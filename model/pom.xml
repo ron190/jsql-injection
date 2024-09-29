@@ -271,6 +271,12 @@
     <reporting>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <!-- plugin not required but 3.5.0 generate error: Cannot invoke "Object.toString()" because "value" is null  -->
+                <version>${maven-surefire-report-plugin.version}</version>
+            </plugin>
+            <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>${pitest-maven.version}</version>
