@@ -250,9 +250,8 @@ strategy:
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}
-  # TODO no boolean mode here on Time for sqlserver
   time: |
-   ; if (${test})
+   ${boolean.mode} if (${test})
        waitfor delay '00:00:00'
    else
        waitfor delay '00:00:${sleep_time}'

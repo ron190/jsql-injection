@@ -1,16 +1,16 @@
 package com.test.vendor.sqlserver;
 
 import com.test.AbstractTestSuite;
-import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.JdbcSettings;
 import spring.SpringTargetApplication;
 
 public abstract class ConcreteSqlServerSuiteIT extends AbstractTestSuite {
 
     public ConcreteSqlServerSuiteIT() {
 
-        this.jdbcURL = SpringTargetApplication.propsSqlServer.getProperty(Environment.URL);
-        this.jdbcUser = SpringTargetApplication.propsSqlServer.getProperty(Environment.USER);
-        this.jdbcPass = SpringTargetApplication.propsSqlServer.getProperty(Environment.PASS);
+        this.jdbcURL = SpringTargetApplication.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = SpringTargetApplication.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = SpringTargetApplication.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.jsqlDatabaseName = "master";
         this.jsqlTableName = "student";

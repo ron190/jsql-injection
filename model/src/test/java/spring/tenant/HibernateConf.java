@@ -34,8 +34,14 @@ public class HibernateConf {
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
 
+        Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
+        hibernateProperties.setProperty(AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER, "spring.tenant.MultiTenantConnectionProviderImpl");
+        hibernateProperties.setProperty(AvailableSettings.MULTI_TENANT_IDENTIFIER_RESOLVER, "spring.tenant.CurrentTenantIdentifierResolverImpl");
+        hibernateProperties.setProperty("hibernate.multiTenancy", "DATABASE");
+
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setHibernateProperties(this.hibernateProperties());
+        sessionFactory.setHibernateProperties(hibernateProperties);
 
         return sessionFactory;
     }
@@ -55,17 +61,5 @@ public class HibernateConf {
         firewall.setUnsafeAllowAnyHttpMethod(true);
 
         return firewall;
-    }
- 
-    private Properties hibernateProperties() {
-        
-        Properties hibernateProperties = new Properties();
-        
-        hibernateProperties.setProperty(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
-        hibernateProperties.setProperty(AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER, "spring.tenant.MultiTenantConnectionProviderImpl");
-        hibernateProperties.setProperty(AvailableSettings.MULTI_TENANT_IDENTIFIER_RESOLVER, "spring.tenant.CurrentTenantIdentifierResolverImpl");
-        hibernateProperties.setProperty("hibernate.multiTenancy", "DATABASE");
-
-        return hibernateProperties;
     }
 }

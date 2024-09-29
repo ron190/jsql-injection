@@ -1,16 +1,16 @@
 package com.test.vendor.firebird;
 
 import com.test.AbstractTestSuite;
-import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.JdbcSettings;
 import spring.SpringTargetApplication;
 
 public abstract class ConcreteFirebirdSuiteIT extends AbstractTestSuite {
 
     public ConcreteFirebirdSuiteIT() {
 
-        this.jdbcURL = SpringTargetApplication.propsFirebird.getProperty(Environment.URL);
-        this.jdbcUser = SpringTargetApplication.propsFirebird.getProperty(Environment.USER);
-        this.jdbcPass = SpringTargetApplication.propsFirebird.getProperty(Environment.PASS);
+        this.jdbcURL = SpringTargetApplication.propsFirebird.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = SpringTargetApplication.propsFirebird.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = SpringTargetApplication.propsFirebird.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.jsqlDatabaseName = "ADMIN";
         this.jsqlTableName = "STUDENT";

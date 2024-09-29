@@ -1,16 +1,16 @@
 package com.test.vendor.postgresql;
 
 import com.test.AbstractTestSuite;
-import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.JdbcSettings;
 import spring.SpringTargetApplication;
 
 public abstract class ConcretePostgreSqlSuiteIT extends AbstractTestSuite {
 
     public ConcretePostgreSqlSuiteIT() {
 
-        this.jdbcURL = SpringTargetApplication.propsPostgreSql.getProperty(Environment.URL);
-        this.jdbcUser = SpringTargetApplication.propsPostgreSql.getProperty(Environment.USER);
-        this.jdbcPass = SpringTargetApplication.propsPostgreSql.getProperty(Environment.PASS);
+        this.jdbcURL = SpringTargetApplication.propsPostgreSql.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = SpringTargetApplication.propsPostgreSql.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = SpringTargetApplication.propsPostgreSql.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.jsqlDatabaseName = "public";
         this.jsqlTableName = "student";

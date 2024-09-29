@@ -60,7 +60,6 @@ public class ExceptionUtil {
                 && !(throwable instanceof OutOfMemoryError)
                 && !ExceptionUtils.getStackTrace(throwable).contains("OutOfMemoryError")  // when implicit
             ) {
-
                 if (ExceptionUtils.getStackTrace(throwable).contains("Could not initialize class java.awt.Toolkit")) {
 
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "System libraries are missing, please use a proper Java runtime instead of headless runtime");

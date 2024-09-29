@@ -32,15 +32,15 @@
         <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
         <maven-dependency-plugin.version>3.7.1</maven-dependency-plugin.version>
-        <maven-install-plugin.version>3.1.2</maven-install-plugin.version>
+        <maven-install-plugin.version>3.1.3</maven-install-plugin.version>
         <maven-javadoc-plugin.version>3.7.0</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>3.4.0</maven-jxr-plugin.version>
 <!--        <maven-pmd-plugin.version>3.23.0</maven-pmd-plugin.version>-->
         <maven-project-info-reports-plugin.version>3.6.2</maven-project-info-reports-plugin.version>
         <maven-site-plugin.version>4.0.0-M15</maven-site-plugin.version>
         <maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
-        <spotbugs-maven-plugin.version>4.8.6.2</spotbugs-maven-plugin.version>
-        <versions-maven-plugin.version>2.17.0</versions-maven-plugin.version>
+        <spotbugs-maven-plugin.version>4.8.6.4</spotbugs-maven-plugin.version>
+        <versions-maven-plugin.version>2.17.1</versions-maven-plugin.version>
 
         <!-- Tests are disabled for scans by default, profile restores the tests -->
         <skipTests>true</skipTests>
@@ -224,6 +224,7 @@
                 <version>${spotbugs-maven-plugin.version}</version>
                 <configuration>
                     <failOnError>false</failOnError>
+                    <quiet>false</quiet>
                 </configuration>
             </plugin>
             <plugin>

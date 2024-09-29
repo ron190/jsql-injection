@@ -49,14 +49,14 @@
         <awaitility.version>4.2.1</awaitility.version>
         <bootstrap.version>5.3.3</bootstrap.version>
         <!-- required since commons-text:1.11.0 not working -->
-        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <commons-lang3.version>3.17.0</commons-lang3.version>
         <cubrid-jdbc.version>11.2.1.0038</cubrid-jdbc.version>
-        <dnsjava.version>3.5.3</dnsjava.version>
+        <dnsjava.version>3.6.0</dnsjava.version>
         <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
-        <h2.version>2.2.224</h2.version>
+        <h2.version>2.3.232</h2.version>
         <hsqldb.version>2.7.3</hsqldb.version>
         <informix.jdbc.version>4.50.11</informix.jdbc.version>
         <javafaker.version>1.0.2</javafaker.version>
@@ -69,11 +69,11 @@
         <jsoup.version>1.18.1</jsoup.version>
         <junit-pioneer.version>2.2.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
-        <maven-failsafe-plugin.version>3.3.0</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.3.1</maven-failsafe-plugin.version>
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
         <monetdb-jdbc.version>2.29</monetdb-jdbc.version>
-        <mssql-jdbc.version>12.6.3.jre11</mssql-jdbc.version>
+        <mssql-jdbc.version>12.8.1.jre11</mssql-jdbc.version>
         <mysql-connector-j.version>9.0.0</mysql-connector-j.version>
         <nashorn-core.version>15.4</nashorn-core.version>
         <neo4j-java-driver.version>5.22.0</neo4j-java-driver.version>

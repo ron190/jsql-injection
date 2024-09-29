@@ -2,7 +2,7 @@ package com.test.vendor.sqlite;
 
 import com.jsql.model.accessible.DataAccess;
 import com.test.AbstractTestSuite;
-import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.JdbcSettings;
 import spring.SpringTargetApplication;
 
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ public abstract class ConcreteSqliteSuiteIT extends AbstractTestSuite {
     
     public void config() {
 
-        this.jdbcURL = SpringTargetApplication.propsSqlite.getProperty(Environment.URL);
-        this.jdbcUser = SpringTargetApplication.propsSqlite.getProperty(Environment.USER);
-        this.jdbcPass = SpringTargetApplication.propsSqlite.getProperty(Environment.PASS);
+        this.jdbcURL = SpringTargetApplication.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = SpringTargetApplication.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = SpringTargetApplication.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.jsqlDatabaseName = "musicstore";
         this.jsqlTableName = "Student";

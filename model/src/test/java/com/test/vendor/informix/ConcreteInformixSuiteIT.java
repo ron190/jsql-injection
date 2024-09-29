@@ -1,16 +1,16 @@
 package com.test.vendor.informix;
 
 import com.test.AbstractTestSuite;
-import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.JdbcSettings;
 import spring.SpringTargetApplication;
 
 public abstract class ConcreteInformixSuiteIT extends AbstractTestSuite {
 
     public ConcreteInformixSuiteIT() {
 
-        this.jdbcURL = SpringTargetApplication.propsInformix.getProperty(Environment.URL);
-        this.jdbcUser = SpringTargetApplication.propsInformix.getProperty(Environment.USER);
-        this.jdbcPass = SpringTargetApplication.propsInformix.getProperty(Environment.PASS);
+        this.jdbcURL = SpringTargetApplication.propsInformix.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = SpringTargetApplication.propsInformix.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = SpringTargetApplication.propsInformix.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.jsqlDatabaseName = "sysutils";
         this.jsqlTableName = "student";

@@ -7,7 +7,6 @@ import com.mckoi.database.control.DefaultDBConfig;
 import com.mckoi.database.control.TCPJDBCServer;
 import com.mckoi.debug.Lvl;
 import jakarta.annotation.PreDestroy;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -7,8 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-// TODO Time not working
-public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
+public class SqlServerTimeGetSuiteIT extends ConcreteSqlServerSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {

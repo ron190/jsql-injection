@@ -1,16 +1,16 @@
 package com.test.vendor.sybase;
 
 import com.test.AbstractTestSuite;
-import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.JdbcSettings;
 import spring.SpringTargetApplication;
 
 public abstract class ConcreteSybaseSuiteIT extends AbstractTestSuite {
 
     public ConcreteSybaseSuiteIT() {
 
-        this.jdbcURL = SpringTargetApplication.propsSybase.getProperty(Environment.URL);
-        this.jdbcUser = SpringTargetApplication.propsSybase.getProperty(Environment.USER);
-        this.jdbcPass = SpringTargetApplication.propsSybase.getProperty(Environment.PASS);
+        this.jdbcURL = SpringTargetApplication.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = SpringTargetApplication.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = SpringTargetApplication.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.jsqlDatabaseName = "master";
         this.jsqlTableName = "Student";
