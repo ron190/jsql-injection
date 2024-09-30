@@ -52,7 +52,7 @@
         <commons-lang3.version>3.17.0</commons-lang3.version>
         <cubrid-jdbc.version>11.2.1.0038</cubrid-jdbc.version>
         <!-- error with 3.6.0, fixed by pom Multi-Release: Provider org.xbill.DNS.spi.DnsjavaInetAddressResolverProvider not found -->
-        <dnsjava.version>3.5.3</dnsjava.version>
+        <dnsjava.version>3.6.2</dnsjava.version>
         <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
