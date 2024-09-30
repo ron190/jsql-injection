@@ -113,8 +113,8 @@ model,com.jsql.util.bruter,Crc64Helper,0,78,0,8,0,14,0,6,0,2
 model,com.jsql.util.bruter,HashUtil,0,253,0,2,0,44,0,10,0,9
 model,com.jsql.util.bruter,Bruter,32,389,0,12,13,56,7,23,7,17
 model,com.jsql.util.bruter,BaseNCodec,295,205,56,12,57,43,51,11,17,11
-model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
 model,com.jsql.util.bruter,ActionCoder,254,0,0,0,40,0,4,0,4,0
+model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
 model,com.jsql.model.suspendable,SuspendableGetVendor,10,137,1,7,3,37,1,9,0,6
 model,com.jsql.model.suspendable,SuspendableGetRows,74,670,18,36,22,162,16,29,0,18
 model,com.jsql.model.suspendable,SuspendableGetIndexes,43,133,3,9,10,28,3,7,0,4

@@ -99,41 +99,45 @@ public class JTextPaneAppender extends AbstractAppender {
 <span class="fc" id="L99">        var messageLogEvent = new String[] {</span>
 <span class="fc" id="L100">            new String(this.getLayout().toByteArray(event), StandardCharsets.UTF_8)</span>
         };
+
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (messageLogEvent.length == 0) {  // fixes #95664</span>
+<span class="nc" id="L104">            return;</span>
+        }
         
-<span class="fc" id="L103">        var level = event.getLevel().intLevel();</span>
+<span class="fc" id="L107">        var level = event.getLevel().intLevel();</span>
         
-<span class="fc" id="L105">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="fc" id="L109">        SwingUtilities.invokeLater(() -&gt; {</span>
             
-<span class="fc" id="L107">            String message = messageLogEvent[0];</span>
-            
-<span class="fc bfc" id="L109" title="All 2 branches covered.">            if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {</span>
-<span class="fc" id="L110">                javaTextPane.append(message, ATTRIBUTE_WARN);</span>
-<span class="fc bfc" id="L111" title="All 2 branches covered.">            } else if (level == LogLevelUtil.CONSOLE_ERROR.intLevel()) {</span>
-<span class="fc" id="L112">                consoleTextPane.append(message, ATTRIBUTE_WARN);</span>
-<span class="fc bfc" id="L113" title="All 2 branches covered.">            } else if (level == LogLevelUtil.CONSOLE_INFORM.intLevel()) {</span>
-<span class="fc" id="L114">                consoleTextPane.append(message, ATTRIBUTE_INFORM);</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            } else if (level == LogLevelUtil.CONSOLE_SUCCESS.intLevel()) {</span>
-<span class="nc" id="L116">                consoleTextPane.append(message, ATTRIBUTE_SUCCESS);</span>
-<span class="pc bpc" id="L117" title="2 of 4 branches missed.">            } else if (level != LogLevelUtil.IGNORE.intLevel() &amp;&amp; level != Level.ERROR.intLevel()) {  // ignore &amp; stdout when unhandled exception</span>
-<span class="fc" id="L118">                consoleTextPane.append(message, ATTRIBUTE_ALL);</span>
+<span class="fc" id="L111">            String message = messageLogEvent[0];</span>
+
+<span class="fc bfc" id="L113" title="All 2 branches covered.">            if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {</span>
+<span class="fc" id="L114">                javaTextPane.append(message, ATTRIBUTE_WARN);</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            } else if (level == LogLevelUtil.CONSOLE_ERROR.intLevel()) {</span>
+<span class="fc" id="L116">                consoleTextPane.append(message, ATTRIBUTE_WARN);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            } else if (level == LogLevelUtil.CONSOLE_INFORM.intLevel()) {</span>
+<span class="fc" id="L118">                consoleTextPane.append(message, ATTRIBUTE_INFORM);</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">            } else if (level == LogLevelUtil.CONSOLE_SUCCESS.intLevel()) {</span>
+<span class="nc" id="L120">                consoleTextPane.append(message, ATTRIBUTE_SUCCESS);</span>
+<span class="pc bpc" id="L121" title="2 of 4 branches missed.">            } else if (level != LogLevelUtil.IGNORE.intLevel() &amp;&amp; level != Level.ERROR.intLevel()) {  // ignore &amp; stdout when unhandled exception</span>
+<span class="fc" id="L122">                consoleTextPane.append(message, ATTRIBUTE_ALL);</span>
             }
-<span class="fc" id="L120">        });</span>
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L124">        });</span>
+<span class="fc" id="L125">    }</span>
     
     /**
      * Register the java console.
      * @param javaConsole
      */
     public static void register(JavaConsoleAdapter javaConsole) {
-<span class="fc" id="L128">        JTextPaneAppender.javaTextPane = javaConsole;</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L132">        JTextPaneAppender.javaTextPane = javaConsole;</span>
+<span class="fc" id="L133">    }</span>
 
     /**
      * Register the default console.
      * @param consoleColored
      */
     public static void register(SimpleConsoleAdapter consoleColored) {
-<span class="fc" id="L136">        JTextPaneAppender.consoleTextPane = consoleColored;</span>
-<span class="fc" id="L137">    }</span>
+<span class="fc" id="L140">        JTextPaneAppender.consoleTextPane = consoleColored;</span>
+<span class="fc" id="L141">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

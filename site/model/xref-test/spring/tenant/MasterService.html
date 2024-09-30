@@ -9,33 +9,33 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> spring.tenant;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> org.hibernate.cfg.Environment;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.springframework.jdbc.datasource.DriverManagerDataSource;
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> spring.SpringTargetApplication;
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> java.sql.DriverManager;
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> java.util.AbstractMap;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> java.util.HashMap;
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="MasterService" href="../../spring/tenant/MasterService.html#MasterService">MasterService</a> {
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>      
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> HashMap&lt;String, ConnectionProvider&gt; hashMap = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>      
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>      <strong class="jxr_keyword">public</strong> <a name="MasterService" href="../../spring/tenant/MasterService.html#MasterService">MasterService</a>() {
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>          
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>          <em class="jxr_comment">// Remove annoying logs from jdbc driver</em>
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>          DriverManager.setLogWriter(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.hibernate.cfg.JdbcSettings;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.springframework.jdbc.datasource.DriverManagerDataSource;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> spring.SpringTargetApplication;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> java.sql.DriverManager;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> java.util.AbstractMap;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> java.util.HashMap;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="MasterService" href="../../spring/tenant/MasterService.html#MasterService">MasterService</a> {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>      
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> HashMap&lt;String, ConnectionProvider&gt; hashMap = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>      
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">public</strong> <a name="MasterService" href="../../spring/tenant/MasterService.html#MasterService">MasterService</a>() {
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>          
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>          DriverManager.setLogWriter(<strong class="jxr_keyword">null</strong>);  <em class="jxr_comment">// remove annoying logs from jdbc driver</em>
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>          SpringTargetApplication.getPropertiesFilterByProfile().map(AbstractMap.SimpleEntry::getKey).forEach(props -&gt; {
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>              
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>              DatasourceConnectionProviderImpl connectionProvider = <strong class="jxr_keyword">new</strong> DatasourceConnectionProviderImpl();
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>              
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>              DriverManagerDataSource dataSource = <strong class="jxr_keyword">new</strong> DriverManagerDataSource();
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>              dataSource.setUrl(props.getProperty(Environment.URL));
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>              dataSource.setUsername(props.getProperty(Environment.USER));
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>              dataSource.setPassword(props.getProperty(Environment.PASS));
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>              dataSource.setUrl(props.getProperty(JdbcSettings.JAKARTA_JDBC_URL));
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>              dataSource.setUsername(props.getProperty(JdbcSettings.JAKARTA_JDBC_USER));
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>              dataSource.setPassword(props.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD));
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>              
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>              connectionProvider.configure(Map.of(
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>                  Environment.DATASOURCE, dataSource
