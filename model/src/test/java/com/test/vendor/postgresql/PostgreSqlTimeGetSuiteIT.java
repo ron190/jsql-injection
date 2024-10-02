@@ -20,7 +20,12 @@ public class PostgreSqlTimeGetSuiteIT extends ConcretePostgreSqlSuiteIT {
         );
         
         model.setIsScanning(true);
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

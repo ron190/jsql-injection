@@ -22,6 +22,11 @@ public class SqlServerTimeGetSuiteIT extends ConcreteSqlServerSuiteIT {
         );
         
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true);
         
         model
         .getMediatorUtils()

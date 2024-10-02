@@ -36,7 +36,6 @@ public class PostgreSqlReadFileSuiteIT extends ConcretePostgreSqlSuiteIT {
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyStackedDisabled(true)
-        .withIsStrategyMultibitDisabled(true)
         .withIsStrategyErrorDisabled(true);
 
         model.beginInjection();

@@ -21,14 +21,14 @@ public class MySqlMultibitSuiteIT extends ConcreteMySqlSuiteIT {
             "http://localhost:8080/multibit?tenant=mysql&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true);
 
-        model.setIsScanning(true);
-        
         model
         .getMediatorUtils()
         .getConnectionUtil()

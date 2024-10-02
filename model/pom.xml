@@ -77,16 +77,16 @@
         <mssql-jdbc.version>12.8.1.jre11</mssql-jdbc.version>
         <mysql-connector-j.version>9.0.0</mysql-connector-j.version>
         <nashorn-core.version>15.4</nashorn-core.version>
-        <neo4j-java-driver.version>5.22.0</neo4j-java-driver.version>
+        <neo4j-java-driver.version>5.25.0</neo4j-java-driver.version>
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
         <ojdbc8.version>23.4.0.24.05</ojdbc8.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
         <pitest-maven.version>1.16.1</pitest-maven.version>
-        <postgresql.version>42.7.3</postgresql.version>
+        <postgresql.version>42.7.4</postgresql.version>
         <snakeyaml.version>2.2</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
         <spock-core.version>2.4-M4-groovy-4.0</spock-core.version>
-        <spring-boot-dependencies.version>3.3.1</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>3.3.4</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
         <sqlite-jdbc.version>3.46.0.0</sqlite-jdbc.version>
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>

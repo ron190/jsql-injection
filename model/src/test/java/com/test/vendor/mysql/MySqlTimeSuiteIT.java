@@ -26,8 +26,8 @@ public class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withNotInjectingMetadata();
-        
+        .withIsStrategyBlindDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

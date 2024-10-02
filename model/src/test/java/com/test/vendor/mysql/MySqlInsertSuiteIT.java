@@ -21,14 +21,14 @@ public class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {
             "http://localhost:8080/insert?tenant=mysql-error&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true);
 
-        model.setIsScanning(true);
-        
         model
         .getMediatorUtils()
         .getConnectionUtil()

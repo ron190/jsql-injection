@@ -21,12 +21,12 @@ public class MySqlBlindSuiteIT extends ConcreteMySqlSuiteIT {
             "http://localhost:8080/blind?tenant=mysql&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsStrategyTimeDisabled(true);
-
-        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
