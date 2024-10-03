@@ -83,7 +83,7 @@
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
         <pitest-maven.version>1.16.1</pitest-maven.version>
         <postgresql.version>42.7.4</postgresql.version>
-        <snakeyaml.version>2.2</snakeyaml.version>
+        <snakeyaml.version>2.3</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
         <spock-core.version>2.4-M4-groovy-4.0</spock-core.version>
         <spring-boot-dependencies.version>3.3.4</spring-boot-dependencies.version>
