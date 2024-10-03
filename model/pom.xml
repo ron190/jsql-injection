@@ -63,7 +63,7 @@
         <javafaker.version>1.0.2</javafaker.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <jaybird.version>5.0.5.java11</jaybird.version>
-        <jcabi-log.version>0.24.1</jcabi-log.version>
+        <jcabi-log.version>0.24.2</jcabi-log.version>
         <jna.version>5.15.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20240303</json.version>
