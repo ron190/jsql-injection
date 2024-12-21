@@ -67,7 +67,7 @@
         <jna.version>5.15.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20240303</json.version>
-        <jsoup.version>1.18.1</jsoup.version>
+        <jsoup.version>1.18.2</jsoup.version>
         <junit-pioneer.version>2.2.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <maven-failsafe-plugin.version>3.3.1</maven-failsafe-plugin.version>
