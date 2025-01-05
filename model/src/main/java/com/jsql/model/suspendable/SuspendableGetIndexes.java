@@ -33,10 +33,8 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
 
     @Override
     public String run(Object... args) throws JSqlException {
-        
         // Concurrent search
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetIndexes");
-        
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         String initialQuery = StringUtils.EMPTY;
@@ -60,18 +58,14 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
         }
         
         nbIndex = 1;
-
         try {
             // Start from 10 to 100 requests
             while (nbIndex <= countNormalIndex) {
-
                 if (this.isSuspended()) {
                     throw new StoppedByUserSlidingException();
                 }
-
                 CallablePageSource currentCallable = taskCompletionService.take().get();
                 nbIndex++;
-
                 // Found a correct mark 1337[index]7331 in the source
                 String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, "\\d+");
                 if (Pattern.compile("(?s).*"+ regexAllIndexes +".*").matcher(currentCallable.getContent()).matches()) {
@@ -80,33 +74,25 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     initialQuery = currentCallable.getQuery().replace("0%2b1", "1");
                     
                     if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {
-
                         String regexIndexesExceptFirst = String.format(VendorYaml.FORMAT_INDEX, "(?!17331)\\d+");
                         initialQuery = initialQuery.replaceAll(regexIndexesExceptFirst, "1");
                         LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Calibrating indexes disabled, forcing to index [1]");
                     }
-                    
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_INFORM,
                         "Strategy [Normal] triggered by [{}]",
                         () -> currentCallable.getQuery().trim().replaceAll("1337(\\d*)7330%2b1", "$1")
                     );
-                    
                     break;
                 }
             }
-
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-
         } catch (InterruptedException e) {
-
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
-
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-
         return initialQuery;
     }
 }

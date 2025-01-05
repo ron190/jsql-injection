@@ -153,7 +153,7 @@ strategy:
   capacity: (select '${lead}${indice}' || ${calibrator})
   orderBy: order by 1337
 
- boolean:
+ binary:
   test:
    falsy:
     - 0 = 1
@@ -181,4 +181,4 @@ strategy:
     %26${bit}
   modeAnd: and
   modeOr: or
-  blind: ${boolean.mode} ${test}
+  blind: ${binary.mode} ${test}

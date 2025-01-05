@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -25,12 +25,9 @@ public class ShellWeb extends AbstractShell {
      * Build a webshell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
      * @param urlShell URL of current shell
-     * @throws MalformedURLException
      */
     public ShellWeb(UUID terminalID, String urlShell) throws MalformedURLException, URISyntaxException {
-        
         super(terminalID, urlShell, "system");
-        
         this.setName("webShell");
     }
 

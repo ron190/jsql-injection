@@ -28,21 +28,16 @@ public class FormUtil {
     }
 
     public void parseForms(int statusCode, String pageSource) {
-        
         var elementsForm = Jsoup.parse(pageSource).select("form");
-        
         if (elementsForm.isEmpty()) {
             return;
         }
         
         var result = new StringBuilder();
-        
         Map<Element, List<Element>> mapForms = new HashMap<>();
         
         for (Element form: elementsForm) {
-            
             mapForms.put(form, new ArrayList<>());
-            
             result.append(
                 String.format(
                     "%n<form action=\"%s\" method=\"%s\" />",
@@ -50,9 +45,7 @@ public class FormUtil {
                     form.attr(FORM_ATTR_VALUE)
                 )
             );
-            
             for (Element input: form.select("input")) {
-                
                 result.append(
                     String.format(
                         "%n    <input name=\"%s\" value=\"%s\" />",
@@ -60,10 +53,8 @@ public class FormUtil {
                         input.attr(INPUT_ATTR_VALUE)
                     )
                 );
-                
                 mapForms.get(form).add(input);
             }
-            
             Collections.reverse(mapForms.get(form));
         }
             
@@ -75,7 +66,6 @@ public class FormUtil {
     }
 
     private void addForms(Elements elementsForm, StringBuilder result, Map<Element, List<Element>> mapForms) {
-        
         LOGGER.log(
             LogLevelUtil.CONSOLE_SUCCESS,
             "Found {} <form> in HTML body, adding input(s) to requests: {}",
@@ -83,7 +73,7 @@ public class FormUtil {
             () -> result
         );
         
-        for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
+        for (Entry<Element, List<Element>> form: mapForms.entrySet()) {
             for (Element input: form.getValue()) {
                 if ("get".equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {
                     this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(
@@ -107,14 +97,12 @@ public class FormUtil {
     }
 
     private void logForms(int statusCode, Elements elementsForm, StringBuilder result) {
-        
         LOGGER.log(
             LogLevelUtil.CONSOLE_DEFAULT,
             "Found {} ignored <form> in HTML body: {}",
             elementsForm::size,
             () -> result
         );
-        
         if (statusCode != 200) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "WAF can detect missing form parameters, you may enable 'Add <input/> parameters' in Preferences and retry");
         }

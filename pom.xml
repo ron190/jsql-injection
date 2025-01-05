@@ -23,10 +23,10 @@
         <sonar.java.binaries>target/classes</sonar.java.binaries>
         <sonar.java.source>11</sonar.java.source>
 
-        <commons-text.version>1.12.0</commons-text.version>
+        <commons-text.version>1.13.0</commons-text.version>
         <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
-        <log4j-bom.version>2.23.1</log4j-bom.version>
+        <log4j-bom.version>2.24.3</log4j-bom.version>
         <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
         <maven-checkstyle-plugin.version>3.5.0</maven-checkstyle-plugin.version>
         <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
@@ -38,7 +38,7 @@
 <!--        <maven-pmd-plugin.version>3.23.0</maven-pmd-plugin.version>-->
         <maven-project-info-reports-plugin.version>3.6.2</maven-project-info-reports-plugin.version>
         <maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
-        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
         <maven-surefire-report-plugin.version>3.4.0</maven-surefire-report-plugin.version>
         <spotbugs-maven-plugin.version>4.8.6.4</spotbugs-maven-plugin.version>
         <versions-maven-plugin.version>2.17.1</versions-maven-plugin.version>
@@ -94,27 +94,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>${commons-text.version}</version>
-        </dependency>
-        <!-- Upgrade version for Plugin Updates Report -->
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>${maven-assembly-plugin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-clean-plugin</artifactId>
-            <version>${maven-clean-plugin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-install-plugin</artifactId>
-            <version>${maven-install-plugin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>${maven-antrun-plugin.version}</version>
         </dependency>
     </dependencies>
 
@@ -226,6 +205,27 @@
                     <artifactId>maven-surefire-report-plugin</artifactId>
                     <!-- plugin not required but 3.5.0 generate error: Cannot invoke "Object.toString()" because "value" is null  -->
                     <version>${maven-surefire-report-plugin.version}</version>
+                </plugin>
+                <!-- Upgrade version for Plugin Updates Report -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven-assembly-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven-install-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven-antrun-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

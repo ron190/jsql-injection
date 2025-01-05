@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -20,8 +20,6 @@ import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.list.*;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -57,91 +55,78 @@ public class ManagerScan extends AbstractManagerList {
      * Create admin page finder.
      */
     public ManagerScan() {
-        
-        this.setLayout(new BorderLayout());
+        super(UiUtil.INPUT_STREAM_PAGES_SCAN, true);
 
-        List<ItemList> itemsList = this.getItemList();
+        this.listPaths.setTransferHandler(null);
+        this.listPaths.setTransferHandler(new ListTransfertHandlerScan());
+        this.listPaths.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                ItemList itemList = (ItemList) value;
+                if (itemList.isVulnerable()) {
+                    label.setIcon(UiUtil.TICK_GREEN.icon);
+                }
+                return label;
+            }
+        });
         
-        final DnDList dndListScan = new DnDListScan(itemsList);
-        
-        dndListScan.setTransferHandler(null);
-        dndListScan.setTransferHandler(new ListTransfertHandlerScan());
-        
-        this.listPaths = dndListScan;
         this.listPaths.setName(ManagerScan.NAME);
-        
-        this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        this.add(new LightScrollPane(0, 0, 0, 0, dndListScan), BorderLayout.CENTER);
 
-        JPanel lastLine = this.getLastLinePanel(dndListScan);
+        JPanel lastLine = this.getLastLinePanel(this.listPaths);
         this.add(lastLine, BorderLayout.SOUTH);
         
-        dndListScan.addListSelectionListener(e -> {
-            
-            if (dndListScan.getSelectedValue() == null) {
+        this.listPaths.addListSelectionListener(e -> {
+            if (this.listPaths.getSelectedValue() == null) {
                 return;
             }
             
-            var beanInjection = ((ItemListScan) dndListScan.getSelectedValue()).getBeanInjection();
-            
+            var beanInjection = ((ItemListScan) this.listPaths.getSelectedValue()).getBeanInjection();
             MediatorHelper.panelAddressBar().getTextFieldAddress().setText(beanInjection.getUrl());
             MediatorHelper.panelAddressBar().getTextFieldHeader().setText(beanInjection.getHeader());
             MediatorHelper.panelAddressBar().getTextFieldRequest().setText(beanInjection.getRequest());
             
             String requestType = beanInjection.getRequestType();
             if (requestType != null && !requestType.isEmpty()) {
-                MediatorHelper.panelAddressBar().getRadioRequest().setText(requestType);
+                MediatorHelper.panelAddressBar().getAtomicRadioMethod().setText(requestType);
             } else {
-                MediatorHelper.panelAddressBar().getRadioRequest().setText("GET");
+                MediatorHelper.panelAddressBar().getAtomicRadioMethod().setText("GET");
             }
             
             AbstractMethodInjection method = beanInjection.getMethodInstance();
-            
             if (method == MediatorHelper.model().getMediatorMethod().getHeader()) {
-                MediatorHelper.panelAddressBar().getRadioHeader().setSelected();
+                MediatorHelper.panelAddressBar().getAtomicRadioHeader().setSelected(true);
             } else if (method == MediatorHelper.model().getMediatorMethod().getRequest()) {
-                MediatorHelper.panelAddressBar().getRadioRequest().setSelected();
+                MediatorHelper.panelAddressBar().getAtomicRadioMethod().setSelected(true);
             } else {
-                MediatorHelper.panelAddressBar().getRadioQueryString().setSelected();
+                MediatorHelper.panelAddressBar().getAtomicRadioRequest().setSelected(true);
             }
         });
     }
 
     private JPanel getLastLinePanel(final DnDList dndListScan) {
-        
         var lastLine = new JPanel();
         lastLine.setOpaque(false);
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
 
-        lastLine.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
-        
         this.initializeRunButton(dndListScan);
 
-        this.loader.setVisible(false);
-
-        lastLine.add(Box.createHorizontalGlue());
-        lastLine.add(this.loader);
+        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
+        lastLine.add(this.horizontalGlue);
+        lastLine.add(this.progressBar);
         lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         lastLine.add(this.run);
-        
         return lastLine;
     }
 
     private List<ItemList> getItemList() {
         
         var jsonScan = new StringBuilder();
-        
         try (
             var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.INPUT_STREAM_PAGES_SCAN);
             var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
             var reader = new BufferedReader(inputStreamReader)
         ) {
-            
             String line;
             while ((line = reader.readLine()) != null) {
                 jsonScan.append(line);
@@ -151,24 +136,10 @@ public class ManagerScan extends AbstractManagerList {
         }
         
         List<ItemList> itemsList = new ArrayList<>();
-        
         try {
             var jsonArrayScan = new JSONArray(jsonScan.toString());
-            
             for (var i = 0 ; i < jsonArrayScan.length() ; i++) {
-                
-                var jsonObjectScan = jsonArrayScan.getJSONObject(i);
-                
-                var beanInjection = new BeanInjection(
-                    jsonObjectScan.getString("url"),
-                    jsonObjectScan.optString("request"),
-                    jsonObjectScan.optString("header"),
-                    jsonObjectScan.optString("method"),
-                    jsonObjectScan.optString("vendor"),
-                    jsonObjectScan.optString("requestType")
-                );
-                
-                itemsList.add(new ItemListScan(beanInjection));
+                itemsList.add(new ItemListScan(jsonArrayScan.getJSONObject(i)));
             }
         } catch (JSONException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
@@ -178,48 +149,32 @@ public class ManagerScan extends AbstractManagerList {
     }
 
     private void initializeRunButton(final DnDList dndListScan) {
-        
         this.defaultText = "SCAN_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
         I18nViewUtil.addComponentForKey("SCAN_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18nUtil.valueByKey("SCAN_RUN_BUTTON_TOOLTIP"));
-
-        this.run.setContentAreaFilled(false);
-        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        this.run.setBackground(UiUtil.COLOR_FOCUS_GAINED);
-        
-        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
-        
         this.run.addActionListener(actionEvent -> {
-            
             if (dndListScan.getSelectedValuesList().isEmpty()) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select URL(s) to scan");
                 return;
             }
-            
             new Thread(
                 () -> {
-                
-                    if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
-                        
-                        ManagerScan.this.run.setText(I18nViewUtil.valueByKey("SCAN_RUN_BUTTON_STOP"));
-                        ManagerScan.this.run.setState(StateButton.STOPPABLE);
-                        ManagerScan.this.loader.setVisible(true);
-                        
+                    if (this.run.getState() == StateButton.STARTABLE) {
+                        this.run.setText(I18nViewUtil.valueByKey("SCAN_RUN_BUTTON_STOP"));
+                        this.run.setState(StateButton.STOPPABLE);
+                        this.progressBar.setVisible(true);
+                        this.horizontalGlue.setVisible(false);
                         DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) dndListScan.getModel();
                         for (var i = 0 ; i < listModel.getSize() ; i++) {
                             listModel.get(i).reset();
                         }
-                        
                         this.scan(dndListScan.getSelectedValuesList());
-                        
                     } else {
-                        
                         MediatorHelper.model().getResourceAccess().setScanStopped(true);
                         MediatorHelper.model().setIsStoppedByUser(true);
-                        ManagerScan.this.run.setEnabled(false);
-                        ManagerScan.this.run.setState(StateButton.STOPPING);
+                        this.run.setEnabled(false);
+                        this.run.setState(StateButton.STOPPING);
                     }
                 },
                 "ThreadScan"
@@ -236,17 +191,12 @@ public class ManagerScan extends AbstractManagerList {
      * @param urlsItemList contains a list of String URL
      */
     public void scan(List<ItemList> urlsItemList) {
-        
-        // Erase everything in the view from a previous injection
-        var requests = new Request();
-        requests.setMessage(Interaction.RESET_INTERFACE);
-        MediatorHelper.model().sendToViews(requests);
+        MediatorHelper.frame().resetInterface();  // Erase everything in the view from a previous injection
         
         // wait for ending of ongoing interaction between two injections
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-            
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
@@ -261,21 +211,24 @@ public class ManagerScan extends AbstractManagerList {
         MediatorHelper.model().getResourceAccess().setScanStopped(false);
         
         for (ItemList urlItemList: urlsItemList) {
-            
-            var urlItemListScan = (ItemListScan) urlItemList;
-            if (MediatorHelper.model().isStoppedByUser() || MediatorHelper.model().getResourceAccess().isScanStopped()) {
+            if (  // detect interrupt by user to end intermediate scan
+                MediatorHelper.model().isStoppedByUser()
+                || MediatorHelper.model().getResourceAccess().isScanStopped()
+            ) {
                 break;
             }
-            
+
+            var urlItemListScan = (ItemListScan) urlItemList;
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Scanning {}", urlItemListScan.getBeanInjection().getUrl());
 
-            Optional<Vendor> vendor = MediatorHelper.model().getMediatorVendor().getVendors()
+            Optional<Vendor> optionalVendor = MediatorHelper.model().getMediatorVendor().getVendors()
                 .stream()
-                .filter(v -> v.toString().equalsIgnoreCase(urlItemListScan.getBeanInjection().getVendor()))
+                .filter(vendor -> vendor.toString().equalsIgnoreCase(urlItemListScan.getBeanInjection().getVendor()))
                 .findAny();
 
-            MediatorHelper.model().getMediatorVendor().setVendorByUser(vendor.orElse(MediatorHelper.model().getMediatorVendor().getAuto()));
-
+            MediatorHelper.model().getMediatorVendor().setVendorByUser(
+                optionalVendor.orElse(MediatorHelper.model().getMediatorVendor().getAuto())
+            );
             MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(
                 urlItemListScan.getBeanInjection().getUrl(),
                 urlItemListScan.getBeanInjection().getRequest(),
@@ -288,7 +241,6 @@ public class ManagerScan extends AbstractManagerList {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
             }
@@ -302,8 +254,6 @@ public class ManagerScan extends AbstractManagerList {
         MediatorHelper.model().setIsStoppedByUser(false);
         MediatorHelper.model().getResourceAccess().setScanStopped(false);
 
-        var request = new Request();
-        request.setMessage(Interaction.END_SCAN);
-        MediatorHelper.model().sendToViews(request);
+        this.endProcess();
     }
 }

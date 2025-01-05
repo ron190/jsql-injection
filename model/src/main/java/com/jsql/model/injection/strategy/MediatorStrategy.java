@@ -40,7 +40,6 @@ public class MediatorStrategy {
     private final InjectionModel injectionModel;
     
     public MediatorStrategy(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
         
         this.time = new StrategyInjectionTime(this.injectionModel);
@@ -54,17 +53,14 @@ public class MediatorStrategy {
     }
     
     public String getMeta() {
-        
         String strategyName = this.strategy == null ? StringUtils.EMPTY : this.strategy.toString().toLowerCase();
         
         var strategyMode = "default";
-        
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             strategyMode = "dios";
         } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
             strategyMode = "zip";
         }
-        
         return String.format("%s#%s", strategyName, strategyMode);
     }
     
@@ -78,9 +74,7 @@ public class MediatorStrategy {
      * @return Final data
      */
     public String buildPath(String urlBase, boolean isUsingIndex, String sqlTrail) {
-        
         String result = urlBase;
-        
         if (urlBase.contains(InjectionModel.STAR)) {
             if (!isUsingIndex) {
                 result = urlBase.replace(InjectionModel.STAR, this.encodePath(sqlTrail));
@@ -96,16 +90,13 @@ public class MediatorStrategy {
                 );
             }
         }
-        
         return result;
     }
 
     private String encodePath(String sqlTrail) {
-
         String sqlTrailEncoded = StringUtil.cleanSql(sqlTrail);
 
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()) {
-
             sqlTrailEncoded = sqlTrailEncoded
                 .replace("'", "%27")
                 .replace("(", "%28")
@@ -138,7 +129,6 @@ public class MediatorStrategy {
      * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
      */
     public boolean testStrategies(SimpleEntry<String, String> parameterToInject) throws JSqlException {
-        
         // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
         
         String parameterOriginalValue = null;
@@ -153,7 +143,6 @@ public class MediatorStrategy {
         // parameterToInject null on true STAR injection
         // TODO Use also on Json injection where parameter == null
         if (parameterToInject != null) {
-            
             parameterOriginalValue = parameterToInject.getValue();
                      
             // Test for params integrity
@@ -162,14 +151,12 @@ public class MediatorStrategy {
             String characterInsertion = this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion()
                 ? characterInsertionByUser
                 : new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);
-            
             if (characterInsertion.contains(InjectionModel.STAR)) {  // When injecting all parameters or JSON
                 parameterToInject.setValue(characterInsertion);
             } else {  // When injecting last parameter
                 parameterToInject.setValue(characterInsertion.replaceAll("(\\w)$", "$1+") + InjectionModel.STAR);
             }
         } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
-
             String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run("");
             String urlBase = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
             this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(
@@ -188,14 +175,12 @@ public class MediatorStrategy {
         this.blind.checkApplicability();
 
         if (parameterToInject != null) {
-
             // Multibit requires '0'
             // TODO char insertion 0' should also work on "where x='$param'"
             var backupCharacterInsertion = parameterToInject.getValue();
             parameterToInject.setValue(InjectionModel.STAR);
             this.multibit.checkApplicability();
             parameterToInject.setValue(backupCharacterInsertion);
-
         } else {
             this.multibit.checkApplicability();
         }
@@ -213,7 +198,6 @@ public class MediatorStrategy {
         this.time.activateWhenApplicable();
 
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null) {  // no strategy found
-            
             // Restore initial parameter value on injection failure
             // Only when not true STAR injection
             if (parameterOriginalValue != null) {

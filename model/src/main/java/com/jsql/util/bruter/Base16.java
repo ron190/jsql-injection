@@ -138,16 +138,11 @@ public class Base16 extends BaseNCodec {
      * @param decodingPolicy Decoding policy.
      */
     public Base16(final boolean lowerCase, final CodecPolicy decodingPolicy) {
-        
         super(BYTES_PER_UNENCODED_BLOCK, BYTES_PER_ENCODED_BLOCK, 0, 0, PAD_DEFAULT, decodingPolicy);
-        
         if (lowerCase) {
-            
             this.encodeTable = LOWER_CASE_ENCODE_TABLE;
             this.decodeTable = LOWER_CASE_DECODE_TABLE;
-            
         } else {
-            
             this.encodeTable = UPPER_CASE_ENCODE_TABLE;
             this.decodeTable = UPPER_CASE_DECODE_TABLE;
         }
@@ -155,16 +150,13 @@ public class Base16 extends BaseNCodec {
 
     @Override
     public void decode(final byte[] data, int offsetInput, final int length, final Context context) {
-        
         int offset = offsetInput;
         
         if (context.eof || length < 0) {
-            
             context.eof = true;
             if (context.ibitWorkArea != 0) {
                 this.validateTrailingCharacter();
             }
-            
             return;
         }
 
@@ -173,37 +165,31 @@ public class Base16 extends BaseNCodec {
 
         // small optimisation to short-cut the rest of this method when it is fed byte-by-byte
         if (availableChars == 1 && availableChars == dataLen) {
-            
             context.ibitWorkArea = this.decodeOctet(data[offset]) + 1;   // store 1/2 byte for next invocation of decode, we offset by +1 as empty-value is 0
             return;
         }
 
         // we must have an even number of chars to decode
         final int charsToProcess = availableChars % BYTES_PER_ENCODED_BLOCK == 0 ? availableChars : availableChars - 1;
-
         final byte[] buffer = this.ensureBufferSize(charsToProcess / BYTES_PER_ENCODED_BLOCK, context);
 
         int result;
         var i = 0;
         if (dataLen < availableChars) {
-            
             // we have 1/2 byte from previous invocation to decode
             result = (context.ibitWorkArea - 1) << BITS_PER_ENCODED_BYTE;
             result |= this.decodeOctet(data[offset++]);
             i = 2;
-
-            buffer[context.pos++] = (byte)result;
-
+            buffer[context.pos++] = (byte) result;
             // reset to empty-value for next invocation!
             context.ibitWorkArea = 0;
         }
 
         while (i < charsToProcess) {
-            
             result = this.decodeOctet(data[offset++]) << BITS_PER_ENCODED_BYTE;
             result |= this.decodeOctet(data[offset++]);
             i += 2;
-            buffer[context.pos++] = (byte)result;
+            buffer[context.pos++] = (byte) result;
         }
 
         // we have one char of a hex-pair left over
@@ -213,42 +199,32 @@ public class Base16 extends BaseNCodec {
     }
 
     private int decodeOctet(final byte octet) {
-        
         int decoded = -1;
         if ((octet & 0xff) < this.decodeTable.length) {
             decoded = this.decodeTable[octet];
         }
-
         if (decoded == -1) {
-            throw new IllegalArgumentException("Invalid octet in encoded value: " + (int)octet);
+            throw new IllegalArgumentException("Invalid octet in encoded value: " + (int) octet);
         }
-
         return decoded;
     }
 
     @Override
     public void encode(final byte[] data, final int offset, final int length, final Context context) {
-        
         if (context.eof) {
             return;
         }
-
         if (length < 0) {
-            
             context.eof = true;
             return;
         }
-
         final int size = length * BYTES_PER_ENCODED_BLOCK;
         if (size < 0) {
             throw new IllegalArgumentException("Input length exceeds maximum size for encoded data: " + length);
         }
-
         final byte[] buffer = this.ensureBufferSize(size, context);
-
         final int end = offset + length;
         for (int i = offset; i < end; i++) {
-            
             final int value = data[i];
             final int high = (value >> BITS_PER_ENCODED_BYTE) & MASK_4BITS;
             final int low = value & MASK_4BITS;
@@ -262,7 +238,7 @@ public class Base16 extends BaseNCodec {
      *
      * @param octet The value to test.
      *
-     * @return {@code true} if the value is defined in the the Base16 alphabet {@code false} otherwise.
+     * @return {@code true} if the value is defined in the Base16 alphabet {@code false} otherwise.
      */
     @Override
     public boolean isInAlphabet(final byte octet) {

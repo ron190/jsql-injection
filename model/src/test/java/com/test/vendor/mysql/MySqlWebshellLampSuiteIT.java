@@ -50,7 +50,7 @@ public class MySqlWebshellLampSuiteIT extends ConcreteMySqlSuiteIT {
         String resultCommand = this.injectionModel.getResourceAccess().runWebShell(
             "uname",
             UUID.randomUUID(),
-            "http://jsql-lamp:8079/."+ this.injectionModel.getVersionJsql() +".jw.php"
+            "http://jsql-lamp:8079/."+ this.injectionModel.getPropertiesUtil().getVersionJsql() +".jw.php"
         );
 
         LOGGER.info("Webshell: found {}, to find {}", resultCommand.trim(), "Linux");

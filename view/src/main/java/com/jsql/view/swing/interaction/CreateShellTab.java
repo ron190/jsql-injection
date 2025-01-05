@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -32,7 +32,6 @@ public class CreateShellTab extends CreateTabHelper implements InteractionComman
      * @param interactionParams The local path and url for the shell
      */
     public CreateShellTab(Object[] interactionParams) {
-        
         this.path = (String) interactionParams[0];
         this.url = (String) interactionParams[1];
     }

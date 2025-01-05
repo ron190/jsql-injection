@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -40,9 +40,7 @@ public class AddDatabases implements InteractionCommand {
 
     @Override
     public void execute() {
-        
         LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
-        
         for (Database database: this.databases) {
             LOGGER.debug(database);
         }

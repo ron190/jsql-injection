@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -16,12 +16,13 @@ import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -32,12 +33,12 @@ public class PanelNode extends JPanel {
     /**
      * Default icon of the node (database or table).
      */
-    private final JLabel icon = new JLabel();
+    private final JLabel iconNode = new JLabel();
 
     /**
      * A GIF loader, displayed if progress track is unknown (like columns).
      */
-    private final JLabel loader = new JLabel();
+    private final JLabel loaderWait = new JLabel();
 
     /**
      * Progress bar displayed during injection, with pause icon displayed if user paused the process.
@@ -47,7 +48,7 @@ public class PanelNode extends JPanel {
     /**
      * Text of the node.
      */
-    private final JLabel label = new JLabel();
+    private final JLabel nodeLabel = new JLabel();
     private final JTextField textFieldEditable = new JTextField(15);
     
     /**
@@ -56,40 +57,26 @@ public class PanelNode extends JPanel {
      * @param currentNode Node to draw in the tree
      */
     public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {
-        
-        var animatedGIF = new ImageIcon(Objects.requireNonNull(PanelNode.class.getClassLoader().getResource(UiUtil.PATH_PROGRESSBAR)));
-        animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));
-        
-        this.loader.setIcon(animatedGIF);
-        this.loader.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        this.loaderWait.setIcon(UiUtil.HOURGLASS.icon);
+        this.loaderWait.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
         this.progressBar.setPreferredSize(new Dimension(20, 20));
-        this.progressBar.setUI(new BasicProgressBarUI());
-        this.progressBar.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createEmptyBorder(4, 3, 4, 3),
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY),
-                BorderFactory.createLineBorder(Color.WHITE)
-            )
-        ));
-        
-        this.label.setOpaque(true);
-        this.label.setBorder(UiUtil.BORDER_FOCUS_GAINED);
+        this.progressBar.setBorder(BorderFactory.createEmptyBorder(4, 3, 4, 3));
 
-        this.icon.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        this.nodeLabel.setOpaque(true);
+
+        this.iconNode.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         
-        this.setBackground(Color.WHITE);
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         
         Stream.of(
-            this.icon,
-            this.loader,
+            this.iconNode,
+            this.loaderWait,
             this.progressBar,
-            this.label,
+            this.nodeLabel,
             this.textFieldEditable
         )
         .forEach(component -> {
-            
             this.add(component);
             component.setVisible(false);
         });
@@ -97,36 +84,14 @@ public class PanelNode extends JPanel {
         this.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
         
         this.initializeTextFieldEditable(tree, currentNode);
-
-        this.addFocusListener(new FocusListener() {
-            
-            @Override
-            public void focusLost(FocusEvent e) {
-                
-                PanelNode.this.label.setBackground(UiUtil.COLOR_FOCUS_LOST);
-                PanelNode.this.label.setBorder(UiUtil.BORDER_FOCUS_LOST);
-            }
-            
-            @Override
-            public void focusGained(FocusEvent e) {
-                
-                PanelNode.this.label.setBackground(UiUtil.COLOR_FOCUS_GAINED);
-                PanelNode.this.label.setBorder(UiUtil.BORDER_FOCUS_GAINED);
-            }
-        });
     }
 
     private void initializeTextFieldEditable(final JTree tree, final DefaultMutableTreeNode currentNode) {
-        
-        this.textFieldEditable.setFont(UiUtil.FONT_NON_MONO);
-        this.textFieldEditable.setBorder(BorderFactory.createLineBorder(UiUtil.COLOR_FOCUS_GAINED, 1, false));
-        
         this.textFieldEditable.addActionListener(e -> {
-            
             AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
             nodeModel.setIsEdited(false);
             
-            this.label.setVisible(true);
+            this.nodeLabel.setVisible(true);
             this.textFieldEditable.setVisible(false);
             tree.requestFocusInWindow();
 
@@ -134,17 +99,15 @@ public class PanelNode extends JPanel {
                 this.textFieldEditable.getText().getBytes(StandardCharsets.UTF_8),
                 StandardCharsets.UTF_8
             ));
-            this.label.setText(UiStringUtil.detectUtf8Html(nodeModel.getElementDatabase().getLabelCount()));
+            this.nodeLabel.setText(UiStringUtil.detectUtf8Html(nodeModel.getElementDatabase().getLabelWithCount()));
             
             tree.revalidate();
             tree.repaint();
         });
         
         this.textFieldEditable.addFocusListener(new FocusAdapter() {
-            
             @Override
             public void focusLost(FocusEvent e) {
-                
                 AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
                 nodeModel.setIsEdited(false);
                 tree.revalidate();
@@ -153,17 +116,14 @@ public class PanelNode extends JPanel {
         });
         
         KeyAdapter keyAdapterF2 = new KeyAdapter() {
-            
             @Override
             public void keyPressed(KeyEvent e) {
-                
                 AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
                 
                 if (e.getKeyCode() == KeyEvent.VK_F2 && !nodeModel.isRunning()) {
-                    
                     nodeModel.setIsEdited(true);
                     
-                    PanelNode.this.label.setVisible(false);
+                    PanelNode.this.nodeLabel.setVisible(false);
                     PanelNode.this.textFieldEditable.setVisible(true);
                     PanelNode.this.textFieldEditable.requestFocusInWindow();
                     
@@ -181,22 +141,22 @@ public class PanelNode extends JPanel {
      * Change the text icon.
      * @param newIcon An icon to display next to the text.
      */
-    public void setIcon(Icon newIcon) {
-        this.icon.setIcon(newIcon);
+    public void setIconNode(Icon newIcon) {
+        this.iconNode.setIcon(newIcon);
     }
     
     /**
      * Display the normal text icon to the left.
      */
     public void showIcon() {
-        this.icon.setVisible(true);
+        this.iconNode.setVisible(true);
     }
     
     /**
      * Mask the node icon for example when the loader component is displayed.
      */
     public void hideIcon() {
-        this.icon.setVisible(false);
+        this.iconNode.setVisible(false);
     }
     
     /**
@@ -204,14 +164,14 @@ public class PanelNode extends JPanel {
      * @param newIcon An icon to display for the loader.
      */
     public void setLoaderIcon(Icon newIcon) {
-        this.loader.setIcon(newIcon);
+        this.loaderWait.setIcon(newIcon);
     }
 
     /**
      * Display the animated gif loader.
      */
     public void showLoader() {
-        this.loader.setVisible(true);
+        this.loaderWait.setVisible(true);
     }
     
     
@@ -221,11 +181,11 @@ public class PanelNode extends JPanel {
         return this.progressBar;
     }
 
-    public JLabel getLabel() {
-        return this.label;
+    public JLabel getNodeLabel() {
+        return this.nodeLabel;
     }
 
-    public JTextField getEditable() {
+    public JTextField getTextFieldEditable() {
         return this.textFieldEditable;
     }
 }

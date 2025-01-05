@@ -70,24 +70,17 @@ public class AuthenticationUtil {
         String kerberosKrb5Conf,
         String kerberosLoginConf
     ) {
-
         boolean isRestartRequired = this.initializeKerberos(isKerberos, kerberosKrb5Conf, kerberosLoginConf);
-        
         this.initializeSimpleAuthorization(isAuthentication, usernameAuthentication, passwordAuthentication);
-        
         this.setAuthentication();
-        
         return isRestartRequired;
     }
 
     public void initializeSimpleAuthorization(boolean isAuthentication, String usernameAuthentication, String passwordAuthentication) {
-        
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
-        
         preferences.putBoolean("isAuthentication", isAuthentication);
         preferences.put("usernameAuthentication", usernameAuthentication);
         preferences.put("passwordAuthentication", passwordAuthentication);
-        
         // Define proxy settings
         this.isAuthentication = isAuthentication;
         this.usernameAuthentication = usernameAuthentication;
@@ -95,7 +88,6 @@ public class AuthenticationUtil {
     }
 
     private boolean initializeKerberos(boolean isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
-        
         // Persist to JVM
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         
@@ -103,7 +95,7 @@ public class AuthenticationUtil {
         this.pathKerberosKrb5 = kerberosKrb5Conf;
         this.pathKerberosLogin = kerberosLoginConf;
         
-        // Check if krb file has change
+        // Check if krb file has changed
         boolean isRestartRequired = this.isKerberos
             && !new File(this.pathKerberosKrb5).exists()
             && !kerberosKrb5Conf.equals(this.pathKerberosKrb5);
@@ -114,17 +106,14 @@ public class AuthenticationUtil {
         
         // Check krb integrity
         if (this.isKerberos) {
-            
             // Fix #23877: NoClassDefFoundError on java/nio/file/Paths
             if (!new File(this.pathKerberosKrb5).exists()) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Krb5 file not found: {}", this.pathKerberosKrb5);
             }
-            
             if (!new File(this.pathKerberosLogin).exists()) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Login file not found: {}", this.pathKerberosLogin);
             }
         }
-        
         return isRestartRequired;
     }
     
@@ -133,7 +122,6 @@ public class AuthenticationUtil {
      * and apply environment settings.
      */
     public void setKerberosCifs() {
-        
         // Use Preferences API to persist proxy configuration
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
@@ -155,9 +143,7 @@ public class AuthenticationUtil {
      * Apply kerberos authentication to the JVM.
      */
     public void setAuthentication() {
-        
         Authenticator.setDefault(null);
-
         if (this.isAuthentication) {
             Authenticator.setDefault(new Authenticator() {
                 @Override
@@ -171,16 +157,12 @@ public class AuthenticationUtil {
         } else {
             Authenticator.setDefault(null);
         }
-        
         if (this.isKerberos) {
-            
             System.setProperty("java.security.krb5.conf", this.pathKerberosKrb5);
             System.setProperty("java.security.auth.login.config", this.pathKerberosLogin);
             System.setProperty("spnego.krb5.conf", this.pathKerberosKrb5);
             System.setProperty("spnego.login.conf", this.pathKerberosLogin);
-            
         } else {
-            
             System.setProperty("java.security.krb5.conf", StringUtils.EMPTY);
             System.setProperty("java.security.auth.login.config", StringUtils.EMPTY);
             System.setProperty("spnego.krb5.conf", StringUtils.EMPTY);

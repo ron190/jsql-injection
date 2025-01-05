@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -11,7 +11,6 @@
 package com.jsql.view.swing.shell;
 
 import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -21,13 +20,13 @@ import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.MouseMotionListener;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A Terminal completely built from swing text pane.
@@ -42,7 +41,7 @@ public abstract class AbstractShell extends JTextPane {
     /**
      * True if terminal is processing command.
      */
-    private final boolean[] isEdited = {false};
+    private final AtomicBoolean isEdited = new AtomicBoolean(false);
 
     /**
      * Server name or IP to display on prompt.
@@ -53,15 +52,8 @@ public abstract class AbstractShell extends JTextPane {
      * User and password for database.
      */
     protected String[] loginPassword = null;
-
     private final UUID uuidShell;
-    
     private final String urlShell;
-
-    /**
-     * Document used to append colored text.
-     */
-    private final transient StyledDocument styledDocument = this.getStyledDocument();
 
     /**
      * Style used for coloring text.
@@ -83,10 +75,8 @@ public abstract class AbstractShell extends JTextPane {
      * @param uuidShell Unique identifier to discriminate beyond multiple opened terminals
      * @param urlShell URL of current shell
      * @param labelShell Type of shell to display on prompt
-     * @throws MalformedURLException
      */
     protected AbstractShell(UUID uuidShell, String urlShell, String labelShell) throws MalformedURLException, URISyntaxException {
-        
         this.uuidShell = uuidShell;
         this.urlShell = urlShell;
         this.labelShell = labelShell;
@@ -94,15 +84,14 @@ public abstract class AbstractShell extends JTextPane {
         var url = new URI(urlShell).toURL();
         this.host = url.getHost();
 
-        this.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
+        this.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, UIManager.getFont("TextArea.font").getSize()));
         this.setCaret(new BlockCaret());
         this.setBackground(Color.BLACK);
         this.setForeground(Color.LIGHT_GRAY);
-        this.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
 
         this.displayPrompt(true);
 
-        this.setCursor(null);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         this.setTransferHandler(null);
         this.setHighlighter(null);
 
@@ -123,12 +112,11 @@ public abstract class AbstractShell extends JTextPane {
      * Update terminal and use default behavior.
      */
     public void reset() {
-        
-        this.isEdited[0] = false;
+        this.isEdited.set(false);
         this.setEditable(true);
         this.displayPrompt(false);
         this.setCaretPosition(this.getDocument().getLength());
-        this.setCursor(null);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
     /**
@@ -139,7 +127,6 @@ public abstract class AbstractShell extends JTextPane {
         try {
             var doc = this.getDocument();
             doc.insertString(doc.getLength(), string, null);
-            
         } catch (BadLocationException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
@@ -150,7 +137,6 @@ public abstract class AbstractShell extends JTextPane {
      * @param isAddingPrompt Should we measure prompt length?
      */
     public void displayPrompt(boolean isAddingPrompt) {
-        
         StyleConstants.setUnderline(this.style, true);
         this.appendPrompt("jsql", Color.LIGHT_GRAY, isAddingPrompt);
         StyleConstants.setUnderline(this.style, false);
@@ -172,8 +158,7 @@ public abstract class AbstractShell extends JTextPane {
     private void appendPrompt(String string, Color color, boolean isAddingPrompt) {
         try {
             StyleConstants.setForeground(this.style, color);
-            this.styledDocument.insertString(this.styledDocument.getLength(), string, this.style);
-            
+            this.getStyledDocument().insertString(this.getStyledDocument().getLength(), string, this.style);
             if (isAddingPrompt) {
                 this.prompt += string;
             }
@@ -202,10 +187,8 @@ public abstract class AbstractShell extends JTextPane {
      * Get index of line for current offset (generally cursor position).
      * @param offset Position on the line
      * @return Index of the line
-     * @throws BadLocationException
      */
     public int getLineOfOffset(int offset) throws BadLocationException {
-        
         var errorMsg = "Can't translate offset to line";
         var doc = this.getDocument();
         
@@ -214,7 +197,6 @@ public abstract class AbstractShell extends JTextPane {
         } else if (offset > doc.getLength()) {
             throw new BadLocationException(errorMsg, doc.getLength() + 1);
         } else {
-            
             var map = doc.getDefaultRootElement();
             return map.getElementIndex(offset);
         }
@@ -224,10 +206,8 @@ public abstract class AbstractShell extends JTextPane {
      * Get position of the beginning of the line.
      * @param line Index of the line
      * @return Offset of line
-     * @throws BadLocationException
      */
     public int getLineStartOffset(int line) throws BadLocationException {
-        
         var map = this.getDocument().getDefaultRootElement();
         
         if (line < 0) {
@@ -235,7 +215,6 @@ public abstract class AbstractShell extends JTextPane {
         } else if (line >= map.getElementCount()) {
             throw new BadLocationException("No such line", this.getDocument().getLength() + 1);
         } else {
-            
             var lineElem = map.getElement(line);
             return lineElem.getStartOffset();
         }
@@ -244,7 +223,7 @@ public abstract class AbstractShell extends JTextPane {
     
     // Getter and setter
     
-    public boolean[] getIsEdited() {
+    public AtomicBoolean getIsEdited() {
         return this.isEdited;
     }
 

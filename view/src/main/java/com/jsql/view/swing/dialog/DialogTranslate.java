@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -13,12 +13,10 @@ package com.jsql.view.swing.dialog;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.dialog.translate.Language;
-import com.jsql.view.swing.dialog.translate.SwingWorkerGithubLocale;
+import com.jsql.view.swing.dialog.translate.WorkerTranslateInto;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
-import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +24,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -60,17 +57,11 @@ public class DialogTranslate extends JDialog {
      * Create a dialog for general information on project jsql.
      */
     public DialogTranslate() {
-        
         super(MediatorHelper.frame(), Dialog.ModalityType.MODELESS);
-
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.setIconImages(UiUtil.getIcons());  // Define a small and large app icon
 
-        // Define a small and large app icon
-        this.setIconImages(UiUtil.getIcons());
-
-        // Action for ESCAPE key
-        ActionListener escapeListener = actionEvent -> DialogTranslate.this.dispose();
-
+        ActionListener escapeListener = actionEvent -> DialogTranslate.this.dispose();  // Action for ESCAPE key
         this.getRootPane().registerKeyboardAction(
             escapeListener,
             KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
@@ -79,17 +70,14 @@ public class DialogTranslate extends JDialog {
 
         JPanel lastLine = this.initializeLastLine();
 
-        this.labelTranslation.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        var containerDialog = this.getContentPane();
-        containerDialog.add(this.labelTranslation, BorderLayout.NORTH);
-        containerDialog.add(lastLine, BorderLayout.SOUTH);
+        this.labelTranslation.setBorder(UiUtil.BORDER_5PX);
+        var contentPane = this.getContentPane();
+        contentPane.add(this.labelTranslation, BorderLayout.NORTH);
+        contentPane.add(lastLine, BorderLayout.SOUTH);
 
         this.initializeTextToTranslate();
 
-        containerDialog.add(
-            new LightScrollPane(1, 0, 1, 0, this.textToTranslate),
-            BorderLayout.CENTER
-        );
+        contentPane.add(new JScrollPane(this.textToTranslate), BorderLayout.CENTER);
     }
 
     /**
@@ -100,7 +88,7 @@ public class DialogTranslate extends JDialog {
         this.progressBarTranslation.setValue(0);
         this.progressBarTranslation.setString("Loading...");
         
-        DialogTranslate.this.language = language;
+        this.language = language;
         
         this.labelTranslation.setText(
             String.join(
@@ -121,7 +109,7 @@ public class DialogTranslate extends JDialog {
         this.labelTranslation.setIcon(language.getFlag());
         this.labelTranslation.setIconTextGap(8);
         
-        DialogTranslate.this.setTitle("Translate to "+ language);
+        this.setTitle("Translate to "+ language);
         this.textToTranslate.setText(null);
         this.textToTranslate.setEditable(false);
         this.buttonSend.setEnabled(false);
@@ -136,20 +124,15 @@ public class DialogTranslate extends JDialog {
             UIManager.getDefaults().getFont("TextField.font").getSize()
         ));
         
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Loading text to translate into {}...", () -> language);
-        
-        new SwingWorkerGithubLocale(this).execute();
+        new WorkerTranslateInto(this).execute();
     }
 
     private JPanel initializeLastLine() {
         
         var lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
-        lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        lastLine.setBorder(UiUtil.BORDER_5PX);
         
-        this.buttonSend.setContentAreaFilled(false);
-        this.buttonSend.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        this.buttonSend.setBackground(UiUtil.COLOR_FOCUS_GAINED);
         this.buttonSend.setToolTipText(
             String.join(
                 "",
@@ -160,19 +143,14 @@ public class DialogTranslate extends JDialog {
             )
         );
         
-        this.buttonSend.addMouseListener(new FlatButtonMouseAdapter(this.buttonSend));
-        
         this.buttonSend.addActionListener(actionEvent -> {
-            
             if (this.textToTranslate.getText().equals(this.textBeforeChange)) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Nothing changed, translate a piece of text then click on Send");
                 return;
             }
             
             // Escape Markdown character # for h1 in .properties
-            String clientDescription = this.textToTranslate
-                .getText()
+            String clientDescription = this.textToTranslate.getText()
                 .replace("\\\\", "\\\\\\\\")
                 .replaceAll("(?m)^#","\\\\#")
                 .replace("<", "\\<");
@@ -180,51 +158,40 @@ public class DialogTranslate extends JDialog {
             MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(
                 clientDescription,
                 ShowOnConsole.YES,
-                DialogTranslate.this.language +" translation"
+                this.language +" translation"
             );
-            DialogTranslate.this.setVisible(false);
+            this.setVisible(false);
         });
 
         this.setLayout(new BorderLayout());
         
-        this.progressBarTranslation.setUI(new BasicProgressBarUI());
-        this.progressBarTranslation.setOpaque(false);
         this.progressBarTranslation.setStringPainted(true);
         this.progressBarTranslation.setValue(0);
         
         lastLine.add(this.progressBarTranslation);
         lastLine.add(Box.createGlue());
         lastLine.add(this.buttonSend);
-        
         return lastLine;
     }
 
     private void initializeTextToTranslate() {
-        
         this.textToTranslate.addMouseListener(new MouseAdapter() {
-            
             @Override
             public void mousePressed(MouseEvent e) {
-                
                 super.mousePressed(e);
                 DialogTranslate.this.textToTranslate.requestFocusInWindow();
             }
         });
-
         this.textToTranslate.addFocusListener(new FocusAdapter() {
-            
             @Override
             public void focusGained(FocusEvent arg0) {
-                
                 DialogTranslate.this.textToTranslate.getCaret().setVisible(true);
                 DialogTranslate.this.textToTranslate.getCaret().setSelectionVisible(true);
             }
         });
-
-        this.textToTranslate.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        this.textToTranslate.setBorder(UiUtil.BORDER_5PX);
         this.textToTranslate.setDragEnabled(true);
         this.textToTranslate.getCaret().setBlinkRate(500);
-
         this.textToTranslate.setComponentPopupMenu(new JPopupMenuText(this.textToTranslate));
     }
     
@@ -233,10 +200,6 @@ public class DialogTranslate extends JDialog {
 
     public Language getLanguage() {
         return this.language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
     }
 
     public String getTextBeforeChange() {
@@ -249,10 +212,6 @@ public class DialogTranslate extends JDialog {
 
     public JButton getButtonSend() {
         return this.buttonSend;
-    }
-
-    public JLabel getLabelTranslation() {
-        return this.labelTranslation;
     }
 
     public JTextArea getTextToTranslate() {

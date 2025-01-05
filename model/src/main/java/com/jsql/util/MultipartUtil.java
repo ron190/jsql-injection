@@ -23,7 +23,6 @@ public class MultipartUtil {
     }
 
     public boolean testParameters(boolean hasFoundInjection) {
-
         if (!hasFoundInjection) {
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking multipart params...");
         } else {
@@ -34,7 +33,6 @@ public class MultipartUtil {
         String rawRequest = this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest();
 
         Matcher matcherBoundary = Pattern.compile("boundary=([^;]*)").matcher(rawHeader);
-
         if (!matcherBoundary.find()) {
             return false;
         }
@@ -50,12 +48,10 @@ public class MultipartUtil {
                 return true;
             }
         }
-
         return false;
     }
 
     private boolean isBoundaryInjectable(String rawRequest, String boundary, Matcher matcherFormDataParameters) {
-
         String nameParameter = matcherFormDataParameters.group(1);
         String valueParameter = matcherFormDataParameters.group(2);
 
@@ -73,9 +69,7 @@ public class MultipartUtil {
                 () -> nameParameter,
                 () -> valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)
             );
-
             return this.injectionModel.getMediatorMethod().getRequest().testParameters();
-
         } catch (JSqlException e) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
@@ -86,7 +80,6 @@ public class MultipartUtil {
                 )
             );
         }
-
         return false;
     }
 }

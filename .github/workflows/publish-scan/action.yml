@@ -1,9 +1,12 @@
+name: publish-scan
+description: Static code analysis and website publishing
+
 inputs:
   CODECOV_TOKEN:
-    type: string
+    description: Codecov authentication token
     required: true
   CODACY_PROJECT_TOKEN:
-    type: string
+    description: Codacy authentication token
     required: true
 
 runs:

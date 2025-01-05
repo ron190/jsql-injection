@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -99,17 +99,15 @@ public class DataAccess {
     }
     
     /**
-     * Get general database informations.<br>
+     * Get general database information.<br>
      * => version{%}database{%}user{%}CURRENT_USER
      */
     public void getDatabaseInfos() {
-        
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_FETCHING_INFORMATIONS"));
         
         var sourcePage = new String[]{ StringUtils.EMPTY };
 
         var resultToParse = "";
-        
         try {
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlInfos(),
@@ -126,7 +124,6 @@ public class DataAccess {
         }
 
         if (StringUtils.isEmpty(resultToParse)) {
-            
             this.injectionModel.sendResponseFromSite("Incorrect metadata", sourcePage[0].trim());
         }
         
@@ -142,11 +139,8 @@ public class DataAccess {
                 versionDatabase,
                 username
             );
-            
             LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, infos);
-            
         } catch (ArrayIndexOutOfBoundsException e) {
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 String.format("%s: %s", I18nUtil.valueByKey("LOG_DB_METADATA_INCORRECT"), resultToParse)
@@ -165,7 +159,6 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public List<Database> listDatabases() throws JSqlException {
-        
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_FETCHING_DATABASES"));
         List<Database> databases = new ArrayList<>();
         String resultToParse = StringUtils.EMPTY;
@@ -194,16 +187,13 @@ public class DataAccess {
                 + ENCLOSE_VALUE_RGX
             )
             .matcher(resultToParse);
-
         if (!regexSearch.find()) {
             throw new InjectionFailureException("No match while injecting databases");
         }
         
         regexSearch.reset();
-
         // Build an array of Database objects from the data we have parsed
         while (regexSearch.find()) {
-            
             String databaseName = regexSearch.group(1);
             String tableCount = regexSearch.group(2);
 
@@ -215,7 +205,6 @@ public class DataAccess {
         request.setMessage(Interaction.ADD_DATABASES);
         request.setParameters(databases);
         this.injectionModel.sendToViews(request);
-        
         return databases;
     }
 
@@ -230,7 +219,6 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public List<Table> listTables(Database database) throws JSqlException {
-        
         // Reset stoppedByUser if list of Databases is partial
         // and some Tables are still reachable
         this.injectionModel.setIsStoppedByUser(false);
@@ -244,7 +232,6 @@ public class DataAccess {
         var tableCount = Integer.toString(database.getChildCount());
         
         String resultToParse = StringUtils.EMPTY;
-        
         try {
             var pageSource = new String[]{ StringUtils.EMPTY };
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
@@ -278,14 +265,12 @@ public class DataAccess {
         if (!regexSearch.find()) {
             throw new InjectionFailureException("No match while injecting tables");
         }
-        
         regexSearch.reset();
         
         List<Table> tables = new ArrayList<>();
         
         // Build an array of Table objects from the data we have parsed
         while (regexSearch.find()) {
-            
             String tableName = regexSearch.group(1);
             String rowCount = regexSearch.group(2);
             
@@ -297,7 +282,6 @@ public class DataAccess {
         requestAddTables.setMessage(Interaction.ADD_TABLES);
         requestAddTables.setParameters(tables);
         this.injectionModel.sendToViews(requestAddTables);
-        
         return tables;
     }
 
@@ -312,7 +296,6 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public List<Column> listColumns(Table table) throws JSqlException {
-        
         List<Column> columns = new ArrayList<>();
         
         // Inform the view that table has just been used
@@ -366,9 +349,7 @@ public class DataAccess {
 
         // Build an array of Column objects from the data we have parsed
         while (regexSearch.find()) {
-            
             String nameColumn = regexSearch.group(1);
-
             var column = new Column(nameColumn, table);
             columns.add(column);
         }
@@ -377,12 +358,11 @@ public class DataAccess {
         requestAddColumns.setMessage(Interaction.ADD_COLUMNS);
         requestAddColumns.setParameters(columns);
         this.injectionModel.sendToViews(requestAddColumns);
-        
         return columns;
     }
 
     /**
-     * Get table values and count each occurrences and send them to the view.<br>
+     * Get table values and count each occurrence and send it to the view.<br>
      * Values are on clear text (not hexa) and follows this window pattern<br>
      * => hh[value 1]jj[count]hhgghh[value 2]jj[count]hhggh...hi<br>
      * Data window can be cut before the end of the request but the process helps to obtain
@@ -392,7 +372,6 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public String[][] listValues(List<Column> columnsBean) throws JSqlException {
-        
         var databaseBean = (Database) columnsBean.get(0).getParent().getParent();
         var tableBean = (Table) columnsBean.get(0).getParent();
         int rowCount = columnsBean.get(0).getParent().getChildCount();
@@ -436,17 +415,14 @@ public class DataAccess {
         requestEndProgress.setMessage(Interaction.END_PROGRESS);
         requestEndProgress.setParameters(tableBean);
         this.injectionModel.sendToViews(requestEndProgress);
-        
         return table;
     }
 
     private List<List<String>> getRows(Database database, Table table, int rowCount, String[] columns) throws InjectionFailureException {
-        
         String resultToParse = StringUtils.EMPTY;
         
         try {
             var pageSource = new String[]{ StringUtils.EMPTY };
-            
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(columns, database, table),
                 pageSource,
@@ -460,12 +436,10 @@ public class DataAccess {
         } catch (Exception e) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
-
         return SuspendableGetRows.parse(resultToParse);
     }
 
     private static String getPartialResultAndLog(AbstractSlidingException e, String resultToParse) {
-
         LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
 
         // Get pieces of data already retrieved instead of losing them
@@ -474,24 +448,20 @@ public class DataAccess {
         } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
             resultToParse = e.getSlidingWindowCurrentRows();
         }
-
         return resultToParse;
     }
 
     private String[][] getTable(List<String> columnsName, List<List<String>> values) {
-        
         // Build a proper 2D array from the data
         var table = new String[values.size()][columnsName.size()];
         
         for (var indexRow = 0 ; indexRow < values.size() ; indexRow++) {
-            
             var isIncomplete = false;
             
             for (var indexColumn = 0 ; indexColumn < columnsName.size() ; indexColumn++) {
                 try {
                     table[indexRow][indexColumn] = values.get(indexRow).get(indexColumn);
                 } catch (IndexOutOfBoundsException e) {
-                    
                     isIncomplete = true;
                     LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey("LOG_LIST_VALUES_INCOMPLETE"));
                     LOGGER.log(LogLevelUtil.IGNORE, e);
@@ -499,7 +469,6 @@ public class DataAccess {
             }
             
             if (isIncomplete) {
-                
                 int logIndexRow = indexRow;
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
@@ -517,7 +486,6 @@ public class DataAccess {
                 );
             }
         }
-        
         return table;
     }
 }

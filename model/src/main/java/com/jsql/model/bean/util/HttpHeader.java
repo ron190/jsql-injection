@@ -43,7 +43,6 @@ public class HttpHeader {
         Map<String, String> response,
         String source
     ) {
-        
         this.url = url;
         this.post = post;
         this.header = header;

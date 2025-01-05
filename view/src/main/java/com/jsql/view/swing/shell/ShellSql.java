@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -25,13 +25,11 @@ public class ShellSql extends AbstractShell {
      * Build a SQL shell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
      * @param urlShell URL of current shell
-     * @param args User and password
-     * @throws MalformedURLException
+     * @param loginPassword User and password
      */
-    public ShellSql(UUID terminalID, String urlShell, String... args) throws MalformedURLException, URISyntaxException {
-        
+    public ShellSql(UUID terminalID, String urlShell, String... loginPassword) throws MalformedURLException, URISyntaxException {
         super(terminalID, urlShell, "sql");
-        this.loginPassword = args;
+        this.loginPassword = loginPassword;
     }
 
     @Override

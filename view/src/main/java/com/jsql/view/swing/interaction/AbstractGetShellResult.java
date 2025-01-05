@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -36,18 +36,14 @@ public class AbstractGetShellResult implements InteractionCommand {
      * @param interactionParams The unique identifier of the terminal and the command's result to display
      */
     public AbstractGetShellResult(Object[] interactionParams) {
-        
         this.terminalID = (UUID) interactionParams[0];
         this.result = (String) interactionParams[1];
     }
 
     @Override
     public void execute() {
-        
-        AbstractShell terminal = MediatorHelper.frame().getConsoles().get(this.terminalID);
-        
+        AbstractShell terminal = MediatorHelper.frame().getMapUuidShell().get(this.terminalID);
         terminal.append(this.result);
-        
         terminal.append("\n");
         terminal.reset();
     }

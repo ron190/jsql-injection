@@ -9,6 +9,7 @@ import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,19 +33,15 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public void checkApplicability() {
-        
         // Reset applicability of new Vendor
         this.isApplicable = false;
         
         var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled()) {
-
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
             return;
-
         } else if (strategyYaml.getError().getMethod().isEmpty()) {
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
@@ -66,24 +63,18 @@ public class StrategyInjectionError extends AbstractStrategy {
         var errorCapacity = 0;
         
         for (Method errorMethod: strategyYaml.getError().getMethod()) {
-            
             boolean methodIsApplicable = this.isApplicable(errorMethod);
-            
             if (methodIsApplicable) {
-                
                 Matcher regexSearch = this.getPerformance(errorMethod);
-                
                 if (regexSearch.find()) {
                     errorCapacity = this.getCapacity(indexErrorMethod, errorCapacity, errorMethod, regexSearch);
                 } else {
-                    
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_ERROR,
                         "{} {} but injectable size is incorrect",
                         () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
                         errorMethod::getName
                     );
-                    
                     methodIsApplicable = false;
                 }
             }
@@ -93,13 +84,11 @@ public class StrategyInjectionError extends AbstractStrategy {
             } else {
                 this.unallow(indexErrorMethod);
             }
-            
             indexErrorMethod++;
         }
     }
 
     private boolean isApplicable(Method errorMethod) {
-        
         var methodIsApplicable = false;
 
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(
@@ -113,32 +102,25 @@ public class StrategyInjectionError extends AbstractStrategy {
             methodIsApplicable = true;
             this.isApplicable = true;
         }
-        
         return methodIsApplicable;
     }
 
     private Matcher getPerformance(Method errorMethod) {
-        
         String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorCalibrator(errorMethod),
             "error#size"
         );
-        
         return Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceErrorSourcePage);
     }
 
     private int getCapacity(int indexErrorMethod, int errorCapacityDefault, Method errorMethod, Matcher regexSearch) {
-        
         int errorCapacityImproved = errorCapacityDefault;
         
         regexSearch.reset();
-        
         while (regexSearch.find()) {
-            
             if (errorCapacityImproved < regexSearch.group(1).length()) {
                 this.indexErrorStrategy = indexErrorMethod;
             }
-            
             errorCapacityImproved = regexSearch.group(1).length();
             this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacityImproved);
         }
@@ -146,7 +128,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         int logErrorCapacityImproved = errorCapacityImproved;
         LOGGER.log(
             LogLevelUtil.CONSOLE_SUCCESS,
-            "{} [Error {}] using [{}] characters",
+            "{} [Error {}] showing [{}] characters",
             () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
             errorMethod::getName,
             () -> Integer.toString(logErrorCapacityImproved)
@@ -157,17 +139,24 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public void allow(int... indexError) {
-
         this.injectionModel.appendAnalysisReport(
-            "<span style=color:rgb(0,0,255)>### Strategy: " + getName() + ":" + this.injectionModel.getMediatorVendor().getVendor().instance()
-            .getModelYaml()
-            .getStrategy()
-            .getError()
-            .getMethod()
-            .get(indexError[0])
-            .getName()
-            + "</span>"+ this.injectionModel.getReportWithoutIndex(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlError("<span style=color:rgb(0,128,0)>&lt;query&gt;</span>", "0", indexError[0], true),
+            StringUtil.formatReport(
+                LogLevelUtil.COLOR_BLU,
+                "### Strategy: " + getName() + ":" + this.injectionModel.getMediatorVendor().getVendor().instance()
+                .getModelYaml()
+                .getStrategy()
+                .getError()
+                .getMethod()
+                .get(indexError[0])
+                .getName()
+            )
+            + this.injectionModel.getReportWithoutIndex(
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(
+                    StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"),
+                    "0",
+                    indexError[0],
+                    true
+                ),
                 "metadataInjectionProcess"
             )
         );
@@ -190,19 +179,13 @@ public class StrategyInjectionError extends AbstractStrategy {
     @Override
     public void activateWhenApplicable() {
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 "{} [{} {}]",
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName,
-                () -> this.injectionModel.getMediatorVendor().getVendor().instance()
-                .getModelYaml()
-                .getStrategy()
-                .getError()
-                .getMethod()
-                .get(this.indexErrorStrategy)
-                .getName()
+                () -> this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy()
+                .getError().getMethod().get(this.indexErrorStrategy).getName()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());
 

@@ -48,10 +48,10 @@
         "header": "X-Forwarded-For:1'*"
     },
     {
-        "url": "http://openvpn_address/user?id=1#tryhackme.com/room/sqhell",
+        "url": "http://openvpn_address/user?id=1#tryhackme.com/room/sqhell"
     },
     {
-        "url": "http://openvpn_address/post?id=2#tryhackme.com/room/sqhell",
+        "url": "http://openvpn_address/post?id=2#tryhackme.com/room/sqhell"
     },
     {
         "url": "http://openvpn_address/login#tryhackme_com/room/sqhell",

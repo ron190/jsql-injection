@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -20,16 +20,16 @@ import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.strategy.MediatorStrategy;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
 import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.*;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.*;
@@ -67,9 +67,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     private final transient MediatorMethod mediatorMethod = new MediatorMethod(this);
     private final transient MediatorUtils mediatorUtils;
     private final transient MediatorStrategy mediatorStrategy;
-
     private final transient PropertiesUtil propertiesUtil = new PropertiesUtil();
-             
     private final transient DataAccess dataAccess = new DataAccess(this);
     private final transient ResourceAccess resourceAccess = new ResourceAccess(this);
     
@@ -86,15 +84,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * without asking the user 'Start a new injection?'.
      */
     private boolean shouldErasePreviousInjection = false;
-
     private boolean isScanning = false;
 
     public InjectionModel() {
-        
-        this.mediatorUtils = new MediatorUtils();
-        
         this.mediatorStrategy = new MediatorStrategy(this);
-
+        this.mediatorUtils = new MediatorUtils();
         this.mediatorUtils.setCertificateUtil(new CertificateUtil());
         this.mediatorUtils.setPropertiesUtil(this.propertiesUtil);
         this.mediatorUtils.setConnectionUtil(new ConnectionUtil(this));
@@ -121,7 +115,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * Reset each injection attributes: Database metadata, General Thread status, Strategy.
      */
     public void resetModel() {
-        
         this.mediatorStrategy.getSpecificNormal().setVisibleIndex(null);
         
         this.mediatorStrategy.getNormal().setApplicable(false);
@@ -148,14 +141,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * Run by Scan, Standard and TU.
      */
     public void beginInjection() {
-        
         this.resetModel();
-        
         try {
             if (this.mediatorUtils.getProxyUtil().isNotLive(ShowOnConsole.YES)) {
                 return;
             }
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 "{}: {}",
@@ -165,7 +155,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             // Check general integrity if user's parameters
             this.mediatorUtils.getParameterUtil().checkParametersFormat();
-            
             this.mediatorUtils.getConnectionUtil().testConnection();
 
             // TODO Check all path params
@@ -177,50 +166,39 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             hasFoundInjection = this.mediatorUtils.getCookiesUtil().testParameters(hasFoundInjection);
 
             if (hasFoundInjection && !this.isScanning) {
-
                 if (!this.getMediatorUtils().getPreferencesUtil().isNotShowingVulnReport()) {
-
                     var requestSetVendor = new Request();
                     requestSetVendor.setMessage(Interaction.CREATE_ANALYSIS_REPORT);
                     requestSetVendor.setParameters(this.analysisReport);
                     this.sendToViews(requestSetVendor);
                 }
-
                 if (this.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using Zip mode for reduced query size");
                 } else if (this.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using Dump In One Shot strategy for single query dump");
                 }
-                
                 if (!this.mediatorUtils.getPreferencesUtil().isNotInjectingMetadata()) {
                     this.dataAccess.getDatabaseInfos();
                 }
-                
                 this.dataAccess.listDatabases();
             }
             
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_DONE"));
             
             this.shouldErasePreviousInjection = true;
-            
         } catch (InterruptedException e) {
-            
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
-            
         } catch (JSqlRuntimeException | JSqlException | IOException e) {  // Catch expected exceptions only
-
             if (e.getMessage() == null) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Unexpected: {}", getImplicitReason(e));
             } else {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Unexpected: {}", e.getMessage());
             }
-
             if (e.toString().contains("HTTP/1.1")) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Something went wrong with HTTP/2, try to switch manually to HTTP/1.1 in preferences");
             }
         } finally {
-            
             var request = new Request();
             request.setMessage(Interaction.END_PREPARATION);
             this.sendToViews(request);
@@ -228,22 +206,18 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     }
     
     public static String getImplicitReason(Throwable e) {
-        
-        String eMessage = e.getClass().getSimpleName();
-        
+        String message = e.getClass().getSimpleName();
         if (e.getMessage() != null) {
-            eMessage += ": "+ e.getMessage();
+            message += ": "+ e.getMessage();
         }
-        
         if (e.getCause() != null && !e.equals(e.getCause())) {
-            eMessage += " > "+ getImplicitReason(e.getCause());
+            message += " > "+ getImplicitReason(e.getCause());
         }
-        
-        return eMessage;
+        return message;
     }
     
     /**
-     * Run a HTTP connection to the web server.
+     * Run an HTTP connection to the web server.
      * @param dataInjection SQL query
      * @return source code of current page
      */
@@ -252,35 +226,24 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String dataInjection,
         boolean isUsingIndex,
         String metadataInjectionProcess,
-        AbstractCallableBoolean<?> callableBoolean,
+        AbstractCallableBinary<?> callableBoolean,
         boolean isReport
     ) {
-        
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlInjection = this.mediatorUtils.getConnectionUtil().getUrlBase();
-
         urlInjection = this.mediatorStrategy.buildPath(urlInjection, isUsingIndex, dataInjection);
-        
         urlInjection = StringUtil.cleanSql(urlInjection.trim());
 
         URL urlObject;
-        
-        // TODO Keep only a single check
-        try {
+        try {  // TODO Keep only a single check
             urlObject = new URI(urlInjection).toURL();
         } catch (MalformedURLException | URISyntaxException e) {
-            
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
-                String.format("Incorrect Query Url: %s", e.getMessage())
-            );
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format("Incorrect Query Url: %s", e.getMessage()));
             return StringUtils.EMPTY;
         }
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-
-        // TODO identique urlInjection == urlObject
-        urlObject = this.initializeQueryString(
+        urlObject = this.initializeQueryString(  // TODO identique urlInjection == urlObject
             isUsingIndex,
             urlInjection,
             dataInjection,
@@ -299,7 +262,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             this.mediatorUtils.getCsrfUtil().addHeaderToken(httpRequestBuilder);
             this.mediatorUtils.getDigestUtil().addHeaderToken(httpRequestBuilder);
-
             this.mediatorUtils.getConnectionUtil().setCustomUserAgent(httpRequestBuilder);
 
             String body = this.initializeRequest(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);
@@ -308,21 +270,18 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             var httpRequest = httpRequestBuilder.build();
 
             if (isReport) {
-
-                String report = "<br><span style=color:rgb(75,143,211)>Method:</span> " + httpRequest.method();
-                report += "<br><span style=color:rgb(75,143,211)>Path:</span> " + httpRequest.uri().getPath();
+                String report = "<br>" + StringUtil.formatReport(UIManager.getColor("TextArea.inactiveForeground"), "Method: ") + httpRequest.method();
+                report += "<br>" + StringUtil.formatReport(UIManager.getColor("TextArea.inactiveForeground"), "Path: ") + httpRequest.uri().getPath();
                 if (httpRequest.uri().getQuery() != null) {
-                    report += "<br><span style=color:rgb(75,143,211)>Query:</span> " + httpRequest.uri().getQuery();
+                    report += "<br>" + StringUtil.formatReport(UIManager.getColor("TextArea.inactiveForeground"), "Query: ") + httpRequest.uri().getQuery();
                 }
-
                 if (
                     !(this.mediatorUtils.getParameterUtil().getListRequest().isEmpty()
                     && this.mediatorUtils.getCsrfUtil().getTokenCsrf() == null)
                 ) {
-                    report += "<br><span style=color:rgb(75,143,211)>Body:</span> " + body;
+                    report += "<br>" + StringUtil.formatReport(UIManager.getColor("TextArea.inactiveForeground"), "Body: ") + body;
                 }
-
-                report += "<br><span style=color:rgb(75,143,211)>Header:</span> " + httpRequest.headers().map().entrySet().stream()
+                report += "<br>" + StringUtil.formatReport(UIManager.getColor("TextArea.inactiveForeground"), "Header: ") + httpRequest.headers().map().entrySet().stream()
                     .map(entry -> String.format("%s: %s", entry.getKey(), String.join("", entry.getValue())))
                     .collect(Collectors.joining("<br>"));
                 return report;
@@ -332,7 +291,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 httpRequestBuilder.build(),
                 BodyHandlers.ofString()
             );
-
             if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
                 // Invalid XML control chars like \x04 requires urlencoding from server
                 pageSource = URLDecoder.decode(response.body(), StandardCharsets.UTF_8);
@@ -341,7 +299,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
 
             Map<String, String> headersResponse = ConnectionUtil.getHeadersMap(response);
-            
             msgHeader.put(Header.RESPONSE, headersResponse);
             msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
             
@@ -350,7 +307,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 .map(key -> headersResponse.get(key).length() + key.length())
                 .mapToInt(Integer::intValue)
                 .sum();
-            
             float size = (float) (pageSource.length() + sizeHeaders) / 1024;
             var decimalFormat = new DecimalFormat("0.000");
             msgHeader.put(Header.PAGE_SIZE, decimalFormat.format(size));
@@ -374,14 +330,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             request.setMessage(Interaction.MESSAGE_HEADER);
             request.setParameters(msgHeader);
             this.sendToViews(request);
-            
         } catch (IOException e) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 String.format("Error during connection: %s", e.getMessage())
             );
         } catch (InterruptedException e) {
-            
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
@@ -397,15 +351,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         URL urlObject,
         Map<Header, Object> msgHeader
     ) {
-        
         String urlInjectionFixed = urlInjection;
         var urlObjectFixed = urlObject;
-        
         if (
             this.mediatorUtils.getParameterUtil().getListQueryString().isEmpty()
             && !this.mediatorUtils.getPreferencesUtil().isProcessingCsrf()
         ) {
-
             msgHeader.put(Header.URL, urlInjectionFixed);
             return urlObjectFixed;
         }
@@ -415,14 +366,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         if (!urlInjectionFixed.contains("?")) {
             urlInjectionFixed += "?";
         }
-
         urlInjectionFixed += this.buildQuery(
             this.mediatorMethod.getQuery(),
             this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(),
             isUsingIndex,
             dataInjection
         );
-
         urlInjectionFixed = this.mediatorUtils.getCsrfUtil().addQueryStringToken(urlInjectionFixed);
         
         // TODO Keep single check
@@ -436,7 +385,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
 
         msgHeader.put(Header.URL, urlInjectionFixed);
-        
         return urlObjectFixed;
     }
 
@@ -479,7 +427,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         Builder httpRequest,
         Map<Header, Object> msgHeader
     ) {
-        
         if (
             this.mediatorUtils.getParameterUtil().getListRequest().isEmpty()
             && this.mediatorUtils.getCsrfUtil().getTokenCsrf() == null
@@ -490,14 +437,13 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // Set connection method
         // Active for query string injection too, in that case inject query string still with altered method
         
-        var body = new StringBuilder();
-        
         if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
             httpRequest.setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "text/xml");
         } else {
             httpRequest.setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "application/x-www-form-urlencoded");
         }
-   
+
+        var body = new StringBuilder();
         this.mediatorUtils.getCsrfUtil().addRequestToken(body);
             
         if (this.mediatorUtils.getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
@@ -532,7 +478,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
         
         var bodyPublisher = BodyPublishers.ofString(body.toString());
-        
         httpRequest.method(
             this.mediatorUtils.getConnectionUtil().getTypeRequest(),
             bodyPublisher
@@ -543,13 +488,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     }
     
     private String buildQuery(AbstractMethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
-        
         String query;
         String paramLeadFixed = paramLead.replace(
             InjectionModel.STAR,
             TamperingUtil.TAG_OPENED + InjectionModel.STAR + TamperingUtil.TAG_CLOSED
         );
-        
         if (
             // No parameter transformation if method is not selected by user
             this.mediatorUtils.getConnectionUtil().getMethodInjection() != methodInjection
@@ -568,24 +511,17 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         } else {
             query = this.initializeRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);
         }
-        
         // Remove comments except empty /**/
         query = this.cleanQuery(methodInjection, query);
-        
         // Add empty comments with space=>/**/
         if (this.mediatorUtils.getConnectionUtil().getMethodInjection() == methodInjection) {
             query = this.mediatorUtils.getTamperingUtil().tamper(query);
         }
-        
-        query = this.applyEncoding(methodInjection, query);
-        
-        return query;
+        return this.applyEncoding(methodInjection, query);
     }
 
     private String initializeRawInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
-        
         String query;
-        
         // Method is selected by user and there's no injection point
         if (!isUsingIndex) {
             // Several SQL expressions does not use indexes in SELECT,
@@ -602,17 +538,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 Matcher.quoteReplacement(sqlTrail)
             );
         }
-
         // Add ending line comment by vendor
-        query = query + this.mediatorVendor.getVendor().instance().endingComment();
-
-        return query;
+        return query + this.mediatorVendor.getVendor().instance().endingComment();
     }
 
     private String initializeStarInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
-        
         String query;
-        
         // Several SQL expressions does not use indexes in SELECT,
         // like Boolean, Error, Shell and search for character insertion,
         // in that case replace injection point by SQL expression.
@@ -634,21 +565,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 + this.mediatorVendor.getVendor().instance().endingComment()
             );
         }
-        
         return query;
     }
 
     /**
      * Dependency:
      * - Tamper space=>comment
-     * @param methodInjection
-     * @param query
-     * @return
      */
     private String cleanQuery(AbstractMethodInjection methodInjection, String query) {
-        
         String queryFixed = query;
-        
         if (
             methodInjection == this.mediatorMethod.getRequest()
             && (
@@ -660,7 +585,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 .replace("+", " ")
                 .replace("%2b", "+")  // Failsafe
                 .replace("%23", "#");  // End comment
-
             if (this.mediatorUtils.getParameterUtil().isMultipartRequest()) {
                 // restore linefeed from textfield
                 queryFixed = queryFixed.replaceAll("(?s)\\\\n", "\r\n");
@@ -668,20 +592,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         } else {
             queryFixed = StringUtil.cleanSql(queryFixed);
         }
-        
         return queryFixed;
     }
 
     private String applyEncoding(AbstractMethodInjection methodInjection, String query) {
-        
         String queryFixed = query;
-        
         if (!this.mediatorUtils.getParameterUtil().isRequestSoap()) {
             if (methodInjection == this.mediatorMethod.getQuery()) {
-                
                 // URL encode each character because no query parameter context
                 if (!this.mediatorUtils.getPreferencesUtil().isUrlEncodingDisabled()) {
-
                     queryFixed = queryFixed.replace("'", "%27");
                     queryFixed = queryFixed.replace("(", "%28");
                     queryFixed = queryFixed.replace(")", "%29");
@@ -695,23 +614,19 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                     queryFixed = queryFixed.replace("_", "%5f");
                     queryFixed = queryFixed.replace(",", "%2c");
                 }
-
                 // HTTP forbidden characters
                 queryFixed = queryFixed.replace(StringUtils.SPACE, "+");
                 queryFixed = queryFixed.replace("`", "%60");  // from `${database}`.`${table}`
                 queryFixed = queryFixed.replace("\"", "%22");
                 queryFixed = queryFixed.replace("|", "%7c");
                 queryFixed = queryFixed.replace("\\", "%5c");
-                
             } else if (methodInjection != this.mediatorMethod.getRequest()) {
-                
                 // For cookies in Spring (confirmed, covered by integration tests)
                 queryFixed = queryFixed.replace("+", "%20");
                 queryFixed = queryFixed.replace(",", "%2c");
                 queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);
             }
         }
-        
         return queryFixed;
     }
     
@@ -721,20 +636,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * @param source Text to display in console
      */
     public void sendResponseFromSite(String message, String source) {
-        
         LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{}, response from site:", message);
         LOGGER.log(LogLevelUtil.CONSOLE_ERROR, ">>>{}", source);
-    }
-    
-    public void displayVersion() {
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_DEFAULT,
-            "jSQL Injection v{} on Java {}-{}-{}",
-            this::getVersionJsql,
-            () -> SystemUtils.JAVA_VERSION,
-            () -> SystemUtils.OS_ARCH,
-            () -> SystemUtils.USER_LANGUAGE
-        );
     }
     
     
@@ -756,8 +659,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.isScanning = isScanning;
     }
 
-    public String getVersionJsql() {
-        return this.propertiesUtil.getProperties().getProperty("jsql.version");
+    public PropertiesUtil getPropertiesUtil() {
+        return propertiesUtil;
     }
 
     public MediatorUtils getMediatorUtils() {

@@ -1,8 +1,8 @@
 package com.jsql.view.swing.action;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.MediatorHelper;
+import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,42 +17,23 @@ public class ActionCloseTabResult extends AbstractAction {
     
     public static void perform(int closeTabNumber) {
         if (MediatorHelper.tabResults().getTabCount() > 0) {
-            
-            var tab = MediatorHelper.tabResults().getTabComponentAt(closeTabNumber);
-            
-            // Stop syntax color highlighter
-            if (
-                tab instanceof TabHeader
-                && ((TabHeader) tab).getCleanableTab() != null
-            ) {
-                ((TabHeader) tab).getCleanableTab().clean();
-            }
-
             MediatorHelper.tabResults().removeTabAt(closeTabNumber);
-            
-            ActionCloseTabResult.displayPlaceholder();
-        }
-    }
-    
-    private static void displayPlaceholder() {
-        if (MediatorHelper.tabResults().getTabCount() == 0) {
-            
-            var splitPaneTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();
-            JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitVerticalLeftRight();
-            
-            int i = splitPaneLeftRight.getDividerLocation();
-            
-            if (ComponentOrientation.LEFT_TO_RIGHT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
-                splitPaneLeftRight.setRightComponent(
-                    splitPaneTopBottom.getLabelPlaceholderResult()
-                );
-            } else {
-                splitPaneLeftRight.setLeftComponent(
-                    splitPaneTopBottom.getLabelPlaceholderResult()
-                );
+
+            if (MediatorHelper.tabResults().getTabCount() == 0) {
+                var splitPaneTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();
+                JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitVerticalLeftRight();
+                int dividerLocation = splitPaneLeftRight.getDividerLocation();
+
+                var label = new JLabel(UiUtil.APP_RESULT.icon);
+                label.setMinimumSize(new Dimension(100, 0));
+                if (ComponentOrientation.LEFT_TO_RIGHT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
+                    splitPaneLeftRight.setRightComponent(label);
+                } else {
+                    splitPaneLeftRight.setLeftComponent(label);
+                }
+
+                splitPaneLeftRight.setDividerLocation(dividerLocation);
             }
-            
-            splitPaneLeftRight.setDividerLocation(i);
         }
     }
 }

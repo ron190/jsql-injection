@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -37,56 +37,42 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
 
     @Override
     protected List<Integer> initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel<ItemList> listModel) {
-        
         int selectedIndexTo = selectedIndexFrom;
         List<Integer> selectedIndexes = new ArrayList<>();
-
         for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {
-
             selectedIndexes.add(selectedIndexTo);
             listModel.add(selectedIndexTo++, itemListScan);
         }
-        
         return selectedIndexes;
     }
 
     @Override
     protected String initializeTransferable() {
-        
         List<JSONObject> jsons = new ArrayList<>();
         var stringTransferable = new StringBuilder();
-        
         try {
             for (ItemList itemPath: this.dragPaths) {
-                
                 ItemListScan itemScanPath = (ItemListScan) itemPath;
                 jsons.add(new JSONObject(itemScanPath.getBeanInjectionToJSON()));
             }
-            
             stringTransferable.append(new JSONArray(jsons).toString(4));
-            
         } catch (JSONException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
         }
-        
         return stringTransferable.toString();
     }
 
     @Override
     protected void parseStringDrop(TransferSupport support, DnDList list, DefaultListModel<ItemList> listModel) {
-        
         var dropLocation = (JList.DropLocation) support.getDropLocation();
         int indexDropLocation = dropLocation.getIndex();
 
         List<Integer> listSelectedIndices = new ArrayList<>();
 
-        // DnD from list
-        if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
+        if (this.dragPaths != null && !this.dragPaths.isEmpty()) {  // DnD from list
             for (ItemList itemPath: this.dragPaths) {
                 if (StringUtils.isNotEmpty(itemPath.toString())) {
-                    
-                    //! FUUuu
-                    ItemListScan itemDrag = (ItemListScan) itemPath;
+                    ItemListScan itemDrag = (ItemListScan) itemPath;  //! FUUuu
                     var itemDrop = new ItemListScan(itemDrag.getBeanInjection());
                     listSelectedIndices.add(indexDropLocation);
                     listModel.add(indexDropLocation++, itemDrop);
@@ -95,9 +81,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
         } else {  // DnD from outside
             try {
                 var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
-                
                 for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(importString)) {
-                    
                     listSelectedIndices.add(indexDropLocation);
                     listModel.add(indexDropLocation++, itemListScan);
                 }
@@ -108,72 +92,38 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
 
         var selectedIndices = new int[listSelectedIndices.size()];
         var i = 0;
-        
         for (Integer integer: listSelectedIndices) {
-            
             selectedIndices[i] = integer;
             i++;
         }
-        
         list.setSelectedIndices(selectedIndices);
     }
     
     public static List<ItemListScan> parse(String clipboardText) {
-        
         List<ItemListScan> itemsParsed = new ArrayList<>();
-        
         try {
             parseJsonArray(clipboardText, itemsParsed);
         } catch (JSONException eJsonArray) {
             parseJsonObject(clipboardText, itemsParsed);
         }
-        
         return itemsParsed;
     }
 
     private static void parseJsonArray(String clipboardText, List<ItemListScan> itemsParsed) {
-        
         var itemsJsonArray = new JSONArray(clipboardText);
-        
         for (var i = 0; i < itemsJsonArray.length(); i++) {
-            
-            var itemJsonObject = itemsJsonArray.getJSONObject(i);
-            
-            var beanInjection = new BeanInjection(
-                itemJsonObject.optString("url", StringUtils.EMPTY),
-                itemJsonObject.optString("request", StringUtils.EMPTY),
-                itemJsonObject.optString("header", StringUtils.EMPTY),
-                itemJsonObject.optString("method", StringUtils.EMPTY),
-                itemJsonObject.optString("vendor", StringUtils.EMPTY),
-                itemJsonObject.optString("requestType", StringUtils.EMPTY)
-            );
-            
-            var newItem = new ItemListScan(beanInjection);
+            var newItem = new ItemListScan(itemsJsonArray.getJSONObject(i));
             itemsParsed.add(newItem);
         }
     }
 
     private static void parseJsonObject(String clipboardText, List<ItemListScan> itemsParsed) {
         try {
-            var itemsJsonObject = new JSONObject(clipboardText);
-            
-            var beanInjection = new BeanInjection(
-                itemsJsonObject.optString("url", StringUtils.EMPTY),
-                itemsJsonObject.optString("request", StringUtils.EMPTY),
-                itemsJsonObject.optString("header", StringUtils.EMPTY),
-                itemsJsonObject.optString("method", StringUtils.EMPTY),
-                itemsJsonObject.optString("vendor", StringUtils.EMPTY),
-                itemsJsonObject.optString("requestType", StringUtils.EMPTY)
-            );
-            
-            var newItem = new ItemListScan(beanInjection);
+            var newItem = new ItemListScan(new JSONObject(clipboardText));
             itemsParsed.add(newItem);
-            
         } catch (JSONException e) {
             for (String url: clipboardText.split("\\n")) {
-                
                 var beanInjection = new BeanInjection(url);
-                
                 var newItem = new ItemListScan(beanInjection);
                 itemsParsed.add(newItem);
             }

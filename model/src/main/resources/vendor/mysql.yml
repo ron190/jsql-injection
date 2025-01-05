@@ -264,7 +264,7 @@ strategy:
 
  stacked: ; select ${window}
 
- boolean:
+ binary:
   test:
    bit: |
     ascii(
@@ -278,9 +278,9 @@ strategy:
   modeAnd: and
   modeOr: or
   modeStacked: ; select 1 where
-  blind: ${boolean.mode} ${test}
+  blind: ${binary.mode} ${test}
   time: |
-   ${boolean.mode} if(
+   ${binary.mode} if(
        ${test},
        1,
        sleep(${sleep_time})

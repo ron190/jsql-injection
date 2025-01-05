@@ -11,12 +11,8 @@ public class JButtonStateful extends JButton {
      */
     private StateButton state = StateButton.STARTABLE;
     
-    private String defaultText;
-
     public JButtonStateful(String defaultText) {
-        
         super(I18nViewUtil.valueByKey(defaultText));
-        this.defaultText = defaultText;
     }
     
     
@@ -32,13 +28,5 @@ public class JButtonStateful extends JButton {
     
     public void setState(StateButton state) {
         this.state = state;
-    }
-
-    public String getDefaultText() {
-        return this.defaultText;
-    }
-
-    public void setDefaultText(String defaultText) {
-        this.defaultText = defaultText;
     }
 }

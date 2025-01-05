@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -41,17 +41,14 @@ public class ImageOverlap extends ImageIcon {
      * @param main Main icon to display
      * @param iconPathOverlap Secondary icon to display on top of main icon
      */
-    public ImageOverlap(String main, String iconPathOverlap) {
-        
-        super(Objects.requireNonNull(ImageOverlap.class.getClassLoader().getResource(main)));
+    public ImageOverlap(ImageIcon main, String iconPathOverlap) {
+        super(main.getImage());
         this.iconPathOverlap = iconPathOverlap;
     }
 
     @Override
     public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
-        
         super.paintIcon(c, g, x, y);
-        
         try {
             BufferedImage bufferedImage = ImageIO.read(
                 Objects.requireNonNull(ImageOverlap.class.getClassLoader().getResource(this.iconPathOverlap))

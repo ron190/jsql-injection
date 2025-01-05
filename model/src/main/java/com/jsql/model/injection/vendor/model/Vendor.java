@@ -7,7 +7,6 @@ public class Vendor {
     private AbstractVendor instanceVendor;
     
     public Vendor(AbstractVendor instanceVendor) {
-        
         this.labelVendor = instanceVendor.getModelYaml().getVendor();
         this.instanceVendor = instanceVendor;
     }

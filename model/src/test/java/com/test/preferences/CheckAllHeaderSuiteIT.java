@@ -24,7 +24,7 @@ public class CheckAllHeaderSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withCheckingAllHeaderParam()
+        .withIsCheckingAllHeaderParam(true)
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true);
         

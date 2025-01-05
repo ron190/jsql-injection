@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -13,6 +13,7 @@ package com.jsql.view.swing.text;
 import com.jsql.view.swing.popupmenu.JPopupMenuComponent;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -20,7 +21,7 @@ import java.awt.event.MouseEvent;
  * Add a popup menu to Decorated component.
  * @param <T> Component like JTextField or JTextArea to decorate
  */
-public class JPopupComponent<T extends JComponent> extends JComponent implements DecoratorJComponent<T> {
+public class JPopupComponent<T extends JTextComponent> extends JComponent implements DecoratorJComponent<T> {
     
     /**
      * Decorated component.
@@ -32,16 +33,12 @@ public class JPopupComponent<T extends JComponent> extends JComponent implements
      * @param proxy Swing component to decorate
      */
     public JPopupComponent(final T proxy) {
-        
         this.proxy = proxy;
         this.proxy.setComponentPopupMenu(new JPopupMenuComponent(this.proxy));
-        
         this.proxy.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                
                 super.mousePressed(e);
-
                 // Left button will unselect text after selectAll, so only for right click
                 if (SwingUtilities.isRightMouseButton(e)) {
                     JPopupComponent.this.proxy.requestFocusInWindow();

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,7 +12,6 @@ package com.jsql.view.swing.action;
 
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +42,6 @@ public class ActionSaveTab extends AbstractAction {
     );
 
     public ActionSaveTab() {
-        
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
         this.putValue(Action.NAME, "Save Tab As...");
@@ -51,39 +49,30 @@ public class ActionSaveTab extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        
         this.replaceFileChooser.setDialogTitle("Save Tab As");
-
         var componentResult = MediatorHelper.tabResults().getSelectedComponent();
-        
         if (componentResult instanceof PanelTable) {
-            
             JTable table = ((PanelTable) componentResult).getTableValues();
             this.saveToFile(table);
-            
         } else if (
-            componentResult instanceof LightScrollPane
-            && ((LightScrollPane) componentResult).scrollPane.getViewport().getView() instanceof JTextComponent
+            componentResult instanceof JScrollPane
+            && ((JScrollPane) componentResult).getViewport().getView() instanceof JTextComponent
         ) {
-            
-            JTextComponent textarea = (JTextComponent) ((LightScrollPane) componentResult).scrollPane.getViewport().getView();
+            JTextComponent textarea = (JTextComponent) ((JScrollPane) componentResult).getViewport().getView();
             this.saveToFile(textarea);
         }
     }
     
     private void saveToFile(JComponent textarea) {
-        
         if (textarea == null) {
             return;
         }
         
+        this.replaceFileChooser.updateUI();  // required when changing dark/light mode
         int stateSave = this.replaceFileChooser.showSaveDialog(MediatorHelper.frame());
-        
         if (stateSave == JFileChooser.APPROVE_OPTION) {
-            
             var folderSelectedFile = this.replaceFileChooser.getCurrentDirectory().toString();
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
-            
             if (textarea instanceof JTextComponent) {
                 this.saveTextToFile((JTextComponent) textarea);
             } else if (textarea instanceof JTable) {
@@ -93,39 +82,30 @@ public class ActionSaveTab extends AbstractAction {
     }
 
     private void saveTableToFile(JTable tableResults) {
-        
         var fileSelected = this.replaceFileChooser.getSelectedFile();
         
-        try (var fileWriterExcel = new FileWriter(fileSelected, StandardCharsets.UTF_8)) {
-            
+        try (var fileWriter = new FileWriter(fileSelected, StandardCharsets.UTF_8)) {
             var tableModel = tableResults.getModel();
-            
             for (var i = 2 ; i < tableModel.getColumnCount() ; i++) {
-                fileWriterExcel.write(tableModel.getColumnName(i) + "\t");
+                fileWriter.write(tableModel.getColumnName(i) + "\t");
             }
-            
-            fileWriterExcel.write("\n");
+            fileWriter.write("\n");
             
             for (var i = 0 ; i < tableModel.getRowCount() ; i++) {
-                
                 for (var j = 2 ; j < tableModel.getColumnCount() ; j++) {
-                    
                     // Cell empty when string was too long to be injected (columnTooLong|cellEmpty|cellEmpty).
                     if (tableModel.getValueAt(i, j) == null) {
-                        fileWriterExcel.write("\t");
+                        fileWriter.write("\t");
                     } else {
-                        
-                        // Encode line break.
-                        var line = tableModel.getValueAt(i, j).toString();
+                        var line = tableModel.getValueAt(i, j).toString();  // Encode line break.
                         line = line
                             .replace("\n", "\\n")
                             .replace("\t", "\\t");
                         line = line + "\t";
-                        fileWriterExcel.write(line);
+                        fileWriter.write(line);
                     }
                 }
-                
-                fileWriterExcel.write("\n");
+                fileWriter.write("\n");
             }
         } catch (IOException e) {
             LOGGER.log(
@@ -137,9 +117,7 @@ public class ActionSaveTab extends AbstractAction {
     }
 
     private void saveTextToFile(JTextComponent textarea) {
-        
         var fileSelected = this.replaceFileChooser.getSelectedFile();
-        
         try (
             var fileWriter = new FileWriter(fileSelected, StandardCharsets.UTF_8);
             var fileOut = new BufferedWriter(fileWriter)

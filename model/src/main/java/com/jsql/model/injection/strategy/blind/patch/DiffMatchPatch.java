@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -33,7 +33,6 @@ import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -386,7 +385,6 @@ public class DiffMatchPatch {
         int text1Length = text1.length();
         int text2Length = text2.length();
         int maxD = (text1Length + text2Length + 1) / 2;
-        int vOffset = maxD;
         int vLength = 2 * maxD;
         int[] v1 = new int[vLength];
         int[] v2 = new int[vLength];
@@ -394,8 +392,8 @@ public class DiffMatchPatch {
             v1[x] = -1;
             v2[x] = -1;
         }
-        v1[vOffset + 1] = 0;
-        v2[vOffset + 1] = 0;
+        v1[maxD + 1] = 0;
+        v2[maxD + 1] = 0;
         int delta = text1Length - text2Length;
         // If the total number of characters is odd, then the front path will
         // collide with the reverse path.
@@ -415,7 +413,7 @@ public class DiffMatchPatch {
 
             // Walk the front path one step.
             for (int k1 = -d + k1start; k1 <= d - k1end; k1 += 2) {
-                int k1Offset = vOffset + k1;
+                int k1Offset = maxD + k1;
                 int x1;
                 if (k1 == -d || (k1 != d && v1[k1Offset - 1] < v1[k1Offset + 1])) {
                     x1 = v1[k1Offset + 1];
@@ -436,7 +434,7 @@ public class DiffMatchPatch {
                     // Ran off the bottom of the graph.
                     k1start += 2;
                 } else if (front) {
-                    int k2Offset = vOffset + delta - k1;
+                    int k2Offset = maxD + delta - k1;
                     if (k2Offset >= 0 && k2Offset < vLength && v2[k2Offset] != -1) {
                         // Mirror x2 onto top-left coordinate system.
                         int x2 = text1Length - v2[k2Offset];
@@ -450,7 +448,7 @@ public class DiffMatchPatch {
 
             // Walk the reverse path one step.
             for (int k2 = -d + k2start; k2 <= d - k2end; k2 += 2) {
-                int k2Offset = vOffset + k2;
+                int k2Offset = maxD + k2;
                 int x2;
                 if (k2 == -d || (k2 != d && v2[k2Offset - 1] < v2[k2Offset + 1])) {
                     x2 = v2[k2Offset + 1];
@@ -472,10 +470,10 @@ public class DiffMatchPatch {
                     // Ran off the top of the graph.
                     k2start += 2;
                 } else if (!front) {
-                    int k1Offset = vOffset + delta - k2;
+                    int k1Offset = maxD + delta - k2;
                     if (k1Offset >= 0 && k1Offset < vLength && v1[k1Offset] != -1) {
                         int x1 = v1[k1Offset];
-                        int y1 = vOffset + x1 - k1Offset;
+                        int y1 = maxD + x1 - k1Offset;
                         // Mirror x2 onto top-left coordinate system.
                         x2 = text1Length - x2;
                         if (x1 >= x2) {
@@ -571,11 +569,11 @@ public class DiffMatchPatch {
             lineStart = lineEnd + 1;
 
             if (lineHash.containsKey(line)) {
-                chars.append(String.valueOf((char) (int) lineHash.get(line)));
+                chars.append((char) (int) lineHash.get(line));
             } else {
                 lineArray.add(line);
                 lineHash.put(line, lineArray.size() - 1);
-                chars.append(String.valueOf((char) (lineArray.size() - 1)));
+                chars.append((char) (lineArray.size() - 1));
             }
         }
         return chars.toString();
@@ -975,7 +973,7 @@ public class DiffMatchPatch {
                         + this.diffCleanupSemanticScore(edit, equality2.toString());
                 while (!edit.isEmpty() && equality2.length() != 0
                         && edit.charAt(0) == equality2.charAt(0)) {
-                    equality1.append(Character.toString(edit.charAt(0)));
+                    equality1.append(edit.charAt(0));
                     edit = edit.substring(1) + equality2.charAt(0);
                     String substring = equality2.substring(1);
                     equality2.setLength(0);
@@ -2092,7 +2090,7 @@ public class DiffMatchPatch {
         short paddingLength = DiffMatchPatch.PATCH_MARGIN;
         StringBuilder nullPadding = new StringBuilder();
         for (short x = 1; x <= paddingLength; x++) {
-            nullPadding.append(String.valueOf((char) x));
+            nullPadding.append((char) x);
         }
 
         // Bump all the patches forward.

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -11,7 +11,7 @@
 package com.jsql.view.swing.tree.model;
 
 import com.jsql.model.bean.database.Column;
-import com.jsql.view.swing.util.UiUtil;
+import com.jsql.view.swing.tree.custom.JPopupMenuCustomExtract;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -26,7 +26,6 @@ public class NodeModelEmpty extends AbstractNodeModel {
     
     /**
      * Flat node for empty tree.
-     * @param textNode
      */
     public NodeModelEmpty(String textNode) {
         super(textNode);
@@ -45,18 +44,12 @@ public class NodeModelEmpty extends AbstractNodeModel {
         var labelEmpty = new JLabel(currentNode.getUserObject().toString());
         panelEmpty.add(labelEmpty);
         labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        
-        if (isSelected) {
-            
-            panelEmpty.setBackground(UiUtil.COLOR_FOCUS_GAINED);
-            labelEmpty.setBorder(UiUtil.BORDER_FOCUS_GAINED);
-            
-        } else {
-            
-            panelEmpty.setBackground(Color.WHITE);
-            labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        }
 
+        if (isSelected) {
+            panelEmpty.setBackground(UIManager.getColor("Tree.selectionBackground"));
+        } else {
+            panelEmpty.setBackground(UIManager.getColor("Tree.selectionInactiveBackground"));
+        }
         return panelEmpty;
     }
 

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -25,8 +25,7 @@ public class MarkBlindInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlind();
-        MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategyInvulnerable(strategy);
+        MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(strategy);
     }
 }

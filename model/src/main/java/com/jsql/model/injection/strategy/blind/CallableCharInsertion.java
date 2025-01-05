@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * position and bit. Opcodes represent the differences between
  * the reference page, and the resulting page.
  */
-public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharInsertion> {
+public class CallableCharInsertion extends AbstractCallableBinary<CallableCharInsertion> {
     
     // List of differences found between the reference page, and the present page
     private LinkedList<Diff> opcodes = new LinkedList<>();
@@ -25,11 +25,8 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
     
     /**
      * Constructor for preparation and blind confirmation.
-     * @param inj
-     * @param injectionCharInsertion
      */
     public CallableCharInsertion(String inj, InjectionCharInsertion injectionCharInsertion, String metadataInjectionProcess) {
-        
         this.injectionCharInsertion = injectionCharInsertion;
         this.metadataInjectionProcess = metadataInjectionProcess;
         this.booleanUrl = inj;
@@ -43,7 +40,6 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
      */
     @Override
     public boolean isTrue() {
-
         // Fix #95422: ConcurrentModificationException on iterator.next()
         List<Diff> copyTrueMarks = new CopyOnWriteArrayList<>(this.injectionCharInsertion.getConstantTrueMark());
         for (Diff trueDiff: copyTrueMarks) {
@@ -51,7 +47,6 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
                 return false;
             }
         }
-
         return true;
     }
 
@@ -62,7 +57,6 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
      */
     @Override
     public CallableCharInsertion call() {
-        
         String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         
         this.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diffMain(
@@ -72,7 +66,6 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
         );
 
         CallableCharInsertion.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);
-        
         return this;
     }
     

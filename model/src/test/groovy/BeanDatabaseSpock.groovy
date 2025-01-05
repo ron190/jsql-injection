@@ -9,13 +9,13 @@ class BeanDatabaseSpock extends Specification {
         
         expect:
             database.getParent() == null
-            database.getLabelCount() == "database (5 tables)"
+            database.getLabelWithCount() == "database (5 tables)"
         and:
             table.getParent() == database
-            table.getLabelCount() == "table (10 rows)"
+            table.getLabelWithCount() == "table (10 rows)"
         and:
             column.getParent() == table
-            column.getLabelCount() == "column"
+            column.getLabelWithCount() == "column"
         
         where:
             database = new Database("database", "5")
@@ -27,10 +27,10 @@ class BeanDatabaseSpock extends Specification {
         
         expect:
             database.getParent() == null
-            database.getLabelCount() == "database (0 table)"
+            database.getLabelWithCount() == "database (0 table)"
         and:
             table.getParent() == database
-            table.getLabelCount() == "table (0 row)"
+            table.getLabelWithCount() == "table (0 row)"
         
         where:
             database = new Database("database", "0")
@@ -41,10 +41,10 @@ class BeanDatabaseSpock extends Specification {
         
         expect:
             database.getParent() == null
-            database.getLabelCount() == "database (0 table)"
+            database.getLabelWithCount() == "database (0 table)"
         and:
             table.getParent() == database
-            table.getLabelCount() == "table (0 row)"
+            table.getLabelWithCount() == "table (0 row)"
         
         where:
             database = new Database("database", "X")
@@ -55,10 +55,10 @@ class BeanDatabaseSpock extends Specification {
         
         expect:
             database.getParent() == null
-            database.getLabelCount() == "information_schema (5 tables)"
+            database.getLabelWithCount() == "information_schema (5 tables)"
         and:
             table.getParent() == database
-            table.getLabelCount() == "table (? rows)"
+            table.getLabelWithCount() == "table (? rows)"
         
         where:
             database = new Database("information_schema", "5")

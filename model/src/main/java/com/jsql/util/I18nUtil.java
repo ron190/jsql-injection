@@ -46,18 +46,14 @@ public class I18nUtil {
      * If not then it invites the user to use the translation process.
      */
     public static void checkCurrentLanguage() {
-        
         URL path = I18nUtil.class.getClassLoader().getResource("i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
-        
         if (!"en".equals(Locale.getDefault().getLanguage()) && path == null) {
-            
             String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
                 () -> String.join(
                     "",
-                    "Please contribute and translate parts of jSQL Injection into ",
+                    "Contribute and translate parts of jSQL Injection into ",
                     languageHost,
                     ": ",
                     "click on the top right button and open menu [Community], choose [I help translate jSQL into > another language...] and ",
@@ -67,12 +63,6 @@ public class I18nUtil {
                 )
             );
         }
-    }
-    
-    public static boolean isAsian(Locale newLocale) {
-        return Locale.forLanguageTag("zh").getLanguage().equals(newLocale.getLanguage())
-            || Locale.forLanguageTag("ko").getLanguage().equals(newLocale.getLanguage())
-            || Locale.forLanguageTag("ja").getLanguage().equals(newLocale.getLanguage());
     }
     
     

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -18,27 +18,20 @@ public class ItemList {
     /**
      * Text displayed on item.
      */
+    private final String originalString;
     private String internalString;
-    private String originalString;
-
     private boolean isVulnerable = false;
-    private Boolean isDatabaseConfirmed = false;
-    
+
     /**
      * Create a JList item.
-     * @param newString
      */
     public ItemList(String newString) {
-        
         this.internalString = newString;
         this.originalString = newString;
     }
     
     public void reset() {
-        
         this.internalString = this.originalString;
-        this.isVulnerable = false;
-        this.isDatabaseConfirmed = false;
     }
     
     @Override
@@ -56,28 +49,16 @@ public class ItemList {
     public void setInternalString(String internalString) {
         this.internalString = internalString;
     }
-
-    public boolean getIsVulnerable() {
-        return this.isVulnerable;
-    }
-
-    public void setIsVulnerable(boolean isVulnerable) {
-        this.isVulnerable = isVulnerable;
-    }
-
-    public boolean getIsDatabaseConfirmed() {
-        return this.isDatabaseConfirmed;
-    }
-
-    public void setIsDatabaseConfirmed(boolean isDatabaseConfirmed) {
-        this.isDatabaseConfirmed = isDatabaseConfirmed;
-    }
     
     public String getOriginalString() {
         return this.originalString;
     }
 
-    public void setOriginalString(String originalString) {
-        this.originalString = originalString;
+    public boolean isVulnerable() {
+        return isVulnerable;
+    }
+
+    public void setVulnerable(boolean vulnerable) {
+        isVulnerable = vulnerable;
     }
 }

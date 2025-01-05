@@ -15,7 +15,6 @@ public class HashUtil {
     }
     
     public static String toAdler32(String text) {
-
         byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
         Checksum checksum = new java.util.zip.Adler32();
         checksum.update(bytes,0,bytes.length);
@@ -32,61 +31,53 @@ public class HashUtil {
     }
     
     public static String toMySql(String textInput) throws NoSuchAlgorithmException {
-        
-        var md = MessageDigest.getInstance("sha-1");
+        var messageDigest = MessageDigest.getInstance("sha-1");
         
         var password = String.valueOf(textInput.toCharArray());
         
         byte[] passwordBytes = password.getBytes(StandardCharsets.UTF_8);
-        md.update(passwordBytes, 0, passwordBytes.length);
+        messageDigest.update(passwordBytes, 0, passwordBytes.length);
         
-        byte[] hashSHA1 = md.digest();
+        byte[] hashSHA1 = messageDigest.digest();
         var stringSHA1 = HashUtil.digestToHexString(hashSHA1);
         
         var passwordSHA1 = String.valueOf(StringUtil.hexstr(stringSHA1).toCharArray());
         byte[] passwordSHA1Bytes = passwordSHA1.getBytes(StandardCharsets.UTF_8);
         
-        md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
-        byte[] hashSHA1SH1 = md.digest();
-        
+        messageDigest.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
+        byte[] hashSHA1SH1 = messageDigest.digest();
         return HashUtil.digestToHexString(hashSHA1SH1);
     }
 
     public static String toCrc32(String textInput) {
-        
         byte[] bytes = textInput.getBytes(StandardCharsets.UTF_8);
         
         Checksum checksum = new CRC32();
         checksum.update(bytes, 0, bytes.length);
         
         long lngChecksum = checksum.getValue();
-        
         return Long.toString(lngChecksum);
     }
 
     public static String toMd4(String textInput) {
-        
-        MessageDigest md = new DigestMD4();
+        MessageDigest messageDigest = new DigestMD4();
 
         var passwordString = String.valueOf(textInput.toCharArray());
         byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);
         
-        md.update(passwordByte, 0, passwordByte.length);
-        byte[] encodedPassword = md.digest();
-        
+        messageDigest.update(passwordByte, 0, passwordByte.length);
+        byte[] encodedPassword = messageDigest.digest();
         return HashUtil.digestToHexString(encodedPassword);
     }
 
     public static String toHash(String nameMethod, String textInput) throws NoSuchAlgorithmException {
-        
-        var md = MessageDigest.getInstance(nameMethod);
+        var messageDigest = MessageDigest.getInstance(nameMethod);
         
         var passwordString = String.valueOf(textInput.toCharArray());
         byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);
         
-        md.update(passwordByte, 0, passwordByte.length);
-        byte[] encodedPassword = md.digest();
-        
+        messageDigest.update(passwordByte, 0, passwordByte.length);
+        byte[] encodedPassword = messageDigest.digest();
         return HashUtil.digestToHexString(encodedPassword);
     }
     
@@ -96,13 +87,10 @@ public class HashUtil {
      * @return Hash as a string
      */
     public static String digestToHexString(byte[] block) {
-        
         var buf = new StringBuilder();
-
         for (byte b : block) {
             HashUtil.byte2hex(b, buf);
         }
-        
         return buf.toString();
     }
     
@@ -112,7 +100,6 @@ public class HashUtil {
      * @param buf Hexadecimal converted character
      */
     private static void byte2hex(byte b, StringBuilder buf) {
-        
         var hexChars = new char[]{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
         int high = (b & 0xf0) >> 4;
         int low = b & 0x0f;

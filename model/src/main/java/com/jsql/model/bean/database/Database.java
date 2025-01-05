@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -31,11 +31,8 @@ public class Database extends AbstractElementDatabase {
 
     /**
      * Define the database label and number of tables.
-     * @param databaseName
-     * @param tableCount
      */
     public Database(String databaseName, String tableCount) {
-        
         this.elementValue = databaseName;
         this.tableCount = tableCount;
     }
@@ -57,8 +54,7 @@ public class Database extends AbstractElementDatabase {
      * displayed by the view, e.g. my_database (7 tables).
      */
     @Override
-    public String getLabelCount() {
-        
+    public String getLabelWithCount() {
         // Report #1500: detect incorrect number of tables
         String sPlural = StringUtils.EMPTY;
         
@@ -67,7 +63,6 @@ public class Database extends AbstractElementDatabase {
                 sPlural = "s";
             }
         } catch (NumberFormatException e) {
-            
             this.tableCount = "0";
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect number of tables for [{}].", this);
         }

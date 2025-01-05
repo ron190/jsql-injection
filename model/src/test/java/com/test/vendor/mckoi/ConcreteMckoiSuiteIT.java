@@ -21,6 +21,6 @@ public abstract class ConcreteMckoiSuiteIT extends AbstractTestSuite {
         this.jdbcQueryForDatabaseNames = "select name from SYS_INFO.sUSRSchemaInfo";
         this.jdbcQueryForTableNames = "select name from SYS_INFO.sUSRTableInfo where \"schema\" = '"+ this.jsqlDatabaseName +"'";
         this.jdbcQueryForColumnNames = "select \"column\" from SYS_INFO.sUSRTableColumns where \"schema\" = '"+ this.jsqlDatabaseName +"' and \"table\" = '"+ this.jsqlTableName +"'";
-        this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlTableName +"";
+        this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlTableName;
     }
 }

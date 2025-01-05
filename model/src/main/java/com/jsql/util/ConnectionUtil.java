@@ -73,7 +73,6 @@ public class ConnectionUtil {
     }
     
     public HttpClient getHttpClient() {
-        
         var httpClientBuilder = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(this.getTimeout()))
             .sslContext(this.injectionModel.getMediatorUtils().getCertificateUtil().getSslContext())
@@ -82,43 +81,36 @@ public class ConnectionUtil {
                 ? HttpClient.Redirect.ALWAYS
                 : HttpClient.Redirect.NEVER
             );
-        
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isHttp2Disabled()) {
             httpClientBuilder.version(Version.HTTP_1_1);
         }
-        
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {
             httpClientBuilder.cookieHandler(this.cookieManager);
         }
-        
         if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isAuthentEnabled()) {
             httpClientBuilder.authenticator(new Authenticator() {
-              @Override
-              protected PasswordAuthentication getPasswordAuthentication() {
-                  return new PasswordAuthentication(
-                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication(),
-                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication().toCharArray()
-                  );
-              }
-          });
-      }
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(
+                        ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication(),
+                        ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication().toCharArray()
+                    );
+                }
+            });
+        }
                 
         return httpClientBuilder.build();
     }
 
 
     public static <T> Map<String, String> getHeadersMap(HttpResponse<T> httpResponse) {
-        
         Map<String, String> sortedMap = getHeadersMap(httpResponse.headers());
-        
         String responseCodeHttp = ""+ httpResponse.statusCode();
         sortedMap.put(":status", responseCodeHttp);
-        
         return sortedMap;
     }
     
     public static Map<String, String> getHeadersMap(HttpHeaders httpHeaders) {
-        
         Map<String, String> unsortedMap = httpHeaders.map()
             .entrySet()
             .stream()
@@ -131,7 +123,6 @@ public class ConnectionUtil {
                 AbstractMap.SimpleEntry::getKey,
                 AbstractMap.SimpleEntry::getValue
             ));
-        
         return new TreeMap<>(unsortedMap);
     }
 
@@ -139,12 +130,8 @@ public class ConnectionUtil {
      * Check that the connection to the website is working correctly.
      * It uses authentication defined by user, with fixed timeout, and warn
      * user in case of authentication detected.
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
      */
     public HttpResponse<String> checkConnectionResponse() throws IOException, InterruptedException, JSqlException {
-
         var queryString = this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
         var testUrl = this.getUrlBase().replaceAll("\\?$", "");
 
@@ -169,10 +156,8 @@ public class ConnectionUtil {
         try {
             httpRequest.uri(
                 URI.create(
-                    // Get encoded params without fragment
-                    testUrl
-                    // Ignore injection point during the test
-                    .replace(InjectionModel.STAR, StringUtils.EMPTY)
+                    testUrl  // Get encoded params without fragment
+                    .replace(InjectionModel.STAR, StringUtils.EMPTY)  // Ignore injection point during the test
                 )
             );
         } catch (IllegalArgumentException e) {
@@ -189,7 +174,7 @@ public class ConnectionUtil {
             BodyPublishers.ofString(body)
         );
 
-        // Add headers if exists (Authorization:Basic, etc)
+        // Add headers if exists (Authorization:Basic, etc.)
         for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {
             HeaderUtil.sanitizeHeaders(httpRequest, header);
         }
@@ -198,7 +183,6 @@ public class ConnectionUtil {
     }
 
     public void testConnection() throws IOException, InterruptedException, JSqlException {
-
         // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
         this.getCookieManager().getCookieStore().removeAll();
@@ -226,7 +210,6 @@ public class ConnectionUtil {
     }
 
     public String getSource(String url, boolean lineFeed) {
-        
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, url);
         
@@ -239,15 +222,11 @@ public class ConnectionUtil {
                 .build();
             
             HttpHeaders httpHeaders;
-                
             if (lineFeed) {
-                
                 HttpResponse<Stream<String>> response = this.getHttpClient().send(httpRequest, BodyHandlers.ofLines());
                 pageSource = response.body().collect(Collectors.joining("\n"));
                 httpHeaders = response.headers();
-                
             } else {
-                
                 HttpResponse<String> response = this.getHttpClient().send(httpRequest, BodyHandlers.ofString());
                 pageSource = response.body();
                 httpHeaders = response.headers();
@@ -259,14 +238,10 @@ public class ConnectionUtil {
         } catch (IOException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         } catch (InterruptedException e) {
-            
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
-            
         } finally {
-            
             msgHeader.put(Header.SOURCE, pageSource);
-            
             // Inform the view about the log infos
             var request = new Request();
             request.setMessage(Interaction.MESSAGE_HEADER);
@@ -291,15 +266,12 @@ public class ConnectionUtil {
     }
 
     public void setCustomUserAgent(Builder httpRequest) {
-        if (this.injectionModel.getMediatorUtils().getUserAgentUtil().isCustomUserAgent()) {
-            
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isUserAgentRandom()) {
             String agents = this.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();
             List<String> listAgents = Stream.of(agents.split("[\\r\\n]+"))
                 .filter(q -> !q.matches("^#.*"))
                 .collect(Collectors.toList());
-            
             String randomElement = listAgents.get(this.randomForUserAgent.nextInt(listAgents.size()));
-            
             httpRequest.setHeader("User-Agent", randomElement);
         }
     }

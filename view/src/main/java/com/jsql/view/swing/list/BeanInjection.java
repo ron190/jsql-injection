@@ -18,7 +18,6 @@ public class BeanInjection {
     private Vendor vendor;
 
     public BeanInjection(String url) {
-        
         this.url = url;
         this.method = MediatorHelper.model().getMediatorMethod().getQuery();
         this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
@@ -26,17 +25,12 @@ public class BeanInjection {
     }
     
     public BeanInjection(String url, String request, String header, String nameMethod, String vendor, String requestType) {
-        
         this(url);
-        
         this.request = request;
         this.header = header;
         
         try {
-            this.method = MediatorHelper.model()
-                .getMediatorMethod()
-                .getMethods()
-                .stream()
+            this.method = MediatorHelper.model().getMediatorMethod().getMethods().stream()
                 .filter(m -> m.name().equalsIgnoreCase(nameMethod))
                 .findAny()
                 .orElse(MediatorHelper.model().getMediatorMethod().getQuery());
@@ -45,10 +39,7 @@ public class BeanInjection {
         }
         
         try {
-            this.vendor = MediatorHelper.model()
-                .getMediatorVendor()
-                .getVendors()
-                .stream()
+            this.vendor = MediatorHelper.model().getMediatorVendor().getVendors().stream()
                 .filter(v -> v.toString().equals(vendor))
                 .findAny()
                 .orElse(MediatorHelper.model().getMediatorVendor().getAuto());
@@ -56,9 +47,7 @@ public class BeanInjection {
             this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
         }
         
-        this.requestType = requestType.isEmpty()
-            ? "GET"
-            : requestType;
+        this.requestType = requestType.isEmpty() ? "GET" : requestType;
     }
     
     

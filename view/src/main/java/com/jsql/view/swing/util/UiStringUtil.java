@@ -37,17 +37,12 @@ public class UiStringUtil {
         );
         
         detector.dataEnd();
-        String encoding = detector.getDetectedCharset();
         String result = text;
-        
+
         // Confirm UTF8
+        String encoding = detector.getDetectedCharset();
         if (encoding != null) {
-            result = String.format(
-                "<html><span style=\"font-family:'%s';%s\">%s</span></html>",
-                UiUtil.FONT_NAME_MONO_ASIAN,
-                nowrap ? "white-space:nowrap;" : StringUtils.EMPTY,
-                text
-            );
+            result = I18nViewUtil.formatNonLatin(text, nowrap ? "white-space:nowrap;" : StringUtils.EMPTY);
         }
         
         return result;

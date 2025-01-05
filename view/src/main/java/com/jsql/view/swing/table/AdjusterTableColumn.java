@@ -49,23 +49,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Specify the table and spacing
      */
     public AdjusterTableColumn(JTable tableAdjust, int spacing) {
-        
         this.tableAdjust = tableAdjust;
-        
-        final TableCellRenderer tcrOs = tableAdjust.getTableHeader().getDefaultRenderer();
-        tableAdjust.getTableHeader().setDefaultRenderer(
-            (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
-                    
-                JLabel label = (JLabel) tcrOs.getTableCellRendererComponent(
-                    table, value, isSelected, hasFocus, row, column
-                );
-                
-                label.setBackground(new Color(230, 230, 230));
-                
-                return label;
-            }
-        );
-        
         this.spacing = spacing;
         this.setColumnHeaderIncluded(true);
         this.setColumnDataIncluded(true);
@@ -78,9 +62,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Adjust the widths of all the columns in the table
      */
     public void adjustColumns() {
-        
         TableColumnModel tcm = this.tableAdjust.getColumnModel();
-
         for (var i = 0 ; i < tcm.getColumnCount() ; i++) {
             this.adjustColumn(i);
         }
@@ -90,9 +72,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Adjust the width of the specified column in the table
      */
     public void adjustColumn(final int column) {
-        
         var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);
-
         if (!tableColumn.getResizable()) {
             return;
         }
@@ -100,7 +80,6 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         int columnHeaderWidth = this.getColumnHeaderWidth(column);
         int columnDataWidth   = this.getColumnDataWidth(column);
         int preferredWidth    = Math.max(columnHeaderWidth, columnDataWidth);
-
         this.updateTableColumn(column, preferredWidth);
     }
 
@@ -108,7 +87,6 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Calculated the width based on the column name
      */
     private int getColumnHeaderWidth(int column) {
-        
         if (!this.isColumnHeaderIncluded) {
             return 0;
         }
@@ -116,13 +94,11 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);
         Object value = tableColumn.getHeaderValue();
         TableCellRenderer renderer = tableColumn.getHeaderRenderer();
-
         if (renderer == null) {
             renderer = this.tableAdjust.getTableHeader().getDefaultRenderer();
         }
 
         var c = renderer.getTableCellRendererComponent(this.tableAdjust, value, false, false, -1, column);
-        
         return c.getPreferredSize().width;
     }
 
@@ -131,7 +107,6 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * given column.
      */
     private int getColumnDataWidth(int column) {
-        
         if (!this.isColumnDataIncluded) {
             return 0;
         }
@@ -140,15 +115,12 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         int maxWidth = this.tableAdjust.getColumnModel().getColumn(column).getMaxWidth();
 
         for (var row = 0 ; row < this.tableAdjust.getRowCount() ; row++) {
-            
             preferredWidth = Math.max(preferredWidth, this.getCellDataWidth(row, column));
-
             // We've exceeded the maximum width, no need to check other rows
             if (preferredWidth >= maxWidth) {
                 break;
             }
         }
-
         return preferredWidth;
     }
 
@@ -156,11 +128,9 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Get the preferred width for the specified cell
      */
     private int getCellDataWidth(int row, int column) {
-        
         // Invoke the renderer for the cell to calculate the preferred width
         TableCellRenderer cellRenderer = this.tableAdjust.getCellRenderer(row, column);
         Component c = this.tableAdjust.prepareRenderer(cellRenderer, row, column);
-        
         return c.getPreferredSize().width + this.tableAdjust.getIntercellSpacing().width;
     }
 
@@ -168,16 +138,13 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Update the TableColumn with the newly calculated width
      */
     private void updateTableColumn(int column, int width) {
-        
         final var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);
-
         if (!tableColumn.getResizable()) {
             return;
         }
 
         int calculatedWidth = width;
         calculatedWidth += this.spacing;
-
         // Don't shrink the column width
         if (this.isOnlyAdjustLarger) {
             calculatedWidth = Math.max(calculatedWidth, tableColumn.getPreferredWidth());
@@ -192,9 +159,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Restore the widths of the columns in the table to its previous width
      */
     public void restoreColumns() {
-        
         TableColumnModel tableColumnModel = this.tableAdjust.getColumnModel();
-
         for (var i = 0 ; i < tableColumnModel.getColumnCount() ; i++) {
             this.restoreColumn(i);
         }
@@ -204,12 +169,9 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Restore the width of the specified column to its previous width
      */
     private void restoreColumn(int column) {
-        
         var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);
         Integer width = this.columnSizes.get(tableColumn);
-
         if (width != null) {
-            
             this.tableAdjust.getTableHeader().setResizingColumn(tableColumn);
             tableColumn.setWidth(width);
         }
@@ -241,21 +203,16 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * dynamically recalculated.
      */
     public void setDynamicAdjustment(boolean isDynamicAdjustment) {
-        
         // May need to add or remove the TableModelListener when changed
         if (this.isDynamicAdjustment != isDynamicAdjustment) {
             if (isDynamicAdjustment) {
-                
                 this.tableAdjust.addPropertyChangeListener(this);
                 this.tableAdjust.getModel().addTableModelListener(this);
-                
             } else {
-                
                 this.tableAdjust.removePropertyChangeListener(this);
                 this.tableAdjust.getModel().removeTableModelListener(this);
             }
         }
-
         this.isDynamicAdjustment = isDynamicAdjustment;
     }
     
@@ -267,11 +224,10 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         // When the TableModel changes we need to update the listeners
         // and column widths
         if ("model".equals(e.getPropertyName())) {
-            
-            TableModel model = (TableModel)e.getOldValue();
+            TableModel model = (TableModel) e.getOldValue();
             model.removeTableModelListener(this);
 
-            model = (TableModel)e.getNewValue();
+            model = (TableModel) e.getNewValue();
             model.addTableModelListener(this);
             this.adjustColumns();
         }
@@ -282,24 +238,19 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      */
     @Override
     public void tableChanged(TableModelEvent e) {
-        
         if (!this.isColumnDataIncluded) {
             return;
         }
 
         // A cell has been updated
         if (e.getType() == TableModelEvent.UPDATE) {
-            
             int column = this.tableAdjust.convertColumnIndexToView(e.getColumn());
 
             // Only need to worry about an increase in width for this cell
             if (this.isOnlyAdjustLarger) {
-                
                 int row = e.getFirstRow();
                 var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);
-
                 if (tableColumn.getResizable()) {
-                    
                     int width = this.getCellDataWidth(row, column);
                     this.updateTableColumn(column, width);
                 }
@@ -315,7 +266,6 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Install Actions to give user control of certain functionality.
      */
     private void installActions() {
-        
         this.installColumnAction(true,  true,  "adjustColumn",   "control ADD");
         this.installColumnAction(false, true,  "adjustColumns",  "control shift ADD");
         this.installColumnAction(true,  false, "restoreColumn",  "control SUBTRACT");
@@ -329,7 +279,6 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Update the input and action maps with a new ColumnAction
      */
     private void installColumnAction(boolean isSelectedColumn, boolean isAdjust, String key, String keyStroke) {
-        
         Action action = new ColumnAction(isSelectedColumn, isAdjust);
         var ks = KeyStroke.getKeyStroke(keyStroke);
         
@@ -341,7 +290,6 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Update the input and action maps with new ToggleAction
      */
     private void installToggleAction(boolean isToggleDynamic, boolean isToggleLarger, String key, String keyStroke) {
-        
         Action action = new ToggleAction(isToggleDynamic, isToggleLarger);
         var ks = KeyStroke.getKeyStroke(keyStroke);
         
@@ -358,7 +306,6 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         private final boolean isAdjust;
 
         public ColumnAction(boolean isSelectedColumn, boolean isAdjust) {
-            
             this.isSelectedColumn = isSelectedColumn;
             this.isAdjust = isAdjust;
         }
@@ -367,7 +314,6 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         public void actionPerformed(ActionEvent e) {
             // Handle selected column(s) width change actions
             if (this.isSelectedColumn) {
-                
                 int[] columns = AdjusterTableColumn.this.tableAdjust.getSelectedColumns();
 
                 for (int column: columns) {
@@ -397,7 +343,6 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         private final boolean isToggleLarger;
 
         public ToggleAction(boolean isToggleDynamic, boolean isToggleLarger) {
-            
             this.isToggleDynamic = isToggleDynamic;
             this.isToggleLarger = isToggleLarger;
         }

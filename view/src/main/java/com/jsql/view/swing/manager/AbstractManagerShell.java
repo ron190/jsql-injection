@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -16,9 +16,7 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
-import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -55,11 +53,9 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
      * Build the manager panel.
      */
     protected AbstractManagerShell() {
-        
         this.setLayout(new BorderLayout());
         
         List<ItemList> itemsList = new ArrayList<>();
-        
         try (
             var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
             var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
@@ -74,118 +70,75 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         }
 
         this.listPaths = new DnDList(itemsList);
-        
-        this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        
-        this.add(new LightScrollPane(0, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);
-        
-        var southPanel = new JPanel();
-        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+        this.add(new JScrollPane(this.listPaths), BorderLayout.CENTER);
 
         String urlTooltip = I18nUtil.valueByKey("SHELL_URL_TOOLTIP");
-        
         this.textfieldUrlShell.setToolTipText(urlTooltip);
-        this.textfieldUrlShell.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
-                    BorderFactory.createMatteBorder(1, 1, 0, 1, UiUtil.COLOR_DEFAULT_BACKGROUND)
-                ),
-                UiUtil.BORDER_BLU
-            )
-        );
 
         JPanel lastLine = this.initializeRunButtonPanel();
-
+        var southPanel = new JPanel();
+        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
         southPanel.add(this.textfieldUrlShell);
         southPanel.add(lastLine);
-        
         this.add(southPanel, BorderLayout.SOUTH);
     }
     
     protected abstract void createPayload(String pathShell, String urlShell) throws JSqlException;
 
     private JPanel initializeRunButtonPanel() {
-
         this.defaultText = "SHELL_RUN_BUTTON_LABEL";
         
         var lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
-        lastLine.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
         
         this.run = new JButtonStateful(this.defaultText);
         I18nViewUtil.addComponentForKey(this.defaultText, this.run);
         this.run.setToolTipText(I18nUtil.valueByKey("SHELL_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
-
-        this.run.setContentAreaFilled(false);
-        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        this.run.setBackground(UiUtil.COLOR_FOCUS_GAINED);
-        
-        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
-
         this.run.addActionListener(new ActionCreationShell());
 
-        this.privilege = new JLabel(I18nUtil.valueByKey("PRIVILEGE_LABEL"), UiUtil.ICON_SQUARE_GREY, SwingConstants.LEFT);
+        this.privilege = new JLabel(I18nUtil.valueByKey("PRIVILEGE_LABEL"), UiUtil.SQUARE.icon, SwingConstants.LEFT);
         I18nViewUtil.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));
         this.privilege.setToolTipText(I18nUtil.valueByKey("PRIVILEGE_TOOLTIP"));
 
+        lastLine.add(Box.createHorizontalStrut(5));
         lastLine.add(this.privilege);
         lastLine.add(Box.createHorizontalStrut(5));
         lastLine.add(Box.createHorizontalGlue());
         lastLine.add(this.run);
-        
         return lastLine;
     }
     
     private class ActionCreationShell implements ActionListener {
-        
         @Override
         public void actionPerformed(ActionEvent evt) {
-            
-            if (AbstractManagerShell.this.getListPaths().getSelectedValuesList().isEmpty()) {
-                
+            if (AbstractManagerShell.this.listPaths.getSelectedValuesList().isEmpty()) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select at least one directory in the list");
                 return;
             }
 
-            String refUrlShell = AbstractManagerShell.this.textfieldUrlShell.getText();
-            
-            if (!refUrlShell.isEmpty() && !refUrlShell.matches("(?i)^https?://.*")) {
-                if (!refUrlShell.matches("(?i)^\\w+://.*")) {
-                    
+            String urlShell = AbstractManagerShell.this.textfieldUrlShell.getText();
+            if (!urlShell.isEmpty() && !urlShell.matches("(?i)^https?://.*")) {
+                if (!urlShell.matches("(?i)^\\w+://.*")) {
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Undefined shell URL protocol, forcing to [http://]");
-                    refUrlShell = "http://"+ refUrlShell;
-                    
+                    urlShell = "http://"+ urlShell;
                 } else {
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Unknown URL protocol");
                     return;
                 }
             }
             
-            if (StringUtils.isNotEmpty(refUrlShell)) {
+            if (StringUtils.isNotEmpty(urlShell)) {
                 try {
-                    new URI(refUrlShell);
+                    new URI(urlShell);
                 } catch (URISyntaxException e) {
-                    
-                    LOGGER.log(
-                        LogLevelUtil.CONSOLE_ERROR,
-                        String.format("Incorrect URL: %s", e.getMessage())
-                    );
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format("Incorrect URL: %s", e.getMessage()));
                     return;
                 }
             }
             
-            String urlShellFinal = refUrlShell;
-
-            AbstractManagerShell.this.getListPaths()
+            String urlShellFinal = urlShell;
+            AbstractManagerShell.this.listPaths
                 .getSelectedValuesList()
                 .forEach(pathShell -> new Thread(
                     () -> {

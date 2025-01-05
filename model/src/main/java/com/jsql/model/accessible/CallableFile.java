@@ -42,10 +42,8 @@ public class CallableFile implements Callable<CallableFile> {
     
     /**
      * Create Callable to read a file.
-     * @param pathFile
      */
     public CallableFile(String pathFile, InjectionModel injectionModel) {
-        
         this.pathFile = pathFile;
         this.injectionModel= injectionModel;
         this.suspendableReadFile = new SuspendableGetRows(injectionModel);
@@ -57,7 +55,6 @@ public class CallableFile implements Callable<CallableFile> {
      */
     @Override
     public CallableFile call() throws Exception {
-        
         var sourcePage = new String[]{ StringUtils.EMPTY };
 
         String resultToParse = StringUtils.EMPTY;
@@ -74,19 +71,16 @@ public class CallableFile implements Callable<CallableFile> {
             // Usually thrown if File does not exist
             LOGGER.log(LogLevelUtil.IGNORE, e);
         } catch (StoppedByUserSlidingException e) {
-            
             // Get partial source
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
             } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
-            
             LOGGER.log(LogLevelUtil.IGNORE, e);
         }
         
         this.sourceFile = resultToParse;
-        
         return this;
     }
     

@@ -166,7 +166,7 @@ public class JdbcRestController {
 
         Class.forName("Altibase.jdbc.driver.AltibaseDriver");
 
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
@@ -194,7 +194,7 @@ public class JdbcRestController {
         // ADMIN ADMIN
         Class.forName("ctree.jdbc.ctreeDriver");
 
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
@@ -223,7 +223,7 @@ public class JdbcRestController {
         // 3.5Go
         Class.forName("com.exasol.jdbc.EXADriver");
 
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
@@ -252,7 +252,7 @@ public class JdbcRestController {
         // ignite ignite
         Class.forName("org.apache.ignite.IgniteJdbcThinDriver");
 
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
@@ -288,7 +288,7 @@ public class JdbcRestController {
         //  _system
         Class.forName("com.frontbase.jdbc.FBJDriver");
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
@@ -320,7 +320,7 @@ public class JdbcRestController {
         // _SYSTEM Mw7SUqLPFbZWUu4
         Class.forName("com.intersystems.jdbc.IRISDriver");
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
@@ -349,7 +349,7 @@ public class JdbcRestController {
         // 4Go
         Class.forName("com.facebook.presto.jdbc.PrestoDriver");
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -13,7 +13,6 @@ package com.jsql.view.swing.tree.model;
 import com.jsql.model.bean.database.Column;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.util.UiStringUtil;
-import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,26 +37,13 @@ public class NodeModelColumn extends NodeModelEmpty {
     ) {
         var checkbox = new JCheckBox(this.toString(), this.isSelected());
         checkbox.setText(UiStringUtil.detectUtf8HtmlNoWrap(this.toString()));
-
-        if (isSelected) {
-            if (hasFocus) {
-                
-                checkbox.setBackground(UiUtil.COLOR_FOCUS_GAINED);
-                checkbox.setBorder(UiUtil.BORDER_FOCUS_GAINED);
-                
-            } else {
-                
-                checkbox.setBackground(UiUtil.COLOR_FOCUS_LOST);
-                checkbox.setBorder(UiUtil.BORDER_FOCUS_LOST);
-            }
-        } else {
-            
-            checkbox.setBackground(Color.WHITE);
-            checkbox.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        }
-        
         checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
-        
+        checkbox.setBackground(
+            isSelected ? UIManager.getColor("Tree.selectionBackground") : UIManager.getColor("Tree.background")
+        );  // required for transparency
+        checkbox.setForeground(  // required by macOS light (opposite text color)
+            isSelected ? UIManager.getColor("Tree.selectionForeground") : UIManager.getColor("Tree.foreground")
+        );
         return checkbox;
     }
 }

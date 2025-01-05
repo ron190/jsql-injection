@@ -49,7 +49,6 @@ public class HeaderUtil {
      * @param header string to decode
      */
     public static void sanitizeHeaders(Builder httpRequest, SimpleEntry<String, String> header) throws JSqlException {
-        
         String keyHeader = header.getKey().trim();
         String valueHeader = header.getValue().trim();
 
@@ -62,10 +61,7 @@ public class HeaderUtil {
                     arrayEntry[1] == null
                     ? ""
                     // Url encode: new cookie RFC restricts chars to non ()<>@,;:\"/[]?={} => server must url decode the request
-                    : URLEncoder.encode(
-                        arrayEntry[1].trim().replace("+", "%2B"),
-                        StandardCharsets.UTF_8
-                    )
+                    : URLEncoder.encode(arrayEntry[1].trim().replace("+", "%2B"), StandardCharsets.UTF_8)
                 ))
                 .collect(Collectors.toList());
             valueHeader = String.join("; ", cookies);
@@ -85,12 +81,10 @@ public class HeaderUtil {
      * Verify the headers received after a request, detect authentication response and
      * send the headers to the view.
      * @param httpRequestBuilder calls URL
-     * @param body 
      * @return httpResponse with response headers
      * @throws IOException when an error occurs during connection
      */
     public HttpResponse<String> checkResponseHeader(Builder httpRequestBuilder, String body) throws IOException, InterruptedException {
-        
         var httpRequest = httpRequestBuilder.build();
         HttpResponse<String> httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(
             httpRequest,
@@ -98,15 +92,13 @@ public class HeaderUtil {
         );
         String pageSource = httpResponse.body();
         
-        Map<String, String> mapResponseHeaders = ConnectionUtil.getHeadersMap(httpResponse);
-        
-        var responseCode = Integer.toString(httpResponse.statusCode());
-
         List<HttpCookie> cookies = this.injectionModel.getMediatorUtils().getConnectionUtil().getCookieManager().getCookieStore().getCookies();
         if (!cookies.isEmpty()) {
             LOGGER.info("Cookies set by host: {}", cookies);
         }
 
+        var responseCode = Integer.toString(httpResponse.statusCode());
+        Map<String, String> mapResponseHeaders = ConnectionUtil.getHeadersMap(httpResponse);
         this.checkResponse(responseCode, mapResponseHeaders);
         this.checkStatus(httpResponse);
         

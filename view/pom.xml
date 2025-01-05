@@ -13,8 +13,7 @@
         <sonar.exclusions>**/view/swing/sql/lexer**/*</sonar.exclusions>
 
         <assertj-swing-junit.version>3.17.1</assertj-swing-junit.version>
-        <awaitility.version>4.2.0</awaitility.version>
-        <commons-io.version>2.16.1</commons-io.version>
+        <commons-io.version>2.17.0</commons-io.version>
         <junit-jupiter-engine.version>5.11.1</junit-jupiter-engine.version>
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
@@ -53,6 +52,31 @@
             <artifactId>mockito-inline</artifactId>
             <version>${mockito-inline.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-intellij-themes</artifactId>
+            <version>3.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-extras</artifactId>
+            <version>3.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.weisj</groupId>
+            <artifactId>jsvg</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fifesoft</groupId>
+            <artifactId>rsyntaxtextarea</artifactId>
+            <version>3.5.3</version>
         </dependency>
     </dependencies>
 

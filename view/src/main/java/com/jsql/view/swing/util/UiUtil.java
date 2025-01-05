@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -10,33 +10,31 @@
  ******************************************************************************/
 package com.jsql.view.swing.util;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.intellijthemes.FlatLightFlatIJTheme;
 import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.sql.lexer.HighlightedDocument;
+import com.jsql.view.swing.console.JTextPaneAppender;
+import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.text.action.DeleteNextCharAction;
 import com.jsql.view.swing.text.action.DeletePrevCharAction;
-import com.jsql.view.swing.ui.BorderRoundBlu;
-import com.jsql.view.swing.ui.CheckBoxIcon;
-import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
-import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.Theme;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,56 +50,8 @@ public class UiUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    public static final Color COLOR_BLU = new Color(132, 172, 221);
-    public static final Color COLOR_GREEN = new Color(0, 128, 0);
+    public static final Border BORDER_5PX = BorderFactory.createEmptyBorder(5, 5, 5, 5);
     public static final String TEXTPANE_FONT = "TextPane.font";
-
-    // Color TabbedPane.selected hardcoded for Mac value is missing
-    public static final Color COLOR_FOCUS_GAINED = new Color(200, 221, 242);
-    
-    public static final Color COLOR_DEFAULT_BACKGROUND = UIManager.getColor("Panel.background");
-    public static final Color COLOR_COMPONENT_BORDER = UIManager.getColor("controlShadow");
-    public static final Color COLOR_FOCUS_LOST = new Color(248, 249, 249);
-    public static final Border BORDER_FOCUS_LOST = new LineBorder(new Color(218, 218, 218), 1, false);
-    public static final Border BORDER_FOCUS_GAINED = new LineBorder(UiUtil.COLOR_COMPONENT_BORDER, 1, false);
-    
-    public static final URL URL_GLOBE = UiUtil.class.getClassLoader().getResource("swing/images/icons/globe.png");
-    
-    public static final Icon ICON_TICK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/check.png")));
-    public static final Icon ICON_SQUARE_RED = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/squareRed.png")));
-    public static final Icon ICON_SQUARE_GREY = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/squareGrey.png")));
-    public static final Icon ICON_LOADER_GIF = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/spinner.gif")));
-
-    public static final Icon ICON_ADMIN_SERVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/admin.png")));
-    public static final Icon ICON_SHELL_SERVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/application_xp_terminal.png")));
-    public static final Icon ICON_DATABASE_SERVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/database.png")));
-    public static final Icon ICON_FILE_SERVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/file.png")));
-    public static final Icon ICON_COG = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/cog.png")));
-    public static final Icon ICON_BRUTER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/lock_open.png")));
-    public static final Icon ICON_CODER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/textfield.png")));
-    public static final Icon ICON_UPLOAD = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/disk.png")));
-    public static final Icon ICON_SCANLIST = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/table_multiple.png")));
-
-    public static final Icon ICON_TABLE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/table.png")));
-    public static final Icon ICON_TABLE_GO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/tableGo.png")));
-    public static final Icon ICON_DATABASE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/database.png")));
-    public static final Icon ICON_DATABASE_GO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/databaseGo.png")));
-    
-    public static final Icon ICON_CONSOLE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/console.gif")));
-    public static final Icon ICON_HEADER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/header.gif")));
-    public static final Icon ICON_CHUNK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/chunk.gif")));
-    public static final Icon ICON_BINARY = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/binary.gif")));
-    public static final Icon ICON_CUP = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/cup.png")));
-    
-    public static final Icon ICON_CLOSE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/close.png")));
-    public static final Icon ICON_CLOSE_ROLLOVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/closeRollover.png")));
-    public static final Icon ICON_CLOSE_PRESSED = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/closePressed.png")));
-
-    public static final Icon ICON_ARROW_DEFAULT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/arrowDefault.png")));
-    public static final Icon ICON_ARROW_ROLLOVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/arrowRollover.png")));
-    public static final Icon ICON_ARROW_PRESSED = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/arrowPressed.png")));
-
-    public static final Icon ICON_EXPAND_TEXT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/expand.png")));
 
     public static final Icon ICON_FLAG_AR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ar.png")));
     public static final Icon ICON_FLAG_ZH = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/zh.png")));
@@ -113,7 +63,7 @@ public class UiUtil {
     public static final Icon ICON_FLAG_CS = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/cs.png")));
     public static final Icon ICON_FLAG_DE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/de.png")));
     public static final Icon ICON_FLAG_NL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/nl.png")));
-    public static final Icon ICON_FLAG_IN_ID = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/id.png")));
+    public static final Icon ICON_FLAG_IN = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/in.png")));
     public static final Icon ICON_FLAG_IT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/it.png")));
     public static final Icon ICON_FLAG_ES = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/es.png")));
     public static final Icon ICON_FLAG_PT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/pt.png")));
@@ -124,37 +74,52 @@ public class UiUtil {
     public static final Icon ICON_FLAG_LK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/lk.png")));
     public static final Icon ICON_FLAG_SE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/se.png")));
     public static final Icon ICON_FLAG_FI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/fi.png")));
-    
+
     public static final URL URL_ICON_16 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug16.png");
     public static final URL URL_ICON_32 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug32.png");
     public static final URL URL_ICON_96 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug96.png");
     public static final URL URL_ICON_128 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug128.png");
 
-    // The drop shadow is created from a PNG image with 8 bit alpha channel.
-    public static final Image IMG_SHADOW = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/shadow.png"))).getImage();
-    
-    public static final ImageIcon IMG_BUG = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/bug.png")));
-    public static final ImageIcon IMG_STOP_DEFAULT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopDefault.png")));
-    public static final ImageIcon IMG_STOP_ROLLOVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopRollover.png")));
-    public static final ImageIcon IMG_STOP_PPRESSED = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopPressed.png")));
-    
+    public static final SvgIcon DATABASE_BOLD = new SvgIcon("database-bold", 0x1C274C, 0.02f);
+    public static final SvgIcon ADMIN = new SvgIcon("admin", 0.02f);
+    public static final SvgIcon DOWNLOAD = new SvgIcon("download", 0.55f);
+    public static final SvgIcon TERMINAL = new SvgIcon("terminal", 0.50f);
+    public static final SvgIcon UPLOAD = new SvgIcon("upload", 0.55f);
+    public static final SvgIcon LOCK = new SvgIcon("lock", 0.02f);
+    public static final SvgIcon TEXTFIELD = new SvgIcon("textfield", 0.02f);
+    public static final SvgIcon BATCH = new SvgIcon("batch", 0.02f);
+
+    public static final SvgIcon TABLE_LINEAR = new SvgIcon("table-linear", 0x212121, 0.02f);
+    public static final SvgIcon TABLE_BOLD = new SvgIcon("table-bold", 0x212121, 0.02f);
+    public static final SvgIcon NETWORK = new SvgIcon("network", 0.02f);
+    public static final SvgIcon DATABASE_LINEAR = new SvgIcon("database-linear", 0x1C274C, 0.02f);
+    public static final SvgIcon CUP = new SvgIcon("cup", 0.02f);
+    public static final SvgIcon CONSOLE = new SvgIcon("console", 0.02f);
+    public static final SvgIcon BINARY = new SvgIcon("binary", 0.02f);
+    public static final SvgIcon CHUNK = new SvgIcon("chunk", 0.02f);
+    public static final SvgIcon COG = new SvgIcon("cog", 0.02f);
+
+    public static final SvgIcon CROSS_RED = new SvgIcon("cross", new Color(0x0F0F0F), null, LogLevelUtil.COLOR_RED, 0.025f);
+    public static final SvgIcon ARROW = new SvgIcon("arrow", new Color(0x005a96), "ComboBox.buttonArrowColor", 1f);
+    public static final SvgIcon ARROW_HOVER = new SvgIcon("arrow", new Color(0x005a96), "ComboBox.buttonHoverArrowColor", 1f);
+    public static final SvgIcon ARROW_PRESSED = new SvgIcon("arrow", new Color(0x005a96), "ComboBox.buttonPressedArrowColor", 1f);
+    public static final SvgIcon EXPAND = new SvgIcon("expand", Color.BLACK, "ComboBox.buttonArrowColor", 0.02f);
+    public static final SvgIcon EXPAND_HOVER = new SvgIcon("expand", Color.BLACK, "ComboBox.buttonHoverArrowColor", 0.02f);
+    public static final SvgIcon EXPAND_PRESSED = new SvgIcon("expand", Color.BLACK, "ComboBox.buttonPressedArrowColor", 0.02f);
+
+    public static final SvgIcon HOURGLASS = new SvgIcon("hourglass", 0.02f);
+    public static final SvgIcon ARROW_UP = new SvgIcon("arrow-up", 0.02f);
+    public static final SvgIcon ARROW_DOWN = new SvgIcon("arrow-down", 0.02f);
+    public static final SvgIcon SQUARE = new SvgIcon("square", 0.01f);
+    public static final SvgIcon TICK_GREEN = new SvgIcon("tick", Color.BLACK, null, LogLevelUtil.COLOR_GREEN, 0.02f);
+    public static final SvgIcon GLOBE = new SvgIcon("globe", 0.025f);
+    public static final SvgIcon REPORT = new SvgIcon("swing/images/software/app.svg", 0.04f);
+    public static final SvgIcon APP_RESULT = new SvgIcon("swing/images/software/app.svg", 0.5f);
+    public static final SvgIcon APP_ABOUT = new SvgIcon("swing/images/software/app.svg", 0.25f);
+
     public static final String PATH_WEB_FOLDERS = "swing/list/payload.txt";
     public static final String INPUT_STREAM_PAGES_SCAN = "swing/list/scan-page.json";
-
-    // Set a margin on menu item on non Mac OS
-    public static final Icon ICON_EMPTY = new ImageIcon(new BufferedImage(16, 16, Transparency.TRANSLUCENT));
-
     public static final String PATH_PAUSE = "swing/images/icons/pause.png";
-    public static final String PATH_PROGRESSBAR = "swing/images/icons/progressBar.gif";
-    
-    public static final Icon ICON_ERROR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/error.png")));
-    
-    public static final Border BORDER_BLU = BorderFactory.createCompoundBorder(
-        BORDER_FOCUS_GAINED,
-        BorderFactory.createEmptyBorder(2, 2, 2, 2)
-    );
-    
-    public static final Border BORDER_ROUND_BLU = new BorderRoundBlu();
 
     public static final String FONT_NAME_MONO_NON_ASIAN = "Ubuntu Mono";
     public static final int FONT_SIZE_MONO_NON_ASIAN = 14;
@@ -165,7 +130,6 @@ public class UiUtil {
     // HTML engine considers Monospaced/Monospace to be the same Font
     // Java engine recognizes only Monospaced
     public static final String FONT_NAME_MONOSPACED = "Monospaced";
-
     public static final Font FONT_MONO_NON_ASIAN = new Font(
         UiUtil.FONT_NAME_MONO_NON_ASIAN,
         Font.PLAIN,
@@ -198,216 +162,27 @@ public class UiUtil {
     private UiUtil() {
         // Utility class
     }
-    
+
     /**
      * Change the default style of various components.
      */
     public static void prepareGUI() {
-        
-        loadFonts();
-        configureToolTip();
-        configureButton();
-        configureMenu();
-        configureTabbedPane();
-        
-        UIManager.put("FileChooser.listFont", UiUtil.FONT_NON_MONO);
-        UIManager.put("FileChooser.listViewBorder", BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(UiUtil.COLOR_BLU),
-            BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
-        ));
-
-        configureText();
-        configureTable();
-        configureTree();
-        configureProgressBar();
-        configureComboBox();
-        
-        UIManager.put("swing.boldMetal", Boolean.FALSE);
+        UiUtil.loadFonts();
+        // timer before closing automatically tooltip
+        ToolTipManager.sharedInstance().setDismissDelay(3 * ToolTipManager.sharedInstance().getDismissDelay());
+        UIManager.put("TextArea.font", UiUtil.FONT_MONO_NON_ASIAN);  // required for basic text like chunks tab
     }
 
     private static void loadFonts() {
-        
         var graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        
-        try (InputStream fontStream = new BufferedInputStream(Objects.requireNonNull(UiUtil.class.getClassLoader().getResourceAsStream("swing/font/UbuntuMono-R-ctrlchar.ttf")))) {
-            
+        try (InputStream fontStream = new BufferedInputStream(
+            Objects.requireNonNull(UiUtil.class.getClassLoader().getResourceAsStream("swing/font/UbuntuMono-R-ctrlchar.ttf"))
+        )) {
             var ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             graphicsEnvironment.registerFont(ubuntuFont);
-            
         } catch (FontFormatException | IOException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Loading Font Ubuntu Mono with control characters failed", e);
         }
-    }
-
-    private static void configureText() {
-        
-        // Custom text component
-        // Admin page
-        UIManager.put("TextPane.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        UIManager.put(TEXTPANE_FONT, UiUtil.FONT_MONO_NON_ASIAN);
-        UIManager.put("TextPane.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        
-        UIManager.put("TextField.border", UiUtil.BORDER_BLU);
-        UIManager.put("TextField.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        
-        UIManager.put("EditorPane.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        
-        UIManager.put("TextArea.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        UIManager.put("TextArea.font", UiUtil.FONT_MONO_NON_ASIAN);
-
-        // Custom Label
-        UIManager.put("Label.font", UiUtil.FONT_NON_MONO);
-        UIManager.put("Label.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-    }
-
-    private static void configureButton() {
-        
-        UIManager.put("Button.font", UiUtil.FONT_NON_MONO);
-        UIManager.put("CheckBox.font", UiUtil.FONT_NON_MONO);
-        UIManager.put("RadioButton.font", UiUtil.FONT_NON_MONO);
-        UIManager.put("TitledBorder.font", UiUtil.FONT_NON_MONO);
-
-        UIManager.put("Spinner.arrowButtonBorder", UiUtil.BORDER_BLU);
-        UIManager.put("Spinner.border", BorderFactory.createLineBorder(UiUtil.COLOR_COMPONENT_BORDER, 1, false));
-        UIManager.put("Spinner.disableOnBoundaryValues", Boolean.TRUE);
-        
-        // Custom button
-        // Change border of button in default Save as, Confirm dialogs
-        UIManager.put("Button.border", UiUtil.BORDER_BLU);
-        UIManager.put("Button.select", new Color(155, 193, 232));
-        
-        // Change border of button in Save as dialog
-        UIManager.put("ToggleButton.border", UiUtil.BORDER_BLU);
-        
-        UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
-    }
-
-    private static void configureToolTip() {
-        
-        // Custom tooltip
-        // timer before showing tooltip
-        ToolTipManager.sharedInstance().setInitialDelay(750);
-        // timer before closing automatically tooltip
-        ToolTipManager.sharedInstance().setDismissDelay(30000);
-        // timer used when mouse move to another component, show tooltip immediately if timer is not expired
-        ToolTipManager.sharedInstance().setReshowDelay(1);
-
-        UIManager.put("ToolTip.background", new Color(255, 255, 225));
-        UIManager.put("ToolTip.backgroundInactive", new Color(255, 255, 225));
-        UIManager.put("ToolTip.foreground", Color.BLACK);
-        UIManager.put("ToolTip.foregroundInactive", Color.BLACK);
-        UIManager.put("ToolTip.font", UiUtil.FONT_NON_MONO);
-    }
-
-    private static void configureTabbedPane() {
-        
-        // Custom tab
-        UIManager.put("TabbedPane.contentAreaColor", UiUtil.FONT_MONO_NON_ASIAN);
-        UIManager.put("TabbedPane.font", UiUtil.FONT_NON_MONO);
-        // margin of current tab panel
-        UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));
-        // margin above tabs
-        UIManager.put("TabbedPane.tabAreaInsets", new Insets(3, 2, 0, 2));
-        // margin around tab name
-        UIManager.put("TabbedPane.tabInsets", new Insets(2, 3 + 5, 2, 3));
-        // lighter unselected tab border
-        UIManager.put("TabbedPane.darkShadow", new Color(190,198,205));
-    }
-
-    private static void configureMenu() {
-        
-        // Prevent green glitch on Mac menu
-        if (!SystemUtils.IS_OS_MAC) {
-            
-            // No bold for menu + round corner
-            UIManager.put("Menu.font", UiUtil.FONT_NON_MONO);
-            UIManager.put("Menu.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-            UIManager.put("Menu.borderPainted", false);
-            UIManager.put("PopupMenu.font", UiUtil.FONT_NON_MONO);
-            UIManager.put("RadioButtonMenuItem.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-            UIManager.put("RadioButtonMenuItem.font", UiUtil.FONT_NON_MONO);
-            UIManager.put("RadioButtonMenuItem.borderPainted", false);
-            UIManager.put("MenuItem.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-            UIManager.put("MenuItem.font", UiUtil.FONT_NON_MONO);
-            UIManager.put("MenuItem.borderPainted", false);
-            UIManager.put("MenuItem.disabledAreNavigable", Boolean.TRUE);
-            
-            UIManager.put("CheckBoxMenuItem.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-            UIManager.put("CheckBoxMenuItem.font", UiUtil.FONT_NON_MONO);
-            UIManager.put("CheckBoxMenuItem.borderPainted", false);
-            UIManager.put("CheckBoxMenuItem.checkIcon", new CheckBoxIcon());
-        }
-    }
-
-    private static void configureTable() {
-        
-        // Custom table
-        UIManager.put("Table.font", UiUtil.FONT_NON_MONO);
-        UIManager.put("TableHeader.font", UiUtil.FONT_NON_MONO);
-        UIManager.put("Table.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        
-        UIManager.put("Table.focusCellHighlightBorder",
-            BorderFactory.createCompoundBorder(
-                new AbstractBorder() {
-                    
-                    @Override
-                    public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
-                        
-                        Graphics2D g2D = (Graphics2D) g;
-                        g2D.setColor(Color.GRAY);
-                        g2D.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{1}, 0));
-                        
-                        // Fix #42291: InternalError on drawRect()
-                        try {
-                            g2D.drawRect(x, y, w - 1, h - 1);
-                        } catch (InternalError e) {
-                            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-                        }
-                    }
-                },
-                BorderFactory.createEmptyBorder(0, 1, 0, 0)
-            )
-        );
-    }
-
-    private static void configureTree() {
-        
-        // Custom tree
-        UIManager.put("Tree.expandedIcon", new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/expanded.png"))));
-        UIManager.put("Tree.collapsedIcon", new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/collapsed.png"))));
-        UIManager.put("Tree.lineTypeDashed", true);
-        
-        // No default icon for tree nodes
-        UIManager.put("Tree.leafIcon", new ImageIcon());
-        UIManager.put("Tree.openIcon", new ImageIcon());
-        UIManager.put("Tree.closedIcon", new ImageIcon());
-    }
-
-    private static void configureComboBox() {
-        
-        // Custom ComboBox
-        UIManager.put("ComboBox.font", UiUtil.FONT_NON_MONO);
-        UIManager.put("ComboBox.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        
-        // Use ColorUIResource to preserve the background color for arrow
-        UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
-        UIManager.put("ComboBox.border", UiUtil.BORDER_BLU);
-        UIManager.put("ComboBoxUI", CustomBasicComboBoxUI.class.getName());
-    }
-
-    private static void configureProgressBar() {
-        
-        // Custom progress bar
-        UIManager.put("ProgressBar.border", BorderFactory.createCompoundBorder(
-            BorderFactory.createEmptyBorder(3, 0, 4, 0),
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY),
-                BorderFactory.createLineBorder(Color.WHITE)
-            )
-        ));
-        
-        UIManager.put("ProgressBar.foreground", new Color(136, 183, 104));
-        UIManager.put("ProgressBar.background", UIManager.get("Tree.background"));
     }
 
     /**
@@ -415,9 +190,7 @@ public class UiUtil {
      * @return List of a 16x16 (default) and 32x32 icon (alt-tab, taskbar)
      */
     public static List<Image> getIcons() {
-        
         List<Image> images = new ArrayList<>();
-        
         // Fix #2154: NoClassDefFoundError on read()
         try {
             images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_128)));
@@ -428,15 +201,14 @@ public class UiUtil {
         } catch (NoClassDefFoundError | IOException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-        
         return images;
     }
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText) {
-        drawPlaceholder(textComponent, g, placeholderText, g.getFontMetrics().getAscent() + 2);
+        drawPlaceholder(textComponent, g, placeholderText, 0, g.getFontMetrics().getAscent() + 2);
     }
     
-    public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText, int y) {
+    public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText, int x, int y) {
         
         int w = textComponent.getWidth();
         
@@ -455,58 +227,56 @@ public class UiUtil {
 
         g.drawString(
             placeholderText,
-            ComponentOrientation.RIGHT_TO_LEFT.equals(textComponent.getComponentOrientation())
+            x +
+            (ComponentOrientation.RIGHT_TO_LEFT.equals(textComponent.getComponentOrientation())
             ? w - (fm.stringWidth(placeholderText) + ins.left + 2)
-            : ins.left + 2,
+            : ins.left + 2),
             y
         );
     }
     
     public static void initialize(JTextComponent component) {
-
         component.setCaret(new DefaultCaret() {
-            
             @Override
             public void setSelectionVisible(boolean visible) {
-                
                 super.setSelectionVisible(true);
             }
         });
-
-        // Side effect: disable caret blink, editable texts must restore blink rate
-        component.addFocusListener(new FocusListener() {
-
-            @Override
-            public void focusLost(FocusEvent e) {
-
-                component.setSelectionColor(UiUtil.COLOR_FOCUS_LOST);
-                component.revalidate();
-                component.repaint();
-            }
-
-            @Override
-            public void focusGained(FocusEvent e) {
-
-                component.setSelectionColor(UiUtil.COLOR_FOCUS_GAINED);
-                component.revalidate();
-                component.repaint();
-            }
-        });
-        
         component.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());
         component.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());
     }
-    
-    /**
-     * End the thread doing coloring.
-     * @param textPane which coloring has to stop.
-     */
-    public static void stopDocumentColorer(JTextPane textPane) {
-        
-        if (textPane.getStyledDocument() instanceof HighlightedDocument) {
-            
-            HighlightedDocument oldDocument = (HighlightedDocument) textPane.getStyledDocument();
-            oldDocument.stopColorer();
+
+    public static void applyTheme(RSyntaxTextArea textarea) {
+        try {
+            boolean isDark = UIManager.getLookAndFeel().getName().matches(".*(Dark|High contrast).*");
+            var xmlTheme = String.format("/org/fife/ui/rsyntaxtextarea/themes/%s.xml", isDark ? "dark" : "default");
+            Theme theme = Theme.load(SqlEngine.class.getResourceAsStream(xmlTheme));
+            theme.apply(textarea);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    public static void applyTheme(String nameTheme) {
+        try {
+            Class<?> c = Class.forName(StringUtils.isEmpty(nameTheme) ? FlatLightFlatIJTheme.class.getName() : nameTheme);
+            LookAndFeel lookAndFeel = (LookAndFeel) c.getDeclaredConstructor().newInstance();
+            UIManager.setLookAndFeel(lookAndFeel);
+        } catch (
+            ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
+            InvocationTargetException | UnsupportedLookAndFeelException e
+        ) {
+            throw new RuntimeException(e);
+        }
+        FlatLaf.updateUI();  // required
+
+        // required ATTRIBUTE_ALL without color for compatibility with dark/light mode as text is white/black
+        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_WARN, LogLevelUtil.COLOR_RED);
+        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_INFORM, LogLevelUtil.COLOR_BLU);
+        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_SUCCESS, LogLevelUtil.COLOR_GREEN);
+    }
+
+    public static GridLayout getColumnLayout(int size) {
+        return new GridLayout((size + 1) / 2, 2);
     }
 }

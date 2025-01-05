@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -44,50 +44,33 @@ public class MenuActionExport implements ActionListener {
      * @param myList List to export.
      */
     public MenuActionExport(DnDList myList) {
-        
         this.myList = myList;
     }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        
         final JFileChooser importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {
-            
             @Override
             public void approveSelection() {
-                
                 var file = this.getSelectedFile();
-                
-                if (
-                    file.exists()
-                    && this.getDialogType() == JFileChooser.SAVE_DIALOG
-                ) {
-                    
+                if (file.exists() && this.getDialogType() == JFileChooser.SAVE_DIALOG) {
                     int replace = JOptionPane.showConfirmDialog(
-                        this,
-                        String.format(
-                            "%s %s",
-                            file.getName(),
-                            I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_LABEL")
-                        ),
+                        MediatorHelper.frame(),
+                        String.format("%s %s", file.getName(), I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_LABEL")),
                         I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
                         JOptionPane.YES_NO_OPTION
                     );
                     
                     switch (replace) {
-                    
                         case JOptionPane.YES_OPTION:
                             super.approveSelection();
                             return;
-                            
                         case JOptionPane.NO_OPTION:
                         case JOptionPane.CLOSED_OPTION:
                             return;
-                            
                         case JOptionPane.CANCEL_OPTION:
                             this.cancelSelection();
                             return;
-                            
                         default:
                             break;
                     }
@@ -99,7 +82,6 @@ public class MenuActionExport implements ActionListener {
         
         importFileDialog.setDialogTitle(I18nUtil.valueByKey("LIST_EXPORT_TITLE"));
         int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());
-        
         if (choice != JFileChooser.APPROVE_OPTION) {
             return;
         }
@@ -109,7 +91,6 @@ public class MenuActionExport implements ActionListener {
             var out = new PrintStream(file, false, StandardCharsets.UTF_8)
         ) {
             int len = this.myList.getModel().getSize();
-            
             for (var i = 0 ; i < len ; i++) {
                 out.println(this.myList.getModel().getElementAt(i).toString());
             }

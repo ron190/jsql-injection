@@ -31,7 +31,7 @@ public class MySqlBlindSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withNotInjectingMetadata();
+        .withIsNotInjectingMetadata(true);
         
         model
         .getMediatorUtils()

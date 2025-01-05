@@ -25,7 +25,7 @@ public class MySqlDiosSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withDiosStrategy()
+        .withIsDiosStrategy(true)
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true);
         

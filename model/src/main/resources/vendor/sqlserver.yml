@@ -219,7 +219,7 @@ strategy:
 
  stacked: ; select ${window}
 
- boolean:
+ binary:
   test:
    falsy:
     - 1 = 0
@@ -249,9 +249,9 @@ strategy:
     )
   modeAnd: and
   modeOr: or
-  blind: ${boolean.mode} ${test}
+  blind: ${binary.mode} ${test}
   time: |
-   ${boolean.mode} if (${test})
+   ${binary.mode} if (${test})
        waitfor delay '00:00:00'
    else
        waitfor delay '00:00:${sleep_time}'

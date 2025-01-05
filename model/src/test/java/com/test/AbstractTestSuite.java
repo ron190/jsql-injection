@@ -241,8 +241,6 @@ public abstract class AbstractTestSuite {
     /**
      * Default columns processing.
      * Can be overridden like for Sqlite.
-     * @param columns
-     * @return
      */
     protected Collection<String> parse(List<String> columns) {
         return columns;

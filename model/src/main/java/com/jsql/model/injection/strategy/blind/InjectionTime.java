@@ -36,9 +36,8 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
      * If every false requests are under 5 seconds and every true are below 5 seconds,
      * then time attack is confirmed.
      */
-    public InjectionTime(InjectionModel injectionModel, BooleanMode booleanMode) {
-        
-        super(injectionModel, booleanMode);
+    public InjectionTime(InjectionModel injectionModel, BinaryMode binaryMode) {
+        super(injectionModel, binaryMode);
         
         // No blind
         if (this.falsy.isEmpty() || this.injectionModel.isStoppedByUser()) {
@@ -49,13 +48,12 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagFalse");
         Collection<CallableTime> callablesFalseTest = new ArrayList<>();
-        
         for (String falseTest: this.falsy) {
             callablesFalseTest.add(new CallableTime(
                 falseTest,
                 injectionModel,
                 this,
-                booleanMode,
+                    binaryMode,
                 "time#falsy"
             ));
         }
@@ -66,15 +64,11 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         try {
             List<Future<CallableTime>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-
             for (Future<CallableTime> futureFalseTest: futuresFalseTest) {
-                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-                
                 if (futureFalseTest.get().isTrue()) {
-                    
                     this.isTimeInjectable = false;
                     return;
                 }
@@ -82,27 +76,24 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         } catch (InterruptedException e) {
-
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
         
-        this.checkTrueTests(booleanMode);
+        this.checkTrueTests(binaryMode);
     }
 
-    private void checkTrueTests(BooleanMode booleanMode) {
-        
+    private void checkTrueTests(BinaryMode binaryMode) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagTrue");
         Collection<CallableTime> callablesTrueTest = new ArrayList<>();
-        
         for (String trueTest: this.truthy) {
             callablesTrueTest.add(new CallableTime(
                 trueTest,
                 this.injectionModel,
                 this,
-                booleanMode,
+                    binaryMode,
                 "time#truthy"
             ));
         }
@@ -112,17 +103,12 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         // Allow the user to stop the loop
         try {
             List<Future<CallableTime>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
-
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-        
             for (Future<CallableTime> futureTrueTest: futuresTrueTest) {
-                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-                
                 if (!futureTrueTest.get().isTrue()) {
-                    
                     this.isTimeInjectable = false;
                     return;
                 }
@@ -130,7 +116,6 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         } catch (InterruptedException e) {
-
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
@@ -144,32 +129,28 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
             bit,
             this.injectionModel,
             this,
-            this.booleanMode,
+            this.binaryMode,
             "bit#" + indexCharacter + "~" + bit
         );
     }
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
-        
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
-        
         var timeTest = new CallableTime(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization(),
             this.injectionModel,
             this,
-            this.booleanMode,
+            this.binaryMode,
             "time#confirm"
         );
-        
         try {
             timeTest.call();
         } catch (Exception e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-
         return this.isTimeInjectable && timeTest.isTrue();
     }
 

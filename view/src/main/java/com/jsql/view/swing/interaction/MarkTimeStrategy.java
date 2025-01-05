@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -15,7 +15,7 @@ import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
 /**
- * Mark the injection as invulnerable to a time based injection.
+ * Mark the injection as vulnerable to a time based injection.
  */
 public class MarkTimeStrategy implements InteractionCommand {
     
@@ -25,8 +25,7 @@ public class MarkTimeStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getTime();
-        MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategy(strategy);
+        MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(strategy);
     }
 }

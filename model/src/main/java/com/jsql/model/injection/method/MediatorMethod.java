@@ -17,22 +17,18 @@ public class MediatorMethod {
     public MediatorMethod(InjectionModel injectionModel) {
         
         this.query = new AbstractMethodInjection(injectionModel) {
-            
             @Override
             public boolean isCheckingAllParam() {
                 return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam();
             }
-
             @Override
             public String getParamsAsString() {
                 return this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
             }
-
             @Override
             public List<SimpleEntry<String, String>> getParams() {
                 return this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString();
             }
-
             @Override
             public String name() {
                 return "Query";
@@ -40,22 +36,18 @@ public class MediatorMethod {
         };
 
         this.request = new AbstractMethodInjection(injectionModel) {
-
             @Override
             public boolean isCheckingAllParam() {
                 return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam();
             }
-
             @Override
             public String getParamsAsString() {
                 return this.injectionModel.getMediatorUtils().getParameterUtil().getRequestFromEntries();
             }
-
             @Override
             public List<SimpleEntry<String, String>> getParams() {
                 return this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest();
             }
-
             @Override
             public String name() {
                 return "Request";
@@ -63,22 +55,18 @@ public class MediatorMethod {
         };
         
         this.header = new AbstractMethodInjection(injectionModel) {
-            
             @Override
             public boolean isCheckingAllParam() {
                 return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam();
             }
-
             @Override
             public String getParamsAsString() {
                 return this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries();
             }
-
             @Override
             public List<SimpleEntry<String, String>> getParams() {
                 return this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader();
             }
-
             @Override
             public String name() {
                 return "Header";

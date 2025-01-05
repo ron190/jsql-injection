@@ -73,10 +73,7 @@ public class Test implements Serializable {
     }
 
     public String getTruthyAsString() {
-        return this.truthy.stream()
-            .collect(
-                Collectors.joining(System.lineSeparator())
-            );
+        return this.truthy.stream().collect(Collectors.joining(System.lineSeparator()));
     }
     
     public void setTruthy(String truthy) {
@@ -84,10 +81,7 @@ public class Test implements Serializable {
     }
     
     public String getFalsyAsString() {
-        return this.falsy.stream()
-            .collect(
-                Collectors.joining(System.lineSeparator())
-            );
+        return this.falsy.stream().collect(Collectors.joining(System.lineSeparator()));
     }
     
     public void setFalsy(String falsy) {

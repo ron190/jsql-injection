@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -57,35 +57,24 @@ public class CoderListener implements ActionListener {
     }
     
     private void transform(String labelMethodMenu) {
-
         String nameMethod = labelMethodMenu.replace("Hash to ", StringUtils.EMPTY);
-        
         String result;
         String textInput = this.coderManager.getTextInput().getText();
         
         try {
             if (
                 StringUtils.isEmpty(textInput)
-                && !Arrays.asList("Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql").contains(nameMethod)
+                && !Arrays.asList(ManagerCoder.HASHES_FOR_EMPTY_TEXT).contains(nameMethod)
             ) {
-                result = "<span style=\"color:red;\">Empty string to convert</span>";
+                result = StringUtil.formatReport(LogLevelUtil.COLOR_RED, "Text to convert not found");
             } else {
-                
                 result = ActionCoder.forName(nameMethod)
                     .orElseThrow(() -> new NoSuchElementException("Unsupported encoding or decoding method"))
                     .run(textInput);
-                
-                // Prevent decoded HTML tags from result not rendered in Coder textPane
-                result = StringUtil.fromHtml(result);
+                result = StringUtil.fromHtml(result);  // Prevent decoded HTML tags from result not rendered in Coder textPane
             }
-        } catch (
-            IllegalArgumentException
-            | NoSuchAlgorithmException
-            | IOException
-            | DecoderException e
-        ) {
-            
-            result = String.format("<span style=\"color:red;\">Decoding failed: %s</span>", e.getMessage());
+        } catch (IllegalArgumentException | NoSuchAlgorithmException | IOException | DecoderException e) {
+            result = StringUtil.formatReport(LogLevelUtil.COLOR_RED, "Decoding failed: " + e.getMessage());
             LOGGER.log(LogLevelUtil.IGNORE, e);
         }
         

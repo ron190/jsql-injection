@@ -227,8 +227,6 @@ public class SpringTargetApplication {
 
     /**
      * For debug purpose only.
-     * @param args
-     * @throws Exception
      */
     public static void main(String[] args) throws Exception {
 

@@ -7,7 +7,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary;
 import com.jsql.model.injection.strategy.blind.InjectionVendor;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -31,29 +31,24 @@ public class SuspendableGetVendor extends AbstractSuspendable {
 
     @Override
     public String run(Object... args) throws JSqlException {
-
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting vendor with Boolean match...");
 
         AtomicBoolean isVendorFound = new AtomicBoolean(false);
         this.injectionModel.getMediatorVendor().getVendors()
         .stream()
         .filter(vendor -> vendor != this.injectionModel.getMediatorVendor().getAuto())
-        .filter(vendor -> StringUtils.isNotEmpty(vendor.instance().getModelYaml()
-            .getStrategy()
-            .getConfiguration()
-            .getFingerprint()
-            .getVendorSpecific()
+        .filter(vendor -> StringUtils.isNotEmpty(
+            vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
         ))
         .forEach(vendor -> {
-
             if (isVendorFound.get()) {
                 return;
             }
-            String vendorSpecificWithMode = AbstractInjectionBoolean.BooleanMode.OR.name() + " " + vendor.instance().getModelYaml()
-                .getStrategy()
-                .getConfiguration()
-                .getFingerprint()
-                .getVendorSpecific();
+            String vendorSpecificWithMode = String.format(
+                "%s %s",
+                AbstractInjectionBinary.BinaryMode.OR.name(),
+                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
+            );
             try {
                 var injectionCharInsertion = new InjectionVendor(this.injectionModel, vendorSpecificWithMode, vendor);
                 if (injectionCharInsertion.isInjectable(vendorSpecificWithMode)) {

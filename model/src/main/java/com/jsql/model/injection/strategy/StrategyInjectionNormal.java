@@ -10,6 +10,7 @@ import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetIndexes;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,9 +47,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public void checkApplicability() throws JSqlException {
-
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled()) {
-
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
             return;
         }
@@ -71,17 +70,15 @@ public class StrategyInjectionNormal extends AbstractStrategy {
             && StringUtils.isNotBlank(this.visibleIndex);
         
         if (this.isApplicable) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
-                "{} [{}] at index [{}] using [{}] characters",
+                "{} [{}] at index [{}] showing [{}] characters",
                 () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
                 this::getName,
                 () -> this.visibleIndex,
                 () -> this.performanceLength
             );
             this.allow();
-            
         } else {
             this.unallow();
         }
@@ -89,11 +86,10 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public void allow(int... i) {
-
         this.injectionModel.appendAnalysisReport(
-            "<span style=color:rgb(0,0,255)>### Strategy: " + getName() + "</span>"
+            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + getName())
             + this.injectionModel.getReportWithIndexes(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal("<span style=color:rgb(0,128,0)>&lt;query&gt;</span>", "0", true),
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
                 "metadataInjectionProcess"
             )
         );
@@ -115,9 +111,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public void activateWhenApplicable() {
-
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 "{} [{}]",
@@ -140,7 +134,6 @@ public class StrategyInjectionNormal extends AbstractStrategy {
      * @return Integer index with most efficiency and visible in source code
      */
     public String getVisibleIndex(String firstSuccessPageSource) {
-        
         // Parse all indexes found
         // Fix #4007 (initialize firstSuccessPageSource to empty String instead of null)
         String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, "(\\d+?)");
@@ -170,15 +163,12 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         //     column 1: index
         //     column 2: # found, so #######...#######
         regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(\\d+)(#+)").matcher(performanceSourcePage);
-        
         List<String[]> performanceResults = new ArrayList<>();
-        
         while (regexSearch.find()) {
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
         }
 
         if (performanceResults.isEmpty()) {
-            
             this.performanceLength = "0";
             return null;
         }
@@ -190,7 +180,6 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         for (var i = 0; i < performanceResults.size(); i++) {
             lengthFields[i] = new Integer[] {
-                    
                 performanceResults.get(i)[1].length() + performanceResults.get(i)[0].length(),
                 Integer.parseInt(performanceResults.get(i)[0])
             };

@@ -1,7 +1,7 @@
 package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
 
@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * position and bit. Diffs represent the differences between
  * the reference page, and the current page.
  */
-public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
+public class CallableBlind extends AbstractCallableBinary<CallableBlind> {
     
     // List of differences found between the reference page, and the current page
     private LinkedList<Diff> diffsWithReference = new LinkedList<>();
@@ -29,8 +29,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     /**
      * Constructor for preparation and blind confirmation.
      */
-    public CallableBlind(String sqlQuery, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
-        
+    public CallableBlind(String sqlQuery, InjectionModel injectionModel, InjectionBlind injectionBlind, BinaryMode blindMode, String metadataInjectionProcess) {
         this.injectionModel = injectionModel;
         this.injectionBlind = injectionBlind;
         this.metadataInjectionProcess = metadataInjectionProcess;
@@ -46,10 +45,9 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
         int bit,
         InjectionModel injectionModel,
         InjectionBlind injectionBlind,
-        BooleanMode blindMode,
+        BinaryMode blindMode,
         String metadataInjectionProcess
     ) {
-        
         this(sqlQuery, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(sqlQuery, indexCharacter, bit, blindMode);
         this.currentIndex = indexCharacter;
@@ -64,7 +62,6 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      */
     @Override
     public boolean isTrue() {
-
         // Fix #95426: ConcurrentModificationException on iterator.next()
         List<Diff> falseDiffs = new CopyOnWriteArrayList<>(this.injectionBlind.getFalseDiffs());
         for (Diff falseDiff: falseDiffs) {
@@ -74,7 +71,6 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
                 return false;
             }
         }
-        
         return true;
     }
 
@@ -85,13 +81,9 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      */
     @Override
     public CallableBlind call() {
-        
         String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        
         this.diffsWithReference = DIFF_MATCH_PATCH.diffMain(this.injectionBlind.getSourceReferencePage(), result, true);
-        
         DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
-        
         return this;
     }
     

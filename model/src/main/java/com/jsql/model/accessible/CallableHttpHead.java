@@ -55,18 +55,16 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
      * @param urlAdminPage URL of admin page
      */
     public CallableHttpHead(String urlAdminPage, InjectionModel injectionModel, String metadataInjectionProcess) {
-        
         this.urlAdminPage = urlAdminPage;
         this.injectionModel= injectionModel;
         this.metadataInjectionProcess= metadataInjectionProcess;
     }
 
     /**
-     * Call URL to a administration page in HEAD mode and send the result back to view.
+     * Call URL to an administration page in HEAD mode and send the result back to view.
      */
     @Override
     public CallableHttpHead call() {
-        
         if (this.injectionModel.getResourceAccess().isSearchAdminStopped()) {
             return this;
         }
@@ -82,15 +80,12 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
                 .split("\\\\r\\\\n")
             )
             .map(e -> {
-                
                 if (e.split(":").length == 2) {
-                    
                     return new SimpleEntry<>(
                         e.split(":")[0],
                         e.split(":")[1]
                     );
                 } else {
-                    
                     return null;
                 }
             })
@@ -118,22 +113,16 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             request.setMessage(Interaction.MESSAGE_HEADER);
             request.setParameters(msgHeader);
             this.injectionModel.sendToViews(request);
-            
         } catch (InterruptedException e) {
-            
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
-            
         } catch (Exception e) {
-            
             var eMessageImplicit = String.format(
                 "Problem connecting to %s (implicit reason): %s", 
                 this.urlAdminPage,
                 InjectionModel.getImplicitReason(e)
             );
-            
             String eMessage = Optional.ofNullable(e.getMessage()).orElse(eMessageImplicit);
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, eMessage);
         }
         
@@ -142,7 +131,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
 
     /**
      * Check if HTTP response is either 2xx or 3xx, which corresponds to
-     * a acceptable response from the website.
+     * an acceptable response from the website.
      * @return true if HTTP code start with 2 or 3
      */
     public boolean isHttpResponseOk() {

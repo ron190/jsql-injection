@@ -34,7 +34,6 @@ public class InjectionVendor {
     private final List<String> falsy;
 
     public InjectionVendor(InjectionModel injectionModel, String vendorSpecificWithMode, Vendor vendor) {
-
         this.injectionModel = injectionModel;
 
         List<String> truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthy();
@@ -55,7 +54,6 @@ public class InjectionVendor {
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableVendorTagTrue");
         Collection<CallableVendor> listCallableTagTrue = new ArrayList<>();
-        
         for (String urlTest: truthy) {
             listCallableTagTrue.add(
                 new CallableVendor(
@@ -74,11 +72,9 @@ public class InjectionVendor {
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
             
             for (var i = 1 ; i < listTagTrue.size() ; i++) {
-                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-
                 if (this.constantTrueMark.isEmpty()) {
                     this.constantTrueMark = listTagTrue.get(i).get().getOpcodes();
                 } else {
@@ -88,7 +84,6 @@ public class InjectionVendor {
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         } catch (InterruptedException e) {
-            
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
@@ -97,7 +92,6 @@ public class InjectionVendor {
     }
     
     private void initializeFalseMarks(String vendorSpecificWithMode) {
-        
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableVendorTagFalse");
@@ -131,24 +125,21 @@ public class InjectionVendor {
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         } catch (InterruptedException e) {
-
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
     }
 
     public boolean isInjectable(String vendorSpecificWithMode) throws StoppedByUserSlidingException {
-        
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
 
         var blindTest = new CallableVendor(
-            vendorSpecificWithMode.replace(VendorYaml.TEST, this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()),
+            vendorSpecificWithMode.replace(VendorYaml.TEST, this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()),
             this,
             "vendor#confirm"
         );
-        
         try {
             blindTest.call();
         } catch (Exception e) {
@@ -162,7 +153,7 @@ public class InjectionVendor {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);
     }
 
-    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
+    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBinary<?> callableBoolean) {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);
     }
 

@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit> {
+public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit> {
 
     /**
      * Log4j logger sent to view.
@@ -29,8 +29,7 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
     private List<Diff> diffsCommonWithAllIds = new ArrayList<>();
     private final List<List<Diff>> diffsById = new ArrayList<>();
 
-    public InjectionMultibit(InjectionModel injectionModel, BooleanMode blindMode) {
-        
+    public InjectionMultibit(InjectionModel injectionModel, BinaryMode blindMode) {
         super(injectionModel, blindMode);
         
         if (this.injectionModel.isStoppedByUser()) {
@@ -56,7 +55,6 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
 
             for (Future<CallableMultibit> futureId: futuresId) {
-
                 List<Diff> diffsWithReference = futureId.get().getDiffsWithReference();
                 if (this.diffsCommonWithAllIds.isEmpty()) {
                     this.diffsCommonWithAllIds = new ArrayList<>(diffsWithReference);
@@ -72,7 +70,6 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         } catch (InterruptedException e) {
-
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
@@ -91,19 +88,15 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
-        
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
-
         var callableBlock1 = new CallableMultibit("'a'", 1, 1, this.injectionModel, this, "multi#confirm.1");
         var callableBlock2 = new CallableMultibit("'a'", 1, 2, this.injectionModel, this, "multi#confirm.2");
         var callableBlock3 = new CallableMultibit("'a'", 1, 3, this.injectionModel, this, "multi#confirm.3");
-
         callableBlock1.call();
         callableBlock2.call();
         callableBlock3.call();
-
         return callableBlock1.getIdPage() == 3 && callableBlock2.getIdPage() == 0 && callableBlock3.getIdPage() == 1;
     }
 
@@ -121,11 +114,8 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
         AtomicInteger countTasksSubmitted
     ) {
         indexCharacter.incrementAndGet();
-
         bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
-
         for (int block: new int[]{ 1, 2, 3 }) {
-
             taskCompletionService.submit(
                 this.getCallableTest(
                     sqlQuery,
@@ -139,7 +129,6 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
 
     @Override
     public char[] initializeBinaryMask(List<char[]> bytes, CallableMultibit currentCallable) {
-
         // Bits for current url
         char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
         extractBitsFromBlock(currentCallable, asciiCodeMask);
@@ -163,7 +152,6 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
      * Set bits by page id
      */
     private void convertIdPageToBits(int idPage, char[] bits, int i1, int i2, int i3) {
-
         String idPageBinary = Integer.toBinaryString(idPage);
         String idPageBinaryPadded = StringUtils.leftPad(idPageBinary, 3, "0");
 

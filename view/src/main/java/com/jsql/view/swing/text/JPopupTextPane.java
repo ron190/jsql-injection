@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -22,7 +22,6 @@ public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements De
     
     /**
      * Build new instance of JTextField to decorate.
-     * @param placeholder
      */
     public JPopupTextPane(String placeholder) {
         this(new JTextPanePlaceholderConsole(placeholder) {
@@ -37,7 +36,6 @@ public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements De
      * Build new instance of JTextArea to decorate.
      */
     public JPopupTextPane(JTextPane proxy) {
-        
         super(proxy);
 
         this.getProxy().addFocusListener(new FocusAdapter() {
@@ -47,7 +45,6 @@ public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements De
                 JPopupTextPane.this.getProxy().getCaret().setSelectionVisible(true);
             }
         });
-
         this.getProxy().setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         this.getProxy().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }

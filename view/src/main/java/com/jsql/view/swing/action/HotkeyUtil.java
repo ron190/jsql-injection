@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.action;
 
-import com.jsql.view.swing.menubar.Menubar;
+import com.jsql.view.swing.menubar.AppMenubar;
 import com.jsql.view.swing.util.MediatorHelper;
 
 import javax.swing.*;
@@ -39,13 +39,11 @@ public final class HotkeyUtil {
      * Select all textfield content when focused.
      */
     public static void addTextFieldShortcutSelectAll() {
-        
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
             "permanentFocusOwner",
             propertyChangeEvent -> {
                 if (propertyChangeEvent.getNewValue() instanceof JTextField) {
                     SwingUtilities.invokeLater(() -> {
-                        
                         JTextField textField = (JTextField) propertyChangeEvent.getNewValue();
                         textField.selectAll();
                     });
@@ -58,7 +56,6 @@ public final class HotkeyUtil {
      * Add action to a single tabbedpane (ctrl-tab, ctrl-shift-tab).
      */
     public static void addShortcut(JTabbedPane tabbedPane) {
-        
         var ctrlTab = KeyStroke.getKeyStroke(STR_CTRL_TAB);
         var ctrlShiftTab = KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB);
 
@@ -81,18 +78,13 @@ public final class HotkeyUtil {
     /**
      * Add action to global root (ctrl-tab, ctrl-shift-tab, ctrl-W).
      */
-        public static void addShortcut(JRootPane rootPane, final JTabbedPane valuesTabbedPane) {
-        
+    public static void addShortcut(JRootPane rootPane, final JTabbedPane valuesTabbedPane) {
         Action closeTab = new ActionCloseTabResult();
-        
         Action nextTab = new AbstractAction() {
-            
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (valuesTabbedPane.getTabCount() > 0) {
-                    
                     int selectedIndex = valuesTabbedPane.getSelectedIndex();
-                    
                     if (selectedIndex + 1 < valuesTabbedPane.getTabCount()) {
                         valuesTabbedPane.setSelectedIndex(selectedIndex + 1);
                     } else {
@@ -101,15 +93,11 @@ public final class HotkeyUtil {
                 }
             }
         };
-        
         Action previousTab = new AbstractAction() {
-            
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (valuesTabbedPane.getTabCount() > 0) {
-                    
                     int selectedIndex = valuesTabbedPane.getSelectedIndex();
-                    
                     if (selectedIndex - 1 > -1) {
                         valuesTabbedPane.setSelectedIndex(selectedIndex - 1);
                     } else {
@@ -138,11 +126,10 @@ public final class HotkeyUtil {
 
         inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB), "actionString-previousTab");
         actionMap.put("actionString-previousTab", previousTab);
-        
-        int tabCount = MediatorHelper.tabManagers().getTabCount();
+
+        int tabCount = MediatorHelper.tabManagersCards().getComponentCount();
         
         for (var currentTab = 1 ; currentTab <= tabCount ; currentTab++) {
-            
             inputMap.put(KeyStroke.getKeyStroke("ctrl "+ currentTab), STR_SELECT_TAB + currentTab);
             inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ currentTab), STR_SELECT_TAB + currentTab);
             
@@ -150,7 +137,7 @@ public final class HotkeyUtil {
             actionMap.put(STR_SELECT_TAB + currentTab, new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    MediatorHelper.tabManagers().setSelectedIndex(currentTabFinal - 1);
+                    MediatorHelper.frame().getTabManagers().setSelectedIndex(currentTabFinal - 1);
                 }
             });
         }
@@ -161,12 +148,10 @@ public final class HotkeyUtil {
 
     /**
      * Create Alt shortcut to display menubar ; remove menubar when focus is set to a component.
-     * @param menubar The menubar to display
+     * @param appMenubar The menubar to display
      */
-    public static void addShortcut(final Menubar menubar) {
-        
-        /* Hide Menubar when focusing any component */
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
+    public static void addShortcut(final AppMenubar appMenubar) {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(  // Hide Menubar when focusing any component
             "permanentFocusOwner",
             propertyChangeEvent -> SwingUtilities.invokeLater(() -> {
                 if (
@@ -174,13 +159,11 @@ public final class HotkeyUtil {
                     MediatorHelper.panelAddressBar() != null
                     && !MediatorHelper.panelAddressBar().isAdvanceActivated()
                 ) {
-                    menubar.setVisible(false);
+                    appMenubar.setVisible(false);
                 }
             })
         );
-        
-        /* Show/Hide the Menubar with Alt key (not Alt Graph) */
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(  // Show/Hide the Menubar with Alt key (not Alt Graph)
             new AltKeyEventDispatcher()
         );
     }

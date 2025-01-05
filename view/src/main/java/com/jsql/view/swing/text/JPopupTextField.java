@@ -1,16 +1,14 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  *******************************************************************************/
 package com.jsql.view.swing.text;
-
-import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
 
@@ -36,14 +34,6 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
      * @param proxy The JTextField to decorate
      */
     public JPopupTextField(JTextField proxy) {
-        
         super(proxy);
-
-        this.getProxy().setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(UiUtil.COLOR_DEFAULT_BACKGROUND, 2),
-                UiUtil.BORDER_BLU
-            )
-        );
     }
 }

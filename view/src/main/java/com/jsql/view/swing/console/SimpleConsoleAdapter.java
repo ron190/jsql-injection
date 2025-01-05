@@ -16,10 +16,8 @@ public class SimpleConsoleAdapter extends AbstractColoredConsole {
      * @param tabName Default text
      */
     public SimpleConsoleAdapter(String tabName, String placeholder) {
-        
         super(tabName, placeholder);
-        
-        StyleConstants.setForeground(this.attributeTimestamp, new Color(75, 143, 211));
+        StyleConstants.setForeground(this.attributeTimestamp, new Color(0x555555));  // timestamp color
     }
 
     @Override

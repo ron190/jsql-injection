@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,8 +12,6 @@ package com.jsql.view.swing.tab;
 
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,74 +20,19 @@ import java.awt.event.MouseListener;
 
 /**
  * Panel displayed as a header for tabs.
+ * Compatible with i18n.
  */
 public class TabHeader extends JPanel implements MouseListener {
     
-    private transient Cleanable cleanableTab;
-    
-    public interface Cleanable {
-        void clean();
-    }
-    
-    private final JLabel tabTitleLabel = new JLabel() {
-        
-        @Override
-        public void setText(String text) {
-            
-            super.setText(text + StringUtils.SPACE);
-        }
-    };
-    
-    /**
-     * Tab header with default tab icon.
-     */
-    public TabHeader() {
-        this(UiUtil.ICON_TABLE);
-    }
-
-    /**
-     * Tab header with a custom icon.
-     */
-    public TabHeader(Icon imageIcon) {
-        
-        super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
-        this.setOpaque(false);
-
-        // Set the text of tab
-        this.getTabTitleLabel().setIcon(imageIcon);
-        this.add(this.getTabTitleLabel());
-
-        JButton tabCloseButton = new ButtonClose();
-        tabCloseButton.addMouseListener(this);
-
-        this.add(tabCloseButton);
-    }
+    private final JLabel tabLabel = new JLabel();
 
     public TabHeader(String label, Icon imageIcon) {
-        
-        this(imageIcon);
-        
-        this.getTabTitleLabel().setText(label);
-        tabTitleLabel.setName(label.trim());
-    }
-
-    public TabHeader(String label, Icon imageIcon, Cleanable cleanableTab) {
-        
-        this(imageIcon);
-        
-        this.getTabTitleLabel().setText(label);
-        tabTitleLabel.setName(label.trim());
-        
-        this.cleanableTab = cleanableTab;
-    }
-    
-    public TabHeader(String label) {
-        
-        this();
-        
-        this.getTabTitleLabel().setText(label);
-        tabTitleLabel.setName(label.trim());
+        super(new BorderLayout());
+        this.setOpaque(false);  // required for transparency
+        this.tabLabel.setIcon(imageIcon);
+        this.tabLabel.setText(label);
+        this.tabLabel.setName(label.trim());
+        this.add(this.tabLabel);
     }
 
     /**
@@ -97,17 +40,10 @@ public class TabHeader extends JPanel implements MouseListener {
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        
         if (SwingUtilities.isRightMouseButton(e)) {
             return;
         }
-        
         int closeTabNumber = MediatorHelper.tabResults().indexOfTabComponent(TabHeader.this);
-        
-        if (this.getCleanableTab() != null) {
-            this.getCleanableTab().clean();
-        }
-        
         ActionCloseTabResult.perform(closeTabNumber);
     }
 
@@ -131,11 +67,7 @@ public class TabHeader extends JPanel implements MouseListener {
         // Do nothing
     }
 
-    public JLabel getTabTitleLabel() {
-        return this.tabTitleLabel;
-    }
-
-    public Cleanable getCleanableTab() {
-        return this.cleanableTab;
+    public JLabel getTabLabel() {
+        return this.tabLabel;
     }
 }

@@ -32,12 +32,10 @@ public class DigestUtil {
     }
 
     public void parseWwwAuthenticate(Map<String, String> mapResponse) {
-
         if (
             mapResponse.containsKey(HeaderUtil.WWW_AUTHENTICATE_RESPONSE)
             && mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).trim().startsWith("Digest")
         ) {
-
             String[] digestParts = StringUtils.split(
                 mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).replaceAll("(?i)^\\s*Digest", ""),
                 ","
@@ -89,11 +87,9 @@ public class DigestUtil {
     }
 
     public void addHeaderToken(Builder httpRequest) {
-        
         if (this.tokenDigest == null) {
              return;
         }
-
         httpRequest.setHeader("Authorization", this.tokenDigest);
     }
 

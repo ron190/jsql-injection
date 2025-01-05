@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,15 +12,18 @@ package com.jsql.view.swing.manager;
 
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.list.DnDList;
+import com.jsql.view.swing.list.DnDListScan;
 import com.jsql.view.swing.list.ItemList;
+import com.jsql.view.swing.list.ItemListScan;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,11 +34,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.StreamSupport;
 
 /**
  * Abstract manager containing a drag and drop list of item.
  */
-public abstract class AbstractManagerList extends JPanel implements Manager {
+public abstract class AbstractManagerList extends JPanel {
     
     /**
      * Log4j logger sent to view.
@@ -43,13 +48,10 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     protected final transient List<ItemList> itemsList = new ArrayList<>();
-    
-    protected DnDList listFile;
-    
     protected final JPanel lastLine = new JPanel();
-    
+
     /**
-     * Contains the paths of webshell.
+     * Contains the paths of files.
      */
     protected DnDList listPaths;
 
@@ -72,43 +74,59 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     /**
      * A animated GIF displayed during processing.
      */
-    protected final JLabel loader = new JLabel(UiUtil.ICON_LOADER_GIF);
-    
+    protected final JProgressBar progressBar = new JProgressBar();
+    protected final Component horizontalGlue = Box.createHorizontalGlue();
+
     protected AbstractManagerList() {
         // Nothing
     }
     
     protected AbstractManagerList(String nameFile) {
-        
+        this(nameFile, false);
+    }
+
+    protected AbstractManagerList(String nameFile, boolean isJson) {
+        this.progressBar.setIndeterminate(true);
+        this.progressBar.setVisible(false);
         this.setLayout(new BorderLayout());
 
-        try (
-            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
-            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
-            var reader = new BufferedReader(inputStreamReader)
-        ) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                this.itemsList.add(new ItemList(line));
+        if (isJson) {
+            var jsonScan = new StringBuilder();
+            try (
+                var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.INPUT_STREAM_PAGES_SCAN);
+                var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
+                var reader = new BufferedReader(inputStreamReader)
+            ) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonScan.append(line);
+                }
+                var jsonArrayScan = new JSONArray(jsonScan.toString());
+                for (var i = 0 ; i < jsonArrayScan.length() ; i++) {
+                    this.itemsList.add(new ItemListScan(jsonArrayScan.getJSONObject(i)));
+                }
+                this.listPaths = new DnDListScan(this.itemsList);
+            } catch (JSONException | IOException e) {
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
-        } catch (IOException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+        } else {
+            try (
+                var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
+                var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
+                var reader = new BufferedReader(inputStreamReader)
+            ) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    this.itemsList.add(new ItemList(line));
+                }
+                this.listPaths = new DnDList(this.itemsList);
+            } catch (IOException e) {
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            }
         }
 
-        this.listFile = new DnDList(this.itemsList);
-
-        this.listFile.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        this.add(new LightScrollPane(0, 0, 0, 0, this.listFile), BorderLayout.CENTER);
-
-        this.lastLine.setOpaque(false);
         this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.X_AXIS));
-
-        this.lastLine.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
+        this.add(new JScrollPane(this.listPaths), BorderLayout.CENTER);
     }
 
     /**
@@ -116,51 +134,42 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * @param element The string to add to the list
      */
     public void addToList(String element) {
-        
-        var isFound = false;
+        AtomicBoolean isFound = new AtomicBoolean(false);
+
         DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) this.listPaths.getModel();
-        
-        for (var i = 0 ; i < listModel.size() ; i++) {
-            if (listModel.get(i).toString().equals(element)) {
-                isFound = true;
-            }
-        }
-        
-        if (!isFound) {
-            
-            var itemList = new ItemList(element);
-            listModel.addElement(itemList);
+        Iterable<ItemList> iterable = () -> listModel.elements().asIterator();
+        StreamSupport.stream(iterable.spliterator(), false)
+            .filter(itemList -> itemList.toString().equals(element))
+            .forEach(itemList -> isFound.set(true));
+
+        if (!isFound.get()) {
+            listModel.addElement(new ItemList(element));
         }
     }
     
     public void highlight(String url, String tag) {
-        
         var itemLabel = String.format(" [%s]", tag);
-        ListModel<ItemList> listModel = this.listPaths.getModel();
-        
+        DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) this.listPaths.getModel();
         for (var i = 0 ; i < listModel.getSize() ; i++) {
-            if (url.contains(listModel.getElementAt(i).getOriginalString())) {
-                
-                listModel.getElementAt(i).setIsVulnerable(true);
-                listModel.getElementAt(i).setInternalString(
-                    listModel
-                    .getElementAt(i)
-                    .getInternalString()
-                    .replace(itemLabel, StringUtils.EMPTY)
-                    + itemLabel
+            ItemList itemList = listModel.getElementAt(i);
+            if (url.contains(itemList.getOriginalString())) {
+                itemList.setVulnerable(true);
+                itemList.setInternalString(
+                    itemList.getInternalString().replace(itemLabel, StringUtils.EMPTY) + itemLabel
                 );
-                
-                ((DefaultListModel<ItemList>) listModel).setElementAt(listModel.getElementAt(i), i);
+                listModel.setElementAt(itemList, i);
             }
         }
     }
     
     public void endProcess() {
-        
-        this.run.setText(I18nViewUtil.valueByKey(this.defaultText));
-        this.setButtonEnable(true);
-        this.loader.setVisible(false);
-        this.run.setState(StateButton.STARTABLE);
+        SwingUtilities.invokeLater(() -> {  // required to prevent scan glitches
+            this.run.setText(I18nViewUtil.valueByKey(this.defaultText));
+            this.setButtonEnable(true);
+            this.progressBar.setVisible(false);
+            this.horizontalGlue.setVisible(true);
+            this.run.setState(StateButton.STARTABLE);
+        });
     }
 
     /**
@@ -184,12 +193,5 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      */
     public void changePrivilegeIcon(Icon icon) {
         this.privilege.setIcon(icon);
-    }
-    
-    
-    // Getter and setter
-
-    public DnDList getListPaths() {
-        return this.listPaths;
     }
 }

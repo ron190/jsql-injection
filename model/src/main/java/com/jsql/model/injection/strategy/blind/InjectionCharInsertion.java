@@ -49,10 +49,8 @@ public class InjectionCharInsertion {
      * Create blind attack initialization.
      * If every false test are not in true mark and every true test are in
      * true test, then blind attack is confirmed.
-     * @param prefixSuffix
      */
     public InjectionCharInsertion(InjectionModel injectionModel, String falseCharInsertion, String prefixSuffix) {
-        
         this.injectionModel = injectionModel;
         this.prefixSuffix = prefixSuffix;
         
@@ -81,7 +79,7 @@ public class InjectionCharInsertion {
                     String.join(
                         StringUtils.SPACE,
                         prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
-                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
+                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
                         urlTest
                     ),
                     this,
@@ -96,9 +94,7 @@ public class InjectionCharInsertion {
         try {
             List<Future<CallableCharInsertion>> listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-            
             for (var i = 1 ; i < listTagTrue.size() ; i++) {
-                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
@@ -112,7 +108,6 @@ public class InjectionCharInsertion {
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         } catch (InterruptedException e) {
-            
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
@@ -121,7 +116,6 @@ public class InjectionCharInsertion {
     }
     
     private void initializeFalseMarks() {
-        
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
@@ -133,7 +127,7 @@ public class InjectionCharInsertion {
                     String.join(
                         StringUtils.SPACE,
                         this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
-                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
+                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
                         urlTest
                     ),
                     this,
@@ -150,45 +144,38 @@ public class InjectionCharInsertion {
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
         
             for (Future<CallableCharInsertion> falseTag: listTagFalse) {
-                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-
                 this.constantTrueMark.removeAll(falseTag.get().getOpcodes());
             }
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         } catch (InterruptedException e) {
-
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
     }
 
     public boolean isInjectable() throws StoppedByUserSlidingException {
-        
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
-        
         var blindTest = new CallableCharInsertion(
             String.join(
                 StringUtils.SPACE,
                 this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "678")),
-                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()
+                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()
             ),
             this,
             "prefix#confirm"
         );
-        
         try {
             blindTest.call();
         } catch (Exception e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-
         return blindTest.isTrue() && !this.constantTrueMark.isEmpty();
     }
     
@@ -196,7 +183,7 @@ public class InjectionCharInsertion {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);
     }
 
-    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
+    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBinary<?> callableBoolean) {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);
     }
 

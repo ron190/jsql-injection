@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -30,7 +30,6 @@ public class MessageHeader implements InteractionCommand {
 
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
-        
         Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
         this.url = (String) params.get(Header.URL);
         this.post = (String) params.get(Header.POST);
@@ -41,9 +40,7 @@ public class MessageHeader implements InteractionCommand {
 
     @Override
     public void execute() {
-        
         LOGGER.debug(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
-        
         LOGGER.debug("Method: {}", () -> this.response.get("Method"));
         LOGGER.debug("Url: {}", this.url);
         LOGGER.debug("Post: {}", this.post);

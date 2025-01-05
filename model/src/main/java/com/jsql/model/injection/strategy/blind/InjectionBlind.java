@@ -40,10 +40,8 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
      * Create blind attack initialization.
      * If every false diffs are not in true diffs and every true diffs are in
      * true diffs, then Blind attack is confirmed.
-     * @param blindMode
      */
-    public InjectionBlind(InjectionModel injectionModel, BooleanMode blindMode) {
-        
+    public InjectionBlind(InjectionModel injectionModel, BinaryMode blindMode) {
         super(injectionModel, blindMode);
         
         // No blind
@@ -75,13 +73,10 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         try {
             List<Future<CallableBlind>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-
             for (Future<CallableBlind> futureFalseTest: futuresFalseTest) {
-
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-
                 if (this.falseDiffs.isEmpty()) {
                     this.falseDiffs = futureFalseTest.get().getDiffsWithReference();  // Init diffs
                 } else {
@@ -91,7 +86,6 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         } catch (InterruptedException e) {
-            
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
@@ -103,8 +97,7 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         this.cleanTrueDiffs(injectionModel, blindMode);
     }
 
-    private void cleanTrueDiffs(InjectionModel injectionModel, BooleanMode blindMode) {
-        
+    private void cleanTrueDiffs(InjectionModel injectionModel, BinaryMode blindMode) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
@@ -138,7 +131,6 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         } catch (InterruptedException e) {
-            
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
@@ -152,32 +144,29 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
             bit,
             this.injectionModel,
             this,
-            this.booleanMode,
+            this.binaryMode,
             "bit#" + indexCharacter + "~" + bit
         );
     }
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
-        
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
         
         var blindTest = new CallableBlind(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization(),
             this.injectionModel,
             this,
-            this.booleanMode,
+            this.binaryMode,
             "blind#confirm"
         );
-        
         try {
             blindTest.call();
         } catch (Exception e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-
         return blindTest.isTrue() && !this.falseDiffs.isEmpty();
     }
 

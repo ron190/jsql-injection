@@ -1,5 +1,6 @@
 package com.test.assertj;
 
+import com.formdev.flatlaf.intellijthemes.FlatDarkFlatIJTheme;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
@@ -9,8 +10,11 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.JFrameView;
+import com.jsql.view.swing.manager.ManagerCoder;
 import com.jsql.view.swing.manager.ManagerScan;
+import com.jsql.view.swing.menubar.AppMenubar;
 import com.jsql.view.swing.util.MediatorHelper;
+import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.codec.DecoderException;
 import org.apache.logging.log4j.util.Strings;
 import org.assertj.swing.core.BasicRobot;
@@ -26,11 +30,15 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Safelist;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -53,20 +61,18 @@ class ApplicationUiTest {
 
     @BeforeAll
     static void setUpOnce() {
-
         FailOnThreadViolationRepaintManager.install();
 
         // fix linux instabilities
         robot = BasicRobot.robotWithNewAwtHierarchy();
-        robot.settings().delayBetweenEvents(240);
-        robot.settings().eventPostingDelay(400);
+//        robot.settings().delayBetweenEvents(240);
+//        robot.settings().eventPostingDelay(400);
 
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);
 
         // Static mock on current ThreadLocal
         JFrameView frame = GuiActionRunner.execute(() -> {
-
             if (utilities != null) {
                 utilities.close();
             }
@@ -85,7 +91,10 @@ class ApplicationUiTest {
             Mockito.when(document.text()).thenReturn("<html><input/>test</html>");
             utilities.when(() -> Jsoup.parse(Mockito.anyString())).thenReturn(document);
 
-            return new JFrameView();
+            UiUtil.applyTheme(FlatDarkFlatIJTheme.class.getName());  // init but not enough, reapplied next
+            var view = new JFrameView();
+            SwingUtilities.invokeLater(() -> AppMenubar.applyTheme(FlatDarkFlatIJTheme.class.getName()));
+            return view;
         });
 
         window = new FrameFixture(robot, frame);
@@ -101,7 +110,6 @@ class ApplicationUiTest {
 
     @Test
     void shouldDnDList() {
-
         window.tabbedPane("tabManagers").selectTab("Admin page");
 
         Assertions.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
@@ -144,7 +152,6 @@ class ApplicationUiTest {
 
     @Test
     void shouldDnDScanList() {
-
         window.tabbedPane("tabManagers").selectTab("Batch scan");
         Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(0));
         Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(1));
@@ -175,7 +182,6 @@ class ApplicationUiTest {
 
     @Test
     void shouldDnDTabs() {
-
         var request = new Request();
         request.setMessage(Interaction.CREATE_FILE_TAB);
         request.setParameters("dragfile", "content", "path");
@@ -211,7 +217,6 @@ class ApplicationUiTest {
         }
 
         GuiActionRunner.execute(() -> {
-
             window.tabbedPane("tabResults").target().removeTabAt(0);
             window.tabbedPane("tabResults").target().removeTabAt(0);
             window.tabbedPane("tabResults").target().removeTabAt(0);
@@ -220,7 +225,6 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindFile() {
-
         var request = new Request();
         request.setMessage(Interaction.CREATE_FILE_TAB);
         request.setParameters("file", "content", "path");
@@ -237,14 +241,13 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindWebshell() {
-
         var request = new Request();
         request.setMessage(Interaction.CREATE_SHELL_TAB);
         request.setParameters("http://webshell", "http://webshell/path");
         MediatorHelper.model().sendToViews(request);
 
         try {
-            window.tabbedPane("tabResults").selectTab("Web shell ").requireVisible();
+            window.tabbedPane("tabResults").selectTab("Web shell").requireVisible();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -269,8 +272,7 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindVendorAndErrorMethods() {
-
-        window.menuItem("menuStrategy").click();
+        window.label("menuStrategy").click();
         window.menuItem("itemRadioStrategyError").requireDisabled();
 
         var request = new Request();
@@ -293,29 +295,27 @@ class ApplicationUiTest {
 
         window.menuItem("itemRadioStrategyError").requireEnabled(Timeout.timeout(1000));
 
-        window.robot().moveMouse(window.menuItem("menuVendor").target());
-        Assertions.assertEquals("MySQL", window.menuItem("menuVendor").target().getText(), "Vendor should be MySQL");
+        Assertions.assertEquals("MySQL", window.label("menuVendor").target().getText(), "Vendor should be MySQL");
 
-        window.robot().moveMouse(window.menuItem("menuStrategy").target());
+        window.label("menuVendor").click();
         window.menuItem("itemRadioVendorMySQL").requireVisible();
 
-        window.menuItem("menuStrategy").requireVisible();
+        window.label("menuStrategy").click();
+        window.label("menuStrategy").requireVisible();
 
+        window.menuItem("itemRadioStrategyError").click();
         try {
-            window.menuItem("itemRadioVendorUnsigned:or").requireVisible();
+            window.menuItem("itemRadioErrorUnsigned:or").requireVisible();
         } catch (Exception e) {
             Assertions.fail();
         }
 
-        window.robot().showPopupMenu(window.menuItem("itemRadioStrategyError").target());
-
         window.menuItem("itemRadioStrategyError").requireEnabled();
-        window.menuItem("itemRadioVendorUnsigned:or").click();
+        window.menuItem("itemRadioErrorUnsigned:or").click();
     }
 
     @Test
     void shouldFindNetworkHeader() {
-
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, "url");
         msgHeader.put(Header.POST, "post");
@@ -355,14 +355,13 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindSqlshell() {
-
         var request = new Request();
         request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
         request.setParameters("http://sqlshell", "http://sqlshell/path", "username", "password");
         MediatorHelper.model().sendToViews(request);
 
         try {
-            window.tabbedPane("tabResults").selectTab("SQL shell ").requireVisible();
+            window.tabbedPane("tabResults").selectTab("SQL shell").requireVisible();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -372,9 +371,8 @@ class ApplicationUiTest {
 
     @Test
     void shouldRunCoder() {
-
         window.tabbedPane("tabManagers").selectTab("Encoding");
-        window.menuItem("menuMethodManagerCoder").click();
+        window.label("menuMethodManagerCoder").click();
 
         window.textBox("textInputManagerCoder").setText("a");
 
@@ -400,16 +398,13 @@ class ApplicationUiTest {
             Assertions.fail();
         }
 
-        Stream.of("Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql")
+        Stream.of(ManagerCoder.HASHES)
         .forEach(hash -> {
-
             String result = null;
             try {
-                result = ActionCoder
-                    .forName(hash)
+                result = ActionCoder.forName(hash)
                     .orElseThrow(() -> new NoSuchElementException("Unsupported encoding or decoding method"))
                     .run("a");
-
             } catch (NoSuchAlgorithmException | NoSuchElementException | DecoderException | IOException e) {
                 Assertions.fail();
             }
@@ -421,7 +416,6 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindAdminpage() throws IOException {
-
         window.tabbedPane("tabManagers").selectTab("Admin page");
         window.list("listManagerAdminPage").item(0).select().rightClick();
 
@@ -443,7 +437,6 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindDatabase() {
-
         window.tabbedPane("tabManagers").selectTab("Database");
 
         var nameDatabase = "database";
@@ -453,52 +446,39 @@ class ApplicationUiTest {
         requestDatabase.setMessage(Interaction.ADD_DATABASES);
         requestDatabase.setParameters(List.of(database));
         MediatorHelper.model().sendToViews(requestDatabase);
-
         Assertions.assertEquals(nameDatabase +" (1 table)", window.tree("treeDatabases").valueAt(0));
-
 
         var nameTable = "table";
         Table table = new Table(nameTable, "2", database);
-
         var requestTable = new Request();
         requestTable.setMessage(Interaction.ADD_TABLES);
         requestTable.setParameters(List.of(table));
         MediatorHelper.model().sendToViews(requestTable);
-
         Assertions.assertEquals(nameTable +" (2 rows)", window.tree("treeDatabases").valueAt(1));
-
 
         var nameColumn0 = "column 0";
         var nameColumn1 = "column 1";
         Column column1 = new Column(nameColumn0, table);
         Column column2 = new Column(nameColumn1, table);
-
         var request = new Request();
         request.setMessage(Interaction.ADD_COLUMNS);
         request.setParameters(Arrays.asList(column1, column2));
         MediatorHelper.model().sendToViews(request);
-
         Assertions.assertEquals(nameColumn0, window.tree("treeDatabases").valueAt(2));
         Assertions.assertEquals(nameColumn1, window.tree("treeDatabases").valueAt(3));
 
-
         var arrayColumns = new String[] { Strings.EMPTY, Strings.EMPTY, nameColumn0, nameColumn1 };
-
         var tableDatas = new String[][] {
             { "", "", "[0, 0]", "[0, 1]" },
             { "", "", "[1, 0]", "[1, 1]" }
         };
-
         var objectData = new Object[]{ arrayColumns, tableDatas, table };
-
         var requestValues = new Request();
         requestValues.setMessage(Interaction.CREATE_VALUES_TAB);
         requestValues.setParameters(objectData);
         MediatorHelper.model().sendToViews(requestValues);
 
         window.tabbedPane("tabResults").selectTab(nameTable).requireVisible();
-
-
         window.tree("treeDatabases").rightClickRow(0);
         window.tabbedPane("tabResults").click();
         window.tree("treeDatabases").rightClickRow(1);
@@ -517,13 +497,12 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindConsoleButton() {
-
-        window.button("buttonShowSouth").click();
-        window.button("buttonShowConsolesHidden").click();
-        window.button("buttonShowNorth").click();
+        window.label("buttonShowSouth").click();
+        window.label("buttonShowConsolesHidden").click();
+        window.label("buttonShowNorth").click();
 
         try {
-            window.button("buttonShowSouth").click();
+            window.label("buttonShowSouth").click();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -531,32 +510,21 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindConnectionPreferences() {
-
-        window.button("advancedButton").click();
+        window.label("advancedButton").click();
         window.menuItem("menuWindows").click();
         window.menuItem("itemPreferences").click();
-
         window.list("listCategoriesPreference").selectItem(Pattern.compile(".*Connection.*"));
 
-        Assertions.assertArrayEquals(new boolean[] {
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            true,
-            false,
-        }, new boolean[] {
+        Arrays.asList(  // init
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
-        });
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout()
+        ).forEach(Assertions::assertFalse);
+        Assertions.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
 
         window.checkBox("checkboxIsFollowingRedirection").click();
         window.checkBox("checkboxIsUnicodeDecodeDisabled").click();
@@ -566,110 +534,48 @@ class ApplicationUiTest {
         window.checkBox("checkboxIsNotProcessingCookies").click();
         window.checkBox("checkboxIsLimitingThreads").click();
         window.checkBox("checkboxIsConnectionTimeout").click();
-
-        Assertions.assertArrayEquals(new boolean[] {
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            false,
-            true,
-        }, new boolean[] {
+        Arrays.asList(  // check
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
-        });
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout()
+        ).forEach(Assertions::assertTrue);
+        Assertions.assertFalse(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
 
-        window.button("labelIsFollowingRedirection").click();
-        window.button("labelIsUnicodeDecodeDisabled").click();
-        window.button("labelIsNotTestingConnection").click();
-        window.button("labelIsProcessingCsrf").click();
-        window.button("labelIsCsrfUserTag").click();
-        window.button("labelIsNotProcessingCookies").click();
-        window.button("labelIsLimitingThreads").click();
-        window.button("labelIsConnectionTimeout").click();
-
-        Assertions.assertArrayEquals(new boolean[] {
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            true,
-            false,
-        }, new boolean[] {
+        window.checkBox("checkboxIsFollowingRedirection").click();
+        window.checkBox("checkboxIsUnicodeDecodeDisabled").click();
+        window.checkBox("checkboxIsNotTestingConnection").click();
+        window.checkBox("checkboxIsNotProcessingCookies").click();
+        window.checkBox("checkboxIsProcessingCsrf").click();
+        window.checkBox("checkboxIsCsrfUserTag").click();
+        window.checkBox("checkboxIsLimitingThreads").click();
+        window.checkBox("checkboxIsConnectionTimeout").click();
+        Arrays.asList(  // uncheck
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
-        });
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout()
+        ).forEach(Assertions::assertFalse);
+        Assertions.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
 
-        window.button("labelIsFollowingRedirection").click();
-        window.button("labelIsUnicodeDecodeDisabled").click();
-        window.button("labelIsNotTestingConnection").click();
-        window.button("labelIsProcessingCsrf").click();
-        window.button("labelIsCsrfUserTag").click();
-        window.button("labelIsNotProcessingCookies").click();
-        window.button("labelIsLimitingThreads").click();
-        window.button("labelIsConnectionTimeout").click();
-
-        Assertions.assertArrayEquals(new boolean[] {
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            false,
-            true,
-        }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
-        });
-
-        window.button("advancedButton").click();
+        window.label("advancedButton").click();
 
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
     }
 
     @Test
     void shouldFindInjectionPreferences() {
-
-        window.button("advancedButton").click();
+        window.label("advancedButton").click();
         window.menuItem("menuWindows").click();
         window.menuItem("itemPreferences").click();
 
-        Assertions.assertArrayEquals(new boolean[] {
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-        }, new boolean[] {
+        Arrays.asList(
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
@@ -680,8 +586,8 @@ class ApplicationUiTest {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
-        });
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()
+        ).forEach(Assertions::assertFalse);
 
         window.checkBox("checkboxIsParsingForm").click();
         window.checkBox("checkboxIsNotInjectingMetadata").click();
@@ -694,20 +600,7 @@ class ApplicationUiTest {
         window.checkBox("checkboxIsCheckingAllSOAPParam").click();
         window.checkBox("checkboxIsPerfIndexDisabled").click();
         window.checkBox("checkboxIsUrlEncodingDisabled").click();
-
-        Assertions.assertArrayEquals(new boolean[] {
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-        }, new boolean[] {
+        Arrays.asList(
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
@@ -718,34 +611,21 @@ class ApplicationUiTest {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
-        });
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()
+        ).forEach(Assertions::assertTrue);
 
-        window.button("labelIsParsingForm").click();
-        window.button("labelIsNotInjectingMetadata").click();
-        window.button("labelIsLimitingNormalIndex").click();
-        window.button("labelIsLimitingSleepTimeStrategy").click();
-        window.button("labelIsCheckingAllURLParam").click();
-        window.button("labelIsCheckingAllRequestParam").click();
-        window.button("labelIsCheckingAllHeaderParam").click();
-        window.button("labelIsCheckingAllJSONParam").click();
-        window.button("labelIsCheckingAllSOAPParam").click();
-        window.button("labelIsPerfIndexDisabled").click();
-        window.button("labelIsUrlEncodingDisabled").click();
-
-        Assertions.assertArrayEquals(new boolean[] {
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-        }, new boolean[] {
+        window.checkBox("checkboxIsParsingForm").click();
+        window.checkBox("checkboxIsNotInjectingMetadata").click();
+        window.checkBox("checkboxIsLimitingNormalIndex").click();
+        window.checkBox("checkboxIsLimitingSleepTimeStrategy").click();
+        window.checkBox("checkboxIsCheckingAllURLParam").click();
+        window.checkBox("checkboxIsCheckingAllRequestParam").click();
+        window.checkBox("checkboxIsCheckingAllHeaderParam").click();
+        window.checkBox("checkboxIsCheckingAllJSONParam").click();
+        window.checkBox("checkboxIsCheckingAllSOAPParam").click();
+        window.checkBox("checkboxIsPerfIndexDisabled").click();
+        window.checkBox("checkboxIsUrlEncodingDisabled").click();
+        Arrays.asList(
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
@@ -756,46 +636,8 @@ class ApplicationUiTest {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
-        });
-
-        window.button("labelIsParsingForm").click();
-        window.button("labelIsNotInjectingMetadata").click();
-        window.button("labelIsLimitingNormalIndex").click();
-        window.button("labelIsLimitingSleepTimeStrategy").click();
-        window.button("labelIsCheckingAllURLParam").click();
-        window.button("labelIsCheckingAllRequestParam").click();
-        window.button("labelIsCheckingAllHeaderParam").click();
-        window.button("labelIsCheckingAllJSONParam").click();
-        window.button("labelIsCheckingAllSOAPParam").click();
-        window.button("labelIsPerfIndexDisabled").click();
-        window.button("labelIsUrlEncodingDisabled").click();
-
-        Assertions.assertArrayEquals(new boolean[] {
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-        }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
-        });
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()
+        ).forEach(Assertions::assertFalse);
 
         window.radioButton("radioIsZipStrategy").check();
         Assertions.assertArrayEquals(new boolean[] {
@@ -830,53 +672,19 @@ class ApplicationUiTest {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
         });
 
-        window.button("labelIsZipStrategy").click();
-        Assertions.assertArrayEquals(new boolean[] {
-            true,
-            false,
-            false,
-        }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-        });
-
-        window.button("labelIsDefaultStrategy").click();
-        Assertions.assertArrayEquals(new boolean[] {
-            false,
-            true,
-            false,
-        }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-        });
-
-        window.button("labelIsDiosStrategy").click();
-        Assertions.assertArrayEquals(new boolean[] {
-            false,
-            false,
-            true,
-        }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-        });
-
-        window.button("advancedButton").click();
+        window.label("advancedButton").click();
 
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
     }
 
     @Test
     void shouldFindSqlEngine() {
-
-        window.button("advancedButton").click();
+        window.label("advancedButton").click();
         window.menuItem("menuWindows").click();
         window.menuItem("itemSqlEngine").click();
 
         try {
-            window.button("advancedButton").click();
+            window.label("advancedButton").click();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -886,8 +694,7 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindLanguage() {
-
-        window.button("advancedButton").click();
+        window.label("advancedButton").click();
         window.menuItem("menuWindows").click();
         window.menuItem("menuTranslation").click();
         window.menuItem("itemRussian").click();
@@ -897,7 +704,7 @@ class ApplicationUiTest {
         window.menuItem("itemEnglish").click();
 
         try {
-            window.button("advancedButton").click();
+            window.label("advancedButton").click();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -907,7 +714,7 @@ class ApplicationUiTest {
 //    @Test
 //    void shouldFindReportIssue() {
 //
-//        window.button("advancedButton").click();
+//        window.label("advancedButton").click();
 //        window.menuItem("menuCommunity").click();
 //        window.menuItem("itemReportIssue").click();
 //
@@ -915,7 +722,7 @@ class ApplicationUiTest {
 //        dialog.button(JButtonMatcher.withText("Cancel")).click();
 //
 //        try {
-//            window.button("advancedButton").click();
+//            window.label("advancedButton").click();
 //        } catch (Exception e) {
 //            Assertions.fail();
 //        }
@@ -923,8 +730,7 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindIHelpTranslate() {
-
-        window.button("advancedButton").click();
+        window.label("advancedButton").click();
         window.menuItem("menuCommunity").click();
         window.menuItem("menuI18nContribution").click();
         window.menuItem("itemIntoFrench").click();
@@ -933,7 +739,7 @@ class ApplicationUiTest {
         dialog.close();
 
         try {
-            window.button("advancedButton").click();
+            window.label("advancedButton").click();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -941,8 +747,7 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindAbout() {
-
-        window.button("advancedButton").click();
+        window.label("advancedButton").click();
         window.menuItem("menuHelp").click();
         window.menuItem("itemHelp").click();
 
@@ -950,14 +755,13 @@ class ApplicationUiTest {
         dialog.button(JButtonMatcher.withText("Close")).click();
 
         try {
-            window.button("advancedButton").click();
+            window.label("advancedButton").click();
         } catch (Exception e) {
             Assertions.fail();
         }
     }
 
     private static void verifyMockAdminPage() throws IOException {
-
         Mockito.verify(document, Mockito.times(1)).html();
         Mockito.verify(connection, Mockito.times(1)).get();
         Mockito.verify(connection, Mockito.times(1)).ignoreContentType(ArgumentMatchers.anyBoolean());

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -24,11 +24,9 @@ public class EndPreparation implements InteractionCommand {
 
     @Override
     public void execute() {
-        
-        MediatorHelper.panelAddressBar().getAddressMenuBar().endPreparation();
-
+        MediatorHelper.panelAddressBar().getPanelTrailingAddress().endPreparation();
         if (MediatorHelper.model().shouldErasePreviousInjection()) {
-            MediatorHelper.tabManagers().endPreparation();
+            MediatorHelper.tabManagersCards().endPreparation();
         }
     }
 }

@@ -9,7 +9,6 @@ public abstract class AbstractSlidingException extends JSqlException {
     private final String slidingWindowCurrentRows;
     
     protected AbstractSlidingException(String message) {
-        
         super(message);
         
         this.slidingWindowAllRows = StringUtils.EMPTY;
@@ -17,7 +16,6 @@ public abstract class AbstractSlidingException extends JSqlException {
     }
     
     protected AbstractSlidingException(String message, Throwable e) {
-        
         super(message, e);
         
         this.slidingWindowAllRows = StringUtils.EMPTY;
@@ -25,7 +23,6 @@ public abstract class AbstractSlidingException extends JSqlException {
     }
     
     protected AbstractSlidingException(String string, String slidingWindowAllRows) {
-        
         super(string);
         
         this.slidingWindowCurrentRows = StringUtils.EMPTY;
@@ -36,7 +33,6 @@ public abstract class AbstractSlidingException extends JSqlException {
     }
 
     protected AbstractSlidingException(String string, String slidingWindowAllRows, String slidingWindowCurrentRows) {
-        
         super(string);
         
         this.slidingWindowAllRows = StringUtils.isNotEmpty(slidingWindowAllRows)

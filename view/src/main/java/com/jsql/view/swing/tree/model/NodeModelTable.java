@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,19 +12,17 @@ package com.jsql.view.swing.tree.model;
 
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.text.JPopupTextField;
-import com.jsql.view.swing.tree.CheckBoxMenuItemIconCustom;
-import com.jsql.view.swing.tree.ImageObserverAnimated;
+import com.jsql.view.swing.tree.custom.CheckBoxMenuItemIconCustom;
 import com.jsql.view.swing.tree.ImageOverlap;
 import com.jsql.view.swing.tree.PanelNode;
+import com.jsql.view.swing.tree.action.ActionCheckAll;
+import com.jsql.view.swing.tree.custom.JPopupMenuCustomExtract;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
-import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -46,24 +44,19 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     protected Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return UiUtil.ICON_TABLE_GO;
+            return UiUtil.TABLE_LINEAR.icon;
         } else {
-            return UiUtil.ICON_TABLE;
+            return UiUtil.TABLE_BOLD.icon;
         }
     }
 
     @Override
     protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
         if ("information_schema".equals(this.getParent().toString())) {
-            
             panelNode.showLoader();
             AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
-            
             if (suspendableTask != null && suspendableTask.isPaused()) {
-                
-                ImageIcon animatedGifPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
-                animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorHelper.treeDatabase(), currentNode));
-                panelNode.setLoaderIcon(animatedGifPaused);
+                panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.icon, UiUtil.PATH_PAUSE));
             }
         } else {
             super.displayProgress(panelNode, currentNode);
@@ -72,7 +65,6 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     public void runAction() {
-        
         if (this.isRunning()) {  // Prevent double thread run
             return;
         }
@@ -84,13 +76,10 @@ public class NodeModelTable extends AbstractNodeModel {
         treeModel.reload(treeNode);
 
         new SwingWorker<>() {
-
             @Override
             protected Object doInBackground() throws Exception {
-
                 Thread.currentThread().setName("SwingWorkerNodeModelTable");
                 var selectedTable = (Table) NodeModelTable.this.getElementDatabase();
-
                 return MediatorHelper.model().getDataAccess().listColumns(selectedTable);
             }
         }.execute();
@@ -100,9 +89,8 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, final TreePath path) {
-        
         this.addCheckUncheckItems(tablePopupMenu, path);
-//        this.addCustomLoadItems(tablePopupMenu);
+        // this.addCustomLoadItems(tablePopupMenu);
     }
 
     private void addCustomLoadItems(JPopupMenuCustomExtract tablePopupMenu) {
@@ -183,31 +171,6 @@ public class NodeModelTable extends AbstractNodeModel {
         menuCustomLoad.add(panelCustomToChar);
         menuCustomLoad.add(new JSeparator());
         menuCustomLoad.add(menuItemDump);
-        
-        for (JMenuItem menuItem: new JMenuItem[]{menuItemLoadAllRows, menuItemLoadOneRow}) {
-            
-            menuItem.setUI(
-                new BasicRadioButtonMenuItemUI() {
-                    
-                    @Override
-                    protected void doClick(MenuSelectionManager msm) {
-                        
-                        this.menuItem.doClick(0);
-                    }
-                }
-            );
-        }
-        
-        menuItemDump.setUI(
-            new BasicCheckBoxMenuItemUI() {
-                
-                @Override
-                protected void doClick(MenuSelectionManager msm) {
-                    
-                    this.menuItem.doClick(0);
-                }
-            }
-        );
 
         tablePopupMenu.add(new JSeparator());
         tablePopupMenu.add(menuCustomLoad);
@@ -220,21 +183,19 @@ public class NodeModelTable extends AbstractNodeModel {
     }
 
     private void addCheckUncheckItems(JPopupMenuCustomExtract tablePopupMenu, final TreePath path) {
-        
-        JMenuItem menuItemCheckAll = new JMenuItemWithMargin(I18nViewUtil.valueByKey("COLUMNS_CHECK_ALL"), 'C');
+        JMenuItem menuItemCheckAll = new JMenuItem(I18nViewUtil.valueByKey("COLUMNS_CHECK_ALL"), 'C');
         I18nViewUtil.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
         
-        JMenuItem menuItemUncheckAll = new JMenuItemWithMargin(I18nViewUtil.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
+        JMenuItem menuItemUncheckAll = new JMenuItem(I18nViewUtil.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
         I18nViewUtil.addComponentForKey("COLUMNS_UNCHECK_ALL", menuItemUncheckAll);
 
         if (!this.isLoaded()) {
-            
             menuItemCheckAll.setEnabled(false);
             menuItemUncheckAll.setEnabled(false);
         }
 
-        menuItemCheckAll.addActionListener(new ActionCheckbox(true, path));
-        menuItemUncheckAll.addActionListener(new ActionCheckbox(false, path));
+        menuItemCheckAll.addActionListener(new ActionCheckAll(true, path));
+        menuItemUncheckAll.addActionListener(new ActionCheckAll(false, path));
 
         tablePopupMenu.add(new JSeparator());
         tablePopupMenu.add(menuItemCheckAll);

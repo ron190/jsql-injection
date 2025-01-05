@@ -2,6 +2,7 @@ package com.jsql.view.swing.panel.split;
 
 import com.jsql.view.swing.util.MediatorHelper;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,27 +20,18 @@ public class ActionHideShowResult implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        var splitHorizontalTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();
+        var split = MediatorHelper.frame().getSplitHorizontalTopBottom();
         
-        if (
-            splitHorizontalTopBottom.getTopComponent().isVisible()
-            && splitHorizontalTopBottom.getBottomComponent().isVisible()
-        ) {
-            
-            MediatorHelper.panelConsoles().setDividerLocation(splitHorizontalTopBottom.getDividerLocation());
-            splitHorizontalTopBottom.getTopComponent().setVisible(false);
-            splitHorizontalTopBottom.disableDragSize();
-            MediatorHelper.panelConsoles().getButtonShowNorth().setVisible(false);
-            
-        } else if (
-            splitHorizontalTopBottom.getTopComponent().isVisible()
-            && !splitHorizontalTopBottom.getBottomComponent().isVisible()
-        ) {
-            
-            splitHorizontalTopBottom.setDividerLocation(MediatorHelper.panelConsoles().getDividerLocation());
-            splitHorizontalTopBottom.getBottomComponent().setVisible(true);
-            splitHorizontalTopBottom.getTopComponent().setVisible(true);
-            splitHorizontalTopBottom.enableDragSize();
+        if (split.getTopComponent().isVisible() && split.getBottomComponent().isVisible()) {
+            MediatorHelper.panelConsoles().setDividerLocation(split.getDividerLocation());
+            split.getTopComponent().setVisible(false);
+            MediatorHelper.panelConsoles().getLabelShowNorth().setVisible(false);
+            split.setDividerSize(0);  // required to hide bar
+        } else if (split.getTopComponent().isVisible() && !split.getBottomComponent().isVisible()) {
+            split.setDividerLocation(MediatorHelper.panelConsoles().getDividerLocation());
+            split.getBottomComponent().setVisible(true);
+            split.getTopComponent().setVisible(true);
+            split.setDividerSize(UIManager.getInt("SplitPane.dividerSize"));
         }
     }
 }

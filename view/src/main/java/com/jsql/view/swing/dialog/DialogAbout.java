@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,8 +12,6 @@ package com.jsql.view.swing.dialog;
 
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
@@ -46,27 +44,16 @@ public class DialogAbout extends JDialog {
      * Button receiving focus.
      */
     private JButton buttonClose = null;
-    
-    /**
-     * Dialog scroller.
-     */
-    private final LightScrollPane scrollPane;
 
     /**
      * Create a dialog about project general information.
      */
     public DialogAbout() {
-        
         super(MediatorHelper.frame(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
-
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.setIconImages(UiUtil.getIcons());  // Define a small and large app icon
 
-        // Define a small and large app icon
-        this.setIconImages(UiUtil.getIcons());
-
-        // Action for ESCAPE key
-        ActionListener escapeListener = actionEvent -> DialogAbout.this.dispose();
-
+        ActionListener escapeListener = actionEvent -> DialogAbout.this.dispose();  // Action for ESCAPE key
         this.getRootPane().registerKeyboardAction(
             escapeListener,
             KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
@@ -74,135 +61,86 @@ public class DialogAbout extends JDialog {
         );
         
         this.setLayout(new BorderLayout());
-        Container dialogPane = this.getContentPane();
 
+        Container dialogPane = this.getContentPane();
         JPanel lastLine = this.initializeLastLine(escapeListener);
 
-        var iconJsql = new JLabel(new ImageIcon(Objects.requireNonNull(UiUtil.URL_ICON_96)));
-        dialogPane.add(iconJsql, BorderLayout.WEST);
+        var labelIcon = new JLabel(UiUtil.APP_ABOUT.icon);
+        labelIcon.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        dialogPane.add(labelIcon, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 
-        // Contact info, use HTML text
-        final JEditorPane text = this.initializeEditorPane();
-
-        this.scrollPane = new LightScrollPane(1, 1, 1, 0, text);
-        dialogPane.add(this.scrollPane, BorderLayout.CENTER);
+        final JEditorPane text = this.initializeEditorPane();  // Contact info, use HTML text
+        dialogPane.add(new JScrollPane(text), BorderLayout.CENTER);
 
         this.initializeDialog();
     }
 
     private JPanel initializeLastLine(ActionListener escapeListener) {
-        
-        var lastLine = new JPanel();
-        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
-        lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        
-        final JButton buttonWebpage = this.initializeButtonWebpage();
-        
-        this.initializeButtonClose(escapeListener);
-        
-        lastLine.add(buttonWebpage);
-        lastLine.add(Box.createGlue());
-        lastLine.add(this.buttonClose);
-        
-        return lastLine;
-    }
-
-    private void initializeButtonClose(ActionListener escapeListener) {
-        
-        this.buttonClose = new JButton("Close");
-        this.buttonClose.setBorder(BorderFactory.createCompoundBorder(
-            UiUtil.BORDER_FOCUS_GAINED,
-            BorderFactory.createEmptyBorder(2, 20, 2, 20))
-        );
-        this.buttonClose.addActionListener(escapeListener);
-        
-        this.buttonClose.setContentAreaFilled(false);
-        this.buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        this.buttonClose.setBackground(UiUtil.COLOR_FOCUS_GAINED);
-        
-        this.buttonClose.addMouseListener(new FlatButtonMouseAdapter(this.buttonClose));
-    }
-
-    private JButton initializeButtonWebpage() {
-        
         final var buttonWebpage = new JButton("Webpage");
-        
-        buttonWebpage.setBorder(BorderFactory.createCompoundBorder(
-            UiUtil.BORDER_FOCUS_GAINED,
-            BorderFactory.createEmptyBorder(2, 20, 2, 20))
-        );
-        
         buttonWebpage.addActionListener(ev -> {
             try {
-                Desktop.getDesktop().browse(new URI((String) MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")));
+                Desktop.getDesktop().browse(new URI(MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.url")));
             } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Browsing to Url failed", e);
             }
         });
-        
-        buttonWebpage.setContentAreaFilled(false);
-        buttonWebpage.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        buttonWebpage.setBackground(UiUtil.COLOR_FOCUS_GAINED);
-        
-        buttonWebpage.addMouseListener(new FlatButtonMouseAdapter(buttonWebpage));
-        
-        return buttonWebpage;
+
+        this.buttonClose = new JButton("Close");
+        this.buttonClose.addActionListener(escapeListener);
+
+        var lastLine = new JPanel();
+        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
+        lastLine.setBorder(UiUtil.BORDER_5PX);
+        lastLine.add(buttonWebpage);
+        lastLine.add(Box.createGlue());
+        lastLine.add(this.buttonClose);
+        return lastLine;
     }
 
     private JEditorPane initializeEditorPane() {
-        
         var editorPane = new JEditorPane();
         
         // Fix #82540: NoClassDefFoundError on setText()
-        try {
+        try (
+            InputStream inputStream = DialogAbout.class.getClassLoader().getResourceAsStream("swing/about.htm");
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
+            var reader = new BufferedReader(inputStreamReader)
+        ) {
             editorPane.setContentType("text/html");
-
             var result = new StringBuilder();
-            
-            try (
-                InputStream inputStream = DialogAbout.class.getClassLoader().getResourceAsStream("swing/about.htm");
-                var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
-                var reader = new BufferedReader(inputStreamReader)
-            ) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    result.append(line);
-                }
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line);
             }
-
-            editorPane.setText(result.toString().replace("%JSQLVERSION%", MediatorHelper.model().getVersionJsql()));
-            
+            editorPane.setText(result.toString().replace(
+                "%JSQLVERSION%",
+                MediatorHelper.model().getPropertiesUtil().getVersionJsql()
+            ));
         } catch (NoClassDefFoundError | IOException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
         editorPane.addMouseListener(new MouseAdapter() {
-            
             @Override
             public void mousePressed(MouseEvent e) {
-                
                 super.mousePressed(e);
                 editorPane.requestFocusInWindow();
             }
         });
-
         editorPane.addFocusListener(new FocusAdapter() {
-            
             @Override
-            public void focusGained(FocusEvent arg0) {
-                
+            public void focusGained(FocusEvent focusEvent) {
                 editorPane.getCaret().setVisible(true);
                 editorPane.getCaret().setSelectionVisible(true);
             }
         });
 
-        editorPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         editorPane.setDragEnabled(true);
         editorPane.setEditable(false);
-
+        editorPane.getCaret().setBlinkRate(0);
+        editorPane.setCaretPosition(0);
         editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));
-
         editorPane.addHyperlinkListener(linkEvent -> {
             if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
                 try {
@@ -220,8 +158,6 @@ public class DialogAbout extends JDialog {
      * Set back default setting for About frame.
      */
     public final void initializeDialog() {
-        
-        this.scrollPane.scrollPane.getViewport().setViewPosition(new Point(0, 0));
         this.setSize(533, 400);
         this.setLocationRelativeTo(MediatorHelper.frame());
         this.buttonClose.requestFocusInWindow();

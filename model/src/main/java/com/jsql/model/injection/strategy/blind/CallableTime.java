@@ -1,7 +1,7 @@
 package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.Date;
  * Define a call HTTP to the server, require the associated url, character position and bit.
  * diffSeconds represents the response time of the current page
  */
-public class CallableTime extends AbstractCallableBoolean<CallableTime> {
+public class CallableTime extends AbstractCallableBinary<CallableTime> {
     
     /**
      * Time before the url call.
@@ -39,10 +39,9 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
         String sqlQuery,
         InjectionModel injectionModel,
         InjectionTime injectionTime,
-        BooleanMode blindMode,
+        BinaryMode blindMode,
         String metadataInjectionProcess
     ) {
-        
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
         this.metadataInjectionProcess = metadataInjectionProcess;
@@ -58,10 +57,9 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
         int bit,
         InjectionModel injectionModel,
         InjectionTime injectionTime,
-        BooleanMode blindMode,
+        BinaryMode blindMode,
         String metadataInjectionProcess
     ) {
-        
         this(sqlQuery, injectionModel, injectionTime, blindMode, metadataInjectionProcess);
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(sqlQuery, indexCharacter, bit, blindMode);
         this.currentIndex = indexCharacter;
@@ -70,11 +68,9 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     
     @Override
     public boolean isTrue() {
-
         int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
             : 5;
-        
         return this.diffSeconds < countSleepTimeStrategy;
     }
 
@@ -85,18 +81,15 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
      */
     @Override
     public CallableTime call() {
-        
         this.calendarOnStart.setTime(new Date());
         this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         this.calendarOnEnd.setTime(new Date());
         
         long timeInMillisOnStart = this.calendarOnStart.getTimeInMillis();
         long timeInMillisOnEnd = this.calendarOnEnd.getTimeInMillis();
-        
         long diff = timeInMillisOnEnd - timeInMillisOnStart;
         
         this.diffSeconds = diff / 1000;
-        
         return this;
     }
 }

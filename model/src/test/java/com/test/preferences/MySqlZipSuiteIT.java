@@ -25,7 +25,7 @@ public class MySqlZipSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withZipStrategy()
+        .withIsZipStrategy(true)
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true);
         

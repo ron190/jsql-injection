@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -21,13 +21,9 @@ public class ComparatorColumn<T> implements Comparator<T> {
     /**
      * Custom compare to sort numbers as numbers.
      * Strings as strings, with numbers ordered before strings.
-     * @param cellLeft
-     * @param cellRight
-     * @return
      */
     @Override
     public int compare(T cellLeft, T cellRight) {
-        
         var isFirstNumber = true;
         var isSecondNumber = true;
         
@@ -39,7 +35,6 @@ public class ComparatorColumn<T> implements Comparator<T> {
         } catch (NumberFormatException e) {
             isFirstNumber = false;
         }
-        
         try {
             Long.parseLong(valueCellRight);
         } catch (NumberFormatException e) {
@@ -56,7 +51,6 @@ public class ComparatorColumn<T> implements Comparator<T> {
         } else {
             sortOrder = valueCellLeft.compareToIgnoreCase(valueCellRight);  // Sort by Letter
         }
-        
         return sortOrder;
     }
 }

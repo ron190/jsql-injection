@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -13,8 +13,6 @@ package com.jsql.view.swing.interaction;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.menubar.JMenuItemWithMargin;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -92,7 +90,8 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         final var browser = new JTextPane();
         browser.setContentType("text/html");
         browser.setEditable(false);
-        
+        browser.setCaretPosition(0);
+
         // Fix #43220: EmptyStackException on setText()
         // Fix #94242: IndexOutOfBoundsException on setText()
         try {
@@ -101,34 +100,31 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
-        final var menu = new JPopupMenu();
-        
-        JMenuItem itemCopyUrl = new JMenuItemWithMargin(I18nUtil.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
+        JMenuItem itemCopyUrl = new JMenuItem(I18nUtil.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", itemCopyUrl);
-        
-        JMenuItem itemCopy = new JMenuItemWithMargin();
+
+        JMenuItem itemCopy = new JMenuItem();
         itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
         itemCopy.setMnemonic('C');
         itemCopy.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
-        
-        JMenuItem itemSelectAll = new JMenuItemWithMargin();
+
+        JMenuItem itemSelectAll = new JMenuItem();
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         itemSelectAll.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
         itemSelectAll.setMnemonic('A');
-        
+
+        final var menu = new JPopupMenu();
         menu.add(itemCopyUrl);
         menu.add(new JSeparator());
         menu.add(itemCopy);
         menu.add(itemSelectAll);
-        
         menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
 
         itemCopyUrl.addActionListener(actionEvent -> {
-            
             var stringSelection = new StringSelection(CreateAdminPageTab.this.url);
             var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(stringSelection, null);
@@ -137,37 +133,30 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         itemSelectAll.addActionListener(actionEvent -> browser.selectAll());
         
         browser.addFocusListener(new FocusAdapter() {
-            
             @Override
-            public void focusGained(FocusEvent arg0) {
+            public void focusGained(FocusEvent focusEvent) {
                 browser.getCaret().setVisible(true);
                 browser.getCaret().setSelectionVisible(true);
             }
         });
         
         browser.addMouseListener(new MouseAdapter() {
-            
             @Override
             public void mousePressed(MouseEvent evt) {
-                
                 browser.requestFocusInWindow();
-                
                 if (evt.isPopupTrigger()) {
                     menu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }
-
             @Override
             public void mouseReleased(MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
-                    
                     // Fix #45348: IllegalComponentStateException on show()
                     try {
                         menu.show(evt.getComponent(), evt.getX(), evt.getY());
                     } catch (IllegalComponentStateException e) {
                         LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                     }
-                    
                     menu.setLocation(
                         ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
                         ? evt.getXOnScreen() - menu.getWidth()
@@ -178,35 +167,21 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             }
         });
 
-        final var scroller = new LightScrollPane(1, 0, 0, 0, browser);
+        final var scroller = new JScrollPane(browser);
         MediatorHelper.tabResults().addTab(this.url.replaceAll(".*/", StringUtils.EMPTY) + StringUtils.SPACE, scroller);
-
-        // Focus on the new tab
-        MediatorHelper.tabResults().setSelectedComponent(scroller);
-
-        // Create a custom tab header with close button
-        var header = new TabHeader(
-            this.url.replaceAll(
-                ".*/",
-                StringUtils.EMPTY
-            ),
-            UiUtil.ICON_ADMIN_SERVER
-        );
-
+        MediatorHelper.tabResults().setSelectedComponent(scroller);  // Focus on the new tab
         MediatorHelper.tabResults().setToolTipTextAt(
             MediatorHelper.tabResults().indexOfComponent(scroller),
             String.format("<html>%s</html>", this.url)
         );
 
-        // Apply the custom header to the tab
-        MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);
-
-        // Give focus to the admin page
-        browser.requestFocusInWindow();
-
-        // Get back to the top
-        SwingUtilities.invokeLater(() ->
-            scroller.scrollPane.getViewport().setViewPosition(new Point(0, 0))
+        // Create a custom tab header
+        var header = new TabHeader(
+            this.url.replaceAll(".*/", StringUtils.EMPTY),
+            UiUtil.ADMIN.icon
         );
+        MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  // Apply the custom header to the tab
+        browser.requestFocusInWindow();  // Give focus to the admin page
+        SwingUtilities.invokeLater(() -> scroller.getViewport().setViewPosition(new Point(0, 0)));  // Get back to the top
     }
 }

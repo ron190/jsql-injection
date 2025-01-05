@@ -49,7 +49,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 
     @Override
     public String run(Object... args) throws JSqlException {
-        
         String characterInsertionByUser = (String) args[0];
         
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetInsertionCharacter");
@@ -59,27 +58,22 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         List<String> charactersInsertion = this.initializeCallables(taskCompletionService, charFromBooleanMatch);
         
         var mediatorVendor = this.injectionModel.getMediatorVendor();
-
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database and character insertion with Order by match...");
 
         String charFromOrderBy = null;
         
         int total = charactersInsertion.size();
         while (0 < total) {
-
             if (this.isSuspended()) {
                 throw new StoppedByUserSlidingException();
             }
-            
             try {
                 CallablePageSource currentCallable = taskCompletionService.take().get();
                 total--;
                 String pageSource = currentCallable.getContent();
                 
                 List<Vendor> vendorsOrderByMatch = this.getVendorsOrderByMatch(mediatorVendor, pageSource);
-                
                 if (!vendorsOrderByMatch.isEmpty()) {
-
                     this.setVendor(mediatorVendor, vendorsOrderByMatch);
                     
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using [{}]", mediatorVendor.getVendor());
@@ -93,27 +87,20 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     
                     // Char insertion
                     charFromOrderBy = currentCallable.getCharacterInsertion();
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Character insertion [{}] matching with Order by and compatible with Error strategy", charFromOrderBy);
-                    
                     break;
                 }
             } catch (InterruptedException e) {
-                
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
-                
             } catch (ExecutionException e) {
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
-
         this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-        
         if (charFromOrderBy == null && charFromBooleanMatch[0] != null) {
             charFromOrderBy = charFromBooleanMatch[0];
         }
-        
         return this.getCharacterInsertion(characterInsertionByUser, charFromOrderBy);
     }
 
@@ -135,27 +122,15 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
     }
 
     private List<Vendor> getVendorsOrderByMatch(MediatorVendor mediatorVendor, String pageSource) {
-        
         return mediatorVendor.getVendors()
             .stream()
             .filter(vendor -> vendor != mediatorVendor.getAuto())
             .filter(vendor -> StringUtils.isNotEmpty(
-                vendor.instance()
-                .getModelYaml()
-                .getStrategy()
-                .getConfiguration()
-                .getFingerprint()
-                .getOrderByErrorMessage()
+                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
             ))
             .filter(vendor -> {
-                
                 Optional<String> optionalOrderByErrorMatch = Stream.of(
-                    vendor.instance()
-                    .getModelYaml()
-                    .getStrategy()
-                    .getConfiguration()
-                    .getFingerprint()
-                    .getOrderByErrorMessage()
+                    vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
                     .split("[\\r\\n]+")
                 )
                 .filter(errorMessage ->
@@ -165,26 +140,22 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     .matches()
                 )
                 .findAny();
-                
                 if (optionalOrderByErrorMatch.isPresent()) {
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_SUCCESS,
                         String.format("Order by fingerprint matching vendor [%s]", vendor)
                     );
                 }
-                
                 return optionalOrderByErrorMatch.isPresent();
             })
             .collect(Collectors.toList());
     }
 
     private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService, String[] charFromBooleanMatch) throws JSqlException {
-        
         List<String> prefixValues = Arrays.asList(
             RandomStringUtils.random(10, "012"),  // to trigger probable failure
             "1"  // to trigger eventual success
         );
-        
         List<String> prefixQuotes = Arrays.asList(
             LABEL_PREFIX +"'",
             LABEL_PREFIX,
@@ -192,11 +163,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             LABEL_PREFIX +"\"",
             LABEL_PREFIX +"%bf'"  // GBK slash encoding use case
         );
-        
         List<String> prefixParentheses = Arrays.asList(StringUtils.EMPTY, ")", "))");
-        
         List<String> charactersInsertion = new ArrayList<>();
-        
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting character insertion with Boolean match...");
         for (String prefixValue: prefixValues) {
             for (String prefixQuote: prefixQuotes) {
@@ -205,7 +173,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 }
             }
         }
-        
         for (String characterInsertion: charactersInsertion) {
             taskCompletionService.submit(
                 new CallablePageSource(
@@ -218,7 +185,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 )
             );
         }
-        
         return charactersInsertion;
     }
 
@@ -229,24 +195,19 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         String prefixQuote,
         String prefixParenthesis
     ) throws StoppedByUserSlidingException {
-
         String characterInsertion = prefixQuote.replace(LABEL_PREFIX, prefixValue) + prefixParenthesis;
         charactersInsertion.add(characterInsertion);
-        
         // Skipping Boolean match when already found
         if (charFromBooleanMatch[0] == null) {
-            
             var injectionCharInsertion = new InjectionCharInsertion(
                 this.injectionModel,
                 characterInsertion,
                 prefixQuote + prefixParenthesis
             );
             if (injectionCharInsertion.isInjectable()) {
-   
                 if (this.isSuspended()) {
                     throw new StoppedByUserSlidingException();
                 }
-                
                 charFromBooleanMatch[0] = characterInsertion;
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_SUCCESS,
@@ -258,13 +219,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
     }
     
     private String getCharacterInsertion(String characterInsertionByUser, String characterInsertionDetected) {
-        
         String characterInsertionDetectedFixed = characterInsertionDetected;
-        
         if (characterInsertionDetectedFixed == null) {
-            
             characterInsertionDetectedFixed = characterInsertionByUser;
-
             String logCharacterInsertion = characterInsertionDetectedFixed;
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
@@ -272,7 +229,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 () -> logCharacterInsertion.replace(InjectionModel.STAR, StringUtils.EMPTY)
             );
         } else if (!characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY).equals(characterInsertionDetectedFixed)) {
-            
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
@@ -294,7 +250,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 () -> characterInsertionDetected.replace(InjectionModel.STAR, StringUtils.EMPTY)
             );
         }
-        
         return characterInsertionDetectedFixed;
     }
 }

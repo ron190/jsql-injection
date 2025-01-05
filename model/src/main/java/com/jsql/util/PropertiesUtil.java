@@ -17,23 +17,20 @@ public class PropertiesUtil {
     private final Properties properties = new Properties();
     
     public PropertiesUtil() {
-        
         var filename = "config.properties";
-
         try (InputStream input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename)) {
-            
             if (input == null) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Properties file {} not found", filename);
                 return;
             }
-
-            // load a properties file from class path, inside static method
-            this.getProperties().load(input);
-            
+            this.getProperties().load(input);  // load a properties file from class path, inside static method
         } catch (IOException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
+    }
+
+    public String getVersionJsql() {
+        return this.properties.getProperty("jsql.version");
     }
 
     public Properties getProperties() {

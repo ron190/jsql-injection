@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,7 +12,6 @@ package com.jsql.view.swing.list;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -53,9 +52,7 @@ public class DnDList extends JList<ItemList> {
      * @param newList List to decorate
      */
     public DnDList(List<ItemList> newList) {
-        
         this.defaultList = newList;
-
         this.listModel = new DefaultListModel<>();
 
         for (ItemList path: newList) {
@@ -63,43 +60,29 @@ public class DnDList extends JList<ItemList> {
         }
 
         this.setModel(this.listModel);
-
-        ListCellRenderer<ItemList> renderer = new RendererComplexCell();
-        this.setCellRenderer(renderer);
-        
         this.initializeActionMap();
         this.initializeListener();
-        
         this.setDragEnabled(true);
         this.setDropMode(DropMode.INSERT);
-
-        // Set Drag and Drop
-        this.setTransferHandler(new ListTransfertHandler());
+        this.setTransferHandler(new ListTransfertHandler());  // Set Drag and Drop
     }
 
     private void initializeListener() {
-        
         this.addMouseListener(new MouseAdapterMenuAction(this));
-
-        // Allows color change when list loses/gains focus
-        this.addFocusListener(new FocusListener() {
-                
+        this.addFocusListener(new FocusListener() {  // Allows color change when list loses/gains focus
             @Override
             public void focusLost(FocusEvent arg0) {
                 DnDList.this.repaint();
             }
-            
             @Override
             public void focusGained(FocusEvent arg0) {
                 DnDList.this.repaint();
             }
         });
-        
-        // Allows deleting values
-        this.addKeyListener(new KeyAdapter() {
+        this.addKeyListener(new KeyAdapter() {  // Allows deleting values
             @Override
-            public void keyPressed(KeyEvent arg0) {
-                if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
+            public void keyPressed(KeyEvent keyEvent) {
+                if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
                     DnDList.this.removeSelectedItem();
                 }
             }
@@ -107,25 +90,18 @@ public class DnDList extends JList<ItemList> {
     }
 
     private void initializeActionMap() {
-        
-        // Transform Cut, selects next value
-        var listActionMap = this.getActionMap();
-        
+        var listActionMap = this.getActionMap();  // Transform Cut, selects next value
         listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
                 if (DnDList.this.getSelectedValuesList().isEmpty()) {
                     return;
                 }
                 
                 List<ItemList> selectedValues = DnDList.this.getSelectedValuesList();
                 List<ItemList> siblings = new ArrayList<>();
-                
                 for (ItemList value: selectedValues) {
-                    
                     int valueIndex = DnDList.this.listModel.indexOf(value);
-
                     if (valueIndex < DnDList.this.listModel.size() - 1) {
                         siblings.add(DnDList.this.listModel.get(valueIndex + 1));
                     } else if (valueIndex > 0) {
@@ -145,7 +121,6 @@ public class DnDList extends JList<ItemList> {
             TransferHandler.getCopyAction().getValue(Action.NAME),
             TransferHandler.getCopyAction()
         );
-        
         listActionMap.put(
             TransferHandler.getPasteAction().getValue(Action.NAME),
             TransferHandler.getPasteAction()
@@ -156,18 +131,14 @@ public class DnDList extends JList<ItemList> {
      * Delete selected items from the list.
      */
     public void removeSelectedItem() {
-        
         if (this.getSelectedValuesList().isEmpty()) {
             return;
         }
 
         List<ItemList> selectedValues = this.getSelectedValuesList();
-        
         for (ItemList itemSelected: selectedValues) {
-            
             int indexOfItemSelected = this.listModel.indexOf(itemSelected);
             this.listModel.removeElement(itemSelected);
-            
             if (indexOfItemSelected == this.listModel.getSize()) {
                 this.setSelectedIndex(indexOfItemSelected - 1);
             } else {
@@ -180,7 +151,6 @@ public class DnDList extends JList<ItemList> {
                 this.getMinSelectionIndex(),
                 this.getMaxSelectionIndex()
             );
-            
             if (rectangle != null) {
                 this.scrollRectToVisible(
                     this.getCellBounds(
@@ -197,37 +167,30 @@ public class DnDList extends JList<ItemList> {
 
     /**
      * Load a file into the list (drag/drop or copy/paste).
-     * @param filesToImport
-     * @param position
      */
     public void dropPasteFile(final List<File> filesToImport, int position) {
-        
         if (filesToImport.isEmpty()) {
             return;
         }
         
         for (File fileToImport : filesToImport) {
-            
             // Report NoSuchMethodError #1617
             if (
                 !FilenameUtils
                 .getExtension(fileToImport.getPath())
                 .matches("txt|csv|ini")
             ) {
-                
                 // Fix #42832: ClassCastException on showMessageDialog()
                 try {
                     JOptionPane.showMessageDialog(
                         this.getTopLevelAncestor(),
                         I18nUtil.valueByKey("LIST_IMPORT_ERROR_LABEL"),
                         I18nUtil.valueByKey("LIST_IMPORT_ERROR_TITLE"),
-                        JOptionPane.ERROR_MESSAGE,
-                        UiUtil.ICON_ERROR
+                        JOptionPane.ERROR_MESSAGE
                     );
                 } catch (ClassCastException e) {
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
                 }
-                
                 return;
             }
         }
@@ -237,7 +200,6 @@ public class DnDList extends JList<ItemList> {
             I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_ADD"),
             I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
         };
-        
         int answer = JOptionPane.showOptionDialog(
             this.getTopLevelAncestor(),
             I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_LABEL"),
@@ -248,32 +210,24 @@ public class DnDList extends JList<ItemList> {
             options,
             options[2]
         );
-        
-        int startPosition = position;
-
         if (answer != JOptionPane.YES_OPTION && answer != JOptionPane.NO_OPTION) {
             return;
         }
-        
+
+        int startPosition = position;
         if (answer == JOptionPane.YES_OPTION) {
-            
             this.listModel.clear();
             startPosition = 0;
         }
-        
         int startPositionFinal = startPosition;
-        
         SwingUtilities.invokeLater(() -> this.addItems(filesToImport, startPositionFinal));
     }
 
     private void addItems(final List<File> filesToImport, int startPosition) {
-        
         int endPosition = startPosition;
-        
         for (File file: filesToImport) {
             endPosition = this.initializeItems(endPosition, file);
         }
-
         if (!this.listModel.isEmpty()) {
             DnDList.this.setSelectionInterval(startPosition, endPosition - 1);
         }
@@ -292,14 +246,12 @@ public class DnDList extends JList<ItemList> {
     }
 
     private int initializeItems(int startPosition, File file) {
-        
         int endPosition = startPosition;
         
         try (
             var fileReader = new FileReader(file, StandardCharsets.UTF_8);
             var bufferedReader = new BufferedReader(fileReader)
         ) {
-            
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 if (
@@ -319,9 +271,7 @@ public class DnDList extends JList<ItemList> {
     }
     
     public void restore() {
-        
         this.listModel.clear();
-        
         for (ItemList path: this.defaultList) {
             this.listModel.addElement(path);
         }

@@ -16,7 +16,6 @@ public class EmptyFocus implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        
         e.consume();
         this.abstractShell.requestFocusInWindow();
         this.abstractShell.setCaretPosition(this.abstractShell.getDocument().getLength());

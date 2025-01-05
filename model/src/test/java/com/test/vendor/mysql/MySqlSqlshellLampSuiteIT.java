@@ -50,7 +50,7 @@ public class MySqlSqlshellLampSuiteIT extends ConcreteMySqlSuiteIT {
         String resultCommand = this.injectionModel.getResourceAccess().runSqlShell(
             "select version()",
             UUID.randomUUID(),
-            "http://jsql-lamp:8079/."+ this.injectionModel.getVersionJsql() +".js.php",
+            "http://jsql-lamp:8079/."+ this.injectionModel.getPropertiesUtil().getVersionJsql() +".js.php",
             "root",
             "password"
         );

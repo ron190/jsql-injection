@@ -18,7 +18,7 @@ public abstract class AbstractStrategy {
 
     protected static final String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
     protected static final String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
-    protected static final String FORMAT_STRATEGY_NOT_IMPLEMENTED = "Strategy [{}] for [{}] missing, please share your implementation";
+    protected static final String FORMAT_STRATEGY_NOT_IMPLEMENTED = "Strategy [{}] for [{}] missing";
     protected static final String FORMAT_SKIP_STRATEGY_DISABLED = "Skipping strategy [{}] disabled";
     protected static final String FORMAT_CHECKING_STRATEGY = "{} [{}]...";
 
@@ -71,7 +71,6 @@ public abstract class AbstractStrategy {
     public abstract String getName();
     
     public void markVulnerability(Interaction message, int... indexErrorStrategy) {
-        
         var request = new Request();
         request.setMessage(message);
         
@@ -80,7 +79,6 @@ public abstract class AbstractStrategy {
         
         // Ellipse default to non null array
         if (indexErrorStrategy.length > 0) {
-            
             msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);
             msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);
         }

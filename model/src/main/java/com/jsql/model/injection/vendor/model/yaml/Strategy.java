@@ -10,7 +10,7 @@ public class Strategy implements Serializable {
     private Configuration configuration = new Configuration();
     private Normal normal = new Normal();
     private String stacked = StringUtils.EMPTY;
-    private Boolean booleanStrategy = new Boolean();
+    private Binary binary = new Binary();
     private Error error = new Error();
 
     public Configuration getConfiguration() {
@@ -29,12 +29,12 @@ public class Strategy implements Serializable {
         this.normal = normal;
     }
 
-    public Boolean getBoolean() {
-        return this.booleanStrategy;
+    public Binary getBinary() {
+        return this.binary;
     }
 
-    public void setBoolean(Boolean booleanStrategy) {
-        this.booleanStrategy = booleanStrategy;
+    public void setBinary(Binary binary) {
+        this.binary = binary;
     }
 
     public Error getError() {

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.universalchardet.UniversalDetector;
 
+import java.awt.*;
 import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -42,7 +43,7 @@ public final class StringUtil {
     
     // Define the schema of conversion to html entities
     private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10);
-    
+
     /**
      * This utility class defines a schema used to encode a text into a specialized
      * representation
@@ -54,7 +55,6 @@ public final class StringUtil {
         private final int radix;
         
         public CharEncoder(String prefix, String suffix, int radix) {
-            
             this.prefix = prefix;
             this.suffix = suffix;
             this.radix = radix;
@@ -82,9 +82,7 @@ public final class StringUtil {
     }
     
     public static String decimalHtmlEncode(String text, boolean isRaw) {
-        
         var result = StringUtil.encode(text);
-        
         if (isRaw) {
             return result
                 .replace("<", "&lt;")
@@ -96,15 +94,13 @@ public final class StringUtil {
     }
     
     /**
-     * Non trivial methods to convert unicode characters to html entities.
+     * Non-trivial methods to convert unicode characters to html entities.
      *
      * @param text string to encode
      * @return string representation using the encoder schema
      */
     private static String encode(String text) {
-        
         var buff = new StringBuilder();
-        
         for (var i = 0 ; i < text.length() ; i++) {
             if (text.charAt(i) > 128) {
                 StringUtil.DECIMAL_HTML_ENCODER.encode(text.charAt(i), buff);
@@ -112,7 +108,6 @@ public final class StringUtil {
                 buff.append(text.charAt(i));
             }
         }
-        
         return buff.toString();
     }
 
@@ -122,18 +117,14 @@ public final class StringUtil {
      * @return The string converted from hex
      */
     public static String hexstr(String hex) {
-        
         var bytes = new byte[hex.length() / 2];
-        
         for (var i = 0 ; i < bytes.length ; i++) {
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
-        
         return new String(bytes, StandardCharsets.UTF_8);
     }
     
     public static boolean isUtf8(String text) {
-        
         if (text == null) {
             return false;
         }
@@ -142,12 +133,10 @@ public final class StringUtil {
         detector.handleData(text.getBytes(StandardCharsets.UTF_8), 0, text.length() - 1);
         detector.dataEnd();
         String encoding = detector.getDetectedCharset();
-        
         return encoding != null;
     }
     
     public static String detectUtf8(String text) {
-        
         if (text == null) {
             return org.apache.commons.lang3.StringUtils.EMPTY;
         }
@@ -169,18 +158,15 @@ public final class StringUtil {
         if (encoding != null) {
             result = new String(text.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         }
-        
         return result;
     }
     
     public static String base32Encode(String s) {
-        
         var base32 = new Base32();
         return base32.encodeToString(StringUtils.getBytesUtf8(s));
     }
     
     public static String base32Decode(String s) {
-        
         var base32 = new Base32();
         return StringUtils.newStringUtf8(base32.decode(s));
     }
@@ -194,13 +180,11 @@ public final class StringUtil {
     }
     
     public static String base16Encode(String s) {
-        
         var base16 = new Base16();
         return base16.encodeToString(StringUtils.getBytesUtf8(s));
     }
     
     public static String base16Decode(String s) {
-        
         var base16 = new Base16();
         return StringUtils.newStringUtf8(base16.decode(s));
     }
@@ -231,10 +215,8 @@ public final class StringUtil {
      * Zip a string.
      * @param str Text to zip
      * @return Zipped string
-     * @throws IOException
      */
     public static String compress(String str) throws IOException {
-        
         if (org.apache.commons.lang3.StringUtils.isEmpty(str)) {
             return str;
         }
@@ -251,10 +233,8 @@ public final class StringUtil {
      * Unzip a String encoded from base64 or hexadecimal.
      * @param str String to unzip
      * @return String unzipped
-     * @throws IOException
      */
     public static String decompress(String str) throws IOException {
-        
         if (org.apache.commons.lang3.StringUtils.isEmpty(str)) {
             return str;
         }
@@ -270,7 +250,6 @@ public final class StringUtil {
         while ((read = bf.read(buff)) != -1) {
             response.append(buff, 0, read);
         }
-        
         return response.toString();
     }
     
@@ -279,24 +258,18 @@ public final class StringUtil {
     }
     
     public static String fromHex(String text) throws DecoderException {
-        
         byte[] hex = Hex.decodeHex(text.toCharArray());
-        
         return new String(hex, StandardCharsets.UTF_8);
     }
     
     public static String toHexZip(String text) throws IOException {
-        
         byte[] zip = StringUtil.compress(text).getBytes(StandardCharsets.UTF_8);
-        
         return Hex.encodeHexString(zip).trim();
     }
     
     public static String fromHexZip(String text) throws IOException, DecoderException {
-        
         byte[] hex = Hex.decodeHex(text.toCharArray());
         var zip = new String(hex, StandardCharsets.UTF_8);
-        
         return StringUtil.decompress(zip);
     }
     
@@ -346,6 +319,16 @@ public final class StringUtil {
         return query.replaceAll(
             "(?s)(?!/\\*\\*/|/\\*!.*\\*/)/\\*.*?\\*/",
             org.apache.commons.lang3.StringUtils.EMPTY
+        );
+    }
+
+    public static String formatReport(Color color, String text) {
+        return String.format(
+            "<span style=color:rgb(%s,%s,%s)>%s</span>",
+            color.getRed(),
+            color.getGreen(),
+            color.getBlue(),
+            text
         );
     }
 }

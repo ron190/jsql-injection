@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> {
+public class CallableMultibit extends AbstractCallableBinary<CallableMultibit> {
 
     private LinkedList<Diff> diffsWithReference = new LinkedList<>();
 
@@ -19,7 +19,6 @@ public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> 
     private final String metadataInjectionProcess;
 
     public CallableMultibit(String sqlQuery, InjectionMultibit injectionMultibit, String metadataInjectionProcess) {
-
         this.injectionMultibit = injectionMultibit;
         this.metadataInjectionProcess = metadataInjectionProcess;
         this.booleanUrl = sqlQuery;
@@ -34,7 +33,6 @@ public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> 
         InjectionMultibit injectionMultibit,
         String metadataInjectionProcess
     ) {
-
         this(
             injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
                 sqlQuery,
@@ -50,11 +48,8 @@ public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> 
 
     @Override
     public CallableMultibit call() {
-
         String result = this.injectionMultibit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-
         this.diffsWithReference = DIFF_MATCH_PATCH.diffMain(this.injectionMultibit.getSourceReference(), result, true);
-
         DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
 
         this.diffsWithReference.removeAll(this.injectionMultibit.getDiffsCommonWithAllIds());
@@ -64,7 +59,6 @@ public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> 
                 this.idPage = i;
             }
         }
-
         return this;
     }
 

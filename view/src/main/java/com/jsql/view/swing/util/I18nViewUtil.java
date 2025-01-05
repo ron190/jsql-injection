@@ -1,6 +1,7 @@
 package com.jsql.view.swing.util;
 
 import com.jsql.util.I18nUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -50,34 +51,40 @@ public class I18nViewUtil {
     public static void addComponentForKey(String key, Object component) {
         I18nViewUtil.componentsLocalized.get(key).add(component);
     }
-    
+
     /**
      * Return the text corresponding to a i18n key in the properties.
      * @param key a i18n key in the properties
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-        
-        String result;
-        
-        if (I18nUtil.isAsian(I18nUtil.getLocaleDefault())) {
-            result = String.format(
-                "<html><span style=\"font-family:'%s'\">%s</span></html>",
-                UiUtil.FONT_NAME_MONO_ASIAN,
-                I18nUtil.valueByKey(key)
-            );
-        } else {
-            result = I18nUtil.valueByKey(key);
-        }
-        
-        return result;
+        return I18nViewUtil.isNonUbuntu(I18nUtil.getLocaleDefault())
+            ? I18nViewUtil.formatNonLatin(I18nUtil.valueByKey(key))
+            : I18nUtil.valueByKey(key);
     }
-    
+
     public static String valueByKey(String key, Locale newLocale) {
-        if (I18nUtil.isAsian(newLocale)) {
-            return I18nViewUtil.valueByKey(key);
-        } else {
-            return I18nUtil.valueByKey(key);
-        }
+        return I18nViewUtil.isNonUbuntu(newLocale)
+            ? I18nViewUtil.valueByKey(key)
+            : I18nUtil.valueByKey(key);
+    }
+
+    public static boolean isNonUbuntu(Locale locale) {
+        return Locale.forLanguageTag("zh").getLanguage().equals(locale.getLanguage())
+            || Locale.forLanguageTag("ko").getLanguage().equals(locale.getLanguage())
+            || Locale.forLanguageTag("ja").getLanguage().equals(locale.getLanguage());
+    }
+
+    public static String formatNonLatin(String label) {
+        return I18nViewUtil.formatNonLatin(label, StringUtils.EMPTY);
+    }
+
+    public static String formatNonLatin(String label, String custom) {
+        return String.format(
+            "<html><span style=\"font-family:'%s';%s\">%s</span></html>",
+            UiUtil.FONT_NAME_MONO_ASIAN,
+            custom,
+            label
+        );
     }
 }

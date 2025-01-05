@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -10,14 +10,14 @@
  *******************************************************************************/
 package com.jsql.view.swing.tab;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
+import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.scrollpane.LightScrollPaneShell;
 import com.jsql.view.swing.shell.ShellSql;
 import com.jsql.view.swing.shell.ShellWeb;
 import com.jsql.view.swing.tab.dnd.DnDTabbedPane;
@@ -34,11 +34,14 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.function.IntConsumer;
 
 /**
  * TabbedPane containing result injection panels.
@@ -54,33 +57,35 @@ public class TabResults extends DnDTabbedPane {
      * Create the panel containing injection results.
      */
     public TabResults() {
-        
+        this.setName("tabResults");
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         this.setTransferHandler(new TabTransferHandler());
-
-        // Add hotkeys to root-pane ctrl-tab, ctrl-shift-tab, ctrl-w
-        HotkeyUtil.addShortcut(this);
+        this.putClientProperty("JTabbedPane.tabClosable", true);
+        this.putClientProperty("JTabbedPane.tabCloseCallback", (IntConsumer) ActionCloseTabResult::perform);
+        UIManager.put("TabbedPane.closeHoverForeground", LogLevelUtil.COLOR_RED);
+        HotkeyUtil.addShortcut(this);  // Add hotkeys to root-pane ctrl-tab, ctrl-shift-tab, ctrl-w
+        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());
+        MediatorHelper.register(this);
     }
 
     public void createFileTab(String label, String content, String path) {
-
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(content);
         fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
         fileText.setCaretPosition(0);
-
-        this.createTextTab(label, path, fileText);
-        MediatorHelper.tabManagers().addToLists(path, label);
+        this.createTextTab(label, path, fileText, UiUtil.DOWNLOAD.icon);
+        MediatorHelper.tabManagersCards().addToLists(path, label);
     }
 
-    public void createReportTab(String label, String content, String path) {
-
+    public void createReportTab(String content) {
         JEditorPane editorPane = new JEditorPane();
         editorPane.setContentType("text/html");
         editorPane.setText("<html><span style=\"white-space: nowrap; font-family:'"+ UiUtil.FONT_NAME_MONO_NON_ASIAN +"'\">" + content + "</span></html>");
+        editorPane.setFont(UIManager.getFont("TextArea.font"));  // required to increase text size
         editorPane.setDragEnabled(true);
         editorPane.setEditable(false);
         editorPane.setCaretPosition(0);
+        editorPane.getCaret().setBlinkRate(0);
         editorPane.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
         editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));
         editorPane.addHyperlinkListener(linkEvent -> {
@@ -88,48 +93,41 @@ public class TabResults extends DnDTabbedPane {
                 try {
                     Desktop.getDesktop().browse(linkEvent.getURL().toURI());
                 } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Browsing to Url failed", e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failing to browse Url", e);
                 }
             }
         });
+        editorPane.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent arg0) {
+                editorPane.getCaret().setVisible(true);
+                editorPane.getCaret().setSelectionVisible(true);
+                editorPane.getCaret().setBlinkRate(0);
+            }
+        });
+        UiUtil.initialize(editorPane);  // silent delete
 
-        this.createTextTab(label, path, editorPane);
+        this.createTextTab("Vulnerability report", "Analysis report with all payloads detected", editorPane, UiUtil.REPORT.icon);
     }
 
-    public void createTextTab(String label, String path, JComponent componentText) {
-
-        var scroller = new LightScrollPane(1, 0, 0, 0, componentText);
-
+    public void createTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
+        var scroller = new JScrollPane(componentText);
         this.addTab(label + StringUtils.SPACE, scroller);
-
-        // Focus on the new tab
-        this.setSelectedComponent(scroller);
-
-        // Create a custom tab header with close button
-        var header = new TabHeader(label, UiUtil.ICON_FILE_SERVER);
-
-        this.setToolTipTextAt(this.indexOfComponent(scroller), path);
-
-        // Apply the custom header to the tab
+        this.setSelectedComponent(scroller);  // Focus on the new tab
+        this.setToolTipTextAt(this.indexOfComponent(scroller), toolTipText);
+        var header = new TabHeader(label, icon);
         this.setTabComponentAt(this.indexOfComponent(scroller), header);
     }
-    
+
     public void createShell(String url, String path) {
         try {
             var terminalID = UUID.randomUUID();
             var terminal = new ShellWeb(terminalID, url);
-            MediatorHelper.frame().getConsoles().put(terminalID, terminal);
-            
-            LightScrollPane scroller = new LightScrollPaneShell(terminal);
-    
-            this.addTab("Web shell ", scroller);
-    
-            // Focus on the new tab
-            this.setSelectedComponent(scroller);
-    
-            // Create a custom tab header with close button
-            var header = new TabHeader("Web shell", UiUtil.ICON_SHELL_SERVER);
-    
+            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+
+            JScrollPane scroller = new JScrollPane(terminal);
+            this.addTab("Web shell", scroller);
+            this.setSelectedComponent(scroller);  // Focus on the new tab
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
                 String.format(
@@ -139,10 +137,9 @@ public class TabResults extends DnDTabbedPane {
                     MediatorHelper.model().getResourceAccess().filenameWebshell
                 )
             );
-    
-            // Apply the custom header to the tab
+
+            var header = new TabHeader("Web shell", UiUtil.TERMINAL.icon);
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
-    
             terminal.requestFocusInWindow();
             
         } catch (MalformedURLException | URISyntaxException e) {
@@ -154,18 +151,11 @@ public class TabResults extends DnDTabbedPane {
         try {
             var terminalID = UUID.randomUUID();
             var terminal = new ShellSql(terminalID, url, user, pass);
+            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
-            MediatorHelper.frame().getConsoles().put(terminalID, terminal);
-    
-            LightScrollPane scroller = new LightScrollPaneShell(terminal);
-            this.addTab("SQL shell ", scroller);
-    
-            // Focus on the new tab
-            this.setSelectedComponent(scroller);
-    
-            // Create a custom tab header with close button
-            var header = new TabHeader("SQL shell", UiUtil.ICON_SHELL_SERVER);
-    
+            JScrollPane scroller = new JScrollPane(terminal);
+            this.addTab("SQL shell", scroller);
+            this.setSelectedComponent(scroller);  // Focus on the new tab
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
                 String.format(
@@ -175,34 +165,24 @@ public class TabResults extends DnDTabbedPane {
                     MediatorHelper.model().getResourceAccess().filenameSqlshell
                 )
             );
-    
-            // Apply the custom header to the tab
+
+            var header = new TabHeader("SQL shell", UiUtil.TERMINAL.icon);
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
-    
             terminal.requestFocusInWindow();
-            
         } catch (MalformedURLException | URISyntaxException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
         }
     }
     
     public void createValuesTab(String[][] data, String[] columnNames, AbstractElementDatabase table) {
+        var panelTable = new PanelTable(data, columnNames);
         
-        // Create a new table to display the values
-        var newTableJPanel = new PanelTable(data, columnNames);
+        this.addTab(StringUtil.detectUtf8(table.toString()), panelTable);
+        panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
         
-        // Create a new tab: add header and table
-        this.addTab(StringUtil.detectUtf8(table.toString()), newTableJPanel);
-        newTableJPanel.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
-        
-        // Focus on the new tab
-        this.setSelectedComponent(newTableJPanel);
-        
-        // Create a custom tab header with close button
-        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()));
-        
+        this.setSelectedComponent(panelTable);  // Focus on the new tab
         this.setToolTipTextAt(
-            this.indexOfComponent(newTableJPanel),
+            this.indexOfComponent(panelTable),
             String.format(
                 "<html><b>%s.%s</b><br><i>%s</i></html>",
                 table.getParent(),
@@ -210,11 +190,8 @@ public class TabResults extends DnDTabbedPane {
                 String.join("<br>", Arrays.copyOfRange(columnNames, 2, columnNames.length))
             )
         );
-        
-        // Apply the custom header to the tab
-        this.setTabComponentAt(
-            this.indexOfComponent(newTableJPanel),
-            header
-        );
+
+        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.icon);
+        this.setTabComponentAt(this.indexOfComponent(panelTable), header);
     }
 }

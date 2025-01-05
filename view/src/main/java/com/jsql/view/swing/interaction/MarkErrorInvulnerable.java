@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -17,7 +17,7 @@ import com.jsql.view.swing.util.MediatorHelper;
 import java.util.Map;
 
 /**
- * Mark the injection as invulnerable to a error based injection.
+ * Mark the injection as invulnerable to an error based injection.
  */
 public class MarkErrorInvulnerable implements InteractionCommand {
     
@@ -25,13 +25,12 @@ public class MarkErrorInvulnerable implements InteractionCommand {
     
     @SuppressWarnings("unchecked")
     public MarkErrorInvulnerable(Object[] interactionParams) {
-        
         Map<Header, Object> mapHeader = (Map<Header, Object>) interactionParams[0];
         this.indexMethodError = (int) mapHeader.get(Header.INDEX_ERROR_STRATEGY);
     }
 
     @Override
     public void execute() {
-        MediatorHelper.panelAddressBar().getAddressMenuBar().markErrorInvulnerable(this.indexMethodError);
+        MediatorHelper.panelAddressBar().getPanelTrailingAddress().markErrorInvulnerable(this.indexMethodError);
     }
 }

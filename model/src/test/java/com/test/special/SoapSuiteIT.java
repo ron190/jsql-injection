@@ -30,8 +30,8 @@ public class SoapSuiteIT extends ConcreteMySqlErrorSuiteIT {
             "</soapenv:Envelope>"
         );
         model.getMediatorUtils().getPreferencesUtil()
-        .withNotTestingConnection()  // Expected error 500 on connection test (SQL failure)
-        .withCheckingAllSoapParam()
+        .withIsNotTestingConnection(true)  // Expected error 500 on connection test (SQL failure)
+        .withIsCheckingAllSoapParam(true)
         .withIsNotSearchingCharInsertion(true)
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true)

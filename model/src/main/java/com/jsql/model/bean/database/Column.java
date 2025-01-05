@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -23,11 +23,8 @@ public class Column extends AbstractElementDatabase {
 
     /**
      * Define the column label and parent table.
-     * @param newColumnName
-     * @param newTableName
      */
     public Column(String newColumnName, Table newTableName) {
-        
         this.elementValue = newColumnName;
         this.parentTable = newTableName;
     }
@@ -55,7 +52,7 @@ public class Column extends AbstractElementDatabase {
      * @return column text
      */
     @Override
-    public String getLabelCount() {
+    public String getLabelWithCount() {
         return this.toString();
     }
 }

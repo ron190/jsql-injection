@@ -34,9 +34,6 @@ public abstract class AbstractSuspendable {
     
     /**
      * The pausable/stoppable action.
-     * @param args
-     * @return
-     * @throws JSqlException
      */
     public abstract String run(Object... args) throws JSqlException;
 
@@ -47,18 +44,15 @@ public abstract class AbstractSuspendable {
      * @return Stop state
      */
     public synchronized boolean isSuspended() {
-        
         // Make application loop until shouldPauseThread is set to false by another user action
         while (this.isPaused) {
             try {
                 this.wait();
             } catch (InterruptedException e) {
-                
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
             }
         }
-
         return this.isStopped || this.injectionModel.isStoppedByUser();  // Return true if stop requested, else return false
     }
     
@@ -66,7 +60,6 @@ public abstract class AbstractSuspendable {
      * Mark as stopped.
      */
     public void stop() {
-
         this.unpause();
         this.isStopped = true;
     }
@@ -82,7 +75,6 @@ public abstract class AbstractSuspendable {
      * Mark as unpaused.
      */
     public void unpause() {
-        
         this.isPaused = false;
         this.resume();  // Restart the action after unpause
     }

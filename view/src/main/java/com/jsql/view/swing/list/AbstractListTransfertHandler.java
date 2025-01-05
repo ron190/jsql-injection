@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -51,14 +51,10 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     }
     
     @Override
-    protected Transferable createTransferable(JComponent c) {
-        
-        DnDList list = (DnDList) c;
-        
+    protected Transferable createTransferable(JComponent component) {
+        DnDList list = (DnDList) component;
         this.dragPaths = list.getSelectedValuesList();
-        
         var stringTransferable = this.initializeTransferable();
-
         return new StringSelection(stringTransferable.trim());
     }
 
@@ -66,7 +62,6 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
         if (action == TransferHandler.MOVE) {
-            
             JList<ItemList> list = (JList<ItemList>) c;
             DefaultListModel<ItemList> model = (DefaultListModel<ItemList>) list.getModel();
             
@@ -85,14 +80,12 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
 
     @Override
     public boolean canImport(TransferSupport support) {
-        return
-            support.isDataFlavorSupported(DataFlavor.stringFlavor)
+        return support.isDataFlavorSupported(DataFlavor.stringFlavor)
             || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
     }
 
     @Override
     public boolean importData(TransferSupport support) {
-        
         if (!this.canImport(support)) {
             return false;
         }
@@ -100,19 +93,15 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
         DnDList list = (DnDList) support.getComponent();
         DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) list.getModel();
         
-        //This is a drop
-        if (support.isDrop()) {
+        if (support.isDrop()) {  // drop
             if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                 this.parseStringDrop(support, list, listModel);
             } else if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                 this.parseFileDrop(support, list);
             }
         } else {
-            
-            //This is a paste
             var transferableFromClipboard = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
-            
-            if (transferableFromClipboard != null) {
+            if (transferableFromClipboard != null) {  // paste
                 if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                     this.parseStringPaste(list, listModel, transferableFromClipboard);
                 } else if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
@@ -120,16 +109,13 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
                 }
             }
         }
-
         return true;
     }
 
     @SuppressWarnings("unchecked")
     private void parseFileDrop(TransferSupport support, DnDList list) {
-        
         JList.DropLocation dropLocation = (JList.DropLocation) support.getDropLocation();
         int childIndex = dropLocation.getIndex();
-
         try {
             list.dropPasteFile(
                 (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor),
@@ -150,7 +136,6 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
             var i = 0;
             
             for (Integer selectedIndex: selectedIndexes) {
-                
                 selectedIndexesPasted[i] = selectedIndex;
                 i++;
             }

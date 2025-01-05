@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -23,6 +23,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Keyboard key processing for terminal.
@@ -60,26 +61,24 @@ public class KeyAdapterTerminal extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         try {
-            final var root = this.terminal.getDocument().getDefaultRootElement();
-            final int caretPosition = this.terminal.getCaretPosition();
-    
-            // Get current line
-            int lineNumber = this.terminal.getLineOfOffset(caretPosition);
-    
-            // Cancel every user keyboard input if another command has just been sent
-            if (this.terminal.getIsEdited()[0]) {
-                
+            var root = this.terminal.getDocument().getDefaultRootElement();
+            int caretPosition = this.terminal.getCaretPosition();
+            int lineNumber = this.terminal.getLineOfOffset(caretPosition);  // Get current line
+
+            if (this.terminal.getIsEdited().get()) {  // Cancel every user keyboard input if another command has just been sent
                 keyEvent.consume();
                 return;
             }
     
             // Get user input
-            final var command = new String[]{ StringUtils.EMPTY };
-            command[0] = this.terminal.getText(
+            var command = new AtomicReference<>(StringUtils.EMPTY);
+            command.set(
+                this.terminal.getText(
                     root.getElement(lineNumber).getStartOffset(),
                     root.getElement(lineNumber).getEndOffset() - root.getElement(lineNumber).getStartOffset()
                 )
-                .replace(this.terminal.getPrompt(), StringUtils.EMPTY);
+                .replace(this.terminal.getPrompt(), StringUtils.EMPTY)
+            );
     
             if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {  // Validate user input ; disable text editing
                 this.runCommand(keyEvent, command);
@@ -101,7 +100,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
         }
     }
 
-    private boolean isKeyNotAllowed(KeyEvent keyEvent, final int caretPosition) {
+    private boolean isKeyNotAllowed(KeyEvent keyEvent, int caretPosition) {
         return
             // Cancel the select all shortcut Ctrl+A
             keyEvent.getKeyCode() == KeyEvent.VK_A && (keyEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0
@@ -114,36 +113,29 @@ public class KeyAdapterTerminal extends KeyAdapter {
     }
 
     private void cancelCommand(KeyEvent keyEvent) {
-        
         keyEvent.consume();
-   
         this.terminal.append("\n");
         this.terminal.reset();
     }
 
     private void moveCaretHome(KeyEvent keyEvent, int lineNumber) throws BadLocationException {
-        
         keyEvent.consume();
-        
         this.terminal.setCaretPosition(this.terminal.getLineStartOffset(lineNumber) + this.terminal.getPrompt().length());
     }
 
-    private void moveCaretLeft(KeyEvent keyEvent, final int caretPosition, int lineNumber) throws BadLocationException {
-        
-        int columnnum = caretPosition - this.terminal.getLineStartOffset(lineNumber);
-
-        if (columnnum <= this.terminal.getPrompt().length()) {
+    private void moveCaretLeft(KeyEvent keyEvent, int caretPosition, int lineNumber) throws BadLocationException {
+        int newCaretPosition = caretPosition - this.terminal.getLineStartOffset(lineNumber);
+        if (newCaretPosition <= this.terminal.getPrompt().length()) {
             keyEvent.consume();
         }
     }
 
     private void appendNextCommand(
         KeyEvent keyEvent,
-        final Element root,
+        Element root,
         int lineNumber,
-        final String[] command
+        AtomicReference<String> command
     ) throws BadLocationException {
-        
         keyEvent.consume();
    
         if (this.indexCommandsHistory < this.commandsHistory.size()) {
@@ -151,10 +143,9 @@ public class KeyAdapterTerminal extends KeyAdapter {
         }
    
         if (!this.commandsHistory.isEmpty() && this.indexCommandsHistory < this.commandsHistory.size()) {
-            
             this.terminal.getDocument().remove(
                 root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
-                command[0].length() - 1
+                command.get().length() - 1
             );
    
             this.terminal.append(this.commandsHistory.get(this.indexCommandsHistory));
@@ -164,11 +155,10 @@ public class KeyAdapterTerminal extends KeyAdapter {
 
     private void appendPreviousCommand(
         KeyEvent keyEvent,
-        final Element root,
+        Element root,
         int lineNumber,
-        final String[] command
+        AtomicReference<String> command
     ) throws BadLocationException {
-        
         keyEvent.consume();
    
         if (this.indexCommandsHistory > 0) {
@@ -176,18 +166,17 @@ public class KeyAdapterTerminal extends KeyAdapter {
         }
    
         if (!this.commandsHistory.isEmpty()) {
-            
             if (
                 this.commandsHistory.size() > 1
                 && this.indexCommandsHistory == this.commandsHistory.size() - 1
-                && StringUtils.isNotEmpty(command[0].trim())
+                && StringUtils.isNotEmpty(command.get().trim())
             ) {
                 this.indexCommandsHistory--;
             }
    
             this.terminal.getDocument().remove(
                 root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
-                command[0].length() - 1
+                command.get().length() - 1
             );
    
             this.terminal.append(this.commandsHistory.get(this.indexCommandsHistory));
@@ -195,38 +184,30 @@ public class KeyAdapterTerminal extends KeyAdapter {
         }
     }
 
-    private void runCommand(KeyEvent keyEvent, final String[] command) {
-        
-        this.terminal.getIsEdited()[0] = true;
+    private void runCommand(KeyEvent keyEvent, AtomicReference<String> command) {
+        this.terminal.getIsEdited().set(true);
         keyEvent.consume();
         this.terminal.setEditable(false);
    
         // Populate cmd list for key up/down
-        if (StringUtils.isNotEmpty(command[0].trim())) {
-            
-            this.commandsHistory.add(command[0].trim());
+        if (StringUtils.isNotEmpty(command.get().trim())) {
+            this.commandsHistory.add(command.get().trim());
             this.indexCommandsHistory = this.commandsHistory.size();
         }
-   
-        // Thread to give back control of the GUI to the user (SwingUtilities does not)
-        new SwingWorker<>() {
-            
+
+        new SwingWorker<>() {  // Thread to give back control to user (SwingUtilities does not)
             @Override
             protected Object doInBackground() {
-                
-                Thread.currentThread().setName("SwingWorkerKeyAdapterTerminal");
-                
-                AbstractShell terminalCommand = KeyAdapterTerminal.this.terminal;
-                
                 // Inside Swing thread to avoid flickering
+                Thread.currentThread().setName("SwingWorkerKeyAdapterTerminal");
+
+                AbstractShell terminalCommand = KeyAdapterTerminal.this.terminal;
                 terminalCommand.append("\n");
                 
-                if (StringUtils.isNotEmpty(command[0].trim())) {
-                    
+                if (StringUtils.isNotEmpty(command.get().trim())) {
                     terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());
-                    
                     terminalCommand.action(
-                        command[0],
+                        command.get(),
                         terminalCommand.getUuidShell(),
                         terminalCommand.getUrlShell(),
                         terminalCommand.loginPassword
@@ -234,7 +215,6 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 } else {
                     terminalCommand.reset();
                 }
-                
                 return null;
             }
         }.execute();

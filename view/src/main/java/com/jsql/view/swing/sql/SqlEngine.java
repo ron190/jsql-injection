@@ -4,294 +4,258 @@ import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.manager.util.ComboMenu;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.sql.lexer.HighlightedDocument;
-import com.jsql.view.swing.sql.text.JTextPaneLexer;
-import com.jsql.view.swing.sql.text.JTextPaneObjectMethod;
-import com.jsql.view.swing.tab.TabHeader.Cleanable;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SqlEngine extends JPanel implements Cleanable {
+public class SqlEngine extends JPanel {
 
     private static ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
-    private static final JTabbedPane tabbedPaneError = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
-    private static final Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
-    
-    private static final List<JTextPaneLexer> textPanesError = new ArrayList<>();
+    private static final JTabbedPane tabsError = new TabbedPaneWheeled(SwingConstants.RIGHT);
+    private static final List<JSyntaxTextArea> listTextareasError = new ArrayList<>();
     
     enum TextareaWithColor {
         
         // Default
-        DATABASE_DEFAULT(new JTextPaneLexer(
+        DATABASE_DEFAULT(new JSyntaxTextArea(
             v -> modelYaml.getResource().getSchema().setDatabase(v),
             () -> modelYaml.getResource().getSchema().getDatabase()
         )),
-        TABLE_DEFAULT(new JTextPaneLexer(
+        TABLE_DEFAULT(new JSyntaxTextArea(
             v -> modelYaml.getResource().getSchema().setTable(v),
             () -> modelYaml.getResource().getSchema().getTable()
         )),
-        COLUMN_DEFAULT(new JTextPaneLexer(
+        COLUMN_DEFAULT(new JSyntaxTextArea(
             v -> modelYaml.getResource().getSchema().setColumn(v),
             () -> modelYaml.getResource().getSchema().getColumn()
         )),
-        QUERY_DEFAULT(new JTextPaneLexer(
+        QUERY_DEFAULT(new JSyntaxTextArea(
             v -> modelYaml.getResource().getSchema().getRow().setQuery(v),
             () -> modelYaml.getResource().getSchema().getRow().getQuery()
         )),
-        FIELD_DEFAULT(new JTextPaneLexer(
+        FIELD_DEFAULT(new JSyntaxTextArea(
             v -> modelYaml.getResource().getSchema().getRow().getFields().setField(v),
             () -> modelYaml.getResource().getSchema().getRow().getFields().getField()
         )),
-        CONCAT_DEFAULT(new JTextPaneLexer(
+        CONCAT_DEFAULT(new JSyntaxTextArea(
             v -> modelYaml.getResource().getSchema().getRow().getFields().setConcat(v),
             () -> modelYaml.getResource().getSchema().getRow().getFields().getConcat()
         )),
         
         // Zip
-        DATABASE_ZIP(new JTextPaneLexer(
+        DATABASE_ZIP(new JSyntaxTextArea(
             v -> modelYaml.getResource().getZip().setDatabase(v),
             () -> modelYaml.getResource().getZip().getDatabase()
         )),
-        TABLE_ZIP(new JTextPaneLexer(
+        TABLE_ZIP(new JSyntaxTextArea(
             v -> modelYaml.getResource().getZip().setTable(v),
             () -> modelYaml.getResource().getZip().getTable()
         )),
-        COLUMN_ZIP(new JTextPaneLexer(
+        COLUMN_ZIP(new JSyntaxTextArea(
             v -> modelYaml.getResource().getZip().setColumn(v),
             () -> modelYaml.getResource().getZip().getColumn()
         )),
-        QUERY_ZIP(new JTextPaneLexer(
+        QUERY_ZIP(new JSyntaxTextArea(
             v -> modelYaml.getResource().getZip().getRow().setQuery(v),
             () -> modelYaml.getResource().getZip().getRow().getQuery()
         )),
-        FIELD_ZIP(new JTextPaneLexer(
+        FIELD_ZIP(new JSyntaxTextArea(
             v -> modelYaml.getResource().getZip().getRow().getFields().setField(v),
             () -> modelYaml.getResource().getZip().getRow().getFields().getField()
         )),
-        CONCAT_ZIP(new JTextPaneLexer(
+        CONCAT_ZIP(new JSyntaxTextArea(
             v -> modelYaml.getResource().getZip().getRow().getFields().setConcat(v),
             () -> modelYaml.getResource().getZip().getRow().getFields().getConcat()
         )),
         
         // Dios
-        DATABASE_DIOS(new JTextPaneLexer(
+        DATABASE_DIOS(new JSyntaxTextArea(
             v -> modelYaml.getResource().getDios().setDatabase(v),
             () -> modelYaml.getResource().getDios().getDatabase()
         )),
-        TABLE_DIOS(new JTextPaneLexer(
+        TABLE_DIOS(new JSyntaxTextArea(
             v -> modelYaml.getResource().getDios().setTable(v),
             () -> modelYaml.getResource().getDios().getTable()
         )),
-        COLUMN_DIOS(new JTextPaneLexer(
+        COLUMN_DIOS(new JSyntaxTextArea(
             v -> modelYaml.getResource().getDios().setColumn(v),
             () -> modelYaml.getResource().getDios().getColumn()
         )),
-        QUERY_DIOS(new JTextPaneLexer(
+        QUERY_DIOS(new JSyntaxTextArea(
             v -> modelYaml.getResource().getDios().getRow().setQuery(v),
             () -> modelYaml.getResource().getDios().getRow().getQuery()
         )),
-        FIELD_DIOS(new JTextPaneLexer(
+        FIELD_DIOS(new JSyntaxTextArea(
             v -> modelYaml.getResource().getDios().getRow().getFields().setField(v),
             () -> modelYaml.getResource().getDios().getRow().getFields().getField()
         )),
-        CONCAT_DIOS(new JTextPaneLexer(
+        CONCAT_DIOS(new JSyntaxTextArea(
             v -> modelYaml.getResource().getDios().getRow().getFields().setConcat(v),
             () -> modelYaml.getResource().getDios().getRow().getFields().getConcat()
         )),
         
-        INFO(new JTextPaneLexer(
+        INFO(new JSyntaxTextArea(
             v -> modelYaml.getResource().setInfo(v),
             () -> modelYaml.getResource().getInfo()
         )),
 
         // Configuration
-        SLIDING_WINDOW(new JTextPaneLexer(
+        SLIDING_WINDOW(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getConfiguration().setSlidingWindow(v),
             () -> modelYaml.getStrategy().getConfiguration().getSlidingWindow()
         )),
-        LIMIT(new JTextPaneLexer(
+        LIMIT(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getConfiguration().setLimit(v),
             () -> modelYaml.getStrategy().getConfiguration().getLimit()
         )),
-        FAILSAFE(new JTextPaneLexer(
+        FAILSAFE(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getConfiguration().setFailsafe(v),
             () -> modelYaml.getStrategy().getConfiguration().getFailsafe()
         )),
-        CALIBRATOR(new JTextPaneLexer(
+        CALIBRATOR(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getConfiguration().setCalibrator(v),
             () -> modelYaml.getStrategy().getConfiguration().getCalibrator()
         )),
-        ENDING_COMMENT(new JTextPaneLexer(
+        ENDING_COMMENT(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getConfiguration().setEndingComment(v),
             () -> modelYaml.getStrategy().getConfiguration().getEndingComment()
         )),
-        LIMIT_BOUNDARY(new JTextPaneLexer(
+        LIMIT_BOUNDARY(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getConfiguration().setLimitBoundary(v),
             () -> modelYaml.getStrategy().getConfiguration().getLimitBoundary()
         )),
         
         // Normal
-        INDICES(new JTextPaneLexer(
+        INDICES(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getNormal().setIndices(v),
             () -> modelYaml.getStrategy().getNormal().getIndices()
         )),
-        CAPACITY(new JTextPaneLexer(
+        CAPACITY(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getNormal().setCapacity(v),
             () -> modelYaml.getStrategy().getNormal().getCapacity()
         )),
 
-        STACKED(new JTextPaneLexer(
+        STACKED(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().setStacked(v),
             () -> modelYaml.getStrategy().getStacked()
         )),
 
         // Boolean
-        MODE_AND(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().setModeAnd(v),
-            () -> modelYaml.getStrategy().getBoolean().getModeAnd()
+        MODE_AND(new JSyntaxTextArea(
+            v -> modelYaml.getStrategy().getBinary().setModeAnd(v),
+            () -> modelYaml.getStrategy().getBinary().getModeAnd()
         )),
-        MODE_OR(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().setModeOr(v),
-            () -> modelYaml.getStrategy().getBoolean().getModeOr()
+        MODE_OR(new JSyntaxTextArea(
+            v -> modelYaml.getStrategy().getBinary().setModeOr(v),
+            () -> modelYaml.getStrategy().getBinary().getModeOr()
         )),
-        MODE_STACKED(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().setModeStacked(v),
-            () -> modelYaml.getStrategy().getBoolean().getModeStacked()
+        MODE_STACKED(new JSyntaxTextArea(
+            v -> modelYaml.getStrategy().getBinary().setModeStacked(v),
+            () -> modelYaml.getStrategy().getBinary().getModeStacked()
         )),
-        BLIND(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().setBlind(v),
-            () -> modelYaml.getStrategy().getBoolean().getBlind()
+        BLIND(new JSyntaxTextArea(
+            v -> modelYaml.getStrategy().getBinary().setBlind(v),
+            () -> modelYaml.getStrategy().getBinary().getBlind()
         )),
-        TIME(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().setTime(v),
-            () -> modelYaml.getStrategy().getBoolean().getTime()
+        TIME(new JSyntaxTextArea(
+            v -> modelYaml.getStrategy().getBinary().setTime(v),
+            () -> modelYaml.getStrategy().getBinary().getTime()
         )),
-        MULTIBIT(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().setMultibit(v),
-            () -> modelYaml.getStrategy().getBoolean().getMultibit()
+        MULTIBIT(new JSyntaxTextArea(
+            v -> modelYaml.getStrategy().getBinary().setMultibit(v),
+            () -> modelYaml.getStrategy().getBinary().getMultibit()
         )),
-        BIT_TEST(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().getTest().setBit(v),
-            () -> modelYaml.getStrategy().getBoolean().getTest().getBit()
+        BIT_TEST(new JSyntaxTextArea(
+            v -> modelYaml.getStrategy().getBinary().getTest().setBit(v),
+            () -> modelYaml.getStrategy().getBinary().getTest().getBit()
         )),
 
         // File
-        FILE_PRIVILEGE(new JTextPaneLexer(
+        FILE_PRIVILEGE(new JSyntaxTextArea(
             v -> modelYaml.getResource().getFile().setPrivilege(v),
             () -> modelYaml.getResource().getFile().getPrivilege()
         )),
-        FILE_READ(new JTextPaneLexer(
+        FILE_READ(new JSyntaxTextArea(
             v -> modelYaml.getResource().getFile().setRead(v),
             () -> modelYaml.getResource().getFile().getRead()
         )),
-        FILE_WRITE_BODY(new JTextPaneLexer(
+        FILE_WRITE_BODY(new JSyntaxTextArea(
             v -> modelYaml.getResource().getFile().getWrite().setBody(v),
             () -> modelYaml.getResource().getFile().getWrite().getBody()
         )),
-        FILE_WRITE_PATH(new JTextPaneLexer(
+        FILE_WRITE_PATH(new JSyntaxTextArea(
             v -> modelYaml.getResource().getFile().getWrite().setPath(v),
             () -> modelYaml.getResource().getFile().getWrite().getPath()
         )),
 
         // Fingerprint
-        TRUTHY(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().getTest().setTruthy(v),
-            () -> modelYaml.getStrategy().getBoolean().getTest().getTruthyAsString()
+        TRUTHY(new JSyntaxTextArea(
+            v -> modelYaml.getStrategy().getBinary().getTest().setTruthy(v),
+            () -> modelYaml.getStrategy().getBinary().getTest().getTruthyAsString()
         )),
-        FALSY(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().getTest().setFalsy(v),
-            () -> modelYaml.getStrategy().getBoolean().getTest().getFalsyAsString()
+        FALSY(new JSyntaxTextArea(
+            v -> modelYaml.getStrategy().getBinary().getTest().setFalsy(v),
+            () -> modelYaml.getStrategy().getBinary().getTest().getFalsyAsString()
         )),
-        INCORRECT_STRING_ERROR_MESSAGE(new JTextPaneLexer(
+        INCORRECT_STRING_ERROR_MESSAGE(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),
             () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()
         )),
-        ORDER_BY_ERROR_MESSAGE(new JTextPaneLexer(
+        ORDER_BY_ERROR_MESSAGE(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),
             () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
         )),
-        ORDER_BY(new JTextPaneLexer(
+        ORDER_BY(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getNormal().setOrderBy(v),
             () -> modelYaml.getStrategy().getNormal().getOrderBy()
         )),
-        VENDOR_SPECIFIC(new JTextPaneLexer(
+        VENDOR_SPECIFIC(new JSyntaxTextArea(
             v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),
             () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
         )),
         ;
         
-        final JTextPaneLexer text;
+        final JSyntaxTextArea textarea;
 
-        public JTextPaneLexer getText() {
-            return this.text;
+        public JSyntaxTextArea getTextArea() {
+            return this.textarea;
         }
 
-        TextareaWithColor(JTextPaneLexer text) {
-            this.text = text;
+        TextareaWithColor(JSyntaxTextArea textarea) {
+            this.textarea = textarea;
         }
     }
     
     public SqlEngine() {
-        
-        SqlEngine.initializeTextComponents();
-        
-        Stream.of(
-            TextareaWithColor.DATABASE_DEFAULT,
-            TextareaWithColor.TABLE_DEFAULT,
-            TextareaWithColor.COLUMN_DEFAULT,
-            TextareaWithColor.QUERY_DEFAULT,
-            TextareaWithColor.FIELD_DEFAULT,
-            TextareaWithColor.CONCAT_DEFAULT,
-            TextareaWithColor.INFO,
-            
-            TextareaWithColor.DATABASE_ZIP,
-            TextareaWithColor.TABLE_ZIP,
-            TextareaWithColor.COLUMN_ZIP,
-            TextareaWithColor.QUERY_ZIP,
-            TextareaWithColor.FIELD_ZIP,
-            TextareaWithColor.CONCAT_ZIP,
-            
-            TextareaWithColor.DATABASE_DIOS,
-            TextareaWithColor.TABLE_DIOS,
-            TextareaWithColor.COLUMN_DIOS,
-            TextareaWithColor.QUERY_DIOS,
-            TextareaWithColor.FIELD_DIOS,
-            TextareaWithColor.CONCAT_DIOS,
-            
-            TextareaWithColor.MODE_AND,
-            TextareaWithColor.MODE_OR,
-            TextareaWithColor.MODE_STACKED,
-            TextareaWithColor.BLIND,
-            TextareaWithColor.TIME,
-            TextareaWithColor.MULTIBIT,
-            TextareaWithColor.BIT_TEST
-        )
-        .forEach(textPane -> textPane.getText().setBorder(SqlEngine.borderRight));
-        
-        JPanel panelStructure = this.getPanelStructure();
-        JPanel panelFile = this.getPanelFile();
-        JPanel panelStrategy = this.getPanelStrategy();
-        JPanel panelConfiguration = this.getPanelConfiguration();
-        JPanel panelFingerprinting = this.getPanelFingerprinting();
+        // user can switch to another vendor then close, so restore current vendor
+        SqlEngine.modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
-        JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
+        SqlEngine.initializeTextComponents();
+
+        JTabbedPane panelStructure = this.getPanelStructure();
+        JTabbedPane panelFile = this.getPanelFile();
+        JTabbedPane panelStrategy = this.getPanelStrategy();
+        JTabbedPane panelConfiguration = this.getPanelConfiguration();
+        JTabbedPane panelFingerprinting = this.getPanelFingerprinting();
+
+        JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM);
         
         Stream.of(
             new SimpleEntry<>("SQLENGINE_STRUCTURE", panelStructure),
@@ -301,198 +265,133 @@ public class SqlEngine extends JPanel implements Cleanable {
             new SimpleEntry<>("SQLENGINE_FILE", panelFile)
         )
         .forEach(entry -> {
-            
             tabsBottom.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());
-            
             var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             tabsBottom.setTabComponentAt(
                 tabsBottom.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
                 label
             );
-            
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
 
-        this.setLayout(new OverlayLayout(this));
+        this.setLayout(new BorderLayout());
 
         JPanel panelCombo = SqlEngine.initializeMenuVendor();
-        this.add(panelCombo);
+        tabsBottom.putClientProperty("JTabbedPane.trailingComponent", panelCombo);
         this.add(tabsBottom);
-        
-        tabsBottom.setAlignmentX(FlowLayout.LEADING);
-        tabsBottom.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-        
-        MediatorHelper.menubar().switchLocale(I18nUtil.getLocaleDefault());
+
+        SwingUtilities.invokeLater(() -> MediatorHelper.menubar().switchLocale(I18nUtil.getLocaleDefault()));  // required for arabic
     }
 
-    private JPanel getPanelStructure() {
-
+    private JTabbedPane getPanelStructure() {
         final var keyDatabases = "SQLENGINE_DATABASES";
         final var keyTables = "SQLENGINE_TABLES";
         final var keyColumns = "SQLENGINE_COLUMNS";
         final var keyRows = "SQLENGINE_ROWS";
         final var keyField = "SQLENGINE_FIELD";
         final var keyFieldSeparator = "SQLENGINE_FIELDS_SEPARATOR";
-        
-        JTabbedPane tabsStandard = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
-        JTabbedPane tabsSchema = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        
+
+        JTabbedPane tabsDefault = new TabbedPaneWheeled();
         Stream.of(
-            new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_DEFAULT.getText()),
-            new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_DEFAULT.getText()),
-            new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_DEFAULT.getText()),
-            new SimpleEntry<>(keyRows, TextareaWithColor.QUERY_DEFAULT.getText()),
-            new SimpleEntry<>(keyField, TextareaWithColor.FIELD_DEFAULT.getText()),
-            new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_DEFAULT.getText()),
-            new SimpleEntry<>("SQLENGINE_METADATA", TextareaWithColor.INFO.getText())
+            new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_DEFAULT.getTextArea()),
+            new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_DEFAULT.getTextArea()),
+            new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_DEFAULT.getTextArea()),
+            new SimpleEntry<>(keyRows, TextareaWithColor.QUERY_DEFAULT.getTextArea()),
+            new SimpleEntry<>(keyField, TextareaWithColor.FIELD_DEFAULT.getTextArea()),
+            new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_DEFAULT.getTextArea()),
+            new SimpleEntry<>("SQLENGINE_METADATA", TextareaWithColor.INFO.getTextArea())
         )
         .forEach(entry -> {
-            
-            tabsSchema.addTab(
-                I18nUtil.valueByKey(entry.getKey()),
-                new LightScrollPane(1, 0, 1, 0, entry.getValue())
-            );
-            
+            tabsDefault.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue()));
             var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
-            tabsSchema.setTabComponentAt(
-                tabsSchema.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
-                label
-            );
+            tabsDefault.setTabComponentAt(tabsDefault.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
         
-        JTabbedPane tabsZip = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        
+        JTabbedPane tabsZip = new TabbedPaneWheeled();
         Stream.of(
-            new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_ZIP.getText()),
-            new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_ZIP.getText()),
-            new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_ZIP.getText()),
-            new SimpleEntry<>(keyRows, TextareaWithColor.QUERY_ZIP.getText()),
-            new SimpleEntry<>(keyField, TextareaWithColor.FIELD_ZIP.getText()),
-            new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_ZIP.getText())
+            new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_ZIP.getTextArea()),
+            new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_ZIP.getTextArea()),
+            new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_ZIP.getTextArea()),
+            new SimpleEntry<>(keyRows, TextareaWithColor.QUERY_ZIP.getTextArea()),
+            new SimpleEntry<>(keyField, TextareaWithColor.FIELD_ZIP.getTextArea()),
+            new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_ZIP.getTextArea())
         )
         .forEach(entry -> {
-            
-            tabsZip.addTab(
-                I18nUtil.valueByKey(entry.getKey()),
-                new LightScrollPane(1, 0, 1, 0, entry.getValue())
-            );
-            
+            tabsZip.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue()));
             var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
-            tabsZip.setTabComponentAt(
-                tabsZip.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
-                label
-            );
+            tabsZip.setTabComponentAt(tabsZip.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
         
-        JTabbedPane tabsDios = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        
+        JTabbedPane tabsDios = new TabbedPaneWheeled();
         Stream.of(
-            new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_DIOS.getText()),
-            new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_DIOS.getText()),
-            new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_DIOS.getText()),
-            new SimpleEntry<>(keyRows, TextareaWithColor.QUERY_DIOS.getText()),
-            new SimpleEntry<>(keyField, TextareaWithColor.FIELD_DIOS.getText()),
-            new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_DIOS.getText())
+            new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_DIOS.getTextArea()),
+            new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_DIOS.getTextArea()),
+            new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_DIOS.getTextArea()),
+            new SimpleEntry<>(keyRows, TextareaWithColor.QUERY_DIOS.getTextArea()),
+            new SimpleEntry<>(keyField, TextareaWithColor.FIELD_DIOS.getTextArea()),
+            new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_DIOS.getTextArea())
         )
         .forEach(entry -> {
-            
-            tabsDios.addTab(
-                I18nUtil.valueByKey(entry.getKey()),
-                new LightScrollPane(1, 0, 1, 0, entry.getValue())
-            );
-            
+            tabsDios.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue()));
             var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
-            tabsDios.setTabComponentAt(
-                tabsDios.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
-                label
-            );
+            tabsDios.setTabComponentAt(tabsDios.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
-        
+
+        JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.RIGHT);
         Stream.of(
-            new SimpleEntry<>("SQLENGINE_STANDARD", tabsSchema),
+            new SimpleEntry<>("SQLENGINE_STANDARD", tabsDefault),
             new SimpleEntry<>("SQLENGINE_ZIP", tabsZip),
             new SimpleEntry<>("SQLENGINE_DIOS", tabsDios)
         )
         .forEach(entry -> {
-            
-            tabsStandard.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());
-            
+            tabs.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());
             var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
-            tabsStandard.setTabComponentAt(
-                tabsStandard.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
-                label
-            );
+            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
-        
-        var panelStructure = new JPanel(new BorderLayout());
-        panelStructure.add(tabsStandard, BorderLayout.CENTER);
-        panelStructure.setBorder(BorderFactory.createEmptyBorder());
-        
-        return panelStructure;
+        return tabs;
     }
 
-    private JPanel getPanelFile() {
-
-        JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-
-        tabs.addTab("Privilege", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FILE_PRIVILEGE.getText()));
-        tabs.addTab("Read", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FILE_READ.getText()));
-        tabs.addTab("Write body", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FILE_WRITE_BODY.getText()));
-        tabs.addTab("Write path", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FILE_WRITE_PATH.getText()));
-
-        var panel = new JPanel(new BorderLayout());
-        panel.add(tabs, BorderLayout.CENTER);
-        panel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
-
-        return panel;
+    private JTabbedPane getPanelFile() {
+        JTabbedPane tabs = new TabbedPaneWheeled();
+        tabs.addTab("Privilege", new RTextScrollPane(TextareaWithColor.FILE_PRIVILEGE.getTextArea()));
+        tabs.addTab("Read", new RTextScrollPane(TextareaWithColor.FILE_READ.getTextArea()));
+        tabs.addTab("Write body", new RTextScrollPane(TextareaWithColor.FILE_WRITE_BODY.getTextArea()));
+        tabs.addTab("Write path", new RTextScrollPane(TextareaWithColor.FILE_WRITE_PATH.getTextArea()));
+        return tabs;
     }
 
-    private JPanel getPanelStrategy() {
-        
-        JTabbedPane tabsStrategy = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.INDICES.getText()));
-        
-        var panelStrategy = new JPanel(new BorderLayout());
-        panelStrategy.add(tabsStrategy, BorderLayout.CENTER);
-        panelStrategy.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
+    private JTabbedPane getPanelStrategy() {
+        JTabbedPane tabs = new TabbedPaneWheeled();
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new RTextScrollPane(TextareaWithColor.INDICES.getTextArea()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_STACKED"), new RTextScrollPane(TextareaWithColor.STACKED.getTextArea()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), SqlEngine.tabsError);
 
-        tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_STACKED"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.STACKED.getText()));
-
-        /* Error */
-        var panelError = new JPanel(new BorderLayout());
-        panelError.add(SqlEngine.tabbedPaneError, BorderLayout.CENTER);
-        
-        tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), panelError);
-
-        /* Boolean */
-        JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
-        
+        JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT);
         Stream.of(
-            new SimpleEntry<>("AND mode", TextareaWithColor.MODE_AND.getText()),
-            new SimpleEntry<>("OR mode", TextareaWithColor.MODE_OR.getText()),
-            new SimpleEntry<>("Stacked mode", TextareaWithColor.MODE_STACKED.getText()),
-            new SimpleEntry<>("Blind", TextareaWithColor.BLIND.getText()),
-            new SimpleEntry<>("Time", TextareaWithColor.TIME.getText()),
-            new SimpleEntry<>("Multibit", TextareaWithColor.MULTIBIT.getText()),
-            new SimpleEntry<>("Bit test", TextareaWithColor.BIT_TEST.getText())
+            new SimpleEntry<>("AND mode", TextareaWithColor.MODE_AND.getTextArea()),
+            new SimpleEntry<>("OR mode", TextareaWithColor.MODE_OR.getTextArea()),
+            new SimpleEntry<>("Stacked mode", TextareaWithColor.MODE_STACKED.getTextArea()),
+            new SimpleEntry<>("Blind", TextareaWithColor.BLIND.getTextArea()),
+            new SimpleEntry<>("Time", TextareaWithColor.TIME.getTextArea()),
+            new SimpleEntry<>("Multibit", TextareaWithColor.MULTIBIT.getTextArea()),
+            new SimpleEntry<>("Bit test", TextareaWithColor.BIT_TEST.getTextArea())
         )
-        .forEach(entry ->
-            tabsBoolean.addTab(
-                entry.getKey(),
-                new LightScrollPane(1, 0, 1, 0, entry.getValue())
-            )
-        );
-        
-        var panelBoolean = new JPanel(new BorderLayout());
-        panelBoolean.add(tabsBoolean, BorderLayout.CENTER);
-        
-        tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_BOOLEAN"), panelBoolean);
+        .forEach(entry -> {
+            tabsBoolean.addTab(entry.getKey(), new RTextScrollPane(entry.getValue()));
+            tabsBoolean.setTitleAt(
+                tabsBoolean.getTabCount() - 1,
+                String.format(
+                    "<html><div style=\"text-align:left;width:60px;\">%s</div></html>",
+                    entry.getKey()
+                )
+            );
+        });
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_BOOLEAN"), tabsBoolean);
 
-        /* Strategy */
         Stream.of(
             "SQLENGINE_NORMAL",
             "SQLENGINE_STACKED",
@@ -500,31 +399,22 @@ public class SqlEngine extends JPanel implements Cleanable {
             "SQLENGINE_BOOLEAN"
         )
         .forEach(keyI18n -> {
-            
             var label = new JLabel(I18nUtil.valueByKey(keyI18n));
-            
-            tabsStrategy.setTabComponentAt(
-                tabsStrategy.indexOfTab(I18nUtil.valueByKey(keyI18n)),
-                label
-            );
-            
+            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)), label);
             I18nViewUtil.addComponentForKey(keyI18n, label);
         });
-        
-        return panelStrategy;
+        return tabs;
     }
 
-    private JPanel getPanelConfiguration() {
-        
-        JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.SLIDING_WINDOW.getText()));
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.LIMIT.getText()));
-        tabs.addTab("Limit start index", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.LIMIT_BOUNDARY.getText()));
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CAPACITY"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.CAPACITY.getText()));
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CALIBRATOR"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.CALIBRATOR.getText()));
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_FAILSAFE"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FAILSAFE.getText()));
-        tabs.addTab("End comment", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ENDING_COMMENT.getText()));
+    private JTabbedPane getPanelConfiguration() {
+        JTabbedPane tabs = new TabbedPaneWheeled();
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new RTextScrollPane(TextareaWithColor.SLIDING_WINDOW.getTextArea()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new RTextScrollPane(TextareaWithColor.LIMIT.getTextArea()));
+        tabs.addTab("Limit start index", new RTextScrollPane(TextareaWithColor.LIMIT_BOUNDARY.getTextArea()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CAPACITY"), new RTextScrollPane(TextareaWithColor.CAPACITY.getTextArea()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CALIBRATOR"), new RTextScrollPane(TextareaWithColor.CALIBRATOR.getTextArea()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_FAILSAFE"), new RTextScrollPane(TextareaWithColor.FAILSAFE.getTextArea()));
+        tabs.addTab("End comment", new RTextScrollPane(TextareaWithColor.ENDING_COMMENT.getTextArea()));
         
         Stream.of(
             "SQLENGINE_CHARACTERS_SLIDINGWINDOW",
@@ -534,212 +424,142 @@ public class SqlEngine extends JPanel implements Cleanable {
             "SQLENGINE_FAILSAFE"
         )
         .forEach(keyI18n -> {
-            
             var label = new JLabel(I18nUtil.valueByKey(keyI18n));
-            tabs.setTabComponentAt(
-                tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)),
-                label
-            );
-            
+            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)), label);
             I18nViewUtil.addComponentForKey(keyI18n, label);
         });
-        
-        var panel = new JPanel(new BorderLayout());
-        panel.add(tabs, BorderLayout.CENTER);
-        panel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
-        
-        return panel;
+        return tabs;
     }
     
-    private JPanel getPanelFingerprinting() {
-        
-        JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ORDER_BY.getText()));
-        tabs.addTab("Order by error", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getText()));
-        tabs.addTab("String error", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getText()));
-        tabs.addTab("Vendor specific", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.VENDOR_SPECIFIC.getText()));
-        tabs.addTab("Truthy", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.TRUTHY.getText()));
-        tabs.addTab("Falsy", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FALSY.getText()));
+    private JTabbedPane getPanelFingerprinting() {
+        JTabbedPane tabs = new TabbedPaneWheeled();
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new RTextScrollPane(TextareaWithColor.ORDER_BY.getTextArea()));
+        tabs.addTab("Order by error", new RTextScrollPane(TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getTextArea()));
+        tabs.addTab("String error", new RTextScrollPane(TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getTextArea()));
+        tabs.addTab("Vendor specific", new RTextScrollPane(TextareaWithColor.VENDOR_SPECIFIC.getTextArea()));
+        tabs.addTab("Truthy", new RTextScrollPane(TextareaWithColor.TRUTHY.getTextArea()));
+        tabs.addTab("Falsy", new RTextScrollPane(TextareaWithColor.FALSY.getTextArea()));
         
         Stream.of("SQLENGINE_ORDER_BY").forEach(keyI18n -> {
-
             var label = new JLabel(I18nUtil.valueByKey(keyI18n));
-            tabs.setTabComponentAt(
-                tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)),
-                label
-            );
-
+            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)), label);
             I18nViewUtil.addComponentForKey(keyI18n, label);
         });
-        
-        var panel = new JPanel(new BorderLayout());
-        panel.add(tabs, BorderLayout.CENTER);
-        panel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
-        
-        return panel;
+        return tabs;
     }
 
     private static JPanel initializeMenuVendor() {
-        
-        var panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.setOpaque(false);
+        var panelMenuVendor = new JPanel();  // required for label on right
+        panelMenuVendor.setLayout(new BorderLayout());
 
-        // Disable overlap with zerosizesplitter
-        panel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
-        panel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 25));
-        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
+        JPopupMenu popupMenuVendors = new JPopupMenu();
+        popupMenuVendors.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorVendor().getVendors().size()));
 
-        var menuBarVendor = new JMenuBar();
-        menuBarVendor.setOpaque(false);
-        menuBarVendor.setBorder(null);
-        
-        JMenu comboMenuVendor = new ComboMenu(MediatorHelper.model().getMediatorVendor().getVendor().toString());
-        comboMenuVendor.getPopupMenu().setLayout(new GridLayout(MediatorHelper.model().getMediatorVendor().getVendors().size() / 2, 2));
-        menuBarVendor.add(comboMenuVendor);
-
-        var groupVendor = new ButtonGroup();
+        JLabel labelVendor = new JLabel(MediatorHelper.model().getMediatorVendor().getVendor().toString(), UiUtil.ARROW_DOWN.icon, SwingConstants.LEFT);
+        labelVendor.setBorder(UiUtil.BORDER_5PX);  // required for padding
+        labelVendor.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Arrays.stream(popupMenuVendors.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
+                popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch
+                popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());
+                popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+            }
+        });
 
         List<Vendor> listVendors = new LinkedList<>(MediatorHelper.model().getMediatorVendor().getVendors());
         listVendors.removeIf(vendor -> vendor == MediatorHelper.model().getMediatorVendor().getAuto());
-        
+
+        var groupVendor = new ButtonGroup();
         for (final Vendor vendor: listVendors) {
-            
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(
                 vendor.toString(),
                 vendor == MediatorHelper.model().getMediatorVendor().getVendor()
             );
             
             itemRadioVendor.addActionListener(actionEvent -> {
-                
                 SqlEngine.modelYaml = vendor.instance().getModelYaml();
                 SqlEngine.initializeTextComponents();
-                comboMenuVendor.setText(vendor.toString());
+                labelVendor.setText(vendor.toString());
             });
             
-            itemRadioVendor.setUI(
-                new BasicRadioButtonMenuItemUI() {
-                    
-                    @Override
-                    protected void doClick(MenuSelectionManager msm) {
-                        
-                        this.menuItem.doClick(0);
-                    }
-                }
-            );
-            
-            comboMenuVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
+            popupMenuVendors.add(itemRadioVendor);
         }
         
-        panel.add(menuBarVendor, BorderLayout.LINE_END);
-
-        // Do Overlay
-        panel.setAlignmentX(FlowLayout.TRAILING);
-        panel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-        
-        return panel;
+        panelMenuVendor.add(labelVendor, BorderLayout.LINE_END);  // required to set on right
+        return panelMenuVendor;
     }
     
     /**
      * Configure all text components with new coloring and new modelYaml setter.
      */
     private static void initializeTextComponents() {
-        
-        SqlEngine.getTextPanes().forEach(SqlEngine::resetLexer);
-        SqlEngine.getTextPanes().forEach(JTextPaneObjectMethod::switchSetterToVendor);
-        SqlEngine.getTextPanes().forEach(textPaneLexer -> textPaneLexer.setText(StringUtils.EMPTY));
-        
+        SqlEngine.getTextareas().forEach(SqlEngine::reset);
+        SqlEngine.getTextareas().forEach(textPaneLexer -> textPaneLexer.setText(StringUtils.EMPTY));
+
         Stream.of(TextareaWithColor.values())
-        .forEach(entry -> entry.getText()
-            .setText(
-                entry.getText()
-                .getSupplierGetter()
-                .get()
-                .trim()
-            )
-        );
+        .map(textareaWithColor -> textareaWithColor.textarea)
+        .forEach(textArea -> {
+            textArea.setText(textArea.getSupplierGetter().get().trim());
+            textArea.setCaretPosition(0);
+        });
 
         SqlEngine.populateTabError();
+        SqlEngine.applyTheme();
     }
-    
+
+    public static void applyTheme() {
+        SqlEngine.getTextareas().forEach(UiUtil::applyTheme);
+    }
+
     /**
      * Dynamically add textPanes to Error tab for current vendor.
      */
     private static void populateTabError() {
-        
-        SqlEngine.tabbedPaneError.removeAll();
-        
+        SqlEngine.tabsError.removeAll();
+
         if (SqlEngine.modelYaml.getStrategy().getError() == null) {
             return;
         }
             
         for (Method methodError: SqlEngine.modelYaml.getStrategy().getError().getMethod()) {
-            
             var panelError = new JPanel(new BorderLayout());
-            
-            final var refMethodError = new Method[]{ methodError };
-            
-            var textPaneError = new JTextPaneLexer(
-                refMethodError[0]::setQuery,
-                refMethodError[0]::getQuery
-            );
-            
-            SqlEngine.resetLexer(textPaneError);
-            textPaneError.switchSetterToVendor();
-            textPaneError.setText(methodError.getQuery().trim());
-            textPaneError.setBorder(SqlEngine.borderRight);
 
-            panelError.add(new LightScrollPane(1, 0, 1, 0, textPaneError), BorderLayout.CENTER);
+            var textareaError = new JSyntaxTextArea(methodError::setQuery, methodError::getQuery);
+            SqlEngine.reset(textareaError);
+            textareaError.setText(methodError.getQuery().trim());
+            textareaError.setCaretPosition(0);
+            panelError.add(new RTextScrollPane(textareaError), BorderLayout.CENTER);
             
-            var panelLimit = new JPanel();
+            var panelLimit = new JPanel();  // TODO Integrate Error limit
             panelLimit.setLayout(new BoxLayout(panelLimit, BoxLayout.LINE_AXIS));
             panelLimit.add(new JLabel(" Overflow limit: "));
             panelLimit.add(new JTextField(Integer.toString(methodError.getCapacity())));
-            
-            // TODO Integrate Error limit
             panelError.add(panelLimit, BorderLayout.SOUTH);
 
-            SqlEngine.tabbedPaneError.addTab(methodError.getName(), panelError);
-            
-            SqlEngine.tabbedPaneError.setTitleAt(
-                SqlEngine.tabbedPaneError.getTabCount() - 1,
+            SqlEngine.tabsError.addTab(methodError.getName(), panelError);
+            SqlEngine.tabsError.setTitleAt(
+                SqlEngine.tabsError.getTabCount() - 1,
                 String.format(
                     "<html><div style=\"text-align:left;width:100px;\">%s</div></html>",
                     methodError.getName()
                 )
             );
-            
-            SqlEngine.textPanesError.add(textPaneError);
+            SqlEngine.listTextareasError.add(textareaError);
         }
-    }
-
-    /**
-     * End coloring threads.
-     * Used when Sql Engine is closed by ctrl+W or using tab header close icon and middle click.
-     */
-    @Override
-    public void clean() {
-        SqlEngine.getTextPanes().forEach(UiUtil::stopDocumentColorer);
     }
     
     /**
-     * Reset the textPane colorer.
-     * @param textPane which colorer will be reset.
+     * Reset the textarea colorer.
+     * @param textarea which colorer will be reset.
      */
-    private static void resetLexer(JTextPaneLexer textPane) {
-        
-        UiUtil.stopDocumentColorer(textPane);
-        
-        var document = new HighlightedDocument(HighlightedDocument.SQL_STYLE);
-        document.setHighlightStyle(HighlightedDocument.SQL_STYLE);
-        textPane.setStyledDocument(document);
-        
-        document.addDocumentListener(new DocumentListenerEditing() {
+    private static void reset(JSyntaxTextArea textarea) {
+        textarea.setDocument(new RSyntaxDocument(RSyntaxDocument.SYNTAX_STYLE_SQL));  // required else empty on reopen
+        textarea.getDocument().addDocumentListener(new DocumentListenerEditing() {
             @Override
             public void process() {
-                textPane.setAttribute();
+                textarea.setAttribute();
             }
         });
     }
@@ -748,11 +568,10 @@ public class SqlEngine extends JPanel implements Cleanable {
      * Merge list of Error textPanes and list of other textAreas.
      * @return the merged list
      */
-    private static List<JTextPaneLexer> getTextPanes() {
+    private static List<JSyntaxTextArea> getTextareas() {
         return Stream.concat(
-            SqlEngine.textPanesError.stream(),
-            Stream.of(TextareaWithColor.values())
-                .map(TextareaWithColor::getText)
+            SqlEngine.listTextareasError.stream(),
+            Stream.of(TextareaWithColor.values()).map(TextareaWithColor::getTextArea)
         )
         .collect(Collectors.toList());
     }

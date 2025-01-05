@@ -1,6 +1,7 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.util.prefs.Preferences;
@@ -60,8 +61,8 @@ public class PreferencesUtil {
     private boolean isTamperingSpaceToDashComment = false;
     private boolean isTamperingSpaceToSharpComment = false;
 
-    private String csrfUserTag = "";
-    private String csrfUserTagOutput = "";
+    private String csrfUserTag = StringUtils.EMPTY;
+    private String csrfUserTagOutput = StringUtils.EMPTY;
     private boolean isCsrfUserTag = false;
     private boolean isLimitingThreads = true;
     private int countLimitingThreads = 5;
@@ -81,6 +82,10 @@ public class PreferencesUtil {
     private int countNormalIndex = 50;
     private boolean isLimitingSleepTimeStrategy = false;
     private int countSleepTimeStrategy = 5;
+
+    private String themeFlatLafName = StringUtils.EMPTY;
+    private String languageTag = StringUtils.EMPTY;
+    private boolean isUserAgentRandom = false;
 
     /**
      * Initialize the utility class with previously saved JVM preferences and apply
@@ -135,8 +140,8 @@ public class PreferencesUtil {
         
         this.is4K = preferences.getBoolean("is4K", false);
         this.isCsrfUserTag = preferences.getBoolean("isCsrfUserTag", false);
-        this.csrfUserTag = preferences.get("csrfUserTag", "");
-        this.csrfUserTagOutput = preferences.get("csrfUserTagOutput", "");
+        this.csrfUserTag = preferences.get("csrfUserTag", StringUtils.EMPTY);
+        this.csrfUserTagOutput = preferences.get("csrfUserTagOutput", StringUtils.EMPTY);
         this.isLimitingThreads = preferences.getBoolean("isLimitingThreads", true);
         this.countLimitingThreads = preferences.getInt("countLimitingThreads", 5);
         this.isConnectionTimeout = preferences.getBoolean("isConnectionTimeout", false);
@@ -154,6 +159,11 @@ public class PreferencesUtil {
         this.isStrategyStackedDisabled = preferences.getBoolean("isStrategyStackedDisabled", false);
         this.isStrategyErrorDisabled = preferences.getBoolean("isStrategyErrorDisabled", false);
         this.isStrategyNormalDisabled = preferences.getBoolean("isStrategyNormalDisabled", false);
+
+        this.isUserAgentRandom = preferences.getBoolean("isUserAgentRandom", false);
+
+        this.themeFlatLafName = preferences.get("themeFlatLafName", StringUtils.EMPTY);
+        this.languageTag = preferences.get("languageTag", StringUtils.EMPTY);
     }
     
     /**
@@ -223,6 +233,11 @@ public class PreferencesUtil {
         preferences.putBoolean("isStrategyStackedDisabled", this.isStrategyStackedDisabled);
         preferences.putBoolean("isStrategyErrorDisabled", this.isStrategyErrorDisabled);
         preferences.putBoolean("isStrategyNormalDisabled", this.isStrategyNormalDisabled);
+
+        preferences.putBoolean("isUserAgentRandom", this.isUserAgentRandom);
+
+        preferences.put("themeFlatLafName", this.themeFlatLafName);
+        preferences.put("languageTag", this.languageTag);
     }
     
     /**
@@ -230,9 +245,7 @@ public class PreferencesUtil {
      * @param path folder path to persist
      */
     public void set(String path) {
-        
         this.pathFile = path;
-        
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         preferences.put("pathFile", this.pathFile);
     }
@@ -460,84 +473,18 @@ public class PreferencesUtil {
         return this.isStrategyNormalDisabled;
     }
 
-
-    // Builder true
-
-    public PreferencesUtil withDiosStrategy() {
-        this.isDiosStrategy = true;
-        return this;
-    }
-    
-    public PreferencesUtil withZipStrategy() {
-        this.isZipStrategy = true;
-        return this;
-    }
-    
-    public PreferencesUtil withDefaultStrategy() {
-        this.isDefaultStrategy = true;
-        return this;
-    }
-    
-    public PreferencesUtil withNotTestingConnection() {
-        this.isNotTestingConnection = true;
-        return this;
-    }
-    
-    public PreferencesUtil withNotInjectingMetadata() {
-        this.isNotInjectingMetadata = true;
-        return this;
-    }
-    
-    public PreferencesUtil withNotSearchingCharInsertion() {
-        this.isNotSearchingCharInsertion = true;
-        return this;
+    public boolean isUserAgentRandom() {
+        return this.isUserAgentRandom;
     }
 
-    public PreferencesUtil withCheckingAllHeaderParam() {
-        this.isCheckingAllHeaderParam = true;
-        return this;
+    public String getThemeFlatLafName() {
+        return this.themeFlatLafName;
     }
-    
-    public PreferencesUtil withIsNotProcessingCookies() {
-        this.isNotProcessingCookies = true;
-        return this;
+
+    public String getLanguageTag() {
+        return this.languageTag;
     }
-    
-    public PreferencesUtil withProcessingCsrf() {
-        this.isProcessingCsrf = true;
-        return this;
-    }
-    
-    public PreferencesUtil withCheckingAllURLParam() {
-        this.isCheckingAllURLParam = true;
-        return this;
-    }
-    
-    public PreferencesUtil withCheckingAllRequestParam() {
-        this.isCheckingAllRequestParam = true;
-        return this;
-    }
-    
-    public PreferencesUtil withCheckingAllJsonParam() {
-        this.isCheckingAllJsonParam = true;
-        return this;
-    }
-    
-    public PreferencesUtil withCheckingAllSoapParam() {
-        this.isCheckingAllSoapParam = true;
-        return this;
-    }
-    
-    public PreferencesUtil withCheckingUpdate() {
-        this.isCheckingUpdate = true;
-        return this;
-    }
-    
-    public PreferencesUtil withReportingBugs() {
-        this.isReportingBugs = true;
-        return this;
-    }
-    
+
     
     // Builder
 
@@ -808,6 +755,21 @@ public class PreferencesUtil {
 
     public PreferencesUtil withIsStrategyNormalDisabled(boolean isStrategyNormalDisabled) {
         this.isStrategyNormalDisabled = isStrategyNormalDisabled;
+        return this;
+    }
+
+    public PreferencesUtil withThemeFlatLafName(String themeFlatLafName) {
+        this.themeFlatLafName = themeFlatLafName;
+        return this;
+    }
+
+    public PreferencesUtil withLanguageTag(String languageTag) {
+        this.languageTag = languageTag;
+        return this;
+    }
+
+    public PreferencesUtil withIsUserAgentRandom(boolean selected) {
+        this.isUserAgentRandom = selected;
         return this;
     }
 }

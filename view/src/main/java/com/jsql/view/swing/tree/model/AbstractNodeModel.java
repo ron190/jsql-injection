@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -15,8 +15,11 @@ import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.menubar.JMenuItemWithMargin;
-import com.jsql.view.swing.tree.*;
+import com.jsql.view.swing.tree.action.ActionLoadStop;
+import com.jsql.view.swing.tree.action.ActionPauseUnpause;
+import com.jsql.view.swing.tree.ImageOverlap;
+import com.jsql.view.swing.tree.PanelNode;
+import com.jsql.view.swing.tree.custom.JPopupMenuCustomExtract;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiStringUtil;
@@ -25,6 +28,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
@@ -69,7 +73,7 @@ public abstract class AbstractNodeModel {
      * True if current table node has checkbox selected, false otherwise.
      * Used to display popup menu and block injection start if no checkbox selected.
      */
-    private boolean isContainingSelection = false;
+    private boolean isAnyCheckboxSelected = false;
 
     /**
      * True if current node has already been filled, false otherwise.
@@ -79,7 +83,7 @@ public abstract class AbstractNodeModel {
 
     /**
      * True if current node is loading with unknown total number, false otherwise.
-     * Used to display gif loader.
+     * Used to display loader.
      */
     private boolean isProgressing = false;
 
@@ -142,20 +146,16 @@ public abstract class AbstractNodeModel {
      * @param path Path of current node
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
-        
         var popupMenu = new JPopupMenuCustomExtract();
         AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
 
         this.initializeItemLoadPause(currentTableNode, popupMenu, suspendableTask);
         this.initializeItemRenameReload(currentTableNode, path, popupMenu);
-
         this.buildMenu(popupMenu, path);
-        
         this.displayPopupMenu(e, popupMenu);
     }
 
     private void displayPopupMenu(MouseEvent e, JPopupMenuCustomExtract popupMenu) {
-        
         popupMenu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
 
         popupMenu.show(
@@ -175,7 +175,6 @@ public abstract class AbstractNodeModel {
     }
 
     private void initializeItemRenameReload(DefaultMutableTreeNode currentTableNode, TreePath path, JPopupMenuCustomExtract popupMenu) {
-        
         String textReload;
         
         if (this instanceof NodeModelDatabase) {
@@ -186,21 +185,18 @@ public abstract class AbstractNodeModel {
             textReload = "?";
         }
         
-        JMenuItem menuItemReload = new JMenuItemWithMargin(textReload);
-
+        JMenuItem menuItemReload = new JMenuItem(textReload);
         menuItemReload.setEnabled(!this.isRunning);
         menuItemReload.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
         
-        JMenuItem menuItemRename = new JMenuItemWithMargin(I18nViewUtil.valueByKey("RENAME_NODE"));
-        
+        JMenuItem menuItemRename = new JMenuItem(I18nViewUtil.valueByKey("RENAME_NODE"));
         menuItemRename.setEnabled(!this.isRunning);
         menuItemRename.addActionListener(actionEvent -> {
-            
             AbstractNodeModel nodeModel = (AbstractNodeModel) currentTableNode.getUserObject();
             nodeModel.setIsEdited(true);
             
-            AbstractNodeModel.this.getPanel().getLabel().setVisible(false);
-            AbstractNodeModel.this.getPanel().getEditable().setVisible(true);
+            AbstractNodeModel.this.getPanel().getNodeLabel().setVisible(false);
+            AbstractNodeModel.this.getPanel().getTextFieldEditable().setVisible(true);
             
             MediatorHelper.treeDatabase().setSelectionPath(path);
         });
@@ -215,27 +211,24 @@ public abstract class AbstractNodeModel {
         JPopupMenuCustomExtract popupMenu,
         AbstractSuspendable suspendableTask
     ) {
-        JMenuItem menuItemLoad = new JMenuItemWithMargin(
+        JMenuItem menuItemLoad = new JMenuItem(
             this.isRunning
             ? I18nViewUtil.valueByKey("THREAD_STOP")
             : I18nViewUtil.valueByKey("THREAD_LOAD"),
             'o'
         );
-        
-        if (!this.isContainingSelection && !this.isRunning) {
+        if (!this.isAnyCheckboxSelected && !this.isRunning) {
             menuItemLoad.setEnabled(false);
         }
-        
         menuItemLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
 
-        JMenuItem menuItemPause = new JMenuItemWithMargin(
+        JMenuItem menuItemPause = new JMenuItem(
             // Report #133: ignore if thread not found
             suspendableTask != null && suspendableTask.isPaused()
             ? I18nViewUtil.valueByKey("THREAD_RESUME")
             : I18nViewUtil.valueByKey("THREAD_PAUSE"),
             's'
         );
-
         if (!this.isRunning) {
             menuItemPause.setEnabled(false);
         }
@@ -247,12 +240,6 @@ public abstract class AbstractNodeModel {
     
     /**
      * Draw the panel component based on node model.
-     * @param tree
-     * @param nodeRenderer
-     * @param isSelected
-     * @param isLeaf
-     * @param hasFocus
-     * @return
      */
     public Component getComponent(
         final JTree tree,
@@ -264,10 +251,19 @@ public abstract class AbstractNodeModel {
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         this.panelNode = new PanelNode(tree, currentNode);
 
+        if (isSelected) {
+            this.panelNode.setBackground(
+                hasFocus
+                ? UIManager.getColor("Tree.selectionBackground")
+                : UIManager.getColor("Tree.selectionInactiveBackground")
+            );  // required for transparency
+        } else {
+            this.panelNode.setBackground(UIManager.getColor("Tree.background"));  // required for transparency
+        }
+
         this.initializeIcon(isLeaf);
         
         AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
-        
         this.initializeEditable(nodeModel.isEdited);
         this.initializeLabel(isSelected, hasFocus, nodeModel.isEdited);
         this.initializeProgress(currentNode);
@@ -276,79 +272,66 @@ public abstract class AbstractNodeModel {
     }
 
     private void initializeIcon(boolean isLeaf) {
-        
         this.panelNode.showIcon();
-        this.panelNode.setIcon(this.getLeafIcon(isLeaf));
+        this.panelNode.setIconNode(this.getLeafIcon(isLeaf));
     }
 
     private void initializeProgress(DefaultMutableTreeNode currentNode) {
-        
         if (this.isLoading) {
-            
             this.displayProgress(this.panelNode, currentNode);
             this.panelNode.hideIcon();
-            
         } else if (this.isProgressing) {
-            
             this.panelNode.showLoader();
             this.panelNode.hideIcon();
 
             AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
-                
-                ImageIcon animatedGIFPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
-                
-                animatedGIFPaused.setImageObserver(
-                    new ImageObserverAnimated(
-                        MediatorHelper.treeDatabase(),
-                        currentNode
-                    )
-                );
-                
-                this.panelNode.setLoaderIcon(animatedGIFPaused);
+                this.panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.icon, UiUtil.PATH_PAUSE));
             }
         }
     }
 
     private void initializeLabel(final boolean isSelected, boolean hasFocus, boolean isEdited) {
-        
         // Fix #90521: NullPointerException on setText()
+        JLabel nodeLabel = this.panelNode.getNodeLabel();
         try {
-            this.panelNode.getLabel().setText(UiStringUtil.detectUtf8Html(this.toString()));
+            nodeLabel.setText(UiStringUtil.detectUtf8Html(this.toString()));
         } catch (NullPointerException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-        
-        this.panelNode.getLabel().setVisible(!isEdited);
+        nodeLabel.setVisible(!isEdited);
 
         if (isSelected) {
             if (hasFocus) {
-                
-                this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_GAINED);
-                this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_GAINED);
-                
+                nodeLabel.setForeground(UIManager.getColor("Tree.selectionForeground"));  // required by macOS light (opposite text color)
+                nodeLabel.setBackground(UIManager.getColor("Tree.selectionBackground"));
             } else {
-                
-                this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_LOST);
-                this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_LOST);
+                nodeLabel.setForeground(UIManager.getColor("Tree.selectionInactiveForeground"));  // required by macOS light (opposite text color)
+                nodeLabel.setBackground(UIManager.getColor("Tree.selectionInactiveBackground"));
             }
+            nodeLabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         } else {
-            
-            this.panelNode.getLabel().setBackground(Color.WHITE);
-            this.panelNode.getLabel().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+            if (hasFocus) {
+                nodeLabel.setBackground(UIManager.getColor("Tree.foreground"));  // required by macOS light (opposite text color)
+                nodeLabel.setBackground(UIManager.getColor("Tree.background"));
+                nodeLabel.setBorder(new LineBorder(UIManager.getColor("Tree.selectionBorderColor"), 1, false));
+            } else {
+                nodeLabel.setBackground(UIManager.getColor("Tree.foreground"));  // required by macOS light (opposite text color)
+                nodeLabel.setBackground(UIManager.getColor("Tree.background"));
+                nodeLabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+            }
         }
     }
 
     private void initializeEditable(boolean isEdited) {
-        
         if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
-            this.panelNode.getEditable().setFont(UiUtil.FONT_MONO_ASIAN);
+            this.panelNode.getTextFieldEditable().setFont(UiUtil.FONT_MONO_ASIAN);
         } else {
-            this.panelNode.getEditable().setFont(UiUtil.FONT_NON_MONO);
+            this.panelNode.getTextFieldEditable().setFont(UiUtil.FONT_NON_MONO);
         }
         
-        this.panelNode.getEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));
-        this.panelNode.getEditable().setVisible(isEdited);
+        this.panelNode.getTextFieldEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));
+        this.panelNode.getTextFieldEditable().setVisible(isEdited);
     }
     
     /**
@@ -357,7 +340,6 @@ public abstract class AbstractNodeModel {
      * @param currentNode Functional node model object
      */
     protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
-        
         int dataCount = this.elementDatabase.getChildCount();
         panelNode.getProgressBar().setMaximum(dataCount);
         panelNode.getProgressBar().setValue(this.indexProgress);
@@ -365,7 +347,6 @@ public abstract class AbstractNodeModel {
         
         // Report #135: ignore if thread not found
         AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
-        
         if (suspendableTask != null && suspendableTask.isPaused()) {
             panelNode.getProgressBar().pause();
         }
@@ -373,7 +354,7 @@ public abstract class AbstractNodeModel {
     
     @Override
     public String toString() {
-        return this.elementDatabase != null ? this.elementDatabase.getLabelCount() : this.textEmptyNode;
+        return this.elementDatabase != null ? this.elementDatabase.getLabelWithCount() : this.textEmptyNode;
     }
     
     
@@ -389,10 +370,6 @@ public abstract class AbstractNodeModel {
 
     public AbstractElementDatabase getElementDatabase() {
         return this.elementDatabase;
-    }
-
-    public int getIndexProgress() {
-        return this.indexProgress;
     }
 
     public void setIndexProgress(int indexProgress) {
@@ -415,12 +392,8 @@ public abstract class AbstractNodeModel {
         this.isRunning = isRunning;
     }
 
-    public boolean isContainingSelection() {
-        return this.isContainingSelection;
-    }
-
-    public void setContainingSelection(boolean isContainingSelection) {
-        this.isContainingSelection = isContainingSelection;
+    public void setIsAnyCheckboxSelected(boolean isAnyCheckboxSelected) {
+        this.isAnyCheckboxSelected = isAnyCheckboxSelected;
     }
 
     public boolean isLoaded() {
@@ -431,16 +404,8 @@ public abstract class AbstractNodeModel {
         this.isLoaded = isLoaded;
     }
 
-    public boolean isProgressing() {
-        return this.isProgressing;
-    }
-
     public void setProgressing(boolean isProgressing) {
         this.isProgressing = isProgressing;
-    }
-
-    public boolean isLoading() {
-        return this.isLoading;
     }
 
     public void setLoading(boolean isLoading) {

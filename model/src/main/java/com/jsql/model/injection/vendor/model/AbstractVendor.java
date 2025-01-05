@@ -2,7 +2,7 @@ package com.jsql.model.injection.vendor.model;
 
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 
@@ -40,14 +40,14 @@ public interface AbstractVendor {
     List<String> getFalsy();
     List<String> getTruthy();
 
-    String sqlTestBooleanInitialization();
-    String sqlTestBlind(String check, BooleanMode blindMode);
-    String sqlBitTestBlind(String inj, int indexCharacter, int bit, BooleanMode blindMode);
-    String sqlTimeTest(String check, BooleanMode blindMode);
-    String sqlBitTestTime(String inj, int indexCharacter, int bit, BooleanMode blindMode);
+    String sqlTestBinaryInitialization();
+    String sqlTestBlind(String check, BinaryMode blindMode);
+    String sqlBitTestBlind(String inj, int indexCharacter, int bit, BinaryMode blindMode);
+    String sqlTimeTest(String check, BinaryMode blindMode);
+    String sqlBitTestTime(String inj, int indexCharacter, int bit, BinaryMode blindMode);
     String sqlMultibit(String inj, int indexCharacter, int block);
 
-    String sqlBooleanBlind();
+    String sqlBinaryBlind();
 
-    String sqlBooleanTime();
+    String sqlBinaryTime();
 }

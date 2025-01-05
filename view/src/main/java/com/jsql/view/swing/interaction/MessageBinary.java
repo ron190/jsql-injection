@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -32,8 +32,7 @@ public class MessageBinary implements InteractionCommand {
 
     @Override
     public void execute() {
-        
         MediatorHelper.panelConsoles().messageBinary(this.text);
-        MediatorHelper.tabConsoles().highlightTab("Boolean");
+        MediatorHelper.tabConsoles().setBold("Boolean");
     }
 }

@@ -27,7 +27,6 @@ public class ExceptionUtil {
     private final Set<String> exceptionsMd5Cached = new CopyOnWriteArraySet<>();
     
     public ExceptionUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
     
@@ -39,15 +38,12 @@ public class ExceptionUtil {
 
         @Override
         public void uncaughtException(Thread thread, Throwable throwable) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_JAVA,
                 () -> String.format("Unhandled Exception on %s", thread.getName()),
                 throwable
             );
-
-            // Display to stdout
-            LOGGER.log(
+            LOGGER.log(  // Display to stdout
                 Level.ERROR,
                 () -> String.format("Unhandled Exception on %s", thread.getName()),
                 throwable
@@ -61,31 +57,25 @@ public class ExceptionUtil {
                 && !ExceptionUtils.getStackTrace(throwable).contains("OutOfMemoryError")  // when implicit
             ) {
                 if (ExceptionUtils.getStackTrace(throwable).contains("Could not initialize class java.awt.Toolkit")) {
-
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "System libraries are missing, please use a proper Java runtime instead of headless runtime");
                     return;
-
                 } else if (ExceptionUtils.getStackTrace(throwable).contains("Could not initialize class sun.awt.X11.XToolkit")) {
-
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "System libraries are missing or wrong DISPLAY variable, please verify your settings");
                     return;
                 }
 
                 try {
-                    var md = MessageDigest.getInstance("Md5");
+                    var messageDigest = MessageDigest.getInstance("Md5");
 
                     String stackTrace = ExceptionUtils.getStackTrace(throwable).trim();
                     var passwordString = String.valueOf(stackTrace.toCharArray());
 
                     byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);
-                    md.update(passwordByte, 0, passwordByte.length);
+                    messageDigest.update(passwordByte, 0, passwordByte.length);
 
-                    byte[] encodedPassword = md.digest();
-
+                    byte[] encodedPassword = messageDigest.digest();
                     var md5Exception = HashUtil.digestToHexString(encodedPassword);
-
                     if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {
-
                         ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);
                         ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil().sendUnhandledException(
                             thread.getName(),
@@ -104,18 +94,12 @@ public class ExceptionUtil {
      * intercept and process the error to GitHub.
      */
     public void setUncaughtExceptionHandler() {
-        
-        // Regular Exception
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-
-        // Event dispatching thread Exception
-        try {
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());  // Regular Exception
+        try {  // Event dispatching thread Exception
             SwingUtilities.invokeAndWait(() ->
-                // We are in the event dispatching thread
-                Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())
+                Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())  // We are in the event dispatching thread
             );
         } catch (InvocationTargetException | InterruptedException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }

@@ -25,7 +25,6 @@ public class CookiesUtil {
     }
 
     public boolean testParameters(boolean hasFoundInjection) {
-
         if (!hasFoundInjection) {
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam()) {
                 return false;
@@ -53,7 +52,6 @@ public class CookiesUtil {
             .collect(Collectors.toList());
 
         for (AbstractMap.SimpleEntry<String, String> cookie: cookies) {
-
             String keyValue = cookie.getKey() + "=" + cookie.getValue();
             String headerCookieWithStar = rawHeader.replace(keyValue, keyValue + InjectionModel.STAR);
 
@@ -66,7 +64,6 @@ public class CookiesUtil {
                     cookie::getKey,
                     () -> cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
                 );
-
                 if (this.injectionModel.getMediatorMethod().getHeader().testParameters()) {
                     return true;
                 }
@@ -81,7 +78,6 @@ public class CookiesUtil {
                 );
             }
         }
-
         return false;
     }
 }

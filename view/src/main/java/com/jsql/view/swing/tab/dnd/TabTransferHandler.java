@@ -27,31 +27,24 @@ public class TabTransferHandler extends TransferHandler {
     protected DnDTabbedPane source;
 
     public TabTransferHandler() {
-        
-        super();
-        
         this.localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
     }
     
     @Override
     protected Transferable createTransferable(JComponent c) {
-        
         if (c instanceof DnDTabbedPane) {
             this.source = (DnDTabbedPane) c;
         }
 
         return new Transferable() {
-            
             @Override
             public DataFlavor[] getTransferDataFlavors() {
                 return new DataFlavor[] { TabTransferHandler.this.localObjectFlavor };
             }
-            
             @Override
             public boolean isDataFlavorSupported(DataFlavor flavor) {
                 return Objects.equals(TabTransferHandler.this.localObjectFlavor, flavor);
             }
-            
             @Override
             public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
                 if (this.isDataFlavorSupported(flavor)) {
@@ -65,7 +58,6 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     public boolean canImport(TransferHandler.TransferSupport support) {
-        
         if (!support.isDrop() || !support.isDataFlavorSupported(this.localObjectFlavor)) {
             return false;
         }
@@ -103,7 +95,6 @@ public class TabTransferHandler extends TransferHandler {
     }
     
     private BufferedImage makeDragTabImage(DnDTabbedPane tabbedPane) {
-        
         Rectangle rect = tabbedPane.getBoundsAt(tabbedPane.dragTabIndex);
         var image = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g2 = image.createGraphics();
@@ -113,15 +104,12 @@ public class TabTransferHandler extends TransferHandler {
         if (rect.x < 0) {
             rect.translate(-rect.x, 0);
         }
-        
         if (rect.y < 0) {
             rect.translate(0, -rect.y);
         }
-        
         if (rect.x + rect.width > image.getWidth()) {
             rect.width = image.getWidth() - rect.x;
         }
-        
         if (rect.y + rect.height > image.getHeight()) {
             rect.height = image.getHeight() - rect.y;
         }
@@ -131,9 +119,7 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     public int getSourceActions(JComponent c) {
-        
         if (c instanceof DnDTabbedPane) {
-            
             DnDTabbedPane src = (DnDTabbedPane) c;
             c.getRootPane().setGlassPane(new GhostGlassPane(src));
             
@@ -146,13 +132,11 @@ public class TabTransferHandler extends TransferHandler {
             
             return TransferHandler.MOVE;
         }
-        
         return TransferHandler.NONE;
     }
     
     @Override
     public boolean importData(TransferHandler.TransferSupport support) {
-        
         if (!this.canImport(support)) {
             return false;
         }
@@ -170,9 +154,7 @@ public class TabTransferHandler extends TransferHandler {
             } else {
                 src.exportTab(src.dragTabIndex, target, index);
             }
-            
             return true;
-            
         } catch (UnsupportedFlavorException | IOException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
@@ -182,9 +164,7 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
-        
         DnDTabbedPane src = (DnDTabbedPane) c;
-        
         src.getRootPane().getGlassPane().setVisible(false);
         src.setDropLocation(null, false);
         src.repaint();

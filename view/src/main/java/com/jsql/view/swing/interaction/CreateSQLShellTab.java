@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -18,9 +18,7 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class CreateSQLShellTab extends CreateTabHelper implements InteractionCommand {
     
-    /**
-     * Full path of the shell file on remote host.
-     */
+    // Full path of the shell file on remote host
     private final String path;
 
     // Url of the shell webpage on remote host
@@ -33,7 +31,6 @@ public class CreateSQLShellTab extends CreateTabHelper implements InteractionCom
      * @param interactionParams The local path and url for the shell
      */
     public CreateSQLShellTab(Object[] interactionParams) {
-        
         this.path = (String) interactionParams[0];
         this.url = (String) interactionParams[1];
         this.user = (String) interactionParams[2];

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,6 +12,7 @@ package com.jsql.view.swing.tree.model;
 
 import com.jsql.model.bean.database.Database;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.tree.custom.JPopupMenuCustomExtract;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
@@ -42,22 +43,20 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     protected Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return UiUtil.ICON_DATABASE_GO;
+            return UiUtil.DATABASE_LINEAR.icon;
         } else {
-            return UiUtil.ICON_DATABASE;
+            return UiUtil.DATABASE_BOLD.icon;
         }
     }
 
     @Override
     public void runAction() {
-        
         if (this.isRunning()) {
             return;
         }
     
         MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();
-        
         // Fix #90522: ArrayIndexOutOfBoundsException on reload()
         try {
             treeModel.reload(MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));
@@ -68,7 +67,6 @@ public class NodeModelDatabase extends AbstractNodeModel {
         new SwingWorker<>() {
             @Override
             protected Object doInBackground() throws Exception {
-                
                 Thread.currentThread().setName("SwingWorkerNodeModelDatabase");
                 var selectedDatabase = (Database) NodeModelDatabase.this.getElementDatabase();
                 return MediatorHelper.model().getDataAccess().listTables(selectedDatabase);

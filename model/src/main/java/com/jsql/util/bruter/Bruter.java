@@ -33,20 +33,16 @@ public class Bruter {
     };
      
     protected boolean done = false;
-    protected boolean paused = false;
 
     public long getRemainder() {
         return this.getNumberOfPossibilities() - this.count;
     }
 
     public long getNumberOfPossibilities() {
-        
         long possibilities = 0;
-        
         for (int i = this.minLength; i <= this.maxLength; i++) {
             possibilities += (long) Math.pow(this.characters.size(), i);
         }
-        
         return possibilities;
     }
 
@@ -75,33 +71,24 @@ public class Bruter {
     }
 
     public void excludeChars(String s) {
-        
         char[] arrayChars = s.toCharArray();
-        
         for (char arrayChar: arrayChars) {
             this.characters.remove(Character.toString(arrayChar));
         }
     }
 
     public int getPerSecond() {
-        
         int i;
-        
         try {
             i = (int) (this.count / this.calculateTimeDifference());
         } catch (Exception e) {
-            
             LOGGER.log(LogLevelUtil.IGNORE, e);
-            
-            // Ignore division by zero
-            return 0;
+            return 0;  // Ignore division by zero
         }
-        
         return i;
     }
 
     public String calculateTimeElapsed() {
-        
         long timeTaken = this.calculateTimeDifference();
         
         int seconds = (int) timeTaken;
@@ -149,28 +136,12 @@ public class Bruter {
         return this.found;
     }
 
-    public void setPaused(boolean paused) {
-        this.paused = paused;
-    }
-
-    public boolean isPaused() {
-        return this.paused;
-    }
-
     public void setFound(boolean found) {
         this.found = found;
     }
 
     public int getCounter() {
         return this.count;
-    }
-
-    public int getMaxLength() {
-        return this.maxLength;
-    }
-
-    public int getMinLength() {
-        return this.minLength;
     }
 
     public void setIsDone(Boolean done) {

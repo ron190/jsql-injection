@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class CallableVendor extends AbstractCallableBoolean<CallableVendor> {
+public class CallableVendor extends AbstractCallableBinary<CallableVendor> {
 
     // List of differences found between the reference page, and the present page
     private LinkedList<Diff> opcodes = new LinkedList<>();
@@ -19,7 +19,6 @@ public class CallableVendor extends AbstractCallableBoolean<CallableVendor> {
     private final String metadataInjectionProcess;
 
     public CallableVendor(String inj, InjectionVendor injectionCharInsertion, String metadataInjectionProcess) {
-        
         this.injectionCharInsertion = injectionCharInsertion;
         this.metadataInjectionProcess = metadataInjectionProcess;
         this.booleanUrl = inj;
@@ -27,30 +26,24 @@ public class CallableVendor extends AbstractCallableBoolean<CallableVendor> {
 
     @Override
     public boolean isTrue() {
-
         List<Diff> copyTrueMarks = new CopyOnWriteArrayList<>(this.injectionCharInsertion.getConstantTrueMark());
         for (Diff trueDiff: copyTrueMarks) {
             if (!this.opcodes.contains(trueDiff)) {
                 return false;
             }
         }
-
         return true;
     }
 
     @Override
     public CallableVendor call() {
-        
         String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        
         this.opcodes = CallableVendor.DIFF_MATCH_PATCH.diffMain(
             this.injectionCharInsertion.getBlankFalseMark(),
             source,
             false
         );
-
         CallableVendor.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);
-        
         return this;
     }
     

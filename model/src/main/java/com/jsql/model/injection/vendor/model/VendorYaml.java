@@ -3,7 +3,7 @@ package com.jsql.model.injection.vendor.model;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 import com.jsql.util.LogLevelUtil;
@@ -73,7 +73,7 @@ public class VendorYaml implements AbstractVendor {
     
     public static final String FORMAT_INDEX = "1337%s7331";
 
-    private static final String BOOLEAN_MODE = "${boolean.mode}";
+    private static final String BINARY_MODE = "${binary.mode}";
 
     public static final String LIMIT = "${limit}";
     private static final String LIMIT_VALUE = "${limit.value}";
@@ -121,9 +121,7 @@ public class VendorYaml implements AbstractVendor {
     private final InjectionModel injectionModel;
     
     public VendorYaml(String fileYaml, InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
-        
         var yaml = new Yaml();
         this.modelYaml = yaml.loadAs(
             VendorYaml.class.getClassLoader().getResourceAsStream("vendor/"+ fileYaml),
@@ -133,7 +131,6 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlDatabases() {
-        
         String sqlQuery = this.modelYaml.getResource().getSchema().getDatabase();
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
@@ -157,13 +154,11 @@ public class VendorYaml implements AbstractVendor {
                 );
             }
         }
-        
         return sqlQuery;
     }
     
     @Override
     public String sqlTables(Database database) {
-        
         String sqlQuery = this.modelYaml.getResource().getSchema().getTable();
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
@@ -189,7 +184,6 @@ public class VendorYaml implements AbstractVendor {
         }
         
         String databaseUtf8 = Hex.encodeHexString(database.toString().getBytes(StandardCharsets.UTF_8));
-        
         return sqlQuery
             .replace(DATABASE_HEX, databaseUtf8)
             .replace(DATABASE, database.toString());
@@ -197,7 +191,6 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlColumns(Table table) {
-        
         String sqlQuery = this.modelYaml.getResource().getSchema().getColumn();
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
@@ -234,18 +227,15 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlRows(String[] namesColumns, Database database, Table table) {
-        
         String sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
         String sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
         String sqlQuery = this.modelYaml.getResource().getSchema().getRow().getQuery();
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             if (StringUtils.isNotBlank(this.modelYaml.getResource().getDios().getDatabase())) {
-
                 sqlField = this.modelYaml.getResource().getDios().getRow().getFields().getField();
                 sqlConcatFields = this.modelYaml.getResource().getDios().getRow().getFields().getConcat();
                 sqlQuery = this.modelYaml.getResource().getDios().getRow().getQuery();
-            
             } else {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_INFORM,
@@ -255,11 +245,9 @@ public class VendorYaml implements AbstractVendor {
             }
         } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
             if (StringUtils.isNotBlank(this.modelYaml.getResource().getZip().getDatabase())) {
-
                 sqlField = this.modelYaml.getResource().getZip().getRow().getFields().getField();
                 sqlConcatFields = this.modelYaml.getResource().getZip().getRow().getFields().getConcat();
                 sqlQuery = this.modelYaml.getResource().getZip().getRow().getQuery();
-            
             } else {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_INFORM,
@@ -274,15 +262,12 @@ public class VendorYaml implements AbstractVendor {
         String trailSqlField = StringUtils.EMPTY;
         
         if (matcherSqlField.find()) {
-            
             leadSqlField = matcherSqlField.group(1);
             trailSqlField = matcherSqlField.group(2);
         }
         
         var namesColumnUtf8 = new String[namesColumns.length];
-        
         for (var i = 0 ; i < namesColumns.length ; i++) {
-            
             namesColumnUtf8[i] = StringUtil.detectUtf8(namesColumns[i]);
             namesColumnUtf8[i] = URLEncoder.encode(namesColumnUtf8[i], StandardCharsets.UTF_8);
         }
@@ -315,12 +300,10 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlTextIntoFile(String body, String path) {
-
         String visibleIndex = String.format(
             VendorYaml.FORMAT_INDEX,
             this.injectionModel.getMediatorStrategy().getSpecificNormal().getVisibleIndex()
         );
-
         return this.injectionModel.getIndexesInUrl()
             .replaceAll(
                 visibleIndex,
@@ -338,81 +321,72 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestBlind(String check, BooleanMode blindMode) {
-
+    public String sqlTestBlind(String check, BinaryMode blindMode) {
         String replacement = getMode(blindMode);
-
-        return this.modelYaml.getStrategy().getBoolean()
+        return this.modelYaml.getStrategy().getBinary()
             .getBlind()
-            .replace(BOOLEAN_MODE, replacement)
+            .replace(BINARY_MODE, replacement)
             .replace(TEST, check)
-            .trim();  // trim spaces in '${boolean.mode} ${test}' when no mode, not covered by cleanSql()
+            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
     @Override
-    public String sqlBitTestBlind(String inj, int indexCharacter, int bit, BooleanMode blindMode) {
-
+    public String sqlBitTestBlind(String inj, int indexCharacter, int bit, BinaryMode blindMode) {
         String replacement = getMode(blindMode);
-
-        return this.modelYaml.getStrategy().getBoolean()
+        return this.modelYaml.getStrategy().getBinary()
             .getBlind()
-            .replace(BOOLEAN_MODE, replacement)
+            .replace(BINARY_MODE, replacement)
             .replace(
                 TEST,
-                this.modelYaml.getStrategy().getBoolean().getTest().getBit()
+                this.modelYaml.getStrategy().getBinary().getTest().getBit()
                 .replace(INJECTION, inj)
                 .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
                 .replace(BIT, Integer.toString(bit))
             )
-            .trim();  // trim spaces in '${boolean.mode} ${test}' when no mode, not covered by cleanSql()
+            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
     @Override
-    public String sqlTimeTest(String check, BooleanMode blindMode) {
-
+    public String sqlTimeTest(String check, BinaryMode blindMode) {
         String replacement = getMode(blindMode);
         int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
             : 5;
-
-        return this.modelYaml.getStrategy().getBoolean()
+        return this.modelYaml.getStrategy().getBinary()
             .getTime()
-            .replace(BOOLEAN_MODE, replacement)
+            .replace(BINARY_MODE, replacement)
             .replace(TEST, check)
             .replace(SLEEP_TIME, Long.toString(countSleepTimeStrategy))
-            .trim();  // trim spaces in '${boolean.mode} ${test}' when no mode, not covered by cleanSql()
+            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
     @Override
-    public String sqlBitTestTime(String inj, int indexCharacter, int bit, BooleanMode blindMode) {
-
+    public String sqlBitTestTime(String inj, int indexCharacter, int bit, BinaryMode blindMode) {
         String replacement = getMode(blindMode);
         int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
             : 5;
-
-        return this.modelYaml.getStrategy().getBoolean()
+        return this.modelYaml.getStrategy().getBinary()
             .getTime()
-            .replace(BOOLEAN_MODE, replacement)
+            .replace(BINARY_MODE, replacement)
             .replace(
                 TEST,
-                this.modelYaml.getStrategy().getBoolean().getTest()
+                this.modelYaml.getStrategy().getBinary().getTest()
                 .getBit()
                 .replace(INJECTION, inj)
                 .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
                 .replace(BIT, Integer.toString(bit))
             )
             .replace(SLEEP_TIME, Long.toString(countSleepTimeStrategy))
-            .trim();  // trim spaces in '${boolean.mode} ${test}' when no mode, not covered by cleanSql()
+            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
-    private String getMode(BooleanMode blindMode) {
-
+    private String getMode(BinaryMode blindMode) {
         String replacement;
         switch (blindMode) {
-            case AND: replacement = this.modelYaml.getStrategy().getBoolean().getModeAnd(); break;
-            case OR: replacement = this.modelYaml.getStrategy().getBoolean().getModeOr(); break;
-            case STACKED: replacement = this.modelYaml.getStrategy().getBoolean().getModeStacked(); break;
+            case AND: replacement = this.modelYaml.getStrategy().getBinary().getModeAnd(); break;
+            case OR: replacement = this.modelYaml.getStrategy().getBinary().getModeOr(); break;
+            case STACKED: replacement = this.modelYaml.getStrategy().getBinary().getModeStacked(); break;
             case NO_MODE:
             default: replacement = StringUtils.EMPTY; break;
         }
@@ -441,7 +415,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlMultibit(String inj, int indexCharacter, int block){
-        return this.modelYaml.getStrategy().getBoolean().getMultibit()
+        return this.modelYaml.getStrategy().getBinary().getMultibit()
             .replace(INJECTION, inj)
             .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
             .replace(BLOCK_MULTIBIT, Integer.toString(block));
@@ -460,9 +434,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlErrorIndice(Method errorMethod) {
-
         var indexZeroToFind = "0";
-
         return VendorYaml.replaceTags(
             errorMethod.getQuery()
             .replace(VendorYaml.WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
@@ -516,10 +488,8 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlCapacity(String[] indexes) {
-
         String regexIndexes = String.join("|", indexes);
         String regexVisibleIndexesToFind = String.format(VendorYaml.FORMAT_INDEX, "(%s)");
-
         return this.injectionModel.getIndexesInUrl().replaceAll(
             String.format(regexVisibleIndexesToFind, regexIndexes),
             VendorYaml.replaceTags(
@@ -532,21 +502,15 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlIndices(Integer nbFields) {
-        
         String replaceTag = StringUtils.EMPTY;
         List<String> fields = new ArrayList<>();
-        
         var indice = 1;
-        
         for ( ; indice <= nbFields ; indice++) {
-            
             String field = this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(INDICE, Integer.toString(indice));
             fields.add(field);
             replaceTag = field;
         }
-        
         indice--;
-        
         return this.modelYaml.getStrategy().getNormal()
             .getIndices()
             .replace(
@@ -562,15 +526,12 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlLimit(Integer limitSQLResult) {
-        
         var limitBoundary = 0;
-        
         try {
             limitBoundary = Integer.parseInt(this.modelYaml.getStrategy().getConfiguration().getLimitBoundary());
         } catch (NumberFormatException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Limit start index, force to 0");
         }
-        
         return this.modelYaml.getStrategy().getConfiguration()
             .getLimit()
             .replace(LIMIT_VALUE, Integer.toString(limitSQLResult + limitBoundary));
@@ -618,13 +579,13 @@ public class VendorYaml implements AbstractVendor {
     // Getter and setter
 
     @Override
-    public String sqlBooleanBlind() {
-        return this.modelYaml.getStrategy().getBoolean().getBlind();
+    public String sqlBinaryBlind() {
+        return this.modelYaml.getStrategy().getBinary().getBlind();
     }
 
     @Override
-    public String sqlBooleanTime() {
-        return this.modelYaml.getStrategy().getBoolean().getTime();
+    public String sqlBinaryTime() {
+        return this.modelYaml.getStrategy().getBinary().getTime();
     }
 
     @Override
@@ -639,17 +600,17 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public List<String> getFalsy() {
-        return this.modelYaml.getStrategy().getBoolean().getTest().getFalsy();
+        return this.modelYaml.getStrategy().getBinary().getTest().getFalsy();
     }
 
     @Override
     public List<String> getTruthy() {
-        return this.modelYaml.getStrategy().getBoolean().getTest().getTruthy();
+        return this.modelYaml.getStrategy().getBinary().getTest().getTruthy();
     }
 
     @Override
-    public String sqlTestBooleanInitialization() {
-        return this.modelYaml.getStrategy().getBoolean().getTest().getInitialization();
+    public String sqlTestBinaryInitialization() {
+        return this.modelYaml.getStrategy().getBinary().getTest().getInitialization();
     }
 
     @Override
@@ -663,8 +624,7 @@ public class VendorYaml implements AbstractVendor {
             return this.modelYaml.getStrategy().getConfiguration().getEndingComment();
         } else {
             return this.modelYaml.getStrategy().getConfiguration().getEndingComment()
-                // Allows Boolean match fingerprinting on host errors
-                + RandomStringUtils.randomAlphanumeric(4);
+                + RandomStringUtils.randomAlphanumeric(4);  // Allows binary match fingerprinting on host errors
         }
     }
 

@@ -33,11 +33,8 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     
     /**
      * Create a callable to get initial query or insertion character.
-     * @param query
-     * @param injectionModel
      */
     public CallablePageSource(String query, InjectionModel injectionModel, String metadataInjectionProcess) {
-        
         this.query = query;
         this.injectionModel = injectionModel;
         this.metadataInjectionProcess = metadataInjectionProcess;
@@ -45,8 +42,6 @@ public class CallablePageSource implements Callable<CallablePageSource> {
 
     /**
      * Create callable for current insertion character test.
-     * @param query
-     * @param characterInsertion
      */
     public CallablePageSource(
         String query,
@@ -54,17 +49,13 @@ public class CallablePageSource implements Callable<CallablePageSource> {
         InjectionModel injectionModel,
         String metadataInjectionProcess
     ) {
-        
         this(query, injectionModel, metadataInjectionProcess);
-        
         this.characterInsertion = characterInsertion;
     }
     
     @Override
     public CallablePageSource call() {
-        
         this.content = this.injectionModel.injectWithoutIndex(this.query, this.metadataInjectionProcess);
-        
         return this;
     }
 

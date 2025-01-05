@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -11,6 +11,7 @@
 package com.jsql.view.swing.dialog;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 
 import javax.swing.*;
 
@@ -21,7 +22,6 @@ public class ReplaceFileChooser extends JFileChooser {
     
     /**
      * Create a file chooser with a replace confirm dialog.
-     * @param s
      */
     public ReplaceFileChooser(String s) {
         // Unhandled NoSuchMethodError #82561 on constructor: NoSuchMethodError
@@ -31,14 +31,11 @@ public class ReplaceFileChooser extends JFileChooser {
     
     @Override
     public void approveSelection() {
-        
-        var file = this.getSelectedFile();
-        
         if (this.getDialogType() == SAVE_DIALOG) {
+            var file = this.getSelectedFile();
             if (file.exists()) {
-                
                 int result = JOptionPane.showConfirmDialog(
-                    this,
+                    MediatorHelper.frame(),
                     String.format(
                         "%s %s",
                         this.getSelectedFile().getName(),
@@ -47,21 +44,16 @@ public class ReplaceFileChooser extends JFileChooser {
                     I18nUtil.valueByKey("SAVE_TAB_CONFIRM_TITLE"),
                     JOptionPane.YES_NO_OPTION
                 );
-                
                 switch (result) {
-                
                     case JOptionPane.YES_OPTION:
                         super.approveSelection();
                         return;
-                        
                     case JOptionPane.NO_OPTION:
                     case JOptionPane.CLOSED_OPTION:
                         return;
-                        
                     case JOptionPane.CANCEL_OPTION:
                         this.cancelSelection();
                         return;
-                        
                     default:
                         break;
                 }

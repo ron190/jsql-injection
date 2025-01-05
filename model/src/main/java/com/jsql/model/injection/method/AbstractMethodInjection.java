@@ -34,13 +34,10 @@ public abstract class AbstractMethodInjection implements Serializable {
     public abstract String name();
     
     public boolean testParameters(boolean hasFoundInjection) throws JSqlException {
-
         if (!hasFoundInjection) {
-
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking {} params...", () -> name().toLowerCase());
             return this.testParameters();
         }
-
         return true;
     }
 
@@ -51,7 +48,6 @@ public abstract class AbstractMethodInjection implements Serializable {
      * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
      */
     public boolean testParameters() throws JSqlException {
-
         var hasFoundInjection = false;
         
         // Injects URL, Request or Header params only if user tests every params
@@ -77,17 +73,14 @@ public abstract class AbstractMethodInjection implements Serializable {
         } else {
             hasFoundInjection = this.checkAllParams();
         }
-        
         return hasFoundInjection;
     }
 
     private boolean checkParamWithStar() throws JSqlException {
-        
         SimpleEntry<String, String> parameterToInject = this.getParams().stream()
             .filter(entry -> entry.getValue().contains("*"))
             .findFirst()
             .orElse(null);
-
         return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
     }
 
@@ -95,14 +88,12 @@ public abstract class AbstractMethodInjection implements Serializable {
      *  Default injection: last param tested only
      */
     private boolean checkLastParam() throws JSqlException {
-        
         // Will check param value by user.
         // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
         // for JSON injection of last param
         SimpleEntry<String, String> parameterToInject = this.getParams().stream()
             .reduce((a, b) -> b)
             .orElseThrow(NullPointerException::new);
-
         return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
     }
 
@@ -111,10 +102,8 @@ public abstract class AbstractMethodInjection implements Serializable {
      * Params are tested one by one in two loops:
      * - inner loop erases * from previous param
      * - outer loop adds * to current param
-     * @throws StoppedByUserSlidingException
      */
     private boolean checkAllParams() throws StoppedByUserSlidingException {
-        
         // This param will be marked by * if injection is found,
         // inner loop will erase mark * otherwise
         for (SimpleEntry<String, String> paramBase: this.getParams()) {
@@ -133,12 +122,10 @@ public abstract class AbstractMethodInjection implements Serializable {
                 }
             }
         }
-    
         return false;
     }
 
     private boolean isParamInjectable(SimpleEntry<String, String> paramStar) throws StoppedByUserSlidingException {
-        
         boolean hasFoundInjection;
         
         // Will test if current value is a JSON entity
@@ -155,12 +142,10 @@ public abstract class AbstractMethodInjection implements Serializable {
         } else {
             hasFoundInjection = this.testJsonlessParam(paramStar);  // Standard non JSON injection
         }
-        
         return hasFoundInjection;
     }
     
     public boolean testJsonlessParam(SimpleEntry<String, String> paramStar) throws StoppedByUserSlidingException {
-
         var hasFoundInjection = false;
 
         paramStar.setValue(paramStar.getValue() + InjectionModel.STAR);
@@ -203,7 +188,6 @@ public abstract class AbstractMethodInjection implements Serializable {
                 paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
             }
         }
-        
         return hasFoundInjection;
     }
 }

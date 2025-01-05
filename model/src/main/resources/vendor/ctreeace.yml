@@ -114,5 +114,5 @@ strategy:
    )
   orderBy: order by 1337
 
- # boolean: not boolean operator like bitand() &
+ # binary: not binary operator like bitand() &
  # TODO implement old school algorithm instead of multithread

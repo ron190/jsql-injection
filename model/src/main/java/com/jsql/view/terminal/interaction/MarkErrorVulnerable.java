@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Map;
 
 /**
- * Mark the injection as vulnerable to a error-based injection.
+ * Mark the injection as vulnerable to an error-based injection.
  */
 public class MarkErrorVulnerable implements InteractionCommand {
     
@@ -31,7 +31,6 @@ public class MarkErrorVulnerable implements InteractionCommand {
     
     @SuppressWarnings("unchecked")
     public MarkErrorVulnerable(Object[] interactionParams) {
-        
         Map<Header, Object> mapHeader = (Map<Header, Object>) interactionParams[0];
         this.indexMethodError = (int) mapHeader.get(Header.INDEX_ERROR_STRATEGY);
         this.injectionModel = (InjectionModel) mapHeader.get(Header.INJECTION_MODEL);

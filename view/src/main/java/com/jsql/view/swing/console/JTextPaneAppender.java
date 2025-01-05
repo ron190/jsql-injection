@@ -1,7 +1,6 @@
 package com.jsql.view.swing.console;
 
 import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.*;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
@@ -14,22 +13,9 @@ import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import java.awt.*;
 import java.nio.charset.StandardCharsets;
-import java.util.AbstractMap;
 import java.util.Optional;
-import java.util.stream.Stream;
 
-/**
- * Log4j2
- * LOGGER.info(e)
- * => No query string
- * LOGGER.info(e.getMessage())
- * => com.jsql.model.exception.InjectionFailureException: No query string
- * LOGGER.info(e, e)
- * => com.jsql.model.exception.InjectionFailureException: No query string + Stacktrace
- */
 @Plugin(
     name = "JTextPaneAppender",
     category = Core.CATEGORY_NAME,
@@ -38,31 +24,13 @@ import java.util.stream.Stream;
 )
 public class JTextPaneAppender extends AbstractAppender {
     
-    // Main console
-    private static SimpleConsoleAdapter consoleTextPane;
-    
-    // Java console
-    private static JavaConsoleAdapter javaTextPane;
+    private static SimpleConsoleAdapter consoleTextPane;  // Main console
+    private static SimpleConsoleAdapter javaTextPane;  // Java console
 
     public static final SimpleAttributeSet ATTRIBUTE_WARN = new SimpleAttributeSet();
     public static final SimpleAttributeSet ATTRIBUTE_INFORM = new SimpleAttributeSet();
     public static final SimpleAttributeSet ATTRIBUTE_SUCCESS = new SimpleAttributeSet();
     public static final SimpleAttributeSet ATTRIBUTE_ALL = new SimpleAttributeSet();
-    
-    static {
-        Stream.of(
-            new AbstractMap.SimpleEntry<>(ATTRIBUTE_WARN, Color.RED),
-            new AbstractMap.SimpleEntry<>(ATTRIBUTE_INFORM, Color.BLUE),
-            new AbstractMap.SimpleEntry<>(ATTRIBUTE_SUCCESS, UiUtil.COLOR_GREEN),
-            new AbstractMap.SimpleEntry<>(ATTRIBUTE_ALL, Color.BLACK)
-        )
-        .forEach(entry -> {
-            
-            StyleConstants.setFontFamily(entry.getKey(), UiUtil.FONT_NAME_MONO_NON_ASIAN);
-            StyleConstants.setFontSize(entry.getKey(), UiUtil.FONT_SIZE_MONO_NON_ASIAN);
-            StyleConstants.setForeground(entry.getKey(), entry.getValue());
-        });
-    }
     
     private JTextPaneAppender(String name, Layout<?> layout, Filter filter, boolean ignoreExceptions) {
         super(name, filter, layout, ignoreExceptions, Property.EMPTY_ARRAY);
@@ -77,39 +45,30 @@ public class JTextPaneAppender extends AbstractAppender {
         @PluginElement("Filters") Filter filter
     ) {
         if (name == null) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "No name provided for JTextPaneAppender");
             return null;
         }
-
         var layoutTextPane = Optional.ofNullable(layout).orElse(PatternLayout.createDefaultLayout());
-        
         return new JTextPaneAppender(name, layoutTextPane, filter, ignoreExceptions);
     }
 
     @Override
     public void append(LogEvent event) {
-        
         // Avoid errors which might occur in headless mode
         // or logging that occurs before consoles are available
         if (consoleTextPane == null || javaTextPane == null) {
             return;
         }
-        
         var messageLogEvent = new String[] {
             new String(this.getLayout().toByteArray(event), StandardCharsets.UTF_8)
         };
-
         if (messageLogEvent.length == 0) {  // fixes #95664
             return;
         }
         
         var level = event.getLevel().intLevel();
-        
         SwingUtilities.invokeLater(() -> {
-            
             String message = messageLogEvent[0];
-
             if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {
                 javaTextPane.append(message, ATTRIBUTE_WARN);
             } else if (level == LogLevelUtil.CONSOLE_ERROR.intLevel()) {
@@ -126,15 +85,13 @@ public class JTextPaneAppender extends AbstractAppender {
     
     /**
      * Register the java console.
-     * @param javaConsole
      */
-    public static void register(JavaConsoleAdapter javaConsole) {
+    public static void registerJavaConsole(SimpleConsoleAdapter javaConsole) {
         JTextPaneAppender.javaTextPane = javaConsole;
     }
 
     /**
      * Register the default console.
-     * @param consoleColored
      */
     public static void register(SimpleConsoleAdapter consoleColored) {
         JTextPaneAppender.consoleTextPane = consoleColored;

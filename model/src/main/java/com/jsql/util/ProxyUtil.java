@@ -50,7 +50,6 @@ public class ProxyUtil {
     private static final String PROPERTIES_HTTPS_PROXY_PORT = "https.proxyPort";
     
     public ProxyUtil(InjectionModel injectionModel) {
-        
         this.httpProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.ip");
         this.httpProxyDefaultPort = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.port");
         this.httpsProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.ip");
@@ -67,7 +66,6 @@ public class ProxyUtil {
         boolean isUsingProxyHttp, String proxyAddressHttp, String proxyPortHttp,
         boolean isUsingProxyHttps, String proxyAddressHttps, String proxyPortHttps
     ) {
-        
         // Set the application proxy settings
         this.setUsingProxyHttp(isUsingProxyHttp);
         this.setProxyAddressHttp(proxyAddressHttp);
@@ -89,23 +87,16 @@ public class ProxyUtil {
 
         // Change the JVM configuration
         if (this.isUsingProxyHttp()) {
-            
             System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddressHttp());
             System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPortHttp());
-            
         } else {
-            
             System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, "");
             System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, "");
         }
-        
         if (this.isUsingProxyHttps()) {
-            
             System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
             System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
-            
         } else {
-            
             System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, "");
             System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, "");
         }
@@ -115,7 +106,6 @@ public class ProxyUtil {
      * Initialize proxy information from JVM already saved preferences.
      */
     public void initializeProxy() {
-        
         // Use Preferences API to persist proxy configuration
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
@@ -132,13 +122,10 @@ public class ProxyUtil {
         
         // Change the JVM configuration
         if (this.isUsingProxyHttp()) {
-            
             System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddressHttp());
             System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPortHttp());
         }
-        
         if (this.isUsingProxyHttps()) {
-            
             System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
             System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
         }
@@ -152,9 +139,7 @@ public class ProxyUtil {
      * @return true if enabled proxies are up
      */
     public boolean isNotLive(ShowOnConsole showOnConsole) {
-        
         var isLive = true;
-        
         if (
             this.isUsingProxyHttp()
             && StringUtils.isNotEmpty(this.getProxyAddressHttp())
@@ -162,7 +147,6 @@ public class ProxyUtil {
         ) {
             isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttp(), this.getProxyPortHttp(), "HTTP");
         }
-
         if (
             this.isUsingProxyHttps()
             && StringUtils.isNotEmpty(this.getProxyAddressHttps())
@@ -170,26 +154,19 @@ public class ProxyUtil {
         ) {
             isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttps(), this.getProxyPortHttps(), "HTTPS");
         }
-        
         return !isLive;
     }
     
     private boolean isSocketOn(ShowOnConsole showOnConsole, String address, String port, String protocol) {
-        
         var isSocketOn = true;
-        
         try {
             var socket = new Socket(address, Integer.parseInt(port));
             socket.close();
-            
             this.logStatus(showOnConsole, address, port, protocol);
-            
         } catch (Exception e) {
-            
             isSocketOn = false;
             this.logStatus(showOnConsole, address, port, protocol, e);
         }
-        
         return isSocketOn;
     }
     
@@ -207,13 +184,11 @@ public class ProxyUtil {
     
     private void logStatus(ShowOnConsole showOnConsole, String address, String port, String protocol, Exception e) {
         if (showOnConsole == ShowOnConsole.YES) {
-            
             String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 () -> String.format(
-                    "Connection to %s proxy %s:%s failed with error \"%s\", verify your proxy settings",
+                    "Connection to %s proxy %s:%s failed, verify your proxy settings: %s",
                     protocol,
                     address,
                     port,

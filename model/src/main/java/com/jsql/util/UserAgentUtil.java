@@ -2,15 +2,10 @@ package com.jsql.util;
 
 public class UserAgentUtil {
     
-    private boolean isCustomUserAgent = false;
-
     private String customUserAgent = null;
 
-    public UserAgentUtil withCustomUserAgent(String customUserAgent) {
-
-        this.isCustomUserAgent = true;
+    public void withCustomUserAgent(String customUserAgent) {
         this.customUserAgent = customUserAgent;
-        return this;
     }
     
     
@@ -22,13 +17,5 @@ public class UserAgentUtil {
 
     public void setCustomUserAgent(String customUserAgent) {
         this.customUserAgent = customUserAgent;
-    }
-
-    public boolean isCustomUserAgent() {
-        return this.isCustomUserAgent;
-    }
-    
-    public void setIsCustomUserAgent(boolean isCustomUserAgent) {
-        this.isCustomUserAgent = isCustomUserAgent;
     }
 }

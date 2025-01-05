@@ -1,8 +1,6 @@
 package com.jsql.view.swing.tab.dnd;
 
 import com.jsql.view.swing.action.ActionCloseTabResult;
-import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
-import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +47,6 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     private void clickArrowButton(String actionKey) {
-        
         JButton scrollForwardButton = null;
         JButton scrollBackwardButton = null;
         
@@ -64,23 +61,18 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         
         JButton button = "scrollTabsForwardAction".equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
-    
         Optional.ofNullable(button)
             .filter(JButton::isEnabled)
             .ifPresent(JButton::doClick);
     }
     
     public void autoScrollTest(Point pt) {
-        
         Rectangle r = this.getTabAreaBounds();
         
         if (isTopBottomTabPlacement(this.getTabPlacement())) {
-            
             RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
             RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
-            
         } else {
-            
             RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
             RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
         }
@@ -93,12 +85,7 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     protected DnDTabbedPane() {
-        
         super();
-        
-        // UIManager.put() is not enough
-        this.setUI(new CustomMetalTabbedPaneUI());
-        this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
         
         var h = new Handler();
         this.addMouseListener(h);
@@ -107,7 +94,6 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     public DnDDropLocation dropLocationForPointDnD(Point p) {
-        
         for (var i = 0; i < this.getTabCount(); i++) {
             if (this.getBoundsAt(i).contains(p)) {
                 return new DnDDropLocation(p, i);
@@ -122,7 +108,6 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     public void setDropLocation(TransferHandler.DropLocation location, boolean forDrop) {
-        
         DnDDropLocation old = this.dropLocation;
         
         if (Objects.isNull(location) || !forDrop) {
@@ -135,7 +120,6 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
-        
         var cmp = this.getComponentAt(dragIndex);
         var tab = this.getTabComponentAt(dragIndex);
         String title = this.getTitleAt(dragIndex);
@@ -156,7 +140,6 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     public void convertTab(int prev, int next) {
-        
         var cmp = this.getComponentAt(prev);
         var tab = this.getTabComponentAt(prev);
         String title = this.getTitleAt(prev);
@@ -175,20 +158,18 @@ public class DnDTabbedPane extends JTabbedPane {
             this.setSelectedIndex(tgtindex);
         }
         
-        // I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
+        // I have a component in all tabs (jlabel with an X to close the tab) and when I move a tab the component disappear.
         // pointed out by Daniel Dario Morales Salas
         this.setTabComponentAt(tgtindex, tab);
     }
     
     public Optional<Rectangle> getDropLineRect() {
-        
         int index = Optional.ofNullable(this.getDropLocation())
             .filter(DnDDropLocation::isDroppable)
             .map(DnDDropLocation::getIndex)
             .orElse(-1);
         
         if (index < 0) {
-            
             RECT_LINE.setBounds(0, 0, 0, 0);
             return Optional.empty();
         }
@@ -206,7 +187,6 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     public Rectangle getTabAreaBounds() {
-        
         Rectangle tabbedRect = this.getBounds();
         int xx = tabbedRect.x;
         int yy = tabbedRect.y;
@@ -218,23 +198,18 @@ public class DnDTabbedPane extends JTabbedPane {
         int tabPlacement = this.getTabPlacement();
         
         if (isTopBottomTabPlacement(tabPlacement)) {
-            
             tabbedRect.height = tabbedRect.height - compRect.height;
-            
             if (tabPlacement == BOTTOM) {
                 tabbedRect.y += compRect.y + compRect.height;
             }
         } else {
-            
             tabbedRect.width = tabbedRect.width - compRect.width;
-            
             if (tabPlacement == RIGHT) {
                 tabbedRect.x += compRect.x + compRect.width;
             }
         }
         
         tabbedRect.translate(-xx, -yy);
-        
         return tabbedRect;
     }
 
@@ -248,11 +223,8 @@ public class DnDTabbedPane extends JTabbedPane {
         private final int gestureMotionThreshold = DragSource.getDragThreshold();
 
         private void repaintDropLocation() {
-            
             Component c = DnDTabbedPane.this.getRootPane().getGlassPane();
-            
             if (c instanceof GhostGlassPane) {
-                
                 GhostGlassPane glassPane = (GhostGlassPane) c;
                 glassPane.setTargetTabbedPane(DnDTabbedPane.this);
                 glassPane.repaint();
@@ -262,7 +234,6 @@ public class DnDTabbedPane extends JTabbedPane {
         // PropertyChangeListener
         @Override
         public void propertyChange(PropertyChangeEvent e) {
-            
             String propertyName = e.getPropertyName();
             if ("dropLocation".equals(propertyName)) {
                 this.repaintDropLocation();
@@ -272,12 +243,9 @@ public class DnDTabbedPane extends JTabbedPane {
         // MouseListener
         @Override
         public void mousePressed(MouseEvent e) {
-            
             DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
             boolean isOnlyOneTab = src.getTabCount() <= 1;
-            
             if (isOnlyOneTab) {
-                
                 this.startPt = null;
                 return;
             }
@@ -294,11 +262,8 @@ public class DnDTabbedPane extends JTabbedPane {
         
         @Override
         public void mouseDragged(MouseEvent e) {
-            
             var tabPt = e.getPoint();
-            
             if (Objects.nonNull(this.startPt) && this.startPt.distance(tabPt) > this.gestureMotionThreshold) {
-                
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
                 var th = src.getTransferHandler();
                 DnDTabbedPane.this.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
@@ -316,12 +281,10 @@ public class DnDTabbedPane extends JTabbedPane {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            
             var tabPt = e.getPoint();
             JTabbedPane src = (JTabbedPane) e.getSource();
             
             int i = src.indexAtLocation(tabPt.x, tabPt.y);
-            
             if (-1 < i && e.getButton() == MouseEvent.BUTTON2) {
                 ActionCloseTabResult.perform(i);
             }

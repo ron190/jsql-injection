@@ -1,45 +1,44 @@
 package com.jsql.view.swing.panel.preferences;
 
 import com.jsql.view.swing.panel.PanelPreferences;
-import com.jsql.view.swing.ui.BasicColoredSpinnerUI;
+import com.jsql.view.swing.panel.preferences.listener.SpinnerMouseWheelListener;
 import com.jsql.view.swing.util.MediatorHelper;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class PanelInjection extends JPanel {
 
-    private final JCheckBox checkboxIsNotShowingVulnReport = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotShowingVulnReport());
-    private final JCheckBox checkboxIsNotSearchingCharInsertion = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion());
-    private final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata());
-    private final JCheckBox checkboxIsParsingForm = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm());
+    private final JCheckBox checkboxIsNotShowingVulnReport = new JCheckBox("Disable showing vulnerability report", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotShowingVulnReport());
+    private final JCheckBox checkboxIsNotSearchingCharInsertion = new JCheckBox("Disable search for character insertion", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion());
+    private final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox("Disable search of database name, version and user metadata", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata());
+    private final JCheckBox checkboxIsParsingForm = new JCheckBox("Get HTML tags <input/> and add parameters to URL and Request", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm());
     
-    private final JCheckBox checkboxIsCheckingAllParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllParam());
-    private final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam());
-    private final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam());
-    private final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam());
-    private final JCheckBox checkboxIsCheckingAllBase64Param = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllBase64Param());
-    private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam());
-    private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
-    private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam());
+    private final JCheckBox checkboxIsCheckingAllParam = new JCheckBox("Inject every parameters (ignore user's selection)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllParam());
+    private final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox("Inject every URL parameters when URL method is selected", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam());
+    private final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox("Inject every Request parameters when Request method is selected", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam());
+    private final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox("Inject every Header parameters when Header method is selected", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam());
+    private final JCheckBox checkboxIsCheckingAllBase64Param = new JCheckBox("Inject Base64 parameters", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllBase64Param());
+    private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox("Inject every JSON parameters", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam());
+    private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("Inject every cookie parameters", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
+    private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox("Inject SOAP parameters in Request body", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam());
 
-    private final JCheckBox checkboxIsLimitingNormalIndex = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex());
+    private final JCheckBox checkboxIsLimitingNormalIndex = new JCheckBox("Limit Normal UNION strategy :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex());
     private final JSpinner spinnerNormalIndexCount = new JSpinner();
-    private final JCheckBox checkboxIsLimitingSleepTimeStrategy = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy());
+    private final JCheckBox checkboxIsLimitingSleepTimeStrategy = new JCheckBox("Delay Time strategy :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy());
     private final JSpinner spinnerSleepTimeStrategyCount = new JSpinner();
 
-    private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
-    private final JRadioButton radioIsZipStrategy = new JRadioButton(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
-    private final JRadioButton radioIsDefaultStrategy = new JRadioButton(StringUtils.EMPTY, true);
-    private final JRadioButton radioIsDiosStrategy = new JRadioButton(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
-    private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
-    private final JCheckBox checkboxIsUrlRandomSuffixDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlRandomSuffixDisabled());
+    private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox("Disable calibration (smaller SQL query during Normal index selection only)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
+    private final JRadioButton radioIsDefaultStrategy = new JRadioButton("Use Default mode (keep unchanged ; URL and processing unchanged)", true);
+    private final JRadioButton radioIsZipStrategy = new JRadioButton("Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
+    private final JRadioButton radioIsDiosStrategy = new JRadioButton("Use Dios mode (less queries ; do not use with Error strategies)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
+    private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox("Disable URL encoding (smaller URL)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
+    private final JCheckBox checkboxIsUrlRandomSuffixDisabled = new JCheckBox("Disable URL random suffix (strategy Time special use case)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlRandomSuffixDisabled());
 
     public PanelInjection(PanelPreferences panelPreferences) {
-        
         this.checkboxIsNotInjectingMetadata.setName("checkboxIsNotInjectingMetadata");
         this.checkboxIsNotSearchingCharInsertion.setName("checkboxIsNotSearchingCharInsertion");
         this.checkboxIsNotShowingVulnReport.setName("checkboxIsNotShowingVulnReport");
@@ -60,78 +59,30 @@ public class PanelInjection extends JPanel {
         this.checkboxIsLimitingNormalIndex.setName("checkboxIsLimitingNormalIndex");
         this.checkboxIsLimitingSleepTimeStrategy.setName("checkboxIsLimitingSleepTimeStrategy");
         
-        this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        
         this.checkboxIsPerfIndexDisabled.setToolTipText(
             "<html>Reduce Normal calibration URL, useful when host rejects large URL."
             + "<br>Should be enabled when Zip mode is activated.</html>"
         );
-
-        var tooltipParseForm =
+        this.checkboxIsParsingForm.setToolTipText(
             "<html>Create name=value params from HTML forms' extracted data.<br>"
             + "Sometimes mandatory params are contained in forms.<br>"
-            + "It makes easy adding such params to requests.</html>";
-        this.checkboxIsParsingForm.setToolTipText(tooltipParseForm);
-        this.checkboxIsParsingForm.setFocusable(false);
-        var labelIsParsingForm = new JButton("Get HTML tags <input/> and add parameters to URL and Request");
-        labelIsParsingForm.setToolTipText(tooltipParseForm);
-        labelIsParsingForm.addActionListener(actionEvent -> {
-            
-            this.checkboxIsParsingForm.setSelected(!this.checkboxIsParsingForm.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        
-        var tooltipIsNotInjectingMetadata = "Not injecting metadata saves time, particularly for Blind and Time strategies";
-        this.checkboxIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
-        this.checkboxIsNotInjectingMetadata.setFocusable(false);
-        var labelIsNotInjectingMetadata = new JButton("Disable search of database name, version and user metadata");
-        labelIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
-        labelIsNotInjectingMetadata.addActionListener(actionEvent -> {
-            
-            this.checkboxIsNotInjectingMetadata.setSelected(!this.checkboxIsNotInjectingMetadata.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        
-        var tooltipIsNotSearchingCharInsertion = "<html>Injection query starts usually with prefix like <b>quote</b> or <b>parenthesis</b>:<br>" +
+            + "It makes easy adding such params to requests.</html>"
+        );
+        this.checkboxIsNotInjectingMetadata.setToolTipText("Not injecting metadata saves time, particularly for Blind and Time strategies");
+        this.checkboxIsNotSearchingCharInsertion.setToolTipText(
+            "<html>Injection query starts usually with prefix like <b>quote</b> or <b>parenthesis</b>:<br>" +
             "- ...&injectMe=' union select...<br>" +
             "- ...&injectMe=) union select...<br>" +
-            "Default is searching for the prefix but can be disabled to save time when prefix is already set by the user.</html>";
-        this.checkboxIsNotSearchingCharInsertion.setToolTipText(tooltipIsNotSearchingCharInsertion);
-        this.checkboxIsNotSearchingCharInsertion.setFocusable(false);
-        var labelIsNotSearchingCharInsertion = new JButton("Disable search for character insertion");
-        labelIsNotSearchingCharInsertion.setToolTipText(tooltipIsNotSearchingCharInsertion);
-        labelIsNotSearchingCharInsertion.addActionListener(actionEvent -> {
+            "Default is searching for the prefix but can be disabled to save time when prefix is already set by the user.</html>"
+        );
+        this.checkboxIsLimitingSleepTimeStrategy.setToolTipText("<html>Time strategy waits an arbitrary number of seconds for a page to respond.<br>Amount of seconds can be lowered on a stable environment like local tests in order to save time.</html>");
 
-            this.checkboxIsNotSearchingCharInsertion.setSelected(!this.checkboxIsNotSearchingCharInsertion.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-
-        this.checkboxIsNotShowingVulnReport.setFocusable(false);
-        var labelIsNotShowingVulnReport = new JButton("Disable showing vulnerability report");
-        labelIsNotShowingVulnReport.addActionListener(actionEvent -> {
-
-            this.checkboxIsNotShowingVulnReport.setSelected(!this.checkboxIsNotShowingVulnReport.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-
-        var tooltipIsSleepTimeStrategy = "<html>Time strategy waits an arbitrary number of seconds for a page to respond.<br>Amount of seconds can be lowered on a stable environment like local tests in order to save time.</html>";
-        this.checkboxIsLimitingSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
-        this.checkboxIsLimitingSleepTimeStrategy.setFocusable(false);
-        var labelIsLimitingSleepTimeStrategy = new JButton("Delay Time strategy for");
-        labelIsLimitingSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
-        labelIsLimitingSleepTimeStrategy.addActionListener(actionEvent -> {
-            
-            this.checkboxIsLimitingSleepTimeStrategy.setSelected(!this.checkboxIsLimitingSleepTimeStrategy.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        
-        var panelSleepTimeStrategy = new JPanel(new BorderLayout());
-        panelSleepTimeStrategy.add(labelIsLimitingSleepTimeStrategy, BorderLayout.WEST);
+        var panelSleepTimeStrategy = new JPanel();
+        panelSleepTimeStrategy.setLayout(new BoxLayout(panelSleepTimeStrategy, BoxLayout.X_AXIS));
+        panelSleepTimeStrategy.add(new JLabel("Adjust delay to "), BorderLayout.WEST);
         panelSleepTimeStrategy.add(this.spinnerSleepTimeStrategyCount, BorderLayout.CENTER);
         panelSleepTimeStrategy.add(new JLabel(" s ; default 5s"), BorderLayout.EAST);
         panelSleepTimeStrategy.setMaximumSize(new Dimension(125, this.spinnerSleepTimeStrategyCount.getPreferredSize().height));
-        this.spinnerSleepTimeStrategyCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
-        
         int countSleepTimeStrategy = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy();
         var spinnerSleepTimeStrategy = new SpinnerNumberModel(
             countSleepTimeStrategy <= 0 ? 15 : countSleepTimeStrategy,
@@ -140,27 +91,17 @@ public class PanelInjection extends JPanel {
             1
         );
         this.spinnerSleepTimeStrategyCount.setModel(spinnerSleepTimeStrategy);
-        this.spinnerSleepTimeStrategyCount.setUI(new BasicColoredSpinnerUI());
         this.spinnerSleepTimeStrategyCount.addMouseWheelListener(new SpinnerMouseWheelListener());
-        
-        var tooltipIsLimitingNormalIndex = "Maximum number of columns to check on UNION based queries";
-        this.checkboxIsLimitingNormalIndex.setToolTipText(tooltipIsLimitingNormalIndex);
-        this.checkboxIsLimitingNormalIndex.setFocusable(false);
-        var labelIsLimitingNormalIndex = new JButton("Limit Normal UNION strategy to");
-        labelIsLimitingNormalIndex.setToolTipText(tooltipIsLimitingNormalIndex);
-        labelIsLimitingNormalIndex.addActionListener(actionEvent -> {
-            
-            this.checkboxIsLimitingNormalIndex.setSelected(!this.checkboxIsLimitingNormalIndex.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        
-        var panelIsLimitingNormalIndex = new JPanel(new BorderLayout());
-        panelIsLimitingNormalIndex.add(labelIsLimitingNormalIndex, BorderLayout.WEST);
-        panelIsLimitingNormalIndex.add(this.spinnerNormalIndexCount, BorderLayout.CENTER);
-        panelIsLimitingNormalIndex.add(new JLabel(" column(s) ; default 50 columns"), BorderLayout.EAST);
-        panelIsLimitingNormalIndex.setMaximumSize(new Dimension(250, this.spinnerNormalIndexCount.getPreferredSize().height));
-        this.spinnerNormalIndexCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
-        
+        this.spinnerSleepTimeStrategyCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
+
+        this.checkboxIsLimitingNormalIndex.setToolTipText("Maximum number of columns to check on UNION based queries");
+
+        var panelIsLimitingNormalIndex = new JPanel();
+        panelIsLimitingNormalIndex.setLayout(new BoxLayout(panelIsLimitingNormalIndex, BoxLayout.X_AXIS));
+        panelIsLimitingNormalIndex.add(new JLabel("Search for up to "));
+        panelIsLimitingNormalIndex.add(this.spinnerNormalIndexCount);
+        panelIsLimitingNormalIndex.add(new JLabel(" column(s) ; default 50 columns"));
+        panelIsLimitingNormalIndex.setMaximumSize(new Dimension(325, this.spinnerNormalIndexCount.getPreferredSize().height));
         int countNormalIndex = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countNormalIndex();
         var spinnerCountNormalIndex = new SpinnerNumberModel(
             countNormalIndex <= 0 ? 50 : countNormalIndex,
@@ -169,44 +110,25 @@ public class PanelInjection extends JPanel {
             1
         );
         this.spinnerNormalIndexCount.setModel(spinnerCountNormalIndex);
-        this.spinnerNormalIndexCount.setUI(new BasicColoredSpinnerUI());
         this.spinnerNormalIndexCount.addMouseWheelListener(new SpinnerMouseWheelListener());
-        
-        var labelIsCheckingAllParam = new JButton("Inject every parameters (ignore user's selection)");
-        var labelIsCheckingAllURLParam = new JButton("Inject every URL parameters when URL method is selected");
-        var labelIsCheckingAllRequestParam = new JButton("Inject every Request parameters when Request method is selected");
-        var labelIsCheckingAllHeaderParam = new JButton("Inject every Header parameters when Header method is selected");
-        var labelIsCheckingAllCookieParam = new JButton("Inject every cookie parameters");
-        var labelIsCheckingAllJSONParam = new JButton("Inject every JSON parameters");
-        var labelIsCheckingAllBase64Param = new JButton("Inject Base64 parameters");
-        var labelIsCheckingAllSOAPParam = new JButton("Inject SOAP parameters in Request body");
-        
-        var labelIsDefaultStrategy = new JButton("Use Default mode (use this ; no change to URL or processing)");
-        var labelIsDiosStrategy = new JButton("Use Dios mode (less queries ; do not use with Error strategies)");
-        labelIsDiosStrategy.setToolTipText(
+        this.spinnerNormalIndexCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
+
+        this.radioIsDiosStrategy.setToolTipText(
             "<html>Mode Dump In One Shot injects a single query that gets all the data at once."
             + "<br>Faster than default mode for Normal and Error strats but requires volume of data to not be huge.</html>"
         );
-        var labelIsZipStrategy = new JButton("Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)");
-        labelIsZipStrategy.setToolTipText(
+        this.radioIsZipStrategy.setToolTipText(
             "<html>Zip mode injects small queries, useful when host rejects large URL."
             + "<br>Downside is metadata like table or row count is not fetched.</html>"
         );
-        var labelIsUrlEncodingDisabled = new JButton("Disable URL encoding (smaller URL)");
-        var labelIsUrlRandomSuffixDisabled = new JButton("Disable URL random suffix (strategy Time special use case)");
-        var labelIsPerfIndexDisabled = new JButton("Disable calibration (smaller SQL query during Normal index selection only)");
-        
-        var emptyLabelGeneralInjection = new JLabel();
+
         var labelGeneralInjection = new JLabel("<html><b>Processing</b></html>");
-        var emptyLabelParamsInjection = new JLabel();
         var labelParamsInjection = new JLabel("<html><br /><b>URL parameters</b></html>");
-        var emptyLabelSpecial = new JLabel();
         var labelSpecial = new JLabel("<html><br /><b>Special parameters</b></html>");
-        var emptyLabelQuerySize = new JLabel();
         var labelQuerySize = new JLabel("<html><br /><b>Reduce URL size (advanced)</b></html>");
-        
+        Arrays.asList(labelGeneralInjection, labelParamsInjection, labelSpecial, labelQuerySize).forEach(label -> label.setBorder(PanelGeneral.MARGIN));
+
         ActionListener actionListenerCheckingAllParam = actionEvent -> {
-            
             if (actionEvent.getSource() != this.checkboxIsCheckingAllParam) {
                 this.checkboxIsCheckingAllParam.setSelected(!this.checkboxIsCheckingAllParam.isSelected());
             }
@@ -219,87 +141,12 @@ public class PanelInjection extends JPanel {
             this.checkboxIsCheckingAllRequestParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
             this.checkboxIsCheckingAllHeaderParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
             
-            labelIsCheckingAllURLParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
-            labelIsCheckingAllRequestParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
-            labelIsCheckingAllHeaderParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
-            
             panelPreferences.getActionListenerSave().actionPerformed(null);
         };
         
         this.checkboxIsCheckingAllURLParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
         this.checkboxIsCheckingAllRequestParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
         this.checkboxIsCheckingAllHeaderParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
-        
-        labelIsCheckingAllURLParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
-        labelIsCheckingAllRequestParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
-        labelIsCheckingAllHeaderParam.setEnabled(!this.checkboxIsCheckingAllParam.isSelected());
-        
-        labelIsCheckingAllParam.addActionListener(actionListenerCheckingAllParam);
-        labelIsCheckingAllURLParam.addActionListener(actionEvent -> {
-            
-            this.checkboxIsCheckingAllURLParam.setSelected(!this.checkboxIsCheckingAllURLParam.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsCheckingAllRequestParam.addActionListener(actionEvent -> {
-            
-            this.checkboxIsCheckingAllRequestParam.setSelected(!this.checkboxIsCheckingAllRequestParam.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsCheckingAllHeaderParam.addActionListener(actionEvent -> {
-            
-            this.checkboxIsCheckingAllHeaderParam.setSelected(!this.checkboxIsCheckingAllHeaderParam.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsCheckingAllJSONParam.addActionListener(actionEvent -> {
-            
-            this.checkboxIsCheckingAllJSONParam.setSelected(!this.checkboxIsCheckingAllJSONParam.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsCheckingAllBase64Param.addActionListener(actionEvent -> {
-            
-            this.checkboxIsCheckingAllBase64Param.setSelected(!this.checkboxIsCheckingAllBase64Param.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsCheckingAllCookieParam.addActionListener(actionEvent -> {
-            
-            this.checkboxIsCheckingAllCookieParam.setSelected(!this.checkboxIsCheckingAllCookieParam.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsCheckingAllSOAPParam.addActionListener(actionEvent -> {
-            
-            this.checkboxIsCheckingAllSOAPParam.setSelected(!this.checkboxIsCheckingAllSOAPParam.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsPerfIndexDisabled.addActionListener(actionEvent -> {
-            
-            this.checkboxIsPerfIndexDisabled.setSelected(!this.checkboxIsPerfIndexDisabled.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsZipStrategy.addActionListener(actionEvent -> {
-            
-            this.radioIsZipStrategy.setSelected(!this.radioIsZipStrategy.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsDiosStrategy.addActionListener(actionEvent -> {
-            
-            this.radioIsDiosStrategy.setSelected(!this.radioIsDiosStrategy.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsDefaultStrategy.addActionListener(actionEvent -> {
-            
-            this.radioIsDefaultStrategy.setSelected(!this.radioIsDefaultStrategy.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsUrlEncodingDisabled.addActionListener(actionEvent -> {
-            
-            this.checkboxIsUrlEncodingDisabled.setSelected(!this.checkboxIsUrlEncodingDisabled.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        labelIsUrlRandomSuffixDisabled.addActionListener(actionEvent -> {
-
-            this.checkboxIsUrlRandomSuffixDisabled.setSelected(!this.checkboxIsUrlRandomSuffixDisabled.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
 
         this.checkboxIsCheckingAllParam.addActionListener(actionListenerCheckingAllParam);
         
@@ -326,89 +173,43 @@ public class PanelInjection extends JPanel {
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
-        Stream.of(
-            labelIsParsingForm,
-            labelIsNotInjectingMetadata,
-            labelIsNotSearchingCharInsertion,
-            labelIsNotShowingVulnReport,
-            labelIsCheckingAllParam,
-            labelIsCheckingAllURLParam,
-            labelIsCheckingAllRequestParam,
-            labelIsCheckingAllHeaderParam,
-            labelIsCheckingAllJSONParam,
-            labelIsCheckingAllBase64Param,
-            labelIsCheckingAllCookieParam,
-            labelIsCheckingAllSOAPParam,
-            labelIsPerfIndexDisabled,
-            labelIsZipStrategy,
-            labelIsDiosStrategy,
-            labelIsDefaultStrategy,
-            labelIsUrlEncodingDisabled,
-            labelIsUrlRandomSuffixDisabled,
-            labelIsLimitingNormalIndex,
-            labelIsLimitingSleepTimeStrategy
-        )
-        .forEach(label -> {
-            
-            label.setHorizontalAlignment(SwingConstants.LEFT);
-            label.setBorderPainted(false);
-            label.setContentAreaFilled(false);
-        });
-        
-        labelIsNotInjectingMetadata.setName("labelIsNotInjectingMetadata");
-        labelIsParsingForm.setName("labelIsParsingForm");
-        labelIsCheckingAllURLParam.setName("labelIsCheckingAllURLParam");
-        labelIsCheckingAllRequestParam.setName("labelIsCheckingAllRequestParam");
-        labelIsCheckingAllHeaderParam.setName("labelIsCheckingAllHeaderParam");
-        labelIsCheckingAllJSONParam.setName("labelIsCheckingAllJSONParam");
-        labelIsCheckingAllBase64Param.setName("labelIsCheckingAllBase64Param");
-        labelIsCheckingAllCookieParam.setName("labelIsCheckingAllCookieParam");
-        labelIsCheckingAllSOAPParam.setName("labelIsCheckingAllSOAPParam");
-        labelIsPerfIndexDisabled.setName("labelIsPerfIndexDisabled");
-        labelIsZipStrategy.setName("labelIsZipStrategy");
-        labelIsDefaultStrategy.setName("labelIsDefaultStrategy");
-        labelIsDiosStrategy.setName("labelIsDiosStrategy");
-        labelIsUrlEncodingDisabled.setName("labelIsUrlEncodingDisabled");
-        labelIsUrlRandomSuffixDisabled.setName("labelIsUrlRandomSuffixDisabled");
-        labelIsLimitingNormalIndex.setName("labelIsLimitingNormalIndex");
-        labelIsLimitingSleepTimeStrategy.setName("labelIsLimitingSleepTimeStrategy");
-        
         var groupSpaceToComment = new ButtonGroup();
         groupSpaceToComment.add(this.radioIsZipStrategy);
         groupSpaceToComment.add(this.radioIsDiosStrategy);
         groupSpaceToComment.add(this.radioIsDefaultStrategy);
-        
+
         var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
 
-        groupLayout
-        .setHorizontalGroup(
+        groupLayout.setHorizontalGroup(
             groupLayout
             .createSequentialGroup()
             .addGroup(
                 groupLayout
-                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                .addComponent(emptyLabelGeneralInjection)
+                .createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                .addComponent(labelGeneralInjection)
                 .addComponent(this.checkboxIsParsingForm)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 .addComponent(this.checkboxIsNotSearchingCharInsertion)
                 .addComponent(this.checkboxIsNotShowingVulnReport)
                 .addComponent(this.checkboxIsLimitingNormalIndex)
+                .addComponent(panelIsLimitingNormalIndex)
                 .addComponent(this.checkboxIsLimitingSleepTimeStrategy)
-                
-                .addComponent(emptyLabelParamsInjection)
+                .addComponent(panelSleepTimeStrategy)
+
+                .addComponent(labelParamsInjection)
                 .addComponent(this.checkboxIsCheckingAllParam)
                 .addComponent(this.checkboxIsCheckingAllURLParam)
                 .addComponent(this.checkboxIsCheckingAllRequestParam)
                 .addComponent(this.checkboxIsCheckingAllHeaderParam)
-                
-                .addComponent(emptyLabelSpecial)
+
+                .addComponent(labelSpecial)
 //                .addComponent(this.checkboxIsCheckingAllBase64Param)
                 .addComponent(this.checkboxIsCheckingAllJSONParam)
                 .addComponent(this.checkboxIsCheckingAllSOAPParam)
                 .addComponent(this.checkboxIsCheckingAllCookieParam)
-                
-                .addComponent(emptyLabelQuerySize)
+
+                .addComponent(labelQuerySize)
                 .addComponent(this.radioIsDefaultStrategy)
                 .addComponent(this.radioIsDiosStrategy)
                 .addComponent(this.radioIsZipStrategy)
@@ -416,189 +217,143 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsUrlEncodingDisabled)
                 .addComponent(this.checkboxIsUrlRandomSuffixDisabled)
             )
-            .addGroup(
-                groupLayout
-                .createParallelGroup()
-                .addComponent(labelGeneralInjection)
-                .addComponent(labelIsParsingForm)
-                .addComponent(labelIsNotInjectingMetadata)
-                .addComponent(labelIsNotSearchingCharInsertion)
-                .addComponent(labelIsNotShowingVulnReport)
-                .addComponent(panelIsLimitingNormalIndex)
-                .addComponent(panelSleepTimeStrategy)
-                
-                .addComponent(labelParamsInjection)
-                .addComponent(labelIsCheckingAllParam)
-                .addComponent(labelIsCheckingAllURLParam)
-                .addComponent(labelIsCheckingAllRequestParam)
-                .addComponent(labelIsCheckingAllHeaderParam)
-                
-                .addComponent(labelSpecial)
-//                .addComponent(labelIsCheckingAllBase64Param)
-                .addComponent(labelIsCheckingAllJSONParam)
-                .addComponent(labelIsCheckingAllSOAPParam)
-                .addComponent(labelIsCheckingAllCookieParam)
-
-                .addComponent(labelQuerySize)
-                .addComponent(labelIsDefaultStrategy)
-                .addComponent(labelIsDiosStrategy)
-                .addComponent(labelIsZipStrategy)
-                .addComponent(labelIsPerfIndexDisabled)
-                .addComponent(labelIsUrlEncodingDisabled)
-                .addComponent(labelIsUrlRandomSuffixDisabled)
-            )
         );
-        
-        groupLayout
-        .setVerticalGroup(
+
+        groupLayout.setVerticalGroup(
             groupLayout
             .createSequentialGroup()
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(emptyLabelGeneralInjection)
                 .addComponent(labelGeneralInjection)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsParsingForm)
-                .addComponent(labelIsParsingForm)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
-                .addComponent(labelIsNotInjectingMetadata)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsNotSearchingCharInsertion)
-                .addComponent(labelIsNotSearchingCharInsertion)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsNotShowingVulnReport)
-                .addComponent(labelIsNotShowingVulnReport)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsLimitingNormalIndex)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(panelIsLimitingNormalIndex)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsLimitingSleepTimeStrategy)
-                .addComponent(panelSleepTimeStrategy)
             )
-            
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(emptyLabelParamsInjection)
+                .addComponent(panelSleepTimeStrategy)
+            )
+
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelParamsInjection)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllParam)
-                .addComponent(labelIsCheckingAllParam)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllURLParam)
-                .addComponent(labelIsCheckingAllURLParam)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllRequestParam)
-                .addComponent(labelIsCheckingAllRequestParam)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllHeaderParam)
-                .addComponent(labelIsCheckingAllHeaderParam)
             )
-            
+
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(emptyLabelSpecial)
                 .addComponent(labelSpecial)
             )
 //            .addGroup(
 //                groupLayout
 //                .createParallelGroup(GroupLayout.Alignment.BASELINE)
 //                .addComponent(this.checkboxIsCheckingAllBase64Param)
-//                .addComponent(labelIsCheckingAllBase64Param)
 //            )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllJSONParam)
-                .addComponent(labelIsCheckingAllJSONParam)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllSOAPParam)
-                .addComponent(labelIsCheckingAllSOAPParam)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllCookieParam)
-                .addComponent(labelIsCheckingAllCookieParam)
             )
-            
+
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(emptyLabelQuerySize)
                 .addComponent(labelQuerySize)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsDefaultStrategy)
-                .addComponent(labelIsDefaultStrategy)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsDiosStrategy)
-                .addComponent(labelIsDiosStrategy)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsZipStrategy)
-                .addComponent(labelIsZipStrategy)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsPerfIndexDisabled)
-                .addComponent(labelIsPerfIndexDisabled)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsUrlEncodingDisabled)
-                .addComponent(labelIsUrlEncodingDisabled)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsUrlRandomSuffixDisabled)
-                .addComponent(labelIsUrlRandomSuffixDisabled)
             )
         );
     }

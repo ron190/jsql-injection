@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -15,7 +15,7 @@ import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
 /**
- * Mark the injection as invulnerable to a blind injection.
+ * Mark the injection as vulnerable to a multibit injection.
  */
 public class MarkMultiStrategy implements InteractionCommand {
 
@@ -25,8 +25,7 @@ public class MarkMultiStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getMultibit();
-        MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategy(strategy);
+        MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(strategy);
     }
 }

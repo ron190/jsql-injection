@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -10,22 +10,29 @@
  ******************************************************************************/
 package com.jsql.view.swing.panel;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.icons.FlatRadioButtonMenuItemIcon;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.panel.address.ActionEnterAddressBar;
-import com.jsql.view.swing.panel.address.AddressMenuBar;
-import com.jsql.view.swing.panel.address.RequestPanel;
+import com.jsql.view.swing.panel.address.PanelTrailingAddress;
+import com.jsql.view.swing.panel.address.RadioModel;
 import com.jsql.view.swing.panel.util.ButtonExpandText;
-import com.jsql.view.swing.radio.RadioLinkMethod;
 import com.jsql.view.swing.text.*;
-import com.jsql.view.swing.ui.ComponentBorder;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 /**
@@ -33,272 +40,302 @@ import java.util.stream.Stream;
  * Contains textfields in a panel.
  */
 public class PanelAddressBar extends JPanel {
-    
-    private final JTextField textFieldAddress;
-    private final JTextField textFieldRequest;
-    private final JTextField textFieldHeader;
 
-    private final RadioLinkMethod[] radioQueryString = new RadioLinkMethod[1];
-    private final RadioLinkMethod[] radioRequest = new RadioLinkMethod[1];
-    private final RadioLinkMethod[] radioHeader = new RadioLinkMethod[1];
-    
-    private static final String KEY_TOOLTIP_QUERY = "FIELD_QUERYSTRING_TOOLTIP";
-    private static final String KEY_TOOLTIP_REQUEST = "FIELD_REQUEST_TOOLTIP";
-    private static final String KEY_TOOLTIP_HEADER = "FIELD_HEADER_TOOLTIP";
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
-    // Current injection method.
+    private final AtomicReference<JTextField> atomicTextFieldAddress = new AtomicReference<>();  // atomic to build dynamically;
+    private final AtomicReference<JTextField> atomicTextFieldRequest = new AtomicReference<>();
+    private final AtomicReference<JTextField> atomicTextFieldHeader = new AtomicReference<>();
+
+    private final AtomicReference<JRadioButton> atomicRadioRequest = new AtomicReference<>();  // atomic to build dynamically
+    private final AtomicReference<JRadioButton> atomicRadioMethod = new AtomicReference<>();
+    private final AtomicReference<JRadioButton> atomicRadioHeader = new AtomicReference<>();
+
+    private static final String KEY_ADDRESS_BAR_PLACEHOLDER = "ADDRESS_BAR_PLACEHOLDER";
+
+    // Current injection method
     private AbstractMethodInjection methodInjection = MediatorHelper.model().getMediatorMethod().getQuery();
+    private String typeRequest = "GET";
 
-    private final AddressMenuBar addressMenuBar;
-    private final RequestPanel requestPanel;
+    private final PanelTrailingAddress panelTrailingAddress;
 
     private boolean isAdvanceActivated = false;
     
     public PanelAddressBar() {
-        
-        this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
-        
-        final var tooltipQuery = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_QUERY)) };
-        JTextFieldWithIcon fieldWithIcon = new JTextFieldWithIcon(I18nUtil.valueByKey("ADDRESS_BAR")) {
-            
-            @Override
-            public JToolTip createToolTip() {
-                
-                JToolTipI18n tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_QUERY));
-                tooltipQuery[0] = tipI18n;
-                return tipI18n;
-            }
-        };
-        this.textFieldAddress = new JTextFieldAddressBar(fieldWithIcon).getProxy();
-        I18nViewUtil.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
-        I18nViewUtil.addComponentForKey(KEY_TOOLTIP_QUERY, tooltipQuery[0]);
-        
-        this.textFieldAddress.setName("textFieldAddress");
-        
-        final var tooltipRequest = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST)) };
-        this.textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe=") {
-            
-            @Override
-            public JToolTip createToolTip() {
-                
-                JToolTipI18n tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST));
-                tooltipRequest[0] = tipI18n;
-                return tipI18n;
-            }
-        }).getProxy();
-        I18nViewUtil.addComponentForKey(KEY_TOOLTIP_REQUEST, tooltipRequest[0]);
-        
-        final var tooltipHeader = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_HEADER)) };
-        this.textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key: value\\r\\nCookie: cKey1=cValue1; cKey2=cValue2\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:") {
-            
-            @Override
-            public JToolTip createToolTip() {
-                
-                JToolTipI18n tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_HEADER));
-                tooltipHeader[0] = tipI18n;
-                
-                return tooltipHeader[0];
-            }
-        }).getProxy();
-        I18nViewUtil.addComponentForKey(KEY_TOOLTIP_HEADER, tooltipHeader[0]);
-        
+        var buttonGroup = new ButtonGroup();
+
         Stream.of(
-            new RadioModel("URL", true, MediatorHelper.model().getMediatorMethod().getQuery(), "METHOD_QUERYSTRING_TOOLTIP", this.radioQueryString),
-            new RadioModel("GET", false, MediatorHelper.model().getMediatorMethod().getRequest(), "METHOD_REQUEST_TOOLTIP", this.radioRequest),
-            new RadioModel("Header", false, MediatorHelper.model().getMediatorMethod().getHeader(), "METHOD_HEADER_TOOLTIP", this.radioHeader)
+            new RadioModel(
+                "URL",
+                true,
+                MediatorHelper.model().getMediatorMethod().getQuery(),
+                "METHOD_QUERYSTRING_TOOLTIP",
+                atomicRadioRequest,
+                "FIELD_QUERYSTRING_TOOLTIP",
+                I18nUtil.valueByKey(KEY_ADDRESS_BAR_PLACEHOLDER),
+                atomicTextFieldAddress,
+                18
+            ),
+            new RadioModel(
+                "GET",
+                false,
+                MediatorHelper.model().getMediatorMethod().getRequest(),
+                "METHOD_REQUEST_TOOLTIP",
+                atomicRadioMethod,
+                "FIELD_REQUEST_TOOLTIP",
+                "e.g. key=value&injectMe=",
+                atomicTextFieldRequest,
+                0
+            ),
+            new RadioModel(
+                "Header",
+                false,
+                MediatorHelper.model().getMediatorMethod().getHeader(),
+                "METHOD_HEADER_TOOLTIP",
+                atomicRadioHeader,
+                "FIELD_HEADER_TOOLTIP",
+                "e.g. key: value\\r\\nCookie: cKey1=cValue1; cKey2=cValue2\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:",
+                atomicTextFieldHeader,
+                0
+            )
         )
         .forEach(radioModel -> {
-            
-            var tooltip = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18n)) };
-            radioModel.radio[0] = new RadioLinkMethod(radioModel.request, radioModel.isSelected, radioModel.method) {
-                
+            var tooltipTextfield = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(radioModel.keyTooltipQuery)));
+            radioModel.textfield.set(new JPopupTextField(new JTextFieldPlaceholder(radioModel.placeholder, radioModel.offset) {
                 @Override
                 public JToolTip createToolTip() {
-                    
-                    tooltip[0] = new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18n));
-                    
-                    return tooltip[0];
+                    tooltipTextfield.set(new JToolTipI18n(I18nUtil.valueByKey(radioModel.keyTooltipQuery)));
+                    return tooltipTextfield.get();
                 }
-            };
-            I18nViewUtil.addComponentForKey(radioModel.i18n, tooltip[0]);
-            
-            radioModel.radio[0].setToolTipText(I18nUtil.valueByKey(radioModel.i18n));
+            }).getProxy());
+            I18nViewUtil.addComponentForKey(radioModel.keyTooltipQuery, tooltipTextfield.get());
+            radioModel.textfield.get().addActionListener(new ActionEnterAddressBar(this));
+            radioModel.textfield.get().setVisible(false);  // query will be set back to visible
+            radioModel.textfield.get().setToolTipText(I18nUtil.valueByKey(radioModel.keyTooltipQuery));
+
+            var tooltipRadio = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18nRadio)));
+            radioModel.radio.set(
+                new JRadioButton(radioModel.request) {
+                    @Override
+                    public JToolTip createToolTip() {
+                        tooltipRadio.set(new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18nRadio)));
+                        return tooltipRadio.get();
+                    }
+                }
+            );
+            I18nViewUtil.addComponentForKey(radioModel.i18nRadio, tooltipRadio.get());
+            radioModel.radio.get().setToolTipText(I18nUtil.valueByKey(radioModel.i18nRadio));
+            radioModel.radio.get().setSelected(radioModel.isSelected);
+            radioModel.radio.get().setHorizontalTextPosition(SwingConstants.LEFT);
+            radioModel.radio.get().setVisible(false);
+            radioModel.radio.get().addActionListener(e -> MediatorHelper.panelAddressBar().setMethodInjection(radioModel.method));
+            buttonGroup.add(radioModel.radio.get());
         });
-                
-        this.requestPanel = new RequestPanel(this);
 
-        this.radioQueryString[0].setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
-        this.requestPanel.setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
-        this.radioHeader[0].setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
+        this.atomicTextFieldAddress.get().setFont(UiUtil.FONT_NON_MONO_BIG);
+        this.atomicTextFieldAddress.get().setName("textFieldAddress");
+        this.atomicTextFieldAddress.get().setPreferredSize(new Dimension(50, 32));  // required to set correct height
+        this.atomicTextFieldAddress.get().setVisible(true);
+        I18nViewUtil.addComponentForKey(KEY_ADDRESS_BAR_PLACEHOLDER, this.atomicTextFieldAddress.get());  // only i18n placeholder
 
-        // Tooltip setting
-        this.textFieldAddress.setToolTipText(I18nUtil.valueByKey(KEY_TOOLTIP_QUERY));
-        this.textFieldRequest.setToolTipText(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST));
-        this.textFieldHeader.setToolTipText(I18nUtil.valueByKey(KEY_TOOLTIP_HEADER));
+        atomicRadioRequest.get().setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
+        atomicRadioMethod.get().setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
+        atomicRadioHeader.get().setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
 
-        /**
-         * Define UI and the left padding for addressBar
-         */
-        this.textFieldAddress.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(4, 2, 3, 0, UiUtil.COLOR_DEFAULT_BACKGROUND),
-                    BorderFactory.createLineBorder(UiUtil.COLOR_BLU)
-                ),
-                BorderFactory.createEmptyBorder(2, 23, 2, 23)
-            )
+        this.panelTrailingAddress = new PanelTrailingAddress(this);
+        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, this.panelTrailingAddress);
+        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, UiUtil.GLOBE.icon);
+        this.atomicTextFieldRequest.get().putClientProperty(
+            FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT,
+            new ButtonExpandText("Add request body", this.atomicTextFieldRequest.get())
+        );
+        this.atomicTextFieldHeader.get().putClientProperty(
+            FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT,
+            new ButtonExpandText("Add header body", this.atomicTextFieldHeader.get())
         );
 
-        this.textFieldRequest.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND),
-                UiUtil.BORDER_BLU
-            )
-        );
-        
-        this.textFieldHeader.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND),
-                UiUtil.BORDER_BLU
-            )
-        );
-
-        this.textFieldRequest.setPreferredSize(new Dimension(0, 27));
-        this.textFieldRequest.setFont(UiUtil.FONT_NON_MONO_BIG);
-        this.textFieldHeader.setPreferredSize(new Dimension(0, 27));
-        this.textFieldHeader.setFont(UiUtil.FONT_NON_MONO_BIG);
-
-        this.textFieldAddress.addActionListener(new ActionEnterAddressBar(this));
-        this.textFieldRequest.addActionListener(new ActionEnterAddressBar(this));
-        this.textFieldHeader.addActionListener(new ActionEnterAddressBar(this));
-
-        this.addressMenuBar = new AddressMenuBar(this);
-        new ComponentBorder(this.addressMenuBar, 17, 0).install(this.textFieldAddress);
-
-        new ComponentBorder(new ButtonExpandText("Request body", this.textFieldRequest), 0, 0).install(this.textFieldRequest);
-        new ComponentBorder(new ButtonExpandText("Header body", this.textFieldHeader), 0, 0).install(this.textFieldHeader);
-
-        this.radioQueryString[0].setVisible(false);
-        this.textFieldRequest.setVisible(false);
-        this.requestPanel.setVisible(false);
-        this.textFieldHeader.setVisible(false);
-        this.radioHeader[0].setVisible(false);
-        
         this.initializeLayout();
     }
 
     private void initializeLayout() {
+        final JLabel advancedButton = this.initializeAdvancedButton();
         
-        final BasicArrowButton advancedButton = this.initializeAdvancedButton(this.requestPanel);
-        
-        // Vertical positioning for components
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
         // First panel at the top, contains text components
         var panelTextFields = new JPanel();
-        var layoutTextFields = new GroupLayout(panelTextFields);
-        panelTextFields.setLayout(layoutTextFields);
+        var groupLayout = new GroupLayout(panelTextFields);
+        panelTextFields.setLayout(groupLayout);
         panelTextFields.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
         this.add(panelTextFields);
 
-        // Horizontal column rules
-        layoutTextFields
-        .setHorizontalGroup(
-            layoutTextFields
+        final var popup = new JPopupMenu();
+        final var buttonGroupMethod = new ButtonGroup();
+
+        for (String method: new String[]{"DELETE", "GET", "HEAD", "OPTIONS", "POST", "PUT", "TRACE"}) {
+            final JMenuItem newMenuItem = new JRadioButtonMenuItem(method, "GET".equals(method));
+            newMenuItem.addActionListener(actionEvent -> {
+                this.typeRequest = (newMenuItem.getText());
+                atomicRadioMethod.get().setText(this.typeRequest);
+                atomicRadioMethod.get().requestFocusInWindow();  // required to set proper focus
+            });
+            popup.add(newMenuItem);
+            buttonGroupMethod.add(newMenuItem);
+        }
+
+        var panelCustomMethod = new JPanel(new BorderLayout());
+        panelCustomMethod.setBackground(UIManager.getColor("MenuItem.background"));  // required for correct color
+
+        final var radioCustomMethod = new JRadioButton();
+        radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());
+        radioCustomMethod.setBackground(UIManager.getColor("MenuItem.background"));  // required for correct color
+        buttonGroupMethod.add(radioCustomMethod);
+
+        final JTextField inputCustomMethod = new JPopupTextField("CUSTOM").getProxy();
+        inputCustomMethod.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                radioCustomMethod.setSelected(!radioCustomMethod.isSelected());
+            }
+        });
+        radioCustomMethod.addActionListener(actionEvent -> {
+            if (StringUtils.isNotEmpty(inputCustomMethod.getText())) {
+                this.typeRequest = inputCustomMethod.getText();
+                atomicRadioMethod.get().setText(this.typeRequest);
+            } else {
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing request custom method label");
+            }
+        });
+
+        var tooltipCustomMethod = "<html>Set user defined HTTP method.<br/>Must be one word in uppercase.</html>";
+        MouseAdapter mouseAdapterSetBackground = new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                panelCustomMethod.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+                radioCustomMethod.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                panelCustomMethod.setBackground(UIManager.getColor("MenuItem.background"));
+                radioCustomMethod.setBackground(UIManager.getColor("MenuItem.background"));
+            }
+        };
+        Arrays.asList(radioCustomMethod, inputCustomMethod, panelCustomMethod).forEach(component -> {
+            component.addMouseListener(mouseAdapterSetBackground);
+            component.setToolTipText(tooltipCustomMethod);
+        });
+
+        panelCustomMethod.add(radioCustomMethod, BorderLayout.LINE_START);
+        panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);
+        popup.insert(panelCustomMethod, popup.getComponentCount());
+
+        atomicRadioMethod.get().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Arrays.stream(popup.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
+                radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());
+                radioCustomMethod.updateUI();  // required: incorrect when dark/light mode switch
+                inputCustomMethod.updateUI();  // required: incorrect when dark/light mode switch
+                popup.updateUI();  // required: incorrect when dark/light mode switch
+                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+
+                if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
+                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+                } else {
+                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+                }
+
+                popup.show(
+                    e.getComponent(),
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+                    ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()
+                    : e.getComponent().getX(),
+                    e.getComponent().getY() + e.getComponent().getHeight()
+                );
+                popup.setLocation(  // required for proper location
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+                    ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()
+                    : e.getComponent().getLocationOnScreen().x,
+                    e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight()
+                );
+            }
+        });
+
+        groupLayout.setHorizontalGroup(
+            groupLayout
             .createSequentialGroup()
             .addGroup(
-                layoutTextFields
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                .addComponent(this.radioQueryString[0])
-                .addComponent(this.requestPanel)
-                .addComponent(this.radioHeader[0])
+                .addComponent(atomicRadioRequest.get())
+                .addComponent(atomicRadioMethod.get())
+                .addComponent(atomicRadioHeader.get())
             )
             .addGroup(
-                layoutTextFields
+                groupLayout
                 .createParallelGroup()
-                .addComponent(this.textFieldAddress)
-                .addComponent(this.textFieldRequest)
-                .addComponent(this.textFieldHeader)
+                .addComponent(this.atomicTextFieldAddress.get())
+                .addComponent(this.atomicTextFieldRequest.get())
+                .addComponent(this.atomicTextFieldHeader.get())
             )
             .addGroup(
-                layoutTextFields
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.LEADING, false)
                 .addComponent(advancedButton)
             )
         );
 
-        // Vertical line rules
-        layoutTextFields
-        .setVerticalGroup(
-            layoutTextFields
+        groupLayout.setVerticalGroup(
+            groupLayout
             .createSequentialGroup()
             .addGroup(
-                layoutTextFields
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.CENTER, false)
-                .addComponent(this.radioQueryString[0])
-                .addComponent(this.textFieldAddress)
+                .addComponent(atomicRadioRequest.get())
+                .addComponent(this.atomicTextFieldAddress.get())
                 .addComponent(advancedButton)
             )
             .addGroup(
-                layoutTextFields
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.requestPanel)
-                .addComponent(this.textFieldRequest)
+                .addComponent(atomicRadioMethod.get())
+                .addComponent(this.atomicTextFieldRequest.get())
             )
             .addGroup(
-                layoutTextFields
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.radioHeader[0])
-                .addComponent(this.textFieldHeader)
+                .addComponent(atomicRadioHeader.get())
+                .addComponent(this.atomicTextFieldHeader.get())
             )
         );
     }
 
-    private BasicArrowButton initializeAdvancedButton(final JPanel panelHttpProtocol) {
-        
-        final var advancedButton = new BasicArrowButton(SwingConstants.SOUTH);
+    private JLabel initializeAdvancedButton() {
+        var advancedButton = new JLabel(UiUtil.ARROW_DOWN.icon);
         advancedButton.setName("advancedButton");
-        advancedButton.setBorderPainted(false);
-        advancedButton.setOpaque(false);
-
         advancedButton.setToolTipText(I18nUtil.valueByKey("BUTTON_ADVANCED"));
-        advancedButton.addActionListener(actionEvent -> {
-            
-            boolean isVisible = advancedButton.getDirection() == SwingConstants.SOUTH;
-
-            this.radioQueryString[0].setVisible(isVisible);
-
-            PanelAddressBar.this.textFieldRequest.setVisible(isVisible);
-            panelHttpProtocol.setVisible(isVisible);
-
-            PanelAddressBar.this.textFieldHeader.setVisible(isVisible);
-            this.radioHeader[0].setVisible(isVisible);
-            
-            this.isAdvanceActivated = isVisible;
-            MediatorHelper.menubar().setVisible(isVisible);
-
-            advancedButton.setDirection(isVisible ? SwingConstants.NORTH : SwingConstants.SOUTH);
+        advancedButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                boolean isVisible = advancedButton.getIcon() == UiUtil.ARROW_DOWN.icon;
+                PanelAddressBar.this.atomicTextFieldRequest.get().setVisible(isVisible);
+                PanelAddressBar.this.atomicTextFieldHeader.get().setVisible(isVisible);
+                PanelAddressBar.this.atomicRadioRequest.get().setVisible(isVisible);
+                PanelAddressBar.this.atomicRadioMethod.get().setVisible(isVisible);
+                PanelAddressBar.this.atomicRadioHeader.get().setVisible(isVisible);
+                PanelAddressBar.this.isAdvanceActivated = isVisible;
+                MediatorHelper.menubar().setVisible(isVisible);
+                advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.icon : UiUtil.ARROW_DOWN.icon);
+            }
         });
-        
         return advancedButton;
-    }
-    
-    private static class RadioModel {
-        
-        private final String request;
-        private final Boolean isSelected;
-        private final AbstractMethodInjection method;
-        private final String i18n;
-        private final RadioLinkMethod[] radio;
-
-        public RadioModel(String request, Boolean isSelected, AbstractMethodInjection method, String i18n, RadioLinkMethod[] radio) {
-            
-            this.request = request;
-            this.isSelected = isSelected;
-            this.method = method;
-            this.i18n = i18n;
-            this.radio = radio;
-        }
     }
     
     
@@ -308,43 +345,43 @@ public class PanelAddressBar extends JPanel {
         this.methodInjection = methodInjection;
     }
 
-    public JTextField getTextFieldAddress() {
-        return this.textFieldAddress;
-    }
-
     public boolean isAdvanceActivated() {
         return this.isAdvanceActivated;
     }
 
+    public JTextField getTextFieldAddress() {
+        return this.atomicTextFieldAddress.get();
+    }
+
     public JTextField getTextFieldRequest() {
-        return this.textFieldRequest;
+        return this.atomicTextFieldRequest.get();
     }
 
     public JTextField getTextFieldHeader() {
-        return this.textFieldHeader;
-    }
-
-    public RadioLinkMethod getRadioQueryString() {
-        return this.radioQueryString[0];
-    }
-
-    public RadioLinkMethod getRadioHeader() {
-        return this.radioHeader[0];
-    }
-
-    public RadioLinkMethod getRadioRequest() {
-        return this.radioRequest[0];
+        return this.atomicTextFieldHeader.get();
     }
 
     public AbstractMethodInjection getMethodInjection() {
         return this.methodInjection;
     }
 
-    public AddressMenuBar getAddressMenuBar() {
-        return this.addressMenuBar;
+    public PanelTrailingAddress getPanelTrailingAddress() {
+        return this.panelTrailingAddress;
     }
 
-    public RequestPanel getRequestPanel() {
-        return this.requestPanel;
+    public String getTypeRequest() {
+        return typeRequest;
+    }
+
+    public JRadioButton getAtomicRadioRequest() {
+        return atomicRadioRequest.get();
+    }
+
+    public JRadioButton getAtomicRadioMethod() {
+        return atomicRadioMethod.get();
+    }
+
+    public JRadioButton getAtomicRadioHeader() {
+        return atomicRadioHeader.get();
     }
 }

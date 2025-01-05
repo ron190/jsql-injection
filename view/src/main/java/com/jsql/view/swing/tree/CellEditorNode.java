@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -11,6 +11,7 @@
 package com.jsql.view.swing.tree;
 
 import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.tree.action.ActionCheckSingle;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.logging.log4j.LogManager;
@@ -51,7 +52,6 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
      * Build editor, add tree and mouse listener.
      */
     public CellEditorNode() {
-        
         this.defaultTreeRenderer = new CellRendererNode();
         MediatorHelper.treeDatabase().addTreeSelectionListener(this);
         MediatorHelper.treeDatabase().addMouseListener(this);
@@ -66,26 +66,22 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         boolean leaf, 
         int row
     ) {
-
         var componentRenderer = this.defaultTreeRenderer.getTreeCellRendererComponent(
             tree, nodeRenderer, true, expanded, leaf, row, true
         );
 
         final DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         var currentNodeModel = currentNode.getUserObject();
-        
         try {
             this.nodeModel = (AbstractNodeModel) currentNodeModel;
-            
             if (componentRenderer instanceof JCheckBox) {
                 ((JCheckBox) componentRenderer).addActionListener(
-                    new ActionCheckUncheck(this.nodeModel, currentNode)
+                    new ActionCheckSingle(this.nodeModel, currentNode)
                 );
             }
         } catch (Exception e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-
         return componentRenderer;
     }
 
@@ -96,16 +92,12 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     
     @Override
     public void valueChanged(TreeSelectionEvent treeSelectionEvent) {
-        
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) MediatorHelper.treeDatabase().getLastSelectedPathComponent();
-
-        // Get rid of java.lang.NullPointerException
         if (node == null) {
             return;
         }
 
         if (node.getUserObject() instanceof AbstractNodeModel) {
-            
             AbstractNodeModel dataModel = (AbstractNodeModel) node.getUserObject();
             if (!dataModel.isLoaded()) {
                 dataModel.runAction();
@@ -118,24 +110,19 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
      * @param mouseEvent Mouse event
      */
     private void showPopup(MouseEvent mouseEvent) {
-        
         if (!mouseEvent.isPopupTrigger()) {
             return;
         }
         
         JTree tree = (JTree) mouseEvent.getSource();
         TreePath path = tree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
-        
         if (path == null) {
             return;
         }
 
         DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-
         if (currentTableNode.getUserObject() instanceof AbstractNodeModel) {
-            
             AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
-            
             if (currentTableModel.isPopupDisplayable()) {
                 currentTableModel.showPopup(currentTableNode, path, mouseEvent);
             }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -218,7 +217,6 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         final byte pad,
         final CodecPolicy decodingPolicy
     ) {
-        
         this.unencodedBlockSize = unencodedBlockSize;
         this.encodedBlockSize = encodedBlockSize;
         final boolean useChunking = lineLength > 0 && chunkSeparatorLength > 0;
@@ -253,12 +251,10 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @throws OutOfMemoryError if the {@code minCapacity} is negative
      */
     private static int createPositiveCapacity(final int minCapacity) {
-        
         if (minCapacity < 0) {
             // overflow
             throw new OutOfMemoryError("Unable to allocate array size: " + (minCapacity & 0xffffffffL));
         }
-        
         // This is called when we require buffer expansion to a very big array.
         // Use the conservative maximum buffer size if possible, otherwise the biggest required.
         //
@@ -289,7 +285,6 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return true if byte is whitespace, false otherwise
      */
     protected static boolean isWhiteSpace(final byte byteToCheck) {
-        
         switch (byteToCheck) {
             case ' ' :
             case '\n' :
@@ -309,23 +304,18 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @throws OutOfMemoryError if the {@code minCapacity} is negative
      */
     private static byte[] resizeBuffer(final Context context, final int minCapacity) {
-        
         // Overflow-conscious code treats the min and new capacity as unsigned.
         final int oldCapacity = context.buffer.length;
         int newCapacity = oldCapacity * DEFAULT_BUFFER_RESIZE_FACTOR;
-        
         if (compareUnsigned(newCapacity, minCapacity) < 0) {
             newCapacity = minCapacity;
         }
-        
         if (compareUnsigned(newCapacity, MAX_BUFFER_SIZE) > 0) {
             newCapacity = createPositiveCapacity(minCapacity);
         }
-
         final var b = new byte[newCapacity];
         System.arraycopy(context.buffer, 0, b, 0, context.buffer.length);
         context.buffer = b;
-        
         return b;
     }
 
@@ -349,17 +339,14 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return {@code true} if any byte is a valid character in the alphabet or PAD; {@code false} otherwise
      */
     protected boolean containsAlphabetOrPad(final byte[] arrayOctet) {
-        
         if (arrayOctet == null) {
             return false;
         }
-        
         for (final byte element : arrayOctet) {
             if (this.pad == element || this.isInAlphabet(element)) {
                 return true;
             }
         }
-        
         return false;
     }
 
@@ -372,17 +359,14 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      */
     @Override
     public byte[] decode(final byte[] pArray) {
-        
         if (pArray == null || pArray.length == 0) {
             return pArray;
         }
-        
         final var context = new Context();
         this.decode(pArray, 0, pArray.length, context);
         this.decode(pArray, 0, EOF, context); // Notify decoder of EOF.
         final var result = new byte[context.pos];
         this.readResults(result, 0, result.length, context);
-        
         return result;
     }
 
@@ -431,11 +415,9 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      */
     @Override
     public byte[] encode(final byte[] pArray) {
-        
         if (pArray == null || pArray.length == 0) {
             return pArray;
         }
-        
         return this.encode(pArray, 0, pArray.length);
     }
 
@@ -453,17 +435,14 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @since 1.11
      */
     public byte[] encode(final byte[] pArray, final int offset, final int length) {
-        
         if (pArray == null || pArray.length == 0) {
             return pArray;
         }
-        
         final var context = new Context();
         this.encode(pArray, offset, length, context);
         this.encode(pArray, offset, EOF, context); // Notify encoder of EOF.
         final var buf = new byte[context.pos - context.readPos];
         this.readResults(buf, 0, buf.length, context);
-        
         return buf;
     }
 
@@ -482,11 +461,9 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      */
     @Override
     public Object encode(final Object obj) throws EncoderException {
-        
         if (!(obj instanceof byte[])) {
             throw new EncoderException("Parameter supplied to Base-N encode is not a byte[]");
         }
-        
         return this.encode((byte[]) obj);
     }
 
@@ -523,20 +500,15 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return the buffer
      */
     protected byte[] ensureBufferSize(final int size, final Context context) {
-        
         if (context.buffer == null) {
-            
             context.buffer = new byte[Math.max(size, this.getDefaultBufferSize())];
             context.pos = 0;
             context.readPos = 0;
-
             // Overflow-conscious:
             // x + y > z  ==  x + y - z > 0
-            
         } else if (context.pos + size - context.buffer.length > 0) {
             return resizeBuffer(context, context.pos + size);
         }
-        
         return context.buffer;
     }
 
@@ -574,16 +546,13 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * Returns a long since a max-len array will require &gt; Integer.MAX_VALUE
      */
     public long getEncodedLength(final byte[] pArray) {
-        
         // Calculate non-chunked size - rounded up to allow for padding
         // cast to long is needed to avoid possibility of overflow
         long len = ((pArray.length + this.unencodedBlockSize-1)  / this.unencodedBlockSize) * (long) this.encodedBlockSize;
-        
         if (this.lineLength > 0) { // We're using chunking
             // Round up to nearest multiple
             len += ((len + this.lineLength-1) / this.lineLength) * this.chunkSeparatorLength;
         }
-        
         return len;
     }
 
@@ -618,7 +587,6 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *         {@code false}, otherwise
      */
     public boolean isInAlphabet(final byte[] arrayOctet, final boolean allowWSPad) {
-        
         for (final byte octet : arrayOctet) {
             if (
                 !this.isInAlphabet(octet)
@@ -628,7 +596,6 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
                 return false;
             }
         }
-        
         return true;
     }
 
@@ -678,20 +645,15 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return The number of bytes successfully extracted into the provided byte[] array.
      */
     private int readResults(final byte[] b, final int bPos, final int bAvail, final Context context) {
-        
         if (context.buffer != null) {
-            
             final int len = Math.min(this.available(context), bAvail);
             System.arraycopy(context.buffer, context.readPos, b, bPos, len);
             context.readPos += len;
-            
             if (context.readPos >= context.pos) {
                 context.buffer = null; // so hasData() will return false, and this method can return -1
             }
-            
             return len;
         }
-        
         return context.eof ? EOF : 0;
     }
 

@@ -29,7 +29,7 @@ public class MySqlSelectSuiteIT extends ConcreteMySqlSuiteIT {
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsUrlRandomSuffixDisabled(true)
-        .withNotInjectingMetadata();
+        .withIsNotInjectingMetadata(true);
 
         model
         .getMediatorUtils()

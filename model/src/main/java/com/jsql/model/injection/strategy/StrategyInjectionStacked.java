@@ -9,6 +9,7 @@ import com.jsql.model.injection.vendor.model.yaml.Configuration;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,9 +31,7 @@ public class StrategyInjectionStacked extends AbstractStrategy {
 
     @Override
     public void checkApplicability() {
-
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyStackedDisabled()) {
-
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
             return;
         }
@@ -50,20 +49,15 @@ public class StrategyInjectionStacked extends AbstractStrategy {
         );
 
         boolean methodIsApplicable = this.isApplicable(configurationYaml, strategyYaml.getStacked());
-
         if (methodIsApplicable) {
-
             Matcher regexSearch = this.getPerformance(configurationYaml, strategyYaml.getStacked());
-
             if (!regexSearch.find()) {
-
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
                     "{} {} but injectable size is incorrect",
                     () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
                     () -> "Stacked"
                 );
-
                 methodIsApplicable = false;
             } else {
                 this.performanceLength = "" + regexSearch.group(1).length();
@@ -71,26 +65,21 @@ public class StrategyInjectionStacked extends AbstractStrategy {
         }
 
         if (methodIsApplicable) {
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
-                "{} Stacked injection using [{}] characters",
+                "{} Stacked injection showing [{}] characters",
                 () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
                 () -> this.performanceLength
             );
-
             this.allow();
-
         } else {
             this.unallow();
         }
     }
 
     private boolean isApplicable(Configuration configurationYaml, String stacked) {
-        
         var methodIsApplicable = false;
         var indexZeroToFind = "0";
-      
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(
             VendorYaml.replaceTags(
                 stacked
@@ -101,18 +90,15 @@ public class StrategyInjectionStacked extends AbstractStrategy {
             ),
             "stacked#confirm"
         );
-   
         String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);
         if (performanceSourcePage.matches("(?s).*"+ regexIndexZero +".*")) {
             methodIsApplicable = true;
             this.isApplicable = true;
         }
-        
         return methodIsApplicable;
     }
 
     private Matcher getPerformance(Configuration configurationYaml, String stacked) {
-        
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(
             VendorYaml.replaceTags(
                 stacked
@@ -123,17 +109,15 @@ public class StrategyInjectionStacked extends AbstractStrategy {
             ),
             "stacked#size"
         );
-        
         return Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceSourcePage);
     }
 
     @Override
     public void allow(int... i) {
-
         this.injectionModel.appendAnalysisReport(
-            "<span style=color:rgb(0,0,255)>### Strategy: " + getName() + "</span>"
+            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + getName())
             + this.injectionModel.getReportWithoutIndex(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked("<span style=color:rgb(0,128,0)>&lt;query&gt;</span>", "0", true),
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
                 "metadataInjectionProcess"
             )
         );
@@ -156,7 +140,6 @@ public class StrategyInjectionStacked extends AbstractStrategy {
     @Override
     public void activateWhenApplicable() {
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 "{} [{}]",

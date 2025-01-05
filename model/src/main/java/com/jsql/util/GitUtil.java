@@ -1,6 +1,7 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -15,6 +18,7 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
+import java.util.Locale;
 
 /**
  * Utility class used to connect to GitHub Rest webservices.
@@ -37,10 +41,7 @@ public class GitUtil {
      * Define explicit labels to declare method parameters.
      * Used for code readability only.
      */
-    public enum ShowOnConsole {
-        YES,
-        NO
-    }
+    public enum ShowOnConsole { YES, NO }
 
     private final InjectionModel injectionModel;
     
@@ -53,15 +54,12 @@ public class GitUtil {
      * @param displayUpdateMessage YES for manual update verification, hidden otherwise
      */
     public void checkUpdate(ShowOnConsole displayUpdateMessage) {
-        
         if (displayUpdateMessage == ShowOnConsole.YES) {
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("UPDATE_LOADING"));
         }
-        
         try {
-            var versionGit = Float.parseFloat(this.getJSONObject().getString("version"));
-            
-            if (versionGit > Float.parseFloat(this.injectionModel.getVersionJsql())) {
+            var versionGit = Float.parseFloat(this.callService().getString("version"));
+            if (versionGit > Float.parseFloat(this.injectionModel.getPropertiesUtil().getVersionJsql())) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("UPDATE_NEW_VERSION"));
             } else if (displayUpdateMessage == ShowOnConsole.YES) {
                 LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, () -> I18nUtil.valueByKey("UPDATE_UPTODATE"));
@@ -70,7 +68,7 @@ public class GitUtil {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, I18nUtil.valueByKey("UPDATE_EXCEPTION"));
         }
     }
-    
+
     /**
      * Define the body of an issue to send to GitHub for an unhandled exception.
      * It adds different system data to the body and remove sensible data like
@@ -79,18 +77,22 @@ public class GitUtil {
      * @param throwable unhandled exception to report to GitHub
      */
     public void sendUnhandledException(String threadName, Throwable throwable) {
-        
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+
         var osMetadata = String.join(
             "\n",
             String.format(
                 "jSQL: v%s",
-                this.injectionModel.getVersionJsql()
+                this.injectionModel.getPropertiesUtil().getVersionJsql()
             ),
             String.format(
-                "Java: v%s-%s-%s on %s",
+                "Java: v%s-%s-%s on %s%s",
                 SystemUtils.JAVA_VERSION,
                 SystemUtils.OS_ARCH,
                 SystemUtils.USER_LANGUAGE,
+                SystemUtils.JAVA_VENDOR,
                 SystemUtils.JAVA_RUNTIME_NAME
             ),
             String.format(
@@ -98,10 +100,11 @@ public class GitUtil {
                 SystemUtils.OS_NAME, SystemUtils.OS_VERSION
             ),
             String.format(
-                "Desktop: %s",
-                System.getProperty("sun.desktop") != null
-                ? System.getProperty("sun.desktop")
-                : "undefined"
+                "Display: %s (%sx%s, %s)",
+                UIManager.getLookAndFeel(),
+                width,
+                height,
+                Locale.getDefault().getLanguage()
             ),
             String.format(
                 "Strategy: %s",
@@ -115,20 +118,10 @@ public class GitUtil {
             )
         );
         
-        var exceptionText = String.format(
-            "Exception on %s%n%s%n",
-            threadName,
-            ExceptionUtils.getStackTrace(throwable).trim()
-        );
+        var exceptionText = String.format("Exception on %s%n%s%n", threadName, ExceptionUtils.getStackTrace(throwable).trim());
+        var clientDescription = String.format("```yaml%n%s%n```%n```java%n%s```", osMetadata, exceptionText);
         
-        var clientDescription = String.format(
-            "```yaml%n%s%n```%n```java%n%s```",
-            osMetadata,
-            exceptionText
-        );
-        
-        clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", org.apache.commons.lang3.StringUtils.EMPTY);
-          
+        clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", StringUtils.EMPTY);
         this.sendReport(clientDescription, ShowOnConsole.NO, "Unhandled "+ throwable.getClass().getSimpleName());
     }
     
@@ -140,7 +133,6 @@ public class GitUtil {
      * @param reportTitle title of the Issue
      */
     public void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
-        
         if (this.injectionModel.getMediatorUtils().getProxyUtil().isNotLive(showOnConsole)) {
             return;
         }
@@ -165,18 +157,11 @@ public class GitUtil {
             
         try {
             HttpResponse<String> response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());
-                        
             this.readGithubResponse(response, showOnConsole);
-            
         } catch (InterruptedException | IOException e) {
-            
             if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.log(
-                    LogLevelUtil.CONSOLE_ERROR,
-                    String.format("Error during GitHub report connection: %s", e.getMessage())
-                );
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format("Error during GitHub report connection: %s", e.getMessage()));
             }
-            
             if (e instanceof InterruptedException) {
                 Thread.currentThread().interrupt();
             }
@@ -185,12 +170,8 @@ public class GitUtil {
     
     private void readGithubResponse(HttpResponse<String> response, ShowOnConsole showOnConsole) throws IOException {
         try {
-            // Read the response
-            String sourcePage = response.body();
-
             if (showOnConsole == ShowOnConsole.YES) {
-                
-                var jsonObjectResponse = new JSONObject(sourcePage);
+                var jsonObjectResponse = new JSONObject(response.body());
                 var urlIssue = jsonObjectResponse.getString("html_url");
                 LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Sent to GitHub: {}", urlIssue);
             }
@@ -206,8 +187,7 @@ public class GitUtil {
      */
     public void showNews() {
         try {
-            var news = this.getJSONObject().getJSONArray("news");
-            
+            var news = this.callService().getJSONArray("news");
             for (var index = 0 ; index < news.length() ; index++) {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, news.get(index));
             }
@@ -220,32 +200,26 @@ public class GitUtil {
      * Instantiate the jsonObject from json data if not already set.
      * @return jsonObject describing json data
      */
-    public JSONObject getJSONObject() {
-
+    public JSONObject callService() {
         if (this.jsonObject == null) {
-            
             String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(
                 this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.webservice.url")
             );
-            
             // Fix #45349: JSONException on new JSONObject(json)
             try {
                 this.jsonObject = new JSONObject(json);
             } catch (JSONException e) {
-                
                 try {
                     this.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
                 } catch (JSONException eInner) {
                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Fetching default JSON failed", eInner);
                 }
-                
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
                     "Fetching configuration from GitHub failed. Wait for service to be available, check your connection or update jSQL"
                 );
             }
         }
-        
         return this.jsonObject;
     }
 }

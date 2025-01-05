@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -14,12 +14,13 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
 import com.jsql.model.injection.strategy.blind.InjectionBlind;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,14 +40,10 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled()) {
-
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
             return;
-
-        } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanBlind())) {
-
+        } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBinaryBlind())) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
@@ -56,27 +53,24 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             return;
         }
 
-        checkInjection(BooleanMode.OR);
-        checkInjection(BooleanMode.AND);
-        checkInjection(BooleanMode.STACKED);
-        checkInjection(BooleanMode.NO_MODE);
+        checkInjection(BinaryMode.OR);
+        checkInjection(BinaryMode.AND);
+        checkInjection(BinaryMode.STACKED);
+        checkInjection(BinaryMode.NO_MODE);
 
         if (this.isApplicable) {
-
             this.allow();
 
             var requestMessageBinary = new Request();
             requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
             requestMessageBinary.setParameters(this.injectionBlind.getInfoMessage());
             this.injectionModel.sendToViews(requestMessageBinary);
-
         } else {
             this.unallow();
         }
     }
 
-    private void checkInjection(BooleanMode booleanMode) throws StoppedByUserSlidingException {
-
+    private void checkInjection(BinaryMode binaryMode) throws StoppedByUserSlidingException {
         if (this.isApplicable) {
             return;
         }
@@ -86,9 +80,9 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             "{} [{}] with [{}]...",
             () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY),
             this::getName,
-            () -> booleanMode
+            () -> binaryMode
         );
-        this.injectionBlind = new InjectionBlind(this.injectionModel, booleanMode);
+        this.injectionBlind = new InjectionBlind(this.injectionModel, binaryMode);
         this.isApplicable = this.injectionBlind.isInjectable();
 
         if (this.isApplicable) {
@@ -97,19 +91,22 @@ public class StrategyInjectionBlind extends AbstractStrategy {
                 "{} [{}] injection with [{}]",
                 () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE),
                 this::getName,
-                () -> booleanMode
+                () -> binaryMode
             );
         }
     }
 
     @Override
     public void allow(int... i) {
-
         this.injectionModel.appendAnalysisReport(
-            "<span style=color:rgb(0,0,255)>### Strategy: " + getName() + "</span>"
+            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + getName())
             + this.injectionModel.getReportWithoutIndex(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(
-                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind("<span style=color:rgb(0,128,0)>&lt;query&gt;</span>", "0", true),
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(
+                        StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"),
+                        "0",
+                        true
+                    ),
                     this.injectionBlind.getBooleanMode()
                 ),
                 "metadataInjectionProcess",
@@ -135,7 +132,6 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void activateWhenApplicable() {
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 "{} [{}] with [{}]",

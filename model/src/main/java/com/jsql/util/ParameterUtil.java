@@ -57,7 +57,7 @@ public class ParameterUtil {
     }
     
     /**
-     * Send each parameters from the GUI to the model in order to
+     * Send each parameter from the GUI to the model in order to
      * start the preparation of injection, the injection process is
      * started in a new thread via model function inputValidation().
      */
@@ -71,16 +71,13 @@ public class ParameterUtil {
     ) {
         try {
             String urlQueryFixed = urlQuery;
-               
             // Keep single check
             if (urlQueryFixed.isEmpty()) {
                 throw new MalformedURLException("empty URL");
             } else if (!urlQueryFixed.matches("(?i)^https?://.*")) {
                 if (!urlQueryFixed.matches("(?i)^\\w+://.*")) {
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Undefined URL protocol, forcing to [http://]");
                     urlQueryFixed = "http://"+ urlQueryFixed;
-                    
                 } else {
                     throw new MalformedURLException("unknown URL protocol");
                 }
@@ -106,15 +103,9 @@ public class ParameterUtil {
             if (isScanning) {
                 this.injectionModel.beginInjection();
             } else {
-                // Start the model injection process in a thread
-                new Thread(
-                    this.injectionModel::beginInjection,
-                    "ThreadBeginInjection"
-                )
-                .start();
+                new Thread(this.injectionModel::beginInjection, "ThreadBeginInjection").start();  // in thread
             }
         } catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Url: {}", e.getMessage());
             
             // Incorrect URL, reset the start button
@@ -129,7 +120,6 @@ public class ParameterUtil {
      * @throws InjectionFailureException when params integrity is failure
      */
     public void checkParametersFormat() throws InjectionFailureException {
-        
         this.checkOneOrLessStar();
         this.checkStarMatchMethod();
         this.checkMethodNotEmpty();
@@ -137,7 +127,6 @@ public class ParameterUtil {
     }
 
     private void checkMultipart() throws InjectionFailureException {
-
         isMultipartRequest = false;
 
         if (
@@ -166,7 +155,6 @@ public class ParameterUtil {
     }
 
     private void checkOneOrLessStar() throws InjectionFailureException {
-        
         var nbStarInParameter = 0;
         
         if (this.getQueryStringFromEntries().contains(InjectionModel.STAR)) {
@@ -191,7 +179,6 @@ public class ParameterUtil {
     }
     
     public void checkStarMatchMethod() throws InjectionFailureException {
-        
         AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
         boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
 
@@ -217,7 +204,6 @@ public class ParameterUtil {
     }
     
     public void checkMethodNotEmpty() throws InjectionFailureException {
-        
         AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
         boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
         
@@ -242,22 +228,17 @@ public class ParameterUtil {
     }
     
     public String initializeStar(SimpleEntry<String, String> parameterToInject) {
-        
         String characterInsertionByUser;
-
         if (parameterToInject == null) {
             characterInsertionByUser = InjectionModel.STAR;
         } else {
-            
             characterInsertionByUser = parameterToInject.getValue();
             parameterToInject.setValue(InjectionModel.STAR);
         }
-        
         return characterInsertionByUser;
     }
 
     public void initializeQueryString(String urlQuery) throws MalformedURLException, URISyntaxException {
-
         // Format and get rid of anchor fragment using native URL
         var url = new URI(urlQuery).toURL();
         
@@ -270,12 +251,10 @@ public class ParameterUtil {
         
         this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlByUser(urlQuery);
         this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(urlQuery);
-        
         this.listQueryString.clear();
         
         // Parse url and GET query string
         var regexQueryString = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
-        
         if (!regexQueryString.find()) {
             return;
         }
@@ -295,12 +274,10 @@ public class ParameterUtil {
     }
 
     public void initializeRequest(String rawRequest) {
-
         this.rawRequest = rawRequest;
         this.listRequest.clear();
-
         if (StringUtils.isNotEmpty(rawRequest)) {
-            if (isMultipartRequest()) {
+            if (this.isMultipartRequest) {
                 // Pass request containing star * param without any parsing
                 this.listRequest = new ArrayList<>(List.of(new SimpleEntry<>(
                     rawRequest,
@@ -320,10 +297,8 @@ public class ParameterUtil {
     }
 
     public void initializeHeader(String rawHeader) {
-        
         this.rawHeader = rawHeader;
         this.listHeader.clear();
-
         if (StringUtils.isNotEmpty(rawHeader)) {
             this.listHeader = Pattern.compile("\\\\r\\\\n")
                 .splitAsStream(rawHeader)
@@ -367,11 +342,7 @@ public class ParameterUtil {
     public String getHeaderFromEntries() {
         return this.listHeader.stream()
             .filter(Objects::nonNull)
-            .map(entry -> String.format(
-                "%s:%s",
-                entry.getKey(),
-                entry.getValue()
-            ))
+            .map(entry -> String.format("%s:%s", entry.getKey(), entry.getValue()))
             .collect(Collectors.joining("\\r\\n"));
     }
 
@@ -396,27 +367,15 @@ public class ParameterUtil {
         return this.listRequest;
     }
 
-    public void setListRequest(List<SimpleEntry<String, String>> listRequest) {
-        this.listRequest = listRequest;
-    }
-
     public List<SimpleEntry<String, String>> getListHeader() {
         return this.listHeader;
     }
 
-    public void setListHeader(List<SimpleEntry<String, String>> listHeader) {
-        this.listHeader = listHeader;
-    }
-    
     public List<SimpleEntry<String, String>> getListQueryString() {
         return this.listQueryString;
     }
     
-    public void setListQueryString(List<SimpleEntry<String, String>> listQueryString) {
-        this.listQueryString = listQueryString;
-    }
-
     public boolean isMultipartRequest() {
-        return isMultipartRequest;
+        return this.isMultipartRequest;
     }
 }

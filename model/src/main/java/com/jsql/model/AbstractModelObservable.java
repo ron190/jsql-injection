@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -11,7 +11,7 @@
 package com.jsql.model;
 
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
 
 import java.util.concurrent.SubmissionPublisher;
 
@@ -41,7 +41,7 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
         String dataInjection,
         boolean isUsingIndex,
         String metadataInjectionProcess,
-        AbstractCallableBoolean<?> callableBoolean,
+        AbstractCallableBinary<?> callableBoolean,
         boolean isReport
     );
     
@@ -54,7 +54,7 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
         return this.inject(dataInjection, false, metadataInjectionProcess, null, false);
     }
 
-    public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
+    public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBinary<?> callableBoolean) {
         return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, false);
     }
 
@@ -66,7 +66,7 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
         return this.inject(dataInjection, false, metadataInjectionProcess, null, true);
     }
 
-    public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
+    public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBinary<?> callableBoolean) {
         return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, true);
     }
 

@@ -26,7 +26,8 @@ public class CustomUserAgentSuiteIT extends ConcreteMySqlErrorSuiteIT {
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsStrategyBlindDisabled(true)
-        .withIsStrategyTimeDisabled(true);
+        .withIsStrategyTimeDisabled(true)
+        .withIsUserAgentRandom(true);
         
         model
         .getMediatorUtils()

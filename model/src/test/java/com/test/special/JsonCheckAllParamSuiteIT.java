@@ -26,8 +26,8 @@ public class JsonCheckAllParamSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withCheckingAllRequestParam()
-        .withCheckingAllJsonParam()
+        .withIsCheckingAllRequestParam(true)
+        .withIsCheckingAllJsonParam(true)
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyMultibitDisabled(true);

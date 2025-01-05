@@ -63,12 +63,12 @@ public class MergeUndo extends JEditorPane {
         }
         @Override
         public boolean canUndo() {
-            return this.edits.size()>0 && !this.isUnDone;
+            return !this.edits.isEmpty() && !this.isUnDone;
         }
 
         @Override
         public boolean canRedo() {
-            return this.edits.size()>0 && this.isUnDone;
+            return !this.edits.isEmpty() && this.isUnDone;
         }
     }
     private class UndoManager extends AbstractUndoableEdit implements UndoableEditListener {
@@ -160,7 +160,7 @@ public class MergeUndo extends JEditorPane {
 
         @Override
         public boolean canRedo() {
-            return this.edits.size()>0 && this.pointer<this.edits.size()-1;
+            return !this.edits.isEmpty() && this.pointer<this.edits.size()-1;
         }
  
         public void refreshControls() {

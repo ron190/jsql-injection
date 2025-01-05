@@ -24,48 +24,23 @@ public class HashBruter extends Bruter {
     private String type;
 
     public void tryBruteForce() {
-        
         this.starttime = System.nanoTime();
-        
         for (int size = this.minLength; size <= this.maxLength; size++) {
-            
             if (this.found || this.done) {
                 break;
             }
-            
-            while (this.paused) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    
-                    LOGGER.log(LogLevelUtil.IGNORE, e, e);
-                    Thread.currentThread().interrupt();
-                }
-            }
-            
             try {
                 this.generateAllPossibleCombinations(StringUtils.EMPTY, size);
             } catch (NoSuchAlgorithmException e) {
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            } catch (InterruptedException e) {
-                
-                LOGGER.log(LogLevelUtil.IGNORE, e, e);
-                Thread.currentThread().interrupt();
             }
         }
-        
         this.done = true;
     }
 
-    private void generateAllPossibleCombinations(String baseString, int length) throws NoSuchAlgorithmException, InterruptedException {
-        
-        while (this.paused) {
-            Thread.sleep(500);
-        }
-        
+    private void generateAllPossibleCombinations(String baseString, int length) throws NoSuchAlgorithmException {
         if (!this.found || !this.done) {
             if (baseString.length() == length) {
-                
                 switch (this.type.toLowerCase()) {
                     case "adler32": this.generatedHash = HashUtil.toAdler32(baseString); break;
                     case "crc16":   this.generatedHash = Crc16Helper.generateCRC16(baseString); break;
@@ -75,15 +50,11 @@ public class HashBruter extends Bruter {
                     case "md4":     this.generatedHash = HashUtil.toMd4(baseString); break;
                     default:        this.generatedHash = HashUtil.toHash(this.type, baseString); break;
                 }
-                
                 this.password = baseString;
-                
                 if (this.hash.equals(this.generatedHash)) {
-                    
                     this.found = true;
                     this.done = true;
                 }
-                
                 this.count++;
                 
             } else if (baseString.length() < length) {

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -38,7 +38,6 @@ public class BlockCaret extends DefaultCaret {
 
     @Override
     protected synchronized void damage(Rectangle r) {
-        
         if (r == null) {
             return;
         }
@@ -66,28 +65,22 @@ public class BlockCaret extends DefaultCaret {
 
     @Override
     public void paint(Graphics g) {
-        
         JTextComponent comp = this.getComponent();
-
         if (comp == null) {
             return;
         }
 
         int dot = this.getDot();
-        Rectangle r = null;
+        Rectangle r;
         char dotChar;
         
         try {
             r = comp.modelToView(dot);
-            
             if (r == null) {
                 return;
             }
-            
             dotChar = comp.getText(dot, 1).charAt(0);
-            
         } catch (BadLocationException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             return;
         }
@@ -97,12 +90,10 @@ public class BlockCaret extends DefaultCaret {
         }
 
         if (this.x != r.x || this.y != r.y) {
-            
             // paint() has been called directly, without a previous call to
             // damage(), so do some cleanup. (This happens, for example, when
             // the text component is resized.)
             this.damage(r);
-            
             return;
         }
 

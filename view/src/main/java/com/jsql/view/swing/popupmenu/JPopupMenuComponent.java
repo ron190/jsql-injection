@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,7 +12,6 @@ package com.jsql.view.swing.popupmenu;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JTextPanePlaceholderConsole;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -39,23 +38,22 @@ public class JPopupMenuComponent extends JPopupMenu {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private final JComponent component;
+    private final JTextComponent component;
     
     /**
      * Create a popup menu for editable component.
      * @param component The component with the new menu
      */
-    public JPopupMenuComponent(JComponent component) {
-        
+    public JPopupMenuComponent(JTextComponent component) {
         this.component = component;
         
-        JMenuItem copyItem = new JMenuItemWithMargin(component.getActionMap().get(DefaultEditorKit.copyAction));
+        JMenuItem copyItem = new JMenuItem(component.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
         copyItem.setMnemonic('C');
         copyItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
 
-        JMenuItem selectAllItem = new JMenuItemWithMargin(component.getActionMap().get(DefaultEditorKit.selectAllAction));
+        JMenuItem selectAllItem = new JMenuItem(component.getActionMap().get(DefaultEditorKit.selectAllAction));
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         selectAllItem.setMnemonic('A');
         selectAllItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
@@ -71,14 +69,11 @@ public class JPopupMenuComponent extends JPopupMenu {
             component instanceof JTextAreaPlaceholderConsole
             || component instanceof JTextPanePlaceholderConsole
         ) {
-            JMenuItem clearItem = new JMenuItemWithMargin();
-            
+            JMenuItem clearItem = new JMenuItem();
             clearItem.setAction(new AbstractAction() {
-                
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    
-                    ((JTextComponent) JPopupMenuComponent.this.component).setText(null);
+                    JPopupMenuComponent.this.component.setText(null);
                 }
             });
             
@@ -100,7 +95,6 @@ public class JPopupMenuComponent extends JPopupMenu {
             // Fix #47018: NullPointerException on getLocation()
             try {
                 JPopupMenuComponent.this.setLocation(MouseInfo.getPointerInfo().getLocation());
-                
                 JPopupMenuComponent.this.setLocation(
                     ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
                     ? MouseInfo.getPointerInfo().getLocation().x - JPopupMenuComponent.this.getWidth()
@@ -111,12 +105,10 @@ public class JPopupMenuComponent extends JPopupMenu {
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
-        
         @Override
         public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
             // Do nothing
         }
-        
         @Override
         public void popupMenuCanceled(PopupMenuEvent e) {
             // Do nothing

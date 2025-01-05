@@ -2,7 +2,14 @@ package com.jsql.util;
 
 import org.apache.logging.log4j.Level;
 
+import java.awt.*;
+
 public class LogLevelUtil {
+
+    // Used by model for vuln report and by view for text colors
+    public static final Color COLOR_RED = new Color(0xFF6B68);
+    public static final Color COLOR_BLU = new Color(0x5394EC);
+    public static final Color COLOR_GREEN = new Color(0x299999);
 
     // ERROR 200
     public static final Level CONSOLE_JAVA = Level.forName("CONSOLE_JAVA", 202);

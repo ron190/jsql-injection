@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -46,35 +46,25 @@ public class ActionBruteForce implements ActionListener, Runnable {
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (this.bruteForceManager.getRun().getState() == StateButton.STOPPABLE) {
-            
             this.bruteForceManager.getRun().setEnabled(false);
             this.isStopped = true;
-            
         } else {
-
             if (StringUtils.isEmpty(this.bruteForceManager.getHash().getText())) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_EMPTY_HASH"));
                 return;
-                
             } else if (this.isRangeNotSelected()) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_CHARACTER_RANGE"));
                 return;
-                
             } else if (this.isLengthNotValid()) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH"));
                 return;
             }
-
             new Thread(this, "ThreadDisplayBruteForce").start();
         }
     }
 
     private boolean isLengthNotValid() {
-        return
-            Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString())
+        return Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString())
             < Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString());
     }
 
@@ -87,20 +77,17 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
     @Override
     public void run() {
-        
         // Reset the panel
         this.bruteForceManager.getRun().setText(I18nViewUtil.valueByKey("BRUTEFORCE_STOP"));
         this.bruteForceManager.getRun().setState(StateButton.STOPPABLE);
-        this.bruteForceManager.getLoader().setVisible(true);
+        this.bruteForceManager.showLoader(true);
         this.bruteForceManager.getResult().setText(null);
 
         final var hashBruter = new HashBruter();
-
         this.initializeBruter(hashBruter);
 
         // Begin the reverse hashing process
         new Thread(hashBruter::tryBruteForce, "ThreadRunBruteForce").start();
-
         while (!hashBruter.isDone() && !hashBruter.isFound() && !this.isStopped) {
             
             hashBruter.setEndtime(System.nanoTime());
@@ -108,7 +95,6 @@ public class ActionBruteForce implements ActionListener, Runnable {
             try {
                 Thread.sleep(1000);  // delay to update result panel
             } catch (InterruptedException e) {
-                
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
             }
@@ -122,10 +108,8 @@ public class ActionBruteForce implements ActionListener, Runnable {
             this.bruteForceManager.getResult().setSelectionEnd(selectionEnd);
             
             if (this.isStopped) {
-                
                 hashBruter.setIsDone(true);
                 hashBruter.setFound(true);
-                
                 break;
             }
         }
@@ -133,14 +117,13 @@ public class ActionBruteForce implements ActionListener, Runnable {
         this.displayResult(hashBruter);
 
         this.isStopped = false;
-        this.bruteForceManager.getLoader().setVisible(false);
-        this.bruteForceManager.getRun().setText(I18nViewUtil.valueByKey("BRUTEFORCE_START"));
+        this.bruteForceManager.showLoader(false);
+        this.bruteForceManager.getRun().setText(I18nViewUtil.valueByKey("BRUTEFORCE_RUN_BUTTON_LABEL"));
         this.bruteForceManager.getRun().setEnabled(true);
         this.bruteForceManager.getRun().setState(StateButton.STARTABLE);
     }
 
     private void updateResult(final HashBruter hashBruter) {
-        
         this.bruteForceManager.getResult().setText(I18nUtil.valueByKey("BRUTEFORCE_CURRENT_STRING") + ": " + hashBruter.getPassword());
         this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey("BRUTEFORCE_CURRENT_HASH") + ": " + hashBruter.getGeneratedHash() + "\n");
         this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey("BRUTEFORCE_POSSIBILITIES") + ": " + hashBruter.getNumberOfPossibilities());
@@ -150,9 +133,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         this.append(this.bruteForceManager.getResult(), hashBruter.calculateTimeElapsed());
 
         if (hashBruter.getPerSecond() != 0) {
-            
             float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / hashBruter.getPerSecond();
-            
             this.append(this.bruteForceManager.getResult(), (
                 I18nUtil.valueByKey("BRUTEFORCE_TRAVERSING_REMAINING") + ": "
                 + Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f)) + I18nUtil.valueByKey("BRUTEFORCE_DAYS") + StringUtils.SPACE
@@ -173,35 +154,28 @@ public class ActionBruteForce implements ActionListener, Runnable {
     }
 
     private void initializeBruter(final HashBruter hashBruter) {
-        
         hashBruter.setMinLength(Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString()));
         hashBruter.setMaxLength(Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString()));
 
         if (this.bruteForceManager.getSpecialCharacters().isSelected()) {
             hashBruter.addSpecialCharacters();
         }
-        
         if (this.bruteForceManager.getUpperCaseCharacters().isSelected()) {
             hashBruter.addUpperCaseLetters();
         }
-        
         if (this.bruteForceManager.getLowerCaseCharacters().isSelected()) {
             hashBruter.addLowerCaseLetters();
         }
-        
         if (this.bruteForceManager.getNumericCharacters().isSelected()) {
             hashBruter.addDigits();
         }
-        
         if (StringUtils.isNotEmpty(this.bruteForceManager.getExclude().getText())) {
             hashBruter.excludeChars(this.bruteForceManager.getExclude().getText());
         }
 
         hashBruter.setType((String) this.bruteForceManager.getHashTypes().getSelectedItem());
         hashBruter.setHash(
-            this.bruteForceManager
-            .getHash()
-            .getText()
+            this.bruteForceManager.getHash().getText()
             .toUpperCase(Locale.ROOT)
             .replaceAll("[^a-zA-Z0-9]", StringUtils.EMPTY)
             .trim()
@@ -209,12 +183,10 @@ public class ActionBruteForce implements ActionListener, Runnable {
     }
 
     private void displayResult(final HashBruter hashBruter) {
-        
         // Display the result
         if (this.isStopped) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_ABORTED"));
         } else if (hashBruter.isFound()) {
-            
             this.append(
                 this.bruteForceManager.getResult(),
                 String.format(
@@ -224,7 +196,6 @@ public class ActionBruteForce implements ActionListener, Runnable {
                     hashBruter.getPassword()
                 )
             );
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
                 "{}: {} => {}",
@@ -233,12 +204,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 hashBruter::getPassword
             );
         } else if (hashBruter.isDone()) {
-            
-            this.append(
-                this.bruteForceManager.getResult(),
-                "\n"+ I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND")
-            );
-            
+            this.append(this.bruteForceManager.getResult(), "\n"+ I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
         }
     }

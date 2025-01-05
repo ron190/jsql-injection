@@ -3,12 +3,12 @@ package com.jsql.view.swing.util;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.manager.*;
-import com.jsql.view.swing.menubar.Menubar;
+import com.jsql.view.swing.menubar.AppMenubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.PanelConsoles;
-import com.jsql.view.swing.tab.TabConsoles;
-import com.jsql.view.swing.tab.TabManagersProxy;
+import com.jsql.view.swing.tab.TabManagersCards;
 import com.jsql.view.swing.tab.TabResults;
+import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.tree.TreeDatabase;
 
 /**
@@ -20,12 +20,12 @@ public final class MediatorHelper {
     
     private static TreeDatabase treeDatabase;
     private static TabResults tabResults;
-    private static TabManagersProxy tabManagers;
+    private static TabManagersCards tabManagersCards;
     
     private static JFrameView frame;
-    private static Menubar menubar;
+    private static AppMenubar appMenubar;
     private static PanelAddressBar panelAddressBar;
-    private static TabConsoles tabConsoles;
+    private static TabbedPaneWheeled tabConsoles;
     private static PanelConsoles panelConsoles;
     
     private static ManagerScan managerScan;
@@ -52,23 +52,23 @@ public final class MediatorHelper {
         return tabResults;
     }
     
-    public static TabManagersProxy tabManagers() {
-        return tabManagers;
+    public static TabManagersCards tabManagersCards() {
+        return tabManagersCards;
     }
      
     public static JFrameView frame() {
         return frame;
     }
     
-    public static Menubar menubar() {
-        return menubar;
+    public static AppMenubar menubar() {
+        return appMenubar;
     }
     
     public static PanelAddressBar panelAddressBar() {
         return panelAddressBar;
     }
     
-    public static TabConsoles tabConsoles() {
+    public static TabbedPaneWheeled tabConsoles() {
         return tabConsoles;
     }
     
@@ -111,15 +111,15 @@ public final class MediatorHelper {
         MediatorHelper.frame = frame;
     }
     
-    public static void register(Menubar menubar) {
-        MediatorHelper.menubar = menubar;
+    public static void register(AppMenubar appMenubar) {
+        MediatorHelper.appMenubar = appMenubar;
     }
     
     public static void register(PanelAddressBar panelAddress) {
         MediatorHelper.panelAddressBar = panelAddress;
     }
     
-    public static void register(TabConsoles tabConsoles) {
+    public static void register(TabbedPaneWheeled tabConsoles) {
         MediatorHelper.tabConsoles = tabConsoles;
     }
     
@@ -135,8 +135,8 @@ public final class MediatorHelper {
         MediatorHelper.tabResults = tabResults;
     }
     
-    public static void register(TabManagersProxy tabManagers) {
-        MediatorHelper.tabManagers = tabManagers;
+    public static void register(TabManagersCards tabManagersCards) {
+        MediatorHelper.tabManagersCards = tabManagersCards;
     }
     
     

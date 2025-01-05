@@ -117,7 +117,7 @@ strategy:
   capacity: (select '${lead}${indice}' || ${calibrator} from dual)
   orderBy: order by 1337
 
- boolean:
+ binary:
   test:
    bit: |
     0 != (unicode(
@@ -130,4 +130,4 @@ strategy:
     %26${bit})
   modeAnd: and
   modeOr: or
-  blind: ${boolean.mode} ${test}
+  blind: ${binary.mode} ${test}

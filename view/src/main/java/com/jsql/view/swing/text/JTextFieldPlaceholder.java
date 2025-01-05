@@ -22,14 +22,14 @@ public class JTextFieldPlaceholder extends JTextField {
      * Text to display when empty.
      */
     private String placeholderText;
-    
+    private int xOffset;
+
     /**
      * Create a textfield with hint and default value.
      * @param placeholder Text displayed when empty
      * @param value Default value
      */
     public JTextFieldPlaceholder(String placeholder, String value) {
-        
         this(placeholder);
         this.setText(value);
     }
@@ -42,21 +42,22 @@ public class JTextFieldPlaceholder extends JTextField {
         this.placeholderText = placeholder;
     }
 
+    public JTextFieldPlaceholder(String placeholder, int xOffset) {
+        this(placeholder);
+        this.xOffset = xOffset;
+    }
+
     @Override
     public void paint(Graphics g) {
-        
         try {
             super.paint(g);
         } catch (ClassCastException e) {  // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-        
         if (this.getText().isEmpty()) {
-            
             int h = this.getHeight();
             var fm = g.getFontMetrics();
-
-            UiUtil.drawPlaceholder(this, g, this.placeholderText, h / 2 + fm.getAscent() / 2 - 1);
+            UiUtil.drawPlaceholder(this, g, this.placeholderText, xOffset, h / 2 + fm.getAscent() / 2 - 1);
         }
     }
 

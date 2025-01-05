@@ -31,13 +31,11 @@ public class CsrfUtil {
     }
 
     public void parseForCsrfToken(String pageSource, Map<String, String> headers) {
-        
         this.parseCsrfFromCookie(headers);
         this.parseCsrfFromHtml(pageSource);
     }
 
     private void parseCsrfFromHtml(String pageSource) {
-
         // Change immutable list to mutable for adding user tag
         List<String> tags = new ArrayList<>(
             Arrays.asList(
@@ -62,12 +60,9 @@ public class CsrfUtil {
             );
         }
         
-        Optional<SimpleEntry<String, String>> optionalTokenCsrf = Jsoup
-            .parse(pageSource)
+        Optional<SimpleEntry<String, String>> optionalTokenCsrf = Jsoup.parse(pageSource)
             .select("input")
-            .select(
-                String.join(",", tags)
-            )
+            .select(String.join(",", tags))
             .stream()
             .findFirst()
             .map(input ->
@@ -78,16 +73,13 @@ public class CsrfUtil {
             );
         
         if (optionalTokenCsrf.isPresent()) {
-            
             SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 "Found Csrf token from HTML body: {}={}",
                 tokenCsrfFound::getKey,
                 tokenCsrfFound::getValue
             );
-            
             if (
                 !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
                 && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
@@ -105,22 +97,16 @@ public class CsrfUtil {
     }
 
     private void parseCsrfFromCookie(Map<String, String> mapResponse) {
-        
         Optional<SimpleEntry<String, String>> optionalCookieCsrf = Optional.empty();
         
         if (mapResponse.containsKey(SET_COOKIE_RESPONSE)) {
-            
             // Spring: Cookie XSRF-TOKEN => Header X-XSRF-TOKEN, GET/POST parameter _csrf
             // Laravel, Zend, Symfony
-            
             String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE_RESPONSE), ";");
-            
             optionalCookieCsrf = Stream.of(cookieValues)
                 .filter(cookie -> cookie.trim().toLowerCase().startsWith("xsrf-token"))
                 .map(cookie -> {
-                    
                     String[] cookieEntry = StringUtils.split(cookie, "=");
-
                     return new SimpleEntry<>(
                         cookieEntry[0].trim(),
                         cookieEntry[1].trim()
@@ -130,21 +116,17 @@ public class CsrfUtil {
         }
         
         if (optionalCookieCsrf.isPresent()) {
-            
             SimpleEntry<String, String> cookieCsrf = optionalCookieCsrf.get();
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 "Found CSRF token from Cookie: {}={}",
                 cookieCsrf::getKey,
                 cookieCsrf::getValue
             );
-            
             SimpleEntry<String, String> headerCsrf = new SimpleEntry<>(
                 cookieCsrf.getKey(),
                 cookieCsrf.getValue()
             );
-            
             if (
                 !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
                 && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
@@ -157,7 +139,6 @@ public class CsrfUtil {
     }
 
     public void addHeaderToken(Builder httpRequest) {
-        
         if (this.tokenCsrf == null) {
              return;
         }
@@ -174,11 +155,9 @@ public class CsrfUtil {
     }
 
     public void addRequestToken(StringBuilder httpRequest) {
-
         if (this.tokenCsrf == null) {
             return;
         }
-
         httpRequest.append(
             String.format(
                 "%s=%s&",
@@ -186,14 +165,12 @@ public class CsrfUtil {
                 this.tokenCsrf.getValue()
             )
         );
-        
         httpRequest.append(
             String.format(
                 "_csrf=%s&",
                 this.tokenCsrf.getValue()
             )
         );
-        
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
             httpRequest.append(
                 String.format(
@@ -206,24 +183,19 @@ public class CsrfUtil {
     }
     
     public String addQueryStringToken(String urlInjection) {
-        
         String urlInjectionFixed = urlInjection;
-
         if (this.tokenCsrf == null) {
             return urlInjectionFixed;
         }
-
         urlInjectionFixed += String.format(
             "&%s=%s",
             this.tokenCsrf.getKey(),
             this.tokenCsrf.getValue()
         );
-        
         urlInjectionFixed += String.format(
             "&_csrf=%s",
             this.tokenCsrf.getValue()
         );
-        
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
             urlInjectionFixed += String.format(
                 "&%s=%s",
@@ -231,7 +203,6 @@ public class CsrfUtil {
                 this.tokenCsrf.getValue()
             );
         }
-        
         return urlInjectionFixed;
     }
     

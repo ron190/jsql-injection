@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class AbstractInjectionMonobit<T extends AbstractCallableBoolean<T>> extends AbstractInjectionBoolean<T> {
+public abstract class AbstractInjectionMonobit<T extends AbstractCallableBinary<T>> extends AbstractInjectionBinary<T> {
 
-    protected AbstractInjectionMonobit(InjectionModel injectionModel, BooleanMode booleanMode) {
-        super(injectionModel, booleanMode);
+    protected AbstractInjectionMonobit(InjectionModel injectionModel, BinaryMode binaryMode) {
+        super(injectionModel, binaryMode);
     }
     
     abstract T getCallableBitTest(String sqlQuery, int indexCharacter, int bit);
@@ -30,7 +30,6 @@ public abstract class AbstractInjectionMonobit<T extends AbstractCallableBoolean
         // Test the 8 bits for the next character, save its position and current bit for later
         // Ignore last bit 128 and only check for first seven bits
         for (int bit: new int[]{ 1, 2, 4, 8, 16, 32, 64 }) {
-            
             taskCompletionService.submit(
                 this.getCallableBitTest(
                     sqlQuery,
@@ -43,7 +42,6 @@ public abstract class AbstractInjectionMonobit<T extends AbstractCallableBoolean
     }
 
     public char[] initializeBinaryMask(List<char[]> bytes, T currentCallable) {
-
         // Bits for current url
         char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
 
@@ -54,7 +52,6 @@ public abstract class AbstractInjectionMonobit<T extends AbstractCallableBoolean
 
         // Set current bit
         asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';
-
         return asciiCodeMask;
     }
 }

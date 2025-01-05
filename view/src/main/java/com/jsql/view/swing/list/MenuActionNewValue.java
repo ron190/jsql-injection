@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -13,7 +13,6 @@ package com.jsql.view.swing.list;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.manager.ManagerScan;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.util.I18nViewUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -53,22 +52,19 @@ public class MenuActionNewValue implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        
         var panel = new JPanel(new BorderLayout());
         final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
         var labelAddValue = new JLabel(I18nUtil.valueByKey("LIST_ADD_VALUE_LABEL") + ":");
         panel.add(labelAddValue, BorderLayout.NORTH);
         I18nViewUtil.addComponentForKey("LIST_ADD_VALUE_LABEL", labelAddValue);
-        panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
-        
+        panel.add(new JScrollPane(textarea));
+
         panel.setPreferredSize(new Dimension(600, 400));
         panel.setMinimumSize(new Dimension(600, 400));
         
         textarea.addMouseListener(new MouseAdapter() {
-            
             @Override
             public void mousePressed(MouseEvent e) {
-                
                 super.mousePressed(e);
                 textarea.requestFocusInWindow();
             }
@@ -102,7 +98,6 @@ public class MenuActionNewValue implements ActionListener {
         }
 
         var lastIndex = Math.max(this.myList.getSelectedIndex(), 0);
-
         int firstIndex = lastIndex;
         
         if (ManagerScan.NAME.equals(this.myList.getName())) {
@@ -118,12 +113,10 @@ public class MenuActionNewValue implements ActionListener {
                 this.myList.getMaxSelectionIndex()
             )
         );
-
         textarea.setText(null);
     }
 
     private int addToList(final JTextArea textarea, int index) {
-        
         int lastIndex = index;
         
         for (String newItem: textarea.getText().split("\\n")) {
@@ -134,19 +127,16 @@ public class MenuActionNewValue implements ActionListener {
                 );
             }
         }
-        
         return lastIndex;
     }
 
     private int addToScanList(final JTextArea textarea, int index) {
-        
         int lastIndex = index;
         List<ItemListScan> listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace("\\", "/"));
         
         for (ItemListScan item: listParsedItems) {
             ((DefaultListModel<ItemList>) this.myList.getModel()).add(lastIndex++, item);
         }
-        
         return lastIndex;
     }
 }

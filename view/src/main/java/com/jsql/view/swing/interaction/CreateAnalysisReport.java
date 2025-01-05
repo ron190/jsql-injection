@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss it
@@ -26,10 +26,6 @@ public class CreateAnalysisReport extends CreateTabHelper implements Interaction
 
     @Override
     public void execute() {
-        MediatorHelper.tabResults().createReportTab(
-            "Vulnerability report",
-            this.content.trim(),
-            "Analysis report with all payloads detected"
-        );
+        MediatorHelper.tabResults().createReportTab(this.content.trim());
     }
 }

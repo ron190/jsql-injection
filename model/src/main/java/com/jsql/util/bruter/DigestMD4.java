@@ -69,7 +69,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
     //...........................................................................
 
     public DigestMD4() {
-        
         super("MD4");
         this.engineReset();
     }
@@ -78,7 +77,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      *    This constructor is here to implement cloneability of this class.
      */
     private DigestMD4(DigestMD4 md) {
-        
         this();
         this.context = md.context.clone();
         this.buffer = md.buffer.clone();
@@ -94,7 +92,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
-
         Object clone = super.clone();
         return new DigestMD4(this);
     }
@@ -109,7 +106,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      */
     @Override
     public void engineReset() {
-        
         // initial values of MD4 i.e. A, B, C, D
         // as per rfc-1320; they are low-order byte first
         this.context[0] = 0x67452301;
@@ -128,7 +124,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      */
     @Override
     public void engineUpdate(byte b) {
-        
         // compute number of bytes still unhashed; ie. present in buffer
         int i = (int)(this.count % BLOCK_LENGTH);
         this.count++;                                        // update number of bytes
@@ -153,9 +148,8 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      */
     @Override
     public void engineUpdate(byte[] input, int offset, int len) {
-        
         // make sure we don't exceed input's allocated size/length
-        if (offset < 0 || len < 0 || (long)offset + len > input.length) {
+        if (offset < 0 || len < 0 || (long) offset + len > input.length) {
             throw new ArrayIndexOutOfBoundsException();
         }
         
@@ -193,14 +187,13 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      */
     @Override
     public byte[] engineDigest() {
-        
         // pad output to 56 mod 64; as RFC1320 puts it: congruent to 448 mod 512
         int bufferNdx = (int)(this.count % BLOCK_LENGTH);
         int padLen = bufferNdx < 56 ? 56 - bufferNdx : 120 - bufferNdx;
 
         // padding is alwas binary 1 followed by binary 0s
         byte[] tail = new byte[padLen + 8];
-        tail[0] = (byte)0x80;
+        tail[0] = (byte) 0x80;
 
         // append length before final transform:
         // save number of bits, casting the long to an array of 8 bytes
@@ -240,7 +233,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      *    @param    offset    starting position of sub-array.
      */
     private void transform(byte[] block, int offset) {
-
         // encodes 64 bytes from input block into an array of 16 32-bit
         // entities. Use A as a temp var.
         for (int i = 0; i < 16; i++) {
@@ -316,19 +308,16 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
     // The basic MD4 atomic functions.
 
     private int FF(int a, int b, int c, int d, int x, int s) {
-        
         int t = a + ((b & c) | (~b & d)) + x;
         return t << s | t >>> (32 - s);
     }
     
     private int GG(int a, int b, int c, int d, int x, int s) {
-        
         int t = a + ((b & (c | d)) | (c & d)) + x + 0x5A827999;
         return t << s | t >>> (32 - s);
     }
     
     private int HH(int a, int b, int c, int d, int x, int s) {
-        
         int t = a + (b ^ c ^ d) + x + 0x6ED9EBA1;
         return t << s | t >>> (32 - s);
     }

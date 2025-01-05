@@ -20,7 +20,7 @@ public class SubscriberInteraction implements Subscriber<Request> {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private final String packageInteraction;
-    
+
     /**
      * Observer pattern.<br>
      * Receive an update order from the model:<br>
@@ -35,18 +35,14 @@ public class SubscriberInteraction implements Subscriber<Request> {
     
     @Override
     public void onSubscribe(Subscription subscription) {
-        
         this.subscription = subscription;
         subscription.request(1);
     }
 
     @Override
     public void onNext(Request request) {
-        
         subscription.request(1);
-        
         if (Interaction.UNSUBSCRIBE.equals(request.getMessage())) {
-            
             subscription.cancel();
             return;
         }
@@ -55,14 +51,11 @@ public class SubscriberInteraction implements Subscriber<Request> {
         String nameThread = Thread.currentThread().getName();
         
         SwingUtilities.invokeLater(() -> {
-            
             Thread.currentThread().setName("from " + nameThread);
-            
             try {
                 Class<?> cl = Class.forName(this.packageInteraction +"."+ request.getMessage());
                 var types = new Class[]{ Object[].class };
                 Constructor<?> constructor = cl.getConstructor(types);
-    
                 @SuppressWarnings("java:S1905")
                 InteractionCommand interactionCommand = (InteractionCommand) constructor.newInstance(
                     (Object[]) new Object[] {  // cast for sonar disambiguation
@@ -70,7 +63,6 @@ public class SubscriberInteraction implements Subscriber<Request> {
                     }
                 );
                 interactionCommand.execute();
-                
             } catch (ClassNotFoundException e) {
                 LOGGER.log(LogLevelUtil.IGNORE, e);  // Ignore unused interaction message
             } catch (

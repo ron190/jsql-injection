@@ -10,13 +10,11 @@ public enum Interaction {
     CREATE_FILE_TAB("CreateFileTab"),
     CREATE_SHELL_TAB("CreateShellTab"),
     CREATE_SQL_SHELL_TAB("CreateSQLShellTab"),
-    CREATE_TAB("CreateTab"),
     CREATE_VALUES_TAB("CreateValuesTab"),
     CREATE_ANALYSIS_REPORT("CreateAnalysisReport"),
     
     END_ADMIN_SEARCH("EndAdminSearch"),
     END_FILE_SEARCH("EndFileSearch"),
-    END_SCAN("EndScan"),
     END_UPLOAD("EndUpload"),
 
     START_PROGRESS("StartProgress"),
@@ -30,7 +28,6 @@ public enum Interaction {
     MARK_FILE_SYSTEM_VULNERABLE("MarkFileSystemVulnerable"),
     GET_WEB_SHELL_RESULT("GetWebShellResult"),
     GET_SQL_SHELL_RESULT("GetSQLShellResult"),
-    INTERACTION_COMMAND("InteractionCommand"),
 
     MARK_MULTI_INVULNERABLE("MarkMultiInvulnerable"),
     MARK_MULTI_STRATEGY("MarkMultiStrategy"),
@@ -55,13 +52,10 @@ public enum Interaction {
     MESSAGE_CHUNK("MessageChunk"),
     MESSAGE_HEADER("MessageHeader"),
     
-    RESET_INTERFACE("ResetInterface"),
-    RESET_STRATEGY_LABEL("ResetStrategyLabel"),
-    
     SET_VENDOR("SetVendor"),
     DATABASE_IDENTIFIED("DatabaseIdentified"),
     
-    UNSUBSCRIBE("Unsubscribe");
+    UNSUBSCRIBE("Unsubscribe");  // without real class to unsubscribe subscriber implicitly
     
     private final String name;
     

@@ -53,7 +53,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     @Override
     public String run(Object... args) throws AbstractSlidingException {
-        
         // TODO Map class
         String initialSqlQuery = (String) args[0];
         String[] sourcePage = (String[]) args[1];
@@ -83,11 +82,9 @@ public class SuspendableGetRows extends AbstractSuspendable {
         String queryGetRows = this.getQuery(initialSqlQuery, countAllRows);
         
         while (true) {
-
             this.checkSuspend(strategy, slidingWindowAllRows, slidingWindowCurrentRow);
             
             sourcePage[0] = strategy.inject(queryGetRows, Integer.toString(charPositionInCurrentRow), this, metadataInjectionProcess);
-            
             // Parse all the data we have retrieved
             Matcher regexLeadFound = this.parseLeadFound(sourcePage[0], strategy.getPerformanceLength());
             Matcher regexTrailOnlyFound = this.parseTrailOnlyFound(sourcePage[0]);
@@ -97,7 +94,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 && isMultipleRows
                 && StringUtils.isNotEmpty(slidingWindowAllRows.toString())
             ) {
-                
                 this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);
                 break;
             }
@@ -115,14 +111,12 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 previousChunk = currentChunk;
                 slidingWindowCurrentRow.append(currentChunk);
                 this.sendChunk(currentChunk);
-                
             } catch (IllegalArgumentException | IllegalStateException | OutOfMemoryError e) {
                 this.endInjection(elementDatabase, e);
             }
 
             // Check how many rows we have collected from the beginning of that chunk
             int countChunkRows = this.getCountRows(slidingWindowCurrentRow);
-
             this.sendProgress(countRowsToFind, countAllRows + countChunkRows, elementDatabase);
 
             // End of rows detected: \1\3\3\7
@@ -131,51 +125,37 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 countChunkRows > 0
                 || slidingWindowCurrentRow.toString().matches("(?s).*"+ TRAIL_RGX +".*")
             ) {
-                
                 this.scrapeTrailJunk(slidingWindowCurrentRow);
-                
                 slidingWindowAllRows.append(slidingWindowCurrentRow);
                 
                 if (isMultipleRows) {
-                    
                     this.scrap(slidingWindowAllRows);
                     this.scrap(slidingWindowCurrentRow);
-
                     this.appendRowFixed(slidingWindowAllRows, slidingWindowCurrentRow);
 
                     countAllRows = this.getCountRows(slidingWindowAllRows);
-
                     this.sendProgress(countRowsToFind, countAllRows, elementDatabase);
 
                     // Ending condition: every expected rows have been retrieved.
                     if (countAllRows == countRowsToFind) {
-                        
                         break;
                     }
-
                     // Add the LIMIT statement to the next SQL query and reset variables.
                     // Put the character cursor to the beginning of the line, and reset the result of the current query
                     queryGetRows = this.getQuery(initialSqlQuery, countAllRows);
-
                     slidingWindowCurrentRow.setLength(0);
-
                 } else {
-                    
                     this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);
                     break;
                 }
             }
-
             charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;
         }
-        
         this.injectionModel.getMediatorUtils().getThreadUtil().remove(elementDatabase);
-
         return slidingWindowAllRows.toString();
     }
 
     private String decodeUrl(String currentChunk) {
-
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {
             try {
                 return URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
@@ -187,7 +167,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private String decodeUnicode(String currentChunk) {
-
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
             return StringEscapeUtils.unescapeJava(  // transform \u0000 entities to text
                 currentChunk.replaceAll("\\\\u.{0,3}$", "")  // remove incorrect entities
@@ -201,7 +180,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private void appendRowFixed(StringBuilder slidingWindowAllRows, StringBuilder slidingWindowCurrentRow) {
-        
         // Check either if there is more than 1 row and if there is less than 1 complete row
         var regexAtLeastOneRow = Pattern.compile(
             String.format(
@@ -224,7 +202,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
         // If there is more than 1 row, delete the last incomplete one in order to restart properly from it at the next loop,
         // else if there is 1 row but incomplete, mark it as cut with the letter c
         if (regexAtLeastOneRow.find()) {
-            
             var allLine = slidingWindowAllRows.toString();
             slidingWindowAllRows.setLength(0);
             slidingWindowAllRows.append(
@@ -237,7 +214,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 .replaceAll(StringUtils.EMPTY)
             );
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Chunk unreliable, reloading row part...");
-
         } else if (regexRowIncomplete.find()) {
             slidingWindowAllRows.append(StringUtil.hexstr("05")).append("1").append(StringUtil.hexstr("0804"));
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Chunk unreliable, keeping row parts only");
@@ -245,7 +221,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private void scrapeTrailJunk(StringBuilder slidingWindowCurrentRow) {
-        
         // Remove everything after chunk
         // => \4xxxxxxxx\500\4\6\4...\4 => \1\3\3\7junk
         var currentRow = slidingWindowCurrentRow.toString();
@@ -258,7 +233,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private int getCountRows(StringBuilder slidingWindowCurrentRow) {
-        
         var regexAtLeastOneRow = Pattern.compile(
             String.format(
                 "%s(%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?%s)",
@@ -269,42 +243,33 @@ public class SuspendableGetRows extends AbstractSuspendable {
             )
         )
         .matcher(slidingWindowCurrentRow);
-        
         var nbCompleteLine = 0;
         while (regexAtLeastOneRow.find()) {
             nbCompleteLine++;
         }
-        
         return nbCompleteLine;
     }
 
     private void endInjection(AbstractElementDatabase searchName, Throwable e) throws InjectionFailureException {
-        
         // Premature end of results
         // if it's not the root (empty tree)
         if (searchName != null) {
-            
             var request = new Request();
             request.setMessage(Interaction.END_PROGRESS);
             request.setParameters(searchName);
             this.injectionModel.sendToViews(request);
         }
-
         var messageError = new StringBuilder("Fetching fails: no data to parse");
-        
         if (searchName != null) {
             messageError.append(" for ").append(StringUtil.detectUtf8(searchName.toString()));
         }
-        
         if (searchName instanceof Table && searchName.getChildCount() > 0) {
             messageError.append(", check Network tab for logs");
         }
-        
         throw new InjectionFailureException(messageError.toString(), e);
     }
 
     private void sendChunk(String currentChunk) {
-        
         var request = new Request();
         request.setMessage(Interaction.MESSAGE_CHUNK);
         request.setParameters(
@@ -315,7 +280,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
             .replace("\\r", "\\\\\\r")
             .replace("\\t", "\\\\\\t")
         );
-        
         this.injectionModel.sendToViews(request);
     }
 
@@ -328,30 +292,22 @@ public class SuspendableGetRows extends AbstractSuspendable {
         StringBuilder slidingWindowCurrentRow,
         StringBuilder slidingWindowAllRows
     ) throws LoopDetectedSlidingException {
-        
         int infiniteLoop = loop;
-        
         if (previousChunk.equals(currentChunk)) {
-            
             infiniteLoop++;
             if (infiniteLoop >= 20) {
-                
                 this.stop();
-                
                 throw new LoopDetectedSlidingException(
                     slidingWindowAllRows.toString(),
                     slidingWindowCurrentRow.toString()
                 );
             }
         }
-        
         return infiniteLoop;
     }
 
     private Matcher parseTrailOnlyFound(String sourcePage) {
-
         String sourcePageUnicodeDecoded = decodeUnicode(sourcePage);
-
         // TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX
         // It creates extra query which can be endless if not nullified
         return Pattern.compile(
@@ -367,9 +323,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
      * ${lead}blahblah      blah] : continue substr()
      */
     private Matcher parseLeadFound(String sourcePage, String performanceLength) throws InjectionFailureException {
-        
         Matcher regexAtLeastOneRow;
-        
         try {
             regexAtLeastOneRow = Pattern.compile(
                 String.format("(?s)%s(?i)(.{1,%s})", LEAD, performanceLength)
@@ -379,7 +333,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
             // Fix #35382 : PatternSyntaxException null on SQLi(.{1,null})
             throw new InjectionFailureException("Row parsing failed using capacity", e);
         }
-        
         return regexAtLeastOneRow;
     }
 
@@ -400,11 +353,9 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private void scrap(StringBuilder slidingWindowAllRows) {
-        
         // Remove everything not properly attached to the last row:
         // 1. very start of a new row: XXXXX\4[\6\4]$
         // 2. very end of the last row: XXXXX[\500]$
-
         var allRowsLimit = slidingWindowAllRows.toString();
         slidingWindowAllRows.setLength(0);
         slidingWindowAllRows.append(
@@ -424,7 +375,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     private void sendProgress(int numberToFind, int countProgress, AbstractElementDatabase searchName) {
         if (numberToFind > 0 && searchName != null) {
-            
             var request = new Request();
             request.setMessage(Interaction.UPDATE_PROGRESS);
             request.setParameters(searchName, countProgress);
@@ -433,7 +383,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
     
     public static List<List<String>> parse(String rows) throws InjectionFailureException {
-        
         // Parse all the data we have retrieved
         var regexSearch = Pattern.compile(
                 String.format(
@@ -445,34 +394,27 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 )
             )
             .matcher(rows);
-
         if (!regexSearch.find()) {
             throw new InjectionFailureException();
         }
-        
         regexSearch.reset();
-
         var rowsFound = 0;
         List<List<String>> listValues = new ArrayList<>();
 
         // Build a 2D array of strings from the data we have parsed
         // => row number, occurrence, value1, value2...
         while (regexSearch.find()) {
-            
             String values = regexSearch.group(1);
             var instances = Integer.parseInt(regexSearch.group(2));
 
             listValues.add(new ArrayList<>());
             listValues.get(rowsFound).add(Integer.toString(rowsFound + 1));
             listValues.get(rowsFound).add("x"+ instances);
-            
             for (String cellValue: values.split("\\x7F", -1)) {
                 listValues.get(rowsFound).add(cellValue);
             }
-
             rowsFound++;
         }
-        
         return listValues;
     }
 }

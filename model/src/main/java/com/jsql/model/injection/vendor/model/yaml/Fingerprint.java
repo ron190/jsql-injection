@@ -32,10 +32,7 @@ public class Fingerprint implements Serializable {
     }
     
     public String getErrorMessageAsString() {
-        return this.errorMessage.stream()
-            .collect(
-                Collectors.joining(System.lineSeparator())
-            );
+        return this.errorMessage.stream().collect(Collectors.joining(System.lineSeparator()));
     }
     
     public void setErrorMessageAsString(String errorMessage) {

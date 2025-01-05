@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -85,29 +85,23 @@ public final class ThreadUtil {
      * they were instantiated in order to be garbage collected.
      */
     public void reset() {
-        
         this.suspendables.values().forEach(AbstractSuspendable::stop);
         this.suspendables.clear();
     }
     
     public ExecutorService getExecutor(String nameThread) {
-
         ExecutorService taskExecutor;
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
             int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
             taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(nameThread));
-            
         } else {
             taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable(nameThread));
         }
-        
         return taskExecutor;
     }
 
     public void shutdown(ExecutorService taskExecutor) {
-
         int timeout = 15;
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isConnectionTimeout()) {
             timeout = this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();
@@ -119,7 +113,6 @@ public final class ThreadUtil {
                 taskExecutor.shutdownNow();
             }
         } catch (InterruptedException e) {
-
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }

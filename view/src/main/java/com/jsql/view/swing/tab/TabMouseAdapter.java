@@ -4,7 +4,6 @@ import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.commons.lang3.SerializationException;
-import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,36 +31,28 @@ public class TabMouseAdapter extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent event) {
-        
         if (!SwingUtilities.isRightMouseButton(event)) {
             return;
         }
-            
-        var componentSource = (Component) event.getSource();
-        var menu = new JPopupMenu();
 
         // Copy menu items from menubar
-        for (
-            var position = 0
-            ; position < MediatorHelper.menubar().getMenuView().getMenuComponentCount()
-            ; position++
-        ) {
-            
+        var menu = new JPopupMenu();
+        for (var i = 0 ; i < MediatorHelper.menubar().getMenuView().getMenuComponentCount() ; i++) {
+            final int positionFinal = i;
             // Fix #35348: SerializationException on clone()
             try {
-                JMenuItem itemMenu = (JMenuItem) SerializationUtils.clone(MediatorHelper.menubar().getMenuView().getMenuComponent(position));
-                menu.add(itemMenu);
-                
-                final int positionFinal = position;
+                // clone and setAction() not efficient (performance and i18n)
+                var itemOrigin = (JMenuItem) MediatorHelper.menubar().getMenuView().getMenuComponent(i);
+                JMenuItem itemMenu = new JMenuItem(itemOrigin.getText(), itemOrigin.getIcon());
                 itemMenu.addActionListener(actionEvent -> this.tabbedPaneWheeled.setSelectedIndex(positionFinal));
-                
+                menu.add(itemMenu);
             } catch (SerializationException e) {
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
 
+        var componentSource = (Component) event.getSource();
         menu.show(componentSource, event.getX(), event.getY());
-        
         menu.setLocation(
             ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
             ? event.getXOnScreen() - menu.getWidth()

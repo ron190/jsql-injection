@@ -69,7 +69,6 @@ public class MediatorVendor {
     private final InjectionModel injectionModel;
     
     public MediatorVendor(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
         
         Vendor access = new Vendor(new VendorYaml("access.yml", injectionModel));
@@ -102,31 +101,24 @@ public class MediatorVendor {
         this.oracle = new Vendor(new VendorYaml("oracle.yml", injectionModel));
         this.postgresql = new Vendor(new VendorYaml("postgresql.yml", injectionModel));
         this.sqlite = new Vendor(new VendorYaml("sqlite.yml", injectionModel)) {
-
             @Override
             public String transformSqlite(String resultToParse) {
-
                 var resultSqlite = new StringBuilder();
 
                 String resultTmp = resultToParse
                     .replaceFirst("[^(]+\\(", StringUtils.EMPTY)
                     .trim()
                     .replaceAll("\\)$", StringUtils.EMPTY);
-
                 resultTmp = resultTmp.replaceAll("\\([^)]+\\)", StringUtils.EMPTY);
 
                 for (String columnNameAndType: resultTmp.split(",")) {
-
                     if (columnNameAndType.trim().startsWith("primary key")) {
                         continue;
                     }
-
                     // Some recent SQLite use tabulation character as a separator => split() by any white space \s
                     String columnName = columnNameAndType.trim().split("\\s")[0];
-
                     // Some recent SQLite enclose names with ` => strip those `
                     columnName = StringUtils.strip(columnName, "`");
-
                     if (
                         !"CONSTRAINT".equals(columnName)
                         && !"UNIQUE".equals(columnName)
@@ -135,7 +127,6 @@ public class MediatorVendor {
                         resultSqlite.append((char) 4).append(columnName).append((char) 5).append("0").append((char) 4).append((char) 6);
                     }
                 }
-
                 return resultSqlite.toString();
             }
         };
@@ -144,38 +135,9 @@ public class MediatorVendor {
         this.vertica = new Vendor(new VendorYaml("vertica.yml", injectionModel));
 
         this.vendors = Arrays.asList(
-            this.auto,
-            access,
-            altibase,
-            ctreeace,
-            this.cubrid,
-            this.db2,
-            this.derby,
-            exasol,
-            this.firebird,
-            frontbase,
-            this.h2,
-            hana,
-            this.hsqldb,
-            this.informix,
-            ingres,
-            iris,
-            maxdb,
-            this.mckoi,
-            this.mimer,
-            this.monetdb,
-            this.mysql,
-            this.neo4j,
-            netezza,
-            nuodb,
-            this.oracle,
-            this.postgresql,
-            presto,
-            this.sqlite,
-            this.sqlserver,
-            this.sybase,
-            teradata,
-            this.vertica
+            this.auto, access, altibase, ctreeace, this.cubrid, this.db2, this.derby, exasol, this.firebird, frontbase, this.h2,
+            hana, this.hsqldb, this.informix, ingres, iris, maxdb, this.mckoi, this.mimer, this.monetdb, this.mysql, this.neo4j,
+            netezza, nuodb, this.oracle, this.postgresql, presto, this.sqlite, this.sqlserver, this.sybase, teradata, this.vertica
         );
         
         this.setVendor(this.mysql);
@@ -187,11 +149,8 @@ public class MediatorVendor {
     }
     
     public Vendor fingerprintVendor() {
-        
         Vendor vendorFound = null;
-        
         if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {
-            
             vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
@@ -200,9 +159,7 @@ public class MediatorVendor {
                 () -> this.injectionModel.getMediatorVendor().getVendorByUser()
             );
         } else {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database...");
-        
             var insertionCharacter = URLEncoder.encode("'\"#-)'\"*", StandardCharsets.UTF_8);
             String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "test#vendor");
                 
@@ -215,7 +172,6 @@ public class MediatorVendor {
             // Test each vendor
             for (Vendor vendorTest: vendorsWithoutAuto) {
                 if (pageSource.matches(vendorTest.instance().fingerprintErrorsAsRegex())) {
-                    
                     vendorFound = vendorTest;
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_SUCCESS,
@@ -226,14 +182,13 @@ public class MediatorVendor {
                     break;
                 }
             }
-            
             vendorFound = this.initializeVendor(vendorFound);
         }
 
         this.injectionModel.appendAnalysisReport(
-            "<span style=color:rgb(0,0,255)># Date: " + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
+            "# Date: " + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
             + "<br># Tested on: " + String.format("%s (v%s)", SystemUtils.OS_NAME, SystemUtils.OS_VERSION)
-            + "<br># Tool: jSQL Injection v" + this.injectionModel.getVersionJsql()
+            + "<br># Tool: jSQL Injection v" + this.injectionModel.getPropertiesUtil().getVersionJsql()
                 + " (<a href="+this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")+">"
                 + this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")
                 + "</a>)"
@@ -254,11 +209,8 @@ public class MediatorVendor {
     }
 
     public Vendor initializeVendor(Vendor vendor) {
-        
         var vendorFixed = vendor;
-        
         if (vendorFixed == null) {
-            
             vendorFixed = this.injectionModel.getMediatorVendor().getMysql();
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
@@ -267,14 +219,12 @@ public class MediatorVendor {
                 () -> this.injectionModel.getMediatorVendor().getMysql()
             );
         } else {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
                 () -> I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"),
                 () -> vendor
             );
-            
             Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
             msgHeader.put(
                 Header.URL,
@@ -287,7 +237,6 @@ public class MediatorVendor {
             requestDatabaseIdentified.setParameters(msgHeader);
             this.injectionModel.sendToViews(requestDatabaseIdentified);
         }
-        
         return vendorFixed;
     }
     

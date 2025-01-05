@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -40,7 +40,6 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
      * @param proxy Swing component to decorate
      */
     public JPopupTextComponent(final T proxy) {
-        
         super(proxy);
 
         this.getProxy().setComponentPopupMenu(new JPopupMenuText(this.getProxy()));
@@ -58,7 +57,6 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
     }
 
     private void initializeUndo(final UndoManager undo) {
-        
         final var undoIdentifier = "Undo";  // Create an undo action and add it to the text component
         
         this.getProxy().getActionMap().put(undoIdentifier, new AbstractAction(undoIdentifier) {
@@ -80,7 +78,6 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
     }
 
     private void initializeRedo(final UndoManager undo) {
-        
         final var redoIdentifier = "Redo";  // Create a redo action and add it to the text component
         
         this.getProxy().getActionMap().put(redoIdentifier, new AbstractAction(redoIdentifier) {
@@ -101,7 +98,6 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
     }
 
     private void makeDeleteSilent() {
-        
         var actionMap = this.getProxy().getActionMap();  // Silent delete
 
         String key = DefaultEditorKit.deletePrevCharAction;

@@ -6,7 +6,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -37,8 +36,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
      *  Specify the number of columns to be fixed and the scroll pane
      *  containing the table.
      */
-        public void fixColumnSize(int fixedColumns, JScrollPane scrollPane) {
-        
+    public void fixColumnSize(int fixedColumns, JScrollPane scrollPane) {
         this.scrollPane = scrollPane;
 
         this.mainTable = (JTable) scrollPane.getViewport().getView();
@@ -57,33 +55,26 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         this.fixedTable.setAutoCreateColumnsFromModel(false);
         
         final DefaultTableModel modelFixedTable = new DefaultTableModel() {
-            
             @Override
             public int getColumnCount() {
                 return 2;
             }
-
             @Override
             public boolean isCellEditable(int row, int col) {
                 return false;
             }
-
             @Override
             public int getRowCount() {
                 return FixedColumnTable.this.mainTable.getRowCount();
             }
-
             @Override
             public Class<?> getColumnClass(int colNum) {
-                
                 Class<?> columnClass;
-                
                 if (colNum == 0) {
                     columnClass = String.class;
                 } else {
                     columnClass = super.getColumnClass(colNum);
                 }
-                
                 return columnClass;
             }
         };
@@ -94,34 +85,14 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         this.fixedTable.setRowHeight(20);
         this.fixedTable.setFocusable(false);
         this.fixedTable.getTableHeader().setReorderingAllowed(false);
-        this.fixedTable.setGridColor(Color.LIGHT_GRAY);
-        
-        this.fixedTable.getTableHeader().setDefaultRenderer(new RowHeaderRenderer() {
-            
-            @Override
-            public Component getTableCellRendererComponent(
-                JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
-            ) {
-                
-                JComponent label = (JComponent) super.getTableCellRendererComponent(
-                    table, value, isSelected, hasFocus, row, column
-                );
-                
-                label.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY));
-                
-                return label;
-            }
-        });
         
         //  Remove the fixed columns from the main table
         //  and add them to the fixed table
         TableColumnModel columnModel = this.mainTable.getColumnModel();
         for (var i = 0 ; i < fixedColumns ; i++) {
-            
             TableColumn column = columnModel.getColumn(i);
             column.setMinWidth(0);
             column.setMaxWidth(0);
-            
             this.fixedTable.getColumnModel().addColumn(new TableColumn(i));
         }
 
@@ -133,12 +104,9 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         this.fixedTable.getColumnModel().getColumn(1).setPreferredWidth(38);
 
         this.mainTable.getRowSorter().addRowSorterListener(rowSorterEvent -> {
-            
             modelFixedTable.fireTableDataChanged();
-            
             // Copy data from hidden column in main table
             for (var i = 0 ; i < FixedColumnTable.this.mainTable.getRowCount() ; i++) {
-                
                 FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 0), i, 0);
                 FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 1), i, 1);
             }
@@ -150,7 +118,6 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         
         // Copy data from first column of main table to fixed column
         for (var i = 0 ; i < this.mainTable.getRowCount() ; i++) {
-            
             this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 0), i, 0);
             this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 1), i, 1);
         }
@@ -169,7 +136,6 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
      */
     @Override
     public void stateChanged(ChangeEvent e) {
-        
         //  Sync the scroll pane scrollbar with the row header
         JViewport viewport = (JViewport) e.getSource();
         this.scrollPane.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
@@ -180,7 +146,6 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
      */
     @Override
     public void propertyChange(PropertyChangeEvent e) {
-        
         //  Keep the fixed table in sync with the main table
         if ("selectionModel".equals(e.getPropertyName())) {
             this.fixedTable.setSelectionModel(this.mainTable.getSelectionModel());

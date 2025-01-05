@@ -30,32 +30,25 @@ public class JsonUtil {
     }
 
     public static boolean isJson(String param) {
-        
         var isJson = false;
-        
         try {
             // Test for JSON Object
             new JSONObject(param);
             isJson = true;
-            
         } catch (JSONException exceptionJSONObject) {
             try {
                 // Test for JSON Array
                 new JSONArray(param);
                 isJson = true;
-                
             } catch (JSONException exceptionJSONArray) {
                 // Not a JSON entity
             }
         }
-        
         return isJson;
     }
 
     public static Object getJson(String param) {
-
         Object jsonEntity;  // Will test if current value is a JSON entity
-        
         try {
             jsonEntity = new JSONObject(param);  // Test for JSON Object
         } catch (JSONException exceptionJSONObject) {
@@ -65,29 +58,22 @@ public class JsonUtil {
                 jsonEntity = new Object();  // Not a JSON entity
             }
         }
-        
         return jsonEntity;
     }
 
     public static List<SimpleEntry<String, String>> createEntries(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath) {
-        
         List<SimpleEntry<String, String>> attributesXPath = new ArrayList<>();
-        
         if (jsonEntity instanceof JSONObject) {
             JsonUtil.scanJsonObject(jsonEntity, parentName, parentXPath, attributesXPath);
         } else if (jsonEntity instanceof JSONArray) {
             JsonUtil.scanJsonArray(jsonEntity, parentName, parentXPath, attributesXPath);
         }
-        
         return attributesXPath;
     }
 
     private static void scanJsonArray(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath, List<SimpleEntry<String, String>> attributesXPath) {
-        
         var jsonArrayEntity = (JSONArray) jsonEntity;
-        
         for (var i = 0; i < jsonArrayEntity.length(); i++) {
-            
             Object value = jsonArrayEntity.get(i);
             String xpath = parentName +"["+ i +"]";
             
@@ -95,7 +81,6 @@ public class JsonUtil {
             if (value instanceof JSONArray || value instanceof JSONObject) {
                 attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));
             } else if (value instanceof String) {
-                
                 SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, (String) value);
                 attributesXPath.add(stringValue);
                 
@@ -109,13 +94,9 @@ public class JsonUtil {
     }
 
     private static void scanJsonObject(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath, List<SimpleEntry<String, String>> attributesXPath) {
-        
         var jsonObjectEntity = (JSONObject) jsonEntity;
-        
         Iterator<?> keys = jsonObjectEntity.keys();
-        
         while (keys.hasNext()) {
-            
             String key = (String) keys.next();
             var value = jsonObjectEntity.get(key);
             String xpath = parentName +"."+ key;
@@ -138,7 +119,6 @@ public class JsonUtil {
     }
     
     public boolean testJsonParam(AbstractMethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
-        
         var hasFoundInjection = false;
         
         // Remove STAR at the end of parameter, STAR will be added inside json data instead
@@ -152,7 +132,6 @@ public class JsonUtil {
         
         // Loop through each JSON values
         for (SimpleEntry<String, String> parentXPath: attributesJson) {
-            
             JsonUtil.createEntries(jsonEntity, "root", null);  // Erase previously defined *
             JsonUtil.createEntries(jsonEntity, "root", parentXPath);  // Add * to current parameter's value
 
@@ -173,9 +152,7 @@ public class JsonUtil {
                 
                 // Injection successful
                 break;
-                
             } catch (JSqlException e) {
-                
                 // Injection failure
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
@@ -187,7 +164,6 @@ public class JsonUtil {
                     )
                 );
             } finally {
-                
                 // Erase * at the end of each params
                 // TODO useless
                 methodInjection.getParams()
@@ -203,7 +179,6 @@ public class JsonUtil {
                 }
             }
         }
-        
         return hasFoundInjection;
     }
 }

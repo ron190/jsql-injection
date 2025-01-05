@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -30,26 +30,22 @@ public abstract class AbstractElementDatabase {
      * Required for suspendable concurrent map tracking.
      */
     public static final AbstractElementDatabase MOCK = new AbstractElementDatabase() {
-
         @Override
         public AbstractElementDatabase getParent() {
             return null;
         }
-
         @Override
         public int getChildCount() {
             return 0;
         }
-
         @Override
-        public String getLabelCount() {
+        public String getLabelWithCount() {
             return null;
         }
     };
     
     /**
      * Traverse upward, and return the parent.
-     * @return
      */
     public abstract AbstractElementDatabase getParent();
     
@@ -62,9 +58,8 @@ public abstract class AbstractElementDatabase {
     
     /**
      * Return a readable label displayed by the view.
-     * @return
      */
-    public abstract String getLabelCount();
+    public abstract String getLabelWithCount();
     
     /**
      * Return the label of current element.

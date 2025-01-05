@@ -27,7 +27,7 @@ public class CheckAllGetSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withCheckingAllURLParam()
+        .withIsCheckingAllURLParam(true)
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true);
         

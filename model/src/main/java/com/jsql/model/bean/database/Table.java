@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -35,12 +35,8 @@ public class Table extends AbstractElementDatabase {
 
     /**
      * Define the table label, number of rows and parent database.
-     * @param tableName
-     * @param rowCount
-     * @param parentDatabase
      */
     public Table(String tableName, String rowCount, Database parentDatabase) {
-        
         this.elementValue = tableName;
         this.rowCount = rowCount;
         this.parentDatabase = parentDatabase;
@@ -64,21 +60,18 @@ public class Table extends AbstractElementDatabase {
      * of rows is unknown, e.g. my_table (7 rows).
      */
     @Override
-    public String getLabelCount() {
-        
+    public String getLabelWithCount() {
         String nbRow = "information_schema".equals(this.parentDatabase.toString())
             ? "?"
             : this.rowCount;
         
         // Report #138: detect incorrect number of rows
         String sPlural = StringUtils.EMPTY;
-        
         try {
             if (Integer.parseInt(this.rowCount) > 1) {
                 sPlural = "s";
             }
         } catch (NumberFormatException e) {
-            
             this.rowCount = "0";
             nbRow = "0";
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect number of rows.");

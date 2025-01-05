@@ -39,9 +39,7 @@ public class TamperingUtil {
     private static final ScriptEngineManager SCRIPT_ENGINE_MANAGER = new ScriptEngineManager();
 
     private static String eval(String sqlQuery, String jsTampering) {
-
         Object resultSqlTampered;
-
         try {
             if (StringUtils.isEmpty(jsTampering)) {
                 throw new ScriptException("Tampering context is empty");
@@ -54,16 +52,13 @@ public class TamperingUtil {
             resultSqlTampered = nashornInvocable.invokeFunction("tampering", sqlQuery);
 
         } catch (ScriptException e) {
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 String.format("Tampering context contains errors: %s", e.getMessage()),
                 e
             );
             resultSqlTampered = sqlQuery;
-
         } catch (NoSuchMethodException e) {
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 String.format("Tampering context is not properly defined: %s", e.getMessage()),
@@ -72,12 +67,10 @@ public class TamperingUtil {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Minimal tampering context is: var tampering = function(sql) {return sql}");
             resultSqlTampered = sqlQuery;
         }
-
         return resultSqlTampered.toString();
     }
 
     public String tamper(String sqlQueryDefault) {
-
         String lead;
         String sqlQuery;
         String trail;
@@ -87,11 +80,9 @@ public class TamperingUtil {
         var matcherSql = Pattern.compile(regexToMatchTamperTags).matcher(sqlQueryDefault);
 
         if (matcherSql.find()) {
-
             lead = matcherSql.group(1);
             sqlQuery = matcherSql.group(2);
             trail = matcherSql.group(3);
-
         } else {
             return sqlQueryDefault;
         }
@@ -130,16 +121,13 @@ public class TamperingUtil {
 
         sqlQuery = transform(sqlQuery, this.isBase64, TamperingType.BASE64);
         sqlQuery = transform(sqlQuery, this.isQuoteToUtf8, TamperingType.QUOTE_TO_UTF8);  // char insertion included
-
         return sqlQuery;
     }
 
     private String transform(String sqlQuery, boolean shouldApply, TamperingType tamperingType) {
-
         if (shouldApply) {
             return eval(sqlQuery, tamperingType.instance().getJavascript());
         }
-
         return sqlQuery;
     }
 

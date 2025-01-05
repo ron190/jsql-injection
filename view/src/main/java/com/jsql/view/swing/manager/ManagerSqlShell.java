@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -14,7 +14,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,46 +34,40 @@ public class ManagerSqlShell extends AbstractManagerShell {
         this.run.setText("Create SQL shell(s)");
         
         var userPassPanel = new JPanel();
-        
-        var layout = new GroupLayout(userPassPanel);
-        userPassPanel.setLayout(layout);
+        var groupLayout = new GroupLayout(userPassPanel);
+        userPassPanel.setLayout(groupLayout);
         userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        userPassPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        
+
         this.username.setToolTipText(I18nUtil.valueByKey("SQL_SHELL_USERNAME_TOOLTIP"));
         this.password.setToolTipText(I18nUtil.valueByKey("SQL_SHELL_PASSWORD_TOOLTIP"));
-        
-        this.username.setBorder(UiUtil.BORDER_BLU);
-        this.password.setBorder(UiUtil.BORDER_BLU);
-        
+
         var panelPassword = new JPanel(new BorderLayout());
-        panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         panelPassword.add(this.password);
         
-        layout.setHorizontalGroup(
-            layout
+        groupLayout.setHorizontalGroup(
+            groupLayout
             .createSequentialGroup()
             .addGroup(
-                layout
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
             )
             .addGroup(
-                layout.createParallelGroup()
+                groupLayout.createParallelGroup()
                 .addComponent(this.username)
                 .addComponent(panelPassword)
             )
         );
 
-        layout.setVerticalGroup(
-            layout
+        groupLayout.setVerticalGroup(
+            groupLayout
             .createSequentialGroup()
             .addGroup(
-                layout
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.username)
             )
             .addGroup(
-                layout
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(panelPassword)
             )

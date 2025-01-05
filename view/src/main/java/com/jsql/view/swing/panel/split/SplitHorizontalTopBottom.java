@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,41 +12,38 @@ package com.jsql.view.swing.panel.split;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.panel.PanelConsoles;
-import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
-import com.jsql.view.swing.tab.TabManagersProxy;
+import com.jsql.view.swing.tab.TabManagersCards;
 import com.jsql.view.swing.tab.TabResults;
-import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.prefs.Preferences;
 
 /**
  * SplitPane composed of tree and tabs on top, and info tabs on bottom.
  */
-public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
+public class SplitHorizontalTopBottom extends JSplitPane {
     
     /**
      * Name of preference for splitter vertical.
      * Reset divider position for current application version.
      */
-    private static final String NAME_LEFT_RIGHT_SPLITPANE = "verticalSplitter-";
+    public static final String NAME_LEFT_RIGHT_SPLITPANE = "verticalSplitter";
     
     /**
      * Name of preference for splitter horizontal.
      * Reset divider position for current application version.
      */
-    private static final String NAME_TOP_BOTTOM_SPLITPANE = "horizontalSplitter-";
+    public static final String NAME_TOP_BOTTOM_SPLITPANE = "horizontalSplitter";
     
-    private static final int LOC_LEFT_RIGHT_SPLITTER = 350;
-
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.
      */
-    private final JSplitPaneWithZeroSizeDivider splitVerticalLeftRight;
+    private final JSplitPane splitVerticalLeftRight;
 
     private static final JPanel PANEL_HIDDEN_CONSOLES = new JPanel();
     
@@ -66,81 +63,48 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
     public SplitHorizontalTopBottom() {
         
         super(JSplitPane.VERTICAL_SPLIT);
-
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
-        var verticalLeftRightSplitter = preferences.getInt(SplitHorizontalTopBottom.NAME_LEFT_RIGHT_SPLITPANE, LOC_LEFT_RIGHT_SPLITTER);
-
-        var tabManagersProxy = new TabManagersProxy();
-        MediatorHelper.register(tabManagersProxy);
-
-        var tabResults = new TabResults();
-        tabResults.setName("tabResults");
-        tabResults.addMouseWheelListener(new TabbedPaneMouseWheelListener());
-        MediatorHelper.register(tabResults);
+        var verticalLeftRightSplitter = preferences.getInt(SplitHorizontalTopBottom.NAME_LEFT_RIGHT_SPLITPANE, 350);
+        var tabManagersProxy = new TabManagersCards();
+        new TabResults();  // initialized but hidden
 
         // Tree and tabs on top
-        this.splitVerticalLeftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
+        this.splitVerticalLeftRight = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         this.splitVerticalLeftRight.setLeftComponent(tabManagersProxy);
-        
-        this.labelPlaceholderResult = new JLabel(UiUtil.IMG_BUG);
+        this.labelPlaceholderResult = new JLabel(UiUtil.APP_RESULT.icon);
         this.labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));
-
-        this.labelPlaceholderResult.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.labelPlaceholderResult.setAlignmentY(Component.CENTER_ALIGNMENT);
-      
         this.splitVerticalLeftRight.setRightComponent(this.labelPlaceholderResult);
         this.splitVerticalLeftRight.setDividerLocation(verticalLeftRightSplitter);
-        this.splitVerticalLeftRight.setDividerSize(0);
-        this.splitVerticalLeftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
 
-        this.setDividerSize(0);
-        this.setBorder(null);
+        JLabel labelShowConsoles = new JLabel(UiUtil.ARROW_UP.icon);
+        labelShowConsoles.setBorder(BorderFactory.createEmptyBorder());
+        labelShowConsoles.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE.actionPerformed(null);
+            }
+        });
+        labelShowConsoles.setName("buttonShowConsolesHidden");
+        PANEL_HIDDEN_CONSOLES.setLayout(new BorderLayout());
+        PANEL_HIDDEN_CONSOLES.add(labelShowConsoles, BorderLayout.LINE_END);
+        PANEL_HIDDEN_CONSOLES.setVisible(false);
 
         var panelManagerResult = new JPanel(new BorderLayout());
         panelManagerResult.add(this.splitVerticalLeftRight, BorderLayout.CENTER);
-
-        PANEL_HIDDEN_CONSOLES.setLayout(new BorderLayout());
-        PANEL_HIDDEN_CONSOLES.setOpaque(false);
-        PANEL_HIDDEN_CONSOLES.setPreferredSize(new Dimension(17, 22));
-        PANEL_HIDDEN_CONSOLES.setMaximumSize(new Dimension(17, 22));
-        
-        JButton buttonShowConsoles = new BasicArrowButton(SwingConstants.NORTH);
-        buttonShowConsoles.setBorderPainted(false);
-        buttonShowConsoles.setOpaque(false);
-        buttonShowConsoles.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);
-        buttonShowConsoles.setName("buttonShowConsolesHidden");
-        
-        PANEL_HIDDEN_CONSOLES.add(Box.createHorizontalGlue());
-        PANEL_HIDDEN_CONSOLES.add(buttonShowConsoles, BorderLayout.LINE_END);
-        PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
-        PANEL_HIDDEN_CONSOLES.setVisible(false);
-
         panelManagerResult.add(PANEL_HIDDEN_CONSOLES, BorderLayout.SOUTH);
-
-        // Setting for top and bottom components
         this.setTopComponent(panelManagerResult);
 
         var panelConsoles = new PanelConsoles();
         MediatorHelper.register(panelConsoles);
-
         this.setBottomComponent(panelConsoles);
 
-        // defines left and bottom pane
         this.setResizeWeight(1);
     }
     
     
     // Getter and setter
 
-    public static String getNameVSplitpane() {
-        return NAME_LEFT_RIGHT_SPLITPANE;
-    }
-
-    public static String getNameHSplitpane() {
-        return NAME_TOP_BOTTOM_SPLITPANE;
-    }
-
-    public JSplitPaneWithZeroSizeDivider getSplitVerticalLeftRight() {
+    public JSplitPane getSplitVerticalLeftRight() {
         return this.splitVerticalLeftRight;
     }
 
