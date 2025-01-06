@@ -10,7 +10,10 @@
  *******************************************************************************/
 package com.jsql.view.swing.text;
 
+import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,44 +24,54 @@ import java.awt.event.FocusEvent;
  * A JTextArea decorated with popup menu and border.
  */
 public class JPopupTextArea extends JPopupTextComponent&lt;JTextArea&gt; implements DecoratorJComponent&lt;JTextArea&gt; {
-    
+
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L31">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
     /**
      * Build new instance of readonly JTextArea to decorate.
      */
     public JPopupTextArea() {
-<span class="fc" id="L29">        this(StringUtils.EMPTY);</span>
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L37">        this(StringUtils.EMPTY);</span>
+<span class="fc" id="L38">    }</span>
     
     /**
      * Build new instance of readonly JTextArea to decorate
      * with a default placeholder.
      */
     public JPopupTextArea(String placeholder) {
-<span class="fc" id="L37">        this(new JTextAreaPlaceholder(placeholder) {</span>
+<span class="fc" id="L45">        this(new JTextAreaPlaceholder(placeholder) {</span>
             @Override
             public boolean isEditable() {
-<span class="fc" id="L40">                return false;</span>
+<span class="fc" id="L48">                return false;</span>
             }
         });
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L51">    }</span>
 
     /**
      * Build new instance of JTextArea to decorate.
      */
     public JPopupTextArea(JTextArea proxy) {
-<span class="fc" id="L49">        super(proxy);</span>
+<span class="fc" id="L57">        super(proxy);</span>
 
         // Side effect: disable caret blink, editable texts must restore blink rate
-<span class="fc" id="L52">        this.getProxy().addFocusListener(new FocusAdapter() {</span>
+<span class="fc" id="L60">        this.getProxy().addFocusListener(new FocusAdapter() {</span>
             @Override
             public void focusGained(FocusEvent arg0) {
-<span class="fc" id="L55">                JPopupTextArea.this.getProxy().getCaret().setVisible(true);</span>
-<span class="fc" id="L56">                JPopupTextArea.this.getProxy().getCaret().setSelectionVisible(true);</span>
-<span class="fc" id="L57">            }</span>
+                // Fix #95769: IllegalArgumentException on setVisible()
+                try {
+<span class="fc" id="L65">                    JPopupTextArea.this.getProxy().getCaret().setVisible(true);</span>
+<span class="nc" id="L66">                } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L67">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
+<span class="fc" id="L68">                }</span>
+<span class="fc" id="L69">                JPopupTextArea.this.getProxy().getCaret().setSelectionVisible(true);</span>
+<span class="fc" id="L70">            }</span>
         });
 
-<span class="fc" id="L60">        this.getProxy().setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));</span>
-<span class="fc" id="L61">        this.getProxy().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L73">        this.getProxy().setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));</span>
+<span class="fc" id="L74">        this.getProxy().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));</span>
+<span class="fc" id="L75">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

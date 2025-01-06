@@ -15,11 +15,13 @@ import com.formdev.flatlaf.icons.FlatRadioButtonMenuItemIcon;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.ParameterUtil;
 import com.jsql.view.swing.panel.address.ActionEnterAddressBar;
 import com.jsql.view.swing.panel.address.PanelTrailingAddress;
 import com.jsql.view.swing.panel.address.RadioModel;
 import com.jsql.view.swing.panel.util.ButtonExpandText;
 import com.jsql.view.swing.text.*;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -44,45 +46,45 @@ public class PanelAddressBar extends JPanel {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L47">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L49">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
-<span class="fc" id="L49">    private final AtomicReference&lt;JTextField&gt; atomicTextFieldAddress = new AtomicReference&lt;&gt;();  // atomic to build dynamically;</span>
-<span class="fc" id="L50">    private final AtomicReference&lt;JTextField&gt; atomicTextFieldRequest = new AtomicReference&lt;&gt;();</span>
-<span class="fc" id="L51">    private final AtomicReference&lt;JTextField&gt; atomicTextFieldHeader = new AtomicReference&lt;&gt;();</span>
+<span class="fc" id="L51">    private final AtomicReference&lt;JTextField&gt; atomicTextFieldAddress = new AtomicReference&lt;&gt;();  // atomic to build dynamically;</span>
+<span class="fc" id="L52">    private final AtomicReference&lt;JTextField&gt; atomicTextFieldRequest = new AtomicReference&lt;&gt;();</span>
+<span class="fc" id="L53">    private final AtomicReference&lt;JTextField&gt; atomicTextFieldHeader = new AtomicReference&lt;&gt;();</span>
 
-<span class="fc" id="L53">    private final AtomicReference&lt;JRadioButton&gt; atomicRadioRequest = new AtomicReference&lt;&gt;();  // atomic to build dynamically</span>
-<span class="fc" id="L54">    private final AtomicReference&lt;JRadioButton&gt; atomicRadioMethod = new AtomicReference&lt;&gt;();</span>
-<span class="fc" id="L55">    private final AtomicReference&lt;JRadioButton&gt; atomicRadioHeader = new AtomicReference&lt;&gt;();</span>
+<span class="fc" id="L55">    private final AtomicReference&lt;JRadioButton&gt; atomicRadioRequest = new AtomicReference&lt;&gt;();  // atomic to build dynamically</span>
+<span class="fc" id="L56">    private final AtomicReference&lt;JRadioButton&gt; atomicRadioMethod = new AtomicReference&lt;&gt;();</span>
+<span class="fc" id="L57">    private final AtomicReference&lt;JRadioButton&gt; atomicRadioHeader = new AtomicReference&lt;&gt;();</span>
 
     private static final String KEY_ADDRESS_BAR_PLACEHOLDER = &quot;ADDRESS_BAR_PLACEHOLDER&quot;;
 
     // Current injection method
-<span class="fc" id="L60">    private AbstractMethodInjection methodInjection = MediatorHelper.model().getMediatorMethod().getQuery();</span>
-<span class="fc" id="L61">    private String typeRequest = &quot;GET&quot;;</span>
+<span class="fc" id="L62">    private AbstractMethodInjection methodInjection = MediatorHelper.model().getMediatorMethod().getQuery();</span>
+<span class="fc" id="L63">    private String typeRequest = &quot;GET&quot;;</span>
 
     private final PanelTrailingAddress panelTrailingAddress;
 
-<span class="fc" id="L65">    private boolean isAdvanceActivated = false;</span>
+<span class="fc" id="L67">    private boolean isAdvanceActivated = false;</span>
     
-<span class="fc" id="L67">    public PanelAddressBar() {</span>
-<span class="fc" id="L68">        var buttonGroup = new ButtonGroup();</span>
+<span class="fc" id="L69">    public PanelAddressBar() {</span>
+<span class="fc" id="L70">        var buttonGroup = new ButtonGroup();</span>
 
-<span class="fc" id="L70">        Stream.of(</span>
+<span class="fc" id="L72">        Stream.of(</span>
             new RadioModel(
                 &quot;URL&quot;,
-<span class="fc" id="L73">                true,</span>
-<span class="fc" id="L74">                MediatorHelper.model().getMediatorMethod().getQuery(),</span>
+<span class="fc" id="L75">                true,</span>
+<span class="fc" id="L76">                MediatorHelper.model().getMediatorMethod().getQuery(),</span>
                 &quot;METHOD_QUERYSTRING_TOOLTIP&quot;,
                 atomicRadioRequest,
                 &quot;FIELD_QUERYSTRING_TOOLTIP&quot;,
-<span class="fc" id="L78">                I18nUtil.valueByKey(KEY_ADDRESS_BAR_PLACEHOLDER),</span>
+<span class="fc" id="L80">                I18nUtil.valueByKey(KEY_ADDRESS_BAR_PLACEHOLDER),</span>
                 atomicTextFieldAddress,
                 18
             ),
             new RadioModel(
                 &quot;GET&quot;,
-<span class="fc" id="L84">                false,</span>
-<span class="fc" id="L85">                MediatorHelper.model().getMediatorMethod().getRequest(),</span>
+<span class="fc" id="L86">                false,</span>
+<span class="fc" id="L87">                MediatorHelper.model().getMediatorMethod().getRequest(),</span>
                 &quot;METHOD_REQUEST_TOOLTIP&quot;,
                 atomicRadioMethod,
                 &quot;FIELD_REQUEST_TOOLTIP&quot;,
@@ -92,8 +94,8 @@ public class PanelAddressBar extends JPanel {
             ),
             new RadioModel(
                 &quot;Header&quot;,
-<span class="fc" id="L95">                false,</span>
-<span class="fc" id="L96">                MediatorHelper.model().getMediatorMethod().getHeader(),</span>
+<span class="fc" id="L97">                false,</span>
+<span class="fc" id="L98">                MediatorHelper.model().getMediatorMethod().getHeader(),</span>
                 &quot;METHOD_HEADER_TOOLTIP&quot;,
                 atomicRadioHeader,
                 &quot;FIELD_HEADER_TOOLTIP&quot;,
@@ -102,287 +104,303 @@ public class PanelAddressBar extends JPanel {
                 0
             )
         )
-<span class="fc" id="L105">        .forEach(radioModel -&gt; {</span>
-<span class="fc" id="L106">            var tooltipTextfield = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(radioModel.keyTooltipQuery)));</span>
-<span class="fc" id="L107">            radioModel.textfield.set(new JPopupTextField(new JTextFieldPlaceholder(radioModel.placeholder, radioModel.offset) {</span>
+<span class="fc" id="L107">        .forEach(radioModel -&gt; {</span>
+<span class="fc" id="L108">            var tooltipTextfield = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(radioModel.keyTooltipQuery)));</span>
+<span class="fc" id="L109">            radioModel.textfield.set(new JPopupTextField(new JTextFieldPlaceholder(radioModel.placeholder, radioModel.offset) {</span>
                 @Override
                 public JToolTip createToolTip() {
-<span class="nc" id="L110">                    tooltipTextfield.set(new JToolTipI18n(I18nUtil.valueByKey(radioModel.keyTooltipQuery)));</span>
-<span class="nc" id="L111">                    return tooltipTextfield.get();</span>
+<span class="nc" id="L112">                    tooltipTextfield.set(new JToolTipI18n(I18nUtil.valueByKey(radioModel.keyTooltipQuery)));</span>
+<span class="nc" id="L113">                    return tooltipTextfield.get();</span>
                 }
-<span class="fc" id="L113">            }).getProxy());</span>
-<span class="fc" id="L114">            I18nViewUtil.addComponentForKey(radioModel.keyTooltipQuery, tooltipTextfield.get());</span>
-<span class="fc" id="L115">            radioModel.textfield.get().addActionListener(new ActionEnterAddressBar(this));</span>
-<span class="fc" id="L116">            radioModel.textfield.get().setVisible(false);  // query will be set back to visible</span>
-<span class="fc" id="L117">            radioModel.textfield.get().setToolTipText(I18nUtil.valueByKey(radioModel.keyTooltipQuery));</span>
+<span class="fc" id="L115">            }).getProxy());</span>
+<span class="fc" id="L116">            I18nViewUtil.addComponentForKey(radioModel.keyTooltipQuery, tooltipTextfield.get());</span>
+<span class="fc" id="L117">            radioModel.textfield.get().addActionListener(new ActionEnterAddressBar(this));</span>
+<span class="fc" id="L118">            radioModel.textfield.get().setVisible(false);  // query will be set back to visible</span>
+<span class="fc" id="L119">            radioModel.textfield.get().setToolTipText(I18nUtil.valueByKey(radioModel.keyTooltipQuery));</span>
 
-<span class="fc" id="L119">            var tooltipRadio = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18nRadio)));</span>
-<span class="fc" id="L120">            radioModel.radio.set(</span>
-<span class="fc" id="L121">                new JRadioButton(radioModel.request) {</span>
+<span class="fc" id="L121">            var tooltipRadio = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18nRadio)));</span>
+<span class="fc" id="L122">            radioModel.radio.set(</span>
+<span class="fc" id="L123">                new JRadioButton(radioModel.request) {</span>
                     @Override
                     public JToolTip createToolTip() {
-<span class="nc" id="L124">                        tooltipRadio.set(new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18nRadio)));</span>
-<span class="nc" id="L125">                        return tooltipRadio.get();</span>
+<span class="nc" id="L126">                        tooltipRadio.set(new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18nRadio)));</span>
+<span class="nc" id="L127">                        return tooltipRadio.get();</span>
                     }
                 }
             );
-<span class="fc" id="L129">            I18nViewUtil.addComponentForKey(radioModel.i18nRadio, tooltipRadio.get());</span>
-<span class="fc" id="L130">            radioModel.radio.get().setToolTipText(I18nUtil.valueByKey(radioModel.i18nRadio));</span>
-<span class="fc" id="L131">            radioModel.radio.get().setSelected(radioModel.isSelected);</span>
-<span class="fc" id="L132">            radioModel.radio.get().setHorizontalTextPosition(SwingConstants.LEFT);</span>
-<span class="fc" id="L133">            radioModel.radio.get().setVisible(false);</span>
-<span class="pc" id="L134">            radioModel.radio.get().addActionListener(e -&gt; MediatorHelper.panelAddressBar().setMethodInjection(radioModel.method));</span>
-<span class="fc" id="L135">            buttonGroup.add(radioModel.radio.get());</span>
-<span class="fc" id="L136">        });</span>
+<span class="fc" id="L131">            I18nViewUtil.addComponentForKey(radioModel.i18nRadio, tooltipRadio.get());</span>
+<span class="fc" id="L132">            radioModel.radio.get().setToolTipText(I18nUtil.valueByKey(radioModel.i18nRadio));</span>
+<span class="fc" id="L133">            radioModel.radio.get().setSelected(radioModel.isSelected);</span>
+<span class="fc" id="L134">            radioModel.radio.get().setHorizontalTextPosition(SwingConstants.LEFT);</span>
+<span class="fc" id="L135">            radioModel.radio.get().setVisible(false);</span>
+<span class="pc" id="L136">            radioModel.radio.get().addActionListener(e -&gt; MediatorHelper.panelAddressBar().setMethodInjection(radioModel.method));</span>
+<span class="fc" id="L137">            buttonGroup.add(radioModel.radio.get());</span>
+<span class="fc" id="L138">        });</span>
 
-<span class="fc" id="L138">        this.atomicTextFieldAddress.get().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
-<span class="fc" id="L139">        this.atomicTextFieldAddress.get().setName(&quot;textFieldAddress&quot;);</span>
-<span class="fc" id="L140">        this.atomicTextFieldAddress.get().setPreferredSize(new Dimension(50, 32));  // required to set correct height</span>
-<span class="fc" id="L141">        this.atomicTextFieldAddress.get().setVisible(true);</span>
-<span class="fc" id="L142">        I18nViewUtil.addComponentForKey(KEY_ADDRESS_BAR_PLACEHOLDER, this.atomicTextFieldAddress.get());  // only i18n placeholder</span>
+<span class="fc" id="L140">        this.atomicTextFieldAddress.get().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
+<span class="fc" id="L141">        this.atomicTextFieldAddress.get().setName(&quot;textFieldAddress&quot;);</span>
+<span class="fc" id="L142">        this.atomicTextFieldAddress.get().setPreferredSize(new Dimension(50, 32));  // required to set correct height</span>
+<span class="fc" id="L143">        this.atomicTextFieldAddress.get().setVisible(true);</span>
+<span class="fc" id="L144">        I18nViewUtil.addComponentForKey(KEY_ADDRESS_BAR_PLACEHOLDER, this.atomicTextFieldAddress.get());  // only i18n placeholder</span>
 
-<span class="fc" id="L144">        atomicRadioRequest.get().setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));</span>
-<span class="fc" id="L145">        atomicRadioMethod.get().setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));</span>
-<span class="fc" id="L146">        atomicRadioHeader.get().setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));</span>
+<span class="fc" id="L146">        atomicRadioRequest.get().setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));</span>
+<span class="fc" id="L147">        atomicRadioMethod.get().setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));</span>
+<span class="fc" id="L148">        atomicRadioHeader.get().setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));</span>
 
-<span class="fc" id="L148">        this.panelTrailingAddress = new PanelTrailingAddress(this);</span>
-<span class="fc" id="L149">        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, this.panelTrailingAddress);</span>
-<span class="fc" id="L150">        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, UiUtil.GLOBE.icon);</span>
-<span class="fc" id="L151">        this.atomicTextFieldRequest.get().putClientProperty(</span>
+<span class="fc" id="L150">        this.panelTrailingAddress = new PanelTrailingAddress(this);</span>
+<span class="fc" id="L151">        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, this.panelTrailingAddress);</span>
+<span class="fc" id="L152">        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, UiUtil.GLOBE.icon);</span>
+<span class="fc" id="L153">        this.atomicTextFieldRequest.get().putClientProperty(</span>
             FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT,
-<span class="fc" id="L153">            new ButtonExpandText(&quot;Add request body&quot;, this.atomicTextFieldRequest.get())</span>
+<span class="fc" id="L155">            new ButtonExpandText(&quot;Add request body&quot;, this.atomicTextFieldRequest.get())</span>
         );
-<span class="fc" id="L155">        this.atomicTextFieldHeader.get().putClientProperty(</span>
+<span class="fc" id="L157">        this.atomicTextFieldHeader.get().putClientProperty(</span>
             FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT,
-<span class="fc" id="L157">            new ButtonExpandText(&quot;Add header body&quot;, this.atomicTextFieldHeader.get())</span>
+<span class="fc" id="L159">            new ButtonExpandText(&quot;Add header body&quot;, this.atomicTextFieldHeader.get())</span>
         );
 
-<span class="fc" id="L160">        this.initializeLayout();</span>
-<span class="fc" id="L161">    }</span>
+<span class="fc" id="L162">        this.initializeLayout();</span>
+<span class="fc" id="L163">    }</span>
 
     private void initializeLayout() {
-<span class="fc" id="L164">        final JLabel advancedButton = this.initializeAdvancedButton();</span>
+<span class="fc" id="L166">        final JLabel advancedButton = this.initializeAdvancedButton();</span>
         
-<span class="fc" id="L166">        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));</span>
+<span class="fc" id="L168">        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));</span>
         
         // First panel at the top, contains text components
-<span class="fc" id="L169">        var panelTextFields = new JPanel();</span>
-<span class="fc" id="L170">        var groupLayout = new GroupLayout(panelTextFields);</span>
-<span class="fc" id="L171">        panelTextFields.setLayout(groupLayout);</span>
-<span class="fc" id="L172">        panelTextFields.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));</span>
-<span class="fc" id="L173">        this.add(panelTextFields);</span>
+<span class="fc" id="L171">        var panelTextFields = new JPanel();</span>
+<span class="fc" id="L172">        var groupLayout = new GroupLayout(panelTextFields);</span>
+<span class="fc" id="L173">        panelTextFields.setLayout(groupLayout);</span>
+<span class="fc" id="L174">        panelTextFields.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));</span>
+<span class="fc" id="L175">        this.add(panelTextFields);</span>
 
-<span class="fc" id="L175">        final var popup = new JPopupMenu();</span>
-<span class="fc" id="L176">        final var buttonGroupMethod = new ButtonGroup();</span>
+<span class="fc" id="L177">        final var popup = new JPopupMenu();</span>
+<span class="fc" id="L178">        final var buttonGroupMethod = new ButtonGroup();</span>
 
-<span class="fc bfc" id="L178" title="All 2 branches covered.">        for (String method: new String[]{&quot;DELETE&quot;, &quot;GET&quot;, &quot;HEAD&quot;, &quot;OPTIONS&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;TRACE&quot;}) {</span>
-<span class="fc" id="L179">            final JMenuItem newMenuItem = new JRadioButtonMenuItem(method, &quot;GET&quot;.equals(method));</span>
-<span class="fc" id="L180">            newMenuItem.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L181">                this.typeRequest = (newMenuItem.getText());</span>
-<span class="nc" id="L182">                atomicRadioMethod.get().setText(this.typeRequest);</span>
-<span class="nc" id="L183">                atomicRadioMethod.get().requestFocusInWindow();  // required to set proper focus</span>
-<span class="nc" id="L184">            });</span>
-<span class="fc" id="L185">            popup.add(newMenuItem);</span>
-<span class="fc" id="L186">            buttonGroupMethod.add(newMenuItem);</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        for (String method: new String[]{&quot;DELETE&quot;, &quot;GET&quot;, &quot;HEAD&quot;, &quot;OPTIONS&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;TRACE&quot;}) {</span>
+<span class="fc" id="L181">            final JMenuItem newMenuItem = new JRadioButtonMenuItem(method, &quot;GET&quot;.equals(method));</span>
+<span class="fc" id="L182">            newMenuItem.addActionListener(actionEvent -&gt; {</span>
+<span class="nc" id="L183">                this.typeRequest = newMenuItem.getText();</span>
+<span class="nc" id="L184">                atomicRadioMethod.get().setText(this.typeRequest);</span>
+<span class="nc" id="L185">                atomicRadioMethod.get().requestFocusInWindow();  // required to set proper focus</span>
+<span class="nc" id="L186">            });</span>
+<span class="fc" id="L187">            popup.add(newMenuItem);</span>
+<span class="fc" id="L188">            buttonGroupMethod.add(newMenuItem);</span>
         }
 
-<span class="fc" id="L189">        var panelCustomMethod = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L190">        panelCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.background&quot;));  // required for correct color</span>
+<span class="fc" id="L191">        var panelCustomMethod = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L192">        panelCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.background&quot;));  // required for correct color</span>
 
-<span class="fc" id="L192">        final var radioCustomMethod = new JRadioButton();</span>
-<span class="fc" id="L193">        radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
-<span class="fc" id="L194">        radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());</span>
-<span class="fc" id="L195">        radioCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.background&quot;));  // required for correct color</span>
-<span class="fc" id="L196">        buttonGroupMethod.add(radioCustomMethod);</span>
+<span class="fc" id="L194">        final var radioCustomMethod = new JRadioButton();</span>
+<span class="fc" id="L195">        radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
+<span class="fc" id="L196">        radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());</span>
+<span class="fc" id="L197">        radioCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.background&quot;));  // required for correct color</span>
+<span class="fc" id="L198">        buttonGroupMethod.add(radioCustomMethod);</span>
 
-<span class="fc" id="L198">        final JTextField inputCustomMethod = new JPopupTextField(&quot;CUSTOM&quot;).getProxy();</span>
-<span class="fc" id="L199">        inputCustomMethod.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L200">        final JTextField inputCustomMethod = new JPopupTextField(&quot;CUSTOM&quot;).getProxy();</span>
+<span class="fc" id="L201">        inputCustomMethod.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mouseClicked(MouseEvent e) {
-<span class="nc" id="L202">                super.mouseClicked(e);</span>
-<span class="nc bnc" id="L203" title="All 2 branches missed.">                radioCustomMethod.setSelected(!radioCustomMethod.isSelected());</span>
-<span class="nc" id="L204">            }</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">                radioCustomMethod.setSelected(!radioCustomMethod.isSelected());</span>
+<span class="nc" id="L205">            }</span>
         });
-<span class="fc" id="L206">        radioCustomMethod.addActionListener(actionEvent -&gt; {</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(inputCustomMethod.getText())) {</span>
-<span class="nc" id="L208">                this.typeRequest = inputCustomMethod.getText();</span>
-<span class="nc" id="L209">                atomicRadioMethod.get().setText(this.typeRequest);</span>
-            } else {
-<span class="nc" id="L211">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing request custom method label&quot;);</span>
-            }
-<span class="nc" id="L213">        });</span>
+<span class="fc" id="L207">        inputCustomMethod.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
+            @Override
+            public void process() {
+<span class="nc" id="L210">                validate(inputCustomMethod);</span>
+<span class="nc" id="L211">            }</span>
+        });
+<span class="fc" id="L213">        radioCustomMethod.addActionListener(actionEvent -&gt; {</span>
+<span class="nc" id="L214">            validate(inputCustomMethod);</span>
+<span class="nc" id="L215">        });</span>
 
-<span class="fc" id="L215">        var tooltipCustomMethod = &quot;&lt;html&gt;Set user defined HTTP method.&lt;br/&gt;Must be one word in uppercase.&lt;/html&gt;&quot;;</span>
-<span class="fc" id="L216">        MouseAdapter mouseAdapterSetBackground = new MouseAdapter() {</span>
+<span class="fc" id="L217">        var tooltipCustomMethod = &quot;&lt;html&gt;Set user defined HTTP method.&lt;br/&gt;&quot; +</span>
+            &quot;A valid method is limited to chars:&lt;br&gt;&quot; +
+            &quot;!#$%&amp;'*+-.^_`|~0123456789&lt;br&gt;&quot; +
+            &quot;abcdefghijklmnopqrstuvwxyz&lt;br&gt;&quot; +
+            &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot; +
+        &quot;&lt;/html&gt;&quot;;
+<span class="fc" id="L223">        MouseAdapter mouseAdapterSetBackground = new MouseAdapter() {</span>
             @Override
             public void mouseEntered(MouseEvent e) {
-<span class="nc" id="L219">                super.mouseEntered(e);</span>
-<span class="nc" id="L220">                panelCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.selectionBackground&quot;));</span>
-<span class="nc" id="L221">                radioCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.selectionBackground&quot;));</span>
-<span class="nc" id="L222">            }</span>
+<span class="nc" id="L226">                super.mouseEntered(e);</span>
+<span class="nc" id="L227">                panelCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.selectionBackground&quot;));</span>
+<span class="nc" id="L228">                radioCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.selectionBackground&quot;));</span>
+<span class="nc" id="L229">            }</span>
             @Override
             public void mouseExited(MouseEvent e) {
-<span class="nc" id="L225">                super.mouseExited(e);</span>
-<span class="nc" id="L226">                panelCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.background&quot;));</span>
-<span class="nc" id="L227">                radioCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.background&quot;));</span>
-<span class="nc" id="L228">            }</span>
+<span class="nc" id="L232">                super.mouseExited(e);</span>
+<span class="nc" id="L233">                panelCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.background&quot;));</span>
+<span class="nc" id="L234">                radioCustomMethod.setBackground(UIManager.getColor(&quot;MenuItem.background&quot;));</span>
+<span class="nc" id="L235">            }</span>
         };
-<span class="fc" id="L230">        Arrays.asList(radioCustomMethod, inputCustomMethod, panelCustomMethod).forEach(component -&gt; {</span>
-<span class="fc" id="L231">            component.addMouseListener(mouseAdapterSetBackground);</span>
-<span class="fc" id="L232">            component.setToolTipText(tooltipCustomMethod);</span>
-<span class="fc" id="L233">        });</span>
+<span class="fc" id="L237">        Arrays.asList(radioCustomMethod, inputCustomMethod, panelCustomMethod).forEach(component -&gt; {</span>
+<span class="fc" id="L238">            component.addMouseListener(mouseAdapterSetBackground);</span>
+<span class="fc" id="L239">            component.setToolTipText(tooltipCustomMethod);</span>
+<span class="fc" id="L240">        });</span>
 
-<span class="fc" id="L235">        panelCustomMethod.add(radioCustomMethod, BorderLayout.LINE_START);</span>
-<span class="fc" id="L236">        panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);</span>
-<span class="fc" id="L237">        popup.insert(panelCustomMethod, popup.getComponentCount());</span>
+<span class="fc" id="L242">        panelCustomMethod.add(radioCustomMethod, BorderLayout.LINE_START);</span>
+<span class="fc" id="L243">        panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);</span>
+<span class="fc" id="L244">        popup.insert(panelCustomMethod, popup.getComponentCount());</span>
 
-<span class="fc" id="L239">        atomicRadioMethod.get().addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L246">        atomicRadioMethod.get().addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="nc" id="L242">                Arrays.stream(popup.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L243">                radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());</span>
-<span class="nc" id="L244">                radioCustomMethod.updateUI();  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L245">                inputCustomMethod.updateUI();  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L246">                popup.updateUI();  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L247">                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
+<span class="nc" id="L249">                Arrays.stream(popup.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L250">                radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());</span>
+<span class="nc" id="L251">                radioCustomMethod.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L252">                inputCustomMethod.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L253">                popup.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L254">                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">                if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {</span>
-<span class="nc" id="L250">                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {</span>
+<span class="nc" id="L257">                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));</span>
                 } else {
-<span class="nc" id="L252">                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
+<span class="nc" id="L259">                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
                 }
 
-<span class="nc" id="L255">                popup.show(</span>
-<span class="nc" id="L256">                    e.getComponent(),</span>
-<span class="nc bnc" id="L257" title="All 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
-<span class="nc" id="L258">                    ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()</span>
-<span class="nc" id="L259">                    : e.getComponent().getX(),</span>
-<span class="nc" id="L260">                    e.getComponent().getY() + e.getComponent().getHeight()</span>
+<span class="nc" id="L262">                popup.show(</span>
+<span class="nc" id="L263">                    e.getComponent(),</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="nc" id="L265">                    ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()</span>
+<span class="nc" id="L266">                    : e.getComponent().getX(),</span>
+<span class="nc" id="L267">                    e.getComponent().getY() + e.getComponent().getHeight()</span>
                 );
-<span class="nc" id="L262">                popup.setLocation(  // required for proper location</span>
-<span class="nc bnc" id="L263" title="All 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
-<span class="nc" id="L264">                    ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()</span>
-<span class="nc" id="L265">                    : e.getComponent().getLocationOnScreen().x,</span>
-<span class="nc" id="L266">                    e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight()</span>
+<span class="nc" id="L269">                popup.setLocation(  // required for proper location</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="nc" id="L271">                    ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()</span>
+<span class="nc" id="L272">                    : e.getComponent().getLocationOnScreen().x,</span>
+<span class="nc" id="L273">                    e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight()</span>
                 );
-<span class="nc" id="L268">            }</span>
+<span class="nc" id="L275">            }</span>
         });
 
-<span class="fc" id="L271">        groupLayout.setHorizontalGroup(</span>
+<span class="fc" id="L278">        groupLayout.setHorizontalGroup(</span>
             groupLayout
-<span class="fc" id="L273">            .createSequentialGroup()</span>
-<span class="fc" id="L274">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L276">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
-<span class="fc" id="L277">                .addComponent(atomicRadioRequest.get())</span>
-<span class="fc" id="L278">                .addComponent(atomicRadioMethod.get())</span>
-<span class="fc" id="L279">                .addComponent(atomicRadioHeader.get())</span>
-            )
+<span class="fc" id="L280">            .createSequentialGroup()</span>
 <span class="fc" id="L281">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L283">                .createParallelGroup()</span>
-<span class="fc" id="L284">                .addComponent(this.atomicTextFieldAddress.get())</span>
-<span class="fc" id="L285">                .addComponent(this.atomicTextFieldRequest.get())</span>
-<span class="fc" id="L286">                .addComponent(this.atomicTextFieldHeader.get())</span>
+<span class="fc" id="L283">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
+<span class="fc" id="L284">                .addComponent(atomicRadioRequest.get())</span>
+<span class="fc" id="L285">                .addComponent(atomicRadioMethod.get())</span>
+<span class="fc" id="L286">                .addComponent(atomicRadioHeader.get())</span>
             )
 <span class="fc" id="L288">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L290">                .createParallelGroup(GroupLayout.Alignment.LEADING, false)</span>
-<span class="fc" id="L291">                .addComponent(advancedButton)</span>
+<span class="fc" id="L290">                .createParallelGroup()</span>
+<span class="fc" id="L291">                .addComponent(this.atomicTextFieldAddress.get())</span>
+<span class="fc" id="L292">                .addComponent(this.atomicTextFieldRequest.get())</span>
+<span class="fc" id="L293">                .addComponent(this.atomicTextFieldHeader.get())</span>
+            )
+<span class="fc" id="L295">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L297">                .createParallelGroup(GroupLayout.Alignment.LEADING, false)</span>
+<span class="fc" id="L298">                .addComponent(advancedButton)</span>
             )
         );
 
-<span class="fc" id="L295">        groupLayout.setVerticalGroup(</span>
+<span class="fc" id="L302">        groupLayout.setVerticalGroup(</span>
             groupLayout
-<span class="fc" id="L297">            .createSequentialGroup()</span>
-<span class="fc" id="L298">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L300">                .createParallelGroup(GroupLayout.Alignment.CENTER, false)</span>
-<span class="fc" id="L301">                .addComponent(atomicRadioRequest.get())</span>
-<span class="fc" id="L302">                .addComponent(this.atomicTextFieldAddress.get())</span>
-<span class="fc" id="L303">                .addComponent(advancedButton)</span>
-            )
+<span class="fc" id="L304">            .createSequentialGroup()</span>
 <span class="fc" id="L305">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L307">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L308">                .addComponent(atomicRadioMethod.get())</span>
-<span class="fc" id="L309">                .addComponent(this.atomicTextFieldRequest.get())</span>
+<span class="fc" id="L307">                .createParallelGroup(GroupLayout.Alignment.CENTER, false)</span>
+<span class="fc" id="L308">                .addComponent(atomicRadioRequest.get())</span>
+<span class="fc" id="L309">                .addComponent(this.atomicTextFieldAddress.get())</span>
+<span class="fc" id="L310">                .addComponent(advancedButton)</span>
             )
-<span class="fc" id="L311">            .addGroup(</span>
+<span class="fc" id="L312">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L313">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L314">                .addComponent(atomicRadioHeader.get())</span>
-<span class="fc" id="L315">                .addComponent(this.atomicTextFieldHeader.get())</span>
+<span class="fc" id="L314">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L315">                .addComponent(atomicRadioMethod.get())</span>
+<span class="fc" id="L316">                .addComponent(this.atomicTextFieldRequest.get())</span>
+            )
+<span class="fc" id="L318">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L320">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L321">                .addComponent(atomicRadioHeader.get())</span>
+<span class="fc" id="L322">                .addComponent(this.atomicTextFieldHeader.get())</span>
             )
         );
-<span class="fc" id="L318">    }</span>
+<span class="fc" id="L325">    }</span>
+
+    private void validate(JTextField inputCustomMethod) {
+<span class="nc bnc" id="L328" title="All 2 branches missed.">        if (StringUtils.isEmpty(inputCustomMethod.getText())) {</span>
+<span class="nc" id="L329">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing custom method label&quot;);</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">        } else if (!ParameterUtil.isValidName(inputCustomMethod.getText())) {</span>
+<span class="nc" id="L331">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format(&quot;Illegal method: \&quot;%s\&quot;&quot;, inputCustomMethod.getText()));</span>
+        } else {
+<span class="nc" id="L333">            this.typeRequest = inputCustomMethod.getText();</span>
+<span class="nc" id="L334">            atomicRadioMethod.get().setText(this.typeRequest);</span>
+        }
+<span class="nc" id="L336">    }</span>
 
     private JLabel initializeAdvancedButton() {
-<span class="fc" id="L321">        var advancedButton = new JLabel(UiUtil.ARROW_DOWN.icon);</span>
-<span class="fc" id="L322">        advancedButton.setName(&quot;advancedButton&quot;);</span>
-<span class="fc" id="L323">        advancedButton.setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_ADVANCED&quot;));</span>
-<span class="fc" id="L324">        advancedButton.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L339">        var advancedButton = new JLabel(UiUtil.ARROW_DOWN.icon);</span>
+<span class="fc" id="L340">        advancedButton.setName(&quot;advancedButton&quot;);</span>
+<span class="fc" id="L341">        advancedButton.setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_ADVANCED&quot;));</span>
+<span class="fc" id="L342">        advancedButton.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mouseClicked(MouseEvent e) {
-<span class="fc bfc" id="L327" title="All 2 branches covered.">                boolean isVisible = advancedButton.getIcon() == UiUtil.ARROW_DOWN.icon;</span>
-<span class="fc" id="L328">                PanelAddressBar.this.atomicTextFieldRequest.get().setVisible(isVisible);</span>
-<span class="fc" id="L329">                PanelAddressBar.this.atomicTextFieldHeader.get().setVisible(isVisible);</span>
-<span class="fc" id="L330">                PanelAddressBar.this.atomicRadioRequest.get().setVisible(isVisible);</span>
-<span class="fc" id="L331">                PanelAddressBar.this.atomicRadioMethod.get().setVisible(isVisible);</span>
-<span class="fc" id="L332">                PanelAddressBar.this.atomicRadioHeader.get().setVisible(isVisible);</span>
-<span class="fc" id="L333">                PanelAddressBar.this.isAdvanceActivated = isVisible;</span>
-<span class="fc" id="L334">                MediatorHelper.menubar().setVisible(isVisible);</span>
-<span class="fc bfc" id="L335" title="All 2 branches covered.">                advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.icon : UiUtil.ARROW_DOWN.icon);</span>
-<span class="fc" id="L336">            }</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">                boolean isVisible = advancedButton.getIcon() == UiUtil.ARROW_DOWN.icon;</span>
+<span class="fc" id="L346">                PanelAddressBar.this.atomicTextFieldRequest.get().setVisible(isVisible);</span>
+<span class="fc" id="L347">                PanelAddressBar.this.atomicTextFieldHeader.get().setVisible(isVisible);</span>
+<span class="fc" id="L348">                PanelAddressBar.this.atomicRadioRequest.get().setVisible(isVisible);</span>
+<span class="fc" id="L349">                PanelAddressBar.this.atomicRadioMethod.get().setVisible(isVisible);</span>
+<span class="fc" id="L350">                PanelAddressBar.this.atomicRadioHeader.get().setVisible(isVisible);</span>
+<span class="fc" id="L351">                PanelAddressBar.this.isAdvanceActivated = isVisible;</span>
+<span class="fc" id="L352">                MediatorHelper.menubar().setVisible(isVisible);</span>
+<span class="fc bfc" id="L353" title="All 2 branches covered.">                advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.icon : UiUtil.ARROW_DOWN.icon);</span>
+<span class="fc" id="L354">            }</span>
         });
-<span class="fc" id="L338">        return advancedButton;</span>
+<span class="fc" id="L356">        return advancedButton;</span>
     }
     
     
     // Getter and setter
 
     public void setMethodInjection(AbstractMethodInjection methodInjection) {
-<span class="nc" id="L345">        this.methodInjection = methodInjection;</span>
-<span class="nc" id="L346">    }</span>
+<span class="nc" id="L363">        this.methodInjection = methodInjection;</span>
+<span class="nc" id="L364">    }</span>
 
     public boolean isAdvanceActivated() {
-<span class="fc" id="L349">        return this.isAdvanceActivated;</span>
+<span class="fc" id="L367">        return this.isAdvanceActivated;</span>
     }
 
     public JTextField getTextFieldAddress() {
-<span class="fc" id="L353">        return this.atomicTextFieldAddress.get();</span>
+<span class="fc" id="L371">        return this.atomicTextFieldAddress.get();</span>
     }
 
     public JTextField getTextFieldRequest() {
-<span class="fc" id="L357">        return this.atomicTextFieldRequest.get();</span>
+<span class="fc" id="L375">        return this.atomicTextFieldRequest.get();</span>
     }
 
     public JTextField getTextFieldHeader() {
-<span class="fc" id="L361">        return this.atomicTextFieldHeader.get();</span>
+<span class="fc" id="L379">        return this.atomicTextFieldHeader.get();</span>
     }
 
     public AbstractMethodInjection getMethodInjection() {
-<span class="fc" id="L365">        return this.methodInjection;</span>
+<span class="fc" id="L383">        return this.methodInjection;</span>
     }
 
     public PanelTrailingAddress getPanelTrailingAddress() {
-<span class="fc" id="L369">        return this.panelTrailingAddress;</span>
+<span class="fc" id="L387">        return this.panelTrailingAddress;</span>
     }
 
     public String getTypeRequest() {
-<span class="fc" id="L373">        return typeRequest;</span>
+<span class="fc" id="L391">        return typeRequest;</span>
     }
 
     public JRadioButton getAtomicRadioRequest() {
-<span class="fc" id="L377">        return atomicRadioRequest.get();</span>
+<span class="fc" id="L395">        return atomicRadioRequest.get();</span>
     }
 
     public JRadioButton getAtomicRadioMethod() {
-<span class="fc" id="L381">        return atomicRadioMethod.get();</span>
+<span class="fc" id="L399">        return atomicRadioMethod.get();</span>
     }
 
     public JRadioButton getAtomicRadioHeader() {
-<span class="nc" id="L385">        return atomicRadioHeader.get();</span>
+<span class="nc" id="L403">        return atomicRadioHeader.get();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

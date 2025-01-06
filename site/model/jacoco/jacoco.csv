@@ -154,7 +154,7 @@ model,com.jsql.util,I18nUtil,65,16,4,0,10,4,7,2,5,2
 model,com.jsql.util,ExceptionUtil,25,14,0,0,8,5,2,2,2,2
 model,com.jsql.util,PreferencesUtil,167,1125,0,0,61,292,40,79,40,79
 model,com.jsql.util,CertificateUtil.new X509TrustManager() {...},1,10,0,0,1,3,1,3,1,3
-model,com.jsql.util,ConnectionUtil,68,500,9,33,17,118,11,38,2,26
+model,com.jsql.util,ConnectionUtil,68,500,9,33,17,117,11,38,2,26
 model,com.jsql.util,JsonUtil,47,317,5,27,11,75,4,22,0,10
 model,com.jsql.util,ConnectionUtil.new Authenticator() {...},0,23,0,0,0,4,0,2,0,2
 model,com.jsql.util,CertificateUtil,6,39,0,0,2,10,0,3,0,3
@@ -176,6 +176,6 @@ model,com.jsql.util,DigestUtil,6,243,2,6,2,44,2,10,0,8
 model,com.jsql.util,StringUtil,6,421,0,22,2,97,0,41,0,30
 model,com.jsql.util,ProxyUtil,350,62,23,3,81,17,32,5,19,5
 model,com.jsql.util,HeaderUtil,70,427,18,46,12,87,16,30,0,14
-model,com.jsql.util,ParameterUtil,139,635,30,72,34,149,25,59,1,32
+model,com.jsql.util,ParameterUtil,158,693,34,80,37,160,29,62,1,33
 model,com.jsql.model.suspendable.callable,CallablePageSource,0,44,0,0,0,14,0,6,0,6
 model,com.jsql.model.suspendable.callable,ThreadFactoryCallable,0,13,0,0,0,4,0,2,0,2

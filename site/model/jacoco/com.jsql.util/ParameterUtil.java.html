@@ -124,259 +124,292 @@ public class ParameterUtil {
 <span class="fc" id="L124">        this.checkStarMatchMethod();</span>
 <span class="fc" id="L125">        this.checkMethodNotEmpty();</span>
 <span class="fc" id="L126">        this.checkMultipart();</span>
-<span class="fc" id="L127">    }</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (!isValidName(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {</span>
+<span class="nc" id="L128">            throw new InjectionFailureException(String.format(</span>
+                &quot;Illegal method: \&quot;%s\&quot;&quot;,
+<span class="nc" id="L130">                this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest()</span>
+            ));
+        }
+<span class="fc" id="L133">    }</span>
+
+    // ABNF primitives defined in RFC 7230
+<span class="fc" id="L136">    private static final boolean[] tchar = new boolean[256];</span>
+
+    static {
+<span class="fc" id="L139">        char[] allowedTokenChars = (</span>
+            &quot;!#$%&amp;'*+-.^_`|~0123456789&quot; +
+            &quot;abcdefghijklmnopqrstuvwxyz&quot; +
+            &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;
+<span class="fc" id="L143">        ).toCharArray();</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        for (char c : allowedTokenChars) {</span>
+<span class="fc" id="L145">            tchar[c] = true;</span>
+        }
+<span class="fc" id="L147">    }</span>
+
+    /*
+     * Validates a RFC 7230 field-name.
+     */
+    public static boolean isValidName(String token) {
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        for (int i = 0; i &lt; token.length(); i++) {</span>
+<span class="fc" id="L154">            char c = token.charAt(i);</span>
+<span class="pc bpc" id="L155" title="2 of 4 branches missed.">            if (c &gt; 255 || !tchar[c]) {</span>
+<span class="nc" id="L156">                return false;</span>
+            }
+        }
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        return !token.isEmpty();</span>
+    }
 
     private void checkMultipart() throws InjectionFailureException {
-<span class="fc" id="L130">        isMultipartRequest = false;</span>
+<span class="fc" id="L163">        isMultipartRequest = false;</span>
 
-<span class="fc" id="L132">        if (</span>
-<span class="fc" id="L133">            this.getListHeader()</span>
-<span class="fc" id="L134">            .stream()</span>
-<span class="fc" id="L135">            .filter(entry -&gt; &quot;Content-Type&quot;.equals(entry.getKey()))</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">            .anyMatch(entry -&gt;</span>
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">                entry.getValue() != null</span>
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">                &amp;&amp; entry.getValue().contains(&quot;multipart/form-data&quot;)</span>
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">                &amp;&amp; entry.getValue().contains(&quot;boundary=&quot;)</span>
+<span class="fc" id="L165">        if (</span>
+<span class="fc" id="L166">            this.getListHeader()</span>
+<span class="fc" id="L167">            .stream()</span>
+<span class="fc" id="L168">            .filter(entry -&gt; &quot;Content-Type&quot;.equals(entry.getKey()))</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">            .anyMatch(entry -&gt;</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">                entry.getValue() != null</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">                &amp;&amp; entry.getValue().contains(&quot;multipart/form-data&quot;)</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">                &amp;&amp; entry.getValue().contains(&quot;boundary=&quot;)</span>
             )
         ) {
-<span class="fc" id="L142">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Multipart boundary found in header&quot;);</span>
-<span class="fc" id="L143">            Matcher matcherBoundary = Pattern.compile(&quot;boundary=([^;]*)&quot;).matcher(this.getHeaderFromEntries());</span>
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">            if (matcherBoundary.find()) {</span>
-<span class="fc" id="L145">                String boundary = matcherBoundary.group(1);</span>
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">                if (!this.rawRequest.contains(boundary)) {</span>
-<span class="nc" id="L147">                    throw new InjectionFailureException(</span>
-<span class="nc" id="L148">                        String.format(&quot;Incorrect multipart data, boundary not found in body: %s&quot;, boundary)</span>
+<span class="fc" id="L175">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Multipart boundary found in header&quot;);</span>
+<span class="fc" id="L176">            Matcher matcherBoundary = Pattern.compile(&quot;boundary=([^;]*)&quot;).matcher(this.getHeaderFromEntries());</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">            if (matcherBoundary.find()) {</span>
+<span class="fc" id="L178">                String boundary = matcherBoundary.group(1);</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">                if (!this.rawRequest.contains(boundary)) {</span>
+<span class="nc" id="L180">                    throw new InjectionFailureException(</span>
+<span class="nc" id="L181">                        String.format(&quot;Incorrect multipart data, boundary not found in body: %s&quot;, boundary)</span>
                     );
                 } else {
-<span class="fc" id="L151">                    isMultipartRequest = true;</span>
+<span class="fc" id="L184">                    isMultipartRequest = true;</span>
                 }
             }
         }
-<span class="fc" id="L155">    }</span>
+<span class="fc" id="L188">    }</span>
 
     private void checkOneOrLessStar() throws InjectionFailureException {
-<span class="fc" id="L158">        var nbStarInParameter = 0;</span>
+<span class="fc" id="L191">        var nbStarInParameter = 0;</span>
         
-<span class="fc bfc" id="L160" title="All 2 branches covered.">        if (this.getQueryStringFromEntries().contains(InjectionModel.STAR)) {</span>
-<span class="fc" id="L161">            nbStarInParameter++;</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        if (this.getQueryStringFromEntries().contains(InjectionModel.STAR)) {</span>
+<span class="fc" id="L194">            nbStarInParameter++;</span>
         }
-<span class="fc bfc" id="L163" title="All 2 branches covered.">        if (this.getRequestFromEntries().contains(InjectionModel.STAR)) {</span>
-<span class="fc" id="L164">            nbStarInParameter++;</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">        if (this.getRequestFromEntries().contains(InjectionModel.STAR)) {</span>
+<span class="fc" id="L197">            nbStarInParameter++;</span>
         }
-<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (this.getHeaderFromEntries().contains(InjectionModel.STAR)) {</span>
-<span class="fc" id="L167">            nbStarInParameter++;</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        if (this.getHeaderFromEntries().contains(InjectionModel.STAR)) {</span>
+<span class="fc" id="L200">            nbStarInParameter++;</span>
         }
         
         // Injection Point
-<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        if (</span>
             nbStarInParameter &gt; 1
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">            || StringUtils.countMatches(this.getQueryStringFromEntries(), &quot;*&quot;) &gt; 1</span>
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">            || StringUtils.countMatches(this.getRequestFromEntries(), &quot;*&quot;) &gt; 1</span>
-<span class="pc bpc" id="L175" title="1 of 2 branches missed.">            || StringUtils.countMatches(this.getHeaderFromEntries(), &quot;*&quot;) &gt; 1</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">            || StringUtils.countMatches(this.getQueryStringFromEntries(), &quot;*&quot;) &gt; 1</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">            || StringUtils.countMatches(this.getRequestFromEntries(), &quot;*&quot;) &gt; 1</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">            || StringUtils.countMatches(this.getHeaderFromEntries(), &quot;*&quot;) &gt; 1</span>
         ) {
-<span class="fc" id="L177">            throw new InjectionFailureException(&quot;Character insertion [*] must be used once in Query String, Request or Header parameters&quot;);</span>
+<span class="fc" id="L210">            throw new InjectionFailureException(&quot;Character insertion [*] must be used once in Query String, Request or Header parameters&quot;);</span>
         }
-<span class="fc" id="L179">    }</span>
+<span class="fc" id="L212">    }</span>
     
     public void checkStarMatchMethod() throws InjectionFailureException {
-<span class="fc" id="L182">        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();</span>
-<span class="fc" id="L183">        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();</span>
+<span class="fc" id="L215">        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();</span>
+<span class="fc" id="L216">        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();</span>
 
-<span class="fc" id="L185">        if (</span>
-<span class="fc bfc" id="L186" title="All 2 branches covered.">            this.getQueryStringFromEntries().contains(InjectionModel.STAR)</span>
-<span class="pc bpc" id="L187" title="1 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getQuery()</span>
+<span class="fc" id="L218">        if (</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">            this.getQueryStringFromEntries().contains(InjectionModel.STAR)</span>
+<span class="pc bpc" id="L220" title="1 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getQuery()</span>
             &amp;&amp; !isCheckingAllParam
         ) {
-<span class="fc" id="L190">            throw new InjectionFailureException(&quot;Select method GET to use character [*] or remove [*] from GET parameters&quot;);</span>
-<span class="fc" id="L191">        } else if (</span>
-<span class="fc bfc" id="L192" title="All 2 branches covered.">            this.getRequestFromEntries().contains(InjectionModel.STAR)</span>
-<span class="pc bpc" id="L193" title="1 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getRequest()</span>
+<span class="fc" id="L223">            throw new InjectionFailureException(&quot;Select method GET to use character [*] or remove [*] from GET parameters&quot;);</span>
+<span class="fc" id="L224">        } else if (</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">            this.getRequestFromEntries().contains(InjectionModel.STAR)</span>
+<span class="pc bpc" id="L226" title="1 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getRequest()</span>
             &amp;&amp; !isCheckingAllParam
         ) {
-<span class="fc" id="L196">            throw new InjectionFailureException(&quot;Select a Request method (like POST) to use [*], or remove [*] from Request parameters&quot;);</span>
-<span class="fc" id="L197">        } else if (</span>
-<span class="fc bfc" id="L198" title="All 2 branches covered.">            this.getHeaderFromEntries().contains(InjectionModel.STAR)</span>
-<span class="pc bpc" id="L199" title="1 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getHeader()</span>
+<span class="fc" id="L229">            throw new InjectionFailureException(&quot;Select a Request method (like POST) to use [*], or remove [*] from Request parameters&quot;);</span>
+<span class="fc" id="L230">        } else if (</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">            this.getHeaderFromEntries().contains(InjectionModel.STAR)</span>
+<span class="pc bpc" id="L232" title="1 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getHeader()</span>
             &amp;&amp; !isCheckingAllParam
         ) {
-<span class="fc" id="L202">            throw new InjectionFailureException(&quot;Select method Header to use character [*] or remove [*] from Header parameters&quot;);</span>
+<span class="fc" id="L235">            throw new InjectionFailureException(&quot;Select method Header to use character [*] or remove [*] from Header parameters&quot;);</span>
         }
-<span class="fc" id="L204">    }</span>
+<span class="fc" id="L237">    }</span>
     
     public void checkMethodNotEmpty() throws InjectionFailureException {
-<span class="fc" id="L207">        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();</span>
-<span class="fc" id="L208">        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();</span>
+<span class="fc" id="L240">        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();</span>
+<span class="fc" id="L241">        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();</span>
         
-<span class="fc" id="L210">        if (</span>
-<span class="pc bpc" id="L211" title="1 of 4 branches missed.">            methodInjection == this.injectionModel.getMediatorMethod().getQuery()</span>
+<span class="fc" id="L243">        if (</span>
+<span class="pc bpc" id="L244" title="1 of 4 branches missed.">            methodInjection == this.injectionModel.getMediatorMethod().getQuery()</span>
             &amp;&amp; !isCheckingAllParam
-<span class="fc bfc" id="L213" title="All 2 branches covered.">            &amp;&amp; this.getListQueryString().isEmpty()</span>
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">            &amp;&amp; !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">            &amp;&amp; this.getListQueryString().isEmpty()</span>
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">            &amp;&amp; !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)</span>
         ) {
-<span class="fc" id="L216">            throw new InjectionFailureException(&quot;No query string&quot;);</span>
-<span class="fc" id="L217">        } else if (</span>
-<span class="fc bfc" id="L218" title="All 2 branches covered.">            methodInjection == this.injectionModel.getMediatorMethod().getRequest()</span>
-<span class="fc bfc" id="L219" title="All 2 branches covered.">            &amp;&amp; this.getListRequest().isEmpty()</span>
+<span class="fc" id="L249">            throw new InjectionFailureException(&quot;No query string&quot;);</span>
+<span class="fc" id="L250">        } else if (</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">            methodInjection == this.injectionModel.getMediatorMethod().getRequest()</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">            &amp;&amp; this.getListRequest().isEmpty()</span>
         ) {
-<span class="fc" id="L221">            throw new InjectionFailureException(&quot;Incorrect Request format&quot;);</span>
-<span class="fc" id="L222">        } else if (</span>
-<span class="fc bfc" id="L223" title="All 2 branches covered.">            methodInjection == this.injectionModel.getMediatorMethod().getHeader()</span>
-<span class="fc bfc" id="L224" title="All 2 branches covered.">            &amp;&amp; this.getListHeader().isEmpty()</span>
+<span class="fc" id="L254">            throw new InjectionFailureException(&quot;Incorrect Request format&quot;);</span>
+<span class="fc" id="L255">        } else if (</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">            methodInjection == this.injectionModel.getMediatorMethod().getHeader()</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">            &amp;&amp; this.getListHeader().isEmpty()</span>
         ) {
-<span class="fc" id="L226">            throw new InjectionFailureException(&quot;Incorrect Header format&quot;);</span>
+<span class="fc" id="L259">            throw new InjectionFailureException(&quot;Incorrect Header format&quot;);</span>
         }
-<span class="fc" id="L228">    }</span>
+<span class="fc" id="L261">    }</span>
     
     public String initializeStar(SimpleEntry&lt;String, String&gt; parameterToInject) {
         String characterInsertionByUser;
-<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        if (parameterToInject == null) {</span>
-<span class="nc" id="L233">            characterInsertionByUser = InjectionModel.STAR;</span>
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">        if (parameterToInject == null) {</span>
+<span class="nc" id="L266">            characterInsertionByUser = InjectionModel.STAR;</span>
         } else {
-<span class="fc" id="L235">            characterInsertionByUser = parameterToInject.getValue();</span>
-<span class="fc" id="L236">            parameterToInject.setValue(InjectionModel.STAR);</span>
+<span class="fc" id="L268">            characterInsertionByUser = parameterToInject.getValue();</span>
+<span class="fc" id="L269">            parameterToInject.setValue(InjectionModel.STAR);</span>
         }
-<span class="fc" id="L238">        return characterInsertionByUser;</span>
+<span class="fc" id="L271">        return characterInsertionByUser;</span>
     }
 
     public void initializeQueryString(String urlQuery) throws MalformedURLException, URISyntaxException {
         // Format and get rid of anchor fragment using native URL
-<span class="fc" id="L243">        var url = new URI(urlQuery).toURL();</span>
+<span class="fc" id="L276">        var url = new URI(urlQuery).toURL();</span>
         
-<span class="fc" id="L245">        if (</span>
-<span class="pc bpc" id="L246" title="1 of 2 branches missed.">            StringUtils.isEmpty(urlQuery)</span>
-<span class="pc bpc" id="L247" title="1 of 2 branches missed.">            || StringUtils.isEmpty(url.getHost())</span>
+<span class="fc" id="L278">        if (</span>
+<span class="pc bpc" id="L279" title="1 of 2 branches missed.">            StringUtils.isEmpty(urlQuery)</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">            || StringUtils.isEmpty(url.getHost())</span>
         ) {
-<span class="nc" id="L249">            throw new MalformedURLException(&quot;empty URL&quot;);</span>
+<span class="nc" id="L282">            throw new MalformedURLException(&quot;empty URL&quot;);</span>
         }
         
-<span class="fc" id="L252">        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlByUser(urlQuery);</span>
-<span class="fc" id="L253">        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(urlQuery);</span>
-<span class="fc" id="L254">        this.listQueryString.clear();</span>
+<span class="fc" id="L285">        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlByUser(urlQuery);</span>
+<span class="fc" id="L286">        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(urlQuery);</span>
+<span class="fc" id="L287">        this.listQueryString.clear();</span>
         
         // Parse url and GET query string
-<span class="fc" id="L257">        var regexQueryString = Pattern.compile(&quot;(.*\\?)(.*)&quot;).matcher(urlQuery);</span>
-<span class="fc bfc" id="L258" title="All 2 branches covered.">        if (!regexQueryString.find()) {</span>
-<span class="fc" id="L259">            return;</span>
+<span class="fc" id="L290">        var regexQueryString = Pattern.compile(&quot;(.*\\?)(.*)&quot;).matcher(urlQuery);</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">        if (!regexQueryString.find()) {</span>
+<span class="fc" id="L292">            return;</span>
         }
         
-<span class="fc" id="L262">        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexQueryString.group(1));</span>
+<span class="fc" id="L295">        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexQueryString.group(1));</span>
         
-<span class="pc bpc" id="L264" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(url.getQuery())) {</span>
-<span class="fc" id="L265">            this.listQueryString = Pattern.compile(&quot;&amp;&quot;)</span>
-<span class="fc" id="L266">                .splitAsStream(url.getQuery())</span>
-<span class="fc" id="L267">                .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;=&quot;), 2))</span>
-<span class="fc" id="L268">                .map(keyValue -&gt; new SimpleEntry&lt;&gt;(</span>
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(url.getQuery())) {</span>
+<span class="fc" id="L298">            this.listQueryString = Pattern.compile(&quot;&amp;&quot;)</span>
+<span class="fc" id="L299">                .splitAsStream(url.getQuery())</span>
+<span class="fc" id="L300">                .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;=&quot;), 2))</span>
+<span class="fc" id="L301">                .map(keyValue -&gt; new SimpleEntry&lt;&gt;(</span>
                     keyValue[0],
-<span class="fc bfc" id="L270" title="All 2 branches covered.">                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
                 ))
-<span class="fc" id="L272">                .collect(Collectors.toList());</span>
+<span class="fc" id="L305">                .collect(Collectors.toList());</span>
         }
-<span class="fc" id="L274">    }</span>
+<span class="fc" id="L307">    }</span>
 
     public void initializeRequest(String rawRequest) {
-<span class="fc" id="L277">        this.rawRequest = rawRequest;</span>
-<span class="fc" id="L278">        this.listRequest.clear();</span>
-<span class="fc bfc" id="L279" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawRequest)) {</span>
-<span class="fc bfc" id="L280" title="All 2 branches covered.">            if (this.isMultipartRequest) {</span>
+<span class="fc" id="L310">        this.rawRequest = rawRequest;</span>
+<span class="fc" id="L311">        this.listRequest.clear();</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawRequest)) {</span>
+<span class="fc bfc" id="L313" title="All 2 branches covered.">            if (this.isMultipartRequest) {</span>
                 // Pass request containing star * param without any parsing
-<span class="fc" id="L282">                this.listRequest = new ArrayList&lt;&gt;(List.of(new SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L315">                this.listRequest = new ArrayList&lt;&gt;(List.of(new SimpleEntry&lt;&gt;(</span>
                     rawRequest,
                     &quot;&quot;
                 )));
             } else {
-<span class="fc" id="L287">                this.listRequest = Pattern.compile(&quot;&amp;&quot;)</span>
-<span class="fc" id="L288">                    .splitAsStream(rawRequest)</span>
-<span class="fc" id="L289">                    .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;=&quot;), 2))</span>
-<span class="fc" id="L290">                    .map(keyValue -&gt; new SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L320">                this.listRequest = Pattern.compile(&quot;&amp;&quot;)</span>
+<span class="fc" id="L321">                    .splitAsStream(rawRequest)</span>
+<span class="fc" id="L322">                    .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;=&quot;), 2))</span>
+<span class="fc" id="L323">                    .map(keyValue -&gt; new SimpleEntry&lt;&gt;(</span>
                         keyValue[0],
-<span class="fc bfc" id="L292" title="All 2 branches covered.">                        keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">                        keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
                     ))
-<span class="fc" id="L294">                    .collect(Collectors.toList());</span>
+<span class="fc" id="L327">                    .collect(Collectors.toList());</span>
             }
         }
-<span class="fc" id="L297">    }</span>
+<span class="fc" id="L330">    }</span>
 
     public void initializeHeader(String rawHeader) {
-<span class="fc" id="L300">        this.rawHeader = rawHeader;</span>
-<span class="fc" id="L301">        this.listHeader.clear();</span>
-<span class="fc bfc" id="L302" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawHeader)) {</span>
-<span class="fc" id="L303">            this.listHeader = Pattern.compile(&quot;\\\\r\\\\n&quot;)</span>
-<span class="fc" id="L304">                .splitAsStream(rawHeader)</span>
-<span class="fc" id="L305">                .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;:&quot;), 2))</span>
-<span class="fc" id="L306">                .map(keyValue -&gt; new SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L333">        this.rawHeader = rawHeader;</span>
+<span class="fc" id="L334">        this.listHeader.clear();</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawHeader)) {</span>
+<span class="fc" id="L336">            this.listHeader = Pattern.compile(&quot;\\\\r\\\\n&quot;)</span>
+<span class="fc" id="L337">                .splitAsStream(rawHeader)</span>
+<span class="fc" id="L338">                .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;:&quot;), 2))</span>
+<span class="fc" id="L339">                .map(keyValue -&gt; new SimpleEntry&lt;&gt;(</span>
                     keyValue[0],
-<span class="fc bfc" id="L308" title="All 2 branches covered.">                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
+<span class="fc bfc" id="L341" title="All 2 branches covered.">                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
                 ))
-<span class="fc" id="L310">                .collect(Collectors.toList());</span>
+<span class="fc" id="L343">                .collect(Collectors.toList());</span>
         }
-<span class="fc" id="L312">    }</span>
+<span class="fc" id="L345">    }</span>
     
     public String getQueryStringFromEntries() {
-<span class="fc" id="L315">        return this.listQueryString.stream()</span>
-<span class="fc" id="L316">            .filter(Objects::nonNull)</span>
-<span class="fc" id="L317">            .map(entry -&gt; {</span>
-<span class="fc" id="L318">                if (</span>
-<span class="fc bfc" id="L319" title="All 2 branches covered.">                    this.injectionModel.getMediatorStrategy().getStrategy() == this.injectionModel.getMediatorStrategy().getMultibit()</span>
-<span class="pc bpc" id="L320" title="1 of 2 branches missed.">                    &amp;&amp; entry.getValue() != null</span>
-<span class="fc bfc" id="L321" title="All 2 branches covered.">                    &amp;&amp; entry.getValue().contains(InjectionModel.STAR)</span>
+<span class="fc" id="L348">        return this.listQueryString.stream()</span>
+<span class="fc" id="L349">            .filter(Objects::nonNull)</span>
+<span class="fc" id="L350">            .map(entry -&gt; {</span>
+<span class="fc" id="L351">                if (</span>
+<span class="fc bfc" id="L352" title="All 2 branches covered.">                    this.injectionModel.getMediatorStrategy().getStrategy() == this.injectionModel.getMediatorStrategy().getMultibit()</span>
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">                    &amp;&amp; entry.getValue() != null</span>
+<span class="fc bfc" id="L354" title="All 2 branches covered.">                    &amp;&amp; entry.getValue().contains(InjectionModel.STAR)</span>
                 ) {
-<span class="fc" id="L323">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);</span>
+<span class="fc" id="L356">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);</span>
                 } else {
-<span class="fc" id="L325">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L358">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), entry.getValue());</span>
                 }
             })
-<span class="fc" id="L328">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
+<span class="fc" id="L361">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
     }
 
     public String getRequestFromEntries() {
-<span class="fc" id="L332">        return this.listRequest.stream()</span>
-<span class="fc" id="L333">            .filter(Objects::nonNull)</span>
-<span class="fc" id="L334">            .map(entry -&gt; String.format(</span>
+<span class="fc" id="L365">        return this.listRequest.stream()</span>
+<span class="fc" id="L366">            .filter(Objects::nonNull)</span>
+<span class="fc" id="L367">            .map(entry -&gt; String.format(</span>
                 FORMAT_KEY_VALUE,
-<span class="fc" id="L336">                entry.getKey(),</span>
-<span class="fc bfc" id="L337" title="All 2 branches covered.">                StringUtils.isEmpty(entry.getValue()) ? &quot;&quot; : entry.getValue()</span>
+<span class="fc" id="L369">                entry.getKey(),</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">                StringUtils.isEmpty(entry.getValue()) ? &quot;&quot; : entry.getValue()</span>
             ))
-<span class="fc" id="L339">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
+<span class="fc" id="L372">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
     }
     
     public String getHeaderFromEntries() {
-<span class="fc" id="L343">        return this.listHeader.stream()</span>
-<span class="fc" id="L344">            .filter(Objects::nonNull)</span>
-<span class="fc" id="L345">            .map(entry -&gt; String.format(&quot;%s:%s&quot;, entry.getKey(), entry.getValue()))</span>
-<span class="fc" id="L346">            .collect(Collectors.joining(&quot;\\r\\n&quot;));</span>
+<span class="fc" id="L376">        return this.listHeader.stream()</span>
+<span class="fc" id="L377">            .filter(Objects::nonNull)</span>
+<span class="fc" id="L378">            .map(entry -&gt; String.format(&quot;%s:%s&quot;, entry.getKey(), entry.getValue()))</span>
+<span class="fc" id="L379">            .collect(Collectors.joining(&quot;\\r\\n&quot;));</span>
     }
 
     public boolean isRequestSoap() {
-<span class="fc" id="L350">        return this.rawRequest</span>
-<span class="fc" id="L351">            .trim()</span>
-<span class="fc" id="L352">            .matches(&quot;^(&lt;soapenv:|&lt;\\?xml).*&quot;);</span>
+<span class="fc" id="L383">        return this.rawRequest</span>
+<span class="fc" id="L384">            .trim()</span>
+<span class="fc" id="L385">            .matches(&quot;^(&lt;soapenv:|&lt;\\?xml).*&quot;);</span>
     }
 
     
     // Getters / setters
     
     public String getRawRequest() {
-<span class="fc" id="L359">        return this.rawRequest;</span>
+<span class="fc" id="L392">        return this.rawRequest;</span>
     }
 
     public String getRawHeader() {
-<span class="fc" id="L363">        return this.rawHeader;</span>
+<span class="fc" id="L396">        return this.rawHeader;</span>
     }
 
     public List&lt;SimpleEntry&lt;String, String&gt;&gt; getListRequest() {
-<span class="fc" id="L367">        return this.listRequest;</span>
+<span class="fc" id="L400">        return this.listRequest;</span>
     }
 
     public List&lt;SimpleEntry&lt;String, String&gt;&gt; getListHeader() {
-<span class="fc" id="L371">        return this.listHeader;</span>
+<span class="fc" id="L404">        return this.listHeader;</span>
     }
 
     public List&lt;SimpleEntry&lt;String, String&gt;&gt; getListQueryString() {
-<span class="fc" id="L375">        return this.listQueryString;</span>
+<span class="fc" id="L408">        return this.listQueryString;</span>
     }
     
     public boolean isMultipartRequest() {
-<span class="fc" id="L379">        return this.isMultipartRequest;</span>
+<span class="fc" id="L412">        return this.isMultipartRequest;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
