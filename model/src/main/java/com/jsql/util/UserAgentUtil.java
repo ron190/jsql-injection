@@ -1,8 +1,10 @@
 package com.jsql.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class UserAgentUtil {
     
-    private String customUserAgent = null;
+    private String customUserAgent = StringUtils.EMPTY;
 
     public void withCustomUserAgent(String customUserAgent) {
         this.customUserAgent = customUserAgent;

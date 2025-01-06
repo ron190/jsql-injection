@@ -101,7 +101,7 @@ public class GitUtil {
             ),
             String.format(
                 "Display: %s (%sx%s, %s)",
-                UIManager.getLookAndFeel(),
+                UIManager.getLookAndFeel().getName(),
                 width,
                 height,
                 Locale.getDefault().getLanguage()

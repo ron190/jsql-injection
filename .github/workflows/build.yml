@@ -100,7 +100,7 @@ jobs:
 
       - name: Coverage and site
         uses: ./.github/workflows/publish-scan/
-        if: matrix.jdk == '3.8.6-eclipse-temurin-18'
+#        if: matrix.jdk == '3.8.6-eclipse-temurin-18'
         with:  # composite cannot use secrets directly
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
