@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.jsql.view.swing.tab;
 
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
@@ -117,6 +118,10 @@ public class TabResults extends DnDTabbedPane {
         this.setToolTipTextAt(this.indexOfComponent(scroller), toolTipText);
         var header = new TabHeader(label, icon);
         this.setTabComponentAt(this.indexOfComponent(scroller), header);
+
+        FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
+        MediatorHelper.frame().revalidate();
+        MediatorHelper.frame().repaint();
     }
 
     public void createShell(String url, String path) {
@@ -141,7 +146,10 @@ public class TabResults extends DnDTabbedPane {
             var header = new TabHeader("Web shell", UiUtil.TERMINAL.icon);
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
-            
+
+            FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
+            MediatorHelper.frame().revalidate();
+            MediatorHelper.frame().repaint();
         } catch (MalformedURLException | URISyntaxException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
         }
@@ -169,6 +177,10 @@ public class TabResults extends DnDTabbedPane {
             var header = new TabHeader("SQL shell", UiUtil.TERMINAL.icon);
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
+
+            FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
+            MediatorHelper.frame().revalidate();
+            MediatorHelper.frame().repaint();
         } catch (MalformedURLException | URISyntaxException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
         }
@@ -193,5 +205,9 @@ public class TabResults extends DnDTabbedPane {
 
         var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.icon);
         this.setTabComponentAt(this.indexOfComponent(panelTable), header);
+
+        FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
+        MediatorHelper.frame().revalidate();
+        MediatorHelper.frame().repaint();
     }
 }

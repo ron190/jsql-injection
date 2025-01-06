@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import com.formdev.flatlaf.FlatLaf;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
@@ -183,5 +184,9 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  // Apply the custom header to the tab
         browser.requestFocusInWindow();  // Give focus to the admin page
         SwingUtilities.invokeLater(() -> scroller.getViewport().setViewPosition(new Point(0, 0)));  // Get back to the top
+
+        FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
+        MediatorHelper.frame().revalidate();
+        MediatorHelper.frame().repaint();
     }
 }

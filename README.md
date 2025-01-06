@@ -3,7 +3,7 @@
 
 It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac and it works with Java from version 11 to 22.
 
-![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [SnoopGod](https://snoopgod.com/), [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
+jSQL Injection is also part of the official penetration testing distribution [Kali Linux](https://www.kali.org) and is included in various other distributions like [SnoopGod](https://snoopgod.com), [Pentest Box](https://pentestbox.com), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org) and [BlackArch Linux](http://www.blackarch.org).
 
 [![Twitter](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190 "Developer Twitter account")](https://twitter.com/ron190jsql)<br>
 [![Java](https://img.shields.io/badge/java-11%20to%2022-orange?logo=java "Version range compatibility")](http://www.oracle.com/technetwork/java/javase/downloads/)
@@ -32,14 +32,13 @@ If you are using Kali Linux then get the latest version using command `sudo apt-
 > Download the latest version from GitHub: [jsql-injection-v0.101.jar](https://github.com/ron190/jsql-injection/releases/download/v0.101/jsql-injection-v0.101.jar)
 ___
 ## Screenshots
-[![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
-[![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/sqlengine.png)
-[![Tamper](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/tamper-mini.png "Tamper")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/tamper.png)
-[![Batch scan](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan-mini.png "Batch scan")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan.png)
-[![Admin page](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/admin-mini.png "Admin page")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/admin.png)
-[![Web shell](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/webshell-mini.png "Web shell")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/webshell.png)
-[![SQL shell](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/sqlshell-mini.png "SQL shell")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/sqlshell.png)
-[![File](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/file-mini.png "File")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/file.png)
+[<img src=https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/database.png width=200/>](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/database.png)
+[<img src=https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/database-dark.png width=200/>](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/database-dark.png)
+[<img src=https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/sqlengine.png width=200/>](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/sqlengine.png)
+[<img src=https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/tamper.png width=200/>](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/tamper.png)
+[<img src=https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/batch.png width=200/>](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/batch.png)
+[<img src=https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/admin.png width=200/>](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/admin.png)
+[<img src=https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/shell.png width=200/>](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/shell.png)
 ___
 ## Disclaimer
 > [!NOTE]
