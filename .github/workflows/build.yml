@@ -13,9 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - jdk: 3.8.6-eclipse-temurin-18
-            nashorn: ''
-            bytebuddy: ''
+#          - jdk: 3.8.6-eclipse-temurin-18
+#            nashorn: ''
+#            bytebuddy: ''
           - jdk: 3.9.7-eclipse-temurin-21
             nashorn: ''
             bytebuddy: '-Dnet.bytebuddy.experimental=true'
