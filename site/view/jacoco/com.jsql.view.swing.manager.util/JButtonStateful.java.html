@@ -11,13 +11,9 @@ public class JButtonStateful extends JButton {
      */
 <span class="fc" id="L12">    private StateButton state = StateButton.STARTABLE;</span>
     
-    private String defaultText;
-
     public JButtonStateful(String defaultText) {
-        
-<span class="fc" id="L18">        super(I18nViewUtil.valueByKey(defaultText));</span>
-<span class="fc" id="L19">        this.defaultText = defaultText;</span>
-<span class="fc" id="L20">    }</span>
+<span class="fc" id="L15">        super(I18nViewUtil.valueByKey(defaultText));</span>
+<span class="fc" id="L16">    }</span>
     
     
     // Getter and setter
@@ -27,19 +23,11 @@ public class JButtonStateful extends JButton {
      * @return State of process
      */
     public StateButton getState() {
-<span class="nc" id="L30">        return this.state;</span>
+<span class="nc" id="L26">        return this.state;</span>
     }
     
     public void setState(StateButton state) {
-<span class="nc" id="L34">        this.state = state;</span>
-<span class="nc" id="L35">    }</span>
-
-    public String getDefaultText() {
-<span class="nc" id="L38">        return this.defaultText;</span>
-    }
-
-    public void setDefaultText(String defaultText) {
-<span class="nc" id="L42">        this.defaultText = defaultText;</span>
-<span class="nc" id="L43">    }</span>
+<span class="nc" id="L30">        this.state = state;</span>
+<span class="nc" id="L31">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

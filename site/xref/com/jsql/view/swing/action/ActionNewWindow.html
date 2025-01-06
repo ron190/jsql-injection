@@ -7,10 +7,10 @@
 <body>
 <div id="overview"><a href="../../../../../../apidocs/com/jsql/view/swing/action/ActionNewWindow.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/*******************************************************************************</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> * Copyhacked (H) 2012-2020.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> * Copyhacked (H) 2012-2025.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> * This program and the accompanying materials</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_javadoccomment"> * are made available under no term at all, use it like</em>
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> * you want, but share and discuss about it</em>
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> * you want, but share and discuss it</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * every time possible with every body.</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * </em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> * Contributors:</em>
@@ -46,48 +46,40 @@
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Logger LOGGER = LogManager.getRootLogger();
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String PATH = SystemUtils.JAVA_HOME + File.separator +<span class="jxr_string">"bin"</span>+ File.separator +<span class="jxr_string">"java"</span>;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>      
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; COMMANDS_DEFAULT = Arrays.asList(
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          <span class="jxr_string">"-cp"</span>,
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          SystemUtils.JAVA_CLASS_PATH,
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>          MainApplication.<strong class="jxr_keyword">class</strong>.getName()
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>      );
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; commands;
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">public</strong> <a name="ActionNewWindow" href="../../../../../com/jsql/view/swing/action/ActionNewWindow.html#ActionNewWindow">ActionNewWindow</a>() {
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>          
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>(I18nUtil.valueByKey(<span class="jxr_string">"NEW_WINDOW_MENU"</span>));
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">this</strong>.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">this</strong>.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      }
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">public</strong> <a name="ActionNewWindow" href="../../../../../com/jsql/view/swing/action/ActionNewWindow.html#ActionNewWindow">ActionNewWindow</a>(String name, String... commands) {
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.commands = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;(List.of(PATH));
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">this</strong>.commands.addAll(Arrays.asList(commands));
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">this</strong>.commands.addAll(COMMANDS_DEFAULT);
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">this</strong>.putValue(Action.NAME, name);
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      }
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>      @Override
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> actionPerformed(ActionEvent event) {
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>          
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"NEW_WINDOW_START"</span>));
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">var</strong> processBuilder = <strong class="jxr_keyword">new</strong> ProcessBuilder(<strong class="jxr_keyword">this</strong>.commands.toArray(<strong class="jxr_keyword">new</strong> String[0]));
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>              processBuilder.start();
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          } <strong class="jxr_keyword">catch</strong> (IOException e) {
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>              LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          }
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>      }
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>  }
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; COMMANDS_DEFAULT = Arrays.asList(
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          <span class="jxr_string">"-cp"</span>,
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>          SystemUtils.JAVA_CLASS_PATH,
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>          MainApplication.<strong class="jxr_keyword">class</strong>.getName()
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      );
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; commands;
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">public</strong> <a name="ActionNewWindow" href="../../../../../com/jsql/view/swing/action/ActionNewWindow.html#ActionNewWindow">ActionNewWindow</a>() {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">this</strong>(I18nUtil.valueByKey(<span class="jxr_string">"NEW_WINDOW_MENU"</span>));
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          <strong class="jxr_keyword">this</strong>.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>  
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">public</strong> <a name="ActionNewWindow" href="../../../../../com/jsql/view/swing/action/ActionNewWindow.html#ActionNewWindow">ActionNewWindow</a>(String name, String... commands) {
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">this</strong>.commands = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;(List.of(PATH));
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">this</strong>.commands.addAll(Arrays.asList(commands));
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">this</strong>.commands.addAll(COMMANDS_DEFAULT);
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">this</strong>.putValue(Action.NAME, name);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      }
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>  
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      @Override
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> actionPerformed(ActionEvent event) {
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>          LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"NEW_WINDOW_START"</span>));
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">var</strong> processBuilder = <strong class="jxr_keyword">new</strong> ProcessBuilder(<strong class="jxr_keyword">this</strong>.commands.toArray(<strong class="jxr_keyword">new</strong> String[0]));
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>              processBuilder.start();
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>          } <strong class="jxr_keyword">catch</strong> (IOException e) {
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>              LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>          }
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>      }
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2024. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
 </body>
 </html>

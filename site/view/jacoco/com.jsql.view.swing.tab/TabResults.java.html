@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabResults.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.tab</a> &gt; <span class="el_source">TabResults.java</span></div><h1>TabResults.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -10,14 +10,14 @@
  *******************************************************************************/
 package com.jsql.view.swing.tab;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
+import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.scrollpane.LightScrollPaneShell;
 import com.jsql.view.swing.shell.ShellSql;
 import com.jsql.view.swing.shell.ShellWeb;
 import com.jsql.view.swing.tab.dnd.DnDTabbedPane;
@@ -34,11 +34,14 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.function.IntConsumer;
 
 /**
  * TabbedPane containing result injection panels.
@@ -48,174 +51,148 @@ public class TabResults extends DnDTabbedPane {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L51">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L54">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     /**
      * Create the panel containing injection results.
      */
-<span class="fc" id="L56">    public TabResults() {</span>
-        
-<span class="fc" id="L58">        this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);</span>
-<span class="fc" id="L59">        this.setTransferHandler(new TabTransferHandler());</span>
-
-        // Add hotkeys to root-pane ctrl-tab, ctrl-shift-tab, ctrl-w
-<span class="fc" id="L62">        HotkeyUtil.addShortcut(this);</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L59">    public TabResults() {</span>
+<span class="fc" id="L60">        this.setName(&quot;tabResults&quot;);</span>
+<span class="fc" id="L61">        this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);</span>
+<span class="fc" id="L62">        this.setTransferHandler(new TabTransferHandler());</span>
+<span class="fc" id="L63">        this.putClientProperty(&quot;JTabbedPane.tabClosable&quot;, true);</span>
+<span class="fc" id="L64">        this.putClientProperty(&quot;JTabbedPane.tabCloseCallback&quot;, (IntConsumer) ActionCloseTabResult::perform);</span>
+<span class="fc" id="L65">        UIManager.put(&quot;TabbedPane.closeHoverForeground&quot;, LogLevelUtil.COLOR_RED);</span>
+<span class="fc" id="L66">        HotkeyUtil.addShortcut(this);  // Add hotkeys to root-pane ctrl-tab, ctrl-shift-tab, ctrl-w</span>
+<span class="fc" id="L67">        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());</span>
+<span class="fc" id="L68">        MediatorHelper.register(this);</span>
+<span class="fc" id="L69">    }</span>
 
     public void createFileTab(String label, String content, String path) {
+<span class="fc" id="L72">        JTextArea fileText = new JPopupTextArea().getProxy();</span>
+<span class="fc" id="L73">        fileText.setText(content);</span>
+<span class="fc" id="L74">        fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));</span>
+<span class="fc" id="L75">        fileText.setCaretPosition(0);</span>
+<span class="fc" id="L76">        this.createTextTab(label, path, fileText, UiUtil.DOWNLOAD.icon);</span>
+<span class="fc" id="L77">        MediatorHelper.tabManagersCards().addToLists(path, label);</span>
+<span class="fc" id="L78">    }</span>
 
-<span class="fc" id="L67">        JTextArea fileText = new JPopupTextArea().getProxy();</span>
-<span class="fc" id="L68">        fileText.setText(content);</span>
-<span class="fc" id="L69">        fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));</span>
-<span class="fc" id="L70">        fileText.setCaretPosition(0);</span>
-
-<span class="fc" id="L72">        this.createTextTab(label, path, fileText);</span>
-<span class="fc" id="L73">        MediatorHelper.tabManagers().addToLists(path, label);</span>
-<span class="fc" id="L74">    }</span>
-
-    public void createReportTab(String label, String content, String path) {
-
-<span class="nc" id="L78">        JEditorPane editorPane = new JEditorPane();</span>
-<span class="nc" id="L79">        editorPane.setContentType(&quot;text/html&quot;);</span>
-<span class="nc" id="L80">        editorPane.setText(&quot;&lt;html&gt;&lt;span style=\&quot;white-space: nowrap; font-family:'&quot;+ UiUtil.FONT_NAME_MONO_NON_ASIAN +&quot;'\&quot;&gt;&quot; + content + &quot;&lt;/span&gt;&lt;/html&gt;&quot;);</span>
-<span class="nc" id="L81">        editorPane.setDragEnabled(true);</span>
-<span class="nc" id="L82">        editorPane.setEditable(false);</span>
-<span class="nc" id="L83">        editorPane.setCaretPosition(0);</span>
-<span class="nc" id="L84">        editorPane.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));</span>
-<span class="nc" id="L85">        editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));</span>
-<span class="nc" id="L86">        editorPane.addHyperlinkListener(linkEvent -&gt; {</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">            if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {</span>
+    public void createReportTab(String content) {
+<span class="nc" id="L81">        JEditorPane editorPane = new JEditorPane();</span>
+<span class="nc" id="L82">        editorPane.setContentType(&quot;text/html&quot;);</span>
+<span class="nc" id="L83">        editorPane.setText(&quot;&lt;html&gt;&lt;span style=\&quot;white-space: nowrap; font-family:'&quot;+ UiUtil.FONT_NAME_MONO_NON_ASIAN +&quot;'\&quot;&gt;&quot; + content + &quot;&lt;/span&gt;&lt;/html&gt;&quot;);</span>
+<span class="nc" id="L84">        editorPane.setFont(UIManager.getFont(&quot;TextArea.font&quot;));  // required to increase text size</span>
+<span class="nc" id="L85">        editorPane.setDragEnabled(true);</span>
+<span class="nc" id="L86">        editorPane.setEditable(false);</span>
+<span class="nc" id="L87">        editorPane.setCaretPosition(0);</span>
+<span class="nc" id="L88">        editorPane.getCaret().setBlinkRate(0);</span>
+<span class="nc" id="L89">        editorPane.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));</span>
+<span class="nc" id="L90">        editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));</span>
+<span class="nc" id="L91">        editorPane.addHyperlinkListener(linkEvent -&gt; {</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {</span>
                 try {
-<span class="nc" id="L89">                    Desktop.getDesktop().browse(linkEvent.getURL().toURI());</span>
-<span class="nc" id="L90">                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
-<span class="nc" id="L91">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Browsing to Url failed&quot;, e);</span>
-<span class="nc" id="L92">                }</span>
+<span class="nc" id="L94">                    Desktop.getDesktop().browse(linkEvent.getURL().toURI());</span>
+<span class="nc" id="L95">                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
+<span class="nc" id="L96">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Failing to browse Url&quot;, e);</span>
+<span class="nc" id="L97">                }</span>
             }
-<span class="nc" id="L94">        });</span>
+<span class="nc" id="L99">        });</span>
+<span class="nc" id="L100">        editorPane.addFocusListener(new FocusAdapter() {</span>
+            @Override
+            public void focusGained(FocusEvent arg0) {
+<span class="nc" id="L103">                editorPane.getCaret().setVisible(true);</span>
+<span class="nc" id="L104">                editorPane.getCaret().setSelectionVisible(true);</span>
+<span class="nc" id="L105">                editorPane.getCaret().setBlinkRate(0);</span>
+<span class="nc" id="L106">            }</span>
+        });
+<span class="nc" id="L108">        UiUtil.initialize(editorPane);  // silent delete</span>
 
-<span class="nc" id="L96">        this.createTextTab(label, path, editorPane);</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L110">        this.createTextTab(&quot;Vulnerability report&quot;, &quot;Analysis report with all payloads detected&quot;, editorPane, UiUtil.REPORT.icon);</span>
+<span class="nc" id="L111">    }</span>
 
-    public void createTextTab(String label, String path, JComponent componentText) {
+    public void createTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
+<span class="fc" id="L114">        var scroller = new JScrollPane(componentText);</span>
+<span class="fc" id="L115">        this.addTab(label + StringUtils.SPACE, scroller);</span>
+<span class="fc" id="L116">        this.setSelectedComponent(scroller);  // Focus on the new tab</span>
+<span class="fc" id="L117">        this.setToolTipTextAt(this.indexOfComponent(scroller), toolTipText);</span>
+<span class="fc" id="L118">        var header = new TabHeader(label, icon);</span>
+<span class="fc" id="L119">        this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
+<span class="fc" id="L120">    }</span>
 
-<span class="fc" id="L101">        var scroller = new LightScrollPane(1, 0, 0, 0, componentText);</span>
-
-<span class="fc" id="L103">        this.addTab(label + StringUtils.SPACE, scroller);</span>
-
-        // Focus on the new tab
-<span class="fc" id="L106">        this.setSelectedComponent(scroller);</span>
-
-        // Create a custom tab header with close button
-<span class="fc" id="L109">        var header = new TabHeader(label, UiUtil.ICON_FILE_SERVER);</span>
-
-<span class="fc" id="L111">        this.setToolTipTextAt(this.indexOfComponent(scroller), path);</span>
-
-        // Apply the custom header to the tab
-<span class="fc" id="L114">        this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
-<span class="fc" id="L115">    }</span>
-    
     public void createShell(String url, String path) {
         try {
-<span class="fc" id="L119">            var terminalID = UUID.randomUUID();</span>
-<span class="fc" id="L120">            var terminal = new ShellWeb(terminalID, url);</span>
-<span class="fc" id="L121">            MediatorHelper.frame().getConsoles().put(terminalID, terminal);</span>
-            
-<span class="fc" id="L123">            LightScrollPane scroller = new LightScrollPaneShell(terminal);</span>
-    
-<span class="fc" id="L125">            this.addTab(&quot;Web shell &quot;, scroller);</span>
-    
-            // Focus on the new tab
-<span class="fc" id="L128">            this.setSelectedComponent(scroller);</span>
-    
-            // Create a custom tab header with close button
-<span class="fc" id="L131">            var header = new TabHeader(&quot;Web shell&quot;, UiUtil.ICON_SHELL_SERVER);</span>
-    
-<span class="fc" id="L133">            this.setToolTipTextAt(</span>
-<span class="fc" id="L134">                this.indexOfComponent(scroller),</span>
-<span class="fc" id="L135">                String.format(</span>
+<span class="fc" id="L124">            var terminalID = UUID.randomUUID();</span>
+<span class="fc" id="L125">            var terminal = new ShellWeb(terminalID, url);</span>
+<span class="fc" id="L126">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
+
+<span class="fc" id="L128">            JScrollPane scroller = new JScrollPane(terminal);</span>
+<span class="fc" id="L129">            this.addTab(&quot;Web shell&quot;, scroller);</span>
+<span class="fc" id="L130">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
+<span class="fc" id="L131">            this.setToolTipTextAt(</span>
+<span class="fc" id="L132">                this.indexOfComponent(scroller),</span>
+<span class="fc" id="L133">                String.format(</span>
                     &quot;&lt;html&gt;&lt;b&gt;URL&lt;/b&gt;&lt;br&gt;%s&lt;br&gt;&lt;b&gt;Path&lt;/b&gt;&lt;br&gt;%s%s&lt;/html&gt;&quot;,
                     url,
                     path,
-<span class="fc" id="L139">                    MediatorHelper.model().getResourceAccess().filenameWebshell</span>
+<span class="fc" id="L137">                    MediatorHelper.model().getResourceAccess().filenameWebshell</span>
                 )
             );
-    
-            // Apply the custom header to the tab
-<span class="fc" id="L144">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
-    
-<span class="fc" id="L146">            terminal.requestFocusInWindow();</span>
+
+<span class="fc" id="L141">            var header = new TabHeader(&quot;Web shell&quot;, UiUtil.TERMINAL.icon);</span>
+<span class="fc" id="L142">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
+<span class="fc" id="L143">            terminal.requestFocusInWindow();</span>
             
-<span class="nc" id="L148">        } catch (MalformedURLException | URISyntaxException e) {</span>
-<span class="nc" id="L149">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect shell Url&quot;, e);</span>
-<span class="fc" id="L150">        }</span>
-<span class="fc" id="L151">    }</span>
+<span class="nc" id="L145">        } catch (MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L146">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect shell Url&quot;, e);</span>
+<span class="fc" id="L147">        }</span>
+<span class="fc" id="L148">    }</span>
     
     public void createSQLShellTab(String url, String user, String pass, String path) {
         try {
-<span class="fc" id="L155">            var terminalID = UUID.randomUUID();</span>
-<span class="fc" id="L156">            var terminal = new ShellSql(terminalID, url, user, pass);</span>
+<span class="fc" id="L152">            var terminalID = UUID.randomUUID();</span>
+<span class="fc" id="L153">            var terminal = new ShellSql(terminalID, url, user, pass);</span>
+<span class="fc" id="L154">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
 
-<span class="fc" id="L158">            MediatorHelper.frame().getConsoles().put(terminalID, terminal);</span>
-    
-<span class="fc" id="L160">            LightScrollPane scroller = new LightScrollPaneShell(terminal);</span>
-<span class="fc" id="L161">            this.addTab(&quot;SQL shell &quot;, scroller);</span>
-    
-            // Focus on the new tab
-<span class="fc" id="L164">            this.setSelectedComponent(scroller);</span>
-    
-            // Create a custom tab header with close button
-<span class="fc" id="L167">            var header = new TabHeader(&quot;SQL shell&quot;, UiUtil.ICON_SHELL_SERVER);</span>
-    
-<span class="fc" id="L169">            this.setToolTipTextAt(</span>
-<span class="fc" id="L170">                this.indexOfComponent(scroller),</span>
-<span class="fc" id="L171">                String.format(</span>
+<span class="fc" id="L156">            JScrollPane scroller = new JScrollPane(terminal);</span>
+<span class="fc" id="L157">            this.addTab(&quot;SQL shell&quot;, scroller);</span>
+<span class="fc" id="L158">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
+<span class="fc" id="L159">            this.setToolTipTextAt(</span>
+<span class="fc" id="L160">                this.indexOfComponent(scroller),</span>
+<span class="fc" id="L161">                String.format(</span>
                     &quot;&lt;html&gt;&lt;b&gt;URL&lt;/b&gt;&lt;br&gt;%s&lt;br&gt;&lt;b&gt;Path&lt;/b&gt;&lt;br&gt;%s%s&lt;/html&gt;&quot;,
                     url,
                     path,
-<span class="fc" id="L175">                    MediatorHelper.model().getResourceAccess().filenameSqlshell</span>
+<span class="fc" id="L165">                    MediatorHelper.model().getResourceAccess().filenameSqlshell</span>
                 )
             );
-    
-            // Apply the custom header to the tab
-<span class="fc" id="L180">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
-    
-<span class="fc" id="L182">            terminal.requestFocusInWindow();</span>
-            
-<span class="nc" id="L184">        } catch (MalformedURLException | URISyntaxException e) {</span>
-<span class="nc" id="L185">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect shell Url&quot;, e);</span>
-<span class="fc" id="L186">        }</span>
-<span class="fc" id="L187">    }</span>
+
+<span class="fc" id="L169">            var header = new TabHeader(&quot;SQL shell&quot;, UiUtil.TERMINAL.icon);</span>
+<span class="fc" id="L170">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
+<span class="fc" id="L171">            terminal.requestFocusInWindow();</span>
+<span class="nc" id="L172">        } catch (MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L173">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect shell Url&quot;, e);</span>
+<span class="fc" id="L174">        }</span>
+<span class="fc" id="L175">    }</span>
     
     public void createValuesTab(String[][] data, String[] columnNames, AbstractElementDatabase table) {
+<span class="fc" id="L178">        var panelTable = new PanelTable(data, columnNames);</span>
         
-        // Create a new table to display the values
-<span class="fc" id="L192">        var newTableJPanel = new PanelTable(data, columnNames);</span>
+<span class="fc" id="L180">        this.addTab(StringUtil.detectUtf8(table.toString()), panelTable);</span>
+<span class="fc" id="L181">        panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
         
-        // Create a new tab: add header and table
-<span class="fc" id="L195">        this.addTab(StringUtil.detectUtf8(table.toString()), newTableJPanel);</span>
-<span class="fc" id="L196">        newTableJPanel.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
-        
-        // Focus on the new tab
-<span class="fc" id="L199">        this.setSelectedComponent(newTableJPanel);</span>
-        
-        // Create a custom tab header with close button
-<span class="fc" id="L202">        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()));</span>
-        
-<span class="fc" id="L204">        this.setToolTipTextAt(</span>
-<span class="fc" id="L205">            this.indexOfComponent(newTableJPanel),</span>
-<span class="fc" id="L206">            String.format(</span>
+<span class="fc" id="L183">        this.setSelectedComponent(panelTable);  // Focus on the new tab</span>
+<span class="fc" id="L184">        this.setToolTipTextAt(</span>
+<span class="fc" id="L185">            this.indexOfComponent(panelTable),</span>
+<span class="fc" id="L186">            String.format(</span>
                 &quot;&lt;html&gt;&lt;b&gt;%s.%s&lt;/b&gt;&lt;br&gt;&lt;i&gt;%s&lt;/i&gt;&lt;/html&gt;&quot;,
-<span class="fc" id="L208">                table.getParent(),</span>
+<span class="fc" id="L188">                table.getParent(),</span>
                 table,
-<span class="fc" id="L210">                String.join(&quot;&lt;br&gt;&quot;, Arrays.copyOfRange(columnNames, 2, columnNames.length))</span>
+<span class="fc" id="L190">                String.join(&quot;&lt;br&gt;&quot;, Arrays.copyOfRange(columnNames, 2, columnNames.length))</span>
             )
         );
-        
-        // Apply the custom header to the tab
-<span class="fc" id="L215">        this.setTabComponentAt(</span>
-<span class="fc" id="L216">            this.indexOfComponent(newTableJPanel),</span>
-            header
-        );
-<span class="fc" id="L219">    }</span>
+
+<span class="fc" id="L194">        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.icon);</span>
+<span class="fc" id="L195">        this.setTabComponentAt(this.indexOfComponent(panelTable), header);</span>
+<span class="fc" id="L196">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

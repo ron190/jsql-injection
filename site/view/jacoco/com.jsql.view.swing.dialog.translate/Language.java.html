@@ -1,56 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Language.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.dialog.translate</a> &gt; <span class="el_source">Language.java</span></div><h1>Language.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.dialog.translate;
 
+import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
+import java.util.Locale;
 
-<span class="fc" id="L7">public enum Language {</span>
+<span class="fc" id="L9">public enum Language {</span>
     
-<span class="fc" id="L9">    AR(&quot;Arabic&quot;, &quot;ar&quot;, UiUtil.ICON_FLAG_AR),</span>
-<span class="fc" id="L10">    RU(&quot;Russian&quot;, &quot;ru&quot;, UiUtil.ICON_FLAG_RU),</span>
-<span class="fc" id="L11">    ZH(&quot;Chinese&quot;, &quot;zh&quot;, UiUtil.ICON_FLAG_ZH),</span>
-<span class="fc" id="L12">    TR(&quot;Turkish&quot;, &quot;tr&quot;, UiUtil.ICON_FLAG_TR),</span>
-<span class="fc" id="L13">    EN(&quot;English&quot;, &quot;en&quot;, UiUtil.ICON_FLAG_EN),</span>
-<span class="fc" id="L14">    FR(&quot;French&quot;, &quot;fr&quot;, UiUtil.ICON_FLAG_FR),</span>
-<span class="fc" id="L15">    HI(&quot;Hindi&quot;, &quot;hi&quot;, UiUtil.ICON_FLAG_HI),</span>
-<span class="fc" id="L16">    CS(&quot;Czech&quot;, &quot;cs&quot;, UiUtil.ICON_FLAG_CS),</span>
-<span class="fc" id="L17">    DE(&quot;German&quot;, &quot;de&quot;, UiUtil.ICON_FLAG_DE),</span>
-<span class="fc" id="L18">    NL(&quot;Dutch&quot;, &quot;nl&quot;, UiUtil.ICON_FLAG_NL),</span>
-<span class="fc" id="L19">    IN_ID(&quot;Bahasa Indonesia&quot;, &quot;in_ID&quot;, UiUtil.ICON_FLAG_IN_ID),</span>
-<span class="fc" id="L20">    IT(&quot;Italian&quot;, &quot;it&quot;, UiUtil.ICON_FLAG_IT),</span>
-<span class="fc" id="L21">    ES(&quot;Spanish&quot;, &quot;es&quot;, UiUtil.ICON_FLAG_ES),</span>
-<span class="fc" id="L22">    PT(&quot;Portuguese&quot;, &quot;pt&quot;, UiUtil.ICON_FLAG_PT),</span>
-<span class="fc" id="L23">    PL(&quot;Polish&quot;, &quot;pl&quot;, UiUtil.ICON_FLAG_PL),</span>
-<span class="fc" id="L24">    KO(&quot;Korean&quot;, &quot;ko&quot;, UiUtil.ICON_FLAG_KO),</span>
-<span class="fc" id="L25">    JA(&quot;Japanese&quot;, &quot;ja&quot;, UiUtil.ICON_FLAG_JA),</span>
-<span class="fc" id="L26">    RO(&quot;Romanian&quot;, &quot;ro&quot;, UiUtil.ICON_FLAG_RO),</span>
-<span class="fc" id="L27">    TA(&quot;Tamil&quot;, &quot;ta&quot;, UiUtil.ICON_FLAG_LK),</span>
-<span class="fc" id="L28">    SE(&quot;Swedish&quot;, &quot;se&quot;, UiUtil.ICON_FLAG_SE),</span>
-<span class="fc" id="L29">    FI(&quot;Finnish&quot;, &quot;fi&quot;, UiUtil.ICON_FLAG_FI),</span>
-<span class="fc" id="L30">    OT(&quot;another language&quot;, null, null);</span>
+<span class="fc" id="L11">    AR(&quot;Arabic&quot;, &quot;ar&quot;, UiUtil.ICON_FLAG_AR, true, true),</span>
+<span class="fc" id="L12">    RU(&quot;Russian&quot;, &quot;ru&quot;, UiUtil.ICON_FLAG_RU),</span>
+<span class="fc" id="L13">    ZH(&quot;Chinese&quot;, &quot;zh&quot;, UiUtil.ICON_FLAG_ZH, true),</span>
+<span class="fc" id="L14">    TR(&quot;Turkish&quot;, &quot;tr&quot;, UiUtil.ICON_FLAG_TR),</span>
+<span class="fc" id="L15">    EN(&quot;English&quot;, &quot;en&quot;, UiUtil.ICON_FLAG_EN),</span>
+<span class="fc" id="L16">    FR(&quot;French&quot;, &quot;fr&quot;, UiUtil.ICON_FLAG_FR),</span>
+<span class="fc" id="L17">    HI(&quot;Hindi&quot;, &quot;hi&quot;, UiUtil.ICON_FLAG_HI, true),</span>
+<span class="fc" id="L18">    CS(&quot;Czech&quot;, &quot;cs&quot;, UiUtil.ICON_FLAG_CS),</span>
+<span class="fc" id="L19">    DE(&quot;German&quot;, &quot;de&quot;, UiUtil.ICON_FLAG_DE),</span>
+<span class="fc" id="L20">    NL(&quot;Dutch&quot;, &quot;nl&quot;, UiUtil.ICON_FLAG_NL),</span>
+<span class="fc" id="L21">    IN(&quot;Indonesian&quot;, &quot;in&quot;, UiUtil.ICON_FLAG_IN),</span>
+<span class="fc" id="L22">    IT(&quot;Italian&quot;, &quot;it&quot;, UiUtil.ICON_FLAG_IT),</span>
+<span class="fc" id="L23">    ES(&quot;Spanish&quot;, &quot;es&quot;, UiUtil.ICON_FLAG_ES),</span>
+<span class="fc" id="L24">    PT(&quot;Portuguese&quot;, &quot;pt&quot;, UiUtil.ICON_FLAG_PT),</span>
+<span class="fc" id="L25">    PL(&quot;Polish&quot;, &quot;pl&quot;, UiUtil.ICON_FLAG_PL),</span>
+<span class="fc" id="L26">    KO(&quot;Korean&quot;, &quot;ko&quot;, UiUtil.ICON_FLAG_KO, true),</span>
+<span class="fc" id="L27">    JA(&quot;Japanese&quot;, &quot;ja&quot;, UiUtil.ICON_FLAG_JA, true),</span>
+<span class="fc" id="L28">    RO(&quot;Romanian&quot;, &quot;ro&quot;, UiUtil.ICON_FLAG_RO),</span>
+<span class="fc" id="L29">    TA(&quot;Tamil&quot;, &quot;ta&quot;, UiUtil.ICON_FLAG_LK),</span>
+<span class="fc" id="L30">    SE(&quot;Swedish&quot;, &quot;se&quot;, UiUtil.ICON_FLAG_SE),</span>
+<span class="fc" id="L31">    FI(&quot;Finnish&quot;, &quot;fi&quot;, UiUtil.ICON_FLAG_FI),</span>
+<span class="fc" id="L32">    OT(&quot;another language&quot;, &quot;unknown&quot;, null);</span>
 
-    private final String nameEnglish;
+    private final String nameEnglish;  // required for default logging and english modal translate into
     private final Icon flag;
-    private final String labelLocale;
-    
-<span class="fc" id="L36">    Language(String nameEnglish, String labelLocale, Icon flag) {</span>
-        
-<span class="fc" id="L38">        this.nameEnglish = nameEnglish;</span>
-<span class="fc" id="L39">        this.flag = flag;</span>
-<span class="fc" id="L40">        this.labelLocale = labelLocale;</span>
-<span class="fc" id="L41">    }</span>
-    
-    public Icon getFlag() {
-<span class="fc" id="L44">        return this.flag;</span>
+    private final String languageTag;
+    private final boolean isNonLatin;
+    private final boolean isRightToLeft;
+
+<span class="fc" id="L40">    Language(String nameEnglish, String languageTag, Icon flag, boolean isNonLatin, boolean isRightToLeft) {</span>
+<span class="fc" id="L41">        this.nameEnglish = nameEnglish;</span>
+<span class="fc" id="L42">        this.flag = flag;</span>
+<span class="fc" id="L43">        this.languageTag = languageTag;</span>
+<span class="fc" id="L44">        this.isNonLatin = isNonLatin;</span>
+<span class="fc" id="L45">        this.isRightToLeft = isRightToLeft;</span>
+<span class="fc" id="L46">    }</span>
+
+    Language(String nameEnglish, String languageTag, Icon flag, boolean isNonLatin) {
+<span class="fc" id="L49">        this(nameEnglish, languageTag, flag, isNonLatin, false);</span>
+<span class="fc" id="L50">    }</span>
+
+    Language(String nameEnglish, String languageTag, Icon flag) {
+<span class="fc" id="L53">        this(nameEnglish, languageTag, flag, false, false);</span>
+<span class="fc" id="L54">    }</span>
+
+    public String getMenuItemLabel() {
+<span class="fc" id="L57">        var label = Locale.forLanguageTag(this.languageTag).getDisplayLanguage(Locale.forLanguageTag(this.languageTag));</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        return this.isNonLatin ? I18nViewUtil.formatNonLatin(label) : label;</span>
     }
-    
+
+    public boolean isCurrentLanguage() {
+<span class="fc" id="L62">        return Locale.forLanguageTag(this.languageTag).getLanguage().equals(Locale.getDefault().getLanguage());</span>
+    }
+
+    public Icon getFlag() {
+<span class="fc" id="L66">        return this.flag;</span>
+    }
+
+    public boolean isRightToLeft() {
+<span class="fc" id="L70">        return isRightToLeft;</span>
+    }
+
+    public String getLanguageTag() {
+<span class="fc" id="L74">        return this.languageTag;</span>
+    }
+
     @Override
     public String toString() {
-<span class="fc" id="L49">        return this.nameEnglish;</span>
-    }
-    
-    public String getLabelLocale() {
-<span class="fc" id="L53">        return this.labelLocale;</span>
+<span class="fc" id="L79">        return this.nameEnglish;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

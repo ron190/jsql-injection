@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ListTransfertHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.list</a> &gt; <span class="el_source">ListTransfertHandler.java</span></div><h1>ListTransfertHandler.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -34,93 +34,74 @@ import java.util.List;
 
     @Override
     protected String initializeTransferable() {
-        
-<span class="fc" id="L38">        var stringTransferable = new StringBuilder();</span>
-
-<span class="fc bfc" id="L40" title="All 2 branches covered.">        for (ItemList itemPath: this.dragPaths) {</span>
-<span class="fc" id="L41">            stringTransferable.append(itemPath).append(&quot;\n&quot;);</span>
-<span class="fc" id="L42">        }</span>
-        
-<span class="fc" id="L44">        return stringTransferable.toString();</span>
+<span class="fc" id="L37">        var stringTransferable = new StringBuilder();</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (ItemList itemPath: this.dragPaths) {</span>
+<span class="fc" id="L39">            stringTransferable.append(itemPath).append(&quot;\n&quot;);</span>
+<span class="fc" id="L40">        }</span>
+<span class="fc" id="L41">        return stringTransferable.toString();</span>
     }
 
     @Override
     protected void parseStringDrop(TransferSupport support, DnDList list, DefaultListModel&lt;ItemList&gt; listModel) {
-        
-<span class="fc" id="L50">        var dropLocation = (JList.DropLocation) support.getDropLocation();</span>
-<span class="fc" id="L51">        int childIndex = dropLocation.getIndex();</span>
-
-<span class="fc" id="L53">        List&lt;Integer&gt; listSelectedIndices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L46">        var dropLocation = (JList.DropLocation) support.getDropLocation();</span>
+<span class="fc" id="L47">        int childIndex = dropLocation.getIndex();</span>
+<span class="fc" id="L48">        List&lt;Integer&gt; listSelectedIndices = new ArrayList&lt;&gt;();</span>
 
         // DnD from list
-<span class="pc bpc" id="L56" title="2 of 4 branches missed.">        if (this.dragPaths != null &amp;&amp; !this.dragPaths.isEmpty()) {</span>
-<span class="fc" id="L57">            this.addFromList(listModel, childIndex, listSelectedIndices);</span>
+<span class="pc bpc" id="L51" title="2 of 4 branches missed.">        if (this.dragPaths != null &amp;&amp; !this.dragPaths.isEmpty()) {</span>
+<span class="fc" id="L52">            this.addFromList(listModel, childIndex, listSelectedIndices);</span>
         } else {
-<span class="nc" id="L59">            this.addFromOutside(support, listModel, childIndex, listSelectedIndices);</span>
+<span class="nc" id="L54">            this.addFromOutside(support, listModel, childIndex, listSelectedIndices);</span>
         }
 
-<span class="fc" id="L62">        var selectedIndices = new int[listSelectedIndices.size()];</span>
-<span class="fc" id="L63">        var i = 0;</span>
-        
-<span class="fc bfc" id="L65" title="All 2 branches covered.">        for (Integer integer: listSelectedIndices) {</span>
-            
-<span class="fc" id="L67">            selectedIndices[i] = integer;</span>
-<span class="fc" id="L68">            i++;</span>
-<span class="fc" id="L69">        }</span>
-        
-<span class="fc" id="L71">        list.setSelectedIndices(selectedIndices);</span>
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L57">        var selectedIndices = new int[listSelectedIndices.size()];</span>
+<span class="fc" id="L58">        var i = 0;</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (Integer integer: listSelectedIndices) {</span>
+<span class="fc" id="L60">            selectedIndices[i] = integer;</span>
+<span class="fc" id="L61">            i++;</span>
+<span class="fc" id="L62">        }</span>
+<span class="fc" id="L63">        list.setSelectedIndices(selectedIndices);</span>
+<span class="fc" id="L64">    }</span>
 
     private void addFromOutside(TransferSupport support, DefaultListModel&lt;ItemList&gt; listModel, int childIndexFrom, List&lt;Integer&gt; listSelectedIndices) {
         try {
-<span class="nc" id="L76">            int childIndexTo = childIndexFrom;</span>
-            
-<span class="nc" id="L78">            var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);</span>
-            
-<span class="nc bnc" id="L80" title="All 2 branches missed.">            for (String value: importString.split(&quot;\\n&quot;)) {</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">                if (StringUtils.isNotEmpty(value)) {</span>
-                    
-<span class="nc" id="L83">                    listSelectedIndices.add(childIndexTo);</span>
-<span class="nc" id="L84">                    listModel.add(childIndexTo++, new ItemList(value.replace(&quot;\\&quot;, &quot;/&quot;)));</span>
+<span class="nc" id="L68">            int childIndexTo = childIndexFrom;</span>
+<span class="nc" id="L69">            var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            for (String value: importString.split(&quot;\\n&quot;)) {</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                if (StringUtils.isNotEmpty(value)) {</span>
+<span class="nc" id="L72">                    listSelectedIndices.add(childIndexTo);</span>
+<span class="nc" id="L73">                    listModel.add(childIndexTo++, new ItemList(value.replace(&quot;\\&quot;, &quot;/&quot;)));</span>
                 }
             }
-<span class="nc" id="L87">        } catch (UnsupportedFlavorException | IOException e) {</span>
-<span class="nc" id="L88">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L89">        }</span>
-<span class="nc" id="L90">    }</span>
+<span class="nc" id="L76">        } catch (UnsupportedFlavorException | IOException e) {</span>
+<span class="nc" id="L77">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L78">        }</span>
+<span class="nc" id="L79">    }</span>
 
     private void addFromList(DefaultListModel&lt;ItemList&gt; listModel, int childIndexFrom, List&lt;Integer&gt; listSelectedIndices) {
-        
-<span class="fc" id="L94">        int childIndexTo = childIndexFrom;</span>
-        
-<span class="fc bfc" id="L96" title="All 2 branches covered.">        for (ItemList value: this.dragPaths) {</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">            if (StringUtils.isNotEmpty(value.toString())) {</span>
-                
-                //! FUUuu
-<span class="fc" id="L100">                var newValue = new ItemList(value.toString().replace(&quot;\\&quot;, &quot;/&quot;));</span>
-<span class="fc" id="L101">                listSelectedIndices.add(childIndexTo);</span>
-<span class="fc" id="L102">                listModel.add(childIndexTo++, newValue);</span>
+<span class="fc" id="L82">        int childIndexTo = childIndexFrom;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        for (ItemList value: this.dragPaths) {</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">            if (StringUtils.isNotEmpty(value.toString())) {</span>
+<span class="fc" id="L85">                var newValue = new ItemList(value.toString().replace(&quot;\\&quot;, &quot;/&quot;));  //! FUUuu</span>
+<span class="fc" id="L86">                listSelectedIndices.add(childIndexTo);</span>
+<span class="fc" id="L87">                listModel.add(childIndexTo++, newValue);</span>
             }
-<span class="fc" id="L104">        }</span>
-<span class="fc" id="L105">    }</span>
+<span class="fc" id="L89">        }</span>
+<span class="fc" id="L90">    }</span>
 
     @Override
     protected List&lt;Integer&gt; initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
-        
-<span class="fc" id="L110">        int selectedIndexTo = selectedIndexFrom;</span>
-<span class="fc" id="L111">        List&lt;Integer&gt; selectedIndexes = new ArrayList&lt;&gt;();</span>
-
-<span class="fc bfc" id="L113" title="All 2 branches covered.">        for (String line: clipboardText.split(&quot;\\n&quot;)) {</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">            if (StringUtils.isNotEmpty(line)) {</span>
-                
-<span class="fc" id="L116">                String newLine = line.replace(&quot;\\&quot;, &quot;/&quot;);</span>
-<span class="fc" id="L117">                var newItem = new ItemList(newLine);</span>
-<span class="fc" id="L118">                selectedIndexes.add(selectedIndexTo);</span>
-<span class="fc" id="L119">                listModel.add(selectedIndexTo++, newItem);</span>
+<span class="fc" id="L94">        int selectedIndexTo = selectedIndexFrom;</span>
+<span class="fc" id="L95">        List&lt;Integer&gt; selectedIndexes = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        for (String line: clipboardText.split(&quot;\\n&quot;)) {</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">            if (StringUtils.isNotEmpty(line)) {</span>
+<span class="fc" id="L98">                String newLine = line.replace(&quot;\\&quot;, &quot;/&quot;);</span>
+<span class="fc" id="L99">                var newItem = new ItemList(newLine);</span>
+<span class="fc" id="L100">                selectedIndexes.add(selectedIndexTo);</span>
+<span class="fc" id="L101">                listModel.add(selectedIndexTo++, newItem);</span>
             }
         }
-        
-<span class="fc" id="L123">        return selectedIndexes;</span>
+<span class="fc" id="L104">        return selectedIndexes;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -16,15 +16,13 @@ public class SimpleConsoleAdapter extends AbstractColoredConsole {
      * @param tabName Default text
      */
     public SimpleConsoleAdapter(String tabName, String placeholder) {
-        
-<span class="fc" id="L20">        super(tabName, placeholder);</span>
-        
-<span class="fc" id="L22">        StyleConstants.setForeground(this.attributeTimestamp, new Color(75, 143, 211));</span>
-<span class="fc" id="L23">    }</span>
+<span class="fc" id="L19">        super(tabName, placeholder);</span>
+<span class="fc" id="L20">        StyleConstants.setForeground(this.attributeTimestamp, new Color(0x555555));  // timestamp color</span>
+<span class="fc" id="L21">    }</span>
 
     @Override
     public SimpleAttributeSet getColorAttribute() {
-<span class="fc" id="L27">        return this.attributeTimestamp;</span>
+<span class="fc" id="L25">        return this.attributeTimestamp;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -17,18 +17,15 @@ import java.awt.*;
         int row,
         int column
     ) {
-        
-<span class="fc" id="L21">        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);</span>
-        
-<span class="fc" id="L23">        label.setToolTipText(</span>
-<span class="fc" id="L24">            String.format(</span>
+<span class="fc" id="L20">        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);</span>
+<span class="fc" id="L21">        label.setToolTipText(</span>
+<span class="fc" id="L22">            String.format(</span>
                 &quot;&lt;html&gt;&lt;div style=\&quot;font-size:10px;font-family:'%s'\&quot;&gt;%s&lt;/div&gt;&lt;/html&gt;&quot;,
                 UiUtil.FONT_NAME_MONO_NON_ASIAN,
-<span class="fc" id="L27">                label.getText().replaceAll(&quot;(.{100})(?!$)&quot;, &quot;$1&lt;br&gt;&quot;)</span>
+<span class="fc" id="L25">                label.getText().replaceAll(&quot;(.{100})(?!$)&quot;, &quot;$1&lt;br&gt;&quot;)  // linebreak any 100 chars</span>
             )
         );
-        
-<span class="fc" id="L31">        return label;</span>
+<span class="fc" id="L28">        return label;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ManagerAdminPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.manager</a> &gt; <span class="el_source">ManagerAdminPage.java</span></div><h1>ManagerAdminPage.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -15,10 +15,8 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
-import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,105 +33,74 @@ public class ManagerAdminPage extends AbstractManagerList {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L38">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
-    
+<span class="fc" id="L36">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
     /**
      * Create admin page finder.
      */
     public ManagerAdminPage() {
-        
-<span class="fc" id="L45">        super(&quot;swing/list/admin-page.txt&quot;);</span>
+<span class="fc" id="L42">        super(&quot;swing/list/admin-page.txt&quot;);</span>
 
-<span class="fc" id="L47">        this.initializeRunButton();</span>
-        
-<span class="fc" id="L49">        this.listFile.setName(&quot;listManagerAdminPage&quot;);</span>
-<span class="fc" id="L50">        this.run.setName(&quot;runManagerAdminPage&quot;);</span>
-        
-<span class="fc" id="L52">        this.lastLine.setLayout(new BorderLayout());</span>
-<span class="fc" id="L53">        this.lastLine.setPreferredSize(new Dimension(0, 26));</span>
-        
-<span class="fc" id="L55">        var panelRunButton = new JPanel();</span>
-<span class="fc" id="L56">        panelRunButton.setLayout(new BoxLayout(panelRunButton, BoxLayout.X_AXIS));</span>
-        
-<span class="fc" id="L58">        panelRunButton.add(Box.createHorizontalGlue());</span>
-<span class="fc" id="L59">        panelRunButton.add(this.loader);</span>
-<span class="fc" id="L60">        panelRunButton.add(Box.createRigidArea(new Dimension(5, 0)));</span>
-<span class="fc" id="L61">        panelRunButton.add(this.run);</span>
-        
-<span class="fc" id="L63">        this.lastLine.add(panelRunButton, BorderLayout.LINE_END);</span>
-        
-<span class="fc" id="L65">        this.add(this.lastLine, BorderLayout.SOUTH);</span>
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L44">        this.defaultText = &quot;ADMIN_PAGE_RUN_BUTTON_LABEL&quot;;</span>
+<span class="fc" id="L45">        this.run = new JButtonStateful(this.defaultText);</span>
+<span class="fc" id="L46">        this.run.setName(&quot;runManagerAdminPage&quot;);</span>
+<span class="fc" id="L47">        I18nViewUtil.addComponentForKey(&quot;ADMIN_PAGE_RUN_BUTTON_LABEL&quot;, this.run);</span>
+<span class="fc" id="L48">        this.run.setToolTipText(I18nUtil.valueByKey(&quot;ADMIN_PAGE_RUN_BUTTON_TOOLTIP&quot;));</span>
+<span class="pc" id="L49">        this.run.addActionListener(actionEvent -&gt; this.runSearch());</span>
 
-    private void initializeRunButton() {
-        
-<span class="fc" id="L70">        this.defaultText = &quot;ADMIN_PAGE_RUN_BUTTON_LABEL&quot;;</span>
-<span class="fc" id="L71">        this.run = new JButtonStateful(this.defaultText);</span>
-<span class="fc" id="L72">        I18nViewUtil.addComponentForKey(&quot;ADMIN_PAGE_RUN_BUTTON_LABEL&quot;, this.run);</span>
-<span class="fc" id="L73">        this.run.setToolTipText(I18nUtil.valueByKey(&quot;ADMIN_PAGE_RUN_BUTTON_TOOLTIP&quot;));</span>
-        
-<span class="fc" id="L75">        this.run.setContentAreaFilled(false);</span>
-<span class="fc" id="L76">        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));</span>
-<span class="fc" id="L77">        this.run.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
-        
-<span class="fc" id="L79">        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));</span>
-<span class="pc" id="L80">        this.run.addActionListener(actionEvent -&gt; this.runSearch());</span>
+<span class="fc" id="L51">        this.listPaths.setName(&quot;listManagerAdminPage&quot;);</span>
 
-<span class="fc" id="L82">        this.loader.setVisible(false);</span>
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L53">        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));</span>
+<span class="fc" id="L54">        this.lastLine.add(this.horizontalGlue);</span>
+<span class="fc" id="L55">        this.lastLine.add(this.progressBar);</span>
+<span class="fc" id="L56">        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));</span>
+<span class="fc" id="L57">        this.lastLine.add(this.run);</span>
+<span class="fc" id="L58">        this.add(this.lastLine, BorderLayout.SOUTH);</span>
+<span class="fc" id="L59">    }</span>
 
     private void runSearch() {
-        
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (this.listFile.getSelectedValuesList().isEmpty()) {</span>
-            
-<span class="nc" id="L89">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select at least one admin page in the list&quot;);</span>
-<span class="nc" id="L90">            return;</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (this.listPaths.getSelectedValuesList().isEmpty()) {</span>
+<span class="nc" id="L63">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select at least one admin page in the list&quot;);</span>
+<span class="nc" id="L64">            return;</span>
         }
         
-<span class="nc" id="L93">        String urlAddressBar = MediatorHelper.panelAddressBar().getTextFieldAddress().getText();</span>
-        
-<span class="nc bnc" id="L95" title="All 4 branches missed.">        if (!urlAddressBar.isEmpty() &amp;&amp; !urlAddressBar.matches(&quot;(?i)^https?://.*&quot;)) {</span>
-            
-<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (!urlAddressBar.matches(&quot;(?i)^\\w+://.*&quot;)) {</span>
-                
-<span class="nc" id="L99">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_ADMIN_NO_PROTOCOL&quot;));</span>
-<span class="nc" id="L100">                urlAddressBar = &quot;http://&quot;+ urlAddressBar;</span>
-                
+<span class="nc" id="L67">        String urlAddressBar = MediatorHelper.panelAddressBar().getTextFieldAddress().getText();</span>
+<span class="nc bnc" id="L68" title="All 4 branches missed.">        if (!urlAddressBar.isEmpty() &amp;&amp; !urlAddressBar.matches(&quot;(?i)^https?://.*&quot;)) {</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            if (!urlAddressBar.matches(&quot;(?i)^\\w+://.*&quot;)) {</span>
+<span class="nc" id="L70">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_ADMIN_NO_PROTOCOL&quot;));</span>
+<span class="nc" id="L71">                urlAddressBar = &quot;http://&quot;+ urlAddressBar;</span>
             } else {
-                
-<span class="nc" id="L104">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_ADMIN_UNKNOWN_PROTOCOL&quot;));</span>
-<span class="nc" id="L105">                return;</span>
+<span class="nc" id="L73">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_ADMIN_UNKNOWN_PROTOCOL&quot;));</span>
+<span class="nc" id="L74">                return;</span>
             }
         }
         
-<span class="nc" id="L109">        String urlFinal = urlAddressBar;</span>
-        
-<span class="nc" id="L111">        new Thread(() -&gt; this.searchAdminPages(urlFinal), &quot;ThreadAdminPage&quot;).start();</span>
-<span class="nc" id="L112">    }</span>
+<span class="nc" id="L78">        String urlFinal = urlAddressBar;</span>
+<span class="nc" id="L79">        new Thread(() -&gt; this.searchAdminPages(urlFinal), &quot;ThreadAdminPage&quot;).start();</span>
+<span class="nc" id="L80">    }</span>
 
     private void searchAdminPages(String urlAddressBar) {
-        
-<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {</span>
-<span class="nc bnc" id="L117" title="All 2 branches missed.">            if (StringUtils.isEmpty(urlAddressBar)) {</span>
-<span class="nc" id="L118">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing URL in address bar&quot;);</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (this.run.getState() == StateButton.STARTABLE) {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (StringUtils.isEmpty(urlAddressBar)) {</span>
+<span class="nc" id="L85">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing URL in address bar&quot;);</span>
             } else {
-                
-<span class="nc" id="L121">                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking admin page(s)...&quot;);</span>
-<span class="nc" id="L122">                ManagerAdminPage.this.run.setText(I18nViewUtil.valueByKey(&quot;ADMIN_PAGE_RUN_BUTTON_STOP&quot;));</span>
-<span class="nc" id="L123">                ManagerAdminPage.this.run.setState(StateButton.STOPPABLE);</span>
-<span class="nc" id="L124">                ManagerAdminPage.this.loader.setVisible(true);</span>
-                
-<span class="nc" id="L126">                MediatorHelper.model().getResourceAccess().createAdminPages(</span>
+<span class="nc" id="L87">                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking admin page(s)...&quot;);</span>
+<span class="nc" id="L88">                this.run.setText(I18nViewUtil.valueByKey(&quot;ADMIN_PAGE_RUN_BUTTON_STOP&quot;));</span>
+<span class="nc" id="L89">                this.run.setState(StateButton.STOPPABLE);</span>
+<span class="nc" id="L90">                this.progressBar.setVisible(true);</span>
+<span class="nc" id="L91">                this.horizontalGlue.setVisible(false);</span>
+<span class="nc" id="L92">                MediatorHelper.model().getResourceAccess().createAdminPages(</span>
                     urlAddressBar,
-<span class="nc" id="L128">                    this.listFile.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList())</span>
+<span class="nc" id="L94">                    this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList())</span>
                 );
             }
-<span class="nc bnc" id="L131" title="All 2 branches missed.">        } else if (this.run.getState() == StateButton.STOPPABLE) {</span>
-            
-<span class="nc" id="L133">            MediatorHelper.model().getResourceAccess().setSearchAdminStopped(true);</span>
-<span class="nc" id="L134">            ManagerAdminPage.this.run.setEnabled(false);</span>
-<span class="nc" id="L135">            ManagerAdminPage.this.run.setState(StateButton.STOPPING);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        } else if (this.run.getState() == StateButton.STOPPABLE) {</span>
+<span class="nc" id="L98">            MediatorHelper.model().getResourceAccess().setSearchAdminStopped(true);</span>
+<span class="nc" id="L99">            this.run.setEnabled(false);</span>
+<span class="nc" id="L100">            this.run.setState(StateButton.STOPPING);</span>
+<span class="nc" id="L101">            this.progressBar.setVisible(false);</span>
+<span class="nc" id="L102">            this.horizontalGlue.setVisible(true);</span>
         }
-<span class="nc" id="L137">    }</span>
+<span class="nc" id="L104">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

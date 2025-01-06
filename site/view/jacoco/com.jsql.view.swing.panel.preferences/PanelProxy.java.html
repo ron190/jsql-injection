@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PanelProxy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.preferences</a> &gt; <span class="el_source">PanelProxy.java</span></div><h1>PanelProxy.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.panel.preferences;
 
+import com.jsql.view.swing.action.ActionCheckIp;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
@@ -14,198 +13,167 @@ import java.util.stream.Stream;
 
 public class PanelProxy extends JPanel {
 
-<span class="fc" id="L17">    private final JCheckBox checkboxIsUsingProxy = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttp());</span>
-<span class="fc" id="L18">    private final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttps());</span>
+<span class="fc" id="L16">    private final JCheckBox checkboxIsUsingProxy = new JCheckBox(&quot;&lt;html&gt;Enable proxy for &lt;b&gt;HTTP&lt;/b&gt; :&lt;/html&gt;&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttp());</span>
+<span class="fc" id="L17">    private final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox(&quot;&lt;html&gt;Enable proxy for &lt;b&gt;HTTPS&lt;/b&gt; :&lt;/html&gt;&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttps());</span>
 
-<span class="fc" id="L20">    private final JTextField textProxyAddress = new JPopupTextField(&quot;e.g. Tor address: 127.0.0.1&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyAddressHttp()).getProxy();</span>
-<span class="fc" id="L21">    private final JTextField textProxyPort = new JPopupTextField(&quot;e.g. Tor port: 8118&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyPortHttp()).getProxy();</span>
-<span class="fc" id="L22">    private final JTextField textProxyAddressHttps = new JPopupTextField(&quot;e.g. Tor address: 127.0.0.1&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyAddressHttps()).getProxy();</span>
-<span class="fc" id="L23">    private final JTextField textProxyPortHttps = new JPopupTextField(&quot;e.g. Tor port: 8118&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyPortHttps()).getProxy();</span>
+<span class="fc" id="L19">    private final JTextField textProxyAddress = new JPopupTextField(&quot;e.g. Tor address: 127.0.0.1&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyAddressHttp()).getProxy();</span>
+<span class="fc" id="L20">    private final JTextField textProxyPort = new JPopupTextField(&quot;e.g. Tor port: 8118&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyPortHttp()).getProxy();</span>
+<span class="fc" id="L21">    private final JTextField textProxyAddressHttps = new JPopupTextField(&quot;e.g. Tor address: 127.0.0.1&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyAddressHttps()).getProxy();</span>
+<span class="fc" id="L22">    private final JTextField textProxyPortHttps = new JPopupTextField(&quot;e.g. Tor port: 8118&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyPortHttps()).getProxy();</span>
 
-<span class="fc" id="L25">    public PanelProxy(PanelPreferences panelPreferences) {</span>
-        
-<span class="fc" id="L27">        this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));</span>
-        
-        // Proxy label
-<span class="fc" id="L30">        var labelProxyAddress = new JLabel(&quot;Address  &quot;);</span>
-<span class="fc" id="L31">        var labelProxyPort = new JLabel(&quot;Port  &quot;);</span>
-<span class="fc" id="L32">        var labelProxyAddressHttps = new JLabel(&quot;Address  &quot;);</span>
-<span class="fc" id="L33">        var labelProxyPortHttps = new JLabel(&quot;Port  &quot;);</span>
-<span class="fc" id="L34">        var buttonIsUsingProxy = new JButton(&quot;Proxy for http://&quot;);</span>
-<span class="fc" id="L35">        var buttonIsUsingProxyHttps = new JButton(&quot;Proxy for https://&quot;);</span>
-<span class="fc" id="L36">        var tooltipIsUsingProxy = &quot;Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTP protocol.&quot;;</span>
-<span class="fc" id="L37">        buttonIsUsingProxy.setToolTipText(tooltipIsUsingProxy);</span>
-<span class="fc" id="L38">        var tooltipIsUsingProxyHttps = &quot;Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTPS protocol.&quot;;</span>
-<span class="fc" id="L39">        buttonIsUsingProxyHttps.setToolTipText(tooltipIsUsingProxyHttps);</span>
+<span class="fc" id="L24">    public PanelProxy(PanelPreferences panelPreferences) {</span>
+<span class="fc" id="L25">        var panelHttpIpAddress = new JPanel();</span>
+<span class="fc" id="L26">        panelHttpIpAddress.setLayout(new BoxLayout(panelHttpIpAddress, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L27">        panelHttpIpAddress.add(new JLabel(&quot;IP &quot;));</span>
+<span class="fc" id="L28">        panelHttpIpAddress.add(this.textProxyAddress);</span>
+<span class="fc" id="L29">        panelHttpIpAddress.setMaximumSize(new Dimension(325, this.textProxyAddress.getPreferredSize().height));</span>
 
-        // Proxy setting: IP, port, checkbox to activate proxy
-<span class="fc" id="L42">        this.getCheckboxIsUsingProxy().setToolTipText(tooltipIsUsingProxy);</span>
-<span class="fc" id="L43">        this.getCheckboxIsUsingProxy().setFocusable(false);</span>
+<span class="fc" id="L31">        var panelHttpPort = new JPanel();</span>
+<span class="fc" id="L32">        panelHttpPort.setLayout(new BoxLayout(panelHttpPort, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L33">        panelHttpPort.add(new JLabel(&quot;Port &quot;));</span>
+<span class="fc" id="L34">        panelHttpPort.add(this.textProxyPort);</span>
+<span class="fc" id="L35">        panelHttpPort.setMaximumSize(new Dimension(325, this.textProxyPort.getPreferredSize().height));</span>
+<span class="fc" id="L36">        panelHttpPort.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));</span>
 
-<span class="fc" id="L45">        buttonIsUsingProxy.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L47" title="All 2 branches missed.">            this.getCheckboxIsUsingProxy().setSelected(!this.getCheckboxIsUsingProxy().isSelected());</span>
-<span class="nc" id="L48">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L49">        });</span>
-        
-<span class="fc" id="L51">        this.getCheckboxIsUsingProxyHttps().setToolTipText(tooltipIsUsingProxyHttps);</span>
-<span class="fc" id="L52">        this.getCheckboxIsUsingProxyHttps().setFocusable(false);</span>
-        
-<span class="fc" id="L54">        buttonIsUsingProxyHttps.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L56" title="All 2 branches missed.">            this.getCheckboxIsUsingProxyHttps().setSelected(!this.getCheckboxIsUsingProxyHttps().isSelected());</span>
-<span class="nc" id="L57">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L58">        });</span>
+<span class="fc" id="L38">        var panelHttpsIpAddress = new JPanel();</span>
+<span class="fc" id="L39">        panelHttpsIpAddress.setLayout(new BoxLayout(panelHttpsIpAddress, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L40">        panelHttpsIpAddress.add(new JLabel(&quot;IP &quot;));</span>
+<span class="fc" id="L41">        panelHttpsIpAddress.add(this.textProxyAddressHttps);</span>
+<span class="fc" id="L42">        panelHttpsIpAddress.setMaximumSize(new Dimension(325, this.textProxyAddressHttps.getPreferredSize().height));</span>
 
-<span class="fc" id="L60">        this.getTextProxyAddress().setMaximumSize(new Dimension(200, 0));</span>
-<span class="fc" id="L61">        this.getTextProxyPort().setMaximumSize(new Dimension(200, 0));</span>
-<span class="fc" id="L62">        this.getTextProxyAddressHttps().setMaximumSize(new Dimension(200, 0));</span>
-<span class="fc" id="L63">        this.getTextProxyPortHttps().setMaximumSize(new Dimension(200, 0));</span>
-        
-<span class="fc" id="L65">        this.getTextProxyAddress().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
-<span class="fc" id="L66">        this.getTextProxyPort().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
-<span class="fc" id="L67">        this.getTextProxyAddressHttps().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
-<span class="fc" id="L68">        this.getTextProxyPortHttps().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
-        
-<span class="fc" id="L70">        Stream.of(</span>
-<span class="fc" id="L71">            this.getCheckboxIsUsingProxy()</span>
+<span class="fc" id="L44">        var panelHttpsPort = new JPanel();</span>
+<span class="fc" id="L45">        panelHttpsPort.setLayout(new BoxLayout(panelHttpsPort, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L46">        panelHttpsPort.add(new JLabel(&quot;Port &quot;));</span>
+<span class="fc" id="L47">        panelHttpsPort.add(this.textProxyPortHttps);</span>
+<span class="fc" id="L48">        panelHttpsPort.setMaximumSize(new Dimension(325, this.textProxyPortHttps.getPreferredSize().height));</span>
+<span class="fc" id="L49">        panelHttpsPort.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));</span>
+
+<span class="fc" id="L51">        this.checkboxIsUsingProxy.setToolTipText(&quot;Enable proxy for HTTP protocol&quot;);</span>
+<span class="fc" id="L52">        this.checkboxIsUsingProxyHttps.setToolTipText(&quot;Enable proxy for HTTPS protocol&quot;);</span>
+
+<span class="fc" id="L54">        Stream.of(</span>
+            this.checkboxIsUsingProxy,
+            this.checkboxIsUsingProxyHttps
         )
-<span class="fc" id="L73">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
+<span class="fc" id="L58">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
         
-<span class="fc" id="L75">        DocumentListener documentListenerSave = new DocumentListenerEditing() {</span>
+<span class="fc" id="L60">        DocumentListener documentListenerSave = new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-<span class="nc" id="L78">                panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L79">            }</span>
+<span class="nc" id="L63">                panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L64">            }</span>
         };
 
-<span class="fc" id="L82">        Stream.of(</span>
-<span class="fc" id="L83">            this.getTextProxyAddress(),</span>
-<span class="fc" id="L84">            this.getTextProxyPort(),</span>
-<span class="fc" id="L85">            this.getTextProxyAddressHttps(),</span>
-<span class="fc" id="L86">            this.getTextProxyPortHttps()</span>
+<span class="fc" id="L67">        Stream.of(</span>
+            this.textProxyAddress,
+            this.textProxyPort,
+            this.textProxyAddressHttps,
+            this.textProxyPortHttps
         )
-<span class="fc" id="L88">        .forEach(textField -&gt; textField.getDocument().addDocumentListener(documentListenerSave));</span>
+<span class="fc" id="L73">        .forEach(textField -&gt; textField.getDocument().addDocumentListener(documentListenerSave));</span>
 
-<span class="fc" id="L90">        Stream.of(</span>
-            buttonIsUsingProxy,
-            buttonIsUsingProxyHttps
-        )
-<span class="fc" id="L94">        .forEach(label -&gt; {</span>
-            
-<span class="fc" id="L96">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
-<span class="fc" id="L97">            label.setBorderPainted(false);</span>
-<span class="fc" id="L98">            label.setContentAreaFilled(false);</span>
-<span class="fc" id="L99">        });</span>
+<span class="fc" id="L75">        final var buttonCheckIp = new JButton(&quot;Check your IP address&quot;);</span>
+<span class="fc" id="L76">        buttonCheckIp.addActionListener(new ActionCheckIp());</span>
+<span class="fc" id="L77">        buttonCheckIp.setToolTipText(</span>
+            &quot;&lt;html&gt;&lt;b&gt;Show your public IP address&lt;/b&gt;&lt;br&gt;&quot;
+            + &quot;Your internal IP is displayed if you don't set a proxy. If you set a proxy&lt;br&gt;&quot;
+            + &quot;like TOR then another IP is used instead of your internal IP.&lt;/html&gt;&quot;
+        );
+
+<span class="fc" id="L83">        var labelOrigin = new JLabel(&quot;&lt;html&gt;&lt;b&gt;Proxy settings (e.g Burp, Tor and Privoxy)&lt;/b&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L84">        labelOrigin.setBorder(PanelGeneral.MARGIN);</span>
+
+<span class="fc" id="L86">        var groupLayout = new GroupLayout(this);</span>
+<span class="fc" id="L87">        this.setLayout(groupLayout);</span>
         
-<span class="fc" id="L101">        var groupLayout = new GroupLayout(this);</span>
-<span class="fc" id="L102">        this.setLayout(groupLayout);</span>
-        
-<span class="fc" id="L104">        var labelProxyHttpsHidden = new JLabel();</span>
-<span class="fc" id="L105">        var labelProxyHttps = new JLabel();</span>
-<span class="fc" id="L106">        labelProxyHttps.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));</span>
-        
-<span class="fc" id="L108">        groupLayout</span>
-<span class="fc" id="L109">        .setHorizontalGroup(</span>
+<span class="fc" id="L89">        groupLayout.setHorizontalGroup(</span>
             groupLayout
-<span class="fc" id="L111">            .createSequentialGroup()</span>
-<span class="fc" id="L112">            .addGroup(</span>
+<span class="fc" id="L91">            .createSequentialGroup()</span>
+<span class="fc" id="L92">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L114">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
-<span class="fc" id="L115">                .addComponent(this.getCheckboxIsUsingProxy())</span>
-<span class="fc" id="L116">                .addComponent(labelProxyAddress)</span>
-<span class="fc" id="L117">                .addComponent(labelProxyPort)</span>
-<span class="fc" id="L118">                .addComponent(labelProxyHttpsHidden)</span>
-<span class="fc" id="L119">                .addComponent(this.getCheckboxIsUsingProxyHttps())</span>
-<span class="fc" id="L120">                .addComponent(labelProxyAddressHttps)</span>
-<span class="fc" id="L121">                .addComponent(labelProxyPortHttps)</span>
-<span class="fc" id="L122">            ).addGroup(</span>
-                groupLayout
-<span class="fc" id="L124">                .createParallelGroup()</span>
-<span class="fc" id="L125">                .addComponent(buttonIsUsingProxy)</span>
-<span class="fc" id="L126">                .addComponent(this.getTextProxyAddress())</span>
-<span class="fc" id="L127">                .addComponent(this.getTextProxyPort())</span>
-<span class="fc" id="L128">                .addComponent(labelProxyHttps)</span>
-<span class="fc" id="L129">                .addComponent(buttonIsUsingProxyHttps)</span>
-<span class="fc" id="L130">                .addComponent(this.getTextProxyAddressHttps())</span>
-<span class="fc" id="L131">                .addComponent(this.getTextProxyPortHttps())</span>
+<span class="fc" id="L94">                .createParallelGroup(GroupLayout.Alignment.LEADING, false)</span>
+<span class="fc" id="L95">                .addComponent(labelOrigin)</span>
+<span class="fc" id="L96">                .addComponent(this.checkboxIsUsingProxy)</span>
+<span class="fc" id="L97">                .addComponent(panelHttpIpAddress)</span>
+<span class="fc" id="L98">                .addComponent(panelHttpPort)</span>
+<span class="fc" id="L99">                .addComponent(this.checkboxIsUsingProxyHttps)</span>
+<span class="fc" id="L100">                .addComponent(panelHttpsIpAddress)</span>
+<span class="fc" id="L101">                .addComponent(panelHttpsPort)</span>
+<span class="fc" id="L102">                .addComponent(buttonCheckIp)</span>
             )
         );
         
-<span class="fc" id="L135">        groupLayout</span>
-<span class="fc" id="L136">        .setVerticalGroup(</span>
+<span class="fc" id="L106">        groupLayout.setVerticalGroup(</span>
             groupLayout
-<span class="fc" id="L138">            .createSequentialGroup()</span>
+<span class="fc" id="L108">            .createSequentialGroup()</span>
+<span class="fc" id="L109">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L111">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L112">                .addComponent(labelOrigin)</span>
+            )
+<span class="fc" id="L114">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L116">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L117">                .addComponent(this.checkboxIsUsingProxy)</span>
+            )
+<span class="fc" id="L119">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L121">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L122">                .addComponent(panelHttpIpAddress)</span>
+            )
+<span class="fc" id="L124">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L126">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L127">                .addComponent(panelHttpPort)</span>
+            )
+<span class="fc" id="L129">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L131">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L132">                .addComponent(this.checkboxIsUsingProxyHttps)</span>
+            )
+<span class="fc" id="L134">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L136">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L137">                .addComponent(panelHttpsIpAddress)</span>
+            )
 <span class="fc" id="L139">            .addGroup(</span>
                 groupLayout
 <span class="fc" id="L141">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L142">                .addComponent(this.getCheckboxIsUsingProxy())</span>
-<span class="fc" id="L143">                .addComponent(buttonIsUsingProxy)</span>
+<span class="fc" id="L142">                .addComponent(panelHttpsPort)</span>
             )
-<span class="fc" id="L145">            .addGroup(</span>
+<span class="fc" id="L144">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L147">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L148">                .addComponent(labelProxyAddress)</span>
-<span class="fc" id="L149">                .addComponent(this.getTextProxyAddress())</span>
-            )
-<span class="fc" id="L151">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L153">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L154">                .addComponent(labelProxyPort)</span>
-<span class="fc" id="L155">                .addComponent(this.getTextProxyPort())</span>
-            )
-<span class="fc" id="L157">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L159">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L160">                .addComponent(labelProxyHttpsHidden)</span>
-<span class="fc" id="L161">                .addComponent(labelProxyHttps)</span>
-            )
-<span class="fc" id="L163">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L165">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L166">                .addComponent(this.getCheckboxIsUsingProxyHttps())</span>
-<span class="fc" id="L167">                .addComponent(buttonIsUsingProxyHttps)</span>
-            )
-<span class="fc" id="L169">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L171">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L172">                .addComponent(labelProxyAddressHttps)</span>
-<span class="fc" id="L173">                .addComponent(this.getTextProxyAddressHttps())</span>
-            )
-<span class="fc" id="L175">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L177">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L178">                .addComponent(labelProxyPortHttps)</span>
-<span class="fc" id="L179">                .addComponent(this.getTextProxyPortHttps())</span>
+<span class="fc" id="L146">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L147">                .addComponent(buttonCheckIp)</span>
             )
         );
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L150">    }</span>
     
     
     // Getter and setter
     
     public JCheckBox getCheckboxIsUsingProxy() {
-<span class="fc" id="L188">        return this.checkboxIsUsingProxy;</span>
+<span class="fc" id="L156">        return this.checkboxIsUsingProxy;</span>
     }
 
     public JTextField getTextProxyAddress() {
-<span class="fc" id="L192">        return this.textProxyAddress;</span>
+<span class="fc" id="L160">        return this.textProxyAddress;</span>
     }
 
     public JTextField getTextProxyPort() {
-<span class="fc" id="L196">        return this.textProxyPort;</span>
+<span class="fc" id="L164">        return this.textProxyPort;</span>
     }
 
     public JCheckBox getCheckboxIsUsingProxyHttps() {
-<span class="fc" id="L200">        return this.checkboxIsUsingProxyHttps;</span>
+<span class="fc" id="L168">        return this.checkboxIsUsingProxyHttps;</span>
     }
 
     public JTextField getTextProxyAddressHttps() {
-<span class="fc" id="L204">        return this.textProxyAddressHttps;</span>
+<span class="fc" id="L172">        return this.textProxyAddressHttps;</span>
     }
 
     public JTextField getTextProxyPortHttps() {
-<span class="fc" id="L208">        return this.textProxyPortHttps;</span>
+<span class="fc" id="L176">        return this.textProxyPortHttps;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>TamperingMouseAdapter xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../../../apidocs/com/jsql/view/swing/panel/preferences/listener/TamperingMouseAdapter.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.view.swing.panel.preferences.listener;
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.util.tampering.TamperingType;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> java.awt.event.MouseAdapter;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> java.awt.event.MouseEvent;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="TamperingMouseAdapter" href="../../../../../../../com/jsql/view/swing/panel/preferences/listener/TamperingMouseAdapter.html#TamperingMouseAdapter">TamperingMouseAdapter</a> <strong class="jxr_keyword">extends</strong> MouseAdapter {
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>      
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="TamperingType" href="../../../../../../../com/jsql/util/tampering/TamperingType.html#TamperingType">TamperingType</a> tampering;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> RSyntaxTextArea textPaneEval;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>      <strong class="jxr_keyword">private</strong> String eval = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>      
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>      <strong class="jxr_keyword">public</strong> <a name="TamperingMouseAdapter" href="../../../../../../../com/jsql/view/swing/panel/preferences/listener/TamperingMouseAdapter.html#TamperingMouseAdapter">TamperingMouseAdapter</a>(<a name="TamperingType" href="../../../../../../../com/jsql/util/tampering/TamperingType.html#TamperingType">TamperingType</a> tampering, RSyntaxTextArea textPaneEval) {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>          <strong class="jxr_keyword">this</strong>.tampering = tampering;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>          <strong class="jxr_keyword">this</strong>.textPaneEval = textPaneEval;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>      }
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>      @Override
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mouseEntered(MouseEvent me) {
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>          <strong class="jxr_keyword">this</strong>.eval = <strong class="jxr_keyword">this</strong>.textPaneEval.getText();
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>          <strong class="jxr_keyword">this</strong>.textPaneEval.setText(<strong class="jxr_keyword">this</strong>.tampering.instance().getJavascript().trim());
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>          <strong class="jxr_keyword">this</strong>.textPaneEval.setCaretPosition(0);
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>      }
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>      @Override
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mouseExited(MouseEvent e) {
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>          <strong class="jxr_keyword">this</strong>.textPaneEval.setText(<strong class="jxr_keyword">this</strong>.eval);
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>          <strong class="jxr_keyword">this</strong>.textPaneEval.setCaretPosition(0);
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      }
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      @Override
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mouseClicked(MouseEvent e) {
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          <strong class="jxr_keyword">this</strong>.eval = <strong class="jxr_keyword">this</strong>.tampering.instance().getJavascript().trim();
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">this</strong>.textPaneEval.setText(<strong class="jxr_keyword">this</strong>.eval);
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">this</strong>.textPaneEval.setCaretPosition(0);
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      }
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
+</body>
+</html>

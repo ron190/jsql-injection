@@ -7,22 +7,18 @@ import java.awt.*;
 public class RowHeaderRenderer extends DefaultTableCellRenderer {
     
 <span class="fc" id="L9">    public RowHeaderRenderer() {</span>
-        
-<span class="fc" id="L11">        this.setHorizontalAlignment(SwingConstants.CENTER);</span>
-<span class="fc" id="L12">        this.setBackground(new Color(230, 230, 230));</span>
-<span class="fc" id="L13">    }</span>
+<span class="fc" id="L10">        this.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="fc" id="L11">    }</span>
 
     @Override
     public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
     ) {
-        
         // Report #218: ignore if value is null
-<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (value != null) {</span>
-<span class="fc" id="L22">            this.setText(value.toString());</span>
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if (value != null) {</span>
+<span class="fc" id="L19">            this.setText(value.toString());</span>
         }
-        
-<span class="fc" id="L25">        return this;</span>
+<span class="fc" id="L21">        return this;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

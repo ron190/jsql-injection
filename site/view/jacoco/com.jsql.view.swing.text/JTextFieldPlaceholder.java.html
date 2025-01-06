@@ -22,14 +22,14 @@ public class JTextFieldPlaceholder extends JTextField {
      * Text to display when empty.
      */
     private String placeholderText;
-    
+    private int xOffset;
+
     /**
      * Create a textfield with hint and default value.
      * @param placeholder Text displayed when empty
      * @param value Default value
      */
     public JTextFieldPlaceholder(String placeholder, String value) {
-        
 <span class="fc" id="L33">        this(placeholder);</span>
 <span class="fc" id="L34">        this.setText(value);</span>
 <span class="fc" id="L35">    }</span>
@@ -42,26 +42,27 @@ public class JTextFieldPlaceholder extends JTextField {
 <span class="fc" id="L42">        this.placeholderText = placeholder;</span>
 <span class="fc" id="L43">    }</span>
 
+    public JTextFieldPlaceholder(String placeholder, int xOffset) {
+<span class="fc" id="L46">        this(placeholder);</span>
+<span class="fc" id="L47">        this.xOffset = xOffset;</span>
+<span class="fc" id="L48">    }</span>
+
     @Override
     public void paint(Graphics g) {
-        
         try {
-<span class="fc" id="L49">            super.paint(g);</span>
-<span class="nc" id="L50">        } catch (ClassCastException e) {  // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData</span>
-<span class="nc" id="L51">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L52">        }</span>
-        
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (this.getText().isEmpty()) {</span>
-            
-<span class="fc" id="L56">            int h = this.getHeight();</span>
-<span class="fc" id="L57">            var fm = g.getFontMetrics();</span>
-
-<span class="fc" id="L59">            UiUtil.drawPlaceholder(this, g, this.placeholderText, h / 2 + fm.getAscent() / 2 - 1);</span>
+<span class="fc" id="L53">            super.paint(g);</span>
+<span class="nc" id="L54">        } catch (ClassCastException e) {  // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData</span>
+<span class="nc" id="L55">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L56">        }</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (this.getText().isEmpty()) {</span>
+<span class="fc" id="L58">            int h = this.getHeight();</span>
+<span class="fc" id="L59">            var fm = g.getFontMetrics();</span>
+<span class="fc" id="L60">            UiUtil.drawPlaceholder(this, g, this.placeholderText, xOffset, h / 2 + fm.getAscent() / 2 - 1);</span>
         }
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L62">    }</span>
 
     public void setPlaceholderText(String placeholderText) {
-<span class="fc" id="L64">        this.placeholderText = placeholderText;</span>
-<span class="fc" id="L65">    }</span>
+<span class="fc" id="L65">        this.placeholderText = placeholderText;</span>
+<span class="fc" id="L66">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

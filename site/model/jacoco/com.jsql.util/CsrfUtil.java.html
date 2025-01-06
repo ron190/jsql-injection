@@ -31,16 +31,14 @@ public class CsrfUtil {
 <span class="fc" id="L31">    }</span>
 
     public void parseForCsrfToken(String pageSource, Map&lt;String, String&gt; headers) {
-        
-<span class="fc" id="L35">        this.parseCsrfFromCookie(headers);</span>
-<span class="fc" id="L36">        this.parseCsrfFromHtml(pageSource);</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L34">        this.parseCsrfFromCookie(headers);</span>
+<span class="fc" id="L35">        this.parseCsrfFromHtml(pageSource);</span>
+<span class="fc" id="L36">    }</span>
 
     private void parseCsrfFromHtml(String pageSource) {
-
         // Change immutable list to mutable for adding user tag
-<span class="fc" id="L42">        List&lt;String&gt; tags = new ArrayList&lt;&gt;(</span>
-<span class="fc" id="L43">            Arrays.asList(</span>
+<span class="fc" id="L40">        List&lt;String&gt; tags = new ArrayList&lt;&gt;(</span>
+<span class="fc" id="L41">            Arrays.asList(</span>
                 &quot;[name=_csrf]&quot;,
                 &quot;[name=_token]&quot;,
                 &quot;[name=csrf-token]&quot;,
@@ -53,201 +51,174 @@ public class CsrfUtil {
             )
         );
         
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
-<span class="nc" id="L57">            tags.add(</span>
-<span class="nc" id="L58">                String.format(</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
+<span class="nc" id="L55">            tags.add(</span>
+<span class="nc" id="L56">                String.format(</span>
                     &quot;[name='%s']&quot;,
-<span class="nc" id="L60">                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTag()</span>
+<span class="nc" id="L58">                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTag()</span>
                 )
             );
         }
         
-<span class="fc" id="L65">        Optional&lt;SimpleEntry&lt;String, String&gt;&gt; optionalTokenCsrf = Jsoup</span>
-<span class="fc" id="L66">            .parse(pageSource)</span>
-<span class="fc" id="L67">            .select(&quot;input&quot;)</span>
-<span class="fc" id="L68">            .select(</span>
-<span class="fc" id="L69">                String.join(&quot;,&quot;, tags)</span>
-            )
-<span class="fc" id="L71">            .stream()</span>
-<span class="fc" id="L72">            .findFirst()</span>
-<span class="fc" id="L73">            .map(input -&gt;</span>
-<span class="nc" id="L74">                new SimpleEntry&lt;&gt;(</span>
-<span class="nc" id="L75">                    input.attr(&quot;name&quot;),</span>
-<span class="nc" id="L76">                    input.attr(INPUT_ATTR_VALUE)</span>
+<span class="fc" id="L63">        Optional&lt;SimpleEntry&lt;String, String&gt;&gt; optionalTokenCsrf = Jsoup.parse(pageSource)</span>
+<span class="fc" id="L64">            .select(&quot;input&quot;)</span>
+<span class="fc" id="L65">            .select(String.join(&quot;,&quot;, tags))</span>
+<span class="fc" id="L66">            .stream()</span>
+<span class="fc" id="L67">            .findFirst()</span>
+<span class="fc" id="L68">            .map(input -&gt;</span>
+<span class="nc" id="L69">                new SimpleEntry&lt;&gt;(</span>
+<span class="nc" id="L70">                    input.attr(&quot;name&quot;),</span>
+<span class="nc" id="L71">                    input.attr(INPUT_ATTR_VALUE)</span>
                 )
             );
         
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (optionalTokenCsrf.isPresent()) {</span>
-            
-<span class="nc" id="L82">            SimpleEntry&lt;String, String&gt; tokenCsrfFound = optionalTokenCsrf.get();</span>
-            
-<span class="nc" id="L84">            LOGGER.log(</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (optionalTokenCsrf.isPresent()) {</span>
+<span class="nc" id="L76">            SimpleEntry&lt;String, String&gt; tokenCsrfFound = optionalTokenCsrf.get();</span>
+<span class="nc" id="L77">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;Found Csrf token from HTML body: {}={}&quot;,
-<span class="nc" id="L87">                tokenCsrfFound::getKey,</span>
-<span class="nc" id="L88">                tokenCsrfFound::getValue</span>
+<span class="nc" id="L80">                tokenCsrfFound::getKey,</span>
+<span class="nc" id="L81">                tokenCsrfFound::getValue</span>
             );
-            
-<span class="nc" id="L91">            if (</span>
-<span class="nc bnc" id="L92" title="All 2 branches missed.">                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">                &amp;&amp; this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()</span>
+<span class="nc" id="L83">            if (</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">                &amp;&amp; this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()</span>
             ) {
-<span class="nc" id="L95">                this.tokenCsrf = tokenCsrfFound;</span>
-<span class="nc" id="L96">                LOGGER.log(</span>
+<span class="nc" id="L87">                this.tokenCsrf = tokenCsrfFound;</span>
+<span class="nc" id="L88">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_SUCCESS,
                     &quot;Csrf token added to query and header: {}&quot;,
-<span class="nc" id="L99">                    tokenCsrfFound::getValue</span>
+<span class="nc" id="L91">                    tokenCsrfFound::getValue</span>
                 );
             } else {
-<span class="nc" id="L102">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);</span>
+<span class="nc" id="L94">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);</span>
             }
         }
-<span class="fc" id="L105">    }</span>
+<span class="fc" id="L97">    }</span>
 
     private void parseCsrfFromCookie(Map&lt;String, String&gt; mapResponse) {
+<span class="fc" id="L100">        Optional&lt;SimpleEntry&lt;String, String&gt;&gt; optionalCookieCsrf = Optional.empty();</span>
         
-<span class="fc" id="L109">        Optional&lt;SimpleEntry&lt;String, String&gt;&gt; optionalCookieCsrf = Optional.empty();</span>
-        
-<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (mapResponse.containsKey(SET_COOKIE_RESPONSE)) {</span>
-            
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (mapResponse.containsKey(SET_COOKIE_RESPONSE)) {</span>
             // Spring: Cookie XSRF-TOKEN =&gt; Header X-XSRF-TOKEN, GET/POST parameter _csrf
             // Laravel, Zend, Symfony
-            
-<span class="fc" id="L116">            String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE_RESPONSE), &quot;;&quot;);</span>
-            
-<span class="fc" id="L118">            optionalCookieCsrf = Stream.of(cookieValues)</span>
-<span class="fc" id="L119">                .filter(cookie -&gt; cookie.trim().toLowerCase().startsWith(&quot;xsrf-token&quot;))</span>
-<span class="fc" id="L120">                .map(cookie -&gt; {</span>
-                    
-<span class="fc" id="L122">                    String[] cookieEntry = StringUtils.split(cookie, &quot;=&quot;);</span>
-
-<span class="fc" id="L124">                    return new SimpleEntry&lt;&gt;(</span>
-<span class="fc" id="L125">                        cookieEntry[0].trim(),</span>
-<span class="fc" id="L126">                        cookieEntry[1].trim()</span>
+<span class="fc" id="L105">            String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE_RESPONSE), &quot;;&quot;);</span>
+<span class="fc" id="L106">            optionalCookieCsrf = Stream.of(cookieValues)</span>
+<span class="fc" id="L107">                .filter(cookie -&gt; cookie.trim().toLowerCase().startsWith(&quot;xsrf-token&quot;))</span>
+<span class="fc" id="L108">                .map(cookie -&gt; {</span>
+<span class="fc" id="L109">                    String[] cookieEntry = StringUtils.split(cookie, &quot;=&quot;);</span>
+<span class="fc" id="L110">                    return new SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L111">                        cookieEntry[0].trim(),</span>
+<span class="fc" id="L112">                        cookieEntry[1].trim()</span>
                     );
                 })
-<span class="fc" id="L129">                .findFirst();</span>
+<span class="fc" id="L115">                .findFirst();</span>
         }
         
-<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (optionalCookieCsrf.isPresent()) {</span>
-            
-<span class="fc" id="L134">            SimpleEntry&lt;String, String&gt; cookieCsrf = optionalCookieCsrf.get();</span>
-            
-<span class="fc" id="L136">            LOGGER.log(</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (optionalCookieCsrf.isPresent()) {</span>
+<span class="fc" id="L119">            SimpleEntry&lt;String, String&gt; cookieCsrf = optionalCookieCsrf.get();</span>
+<span class="fc" id="L120">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
                 &quot;Found CSRF token from Cookie: {}={}&quot;,
-<span class="fc" id="L139">                cookieCsrf::getKey,</span>
-<span class="fc" id="L140">                cookieCsrf::getValue</span>
+<span class="fc" id="L123">                cookieCsrf::getKey,</span>
+<span class="fc" id="L124">                cookieCsrf::getValue</span>
             );
-            
-<span class="fc" id="L143">            SimpleEntry&lt;String, String&gt; headerCsrf = new SimpleEntry&lt;&gt;(</span>
-<span class="fc" id="L144">                cookieCsrf.getKey(),</span>
-<span class="fc" id="L145">                cookieCsrf.getValue()</span>
+<span class="fc" id="L126">            SimpleEntry&lt;String, String&gt; headerCsrf = new SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L127">                cookieCsrf.getKey(),</span>
+<span class="fc" id="L128">                cookieCsrf.getValue()</span>
             );
-            
-<span class="fc" id="L148">            if (</span>
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()</span>
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">                &amp;&amp; this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()</span>
+<span class="fc" id="L130">            if (</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">                &amp;&amp; this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()</span>
             ) {
-<span class="fc" id="L152">                this.tokenCsrf = headerCsrf;</span>
+<span class="fc" id="L134">                this.tokenCsrf = headerCsrf;</span>
             } else {
-<span class="nc" id="L154">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);</span>
+<span class="nc" id="L136">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);</span>
             }
         }
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L139">    }</span>
 
     public void addHeaderToken(Builder httpRequest) {
-        
-<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (this.tokenCsrf == null) {</span>
-<span class="fc" id="L162">             return;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        if (this.tokenCsrf == null) {</span>
+<span class="fc" id="L143">             return;</span>
         }
 
-<span class="fc" id="L165">        httpRequest.setHeader(&quot;X-XSRF-TOKEN&quot;, this.tokenCsrf.getValue());</span>
-<span class="fc" id="L166">        httpRequest.setHeader(&quot;X-CSRF-TOKEN&quot;, this.tokenCsrf.getValue());</span>
+<span class="fc" id="L146">        httpRequest.setHeader(&quot;X-XSRF-TOKEN&quot;, this.tokenCsrf.getValue());</span>
+<span class="fc" id="L147">        httpRequest.setHeader(&quot;X-CSRF-TOKEN&quot;, this.tokenCsrf.getValue());</span>
         
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
-<span class="nc" id="L169">            httpRequest.setHeader(</span>
-<span class="nc" id="L170">                this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),</span>
-<span class="nc" id="L171">                this.tokenCsrf.getValue()</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
+<span class="nc" id="L150">            httpRequest.setHeader(</span>
+<span class="nc" id="L151">                this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),</span>
+<span class="nc" id="L152">                this.tokenCsrf.getValue()</span>
             );
         }
-<span class="fc" id="L174">    }</span>
+<span class="fc" id="L155">    }</span>
 
     public void addRequestToken(StringBuilder httpRequest) {
-
-<span class="fc bfc" id="L178" title="All 2 branches covered.">        if (this.tokenCsrf == null) {</span>
-<span class="fc" id="L179">            return;</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (this.tokenCsrf == null) {</span>
+<span class="fc" id="L159">            return;</span>
         }
-
-<span class="fc" id="L182">        httpRequest.append(</span>
-<span class="fc" id="L183">            String.format(</span>
+<span class="fc" id="L161">        httpRequest.append(</span>
+<span class="fc" id="L162">            String.format(</span>
                 &quot;%s=%s&amp;&quot;,
-<span class="fc" id="L185">                this.tokenCsrf.getKey(),</span>
-<span class="fc" id="L186">                this.tokenCsrf.getValue()</span>
+<span class="fc" id="L164">                this.tokenCsrf.getKey(),</span>
+<span class="fc" id="L165">                this.tokenCsrf.getValue()</span>
             )
         );
-        
-<span class="fc" id="L190">        httpRequest.append(</span>
-<span class="fc" id="L191">            String.format(</span>
+<span class="fc" id="L168">        httpRequest.append(</span>
+<span class="fc" id="L169">            String.format(</span>
                 &quot;_csrf=%s&amp;&quot;,
-<span class="fc" id="L193">                this.tokenCsrf.getValue()</span>
+<span class="fc" id="L171">                this.tokenCsrf.getValue()</span>
             )
         );
-        
-<span class="pc bpc" id="L197" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
-<span class="nc" id="L198">            httpRequest.append(</span>
-<span class="nc" id="L199">                String.format(</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
+<span class="nc" id="L175">            httpRequest.append(</span>
+<span class="nc" id="L176">                String.format(</span>
                     &quot;%s=%s&amp;&quot;,
-<span class="nc" id="L201">                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),</span>
-<span class="nc" id="L202">                    this.tokenCsrf.getValue()</span>
+<span class="nc" id="L178">                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),</span>
+<span class="nc" id="L179">                    this.tokenCsrf.getValue()</span>
                 )
             );
         }
-<span class="fc" id="L206">    }</span>
+<span class="fc" id="L183">    }</span>
     
     public String addQueryStringToken(String urlInjection) {
-        
-<span class="fc" id="L210">        String urlInjectionFixed = urlInjection;</span>
-
-<span class="fc bfc" id="L212" title="All 2 branches covered.">        if (this.tokenCsrf == null) {</span>
-<span class="fc" id="L213">            return urlInjectionFixed;</span>
+<span class="fc" id="L186">        String urlInjectionFixed = urlInjection;</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">        if (this.tokenCsrf == null) {</span>
+<span class="fc" id="L188">            return urlInjectionFixed;</span>
         }
-
-<span class="fc" id="L216">        urlInjectionFixed += String.format(</span>
+<span class="fc" id="L190">        urlInjectionFixed += String.format(</span>
             &quot;&amp;%s=%s&quot;,
-<span class="fc" id="L218">            this.tokenCsrf.getKey(),</span>
-<span class="fc" id="L219">            this.tokenCsrf.getValue()</span>
+<span class="fc" id="L192">            this.tokenCsrf.getKey(),</span>
+<span class="fc" id="L193">            this.tokenCsrf.getValue()</span>
         );
-        
-<span class="fc" id="L222">        urlInjectionFixed += String.format(</span>
+<span class="fc" id="L195">        urlInjectionFixed += String.format(</span>
             &quot;&amp;_csrf=%s&quot;,
-<span class="fc" id="L224">            this.tokenCsrf.getValue()</span>
+<span class="fc" id="L197">            this.tokenCsrf.getValue()</span>
         );
-        
-<span class="pc bpc" id="L227" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
-<span class="nc" id="L228">            urlInjectionFixed += String.format(</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
+<span class="nc" id="L200">            urlInjectionFixed += String.format(</span>
                 &quot;&amp;%s=%s&quot;,
-<span class="nc" id="L230">                this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),</span>
-<span class="nc" id="L231">                this.tokenCsrf.getValue()</span>
+<span class="nc" id="L202">                this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),</span>
+<span class="nc" id="L203">                this.tokenCsrf.getValue()</span>
             );
         }
-        
-<span class="fc" id="L235">        return urlInjectionFixed;</span>
+<span class="fc" id="L206">        return urlInjectionFixed;</span>
     }
     
     
     // Getter / Setter
 
     public boolean isCsrf() {
-<span class="fc bfc" id="L242" title="All 2 branches covered.">        return this.tokenCsrf != null;</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        return this.tokenCsrf != null;</span>
     }
 
     public SimpleEntry&lt;String, String&gt; getTokenCsrf() {
-<span class="fc" id="L246">        return this.tokenCsrf;</span>
+<span class="fc" id="L217">        return this.tokenCsrf;</span>
     }
 
     public void setTokenCsrf(SimpleEntry&lt;String, String&gt; tokenCsrf) {
-<span class="fc" id="L250">        this.tokenCsrf = tokenCsrf;</span>
-<span class="fc" id="L251">    }</span>
+<span class="fc" id="L221">        this.tokenCsrf = tokenCsrf;</span>
+<span class="fc" id="L222">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

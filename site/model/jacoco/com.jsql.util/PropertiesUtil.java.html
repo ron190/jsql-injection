@@ -17,27 +17,24 @@ public class PropertiesUtil {
 <span class="fc" id="L17">    private final Properties properties = new Properties();</span>
     
 <span class="fc" id="L19">    public PropertiesUtil() {</span>
-        
-<span class="fc" id="L21">        var filename = &quot;config.properties&quot;;</span>
-
-<span class="fc" id="L23">        try (InputStream input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename)) {</span>
-            
-<span class="pc bpc" id="L25" title="1 of 2 branches missed.">            if (input == null) {</span>
-                
-<span class="nc" id="L27">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Properties file {} not found&quot;, filename);</span>
-<span class="nc" id="L28">                return;</span>
+<span class="fc" id="L20">        var filename = &quot;config.properties&quot;;</span>
+<span class="fc" id="L21">        try (InputStream input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename)) {</span>
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">            if (input == null) {</span>
+<span class="nc" id="L23">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Properties file {} not found&quot;, filename);</span>
+<span class="nc" id="L24">                return;</span>
             }
+<span class="fc" id="L26">            this.getProperties().load(input);  // load a properties file from class path, inside static method</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        } catch (IOException e) {</span>
+<span class="nc" id="L28">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L29">        }</span>
+<span class="fc" id="L30">    }</span>
 
-            // load a properties file from class path, inside static method
-<span class="fc" id="L32">            this.getProperties().load(input);</span>
-            
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        } catch (IOException e) {</span>
-<span class="nc" id="L35">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L36">        }</span>
-<span class="fc" id="L37">    }</span>
+    public String getVersionJsql() {
+<span class="fc" id="L33">        return this.properties.getProperty(&quot;jsql.version&quot;);</span>
+    }
 
     public Properties getProperties() {
-<span class="fc" id="L40">        return this.properties;</span>
+<span class="fc" id="L37">        return this.properties;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

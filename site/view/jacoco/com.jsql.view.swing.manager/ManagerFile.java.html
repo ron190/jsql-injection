@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ManagerFile.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.manager</a> &gt; <span class="el_source">ManagerFile.java</span></div><h1>ManagerFile.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -15,7 +15,6 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
-import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -35,88 +34,72 @@ public class ManagerFile extends AbstractManagerList {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L38">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L37">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Create the manager panel to read a file.
      */
     public ManagerFile() {
+<span class="fc" id="L43">        super(&quot;swing/list/file.txt&quot;);</span>
         
-<span class="fc" id="L45">        super(&quot;swing/list/file.txt&quot;);</span>
-        
-<span class="fc" id="L47">        this.initializeRunButton();</span>
+<span class="fc" id="L45">        this.initializeRunButton();</span>
 
-<span class="fc" id="L49">        this.privilege = new JLabel(I18nUtil.valueByKey(&quot;PRIVILEGE_LABEL&quot;), UiUtil.ICON_SQUARE_GREY, SwingConstants.LEFT);</span>
-<span class="fc" id="L50">        I18nViewUtil.addComponentForKey(&quot;PRIVILEGE_LABEL&quot;, this.privilege);</span>
-<span class="fc" id="L51">        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));</span>
-<span class="fc" id="L52">        this.privilege.setToolTipText(I18nUtil.valueByKey(&quot;PRIVILEGE_TOOLTIP&quot;));</span>
+<span class="fc" id="L47">        this.privilege = new JLabel(I18nUtil.valueByKey(&quot;PRIVILEGE_LABEL&quot;), UiUtil.SQUARE.icon, SwingConstants.LEFT);</span>
+<span class="fc" id="L48">        I18nViewUtil.addComponentForKey(&quot;PRIVILEGE_LABEL&quot;, this.privilege);</span>
+<span class="fc" id="L49">        this.privilege.setToolTipText(I18nUtil.valueByKey(&quot;PRIVILEGE_TOOLTIP&quot;));</span>
 
-<span class="fc" id="L54">        this.loader.setVisible(false);</span>
+<span class="fc" id="L51">        this.progressBar.setVisible(false);</span>
 
-<span class="fc" id="L56">        this.lastLine.add(this.privilege);</span>
-<span class="fc" id="L57">        this.lastLine.add(Box.createHorizontalGlue());</span>
-<span class="fc" id="L58">        this.lastLine.add(this.loader);</span>
-<span class="fc" id="L59">        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));</span>
-<span class="fc" id="L60">        this.lastLine.add(this.run);</span>
-        
-<span class="fc" id="L62">        this.add(this.lastLine, BorderLayout.SOUTH);</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L53">        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));</span>
+<span class="fc" id="L54">        this.lastLine.add(this.privilege);</span>
+<span class="fc" id="L55">        this.lastLine.add(Box.createHorizontalGlue());</span>
+<span class="fc" id="L56">        this.lastLine.add(this.progressBar);</span>
+<span class="fc" id="L57">        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));</span>
+<span class="fc" id="L58">        this.lastLine.add(this.run);</span>
+<span class="fc" id="L59">        this.add(this.lastLine, BorderLayout.SOUTH);</span>
+<span class="fc" id="L60">    }</span>
 
     private void initializeRunButton() {
-        
-<span class="fc" id="L67">        this.defaultText = &quot;FILE_RUN_BUTTON_LABEL&quot;;</span>
-<span class="fc" id="L68">        this.run = new JButtonStateful(this.defaultText);</span>
-<span class="fc" id="L69">        I18nViewUtil.addComponentForKey(&quot;FILE_RUN_BUTTON_LABEL&quot;, this.run);</span>
-<span class="fc" id="L70">        this.run.setToolTipText(I18nUtil.valueByKey(&quot;FILE_RUN_BUTTON_TOOLTIP&quot;));</span>
-        
-<span class="fc" id="L72">        this.run.setEnabled(false);</span>
-<span class="fc" id="L73">        this.run.setContentAreaFilled(false);</span>
-<span class="fc" id="L74">        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));</span>
-<span class="fc" id="L75">        this.run.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
-        
-<span class="fc" id="L77">        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));</span>
-        
-<span class="fc" id="L79">        this.run.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (this.listFile.getSelectedValuesList().isEmpty()) {</span>
-                
-<span class="nc" id="L83">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select at least one file to read in the list&quot;);</span>
-<span class="nc" id="L84">                return;</span>
+<span class="fc" id="L63">        this.defaultText = &quot;FILE_RUN_BUTTON_LABEL&quot;;</span>
+<span class="fc" id="L64">        this.run = new JButtonStateful(this.defaultText);</span>
+<span class="fc" id="L65">        I18nViewUtil.addComponentForKey(&quot;FILE_RUN_BUTTON_LABEL&quot;, this.run);</span>
+<span class="fc" id="L66">        this.run.setToolTipText(I18nUtil.valueByKey(&quot;FILE_RUN_BUTTON_TOOLTIP&quot;));</span>
+<span class="fc" id="L67">        this.run.setEnabled(false);</span>
+<span class="fc" id="L68">        this.run.addActionListener(actionEvent -&gt; {</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            if (this.listPaths.getSelectedValuesList().isEmpty()) {</span>
+<span class="nc" id="L70">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select at least one file to read in the list&quot;);</span>
+<span class="nc" id="L71">                return;</span>
             }
 
-<span class="nc" id="L87">            new Thread(</span>
+<span class="nc" id="L74">            new Thread(</span>
                 () -&gt; {
-<span class="nc bnc" id="L89" title="All 2 branches missed.">                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {</span>
+<span class="nc" id="L77">                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey(&quot;FILE_RUN_BUTTON_STOP&quot;));</span>
+<span class="nc" id="L78">                        ManagerFile.this.run.setState(StateButton.STOPPABLE);</span>
+<span class="nc" id="L79">                        ManagerFile.this.progressBar.setVisible(true);</span>
                         
-<span class="nc" id="L91">                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey(&quot;FILE_RUN_BUTTON_STOP&quot;));</span>
-<span class="nc" id="L92">                        ManagerFile.this.run.setState(StateButton.STOPPABLE);</span>
-<span class="nc" id="L93">                        ManagerFile.this.loader.setVisible(true);</span>
-                        
-<span class="nc" id="L95">                        MediatorHelper.managerWebshell().clearSelection();</span>
-<span class="nc" id="L96">                        MediatorHelper.managerSqlshell().clearSelection();</span>
+<span class="nc" id="L81">                        MediatorHelper.managerWebshell().clearSelection();</span>
+<span class="nc" id="L82">                        MediatorHelper.managerSqlshell().clearSelection();</span>
                         
                         try {
-<span class="nc" id="L99">                            List&lt;String&gt; filePaths = this.listFile.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
-<span class="nc" id="L100">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
-                            
-<span class="nc" id="L102">                        } catch (InterruptedException e) {</span>
-                            
-<span class="nc" id="L104">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L105">                            Thread.currentThread().interrupt();</span>
-                            
-<span class="nc" id="L107">                        } catch (Exception e) {</span>
-<span class="nc" id="L108">                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);</span>
-<span class="nc" id="L109">                        }</span>
+<span class="nc" id="L85">                            List&lt;String&gt; filePaths = this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
+<span class="nc" id="L86">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
+<span class="nc" id="L87">                        } catch (InterruptedException e) {</span>
+<span class="nc" id="L88">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L89">                            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L90">                        } catch (Exception e) {</span>
+<span class="nc" id="L91">                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);</span>
+<span class="nc" id="L92">                            this.endProcess();</span>
+<span class="nc" id="L93">                        }</span>
                     } else {
-                        
-<span class="nc" id="L112">                        MediatorHelper.model().getResourceAccess().stopSearchingFile();</span>
-<span class="nc" id="L113">                        ManagerFile.this.run.setEnabled(false);</span>
-<span class="nc" id="L114">                        ManagerFile.this.run.setState(StateButton.STOPPING);</span>
+<span class="nc" id="L95">                        MediatorHelper.model().getResourceAccess().stopSearchingFile();</span>
+<span class="nc" id="L96">                        ManagerFile.this.run.setEnabled(false);</span>
+<span class="nc" id="L97">                        ManagerFile.this.run.setState(StateButton.STOPPING);</span>
                     }
-<span class="nc" id="L116">                },</span>
+<span class="nc" id="L99">                },</span>
                 &quot;ThreadReadFile&quot;
-<span class="nc" id="L118">            ).start();</span>
-<span class="nc" id="L119">        });</span>
-<span class="fc" id="L120">    }</span>
+<span class="nc" id="L101">            ).start();</span>
+<span class="nc" id="L102">        });</span>
+<span class="fc" id="L103">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

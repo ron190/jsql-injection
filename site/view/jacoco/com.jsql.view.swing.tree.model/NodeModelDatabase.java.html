@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NodeModelDatabase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.tree.model</a> &gt; <span class="el_source">NodeModelDatabase.java</span></div><h1>NodeModelDatabase.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,6 +12,7 @@ package com.jsql.view.swing.tree.model;
 
 import com.jsql.model.bean.database.Database;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.tree.custom.JPopupMenuCustomExtract;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
@@ -29,63 +30,60 @@ public class NodeModelDatabase extends AbstractNodeModel {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L32">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L33">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     /**
      * Node as a database model.
      * @param database Element database coming from model
      */
     public NodeModelDatabase(Database database) {
-<span class="fc" id="L39">        super(database);</span>
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L40">        super(database);</span>
+<span class="fc" id="L41">    }</span>
 
     @Override
     protected Icon getLeafIcon(boolean leaf) {
-<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (leaf) {</span>
-<span class="fc" id="L45">            return UiUtil.ICON_DATABASE_GO;</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (leaf) {</span>
+<span class="fc" id="L46">            return UiUtil.DATABASE_LINEAR.icon;</span>
         } else {
-<span class="fc" id="L47">            return UiUtil.ICON_DATABASE;</span>
+<span class="fc" id="L48">            return UiUtil.DATABASE_BOLD.icon;</span>
         }
     }
 
     @Override
     public void runAction() {
-        
 <span class="nc bnc" id="L54" title="All 2 branches missed.">        if (this.isRunning()) {</span>
 <span class="nc" id="L55">            return;</span>
         }
     
 <span class="nc" id="L58">        MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();</span>
 <span class="nc" id="L59">        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();</span>
-        
         // Fix #90522: ArrayIndexOutOfBoundsException on reload()
         try {
-<span class="nc" id="L63">            treeModel.reload(MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));</span>
-<span class="nc" id="L64">        } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L65">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L66">        }</span>
+<span class="nc" id="L62">            treeModel.reload(MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));</span>
+<span class="nc" id="L63">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L64">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L65">        }</span>
         
-<span class="nc" id="L68">        new SwingWorker&lt;&gt;() {</span>
+<span class="nc" id="L67">        new SwingWorker&lt;&gt;() {</span>
             @Override
             protected Object doInBackground() throws Exception {
-                
-<span class="nc" id="L72">                Thread.currentThread().setName(&quot;SwingWorkerNodeModelDatabase&quot;);</span>
-<span class="nc" id="L73">                var selectedDatabase = (Database) NodeModelDatabase.this.getElementDatabase();</span>
-<span class="nc" id="L74">                return MediatorHelper.model().getDataAccess().listTables(selectedDatabase);</span>
+<span class="nc" id="L70">                Thread.currentThread().setName(&quot;SwingWorkerNodeModelDatabase&quot;);</span>
+<span class="nc" id="L71">                var selectedDatabase = (Database) NodeModelDatabase.this.getElementDatabase();</span>
+<span class="nc" id="L72">                return MediatorHelper.model().getDataAccess().listTables(selectedDatabase);</span>
             }
-<span class="nc" id="L76">        }.execute();</span>
+<span class="nc" id="L74">        }.execute();</span>
         
-<span class="nc" id="L78">        this.setRunning(true);</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L76">        this.setRunning(true);</span>
+<span class="nc" id="L77">    }</span>
 
     @Override
     public boolean isPopupDisplayable() {
-<span class="pc bpc" id="L83" title="5 of 6 branches missed.">        return this.isLoaded() || !this.isLoaded() &amp;&amp; this.isRunning();</span>
+<span class="pc bpc" id="L81" title="5 of 6 branches missed.">        return this.isLoaded() || !this.isLoaded() &amp;&amp; this.isRunning();</span>
     }
 
     @Override
     protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, TreePath path) {
         // Do nothing
-<span class="fc" id="L89">    }</span>
+<span class="fc" id="L87">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

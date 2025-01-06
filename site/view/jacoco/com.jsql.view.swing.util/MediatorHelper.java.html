@@ -3,12 +3,12 @@
 import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.manager.*;
-import com.jsql.view.swing.menubar.Menubar;
+import com.jsql.view.swing.menubar.AppMenubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.PanelConsoles;
-import com.jsql.view.swing.tab.TabConsoles;
-import com.jsql.view.swing.tab.TabManagersProxy;
+import com.jsql.view.swing.tab.TabManagersCards;
 import com.jsql.view.swing.tab.TabResults;
+import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.tree.TreeDatabase;
 
 /**
@@ -20,12 +20,12 @@ public final class MediatorHelper {
     
     private static TreeDatabase treeDatabase;
     private static TabResults tabResults;
-    private static TabManagersProxy tabManagers;
+    private static TabManagersCards tabManagersCards;
     
     private static JFrameView frame;
-    private static Menubar menubar;
+    private static AppMenubar appMenubar;
     private static PanelAddressBar panelAddressBar;
-    private static TabConsoles tabConsoles;
+    private static TabbedPaneWheeled tabConsoles;
     private static PanelConsoles panelConsoles;
     
     private static ManagerScan managerScan;
@@ -52,23 +52,23 @@ public final class MediatorHelper {
 <span class="fc" id="L52">        return tabResults;</span>
     }
     
-    public static TabManagersProxy tabManagers() {
-<span class="fc" id="L56">        return tabManagers;</span>
+    public static TabManagersCards tabManagersCards() {
+<span class="fc" id="L56">        return tabManagersCards;</span>
     }
      
     public static JFrameView frame() {
 <span class="fc" id="L60">        return frame;</span>
     }
     
-    public static Menubar menubar() {
-<span class="fc" id="L64">        return menubar;</span>
+    public static AppMenubar menubar() {
+<span class="fc" id="L64">        return appMenubar;</span>
     }
     
     public static PanelAddressBar panelAddressBar() {
 <span class="fc" id="L68">        return panelAddressBar;</span>
     }
     
-    public static TabConsoles tabConsoles() {
+    public static TabbedPaneWheeled tabConsoles() {
 <span class="fc" id="L72">        return tabConsoles;</span>
     }
     
@@ -111,15 +111,15 @@ public final class MediatorHelper {
 <span class="fc" id="L111">        MediatorHelper.frame = frame;</span>
 <span class="fc" id="L112">    }</span>
     
-    public static void register(Menubar menubar) {
-<span class="fc" id="L115">        MediatorHelper.menubar = menubar;</span>
+    public static void register(AppMenubar appMenubar) {
+<span class="fc" id="L115">        MediatorHelper.appMenubar = appMenubar;</span>
 <span class="fc" id="L116">    }</span>
     
     public static void register(PanelAddressBar panelAddress) {
 <span class="fc" id="L119">        MediatorHelper.panelAddressBar = panelAddress;</span>
 <span class="fc" id="L120">    }</span>
     
-    public static void register(TabConsoles tabConsoles) {
+    public static void register(TabbedPaneWheeled tabConsoles) {
 <span class="fc" id="L123">        MediatorHelper.tabConsoles = tabConsoles;</span>
 <span class="fc" id="L124">    }</span>
     
@@ -135,8 +135,8 @@ public final class MediatorHelper {
 <span class="fc" id="L135">        MediatorHelper.tabResults = tabResults;</span>
 <span class="fc" id="L136">    }</span>
     
-    public static void register(TabManagersProxy tabManagers) {
-<span class="fc" id="L139">        MediatorHelper.tabManagers = tabManagers;</span>
+    public static void register(TabManagersCards tabManagersCards) {
+<span class="fc" id="L139">        MediatorHelper.tabManagersCards = tabManagersCards;</span>
 <span class="fc" id="L140">    }</span>
     
     

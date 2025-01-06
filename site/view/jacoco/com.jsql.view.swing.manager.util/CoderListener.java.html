@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoderListener.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.manager.util</a> &gt; <span class="el_source">CoderListener.java</span></div><h1>CoderListener.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -57,45 +57,34 @@ public class CoderListener implements ActionListener {
 <span class="nc" id="L57">    }</span>
     
     private void transform(String labelMethodMenu) {
-
-<span class="fc" id="L61">        String nameMethod = labelMethodMenu.replace(&quot;Hash to &quot;, StringUtils.EMPTY);</span>
-        
+<span class="fc" id="L60">        String nameMethod = labelMethodMenu.replace(&quot;Hash to &quot;, StringUtils.EMPTY);</span>
         String result;
-<span class="fc" id="L64">        String textInput = this.coderManager.getTextInput().getText();</span>
+<span class="fc" id="L62">        String textInput = this.coderManager.getTextInput().getText();</span>
         
         try {
-<span class="fc" id="L67">            if (</span>
-<span class="pc bpc" id="L68" title="1 of 2 branches missed.">                StringUtils.isEmpty(textInput)</span>
-<span class="nc bnc" id="L69" title="All 2 branches missed.">                &amp;&amp; !Arrays.asList(&quot;Md2&quot;, &quot;Md4&quot;, &quot;Md5&quot;, &quot;Sha-1&quot;, &quot;Sha-256&quot;, &quot;Sha-384&quot;, &quot;Sha-512&quot;, &quot;Mysql&quot;).contains(nameMethod)</span>
+<span class="fc" id="L65">            if (</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">                StringUtils.isEmpty(textInput)</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                &amp;&amp; !Arrays.asList(ManagerCoder.HASHES_FOR_EMPTY_TEXT).contains(nameMethod)</span>
             ) {
-<span class="nc" id="L71">                result = &quot;&lt;span style=\&quot;color:red;\&quot;&gt;Empty string to convert&lt;/span&gt;&quot;;</span>
+<span class="nc" id="L69">                result = StringUtil.formatReport(LogLevelUtil.COLOR_RED, &quot;Text to convert not found&quot;);</span>
             } else {
-                
-<span class="fc" id="L74">                result = ActionCoder.forName(nameMethod)</span>
-<span class="pc" id="L75">                    .orElseThrow(() -&gt; new NoSuchElementException(&quot;Unsupported encoding or decoding method&quot;))</span>
-<span class="fc" id="L76">                    .run(textInput);</span>
-                
-                // Prevent decoded HTML tags from result not rendered in Coder textPane
-<span class="fc" id="L79">                result = StringUtil.fromHtml(result);</span>
+<span class="fc" id="L71">                result = ActionCoder.forName(nameMethod)</span>
+<span class="pc" id="L72">                    .orElseThrow(() -&gt; new NoSuchElementException(&quot;Unsupported encoding or decoding method&quot;))</span>
+<span class="fc" id="L73">                    .run(textInput);</span>
+<span class="fc" id="L74">                result = StringUtil.fromHtml(result);  // Prevent decoded HTML tags from result not rendered in Coder textPane</span>
             }
-<span class="nc" id="L81">        } catch (</span>
-            IllegalArgumentException
-            | NoSuchAlgorithmException
-            | IOException
-            | DecoderException e
-        ) {
-            
-<span class="nc" id="L88">            result = String.format(&quot;&lt;span style=\&quot;color:red;\&quot;&gt;Decoding failed: %s&lt;/span&gt;&quot;, e.getMessage());</span>
-<span class="nc" id="L89">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="fc" id="L90">        }</span>
+<span class="nc" id="L76">        } catch (IllegalArgumentException | NoSuchAlgorithmException | IOException | DecoderException e) {</span>
+<span class="nc" id="L77">            result = StringUtil.formatReport(LogLevelUtil.COLOR_RED, &quot;Decoding failed: &quot; + e.getMessage());</span>
+<span class="nc" id="L78">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="fc" id="L79">        }</span>
         
-<span class="fc" id="L92">        this.coderManager.getResult().setText(</span>
-<span class="fc" id="L93">            String.format(</span>
+<span class="fc" id="L81">        this.coderManager.getResult().setText(</span>
+<span class="fc" id="L82">            String.format(</span>
                 &quot;&lt;html&gt;&lt;span style=\&quot;font-family:'%s'\&quot;&gt;%s&lt;/span&gt;&lt;/html&gt;&quot;,
                 UiUtil.FONT_NAME_MONO_NON_ASIAN,
                 result
             )
         );
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L88">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -29,11 +29,11 @@
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForDatabaseNames = <span class="jxr_string">"select name from SYS_INFO.sUSRSchemaInfo"</span>;
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForTableNames = <span class="jxr_string">"select name from SYS_INFO.sUSRTableInfo where \&quot;schema\&quot; = '"</span>+ <strong class="jxr_keyword">this</strong>.jsqlDatabaseName +<span class="jxr_string">"'"</span>;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForColumnNames = <span class="jxr_string">"select \&quot;column\&quot; from SYS_INFO.sUSRTableColumns where \&quot;schema\&quot; = '"</span>+ <strong class="jxr_keyword">this</strong>.jsqlDatabaseName +<span class="jxr_string">"' and \&quot;table\&quot; = '"</span>+ <strong class="jxr_keyword">this</strong>.jsqlTableName +<span class="jxr_string">"'"</span>;
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForValues = <span class="jxr_string">"select "</span>+ <strong class="jxr_keyword">this</strong>.jsqlColumnName +<span class="jxr_string">" from "</span>+ <strong class="jxr_keyword">this</strong>.jsqlTableName +<span class="jxr_string">""</span>;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForValues = <span class="jxr_string">"select "</span>+ <strong class="jxr_keyword">this</strong>.jsqlColumnName +<span class="jxr_string">" from "</span>+ <strong class="jxr_keyword">this</strong>.jsqlTableName;
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>      }
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2024. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
 </body>
 </html>

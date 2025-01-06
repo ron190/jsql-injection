@@ -71,12 +71,12 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          }
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          @Override
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> canUndo() {
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>              <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.edits.size()&gt;0 &amp;&amp; !<strong class="jxr_keyword">this</strong>.isUnDone;
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>              <strong class="jxr_keyword">return</strong> !<strong class="jxr_keyword">this</strong>.edits.isEmpty() &amp;&amp; !<strong class="jxr_keyword">this</strong>.isUnDone;
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          }
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          @Override
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> canRedo() {
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>              <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.edits.size()&gt;0 &amp;&amp; <strong class="jxr_keyword">this</strong>.isUnDone;
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>              <strong class="jxr_keyword">return</strong> !<strong class="jxr_keyword">this</strong>.edits.isEmpty() &amp;&amp; <strong class="jxr_keyword">this</strong>.isUnDone;
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          }
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>      }
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> UndoManager <strong class="jxr_keyword">extends</strong> AbstractUndoableEdit <strong class="jxr_keyword">implements</strong> UndoableEditListener {
@@ -168,7 +168,7 @@
 <a class="jxr_linenumber" name="L160" href="#L160">160</a> 
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>         @Override
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> canRedo() {
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.edits.size()&gt;0 &amp;&amp; <strong class="jxr_keyword">this</strong>.pointer&lt;<strong class="jxr_keyword">this</strong>.edits.size()-1;
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>             <strong class="jxr_keyword">return</strong> !<strong class="jxr_keyword">this</strong>.edits.isEmpty() &amp;&amp; <strong class="jxr_keyword">this</strong>.pointer&lt;<strong class="jxr_keyword">this</strong>.edits.size()-1;
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>         }
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>  
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> refreshControls() {
@@ -179,6 +179,6 @@
 <a class="jxr_linenumber" name="L171" href="#L171">171</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2024. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
 </body>
 </html>

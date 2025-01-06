@@ -32,81 +32,77 @@ public class DigestUtil {
 <span class="fc" id="L32">    }</span>
 
     public void parseWwwAuthenticate(Map&lt;String, String&gt; mapResponse) {
-
-<span class="fc" id="L36">        if (</span>
-<span class="fc bfc" id="L37" title="All 2 branches covered.">            mapResponse.containsKey(HeaderUtil.WWW_AUTHENTICATE_RESPONSE)</span>
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">            &amp;&amp; mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).trim().startsWith(&quot;Digest&quot;)</span>
+<span class="fc" id="L35">        if (</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            mapResponse.containsKey(HeaderUtil.WWW_AUTHENTICATE_RESPONSE)</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">            &amp;&amp; mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).trim().startsWith(&quot;Digest&quot;)</span>
         ) {
-
-<span class="fc" id="L41">            String[] digestParts = StringUtils.split(</span>
-<span class="fc" id="L42">                mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).replaceAll(&quot;(?i)^\\s*Digest&quot;, &quot;&quot;),</span>
+<span class="fc" id="L39">            String[] digestParts = StringUtils.split(</span>
+<span class="fc" id="L40">                mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).replaceAll(&quot;(?i)^\\s*Digest&quot;, &quot;&quot;),</span>
                 &quot;,&quot;
             );
 
-<span class="fc" id="L46">            Map&lt;String, String&gt; cookieValues = Arrays.stream(digestParts)</span>
-<span class="fc" id="L47">                .map(cookie -&gt; {</span>
-<span class="fc" id="L48">                    String[] cookieEntry = StringUtils.split(cookie, &quot;=&quot;);</span>
-<span class="fc" id="L49">                    return new SimpleEntry&lt;&gt;(</span>
-<span class="fc" id="L50">                        cookieEntry[0].trim(),</span>
-<span class="fc" id="L51">                        cookieEntry[1].trim()</span>
+<span class="fc" id="L44">            Map&lt;String, String&gt; cookieValues = Arrays.stream(digestParts)</span>
+<span class="fc" id="L45">                .map(cookie -&gt; {</span>
+<span class="fc" id="L46">                    String[] cookieEntry = StringUtils.split(cookie, &quot;=&quot;);</span>
+<span class="fc" id="L47">                    return new SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L48">                        cookieEntry[0].trim(),</span>
+<span class="fc" id="L49">                        cookieEntry[1].trim()</span>
                     );
                 })
-<span class="fc" id="L54">                .collect(</span>
-<span class="fc" id="L55">                    Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)</span>
+<span class="fc" id="L52">                .collect(</span>
+<span class="fc" id="L53">                    Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)</span>
                 );
 
-<span class="fc" id="L58">            String realm = cookieValues.get(&quot;realm&quot;).replace(&quot;\&quot;&quot;, &quot;&quot;);</span>
-<span class="fc" id="L59">            String qop = cookieValues.get(&quot;qop&quot;).replace(&quot;\&quot;&quot;, &quot;&quot;);</span>
-<span class="fc" id="L60">            String nonce = cookieValues.get(&quot;nonce&quot;).replace(&quot;\&quot;&quot;, &quot;&quot;);</span>
+<span class="fc" id="L56">            String realm = cookieValues.get(&quot;realm&quot;).replace(&quot;\&quot;&quot;, &quot;&quot;);</span>
+<span class="fc" id="L57">            String qop = cookieValues.get(&quot;qop&quot;).replace(&quot;\&quot;&quot;, &quot;&quot;);</span>
+<span class="fc" id="L58">            String nonce = cookieValues.get(&quot;nonce&quot;).replace(&quot;\&quot;&quot;, &quot;&quot;);</span>
 
             try {
-<span class="fc" id="L63">                String username = this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication();</span>
-<span class="fc" id="L64">                String password = this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication();</span>
-<span class="fc" id="L65">                String nc = &quot;00000001&quot;;</span>
-<span class="fc" id="L66">                String cnonce = &quot;2ecb0e39da79fcb5aa6ffb1bd45cb3bb&quot;;</span>
+<span class="fc" id="L61">                String username = this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication();</span>
+<span class="fc" id="L62">                String password = this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication();</span>
+<span class="fc" id="L63">                String nc = &quot;00000001&quot;;</span>
+<span class="fc" id="L64">                String cnonce = &quot;2ecb0e39da79fcb5aa6ffb1bd45cb3bb&quot;;</span>
 
-<span class="fc" id="L68">                URL url = new URI(this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()).toURL();</span>
-<span class="fc" id="L69">                String path = url.getFile();</span>
+<span class="fc" id="L66">                URL url = new URI(this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()).toURL();</span>
+<span class="fc" id="L67">                String path = url.getFile();</span>
 
-<span class="fc" id="L71">                String ha1 = DigestUtils.md5Hex(</span>
-<span class="fc" id="L72">                    String.format(&quot;%s:%s:%s&quot;, username, realm, password)</span>
+<span class="fc" id="L69">                String ha1 = DigestUtils.md5Hex(</span>
+<span class="fc" id="L70">                    String.format(&quot;%s:%s:%s&quot;, username, realm, password)</span>
                 );
-<span class="fc" id="L74">                String ha2 = DigestUtils.md5Hex(</span>
-<span class="fc" id="L75">                    String.format(&quot;%s:%s&quot;, this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(), path)</span>
+<span class="fc" id="L72">                String ha2 = DigestUtils.md5Hex(</span>
+<span class="fc" id="L73">                    String.format(&quot;%s:%s&quot;, this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(), path)</span>
                 );
-<span class="fc" id="L77">                String response = DigestUtils.md5Hex(</span>
-<span class="fc" id="L78">                    String.format(&quot;%s:%s:%s:%s:%s:%s&quot;, ha1, nonce, nc, cnonce, qop, ha2)</span>
+<span class="fc" id="L75">                String response = DigestUtils.md5Hex(</span>
+<span class="fc" id="L76">                    String.format(&quot;%s:%s:%s:%s:%s:%s&quot;, ha1, nonce, nc, cnonce, qop, ha2)</span>
                 );
 
-<span class="fc" id="L81">                this.tokenDigest = String.format(</span>
+<span class="fc" id="L79">                this.tokenDigest = String.format(</span>
                     &quot;Digest username=\&quot;%s\&quot;,realm=\&quot;%s\&quot;,nonce=\&quot;%s\&quot;,uri=\&quot;%s\&quot;,cnonce=\&quot;%s\&quot;,nc=%s,response=\&quot;%s\&quot;,qop=\&quot;%s\&quot;&quot;,
                     username, realm, nonce, path, cnonce, nc, response, qop
                 );
-<span class="nc" id="L85">            } catch (MalformedURLException | URISyntaxException e) {</span>
-<span class="nc" id="L86">                LOGGER.error(&quot;Incorrect URL&quot;, e);</span>
-<span class="fc" id="L87">            }</span>
+<span class="nc" id="L83">            } catch (MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L84">                LOGGER.error(&quot;Incorrect URL&quot;, e);</span>
+<span class="fc" id="L85">            }</span>
         }
-<span class="fc" id="L89">    }</span>
+<span class="fc" id="L87">    }</span>
 
     public void addHeaderToken(Builder httpRequest) {
-        
-<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (this.tokenDigest == null) {</span>
-<span class="fc" id="L94">             return;</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (this.tokenDigest == null) {</span>
+<span class="fc" id="L91">             return;</span>
         }
-
-<span class="fc" id="L97">        httpRequest.setHeader(&quot;Authorization&quot;, this.tokenDigest);</span>
-<span class="fc" id="L98">    }</span>
+<span class="fc" id="L93">        httpRequest.setHeader(&quot;Authorization&quot;, this.tokenDigest);</span>
+<span class="fc" id="L94">    }</span>
 
     public boolean isDigest() {
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        return this.tokenDigest != null;</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        return this.tokenDigest != null;</span>
     }
 
     public void setTokenDigest(String tokenDigest) {
-<span class="fc" id="L105">        this.tokenDigest = tokenDigest;</span>
-<span class="fc" id="L106">    }</span>
+<span class="fc" id="L101">        this.tokenDigest = tokenDigest;</span>
+<span class="fc" id="L102">    }</span>
 
     public String getTokenDigest() {
-<span class="fc" id="L109">        return tokenDigest;</span>
+<span class="fc" id="L105">        return tokenDigest;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

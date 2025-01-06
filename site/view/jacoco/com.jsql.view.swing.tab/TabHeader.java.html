@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabHeader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.tab</a> &gt; <span class="el_source">TabHeader.java</span></div><h1>TabHeader.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,8 +12,6 @@ package com.jsql.view.swing.tab;
 
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,121 +20,55 @@ import java.awt.event.MouseListener;
 
 /**
  * Panel displayed as a header for tabs.
+ * Compatible with i18n.
  */
 public class TabHeader extends JPanel implements MouseListener {
     
-    private transient Cleanable cleanableTab;
-    
-    public interface Cleanable {
-        void clean();
-    }
-    
-<span class="fc" id="L34">    private final JLabel tabTitleLabel = new JLabel() {</span>
-        
-        @Override
-        public void setText(String text) {
-            
-<span class="fc" id="L39">            super.setText(text + StringUtils.SPACE);</span>
-<span class="fc" id="L40">        }</span>
-    };
-    
-    /**
-     * Tab header with default tab icon.
-     */
-    public TabHeader() {
-<span class="fc" id="L47">        this(UiUtil.ICON_TABLE);</span>
-<span class="fc" id="L48">    }</span>
-
-    /**
-     * Tab header with a custom icon.
-     */
-    public TabHeader(Icon imageIcon) {
-        
-<span class="fc" id="L55">        super(new FlowLayout(FlowLayout.LEFT, 0, 0));</span>
-
-<span class="fc" id="L57">        this.setOpaque(false);</span>
-
-        // Set the text of tab
-<span class="fc" id="L60">        this.getTabTitleLabel().setIcon(imageIcon);</span>
-<span class="fc" id="L61">        this.add(this.getTabTitleLabel());</span>
-
-<span class="fc" id="L63">        JButton tabCloseButton = new ButtonClose();</span>
-<span class="fc" id="L64">        tabCloseButton.addMouseListener(this);</span>
-
-<span class="fc" id="L66">        this.add(tabCloseButton);</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L27">    private final JLabel tabLabel = new JLabel();</span>
 
     public TabHeader(String label, Icon imageIcon) {
-        
-<span class="fc" id="L71">        this(imageIcon);</span>
-        
-<span class="fc" id="L73">        this.getTabTitleLabel().setText(label);</span>
-<span class="fc" id="L74">        tabTitleLabel.setName(label.trim());</span>
-<span class="fc" id="L75">    }</span>
-
-    public TabHeader(String label, Icon imageIcon, Cleanable cleanableTab) {
-        
-<span class="fc" id="L79">        this(imageIcon);</span>
-        
-<span class="fc" id="L81">        this.getTabTitleLabel().setText(label);</span>
-<span class="fc" id="L82">        tabTitleLabel.setName(label.trim());</span>
-        
-<span class="fc" id="L84">        this.cleanableTab = cleanableTab;</span>
-<span class="fc" id="L85">    }</span>
-    
-    public TabHeader(String label) {
-        
-<span class="fc" id="L89">        this();</span>
-        
-<span class="fc" id="L91">        this.getTabTitleLabel().setText(label);</span>
-<span class="fc" id="L92">        tabTitleLabel.setName(label.trim());</span>
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L30">        super(new BorderLayout());</span>
+<span class="fc" id="L31">        this.setOpaque(false);  // required for transparency</span>
+<span class="fc" id="L32">        this.tabLabel.setIcon(imageIcon);</span>
+<span class="fc" id="L33">        this.tabLabel.setText(label);</span>
+<span class="fc" id="L34">        this.tabLabel.setName(label.trim());</span>
+<span class="fc" id="L35">        this.add(this.tabLabel);</span>
+<span class="fc" id="L36">    }</span>
 
     /**
      * Action for close button: remove tab.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        
-<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (SwingUtilities.isRightMouseButton(e)) {</span>
-<span class="nc" id="L102">            return;</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (SwingUtilities.isRightMouseButton(e)) {</span>
+<span class="nc" id="L44">            return;</span>
         }
-        
-<span class="nc" id="L105">        int closeTabNumber = MediatorHelper.tabResults().indexOfTabComponent(TabHeader.this);</span>
-        
-<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (this.getCleanableTab() != null) {</span>
-<span class="nc" id="L108">            this.getCleanableTab().clean();</span>
-        }
-        
-<span class="nc" id="L111">        ActionCloseTabResult.perform(closeTabNumber);</span>
-<span class="nc" id="L112">    }</span>
+<span class="nc" id="L46">        int closeTabNumber = MediatorHelper.tabResults().indexOfTabComponent(TabHeader.this);</span>
+<span class="nc" id="L47">        ActionCloseTabResult.perform(closeTabNumber);</span>
+<span class="nc" id="L48">    }</span>
 
     @Override
     public void mouseEntered(MouseEvent e) {
         // Do nothing
-<span class="nc" id="L117">    }</span>
+<span class="nc" id="L53">    }</span>
     
     @Override
     public void mouseExited(MouseEvent e) {
         // Do nothing
-<span class="nc" id="L122">    }</span>
+<span class="nc" id="L58">    }</span>
     
     @Override
     public void mousePressed(MouseEvent e) {
         // Do nothing
-<span class="nc" id="L127">    }</span>
+<span class="nc" id="L63">    }</span>
     
     @Override
     public void mouseReleased(MouseEvent e) {
         // Do nothing
-<span class="nc" id="L132">    }</span>
+<span class="nc" id="L68">    }</span>
 
-    public JLabel getTabTitleLabel() {
-<span class="fc" id="L135">        return this.tabTitleLabel;</span>
-    }
-
-    public Cleanable getCleanableTab() {
-<span class="nc" id="L139">        return this.cleanableTab;</span>
+    public JLabel getTabLabel() {
+<span class="fc" id="L71">        return this.tabLabel;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

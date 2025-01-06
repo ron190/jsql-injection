@@ -9,6 +9,7 @@ import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,214 +21,196 @@ public class StrategyInjectionError extends AbstractStrategy {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L23">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L24">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private String[] tabCapacityMethod;
     
-<span class="fc" id="L27">    private int indexErrorStrategy = 0;</span>
+<span class="fc" id="L28">    private int indexErrorStrategy = 0;</span>
 
     public StrategyInjectionError(InjectionModel injectionModel) {
-<span class="fc" id="L30">        super(injectionModel);</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L31">        super(injectionModel);</span>
+<span class="fc" id="L32">    }</span>
 
     @Override
     public void checkApplicability() {
-        
         // Reset applicability of new Vendor
 <span class="fc" id="L37">        this.isApplicable = false;</span>
         
 <span class="fc" id="L39">        var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();</span>
 
 <span class="fc bfc" id="L41" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled()) {</span>
-
-<span class="fc" id="L43">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());</span>
-<span class="fc" id="L44">            return;</span>
-
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        } else if (strategyYaml.getError().getMethod().isEmpty()) {</span>
-
-<span class="fc" id="L48">            LOGGER.log(</span>
+<span class="fc" id="L42">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());</span>
+<span class="fc" id="L43">            return;</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        } else if (strategyYaml.getError().getMethod().isEmpty()) {</span>
+<span class="fc" id="L45">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
-<span class="fc" id="L51">                getName(),</span>
-<span class="fc" id="L52">                this.injectionModel.getMediatorVendor().getVendor()</span>
+<span class="fc" id="L48">                getName(),</span>
+<span class="fc" id="L49">                this.injectionModel.getMediatorVendor().getVendor()</span>
             );
-<span class="fc" id="L54">            return;</span>
+<span class="fc" id="L51">            return;</span>
         }
 
-<span class="fc" id="L57">        LOGGER.log(</span>
+<span class="fc" id="L54">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_DEFAULT,
             AbstractStrategy.FORMAT_CHECKING_STRATEGY,
-<span class="fc" id="L60">            () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING_STRATEGY&quot;),</span>
+<span class="fc" id="L57">            () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING_STRATEGY&quot;),</span>
             this::getName
         );
         
-<span class="fc" id="L64">        this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];</span>
-<span class="fc" id="L65">        var indexErrorMethod = 0;</span>
-<span class="fc" id="L66">        var errorCapacity = 0;</span>
+<span class="fc" id="L61">        this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];</span>
+<span class="fc" id="L62">        var indexErrorMethod = 0;</span>
+<span class="fc" id="L63">        var errorCapacity = 0;</span>
         
-<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (Method errorMethod: strategyYaml.getError().getMethod()) {</span>
-            
-<span class="fc" id="L70">            boolean methodIsApplicable = this.isApplicable(errorMethod);</span>
-            
-<span class="fc bfc" id="L72" title="All 2 branches covered.">            if (methodIsApplicable) {</span>
-                
-<span class="fc" id="L74">                Matcher regexSearch = this.getPerformance(errorMethod);</span>
-                
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                if (regexSearch.find()) {</span>
-<span class="fc" id="L77">                    errorCapacity = this.getCapacity(indexErrorMethod, errorCapacity, errorMethod, regexSearch);</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        for (Method errorMethod: strategyYaml.getError().getMethod()) {</span>
+<span class="fc" id="L66">            boolean methodIsApplicable = this.isApplicable(errorMethod);</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            if (methodIsApplicable) {</span>
+<span class="fc" id="L68">                Matcher regexSearch = this.getPerformance(errorMethod);</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">                if (regexSearch.find()) {</span>
+<span class="fc" id="L70">                    errorCapacity = this.getCapacity(indexErrorMethod, errorCapacity, errorMethod, regexSearch);</span>
                 } else {
-                    
-<span class="nc" id="L80">                    LOGGER.log(</span>
+<span class="nc" id="L72">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_ERROR,
                         &quot;{} {} but injectable size is incorrect&quot;,
-<span class="nc" id="L83">                        () -&gt; I18nUtil.valueByKey(&quot;LOG_VULNERABLE&quot;),</span>
-<span class="nc" id="L84">                        errorMethod::getName</span>
+<span class="nc" id="L75">                        () -&gt; I18nUtil.valueByKey(&quot;LOG_VULNERABLE&quot;),</span>
+<span class="nc" id="L76">                        errorMethod::getName</span>
                     );
-                    
-<span class="nc" id="L87">                    methodIsApplicable = false;</span>
+<span class="nc" id="L78">                    methodIsApplicable = false;</span>
                 }
             }
             
-<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (methodIsApplicable) {</span>
-<span class="fc" id="L92">                this.allow(indexErrorMethod);</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">            if (methodIsApplicable) {</span>
+<span class="fc" id="L83">                this.allow(indexErrorMethod);</span>
             } else {
-<span class="fc" id="L94">                this.unallow(indexErrorMethod);</span>
+<span class="fc" id="L85">                this.unallow(indexErrorMethod);</span>
             }
-            
-<span class="fc" id="L97">            indexErrorMethod++;</span>
-<span class="fc" id="L98">        }</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L87">            indexErrorMethod++;</span>
+<span class="fc" id="L88">        }</span>
+<span class="fc" id="L89">    }</span>
 
     private boolean isApplicable(Method errorMethod) {
-        
-<span class="fc" id="L103">        var methodIsApplicable = false;</span>
+<span class="fc" id="L92">        var methodIsApplicable = false;</span>
 
-<span class="fc" id="L105">        String performanceSourcePage = this.injectionModel.injectWithoutIndex(</span>
-<span class="fc" id="L106">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorIndice(errorMethod),</span>
+<span class="fc" id="L94">        String performanceSourcePage = this.injectionModel.injectWithoutIndex(</span>
+<span class="fc" id="L95">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorIndice(errorMethod),</span>
             &quot;error#confirm&quot;
         );
 
-<span class="fc" id="L110">        var indexZeroToFind = &quot;0&quot;;</span>
-<span class="fc" id="L111">        String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);</span>
-<span class="fc bfc" id="L112" title="All 2 branches covered.">        if (performanceSourcePage.matches(&quot;(?s).*&quot;+ regexIndexZero +&quot;.*&quot;)) {</span>
-<span class="fc" id="L113">            methodIsApplicable = true;</span>
-<span class="fc" id="L114">            this.isApplicable = true;</span>
+<span class="fc" id="L99">        var indexZeroToFind = &quot;0&quot;;</span>
+<span class="fc" id="L100">        String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (performanceSourcePage.matches(&quot;(?s).*&quot;+ regexIndexZero +&quot;.*&quot;)) {</span>
+<span class="fc" id="L102">            methodIsApplicable = true;</span>
+<span class="fc" id="L103">            this.isApplicable = true;</span>
         }
-        
-<span class="fc" id="L117">        return methodIsApplicable;</span>
+<span class="fc" id="L105">        return methodIsApplicable;</span>
     }
 
     private Matcher getPerformance(Method errorMethod) {
-        
-<span class="fc" id="L122">        String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(</span>
-<span class="fc" id="L123">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorCalibrator(errorMethod),</span>
+<span class="fc" id="L109">        String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(</span>
+<span class="fc" id="L110">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorCalibrator(errorMethod),</span>
             &quot;error#size&quot;
         );
-        
-<span class="fc" id="L127">        return Pattern.compile(&quot;(?s)&quot;+ DataAccess.LEAD +&quot;(#+)&quot;).matcher(performanceErrorSourcePage);</span>
+<span class="fc" id="L113">        return Pattern.compile(&quot;(?s)&quot;+ DataAccess.LEAD +&quot;(#+)&quot;).matcher(performanceErrorSourcePage);</span>
     }
 
     private int getCapacity(int indexErrorMethod, int errorCapacityDefault, Method errorMethod, Matcher regexSearch) {
+<span class="fc" id="L117">        int errorCapacityImproved = errorCapacityDefault;</span>
         
-<span class="fc" id="L132">        int errorCapacityImproved = errorCapacityDefault;</span>
-        
-<span class="fc" id="L134">        regexSearch.reset();</span>
-        
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        while (regexSearch.find()) {</span>
-            
-<span class="fc bfc" id="L138" title="All 2 branches covered.">            if (errorCapacityImproved &lt; regexSearch.group(1).length()) {</span>
-<span class="fc" id="L139">                this.indexErrorStrategy = indexErrorMethod;</span>
+<span class="fc" id="L119">        regexSearch.reset();</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        while (regexSearch.find()) {</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            if (errorCapacityImproved &lt; regexSearch.group(1).length()) {</span>
+<span class="fc" id="L122">                this.indexErrorStrategy = indexErrorMethod;</span>
             }
-            
-<span class="fc" id="L142">            errorCapacityImproved = regexSearch.group(1).length();</span>
-<span class="fc" id="L143">            this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacityImproved);</span>
+<span class="fc" id="L124">            errorCapacityImproved = regexSearch.group(1).length();</span>
+<span class="fc" id="L125">            this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacityImproved);</span>
         }
         
-<span class="fc" id="L146">        int logErrorCapacityImproved = errorCapacityImproved;</span>
-<span class="fc" id="L147">        LOGGER.log(</span>
+<span class="fc" id="L128">        int logErrorCapacityImproved = errorCapacityImproved;</span>
+<span class="fc" id="L129">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_SUCCESS,
-            &quot;{} [Error {}] using [{}] characters&quot;,
-<span class="fc" id="L150">            () -&gt; I18nUtil.valueByKey(&quot;LOG_VULNERABLE&quot;),</span>
-<span class="fc" id="L151">            errorMethod::getName,</span>
-<span class="fc" id="L152">            () -&gt; Integer.toString(logErrorCapacityImproved)</span>
+            &quot;{} [Error {}] showing [{}] characters&quot;,
+<span class="fc" id="L132">            () -&gt; I18nUtil.valueByKey(&quot;LOG_VULNERABLE&quot;),</span>
+<span class="fc" id="L133">            errorMethod::getName,</span>
+<span class="fc" id="L134">            () -&gt; Integer.toString(logErrorCapacityImproved)</span>
         );
         
-<span class="fc" id="L155">        return errorCapacityImproved;</span>
+<span class="fc" id="L137">        return errorCapacityImproved;</span>
     }
 
     @Override
     public void allow(int... indexError) {
-
-<span class="fc" id="L161">        this.injectionModel.appendAnalysisReport(</span>
-<span class="fc" id="L162">            &quot;&lt;span style=color:rgb(0,0,255)&gt;### Strategy: &quot; + getName() + &quot;:&quot; + this.injectionModel.getMediatorVendor().getVendor().instance()</span>
-<span class="fc" id="L163">            .getModelYaml()</span>
-<span class="fc" id="L164">            .getStrategy()</span>
-<span class="fc" id="L165">            .getError()</span>
-<span class="fc" id="L166">            .getMethod()</span>
-<span class="fc" id="L167">            .get(indexError[0])</span>
-<span class="fc" id="L168">            .getName()</span>
-<span class="fc" id="L169">            + &quot;&lt;/span&gt;&quot;+ this.injectionModel.getReportWithoutIndex(</span>
-<span class="fc" id="L170">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(&quot;&lt;span style=color:rgb(0,128,0)&gt;&amp;lt;query&amp;gt;&lt;/span&gt;&quot;, &quot;0&quot;, indexError[0], true),</span>
+<span class="fc" id="L142">        this.injectionModel.appendAnalysisReport(</span>
+<span class="fc" id="L143">            StringUtil.formatReport(</span>
+                LogLevelUtil.COLOR_BLU,
+<span class="fc" id="L145">                &quot;### Strategy: &quot; + getName() + &quot;:&quot; + this.injectionModel.getMediatorVendor().getVendor().instance()</span>
+<span class="fc" id="L146">                .getModelYaml()</span>
+<span class="fc" id="L147">                .getStrategy()</span>
+<span class="fc" id="L148">                .getError()</span>
+<span class="fc" id="L149">                .getMethod()</span>
+<span class="fc" id="L150">                .get(indexError[0])</span>
+<span class="fc" id="L151">                .getName()</span>
+            )
+<span class="fc" id="L153">            + this.injectionModel.getReportWithoutIndex(</span>
+<span class="fc" id="L154">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(</span>
+<span class="fc" id="L155">                    StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, &quot;&amp;lt;query&amp;gt;&quot;),</span>
+                    &quot;0&quot;,
+                    indexError[0],
+                    true
+                ),
                 &quot;metadataInjectionProcess&quot;
             )
         );
-<span class="fc" id="L174">        this.markVulnerability(Interaction.MARK_ERROR_VULNERABLE, indexError[0]);</span>
-<span class="fc" id="L175">    }</span>
+<span class="fc" id="L163">        this.markVulnerability(Interaction.MARK_ERROR_VULNERABLE, indexError[0]);</span>
+<span class="fc" id="L164">    }</span>
 
     @Override
     public void unallow(int... indexError) {
-<span class="fc" id="L179">        this.markVulnerability(Interaction.MARK_ERROR_INVULNERABLE, indexError[0]);</span>
-<span class="fc" id="L180">    }</span>
+<span class="fc" id="L168">        this.markVulnerability(Interaction.MARK_ERROR_INVULNERABLE, indexError[0]);</span>
+<span class="fc" id="L169">    }</span>
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
-<span class="fc" id="L184">        return this.injectionModel.injectWithoutIndex(</span>
-<span class="fc" id="L185">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition, this.indexErrorStrategy, false),</span>
+<span class="fc" id="L173">        return this.injectionModel.injectWithoutIndex(</span>
+<span class="fc" id="L174">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition, this.indexErrorStrategy, false),</span>
             metadataInjectionProcess
         );
     }
 
     @Override
     public void activateWhenApplicable() {
-<span class="fc bfc" id="L192" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
-
-<span class="fc" id="L194">            LOGGER.log(</span>
+<span class="fc bfc" id="L181" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
+<span class="fc" id="L182">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;{} [{} {}]&quot;,
-<span class="fc" id="L197">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
+<span class="fc" id="L185">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
                 this::getName,
-<span class="fc" id="L199">                () -&gt; this.injectionModel.getMediatorVendor().getVendor().instance()</span>
-<span class="fc" id="L200">                .getModelYaml()</span>
-<span class="fc" id="L201">                .getStrategy()</span>
-<span class="fc" id="L202">                .getError()</span>
-<span class="fc" id="L203">                .getMethod()</span>
-<span class="fc" id="L204">                .get(this.indexErrorStrategy)</span>
-<span class="fc" id="L205">                .getName()</span>
+<span class="fc" id="L187">                () -&gt; this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy()</span>
+<span class="fc" id="L188">                .getError().getMethod().get(this.indexErrorStrategy).getName()</span>
             );
-<span class="fc" id="L207">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());</span>
+<span class="fc" id="L190">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());</span>
 
-<span class="fc" id="L209">            var request = new Request();</span>
-<span class="fc" id="L210">            request.setMessage(Interaction.MARK_ERROR_STRATEGY);</span>
-<span class="fc" id="L211">            this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L192">            var request = new Request();</span>
+<span class="fc" id="L193">            request.setMessage(Interaction.MARK_ERROR_STRATEGY);</span>
+<span class="fc" id="L194">            this.injectionModel.sendToViews(request);</span>
         }
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L196">    }</span>
     
     @Override
     public String getPerformanceLength() {
-<span class="fc" id="L217">        return this.tabCapacityMethod[this.indexErrorStrategy];</span>
+<span class="fc" id="L200">        return this.tabCapacityMethod[this.indexErrorStrategy];</span>
     }
     
     @Override
     public String getName() {
-<span class="fc" id="L222">        return &quot;Error&quot;;</span>
+<span class="fc" id="L205">        return &quot;Error&quot;;</span>
     }
     
     public Integer getIndexErrorStrategy() {
-<span class="nc" id="L226">        return this.indexErrorStrategy;</span>
+<span class="nc" id="L209">        return this.indexErrorStrategy;</span>
     }
     
     public void setIndexErrorStrategy(int indexErrorStrategy) {
-<span class="nc" id="L230">        this.indexErrorStrategy = indexErrorStrategy;</span>
-<span class="nc" id="L231">    }</span>
+<span class="nc" id="L213">        this.indexErrorStrategy = indexErrorStrategy;</span>
+<span class="nc" id="L214">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

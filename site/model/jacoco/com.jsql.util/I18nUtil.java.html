@@ -46,18 +46,14 @@ public class I18nUtil {
      * If not then it invites the user to use the translation process.
      */
     public static void checkCurrentLanguage() {
-        
-<span class="nc" id="L50">        URL path = I18nUtil.class.getClassLoader().getResource(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
-        
-<span class="nc bnc" id="L52" title="All 4 branches missed.">        if (!&quot;en&quot;.equals(Locale.getDefault().getLanguage()) &amp;&amp; path == null) {</span>
-            
-<span class="nc" id="L54">            String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);</span>
-            
-<span class="nc" id="L56">            LOGGER.log(</span>
+<span class="nc" id="L49">        URL path = I18nUtil.class.getClassLoader().getResource(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
+<span class="nc bnc" id="L50" title="All 4 branches missed.">        if (!&quot;en&quot;.equals(Locale.getDefault().getLanguage()) &amp;&amp; path == null) {</span>
+<span class="nc" id="L51">            String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);</span>
+<span class="nc" id="L52">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
-<span class="nc" id="L58">                () -&gt; String.join(</span>
+<span class="nc" id="L54">                () -&gt; String.join(</span>
                     &quot;&quot;,
-                    &quot;Please contribute and translate parts of jSQL Injection into &quot;,
+                    &quot;Contribute and translate parts of jSQL Injection into &quot;,
                     languageHost,
                     &quot;: &quot;,
                     &quot;click on the top right button and open menu [Community], choose [I help translate jSQL into &gt; another language...] and &quot;,
@@ -67,27 +63,21 @@ public class I18nUtil {
                 )
             );
         }
-<span class="nc" id="L70">    }</span>
-    
-    public static boolean isAsian(Locale newLocale) {
-<span class="fc bfc" id="L73" title="All 2 branches covered.">        return Locale.forLanguageTag(&quot;zh&quot;).getLanguage().equals(newLocale.getLanguage())</span>
-<span class="fc bfc" id="L74" title="All 2 branches covered.">            || Locale.forLanguageTag(&quot;ko&quot;).getLanguage().equals(newLocale.getLanguage())</span>
-<span class="fc bfc" id="L75" title="All 2 branches covered.">            || Locale.forLanguageTag(&quot;ja&quot;).getLanguage().equals(newLocale.getLanguage());</span>
-    }
+<span class="nc" id="L66">    }</span>
     
     
     // Getters and setters
     
     public static void setLocaleDefault(ResourceBundle localeDefault) {
-<span class="nc" id="L82">        I18nUtil.localeDefault = localeDefault;</span>
-<span class="nc" id="L83">    }</span>
+<span class="nc" id="L72">        I18nUtil.localeDefault = localeDefault;</span>
+<span class="nc" id="L73">    }</span>
     
     public static Locale getLocaleDefault() {
-<span class="nc" id="L86">        return I18nUtil.localeDefault.getLocale();</span>
+<span class="nc" id="L76">        return I18nUtil.localeDefault.getLocale();</span>
     }
 
     public static ResourceBundle getLocaleRoot() {
-<span class="nc" id="L90">        return LOCALE_ROOT;</span>
+<span class="nc" id="L80">        return LOCALE_ROOT;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

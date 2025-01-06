@@ -2,34 +2,21 @@
 
 <span class="fc" id="L3">public class UserAgentUtil {</span>
     
-<span class="fc" id="L5">    private boolean isCustomUserAgent = false;</span>
+<span class="fc" id="L5">    private String customUserAgent = null;</span>
 
-<span class="fc" id="L7">    private String customUserAgent = null;</span>
-
-    public UserAgentUtil withCustomUserAgent(String customUserAgent) {
-
-<span class="fc" id="L11">        this.isCustomUserAgent = true;</span>
-<span class="fc" id="L12">        this.customUserAgent = customUserAgent;</span>
-<span class="fc" id="L13">        return this;</span>
-    }
+    public void withCustomUserAgent(String customUserAgent) {
+<span class="fc" id="L8">        this.customUserAgent = customUserAgent;</span>
+<span class="fc" id="L9">    }</span>
     
     
     // Getter and setter
 
     public String getCustomUserAgent() {
-<span class="fc" id="L20">        return this.customUserAgent;</span>
+<span class="fc" id="L15">        return this.customUserAgent;</span>
     }
 
     public void setCustomUserAgent(String customUserAgent) {
-<span class="nc" id="L24">        this.customUserAgent = customUserAgent;</span>
-<span class="nc" id="L25">    }</span>
-
-    public boolean isCustomUserAgent() {
-<span class="fc" id="L28">        return this.isCustomUserAgent;</span>
-    }
-    
-    public void setIsCustomUserAgent(boolean isCustomUserAgent) {
-<span class="nc" id="L32">        this.isCustomUserAgent = isCustomUserAgent;</span>
-<span class="nc" id="L33">    }</span>
+<span class="nc" id="L19">        this.customUserAgent = customUserAgent;</span>
+<span class="nc" id="L20">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -7,10 +7,10 @@
 <body>
 <div id="overview"><a href="../../../../apidocs/com/jsql/model/AbstractModelObservable.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/*******************************************************************************</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> * Copyhacked (H) 2012-2020.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> * Copyhacked (H) 2012-2025.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> * This program and the accompanying materials</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_javadoccomment"> * are made available under no term at all, use it like</em>
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> * you want, but share and discuss about it</em>
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> * you want, but share and discuss it</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * every time possible with every body.</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * </em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> * Contributors:</em>
@@ -19,7 +19,7 @@
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">package</strong> com.jsql.model;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.bean.util.Request;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> java.util.concurrent.SubmissionPublisher;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
@@ -49,7 +49,7 @@
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          String dataInjection,
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>          <strong class="jxr_keyword">boolean</strong> isUsingIndex,
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>          String metadataInjectionProcess,
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          AbstractCallableBoolean&lt;?&gt; callableBoolean,
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>          AbstractCallableBinary&lt;?&gt; callableBoolean,
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>          <strong class="jxr_keyword">boolean</strong> isReport
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      );
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      
@@ -62,7 +62,7 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.inject(dataInjection, false, metadataInjectionProcess, <strong class="jxr_keyword">null</strong>, false);
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      }
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">public</strong> String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean&lt;?&gt; callableBoolean) {
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">public</strong> String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBinary&lt;?&gt; callableBoolean) {
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, false);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      }
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
@@ -74,7 +74,7 @@
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.inject(dataInjection, false, metadataInjectionProcess, <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      }
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">public</strong> String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean&lt;?&gt; callableBoolean) {
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">public</strong> String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBinary&lt;?&gt; callableBoolean) {
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      }
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  
@@ -103,6 +103,6 @@
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2024. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
 </body>
 </html>

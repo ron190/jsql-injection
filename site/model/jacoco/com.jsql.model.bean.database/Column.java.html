@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Column.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.bean.database</a> &gt; <span class="el_source">Column.java</span></div><h1>Column.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -23,14 +23,11 @@ public class Column extends AbstractElementDatabase {
 
     /**
      * Define the column label and parent table.
-     * @param newColumnName
-     * @param newTableName
      */
-<span class="fc" id="L29">    public Column(String newColumnName, Table newTableName) {</span>
-        
-<span class="fc" id="L31">        this.elementValue = newColumnName;</span>
-<span class="fc" id="L32">        this.parentTable = newTableName;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L27">    public Column(String newColumnName, Table newTableName) {</span>
+<span class="fc" id="L28">        this.elementValue = newColumnName;</span>
+<span class="fc" id="L29">        this.parentTable = newTableName;</span>
+<span class="fc" id="L30">    }</span>
 
     /**
      * Return the parent table.
@@ -38,7 +35,7 @@ public class Column extends AbstractElementDatabase {
      */
     @Override
     public AbstractElementDatabase getParent() {
-<span class="fc" id="L41">        return this.parentTable;</span>
+<span class="fc" id="L38">        return this.parentTable;</span>
     }
 
     /**
@@ -47,7 +44,7 @@ public class Column extends AbstractElementDatabase {
      */
     @Override
     public int getChildCount() {
-<span class="nc" id="L50">        return 0;</span>
+<span class="nc" id="L47">        return 0;</span>
     }
 
     /**
@@ -55,8 +52,8 @@ public class Column extends AbstractElementDatabase {
      * @return column text
      */
     @Override
-    public String getLabelCount() {
-<span class="fc" id="L59">        return this.toString();</span>
+    public String getLabelWithCount() {
+<span class="fc" id="L56">        return this.toString();</span>
     }
 }
 

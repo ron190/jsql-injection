@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JPopupMenuTable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.popupmenu</a> &gt; <span class="el_source">JPopupMenuTable.java</span></div><h1>JPopupMenuTable.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -11,7 +11,6 @@
 package com.jsql.view.swing.popupmenu;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.util.I18nViewUtil;
 
 import javax.swing.*;
@@ -36,93 +35,77 @@ public class JPopupMenuTable extends JPopupMenu {
      * Create popup menu for this table component.
      * @param table The table receiving the menu
      */
-<span class="fc" id="L39">    public JPopupMenuTable(JTable table) {</span>
-        
-<span class="fc" id="L41">        this.table = table;</span>
+<span class="fc" id="L38">    public JPopupMenuTable(JTable table) {</span>
+<span class="fc" id="L39">        this.table = table;</span>
+<span class="fc" id="L40">        table.setComponentPopupMenu(this);</span>
 
-<span class="fc" id="L43">        table.setComponentPopupMenu(this);</span>
+<span class="fc" id="L42">        JMenuItem copyItem = new JMenuItem(new ActionCopy());</span>
+<span class="fc" id="L43">        copyItem.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY&quot;));</span>
+<span class="fc" id="L44">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY&quot;, copyItem);</span>
+<span class="fc" id="L45">        copyItem.setMnemonic('C');</span>
+<span class="fc" id="L46">        copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
 
-<span class="fc" id="L45">        JMenuItem copyItem = new JMenuItemWithMargin(new ActionCopy());</span>
-<span class="fc" id="L46">        copyItem.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY&quot;));</span>
-<span class="fc" id="L47">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY&quot;, copyItem);</span>
-<span class="fc" id="L48">        copyItem.setMnemonic('C');</span>
-<span class="fc" id="L49">        copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
-        
-<span class="fc" id="L51">        this.add(copyItem);</span>
+<span class="fc" id="L48">        JMenuItem selectAllItem = new JMenuItem(new ActionSelectAll());</span>
+<span class="fc" id="L49">        selectAllItem.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;));</span>
+<span class="fc" id="L50">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;, selectAllItem);</span>
+<span class="fc" id="L51">        selectAllItem.setMnemonic('A');</span>
+<span class="fc" id="L52">        selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
 
-<span class="fc" id="L53">        this.addSeparator();</span>
-
-<span class="fc" id="L55">        JMenuItem selectAllItem = new JMenuItemWithMargin(new ActionSelectAll());</span>
-<span class="fc" id="L56">        selectAllItem.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;));</span>
-<span class="fc" id="L57">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;, selectAllItem);</span>
-<span class="fc" id="L58">        selectAllItem.setMnemonic('A');</span>
-<span class="fc" id="L59">        selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
-        
-<span class="fc" id="L61">        this.add(selectAllItem);</span>
+<span class="fc" id="L54">        this.add(copyItem);</span>
+<span class="fc" id="L55">        this.addSeparator();</span>
+<span class="fc" id="L56">        this.add(selectAllItem);</span>
 
         // Show menu next mouse pointer
-<span class="fc" id="L64">        this.addPopupMenuListener(new PopupMenuListener() {</span>
-            
+<span class="fc" id="L59">        this.addPopupMenuListener(new PopupMenuListener() {</span>
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 // Fix #67773: NullPointerException on getLocation()
-<span class="nc bnc" id="L69" title="All 2 branches missed.">                if (MouseInfo.getPointerInfo() != null) {</span>
-<span class="nc" id="L70">                    JPopupMenuTable.this.setLocation(MouseInfo.getPointerInfo().getLocation());</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                if (MouseInfo.getPointerInfo() != null) {</span>
+<span class="nc" id="L64">                    JPopupMenuTable.this.setLocation(MouseInfo.getPointerInfo().getLocation());</span>
                 }
-<span class="nc" id="L72">            }</span>
-            
+<span class="nc" id="L66">            }</span>
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 // Do nothing
-<span class="nc" id="L77">            }</span>
-            
+<span class="nc" id="L70">            }</span>
             @Override
             public void popupMenuCanceled(PopupMenuEvent e) {
                 // Do nothing
-<span class="nc" id="L82">            }</span>
+<span class="nc" id="L74">            }</span>
         });
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L76">    }</span>
 
     public JPopupMenuTable(JTable tableValues, Action actionShowSearchTable) {
-        
-<span class="fc" id="L88">        this(tableValues);</span>
-        
-<span class="fc" id="L90">        this.addSeparator();</span>
+<span class="fc" id="L79">        this(tableValues);</span>
 
-<span class="fc" id="L92">        JMenuItem search = new JMenuItemWithMargin();</span>
-<span class="fc" id="L93">        search.setAction(actionShowSearchTable);</span>
-<span class="fc" id="L94">        search.setText(&quot;Search...&quot;);</span>
-<span class="fc" id="L95">        search.setMnemonic('S');</span>
-<span class="fc" id="L96">        search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));</span>
-        
-<span class="fc" id="L98">        this.add(search);</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L81">        JMenuItem search = new JMenuItem();</span>
+<span class="fc" id="L82">        search.setAction(actionShowSearchTable);</span>
+<span class="fc" id="L83">        search.setText(&quot;Search...&quot;);</span>
+<span class="fc" id="L84">        search.setMnemonic('S');</span>
+<span class="fc" id="L85">        search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L86">        this.addSeparator();</span>
+<span class="fc" id="L87">        this.add(search);</span>
+<span class="fc" id="L88">    }</span>
 
     /**
      * An action for Select All shortcut.
      */
-<span class="fc" id="L104">    private class ActionSelectAll extends AbstractAction {</span>
+<span class="fc" id="L93">    private class ActionSelectAll extends AbstractAction {</span>
         @Override
         public void actionPerformed(ActionEvent e) {
-<span class="nc" id="L107">            JPopupMenuTable.this.table.selectAll();</span>
-<span class="nc" id="L108">        }</span>
+<span class="nc" id="L96">            JPopupMenuTable.this.table.selectAll();</span>
+<span class="nc" id="L97">        }</span>
     }
 
     /**
      * An action for Copy shortcut.
      */
-<span class="fc" id="L114">    private class ActionCopy extends AbstractAction {</span>
+<span class="fc" id="L103">    private class ActionCopy extends AbstractAction {</span>
         @Override
         public void actionPerformed(ActionEvent e) {
-            
-<span class="nc" id="L118">            var copyEvent = new ActionEvent(</span>
-                JPopupMenuTable.this.table,
-                ActionEvent.ACTION_PERFORMED,
-                &quot;copy&quot;
-            );
-            
-<span class="nc" id="L124">            JPopupMenuTable.this.table.getActionMap().get(copyEvent.getActionCommand()).actionPerformed(copyEvent);</span>
-<span class="nc" id="L125">        }</span>
+<span class="nc" id="L106">            var copyEvent = new ActionEvent(JPopupMenuTable.this.table, ActionEvent.ACTION_PERFORMED, &quot;copy&quot;);</span>
+<span class="nc" id="L107">            JPopupMenuTable.this.table.getActionMap().get(copyEvent.getActionCommand()).actionPerformed(copyEvent);</span>
+<span class="nc" id="L108">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -73,25 +73,19 @@ import java.util.stream.Collectors;
 <span class="nc" id="L73">    }</span>
 
     public String getTruthyAsString() {
-<span class="nc" id="L76">        return this.truthy.stream()</span>
-<span class="nc" id="L77">            .collect(</span>
-<span class="nc" id="L78">                Collectors.joining(System.lineSeparator())</span>
-            );
+<span class="nc" id="L76">        return this.truthy.stream().collect(Collectors.joining(System.lineSeparator()));</span>
     }
     
     public void setTruthy(String truthy) {
-<span class="nc" id="L83">        this.truthy = Arrays.asList(truthy.split(&quot;[\r\n]+&quot;));</span>
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L80">        this.truthy = Arrays.asList(truthy.split(&quot;[\r\n]+&quot;));</span>
+<span class="nc" id="L81">    }</span>
     
     public String getFalsyAsString() {
-<span class="nc" id="L87">        return this.falsy.stream()</span>
-<span class="nc" id="L88">            .collect(</span>
-<span class="nc" id="L89">                Collectors.joining(System.lineSeparator())</span>
-            );
+<span class="nc" id="L84">        return this.falsy.stream().collect(Collectors.joining(System.lineSeparator()));</span>
     }
     
     public void setFalsy(String falsy) {
-<span class="nc" id="L94">        this.falsy = Arrays.asList(falsy.split(&quot;[\r\n]+&quot;));</span>
-<span class="nc" id="L95">    }</span>
+<span class="nc" id="L88">        this.falsy = Arrays.asList(falsy.split(&quot;[\r\n]+&quot;));</span>
+<span class="nc" id="L89">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

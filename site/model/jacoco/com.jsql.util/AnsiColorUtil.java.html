@@ -13,21 +13,21 @@ public class AnsiColorUtil {
     
     private static final String SUFFIX = &quot;m&quot;;
     
-    private static final String END_COLOUR = PREFIX + SUFFIX;
+    private static final String END_COLOR = PREFIX + SUFFIX;
 
-    private static final String ERROR_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_RED + SUFFIX;
-    private static final String INFO_COLOUR = PREFIX + NORMAL+ SEPARATOR + FOREGROUND_GREEN + SUFFIX;
+    private static final String ERROR_COLOR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_RED + SUFFIX;
+    private static final String INFO_COLOR = PREFIX + NORMAL+ SEPARATOR + FOREGROUND_GREEN + SUFFIX;
 
     private AnsiColorUtil() {
         // Utility class
     }
 
     public static String addGreenColor(String text) {
-<span class="fc" id="L26">        return INFO_COLOUR + text + END_COLOUR;</span>
+<span class="fc" id="L26">        return INFO_COLOR + text + END_COLOR;</span>
     }
     
     public static String addRedColor(String text) {
-<span class="nc" id="L30">        return ERROR_COLOUR + text + END_COLOUR;</span>
+<span class="nc" id="L30">        return ERROR_COLOR + text + END_COLOR;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

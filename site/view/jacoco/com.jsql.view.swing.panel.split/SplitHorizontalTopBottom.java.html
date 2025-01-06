@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SplitHorizontalTopBottom.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.split</a> &gt; <span class="el_source">SplitHorizontalTopBottom.java</span></div><h1>SplitHorizontalTopBottom.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,50 +12,47 @@ package com.jsql.view.swing.panel.split;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.panel.PanelConsoles;
-import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
-import com.jsql.view.swing.tab.TabManagersProxy;
+import com.jsql.view.swing.tab.TabManagersCards;
 import com.jsql.view.swing.tab.TabResults;
-import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.prefs.Preferences;
 
 /**
  * SplitPane composed of tree and tabs on top, and info tabs on bottom.
  */
-public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
+public class SplitHorizontalTopBottom extends JSplitPane {
     
     /**
      * Name of preference for splitter vertical.
      * Reset divider position for current application version.
      */
-    private static final String NAME_LEFT_RIGHT_SPLITPANE = &quot;verticalSplitter-&quot;;
+    public static final String NAME_LEFT_RIGHT_SPLITPANE = &quot;verticalSplitter&quot;;
     
     /**
      * Name of preference for splitter horizontal.
      * Reset divider position for current application version.
      */
-    private static final String NAME_TOP_BOTTOM_SPLITPANE = &quot;horizontalSplitter-&quot;;
+    public static final String NAME_TOP_BOTTOM_SPLITPANE = &quot;horizontalSplitter&quot;;
     
-    private static final int LOC_LEFT_RIGHT_SPLITTER = 350;
-
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.
      */
-    private final JSplitPaneWithZeroSizeDivider splitVerticalLeftRight;
+    private final JSplitPane splitVerticalLeftRight;
 
-<span class="fc" id="L51">    private static final JPanel PANEL_HIDDEN_CONSOLES = new JPanel();</span>
+<span class="fc" id="L48">    private static final JPanel PANEL_HIDDEN_CONSOLES = new JPanel();</span>
     
     /**
      * MouseAdapter used on arrow on tabbedpane header and on
      * ersatz button when bottom panel is hidden.
      */
-<span class="fc" id="L57">    private static final ActionHideShowConsole ACTION_HIDE_SHOW_CONSOLE = new ActionHideShowConsole(PANEL_HIDDEN_CONSOLES);</span>
-<span class="fc" id="L58">    private static final ActionHideShowResult ACTION_HIDE_SHOW_RESULT= new ActionHideShowResult();</span>
+<span class="fc" id="L54">    private static final ActionHideShowConsole ACTION_HIDE_SHOW_CONSOLE = new ActionHideShowConsole(PANEL_HIDDEN_CONSOLES);</span>
+<span class="fc" id="L55">    private static final ActionHideShowResult ACTION_HIDE_SHOW_RESULT= new ActionHideShowResult();</span>
 
     private final JLabel labelPlaceholderResult;
     
@@ -65,95 +62,62 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
      */
     public SplitHorizontalTopBottom() {
         
-<span class="fc" id="L68">        super(JSplitPane.VERTICAL_SPLIT);</span>
-
-<span class="fc" id="L70">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
-<span class="fc" id="L71">        var verticalLeftRightSplitter = preferences.getInt(SplitHorizontalTopBottom.NAME_LEFT_RIGHT_SPLITPANE, LOC_LEFT_RIGHT_SPLITTER);</span>
-
-<span class="fc" id="L73">        var tabManagersProxy = new TabManagersProxy();</span>
-<span class="fc" id="L74">        MediatorHelper.register(tabManagersProxy);</span>
-
-<span class="fc" id="L76">        var tabResults = new TabResults();</span>
-<span class="fc" id="L77">        tabResults.setName(&quot;tabResults&quot;);</span>
-<span class="fc" id="L78">        tabResults.addMouseWheelListener(new TabbedPaneMouseWheelListener());</span>
-<span class="fc" id="L79">        MediatorHelper.register(tabResults);</span>
+<span class="fc" id="L65">        super(JSplitPane.VERTICAL_SPLIT);</span>
+<span class="fc" id="L66">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="fc" id="L67">        var verticalLeftRightSplitter = preferences.getInt(SplitHorizontalTopBottom.NAME_LEFT_RIGHT_SPLITPANE, 350);</span>
+<span class="fc" id="L68">        var tabManagersProxy = new TabManagersCards();</span>
+<span class="fc" id="L69">        new TabResults();  // initialized but hidden</span>
 
         // Tree and tabs on top
-<span class="fc" id="L82">        this.splitVerticalLeftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);</span>
-<span class="fc" id="L83">        this.splitVerticalLeftRight.setLeftComponent(tabManagersProxy);</span>
-        
-<span class="fc" id="L85">        this.labelPlaceholderResult = new JLabel(UiUtil.IMG_BUG);</span>
-<span class="fc" id="L86">        this.labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));</span>
+<span class="fc" id="L72">        this.splitVerticalLeftRight = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);</span>
+<span class="fc" id="L73">        this.splitVerticalLeftRight.setLeftComponent(tabManagersProxy);</span>
+<span class="fc" id="L74">        this.labelPlaceholderResult = new JLabel(UiUtil.APP_RESULT.icon);</span>
+<span class="fc" id="L75">        this.labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));</span>
+<span class="fc" id="L76">        this.splitVerticalLeftRight.setRightComponent(this.labelPlaceholderResult);</span>
+<span class="fc" id="L77">        this.splitVerticalLeftRight.setDividerLocation(verticalLeftRightSplitter);</span>
 
-<span class="fc" id="L88">        this.labelPlaceholderResult.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
-<span class="fc" id="L89">        this.labelPlaceholderResult.setAlignmentY(Component.CENTER_ALIGNMENT);</span>
-      
-<span class="fc" id="L91">        this.splitVerticalLeftRight.setRightComponent(this.labelPlaceholderResult);</span>
-<span class="fc" id="L92">        this.splitVerticalLeftRight.setDividerLocation(verticalLeftRightSplitter);</span>
-<span class="fc" id="L93">        this.splitVerticalLeftRight.setDividerSize(0);</span>
-<span class="fc" id="L94">        this.splitVerticalLeftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));</span>
+<span class="fc" id="L79">        JLabel labelShowConsoles = new JLabel(UiUtil.ARROW_UP.icon);</span>
+<span class="fc" id="L80">        labelShowConsoles.setBorder(BorderFactory.createEmptyBorder());</span>
+<span class="fc" id="L81">        labelShowConsoles.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mouseClicked(MouseEvent e) {
+<span class="fc" id="L84">                SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE.actionPerformed(null);</span>
+<span class="fc" id="L85">            }</span>
+        });
+<span class="fc" id="L87">        labelShowConsoles.setName(&quot;buttonShowConsolesHidden&quot;);</span>
+<span class="fc" id="L88">        PANEL_HIDDEN_CONSOLES.setLayout(new BorderLayout());</span>
+<span class="fc" id="L89">        PANEL_HIDDEN_CONSOLES.add(labelShowConsoles, BorderLayout.LINE_END);</span>
+<span class="fc" id="L90">        PANEL_HIDDEN_CONSOLES.setVisible(false);</span>
 
-<span class="fc" id="L96">        this.setDividerSize(0);</span>
-<span class="fc" id="L97">        this.setBorder(null);</span>
+<span class="fc" id="L92">        var panelManagerResult = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L93">        panelManagerResult.add(this.splitVerticalLeftRight, BorderLayout.CENTER);</span>
+<span class="fc" id="L94">        panelManagerResult.add(PANEL_HIDDEN_CONSOLES, BorderLayout.SOUTH);</span>
+<span class="fc" id="L95">        this.setTopComponent(panelManagerResult);</span>
 
-<span class="fc" id="L99">        var panelManagerResult = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L100">        panelManagerResult.add(this.splitVerticalLeftRight, BorderLayout.CENTER);</span>
+<span class="fc" id="L97">        var panelConsoles = new PanelConsoles();</span>
+<span class="fc" id="L98">        MediatorHelper.register(panelConsoles);</span>
+<span class="fc" id="L99">        this.setBottomComponent(panelConsoles);</span>
 
-<span class="fc" id="L102">        PANEL_HIDDEN_CONSOLES.setLayout(new BorderLayout());</span>
-<span class="fc" id="L103">        PANEL_HIDDEN_CONSOLES.setOpaque(false);</span>
-<span class="fc" id="L104">        PANEL_HIDDEN_CONSOLES.setPreferredSize(new Dimension(17, 22));</span>
-<span class="fc" id="L105">        PANEL_HIDDEN_CONSOLES.setMaximumSize(new Dimension(17, 22));</span>
-        
-<span class="fc" id="L107">        JButton buttonShowConsoles = new BasicArrowButton(SwingConstants.NORTH);</span>
-<span class="fc" id="L108">        buttonShowConsoles.setBorderPainted(false);</span>
-<span class="fc" id="L109">        buttonShowConsoles.setOpaque(false);</span>
-<span class="fc" id="L110">        buttonShowConsoles.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);</span>
-<span class="fc" id="L111">        buttonShowConsoles.setName(&quot;buttonShowConsolesHidden&quot;);</span>
-        
-<span class="fc" id="L113">        PANEL_HIDDEN_CONSOLES.add(Box.createHorizontalGlue());</span>
-<span class="fc" id="L114">        PANEL_HIDDEN_CONSOLES.add(buttonShowConsoles, BorderLayout.LINE_END);</span>
-<span class="fc" id="L115">        PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));</span>
-<span class="fc" id="L116">        PANEL_HIDDEN_CONSOLES.setVisible(false);</span>
-
-<span class="fc" id="L118">        panelManagerResult.add(PANEL_HIDDEN_CONSOLES, BorderLayout.SOUTH);</span>
-
-        // Setting for top and bottom components
-<span class="fc" id="L121">        this.setTopComponent(panelManagerResult);</span>
-
-<span class="fc" id="L123">        var panelConsoles = new PanelConsoles();</span>
-<span class="fc" id="L124">        MediatorHelper.register(panelConsoles);</span>
-
-<span class="fc" id="L126">        this.setBottomComponent(panelConsoles);</span>
-
-        // defines left and bottom pane
-<span class="fc" id="L129">        this.setResizeWeight(1);</span>
-<span class="fc" id="L130">    }</span>
+<span class="fc" id="L101">        this.setResizeWeight(1);</span>
+<span class="fc" id="L102">    }</span>
     
     
     // Getter and setter
 
-    public static String getNameVSplitpane() {
-<span class="nc" id="L136">        return NAME_LEFT_RIGHT_SPLITPANE;</span>
-    }
-
-    public static String getNameHSplitpane() {
-<span class="fc" id="L140">        return NAME_TOP_BOTTOM_SPLITPANE;</span>
-    }
-
-    public JSplitPaneWithZeroSizeDivider getSplitVerticalLeftRight() {
-<span class="fc" id="L144">        return this.splitVerticalLeftRight;</span>
+    public JSplitPane getSplitVerticalLeftRight() {
+<span class="fc" id="L108">        return this.splitVerticalLeftRight;</span>
     }
 
     public static ActionHideShowConsole getActionHideShowConsole() {
-<span class="fc" id="L148">        return ACTION_HIDE_SHOW_CONSOLE;</span>
+<span class="fc" id="L112">        return ACTION_HIDE_SHOW_CONSOLE;</span>
     }
     
     public static ActionHideShowResult getActionHideShowResult() {
-<span class="fc" id="L152">        return ACTION_HIDE_SHOW_RESULT;</span>
+<span class="fc" id="L116">        return ACTION_HIDE_SHOW_RESULT;</span>
     }
 
     public JLabel getLabelPlaceholderResult() {
-<span class="nc" id="L156">        return this.labelPlaceholderResult;</span>
+<span class="nc" id="L120">        return this.labelPlaceholderResult;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

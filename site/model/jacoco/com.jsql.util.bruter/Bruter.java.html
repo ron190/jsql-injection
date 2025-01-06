@@ -33,152 +33,123 @@ import java.util.List;
     };
      
 <span class="fc" id="L35">    protected boolean done = false;</span>
-<span class="fc" id="L36">    protected boolean paused = false;</span>
 
     public long getRemainder() {
-<span class="fc" id="L39">        return this.getNumberOfPossibilities() - this.count;</span>
+<span class="fc" id="L38">        return this.getNumberOfPossibilities() - this.count;</span>
     }
 
     public long getNumberOfPossibilities() {
-        
-<span class="fc" id="L44">        long possibilities = 0;</span>
-        
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (int i = this.minLength; i &lt;= this.maxLength; i++) {</span>
-<span class="fc" id="L47">            possibilities += (long) Math.pow(this.characters.size(), i);</span>
+<span class="fc" id="L42">        long possibilities = 0;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (int i = this.minLength; i &lt;= this.maxLength; i++) {</span>
+<span class="fc" id="L44">            possibilities += (long) Math.pow(this.characters.size(), i);</span>
         }
-        
-<span class="fc" id="L50">        return possibilities;</span>
+<span class="fc" id="L46">        return possibilities;</span>
     }
 
     public void addLowerCaseLetters() {
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (var c = 'a'; c &lt;= 'z'; c++) {</span>
-<span class="fc" id="L55">            this.characters.add(String.valueOf(c));</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (var c = 'a'; c &lt;= 'z'; c++) {</span>
+<span class="fc" id="L51">            this.characters.add(String.valueOf(c));</span>
         }
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L53">    }</span>
 
     public void addDigits() {
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (var c = 0; c &lt;= 9; c++) {</span>
-<span class="fc" id="L61">            this.characters.add(String.valueOf(c));</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (var c = 0; c &lt;= 9; c++) {</span>
+<span class="fc" id="L57">            this.characters.add(String.valueOf(c));</span>
         }
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L59">    }</span>
 
     public void addUpperCaseLetters() {
-<span class="fc bfc" id="L66" title="All 2 branches covered.">        for (var c = 'A'; c &lt;= 'Z'; c++) {</span>
-<span class="fc" id="L67">            this.characters.add(String.valueOf(c));</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (var c = 'A'; c &lt;= 'Z'; c++) {</span>
+<span class="fc" id="L63">            this.characters.add(String.valueOf(c));</span>
         }
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L65">    }</span>
 
     public void addSpecialCharacters() {
-<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (char c: specialCharacters) {</span>
-<span class="fc" id="L73">            this.characters.add(String.valueOf(c));</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (char c: specialCharacters) {</span>
+<span class="fc" id="L69">            this.characters.add(String.valueOf(c));</span>
         }
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L71">    }</span>
 
     public void excludeChars(String s) {
-        
-<span class="fc" id="L79">        char[] arrayChars = s.toCharArray();</span>
-        
-<span class="fc bfc" id="L81" title="All 2 branches covered.">        for (char arrayChar: arrayChars) {</span>
-<span class="fc" id="L82">            this.characters.remove(Character.toString(arrayChar));</span>
+<span class="fc" id="L74">        char[] arrayChars = s.toCharArray();</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (char arrayChar: arrayChars) {</span>
+<span class="fc" id="L76">            this.characters.remove(Character.toString(arrayChar));</span>
         }
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L78">    }</span>
 
     public int getPerSecond() {
-        
         int i;
-        
         try {
-<span class="fc" id="L91">            i = (int) (this.count / this.calculateTimeDifference());</span>
-<span class="nc" id="L92">        } catch (Exception e) {</span>
-            
-<span class="nc" id="L94">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-            
-            // Ignore division by zero
-<span class="nc" id="L97">            return 0;</span>
-<span class="fc" id="L98">        }</span>
-        
-<span class="fc" id="L100">        return i;</span>
+<span class="fc" id="L83">            i = (int) (this.count / this.calculateTimeDifference());</span>
+<span class="nc" id="L84">        } catch (Exception e) {</span>
+<span class="nc" id="L85">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L86">            return 0;  // Ignore division by zero</span>
+<span class="fc" id="L87">        }</span>
+<span class="fc" id="L88">        return i;</span>
     }
 
     public String calculateTimeElapsed() {
+<span class="fc" id="L92">        long timeTaken = this.calculateTimeDifference();</span>
         
-<span class="fc" id="L105">        long timeTaken = this.calculateTimeDifference();</span>
+<span class="fc" id="L94">        int seconds = (int) timeTaken;</span>
         
-<span class="fc" id="L107">        int seconds = (int) timeTaken;</span>
+<span class="fc" id="L96">        var minutes = 0;</span>
+<span class="fc" id="L97">        var hours = 0;</span>
+<span class="fc" id="L98">        var days = 0;</span>
         
-<span class="fc" id="L109">        var minutes = 0;</span>
-<span class="fc" id="L110">        var hours = 0;</span>
-<span class="fc" id="L111">        var days = 0;</span>
+<span class="fc" id="L100">        minutes = seconds / 60;</span>
+<span class="fc" id="L101">        seconds = seconds % 60;</span>
+<span class="fc" id="L102">        hours = minutes / 60;</span>
+<span class="fc" id="L103">        minutes = minutes % 60;</span>
+<span class="fc" id="L104">        days = hours / 24;</span>
+<span class="fc" id="L105">        hours = hours % 24;</span>
         
-<span class="fc" id="L113">        minutes = seconds / 60;</span>
-<span class="fc" id="L114">        seconds = seconds % 60;</span>
-<span class="fc" id="L115">        hours = minutes / 60;</span>
-<span class="fc" id="L116">        minutes = minutes % 60;</span>
-<span class="fc" id="L117">        days = hours / 24;</span>
-<span class="fc" id="L118">        hours = hours % 24;</span>
-        
-<span class="fc" id="L120">        return String.format(</span>
+<span class="fc" id="L107">        return String.format(</span>
             &quot;Time elapsed: %sdays %sh %smin %ss&quot;,
-<span class="fc" id="L122">            days,</span>
-<span class="fc" id="L123">            hours,</span>
-<span class="fc" id="L124">            minutes,</span>
-<span class="fc" id="L125">            seconds</span>
+<span class="fc" id="L109">            days,</span>
+<span class="fc" id="L110">            hours,</span>
+<span class="fc" id="L111">            minutes,</span>
+<span class="fc" id="L112">            seconds</span>
         );
     }
 
     private long calculateTimeDifference() {
-<span class="fc" id="L130">        return (long) ((this.endtime - this.starttime) * (1 * Math.pow(10, -9)));</span>
+<span class="fc" id="L117">        return (long) ((this.endtime - this.starttime) * (1 * Math.pow(10, -9)));</span>
     }
     
     
     // Getter and setter
 
     public synchronized void setEndtime(long endtime) {
-<span class="fc" id="L137">        this.endtime = endtime;</span>
-<span class="fc" id="L138">    }</span>
+<span class="fc" id="L124">        this.endtime = endtime;</span>
+<span class="fc" id="L125">    }</span>
 
     public void setMaxLength(int maxLength) {
-<span class="fc" id="L141">        this.maxLength = maxLength;</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L128">        this.maxLength = maxLength;</span>
+<span class="fc" id="L129">    }</span>
 
     public void setMinLength(int minLength) {
-<span class="fc" id="L145">        this.minLength = minLength;</span>
-<span class="fc" id="L146">    }</span>
+<span class="fc" id="L132">        this.minLength = minLength;</span>
+<span class="fc" id="L133">    }</span>
 
     public boolean isFound() {
-<span class="fc" id="L149">        return this.found;</span>
-    }
-
-    public void setPaused(boolean paused) {
-<span class="nc" id="L153">        this.paused = paused;</span>
-<span class="nc" id="L154">    }</span>
-
-    public boolean isPaused() {
-<span class="nc" id="L157">        return this.paused;</span>
+<span class="fc" id="L136">        return this.found;</span>
     }
 
     public void setFound(boolean found) {
-<span class="nc" id="L161">        this.found = found;</span>
-<span class="nc" id="L162">    }</span>
+<span class="nc" id="L140">        this.found = found;</span>
+<span class="nc" id="L141">    }</span>
 
     public int getCounter() {
-<span class="nc" id="L165">        return this.count;</span>
-    }
-
-    public int getMaxLength() {
-<span class="nc" id="L169">        return this.maxLength;</span>
-    }
-
-    public int getMinLength() {
-<span class="nc" id="L173">        return this.minLength;</span>
+<span class="nc" id="L144">        return this.count;</span>
     }
 
     public void setIsDone(Boolean done) {
-<span class="nc" id="L177">        this.done = done;</span>
-<span class="nc" id="L178">    }</span>
+<span class="nc" id="L148">        this.done = done;</span>
+<span class="nc" id="L149">    }</span>
 
     public boolean isDone() {
-<span class="fc" id="L181">        return this.done;</span>
+<span class="fc" id="L152">        return this.done;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

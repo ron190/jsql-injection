@@ -138,135 +138,111 @@ public class Base16 extends BaseNCodec {
      * @param decodingPolicy Decoding policy.
      */
     public Base16(final boolean lowerCase, final CodecPolicy decodingPolicy) {
-        
-<span class="fc" id="L142">        super(BYTES_PER_UNENCODED_BLOCK, BYTES_PER_ENCODED_BLOCK, 0, 0, PAD_DEFAULT, decodingPolicy);</span>
-        
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (lowerCase) {</span>
-            
-<span class="nc" id="L146">            this.encodeTable = LOWER_CASE_ENCODE_TABLE;</span>
-<span class="nc" id="L147">            this.decodeTable = LOWER_CASE_DECODE_TABLE;</span>
-            
+<span class="fc" id="L141">        super(BYTES_PER_UNENCODED_BLOCK, BYTES_PER_ENCODED_BLOCK, 0, 0, PAD_DEFAULT, decodingPolicy);</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        if (lowerCase) {</span>
+<span class="nc" id="L143">            this.encodeTable = LOWER_CASE_ENCODE_TABLE;</span>
+<span class="nc" id="L144">            this.decodeTable = LOWER_CASE_DECODE_TABLE;</span>
         } else {
-            
-<span class="fc" id="L151">            this.encodeTable = UPPER_CASE_ENCODE_TABLE;</span>
-<span class="fc" id="L152">            this.decodeTable = UPPER_CASE_DECODE_TABLE;</span>
+<span class="fc" id="L146">            this.encodeTable = UPPER_CASE_ENCODE_TABLE;</span>
+<span class="fc" id="L147">            this.decodeTable = UPPER_CASE_DECODE_TABLE;</span>
         }
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L149">    }</span>
 
     @Override
     public void decode(final byte[] data, int offsetInput, final int length, final Context context) {
+<span class="fc" id="L153">        int offset = offsetInput;</span>
         
-<span class="fc" id="L159">        int offset = offsetInput;</span>
-        
-<span class="pc bpc" id="L161" title="1 of 4 branches missed.">        if (context.eof || length &lt; 0) {</span>
-            
-<span class="fc" id="L163">            context.eof = true;</span>
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">            if (context.ibitWorkArea != 0) {</span>
-<span class="nc" id="L165">                this.validateTrailingCharacter();</span>
+<span class="pc bpc" id="L155" title="1 of 4 branches missed.">        if (context.eof || length &lt; 0) {</span>
+<span class="fc" id="L156">            context.eof = true;</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">            if (context.ibitWorkArea != 0) {</span>
+<span class="nc" id="L158">                this.validateTrailingCharacter();</span>
             }
-            
-<span class="fc" id="L168">            return;</span>
+<span class="fc" id="L160">            return;</span>
         }
 
-<span class="fc" id="L171">        final int dataLen = Math.min(data.length - offset, length);</span>
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        final int availableChars = (context.ibitWorkArea != 0 ? 1 : 0) + dataLen;</span>
+<span class="fc" id="L163">        final int dataLen = Math.min(data.length - offset, length);</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        final int availableChars = (context.ibitWorkArea != 0 ? 1 : 0) + dataLen;</span>
 
         // small optimisation to short-cut the rest of this method when it is fed byte-by-byte
-<span class="pc bpc" id="L175" title="3 of 4 branches missed.">        if (availableChars == 1 &amp;&amp; availableChars == dataLen) {</span>
-            
-<span class="nc" id="L177">            context.ibitWorkArea = this.decodeOctet(data[offset]) + 1;   // store 1/2 byte for next invocation of decode, we offset by +1 as empty-value is 0</span>
-<span class="nc" id="L178">            return;</span>
+<span class="pc bpc" id="L167" title="3 of 4 branches missed.">        if (availableChars == 1 &amp;&amp; availableChars == dataLen) {</span>
+<span class="nc" id="L168">            context.ibitWorkArea = this.decodeOctet(data[offset]) + 1;   // store 1/2 byte for next invocation of decode, we offset by +1 as empty-value is 0</span>
+<span class="nc" id="L169">            return;</span>
         }
 
         // we must have an even number of chars to decode
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        final int charsToProcess = availableChars % BYTES_PER_ENCODED_BLOCK == 0 ? availableChars : availableChars - 1;</span>
-
-<span class="fc" id="L184">        final byte[] buffer = this.ensureBufferSize(charsToProcess / BYTES_PER_ENCODED_BLOCK, context);</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        final int charsToProcess = availableChars % BYTES_PER_ENCODED_BLOCK == 0 ? availableChars : availableChars - 1;</span>
+<span class="fc" id="L174">        final byte[] buffer = this.ensureBufferSize(charsToProcess / BYTES_PER_ENCODED_BLOCK, context);</span>
 
         int result;
-<span class="fc" id="L187">        var i = 0;</span>
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (dataLen &lt; availableChars) {</span>
-            
+<span class="fc" id="L177">        var i = 0;</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">        if (dataLen &lt; availableChars) {</span>
             // we have 1/2 byte from previous invocation to decode
-<span class="nc" id="L191">            result = (context.ibitWorkArea - 1) &lt;&lt; BITS_PER_ENCODED_BYTE;</span>
-<span class="nc" id="L192">            result |= this.decodeOctet(data[offset++]);</span>
-<span class="nc" id="L193">            i = 2;</span>
-
-<span class="nc" id="L195">            buffer[context.pos++] = (byte)result;</span>
-
+<span class="nc" id="L180">            result = (context.ibitWorkArea - 1) &lt;&lt; BITS_PER_ENCODED_BYTE;</span>
+<span class="nc" id="L181">            result |= this.decodeOctet(data[offset++]);</span>
+<span class="nc" id="L182">            i = 2;</span>
+<span class="nc" id="L183">            buffer[context.pos++] = (byte) result;</span>
             // reset to empty-value for next invocation!
-<span class="nc" id="L198">            context.ibitWorkArea = 0;</span>
+<span class="nc" id="L185">            context.ibitWorkArea = 0;</span>
         }
 
-<span class="fc bfc" id="L201" title="All 2 branches covered.">        while (i &lt; charsToProcess) {</span>
-            
-<span class="fc" id="L203">            result = this.decodeOctet(data[offset++]) &lt;&lt; BITS_PER_ENCODED_BYTE;</span>
-<span class="fc" id="L204">            result |= this.decodeOctet(data[offset++]);</span>
-<span class="fc" id="L205">            i += 2;</span>
-<span class="fc" id="L206">            buffer[context.pos++] = (byte)result;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        while (i &lt; charsToProcess) {</span>
+<span class="fc" id="L189">            result = this.decodeOctet(data[offset++]) &lt;&lt; BITS_PER_ENCODED_BYTE;</span>
+<span class="fc" id="L190">            result |= this.decodeOctet(data[offset++]);</span>
+<span class="fc" id="L191">            i += 2;</span>
+<span class="fc" id="L192">            buffer[context.pos++] = (byte) result;</span>
         }
 
         // we have one char of a hex-pair left over
-<span class="pc bpc" id="L210" title="1 of 2 branches missed.">        if (i &lt; dataLen) {</span>
-<span class="nc" id="L211">            context.ibitWorkArea = this.decodeOctet(data[i]) + 1;   // store 1/2 byte for next invocation of decode, we offset by +1 as empty-value is 0</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        if (i &lt; dataLen) {</span>
+<span class="nc" id="L197">            context.ibitWorkArea = this.decodeOctet(data[i]) + 1;   // store 1/2 byte for next invocation of decode, we offset by +1 as empty-value is 0</span>
         }
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L199">    }</span>
 
     private int decodeOctet(final byte octet) {
-        
-<span class="fc" id="L217">        int decoded = -1;</span>
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">        if ((octet &amp; 0xff) &lt; this.decodeTable.length) {</span>
-<span class="fc" id="L219">            decoded = this.decodeTable[octet];</span>
+<span class="fc" id="L202">        int decoded = -1;</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">        if ((octet &amp; 0xff) &lt; this.decodeTable.length) {</span>
+<span class="fc" id="L204">            decoded = this.decodeTable[octet];</span>
         }
-
-<span class="pc bpc" id="L222" title="1 of 2 branches missed.">        if (decoded == -1) {</span>
-<span class="nc" id="L223">            throw new IllegalArgumentException(&quot;Invalid octet in encoded value: &quot; + (int)octet);</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">        if (decoded == -1) {</span>
+<span class="nc" id="L207">            throw new IllegalArgumentException(&quot;Invalid octet in encoded value: &quot; + (int) octet);</span>
         }
-
-<span class="fc" id="L226">        return decoded;</span>
+<span class="fc" id="L209">        return decoded;</span>
     }
 
     @Override
     public void encode(final byte[] data, final int offset, final int length, final Context context) {
-        
-<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        if (context.eof) {</span>
-<span class="nc" id="L233">            return;</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">        if (context.eof) {</span>
+<span class="nc" id="L215">            return;</span>
         }
-
-<span class="fc bfc" id="L236" title="All 2 branches covered.">        if (length &lt; 0) {</span>
-            
-<span class="fc" id="L238">            context.eof = true;</span>
-<span class="fc" id="L239">            return;</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        if (length &lt; 0) {</span>
+<span class="fc" id="L218">            context.eof = true;</span>
+<span class="fc" id="L219">            return;</span>
         }
-
-<span class="fc" id="L242">        final int size = length * BYTES_PER_ENCODED_BLOCK;</span>
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        if (size &lt; 0) {</span>
-<span class="nc" id="L244">            throw new IllegalArgumentException(&quot;Input length exceeds maximum size for encoded data: &quot; + length);</span>
+<span class="fc" id="L221">        final int size = length * BYTES_PER_ENCODED_BLOCK;</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">        if (size &lt; 0) {</span>
+<span class="nc" id="L223">            throw new IllegalArgumentException(&quot;Input length exceeds maximum size for encoded data: &quot; + length);</span>
         }
-
-<span class="fc" id="L247">        final byte[] buffer = this.ensureBufferSize(size, context);</span>
-
-<span class="fc" id="L249">        final int end = offset + length;</span>
-<span class="fc bfc" id="L250" title="All 2 branches covered.">        for (int i = offset; i &lt; end; i++) {</span>
-            
-<span class="fc" id="L252">            final int value = data[i];</span>
-<span class="fc" id="L253">            final int high = (value &gt;&gt; BITS_PER_ENCODED_BYTE) &amp; MASK_4BITS;</span>
-<span class="fc" id="L254">            final int low = value &amp; MASK_4BITS;</span>
-<span class="fc" id="L255">            buffer[context.pos++] = this.encodeTable[high];</span>
-<span class="fc" id="L256">            buffer[context.pos++] = this.encodeTable[low];</span>
+<span class="fc" id="L225">        final byte[] buffer = this.ensureBufferSize(size, context);</span>
+<span class="fc" id="L226">        final int end = offset + length;</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        for (int i = offset; i &lt; end; i++) {</span>
+<span class="fc" id="L228">            final int value = data[i];</span>
+<span class="fc" id="L229">            final int high = (value &gt;&gt; BITS_PER_ENCODED_BYTE) &amp; MASK_4BITS;</span>
+<span class="fc" id="L230">            final int low = value &amp; MASK_4BITS;</span>
+<span class="fc" id="L231">            buffer[context.pos++] = this.encodeTable[high];</span>
+<span class="fc" id="L232">            buffer[context.pos++] = this.encodeTable[low];</span>
         }
-<span class="fc" id="L258">    }</span>
+<span class="fc" id="L234">    }</span>
 
     /**
      * Returns whether the {@code octet} is in the Base16 alphabet.
      *
      * @param octet The value to test.
      *
-     * @return {@code true} if the value is defined in the the Base16 alphabet {@code false} otherwise.
+     * @return {@code true} if the value is defined in the Base16 alphabet {@code false} otherwise.
      */
     @Override
     public boolean isInAlphabet(final byte octet) {
-<span class="nc bnc" id="L269" title="All 4 branches missed.">        return (octet &amp; 0xff) &lt; this.decodeTable.length &amp;&amp; this.decodeTable[octet] != -1;</span>
+<span class="nc bnc" id="L245" title="All 4 branches missed.">        return (octet &amp; 0xff) &lt; this.decodeTable.length &amp;&amp; this.decodeTable[octet] != -1;</span>
     }
 
     /**
@@ -276,14 +252,14 @@ public class Base16 extends BaseNCodec {
      * @throws IllegalArgumentException if strict decoding is enabled
      */
     private void validateTrailingCharacter() {
-<span class="nc bnc" id="L279" title="All 2 branches missed.">        if (this.isStrictDecoding()) {</span>
-<span class="nc" id="L280">            throw new IllegalArgumentException(</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (this.isStrictDecoding()) {</span>
+<span class="nc" id="L256">            throw new IllegalArgumentException(</span>
                 &quot;Strict decoding: Last encoded character is a valid base 16 alphabet&quot; +
                 &quot;character but not a possible encoding. &quot; +
                 &quot;Decoding requires at least two characters to create one byte.&quot;
             );
         }
-<span class="nc" id="L286">    }</span>
+<span class="nc" id="L262">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

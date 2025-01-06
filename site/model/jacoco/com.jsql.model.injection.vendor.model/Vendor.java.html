@@ -7,26 +7,25 @@ public class Vendor {
     private AbstractVendor instanceVendor;
     
 <span class="fc" id="L9">    public Vendor(AbstractVendor instanceVendor) {</span>
-        
-<span class="fc" id="L11">        this.labelVendor = instanceVendor.getModelYaml().getVendor();</span>
-<span class="fc" id="L12">        this.instanceVendor = instanceVendor;</span>
-<span class="fc" id="L13">    }</span>
+<span class="fc" id="L10">        this.labelVendor = instanceVendor.getModelYaml().getVendor();</span>
+<span class="fc" id="L11">        this.instanceVendor = instanceVendor;</span>
+<span class="fc" id="L12">    }</span>
     
-<span class="fc" id="L15">    public Vendor() {</span>
-<span class="fc" id="L16">        this.labelVendor = &quot;Database auto&quot;;</span>
-<span class="fc" id="L17">    }</span>
+<span class="fc" id="L14">    public Vendor() {</span>
+<span class="fc" id="L15">        this.labelVendor = &quot;Database auto&quot;;</span>
+<span class="fc" id="L16">    }</span>
 
     public AbstractVendor instance() {
-<span class="fc" id="L20">        return this.instanceVendor;</span>
+<span class="fc" id="L19">        return this.instanceVendor;</span>
     }
     
     @Override
     public String toString() {
-<span class="fc" id="L25">        return this.labelVendor;</span>
+<span class="fc" id="L24">        return this.labelVendor;</span>
     }
     
     public String transformSqlite(String resultToParse) {
-<span class="nc" id="L29">        return resultToParse;</span>
+<span class="nc" id="L28">        return resultToParse;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

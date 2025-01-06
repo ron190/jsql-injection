@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionSaveTab.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.action</a> &gt; <span class="el_source">ActionSaveTab.java</span></div><h1>ActionSaveTab.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,7 +12,6 @@ package com.jsql.view.swing.action;
 
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.logging.log4j.LogManager;
@@ -36,122 +35,101 @@ public class ActionSaveTab extends AbstractAction {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L39">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L38">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
-<span class="fc" id="L41">    private final ReplaceFileChooser replaceFileChooser = new ReplaceFileChooser(</span>
-<span class="fc" id="L42">        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()</span>
+<span class="fc" id="L40">    private final ReplaceFileChooser replaceFileChooser = new ReplaceFileChooser(</span>
+<span class="fc" id="L41">        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()</span>
     );
 
-<span class="fc" id="L45">    public ActionSaveTab() {</span>
-        
-<span class="fc" id="L47">        this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));</span>
-<span class="fc" id="L48">        this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);</span>
-<span class="fc" id="L49">        this.putValue(Action.NAME, &quot;Save Tab As...&quot;);</span>
-<span class="fc" id="L50">    }</span>
+<span class="fc" id="L44">    public ActionSaveTab() {</span>
+<span class="fc" id="L45">        this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L46">        this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);</span>
+<span class="fc" id="L47">        this.putValue(Action.NAME, &quot;Save Tab As...&quot;);</span>
+<span class="fc" id="L48">    }</span>
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-<span class="nc" id="L55">        this.replaceFileChooser.setDialogTitle(&quot;Save Tab As&quot;);</span>
-
-<span class="nc" id="L57">        var componentResult = MediatorHelper.tabResults().getSelectedComponent();</span>
-        
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (componentResult instanceof PanelTable) {</span>
-            
-<span class="nc" id="L61">            JTable table = ((PanelTable) componentResult).getTableValues();</span>
-<span class="nc" id="L62">            this.saveToFile(table);</span>
-            
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        } else if (</span>
-            componentResult instanceof LightScrollPane
-<span class="nc bnc" id="L66" title="All 2 branches missed.">            &amp;&amp; ((LightScrollPane) componentResult).scrollPane.getViewport().getView() instanceof JTextComponent</span>
+<span class="nc" id="L52">        this.replaceFileChooser.setDialogTitle(&quot;Save Tab As&quot;);</span>
+<span class="nc" id="L53">        var componentResult = MediatorHelper.tabResults().getSelectedComponent();</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (componentResult instanceof PanelTable) {</span>
+<span class="nc" id="L55">            JTable table = ((PanelTable) componentResult).getTableValues();</span>
+<span class="nc" id="L56">            this.saveToFile(table);</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        } else if (</span>
+            componentResult instanceof JScrollPane
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            &amp;&amp; ((JScrollPane) componentResult).getViewport().getView() instanceof JTextComponent</span>
         ) {
-            
-<span class="nc" id="L69">            JTextComponent textarea = (JTextComponent) ((LightScrollPane) componentResult).scrollPane.getViewport().getView();</span>
-<span class="nc" id="L70">            this.saveToFile(textarea);</span>
+<span class="nc" id="L61">            JTextComponent textarea = (JTextComponent) ((JScrollPane) componentResult).getViewport().getView();</span>
+<span class="nc" id="L62">            this.saveToFile(textarea);</span>
         }
-<span class="nc" id="L72">    }</span>
+<span class="nc" id="L64">    }</span>
     
     private void saveToFile(JComponent textarea) {
-        
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (textarea == null) {</span>
-<span class="nc" id="L77">            return;</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (textarea == null) {</span>
+<span class="nc" id="L68">            return;</span>
         }
         
-<span class="nc" id="L80">        int stateSave = this.replaceFileChooser.showSaveDialog(MediatorHelper.frame());</span>
-        
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (stateSave == JFileChooser.APPROVE_OPTION) {</span>
-            
-<span class="nc" id="L84">            var folderSelectedFile = this.replaceFileChooser.getCurrentDirectory().toString();</span>
-<span class="nc" id="L85">            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);</span>
-            
-<span class="nc bnc" id="L87" title="All 2 branches missed.">            if (textarea instanceof JTextComponent) {</span>
-<span class="nc" id="L88">                this.saveTextToFile((JTextComponent) textarea);</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">            } else if (textarea instanceof JTable) {</span>
-<span class="nc" id="L90">                this.saveTableToFile((JTable) textarea);</span>
+<span class="nc" id="L71">        this.replaceFileChooser.updateUI();  // required when changing dark/light mode</span>
+<span class="nc" id="L72">        int stateSave = this.replaceFileChooser.showSaveDialog(MediatorHelper.frame());</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (stateSave == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L74">            var folderSelectedFile = this.replaceFileChooser.getCurrentDirectory().toString();</span>
+<span class="nc" id="L75">            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            if (textarea instanceof JTextComponent) {</span>
+<span class="nc" id="L77">                this.saveTextToFile((JTextComponent) textarea);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            } else if (textarea instanceof JTable) {</span>
+<span class="nc" id="L79">                this.saveTableToFile((JTable) textarea);</span>
             }
         }
-<span class="nc" id="L93">    }</span>
+<span class="nc" id="L82">    }</span>
 
     private void saveTableToFile(JTable tableResults) {
+<span class="nc" id="L85">        var fileSelected = this.replaceFileChooser.getSelectedFile();</span>
         
-<span class="nc" id="L97">        var fileSelected = this.replaceFileChooser.getSelectedFile();</span>
-        
-<span class="nc" id="L99">        try (var fileWriterExcel = new FileWriter(fileSelected, StandardCharsets.UTF_8)) {</span>
-            
-<span class="nc" id="L101">            var tableModel = tableResults.getModel();</span>
-            
-<span class="nc bnc" id="L103" title="All 2 branches missed.">            for (var i = 2 ; i &lt; tableModel.getColumnCount() ; i++) {</span>
-<span class="nc" id="L104">                fileWriterExcel.write(tableModel.getColumnName(i) + &quot;\t&quot;);</span>
+<span class="nc" id="L87">        try (var fileWriter = new FileWriter(fileSelected, StandardCharsets.UTF_8)) {</span>
+<span class="nc" id="L88">            var tableModel = tableResults.getModel();</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">            for (var i = 2 ; i &lt; tableModel.getColumnCount() ; i++) {</span>
+<span class="nc" id="L90">                fileWriter.write(tableModel.getColumnName(i) + &quot;\t&quot;);</span>
             }
+<span class="nc" id="L92">            fileWriter.write(&quot;\n&quot;);</span>
             
-<span class="nc" id="L107">            fileWriterExcel.write(&quot;\n&quot;);</span>
-            
-<span class="nc bnc" id="L109" title="All 2 branches missed.">            for (var i = 0 ; i &lt; tableModel.getRowCount() ; i++) {</span>
-                
-<span class="nc bnc" id="L111" title="All 2 branches missed.">                for (var j = 2 ; j &lt; tableModel.getColumnCount() ; j++) {</span>
-                    
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            for (var i = 0 ; i &lt; tableModel.getRowCount() ; i++) {</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">                for (var j = 2 ; j &lt; tableModel.getColumnCount() ; j++) {</span>
                     // Cell empty when string was too long to be injected (columnTooLong|cellEmpty|cellEmpty).
-<span class="nc bnc" id="L114" title="All 2 branches missed.">                    if (tableModel.getValueAt(i, j) == null) {</span>
-<span class="nc" id="L115">                        fileWriterExcel.write(&quot;\t&quot;);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                    if (tableModel.getValueAt(i, j) == null) {</span>
+<span class="nc" id="L98">                        fileWriter.write(&quot;\t&quot;);</span>
                     } else {
-                        
-                        // Encode line break.
-<span class="nc" id="L119">                        var line = tableModel.getValueAt(i, j).toString();</span>
-<span class="nc" id="L120">                        line = line</span>
-<span class="nc" id="L121">                            .replace(&quot;\n&quot;, &quot;\\n&quot;)</span>
-<span class="nc" id="L122">                            .replace(&quot;\t&quot;, &quot;\\t&quot;);</span>
-<span class="nc" id="L123">                        line = line + &quot;\t&quot;;</span>
-<span class="nc" id="L124">                        fileWriterExcel.write(line);</span>
+<span class="nc" id="L100">                        var line = tableModel.getValueAt(i, j).toString();  // Encode line break.</span>
+<span class="nc" id="L101">                        line = line</span>
+<span class="nc" id="L102">                            .replace(&quot;\n&quot;, &quot;\\n&quot;)</span>
+<span class="nc" id="L103">                            .replace(&quot;\t&quot;, &quot;\\t&quot;);</span>
+<span class="nc" id="L104">                        line = line + &quot;\t&quot;;</span>
+<span class="nc" id="L105">                        fileWriter.write(line);</span>
                     }
                 }
-                
-<span class="nc" id="L128">                fileWriterExcel.write(&quot;\n&quot;);</span>
+<span class="nc" id="L108">                fileWriter.write(&quot;\n&quot;);</span>
             }
-<span class="nc" id="L130">        } catch (IOException e) {</span>
-<span class="nc" id="L131">            LOGGER.log(</span>
+<span class="nc" id="L110">        } catch (IOException e) {</span>
+<span class="nc" id="L111">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L133">                String.format(&quot;Error writing to %s&quot;, fileSelected.getName()),</span>
+<span class="nc" id="L113">                String.format(&quot;Error writing to %s&quot;, fileSelected.getName()),</span>
                 e
             );
-<span class="nc" id="L136">        }</span>
-<span class="nc" id="L137">    }</span>
+<span class="nc" id="L116">        }</span>
+<span class="nc" id="L117">    }</span>
 
     private void saveTextToFile(JTextComponent textarea) {
-        
-<span class="nc" id="L141">        var fileSelected = this.replaceFileChooser.getSelectedFile();</span>
-        
+<span class="nc" id="L120">        var fileSelected = this.replaceFileChooser.getSelectedFile();</span>
         try (
-<span class="nc" id="L144">            var fileWriter = new FileWriter(fileSelected, StandardCharsets.UTF_8);</span>
-<span class="nc" id="L145">            var fileOut = new BufferedWriter(fileWriter)</span>
+<span class="nc" id="L122">            var fileWriter = new FileWriter(fileSelected, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L123">            var fileOut = new BufferedWriter(fileWriter)</span>
         ) {
-<span class="nc" id="L147">            textarea.write(fileOut);</span>
-<span class="nc" id="L148">        } catch (IOException e) {</span>
-<span class="nc" id="L149">            LOGGER.log(</span>
+<span class="nc" id="L125">            textarea.write(fileOut);</span>
+<span class="nc" id="L126">        } catch (IOException e) {</span>
+<span class="nc" id="L127">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L151">                String.format(&quot;Error writing to %s&quot;, fileSelected.getName()),</span>
+<span class="nc" id="L129">                String.format(&quot;Error writing to %s&quot;, fileSelected.getName()),</span>
                 e
             );
-<span class="nc" id="L154">        }</span>
-<span class="nc" id="L155">    }</span>
+<span class="nc" id="L132">        }</span>
+<span class="nc" id="L133">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

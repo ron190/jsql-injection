@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>I18nViewUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.util</a> &gt; <span class="el_source">I18nViewUtil.java</span></div><h1>I18nViewUtil.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.util;
 
 import com.jsql.util.I18nUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -9,14 +10,14 @@ public class I18nViewUtil {
     /**
      * A list of graphical components for each i18n keys in the main properties
      */
-<span class="fc" id="L12">    private static final Map&lt;String, List&lt;Object&gt;&gt; componentsLocalized = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L13">    private static final Map&lt;String, List&lt;Object&gt;&gt; componentsLocalized = new HashMap&lt;&gt;();</span>
     
     // Initialize the list of graphical components
     static {
-<span class="fc bfc" id="L16" title="All 2 branches covered.">        for (String keyI18n: I18nUtil.getLocaleRoot().keySet()) {</span>
-<span class="fc" id="L17">            I18nViewUtil.componentsLocalized.put(keyI18n, new ArrayList&lt;&gt;());</span>
-<span class="fc" id="L18">        }</span>
-<span class="fc" id="L19">    }</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        for (String keyI18n: I18nUtil.getLocaleRoot().keySet()) {</span>
+<span class="fc" id="L18">            I18nViewUtil.componentsLocalized.put(keyI18n, new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L19">        }</span>
+<span class="fc" id="L20">    }</span>
 
     private I18nViewUtil() {
         // Utility class
@@ -28,7 +29,7 @@ public class I18nViewUtil {
      * @return a set of key names of a i18n key in the properties
      */
     public static Set&lt;String&gt; keys() {
-<span class="fc" id="L31">        return I18nViewUtil.componentsLocalized.keySet();</span>
+<span class="fc" id="L32">        return I18nViewUtil.componentsLocalized.keySet();</span>
     }
     
     /**
@@ -38,7 +39,7 @@ public class I18nViewUtil {
      * @return a list of graphical components
      */
     public static List&lt;Object&gt; componentsByKey(String key) {
-<span class="fc" id="L41">        return I18nViewUtil.componentsLocalized.get(key);</span>
+<span class="fc" id="L42">        return I18nViewUtil.componentsLocalized.get(key);</span>
     }
     
     /**
@@ -48,37 +49,43 @@ public class I18nViewUtil {
      * @param component graphical component which will receive the translated text
      */
     public static void addComponentForKey(String key, Object component) {
-<span class="fc" id="L51">        I18nViewUtil.componentsLocalized.get(key).add(component);</span>
-<span class="fc" id="L52">    }</span>
-    
+<span class="fc" id="L52">        I18nViewUtil.componentsLocalized.get(key).add(component);</span>
+<span class="fc" id="L53">    }</span>
+
     /**
      * Return the text corresponding to a i18n key in the properties.
      * @param key a i18n key in the properties
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-        
-        String result;
-        
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (I18nUtil.isAsian(I18nUtil.getLocaleDefault())) {</span>
-<span class="nc" id="L64">            result = String.format(</span>
-                &quot;&lt;html&gt;&lt;span style=\&quot;font-family:'%s'\&quot;&gt;%s&lt;/span&gt;&lt;/html&gt;&quot;,
-                UiUtil.FONT_NAME_MONO_ASIAN,
-<span class="nc" id="L67">                I18nUtil.valueByKey(key)</span>
-            );
-        } else {
-<span class="fc" id="L70">            result = I18nUtil.valueByKey(key);</span>
-        }
-        
-<span class="fc" id="L73">        return result;</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        return I18nViewUtil.isNonUbuntu(I18nUtil.getLocaleDefault())</span>
+<span class="nc" id="L62">            ? I18nViewUtil.formatNonLatin(I18nUtil.valueByKey(key))</span>
+<span class="fc" id="L63">            : I18nUtil.valueByKey(key);</span>
     }
-    
+
     public static String valueByKey(String key, Locale newLocale) {
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (I18nUtil.isAsian(newLocale)) {</span>
-<span class="nc" id="L78">            return I18nViewUtil.valueByKey(key);</span>
-        } else {
-<span class="fc" id="L80">            return I18nUtil.valueByKey(key);</span>
-        }
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">        return I18nViewUtil.isNonUbuntu(newLocale)</span>
+<span class="nc" id="L68">            ? I18nViewUtil.valueByKey(key)</span>
+<span class="fc" id="L69">            : I18nUtil.valueByKey(key);</span>
+    }
+
+    public static boolean isNonUbuntu(Locale locale) {
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        return Locale.forLanguageTag(&quot;zh&quot;).getLanguage().equals(locale.getLanguage())</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">            || Locale.forLanguageTag(&quot;ko&quot;).getLanguage().equals(locale.getLanguage())</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">            || Locale.forLanguageTag(&quot;ja&quot;).getLanguage().equals(locale.getLanguage());</span>
+    }
+
+    public static String formatNonLatin(String label) {
+<span class="fc" id="L79">        return I18nViewUtil.formatNonLatin(label, StringUtils.EMPTY);</span>
+    }
+
+    public static String formatNonLatin(String label, String custom) {
+<span class="fc" id="L83">        return String.format(</span>
+            &quot;&lt;html&gt;&lt;span style=\&quot;font-family:'%s';%s\&quot;&gt;%s&lt;/span&gt;&lt;/html&gt;&quot;,
+            UiUtil.FONT_NAME_MONO_ASIAN,
+            custom,
+            label
+        );
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

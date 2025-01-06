@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionPauseUnpause.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.tree.action</a> &gt; <span class="el_source">ActionPauseUnpause.java</span></div><h1>ActionPauseUnpause.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2025.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss it
+ * every time possible with every body.
+ *
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ *******************************************************************************/
+package com.jsql.view.swing.tree.action;
+
+import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import com.jsql.view.swing.util.MediatorHelper;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+/**
+ * Action to pause and unpause injection process.
+ */
+public class ActionPauseUnpause implements ActionListener {
+    
+    private final AbstractNodeModel nodeModel;
+
+<span class="fc" id="L27">    public ActionPauseUnpause(AbstractNodeModel nodeModel) {</span>
+<span class="fc" id="L28">        this.nodeModel = nodeModel;</span>
+<span class="fc" id="L29">    }</span>
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L33">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (suspendableTask == null) {</span>
+<span class="nc" id="L35">            return;</span>
+        }
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (suspendableTask.isPaused()) {</span>
+<span class="nc" id="L38">            suspendableTask.unpause();</span>
+        } else {
+<span class="nc" id="L40">            suspendableTask.pause();</span>
+        }
+<span class="nc" id="L42">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

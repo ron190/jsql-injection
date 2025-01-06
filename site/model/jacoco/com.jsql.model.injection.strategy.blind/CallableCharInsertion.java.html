@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * position and bit. Opcodes represent the differences between
  * the reference page, and the resulting page.
  */
-public class CallableCharInsertion extends AbstractCallableBoolean&lt;CallableCharInsertion&gt; {
+public class CallableCharInsertion extends AbstractCallableBinary&lt;CallableCharInsertion&gt; {
     
     // List of differences found between the reference page, and the present page
 <span class="fc" id="L18">    private LinkedList&lt;Diff&gt; opcodes = new LinkedList&lt;&gt;();</span>
@@ -25,15 +25,12 @@ public class CallableCharInsertion extends AbstractCallableBoolean&lt;CallableCh
     
     /**
      * Constructor for preparation and blind confirmation.
-     * @param inj
-     * @param injectionCharInsertion
      */
-<span class="fc" id="L31">    public CallableCharInsertion(String inj, InjectionCharInsertion injectionCharInsertion, String metadataInjectionProcess) {</span>
-        
-<span class="fc" id="L33">        this.injectionCharInsertion = injectionCharInsertion;</span>
-<span class="fc" id="L34">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
-<span class="fc" id="L35">        this.booleanUrl = inj;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L29">    public CallableCharInsertion(String inj, InjectionCharInsertion injectionCharInsertion, String metadataInjectionProcess) {</span>
+<span class="fc" id="L30">        this.injectionCharInsertion = injectionCharInsertion;</span>
+<span class="fc" id="L31">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L32">        this.booleanUrl = inj;</span>
+<span class="fc" id="L33">    }</span>
 
     /**
      * Check if a result page means the SQL query is true,
@@ -43,16 +40,14 @@ public class CallableCharInsertion extends AbstractCallableBoolean&lt;CallableCh
      */
     @Override
     public boolean isTrue() {
-
         // Fix #95422: ConcurrentModificationException on iterator.next()
-<span class="fc" id="L48">        List&lt;Diff&gt; copyTrueMarks = new CopyOnWriteArrayList&lt;&gt;(this.injectionCharInsertion.getConstantTrueMark());</span>
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (Diff trueDiff: copyTrueMarks) {</span>
-<span class="fc bfc" id="L50" title="All 2 branches covered.">            if (!this.opcodes.contains(trueDiff)) {</span>
-<span class="fc" id="L51">                return false;</span>
+<span class="fc" id="L44">        List&lt;Diff&gt; copyTrueMarks = new CopyOnWriteArrayList&lt;&gt;(this.injectionCharInsertion.getConstantTrueMark());</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        for (Diff trueDiff: copyTrueMarks) {</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            if (!this.opcodes.contains(trueDiff)) {</span>
+<span class="fc" id="L47">                return false;</span>
             }
-<span class="fc" id="L53">        }</span>
-
-<span class="fc" id="L55">        return true;</span>
+<span class="fc" id="L49">        }</span>
+<span class="fc" id="L50">        return true;</span>
     }
 
     /**
@@ -62,22 +57,20 @@ public class CallableCharInsertion extends AbstractCallableBoolean&lt;CallableCh
      */
     @Override
     public CallableCharInsertion call() {
+<span class="fc" id="L60">        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
         
-<span class="fc" id="L66">        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
-        
-<span class="fc" id="L68">        this.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diffMain(</span>
-<span class="fc" id="L69">            this.injectionCharInsertion.getBlankFalseMark(),</span>
+<span class="fc" id="L62">        this.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diffMain(</span>
+<span class="fc" id="L63">            this.injectionCharInsertion.getBlankFalseMark(),</span>
             source,
             false
         );
 
-<span class="fc" id="L74">        CallableCharInsertion.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);</span>
-        
-<span class="fc" id="L76">        return this;</span>
+<span class="fc" id="L68">        CallableCharInsertion.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);</span>
+<span class="fc" id="L69">        return this;</span>
     }
     
     public List&lt;Diff&gt; getOpcodes() {
-<span class="fc" id="L80">        return this.opcodes;</span>
+<span class="fc" id="L73">        return this.opcodes;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -4,7 +4,6 @@ import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.commons.lang3.SerializationException;
-import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,52 +21,44 @@ public class TabMouseAdapter extends MouseAdapter {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L25">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L24">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private final TabbedPaneWheeled tabbedPaneWheeled;
     
-<span class="fc" id="L29">    public TabMouseAdapter(TabbedPaneWheeled tabbedPaneWheeled) {</span>
-<span class="fc" id="L30">        this.tabbedPaneWheeled = tabbedPaneWheeled;</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L28">    public TabMouseAdapter(TabbedPaneWheeled tabbedPaneWheeled) {</span>
+<span class="fc" id="L29">        this.tabbedPaneWheeled = tabbedPaneWheeled;</span>
+<span class="fc" id="L30">    }</span>
 
     @Override
     public void mouseClicked(MouseEvent event) {
-        
-<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (!SwingUtilities.isRightMouseButton(event)) {</span>
-<span class="fc" id="L37">            return;</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (!SwingUtilities.isRightMouseButton(event)) {</span>
+<span class="fc" id="L35">            return;</span>
         }
-            
-<span class="nc" id="L40">        var componentSource = (Component) event.getSource();</span>
-<span class="nc" id="L41">        var menu = new JPopupMenu();</span>
 
         // Copy menu items from menubar
-        for (
-<span class="nc" id="L45">            var position = 0</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">            ; position &lt; MediatorHelper.menubar().getMenuView().getMenuComponentCount()</span>
-<span class="nc" id="L47">            ; position++</span>
-        ) {
-            
+<span class="nc" id="L39">        var menu = new JPopupMenu();</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        for (var i = 0 ; i &lt; MediatorHelper.menubar().getMenuView().getMenuComponentCount() ; i++) {</span>
+<span class="nc" id="L41">            final int positionFinal = i;</span>
             // Fix #35348: SerializationException on clone()
             try {
-<span class="nc" id="L52">                JMenuItem itemMenu = (JMenuItem) SerializationUtils.clone(MediatorHelper.menubar().getMenuView().getMenuComponent(position));</span>
-<span class="nc" id="L53">                menu.add(itemMenu);</span>
-                
-<span class="nc" id="L55">                final int positionFinal = position;</span>
-<span class="nc" id="L56">                itemMenu.addActionListener(actionEvent -&gt; this.tabbedPaneWheeled.setSelectedIndex(positionFinal));</span>
-                
-<span class="nc" id="L58">            } catch (SerializationException e) {</span>
-<span class="nc" id="L59">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L60">            }</span>
+                // clone and setAction() not efficient (performance and i18n)
+<span class="nc" id="L45">                var itemOrigin = (JMenuItem) MediatorHelper.menubar().getMenuView().getMenuComponent(i);</span>
+<span class="nc" id="L46">                JMenuItem itemMenu = new JMenuItem(itemOrigin.getText(), itemOrigin.getIcon());</span>
+<span class="nc" id="L47">                itemMenu.addActionListener(actionEvent -&gt; this.tabbedPaneWheeled.setSelectedIndex(positionFinal));</span>
+<span class="nc" id="L48">                menu.add(itemMenu);</span>
+<span class="nc" id="L49">            } catch (SerializationException e) {</span>
+<span class="nc" id="L50">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L51">            }</span>
         }
 
-<span class="nc" id="L63">        menu.show(componentSource, event.getX(), event.getY());</span>
-        
-<span class="nc" id="L65">        menu.setLocation(</span>
-<span class="nc bnc" id="L66" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
-<span class="nc" id="L67">            ? event.getXOnScreen() - menu.getWidth()</span>
-<span class="nc" id="L68">            : event.getXOnScreen(),</span>
-<span class="nc" id="L69">            event.getYOnScreen()</span>
+<span class="nc" id="L54">        var componentSource = (Component) event.getSource();</span>
+<span class="nc" id="L55">        menu.show(componentSource, event.getX(), event.getY());</span>
+<span class="nc" id="L56">        menu.setLocation(</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="nc" id="L58">            ? event.getXOnScreen() - menu.getWidth()</span>
+<span class="nc" id="L59">            : event.getXOnScreen(),</span>
+<span class="nc" id="L60">            event.getYOnScreen()</span>
         );
-<span class="nc" id="L71">    }</span>
+<span class="nc" id="L62">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

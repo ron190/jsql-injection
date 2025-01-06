@@ -7,10 +7,10 @@
 <body>
 <div id="overview"><a href="../../../../../../apidocs/com/jsql/view/scan/interaction/MarkNormalVulnerable.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/*******************************************************************************</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> * Copyhacked (H) 2012-2020.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> * Copyhacked (H) 2012-2025.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> * This program and the accompanying materials</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_javadoccomment"> * are made available under no term at all, use it like</em>
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> * you want, but share and discuss about it</em>
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> * you want, but share and discuss it</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * every time possible with every body.</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * </em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> * Contributors:</em>
@@ -34,20 +34,19 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>      
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>      @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">public</strong> <a name="MarkNormalVulnerable" href="../../../../../com/jsql/view/scan/interaction/MarkNormalVulnerable.html#MarkNormalVulnerable">MarkNormalVulnerable</a>(Object[] interactionParams) {
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>          Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">this</strong>.url = (String) params.get(Header.URL);
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      }
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      @Override
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() {
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> strategy = MediatorHelper.model().getMediatorStrategy().getNormal();
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          MediatorHelper.managerScan().highlight(<strong class="jxr_keyword">this</strong>.url, strategy.toString());
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      }
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  }
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>          Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>          <strong class="jxr_keyword">this</strong>.url = (String) params.get(Header.URL);
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      }
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      @Override
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() {
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> strategy = MediatorHelper.model().getMediatorStrategy().getNormal();
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          MediatorHelper.managerScan().highlight(<strong class="jxr_keyword">this</strong>.url, strategy.toString());
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      }
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2024. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
 </body>
 </html>

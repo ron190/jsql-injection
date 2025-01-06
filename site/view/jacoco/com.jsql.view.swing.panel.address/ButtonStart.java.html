@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ButtonStart.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.address</a> &gt; <span class="el_source">ButtonStart.java</span></div><h1>ButtonStart.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2025.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss it
+ * every time possible with every body.
+ *
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ *******************************************************************************/
+package com.jsql.view.swing.panel.address;
+
+import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.manager.util.StateButton;
+import com.jsql.view.swing.text.JToolTipI18n;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.concurrent.atomic.AtomicReference;
+
+/**
+ * A button displayed in address.
+ */
+public class ButtonStart extends JButton {
+    
+    /**
+     * State of current injection.
+     */
+<span class="fc" id="L31">    private StateButton state = StateButton.STARTABLE;</span>
+
+<span class="fc" id="L33">    private final AtomicReference&lt;JToolTipI18n&gt; tooltipRadio = new AtomicReference&lt;&gt;(</span>
+<span class="fc" id="L34">        new JToolTipI18n(I18nUtil.valueByKey(&quot;BUTTON_START_TOOLTIP&quot;))</span>
+    );
+
+    @Override
+    public JToolTip createToolTip() {
+<span class="nc" id="L39">        tooltipRadio.set(new JToolTipI18n(I18nUtil.valueByKey(&quot;BUTTON_START_TOOLTIP&quot;)));</span>
+<span class="nc" id="L40">        return tooltipRadio.get();</span>
+    }
+
+    /**
+     * Create a button in address bar.
+     */
+<span class="fc" id="L46">    public ButtonStart() {</span>
+<span class="fc" id="L47">        this.setName(&quot;buttonInUrl&quot;);</span>
+<span class="fc" id="L48">        this.setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_START_TOOLTIP&quot;));</span>
+<span class="fc" id="L49">        I18nViewUtil.addComponentForKey(&quot;BUTTON_START_TOOLTIP&quot;, tooltipRadio.get());</span>
+
+<span class="fc" id="L51">        this.setPreferredSize(new Dimension(18, 16));</span>
+<span class="fc" id="L52">        this.setOpaque(false);</span>
+<span class="fc" id="L53">        this.setContentAreaFilled(false);</span>
+<span class="fc" id="L54">        this.setBorderPainted(false);</span>
+<span class="fc" id="L55">        this.setRolloverEnabled(true);</span>
+<span class="fc" id="L56">        this.setIcons();</span>
+<span class="fc" id="L57">    }</span>
+
+    private void setIcons() {
+        // required to get correct color at startup instead of blu
+<span class="fc" id="L61">        this.setIcon(UiUtil.ARROW.icon);</span>
+<span class="fc" id="L62">        this.setRolloverIcon(UiUtil.ARROW_HOVER.icon);</span>
+<span class="fc" id="L63">        this.setPressedIcon(UiUtil.ARROW_PRESSED.icon);</span>
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Replace button with Stop icon ; user can stop current process.
+     */
+    public void setInjectionReady() {
+<span class="fc" id="L70">        this.state = StateButton.STARTABLE;</span>
+<span class="fc" id="L71">        this.setRolloverEnabled(true);</span>
+<span class="fc" id="L72">        this.setEnabled(true);</span>
+<span class="fc" id="L73">        this.setIcons();</span>
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * Replace button with Stop icon ; user can stop current process.
+     */
+    public void setInjectionRunning() {
+<span class="fc" id="L80">        this.state = StateButton.STOPPABLE;</span>
+<span class="fc" id="L81">        this.setRolloverEnabled(false);</span>
+<span class="fc" id="L82">        this.setEnabled(true);</span>
+<span class="fc" id="L83">        this.setIcon(UiUtil.CROSS_RED.icon);</span>
+<span class="fc" id="L84">        this.setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_STOP_TOOLTIP&quot;));</span>
+<span class="fc" id="L85">    }</span>
+
+    /**
+     * Replace button with icon loader until injection process
+     * is finished ; user waits the end of process.
+     */
+    public void setInjectionStopping() {
+<span class="nc" id="L92">        this.state = StateButton.STOPPING;</span>
+<span class="nc" id="L93">        this.setRolloverEnabled(false);</span>
+<span class="nc" id="L94">        this.setEnabled(false);</span>
+<span class="nc" id="L95">        this.setIcon(UiUtil.HOURGLASS.icon);</span>
+<span class="nc" id="L96">        this.setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_STOPPING_TOOLTIP&quot;));</span>
+<span class="nc" id="L97">    }</span>
+
+    /**
+     * Return the current state of current process.
+     * @return State of process
+     */
+    public StateButton getState() {
+<span class="fc" id="L104">        return this.state;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

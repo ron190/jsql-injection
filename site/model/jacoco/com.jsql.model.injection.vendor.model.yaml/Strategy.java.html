@@ -10,7 +10,7 @@ import java.io.Serializable;
 <span class="fc" id="L10">    private Configuration configuration = new Configuration();</span>
 <span class="fc" id="L11">    private Normal normal = new Normal();</span>
 <span class="fc" id="L12">    private String stacked = StringUtils.EMPTY;</span>
-<span class="fc" id="L13">    private Boolean booleanStrategy = new Boolean();</span>
+<span class="fc" id="L13">    private Binary binary = new Binary();</span>
 <span class="fc" id="L14">    private Error error = new Error();</span>
 
     public Configuration getConfiguration() {
@@ -29,12 +29,12 @@ import java.io.Serializable;
 <span class="fc" id="L29">        this.normal = normal;</span>
 <span class="fc" id="L30">    }</span>
 
-    public Boolean getBoolean() {
-<span class="fc" id="L33">        return this.booleanStrategy;</span>
+    public Binary getBinary() {
+<span class="fc" id="L33">        return this.binary;</span>
     }
 
-    public void setBoolean(Boolean booleanStrategy) {
-<span class="fc" id="L37">        this.booleanStrategy = booleanStrategy;</span>
+    public void setBinary(Binary binary) {
+<span class="fc" id="L37">        this.binary = binary;</span>
 <span class="fc" id="L38">    }</span>
 
     public Error getError() {

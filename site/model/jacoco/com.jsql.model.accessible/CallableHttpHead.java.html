@@ -55,105 +55,94 @@ public class CallableHttpHead implements Callable&lt;CallableHttpHead&gt; {
      * @param urlAdminPage URL of admin page
      */
 <span class="fc" id="L57">    public CallableHttpHead(String urlAdminPage, InjectionModel injectionModel, String metadataInjectionProcess) {</span>
-        
-<span class="fc" id="L59">        this.urlAdminPage = urlAdminPage;</span>
-<span class="fc" id="L60">        this.injectionModel= injectionModel;</span>
-<span class="fc" id="L61">        this.metadataInjectionProcess= metadataInjectionProcess;</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L58">        this.urlAdminPage = urlAdminPage;</span>
+<span class="fc" id="L59">        this.injectionModel= injectionModel;</span>
+<span class="fc" id="L60">        this.metadataInjectionProcess= metadataInjectionProcess;</span>
+<span class="fc" id="L61">    }</span>
 
     /**
-     * Call URL to a administration page in HEAD mode and send the result back to view.
+     * Call URL to an administration page in HEAD mode and send the result back to view.
      */
     @Override
     public CallableHttpHead call() {
-        
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        if (this.injectionModel.getResourceAccess().isSearchAdminStopped()) {</span>
-<span class="nc" id="L71">            return this;</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        if (this.injectionModel.getResourceAccess().isSearchAdminStopped()) {</span>
+<span class="nc" id="L69">            return this;</span>
         }
         
         try {
-<span class="fc" id="L75">            var builderHttpRequest = HttpRequest.newBuilder()</span>
-<span class="fc" id="L76">                .uri(URI.create(this.urlAdminPage))</span>
-<span class="fc" id="L77">                .method(&quot;HEAD&quot;, BodyPublishers.noBody())</span>
-<span class="fc" id="L78">                .timeout(Duration.ofSeconds(4));</span>
+<span class="fc" id="L73">            var builderHttpRequest = HttpRequest.newBuilder()</span>
+<span class="fc" id="L74">                .uri(URI.create(this.urlAdminPage))</span>
+<span class="fc" id="L75">                .method(&quot;HEAD&quot;, BodyPublishers.noBody())</span>
+<span class="fc" id="L76">                .timeout(Duration.ofSeconds(4));</span>
             
-<span class="fc" id="L80">            Stream.of(</span>
-<span class="fc" id="L81">                this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries()</span>
-<span class="fc" id="L82">                .split(&quot;\\\\r\\\\n&quot;)</span>
+<span class="fc" id="L78">            Stream.of(</span>
+<span class="fc" id="L79">                this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries()</span>
+<span class="fc" id="L80">                .split(&quot;\\\\r\\\\n&quot;)</span>
             )
-<span class="fc" id="L84">            .map(e -&gt; {</span>
-                
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">                if (e.split(&quot;:&quot;).length == 2) {</span>
-                    
-<span class="nc" id="L88">                    return new SimpleEntry&lt;&gt;(</span>
-<span class="nc" id="L89">                        e.split(&quot;:&quot;)[0],</span>
-<span class="nc" id="L90">                        e.split(&quot;:&quot;)[1]</span>
+<span class="fc" id="L82">            .map(e -&gt; {</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">                if (e.split(&quot;:&quot;).length == 2) {</span>
+<span class="nc" id="L84">                    return new SimpleEntry&lt;&gt;(</span>
+<span class="nc" id="L85">                        e.split(&quot;:&quot;)[0],</span>
+<span class="nc" id="L86">                        e.split(&quot;:&quot;)[1]</span>
                     );
                 } else {
-                    
-<span class="fc" id="L94">                    return null;</span>
+<span class="fc" id="L89">                    return null;</span>
                 }
             })
-<span class="fc" id="L97">            .filter(Objects::nonNull)</span>
-<span class="pc" id="L98">            .forEach(e -&gt; builderHttpRequest.header(e.getKey(), e.getValue()));</span>
+<span class="fc" id="L92">            .filter(Objects::nonNull)</span>
+<span class="pc" id="L93">            .forEach(e -&gt; builderHttpRequest.header(e.getKey(), e.getValue()));</span>
             
-<span class="fc" id="L100">            var httpRequest = builderHttpRequest.build();</span>
+<span class="fc" id="L95">            var httpRequest = builderHttpRequest.build();</span>
             
-<span class="fc" id="L102">            var httpClient = HttpClient.newBuilder()</span>
-<span class="fc" id="L103">                .connectTimeout(Duration.ofSeconds(4))</span>
-<span class="fc" id="L104">                .build();</span>
+<span class="fc" id="L97">            var httpClient = HttpClient.newBuilder()</span>
+<span class="fc" id="L98">                .connectTimeout(Duration.ofSeconds(4))</span>
+<span class="fc" id="L99">                .build();</span>
             
-<span class="fc" id="L106">            HttpResponse&lt;Void&gt; response = httpClient.send(httpRequest, BodyHandlers.discarding());</span>
+<span class="fc" id="L101">            HttpResponse&lt;Void&gt; response = httpClient.send(httpRequest, BodyHandlers.discarding());</span>
 
-<span class="fc" id="L108">            this.responseCodeHttp = &quot;&quot;+ response.statusCode();</span>
+<span class="fc" id="L103">            this.responseCodeHttp = &quot;&quot;+ response.statusCode();</span>
 
-<span class="fc" id="L110">            Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L111">            msgHeader.put(Header.URL, this.urlAdminPage);</span>
-<span class="fc" id="L112">            msgHeader.put(Header.POST, StringUtils.EMPTY);</span>
-<span class="fc" id="L113">            msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));</span>
-<span class="fc" id="L114">            msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(response));</span>
-<span class="fc" id="L115">            msgHeader.put(Header.METADATA_PROCESS, this.metadataInjectionProcess);</span>
+<span class="fc" id="L105">            Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L106">            msgHeader.put(Header.URL, this.urlAdminPage);</span>
+<span class="fc" id="L107">            msgHeader.put(Header.POST, StringUtils.EMPTY);</span>
+<span class="fc" id="L108">            msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));</span>
+<span class="fc" id="L109">            msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(response));</span>
+<span class="fc" id="L110">            msgHeader.put(Header.METADATA_PROCESS, this.metadataInjectionProcess);</span>
             
-<span class="fc" id="L117">            var request = new Request();</span>
-<span class="fc" id="L118">            request.setMessage(Interaction.MESSAGE_HEADER);</span>
-<span class="fc" id="L119">            request.setParameters(msgHeader);</span>
-<span class="fc" id="L120">            this.injectionModel.sendToViews(request);</span>
-            
-<span class="nc" id="L122">        } catch (InterruptedException e) {</span>
-            
-<span class="nc" id="L124">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L125">            Thread.currentThread().interrupt();</span>
-            
-<span class="nc" id="L127">        } catch (Exception e) {</span>
-            
-<span class="nc" id="L129">            var eMessageImplicit = String.format(</span>
+<span class="fc" id="L112">            var request = new Request();</span>
+<span class="fc" id="L113">            request.setMessage(Interaction.MESSAGE_HEADER);</span>
+<span class="fc" id="L114">            request.setParameters(msgHeader);</span>
+<span class="fc" id="L115">            this.injectionModel.sendToViews(request);</span>
+<span class="nc" id="L116">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L117">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L118">            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L119">        } catch (Exception e) {</span>
+<span class="nc" id="L120">            var eMessageImplicit = String.format(</span>
                 &quot;Problem connecting to %s (implicit reason): %s&quot;, 
                 this.urlAdminPage,
-<span class="nc" id="L132">                InjectionModel.getImplicitReason(e)</span>
+<span class="nc" id="L123">                InjectionModel.getImplicitReason(e)</span>
             );
-            
-<span class="nc" id="L135">            String eMessage = Optional.ofNullable(e.getMessage()).orElse(eMessageImplicit);</span>
-            
-<span class="nc" id="L137">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, eMessage);</span>
-<span class="pc" id="L138">        }</span>
+<span class="nc" id="L125">            String eMessage = Optional.ofNullable(e.getMessage()).orElse(eMessageImplicit);</span>
+<span class="nc" id="L126">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, eMessage);</span>
+<span class="pc" id="L127">        }</span>
         
-<span class="fc" id="L140">        return this;</span>
+<span class="fc" id="L129">        return this;</span>
     }
 
     /**
      * Check if HTTP response is either 2xx or 3xx, which corresponds to
-     * a acceptable response from the website.
+     * an acceptable response from the website.
      * @return true if HTTP code start with 2 or 3
      */
     public boolean isHttpResponseOk() {
-<span class="fc" id="L149">        return this.responseCodeHttp.matches(&quot;[23]\\d\\d&quot;);</span>
+<span class="fc" id="L138">        return this.responseCodeHttp.matches(&quot;[23]\\d\\d&quot;);</span>
     }
     
     
     // Getters
     
     public String getUrl() {
-<span class="fc" id="L156">        return this.urlAdminPage;</span>
+<span class="fc" id="L145">        return this.urlAdminPage;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

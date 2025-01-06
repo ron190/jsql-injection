@@ -33,81 +33,67 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
 
     @Override
     public String run(Object... args) throws JSqlException {
-        
         // Concurrent search
-<span class="fc" id="L38">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetIndexes&quot;);</span>
-        
-<span class="fc" id="L40">        CompletionService&lt;CallablePageSource&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
+<span class="fc" id="L37">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetIndexes&quot;);</span>
+<span class="fc" id="L38">        CompletionService&lt;CallablePageSource&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
-<span class="fc" id="L42">        String initialQuery = StringUtils.EMPTY;</span>
+<span class="fc" id="L40">        String initialQuery = StringUtils.EMPTY;</span>
         int nbIndex;
         
-<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        int countNormalIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex()</span>
-<span class="nc" id="L46">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countNormalIndex()</span>
-<span class="fc" id="L47">            : 50;</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        int countNormalIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex()</span>
+<span class="nc" id="L44">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countNormalIndex()</span>
+<span class="fc" id="L45">            : 50;</span>
 
         // SQL fields are built like 1337[index]7330+1
         // 7330+1 allows to exclude false positive when page contains injection URL
         // Search if the source contains 1337[index]7331
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (nbIndex = 1 ; nbIndex &lt;= countNormalIndex ; nbIndex++) {</span>
-<span class="fc" id="L53">            taskCompletionService.submit(</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (nbIndex = 1 ; nbIndex &lt;= countNormalIndex ; nbIndex++) {</span>
+<span class="fc" id="L51">            taskCompletionService.submit(</span>
                 new CallablePageSource(
-<span class="fc" id="L55">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),</span>
+<span class="fc" id="L53">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),</span>
                     this.injectionModel,
                     &quot;normal#&quot; + nbIndex
                 )
             );
         }
         
-<span class="fc" id="L62">        nbIndex = 1;</span>
-
+<span class="fc" id="L60">        nbIndex = 1;</span>
         try {
             // Start from 10 to 100 requests
-<span class="fc bfc" id="L66" title="All 2 branches covered.">            while (nbIndex &lt;= countNormalIndex) {</span>
-
-<span class="pc bpc" id="L68" title="1 of 2 branches missed.">                if (this.isSuspended()) {</span>
-<span class="nc" id="L69">                    throw new StoppedByUserSlidingException();</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            while (nbIndex &lt;= countNormalIndex) {</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">                if (this.isSuspended()) {</span>
+<span class="nc" id="L65">                    throw new StoppedByUserSlidingException();</span>
                 }
-
-<span class="fc" id="L72">                CallablePageSource currentCallable = taskCompletionService.take().get();</span>
-<span class="fc" id="L73">                nbIndex++;</span>
-
+<span class="fc" id="L67">                CallablePageSource currentCallable = taskCompletionService.take().get();</span>
+<span class="fc" id="L68">                nbIndex++;</span>
                 // Found a correct mark 1337[index]7331 in the source
-<span class="fc" id="L76">                String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, &quot;\\d+&quot;);</span>
-<span class="fc bfc" id="L77" title="All 2 branches covered.">                if (Pattern.compile(&quot;(?s).*&quot;+ regexAllIndexes +&quot;.*&quot;).matcher(currentCallable.getContent()).matches()) {</span>
+<span class="fc" id="L70">                String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, &quot;\\d+&quot;);</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">                if (Pattern.compile(&quot;(?s).*&quot;+ regexAllIndexes +&quot;.*&quot;).matcher(currentCallable.getContent()).matches()) {</span>
                     
-<span class="fc" id="L79">                    this.injectionModel.getMediatorStrategy().getSpecificNormal().setSourceIndexesFound(currentCallable.getContent());</span>
-<span class="fc" id="L80">                    initialQuery = currentCallable.getQuery().replace(&quot;0%2b1&quot;, &quot;1&quot;);</span>
+<span class="fc" id="L73">                    this.injectionModel.getMediatorStrategy().getSpecificNormal().setSourceIndexesFound(currentCallable.getContent());</span>
+<span class="fc" id="L74">                    initialQuery = currentCallable.getQuery().replace(&quot;0%2b1&quot;, &quot;1&quot;);</span>
                     
-<span class="pc bpc" id="L82" title="1 of 2 branches missed.">                    if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {</span>
-
-<span class="nc" id="L84">                        String regexIndexesExceptFirst = String.format(VendorYaml.FORMAT_INDEX, &quot;(?!17331)\\d+&quot;);</span>
-<span class="nc" id="L85">                        initialQuery = initialQuery.replaceAll(regexIndexesExceptFirst, &quot;1&quot;);</span>
-<span class="nc" id="L86">                        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Calibrating indexes disabled, forcing to index [1]&quot;);</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                    if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {</span>
+<span class="nc" id="L77">                        String regexIndexesExceptFirst = String.format(VendorYaml.FORMAT_INDEX, &quot;(?!17331)\\d+&quot;);</span>
+<span class="nc" id="L78">                        initialQuery = initialQuery.replaceAll(regexIndexesExceptFirst, &quot;1&quot;);</span>
+<span class="nc" id="L79">                        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Calibrating indexes disabled, forcing to index [1]&quot;);</span>
                     }
-                    
-<span class="fc" id="L89">                    LOGGER.log(</span>
+<span class="fc" id="L81">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_INFORM,
                         &quot;Strategy [Normal] triggered by [{}]&quot;,
-<span class="fc" id="L92">                        () -&gt; currentCallable.getQuery().trim().replaceAll(&quot;1337(\\d*)7330%2b1&quot;, &quot;$1&quot;)</span>
+<span class="fc" id="L84">                        () -&gt; currentCallable.getQuery().trim().replaceAll(&quot;1337(\\d*)7330%2b1&quot;, &quot;$1&quot;)</span>
                     );
-                    
-<span class="fc" id="L95">                    break;</span>
+<span class="fc" id="L86">                    break;</span>
                 }
-<span class="fc" id="L97">            }</span>
-
-<span class="fc" id="L99">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-
-<span class="nc" id="L101">        } catch (InterruptedException e) {</span>
-
-<span class="nc" id="L103">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L104">            Thread.currentThread().interrupt();</span>
-
-<span class="nc" id="L106">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L107">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="pc" id="L108">        }</span>
-
-<span class="fc" id="L110">        return initialQuery;</span>
+<span class="fc" id="L88">            }</span>
+<span class="fc" id="L89">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="nc" id="L90">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L91">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L92">            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L93">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L94">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="pc" id="L95">        }</span>
+<span class="fc" id="L96">        return initialQuery;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

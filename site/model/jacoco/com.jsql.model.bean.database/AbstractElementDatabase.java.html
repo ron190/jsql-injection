@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractElementDatabase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.bean.database</a> &gt; <span class="el_source">AbstractElementDatabase.java</span></div><h1>AbstractElementDatabase.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -30,26 +30,22 @@ package com.jsql.model.bean.database;
      * Required for suspendable concurrent map tracking.
      */
 <span class="fc" id="L32">    public static final AbstractElementDatabase MOCK = new AbstractElementDatabase() {</span>
-
         @Override
         public AbstractElementDatabase getParent() {
-<span class="nc" id="L36">            return null;</span>
+<span class="nc" id="L35">            return null;</span>
         }
-
         @Override
         public int getChildCount() {
-<span class="nc" id="L41">            return 0;</span>
+<span class="nc" id="L39">            return 0;</span>
         }
-
         @Override
-        public String getLabelCount() {
-<span class="nc" id="L46">            return null;</span>
+        public String getLabelWithCount() {
+<span class="nc" id="L43">            return null;</span>
         }
     };
     
     /**
      * Traverse upward, and return the parent.
-     * @return
      */
     public abstract AbstractElementDatabase getParent();
     
@@ -62,20 +58,19 @@ package com.jsql.model.bean.database;
     
     /**
      * Return a readable label displayed by the view.
-     * @return
      */
-    public abstract String getLabelCount();
+    public abstract String getLabelWithCount();
     
     /**
      * Return the label of current element.
      */
     @Override
     public String toString() {
-<span class="fc" id="L74">        return this.elementValue;</span>
+<span class="fc" id="L69">        return this.elementValue;</span>
     }
     
     public void setElementValue(String elementValue) {
-<span class="nc" id="L78">        this.elementValue = elementValue;</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L73">        this.elementValue = elementValue;</span>
+<span class="nc" id="L74">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -28,96 +28,84 @@ public class FormUtil {
 <span class="fc" id="L28">    }</span>
 
     public void parseForms(int statusCode, String pageSource) {
-        
-<span class="fc" id="L32">        var elementsForm = Jsoup.parse(pageSource).select(&quot;form&quot;);</span>
-        
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (elementsForm.isEmpty()) {</span>
-<span class="fc" id="L35">            return;</span>
+<span class="fc" id="L31">        var elementsForm = Jsoup.parse(pageSource).select(&quot;form&quot;);</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (elementsForm.isEmpty()) {</span>
+<span class="fc" id="L33">            return;</span>
         }
         
-<span class="nc" id="L38">        var result = new StringBuilder();</span>
+<span class="nc" id="L36">        var result = new StringBuilder();</span>
+<span class="nc" id="L37">        Map&lt;Element, List&lt;Element&gt;&gt; mapForms = new HashMap&lt;&gt;();</span>
         
-<span class="nc" id="L40">        Map&lt;Element, List&lt;Element&gt;&gt; mapForms = new HashMap&lt;&gt;();</span>
-        
-<span class="nc bnc" id="L42" title="All 2 branches missed.">        for (Element form: elementsForm) {</span>
-            
-<span class="nc" id="L44">            mapForms.put(form, new ArrayList&lt;&gt;());</span>
-            
-<span class="nc" id="L46">            result.append(</span>
-<span class="nc" id="L47">                String.format(</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        for (Element form: elementsForm) {</span>
+<span class="nc" id="L40">            mapForms.put(form, new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L41">            result.append(</span>
+<span class="nc" id="L42">                String.format(</span>
                     &quot;%n&lt;form action=\&quot;%s\&quot; method=\&quot;%s\&quot; /&gt;&quot;,
-<span class="nc" id="L49">                    form.attr(&quot;action&quot;),</span>
-<span class="nc" id="L50">                    form.attr(FORM_ATTR_VALUE)</span>
+<span class="nc" id="L44">                    form.attr(&quot;action&quot;),</span>
+<span class="nc" id="L45">                    form.attr(FORM_ATTR_VALUE)</span>
                 )
             );
-            
-<span class="nc bnc" id="L54" title="All 2 branches missed.">            for (Element input: form.select(&quot;input&quot;)) {</span>
-                
-<span class="nc" id="L56">                result.append(</span>
-<span class="nc" id="L57">                    String.format(</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            for (Element input: form.select(&quot;input&quot;)) {</span>
+<span class="nc" id="L49">                result.append(</span>
+<span class="nc" id="L50">                    String.format(</span>
                         &quot;%n    &lt;input name=\&quot;%s\&quot; value=\&quot;%s\&quot; /&gt;&quot;,
-<span class="nc" id="L59">                        input.attr(&quot;name&quot;),</span>
-<span class="nc" id="L60">                        input.attr(INPUT_ATTR_VALUE)</span>
+<span class="nc" id="L52">                        input.attr(&quot;name&quot;),</span>
+<span class="nc" id="L53">                        input.attr(INPUT_ATTR_VALUE)</span>
                     )
                 );
-                
-<span class="nc" id="L64">                mapForms.get(form).add(input);</span>
-<span class="nc" id="L65">            }</span>
+<span class="nc" id="L56">                mapForms.get(form).add(input);</span>
+<span class="nc" id="L57">            }</span>
+<span class="nc" id="L58">            Collections.reverse(mapForms.get(form));</span>
+<span class="nc" id="L59">        }</span>
             
-<span class="nc" id="L67">            Collections.reverse(mapForms.get(form));</span>
-<span class="nc" id="L68">        }</span>
-            
-<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {</span>
-<span class="nc" id="L71">            this.logForms(statusCode, elementsForm, result);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {</span>
+<span class="nc" id="L62">            this.logForms(statusCode, elementsForm, result);</span>
         } else {
-<span class="nc" id="L73">            this.addForms(elementsForm, result, mapForms);</span>
+<span class="nc" id="L64">            this.addForms(elementsForm, result, mapForms);</span>
         }
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L66">    }</span>
 
     private void addForms(Elements elementsForm, StringBuilder result, Map&lt;Element, List&lt;Element&gt;&gt; mapForms) {
-        
-<span class="nc" id="L79">        LOGGER.log(</span>
+<span class="nc" id="L69">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_SUCCESS,
             &quot;Found {} &lt;form&gt; in HTML body, adding input(s) to requests: {}&quot;,
-<span class="nc" id="L82">            elementsForm::size,</span>
-<span class="nc" id="L83">            () -&gt; result</span>
+<span class="nc" id="L72">            elementsForm::size,</span>
+<span class="nc" id="L73">            () -&gt; result</span>
         );
         
-<span class="nc bnc" id="L86" title="All 2 branches missed.">        for(Entry&lt;Element, List&lt;Element&gt;&gt; form: mapForms.entrySet()) {</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">            for (Element input: form.getValue()) {</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">                if (&quot;get&quot;.equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {</span>
-<span class="nc" id="L89">                    this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        for (Entry&lt;Element, List&lt;Element&gt;&gt; form: mapForms.entrySet()) {</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">            for (Element input: form.getValue()) {</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">                if (&quot;get&quot;.equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {</span>
+<span class="nc" id="L79">                    this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(</span>
                         0,
                         new SimpleEntry&lt;&gt;(
-<span class="nc" id="L92">                            input.attr(&quot;name&quot;),</span>
-<span class="nc" id="L93">                            input.attr(INPUT_ATTR_VALUE)</span>
+<span class="nc" id="L82">                            input.attr(&quot;name&quot;),</span>
+<span class="nc" id="L83">                            input.attr(INPUT_ATTR_VALUE)</span>
                         )
                     );
-<span class="nc bnc" id="L96" title="All 2 branches missed.">                } else if (&quot;post&quot;.equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {</span>
-<span class="nc" id="L97">                    this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                } else if (&quot;post&quot;.equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {</span>
+<span class="nc" id="L87">                    this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(</span>
                         0,
                         new SimpleEntry&lt;&gt;(
-<span class="nc" id="L100">                            input.attr(&quot;name&quot;),</span>
-<span class="nc" id="L101">                            input.attr(INPUT_ATTR_VALUE)</span>
+<span class="nc" id="L90">                            input.attr(&quot;name&quot;),</span>
+<span class="nc" id="L91">                            input.attr(INPUT_ATTR_VALUE)</span>
                         )
                     );
                 }
-<span class="nc" id="L105">            }</span>
-<span class="nc" id="L106">        }</span>
-<span class="nc" id="L107">    }</span>
+<span class="nc" id="L95">            }</span>
+<span class="nc" id="L96">        }</span>
+<span class="nc" id="L97">    }</span>
 
     private void logForms(int statusCode, Elements elementsForm, StringBuilder result) {
-        
-<span class="nc" id="L111">        LOGGER.log(</span>
+<span class="nc" id="L100">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_DEFAULT,
             &quot;Found {} ignored &lt;form&gt; in HTML body: {}&quot;,
-<span class="nc" id="L114">            elementsForm::size,</span>
-<span class="nc" id="L115">            () -&gt; result</span>
+<span class="nc" id="L103">            elementsForm::size,</span>
+<span class="nc" id="L104">            () -&gt; result</span>
         );
-        
-<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (statusCode != 200) {</span>
-<span class="nc" id="L119">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;WAF can detect missing form parameters, you may enable 'Add &lt;input/&gt; parameters' in Preferences and retry&quot;);</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (statusCode != 200) {</span>
+<span class="nc" id="L107">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;WAF can detect missing form parameters, you may enable 'Add &lt;input/&gt; parameters' in Preferences and retry&quot;);</span>
         }
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L109">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

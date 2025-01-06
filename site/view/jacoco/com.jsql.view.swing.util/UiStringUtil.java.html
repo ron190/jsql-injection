@@ -37,20 +37,15 @@ public class UiStringUtil {
         );
         
 <span class="fc" id="L39">        detector.dataEnd();</span>
-<span class="fc" id="L40">        String encoding = detector.getDetectedCharset();</span>
-<span class="fc" id="L41">        String result = text;</span>
-        
+<span class="fc" id="L40">        String result = text;</span>
+
         // Confirm UTF8
+<span class="fc" id="L43">        String encoding = detector.getDetectedCharset();</span>
 <span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (encoding != null) {</span>
-<span class="nc" id="L45">            result = String.format(</span>
-                &quot;&lt;html&gt;&lt;span style=\&quot;font-family:'%s';%s\&quot;&gt;%s&lt;/span&gt;&lt;/html&gt;&quot;,
-                UiUtil.FONT_NAME_MONO_ASIAN,
-<span class="nc bnc" id="L48" title="All 2 branches missed.">                nowrap ? &quot;white-space:nowrap;&quot; : StringUtils.EMPTY,</span>
-                text
-            );
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            result = I18nViewUtil.formatNonLatin(text, nowrap ? &quot;white-space:nowrap;&quot; : StringUtils.EMPTY);</span>
         }
         
-<span class="fc" id="L53">        return result;</span>
+<span class="fc" id="L48">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -32,24 +32,19 @@ public class Crc64Helper {
     }
 
     static {
-        
-<span class="fc" id="L36">        LOOKUPTABLE = new long[0x100];</span>
-        
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (int i = 0; i &lt; 0x100; i++) {</span>
-            
-<span class="fc" id="L40">            long v = i;</span>
-            
-<span class="fc bfc" id="L42" title="All 2 branches covered.">            for (int j = 0; j &lt; 8; j++) {</span>
-<span class="fc bfc" id="L43" title="All 2 branches covered.">                if ((v &amp; 1) == 1) {</span>
-<span class="fc" id="L44">                    v = (v &gt;&gt;&gt; 1) ^ POLY64REV;</span>
+<span class="fc" id="L35">        LOOKUPTABLE = new long[0x100];</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        for (int i = 0; i &lt; 0x100; i++) {</span>
+<span class="fc" id="L37">            long v = i;</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">            for (int j = 0; j &lt; 8; j++) {</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">                if ((v &amp; 1) == 1) {</span>
+<span class="fc" id="L40">                    v = (v &gt;&gt;&gt; 1) ^ POLY64REV;</span>
                 } else {
-<span class="fc" id="L46">                    v = v &gt;&gt;&gt; 1;</span>
+<span class="fc" id="L42">                    v = v &gt;&gt;&gt; 1;</span>
                 }
             }
-            
-<span class="fc" id="L50">            LOOKUPTABLE[i] = v;</span>
+<span class="fc" id="L45">            LOOKUPTABLE[i] = v;</span>
         }
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L47">    }</span>
 
     /**
      * Calculates the CRC64 checksum for the given data array.
@@ -59,15 +54,12 @@ public class Crc64Helper {
      * @return checksum value
      */
     public static String generateCRC64(final byte[] data) {
-        
-<span class="fc" id="L63">        long sum = 0;</span>
-<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (byte element : data) {</span>
-            
-<span class="fc" id="L66">            final int lookupidx = ((int) sum ^ element) &amp; 0xff;</span>
-<span class="fc" id="L67">            sum = (sum &gt;&gt;&gt; 8) ^ LOOKUPTABLE[lookupidx];</span>
+<span class="fc" id="L57">        long sum = 0;</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (byte element : data) {</span>
+<span class="fc" id="L59">            final int lookupidx = ((int) sum ^ element) &amp; 0xff;</span>
+<span class="fc" id="L60">            sum = (sum &gt;&gt;&gt; 8) ^ LOOKUPTABLE[lookupidx];</span>
         }
-        
-<span class="fc" id="L70">        return String.valueOf(sum);</span>
+<span class="fc" id="L62">        return String.valueOf(sum);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

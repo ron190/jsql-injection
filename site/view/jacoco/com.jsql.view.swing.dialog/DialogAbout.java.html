@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DialogAbout.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.dialog</a> &gt; <span class="el_source">DialogAbout.java</span></div><h1>DialogAbout.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,8 +12,6 @@ package com.jsql.view.swing.dialog;
 
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
@@ -40,196 +38,134 @@ public class DialogAbout extends JDialog {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L43">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L41">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Button receiving focus.
      */
-<span class="fc" id="L48">    private JButton buttonClose = null;</span>
-    
-    /**
-     * Dialog scroller.
-     */
-    private final LightScrollPane scrollPane;
+<span class="fc" id="L46">    private JButton buttonClose = null;</span>
 
     /**
      * Create a dialog about project general information.
      */
     public DialogAbout() {
-        
-<span class="fc" id="L60">        super(MediatorHelper.frame(), &quot;About jSQL Injection&quot;, Dialog.ModalityType.MODELESS);</span>
+<span class="fc" id="L52">        super(MediatorHelper.frame(), &quot;About jSQL Injection&quot;, Dialog.ModalityType.MODELESS);</span>
+<span class="fc" id="L53">        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);</span>
+<span class="fc" id="L54">        this.setIconImages(UiUtil.getIcons());  // Define a small and large app icon</span>
 
-<span class="fc" id="L62">        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);</span>
-
-        // Define a small and large app icon
-<span class="fc" id="L65">        this.setIconImages(UiUtil.getIcons());</span>
-
-        // Action for ESCAPE key
-<span class="fc" id="L68">        ActionListener escapeListener = actionEvent -&gt; DialogAbout.this.dispose();</span>
-
-<span class="fc" id="L70">        this.getRootPane().registerKeyboardAction(</span>
+<span class="fc" id="L56">        ActionListener escapeListener = actionEvent -&gt; DialogAbout.this.dispose();  // Action for ESCAPE key</span>
+<span class="fc" id="L57">        this.getRootPane().registerKeyboardAction(</span>
             escapeListener,
-<span class="fc" id="L72">            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),</span>
+<span class="fc" id="L59">            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),</span>
             JComponent.WHEN_IN_FOCUSED_WINDOW
         );
         
-<span class="fc" id="L76">        this.setLayout(new BorderLayout());</span>
-<span class="fc" id="L77">        Container dialogPane = this.getContentPane();</span>
+<span class="fc" id="L63">        this.setLayout(new BorderLayout());</span>
 
-<span class="fc" id="L79">        JPanel lastLine = this.initializeLastLine(escapeListener);</span>
+<span class="fc" id="L65">        Container dialogPane = this.getContentPane();</span>
+<span class="fc" id="L66">        JPanel lastLine = this.initializeLastLine(escapeListener);</span>
 
-<span class="fc" id="L81">        var iconJsql = new JLabel(new ImageIcon(Objects.requireNonNull(UiUtil.URL_ICON_96)));</span>
-<span class="fc" id="L82">        dialogPane.add(iconJsql, BorderLayout.WEST);</span>
-<span class="fc" id="L83">        dialogPane.add(lastLine, BorderLayout.SOUTH);</span>
+<span class="fc" id="L68">        var labelIcon = new JLabel(UiUtil.APP_ABOUT.icon);</span>
+<span class="fc" id="L69">        labelIcon.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));</span>
+<span class="fc" id="L70">        dialogPane.add(labelIcon, BorderLayout.WEST);</span>
+<span class="fc" id="L71">        dialogPane.add(lastLine, BorderLayout.SOUTH);</span>
 
-        // Contact info, use HTML text
-<span class="fc" id="L86">        final JEditorPane text = this.initializeEditorPane();</span>
+<span class="fc" id="L73">        final JEditorPane text = this.initializeEditorPane();  // Contact info, use HTML text</span>
+<span class="fc" id="L74">        dialogPane.add(new JScrollPane(text), BorderLayout.CENTER);</span>
 
-<span class="fc" id="L88">        this.scrollPane = new LightScrollPane(1, 1, 1, 0, text);</span>
-<span class="fc" id="L89">        dialogPane.add(this.scrollPane, BorderLayout.CENTER);</span>
-
-<span class="fc" id="L91">        this.initializeDialog();</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L76">        this.initializeDialog();</span>
+<span class="fc" id="L77">    }</span>
 
     private JPanel initializeLastLine(ActionListener escapeListener) {
-        
-<span class="fc" id="L96">        var lastLine = new JPanel();</span>
-<span class="fc" id="L97">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));</span>
-<span class="fc" id="L98">        lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));</span>
-        
-<span class="fc" id="L100">        final JButton buttonWebpage = this.initializeButtonWebpage();</span>
-        
-<span class="fc" id="L102">        this.initializeButtonClose(escapeListener);</span>
-        
-<span class="fc" id="L104">        lastLine.add(buttonWebpage);</span>
-<span class="fc" id="L105">        lastLine.add(Box.createGlue());</span>
-<span class="fc" id="L106">        lastLine.add(this.buttonClose);</span>
-        
-<span class="fc" id="L108">        return lastLine;</span>
-    }
-
-    private void initializeButtonClose(ActionListener escapeListener) {
-        
-<span class="fc" id="L113">        this.buttonClose = new JButton(&quot;Close&quot;);</span>
-<span class="fc" id="L114">        this.buttonClose.setBorder(BorderFactory.createCompoundBorder(</span>
-            UiUtil.BORDER_FOCUS_GAINED,
-<span class="fc" id="L116">            BorderFactory.createEmptyBorder(2, 20, 2, 20))</span>
-        );
-<span class="fc" id="L118">        this.buttonClose.addActionListener(escapeListener);</span>
-        
-<span class="fc" id="L120">        this.buttonClose.setContentAreaFilled(false);</span>
-<span class="fc" id="L121">        this.buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));</span>
-<span class="fc" id="L122">        this.buttonClose.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
-        
-<span class="fc" id="L124">        this.buttonClose.addMouseListener(new FlatButtonMouseAdapter(this.buttonClose));</span>
-<span class="fc" id="L125">    }</span>
-
-    private JButton initializeButtonWebpage() {
-        
-<span class="fc" id="L129">        final var buttonWebpage = new JButton(&quot;Webpage&quot;);</span>
-        
-<span class="fc" id="L131">        buttonWebpage.setBorder(BorderFactory.createCompoundBorder(</span>
-            UiUtil.BORDER_FOCUS_GAINED,
-<span class="fc" id="L133">            BorderFactory.createEmptyBorder(2, 20, 2, 20))</span>
-        );
-        
-<span class="fc" id="L136">        buttonWebpage.addActionListener(ev -&gt; {</span>
+<span class="fc" id="L80">        final var buttonWebpage = new JButton(&quot;Webpage&quot;);</span>
+<span class="fc" id="L81">        buttonWebpage.addActionListener(ev -&gt; {</span>
             try {
-<span class="nc" id="L138">                Desktop.getDesktop().browse(new URI((String) MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().get(&quot;github.url&quot;)));</span>
-<span class="nc" id="L139">            } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
-<span class="nc" id="L140">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Browsing to Url failed&quot;, e);</span>
-<span class="nc" id="L141">            }</span>
-<span class="nc" id="L142">        });</span>
-        
-<span class="fc" id="L144">        buttonWebpage.setContentAreaFilled(false);</span>
-<span class="fc" id="L145">        buttonWebpage.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));</span>
-<span class="fc" id="L146">        buttonWebpage.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
-        
-<span class="fc" id="L148">        buttonWebpage.addMouseListener(new FlatButtonMouseAdapter(buttonWebpage));</span>
-        
-<span class="fc" id="L150">        return buttonWebpage;</span>
+<span class="nc" id="L83">                Desktop.getDesktop().browse(new URI(MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.url&quot;)));</span>
+<span class="nc" id="L84">            } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
+<span class="nc" id="L85">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Browsing to Url failed&quot;, e);</span>
+<span class="nc" id="L86">            }</span>
+<span class="nc" id="L87">        });</span>
+
+<span class="fc" id="L89">        this.buttonClose = new JButton(&quot;Close&quot;);</span>
+<span class="fc" id="L90">        this.buttonClose.addActionListener(escapeListener);</span>
+
+<span class="fc" id="L92">        var lastLine = new JPanel();</span>
+<span class="fc" id="L93">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));</span>
+<span class="fc" id="L94">        lastLine.setBorder(UiUtil.BORDER_5PX);</span>
+<span class="fc" id="L95">        lastLine.add(buttonWebpage);</span>
+<span class="fc" id="L96">        lastLine.add(Box.createGlue());</span>
+<span class="fc" id="L97">        lastLine.add(this.buttonClose);</span>
+<span class="fc" id="L98">        return lastLine;</span>
     }
 
     private JEditorPane initializeEditorPane() {
-        
-<span class="fc" id="L155">        var editorPane = new JEditorPane();</span>
+<span class="fc" id="L102">        var editorPane = new JEditorPane();</span>
         
         // Fix #82540: NoClassDefFoundError on setText()
-        try {
-<span class="fc" id="L159">            editorPane.setContentType(&quot;text/html&quot;);</span>
-
-<span class="fc" id="L161">            var result = new StringBuilder();</span>
-            
-            try (
-<span class="fc" id="L164">                InputStream inputStream = DialogAbout.class.getClassLoader().getResourceAsStream(&quot;swing/about.htm&quot;);</span>
-<span class="fc" id="L165">                var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
-<span class="fc" id="L166">                var reader = new BufferedReader(inputStreamReader)</span>
-            ) {
-                String line;
-<span class="fc bfc" id="L169" title="All 2 branches covered.">                while ((line = reader.readLine()) != null) {</span>
-<span class="fc" id="L170">                    result.append(line);</span>
-                }
+        try (
+<span class="fc" id="L106">            InputStream inputStream = DialogAbout.class.getClassLoader().getResourceAsStream(&quot;swing/about.htm&quot;);</span>
+<span class="fc" id="L107">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
+<span class="fc" id="L108">            var reader = new BufferedReader(inputStreamReader)</span>
+        ) {
+<span class="fc" id="L110">            editorPane.setContentType(&quot;text/html&quot;);</span>
+<span class="fc" id="L111">            var result = new StringBuilder();</span>
+            String line;
+<span class="fc bfc" id="L113" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
+<span class="fc" id="L114">                result.append(line);</span>
             }
+<span class="fc" id="L116">            editorPane.setText(result.toString().replace(</span>
+                &quot;%JSQLVERSION%&quot;,
+<span class="fc" id="L118">                MediatorHelper.model().getPropertiesUtil().getVersionJsql()</span>
+            ));
+<span class="nc" id="L120">        } catch (NoClassDefFoundError | IOException e) {</span>
+<span class="nc" id="L121">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L122">        }</span>
 
-<span class="fc" id="L174">            editorPane.setText(result.toString().replace(&quot;%JSQLVERSION%&quot;, MediatorHelper.model().getVersionJsql()));</span>
-            
-<span class="nc" id="L176">        } catch (NoClassDefFoundError | IOException e) {</span>
-<span class="nc" id="L177">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L178">        }</span>
-
-<span class="fc" id="L180">        editorPane.addMouseListener(new MouseAdapter() {</span>
-            
+<span class="fc" id="L124">        editorPane.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-                
-<span class="nc" id="L185">                super.mousePressed(e);</span>
-<span class="nc" id="L186">                editorPane.requestFocusInWindow();</span>
-<span class="nc" id="L187">            }</span>
+<span class="nc" id="L127">                super.mousePressed(e);</span>
+<span class="nc" id="L128">                editorPane.requestFocusInWindow();</span>
+<span class="nc" id="L129">            }</span>
         });
-
-<span class="fc" id="L190">        editorPane.addFocusListener(new FocusAdapter() {</span>
-            
+<span class="fc" id="L131">        editorPane.addFocusListener(new FocusAdapter() {</span>
             @Override
-            public void focusGained(FocusEvent arg0) {
-                
-<span class="nc" id="L195">                editorPane.getCaret().setVisible(true);</span>
-<span class="nc" id="L196">                editorPane.getCaret().setSelectionVisible(true);</span>
-<span class="nc" id="L197">            }</span>
+            public void focusGained(FocusEvent focusEvent) {
+<span class="nc" id="L134">                editorPane.getCaret().setVisible(true);</span>
+<span class="nc" id="L135">                editorPane.getCaret().setSelectionVisible(true);</span>
+<span class="nc" id="L136">            }</span>
         });
 
-<span class="fc" id="L200">        editorPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));</span>
-<span class="fc" id="L201">        editorPane.setDragEnabled(true);</span>
-<span class="fc" id="L202">        editorPane.setEditable(false);</span>
-
-<span class="fc" id="L204">        editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));</span>
-
-<span class="fc" id="L206">        editorPane.addHyperlinkListener(linkEvent -&gt; {</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">            if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {</span>
+<span class="fc" id="L139">        editorPane.setDragEnabled(true);</span>
+<span class="fc" id="L140">        editorPane.setEditable(false);</span>
+<span class="fc" id="L141">        editorPane.getCaret().setBlinkRate(0);</span>
+<span class="fc" id="L142">        editorPane.setCaretPosition(0);</span>
+<span class="fc" id="L143">        editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));</span>
+<span class="fc" id="L144">        editorPane.addHyperlinkListener(linkEvent -&gt; {</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {</span>
                 try {
-<span class="nc" id="L209">                    Desktop.getDesktop().browse(linkEvent.getURL().toURI());</span>
-<span class="nc" id="L210">                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
-<span class="nc" id="L211">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Browsing to Url failed&quot;, e);</span>
-<span class="nc" id="L212">                }</span>
+<span class="nc" id="L147">                    Desktop.getDesktop().browse(linkEvent.getURL().toURI());</span>
+<span class="nc" id="L148">                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
+<span class="nc" id="L149">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Browsing to Url failed&quot;, e);</span>
+<span class="nc" id="L150">                }</span>
             }
-<span class="nc" id="L214">        });</span>
+<span class="nc" id="L152">        });</span>
         
-<span class="fc" id="L216">        return editorPane;</span>
+<span class="fc" id="L154">        return editorPane;</span>
     }
 
     /**
      * Set back default setting for About frame.
      */
     public final void initializeDialog() {
-        
-<span class="fc" id="L224">        this.scrollPane.scrollPane.getViewport().setViewPosition(new Point(0, 0));</span>
-<span class="fc" id="L225">        this.setSize(533, 400);</span>
-<span class="fc" id="L226">        this.setLocationRelativeTo(MediatorHelper.frame());</span>
-<span class="fc" id="L227">        this.buttonClose.requestFocusInWindow();</span>
-<span class="fc" id="L228">        this.getRootPane().setDefaultButton(this.buttonClose);</span>
-<span class="fc" id="L229">    }</span>
+<span class="fc" id="L161">        this.setSize(533, 400);</span>
+<span class="fc" id="L162">        this.setLocationRelativeTo(MediatorHelper.frame());</span>
+<span class="fc" id="L163">        this.buttonClose.requestFocusInWindow();</span>
+<span class="fc" id="L164">        this.getRootPane().setDefaultButton(this.buttonClose);</span>
+<span class="fc" id="L165">    }</span>
 
     public void requestButtonFocus() {
-<span class="fc" id="L232">        this.buttonClose.requestFocusInWindow();</span>
-<span class="fc" id="L233">    }</span>
+<span class="fc" id="L168">        this.buttonClose.requestFocusInWindow();</span>
+<span class="fc" id="L169">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

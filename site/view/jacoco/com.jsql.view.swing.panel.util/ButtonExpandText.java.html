@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ButtonExpandText.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.util</a> &gt; <span class="el_source">ButtonExpandText.java</span></div><h1>ButtonExpandText.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.jsql.view.swing.panel.util;
 
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -18,10 +17,7 @@ import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 /**
  * A button displayed in address.
@@ -31,50 +27,51 @@ public class ButtonExpandText extends JButton {
     /**
      * Create a button in address bar.
      */
-<span class="fc" id="L34">    public ButtonExpandText(String titleFrame, JTextField textFieldHeader) {</span>
-        
-<span class="fc" id="L36">        this.setPreferredSize(new Dimension(18, 16));</span>
-<span class="fc" id="L37">        this.setOpaque(false);</span>
-<span class="fc" id="L38">        this.setContentAreaFilled(false);</span>
-<span class="fc" id="L39">        this.setBorderPainted(false);</span>
-<span class="fc" id="L40">        this.setFocusPainted(false);</span>
+<span class="fc" id="L30">    public ButtonExpandText(String titleFrame, JTextField textFieldHeader) {</span>
+<span class="fc" id="L31">        this.setPreferredSize(new Dimension(16, 16));</span>
+<span class="fc" id="L32">        this.setContentAreaFilled(false);</span>
 
-<span class="fc" id="L42">        this.setIcon(UiUtil.ICON_EXPAND_TEXT);</span>
+<span class="fc" id="L34">        this.setIcon(UiUtil.EXPAND.icon);</span>
+<span class="fc" id="L35">        this.setRolloverIcon(UiUtil.EXPAND_HOVER.icon);</span>
+<span class="fc" id="L36">        this.setPressedIcon(UiUtil.EXPAND_PRESSED.icon);</span>
 
-<span class="fc" id="L44">        JTextArea textArea = new JPopupTextArea(new JTextAreaPlaceholder(&quot;Multiline text&quot;)).getProxy();</span>
-<span class="fc" id="L45">        textArea.getCaret().setBlinkRate(500);</span>
+<span class="fc" id="L38">        JTextArea textArea = new JPopupTextArea(new JTextAreaPlaceholder(&quot;Multiline text&quot;)).getProxy();</span>
+<span class="fc" id="L39">        textArea.getCaret().setBlinkRate(500);</span>
 
-<span class="fc" id="L47">        final JDialog frameWithTextarea = new JDialog(MediatorHelper.frame(), titleFrame, true);</span>
-<span class="fc" id="L48">        frameWithTextarea.getContentPane().add(new LightScrollPane(textArea));</span>
-<span class="fc" id="L49">        frameWithTextarea.pack();</span>
-<span class="fc" id="L50">        frameWithTextarea.setSize(400, 300);</span>
-<span class="fc" id="L51">        frameWithTextarea.setLocationRelativeTo(null);</span>
-<span class="fc" id="L52">        frameWithTextarea.addWindowListener(new WindowAdapter() {</span>
+<span class="fc" id="L41">        final JDialog dialogWithTextarea = new JDialog(MediatorHelper.frame(), titleFrame, true);</span>
+<span class="fc" id="L42">        dialogWithTextarea.getContentPane().add(new JScrollPane(textArea));</span>
+<span class="fc" id="L43">        dialogWithTextarea.pack();</span>
+<span class="fc" id="L44">        dialogWithTextarea.setSize(400, 300);</span>
+<span class="fc" id="L45">        dialogWithTextarea.setLocationRelativeTo(null);</span>
+<span class="fc" id="L46">        dialogWithTextarea.addWindowListener(new WindowAdapter() {</span>
             @Override
             public void windowClosing(WindowEvent e) {
-<span class="nc" id="L55">                textFieldHeader.setText(textArea.getText().replace(&quot;\n&quot;, &quot;\\n&quot;).replace(&quot;\r&quot;, &quot;\\r&quot;));</span>
-<span class="nc" id="L56">                super.windowClosing(e);</span>
-<span class="nc" id="L57">            }</span>
+<span class="nc" id="L49">                textFieldHeader.setText(textArea.getText().replace(&quot;\n&quot;, &quot;\\n&quot;).replace(&quot;\r&quot;, &quot;\\r&quot;));</span>
+<span class="nc" id="L50">                super.windowClosing(e);</span>
+<span class="nc" id="L51">            }</span>
         });
 
-<span class="fc" id="L60">        this.addActionListener(e -&gt; {</span>
-<span class="nc" id="L61">            textArea.setText(textFieldHeader.getText().replace(&quot;\\n&quot;, &quot;\n&quot;).replace(&quot;\\r&quot;, &quot;\r&quot;));</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">            frameWithTextarea.setVisible(!frameWithTextarea.isVisible());</span>
-<span class="nc" id="L63">        });</span>
+<span class="fc" id="L54">        this.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mouseClicked(MouseEvent e) {
+<span class="nc" id="L57">                textArea.setText(textFieldHeader.getText().replace(&quot;\\n&quot;, &quot;\n&quot;).replace(&quot;\\r&quot;, &quot;\r&quot;));</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">                dialogWithTextarea.setVisible(!dialogWithTextarea.isVisible());</span>
+<span class="nc" id="L59">            }</span>
+        });
 
-<span class="fc" id="L65">        frameWithTextarea.getRootPane()</span>
-<span class="fc" id="L66">            .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)</span>
-<span class="fc" id="L67">            .put(</span>
-<span class="fc" id="L68">                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),</span>
+<span class="fc" id="L62">        dialogWithTextarea.getRootPane()</span>
+<span class="fc" id="L63">            .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)</span>
+<span class="fc" id="L64">            .put(</span>
+<span class="fc" id="L65">                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),</span>
                 &quot;Cancel&quot;
             );
-<span class="fc" id="L71">        frameWithTextarea.getRootPane()</span>
-<span class="fc" id="L72">            .getActionMap()</span>
-<span class="fc" id="L73">            .put(&quot;Cancel&quot;, new AbstractAction() {</span>
+<span class="fc" id="L68">        dialogWithTextarea.getRootPane()</span>
+<span class="fc" id="L69">            .getActionMap()</span>
+<span class="fc" id="L70">            .put(&quot;Cancel&quot;, new AbstractAction() {</span>
                 public void actionPerformed(ActionEvent e) {
-<span class="nc" id="L75">                    frameWithTextarea.dispose();</span>
-<span class="nc" id="L76">                }</span>
+<span class="nc" id="L72">                    dialogWithTextarea.dispose();</span>
+<span class="nc" id="L73">                }</span>
             });
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L75">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

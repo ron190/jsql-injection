@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageHeader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.interaction</a> &gt; <span class="el_source">MessageHeader.java</span></div><h1>MessageHeader.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,15 +12,14 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.scrollpane.JScrollIndicator;
+import com.jsql.view.swing.panel.consoles.NetworkTable;
 import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Arrays;
@@ -28,7 +27,7 @@ import java.util.Map;
 
 public class MessageHeader implements InteractionCommand {
     
-<span class="fc" id="L31">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private final String url;
     private final String post;
@@ -38,53 +37,46 @@ public class MessageHeader implements InteractionCommand {
     private final String size;
     private final String metadataProcess;
     private final String metadataStrategy;
-    private final AbstractCallableBoolean&lt;?&gt; metadataBoolean;
+    private final AbstractCallableBinary&lt;?&gt; metadataBoolean;
 
     @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L44">    public MessageHeader(Object[] interactionParams) {</span>
+<span class="fc" id="L43">    public MessageHeader(Object[] interactionParams) {</span>
         
-<span class="fc" id="L46">        Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
+<span class="fc" id="L45">        Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
         
-<span class="fc" id="L48">        this.url = (String) params.get(Header.URL);</span>
-<span class="fc" id="L49">        this.post = (String) params.get(Header.POST);</span>
-<span class="fc" id="L50">        this.header = (Map&lt;String, String&gt;) params.get(Header.HEADER);</span>
-<span class="fc" id="L51">        this.response = (Map&lt;String, String&gt;) params.get(Header.RESPONSE);</span>
-<span class="fc" id="L52">        this.source = (String) params.get(Header.SOURCE);</span>
-<span class="fc" id="L53">        this.size = (String) params.get(Header.PAGE_SIZE);</span>
-<span class="fc" id="L54">        this.metadataProcess = (String) params.get(Header.METADATA_PROCESS);</span>
-<span class="fc" id="L55">        this.metadataStrategy = (String) params.get(Header.METADATA_STRATEGY);</span>
-<span class="fc" id="L56">        this.metadataBoolean = (AbstractCallableBoolean&lt;?&gt;) params.get(Header.METADATA_BOOLEAN);</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L47">        this.url = (String) params.get(Header.URL);</span>
+<span class="fc" id="L48">        this.post = (String) params.get(Header.POST);</span>
+<span class="fc" id="L49">        this.header = (Map&lt;String, String&gt;) params.get(Header.HEADER);</span>
+<span class="fc" id="L50">        this.response = (Map&lt;String, String&gt;) params.get(Header.RESPONSE);</span>
+<span class="fc" id="L51">        this.source = (String) params.get(Header.SOURCE);</span>
+<span class="fc" id="L52">        this.size = (String) params.get(Header.PAGE_SIZE);</span>
+<span class="fc" id="L53">        this.metadataProcess = (String) params.get(Header.METADATA_PROCESS);</span>
+<span class="fc" id="L54">        this.metadataStrategy = (String) params.get(Header.METADATA_STRATEGY);</span>
+<span class="fc" id="L55">        this.metadataBoolean = (AbstractCallableBinary&lt;?&gt;) params.get(Header.METADATA_BOOLEAN);</span>
+<span class="fc" id="L56">    }</span>
 
     @Override
     public void execute() {
-        
-<span class="fc" id="L62">        MediatorHelper.panelConsoles().getNetworkTable().addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));</span>
-        
-<span class="fc" id="L64">        JViewport viewport = ((JScrollIndicator) MediatorHelper.panelConsoles().getNetworkSplitPane().getLeftComponent()).getScrollPane().getViewport();</span>
-<span class="fc" id="L65">        JTable table = (JTable) viewport.getView();</span>
-        
-<span class="fc" id="L67">        DefaultTableModel model = (DefaultTableModel) table.getModel();</span>
+<span class="fc" id="L60">        NetworkTable table = MediatorHelper.panelConsoles().getNetworkTable();</span>
+<span class="fc" id="L61">        table.addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));</span>
+<span class="fc" id="L62">        DefaultTableModel model = (DefaultTableModel) table.getModel();</span>
         
         try {
-<span class="fc" id="L70">            model.addRow(new Object[] {</span>
+<span class="fc" id="L65">            model.addRow(new Object[] {</span>
                 this.url,
                 this.size,
                 this.metadataStrategy,
-<span class="fc" id="L74">                Arrays.asList(this.metadataProcess, this.metadataBoolean)</span>
+<span class="fc" id="L69">                Arrays.asList(this.metadataProcess, this.metadataBoolean)</span>
             });
             
-<span class="fc" id="L77">            Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);</span>
-<span class="fc" id="L78">            Point pt = viewport.getViewPosition();</span>
-<span class="fc" id="L79">            rect.translate(-pt.x, -pt.y);</span>
-<span class="fc" id="L80">            viewport.scrollRectToVisible(rect);</span>
+<span class="fc" id="L72">            Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);</span>
+<span class="fc" id="L73">            table.scrollRectToVisible(rect);</span>
             
-<span class="fc" id="L82">            MediatorHelper.tabConsoles().highlightTab(&quot;Network&quot;);</span>
-            
-<span class="nc" id="L84">        } catch(NullPointerException | IndexOutOfBoundsException e) {</span>
+<span class="fc" id="L75">            MediatorHelper.tabConsoles().setBold(&quot;Network&quot;);</span>
+<span class="nc" id="L76">        } catch(NullPointerException | IndexOutOfBoundsException e) {</span>
             // Fix #4658, #2224, #1797 on model.addRow()
-<span class="nc" id="L86">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L87">        }</span>
-<span class="fc" id="L88">    }</span>
+<span class="nc" id="L78">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L79">        }</span>
+<span class="fc" id="L80">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

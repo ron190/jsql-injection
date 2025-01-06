@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JFrameView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing</a> &gt; <span class="el_source">JFrameView.java</span></div><h1>JFrameView.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -12,16 +12,19 @@ package com.jsql.view.swing;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.SubscriberInteraction;
 import com.jsql.view.swing.action.HotkeyUtil;
-import com.jsql.view.swing.menubar.Menubar;
+import com.jsql.view.swing.menubar.AppMenubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
-import com.jsql.view.swing.shadow.ShadowPopupFactory;
 import com.jsql.view.swing.shell.AbstractShell;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,201 +49,186 @@ import java.util.stream.Stream;
  */
 public class JFrameView extends JFrame {
 
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L55">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
     // Main center panel
     private SplitHorizontalTopBottom splitHorizontalTopBottom;
 
-    // List of terminal by unique identifier
-<span class="fc" id="L53">    private final Map&lt;UUID, AbstractShell&gt; mapShells = new HashMap&lt;&gt;();</span>
+    /**
+     * Get list of terminal by unique identifier.
+     * Map of key/value UUID =&gt; Terminal
+     */
+<span class="fc" id="L64">    private final Map&lt;UUID, AbstractShell&gt; mapUuidShell = new HashMap&lt;&gt;();</span>
     
-<span class="fc" id="L55">    private final transient SubscriberInteraction subscriber = new SubscriberInteraction(&quot;com.jsql.view.swing.interaction&quot;);</span>
-    
-    // Build the GUI: add app icon, tree icons, the 3 main panels
-    public JFrameView() {
-        
-<span class="fc" id="L60">        super(&quot;jSQL Injection&quot;);</span>
-        
-<span class="fc" id="L62">        MediatorHelper.register(this);</span>
+<span class="fc" id="L66">    private final transient SubscriberInteraction subscriber = new SubscriberInteraction(&quot;com.jsql.view.swing.interaction&quot;);</span>
 
-        // Load UI before any component
-<span class="fc" id="L65">        UiUtil.prepareGUI();</span>
-<span class="fc" id="L66">        ShadowPopupFactory.install();</span>
-        
-<span class="fc" id="L68">        this.initializePaneComponents();</span>
-<span class="fc" id="L69">        this.initializeWindow();</span>
-<span class="fc" id="L70">        this.initializeShortcuts();</span>
-<span class="fc" id="L71">    }</span>
+    private JTabbedPane tabManagers;
+    
+    public JFrameView() {  // Build the GUI: add app icon, tree icons, the 3 main panels
+<span class="fc" id="L71">        super(&quot;jSQL Injection&quot;);</span>
+<span class="fc" id="L72">        MediatorHelper.register(this);</span>
+<span class="fc" id="L73">        UiUtil.prepareGUI();  // Load UI before any component</span>
+<span class="fc" id="L74">        this.initializePaneComponents();</span>
+<span class="fc" id="L75">        this.initializeWindow();</span>
+<span class="fc" id="L76">        this.initializeShortcuts();</span>
+<span class="fc" id="L77">        this.displayVersion();</span>
+<span class="fc" id="L78">    }</span>
+
+    private void initializePaneComponents() {
+<span class="fc" id="L81">        var menubar = new AppMenubar();</span>
+<span class="fc" id="L82">        this.setJMenuBar(menubar);</span>
+<span class="fc" id="L83">        MediatorHelper.register(menubar);</span>
+
+        // Define the default panel: each component on a vertical line
+<span class="fc" id="L86">        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));</span>
+
+<span class="fc" id="L88">        tabManagers = new TabManagers();  // Tab manager linked to cards</span>
+<span class="fc" id="L89">        this.add(tabManagers);</span>
+
+<span class="fc" id="L91">        var panelAddressBar = new PanelAddressBar();  // Textfield at the top</span>
+<span class="fc" id="L92">        MediatorHelper.register(panelAddressBar);</span>
+<span class="fc" id="L93">        this.add(panelAddressBar);</span>
+
+<span class="fc" id="L95">        var mainPanel = new JPanel(new BorderLayout());  // Main panel for tree and tables in the middle</span>
+<span class="fc" id="L96">        this.splitHorizontalTopBottom = new SplitHorizontalTopBottom();</span>
+<span class="fc" id="L97">        mainPanel.add(this.splitHorizontalTopBottom);</span>
+<span class="fc" id="L98">        this.add(mainPanel);</span>
+
+<span class="fc" id="L100">        menubar.switchLocale(Locale.ENGLISH, I18nUtil.getLocaleDefault(), true);</span>
+<span class="fc" id="L101">        menubar.getMenuWindows().switchLocaleFromPreferences();</span>
+<span class="fc" id="L102">    }</span>
 
     private void initializeWindow() {
         
-        // Define a small and large app icon
-<span class="fc" id="L76">        this.setIconImages(UiUtil.getIcons());</span>
+<span class="fc" id="L106">        this.setIconImages(UiUtil.getIcons());  // define small and large app icons</span>
 
-<span class="fc" id="L78">        this.addWindowListener(new WindowAdapter() {</span>
+<span class="fc" id="L108">        this.addWindowListener(new WindowAdapter() {</span>
             
             @Override
             public void windowOpened(WindowEvent event) {
+<span class="fc" id="L112">                super.windowOpened(event);</span>
                 
-<span class="fc" id="L83">                super.windowOpened(event);</span>
-                
-<span class="fc" id="L85">                var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
-<span class="fc" id="L86">                var horizontalTopBottomSplitter = preferences.getDouble(SplitHorizontalTopBottom.getNameHSplitpane(), 0.75);</span>
-                
-<span class="pc bpc" id="L88" title="2 of 4 branches missed.">                if (!(0.0 &lt;= horizontalTopBottomSplitter &amp;&amp; horizontalTopBottomSplitter &lt;= 1.0)) {</span>
-                    
-<span class="nc" id="L90">                    horizontalTopBottomSplitter = 0.75;</span>
-                }
+<span class="fc" id="L114">                var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="fc" id="L115">                var horizontalTopBottomSplitter = preferences.getDouble(SplitHorizontalTopBottom.NAME_TOP_BOTTOM_SPLITPANE, 0.75);</span>
 
-<span class="fc" id="L93">                JFrameView.this.splitHorizontalTopBottom.setDividerLocation(horizontalTopBottomSplitter);</span>
-<span class="fc" id="L94">            }</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">                if (!(0.0 &lt;= horizontalTopBottomSplitter &amp;&amp; horizontalTopBottomSplitter &lt;= 1.0)) {</span>
+<span class="nc" id="L118">                    horizontalTopBottomSplitter = 0.75;</span>
+                }
+<span class="fc" id="L120">                JFrameView.this.splitHorizontalTopBottom.setDividerLocation(horizontalTopBottomSplitter);</span>
+<span class="fc" id="L121">            }</span>
             
             @Override
             public void windowClosing(WindowEvent e) {
                 
-<span class="nc" id="L99">                var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
-<span class="nc" id="L100">                preferences.putInt(</span>
-<span class="nc" id="L101">                    SplitHorizontalTopBottom.getNameVSplitpane(),</span>
-<span class="nc" id="L102">                    JFrameView.this.splitHorizontalTopBottom.getSplitVerticalLeftRight().getDividerLocation()</span>
+<span class="nc" id="L126">                var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="nc" id="L127">                preferences.putInt(</span>
+                    SplitHorizontalTopBottom.NAME_LEFT_RIGHT_SPLITPANE,
+                    // TODO not compatible arabic location
+<span class="nc" id="L130">                    JFrameView.this.splitHorizontalTopBottom.getSplitVerticalLeftRight().getDividerLocation()</span>
                 );
                 
-<span class="nc" id="L105">                var roundDecimal = BigDecimal.valueOf(</span>
-<span class="nc" id="L106">                    JFrameView.this.splitHorizontalTopBottom.getDividerLocation() * 100.0</span>
-<span class="nc" id="L107">                    / JFrameView.this.splitHorizontalTopBottom.getHeight()</span>
+<span class="nc" id="L133">                var percentTopBottom = BigDecimal.valueOf(</span>
+<span class="nc" id="L134">                    JFrameView.this.splitHorizontalTopBottom.getDividerLocation() * 100.0</span>
+<span class="nc" id="L135">                    / JFrameView.this.splitHorizontalTopBottom.getHeight()</span>
                     / 100
                 );
-<span class="nc" id="L110">                roundDecimal = roundDecimal.setScale(2, RoundingMode.HALF_UP);</span>
+<span class="nc" id="L138">                percentTopBottom = percentTopBottom.setScale(2, RoundingMode.HALF_UP);</span>
                 
                 // Divider location change when window is maximized, we can't save getDividerLocation()
-<span class="nc" id="L113">                preferences.putDouble(</span>
-<span class="nc" id="L114">                    SplitHorizontalTopBottom.getNameHSplitpane(),</span>
-                    // Fix scale
-<span class="nc" id="L116">                    roundDecimal.doubleValue() - 0.01</span>
+<span class="nc" id="L141">                preferences.putDouble(</span>
+                    SplitHorizontalTopBottom.NAME_TOP_BOTTOM_SPLITPANE,
+<span class="nc" id="L143">                    percentTopBottom.doubleValue() - 0.01  // Fix scale</span>
                 );
                 
-<span class="nc" id="L119">                preferences.putBoolean(UiUtil.BINARY_VISIBLE, false);</span>
-<span class="nc" id="L120">                preferences.putBoolean(UiUtil.CHUNK_VISIBLE, false);</span>
-<span class="nc" id="L121">                preferences.putBoolean(UiUtil.NETWORK_VISIBLE, false);</span>
-<span class="nc" id="L122">                preferences.putBoolean(UiUtil.JAVA_VISIBLE, false);</span>
+<span class="nc" id="L146">                preferences.putBoolean(UiUtil.BINARY_VISIBLE, false);</span>
+<span class="nc" id="L147">                preferences.putBoolean(UiUtil.CHUNK_VISIBLE, false);</span>
+<span class="nc" id="L148">                preferences.putBoolean(UiUtil.NETWORK_VISIBLE, false);</span>
+<span class="nc" id="L149">                preferences.putBoolean(UiUtil.JAVA_VISIBLE, false);</span>
                 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">                for (var i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {</span>
-                    
-<span class="nc bnc" id="L126" title="All 2 branches missed.">                    if (&quot;CONSOLE_BINARY_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
-                        
-<span class="nc" id="L128">                        preferences.putBoolean(UiUtil.BINARY_VISIBLE, true);</span>
-                        
-<span class="nc bnc" id="L130" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_CHUNK_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
-                        
-<span class="nc" id="L132">                        preferences.putBoolean(UiUtil.CHUNK_VISIBLE, true);</span>
-                        
-<span class="nc bnc" id="L134" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_NETWORK_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
-                        
-<span class="nc" id="L136">                        preferences.putBoolean(UiUtil.NETWORK_VISIBLE, true);</span>
-                        
-<span class="nc bnc" id="L138" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_JAVA_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
-                        
-<span class="nc" id="L140">                        preferences.putBoolean(UiUtil.JAVA_VISIBLE, true);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                for (var i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                    if (&quot;CONSOLE_BINARY_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
+<span class="nc" id="L153">                        preferences.putBoolean(UiUtil.BINARY_VISIBLE, true);</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_CHUNK_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
+<span class="nc" id="L155">                        preferences.putBoolean(UiUtil.CHUNK_VISIBLE, true);</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_NETWORK_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
+<span class="nc" id="L157">                        preferences.putBoolean(UiUtil.NETWORK_VISIBLE, true);</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_JAVA_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
+<span class="nc" id="L159">                        preferences.putBoolean(UiUtil.JAVA_VISIBLE, true);</span>
                     }
                 }
-<span class="nc" id="L143">            }</span>
+<span class="nc" id="L162">            }</span>
         });
         
-        // Size of window
-<span class="fc" id="L147">        this.setSize(1024, 768);</span>
-<span class="fc" id="L148">        this.setVisible(true);</span>
-
-        // Center the window
-<span class="fc" id="L151">        this.setLocationRelativeTo(null);</span>
+<span class="fc" id="L165">        this.setSize(1024, 768);</span>
+<span class="fc" id="L166">        this.setVisible(true);</span>
+<span class="fc" id="L167">        this.setLocationRelativeTo(null);  // center the window</span>
+<span class="fc" id="L168">        this.setVisible(true);</span>
+<span class="fc" id="L169">        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</span>
         
-<span class="fc" id="L153">        this.setVisible(true);</span>
-<span class="fc" id="L154">        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</span>
-        
-<span class="fc" id="L156">        MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();</span>
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L171">        MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();</span>
+<span class="fc" id="L172">    }</span>
 
     private void initializeShortcuts() {
-        
-        // Define the keyword shortcuts for tabs #Need to work even if the focus is not on tabs
-<span class="fc" id="L162">        HotkeyUtil.addShortcut(this.getRootPane(), MediatorHelper.tabResults());</span>
-<span class="fc" id="L163">        HotkeyUtil.addTextFieldShortcutSelectAll();</span>
-<span class="fc" id="L164">    }</span>
+<span class="fc" id="L175">        HotkeyUtil.addShortcut(this.getRootPane(), MediatorHelper.tabResults());</span>
+<span class="fc" id="L176">        HotkeyUtil.addTextFieldShortcutSelectAll();</span>
+<span class="fc" id="L177">    }</span>
 
-    private void initializePaneComponents() {
+    public void resetInterface() {  // Empty the interface
+<span class="fc" id="L180">        this.mapUuidShell.clear();</span>
+<span class="fc" id="L181">        MediatorHelper.panelAddressBar().getPanelTrailingAddress().reset();</span>
+<span class="fc" id="L182">        MediatorHelper.panelConsoles().reset();</span>
+<span class="fc" id="L183">        MediatorHelper.treeDatabase().reset();</span>
         
-        // Save controller
-<span class="fc" id="L169">        var menubar = new Menubar();</span>
-<span class="fc" id="L170">        this.setJMenuBar(menubar);</span>
-<span class="fc" id="L171">        MediatorHelper.register(menubar);</span>
-        
-        // Define the default panel: each component on a vertical line
-<span class="fc" id="L174">        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));</span>
-
-        // Main panel for tree and tables in the middle
-        // Set proxy tabs dependency
-<span class="fc" id="L178">        var mainPanel = new JPanel(new GridLayout(1, 0));</span>
-<span class="fc" id="L179">        this.splitHorizontalTopBottom = new SplitHorizontalTopBottom();</span>
-<span class="fc" id="L180">        mainPanel.add(this.splitHorizontalTopBottom);</span>
-
-<span class="fc" id="L182">        var panelAddressBar = new PanelAddressBar();  // Textfields at the top</span>
-<span class="fc" id="L183">        JTabbedPane tabManagers = new TabManagers();  // Tab manager use proxy tabs dependency</span>
-
-<span class="fc" id="L185">        this.add(tabManagers);</span>
-<span class="fc" id="L186">        this.add(panelAddressBar);</span>
-<span class="fc" id="L187">        MediatorHelper.register(panelAddressBar);</span>
-
-<span class="fc" id="L189">        this.add(mainPanel);</span>
-        
-<span class="fc" id="L191">        menubar.switchLocale(Locale.ENGLISH, I18nUtil.getLocaleDefault(), true);</span>
-<span class="fc" id="L192">    }</span>
-
-    // Empty the interface
-    public void resetInterface() {
-        
-<span class="fc" id="L197">        MediatorHelper.panelAddressBar().getAddressMenuBar().reset();</span>
-        
-<span class="fc" id="L199">        MediatorHelper.treeDatabase().getTreeNodeModels().clear();</span>
-<span class="fc" id="L200">        this.mapShells.clear();</span>
-        
-<span class="fc" id="L202">        MediatorHelper.panelConsoles().reset();</span>
-<span class="fc" id="L203">        MediatorHelper.treeDatabase().reset();</span>
-        
-<span class="fc bfc" id="L205" title="All 2 branches covered.">        for (var i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {</span>
-            
-<span class="fc" id="L207">            var tabComponent = MediatorHelper.tabConsoles().getTabComponentAt(i);</span>
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">            if (tabComponent != null) {</span>
-                
-<span class="fc" id="L210">                tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        for (var i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {</span>
+<span class="fc" id="L186">            var tabComponent = MediatorHelper.tabConsoles().getTabComponentAt(i);</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">            if (tabComponent != null) {</span>
+<span class="fc" id="L188">                tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));</span>
             }
         }
         
-<span class="fc" id="L214">        Stream.of(</span>
-<span class="fc" id="L215">            MediatorHelper.managerUpload(),</span>
-<span class="fc" id="L216">            MediatorHelper.managerFile(),</span>
-<span class="fc" id="L217">            MediatorHelper.managerWebshell(),</span>
-<span class="fc" id="L218">            MediatorHelper.managerSqlshell()</span>
+<span class="fc" id="L192">        Stream.of(</span>
+<span class="fc" id="L193">            MediatorHelper.managerUpload(),</span>
+<span class="fc" id="L194">            MediatorHelper.managerFile(),</span>
+<span class="fc" id="L195">            MediatorHelper.managerWebshell(),</span>
+<span class="fc" id="L196">            MediatorHelper.managerSqlshell()</span>
         )
-<span class="fc" id="L220">        .forEach(managerList -&gt; {</span>
-            
-<span class="fc" id="L222">            managerList.setButtonEnable(false);</span>
-<span class="fc" id="L223">            managerList.changePrivilegeIcon(UiUtil.ICON_SQUARE_GREY);</span>
-<span class="fc" id="L224">        });</span>
-<span class="fc" id="L225">    }</span>
-    
-    
+<span class="fc" id="L198">        .forEach(managerList -&gt; {</span>
+<span class="fc" id="L199">            managerList.setButtonEnable(false);</span>
+<span class="fc" id="L200">            managerList.changePrivilegeIcon(UiUtil.SQUARE.icon);</span>
+<span class="fc" id="L201">        });</span>
+<span class="fc" id="L202">    }</span>
+
+    private void displayVersion() {
+<span class="fc" id="L205">        LOGGER.log(</span>
+            LogLevelUtil.CONSOLE_DEFAULT,
+            &quot;jSQL Injection v{} on Java {}-{}-{}&quot;,
+<span class="fc" id="L208">            () -&gt; MediatorHelper.model().getPropertiesUtil().getVersionJsql(),</span>
+<span class="fc" id="L209">            () -&gt; SystemUtils.JAVA_VERSION,</span>
+<span class="fc" id="L210">            () -&gt; SystemUtils.OS_ARCH,</span>
+<span class="fc" id="L211">            () -&gt; SystemUtils.USER_LANGUAGE</span>
+        );
+<span class="fc" id="L213">    }</span>
+
+
     // Getters and setters
 
-    /**
-     * Get list of terminal by unique identifier.
-     * @return Map of key/value UUID =&gt; Terminal
-     */
-    public final Map&lt;UUID, AbstractShell&gt; getConsoles() {
-<span class="fc" id="L235">        return this.mapShells;</span>
+    public final Map&lt;UUID, AbstractShell&gt; getMapUuidShell() {
+<span class="fc" id="L219">        return this.mapUuidShell;</span>
     }
 
     public SubscriberInteraction getSubscriber() {
-<span class="fc" id="L239">        return this.subscriber;</span>
+<span class="fc" id="L223">        return this.subscriber;</span>
     }
 
     public SplitHorizontalTopBottom getSplitHorizontalTopBottom() {
-<span class="fc" id="L243">        return this.splitHorizontalTopBottom;</span>
+<span class="fc" id="L227">        return this.splitHorizontalTopBottom;</span>
+    }
+
+    public JTabbedPane getTabManagers() {
+<span class="nc" id="L231">        return tabManagers;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ManagerSqlShell.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.manager</a> &gt; <span class="el_source">ManagerSqlShell.java</span></div><h1>ManagerSqlShell.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -14,7 +14,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,68 +23,62 @@ import java.awt.*;
  */
 public class ManagerSqlShell extends AbstractManagerShell {
     
-<span class="fc" id="L27">    private final JTextField username = new JPopupTextField(I18nUtil.valueByKey(&quot;SQL_SHELL_USERNAME_LABEL&quot;)).getProxy();</span>
-<span class="fc" id="L28">    private final JTextField password = new JPopupTextField(I18nUtil.valueByKey(&quot;SQL_SHELL_PASSWORD_LABEL&quot;)).getProxy();</span>
+<span class="fc" id="L26">    private final JTextField username = new JPopupTextField(I18nUtil.valueByKey(&quot;SQL_SHELL_USERNAME_LABEL&quot;)).getProxy();</span>
+<span class="fc" id="L27">    private final JTextField password = new JPopupTextField(I18nUtil.valueByKey(&quot;SQL_SHELL_PASSWORD_LABEL&quot;)).getProxy();</span>
     
     /**
      * Build the manager panel.
      */
-<span class="fc" id="L33">    public ManagerSqlShell() {</span>
+<span class="fc" id="L32">    public ManagerSqlShell() {</span>
 
-<span class="fc" id="L35">        this.run.setText(&quot;Create SQL shell(s)&quot;);</span>
+<span class="fc" id="L34">        this.run.setText(&quot;Create SQL shell(s)&quot;);</span>
         
-<span class="fc" id="L37">        var userPassPanel = new JPanel();</span>
+<span class="fc" id="L36">        var userPassPanel = new JPanel();</span>
+<span class="fc" id="L37">        var groupLayout = new GroupLayout(userPassPanel);</span>
+<span class="fc" id="L38">        userPassPanel.setLayout(groupLayout);</span>
+<span class="fc" id="L39">        userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+
+<span class="fc" id="L41">        this.username.setToolTipText(I18nUtil.valueByKey(&quot;SQL_SHELL_USERNAME_TOOLTIP&quot;));</span>
+<span class="fc" id="L42">        this.password.setToolTipText(I18nUtil.valueByKey(&quot;SQL_SHELL_PASSWORD_TOOLTIP&quot;));</span>
+
+<span class="fc" id="L44">        var panelPassword = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L45">        panelPassword.add(this.password);</span>
         
-<span class="fc" id="L39">        var layout = new GroupLayout(userPassPanel);</span>
-<span class="fc" id="L40">        userPassPanel.setLayout(layout);</span>
-<span class="fc" id="L41">        userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
-<span class="fc" id="L42">        userPassPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
-        
-<span class="fc" id="L44">        this.username.setToolTipText(I18nUtil.valueByKey(&quot;SQL_SHELL_USERNAME_TOOLTIP&quot;));</span>
-<span class="fc" id="L45">        this.password.setToolTipText(I18nUtil.valueByKey(&quot;SQL_SHELL_PASSWORD_TOOLTIP&quot;));</span>
-        
-<span class="fc" id="L47">        this.username.setBorder(UiUtil.BORDER_BLU);</span>
-<span class="fc" id="L48">        this.password.setBorder(UiUtil.BORDER_BLU);</span>
-        
-<span class="fc" id="L50">        var panelPassword = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L51">        panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));</span>
-<span class="fc" id="L52">        panelPassword.add(this.password);</span>
-        
-<span class="fc" id="L54">        layout.setHorizontalGroup(</span>
-            layout
-<span class="fc" id="L56">            .createSequentialGroup()</span>
-<span class="fc" id="L57">            .addGroup(</span>
-                layout
-<span class="fc" id="L59">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
+<span class="fc" id="L47">        groupLayout.setHorizontalGroup(</span>
+            groupLayout
+<span class="fc" id="L49">            .createSequentialGroup()</span>
+<span class="fc" id="L50">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L52">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
             )
-<span class="fc" id="L61">            .addGroup(</span>
-<span class="fc" id="L62">                layout.createParallelGroup()</span>
-<span class="fc" id="L63">                .addComponent(this.username)</span>
-<span class="fc" id="L64">                .addComponent(panelPassword)</span>
+<span class="fc" id="L54">            .addGroup(</span>
+<span class="fc" id="L55">                groupLayout.createParallelGroup()</span>
+<span class="fc" id="L56">                .addComponent(this.username)</span>
+<span class="fc" id="L57">                .addComponent(panelPassword)</span>
             )
         );
 
-<span class="fc" id="L68">        layout.setVerticalGroup(</span>
-            layout
-<span class="fc" id="L70">            .createSequentialGroup()</span>
-<span class="fc" id="L71">            .addGroup(</span>
-                layout
-<span class="fc" id="L73">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L74">                .addComponent(this.username)</span>
+<span class="fc" id="L61">        groupLayout.setVerticalGroup(</span>
+            groupLayout
+<span class="fc" id="L63">            .createSequentialGroup()</span>
+<span class="fc" id="L64">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L66">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L67">                .addComponent(this.username)</span>
             )
-<span class="fc" id="L76">            .addGroup(</span>
-                layout
-<span class="fc" id="L78">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L79">                .addComponent(panelPassword)</span>
+<span class="fc" id="L69">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L71">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L72">                .addComponent(panelPassword)</span>
             )
         );
         
-<span class="fc" id="L83">        this.add(userPassPanel, BorderLayout.NORTH);</span>
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L76">        this.add(userPassPanel, BorderLayout.NORTH);</span>
+<span class="fc" id="L77">    }</span>
 
     @Override
     protected void createPayload(String shellPath, String shellURL) throws JSqlException {
-<span class="nc" id="L88">        MediatorHelper.model().getResourceAccess().createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());</span>
-<span class="nc" id="L89">    }</span>
+<span class="nc" id="L81">        MediatorHelper.model().getResourceAccess().createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());</span>
+<span class="nc" id="L82">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

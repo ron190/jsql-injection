@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PanelNode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.tree</a> &gt; <span class="el_source">PanelNode.java</span></div><h1>PanelNode.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  *
  * Contributors:
@@ -16,12 +16,13 @@ import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -32,201 +33,160 @@ public class PanelNode extends JPanel {
     /**
      * Default icon of the node (database or table).
      */
-<span class="fc" id="L35">    private final JLabel icon = new JLabel();</span>
+<span class="fc" id="L36">    private final JLabel iconNode = new JLabel();</span>
 
     /**
      * A GIF loader, displayed if progress track is unknown (like columns).
      */
-<span class="fc" id="L40">    private final JLabel loader = new JLabel();</span>
+<span class="fc" id="L41">    private final JLabel loaderWait = new JLabel();</span>
 
     /**
      * Progress bar displayed during injection, with pause icon displayed if user paused the process.
      */
-<span class="fc" id="L45">    private final ProgressBarPausable progressBar = new ProgressBarPausable();</span>
+<span class="fc" id="L46">    private final ProgressBarPausable progressBar = new ProgressBarPausable();</span>
 
     /**
      * Text of the node.
      */
-<span class="fc" id="L50">    private final JLabel label = new JLabel();</span>
-<span class="fc" id="L51">    private final JTextField textFieldEditable = new JTextField(15);</span>
+<span class="fc" id="L51">    private final JLabel nodeLabel = new JLabel();</span>
+<span class="fc" id="L52">    private final JTextField textFieldEditable = new JTextField(15);</span>
     
     /**
      * Create Panel for tree nodes.
      * @param tree JTree to populate
      * @param currentNode Node to draw in the tree
      */
-<span class="fc" id="L58">    public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {</span>
-        
-<span class="fc" id="L60">        var animatedGIF = new ImageIcon(Objects.requireNonNull(PanelNode.class.getClassLoader().getResource(UiUtil.PATH_PROGRESSBAR)));</span>
-<span class="fc" id="L61">        animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));</span>
-        
-<span class="fc" id="L63">        this.loader.setIcon(animatedGIF);</span>
-<span class="fc" id="L64">        this.loader.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));</span>
+<span class="fc" id="L59">    public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {</span>
+<span class="fc" id="L60">        this.loaderWait.setIcon(UiUtil.HOURGLASS.icon);</span>
+<span class="fc" id="L61">        this.loaderWait.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));</span>
 
-<span class="fc" id="L66">        this.progressBar.setPreferredSize(new Dimension(20, 20));</span>
-<span class="fc" id="L67">        this.progressBar.setUI(new BasicProgressBarUI());</span>
-<span class="fc" id="L68">        this.progressBar.setBorder(BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L69">            BorderFactory.createEmptyBorder(4, 3, 4, 3),</span>
-<span class="fc" id="L70">            BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L71">                BorderFactory.createLineBorder(Color.GRAY),</span>
-<span class="fc" id="L72">                BorderFactory.createLineBorder(Color.WHITE)</span>
-            )
-        ));
-        
-<span class="fc" id="L76">        this.label.setOpaque(true);</span>
-<span class="fc" id="L77">        this.label.setBorder(UiUtil.BORDER_FOCUS_GAINED);</span>
+<span class="fc" id="L63">        this.progressBar.setPreferredSize(new Dimension(20, 20));</span>
+<span class="fc" id="L64">        this.progressBar.setBorder(BorderFactory.createEmptyBorder(4, 3, 4, 3));</span>
 
-<span class="fc" id="L79">        this.icon.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));</span>
+<span class="fc" id="L66">        this.nodeLabel.setOpaque(true);</span>
+
+<span class="fc" id="L68">        this.iconNode.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));</span>
         
-<span class="fc" id="L81">        this.setBackground(Color.WHITE);</span>
-<span class="fc" id="L82">        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));</span>
+<span class="fc" id="L70">        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));</span>
         
-<span class="fc" id="L84">        Stream.of(</span>
-            this.icon,
-            this.loader,
+<span class="fc" id="L72">        Stream.of(</span>
+            this.iconNode,
+            this.loaderWait,
             this.progressBar,
-            this.label,
+            this.nodeLabel,
             this.textFieldEditable
         )
-<span class="fc" id="L91">        .forEach(component -&gt; {</span>
-            
-<span class="fc" id="L93">            this.add(component);</span>
-<span class="fc" id="L94">            component.setVisible(false);</span>
-<span class="fc" id="L95">        });</span>
+<span class="fc" id="L79">        .forEach(component -&gt; {</span>
+<span class="fc" id="L80">            this.add(component);</span>
+<span class="fc" id="L81">            component.setVisible(false);</span>
+<span class="fc" id="L82">        });</span>
         
-<span class="fc" id="L97">        this.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
+<span class="fc" id="L84">        this.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
         
-<span class="fc" id="L99">        this.initializeTextFieldEditable(tree, currentNode);</span>
-
-<span class="fc" id="L101">        this.addFocusListener(new FocusListener() {</span>
-            
-            @Override
-            public void focusLost(FocusEvent e) {
-                
-<span class="nc" id="L106">                PanelNode.this.label.setBackground(UiUtil.COLOR_FOCUS_LOST);</span>
-<span class="nc" id="L107">                PanelNode.this.label.setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
-<span class="nc" id="L108">            }</span>
-            
-            @Override
-            public void focusGained(FocusEvent e) {
-                
-<span class="nc" id="L113">                PanelNode.this.label.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="nc" id="L114">                PanelNode.this.label.setBorder(UiUtil.BORDER_FOCUS_GAINED);</span>
-<span class="nc" id="L115">            }</span>
-        });
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L86">        this.initializeTextFieldEditable(tree, currentNode);</span>
+<span class="fc" id="L87">    }</span>
 
     private void initializeTextFieldEditable(final JTree tree, final DefaultMutableTreeNode currentNode) {
-        
-<span class="fc" id="L121">        this.textFieldEditable.setFont(UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L122">        this.textFieldEditable.setBorder(BorderFactory.createLineBorder(UiUtil.COLOR_FOCUS_GAINED, 1, false));</span>
-        
-<span class="fc" id="L124">        this.textFieldEditable.addActionListener(e -&gt; {</span>
+<span class="fc" id="L90">        this.textFieldEditable.addActionListener(e -&gt; {</span>
+<span class="nc" id="L91">            AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();</span>
+<span class="nc" id="L92">            nodeModel.setIsEdited(false);</span>
             
-<span class="nc" id="L126">            AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();</span>
-<span class="nc" id="L127">            nodeModel.setIsEdited(false);</span>
-            
-<span class="nc" id="L129">            this.label.setVisible(true);</span>
-<span class="nc" id="L130">            this.textFieldEditable.setVisible(false);</span>
-<span class="nc" id="L131">            tree.requestFocusInWindow();</span>
+<span class="nc" id="L94">            this.nodeLabel.setVisible(true);</span>
+<span class="nc" id="L95">            this.textFieldEditable.setVisible(false);</span>
+<span class="nc" id="L96">            tree.requestFocusInWindow();</span>
 
-<span class="nc" id="L133">            nodeModel.getElementDatabase().setElementValue(new String(</span>
-<span class="nc" id="L134">                this.textFieldEditable.getText().getBytes(StandardCharsets.UTF_8),</span>
+<span class="nc" id="L98">            nodeModel.getElementDatabase().setElementValue(new String(</span>
+<span class="nc" id="L99">                this.textFieldEditable.getText().getBytes(StandardCharsets.UTF_8),</span>
                 StandardCharsets.UTF_8
             ));
-<span class="nc" id="L137">            this.label.setText(UiStringUtil.detectUtf8Html(nodeModel.getElementDatabase().getLabelCount()));</span>
+<span class="nc" id="L102">            this.nodeLabel.setText(UiStringUtil.detectUtf8Html(nodeModel.getElementDatabase().getLabelWithCount()));</span>
             
-<span class="nc" id="L139">            tree.revalidate();</span>
-<span class="nc" id="L140">            tree.repaint();</span>
-<span class="nc" id="L141">        });</span>
+<span class="nc" id="L104">            tree.revalidate();</span>
+<span class="nc" id="L105">            tree.repaint();</span>
+<span class="nc" id="L106">        });</span>
         
-<span class="fc" id="L143">        this.textFieldEditable.addFocusListener(new FocusAdapter() {</span>
-            
+<span class="fc" id="L108">        this.textFieldEditable.addFocusListener(new FocusAdapter() {</span>
             @Override
             public void focusLost(FocusEvent e) {
-                
-<span class="nc" id="L148">                AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();</span>
-<span class="nc" id="L149">                nodeModel.setIsEdited(false);</span>
-<span class="nc" id="L150">                tree.revalidate();</span>
-<span class="nc" id="L151">                tree.repaint();</span>
-<span class="nc" id="L152">            }</span>
+<span class="nc" id="L111">                AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();</span>
+<span class="nc" id="L112">                nodeModel.setIsEdited(false);</span>
+<span class="nc" id="L113">                tree.revalidate();</span>
+<span class="nc" id="L114">                tree.repaint();</span>
+<span class="nc" id="L115">            }</span>
         });
         
-<span class="fc" id="L155">        KeyAdapter keyAdapterF2 = new KeyAdapter() {</span>
-            
+<span class="fc" id="L118">        KeyAdapter keyAdapterF2 = new KeyAdapter() {</span>
             @Override
             public void keyPressed(KeyEvent e) {
+<span class="nc" id="L121">                AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();</span>
                 
-<span class="nc" id="L160">                AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();</span>
-                
-<span class="nc bnc" id="L162" title="All 4 branches missed.">                if (e.getKeyCode() == KeyEvent.VK_F2 &amp;&amp; !nodeModel.isRunning()) {</span>
+<span class="nc bnc" id="L123" title="All 4 branches missed.">                if (e.getKeyCode() == KeyEvent.VK_F2 &amp;&amp; !nodeModel.isRunning()) {</span>
+<span class="nc" id="L124">                    nodeModel.setIsEdited(true);</span>
                     
-<span class="nc" id="L164">                    nodeModel.setIsEdited(true);</span>
+<span class="nc" id="L126">                    PanelNode.this.nodeLabel.setVisible(false);</span>
+<span class="nc" id="L127">                    PanelNode.this.textFieldEditable.setVisible(true);</span>
+<span class="nc" id="L128">                    PanelNode.this.textFieldEditable.requestFocusInWindow();</span>
                     
-<span class="nc" id="L166">                    PanelNode.this.label.setVisible(false);</span>
-<span class="nc" id="L167">                    PanelNode.this.textFieldEditable.setVisible(true);</span>
-<span class="nc" id="L168">                    PanelNode.this.textFieldEditable.requestFocusInWindow();</span>
-                    
-<span class="nc" id="L170">                    tree.revalidate();</span>
-<span class="nc" id="L171">                    tree.repaint();</span>
+<span class="nc" id="L130">                    tree.revalidate();</span>
+<span class="nc" id="L131">                    tree.repaint();</span>
                 }
-<span class="nc" id="L173">            }</span>
+<span class="nc" id="L133">            }</span>
         };
         
-<span class="fc" id="L176">        this.addKeyListener(keyAdapterF2);</span>
-<span class="fc" id="L177">        this.textFieldEditable.addKeyListener(keyAdapterF2);</span>
-<span class="fc" id="L178">    }</span>
+<span class="fc" id="L136">        this.addKeyListener(keyAdapterF2);</span>
+<span class="fc" id="L137">        this.textFieldEditable.addKeyListener(keyAdapterF2);</span>
+<span class="fc" id="L138">    }</span>
 
     /**
      * Change the text icon.
      * @param newIcon An icon to display next to the text.
      */
-    public void setIcon(Icon newIcon) {
-<span class="fc" id="L185">        this.icon.setIcon(newIcon);</span>
-<span class="fc" id="L186">    }</span>
+    public void setIconNode(Icon newIcon) {
+<span class="fc" id="L145">        this.iconNode.setIcon(newIcon);</span>
+<span class="fc" id="L146">    }</span>
     
     /**
      * Display the normal text icon to the left.
      */
     public void showIcon() {
-<span class="fc" id="L192">        this.icon.setVisible(true);</span>
-<span class="fc" id="L193">    }</span>
+<span class="fc" id="L152">        this.iconNode.setVisible(true);</span>
+<span class="fc" id="L153">    }</span>
     
     /**
      * Mask the node icon for example when the loader component is displayed.
      */
     public void hideIcon() {
-<span class="nc" id="L199">        this.icon.setVisible(false);</span>
-<span class="nc" id="L200">    }</span>
+<span class="nc" id="L159">        this.iconNode.setVisible(false);</span>
+<span class="nc" id="L160">    }</span>
     
     /**
      * Change the loader icon.
      * @param newIcon An icon to display for the loader.
      */
     public void setLoaderIcon(Icon newIcon) {
-<span class="nc" id="L207">        this.loader.setIcon(newIcon);</span>
-<span class="nc" id="L208">    }</span>
+<span class="nc" id="L167">        this.loaderWait.setIcon(newIcon);</span>
+<span class="nc" id="L168">    }</span>
 
     /**
      * Display the animated gif loader.
      */
     public void showLoader() {
-<span class="nc" id="L214">        this.loader.setVisible(true);</span>
-<span class="nc" id="L215">    }</span>
+<span class="nc" id="L174">        this.loaderWait.setVisible(true);</span>
+<span class="nc" id="L175">    }</span>
     
     
     // Getter and setter
 
     public ProgressBarPausable getProgressBar() {
-<span class="nc" id="L221">        return this.progressBar;</span>
+<span class="nc" id="L181">        return this.progressBar;</span>
     }
 
-    public JLabel getLabel() {
-<span class="fc" id="L225">        return this.label;</span>
+    public JLabel getNodeLabel() {
+<span class="fc" id="L185">        return this.nodeLabel;</span>
     }
 
-    public JTextField getEditable() {
-<span class="fc" id="L229">        return this.textFieldEditable;</span>
+    public JTextField getTextFieldEditable() {
+<span class="fc" id="L189">        return this.textFieldEditable;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

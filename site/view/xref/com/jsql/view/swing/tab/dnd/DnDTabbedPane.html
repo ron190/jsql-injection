@@ -9,339 +9,302 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.view.swing.tab.dnd;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.swing.action.ActionCloseTabResult;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.UiUtil;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> javax.swing.*;
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.awt.*;
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> java.awt.dnd.DragSource;
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> java.awt.event.MouseAdapter;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> java.awt.event.MouseEvent;
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> java.beans.PropertyChangeEvent;
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> java.beans.PropertyChangeListener;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> java.util.Objects;
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> java.util.Optional;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a> <strong class="jxr_keyword">extends</strong> JTabbedPane {
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>      
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> SCROLL_SIZE = 20;  <em class="jxr_comment">// Test</em>
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> BUTTON_SIZE = 30;  <em class="jxr_comment">// 30 is magic number of scroll button size</em>
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> LINE_WIDTH = 3;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Rectangle RECT_BACKWARD = <strong class="jxr_keyword">new</strong> Rectangle();
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Rectangle RECT_FORWARD = <strong class="jxr_keyword">new</strong> Rectangle();
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Rectangle RECT_LINE = <strong class="jxr_keyword">new</strong> Rectangle();
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> dragTabIndex = -1;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">transient</strong> DnDDropLocation dropLocation;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> DnDDropLocation <strong class="jxr_keyword">extends</strong> TransferHandler.DropLocation {
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>          
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> index;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> dropable = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>          
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>          <strong class="jxr_keyword">private</strong> DnDDropLocation(Point p, <strong class="jxr_keyword">int</strong> index) {
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>              <strong class="jxr_keyword">super</strong>(p);
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>              <strong class="jxr_keyword">this</strong>.index = index;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          }
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>          
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getIndex() {
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>              <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.index;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>          }
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>          
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setDroppable(<strong class="jxr_keyword">boolean</strong> flag) {
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>              <strong class="jxr_keyword">this</strong>.dropable = flag;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          }
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>          
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isDroppable() {
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>              <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.dropable;
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>          }
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      }
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> clickArrowButton(String actionKey) {
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> javax.swing.*;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> java.awt.*;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> java.awt.dnd.DragSource;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.awt.event.MouseAdapter;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> java.awt.event.MouseEvent;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> java.beans.PropertyChangeEvent;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> java.beans.PropertyChangeListener;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> java.util.Objects;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> java.util.Optional;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a> <strong class="jxr_keyword">extends</strong> JTabbedPane {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>      
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> SCROLL_SIZE = 20;  <em class="jxr_comment">// Test</em>
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> BUTTON_SIZE = 30;  <em class="jxr_comment">// 30 is magic number of scroll button size</em>
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> LINE_WIDTH = 3;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Rectangle RECT_BACKWARD = <strong class="jxr_keyword">new</strong> Rectangle();
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Rectangle RECT_FORWARD = <strong class="jxr_keyword">new</strong> Rectangle();
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Rectangle RECT_LINE = <strong class="jxr_keyword">new</strong> Rectangle();
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> dragTabIndex = -1;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">transient</strong> DnDDropLocation dropLocation;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> DnDDropLocation <strong class="jxr_keyword">extends</strong> TransferHandler.DropLocation {
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>          
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> index;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> dropable = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>          
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">private</strong> DnDDropLocation(Point p, <strong class="jxr_keyword">int</strong> index) {
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>              <strong class="jxr_keyword">super</strong>(p);
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>              <strong class="jxr_keyword">this</strong>.index = index;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>          }
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getIndex() {
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>              <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.index;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          }
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>          
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setDroppable(<strong class="jxr_keyword">boolean</strong> flag) {
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>              <strong class="jxr_keyword">this</strong>.dropable = flag;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          }
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>          
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isDroppable() {
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>              <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.dropable;
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          }
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      }
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> clickArrowButton(String actionKey) {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          JButton scrollForwardButton = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          JButton scrollBackwardButton = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          JButton scrollForwardButton = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          JButton scrollBackwardButton = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">for</strong> (Component c: <strong class="jxr_keyword">this</strong>.getComponents()) {
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>              <strong class="jxr_keyword">if</strong> (c instanceof JButton) {
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>                  <strong class="jxr_keyword">if</strong> (scrollForwardButton == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>                      scrollForwardButton = (JButton) c;
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>                  } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (scrollBackwardButton == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>                      scrollBackwardButton = (JButton) c;
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>                  }
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>              }
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>          }
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          JButton button = <span class="jxr_string">"scrollTabsForwardAction"</span>.equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>      
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>          Optional.ofNullable(button)
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>              .filter(JButton::isEnabled)
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>              .ifPresent(JButton::doClick);
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>      }
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>      
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> autoScrollTest(Point pt) {
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>          Rectangle r = <strong class="jxr_keyword">this</strong>.getTabAreaBounds();
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">if</strong> (isTopBottomTabPlacement(<strong class="jxr_keyword">this</strong>.getTabPlacement())) {
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>              
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>              RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>              RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>              
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>          } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>              
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>              RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>              RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>          }
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>          
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>          <strong class="jxr_keyword">if</strong> (RECT_BACKWARD.contains(pt)) {
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>              <strong class="jxr_keyword">this</strong>.clickArrowButton(<span class="jxr_string">"scrollTabsBackwardAction"</span>);
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>          } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (RECT_FORWARD.contains(pt)) {
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>              <strong class="jxr_keyword">this</strong>.clickArrowButton(<span class="jxr_string">"scrollTabsForwardAction"</span>);
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>          }
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      }
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>      
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">protected</strong> <a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a>() {
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>          
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">super</strong>();
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>          
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <em class="jxr_comment">// UIManager.put() is not enough</em>
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>         <strong class="jxr_keyword">this</strong>.setUI(<strong class="jxr_keyword">new</strong> <a name="CustomMetalTabbedPaneUI" href="../../../../../../com/jsql/view/swing/ui/CustomMetalTabbedPaneUI.html#CustomMetalTabbedPaneUI">CustomMetalTabbedPaneUI</a>());
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">this</strong>.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">for</strong> (Component c: <strong class="jxr_keyword">this</strong>.getComponents()) {
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>              <strong class="jxr_keyword">if</strong> (c instanceof JButton) {
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>                  <strong class="jxr_keyword">if</strong> (scrollForwardButton == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>                      scrollForwardButton = (JButton) c;
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>                  } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (scrollBackwardButton == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>                      scrollBackwardButton = (JButton) c;
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>                  }
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>              }
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          }
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          JButton button = <span class="jxr_string">"scrollTabsForwardAction"</span>.equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>          Optional.ofNullable(button)
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>              .filter(JButton::isEnabled)
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>              .ifPresent(JButton::doClick);
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>      }
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> autoScrollTest(Point pt) {
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>          Rectangle r = <strong class="jxr_keyword">this</strong>.getTabAreaBounds();
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">if</strong> (isTopBottomTabPlacement(<strong class="jxr_keyword">this</strong>.getTabPlacement())) {
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>              RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>              RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>          } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>              RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>              RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          }
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">if</strong> (RECT_BACKWARD.contains(pt)) {
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>              <strong class="jxr_keyword">this</strong>.clickArrowButton(<span class="jxr_string">"scrollTabsBackwardAction"</span>);
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>          } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (RECT_FORWARD.contains(pt)) {
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>              <strong class="jxr_keyword">this</strong>.clickArrowButton(<span class="jxr_string">"scrollTabsForwardAction"</span>);
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          }
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>      }
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>      
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">protected</strong> <a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a>() {
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          <strong class="jxr_keyword">super</strong>();
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>          <strong class="jxr_keyword">var</strong> h = <strong class="jxr_keyword">new</strong> Handler();
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          <strong class="jxr_keyword">this</strong>.addMouseListener(h);
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>          <strong class="jxr_keyword">this</strong>.addMouseMotionListener(h);
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>          <strong class="jxr_keyword">this</strong>.addPropertyChangeListener(h);
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>      }
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>      
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">public</strong> DnDDropLocation dropLocationForPointDnD(Point p) {
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0; i &lt; <strong class="jxr_keyword">this</strong>.getTabCount(); i++) {
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>              <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.getBoundsAt(i).contains(p)) {
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>                  <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> DnDDropLocation(p, i);
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>             }
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         }
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">var</strong> h = <strong class="jxr_keyword">new</strong> Handler();
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>         <strong class="jxr_keyword">this</strong>.addMouseListener(h);
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>         <strong class="jxr_keyword">this</strong>.addMouseMotionListener(h);
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">this</strong>.addPropertyChangeListener(h);
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>     }
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>     
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">public</strong> DnDDropLocation dropLocationForPointDnD(Point p) {
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>         
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0; i &lt; <strong class="jxr_keyword">this</strong>.getTabCount(); i++) {
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>             <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.getBoundsAt(i).contains(p)) {
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> DnDDropLocation(p, i);
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>             }
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>         }
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>         
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.getTabAreaBounds().contains(p)) {
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> DnDDropLocation(p, <strong class="jxr_keyword">this</strong>.getTabCount());
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>         }
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> DnDDropLocation(p, -1);
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>     }
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>     
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setDropLocation(TransferHandler.DropLocation location, <strong class="jxr_keyword">boolean</strong> forDrop) {
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>         
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>         DnDDropLocation old = <strong class="jxr_keyword">this</strong>.dropLocation;
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">if</strong> (Objects.isNull(location) || !forDrop) {
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>             <strong class="jxr_keyword">this</strong>.dropLocation = <strong class="jxr_keyword">new</strong> DnDDropLocation(<strong class="jxr_keyword">new</strong> Point(), -1);
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (location instanceof DnDDropLocation) {
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>             <strong class="jxr_keyword">this</strong>.dropLocation = (DnDDropLocation) location;
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>         }
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>         
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>         <strong class="jxr_keyword">this</strong>.firePropertyChange(<span class="jxr_string">"dropLocation"</span>, old, <strong class="jxr_keyword">this</strong>.dropLocation);
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>     }
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>     
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> exportTab(<strong class="jxr_keyword">int</strong> dragIndex, JTabbedPane target, <strong class="jxr_keyword">int</strong> targetIndex) {
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>         
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         <strong class="jxr_keyword">var</strong> cmp = <strong class="jxr_keyword">this</strong>.getComponentAt(dragIndex);
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>         <strong class="jxr_keyword">var</strong> tab = <strong class="jxr_keyword">this</strong>.getTabComponentAt(dragIndex);
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         String title = <strong class="jxr_keyword">this</strong>.getTitleAt(dragIndex);
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>         <strong class="jxr_keyword">var</strong> icon = <strong class="jxr_keyword">this</strong>.getIconAt(dragIndex);
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>         String tip = <strong class="jxr_keyword">this</strong>.getToolTipTextAt(dragIndex);
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         <strong class="jxr_keyword">boolean</strong> isEnabled = <strong class="jxr_keyword">this</strong>.isEnabledAt(dragIndex);
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>         
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">this</strong>.remove(dragIndex);
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>         target.insertTab(title, icon, cmp, tip, targetIndex);
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>         target.setEnabledAt(targetIndex, isEnabled);
-<a class="jxr_linenumber" name="L149" href="#L149">149</a> 
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>         target.setTabComponentAt(targetIndex, tab);
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>         target.setSelectedIndex(targetIndex);
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>         
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">if</strong> (tab instanceof JComponent) {
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>             ((JComponent) tab).scrollRectToVisible(tab.getBounds());
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>         }
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>     }
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>     
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> convertTab(<strong class="jxr_keyword">int</strong> prev, <strong class="jxr_keyword">int</strong> next) {
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>         <strong class="jxr_keyword">var</strong> cmp = <strong class="jxr_keyword">this</strong>.getComponentAt(prev);
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>         <strong class="jxr_keyword">var</strong> tab = <strong class="jxr_keyword">this</strong>.getTabComponentAt(prev);
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>         String title = <strong class="jxr_keyword">this</strong>.getTitleAt(prev);
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">var</strong> icon = <strong class="jxr_keyword">this</strong>.getIconAt(prev);
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>         String tip = <strong class="jxr_keyword">this</strong>.getToolTipTextAt(prev);
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>         <strong class="jxr_keyword">boolean</strong> isEnabled = <strong class="jxr_keyword">this</strong>.isEnabledAt(prev);
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>         <strong class="jxr_keyword">int</strong> tgtindex = prev &gt; next ? next : next - 1;
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>         
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">this</strong>.remove(prev);
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>         <strong class="jxr_keyword">this</strong>.insertTab(title, icon, cmp, tip, tgtindex);
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">this</strong>.setEnabledAt(tgtindex, isEnabled);
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.getTabAreaBounds().contains(p)) {
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> DnDDropLocation(p, <strong class="jxr_keyword">this</strong>.getTabCount());
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>         }
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> DnDDropLocation(p, -1);
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>     }
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>     
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setDropLocation(TransferHandler.DropLocation location, <strong class="jxr_keyword">boolean</strong> forDrop) {
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         DnDDropLocation old = <strong class="jxr_keyword">this</strong>.dropLocation;
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">if</strong> (Objects.isNull(location) || !forDrop) {
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>             <strong class="jxr_keyword">this</strong>.dropLocation = <strong class="jxr_keyword">new</strong> DnDDropLocation(<strong class="jxr_keyword">new</strong> Point(), -1);
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (location instanceof DnDDropLocation) {
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>             <strong class="jxr_keyword">this</strong>.dropLocation = (DnDDropLocation) location;
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>         }
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>         
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>         <strong class="jxr_keyword">this</strong>.firePropertyChange(<span class="jxr_string">"dropLocation"</span>, old, <strong class="jxr_keyword">this</strong>.dropLocation);
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>     }
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>     
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> exportTab(<strong class="jxr_keyword">int</strong> dragIndex, JTabbedPane target, <strong class="jxr_keyword">int</strong> targetIndex) {
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         <strong class="jxr_keyword">var</strong> cmp = <strong class="jxr_keyword">this</strong>.getComponentAt(dragIndex);
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         <strong class="jxr_keyword">var</strong> tab = <strong class="jxr_keyword">this</strong>.getTabComponentAt(dragIndex);
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>         String title = <strong class="jxr_keyword">this</strong>.getTitleAt(dragIndex);
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>         <strong class="jxr_keyword">var</strong> icon = <strong class="jxr_keyword">this</strong>.getIconAt(dragIndex);
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         String tip = <strong class="jxr_keyword">this</strong>.getToolTipTextAt(dragIndex);
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">boolean</strong> isEnabled = <strong class="jxr_keyword">this</strong>.isEnabledAt(dragIndex);
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">this</strong>.remove(dragIndex);
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>         target.insertTab(title, icon, cmp, tip, targetIndex);
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>         target.setEnabledAt(targetIndex, isEnabled);
+<a class="jxr_linenumber" name="L133" href="#L133">133</a> 
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>         target.setTabComponentAt(targetIndex, tab);
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>         target.setSelectedIndex(targetIndex);
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         <strong class="jxr_keyword">if</strong> (tab instanceof JComponent) {
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>             ((JComponent) tab).scrollRectToVisible(tab.getBounds());
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>         }
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>     }
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>     
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> convertTab(<strong class="jxr_keyword">int</strong> prev, <strong class="jxr_keyword">int</strong> next) {
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">var</strong> cmp = <strong class="jxr_keyword">this</strong>.getComponentAt(prev);
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         <strong class="jxr_keyword">var</strong> tab = <strong class="jxr_keyword">this</strong>.getTabComponentAt(prev);
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>         String title = <strong class="jxr_keyword">this</strong>.getTitleAt(prev);
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">var</strong> icon = <strong class="jxr_keyword">this</strong>.getIconAt(prev);
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>         String tip = <strong class="jxr_keyword">this</strong>.getToolTipTextAt(prev);
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>         <strong class="jxr_keyword">boolean</strong> isEnabled = <strong class="jxr_keyword">this</strong>.isEnabledAt(prev);
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>         <strong class="jxr_keyword">int</strong> tgtindex = prev &gt; next ? next : next - 1;
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>         
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">this</strong>.remove(prev);
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>         <strong class="jxr_keyword">this</strong>.insertTab(title, icon, cmp, tip, tgtindex);
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">this</strong>.setEnabledAt(tgtindex, isEnabled);
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>         
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>         <em class="jxr_comment">// When you drag'n'drop a disabled tab, it finishes enabled and selected.</em>
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         <em class="jxr_comment">// pointed out by dlorde</em>
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">if</strong> (isEnabled) {
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>             <strong class="jxr_keyword">this</strong>.setSelectedIndex(tgtindex);
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>         }
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>         
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>         <em class="jxr_comment">// I have a component in all tabs (jlabel with an X to close the tab) and when I move a tab the component disappear.</em>
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         <em class="jxr_comment">// pointed out by Daniel Dario Morales Salas</em>
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">this</strong>.setTabComponentAt(tgtindex, tab);
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>     }
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>     
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>     <strong class="jxr_keyword">public</strong> Optional&lt;Rectangle&gt; getDropLineRect() {
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">int</strong> index = Optional.ofNullable(<strong class="jxr_keyword">this</strong>.getDropLocation())
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>             .filter(DnDDropLocation::isDroppable)
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>             .map(DnDDropLocation::getIndex)
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>             .orElse(-1);
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>         
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>         <em class="jxr_comment">// When you drag'n'drop a disabled tab, it finishes enabled and selected.</em>
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>         <em class="jxr_comment">// pointed out by dlorde</em>
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>         <strong class="jxr_keyword">if</strong> (isEnabled) {
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>             <strong class="jxr_keyword">this</strong>.setSelectedIndex(tgtindex);
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>         }
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>         
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>         <em class="jxr_comment">// I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.</em>
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>         <em class="jxr_comment">// pointed out by Daniel Dario Morales Salas</em>
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">this</strong>.setTabComponentAt(tgtindex, tab);
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>     }
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>     
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>     <strong class="jxr_keyword">public</strong> Optional&lt;Rectangle&gt; getDropLineRect() {
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>         
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>         <strong class="jxr_keyword">int</strong> index = Optional.ofNullable(<strong class="jxr_keyword">this</strong>.getDropLocation())
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>             .filter(DnDDropLocation::isDroppable)
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>             .map(DnDDropLocation::getIndex)
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>             .orElse(-1);
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">if</strong> (index &lt; 0) {
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>             
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>             RECT_LINE.setBounds(0, 0, 0, 0);
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>             <strong class="jxr_keyword">return</strong> Optional.empty();
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         }
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>         <strong class="jxr_keyword">int</strong> a = Math.min(index, 1);
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>         Rectangle r = <strong class="jxr_keyword">this</strong>.getBoundsAt(a * (index - 1));
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>         <strong class="jxr_keyword">if</strong> (isTopBottomTabPlacement(<strong class="jxr_keyword">this</strong>.getTabPlacement())) {
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>             RECT_LINE.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>             RECT_LINE.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>         }
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>         
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>         <strong class="jxr_keyword">return</strong> Optional.of(RECT_LINE);
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>     }
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>     
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>     <strong class="jxr_keyword">public</strong> Rectangle getTabAreaBounds() {
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>         
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>         Rectangle tabbedRect = <strong class="jxr_keyword">this</strong>.getBounds();
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>         <strong class="jxr_keyword">int</strong> xx = tabbedRect.x;
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>         <strong class="jxr_keyword">int</strong> yy = tabbedRect.y;
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>         
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>         Rectangle compRect = Optional.ofNullable(<strong class="jxr_keyword">this</strong>.getSelectedComponent())
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>             .map(Component::getBounds)
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>             .orElseGet(Rectangle::<strong class="jxr_keyword">new</strong>);
-<a class="jxr_linenumber" name="L217" href="#L217">217</a> 
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>         <strong class="jxr_keyword">int</strong> tabPlacement = <strong class="jxr_keyword">this</strong>.getTabPlacement();
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>         
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>         <strong class="jxr_keyword">if</strong> (isTopBottomTabPlacement(tabPlacement)) {
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>             
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>             tabbedRect.height = tabbedRect.height - compRect.height;
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>             
-<a class="jxr_linenumber" name="L224" href="#L224">224</a>             <strong class="jxr_keyword">if</strong> (tabPlacement == BOTTOM) {
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>                 tabbedRect.y += compRect.y + compRect.height;
-<a class="jxr_linenumber" name="L226" href="#L226">226</a>             }
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>             
-<a class="jxr_linenumber" name="L229" href="#L229">229</a>             tabbedRect.width = tabbedRect.width - compRect.width;
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>             
-<a class="jxr_linenumber" name="L231" href="#L231">231</a>             <strong class="jxr_keyword">if</strong> (tabPlacement == RIGHT) {
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>                 tabbedRect.x += compRect.x + compRect.width;
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>             }
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>         }
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>         
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>         tabbedRect.translate(-xx, -yy);
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>         
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>         <strong class="jxr_keyword">return</strong> tabbedRect;
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>     }
-<a class="jxr_linenumber" name="L240" href="#L240">240</a> 
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> isTopBottomTabPlacement(<strong class="jxr_keyword">int</strong> tabPlacement) {
-<a class="jxr_linenumber" name="L242" href="#L242">242</a>         <strong class="jxr_keyword">return</strong> tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>     }
-<a class="jxr_linenumber" name="L244" href="#L244">244</a> 
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> Handler <strong class="jxr_keyword">extends</strong> MouseAdapter <strong class="jxr_keyword">implements</strong> PropertyChangeListener { <em class="jxr_comment">// , BeforeDrag</em>
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>         
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>         <strong class="jxr_keyword">private</strong> Point startPt;
-<a class="jxr_linenumber" name="L248" href="#L248">248</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> gestureMotionThreshold = DragSource.getDragThreshold();
-<a class="jxr_linenumber" name="L249" href="#L249">249</a> 
-<a class="jxr_linenumber" name="L250" href="#L250">250</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> repaintDropLocation() {
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>             
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>             Component c = DnDTabbedPane.<strong class="jxr_keyword">this</strong>.getRootPane().getGlassPane();
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>             
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>             <strong class="jxr_keyword">if</strong> (c instanceof <a name="GhostGlassPane" href="../../../../../../com/jsql/view/swing/tab/dnd/GhostGlassPane.html#GhostGlassPane">GhostGlassPane</a>) {
-<a class="jxr_linenumber" name="L255" href="#L255">255</a>                 
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>                 <a name="GhostGlassPane" href="../../../../../../com/jsql/view/swing/tab/dnd/GhostGlassPane.html#GhostGlassPane">GhostGlassPane</a> glassPane = (<a name="GhostGlassPane" href="../../../../../../com/jsql/view/swing/tab/dnd/GhostGlassPane.html#GhostGlassPane">GhostGlassPane</a>) c;
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>                 glassPane.setTargetTabbedPane(DnDTabbedPane.<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>                 glassPane.repaint();
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>             }
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>         }
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>         
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>         <em class="jxr_comment">// PropertyChangeListener</em>
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>         <strong class="jxr_keyword">if</strong> (index &lt; 0) {
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>             RECT_LINE.setBounds(0, 0, 0, 0);
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>             <strong class="jxr_keyword">return</strong> Optional.empty();
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>         }
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>         
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>         <strong class="jxr_keyword">int</strong> a = Math.min(index, 1);
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>         Rectangle r = <strong class="jxr_keyword">this</strong>.getBoundsAt(a * (index - 1));
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>         
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">if</strong> (isTopBottomTabPlacement(<strong class="jxr_keyword">this</strong>.getTabPlacement())) {
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>             RECT_LINE.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>             RECT_LINE.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>         }
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>         
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>         <strong class="jxr_keyword">return</strong> Optional.of(RECT_LINE);
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>     }
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>     <strong class="jxr_keyword">public</strong> Rectangle getTabAreaBounds() {
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         Rectangle tabbedRect = <strong class="jxr_keyword">this</strong>.getBounds();
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <strong class="jxr_keyword">int</strong> xx = tabbedRect.x;
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>         <strong class="jxr_keyword">int</strong> yy = tabbedRect.y;
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>         Rectangle compRect = Optional.ofNullable(<strong class="jxr_keyword">this</strong>.getSelectedComponent())
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>             .map(Component::getBounds)
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>             .orElseGet(Rectangle::<strong class="jxr_keyword">new</strong>);
+<a class="jxr_linenumber" name="L197" href="#L197">197</a> 
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <strong class="jxr_keyword">int</strong> tabPlacement = <strong class="jxr_keyword">this</strong>.getTabPlacement();
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>         
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>         <strong class="jxr_keyword">if</strong> (isTopBottomTabPlacement(tabPlacement)) {
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>             tabbedRect.height = tabbedRect.height - compRect.height;
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>             <strong class="jxr_keyword">if</strong> (tabPlacement == BOTTOM) {
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>                 tabbedRect.y += compRect.y + compRect.height;
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>             }
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>             tabbedRect.width = tabbedRect.width - compRect.width;
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>             <strong class="jxr_keyword">if</strong> (tabPlacement == RIGHT) {
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>                 tabbedRect.x += compRect.x + compRect.width;
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>             }
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>         }
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>         
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>         tabbedRect.translate(-xx, -yy);
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>         <strong class="jxr_keyword">return</strong> tabbedRect;
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>     }
+<a class="jxr_linenumber" name="L215" href="#L215">215</a> 
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> isTopBottomTabPlacement(<strong class="jxr_keyword">int</strong> tabPlacement) {
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>         <strong class="jxr_keyword">return</strong> tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>     }
+<a class="jxr_linenumber" name="L219" href="#L219">219</a> 
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> Handler <strong class="jxr_keyword">extends</strong> MouseAdapter <strong class="jxr_keyword">implements</strong> PropertyChangeListener { <em class="jxr_comment">// , BeforeDrag</em>
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>         
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>         <strong class="jxr_keyword">private</strong> Point startPt;
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> gestureMotionThreshold = DragSource.getDragThreshold();
+<a class="jxr_linenumber" name="L224" href="#L224">224</a> 
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> repaintDropLocation() {
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>             Component c = DnDTabbedPane.<strong class="jxr_keyword">this</strong>.getRootPane().getGlassPane();
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>             <strong class="jxr_keyword">if</strong> (c instanceof <a name="GhostGlassPane" href="../../../../../../com/jsql/view/swing/tab/dnd/GhostGlassPane.html#GhostGlassPane">GhostGlassPane</a>) {
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>                 <a name="GhostGlassPane" href="../../../../../../com/jsql/view/swing/tab/dnd/GhostGlassPane.html#GhostGlassPane">GhostGlassPane</a> glassPane = (<a name="GhostGlassPane" href="../../../../../../com/jsql/view/swing/tab/dnd/GhostGlassPane.html#GhostGlassPane">GhostGlassPane</a>) c;
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>                 glassPane.setTargetTabbedPane(DnDTabbedPane.<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>                 glassPane.repaint();
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>             }
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>         }
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>         
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>         <em class="jxr_comment">// PropertyChangeListener</em>
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>         @Override
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> propertyChange(PropertyChangeEvent e) {
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>             String propertyName = e.getPropertyName();
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>             <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"dropLocation"</span>.equals(propertyName)) {
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>                 <strong class="jxr_keyword">this</strong>.repaintDropLocation();
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>             }
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>         }
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>         
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>         <em class="jxr_comment">// MouseListener</em>
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>         @Override
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent e) {
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>             <a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a> src = (<a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a>) e.getComponent();
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>             <strong class="jxr_keyword">boolean</strong> isOnlyOneTab = src.getTabCount() &lt;= 1;
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>             <strong class="jxr_keyword">if</strong> (isOnlyOneTab) {
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>                 <strong class="jxr_keyword">this</strong>.startPt = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>                 <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>             }
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>             
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>             <strong class="jxr_keyword">var</strong> tabPt = e.getPoint();
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>             <strong class="jxr_keyword">int</strong> idx = src.indexAtLocation(tabPt.x, tabPt.y);
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>             
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>             <em class="jxr_comment">// disabled tab, null component problem.</em>
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>             <em class="jxr_comment">// pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)</em>
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>             <strong class="jxr_keyword">boolean</strong> flag = idx &lt; 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>             
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>             <strong class="jxr_keyword">this</strong>.startPt = flag ? <strong class="jxr_keyword">null</strong> : tabPt;
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>         }
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>         
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>         @Override
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> propertyChange(PropertyChangeEvent e) {
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>             
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>             String propertyName = e.getPropertyName();
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>             <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"dropLocation"</span>.equals(propertyName)) {
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>                 <strong class="jxr_keyword">this</strong>.repaintDropLocation();
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>             }
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>         }
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>         
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>         <em class="jxr_comment">// MouseListener</em>
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>         @Override
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent e) {
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>             
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>             <a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a> src = (<a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a>) e.getComponent();
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>             <strong class="jxr_keyword">boolean</strong> isOnlyOneTab = src.getTabCount() &lt;= 1;
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>             
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>             <strong class="jxr_keyword">if</strong> (isOnlyOneTab) {
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>                 
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>                 <strong class="jxr_keyword">this</strong>.startPt = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>                 <strong class="jxr_keyword">return</strong>;
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>             }
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>             
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>             <strong class="jxr_keyword">var</strong> tabPt = e.getPoint();
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>             <strong class="jxr_keyword">int</strong> idx = src.indexAtLocation(tabPt.x, tabPt.y);
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>             
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>             <em class="jxr_comment">// disabled tab, null component problem.</em>
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>             <em class="jxr_comment">// pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)</em>
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>             <strong class="jxr_keyword">boolean</strong> flag = idx &lt; 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>             
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>             <strong class="jxr_keyword">this</strong>.startPt = flag ? <strong class="jxr_keyword">null</strong> : tabPt;
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>         }
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>         
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>         @Override
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mouseDragged(MouseEvent e) {
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>             
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>             <strong class="jxr_keyword">var</strong> tabPt = e.getPoint();
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>             
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>             <strong class="jxr_keyword">if</strong> (Objects.nonNull(<strong class="jxr_keyword">this</strong>.startPt) &amp;&amp; <strong class="jxr_keyword">this</strong>.startPt.distance(tabPt) &gt; <strong class="jxr_keyword">this</strong>.gestureMotionThreshold) {
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>                 
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>                 <a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a> src = (<a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a>) e.getComponent();
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>                 <strong class="jxr_keyword">var</strong> th = src.getTransferHandler();
-<a class="jxr_linenumber" name="L304" href="#L304">304</a>                 DnDTabbedPane.<strong class="jxr_keyword">this</strong>.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>                 
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>                 <em class="jxr_comment">// Unhandled NoClassDefFoundError #56620: Could not initialize class java.awt.dnd.DragSource</em>
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>                 th.exportAsDrag(src, e, TransferHandler.MOVE);
-<a class="jxr_linenumber" name="L308" href="#L308">308</a>                 
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>                 RECT_LINE.setBounds(0, 0, 0, 0);
-<a class="jxr_linenumber" name="L310" href="#L310">310</a>                 src.getRootPane().getGlassPane().setVisible(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L311" href="#L311">311</a>                 src.setDropLocation(<strong class="jxr_keyword">new</strong> DnDDropLocation(tabPt, -1), <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>                 
-<a class="jxr_linenumber" name="L313" href="#L313">313</a>                 <strong class="jxr_keyword">this</strong>.startPt = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L314" href="#L314">314</a>             }
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>         }
-<a class="jxr_linenumber" name="L316" href="#L316">316</a> 
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>         @Override
-<a class="jxr_linenumber" name="L318" href="#L318">318</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mouseClicked(MouseEvent e) {
-<a class="jxr_linenumber" name="L319" href="#L319">319</a>             
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>             <strong class="jxr_keyword">var</strong> tabPt = e.getPoint();
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>             JTabbedPane src = (JTabbedPane) e.getSource();
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>             
-<a class="jxr_linenumber" name="L323" href="#L323">323</a>             <strong class="jxr_keyword">int</strong> i = src.indexAtLocation(tabPt.x, tabPt.y);
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>             
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>             <strong class="jxr_keyword">if</strong> (-1 &lt; i &amp;&amp; e.getButton() == MouseEvent.BUTTON2) {
-<a class="jxr_linenumber" name="L326" href="#L326">326</a>                 ActionCloseTabResult.perform(i);
-<a class="jxr_linenumber" name="L327" href="#L327">327</a>             }
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>         }
-<a class="jxr_linenumber" name="L329" href="#L329">329</a>     }
-<a class="jxr_linenumber" name="L330" href="#L330">330</a>     
-<a class="jxr_linenumber" name="L331" href="#L331">331</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> DnDDropLocation getDropLocation() {
-<a class="jxr_linenumber" name="L332" href="#L332">332</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.dropLocation;
-<a class="jxr_linenumber" name="L333" href="#L333">333</a>     }
-<a class="jxr_linenumber" name="L334" href="#L334">334</a> }
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mouseDragged(MouseEvent e) {
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>             <strong class="jxr_keyword">var</strong> tabPt = e.getPoint();
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>             <strong class="jxr_keyword">if</strong> (Objects.nonNull(<strong class="jxr_keyword">this</strong>.startPt) &amp;&amp; <strong class="jxr_keyword">this</strong>.startPt.distance(tabPt) &gt; <strong class="jxr_keyword">this</strong>.gestureMotionThreshold) {
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>                 <a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a> src = (<a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a>) e.getComponent();
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>                 <strong class="jxr_keyword">var</strong> th = src.getTransferHandler();
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>                 DnDTabbedPane.<strong class="jxr_keyword">this</strong>.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>                 
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>                 <em class="jxr_comment">// Unhandled NoClassDefFoundError #56620: Could not initialize class java.awt.dnd.DragSource</em>
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>                 th.exportAsDrag(src, e, TransferHandler.MOVE);
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>                 
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>                 RECT_LINE.setBounds(0, 0, 0, 0);
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>                 src.getRootPane().getGlassPane().setVisible(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>                 src.setDropLocation(<strong class="jxr_keyword">new</strong> DnDDropLocation(tabPt, -1), <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>                 
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>                 <strong class="jxr_keyword">this</strong>.startPt = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>             }
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>         }
+<a class="jxr_linenumber" name="L281" href="#L281">281</a> 
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>         @Override
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mouseClicked(MouseEvent e) {
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>             <strong class="jxr_keyword">var</strong> tabPt = e.getPoint();
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>             JTabbedPane src = (JTabbedPane) e.getSource();
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>             
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>             <strong class="jxr_keyword">int</strong> i = src.indexAtLocation(tabPt.x, tabPt.y);
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>             <strong class="jxr_keyword">if</strong> (-1 &lt; i &amp;&amp; e.getButton() == MouseEvent.BUTTON2) {
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>                 ActionCloseTabResult.perform(i);
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>             }
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>         }
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>     }
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>     
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> DnDDropLocation getDropLocation() {
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.dropLocation;
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>     }
+<a class="jxr_linenumber" name="L297" href="#L297">297</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2024. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
 </body>
 </html>

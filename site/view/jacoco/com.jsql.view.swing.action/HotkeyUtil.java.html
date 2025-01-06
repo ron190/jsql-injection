@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HotkeyUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.action</a> &gt; <span class="el_source">HotkeyUtil.java</span></div><h1>HotkeyUtil.java</h1><pre class="source lang-java linenums">/*******************************************************************************
- * Copyhacked (H) 2012-2020.
+ * Copyhacked (H) 2012-2025.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
- * you want, but share and discuss about it
+ * you want, but share and discuss it
  * every time possible with every body.
  * 
  * Contributors:
@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.action;
 
-import com.jsql.view.swing.menubar.Menubar;
+import com.jsql.view.swing.menubar.AppMenubar;
 import com.jsql.view.swing.util.MediatorHelper;
 
 import javax.swing.*;
@@ -39,150 +39,133 @@ public final class HotkeyUtil {
      * Select all textfield content when focused.
      */
     public static void addTextFieldShortcutSelectAll() {
-        
-<span class="fc" id="L43">        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(</span>
+<span class="fc" id="L42">        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(</span>
             &quot;permanentFocusOwner&quot;,
             propertyChangeEvent -&gt; {
-<span class="fc bfc" id="L46" title="All 2 branches covered.">                if (propertyChangeEvent.getNewValue() instanceof JTextField) {</span>
-<span class="fc" id="L47">                    SwingUtilities.invokeLater(() -&gt; {</span>
-                        
-<span class="fc" id="L49">                        JTextField textField = (JTextField) propertyChangeEvent.getNewValue();</span>
-<span class="fc" id="L50">                        textField.selectAll();</span>
-<span class="fc" id="L51">                    });</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">                if (propertyChangeEvent.getNewValue() instanceof JTextField) {</span>
+<span class="fc" id="L46">                    SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="fc" id="L47">                        JTextField textField = (JTextField) propertyChangeEvent.getNewValue();</span>
+<span class="fc" id="L48">                        textField.selectAll();</span>
+<span class="fc" id="L49">                    });</span>
                 }
-<span class="fc" id="L53">            }</span>
+<span class="fc" id="L51">            }</span>
         );
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L53">    }</span>
     
     /**
      * Add action to a single tabbedpane (ctrl-tab, ctrl-shift-tab).
      */
     public static void addShortcut(JTabbedPane tabbedPane) {
-        
-<span class="fc" id="L62">        var ctrlTab = KeyStroke.getKeyStroke(STR_CTRL_TAB);</span>
-<span class="fc" id="L63">        var ctrlShiftTab = KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB);</span>
+<span class="fc" id="L59">        var ctrlTab = KeyStroke.getKeyStroke(STR_CTRL_TAB);</span>
+<span class="fc" id="L60">        var ctrlShiftTab = KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB);</span>
 
         // Remove ctrl-tab from normal focus traversal
-<span class="fc" id="L66">        Set&lt;AWTKeyStroke&gt; forwardKeys = new HashSet&lt;&gt;(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));</span>
-<span class="fc" id="L67">        forwardKeys.remove(ctrlTab);</span>
-<span class="fc" id="L68">        tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);</span>
+<span class="fc" id="L63">        Set&lt;AWTKeyStroke&gt; forwardKeys = new HashSet&lt;&gt;(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));</span>
+<span class="fc" id="L64">        forwardKeys.remove(ctrlTab);</span>
+<span class="fc" id="L65">        tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);</span>
 
         // Remove ctrl-shift-tab from normal focus traversal
-<span class="fc" id="L71">        Set&lt;AWTKeyStroke&gt; backwardKeys = new HashSet&lt;&gt;(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));</span>
-<span class="fc" id="L72">        backwardKeys.remove(ctrlShiftTab);</span>
-<span class="fc" id="L73">        tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);</span>
+<span class="fc" id="L68">        Set&lt;AWTKeyStroke&gt; backwardKeys = new HashSet&lt;&gt;(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));</span>
+<span class="fc" id="L69">        backwardKeys.remove(ctrlShiftTab);</span>
+<span class="fc" id="L70">        tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);</span>
 
         // Add keys to the tab's input map
-<span class="fc" id="L76">        var inputMap = tabbedPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);</span>
-<span class="fc" id="L77">        inputMap.put(ctrlTab, &quot;navigateNext&quot;);</span>
-<span class="fc" id="L78">        inputMap.put(ctrlShiftTab, &quot;navigatePrevious&quot;);</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L73">        var inputMap = tabbedPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);</span>
+<span class="fc" id="L74">        inputMap.put(ctrlTab, &quot;navigateNext&quot;);</span>
+<span class="fc" id="L75">        inputMap.put(ctrlShiftTab, &quot;navigatePrevious&quot;);</span>
+<span class="fc" id="L76">    }</span>
     
     /**
      * Add action to global root (ctrl-tab, ctrl-shift-tab, ctrl-W).
      */
-        public static void addShortcut(JRootPane rootPane, final JTabbedPane valuesTabbedPane) {
-        
-<span class="fc" id="L86">        Action closeTab = new ActionCloseTabResult();</span>
-        
-<span class="fc" id="L88">        Action nextTab = new AbstractAction() {</span>
-            
+    public static void addShortcut(JRootPane rootPane, final JTabbedPane valuesTabbedPane) {
+<span class="fc" id="L82">        Action closeTab = new ActionCloseTabResult();</span>
+<span class="fc" id="L83">        Action nextTab = new AbstractAction() {</span>
             @Override
             public void actionPerformed(ActionEvent e) {
-<span class="nc bnc" id="L92" title="All 2 branches missed.">                if (valuesTabbedPane.getTabCount() &gt; 0) {</span>
-                    
-<span class="nc" id="L94">                    int selectedIndex = valuesTabbedPane.getSelectedIndex();</span>
-                    
-<span class="nc bnc" id="L96" title="All 2 branches missed.">                    if (selectedIndex + 1 &lt; valuesTabbedPane.getTabCount()) {</span>
-<span class="nc" id="L97">                        valuesTabbedPane.setSelectedIndex(selectedIndex + 1);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                if (valuesTabbedPane.getTabCount() &gt; 0) {</span>
+<span class="nc" id="L87">                    int selectedIndex = valuesTabbedPane.getSelectedIndex();</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                    if (selectedIndex + 1 &lt; valuesTabbedPane.getTabCount()) {</span>
+<span class="nc" id="L89">                        valuesTabbedPane.setSelectedIndex(selectedIndex + 1);</span>
                     } else {
-<span class="nc" id="L99">                        valuesTabbedPane.setSelectedIndex(0);</span>
+<span class="nc" id="L91">                        valuesTabbedPane.setSelectedIndex(0);</span>
                     }
                 }
-<span class="nc" id="L102">            }</span>
+<span class="nc" id="L94">            }</span>
         };
-        
-<span class="fc" id="L105">        Action previousTab = new AbstractAction() {</span>
-            
+<span class="fc" id="L96">        Action previousTab = new AbstractAction() {</span>
             @Override
             public void actionPerformed(ActionEvent e) {
-<span class="nc bnc" id="L109" title="All 2 branches missed.">                if (valuesTabbedPane.getTabCount() &gt; 0) {</span>
-                    
-<span class="nc" id="L111">                    int selectedIndex = valuesTabbedPane.getSelectedIndex();</span>
-                    
-<span class="nc bnc" id="L113" title="All 2 branches missed.">                    if (selectedIndex - 1 &gt; -1) {</span>
-<span class="nc" id="L114">                        valuesTabbedPane.setSelectedIndex(selectedIndex - 1);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                if (valuesTabbedPane.getTabCount() &gt; 0) {</span>
+<span class="nc" id="L100">                    int selectedIndex = valuesTabbedPane.getSelectedIndex();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                    if (selectedIndex - 1 &gt; -1) {</span>
+<span class="nc" id="L102">                        valuesTabbedPane.setSelectedIndex(selectedIndex - 1);</span>
                     } else {
-<span class="nc" id="L116">                        valuesTabbedPane.setSelectedIndex(valuesTabbedPane.getTabCount() - 1);</span>
+<span class="nc" id="L104">                        valuesTabbedPane.setSelectedIndex(valuesTabbedPane.getTabCount() - 1);</span>
                     }
                 }
-<span class="nc" id="L119">            }</span>
+<span class="nc" id="L107">            }</span>
         };
         
-<span class="fc" id="L122">        Set&lt;AWTKeyStroke&gt; forwardKeys = new HashSet&lt;&gt;(rootPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));</span>
-<span class="fc" id="L123">        forwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_TAB));</span>
-<span class="fc" id="L124">        rootPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);</span>
+<span class="fc" id="L110">        Set&lt;AWTKeyStroke&gt; forwardKeys = new HashSet&lt;&gt;(rootPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));</span>
+<span class="fc" id="L111">        forwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_TAB));</span>
+<span class="fc" id="L112">        rootPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);</span>
         
-<span class="fc" id="L126">        Set&lt;AWTKeyStroke&gt; backwardKeys = new HashSet&lt;&gt;(rootPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));</span>
-<span class="fc" id="L127">        backwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB));</span>
-<span class="fc" id="L128">        rootPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);</span>
+<span class="fc" id="L114">        Set&lt;AWTKeyStroke&gt; backwardKeys = new HashSet&lt;&gt;(rootPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));</span>
+<span class="fc" id="L115">        backwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB));</span>
+<span class="fc" id="L116">        rootPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);</span>
         
-<span class="fc" id="L130">        var inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);</span>
-<span class="fc" id="L131">        var actionMap = rootPane.getActionMap();</span>
+<span class="fc" id="L118">        var inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);</span>
+<span class="fc" id="L119">        var actionMap = rootPane.getActionMap();</span>
 
-<span class="fc" id="L133">        inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl W&quot;), &quot;actionString-closeTab&quot;);</span>
-<span class="fc" id="L134">        actionMap.put(&quot;actionString-closeTab&quot;, closeTab);</span>
+<span class="fc" id="L121">        inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl W&quot;), &quot;actionString-closeTab&quot;);</span>
+<span class="fc" id="L122">        actionMap.put(&quot;actionString-closeTab&quot;, closeTab);</span>
         
-<span class="fc" id="L136">        inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_TAB), &quot;actionString-nextTab&quot;);</span>
-<span class="fc" id="L137">        actionMap.put(&quot;actionString-nextTab&quot;, nextTab);</span>
+<span class="fc" id="L124">        inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_TAB), &quot;actionString-nextTab&quot;);</span>
+<span class="fc" id="L125">        actionMap.put(&quot;actionString-nextTab&quot;, nextTab);</span>
 
-<span class="fc" id="L139">        inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB), &quot;actionString-previousTab&quot;);</span>
-<span class="fc" id="L140">        actionMap.put(&quot;actionString-previousTab&quot;, previousTab);</span>
+<span class="fc" id="L127">        inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB), &quot;actionString-previousTab&quot;);</span>
+<span class="fc" id="L128">        actionMap.put(&quot;actionString-previousTab&quot;, previousTab);</span>
+
+<span class="fc" id="L130">        int tabCount = MediatorHelper.tabManagersCards().getComponentCount();</span>
         
-<span class="fc" id="L142">        int tabCount = MediatorHelper.tabManagers().getTabCount();</span>
-        
-<span class="fc bfc" id="L144" title="All 2 branches covered.">        for (var currentTab = 1 ; currentTab &lt;= tabCount ; currentTab++) {</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        for (var currentTab = 1 ; currentTab &lt;= tabCount ; currentTab++) {</span>
+<span class="fc" id="L133">            inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl &quot;+ currentTab), STR_SELECT_TAB + currentTab);</span>
+<span class="fc" id="L134">            inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl NUMPAD&quot;+ currentTab), STR_SELECT_TAB + currentTab);</span>
             
-<span class="fc" id="L146">            inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl &quot;+ currentTab), STR_SELECT_TAB + currentTab);</span>
-<span class="fc" id="L147">            inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl NUMPAD&quot;+ currentTab), STR_SELECT_TAB + currentTab);</span>
-            
-<span class="fc" id="L149">            final int currentTabFinal = currentTab;</span>
-<span class="fc" id="L150">            actionMap.put(STR_SELECT_TAB + currentTab, new AbstractAction() {</span>
+<span class="fc" id="L136">            final int currentTabFinal = currentTab;</span>
+<span class="fc" id="L137">            actionMap.put(STR_SELECT_TAB + currentTab, new AbstractAction() {</span>
                 @Override
                 public void actionPerformed(ActionEvent e) {
-<span class="nc" id="L153">                    MediatorHelper.tabManagers().setSelectedIndex(currentTabFinal - 1);</span>
-<span class="nc" id="L154">                }</span>
+<span class="nc" id="L140">                    MediatorHelper.frame().getTabManagers().setSelectedIndex(currentTabFinal - 1);</span>
+<span class="nc" id="L141">                }</span>
             });
         }
         
-<span class="fc" id="L158">        inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl S&quot;), &quot;actionString-saveTab&quot;);</span>
-<span class="fc" id="L159">        actionMap.put(&quot;actionString-saveTab&quot;, new ActionSaveTab());</span>
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L145">        inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl S&quot;), &quot;actionString-saveTab&quot;);</span>
+<span class="fc" id="L146">        actionMap.put(&quot;actionString-saveTab&quot;, new ActionSaveTab());</span>
+<span class="fc" id="L147">    }</span>
 
     /**
      * Create Alt shortcut to display menubar ; remove menubar when focus is set to a component.
-     * @param menubar The menubar to display
+     * @param appMenubar The menubar to display
      */
-    public static void addShortcut(final Menubar menubar) {
-        
-        /* Hide Menubar when focusing any component */
-<span class="fc" id="L169">        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(</span>
+    public static void addShortcut(final AppMenubar appMenubar) {
+<span class="fc" id="L154">        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(  // Hide Menubar when focusing any component</span>
             &quot;permanentFocusOwner&quot;,
-<span class="fc" id="L171">            propertyChangeEvent -&gt; SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="fc" id="L156">            propertyChangeEvent -&gt; SwingUtilities.invokeLater(() -&gt; {</span>
                 if (
                     // Fix #40924: NullPointerException on MediatorGui.panelAddressBar()
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">                    MediatorHelper.panelAddressBar() != null</span>
-<span class="fc bfc" id="L175" title="All 2 branches covered.">                    &amp;&amp; !MediatorHelper.panelAddressBar().isAdvanceActivated()</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">                    MediatorHelper.panelAddressBar() != null</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">                    &amp;&amp; !MediatorHelper.panelAddressBar().isAdvanceActivated()</span>
                 ) {
-<span class="fc" id="L177">                    menubar.setVisible(false);</span>
+<span class="fc" id="L162">                    appMenubar.setVisible(false);</span>
                 }
-<span class="fc" id="L179">            })</span>
+<span class="fc" id="L164">            })</span>
         );
-        
-        /* Show/Hide the Menubar with Alt key (not Alt Graph) */
-<span class="fc" id="L183">        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(</span>
+<span class="fc" id="L166">        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(  // Show/Hide the Menubar with Alt key (not Alt Graph)</span>
             new AltKeyEventDispatcher()
         );
-<span class="fc" id="L186">    }</span>
+<span class="fc" id="L169">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

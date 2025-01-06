@@ -25,8 +25,7 @@ public class Crc16Helper {
     }
     
     public static String generateCRC16(String baseString) {
-        
-<span class="fc" id="L29">         var table = new int[]{</span>
+<span class="fc" id="L28">         var table = new int[]{</span>
             0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
             0xC601, 0x06C0, 0x0780, 0xC741, 0x0500, 0xC5C1, 0xC481, 0x0440,
             0xCC01, 0x0CC0, 0x0D80, 0xCD41, 0x0F00, 0xCFC1, 0xCE81, 0x0E40,
@@ -60,15 +59,12 @@ public class Crc16Helper {
             0x4400, 0x84C1, 0x8581, 0x4540, 0x8701, 0x47C0, 0x4680, 0x8641,
             0x8201, 0x42C0, 0x4380, 0x8341, 0x4100, 0x81C1, 0x8081, 0x4040,
         };
-
-
-<span class="fc" id="L65">        byte[] bytes = baseString.getBytes(StandardCharsets.UTF_8);</span>
-<span class="fc" id="L66">        var crc = 0x0000;</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (byte b : bytes) {</span>
-<span class="fc" id="L68">            crc = (crc &gt;&gt;&gt; 8) ^ table[(crc ^ b) &amp; 0xff];</span>
+<span class="fc" id="L62">        byte[] bytes = baseString.getBytes(StandardCharsets.UTF_8);</span>
+<span class="fc" id="L63">        var crc = 0x0000;</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (byte b : bytes) {</span>
+<span class="fc" id="L65">            crc = (crc &gt;&gt;&gt; 8) ^ table[(crc ^ b) &amp; 0xff];</span>
         }
-
-<span class="fc" id="L71">        return Integer.toHexString(crc);</span>
+<span class="fc" id="L67">        return Integer.toHexString(crc);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

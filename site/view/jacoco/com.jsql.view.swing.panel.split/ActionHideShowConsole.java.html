@@ -31,32 +31,24 @@ public class ActionHideShowConsole implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-<span class="fc" id="L35">        var splitHorizontalTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();</span>
-        
-<span class="fc" id="L37">        if (</span>
-<span class="fc bfc" id="L38" title="All 2 branches covered.">            splitHorizontalTopBottom.getTopComponent().isVisible()</span>
-<span class="fc bfc" id="L39" title="All 2 branches covered.">            &amp;&amp; splitHorizontalTopBottom.getBottomComponent().isVisible()</span>
+<span class="fc" id="L34">        var split = MediatorHelper.frame().getSplitHorizontalTopBottom();</span>
+<span class="fc bfc" id="L35" title="All 4 branches covered.">        if (split.getTopComponent().isVisible() &amp;&amp; split.getBottomComponent().isVisible()) {</span>
+<span class="fc" id="L36">            MediatorHelper.panelConsoles().setDividerLocation(split.getDividerLocation());</span>
+<span class="fc" id="L37">            split.getBottomComponent().setVisible(false);</span>
+<span class="fc" id="L38">            this.panel.setVisible(true);</span>
+<span class="fc" id="L39">            split.setDividerSize(0);  // required to hide bar</span>
+<span class="fc" id="L40">        } else if (</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">            this.panel.isVisible()</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">            || !split.getTopComponent().isVisible()</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">            &amp;&amp; split.getBottomComponent().isVisible()</span>
         ) {
-            
-<span class="fc" id="L42">            MediatorHelper.panelConsoles().setDividerLocation(splitHorizontalTopBottom.getDividerLocation());</span>
-<span class="fc" id="L43">            splitHorizontalTopBottom.getBottomComponent().setVisible(false);</span>
-<span class="fc" id="L44">            this.panel.setVisible(true);</span>
-<span class="fc" id="L45">            splitHorizontalTopBottom.disableDragSize();</span>
-            
-<span class="fc" id="L47">        } else if (</span>
-<span class="fc bfc" id="L48" title="All 2 branches covered.">            this.panel.isVisible()</span>
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            || !splitHorizontalTopBottom.getTopComponent().isVisible()</span>
-<span class="pc bpc" id="L50" title="1 of 2 branches missed.">            &amp;&amp; splitHorizontalTopBottom.getBottomComponent().isVisible()</span>
-        ) {
-            
-<span class="fc" id="L53">            splitHorizontalTopBottom.getBottomComponent().setVisible(true);</span>
-<span class="fc" id="L54">            splitHorizontalTopBottom.getTopComponent().setVisible(true);</span>
-<span class="fc" id="L55">            this.panel.setVisible(false);</span>
-<span class="fc" id="L56">            splitHorizontalTopBottom.setDividerLocation(MediatorHelper.panelConsoles().getDividerLocation());</span>
-<span class="fc" id="L57">            splitHorizontalTopBottom.enableDragSize();</span>
-<span class="fc" id="L58">            MediatorHelper.panelConsoles().getButtonShowNorth().setVisible(true);</span>
+<span class="fc" id="L45">            split.getBottomComponent().setVisible(true);</span>
+<span class="fc" id="L46">            split.getTopComponent().setVisible(true);</span>
+<span class="fc" id="L47">            this.panel.setVisible(false);</span>
+<span class="fc" id="L48">            split.setDividerLocation(MediatorHelper.panelConsoles().getDividerLocation());</span>
+<span class="fc" id="L49">            split.setDividerSize(UIManager.getInt(&quot;SplitPane.dividerSize&quot;));</span>
+<span class="fc" id="L50">            MediatorHelper.panelConsoles().getLabelShowNorth().setVisible(true);</span>
         }
-<span class="fc" id="L60">    }</span>
+<span class="fc" id="L52">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

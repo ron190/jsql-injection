@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class AbstractInjectionMonobit&lt;T extends AbstractCallableBoolean&lt;T&gt;&gt; extends AbstractInjectionBoolean&lt;T&gt; {
+public abstract class AbstractInjectionMonobit&lt;T extends AbstractCallableBinary&lt;T&gt;&gt; extends AbstractInjectionBinary&lt;T&gt; {
 
-    protected AbstractInjectionMonobit(InjectionModel injectionModel, BooleanMode booleanMode) {
-<span class="fc" id="L12">        super(injectionModel, booleanMode);</span>
+    protected AbstractInjectionMonobit(InjectionModel injectionModel, BinaryMode binaryMode) {
+<span class="fc" id="L12">        super(injectionModel, binaryMode);</span>
 <span class="fc" id="L13">    }</span>
     
     abstract T getCallableBitTest(String sqlQuery, int indexCharacter, int bit);
@@ -30,32 +30,29 @@ public abstract class AbstractInjectionMonobit&lt;T extends AbstractCallableBool
         // Test the 8 bits for the next character, save its position and current bit for later
         // Ignore last bit 128 and only check for first seven bits
 <span class="fc bfc" id="L32" title="All 2 branches covered.">        for (int bit: new int[]{ 1, 2, 4, 8, 16, 32, 64 }) {</span>
-            
-<span class="fc" id="L34">            taskCompletionService.submit(</span>
-<span class="fc" id="L35">                this.getCallableBitTest(</span>
+<span class="fc" id="L33">            taskCompletionService.submit(</span>
+<span class="fc" id="L34">                this.getCallableBitTest(</span>
                     sqlQuery,
-<span class="fc" id="L37">                    indexCharacter.get(),</span>
+<span class="fc" id="L36">                    indexCharacter.get(),</span>
                     bit
                 )
             );
-<span class="fc" id="L41">            countTasksSubmitted.addAndGet(1);</span>
+<span class="fc" id="L40">            countTasksSubmitted.addAndGet(1);</span>
         }
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L42">    }</span>
 
     public char[] initializeBinaryMask(List&lt;char[]&gt; bytes, T currentCallable) {
-
         // Bits for current url
-<span class="fc" id="L48">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);</span>
+<span class="fc" id="L46">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);</span>
 
-<span class="fc" id="L50">        int positionInMask = (int) (</span>
-<span class="fc" id="L51">            8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit()))</span>
-<span class="fc" id="L52">            / Math.log(2)</span>
+<span class="fc" id="L48">        int positionInMask = (int) (</span>
+<span class="fc" id="L49">            8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit()))</span>
+<span class="fc" id="L50">            / Math.log(2)</span>
         );
 
         // Set current bit
-<span class="fc bfc" id="L56" title="All 2 branches covered.">        asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';</span>
-
-<span class="fc" id="L58">        return asciiCodeMask;</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';</span>
+<span class="fc" id="L55">        return asciiCodeMask;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

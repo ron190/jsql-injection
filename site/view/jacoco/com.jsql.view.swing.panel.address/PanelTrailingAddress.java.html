@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PanelTrailingAddress.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.address</a> &gt; <span class="el_source">PanelTrailingAddress.java</span></div><h1>PanelTrailingAddress.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.panel.address;
+
+import com.jsql.model.injection.strategy.AbstractStrategy;
+import com.jsql.model.injection.strategy.StrategyInjectionError;
+import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.model.injection.vendor.model.yaml.Method;
+import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.panel.PanelAddressBar;
+import com.jsql.view.swing.text.JToolTipI18n;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
+import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.StreamSupport;
+
+public class PanelTrailingAddress extends JPanel {
+    
+    private JMenu itemRadioStrategyError;
+
+<span class="fc" id="L27">    private final JLabel labelVendor = new JLabel(UiUtil.ARROW_DOWN.icon, SwingConstants.LEFT);</span>
+<span class="fc" id="L28">    private final JLabel labelStrategy = new JLabel(UiUtil.ARROW_DOWN.icon, SwingConstants.LEFT);</span>
+<span class="fc" id="L29">    private final JPopupMenu popupMenuVendors = new JPopupMenu();</span>
+<span class="fc" id="L30">    private final JPopupMenu popupMenuStrategies = new JPopupMenu();</span>
+
+<span class="fc" id="L32">    private final ButtonGroup groupStrategy = new ButtonGroup();</span>
+    private static final String PREFIX_NAME_ERROR = &quot;itemRadioError&quot;;
+    private static final String I18N_TOOLTIP_STRATEGY = &quot;STRATEGY_%s_TOOLTIP&quot;;
+
+    /**
+     * Loader displayed during injection.
+     */
+    private final JProgressBar loader;
+
+    /**
+     * Connection button.
+     */
+<span class="fc" id="L44">    public final ButtonStart buttonStart = new ButtonStart();</span>
+    
+<span class="fc" id="L46">    public PanelTrailingAddress(PanelAddressBar panelAddressBar) {</span>
+<span class="fc" id="L47">        this.buttonStart.addActionListener(new ActionStart(panelAddressBar));</span>
+<span class="fc" id="L48">        this.setOpaque(false);</span>
+<span class="fc" id="L49">        this.setBorder(null);</span>
+<span class="fc" id="L50">        this.labelStrategy.setText(&quot;Strategy auto&quot;);</span>
+<span class="fc" id="L51">        this.labelStrategy.setName(&quot;menuStrategy&quot;);</span>
+
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (final AbstractStrategy strategy: MediatorHelper.model().getMediatorStrategy().getStrategies()) {</span>
+<span class="fc" id="L54">            var nameStrategy = strategy.getName().toUpperCase(Locale.ROOT);</span>
+            JMenuItem itemRadioStrategy;
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            if (strategy == MediatorHelper.model().getMediatorStrategy().getError()) {</span>
+<span class="fc" id="L57">                itemRadioStrategy = new JMenu(strategy.toString());</span>
+<span class="fc" id="L58">                this.itemRadioStrategyError = (JMenu) itemRadioStrategy;</span>
+<span class="fc" id="L59">                itemRadioStrategy.getComponent().setName(&quot;itemRadioStrategyError&quot;);</span>
+            } else {
+<span class="fc" id="L61">                var atomicTooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(</span>
+<span class="fc" id="L62">                    I18nUtil.valueByKey(String.format(I18N_TOOLTIP_STRATEGY, nameStrategy))</span>
+                ));
+<span class="fc" id="L64">                itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString()) {</span>
+                    @Override
+                    public JToolTip createToolTip() {
+<span class="nc" id="L67">                        atomicTooltip.set(new JToolTipI18n(</span>
+<span class="nc" id="L68">                            I18nUtil.valueByKey(</span>
+<span class="nc" id="L69">                                String.format(I18N_TOOLTIP_STRATEGY, nameStrategy)</span>
+                            )
+                        ));
+<span class="nc" id="L72">                        return atomicTooltip.get();</span>
+                    }
+                };
+<span class="fc" id="L75">                I18nViewUtil.addComponentForKey(</span>
+<span class="fc" id="L76">                    String.format(I18N_TOOLTIP_STRATEGY, nameStrategy),</span>
+<span class="fc" id="L77">                    atomicTooltip.get()</span>
+                );
+<span class="fc" id="L79">                itemRadioStrategy.getComponent().setName(&quot;itemRadioStrategy&quot; + strategy);</span>
+<span class="fc" id="L80">                itemRadioStrategy.addActionListener(actionEvent -&gt; {</span>
+<span class="nc" id="L81">                    this.labelStrategy.setText(strategy.toString());</span>
+<span class="nc" id="L82">                    MediatorHelper.model().getMediatorStrategy().setStrategy(strategy);</span>
+<span class="nc" id="L83">                });</span>
+<span class="fc" id="L84">                this.groupStrategy.add(itemRadioStrategy);</span>
+            }
+
+<span class="fc" id="L87">            this.popupMenuStrategies.add(itemRadioStrategy);</span>
+<span class="fc" id="L88">            itemRadioStrategy.setToolTipText(</span>
+<span class="fc" id="L89">                I18nUtil.valueByKey(String.format(I18N_TOOLTIP_STRATEGY, nameStrategy))</span>
+            );
+<span class="fc" id="L91">            ((JComponent) itemRadioStrategy).setEnabled(false);</span>
+<span class="fc" id="L92">        }</span>
+
+<span class="fc" id="L94">        this.labelVendor.setText(MediatorHelper.model().getMediatorVendor().getAuto().toString());</span>
+<span class="fc" id="L95">        this.labelVendor.setName(&quot;menuVendor&quot;);</span>
+<span class="fc" id="L96">        this.popupMenuVendors.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorVendor().getVendors().size()));</span>
+<span class="fc" id="L97">        var groupVendor = new ButtonGroup();</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        for (final Vendor vendor: MediatorHelper.model().getMediatorVendor().getVendors()) {</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorHelper.model().getMediatorVendor().getAuto());</span>
+<span class="fc" id="L100">            itemRadioVendor.setName(&quot;itemRadioVendor&quot;+ vendor);</span>
+<span class="fc" id="L101">            itemRadioVendor.addActionListener(actionEvent -&gt; {</span>
+<span class="nc" id="L102">                this.labelVendor.setText(vendor.toString());</span>
+<span class="nc" id="L103">                MediatorHelper.model().getMediatorVendor().setVendorByUser(vendor);</span>
+<span class="nc" id="L104">            });</span>
+<span class="fc" id="L105">            popupMenuVendors.add(itemRadioVendor);</span>
+<span class="fc" id="L106">            groupVendor.add(itemRadioVendor);</span>
+<span class="fc" id="L107">        }</span>
+
+<span class="fc" id="L109">        this.loader = new JProgressBar();</span>
+<span class="fc" id="L110">        var dimension = UIManager.getDimension(&quot;ProgressBar.horizontalSize&quot;);</span>
+<span class="fc" id="L111">        this.loader.setPreferredSize(new Dimension(32, dimension.height));</span>
+<span class="fc" id="L112">        this.loader.setIndeterminate(true);</span>
+<span class="fc" id="L113">        this.add(this.loader);</span>
+
+<span class="fc" id="L115">        labelVendor.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mousePressed(MouseEvent e) {
+<span class="fc" id="L118">                Arrays.stream(popupMenuVendors.getComponents())</span>
+<span class="fc" id="L119">                    .map(component -&gt; (JComponent) component)</span>
+<span class="fc" id="L120">                    .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
+<span class="fc" id="L121">                popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="fc" id="L122">                popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());</span>
+<span class="fc" id="L123">                popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
+<span class="fc" id="L124">            }</span>
+        });
+<span class="fc" id="L126">        labelStrategy.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mousePressed(MouseEvent e) {
+<span class="fc" id="L129">                Arrays.stream(popupMenuStrategies.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">                for (var i = 0 ; i &lt; getMenuError().getItemCount() ; i++) {</span>
+<span class="fc" id="L131">                    getMenuError().getItem(i).updateUI();  // required: incorrect when dark/light mode switch</span>
+                }
+<span class="fc" id="L133">                popupMenuStrategies.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="fc" id="L134">                popupMenuStrategies.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());</span>
+<span class="fc" id="L135">                popupMenuStrategies.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
+<span class="fc" id="L136">            }</span>
+        });
+
+<span class="fc" id="L139">        this.add(this.labelVendor);</span>
+<span class="fc" id="L140">        this.add(this.labelStrategy);</span>
+<span class="fc" id="L141">        this.add(this.buttonStart);</span>
+<span class="fc" id="L142">        this.setCursor(Cursor.getDefaultCursor());</span>
+<span class="fc" id="L143">        this.loader.setVisible(false);</span>
+<span class="fc" id="L144">    }</span>
+
+    public void endPreparation() {
+<span class="fc" id="L147">        this.buttonStart.setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_START_TOOLTIP&quot;));</span>
+<span class="fc" id="L148">        this.buttonStart.setInjectionReady();</span>
+<span class="fc" id="L149">        this.loader.setVisible(false);</span>
+<span class="fc" id="L150">    }</span>
+    
+    public void reset() {
+<span class="fc" id="L153">        this.labelStrategy.setText(&quot;Strategy auto&quot;);</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        if (MediatorHelper.model().getMediatorVendor().getVendorByUser() == MediatorHelper.model().getMediatorVendor().getAuto()) {</span>
+<span class="fc" id="L155">            this.labelVendor.setText(MediatorHelper.model().getMediatorVendor().getAuto().toString());</span>
+        }
+<span class="fc" id="L157">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="fc" id="L158">            .forEach(component -&gt; component.setEnabled(false));</span>
+<span class="fc" id="L159">        this.getMenuError().removeAll();</span>
+
+<span class="fc" id="L161">        this.groupStrategy.clearSelection();</span>
+<span class="fc" id="L162">        Iterable&lt;AbstractButton&gt; iterable = () -&gt; this.groupStrategy.getElements().asIterator();</span>
+<span class="fc" id="L163">        StreamSupport.stream(iterable.spliterator(), false)</span>
+<span class="fc" id="L164">            .filter(abstractButton -&gt; abstractButton.getName().startsWith(PanelTrailingAddress.PREFIX_NAME_ERROR))</span>
+<span class="fc" id="L165">            .forEach(this.groupStrategy::remove);</span>
+<span class="fc" id="L166">    }</span>
+    
+    public void setVendor(Vendor vendor) {
+<span class="fc" id="L169">        this.labelVendor.setText(vendor.toString());</span>
+<span class="fc" id="L170">        this.itemRadioStrategyError.removeAll();</span>
+<span class="fc" id="L171">        var indexError = 0;</span>
+<span class="fc" id="L172">        if (</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">            vendor != MediatorHelper.model().getMediatorVendor().getAuto()</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">            &amp;&amp; vendor.instance().getModelYaml().getStrategy().getError() != null</span>
+        ) {
+<span class="fc bfc" id="L176" title="All 2 branches covered.">            for (Method methodError: vendor.instance().getModelYaml().getStrategy().getError().getMethod()) {</span>
+<span class="fc" id="L177">                JMenuItem itemRadioError = new JRadioButtonMenuItem(methodError.getName());</span>
+<span class="fc" id="L178">                itemRadioError.setEnabled(false);</span>
+<span class="fc" id="L179">                itemRadioError.setName(PanelTrailingAddress.PREFIX_NAME_ERROR + methodError.getName());</span>
+<span class="fc" id="L180">                this.itemRadioStrategyError.add(itemRadioError);</span>
+<span class="fc" id="L181">                this.groupStrategy.add(itemRadioError);</span>
+<span class="fc" id="L182">                int indexErrorFinal = indexError;</span>
+<span class="fc" id="L183">                itemRadioError.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L184">                    this.labelStrategy.setText(methodError.getName());</span>
+<span class="fc" id="L185">                    MediatorHelper.model().getMediatorStrategy().setStrategy(MediatorHelper.model().getMediatorStrategy().getError());</span>
+<span class="fc" id="L186">                    MediatorHelper.model().getMediatorStrategy().getError().setIndexErrorStrategy(indexErrorFinal);</span>
+<span class="fc" id="L187">                });</span>
+<span class="fc" id="L188">                indexError++;</span>
+<span class="fc" id="L189">            }</span>
+        }
+<span class="fc" id="L191">    }</span>
+    
+    public void markStrategy(AbstractStrategy strategy) {
+<span class="nc" id="L194">        this.labelStrategy.setText(strategy.toString());</span>
+<span class="nc" id="L195">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="nc" id="L196">            .map(component -&gt; (JMenuItem) component)</span>
+<span class="nc" id="L197">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="nc" id="L198">            .forEach(jMenuItem -&gt; jMenuItem.setSelected(true));</span>
+<span class="nc" id="L199">    }</span>
+    
+    public void markStrategyInvulnerable(AbstractStrategy strategy) {
+<span class="nc" id="L202">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="nc" id="L203">            .map(component -&gt; (JMenuItem) component)</span>
+<span class="nc" id="L204">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="nc" id="L205">            .forEach(jMenuItem -&gt; jMenuItem.setEnabled(false));</span>
+<span class="nc" id="L206">    }</span>
+    
+    public void markErrorInvulnerable(int indexMethodError) {
+<span class="nc" id="L209">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();</span>
+<span class="nc" id="L210">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="nc" id="L211">            .map(component -&gt; (JMenuItem) component)</span>
+<span class="nc" id="L212">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="nc" id="L213">            .map(component -&gt; (JMenu) component)</span>
+<span class="nc" id="L214">            .forEach(jMenuItem -&gt; jMenuItem.getItem(indexMethodError).setEnabled(false));</span>
+<span class="nc" id="L215">    }</span>
+    
+    public void markError() {
+<span class="nc" id="L218">        StrategyInjectionError strategy = MediatorHelper.model().getMediatorStrategy().getError();</span>
+<span class="nc" id="L219">        this.labelStrategy.setText(strategy.toString());</span>
+<span class="nc" id="L220">        int indexError = strategy.getIndexErrorStrategy();</span>
+<span class="nc" id="L221">        String nameError = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();</span>
+
+<span class="nc" id="L223">        Arrays.stream(this.getMenuError().getMenuComponents())</span>
+<span class="nc" id="L224">            .map(component -&gt; (JRadioButtonMenuItem) component)</span>
+<span class="nc" id="L225">            .filter(component -&gt; component.getText().equals(nameError))</span>
+<span class="nc" id="L226">            .forEach(jRadioButtonMenuItem -&gt; {</span>
+<span class="nc" id="L227">                jRadioButtonMenuItem.setSelected(true);</span>
+<span class="nc" id="L228">                this.labelStrategy.setText(nameError);</span>
+<span class="nc" id="L229">            });</span>
+<span class="nc" id="L230">    }</span>
+
+    private JMenu getMenuError() {
+<span class="fc" id="L233">        var nameError = MediatorHelper.model().getMediatorStrategy().getError().getName();</span>
+<span class="fc" id="L234">        return (JMenu) Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="fc" id="L235">            .map(component -&gt; (JMenuItem) component)</span>
+<span class="fc" id="L236">            .filter(jMenuItem -&gt; jMenuItem.getText().equalsIgnoreCase(nameError))</span>
+<span class="fc" id="L237">            .findFirst()</span>
+<span class="fc" id="L238">            .orElse(new JMenuItem(&quot;Mock&quot;));</span>
+    }
+    
+    public void markErrorVulnerable(int indexMethodError) {
+<span class="fc" id="L242">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();</span>
+<span class="fc" id="L243">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="fc" id="L244">            .map(component -&gt; (JMenuItem) component)</span>
+<span class="fc" id="L245">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="fc" id="L246">            .map(component -&gt; (JMenu) component)</span>
+<span class="fc" id="L247">            .forEach(jMenuItem -&gt; {</span>
+<span class="fc" id="L248">                jMenuItem.setEnabled(true);</span>
+                // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
+<span class="pc bpc" id="L250" title="2 of 4 branches missed.">                if (0 &lt;= indexMethodError &amp;&amp; indexMethodError &lt; jMenuItem.getItemCount()) {</span>
+<span class="fc" id="L251">                    jMenuItem.getItem(indexMethodError).setEnabled(true);</span>
+                }
+<span class="fc" id="L253">            });</span>
+<span class="fc" id="L254">    }</span>
+    
+    public void markStrategyVulnerable(AbstractStrategy strategy) {
+<span class="nc" id="L257">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="nc" id="L258">            .map(component -&gt; (JMenuItem) component)</span>
+<span class="nc" id="L259">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="nc" id="L260">            .forEach(jMenuItem -&gt; jMenuItem.setEnabled(true));</span>
+<span class="nc" id="L261">    }</span>
+    
+    
+    // Getter and setter
+
+    public JComponent getLoader() {
+<span class="fc" id="L267">        return this.loader;</span>
+    }
+
+    public ButtonStart getButtonStart() {
+<span class="fc" id="L271">        return this.buttonStart;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

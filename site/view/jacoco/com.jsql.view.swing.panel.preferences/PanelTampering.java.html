@@ -2,450 +2,268 @@
 
 import com.jsql.util.tampering.TamperingType;
 import com.jsql.view.swing.panel.PanelPreferences;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.sql.lexer.HighlightedDocument;
-import com.jsql.view.swing.tab.TabHeader.Cleanable;
-import com.jsql.view.swing.text.JPopupTextPane;
-import com.jsql.view.swing.text.JTextPanePlaceholder;
+import com.jsql.view.swing.panel.preferences.listener.TamperingMouseAdapter;
+import com.jsql.view.swing.popupmenu.JPopupMenuComponent;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class PanelTampering extends JPanel implements Cleanable {
-    
-<span class="fc" id="L21">    private final JCheckBox checkboxIsTamperingBase64 = new JCheckBox();</span>
-<span class="fc" id="L22">    private final JCheckBox checkboxIsTamperingVersionComment = new JCheckBox();</span>
-<span class="fc" id="L23">    private final JCheckBox checkboxIsTamperingFunctionComment = new JCheckBox();</span>
-<span class="fc" id="L24">    private final JCheckBox checkboxIsTamperingEqualToLike = new JCheckBox();</span>
-<span class="fc" id="L25">    private final JCheckBox checkboxIsTamperingRandomCase = new JCheckBox();</span>
-<span class="fc" id="L26">    private final JCheckBox checkboxIsTamperingEval = new JCheckBox();</span>
-<span class="fc" id="L27">    private final JCheckBox checkboxIsTamperingHexToChar = new JCheckBox();</span>
-<span class="fc" id="L28">    private final JCheckBox checkboxIsTamperingStringToChar = new JCheckBox();</span>
-<span class="fc" id="L29">    private final JCheckBox checkboxIsTamperingQuoteToUtf8 = new JCheckBox();</span>
-<span class="fc" id="L30">    private final JRadioButton radioIsTamperingSpaceToMultilineComment = new JRadioButton();</span>
-<span class="fc" id="L31">    private final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();</span>
-<span class="fc" id="L32">    private final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton();</span>
-    
-    private final JTextPane textPaneEval;
+public class PanelTampering extends JPanel {
 
-<span class="fc" id="L36">    public PanelTampering(PanelPreferences panelPreferences) {</span>
-        
-<span class="fc" id="L38">        this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));</span>
+    // no preferences init
+<span class="fc" id="L24">    private final JCheckBox checkboxIsTamperingBase64 = new JCheckBox(TamperingType.BASE64.instance().getDescription());</span>
+<span class="fc" id="L25">    private final JCheckBox checkboxIsTamperingVersionComment = new JCheckBox(TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());</span>
+<span class="fc" id="L26">    private final JCheckBox checkboxIsTamperingFunctionComment = new JCheckBox(TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());</span>
+<span class="fc" id="L27">    private final JCheckBox checkboxIsTamperingEqualToLike = new JCheckBox(TamperingType.EQUAL_TO_LIKE.instance().getDescription());</span>
+<span class="fc" id="L28">    private final JCheckBox checkboxIsTamperingRandomCase = new JCheckBox(TamperingType.RANDOM_CASE.instance().getDescription());</span>
+<span class="fc" id="L29">    private final JCheckBox checkboxIsTamperingEval = new JCheckBox(&quot;Enable user tamper script :&quot;);</span>
+<span class="fc" id="L30">    private final JCheckBox checkboxIsTamperingHexToChar = new JCheckBox(TamperingType.HEX_TO_CHAR.instance().getDescription());</span>
+<span class="fc" id="L31">    private final JCheckBox checkboxIsTamperingStringToChar = new JCheckBox(TamperingType.STRING_TO_CHAR.instance().getDescription());</span>
+<span class="fc" id="L32">    private final JCheckBox checkboxIsTamperingQuoteToUtf8 = new JCheckBox(TamperingType.QUOTE_TO_UTF8.instance().getDescription());</span>
+<span class="fc" id="L33">    private final JRadioButton radioIsTamperingSpaceToMultilineComment = new JRadioButton(TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getDescription());</span>
+<span class="fc" id="L34">    private final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton(TamperingType.SPACE_TO_DASH_COMMENT.instance().getDescription());</span>
+<span class="fc" id="L35">    private final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton(TamperingType.SPACE_TO_SHARP_COMMENT.instance().getDescription());</span>
 
-<span class="fc" id="L40">        var emptyLabelCommonConversion = new JLabel();</span>
-<span class="fc" id="L41">        var labelCommonConversion = new JLabel(&quot;&lt;html&gt;&lt;b&gt;Common conversion&lt;/b&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L37">    private static final RSyntaxTextArea textPaneEval = new RSyntaxTextArea();</span>
 
-<span class="fc" id="L43">        String tooltipIsTamperingBase64 = TamperingType.BASE64.instance().getTooltip();</span>
-<span class="fc" id="L44">        this.checkboxIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);</span>
-<span class="fc" id="L45">        this.checkboxIsTamperingBase64.setFocusable(false);</span>
-<span class="fc" id="L46">        var labelIsTamperingBase64 = new JButton(TamperingType.BASE64.instance().getDescription());</span>
-<span class="fc" id="L47">        labelIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);</span>
-<span class="fc" id="L48">        labelIsTamperingBase64.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L50" title="All 2 branches missed.">            this.checkboxIsTamperingBase64.setSelected(!this.checkboxIsTamperingBase64.isSelected());</span>
-<span class="nc" id="L51">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L52">        });</span>
-        
-<span class="fc" id="L54">        String tooltipIsTamperingFunctionComment = TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getTooltip();</span>
-<span class="fc" id="L55">        this.checkboxIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);</span>
-<span class="fc" id="L56">        this.checkboxIsTamperingFunctionComment.setFocusable(false);</span>
-<span class="fc" id="L57">        var labelIsTamperingFunctionComment = new JButton(TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());</span>
-<span class="fc" id="L58">        labelIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);</span>
-<span class="fc" id="L59">        labelIsTamperingFunctionComment.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L61" title="All 2 branches missed.">            this.checkboxIsTamperingFunctionComment.setSelected(!this.checkboxIsTamperingFunctionComment.isSelected());</span>
-<span class="nc" id="L62">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L63">        });</span>
-        
-<span class="fc" id="L65">        String tooltipIsTamperingEqualToLike = TamperingType.EQUAL_TO_LIKE.instance().getTooltip();</span>
-<span class="fc" id="L66">        this.checkboxIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);</span>
-<span class="fc" id="L67">        this.checkboxIsTamperingEqualToLike.setFocusable(false);</span>
-<span class="fc" id="L68">        var labelIsTamperingEqualToLike = new JButton(TamperingType.EQUAL_TO_LIKE.instance().getDescription());</span>
-<span class="fc" id="L69">        labelIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);</span>
-<span class="fc" id="L70">        labelIsTamperingEqualToLike.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L72" title="All 2 branches missed.">            this.checkboxIsTamperingEqualToLike.setSelected(!this.checkboxIsTamperingEqualToLike.isSelected());</span>
-<span class="nc" id="L73">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L74">        });</span>
-        
-<span class="fc" id="L76">        String tooltipIsTamperingRandomCase = TamperingType.RANDOM_CASE.instance().getTooltip();</span>
-<span class="fc" id="L77">        this.checkboxIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);</span>
-<span class="fc" id="L78">        this.checkboxIsTamperingRandomCase.setFocusable(false);</span>
-<span class="fc" id="L79">        var labelIsTamperingRandomCase = new JButton(TamperingType.RANDOM_CASE.instance().getDescription());</span>
-<span class="fc" id="L80">        labelIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);</span>
-<span class="fc" id="L81">        labelIsTamperingRandomCase.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L83" title="All 2 branches missed.">            this.checkboxIsTamperingRandomCase.setSelected(!this.checkboxIsTamperingRandomCase.isSelected());</span>
-<span class="nc" id="L84">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L85">        });</span>
-        
-<span class="fc" id="L87">        var tooltipIsTamperingEval = &quot;Custom tamper in JavaScript and Java, e.g. sql.replace(/\\+/gm,'/**/')&quot;;</span>
-<span class="fc" id="L88">        this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);</span>
-<span class="fc" id="L89">        this.checkboxIsTamperingEval.setFocusable(false);</span>
-        
-<span class="fc" id="L91">        this.textPaneEval = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();</span>
-<span class="fc" id="L92">        this.textPaneEval.getCaret().setBlinkRate(500);</span>
-<span class="fc" id="L93">        var textAreaIsTamperingEval = new LightScrollPane(this.textPaneEval);</span>
-<span class="fc" id="L94">        textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
-<span class="fc" id="L95">        textAreaIsTamperingEval.setMinimumSize(new Dimension(400, 100));</span>
+<span class="fc" id="L39">    public PanelTampering(PanelPreferences panelPreferences) {</span>
+<span class="fc" id="L40">        this.checkboxIsTamperingEval.setToolTipText(&quot;Custom tamper in JavaScript and Java, e.g. sql.replace(/\\+/gm,'/**/')&quot;);</span>
 
-<span class="fc" id="L97">        var emptySpaceConversion = new JLabel();</span>
-<span class="fc" id="L98">        var labelSpaceConversion = new JLabel(&quot;&lt;html&gt;&lt;br /&gt;&lt;b&gt;Space conversion (use double click to uncheck)&lt;/b&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L42">        PanelTampering.textPaneEval.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L43">        PanelTampering.textPaneEval.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);</span>
+<span class="fc" id="L44">        PanelTampering.textPaneEval.setCodeFoldingEnabled(true);</span>
+<span class="fc" id="L45">        PanelTampering.textPaneEval.setMarkOccurrences(true);</span>
+<span class="fc" id="L46">        PanelTampering.textPaneEval.setPopupMenu(new JPopupMenuComponent(PanelTampering.textPaneEval));</span>
+<span class="fc" id="L47">        PanelTampering.applyTheme();</span>
 
-<span class="fc" id="L100">        var groupSpaceToComment = new ButtonGroup();</span>
-<span class="fc" id="L101">        groupSpaceToComment.add(this.radioIsTamperingSpaceToDashComment);</span>
-<span class="fc" id="L102">        groupSpaceToComment.add(this.radioIsTamperingSpaceToMultilineComment);</span>
-<span class="fc" id="L103">        groupSpaceToComment.add(this.radioIsTamperingSpaceToSharpComment);</span>
-        
-<span class="fc" id="L105">        String tooltipIsTamperingSpaceToMultilineComment = TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getTooltip();</span>
-<span class="fc" id="L106">        this.radioIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);</span>
-<span class="fc" id="L107">        this.radioIsTamperingSpaceToMultilineComment.setFocusable(false);</span>
-<span class="fc" id="L108">        var labelIsTamperingSpaceToMultilineComment = new JButton(TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getDescription());</span>
-<span class="fc" id="L109">        labelIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);</span>
-<span class="fc" id="L110">        labelIsTamperingSpaceToMultilineComment.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (this.radioIsTamperingSpaceToMultilineComment.isSelected()) {</span>
-<span class="nc" id="L113">                groupSpaceToComment.clearSelection();</span>
-            } else {
-<span class="nc bnc" id="L115" title="All 2 branches missed.">                this.radioIsTamperingSpaceToMultilineComment.setSelected(!this.radioIsTamperingSpaceToMultilineComment.isSelected());</span>
-            }
-            
-<span class="nc" id="L118">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L119">        });</span>
-        
-<span class="fc" id="L121">        String tooltipIsTamperingSpaceToDashComment = TamperingType.SPACE_TO_DASH_COMMENT.instance().getTooltip();</span>
-<span class="fc" id="L122">        this.radioIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);</span>
-<span class="fc" id="L123">        this.radioIsTamperingSpaceToDashComment.setFocusable(false);</span>
-<span class="fc" id="L124">        var labelIsTamperingSpaceToDashComment = new JButton(TamperingType.SPACE_TO_DASH_COMMENT.instance().getDescription());</span>
-<span class="fc" id="L125">        labelIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);</span>
-<span class="fc" id="L126">        labelIsTamperingSpaceToDashComment.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (this.radioIsTamperingSpaceToDashComment.isSelected()) {</span>
-<span class="nc" id="L129">                groupSpaceToComment.clearSelection();</span>
-            } else {
-<span class="nc bnc" id="L131" title="All 2 branches missed.">                this.radioIsTamperingSpaceToDashComment.setSelected(!this.radioIsTamperingSpaceToDashComment.isSelected());</span>
-            }
-            
-<span class="nc" id="L134">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L135">        });</span>
-        
-<span class="fc" id="L137">        String tooltipIsTamperingSpaceToSharpComment = TamperingType.SPACE_TO_SHARP_COMMENT.instance().getTooltip();</span>
-<span class="fc" id="L138">        this.radioIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);</span>
-<span class="fc" id="L139">        this.radioIsTamperingSpaceToSharpComment.setFocusable(false);</span>
-<span class="fc" id="L140">        var labelIsTamperingSpaceToSharpComment = new JButton(TamperingType.SPACE_TO_SHARP_COMMENT.instance().getDescription());</span>
-<span class="fc" id="L141">        labelIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);</span>
-<span class="fc" id="L142">        labelIsTamperingSpaceToSharpComment.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L144" title="All 2 branches missed.">            if (this.radioIsTamperingSpaceToSharpComment.isSelected()) {</span>
-<span class="nc" id="L145">                groupSpaceToComment.clearSelection();</span>
-            } else {
-<span class="nc bnc" id="L147" title="All 2 branches missed.">                this.radioIsTamperingSpaceToSharpComment.setSelected(!this.radioIsTamperingSpaceToSharpComment.isSelected());</span>
-            }
-            
-<span class="nc" id="L150">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L151">        });</span>
-        
-<span class="fc" id="L153">        String tooltipIsTamperingVersionComment = TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getTooltip();</span>
-<span class="fc" id="L154">        this.checkboxIsTamperingVersionComment.setToolTipText(tooltipIsTamperingVersionComment);</span>
-<span class="fc" id="L155">        this.checkboxIsTamperingVersionComment.setFocusable(false);</span>
-<span class="fc" id="L156">        var labelIsTamperingVersionComment = new JButton(TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());</span>
-<span class="fc" id="L157">        labelIsTamperingVersionComment.setToolTipText(tooltipIsTamperingVersionComment);</span>
-<span class="fc" id="L158">        labelIsTamperingVersionComment.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L160" title="All 2 branches missed.">            this.checkboxIsTamperingVersionComment.setSelected(!this.checkboxIsTamperingVersionComment.isSelected());</span>
-<span class="nc" id="L161">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L162">        });</span>
-        
-<span class="fc" id="L164">        String tooltipIsTamperingHexToChar = TamperingType.HEX_TO_CHAR.instance().getTooltip();</span>
-<span class="fc" id="L165">        this.checkboxIsTamperingHexToChar.setToolTipText(tooltipIsTamperingHexToChar);</span>
-<span class="fc" id="L166">        this.checkboxIsTamperingHexToChar.setFocusable(false);</span>
-<span class="fc" id="L167">        var labelIsTamperingHexToChar = new JButton(TamperingType.HEX_TO_CHAR.instance().getDescription());</span>
-<span class="fc" id="L168">        labelIsTamperingHexToChar.setToolTipText(tooltipIsTamperingHexToChar);</span>
-<span class="fc" id="L169">        labelIsTamperingHexToChar.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L171" title="All 2 branches missed.">            this.checkboxIsTamperingHexToChar.setSelected(!this.checkboxIsTamperingHexToChar.isSelected());</span>
-<span class="nc" id="L172">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L173">        });</span>
-        
-<span class="fc" id="L175">        var tooltipIsTamperingQuoteToUtf8 = TamperingType.QUOTE_TO_UTF8.instance().getTooltip();</span>
-<span class="fc" id="L176">        this.checkboxIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQuoteToUtf8);</span>
-<span class="fc" id="L177">        this.checkboxIsTamperingQuoteToUtf8.setFocusable(false);</span>
-<span class="fc" id="L178">        var labelIsTamperingQuoteToUtf8 = new JButton(TamperingType.QUOTE_TO_UTF8.instance().getDescription());</span>
-<span class="fc" id="L179">        labelIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQuoteToUtf8);</span>
-<span class="fc" id="L180">        labelIsTamperingQuoteToUtf8.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L182" title="All 2 branches missed.">            this.checkboxIsTamperingQuoteToUtf8.setSelected(!this.checkboxIsTamperingQuoteToUtf8.isSelected());</span>
-<span class="nc" id="L183">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L184">        });</span>
-        
-<span class="fc" id="L186">        var tooltipIsTamperingStringToChar = TamperingType.STRING_TO_CHAR.instance().getTooltip();</span>
-<span class="fc" id="L187">        this.checkboxIsTamperingStringToChar.setToolTipText(tooltipIsTamperingStringToChar);</span>
-<span class="fc" id="L188">        this.checkboxIsTamperingStringToChar.setFocusable(false);</span>
-<span class="fc" id="L189">        var labelIsTamperingStringToChar = new JButton(TamperingType.STRING_TO_CHAR.instance().getDescription());</span>
-<span class="fc" id="L190">        labelIsTamperingStringToChar.setToolTipText(tooltipIsTamperingStringToChar);</span>
-<span class="fc" id="L191">        labelIsTamperingStringToChar.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L193" title="All 2 branches missed.">            this.checkboxIsTamperingStringToChar.setSelected(!this.checkboxIsTamperingStringToChar.isSelected());</span>
-<span class="nc" id="L194">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L195">        });</span>
-        
-<span class="fc" id="L197">        Stream.of(</span>
-            new SimpleEntry&lt;&gt;(labelIsTamperingBase64, TamperingType.BASE64),
-            new SimpleEntry&lt;&gt;(labelIsTamperingFunctionComment, TamperingType.COMMENT_TO_METHOD_SIGNATURE),
-            new SimpleEntry&lt;&gt;(labelIsTamperingVersionComment, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE),
-            new SimpleEntry&lt;&gt;(labelIsTamperingEqualToLike, TamperingType.EQUAL_TO_LIKE),
-            new SimpleEntry&lt;&gt;(labelIsTamperingRandomCase, TamperingType.RANDOM_CASE),
-            new SimpleEntry&lt;&gt;(labelIsTamperingHexToChar, TamperingType.HEX_TO_CHAR),
-            new SimpleEntry&lt;&gt;(labelIsTamperingStringToChar, TamperingType.STRING_TO_CHAR),
-            new SimpleEntry&lt;&gt;(labelIsTamperingQuoteToUtf8, TamperingType.QUOTE_TO_UTF8),
-            new SimpleEntry&lt;&gt;(labelIsTamperingSpaceToMultilineComment, TamperingType.SPACE_TO_MULTILINE_COMMENT),
-            new SimpleEntry&lt;&gt;(labelIsTamperingSpaceToDashComment, TamperingType.SPACE_TO_DASH_COMMENT),
-            new SimpleEntry&lt;&gt;(labelIsTamperingSpaceToSharpComment, TamperingType.SPACE_TO_SHARP_COMMENT)
-        )
-<span class="fc" id="L210">        .forEach(entry -&gt; {</span>
-            
-<span class="fc" id="L212">            entry.getKey().addMouseListener(new TamperingMouseAdapter(entry.getValue(), this.textPaneEval));</span>
-            
-<span class="fc" id="L214">            entry.getKey().setHorizontalAlignment(SwingConstants.LEFT);</span>
-<span class="fc" id="L215">            entry.getKey().setBorderPainted(false);</span>
-<span class="fc" id="L216">            entry.getKey().setContentAreaFilled(false);</span>
-<span class="fc" id="L217">        });</span>
+<span class="fc" id="L49">        var textAreaIsTamperingEval = new RTextScrollPane(PanelTampering.textPaneEval);</span>
+<span class="fc" id="L50">        textAreaIsTamperingEval.setMinimumSize(new Dimension(800, 100));</span>
 
-<span class="fc" id="L219">        var emptyLabelCustomConversion = new JLabel();</span>
-<span class="fc" id="L220">        var labelCustomConversion = new JLabel(&quot;&lt;html&gt;&lt;br /&gt;&lt;b&gt;Custom conversion&lt;/b&gt;&lt;/html&gt;&quot;);</span>
-
-<span class="fc" id="L222">        var document = new HighlightedDocument(HighlightedDocument.JAVASCRIPT_STYLE);</span>
-<span class="fc" id="L223">        document.setHighlightStyle(HighlightedDocument.JAVASCRIPT_STYLE);</span>
-<span class="fc" id="L224">        this.textPaneEval.setStyledDocument(document);</span>
-        
-<span class="fc" id="L226">        document.addDocumentListener(new DocumentListenerEditing() {</span>
-            
+<span class="fc" id="L52">        PanelTampering.textPaneEval.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-                
-<span class="nc" id="L231">                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.this.textPaneEval.getText());</span>
-<span class="nc" id="L232">            }</span>
+<span class="nc" id="L55">                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.textPaneEval.getText());</span>
+<span class="nc" id="L56">            }</span>
         });
-        
-<span class="fc" id="L235">        this.textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());</span>
-        
-<span class="fc" id="L237">        var groupLayout = new GroupLayout(this);</span>
-<span class="fc" id="L238">        this.setLayout(groupLayout);</span>
-        
-<span class="fc" id="L240">        groupLayout.setHorizontalGroup(</span>
-            groupLayout
-<span class="fc" id="L242">            .createSequentialGroup()</span>
-<span class="fc" id="L243">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L245">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
-<span class="fc" id="L246">                .addComponent(emptyLabelCommonConversion)</span>
-<span class="fc" id="L247">                .addComponent(this.checkboxIsTamperingBase64)</span>
-<span class="fc" id="L248">                .addComponent(this.checkboxIsTamperingFunctionComment)</span>
-<span class="fc" id="L249">                .addComponent(this.checkboxIsTamperingVersionComment)</span>
-<span class="fc" id="L250">                .addComponent(this.checkboxIsTamperingEqualToLike)</span>
-<span class="fc" id="L251">                .addComponent(this.checkboxIsTamperingRandomCase)</span>
-<span class="fc" id="L252">                .addComponent(this.checkboxIsTamperingStringToChar)</span>
-<span class="fc" id="L253">                .addComponent(this.checkboxIsTamperingHexToChar)</span>
-<span class="fc" id="L254">                .addComponent(this.checkboxIsTamperingQuoteToUtf8)</span>
-<span class="fc" id="L255">                .addComponent(emptySpaceConversion)</span>
-<span class="fc" id="L256">                .addComponent(this.radioIsTamperingSpaceToMultilineComment)</span>
-<span class="fc" id="L257">                .addComponent(this.radioIsTamperingSpaceToDashComment)</span>
-<span class="fc" id="L258">                .addComponent(this.radioIsTamperingSpaceToSharpComment)</span>
-<span class="fc" id="L259">                .addComponent(emptyLabelCustomConversion)</span>
-<span class="fc" id="L260">                .addComponent(this.checkboxIsTamperingEval)</span>
-            )
-<span class="fc" id="L262">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L264">                .createParallelGroup()</span>
-<span class="fc" id="L265">                .addComponent(labelCommonConversion)</span>
-<span class="fc" id="L266">                .addComponent(labelIsTamperingBase64)</span>
-<span class="fc" id="L267">                .addComponent(labelIsTamperingFunctionComment)</span>
-<span class="fc" id="L268">                .addComponent(labelIsTamperingVersionComment)</span>
-<span class="fc" id="L269">                .addComponent(labelIsTamperingEqualToLike)</span>
-<span class="fc" id="L270">                .addComponent(labelIsTamperingRandomCase)</span>
-<span class="fc" id="L271">                .addComponent(labelIsTamperingStringToChar)</span>
-<span class="fc" id="L272">                .addComponent(labelIsTamperingHexToChar)</span>
-<span class="fc" id="L273">                .addComponent(labelIsTamperingQuoteToUtf8)</span>
-<span class="fc" id="L274">                .addComponent(labelSpaceConversion)</span>
-<span class="fc" id="L275">                .addComponent(labelIsTamperingSpaceToMultilineComment)</span>
-<span class="fc" id="L276">                .addComponent(labelIsTamperingSpaceToDashComment)</span>
-<span class="fc" id="L277">                .addComponent(labelIsTamperingSpaceToSharpComment)</span>
-<span class="fc" id="L278">                .addComponent(labelCustomConversion)</span>
-<span class="fc" id="L279">                .addComponent(textAreaIsTamperingEval)</span>
-            )
-        );
-        
-<span class="fc" id="L283">        groupLayout.setVerticalGroup(</span>
-            groupLayout
-<span class="fc" id="L285">            .createSequentialGroup()</span>
-<span class="fc" id="L286">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L288">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L289">                .addComponent(emptyLabelCommonConversion)</span>
-<span class="fc" id="L290">                .addComponent(labelCommonConversion)</span>
-            )
-<span class="fc" id="L292">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L294">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L295">                .addComponent(this.checkboxIsTamperingBase64)</span>
-<span class="fc" id="L296">                .addComponent(labelIsTamperingBase64)</span>
-            )
-<span class="fc" id="L298">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L300">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L301">                .addComponent(this.checkboxIsTamperingFunctionComment)</span>
-<span class="fc" id="L302">                .addComponent(labelIsTamperingFunctionComment)</span>
-            )
-<span class="fc" id="L304">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L306">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L307">                .addComponent(this.checkboxIsTamperingVersionComment)</span>
-<span class="fc" id="L308">                .addComponent(labelIsTamperingVersionComment)</span>
-            )
-<span class="fc" id="L310">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L312">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L313">                .addComponent(this.checkboxIsTamperingEqualToLike)</span>
-<span class="fc" id="L314">                .addComponent(labelIsTamperingEqualToLike)</span>
-            )
-<span class="fc" id="L316">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L318">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L319">                .addComponent(this.checkboxIsTamperingRandomCase)</span>
-<span class="fc" id="L320">                .addComponent(labelIsTamperingRandomCase)</span>
-            )
-<span class="fc" id="L322">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L324">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L325">                .addComponent(this.checkboxIsTamperingStringToChar)</span>
-<span class="fc" id="L326">                .addComponent(labelIsTamperingStringToChar)</span>
-            )
-<span class="fc" id="L328">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L330">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L331">                .addComponent(this.checkboxIsTamperingHexToChar)</span>
-<span class="fc" id="L332">                .addComponent(labelIsTamperingHexToChar)</span>
-            )
-<span class="fc" id="L334">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L336">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L337">                .addComponent(this.checkboxIsTamperingQuoteToUtf8)</span>
-<span class="fc" id="L338">                .addComponent(labelIsTamperingQuoteToUtf8)</span>
-            )
-<span class="fc" id="L340">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L342">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L343">                .addComponent(emptySpaceConversion)</span>
-<span class="fc" id="L344">                .addComponent(labelSpaceConversion)</span>
-            )
-<span class="fc" id="L346">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L348">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L349">                .addComponent(this.radioIsTamperingSpaceToMultilineComment)</span>
-<span class="fc" id="L350">                .addComponent(labelIsTamperingSpaceToMultilineComment)</span>
-            )
-<span class="fc" id="L352">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L354">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L355">                .addComponent(this.radioIsTamperingSpaceToDashComment)</span>
-<span class="fc" id="L356">                .addComponent(labelIsTamperingSpaceToDashComment)</span>
-            )
-<span class="fc" id="L358">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L360">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L361">                .addComponent(this.radioIsTamperingSpaceToSharpComment)</span>
-<span class="fc" id="L362">                .addComponent(labelIsTamperingSpaceToSharpComment)</span>
-            )
-<span class="fc" id="L364">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L366">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L367">                .addComponent(emptyLabelCustomConversion)</span>
-<span class="fc" id="L368">                .addComponent(labelCustomConversion)</span>
-            )
-<span class="fc" id="L370">            .addGroup(</span>
-                groupLayout
-<span class="fc" id="L372">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L373">                .addComponent(this.checkboxIsTamperingEval)</span>
-<span class="fc" id="L374">                .addComponent(textAreaIsTamperingEval)</span>
-            )
-        );
-        
-<span class="fc" id="L378">        Stream.of(</span>
-            this.checkboxIsTamperingEval,
-            this.checkboxIsTamperingBase64,
-            this.checkboxIsTamperingFunctionComment,
-            this.checkboxIsTamperingVersionComment,
-            this.checkboxIsTamperingEqualToLike,
-            this.checkboxIsTamperingRandomCase,
-            this.checkboxIsTamperingHexToChar,
-            this.checkboxIsTamperingStringToChar,
-            this.checkboxIsTamperingQuoteToUtf8,
-            this.radioIsTamperingSpaceToMultilineComment,
-            this.radioIsTamperingSpaceToDashComment,
-            this.radioIsTamperingSpaceToSharpComment
-        )
-<span class="fc" id="L392">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
-<span class="fc" id="L393">    }</span>
+<span class="fc" id="L58">        PanelTampering.textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());</span>
+<span class="fc" id="L59">        this.checkboxIsTamperingEval.addActionListener(panelPreferences.getActionListenerSave());</span>
 
-    @Override
-    public void clean() {
-<span class="nc" id="L397">        UiUtil.stopDocumentColorer(this.textPaneEval);</span>
-<span class="nc" id="L398">    }</span>
+<span class="fc" id="L61">        Stream.of(</span>
+            new SimpleEntry&lt;&gt;(this.checkboxIsTamperingBase64, TamperingType.BASE64),
+            new SimpleEntry&lt;&gt;(this.checkboxIsTamperingFunctionComment, TamperingType.COMMENT_TO_METHOD_SIGNATURE),
+            new SimpleEntry&lt;&gt;(this.checkboxIsTamperingVersionComment, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE),
+            new SimpleEntry&lt;&gt;(this.checkboxIsTamperingEqualToLike, TamperingType.EQUAL_TO_LIKE),
+            new SimpleEntry&lt;&gt;(this.checkboxIsTamperingRandomCase, TamperingType.RANDOM_CASE),
+            new SimpleEntry&lt;&gt;(this.checkboxIsTamperingHexToChar, TamperingType.HEX_TO_CHAR),
+            new SimpleEntry&lt;&gt;(this.checkboxIsTamperingStringToChar, TamperingType.STRING_TO_CHAR),
+            new SimpleEntry&lt;&gt;(this.checkboxIsTamperingQuoteToUtf8, TamperingType.QUOTE_TO_UTF8),
+            new SimpleEntry&lt;&gt;(this.radioIsTamperingSpaceToMultilineComment, TamperingType.SPACE_TO_MULTILINE_COMMENT),
+            new SimpleEntry&lt;&gt;(this.radioIsTamperingSpaceToDashComment, TamperingType.SPACE_TO_DASH_COMMENT),
+            new SimpleEntry&lt;&gt;(this.radioIsTamperingSpaceToSharpComment, TamperingType.SPACE_TO_SHARP_COMMENT)
+        )
+<span class="fc" id="L74">        .forEach(entry -&gt; {</span>
+<span class="fc" id="L75">            entry.getKey().setToolTipText(entry.getValue().instance().getTooltip());</span>
+<span class="fc" id="L76">            entry.getKey().addMouseListener(new TamperingMouseAdapter(entry.getValue(), PanelTampering.textPaneEval));</span>
+<span class="fc" id="L77">            entry.getKey().addActionListener(panelPreferences.getActionListenerSave());</span>
+<span class="fc" id="L78">        });</span>
+
+<span class="fc" id="L80">        var groupSpaceToComment = new ButtonGroup() {</span>
+            @Override
+            public void setSelected(ButtonModel buttonModel, boolean b) {
+                // Click a 2nd time to uncheck
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                if (!b) {</span>
+<span class="nc" id="L85">                    this.clearSelection();</span>
+                } else {
+<span class="nc" id="L87">                    super.setSelected(buttonModel, true);</span>
+                }
+<span class="nc" id="L89">            }</span>
+        };
+<span class="fc" id="L91">        groupSpaceToComment.add(this.radioIsTamperingSpaceToDashComment);</span>
+<span class="fc" id="L92">        groupSpaceToComment.add(this.radioIsTamperingSpaceToMultilineComment);</span>
+<span class="fc" id="L93">        groupSpaceToComment.add(this.radioIsTamperingSpaceToSharpComment);</span>
+
+<span class="fc" id="L95">        var labelCommonConversion = new JLabel(&quot;&lt;html&gt;&lt;b&gt;Common tamper&lt;/b&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L96">        var labelSpaceTamper = new JLabel(&quot;&lt;html&gt;&lt;br /&gt;&lt;b&gt;Space tamper (click again to uncheck)&lt;/b&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L97">        var labelCustomConversion = new JLabel(&quot;&lt;html&gt;&lt;br /&gt;&lt;b&gt;Custom tamper (hover tamper to show implementation, click to paste)&lt;/b&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L98">        Arrays.asList(labelCommonConversion, labelSpaceTamper, labelCustomConversion).forEach(label -&gt; label.setBorder(PanelGeneral.MARGIN));</span>
+
+<span class="fc" id="L100">        var groupLayout = new GroupLayout(this);</span>
+<span class="fc" id="L101">        this.setLayout(groupLayout);</span>
+        
+<span class="fc" id="L103">        groupLayout.setHorizontalGroup(</span>
+            groupLayout
+<span class="fc" id="L105">            .createSequentialGroup()</span>
+<span class="fc" id="L106">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L108">                .createParallelGroup(GroupLayout.Alignment.LEADING, false)</span>
+<span class="fc" id="L109">                .addComponent(labelCommonConversion)</span>
+<span class="fc" id="L110">                .addComponent(this.checkboxIsTamperingBase64)</span>
+<span class="fc" id="L111">                .addComponent(this.checkboxIsTamperingFunctionComment)</span>
+<span class="fc" id="L112">                .addComponent(this.checkboxIsTamperingVersionComment)</span>
+<span class="fc" id="L113">                .addComponent(this.checkboxIsTamperingEqualToLike)</span>
+<span class="fc" id="L114">                .addComponent(this.checkboxIsTamperingRandomCase)</span>
+<span class="fc" id="L115">                .addComponent(this.checkboxIsTamperingStringToChar)</span>
+<span class="fc" id="L116">                .addComponent(this.checkboxIsTamperingHexToChar)</span>
+<span class="fc" id="L117">                .addComponent(this.checkboxIsTamperingQuoteToUtf8)</span>
+<span class="fc" id="L118">                .addComponent(labelSpaceTamper)</span>
+<span class="fc" id="L119">                .addComponent(this.radioIsTamperingSpaceToMultilineComment)</span>
+<span class="fc" id="L120">                .addComponent(this.radioIsTamperingSpaceToDashComment)</span>
+<span class="fc" id="L121">                .addComponent(this.radioIsTamperingSpaceToSharpComment)</span>
+<span class="fc" id="L122">                .addComponent(labelCustomConversion)</span>
+<span class="fc" id="L123">                .addComponent(this.checkboxIsTamperingEval)</span>
+<span class="fc" id="L124">                .addComponent(textAreaIsTamperingEval)</span>
+            )
+        );
+        
+<span class="fc" id="L128">        groupLayout.setVerticalGroup(</span>
+            groupLayout
+<span class="fc" id="L130">            .createSequentialGroup()</span>
+<span class="fc" id="L131">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L133">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L134">                .addComponent(labelCommonConversion)</span>
+            )
+<span class="fc" id="L136">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L138">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L139">                .addComponent(this.checkboxIsTamperingBase64)</span>
+            )
+<span class="fc" id="L141">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L143">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L144">                .addComponent(this.checkboxIsTamperingFunctionComment)</span>
+            )
+<span class="fc" id="L146">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L148">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L149">                .addComponent(this.checkboxIsTamperingVersionComment)</span>
+            )
+<span class="fc" id="L151">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L153">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L154">                .addComponent(this.checkboxIsTamperingEqualToLike)</span>
+            )
+<span class="fc" id="L156">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L158">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L159">                .addComponent(this.checkboxIsTamperingRandomCase)</span>
+            )
+<span class="fc" id="L161">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L163">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L164">                .addComponent(this.checkboxIsTamperingStringToChar)</span>
+            )
+<span class="fc" id="L166">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L168">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L169">                .addComponent(this.checkboxIsTamperingHexToChar)</span>
+            )
+<span class="fc" id="L171">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L173">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L174">                .addComponent(this.checkboxIsTamperingQuoteToUtf8)</span>
+            )
+<span class="fc" id="L176">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L178">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L179">                .addComponent(labelSpaceTamper)</span>
+            )
+<span class="fc" id="L181">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L183">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L184">                .addComponent(this.radioIsTamperingSpaceToMultilineComment)</span>
+            )
+<span class="fc" id="L186">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L188">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L189">                .addComponent(this.radioIsTamperingSpaceToDashComment)</span>
+            )
+<span class="fc" id="L191">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L193">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L194">                .addComponent(this.radioIsTamperingSpaceToSharpComment)</span>
+            )
+<span class="fc" id="L196">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L198">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L199">                .addComponent(labelCustomConversion)</span>
+            )
+<span class="fc" id="L201">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L203">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L204">                .addComponent(this.checkboxIsTamperingEval)</span>
+            )
+<span class="fc" id="L206">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L208">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L209">                .addComponent(textAreaIsTamperingEval)</span>
+            )
+        );
+<span class="fc" id="L212">    }</span>
+
+    public static void applyTheme() {
+<span class="fc" id="L215">        UiUtil.applyTheme(textPaneEval);</span>
+<span class="fc" id="L216">    }</span>
     
     
     // Getter and setter
 
     public JCheckBox getCheckboxIsTamperingBase64() {
-<span class="fc" id="L404">        return this.checkboxIsTamperingBase64;</span>
+<span class="fc" id="L222">        return this.checkboxIsTamperingBase64;</span>
     }
     
     public JCheckBox getCheckboxIsTamperingEqualToLike() {
-<span class="fc" id="L408">        return this.checkboxIsTamperingEqualToLike;</span>
+<span class="fc" id="L226">        return this.checkboxIsTamperingEqualToLike;</span>
     }
     
     public JCheckBox getCheckboxIsTamperingFunctionComment() {
-<span class="fc" id="L412">        return this.checkboxIsTamperingFunctionComment;</span>
+<span class="fc" id="L230">        return this.checkboxIsTamperingFunctionComment;</span>
     }
     
     public JCheckBox getCheckboxIsTamperingVersionComment() {
-<span class="fc" id="L416">        return this.checkboxIsTamperingVersionComment;</span>
+<span class="fc" id="L234">        return this.checkboxIsTamperingVersionComment;</span>
     }
     
     public JCheckBox getCheckboxIsTamperingRandomCase() {
-<span class="fc" id="L420">        return this.checkboxIsTamperingRandomCase;</span>
+<span class="fc" id="L238">        return this.checkboxIsTamperingRandomCase;</span>
     }
     
     public JCheckBox getCheckboxIsTamperingEval() {
-<span class="fc" id="L424">        return this.checkboxIsTamperingEval;</span>
+<span class="fc" id="L242">        return this.checkboxIsTamperingEval;</span>
     }
     
     public JRadioButton getRadioIsTamperingSpaceToDashComment() {
-<span class="fc" id="L428">        return this.radioIsTamperingSpaceToDashComment;</span>
+<span class="fc" id="L246">        return this.radioIsTamperingSpaceToDashComment;</span>
     }
     
     public JRadioButton getRadioIsTamperingSpaceToMultilineComment() {
-<span class="fc" id="L432">        return this.radioIsTamperingSpaceToMultilineComment;</span>
+<span class="fc" id="L250">        return this.radioIsTamperingSpaceToMultilineComment;</span>
     }
     
     public JRadioButton getRadioIsTamperingSpaceToSharpComment() {
-<span class="fc" id="L436">        return this.radioIsTamperingSpaceToSharpComment;</span>
+<span class="fc" id="L254">        return this.radioIsTamperingSpaceToSharpComment;</span>
     }
   
     public JCheckBox getCheckboxIsTamperingHexToChar() {
-<span class="fc" id="L440">        return this.checkboxIsTamperingHexToChar;</span>
+<span class="fc" id="L258">        return this.checkboxIsTamperingHexToChar;</span>
     }
     
     public JCheckBox getCheckboxIsTamperingQuoteToUtf8() {
-<span class="fc" id="L444">        return this.checkboxIsTamperingQuoteToUtf8;</span>
+<span class="fc" id="L262">        return this.checkboxIsTamperingQuoteToUtf8;</span>
     }
 
     public JCheckBox getCheckboxIsTamperingStringToChar() {
-<span class="fc" id="L448">        return this.checkboxIsTamperingStringToChar;</span>
+<span class="fc" id="L266">        return this.checkboxIsTamperingStringToChar;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

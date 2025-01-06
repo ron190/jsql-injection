@@ -249,66 +249,64 @@
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L242" href="#L242">242</a> <em class="jxr_javadoccomment">     * Default columns processing.</em>
 <a class="jxr_linenumber" name="L243" href="#L243">243</a> <em class="jxr_javadoccomment">     * Can be overridden like for Sqlite.</em>
-<a class="jxr_linenumber" name="L244" href="#L244">244</a> <em class="jxr_javadoccomment">     * @param columns</em>
-<a class="jxr_linenumber" name="L245" href="#L245">245</a> <em class="jxr_javadoccomment">     * @return</em>
-<a class="jxr_linenumber" name="L246" href="#L246">246</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>     <strong class="jxr_keyword">protected</strong> Collection&lt;String&gt; parse(List&lt;String&gt; columns) {
-<a class="jxr_linenumber" name="L248" href="#L248">248</a>         <strong class="jxr_keyword">return</strong> columns;
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>     }
-<a class="jxr_linenumber" name="L250" href="#L250">250</a> 
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>     @Ignore(<span class="jxr_string">"Enabled on inherit"</span>)
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> listValues() <strong class="jxr_keyword">throws</strong> JSqlException {
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>         
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>         Set&lt;String&gt; setValuesFromInjection = <strong class="jxr_keyword">new</strong> TreeSet&lt;&gt;();
-<a class="jxr_linenumber" name="L255" href="#L255">255</a>         Set&lt;String&gt; setValuesFromJdbc = <strong class="jxr_keyword">new</strong> TreeSet&lt;&gt;();
-<a class="jxr_linenumber" name="L256" href="#L256">256</a> 
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>             String[][] rows = <strong class="jxr_keyword">this</strong>.injectionModel.getDataAccess().listValues(List.of(
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>                 <strong class="jxr_keyword">new</strong> Column(AbstractTestSuite.<strong class="jxr_keyword">this</strong>.jsqlColumnName,
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>                     <strong class="jxr_keyword">new</strong> Table(AbstractTestSuite.<strong class="jxr_keyword">this</strong>.jsqlTableName, <span class="jxr_string">"0"</span>,
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>                         <strong class="jxr_keyword">new</strong> Database(AbstractTestSuite.<strong class="jxr_keyword">this</strong>.jsqlDatabaseName, <span class="jxr_string">"0"</span>)
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>                     )
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>                 )
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>             ));
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>             
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>             List&lt;String&gt; valuesFound = Arrays.stream(rows)
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>                 <em class="jxr_comment">// =&gt; row number, occurrence, value1, value2...</em>
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>                 .map(row -&gt; row[2].replaceAll(<span class="jxr_string">"\r\n"</span>, <span class="jxr_string">"\n"</span>))
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>                 .collect(Collectors.toList());
-<a class="jxr_linenumber" name="L270" href="#L270">270</a> 
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>             setValuesFromInjection.addAll(valuesFound);
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>             setValuesFromJdbc.addAll(AbstractTestSuite.<strong class="jxr_keyword">this</strong>.valuesFromJdbc);
-<a class="jxr_linenumber" name="L273" href="#L273">273</a> 
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>             String logValuesFromInjection = setValuesFromInjection.toString()
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>                 .replaceAll(<span class="jxr_string">"\n"</span>, <span class="jxr_string">"[n]"</span>)
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>                 .replaceAll(<span class="jxr_string">"\r"</span>, <span class="jxr_string">"[r]"</span>);
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>             
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>             String logValuesFromJdbc = setValuesFromJdbc.toString()
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>                 .replaceAll(<span class="jxr_string">"\n"</span>, <span class="jxr_string">"[n]"</span>)
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>                 .replaceAll(<span class="jxr_string">"\r"</span>, <span class="jxr_string">"[r]"</span>);
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>             
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>             LOGGER.info(<span class="jxr_string">"Values: found {}, to find {}"</span>, logValuesFromInjection, logValuesFromJdbc);
-<a class="jxr_linenumber" name="L283" href="#L283">283</a> 
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>             Assertions.assertTrue(
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>                 !setValuesFromInjection.isEmpty()
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>                 &amp;&amp; !setValuesFromJdbc.isEmpty()
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>                 <em class="jxr_comment">// TODO update and delete injection prevent exact matching =&gt; create a specific table</em>
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>                 &amp;&amp; setValuesFromInjection.containsAll(setValuesFromJdbc)
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>             );
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>         } <strong class="jxr_keyword">catch</strong> (AssertionError e) {
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>             
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>             Set&lt;String&gt; valuesUnknown = Stream.concat(
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>                 setValuesFromInjection.stream().filter(value -&gt; !setValuesFromJdbc.contains(value)),
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>                 setValuesFromJdbc.stream().filter(value -&gt; !setValuesFromInjection.contains(value))
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>             )
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>             .collect(Collectors.toCollection(TreeSet::<strong class="jxr_keyword">new</strong>));
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>             
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> AssertionError(String.format(<span class="jxr_string">"Unknown values: %s%n%s"</span>, valuesUnknown, e));
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>         }
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>     }
-<a class="jxr_linenumber" name="L301" href="#L301">301</a> }
+<a class="jxr_linenumber" name="L244" href="#L244">244</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>     <strong class="jxr_keyword">protected</strong> Collection&lt;String&gt; parse(List&lt;String&gt; columns) {
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>         <strong class="jxr_keyword">return</strong> columns;
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>     }
+<a class="jxr_linenumber" name="L248" href="#L248">248</a> 
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>     @Ignore(<span class="jxr_string">"Enabled on inherit"</span>)
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> listValues() <strong class="jxr_keyword">throws</strong> JSqlException {
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>         
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>         Set&lt;String&gt; setValuesFromInjection = <strong class="jxr_keyword">new</strong> TreeSet&lt;&gt;();
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>         Set&lt;String&gt; setValuesFromJdbc = <strong class="jxr_keyword">new</strong> TreeSet&lt;&gt;();
+<a class="jxr_linenumber" name="L254" href="#L254">254</a> 
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>             String[][] rows = <strong class="jxr_keyword">this</strong>.injectionModel.getDataAccess().listValues(List.of(
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>                 <strong class="jxr_keyword">new</strong> Column(AbstractTestSuite.<strong class="jxr_keyword">this</strong>.jsqlColumnName,
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>                     <strong class="jxr_keyword">new</strong> Table(AbstractTestSuite.<strong class="jxr_keyword">this</strong>.jsqlTableName, <span class="jxr_string">"0"</span>,
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>                         <strong class="jxr_keyword">new</strong> Database(AbstractTestSuite.<strong class="jxr_keyword">this</strong>.jsqlDatabaseName, <span class="jxr_string">"0"</span>)
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>                     )
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>                 )
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>             ));
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>             
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>             List&lt;String&gt; valuesFound = Arrays.stream(rows)
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>                 <em class="jxr_comment">// =&gt; row number, occurrence, value1, value2...</em>
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>                 .map(row -&gt; row[2].replaceAll(<span class="jxr_string">"\r\n"</span>, <span class="jxr_string">"\n"</span>))
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>                 .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L268" href="#L268">268</a> 
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>             setValuesFromInjection.addAll(valuesFound);
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>             setValuesFromJdbc.addAll(AbstractTestSuite.<strong class="jxr_keyword">this</strong>.valuesFromJdbc);
+<a class="jxr_linenumber" name="L271" href="#L271">271</a> 
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>             String logValuesFromInjection = setValuesFromInjection.toString()
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>                 .replaceAll(<span class="jxr_string">"\n"</span>, <span class="jxr_string">"[n]"</span>)
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>                 .replaceAll(<span class="jxr_string">"\r"</span>, <span class="jxr_string">"[r]"</span>);
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>             
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>             String logValuesFromJdbc = setValuesFromJdbc.toString()
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>                 .replaceAll(<span class="jxr_string">"\n"</span>, <span class="jxr_string">"[n]"</span>)
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>                 .replaceAll(<span class="jxr_string">"\r"</span>, <span class="jxr_string">"[r]"</span>);
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>             
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>             LOGGER.info(<span class="jxr_string">"Values: found {}, to find {}"</span>, logValuesFromInjection, logValuesFromJdbc);
+<a class="jxr_linenumber" name="L281" href="#L281">281</a> 
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>             Assertions.assertTrue(
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>                 !setValuesFromInjection.isEmpty()
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>                 &amp;&amp; !setValuesFromJdbc.isEmpty()
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>                 <em class="jxr_comment">// TODO update and delete injection prevent exact matching =&gt; create a specific table</em>
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>                 &amp;&amp; setValuesFromInjection.containsAll(setValuesFromJdbc)
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>             );
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>         } <strong class="jxr_keyword">catch</strong> (AssertionError e) {
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>             
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>             Set&lt;String&gt; valuesUnknown = Stream.concat(
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>                 setValuesFromInjection.stream().filter(value -&gt; !setValuesFromJdbc.contains(value)),
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>                 setValuesFromJdbc.stream().filter(value -&gt; !setValuesFromInjection.contains(value))
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>             )
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>             .collect(Collectors.toCollection(TreeSet::<strong class="jxr_keyword">new</strong>));
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>             
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> AssertionError(String.format(<span class="jxr_string">"Unknown values: %s%n%s"</span>, valuesUnknown, e));
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>         }
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>     }
+<a class="jxr_linenumber" name="L299" href="#L299">299</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2024. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
 </body>
 </html>

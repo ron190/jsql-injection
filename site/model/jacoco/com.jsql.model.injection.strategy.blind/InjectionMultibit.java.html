@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class InjectionMultibit extends AbstractInjectionBoolean&lt;CallableMultibit&gt; {
+public class InjectionMultibit extends AbstractInjectionBinary&lt;CallableMultibit&gt; {
 
     /**
      * Log4j logger sent to view.
@@ -29,20 +29,19 @@ public class InjectionMultibit extends AbstractInjectionBoolean&lt;CallableMulti
 <span class="fc" id="L29">    private List&lt;Diff&gt; diffsCommonWithAllIds = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L30">    private final List&lt;List&lt;Diff&gt;&gt; diffsById = new ArrayList&lt;&gt;();</span>
 
-    public InjectionMultibit(InjectionModel injectionModel, BooleanMode blindMode) {
+    public InjectionMultibit(InjectionModel injectionModel, BinaryMode blindMode) {
+<span class="fc" id="L33">        super(injectionModel, blindMode);</span>
         
-<span class="fc" id="L34">        super(injectionModel, blindMode);</span>
-        
-<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L37">            return;</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L36">            return;</span>
         }
 
-<span class="fc" id="L40">        this.sourceReference = this.callUrl(&quot;8&quot;, &quot;multi#ref&quot;);</span>
-<span class="fc" id="L41">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetMultibitIds&quot;);</span>
-<span class="fc" id="L42">        Collection&lt;CallableMultibit&gt; callablesId = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L39">        this.sourceReference = this.callUrl(&quot;8&quot;, &quot;multi#ref&quot;);</span>
+<span class="fc" id="L40">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetMultibitIds&quot;);</span>
+<span class="fc" id="L41">        Collection&lt;CallableMultibit&gt; callablesId = new ArrayList&lt;&gt;();</span>
 
-<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (int i = 0; i &lt; 8 ; i++) {</span>
-<span class="fc" id="L45">            callablesId.add(</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (int i = 0; i &lt; 8 ; i++) {</span>
+<span class="fc" id="L44">            callablesId.add(</span>
                 new CallableMultibit(
                     &quot;&quot;+i,
                     this,
@@ -52,34 +51,32 @@ public class InjectionMultibit extends AbstractInjectionBoolean&lt;CallableMulti
         }
 
         try {
-<span class="fc" id="L55">            List&lt;Future&lt;CallableMultibit&gt;&gt; futuresId = taskExecutor.invokeAll(callablesId);</span>
-<span class="fc" id="L56">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L54">            List&lt;Future&lt;CallableMultibit&gt;&gt; futuresId = taskExecutor.invokeAll(callablesId);</span>
+<span class="fc" id="L55">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
 
-<span class="fc bfc" id="L58" title="All 2 branches covered.">            for (Future&lt;CallableMultibit&gt; futureId: futuresId) {</span>
-
-<span class="fc" id="L60">                List&lt;Diff&gt; diffsWithReference = futureId.get().getDiffsWithReference();</span>
-<span class="fc bfc" id="L61" title="All 2 branches covered.">                if (this.diffsCommonWithAllIds.isEmpty()) {</span>
-<span class="fc" id="L62">                    this.diffsCommonWithAllIds = new ArrayList&lt;&gt;(diffsWithReference);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">            for (Future&lt;CallableMultibit&gt; futureId: futuresId) {</span>
+<span class="fc" id="L58">                List&lt;Diff&gt; diffsWithReference = futureId.get().getDiffsWithReference();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">                if (this.diffsCommonWithAllIds.isEmpty()) {</span>
+<span class="fc" id="L60">                    this.diffsCommonWithAllIds = new ArrayList&lt;&gt;(diffsWithReference);</span>
                 } else {
-<span class="fc" id="L64">                    this.diffsCommonWithAllIds.retainAll(diffsWithReference);</span>
+<span class="fc" id="L62">                    this.diffsCommonWithAllIds.retainAll(diffsWithReference);</span>
                 }
-<span class="fc" id="L66">                diffsById.add(diffsWithReference);</span>
-<span class="fc" id="L67">            }</span>
+<span class="fc" id="L64">                diffsById.add(diffsWithReference);</span>
+<span class="fc" id="L65">            }</span>
 
-<span class="fc bfc" id="L69" title="All 2 branches covered.">            for (List&lt;Diff&gt; diffById : diffsById) {</span>
-<span class="fc" id="L70">                diffById.removeAll(this.diffsCommonWithAllIds);</span>
-<span class="fc" id="L71">            }</span>
-<span class="nc" id="L72">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L73">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L74">        } catch (InterruptedException e) {</span>
-
-<span class="nc" id="L76">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L77">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L78">        }</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            for (List&lt;Diff&gt; diffById : diffsById) {</span>
+<span class="fc" id="L68">                diffById.removeAll(this.diffsCommonWithAllIds);</span>
+<span class="fc" id="L69">            }</span>
+<span class="nc" id="L70">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L71">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L72">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L73">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L74">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L75">        }</span>
+<span class="fc" id="L76">    }</span>
 
     public CallableMultibit getCallableTest(String sqlQuery, int indexCharacter, int block) {
-<span class="fc" id="L82">        return new CallableMultibit(</span>
+<span class="fc" id="L79">        return new CallableMultibit(</span>
             sqlQuery,
             indexCharacter,
             block,
@@ -91,25 +88,21 @@ public class InjectionMultibit extends AbstractInjectionBoolean&lt;CallableMulti
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
-        
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L96">            throw new StoppedByUserSlidingException();</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L92">            throw new StoppedByUserSlidingException();</span>
         }
-
-<span class="fc" id="L99">        var callableBlock1 = new CallableMultibit(&quot;'a'&quot;, 1, 1, this.injectionModel, this, &quot;multi#confirm.1&quot;);</span>
-<span class="fc" id="L100">        var callableBlock2 = new CallableMultibit(&quot;'a'&quot;, 1, 2, this.injectionModel, this, &quot;multi#confirm.2&quot;);</span>
-<span class="fc" id="L101">        var callableBlock3 = new CallableMultibit(&quot;'a'&quot;, 1, 3, this.injectionModel, this, &quot;multi#confirm.3&quot;);</span>
-
-<span class="fc" id="L103">        callableBlock1.call();</span>
-<span class="fc" id="L104">        callableBlock2.call();</span>
-<span class="fc" id="L105">        callableBlock3.call();</span>
-
-<span class="pc bpc" id="L107" title="2 of 6 branches missed.">        return callableBlock1.getIdPage() == 3 &amp;&amp; callableBlock2.getIdPage() == 0 &amp;&amp; callableBlock3.getIdPage() == 1;</span>
+<span class="fc" id="L94">        var callableBlock1 = new CallableMultibit(&quot;'a'&quot;, 1, 1, this.injectionModel, this, &quot;multi#confirm.1&quot;);</span>
+<span class="fc" id="L95">        var callableBlock2 = new CallableMultibit(&quot;'a'&quot;, 1, 2, this.injectionModel, this, &quot;multi#confirm.2&quot;);</span>
+<span class="fc" id="L96">        var callableBlock3 = new CallableMultibit(&quot;'a'&quot;, 1, 3, this.injectionModel, this, &quot;multi#confirm.3&quot;);</span>
+<span class="fc" id="L97">        callableBlock1.call();</span>
+<span class="fc" id="L98">        callableBlock2.call();</span>
+<span class="fc" id="L99">        callableBlock3.call();</span>
+<span class="pc bpc" id="L100" title="2 of 6 branches missed.">        return callableBlock1.getIdPage() == 3 &amp;&amp; callableBlock2.getIdPage() == 0 &amp;&amp; callableBlock3.getIdPage() == 1;</span>
     }
 
     @Override
     public String getInfoMessage() {
-<span class="fc" id="L112">        return &quot;- Strategy Multibit: query 3 bits when Diffs match index in &quot; + this.diffsById + &quot;\n\n&quot;;</span>
+<span class="fc" id="L105">        return &quot;- Strategy Multibit: query 3 bits when Diffs match index in &quot; + this.diffsById + &quot;\n\n&quot;;</span>
     }
 
     @Override
@@ -120,73 +113,68 @@ public class InjectionMultibit extends AbstractInjectionBoolean&lt;CallableMulti
         CompletionService&lt;CallableMultibit&gt; taskCompletionService,
         AtomicInteger countTasksSubmitted
     ) {
-<span class="fc" id="L123">        indexCharacter.incrementAndGet();</span>
-
-<span class="fc" id="L125">        bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });</span>
-
-<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (int block: new int[]{ 1, 2, 3 }) {</span>
-
-<span class="fc" id="L129">            taskCompletionService.submit(</span>
-<span class="fc" id="L130">                this.getCallableTest(</span>
+<span class="fc" id="L116">        indexCharacter.incrementAndGet();</span>
+<span class="fc" id="L117">        bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        for (int block: new int[]{ 1, 2, 3 }) {</span>
+<span class="fc" id="L119">            taskCompletionService.submit(</span>
+<span class="fc" id="L120">                this.getCallableTest(</span>
                     sqlQuery,
-<span class="fc" id="L132">                    indexCharacter.get(),</span>
+<span class="fc" id="L122">                    indexCharacter.get(),</span>
                     block
                 )
             );
-<span class="fc" id="L136">            countTasksSubmitted.addAndGet(1);</span>
+<span class="fc" id="L126">            countTasksSubmitted.addAndGet(1);</span>
         }
-<span class="fc" id="L138">    }</span>
+<span class="fc" id="L128">    }</span>
 
     @Override
     public char[] initializeBinaryMask(List&lt;char[]&gt; bytes, CallableMultibit currentCallable) {
-
         // Bits for current url
-<span class="fc" id="L144">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);</span>
-<span class="fc" id="L145">        extractBitsFromBlock(currentCallable, asciiCodeMask);</span>
-<span class="fc" id="L146">        return asciiCodeMask;</span>
+<span class="fc" id="L133">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);</span>
+<span class="fc" id="L134">        extractBitsFromBlock(currentCallable, asciiCodeMask);</span>
+<span class="fc" id="L135">        return asciiCodeMask;</span>
     }
 
     /**
      * Extract 3 bits from callable for specific block
      */
     private void extractBitsFromBlock(CallableMultibit currentCallable, char[] bits) {
-<span class="fc bfc" id="L153" title="All 2 branches covered.">        if (currentCallable.block == 1) {</span>
-<span class="fc" id="L154">            convertIdPageToBits(currentCallable.idPage, bits, 0, 1, 2);</span>
-<span class="fc bfc" id="L155" title="All 2 branches covered.">        } else if (currentCallable.block == 2) {</span>
-<span class="fc" id="L156">            convertIdPageToBits(currentCallable.idPage, bits, 3, 4, 5);</span>
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        } else if (currentCallable.block == 3) {</span>
-<span class="fc" id="L158">            convertIdPageToBits(currentCallable.idPage, bits, -1, 6,7);</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        if (currentCallable.block == 1) {</span>
+<span class="fc" id="L143">            convertIdPageToBits(currentCallable.idPage, bits, 0, 1, 2);</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        } else if (currentCallable.block == 2) {</span>
+<span class="fc" id="L145">            convertIdPageToBits(currentCallable.idPage, bits, 3, 4, 5);</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        } else if (currentCallable.block == 3) {</span>
+<span class="fc" id="L147">            convertIdPageToBits(currentCallable.idPage, bits, -1, 6,7);</span>
         }
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L149">    }</span>
 
     /**
      * Set bits by page id
      */
     private void convertIdPageToBits(int idPage, char[] bits, int i1, int i2, int i3) {
+<span class="fc" id="L155">        String idPageBinary = Integer.toBinaryString(idPage);</span>
+<span class="fc" id="L156">        String idPageBinaryPadded = StringUtils.leftPad(idPageBinary, 3, &quot;0&quot;);</span>
 
-<span class="fc" id="L167">        String idPageBinary = Integer.toBinaryString(idPage);</span>
-<span class="fc" id="L168">        String idPageBinaryPadded = StringUtils.leftPad(idPageBinary, 3, &quot;0&quot;);</span>
-
-<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (i1 &gt; -1) {</span>
-<span class="fc" id="L171">            bits[i1] = idPageBinaryPadded.charAt(0);</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (i1 &gt; -1) {</span>
+<span class="fc" id="L159">            bits[i1] = idPageBinaryPadded.charAt(0);</span>
         }
-<span class="fc" id="L173">        bits[i2] = idPageBinaryPadded.charAt(1);</span>
-<span class="fc" id="L174">        bits[i3] = idPageBinaryPadded.charAt(2);</span>
-<span class="fc" id="L175">    }</span>
+<span class="fc" id="L161">        bits[i2] = idPageBinaryPadded.charAt(1);</span>
+<span class="fc" id="L162">        bits[i3] = idPageBinaryPadded.charAt(2);</span>
+<span class="fc" id="L163">    }</span>
 
 
     // Getter
 
     public String getSourceReference() {
-<span class="fc" id="L181">        return this.sourceReference;</span>
+<span class="fc" id="L169">        return this.sourceReference;</span>
     }
 
     public List&lt;Diff&gt; getDiffsCommonWithAllIds() {
-<span class="fc" id="L185">        return this.diffsCommonWithAllIds;</span>
+<span class="fc" id="L173">        return this.diffsCommonWithAllIds;</span>
     }
 
     public List&lt;List&lt;Diff&gt;&gt; getDiffsById() {
-<span class="fc" id="L189">        return diffsById;</span>
+<span class="fc" id="L177">        return diffsById;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

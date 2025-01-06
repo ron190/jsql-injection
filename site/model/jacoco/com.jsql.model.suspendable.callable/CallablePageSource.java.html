@@ -33,20 +33,15 @@ public class CallablePageSource implements Callable&lt;CallablePageSource&gt; {
     
     /**
      * Create a callable to get initial query or insertion character.
-     * @param query
-     * @param injectionModel
      */
-<span class="fc" id="L39">    public CallablePageSource(String query, InjectionModel injectionModel, String metadataInjectionProcess) {</span>
-        
-<span class="fc" id="L41">        this.query = query;</span>
-<span class="fc" id="L42">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L43">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L37">    public CallablePageSource(String query, InjectionModel injectionModel, String metadataInjectionProcess) {</span>
+<span class="fc" id="L38">        this.query = query;</span>
+<span class="fc" id="L39">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L40">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L41">    }</span>
 
     /**
      * Create callable for current insertion character test.
-     * @param query
-     * @param characterInsertion
      */
     public CallablePageSource(
         String query,
@@ -54,33 +49,29 @@ public class CallablePageSource implements Callable&lt;CallablePageSource&gt; {
         InjectionModel injectionModel,
         String metadataInjectionProcess
     ) {
-        
-<span class="fc" id="L58">        this(query, injectionModel, metadataInjectionProcess);</span>
-        
-<span class="fc" id="L60">        this.characterInsertion = characterInsertion;</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L52">        this(query, injectionModel, metadataInjectionProcess);</span>
+<span class="fc" id="L53">        this.characterInsertion = characterInsertion;</span>
+<span class="fc" id="L54">    }</span>
     
     @Override
     public CallablePageSource call() {
-        
-<span class="fc" id="L66">        this.content = this.injectionModel.injectWithoutIndex(this.query, this.metadataInjectionProcess);</span>
-        
-<span class="fc" id="L68">        return this;</span>
+<span class="fc" id="L58">        this.content = this.injectionModel.injectWithoutIndex(this.query, this.metadataInjectionProcess);</span>
+<span class="fc" id="L59">        return this;</span>
     }
 
     
     // Getters
 
     public String getQuery() {
-<span class="fc" id="L75">        return this.query;</span>
+<span class="fc" id="L66">        return this.query;</span>
     }
     
     public String getContent() {
-<span class="fc" id="L79">        return this.content;</span>
+<span class="fc" id="L70">        return this.content;</span>
     }
     
     public String getCharacterInsertion() {
-<span class="fc" id="L83">        return this.characterInsertion;</span>
+<span class="fc" id="L74">        return this.characterInsertion;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
