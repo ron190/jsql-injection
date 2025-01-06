@@ -12,7 +12,7 @@
     </modules>
 
     <properties>
-        <revision>v0.102</revision>
+        <revision>v0.103</revision>
         <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
 
         <maven.compiler.source>11</maven.compiler.source>
