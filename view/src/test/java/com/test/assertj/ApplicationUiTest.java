@@ -67,7 +67,8 @@ class ApplicationUiTest {
         FailOnThreadViolationRepaintManager.install();
 
         // fix linux instabilities
-        robot = BasicRobot.robotWithNewAwtHierarchy();
+        robot = BasicRobot.robotWithCurrentAwtHierarchyWithoutScreenLock();
+//        robot = BasicRobot.robotWithNewAwtHierarchy();
         robot.settings().delayBetweenEvents(240);
         robot.settings().eventPostingDelay(400);
 
