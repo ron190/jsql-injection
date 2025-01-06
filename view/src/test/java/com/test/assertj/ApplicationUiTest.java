@@ -65,8 +65,8 @@ class ApplicationUiTest {
 
         // fix linux instabilities
         robot = BasicRobot.robotWithNewAwtHierarchy();
-//        robot.settings().delayBetweenEvents(240);
-//        robot.settings().eventPostingDelay(400);
+        robot.settings().delayBetweenEvents(240);
+        robot.settings().eventPostingDelay(400);
 
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);

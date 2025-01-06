@@ -15,11 +15,13 @@ import com.formdev.flatlaf.icons.FlatRadioButtonMenuItemIcon;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.ParameterUtil;
 import com.jsql.view.swing.panel.address.ActionEnterAddressBar;
 import com.jsql.view.swing.panel.address.PanelTrailingAddress;
 import com.jsql.view.swing.panel.address.RadioModel;
 import com.jsql.view.swing.panel.util.ButtonExpandText;
 import com.jsql.view.swing.text.*;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -178,7 +180,7 @@ public class PanelAddressBar extends JPanel {
         for (String method: new String[]{"DELETE", "GET", "HEAD", "OPTIONS", "POST", "PUT", "TRACE"}) {
             final JMenuItem newMenuItem = new JRadioButtonMenuItem(method, "GET".equals(method));
             newMenuItem.addActionListener(actionEvent -> {
-                this.typeRequest = (newMenuItem.getText());
+                this.typeRequest = newMenuItem.getText();
                 atomicRadioMethod.get().setText(this.typeRequest);
                 atomicRadioMethod.get().requestFocusInWindow();  // required to set proper focus
             });
@@ -199,20 +201,25 @@ public class PanelAddressBar extends JPanel {
         inputCustomMethod.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
                 radioCustomMethod.setSelected(!radioCustomMethod.isSelected());
             }
         });
-        radioCustomMethod.addActionListener(actionEvent -> {
-            if (StringUtils.isNotEmpty(inputCustomMethod.getText())) {
-                this.typeRequest = inputCustomMethod.getText();
-                atomicRadioMethod.get().setText(this.typeRequest);
-            } else {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing request custom method label");
+        inputCustomMethod.getDocument().addDocumentListener(new DocumentListenerEditing() {
+            @Override
+            public void process() {
+                validate(inputCustomMethod);
             }
         });
+        radioCustomMethod.addActionListener(actionEvent -> {
+            validate(inputCustomMethod);
+        });
 
-        var tooltipCustomMethod = "<html>Set user defined HTTP method.<br/>Must be one word in uppercase.</html>";
+        var tooltipCustomMethod = "<html>Set user defined HTTP method.<br/>" +
+            "A valid method is limited to chars:<br>" +
+            "!#$%&'*+-.^_`|~0123456789<br>" +
+            "abcdefghijklmnopqrstuvwxyz<br>" +
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+        "</html>";
         MouseAdapter mouseAdapterSetBackground = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -315,6 +322,17 @@ public class PanelAddressBar extends JPanel {
                 .addComponent(this.atomicTextFieldHeader.get())
             )
         );
+    }
+
+    private void validate(JTextField inputCustomMethod) {
+        if (StringUtils.isEmpty(inputCustomMethod.getText())) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing custom method label");
+        } else if (!ParameterUtil.isValidName(inputCustomMethod.getText())) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format("Illegal method: \"%s\"", inputCustomMethod.getText()));
+        } else {
+            this.typeRequest = inputCustomMethod.getText();
+            atomicRadioMethod.get().setText(this.typeRequest);
+        }
     }
 
     private JLabel initializeAdvancedButton() {

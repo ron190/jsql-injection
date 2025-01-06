@@ -14,6 +14,7 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,11 +38,21 @@ public class ActionSaveTab extends AbstractAction {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private final ReplaceFileChooser replaceFileChooser = new ReplaceFileChooser(
-        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()
-    );
+    private ReplaceFileChooser replaceFileChooser;
 
     public ActionSaveTab() {
+        // Unhandled NoSuchMethodError #82561 on constructor: NoSuchMethodError
+        // Unhandled InternalError #93015 on constructor: InvocationTargetException
+        // Unhandled NullPointerException #95805 on constructor: desktop null on Windows
+        try {
+            replaceFileChooser = new ReplaceFileChooser(
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()
+            );
+        } catch (NoSuchMethodError | InternalError | NullPointerException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Internal error in JFileChooser: {}", e.getMessage());
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Please verify your system and the error stacktrace in tab Java");
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Internal error", e);
+        }
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
         this.putValue(Action.NAME, "Save Tab As...");
@@ -111,7 +122,7 @@ public class ActionSaveTab extends AbstractAction {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 String.format("Error writing to %s", fileSelected.getName()),
-                e
+                e.getMessage()  // full stacktrace not required
             );
         }
     }

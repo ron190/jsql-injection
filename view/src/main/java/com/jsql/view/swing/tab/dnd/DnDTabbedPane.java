@@ -1,6 +1,9 @@
 package com.jsql.view.swing.tab.dnd;
 
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.action.ActionCloseTabResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +16,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class DnDTabbedPane extends JTabbedPane {
-    
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = LogManager.getRootLogger();
+
     private static final int SCROLL_SIZE = 20;  // Test
     private static final int BUTTON_SIZE = 30;  // 30 is magic number of scroll button size
     private static final int LINE_WIDTH = 3;
@@ -251,7 +259,14 @@ public class DnDTabbedPane extends JTabbedPane {
             }
             
             var tabPt = e.getPoint();
-            int idx = src.indexAtLocation(tabPt.x, tabPt.y);
+            int idx;
+            // Fix #95782: IllegalArgumentException on indexAtLocation()
+            try {
+                idx = src.indexAtLocation(tabPt.x, tabPt.y);
+            } catch (IllegalArgumentException err) {
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, err);
+                return;
+            }
             
             // disabled tab, null component problem.
             // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)

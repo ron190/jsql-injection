@@ -169,10 +169,7 @@ public class ConnectionUtil {
         this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);
         this.injectionModel.getMediatorUtils().getDigestUtil().addHeaderToken(httpRequest);
 
-        httpRequest.method(
-            this.typeRequest,
-            BodyPublishers.ofString(body)
-        );
+        httpRequest.method(this.typeRequest, BodyPublishers.ofString(body));
 
         // Add headers if exists (Authorization:Basic, etc.)
         for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {

@@ -10,7 +10,10 @@
  *******************************************************************************/
 package com.jsql.view.swing.text;
 
+import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +24,12 @@ import java.awt.event.FocusEvent;
  * A JTextArea decorated with popup menu and border.
  */
 public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements DecoratorJComponent<JTextArea> {
-    
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = LogManager.getRootLogger();
+
     /**
      * Build new instance of readonly JTextArea to decorate.
      */
@@ -52,7 +60,12 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
         this.getProxy().addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent arg0) {
-                JPopupTextArea.this.getProxy().getCaret().setVisible(true);
+                // Fix #95769: IllegalArgumentException on setVisible()
+                try {
+                    JPopupTextArea.this.getProxy().getCaret().setVisible(true);
+                } catch (IllegalArgumentException e) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+                }
                 JPopupTextArea.this.getProxy().getCaret().setSelectionVisible(true);
             }
         });

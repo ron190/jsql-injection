@@ -124,6 +124,39 @@ public class ParameterUtil {
         this.checkStarMatchMethod();
         this.checkMethodNotEmpty();
         this.checkMultipart();
+        if (!isValidName(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {
+            throw new InjectionFailureException(String.format(
+                "Illegal method: \"%s\"",
+                this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest()
+            ));
+        }
+    }
+
+    // ABNF primitives defined in RFC 7230
+    private static final boolean[] tchar = new boolean[256];
+
+    static {
+        char[] allowedTokenChars = (
+            "!#$%&'*+-.^_`|~0123456789" +
+            "abcdefghijklmnopqrstuvwxyz" +
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        ).toCharArray();
+        for (char c : allowedTokenChars) {
+            tchar[c] = true;
+        }
+    }
+
+    /*
+     * Validates a RFC 7230 field-name.
+     */
+    public static boolean isValidName(String token) {
+        for (int i = 0; i < token.length(); i++) {
+            char c = token.charAt(i);
+            if (c > 255 || !tchar[c]) {
+                return false;
+            }
+        }
+        return !token.isEmpty();
     }
 
     private void checkMultipart() throws InjectionFailureException {

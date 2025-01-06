@@ -23,10 +23,10 @@ public class ReplaceFileChooser extends JFileChooser {
     /**
      * Create a file chooser with a replace confirm dialog.
      */
-    public ReplaceFileChooser(String s) {
+    public ReplaceFileChooser(String currentDirectoryPath) {
         // Unhandled NoSuchMethodError #82561 on constructor: NoSuchMethodError
         // Unhandled InternalError #93015 on constructor: InvocationTargetException
-        super(s);
+        super(currentDirectoryPath);
     }
     
     @Override
