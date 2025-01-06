@@ -64,7 +64,7 @@
         <jaxb-api.version>2.1</jaxb-api.version>
         <jaybird.version>5.0.5.java11</jaybird.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
-        <jna.version>5.15.0</jna.version>
+        <jna.version>5.16.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20240303</json.version>
         <jsoup.version>1.18.2</jsoup.version>
