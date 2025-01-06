@@ -42,7 +42,7 @@
     <li><a href="project-info.html"><span class="icon-chevron-right"></span>Project Information</a></li>
     <li><a href="project-reports.html"><span class="icon-chevron-down"></span>Project Reports</a>
      <ul class="nav nav-list">
-      <li><a href="surefire-report.html">Surefire</a></li>
+      <li><a href="surefire.html">Surefire</a></li>
       <li><a href="xref/index.html">Source Xref</a></li>
       <li><a href="xref-test/index.html">Test Source Xref</a></li>
       <li><a href="apidocs/index.html">Javadoc</a></li>
@@ -73,7 +73,7 @@
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" /></td>
 <td># of properties using the latest version available</td>
-<td>6</td></tr>
+<td>8</td></tr>
 <tr class="a">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td># of properties where the next version available is smaller than an incremental version update</td>
@@ -85,7 +85,7 @@
 <tr class="a">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td># of properties where the next version available is a minor version update</td>
-<td>6</td></tr>
+<td>4</td></tr>
 <tr class="b">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td># of properties where the next version available is a major version update</td>
@@ -149,12 +149,12 @@
 <td></td>
 <td></td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" /></td>
+<td><img src="images/icon_success_sml.gif" /></td>
 <td>${maven-checkstyle-plugin.version}</td>
-<td>3.5.0</td>
+<td>3.6.0</td>
 <td></td>
 <td></td>
-<td><b>3.6.0</b></td>
+<td></td>
 <td></td></tr>
 <tr class="a">
 <td><img src="images/icon_warning_sml.gif" /></td>
@@ -213,12 +213,12 @@
 <td></td>
 <td></td></tr>
 <tr class="b">
-<td><img src="images/icon_warning_sml.gif" /></td>
+<td><img src="images/icon_success_sml.gif" /></td>
 <td>${maven-surefire-report-plugin.version}</td>
-<td>3.4.0</td>
+<td>3.5.2</td>
 <td></td>
 <td></td>
-<td><b>3.5.2</b></td>
+<td></td>
 <td></td></tr>
 <tr class="a">
 <td><img src="images/icon_warning_sml.gif" /></td>
@@ -427,7 +427,7 @@
 <table class="table table-striped">
 <tr class="a">
 <th>Status</th>
-<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
 <tr class="b">
 <th>Property</th>
 <td style="text-align: left;">${maven-checkstyle-plugin.version}</td></tr>
@@ -436,23 +436,20 @@
 <td style="text-align: left;">org.apache.maven.plugins:maven-checkstyle-plugin</td></tr>
 <tr class="b">
 <th>Current Version</th>
-<td style="text-align: left;">3.5.0</td></tr>
+<td style="text-align: left;">3.6.0</td></tr>
 <tr class="a">
-<th>Newer versions</th>
-<td style="text-align: left;"><b>3.6.0</b>&#160;<i>Latest Minor</i></td></tr>
-<tr class="b">
 <th>Allowed version range</th>
-<td style="text-align: left;">3.5.0</td></tr>
-<tr class="a">
+<td style="text-align: left;">3.6.0</td></tr>
+<tr class="b">
 <th>Infer associations from project</th>
 <td style="text-align: left;">Yes</td></tr>
-<tr class="b">
+<tr class="a">
 <th>Only use release versions</th>
 <td style="text-align: left;">No</td></tr>
-<tr class="a">
+<tr class="b">
 <th>Include projects from reactor</th>
 <td style="text-align: left;">Yes</td></tr>
-<tr class="b">
+<tr class="a">
 <th>Always use reactor projects (even if older or -SNAPSHOT)</th>
 <td style="text-align: left;">Yes</td></tr></table></section><section>
 <h2>${maven-clean-plugin.version}</h2>
@@ -680,7 +677,7 @@
 <table class="table table-striped">
 <tr class="a">
 <th>Status</th>
-<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
 <tr class="b">
 <th>Property</th>
 <td style="text-align: left;">${maven-surefire-report-plugin.version}</td></tr>
@@ -689,23 +686,20 @@
 <td style="text-align: left;">org.apache.maven.plugins:maven-surefire-report-plugin</td></tr>
 <tr class="b">
 <th>Current Version</th>
-<td style="text-align: left;">3.4.0</td></tr>
+<td style="text-align: left;">3.5.2</td></tr>
 <tr class="a">
-<th>Newer versions</th>
-<td style="text-align: left;">3.5.0<br />3.5.1<br /><b>3.5.2</b>&#160;<i>Latest Minor</i></td></tr>
-<tr class="b">
 <th>Allowed version range</th>
-<td style="text-align: left;">3.4.0</td></tr>
-<tr class="a">
+<td style="text-align: left;">3.5.2</td></tr>
+<tr class="b">
 <th>Infer associations from project</th>
 <td style="text-align: left;">Yes</td></tr>
-<tr class="b">
+<tr class="a">
 <th>Only use release versions</th>
 <td style="text-align: left;">No</td></tr>
-<tr class="a">
+<tr class="b">
 <th>Include projects from reactor</th>
 <td style="text-align: left;">Yes</td></tr>
-<tr class="b">
+<tr class="a">
 <th>Always use reactor projects (even if older or -SNAPSHOT)</th>
 <td style="text-align: left;">Yes</td></tr></table></section><section>
 <h2>${spotbugs-maven-plugin.version}</h2>
