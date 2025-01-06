@@ -1,13 +1,15 @@
-package com.test.vendor.sqlserver;
+package com.test.vendor.db2;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junitpioneer.jupiter.RetryingTest;
+import org.junit.jupiter.api.RepeatedTest;
 
-public class SqlServerErrorSuiteIgnoreIT extends ConcreteSqlServerSuiteIgnoreIT {
+@SuppressWarnings("java:S2699")
+public class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
+    //Unstable
 
     @Override
     public void setupInjection() throws Exception {
@@ -17,46 +19,47 @@ public class SqlServerErrorSuiteIgnoreIT extends ConcreteSqlServerSuiteIgnoreIT 
 
         model.subscribe(new SystemOutTerminal());
 
+        // Slow fingerprinting => star
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/errors?tenant=sqlserver&name="
+            "http://localhost:8080/errors?tenant=db2&name='*"
         );
 
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsNotSearchingCharInsertion(true)
         .withIsStrategyBlindDisabled(true)
-        .withIsStrategyTimeDisabled(true);
-        
+        .withIsStrategyStackedDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
+
         model.beginInjection();
     }
     
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
 
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
 
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
 
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }

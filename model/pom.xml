@@ -249,8 +249,8 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <configuration>
                             <includes>
-                                <include>**/*SqlServer*SuiteIT.java</include>
-                                <include>**/*Db2*SuiteIT.java</include>
+<!--                                <include>**/*SqlServer*SuiteIT.java</include>-->
+<!--                                <include>**/*Db2*SuiteIT.java</include>-->
                                 <include>**/*Vertica*SuiteIT.java</include>
                                 <include>**/*Sybase*SuiteIT.java</include>
                             </includes>

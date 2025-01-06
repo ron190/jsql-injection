@@ -7,26 +7,25 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIgnoreIT {
+public class SqlServerNormalGetSuiteIT extends ConcreteSqlServerSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
-        
+
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/time?tenant=sqlserver&name=1'"
+            "http://localhost:8080/normal?tenant=sqlserver&name="
         );
-        
-        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindDisabled(true);
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()
@@ -34,10 +33,27 @@ public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIgnoreI
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlserver());
         model.beginInjection();
     }
-    
+
+    @Override
+    @RetryingTest(3)
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
+    }
+
+    @Override
+    @RetryingTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+
+    @Override
+    @RetryingTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
@@ -47,7 +63,7 @@ public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIgnoreI
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getTime(),
+            this.injectionModel.getMediatorStrategy().getNormal(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

@@ -7,8 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class SqlServerBlindGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIgnoreIT {
-
+public class SqlServerStackedSuiteIT extends ConcreteSqlServerSuiteIT {
+    
     @Override
     public void setupInjection() throws Exception {
         
@@ -18,25 +18,42 @@ public class SqlServerBlindGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIgnore
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/blind?tenant=sqlserver&name=1'*"
+            "http://localhost:8080/stacked?tenant=sqlserver&name="
         );
-        
-        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true);
-        
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
+
         model.beginInjection();
     }
-
+    
+    @Override
+    @RetryingTest(3)
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+    
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
@@ -46,7 +63,7 @@ public class SqlServerBlindGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIgnore
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlind(),
+            this.injectionModel.getMediatorStrategy().getStacked(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

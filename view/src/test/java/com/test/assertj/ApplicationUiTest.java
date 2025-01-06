@@ -52,6 +52,8 @@ import java.util.stream.Stream;
 
 class ApplicationUiTest {
 
+    private static int counterLog = 0;
+
     private static FrameFixture window;
 
     private static final Connection connection = Mockito.mock(Connection.class);
@@ -61,6 +63,7 @@ class ApplicationUiTest {
 
     @BeforeAll
     static void setUpOnce() {
+        logMethod();
         FailOnThreadViolationRepaintManager.install();
 
         // fix linux instabilities
@@ -73,6 +76,7 @@ class ApplicationUiTest {
 
         // Static mock on current ThreadLocal
         JFrameView frame = GuiActionRunner.execute(() -> {
+            logMethod();
             if (utilities != null) {
                 utilities.close();
             }
@@ -85,13 +89,17 @@ class ApplicationUiTest {
             Mockito.when(connection.ignoreContentType(ArgumentMatchers.anyBoolean())).thenReturn(connection);
             Mockito.when(connection.ignoreHttpErrors(ArgumentMatchers.anyBoolean())).thenReturn(connection);
 
+            logMethod();
             Mockito.when(connection.get()).thenReturn(document);
             Mockito.when(document.html()).thenReturn("<html><input/>test</html>");
 
             Mockito.when(document.text()).thenReturn("<html><input/>test</html>");
             utilities.when(() -> Jsoup.parse(Mockito.anyString())).thenReturn(document);
 
+            logMethod();
             UiUtil.applyTheme(FlatDarkFlatIJTheme.class.getName());  // init but not enough, reapplied next
+
+            logMethod();
             var view = new JFrameView();
             SwingUtilities.invokeLater(() -> AppMenubar.applyTheme(FlatDarkFlatIJTheme.class.getName()));
             return view;
@@ -100,16 +108,30 @@ class ApplicationUiTest {
         window = new FrameFixture(robot, frame);
 
         injectionModel.subscribe(frame.getSubscriber());
+        logMethod();
+    }
+
+    private static void logMethod() {
+        counterLog++;
+        System.out.println(
+            "#" + counterLog + ": " +
+            StackWalker.getInstance()
+            .walk(s -> s.skip(1).findFirst())
+            .get()
+            .getMethodName()
+        );
     }
 
     @AfterAll  // when all test methods end, keeps class active
     static void afterAll()  {
+        logMethod();
         window.cleanUp();  // allow mvn retry
         robot.cleanUp();
     }
 
     @Test
     void shouldDnDList() {
+        logMethod();
         window.tabbedPane("tabManagers").selectTab("Admin page");
 
         Assertions.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
@@ -121,6 +143,7 @@ class ApplicationUiTest {
         Assertions.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(0));
         Assertions.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
 
+        logMethod();
         window.list("listManagerAdminPage").selectItem(0).pressKey(KeyEvent.VK_DELETE);
         window.list("listManagerAdminPage").selectItem(0);
         window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
@@ -132,6 +155,7 @@ class ApplicationUiTest {
         Assertions.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
         Assertions.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
 
+        logMethod();
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection("paste-from-clipboard");
         clipboard.setContents(stringSelection, null);
@@ -140,6 +164,7 @@ class ApplicationUiTest {
 
         Assertions.assertEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(1));
 
+        logMethod();
         window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_X);
         window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_X);
         window.list("listManagerAdminPage").selectItem(3);
@@ -148,10 +173,12 @@ class ApplicationUiTest {
 
         Assertions.assertNotEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(1));
         Assertions.assertEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(3));
+        logMethod();
     }
 
     @Test
     void shouldDnDScanList() {
+        logMethod();
         window.tabbedPane("tabManagers").selectTab("Batch scan");
         Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(0));
         Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(1));
@@ -160,6 +187,7 @@ class ApplicationUiTest {
         Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(0));
         Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(1));
 
+        logMethod();
         window.list(ManagerScan.NAME).selectItem(0).pressKey(KeyEvent.VK_DELETE);
         window.list(ManagerScan.NAME).selectItem(0);
         window.list(ManagerScan.NAME).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
@@ -171,6 +199,7 @@ class ApplicationUiTest {
         Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(0));
         Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(1));
 
+        logMethod();
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection("paste-from-clipboard");
         clipboard.setContents(stringSelection, null);
@@ -178,10 +207,12 @@ class ApplicationUiTest {
         window.list(ManagerScan.NAME).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
 
         Assertions.assertEquals("paste-from-clipboard", window.list(ManagerScan.NAME).valueAt(1));
+        logMethod();
     }
 
     @Test
     void shouldDnDTabs() {
+        logMethod();
         var request = new Request();
         request.setMessage(Interaction.CREATE_FILE_TAB);
         request.setParameters("dragfile", "content", "path");
@@ -197,10 +228,12 @@ class ApplicationUiTest {
         request.setParameters("dropfile", "content", "path");
         MediatorHelper.model().sendToViews(request);
 
+        logMethod();
         window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(0));
         window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(1));
         window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
 
+        logMethod();
         window.robot().pressMouse(
             window.label("dragfile").target(),
             window.label("dragfile").target().getLocation()
@@ -216,15 +249,18 @@ class ApplicationUiTest {
             Assertions.fail();
         }
 
+        logMethod();
         GuiActionRunner.execute(() -> {
             window.tabbedPane("tabResults").target().removeTabAt(0);
             window.tabbedPane("tabResults").target().removeTabAt(0);
             window.tabbedPane("tabResults").target().removeTabAt(0);
         });
+        logMethod();
     }
 
     @Test
     void shouldFindFile() {
+        logMethod();
         var request = new Request();
         request.setMessage(Interaction.CREATE_FILE_TAB);
         request.setParameters("file", "content", "path");
@@ -236,11 +272,14 @@ class ApplicationUiTest {
             Assertions.fail();
         }
 
+        logMethod();
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
+        logMethod();
     }
 
     @Test
     void shouldFindWebshell() {
+        logMethod();
         var request = new Request();
         request.setMessage(Interaction.CREATE_SHELL_TAB);
         request.setParameters("http://webshell", "http://webshell/path");
@@ -252,6 +291,7 @@ class ApplicationUiTest {
             Assertions.fail();
         }
 
+        logMethod();
         window.textBox("webShell").pressAndReleaseKeys(
             KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
             KeyEvent.VK_DELETE, KeyEvent.VK_BACK_SPACE,
@@ -268,10 +308,12 @@ class ApplicationUiTest {
         );
 
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
+        logMethod();
     }
 
     @Test
     void shouldFindVendorAndErrorMethods() {
+        logMethod();
         window.label("menuStrategy").click();
         window.menuItem("itemRadioStrategyError").requireDisabled();
 
@@ -293,6 +335,7 @@ class ApplicationUiTest {
         requestError.setParameters(msgHeader);
         MediatorHelper.model().sendToViews(requestError);
 
+        logMethod();
         window.menuItem("itemRadioStrategyError").requireEnabled(Timeout.timeout(1000));
 
         Assertions.assertEquals("MySQL", window.label("menuVendor").target().getText(), "Vendor should be MySQL");
@@ -304,6 +347,7 @@ class ApplicationUiTest {
         window.label("menuStrategy").requireVisible();
 
         window.menuItem("itemRadioStrategyError").click();
+        logMethod();
         try {
             window.menuItem("itemRadioErrorUnsigned:or").requireVisible();
         } catch (Exception e) {
@@ -312,10 +356,12 @@ class ApplicationUiTest {
 
         window.menuItem("itemRadioStrategyError").requireEnabled();
         window.menuItem("itemRadioErrorUnsigned:or").click();
+        logMethod();
     }
 
     @Test
     void shouldFindNetworkHeader() {
+        logMethod();
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, "url");
         msgHeader.put(Header.POST, "post");
@@ -339,6 +385,7 @@ class ApplicationUiTest {
 
         window.table("networkTable").selectRows(0).requireContents(new String[][] { { "url", "1", "meta strategy", "meta process" } });
 
+        logMethod();
         window.label("labelNETWORK_TAB_URL_LABEL").click();
         window.textBox("textNETWORK_TAB_URL_LABEL").requireText("url");
         window.label("labelNETWORK_TAB_RESPONSE_LABEL").click();
@@ -351,26 +398,31 @@ class ApplicationUiTest {
         window.textBox("textNETWORK_TAB_HEADERS_LABEL").requireText(Pattern.compile(".*key1: value1.*key2: value2.*", Pattern.DOTALL));
         window.label("labelNETWORK_TAB_PARAMS_LABEL").click();
         window.textBox("textNETWORK_TAB_PARAMS_LABEL").requireText("post");
+        logMethod();
     }
 
     @Test
     void shouldFindSqlshell() {
+        logMethod();
         var request = new Request();
         request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
         request.setParameters("http://sqlshell", "http://sqlshell/path", "username", "password");
         MediatorHelper.model().sendToViews(request);
 
         try {
+            logMethod();
             window.tabbedPane("tabResults").selectTab("SQL shell").requireVisible();
         } catch (Exception e) {
             Assertions.fail();
         }
 
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
+        logMethod();
     }
 
     @Test
     void shouldRunCoder() {
+        logMethod();
         window.tabbedPane("tabManagers").selectTab("Encoding");
         window.label("menuMethodManagerCoder").click();
 
@@ -392,14 +444,14 @@ class ApplicationUiTest {
         window.robot().moveMouse(window.menuItem("encodeToBase64").target());
         window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>YQ==</font></span>.*", Pattern.DOTALL));
 
+        logMethod();
         try {
             window.robot().moveMouse(window.menuItem("Hash").target());
         } catch (Exception e) {
             Assertions.fail();
         }
 
-        Stream.of(ManagerCoder.HASHES)
-        .forEach(hash -> {
+        Stream.of(ManagerCoder.HASHES).forEach(hash -> {
             String result = null;
             try {
                 result = ActionCoder.forName(hash)
@@ -412,10 +464,12 @@ class ApplicationUiTest {
             window.robot().moveMouse(window.menuItem("hashTo"+ hash).target());
             window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>"+ result +"</font></span>.*", Pattern.DOTALL));
         });
+        logMethod();
     }
 
     @Test
     void shouldFindAdminpage() throws IOException {
+        logMethod();
         window.tabbedPane("tabManagers").selectTab("Admin page");
         window.list("listManagerAdminPage").item(0).select().rightClick();
 
@@ -424,6 +478,7 @@ class ApplicationUiTest {
         request.setParameters("http://adminpage");
         MediatorHelper.model().sendToViews(request);
 
+        logMethod();
         try {
             window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
         } catch (Exception e) {
@@ -433,10 +488,12 @@ class ApplicationUiTest {
         ApplicationUiTest.verifyMockAdminPage();
 
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
+        logMethod();
     }
 
     @Test
     void shouldFindDatabase() {
+        logMethod();
         window.tabbedPane("tabManagers").selectTab("Database");
 
         var nameDatabase = "database";
@@ -456,6 +513,7 @@ class ApplicationUiTest {
         MediatorHelper.model().sendToViews(requestTable);
         Assertions.assertEquals(nameTable +" (2 rows)", window.tree("treeDatabases").valueAt(1));
 
+        logMethod();
         var nameColumn0 = "column 0";
         var nameColumn1 = "column 1";
         Column column1 = new Column(nameColumn0, table);
@@ -478,16 +536,19 @@ class ApplicationUiTest {
         requestValues.setParameters(objectData);
         MediatorHelper.model().sendToViews(requestValues);
 
+        logMethod();
         window.tabbedPane("tabResults").selectTab(nameTable).requireVisible();
         window.tree("treeDatabases").rightClickRow(0);
         window.tabbedPane("tabResults").click();
         window.tree("treeDatabases").rightClickRow(1);
 
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
+        logMethod();
     }
 
     @Test
     void shouldFindOkButton() {
+        logMethod();
         try {
             window.button("buttonInUrl").click();
         } catch (Exception e) {
@@ -497,6 +558,7 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindConsoleButton() {
+        logMethod();
         window.label("buttonShowSouth").click();
         window.label("buttonShowConsolesHidden").click();
         window.label("buttonShowNorth").click();
@@ -510,11 +572,13 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindConnectionPreferences() {
+        logMethod();
         window.label("advancedButton").click();
         window.menuItem("menuWindows").click();
         window.menuItem("itemPreferences").click();
         window.list("listCategoriesPreference").selectItem(Pattern.compile(".*Connection.*"));
 
+        logMethod();
         Arrays.asList(  // init
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
@@ -526,6 +590,7 @@ class ApplicationUiTest {
         ).forEach(Assertions::assertFalse);
         Assertions.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
 
+        logMethod();
         window.checkBox("checkboxIsFollowingRedirection").click();
         window.checkBox("checkboxIsUnicodeDecodeDisabled").click();
         window.checkBox("checkboxIsNotTestingConnection").click();
@@ -545,6 +610,7 @@ class ApplicationUiTest {
         ).forEach(Assertions::assertTrue);
         Assertions.assertFalse(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
 
+        logMethod();
         window.checkBox("checkboxIsFollowingRedirection").click();
         window.checkBox("checkboxIsUnicodeDecodeDisabled").click();
         window.checkBox("checkboxIsNotTestingConnection").click();
@@ -567,14 +633,17 @@ class ApplicationUiTest {
         window.label("advancedButton").click();
 
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
+        logMethod();
     }
 
     @Test
     void shouldFindInjectionPreferences() {
+        logMethod();
         window.label("advancedButton").click();
         window.menuItem("menuWindows").click();
         window.menuItem("itemPreferences").click();
 
+        logMethod();
         Arrays.asList(
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
@@ -589,6 +658,7 @@ class ApplicationUiTest {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()
         ).forEach(Assertions::assertFalse);
 
+        logMethod();
         window.checkBox("checkboxIsParsingForm").click();
         window.checkBox("checkboxIsNotInjectingMetadata").click();
         window.checkBox("checkboxIsLimitingNormalIndex").click();
@@ -614,6 +684,7 @@ class ApplicationUiTest {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()
         ).forEach(Assertions::assertTrue);
 
+        logMethod();
         window.checkBox("checkboxIsParsingForm").click();
         window.checkBox("checkboxIsNotInjectingMetadata").click();
         window.checkBox("checkboxIsLimitingNormalIndex").click();
@@ -639,50 +710,56 @@ class ApplicationUiTest {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()
         ).forEach(Assertions::assertFalse);
 
+        logMethod();
         window.radioButton("radioIsZipStrategy").check();
         Assertions.assertArrayEquals(new boolean[] {
-            true,
             false,
-            false,
-        }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-        });
-
-        window.radioButton("radioIsDefaultStrategy").check();
-        Assertions.assertArrayEquals(new boolean[] {
             false,
             true,
-            false,
         }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
         });
 
+        logMethod();
         window.radioButton("radioIsDiosStrategy").check();
         Assertions.assertArrayEquals(new boolean[] {
             false,
-            false,
             true,
+            false,
         }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+        });
+
+        logMethod();
+        window.radioButton("radioIsDefaultStrategy").check();
+        Assertions.assertArrayEquals(new boolean[] {
+            true,
+            false,
+            false,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
         });
 
         window.label("advancedButton").click();
 
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
+        logMethod();
     }
 
     @Test
     void shouldFindSqlEngine() {
+        logMethod();
         window.label("advancedButton").click();
         window.menuItem("menuWindows").click();
         window.menuItem("itemSqlEngine").click();
 
+        logMethod();
         try {
             window.label("advancedButton").click();
         } catch (Exception e) {
@@ -694,6 +771,7 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindLanguage() {
+        logMethod();
         window.label("advancedButton").click();
         window.menuItem("menuWindows").click();
         window.menuItem("menuTranslation").click();
@@ -703,6 +781,7 @@ class ApplicationUiTest {
         window.menuItem("menuTranslation").click();
         window.menuItem("itemEnglish").click();
 
+        logMethod();
         try {
             window.label("advancedButton").click();
         } catch (Exception e) {
@@ -730,14 +809,17 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindIHelpTranslate() {
+        logMethod();
         window.label("advancedButton").click();
         window.menuItem("menuCommunity").click();
         window.menuItem("menuI18nContribution").click();
         window.menuItem("itemIntoFrench").click();
 
+        logMethod();
         DialogFixture dialog = window.dialog();
         dialog.close();
 
+        logMethod();
         try {
             window.label("advancedButton").click();
         } catch (Exception e) {
@@ -747,6 +829,7 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindAbout() {
+        logMethod();
         window.label("advancedButton").click();
         window.menuItem("menuHelp").click();
         window.menuItem("itemHelp").click();
@@ -754,6 +837,7 @@ class ApplicationUiTest {
         DialogFixture dialog = window.dialog();
         dialog.button(JButtonMatcher.withText("Close")).click();
 
+        logMethod();
         try {
             window.label("advancedButton").click();
         } catch (Exception e) {
