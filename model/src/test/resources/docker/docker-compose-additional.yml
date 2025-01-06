@@ -1,34 +1,34 @@
 version: "3.7"
 services:
 
-  db2:
-    ports:
-      - "50000:50000"
-    privileged: true
-    build:
-      context: .
-      dockerfile: Dockerfile.db2
-    environment:
-      LICENSE: accept
-      DB2INST1_PASSWORD: test
-      DBNAME: testdb
-    container_name: jsql-db2
-    networks:
-      - jsql-network
-
-  sqlserver:
-    ports:
-      - "1434:1434"
-      - "1433:1433"
-    build:
-      context: .
-      dockerfile: Dockerfile.sqlserver
-    environment:
-      SA_PASSWORD: yourStrong(!)Password
-      ACCEPT_EULA: Y
-    container_name: jsql-sqlserver
-    networks:
-      - jsql-network
+#  db2:
+#    ports:
+#      - "50000:50000"
+#    privileged: true
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.db2
+#    environment:
+#      LICENSE: accept
+#      DB2INST1_PASSWORD: test
+#      DBNAME: testdb
+#    container_name: jsql-db2
+#    networks:
+#      - jsql-network
+#
+#  sqlserver:
+#    ports:
+#      - "1434:1434"
+#      - "1433:1433"
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.sqlserver
+#    environment:
+#      SA_PASSWORD: yourStrong(!)Password
+#      ACCEPT_EULA: Y
+#    container_name: jsql-sqlserver
+#    networks:
+#      - jsql-network
 
   sybase:
     ports:

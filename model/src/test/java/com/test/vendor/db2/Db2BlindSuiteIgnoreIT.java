@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
+public class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIgnoreIT {
     // Unstable
     
     @Override

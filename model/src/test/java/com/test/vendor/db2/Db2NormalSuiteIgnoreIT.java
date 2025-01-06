@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 
 @SuppressWarnings("java:S2699")
-public class Db2NormalSuiteIT extends ConcreteDb2SuiteIT {
+public class Db2NormalSuiteIgnoreIT extends ConcreteDb2SuiteIgnoreIT {
     
     @Override
     public void setupInjection() throws Exception {

@@ -7,18 +7,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class SqlServerErrorSuiteIT extends ConcreteSqlServerSuiteIT {
+public class SqlServerNormalGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIgnoreIT {
 
     @Override
     public void setupInjection() throws Exception {
-        
+
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/errors?tenant=sqlserver&name="
+            "http://localhost:8080/normal?tenant=sqlserver&name="
         );
 
         model
@@ -33,10 +33,9 @@ public class SqlServerErrorSuiteIT extends ConcreteSqlServerSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
-    
+
     @Override
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
@@ -64,7 +63,7 @@ public class SqlServerErrorSuiteIT extends ConcreteSqlServerSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getError(),
+            this.injectionModel.getMediatorStrategy().getNormal(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

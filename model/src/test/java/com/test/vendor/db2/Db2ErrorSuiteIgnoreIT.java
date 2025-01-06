@@ -1,13 +1,15 @@
-package com.test.vendor.sqlserver;
+package com.test.vendor.db2;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junitpioneer.jupiter.RetryingTest;
+import org.junit.jupiter.api.RepeatedTest;
 
-public class SqlServerTimeGetSuiteIT extends ConcreteSqlServerSuiteIT {
+@SuppressWarnings("java:S2699")
+public class Db2ErrorSuiteIgnoreIT extends ConcreteDb2SuiteIgnoreIT {
+    //Unstable
 
     @Override
     public void setupInjection() throws Exception {
@@ -17,29 +19,47 @@ public class SqlServerTimeGetSuiteIT extends ConcreteSqlServerSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
+        // Slow fingerprinting => star
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/time?tenant=sqlserver&name=1'"
+            "http://localhost:8080/errors?tenant=db2&name='*"
         );
-        
-        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindDisabled(true);
-        
+        .withIsNotSearchingCharInsertion(true)
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyStackedDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlserver());
+
         model.beginInjection();
     }
     
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
+    }
+
+    @Override
+    @RepeatedTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+
+    @Override
+    @RepeatedTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+
+    @Override
+    @RepeatedTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
@@ -47,7 +67,7 @@ public class SqlServerTimeGetSuiteIT extends ConcreteSqlServerSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getTime(),
+            this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

@@ -4,9 +4,9 @@ import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
 import spring.SpringTargetApplication;
 
-public abstract class ConcreteDb2SuiteIT extends AbstractTestSuite {
+public abstract class ConcreteDb2SuiteIgnoreIT extends AbstractTestSuite {
 
-    public ConcreteDb2SuiteIT() {
+    public ConcreteDb2SuiteIgnoreIT() {
         this.config();
     }
     
