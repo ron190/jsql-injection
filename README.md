@@ -1,7 +1,7 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a server.
 
-It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac and it works with Java from version 11 to 22.
+It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac and it works with Java from version 11 to 23.
 
 jSQL Injection is also part of the official penetration testing distribution [Kali Linux](https://www.kali.org) and is included in various other distributions like [SnoopGod](https://snoopgod.com), [Pentest Box](https://pentestbox.com), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org) and [BlackArch Linux](http://www.blackarch.org).
 
@@ -22,14 +22,14 @@ Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki/Feature
 For programmers, access the generated [Maven reports](https://ron190.github.io/jsql-injection/site/) and [Sonar analysis](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection) to analyze internal metrics, and open the [programming section](https://github.com/ron190/jsql-injection/wiki/Programming-jSQL) in the wiki for more details.
 
 ## Install
-First, install :coffee: [Java](http://java.com) 11 or up to version 22, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.101.jar` to run the software.
+First, install :coffee: [Java](http://java.com) 11 or up to version 23, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.103.jar` to run the software.
 
-You can also type `java -jar jsql-injection-v0.101.jar` in your terminal to start the program.
+You can also type `java -jar jsql-injection-v0.103.jar` in your terminal to start the program.
 
 If you are using Kali Linux then get the latest version using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 > [!NOTE]
-> Download the latest version from GitHub: [jsql-injection-v0.101.jar](https://github.com/ron190/jsql-injection/releases/download/v0.101/jsql-injection-v0.101.jar)
+> Download the latest version from GitHub: [jsql-injection-v0.103.jar](https://github.com/ron190/jsql-injection/releases/download/v0.103/jsql-injection-v0.103.jar)
 ___
 ## Screenshots
 [<img src=https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/database.png width=200/>](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.102/database.png)
