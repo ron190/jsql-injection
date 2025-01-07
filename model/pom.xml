@@ -74,7 +74,7 @@
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
         <monetdb-jdbc.version>2.29</monetdb-jdbc.version>
-        <mssql-jdbc.version>12.8.1.jre11</mssql-jdbc.version>
+        <mssql-jdbc.version>12.9.0.jre11-preview</mssql-jdbc.version>
         <mysql-connector-j.version>9.0.0</mysql-connector-j.version>
         <nashorn-core.version>15.6</nashorn-core.version>
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
