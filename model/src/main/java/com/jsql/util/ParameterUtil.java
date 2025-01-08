@@ -314,7 +314,7 @@ public class ParameterUtil {
                 // Pass request containing star * param without any parsing
                 this.listRequest = new ArrayList<>(List.of(new SimpleEntry<>(
                     rawRequest,
-                    ""
+                    StringUtils.EMPTY
                 )));
             } else {
                 this.listRequest = Pattern.compile("&")
@@ -367,7 +367,7 @@ public class ParameterUtil {
             .map(entry -> String.format(
                 FORMAT_KEY_VALUE,
                 entry.getKey(),
-                StringUtils.isEmpty(entry.getValue()) ? "" : entry.getValue()
+                StringUtils.isEmpty(entry.getValue()) ? StringUtils.EMPTY : entry.getValue()
             ))
             .collect(Collectors.joining("&"));
     }

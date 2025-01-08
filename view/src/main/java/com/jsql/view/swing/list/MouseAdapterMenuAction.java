@@ -59,12 +59,12 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             JList<ItemList> list = (JList<ItemList>) mouseEvent.getSource();
 
             JPopupMenu popupMenuList = this.initializeMenu(mouseEvent);
-            popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+            popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
             // Fix #26274: IllegalComponentStateException on show()
             try {
                 popupMenuList.show(
                     list,
-                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
                     ? mouseEvent.getX() - popupMenuList.getWidth()
                     : mouseEvent.getX(),
                     mouseEvent.getY()
@@ -74,7 +74,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             }
             
             popupMenuList.setLocation(
-                ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+                ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
                 ? mouseEvent.getXOnScreen() - popupMenuList.getWidth()
                 : mouseEvent.getXOnScreen(),
                 mouseEvent.getYOnScreen()
@@ -85,7 +85,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     private JPopupMenu initializeMenu(final MouseEvent mouseEvent) {
         var popupMenuList = new JPopupMenu();
         
-        boolean isNonUbuntu = I18nViewUtil.isNonUbuntu(I18nUtil.getLocaleDefault());
+        boolean isNonUbuntu = I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale());
         
         JMenuItem menuImport = new JMenuItem();
         JMenuItem menuExport = new JMenuItem();

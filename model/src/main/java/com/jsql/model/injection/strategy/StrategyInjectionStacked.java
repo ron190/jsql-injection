@@ -60,7 +60,7 @@ public class StrategyInjectionStacked extends AbstractStrategy {
                 );
                 methodIsApplicable = false;
             } else {
-                this.performanceLength = "" + regexSearch.group(1).length();
+                this.performanceLength = String.valueOf(regexSearch.group(1).length());
             }
         }
 

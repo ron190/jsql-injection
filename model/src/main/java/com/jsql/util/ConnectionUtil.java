@@ -105,7 +105,7 @@ public class ConnectionUtil {
 
     public static <T> Map<String, String> getHeadersMap(HttpResponse<T> httpResponse) {
         Map<String, String> sortedMap = getHeadersMap(httpResponse.headers());
-        String responseCodeHttp = ""+ httpResponse.statusCode();
+        String responseCodeHttp = String.valueOf(httpResponse.statusCode());
         sortedMap.put(":status", responseCodeHttp);
         return sortedMap;
     }
@@ -133,7 +133,7 @@ public class ConnectionUtil {
      */
     public HttpResponse<String> checkConnectionResponse() throws IOException, InterruptedException, JSqlException {
         var queryString = this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
-        var testUrl = this.getUrlBase().replaceAll("\\?$", "");
+        var testUrl = this.getUrlBase().replaceAll("\\?$", StringUtils.EMPTY);
 
         if (StringUtils.isNotEmpty(queryString)) {
             testUrl += "?"+ queryString;

@@ -50,13 +50,13 @@ public class MainApplication {
      * @param args CLI parameters (not used)
      */
     public static void main(String[] args) {
-        
+
         MediatorHelper.register(injectionModel);
-        
+
         injectionModel.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();
         injectionModel.getMediatorUtils().getProxyUtil().initializeProxy();
         injectionModel.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();
-        
+
         try {
             var view = new JFrameView();
             MediatorHelper.register(view);
@@ -76,7 +76,7 @@ public class MainApplication {
             );
             return;
         }
-        
+
         I18nUtil.checkCurrentLanguage();
         MainApplication.check4K();
         SwingUtilities.invokeLater(() -> AppMenubar.applyTheme(
@@ -91,7 +91,7 @@ public class MainApplication {
         }
         injectionModel.getMediatorUtils().getGitUtil().showNews();
     }
-    
+
     private static void apply4K() {  // required not in UiUtil before frame is set
         if (injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
             System.setProperty("sun.java2d.uiScale", "2.5");  // jdk >= 9

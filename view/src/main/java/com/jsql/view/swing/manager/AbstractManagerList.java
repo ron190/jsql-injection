@@ -12,9 +12,7 @@ package com.jsql.view.swing.manager;
 
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.list.DnDListScan;
 import com.jsql.view.swing.list.ItemList;
-import com.jsql.view.swing.list.ItemListScan;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -22,8 +20,6 @@ import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -82,51 +78,28 @@ public abstract class AbstractManagerList extends JPanel {
     }
     
     protected AbstractManagerList(String nameFile) {
-        this(nameFile, false);
-    }
-
-    protected AbstractManagerList(String nameFile, boolean isJson) {
         this.progressBar.setIndeterminate(true);
         this.progressBar.setVisible(false);
         this.setLayout(new BorderLayout());
-
-        if (isJson) {
-            var jsonScan = new StringBuilder();
-            try (
-                var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.INPUT_STREAM_PAGES_SCAN);
-                var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
-                var reader = new BufferedReader(inputStreamReader)
-            ) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    jsonScan.append(line);
-                }
-                var jsonArrayScan = new JSONArray(jsonScan.toString());
-                for (var i = 0 ; i < jsonArrayScan.length() ; i++) {
-                    this.itemsList.add(new ItemListScan(jsonArrayScan.getJSONObject(i)));
-                }
-                this.listPaths = new DnDListScan(this.itemsList);
-            } catch (JSONException | IOException e) {
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            }
-        } else {
-            try (
-                var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
-                var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
-                var reader = new BufferedReader(inputStreamReader)
-            ) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    this.itemsList.add(new ItemList(line));
-                }
-                this.listPaths = new DnDList(this.itemsList);
-            } catch (IOException e) {
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            }
-        }
-
+        this.buildList(nameFile);
         this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.X_AXIS));
         this.add(new JScrollPane(this.listPaths), BorderLayout.CENTER);
+    }
+
+    public void buildList(String nameFile) {
+        try (
+            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
+            var reader = new BufferedReader(inputStreamReader)
+        ) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                this.itemsList.add(new ItemList(line));
+            }
+            this.listPaths = new DnDList(this.itemsList);
+        } catch (IOException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+        }
     }
 
     /**

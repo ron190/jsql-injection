@@ -88,7 +88,7 @@ public class PanelTrailingAddress extends JPanel {
             itemRadioStrategy.setToolTipText(
                 I18nUtil.valueByKey(String.format(I18N_TOOLTIP_STRATEGY, nameStrategy))
             );
-            ((JComponent) itemRadioStrategy).setEnabled(false);
+            itemRadioStrategy.setEnabled(false);
         }
 
         this.labelVendor.setText(MediatorHelper.model().getMediatorVendor().getAuto().toString());
@@ -116,7 +116,7 @@ public class PanelTrailingAddress extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 Arrays.stream(popupMenuVendors.getComponents())
-                    .map(component -> (JComponent) component)
+                    .map(JComponent.class::cast)
                     .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
                 popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch
                 popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
@@ -193,14 +193,14 @@ public class PanelTrailingAddress extends JPanel {
     public void markStrategy(AbstractStrategy strategy) {
         this.labelStrategy.setText(strategy.toString());
         Arrays.stream(this.popupMenuStrategies.getComponents())
-            .map(component -> (JMenuItem) component)
+            .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
             .forEach(jMenuItem -> jMenuItem.setSelected(true));
     }
     
     public void markStrategyInvulnerable(AbstractStrategy strategy) {
         Arrays.stream(this.popupMenuStrategies.getComponents())
-            .map(component -> (JMenuItem) component)
+            .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
             .forEach(jMenuItem -> jMenuItem.setEnabled(false));
     }
@@ -208,9 +208,9 @@ public class PanelTrailingAddress extends JPanel {
     public void markErrorInvulnerable(int indexMethodError) {
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();
         Arrays.stream(this.popupMenuStrategies.getComponents())
-            .map(component -> (JMenuItem) component)
+            .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
-            .map(component -> (JMenu) component)
+            .map(JMenu.class::cast)
             .forEach(jMenuItem -> jMenuItem.getItem(indexMethodError).setEnabled(false));
     }
     
@@ -221,7 +221,7 @@ public class PanelTrailingAddress extends JPanel {
         String nameError = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
 
         Arrays.stream(this.getMenuError().getMenuComponents())
-            .map(component -> (JRadioButtonMenuItem) component)
+            .map(JRadioButtonMenuItem.class::cast)
             .filter(component -> component.getText().equals(nameError))
             .forEach(jRadioButtonMenuItem -> {
                 jRadioButtonMenuItem.setSelected(true);
@@ -232,7 +232,7 @@ public class PanelTrailingAddress extends JPanel {
     private JMenu getMenuError() {
         var nameError = MediatorHelper.model().getMediatorStrategy().getError().getName();
         return (JMenu) Arrays.stream(this.popupMenuStrategies.getComponents())
-            .map(component -> (JMenuItem) component)
+            .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equalsIgnoreCase(nameError))
             .findFirst()
             .orElse(new JMenuItem("Mock"));
@@ -241,9 +241,9 @@ public class PanelTrailingAddress extends JPanel {
     public void markErrorVulnerable(int indexMethodError) {
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();
         Arrays.stream(this.popupMenuStrategies.getComponents())
-            .map(component -> (JMenuItem) component)
+            .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
-            .map(component -> (JMenu) component)
+            .map(JMenu.class::cast)
             .forEach(jMenuItem -> {
                 jMenuItem.setEnabled(true);
                 // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
@@ -255,7 +255,7 @@ public class PanelTrailingAddress extends JPanel {
     
     public void markStrategyVulnerable(AbstractStrategy strategy) {
         Arrays.stream(this.popupMenuStrategies.getComponents())
-            .map(component -> (JMenuItem) component)
+            .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
             .forEach(jMenuItem -> jMenuItem.setEnabled(true));
     }

@@ -48,7 +48,6 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -64,12 +63,12 @@ public class AppMenubar extends JMenuBar {
 
     private final MenuWindows menuWindows;
 
-    protected final List<ModelItem> modelsItem = Stream.of(
+    protected static final List<ModelItem> modelsItem = Stream.of(
         Language.EN, Language.RU, Language.ZH, Language.ES, Language.FR, Language.TR, Language.KO, Language.SE, Language.FI,
         Language.AR, Language.CS, Language.IT, Language.PT, Language.PL, Language.IN, Language.NL, Language.RO, Language.DE
     ).map(ModelItem::new).collect(Collectors.toList());
 
-    private final List<ModelItem> modelsItemInto = Stream.of(
+    private static final List<ModelItem> modelsItemInto = Stream.of(
         Language.FR, Language.ES, Language.SE, Language.FI, Language.TR, Language.CS, Language.RO, Language.IT, Language.PT, Language.AR,
         Language.PL, Language.RU, Language.ZH, Language.DE, Language.IN, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA
     ).map(ModelItem::new).collect(Collectors.toList());
@@ -165,18 +164,18 @@ public class AppMenubar extends JMenuBar {
 
         final var dialogTranslate = new DialogTranslate();  // Render the About dialog behind scene
         this.modelsItemInto.forEach(model -> {
-            model.menuItem = new JMenuItem(model.language.getMenuItemLabel(), model.language.getFlag());
-            model.menuItem.addActionListener(new ActionTranslate(dialogTranslate, model.language));
-            menuI18nContribution.add(model.menuItem);
+            model.setMenuItem(new JMenuItem(model.getLanguage().getMenuItemLabel(), model.getLanguage().getFlag()));
+            model.getMenuItem().addActionListener(new ActionTranslate(dialogTranslate, model.getLanguage()));
+            menuI18nContribution.add(model.getMenuItem());
         });
 
         var itemIntoOther = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);
 
-        this.modelsItemInto.stream().filter(modelItem -> modelItem.language == Language.AR)
-        .forEach(modelItem -> modelItem.menuItem.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
-        this.modelsItemInto.stream().filter(modelItem -> modelItem.language == Language.FR)
-        .forEach(modelItem -> modelItem.menuItem.setName("itemIntoFrench"));
+        this.modelsItemInto.stream().filter(modelItem -> modelItem.getLanguage() == Language.AR)
+        .forEach(modelItem -> modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
+        this.modelsItemInto.stream().filter(modelItem -> modelItem.getLanguage() == Language.FR)
+        .forEach(modelItem -> modelItem.getMenuItem().setName("itemIntoFrench"));
 
         menuI18nContribution.add(new JSeparator());
         menuI18nContribution.add(itemIntoOther);
@@ -293,11 +292,16 @@ public class AppMenubar extends JMenuBar {
     }
     
     public void switchLocale(Locale newLocale) {
-        this.switchLocale(I18nUtil.getLocaleDefault(), newLocale, false);
+        this.switchLocale(I18nUtil.getCurrentLocale(), newLocale, false);
     }
     
+    public void switchLocaleWithStatus(Locale oldLocale, Locale newLocale, boolean isStartup) {
+        switchLocale(oldLocale, newLocale, isStartup);
+        MediatorHelper.model().getPropertiesUtil().displayStatus(newLocale);
+    }
+
     public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
-        I18nUtil.setLocaleDefault(ResourceBundle.getBundle("i18n.jsql", newLocale));
+        I18nUtil.setCurrentBundle(newLocale);
 
         Stream.of(
             JTextPaneAppender.ATTRIBUTE_WARN,
@@ -328,7 +332,7 @@ public class AppMenubar extends JMenuBar {
     }
 
     private void switchOrientation(Locale oldLocale, Locale newLocale, boolean isStartup) {
-        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault());
+        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
         MediatorHelper.frame().applyComponentOrientation(componentOrientation);
         
         if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {
@@ -386,9 +390,9 @@ public class AppMenubar extends JMenuBar {
     }
 
     private void switchMenuItems() {
-        Stream.concat(this.modelsItem.stream(), this.modelsItemInto.stream())
-        .forEach(modelItemInto -> modelItemInto.menuItem.setComponentOrientation(
-            modelItemInto.language.isRightToLeft()
+        Stream.concat(AppMenubar.modelsItem.stream(), AppMenubar.modelsItemInto.stream())
+        .forEach(modelItemInto -> modelItemInto.getMenuItem().setComponentOrientation(
+            modelItemInto.getLanguage().isRightToLeft()
             ? ComponentOrientation.RIGHT_TO_LEFT
             : ComponentOrientation.LEFT_TO_RIGHT
         ));

@@ -43,7 +43,7 @@ public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit>
         for (int i = 0; i < 8 ; i++) {
             callablesId.add(
                 new CallableMultibit(
-                    ""+i,
+                    String.valueOf(i),
                     this,
                     "multi#ref~" + i
                 )

@@ -183,7 +183,7 @@ public class ManagerCoder extends JPanel {
         labelMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Arrays.stream(popupMenu.getComponents()).map(component -> (JMenu) component).forEach(jMenu -> {
+                Arrays.stream(popupMenu.getComponents()).map(JMenu.class::cast).forEach(jMenu -> {
                     jMenu.updateUI();
                     for (var i = 0 ; i < jMenu.getItemCount() ; i++) {
                         jMenu.getItem(i).updateUI();

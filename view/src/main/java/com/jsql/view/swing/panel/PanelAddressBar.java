@@ -35,6 +35,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -48,7 +49,7 @@ public class PanelAddressBar extends JPanel {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private final AtomicReference<JTextField> atomicTextFieldAddress = new AtomicReference<>();  // atomic to build dynamically;
+    private final AtomicReference<JTextField> atomicTextFieldAddress = new AtomicReference<>();  // atomic to build dynamically
     private final AtomicReference<JTextField> atomicTextFieldRequest = new AtomicReference<>();
     private final AtomicReference<JTextField> atomicTextFieldHeader = new AtomicReference<>();
 
@@ -189,12 +190,14 @@ public class PanelAddressBar extends JPanel {
         }
 
         var panelCustomMethod = new JPanel(new BorderLayout());
-        panelCustomMethod.setBackground(UIManager.getColor("MenuItem.background"));  // required for correct color
+        Supplier<Color> colorBackground = () -> UIManager.getColor("MenuItem.background");  // adapt to current theme
+        Supplier<Color> colorSelectionBackground = () -> UIManager.getColor("MenuItem.selectionBackground");  // adapt to current theme
+        panelCustomMethod.setBackground(colorBackground.get());  // required for correct color
 
         final var radioCustomMethod = new JRadioButton();
         radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
         radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());
-        radioCustomMethod.setBackground(UIManager.getColor("MenuItem.background"));  // required for correct color
+        radioCustomMethod.setBackground(colorBackground.get());  // required for correct color
         buttonGroupMethod.add(radioCustomMethod);
 
         final JTextField inputCustomMethod = new JPopupTextField("CUSTOM").getProxy();
@@ -210,9 +213,7 @@ public class PanelAddressBar extends JPanel {
                 validate(inputCustomMethod);
             }
         });
-        radioCustomMethod.addActionListener(actionEvent -> {
-            validate(inputCustomMethod);
-        });
+        radioCustomMethod.addActionListener(actionEvent -> validate(inputCustomMethod));
 
         var tooltipCustomMethod = "<html>Set user defined HTTP method.<br/>" +
             "A valid method is limited to chars:<br>" +
@@ -224,14 +225,14 @@ public class PanelAddressBar extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
-                panelCustomMethod.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
-                radioCustomMethod.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+                panelCustomMethod.setBackground(colorSelectionBackground.get());
+                radioCustomMethod.setBackground(colorSelectionBackground.get());
             }
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
-                panelCustomMethod.setBackground(UIManager.getColor("MenuItem.background"));
-                radioCustomMethod.setBackground(UIManager.getColor("MenuItem.background"));
+                panelCustomMethod.setBackground(colorBackground.get());
+                radioCustomMethod.setBackground(colorBackground.get());
             }
         };
         Arrays.asList(radioCustomMethod, inputCustomMethod, panelCustomMethod).forEach(component -> {
@@ -251,9 +252,9 @@ public class PanelAddressBar extends JPanel {
                 radioCustomMethod.updateUI();  // required: incorrect when dark/light mode switch
                 inputCustomMethod.updateUI();  // required: incorrect when dark/light mode switch
                 popup.updateUI();  // required: incorrect when dark/light mode switch
-                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
 
-                if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
+                if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
                 } else {
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
@@ -261,13 +262,13 @@ public class PanelAddressBar extends JPanel {
 
                 popup.show(
                     e.getComponent(),
-                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
                     ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()
                     : e.getComponent().getX(),
                     e.getComponent().getY() + e.getComponent().getHeight()
                 );
                 popup.setLocation(  // required for proper location
-                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
                     ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()
                     : e.getComponent().getLocationOnScreen().x,
                     e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight()
@@ -328,7 +329,7 @@ public class PanelAddressBar extends JPanel {
         if (StringUtils.isEmpty(inputCustomMethod.getText())) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing custom method label");
         } else if (!ParameterUtil.isValidName(inputCustomMethod.getText())) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format("Illegal method: \"%s\"", inputCustomMethod.getText()));
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> String.format("Illegal method: \"%s\"", inputCustomMethod.getText()));
         } else {
             this.typeRequest = inputCustomMethod.getText();
             atomicRadioMethod.get().setText(this.typeRequest);

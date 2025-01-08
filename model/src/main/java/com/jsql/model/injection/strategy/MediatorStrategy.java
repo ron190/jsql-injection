@@ -157,7 +157,7 @@ public class MediatorStrategy {
                 parameterToInject.setValue(characterInsertion.replaceAll("(\\w)$", "$1+") + InjectionModel.STAR);
             }
         } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
-            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run("");
+            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(StringUtils.EMPTY);
             String urlBase = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
             this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(
                 // Space %20 for URL, do not use +

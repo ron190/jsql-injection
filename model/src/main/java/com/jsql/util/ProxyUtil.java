@@ -90,15 +90,15 @@ public class ProxyUtil {
             System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddressHttp());
             System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPortHttp());
         } else {
-            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, "");
-            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, "");
+            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, StringUtils.EMPTY);
+            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, StringUtils.EMPTY);
         }
         if (this.isUsingProxyHttps()) {
             System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
             System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
         } else {
-            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, "");
-            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, "");
+            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, StringUtils.EMPTY);
+            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, StringUtils.EMPTY);
         }
     }
     

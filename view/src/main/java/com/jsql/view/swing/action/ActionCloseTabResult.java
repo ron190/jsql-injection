@@ -26,7 +26,7 @@ public class ActionCloseTabResult extends AbstractAction {
 
                 var label = new JLabel(UiUtil.APP_RESULT.icon);
                 label.setMinimumSize(new Dimension(100, 0));
-                if (ComponentOrientation.LEFT_TO_RIGHT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
+                if (ComponentOrientation.LEFT_TO_RIGHT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {
                     splitPaneLeftRight.setRightComponent(label);
                 } else {
                     splitPaneLeftRight.setLeftComponent(label);

@@ -38,12 +38,13 @@ import java.awt.event.MouseEvent;
  * Model adding functional layer to the node ; used by renderer and editor.
  */
 public abstract class AbstractNodeModel {
-    
+
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
-    
+    private static final String TREE_BACKGROUND = "Tree.background";
+
     /**
      * Element from injection model in a linked list.
      */
@@ -156,18 +157,18 @@ public abstract class AbstractNodeModel {
     }
 
     private void displayPopupMenu(MouseEvent e, JPopupMenuCustomExtract popupMenu) {
-        popupMenu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+        popupMenu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
 
         popupMenu.show(
             MediatorHelper.treeDatabase(),
-            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
             ? e.getX() - popupMenu.getWidth()
             : e.getX(),
             e.getY()
         );
         
         popupMenu.setLocation(
-            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
             ? e.getXOnScreen() - popupMenu.getWidth()
             : e.getXOnScreen(),
             e.getYOnScreen()
@@ -258,7 +259,7 @@ public abstract class AbstractNodeModel {
                 : UIManager.getColor("Tree.selectionInactiveBackground")
             );  // required for transparency
         } else {
-            this.panelNode.setBackground(UIManager.getColor("Tree.background"));  // required for transparency
+            this.panelNode.setBackground(UIManager.getColor(TREE_BACKGROUND));  // required for transparency
         }
 
         this.initializeIcon(isLeaf);
@@ -313,11 +314,11 @@ public abstract class AbstractNodeModel {
         } else {
             if (hasFocus) {
                 nodeLabel.setBackground(UIManager.getColor("Tree.foreground"));  // required by macOS light (opposite text color)
-                nodeLabel.setBackground(UIManager.getColor("Tree.background"));
+                nodeLabel.setBackground(UIManager.getColor(TREE_BACKGROUND));
                 nodeLabel.setBorder(new LineBorder(UIManager.getColor("Tree.selectionBorderColor"), 1, false));
             } else {
                 nodeLabel.setBackground(UIManager.getColor("Tree.foreground"));  // required by macOS light (opposite text color)
-                nodeLabel.setBackground(UIManager.getColor("Tree.background"));
+                nodeLabel.setBackground(UIManager.getColor(TREE_BACKGROUND));
                 nodeLabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
             }
         }

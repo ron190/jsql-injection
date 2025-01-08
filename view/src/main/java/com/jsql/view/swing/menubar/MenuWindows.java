@@ -272,42 +272,44 @@ public class MenuWindows extends JMenu {
 
         var groupRadioLanguage = new ButtonGroup();
         var atomicIsAnySelected = new AtomicBoolean(false);
-        this.appMenubar.modelsItem.forEach(model -> {
-            atomicIsAnySelected.set(atomicIsAnySelected.get() || model.language.isCurrentLanguage());
-            model.menuItem = new JRadioButtonMenuItem(
-                model.language.getMenuItemLabel(),
-                model.language.getFlag(),
-                model.language.isCurrentLanguage()
-            );
-            model.menuItem.addActionListener(actionEvent -> {
+        AppMenubar.modelsItem.forEach(model -> {
+            atomicIsAnySelected.set(atomicIsAnySelected.get() || model.getLanguage().isCurrentLanguage());
+            model.setMenuItem(new JRadioButtonMenuItem(
+                model.getLanguage().getMenuItemLabel(),
+                model.getLanguage().getFlag(),
+                model.getLanguage().isCurrentLanguage()
+            ));
+            model.getMenuItem().addActionListener(actionEvent -> {
                 this.appMenubar.switchLocale(
-                    model.language == Language.EN
+                    model.getLanguage() == Language.EN
                     ? Locale.ROOT  // required as no bundle 'en'
-                    : Locale.forLanguageTag(model.language.getLanguageTag())
+                    : Locale.forLanguageTag(model.getLanguage().getLanguageTag())
                 );
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withLanguageTag(model.language.getLanguageTag()).persist();
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withLanguageTag(model.getLanguage().getLanguageTag()).persist();
             });
-            menuTranslation.add(model.menuItem);
-            groupRadioLanguage.add(model.menuItem);
+            menuTranslation.add(model.getMenuItem());
+            groupRadioLanguage.add(model.getMenuItem());
         });
 
-        this.appMenubar.modelsItem.stream().filter(modelItem -> modelItem.language == Language.EN)
+        AppMenubar.modelsItem.stream().filter(modelItem -> modelItem.getLanguage() == Language.EN)
         .forEach(modelItem -> {
-            modelItem.menuItem.setSelected(!atomicIsAnySelected.get());
-            modelItem.menuItem.setName("itemEnglish");
+            modelItem.getMenuItem().setSelected(!atomicIsAnySelected.get());
+            modelItem.getMenuItem().setName("itemEnglish");
         });
-        this.appMenubar.modelsItem.stream().filter(modelItem -> modelItem.language == Language.RU)
-        .forEach(modelItem -> modelItem.menuItem.setName("itemRussian"));
-        this.appMenubar.modelsItem.stream().filter(modelItem -> modelItem.language == Language.AR)
-        .forEach(modelItem -> modelItem.menuItem.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
+        AppMenubar.modelsItem.stream().filter(modelItem -> modelItem.getLanguage() == Language.RU)
+        .forEach(modelItem -> modelItem.getMenuItem().setName("itemRussian"));
+        AppMenubar.modelsItem.stream().filter(modelItem -> modelItem.getLanguage() == Language.AR)
+        .forEach(modelItem -> modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
 
         return menuTranslation;
     }
 
     public void switchLocaleFromPreferences() {
-        this.appMenubar.modelsItem.stream()
-        .filter(modelItem -> modelItem.language.getLanguageTag().equals(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()))
-        .forEach(modelItem -> modelItem.menuItem.doClick());
+        AppMenubar.modelsItem.stream()
+        .filter(modelItem -> modelItem.getLanguage().getLanguageTag().equals(
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()
+        ))
+        .forEach(modelItem -> modelItem.getMenuItem().doClick());
     }
 
 

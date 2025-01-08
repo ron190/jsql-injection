@@ -100,12 +100,14 @@ public class UiUtil {
     public static final SvgIcon COG = new SvgIcon("cog", 0.02f);
 
     public static final SvgIcon CROSS_RED = new SvgIcon("cross", new Color(0x0F0F0F), null, LogLevelUtil.COLOR_RED, 0.025f);
-    public static final SvgIcon ARROW = new SvgIcon("arrow", new Color(0x005a96), "ComboBox.buttonArrowColor", 1f);
-    public static final SvgIcon ARROW_HOVER = new SvgIcon("arrow", new Color(0x005a96), "ComboBox.buttonHoverArrowColor", 1f);
-    public static final SvgIcon ARROW_PRESSED = new SvgIcon("arrow", new Color(0x005a96), "ComboBox.buttonPressedArrowColor", 1f);
-    public static final SvgIcon EXPAND = new SvgIcon("expand", Color.BLACK, "ComboBox.buttonArrowColor", 0.02f);
-    public static final SvgIcon EXPAND_HOVER = new SvgIcon("expand", Color.BLACK, "ComboBox.buttonHoverArrowColor", 0.02f);
-    public static final SvgIcon EXPAND_PRESSED = new SvgIcon("expand", Color.BLACK, "ComboBox.buttonPressedArrowColor", 0.02f);
+    private static final String NAME_ARROW = "arrow";
+    public static final SvgIcon ARROW = new SvgIcon(NAME_ARROW, new Color(0x005a96), "ComboBox.buttonArrowColor", 1f);
+    public static final SvgIcon ARROW_HOVER = new SvgIcon(NAME_ARROW, new Color(0x005a96), "ComboBox.buttonHoverArrowColor", 1f);
+    public static final SvgIcon ARROW_PRESSED = new SvgIcon(NAME_ARROW, new Color(0x005a96), "ComboBox.buttonPressedArrowColor", 1f);
+    private static final String NAME_EXPAND = "expand";
+    public static final SvgIcon EXPAND = new SvgIcon(NAME_EXPAND, Color.BLACK, "ComboBox.buttonArrowColor", 0.02f);
+    public static final SvgIcon EXPAND_HOVER = new SvgIcon(NAME_EXPAND, Color.BLACK, "ComboBox.buttonHoverArrowColor", 0.02f);
+    public static final SvgIcon EXPAND_PRESSED = new SvgIcon(NAME_EXPAND, Color.BLACK, "ComboBox.buttonPressedArrowColor", 0.02f);
 
     public static final SvgIcon HOURGLASS = new SvgIcon("hourglass", 0.02f);
     public static final SvgIcon ARROW_UP = new SvgIcon("arrow-up", 0.02f);
@@ -113,12 +115,12 @@ public class UiUtil {
     public static final SvgIcon SQUARE = new SvgIcon("square", 0.01f);
     public static final SvgIcon TICK_GREEN = new SvgIcon("tick", Color.BLACK, null, LogLevelUtil.COLOR_GREEN, 0.02f);
     public static final SvgIcon GLOBE = new SvgIcon("globe", 0.025f);
-    public static final SvgIcon REPORT = new SvgIcon("swing/images/software/app.svg", 0.04f);
-    public static final SvgIcon APP_RESULT = new SvgIcon("swing/images/software/app.svg", 0.5f);
-    public static final SvgIcon APP_ABOUT = new SvgIcon("swing/images/software/app.svg", 0.25f);
+    private static final String PATH_APP_SVG = "swing/images/software/app.svg";
+    public static final SvgIcon REPORT = new SvgIcon(PATH_APP_SVG, 0.04f);
+    public static final SvgIcon APP_RESULT = new SvgIcon(PATH_APP_SVG, 0.5f);
+    public static final SvgIcon APP_ABOUT = new SvgIcon(PATH_APP_SVG, 0.25f);
 
     public static final String PATH_WEB_FOLDERS = "swing/list/payload.txt";
-    public static final String INPUT_STREAM_PAGES_SCAN = "swing/list/scan-page.json";
     public static final String PATH_PAUSE = "swing/images/icons/pause.png";
 
     public static final String FONT_NAME_MONO_NON_ASIAN = "Ubuntu Mono";
@@ -253,7 +255,7 @@ public class UiUtil {
             Theme theme = Theme.load(SqlEngine.class.getResourceAsStream(xmlTheme));
             theme.apply(textarea);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 
@@ -266,7 +268,7 @@ public class UiUtil {
             ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
             InvocationTargetException | UnsupportedLookAndFeelException e
         ) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
         FlatLaf.updateUI();  // required
 

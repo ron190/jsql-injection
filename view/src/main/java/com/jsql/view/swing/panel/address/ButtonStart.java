@@ -24,19 +24,20 @@ import java.util.concurrent.atomic.AtomicReference;
  * A button displayed in address.
  */
 public class ButtonStart extends JButton {
-    
+
     /**
      * State of current injection.
      */
     private StateButton state = StateButton.STARTABLE;
+    private static final String BUTTON_START_TOOLTIP = "BUTTON_START_TOOLTIP";
 
     private final AtomicReference<JToolTipI18n> tooltipRadio = new AtomicReference<>(
-        new JToolTipI18n(I18nUtil.valueByKey("BUTTON_START_TOOLTIP"))
+        new JToolTipI18n(I18nUtil.valueByKey(BUTTON_START_TOOLTIP))
     );
 
     @Override
     public JToolTip createToolTip() {
-        tooltipRadio.set(new JToolTipI18n(I18nUtil.valueByKey("BUTTON_START_TOOLTIP")));
+        tooltipRadio.set(new JToolTipI18n(I18nUtil.valueByKey(BUTTON_START_TOOLTIP)));
         return tooltipRadio.get();
     }
 
@@ -45,8 +46,8 @@ public class ButtonStart extends JButton {
      */
     public ButtonStart() {
         this.setName("buttonInUrl");
-        this.setToolTipText(I18nUtil.valueByKey("BUTTON_START_TOOLTIP"));
-        I18nViewUtil.addComponentForKey("BUTTON_START_TOOLTIP", tooltipRadio.get());
+        this.setToolTipText(I18nUtil.valueByKey(BUTTON_START_TOOLTIP));
+        I18nViewUtil.addComponentForKey(BUTTON_START_TOOLTIP, tooltipRadio.get());
 
         this.setPreferredSize(new Dimension(18, 16));
         this.setOpaque(false);

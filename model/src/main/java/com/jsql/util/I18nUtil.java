@@ -1,5 +1,6 @@
 package com.jsql.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,16 +18,17 @@ import java.util.ResourceBundle;
 public class I18nUtil {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
-    
+    public static final String BASE_NAME = "i18n.jsql";
+
     /**
      * Bundle of standard i18n keys and translated text for root language English
      */
-    private static final ResourceBundle LOCALE_ROOT = ResourceBundle.getBundle("i18n.jsql", Locale.ROOT);
+    public static final ResourceBundle BUNDLE_ROOT = ResourceBundle.getBundle(BASE_NAME, Locale.ROOT);
     
     /**
      * Bundle of i18n keys and translated text for the current system language
      */
-    private static ResourceBundle localeDefault = ResourceBundle.getBundle("i18n.jsql", Locale.getDefault());
+    private static ResourceBundle currentBundle = ResourceBundle.getBundle(BASE_NAME, Locale.getDefault());
 
     private I18nUtil() {
         // Utility class
@@ -38,7 +40,7 @@ public class I18nUtil {
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-        return (String) I18nUtil.localeDefault.getObject(key);
+        return I18nUtil.currentBundle.getString(key);
     }
     
     /**
@@ -52,7 +54,7 @@ public class I18nUtil {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
                 () -> String.join(
-                    "",
+                    StringUtils.EMPTY,
                     "Contribute and translate parts of jSQL Injection into ",
                     languageHost,
                     ": ",
@@ -68,15 +70,11 @@ public class I18nUtil {
     
     // Getters and setters
     
-    public static void setLocaleDefault(ResourceBundle localeDefault) {
-        I18nUtil.localeDefault = localeDefault;
+    public static void setCurrentBundle(Locale newLocale) {
+        I18nUtil.currentBundle = ResourceBundle.getBundle(BASE_NAME, newLocale);
     }
     
-    public static Locale getLocaleDefault() {
-        return I18nUtil.localeDefault.getLocale();
-    }
-
-    public static ResourceBundle getLocaleRoot() {
-        return LOCALE_ROOT;
+    public static Locale getCurrentLocale() {
+        return I18nUtil.currentBundle.getLocale();
     }
 }

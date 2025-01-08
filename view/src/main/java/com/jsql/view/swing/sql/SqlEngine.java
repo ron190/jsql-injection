@@ -11,6 +11,7 @@ import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
@@ -280,7 +281,7 @@ public class SqlEngine extends JPanel {
         tabsBottom.putClientProperty("JTabbedPane.trailingComponent", panelCombo);
         this.add(tabsBottom);
 
-        SwingUtilities.invokeLater(() -> MediatorHelper.menubar().switchLocale(I18nUtil.getLocaleDefault()));  // required for arabic
+        SwingUtilities.invokeLater(() -> MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale()));  // required for arabic
     }
 
     private JTabbedPane getPanelStructure() {
@@ -555,7 +556,7 @@ public class SqlEngine extends JPanel {
      * @param textarea which colorer will be reset.
      */
     private static void reset(JSyntaxTextArea textarea) {
-        textarea.setDocument(new RSyntaxDocument(RSyntaxDocument.SYNTAX_STYLE_SQL));  // required else empty on reopen
+        textarea.setDocument(new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_SQL));  // required else empty on reopen
         textarea.getDocument().addDocumentListener(new DocumentListenerEditing() {
             @Override
             public void process() {

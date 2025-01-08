@@ -55,7 +55,7 @@ public class ManagerScan extends AbstractManagerList {
      * Create admin page finder.
      */
     public ManagerScan() {
-        super(UiUtil.INPUT_STREAM_PAGES_SCAN, true);
+        super("swing/list/scan-page.json");
 
         this.listPaths.setTransferHandler(null);
         this.listPaths.setTransferHandler(new ListTransfertHandlerScan());
@@ -104,6 +104,28 @@ public class ManagerScan extends AbstractManagerList {
         });
     }
 
+    @Override
+    public void buildList(String nameFile) {
+        var jsonScan = new StringBuilder();
+        try (
+            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
+            var reader = new BufferedReader(inputStreamReader)
+        ) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonScan.append(line);
+            }
+            var jsonArrayScan = new JSONArray(jsonScan.toString());
+            for (var i = 0 ; i < jsonArrayScan.length() ; i++) {
+                this.itemsList.add(new ItemListScan(jsonArrayScan.getJSONObject(i)));
+            }
+            this.listPaths = new DnDListScan(this.itemsList);
+        } catch (JSONException | IOException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+        }
+    }
+
     private JPanel getLastLinePanel(final DnDList dndListScan) {
         var lastLine = new JPanel();
         lastLine.setOpaque(false);
@@ -117,35 +139,6 @@ public class ManagerScan extends AbstractManagerList {
         lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         lastLine.add(this.run);
         return lastLine;
-    }
-
-    private List<ItemList> getItemList() {
-        
-        var jsonScan = new StringBuilder();
-        try (
-            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.INPUT_STREAM_PAGES_SCAN);
-            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
-            var reader = new BufferedReader(inputStreamReader)
-        ) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonScan.append(line);
-            }
-        } catch (IOException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-        }
-        
-        List<ItemList> itemsList = new ArrayList<>();
-        try {
-            var jsonArrayScan = new JSONArray(jsonScan.toString());
-            for (var i = 0 ; i < jsonArrayScan.length() ; i++) {
-                itemsList.add(new ItemListScan(jsonArrayScan.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-        }
-        
-        return itemsList;
     }
 
     private void initializeRunButton(final DnDList dndListScan) {

@@ -97,7 +97,6 @@ public class JFrameView extends JFrame {
         mainPanel.add(this.splitHorizontalTopBottom);
         this.add(mainPanel);
 
-        menubar.switchLocale(Locale.ENGLISH, I18nUtil.getLocaleDefault(), true);
         menubar.getMenuWindows().switchLocaleFromPreferences();
     }
 

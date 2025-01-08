@@ -14,7 +14,6 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.util.MediatorHelper;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

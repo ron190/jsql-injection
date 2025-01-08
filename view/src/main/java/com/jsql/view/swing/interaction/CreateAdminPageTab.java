@@ -123,7 +123,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         menu.add(new JSeparator());
         menu.add(itemCopy);
         menu.add(itemSelectAll);
-        menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+        menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
 
         itemCopyUrl.addActionListener(actionEvent -> {
             var stringSelection = new StringSelection(CreateAdminPageTab.this.url);
@@ -159,7 +159,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                         LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                     }
                     menu.setLocation(
-                        ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+                        ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
                         ? evt.getXOnScreen() - menu.getWidth()
                         : evt.getXOnScreen(),
                         evt.getYOnScreen()

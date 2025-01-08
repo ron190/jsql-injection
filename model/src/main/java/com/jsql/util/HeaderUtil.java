@@ -5,6 +5,7 @@ import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,7 +60,7 @@ public class HeaderUtil {
                 .map(cookie -> cookie.split("=", 2))
                 .map(arrayEntry -> arrayEntry[0].trim() + "=" + (
                     arrayEntry[1] == null
-                    ? ""
+                    ? StringUtils.EMPTY
                     // Url encode: new cookie RFC restricts chars to non ()<>@,;:\"/[]?={} => server must url decode the request
                     : URLEncoder.encode(arrayEntry[1].trim().replace("+", "%2B"), StandardCharsets.UTF_8)
                 ))
@@ -70,7 +71,7 @@ public class HeaderUtil {
         try {
             httpRequest.setHeader(
                 keyHeader,
-                valueHeader.replaceAll("[^\\p{ASCII}]", "")
+                valueHeader.replaceAll("[^\\p{ASCII}]", StringUtils.EMPTY)
             );
         } catch (IllegalArgumentException e) {
             throw new JSqlException(e);

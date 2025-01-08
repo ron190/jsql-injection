@@ -26,7 +26,7 @@ public class CreateTabHelper {
             JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();
             int dividerLocation = splitPaneLeftRight.getDividerLocation();
             
-            if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
+            if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {
                 splitPaneLeftRight.setLeftComponent(MediatorHelper.tabResults());
             } else {
                 splitPaneLeftRight.setRightComponent(MediatorHelper.tabResults());

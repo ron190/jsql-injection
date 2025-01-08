@@ -239,7 +239,7 @@ public class ResourceAccess {
     public void createShell(
         String pathShell,
         String urlShell,
-        String property,
+        String keyPropertyShell,
         String filename,
         BiFunction<String, String, Request> biFunctionGetRequest
     ) throws JSqlException {
@@ -248,7 +248,7 @@ public class ResourceAccess {
         }
 
         String bodyShell = StringUtil.base64Decode(
-            this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(property)
+            this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(keyPropertyShell)
         )
         .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
         .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);

@@ -86,17 +86,11 @@ public class MergeUndo extends JEditorPane {
                     int start=event.getOffset();
                     int len=event.getLength();
                     String text=event.getDocument().getText(start, len);
-                    boolean isNeedStart=false;
-                    if (this.current==null) {
-                        isNeedStart=true;
-                    }
-                    else if (text.contains("\n")) {
-                        isNeedStart=true;
-                    }
-                    else if (this.lastEditName==null || !this.lastEditName.equals(edit.getPresentationName())) {
-                        isNeedStart=true;
-                    }
- 
+                    boolean isNeedStart = this.current == null
+                        || text.contains("\n")
+                        || this.lastEditName == null
+                        || !this.lastEditName.equals(edit.getPresentationName());
+
                     while (this.pointer<this.edits.size()-1) {
                         this.edits.remove(this.edits.size()-1);
                         isNeedStart=true;
@@ -116,10 +110,7 @@ public class MergeUndo extends JEditorPane {
         }
  
         public void createCompoundEdit() {
-            if (this.current==null) {
-                this.current= new MyCompoundEdit();
-            }
-            else if (this.current.getLength()>0) {
+            if (this.current==null || this.current.getLength()>0) {
                 this.current= new MyCompoundEdit();
             }
  

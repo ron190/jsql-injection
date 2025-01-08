@@ -81,7 +81,7 @@ public class PanelNode extends JPanel {
             component.setVisible(false);
         });
         
-        this.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+        this.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
         
         this.initializeTextFieldEditable(tree, currentNode);
     }

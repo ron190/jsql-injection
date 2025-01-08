@@ -1,5 +1,7 @@
 package com.jsql.util.bruter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -25,7 +27,7 @@ public class Base58 {
     public static String encode(byte[] input) {
         if (input.length == 0) {
             // paying with the same coin
-            return "";
+            return StringUtils.EMPTY;
         }
         // Make a copy of the input since we are going to modify it.
         byte[] copyInput = copyOfRange(input, 0, input.length);

@@ -1,21 +1,24 @@
 package com.jsql.view.swing.dialog.translate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SortedProperties extends Properties {
     @Override
-    public synchronized Enumeration keys() {
+    public synchronized Enumeration<Object> keys() {
         Enumeration<Object> keysEnum = super.keys();
-        Vector<String> keyList = new Vector<>();
+        List<String> keyList = new ArrayList<>();
         while (keysEnum.hasMoreElements()) {
             keyList.add((String) keysEnum.nextElement());
         }
         Collections.sort(keyList);
-        return keyList.elements();
+        return Collections.enumeration(keyList.stream()
+            .map(s -> (Object) s)
+            .collect(Collectors.toList()));
     }
     @Override
-    public Set<java.util.Map.Entry<Object, Object>> entrySet() {
-        TreeMap<Object, Object> treeMap = new TreeMap<>();
+    public Set<Map.Entry<Object, Object>> entrySet() {
+        Map<Object, Object> treeMap = new TreeMap<>();
         Set<Map.Entry<Object, Object>> entrySet = super.entrySet();
         for (Map.Entry<Object, Object> entry : entrySet) {
             treeMap.put(entry.getKey(), entry.getValue());

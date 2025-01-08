@@ -30,7 +30,6 @@ public class ManagerSqlShell extends AbstractManagerShell {
      * Build the manager panel.
      */
     public ManagerSqlShell() {
-
         this.run.setText("Create SQL shell(s)");
         
         var userPassPanel = new JPanel();

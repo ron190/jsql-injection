@@ -34,7 +34,6 @@ public class TabManagersCards extends JPanel {
      * Create manager panel.
      */
     public TabManagersCards() {
-        
         this.setName("tabManagersProxy");
         this.setLayout(new CardLayout());
         this.setMinimumSize(new Dimension(100, 0));  // allow proper minimize

@@ -54,7 +54,7 @@ public class TabMouseAdapter extends MouseAdapter {
         var componentSource = (Component) event.getSource();
         menu.show(componentSource, event.getX(), event.getY());
         menu.setLocation(
-            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
             ? event.getXOnScreen() - menu.getWidth()
             : event.getXOnScreen(),
             event.getYOnScreen()

@@ -169,7 +169,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
     private String decodeUnicode(String currentChunk) {
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
             return StringEscapeUtils.unescapeJava(  // transform \u0000 entities to text
-                currentChunk.replaceAll("\\\\u.{0,3}$", "")  // remove incorrect entities
+                currentChunk.replaceAll("\\\\u.{0,3}$", StringUtils.EMPTY)  // remove incorrect entities
             );
         }
         return currentChunk;

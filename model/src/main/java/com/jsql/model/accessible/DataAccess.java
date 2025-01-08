@@ -107,7 +107,7 @@ public class DataAccess {
         
         var sourcePage = new String[]{ StringUtils.EMPTY };
 
-        var resultToParse = "";
+        var resultToParse = StringUtils.EMPTY;
         try {
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlInfos(),

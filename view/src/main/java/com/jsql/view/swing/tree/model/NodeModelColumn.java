@@ -37,7 +37,7 @@ public class NodeModelColumn extends NodeModelEmpty {
     ) {
         var checkbox = new JCheckBox(this.toString(), this.isSelected());
         checkbox.setText(UiStringUtil.detectUtf8HtmlNoWrap(this.toString()));
-        checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+        checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
         checkbox.setBackground(
             isSelected ? UIManager.getColor("Tree.selectionBackground") : UIManager.getColor("Tree.background")
         );  // required for transparency

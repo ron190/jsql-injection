@@ -30,6 +30,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.*;
@@ -270,19 +271,20 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             var httpRequest = httpRequestBuilder.build();
 
             if (isReport) {
-                String report = "<br>" + StringUtil.formatReport(UIManager.getColor("TextArea.inactiveForeground"), "Method: ") + httpRequest.method();
-                report += "<br>" + StringUtil.formatReport(UIManager.getColor("TextArea.inactiveForeground"), "Path: ") + httpRequest.uri().getPath();
+                Color colorReport = UIManager.getColor("TextArea.inactiveForeground");
+                String report = "<br>" + StringUtil.formatReport(colorReport, "Method: ") + httpRequest.method();
+                report += "<br>" + StringUtil.formatReport(colorReport, "Path: ") + httpRequest.uri().getPath();
                 if (httpRequest.uri().getQuery() != null) {
-                    report += "<br>" + StringUtil.formatReport(UIManager.getColor("TextArea.inactiveForeground"), "Query: ") + httpRequest.uri().getQuery();
+                    report += "<br>" + StringUtil.formatReport(colorReport, "Query: ") + httpRequest.uri().getQuery();
                 }
                 if (
                     !(this.mediatorUtils.getParameterUtil().getListRequest().isEmpty()
                     && this.mediatorUtils.getCsrfUtil().getTokenCsrf() == null)
                 ) {
-                    report += "<br>" + StringUtil.formatReport(UIManager.getColor("TextArea.inactiveForeground"), "Body: ") + body;
+                    report += "<br>" + StringUtil.formatReport(colorReport, "Body: ") + body;
                 }
-                report += "<br>" + StringUtil.formatReport(UIManager.getColor("TextArea.inactiveForeground"), "Header: ") + httpRequest.headers().map().entrySet().stream()
-                    .map(entry -> String.format("%s: %s", entry.getKey(), String.join("", entry.getValue())))
+                report += "<br>" + StringUtil.formatReport(colorReport, "Header: ") + httpRequest.headers().map().entrySet().stream()
+                    .map(entry -> String.format("%s: %s", entry.getKey(), String.join(StringUtils.EMPTY, entry.getValue())))
                     .collect(Collectors.joining("<br>"));
                 return report;
             }

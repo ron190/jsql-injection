@@ -96,7 +96,7 @@ public class JPopupMenuComponent extends JPopupMenu {
             try {
                 JPopupMenuComponent.this.setLocation(MouseInfo.getPointerInfo().getLocation());
                 JPopupMenuComponent.this.setLocation(
-                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
                     ? MouseInfo.getPointerInfo().getLocation().x - JPopupMenuComponent.this.getWidth()
                     : MouseInfo.getPointerInfo().getLocation().x,
                     MouseInfo.getPointerInfo().getLocation().y

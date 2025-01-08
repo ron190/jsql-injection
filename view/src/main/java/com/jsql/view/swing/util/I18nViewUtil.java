@@ -14,7 +14,7 @@ public class I18nViewUtil {
     
     // Initialize the list of graphical components
     static {
-        for (String keyI18n: I18nUtil.getLocaleRoot().keySet()) {
+        for (String keyI18n: I18nUtil.BUNDLE_ROOT.keySet()) {
             I18nViewUtil.componentsLocalized.put(keyI18n, new ArrayList<>());
         }
     }
@@ -58,7 +58,7 @@ public class I18nViewUtil {
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-        return I18nViewUtil.isNonUbuntu(I18nUtil.getLocaleDefault())
+        return I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale())
             ? I18nViewUtil.formatNonLatin(I18nUtil.valueByKey(key))
             : I18nUtil.valueByKey(key);
     }

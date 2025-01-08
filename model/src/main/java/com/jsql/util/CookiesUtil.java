@@ -47,7 +47,7 @@ public class CookiesUtil {
             .map(cookie -> cookie.split("=", 2))
             .map(arrayEntry -> new AbstractMap.SimpleEntry<>(
                 arrayEntry[0].trim(),
-                arrayEntry[1] == null ? "" : arrayEntry[1].trim()
+                arrayEntry[1] == null ? StringUtils.EMPTY : arrayEntry[1].trim()
             ))
             .collect(Collectors.toList());
 

@@ -37,7 +37,7 @@ public class DigestUtil {
             && mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).trim().startsWith("Digest")
         ) {
             String[] digestParts = StringUtils.split(
-                mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).replaceAll("(?i)^\\s*Digest", ""),
+                mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).replaceAll("(?i)^\\s*Digest", StringUtils.EMPTY),
                 ","
             );
 
@@ -53,9 +53,9 @@ public class DigestUtil {
                     Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
                 );
 
-            String realm = cookieValues.get("realm").replace("\"", "");
-            String qop = cookieValues.get("qop").replace("\"", "");
-            String nonce = cookieValues.get("nonce").replace("\"", "");
+            String realm = cookieValues.get("realm").replace("\"", StringUtils.EMPTY);
+            String qop = cookieValues.get("qop").replace("\"", StringUtils.EMPTY);
+            String nonce = cookieValues.get("nonce").replace("\"", StringUtils.EMPTY);
 
             try {
                 String username = this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication();

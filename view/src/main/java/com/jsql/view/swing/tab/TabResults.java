@@ -190,7 +190,7 @@ public class TabResults extends DnDTabbedPane {
         var panelTable = new PanelTable(data, columnNames);
         
         this.addTab(StringUtil.detectUtf8(table.toString()), panelTable);
-        panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+        panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
         
         this.setSelectedComponent(panelTable);  // Focus on the new tab
         this.setToolTipTextAt(

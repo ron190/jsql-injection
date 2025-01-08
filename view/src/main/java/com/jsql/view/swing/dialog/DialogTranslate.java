@@ -92,7 +92,7 @@ public class DialogTranslate extends JDialog {
         
         this.labelTranslation.setText(
             String.join(
-                "",
+                StringUtils.EMPTY,
                 "<html>",
                 "<b>Contribute and translate parts of jSQL Injection into ",
                 language.toString(),
@@ -135,7 +135,7 @@ public class DialogTranslate extends JDialog {
         
         this.buttonSend.setToolTipText(
             String.join(
-                "",
+                StringUtils.EMPTY,
                 "<html>",
                 "<b>Send your translation to the developer</b><br>",
                 "Your translation will be integrated in the next version of jSQL",

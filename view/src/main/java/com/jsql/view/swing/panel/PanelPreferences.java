@@ -60,7 +60,7 @@ public class PanelPreferences extends JPanel {
         this.addToCard(cards, panelGeneral, CategoryPreference.GENERAL);
         this.add(cards, BorderLayout.CENTER);
 
-        SwingUtilities.invokeLater(() -> MediatorHelper.menubar().switchLocale(I18nUtil.getLocaleDefault()));  // required for arabic
+        SwingUtilities.invokeLater(() -> MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale()));  // required for arabic
     }
 
     private static JList<CategoryPreference> getCategories(JPanel cards) {
