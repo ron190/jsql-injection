@@ -47,12 +47,14 @@ import java.util.function.IntConsumer;
  * TabbedPane containing result injection panels.
  */
 public class TabResults extends DnDTabbedPane {
-    
+
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
-    
+
+    public static final String TAB_EXPLOIT_FAILURE_INCORRECT_URL = "Tab exploit failure: incorrect URL";
+
     /**
      * Create the panel containing injection results.
      */
@@ -137,7 +139,7 @@ public class TabResults extends DnDTabbedPane {
 
             this.updateUI();  // required: light, open/close prefs, dark => light artifacts
         } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Tab exploit failure: incorrect URL", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
         }
     }
 
@@ -157,7 +159,7 @@ public class TabResults extends DnDTabbedPane {
 
             this.updateUI();  // required: light, open/close prefs, dark => light artifacts
         } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Tab exploit failure: incorrect URL", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
         }
     }
 
@@ -177,7 +179,7 @@ public class TabResults extends DnDTabbedPane {
 
             this.updateUI();  // required: light, open/close prefs, dark => light artifacts
         } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Tab exploit failure: incorrect URL", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
         }
     }
     

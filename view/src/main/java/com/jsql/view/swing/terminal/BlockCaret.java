@@ -77,9 +77,6 @@ public class BlockCaret extends DefaultCaret {
         try {
             if (comp.modelToView2D(dot) != null) {
                 r = comp.modelToView2D(dot).getBounds();
-                if (r == null) {
-                    return;
-                }
             }
             dotChar = comp.getText(dot, 1).charAt(0);
         } catch (BadLocationException e) {
@@ -87,10 +84,12 @@ public class BlockCaret extends DefaultCaret {
             return;
         }
 
+        if (r == null) {
+            return;
+        }
         if (Character.isWhitespace(dotChar)) {
             dotChar = '_';
         }
-
         if (this.x != r.x || this.y != r.y) {
             // paint() has been called directly, without a previous call to
             // damage(), so do some cleanup. (This happens, for example, when
@@ -100,12 +99,9 @@ public class BlockCaret extends DefaultCaret {
         }
 
         g.setColor(new Color(0, 255, 0));
-
-        // do this to draw in XOR mode
-        g.setXORMode(comp.getBackground());
+        g.setXORMode(comp.getBackground()); // do this to draw in XOR mode
 
         this.width = g.getFontMetrics().charWidth(dotChar);
-        
         if (this.isVisible()) {
             g.fillRect(r.x, r.y, this.width, r.height);
         }

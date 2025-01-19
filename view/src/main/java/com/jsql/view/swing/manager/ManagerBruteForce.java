@@ -30,7 +30,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * Manager to brute force a hash of various types.
  */
 public class ManagerBruteForce extends JPanel {
-    
+
+    public static final String BRUTEFORCE_RUN_BUTTON_TOOLTIP = "BRUTEFORCE_RUN_BUTTON_TOOLTIP";
+    public static final String BRUTEFORCE_HASH_TOOLTIP = "BRUTEFORCE_HASH_TOOLTIP";
+    public static final String BRUTEFORCE_EXCLUDE_TOOLTIP = "BRUTEFORCE_EXCLUDE_TOOLTIP";
+
     private JButtonStateful run;
     private JTextField hash;
     private JComboBox<String> hashTypes;
@@ -72,7 +76,7 @@ public class ManagerBruteForce extends JPanel {
         var lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
 
-        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP")));
+        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_RUN_BUTTON_TOOLTIP)));
         this.run = new JButtonStateful("BRUTEFORCE_RUN_BUTTON_LABEL") {
             @Override
             public JToolTip createToolTip() {
@@ -80,8 +84,8 @@ public class ManagerBruteForce extends JPanel {
             }
         };
         I18nViewUtil.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
-        I18nViewUtil.addComponentForKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP", tooltip.get());
-        this.run.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
+        I18nViewUtil.addComponentForKey(ManagerBruteForce.BRUTEFORCE_RUN_BUTTON_TOOLTIP, tooltip.get());
+        this.run.setToolTipText(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_RUN_BUTTON_TOOLTIP));
 
         this.run.setName("managerBruterRun");
         this.run.addActionListener(new ActionBruteForce(this));
@@ -118,7 +122,7 @@ public class ManagerBruteForce extends JPanel {
     }
 
     private JPanel initializeFirstLine() {
-        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("BRUTEFORCE_HASH_TOOLTIP")));
+        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP)));
         var placeholder = new JTextFieldPlaceholder(I18nUtil.valueByKey("BRUTEFORCE_HASH_LABEL")) {
             @Override
             public JToolTip createToolTip() {
@@ -126,10 +130,10 @@ public class ManagerBruteForce extends JPanel {
             }
         };
         this.hash = new JPopupTextField(placeholder).getProxy();
-        I18nViewUtil.addComponentForKey("BRUTEFORCE_HASH_TOOLTIP", tooltip.get());
+        I18nViewUtil.addComponentForKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP, tooltip.get());
         I18nViewUtil.addComponentForKey("BRUTEFORCE_HASH_LABEL", this.hash);
         this.hash.setName("managerBruterHash");
-        this.hash.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
+        this.hash.setToolTipText(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP));
 
         var firstLine = new JPanel(new BorderLayout());
         firstLine.add(this.hash, BorderLayout.CENTER);
@@ -172,7 +176,7 @@ public class ManagerBruteForce extends JPanel {
         var thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
 
-        final var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP")));
+        final var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_EXCLUDE_TOOLTIP)));
         var placeholderTooltip = new JTextFieldPlaceholder(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_LABEL")) {
             @Override
             public JToolTip createToolTip() {
@@ -180,9 +184,9 @@ public class ManagerBruteForce extends JPanel {
             }
         };
         this.exclude = new JPopupTextField(placeholderTooltip).getProxy();
-        this.exclude.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP"));
+        this.exclude.setToolTipText(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_EXCLUDE_TOOLTIP));
         I18nViewUtil.addComponentForKey("BRUTEFORCE_EXCLUDE_LABEL", this.exclude);
-        I18nViewUtil.addComponentForKey("BRUTEFORCE_EXCLUDE_TOOLTIP", tooltip.get());
+        I18nViewUtil.addComponentForKey(ManagerBruteForce.BRUTEFORCE_EXCLUDE_TOOLTIP, tooltip.get());
         thirdLine.add(this.exclude);
 
         Arrays.asList(

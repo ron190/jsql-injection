@@ -76,7 +76,7 @@ public class ManagerAdminPage extends AbstractManagerList {
             if (StringUtils.isEmpty(urlAddressBar)) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing URL in address bar");
             } else {
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey("LOG_CHECKING") +" admin pages...");
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} admin pages...", I18nUtil.valueByKey("LOG_CHECKING"));
                 this.run.setText(I18nViewUtil.valueByKey("ADMIN_PAGE_RUN_BUTTON_STOP"));
                 this.run.setState(StateButton.STOPPABLE);
                 this.progressBar.setVisible(true);

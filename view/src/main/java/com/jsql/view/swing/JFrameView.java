@@ -57,7 +57,7 @@ public class JFrameView extends JFrame {
      */
     private final Map<UUID, AbstractExploit> mapUuidShell = new HashMap<>();
     private final transient SubscriberInteraction subscriber = new SubscriberInteraction("com.jsql.view.swing.interaction");
-    private JTabbedPane tabManagers;
+    private TabManagers tabManagers;
     private boolean isMaximized = false;
     private final InjectionModel injectionModel;
     private SplitNS splitNS;  // main
@@ -88,15 +88,15 @@ public class JFrameView extends JFrame {
     }
 
     private void initializePaneComponents() {
-        var menubar = new AppMenubar();
-        this.setJMenuBar(menubar);
-        MediatorHelper.register(menubar);
-
         // Define the default panel: each component on a vertical line
         this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 
         this.tabManagers = new TabManagers();  // Tab manager linked to cards
         this.add(this.tabManagers);
+
+        var menubar = new AppMenubar();
+        this.setJMenuBar(menubar);
+        MediatorHelper.register(menubar);
 
         var panelAddressBar = new PanelAddressBar();  // Textfield at the top
         MediatorHelper.register(panelAddressBar);
@@ -118,7 +118,7 @@ public class JFrameView extends JFrame {
             @Override
             public void windowOpened(WindowEvent event) {
                 if (preferences.getBoolean(PreferencesUtil.IS_MAXIMIZED, false)) {
-                    JFrameView.this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    JFrameView.this.setExtendedState(Frame.MAXIMIZED_BOTH);
                 }
                 var horizontalTopBottomSplitter = preferences.getDouble(PreferencesUtil.NS_SPLIT, 0.75);
                 if (!(0.0 <= horizontalTopBottomSplitter && horizontalTopBottomSplitter <= 1.0)) {
@@ -232,7 +232,7 @@ public class JFrameView extends JFrame {
         return this.splitNS;
     }
 
-    public JTabbedPane getTabManagers() {
+    public TabManagers getTabManagers() {
         return this.tabManagers;
     }
 }

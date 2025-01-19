@@ -83,127 +83,127 @@ public enum ActionCoder {
             return HashUtil.toCrc64(value);
         }
     },
-    ENCODE_TO_HEX("Encode to "+ Coder.HEX) {
+    ENCODE_TO_HEX(StringUtil.ENCODE_TO + Coder.HEX) {
         @Override
         public String run(String value) {
             return StringUtil.toHex(value);
         }
     },
-    ENCODE_TO_HEX_ZIP("Encode to "+ Coder.HEX_ZIP) {
+    ENCODE_TO_HEX_ZIP(StringUtil.ENCODE_TO + Coder.HEX_ZIP) {
         @Override
         public String run(String value) throws IOException {
             return StringUtil.toHexZip(value);
         }
     },
-    ENCODE_TO_BASE64_ZIP("Encode to "+ Coder.BASE64_ZIP) {
+    ENCODE_TO_BASE64_ZIP(StringUtil.ENCODE_TO + Coder.BASE64_ZIP) {
         @Override
         public String run(String value) throws IOException {
             return StringUtil.toBase64Zip(value);
         }
     },
-    ENCODE_TO_BASE64("Encode to "+ Coder.BASE64) {
+    ENCODE_TO_BASE64(StringUtil.ENCODE_TO + Coder.BASE64) {
         @Override
         public String run(String value) {
             return StringUtil.base64Encode(value);
         }
     },
-    ENCODE_TO_BASE32("Encode to "+ Coder.BASE32) {
+    ENCODE_TO_BASE32(StringUtil.ENCODE_TO + Coder.BASE32) {
         @Override
         public String run(String value) {
             return StringUtil.base32Encode(value);
         }
     },
-    ENCODE_TO_BASE58("Encode to "+ Coder.BASE58) {
+    ENCODE_TO_BASE58(StringUtil.ENCODE_TO + Coder.BASE58) {
         @Override
         public String run(String value) {
             return StringUtil.base58Encode(value);
         }
     },
-    ENCODE_TO_BASE16("Encode to "+ Coder.BASE16) {
+    ENCODE_TO_BASE16(StringUtil.ENCODE_TO + Coder.BASE16) {
         @Override
         public String run(String value) {
             return StringUtil.base16Encode(value);
         }
     },
-    ENCODE_TO_HTML("Encode to "+ Coder.HTML) {
+    ENCODE_TO_HTML(StringUtil.ENCODE_TO + Coder.HTML) {
         @Override
         public String run(String value) {
             return StringUtil.toHtml(value);
         }
     },
-    ENCODE_TO_HTML_DECIMAL("Encode to "+ Coder.HTML_DECIMAL) {
+    ENCODE_TO_HTML_DECIMAL(StringUtil.ENCODE_TO + Coder.HTML_DECIMAL) {
         @Override
         public String run(String value) {
             return StringUtil.toHtmlDecimal(value);
         }
     },
-    ENCODE_TO_URL("Encode to "+ Coder.URL) {
+    ENCODE_TO_URL(StringUtil.ENCODE_TO + Coder.URL) {
         @Override
         public String run(String value) {
             return StringUtil.toUrl(value);
         }
     },
-    ENCODE_TO_UNICODE("Encode to "+ Coder.UNICODE) {
+    ENCODE_TO_UNICODE(StringUtil.ENCODE_TO + Coder.UNICODE) {
         @Override
         public String run(String value) {
             return StringEscapeUtils.escapeJava(value);
         }
     },
-    DECODE_FROM_HEX("Decode from "+ Coder.HEX) {
+    DECODE_FROM_HEX(StringUtil.DECODE_FROM + Coder.HEX) {
         @Override
         public String run(String value) {
             return StringUtil.fromHex(value);
         }
     },
-    DECODE_FROM_HEX_ZIP("Decode from "+ Coder.HEX_ZIP) {
+    DECODE_FROM_HEX_ZIP(StringUtil.DECODE_FROM + Coder.HEX_ZIP) {
         @Override
         public String run(String value) throws IOException {
             return StringUtil.fromHexZip(value);
         }
     },
-    DECODE_FROM_BASE64_ZIP("Decode from "+ Coder.BASE64_ZIP) {
+    DECODE_FROM_BASE64_ZIP(StringUtil.DECODE_FROM + Coder.BASE64_ZIP) {
         @Override
         public String run(String value) throws IOException {
             return StringUtil.fromBase64Zip(value);
         }
     },
-    DECODE_FROM_BASE64("Decode from "+ Coder.BASE64) {
+    DECODE_FROM_BASE64(StringUtil.DECODE_FROM + Coder.BASE64) {
         @Override
         public String run(String value) {
             return StringUtil.base64Decode(value);
         }
     },
-    DECODE_FROM_BASE32("Decode from "+ Coder.BASE32) {
+    DECODE_FROM_BASE32(StringUtil.DECODE_FROM + Coder.BASE32) {
         @Override
         public String run(String value) {
             return StringUtil.base32Decode(value);
         }
     },
-    DECODE_FROM_BASE58("Decode from "+ Coder.BASE58) {
+    DECODE_FROM_BASE58(StringUtil.DECODE_FROM + Coder.BASE58) {
         @Override
         public String run(String value) {
             return StringUtil.base58Decode(value);
         }
     },
-    DECODE_FROM_BASE16("Decode from "+ Coder.BASE16) {
+    DECODE_FROM_BASE16(StringUtil.DECODE_FROM + Coder.BASE16) {
         @Override
         public String run(String value) {
             return StringUtil.base16Decode(value);
         }
     },
-    DECODE_FROM_HTML("Decode from "+ Coder.HTML) {
+    DECODE_FROM_HTML(StringUtil.DECODE_FROM + Coder.HTML) {
         @Override
         public String run(String value) {
             return StringUtil.fromHtml(value);
         }
     },
-    DECODE_FROM_UNICODE("Decode from "+ Coder.UNICODE) {
+    DECODE_FROM_UNICODE(StringUtil.DECODE_FROM + Coder.UNICODE) {
         @Override
         public String run(String value) {
             return StringEscapeUtils.unescapeJava(value);
         }
     },
-    DECODE_FROM_URL("Decode from "+ Coder.URL) {
+    DECODE_FROM_URL(StringUtil.DECODE_FROM + Coder.URL) {
         @Override
         public String run(String value) {
             return StringUtil.fromUrl(value);

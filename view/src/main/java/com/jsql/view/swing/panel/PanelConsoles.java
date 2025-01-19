@@ -42,16 +42,21 @@ import java.util.prefs.Preferences;
  * A panel with different consoles displayed on the bottom.
  */
 public class PanelConsoles extends JPanel {
-    
+
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
+    public static final String CONSOLE_JAVA_TOOLTIP = "CONSOLE_JAVA_TOOLTIP";
+    public static final String CONSOLE_CHUNK_TOOLTIP = "CONSOLE_CHUNK_TOOLTIP";
+    public static final String CONSOLE_BINARY_TOOLTIP = "CONSOLE_BINARY_TOOLTIP";
+    public static final String CONSOLE_MAIN_TOOLTIP = "CONSOLE_MAIN_TOOLTIP";
+
     /**
      * Console for java exception messages.
      */
-    private final SimpleConsoleAdapter javaTextPane = new SimpleConsoleAdapter("Java", I18nUtil.valueByKey("CONSOLE_JAVA_TOOLTIP"));
+    private final SimpleConsoleAdapter javaTextPane = new SimpleConsoleAdapter("Java", I18nUtil.valueByKey(PanelConsoles.CONSOLE_JAVA_TOOLTIP));
     
     /**
      * Console for raw SQL results.
@@ -79,7 +84,7 @@ public class PanelConsoles extends JPanel {
      * Create panel at the bottom with different consoles to report injection process.
      */
     public PanelConsoles() {
-        I18nViewUtil.addComponentForKey("CONSOLE_JAVA_TOOLTIP", this.javaTextPane.getProxy());
+        I18nViewUtil.addComponentForKey(PanelConsoles.CONSOLE_JAVA_TOOLTIP, this.javaTextPane.getProxy());
         this.javaTextPane.getProxy().setEditable(false);
         JTextPaneAppender.registerJavaConsole(this.javaTextPane);
         
@@ -111,26 +116,26 @@ public class PanelConsoles extends JPanel {
     }
 
     private void initializeTabsConsoles() {
-        var proxyChunk = new JTextAreaPlaceholderConsole(I18nUtil.valueByKey("CONSOLE_CHUNK_TOOLTIP"));
+        var proxyChunk = new JTextAreaPlaceholderConsole(I18nUtil.valueByKey(PanelConsoles.CONSOLE_CHUNK_TOOLTIP));
         this.chunkTextArea = new JPopupTextArea(proxyChunk).getProxy();
-        I18nViewUtil.addComponentForKey("CONSOLE_CHUNK_TOOLTIP", proxyChunk);
+        I18nViewUtil.addComponentForKey(PanelConsoles.CONSOLE_CHUNK_TOOLTIP, proxyChunk);
         this.chunkTextArea.setLineWrap(true);
         this.chunkTextArea.setEditable(false);
 
-        var proxyBinary = new JTextAreaPlaceholderConsole(I18nUtil.valueByKey("CONSOLE_BINARY_TOOLTIP"));
-        I18nViewUtil.addComponentForKey("CONSOLE_BINARY_TOOLTIP", proxyBinary);
+        var proxyBinary = new JTextAreaPlaceholderConsole(I18nUtil.valueByKey(PanelConsoles.CONSOLE_BINARY_TOOLTIP));
+        I18nViewUtil.addComponentForKey(PanelConsoles.CONSOLE_BINARY_TOOLTIP, proxyBinary);
         this.binaryTextArea = new JPopupTextArea(proxyBinary).getProxy();
         this.binaryTextArea.setLineWrap(true);
         this.binaryTextArea.setEditable(false);
 
-        var consoleTextPane = new SimpleConsoleAdapter("Console", I18nUtil.valueByKey("CONSOLE_MAIN_TOOLTIP"));
-        I18nViewUtil.addComponentForKey("CONSOLE_MAIN_TOOLTIP", consoleTextPane.getProxy());
+        var consoleTextPane = new SimpleConsoleAdapter("Console", I18nUtil.valueByKey(PanelConsoles.CONSOLE_MAIN_TOOLTIP));
+        I18nViewUtil.addComponentForKey(PanelConsoles.CONSOLE_MAIN_TOOLTIP, consoleTextPane.getProxy());
         consoleTextPane.getProxy().setEditable(false);
         JTextPaneAppender.register(consoleTextPane);
 
         this.buildI18nTab(
             "CONSOLE_MAIN_LABEL",
-            "CONSOLE_MAIN_TOOLTIP",
+            PanelConsoles.CONSOLE_MAIN_TOOLTIP,
             UiUtil.CONSOLE.icon,
             new JScrollPane(consoleTextPane.getProxy()),
             0
@@ -220,7 +225,7 @@ public class PanelConsoles extends JPanel {
     public void insertChunkTab() {
         this.buildI18nTab(
             "CONSOLE_CHUNK_LABEL",
-            "CONSOLE_CHUNK_TOOLTIP",
+            PanelConsoles.CONSOLE_CHUNK_TOOLTIP,
             UiUtil.CHUNK.icon,
             new JScrollPane(this.chunkTextArea),
             1
@@ -234,7 +239,7 @@ public class PanelConsoles extends JPanel {
         var positionFromChunk = this.tabConsoles.indexOfTab(UiUtil.CHUNK.icon) != -1 ? 1 : 0;
         this.buildI18nTab(
             "CONSOLE_BINARY_LABEL",
-            "CONSOLE_BINARY_TOOLTIP",
+                PanelConsoles.CONSOLE_BINARY_TOOLTIP,
             UiUtil.BINARY.icon,
             new JScrollPane(this.binaryTextArea),
             1 + positionFromChunk
@@ -261,7 +266,7 @@ public class PanelConsoles extends JPanel {
     public void insertJavaTab() {
         this.buildI18nTab(
             "CONSOLE_JAVA_LABEL",
-            "CONSOLE_JAVA_TOOLTIP",
+            PanelConsoles.CONSOLE_JAVA_TOOLTIP,
             UiUtil.CUP.icon,
             new JScrollPane(this.javaTextPane.getProxy()),
             this.tabConsoles.getTabCount()

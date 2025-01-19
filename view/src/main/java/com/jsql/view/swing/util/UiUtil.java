@@ -139,10 +139,11 @@ public class UiUtil {
     // HTML engine considers Monospaced/Monospace to be the same Font
     // Java engine recognizes only Monospaced
     public static final String FONT_NAME_MONOSPACED = "Monospaced";
+    public static final String TEXT_AREA_FONT = "TextArea.font";
     public static final Font FONT_MONO_NON_ASIAN = new Font(
         UiUtil.FONT_NAME_MONO_NON_ASIAN,
         Font.PLAIN,
-        UIManager.getDefaults().getFont("TextArea.font").getSize() + 2
+        UIManager.getDefaults().getFont(UiUtil.TEXT_AREA_FONT).getSize() + 2
     );
     
     public static final Font FONT_MONO_ASIAN = new Font(
@@ -180,8 +181,8 @@ public class UiUtil {
         UiUtil.loadFonts();
         // timer before closing automatically tooltip
         ToolTipManager.sharedInstance().setDismissDelay(3 * ToolTipManager.sharedInstance().getDismissDelay());
-        UIManager.put("TextArea.font", UiUtil.FONT_MONO_NON_ASIAN);  // required for basic text like chunks tab
-        UIManager.put("TextPane.font", UIManager.getFont("TextArea.font"));  // align textpane font
+        UIManager.put(UiUtil.TEXT_AREA_FONT, UiUtil.FONT_MONO_NON_ASIAN);  // required for basic text like chunks tab
+        UIManager.put(UiUtil.TEXTPANE_FONT, UIManager.getFont(UiUtil.TEXT_AREA_FONT));  // align textpane font
     }
 
     private static void loadFonts() {
@@ -235,11 +236,12 @@ public class UiUtil {
         
         g.setColor(new Color(c2, true));
 
+        var fontNonUbuntu = textComponent.getFont() == UiUtil.FONT_NON_MONO_BIG  // when address bar
+            ? UiUtil.FONT_MONO_ASIAN_BIG.deriveFont(Font.ITALIC)  // bigger font
+            : UiUtil.FONT_MONO_ASIAN.deriveFont(Font.ITALIC);  // fine for address bar, console, textfield
         g.setFont(
             I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale())
-            ? textComponent.getFont() == UiUtil.FONT_NON_MONO_BIG  // when address bar
-            ? UiUtil.FONT_MONO_ASIAN_BIG.deriveFont(Font.ITALIC)  // bigger font
-            : UiUtil.FONT_MONO_ASIAN.deriveFont(Font.ITALIC)  // fine for address bar, console, textfield
+            ? fontNonUbuntu
             : textComponent.getFont().deriveFont(Font.ITALIC)  // same
         );
 

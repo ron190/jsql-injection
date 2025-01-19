@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class TabManagers extends TabbedPaneWheeled {
 
-    public static final List<ModelSvgIcon> TABS = Arrays.asList(
+    private final List<ModelSvgIcon> iconsTabs = Arrays.asList(
         UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH
     );
 
@@ -46,7 +46,7 @@ public class TabManagers extends TabbedPaneWheeled {
         this.addMouseClickMenu();
 
         AtomicInteger indexTab = new AtomicInteger();
-        TabManagers.TABS.forEach(modelSvgIcon -> this.buildI18nTab(modelSvgIcon, indexTab.getAndIncrement()));
+        this.iconsTabs.forEach(modelSvgIcon -> this.buildI18nTab(modelSvgIcon, indexTab.getAndIncrement()));
         this.addChangeListener(e -> {
             CardLayout cardLayout = (CardLayout) MediatorHelper.tabManagersCards().getLayout();
             cardLayout.show(MediatorHelper.tabManagersCards(), this.getTabComponentAt(this.getSelectedIndex()).getName());
@@ -87,5 +87,9 @@ public class TabManagers extends TabbedPaneWheeled {
         
         labelTab.setToolTipText(I18nUtil.valueByKey(keyTooltip));
         labelTab.addMouseListener(new TabMouseAdapter(this));  // required as label incorrectly focused
+    }
+
+    public List<ModelSvgIcon> getIconsTabs() {
+        return this.iconsTabs;
     }
 }

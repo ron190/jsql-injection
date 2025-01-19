@@ -40,12 +40,13 @@ import java.util.stream.StreamSupport;
  * Abstract manager containing a drag and drop list of item.
  */
 public abstract class AbstractManagerList extends JPanel {
-    
+
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
-    
+
+    public static final String PRIVILEGE_TOOLTIP = "PRIVILEGE_TOOLTIP";
     protected final transient List<ItemList> itemsList = new ArrayList<>();
     protected final JPanel lastLine = new JPanel();
 
@@ -123,7 +124,7 @@ public abstract class AbstractManagerList extends JPanel {
     }
 
     public void buildPrivilege() {
-        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("PRIVILEGE_TOOLTIP")));
+        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(AbstractManagerList.PRIVILEGE_TOOLTIP)));
         this.privilege = new JLabel(I18nUtil.valueByKey("PRIVILEGE_LABEL"), UiUtil.SQUARE.icon, SwingConstants.LEFT) {
             @Override
             public JToolTip createToolTip() {
@@ -131,8 +132,8 @@ public abstract class AbstractManagerList extends JPanel {
             }
         };
         I18nViewUtil.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
-        I18nViewUtil.addComponentForKey("PRIVILEGE_TOOLTIP", tooltip.get());
-        this.privilege.setToolTipText(I18nUtil.valueByKey("PRIVILEGE_TOOLTIP"));
+        I18nViewUtil.addComponentForKey(AbstractManagerList.PRIVILEGE_TOOLTIP, tooltip.get());
+        this.privilege.setToolTipText(I18nUtil.valueByKey(AbstractManagerList.PRIVILEGE_TOOLTIP));
 
         this.lastLine.add(Box.createHorizontalStrut(5));
         this.lastLine.add(this.privilege);

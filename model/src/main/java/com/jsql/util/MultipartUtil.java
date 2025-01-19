@@ -24,7 +24,7 @@ public class MultipartUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
         if (!hasFoundInjection) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey("LOG_CHECKING") +"Checking multipart...");
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} multipart...", I18nUtil.valueByKey("LOG_CHECKING"));
         } else {
             return true;
         }

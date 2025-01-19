@@ -53,7 +53,7 @@ public class TabManagersCards extends JPanel {
             new ManagerCoder(), managerScanList
         );
         AtomicInteger i = new AtomicInteger();
-        TabManagers.TABS.forEach(modelSvgIcon -> this.buildI18nTab(
+        MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(modelSvgIcon -> this.buildI18nTab(
             modelSvgIcon.keyLabel,
             managers.get(i.getAndIncrement())
         ));

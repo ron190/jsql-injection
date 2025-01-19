@@ -20,6 +20,8 @@ Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki/Feature
 
 For programmers, access the generated [Maven reports](https://ron190.github.io/jsql-injection/site/) and [Sonar analysis](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection) to analyze internal metrics, and open the [programming section](https://github.com/ron190/jsql-injection/wiki/Programming-jSQL) in the wiki for more details.
 
+To implement new modules, refer to the [API documentation](https://ron190.github.io/jsql-injection/site/xref/index.html)
+
 ## Install
 First, install :coffee: [Java](http://java.com) 11 or up to version 23, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.103.jar` to run the software.
 

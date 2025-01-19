@@ -29,7 +29,7 @@ public class CookiesUtil {
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam()) {
                 return false;
             }
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey("LOG_CHECKING") +" cookies...");
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} cookies...", I18nUtil.valueByKey("LOG_CHECKING"));
         } else {
             return true;
         }

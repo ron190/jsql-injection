@@ -59,6 +59,7 @@ public class PanelAddressBar extends JPanel {
     private final AtomicReference<JRadioButton> atomicRadioHeader = new AtomicReference<>();
 
     private static final String KEY_ADDRESS_BAR_PLACEHOLDER = "ADDRESS_BAR_PLACEHOLDER";
+    private static final String BUTTON_ADVANCED = "BUTTON_ADVANCED";
 
     // Current injection method
     private AbstractMethodInjection methodInjection = MediatorHelper.model().getMediatorMethod().getQuery();
@@ -353,7 +354,7 @@ public class PanelAddressBar extends JPanel {
     }
 
     private JLabel initializeAdvancedButton() {
-        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("BUTTON_ADVANCED")));
+        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(PanelAddressBar.BUTTON_ADVANCED)));
         var advancedButton = new JLabel(UiUtil.ARROW_DOWN.icon) {
             @Override
             public JToolTip createToolTip() {
@@ -361,8 +362,8 @@ public class PanelAddressBar extends JPanel {
             }
         };
         advancedButton.setName("advancedButton");
-        advancedButton.setToolTipText(I18nUtil.valueByKey("BUTTON_ADVANCED"));
-        I18nViewUtil.addComponentForKey("BUTTON_ADVANCED", tooltip.get());
+        advancedButton.setToolTipText(I18nUtil.valueByKey(PanelAddressBar.BUTTON_ADVANCED));
+        I18nViewUtil.addComponentForKey(PanelAddressBar.BUTTON_ADVANCED, tooltip.get());
         advancedButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

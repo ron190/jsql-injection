@@ -47,6 +47,8 @@ public final class StringUtil {
     public static final String POST = "POST";
     public static final String INFORMATION_SCHEMA = "information_schema";
     public static final String APP_NAME = "jSQL Injection";
+    public static final String ENCODE_TO = "Encode to ";
+    public static final String DECODE_FROM = "Decode from ";
 
     /**
      * This utility class defines a schema used to encode a text into a specialized

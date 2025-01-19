@@ -1,5 +1,6 @@
 package com.jsql.util;
 
+import com.jsql.model.exception.JSqlRuntimeException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,7 +55,7 @@ public class PropertiesUtil {
             .forEach(key -> countGui.getAndIncrement());
             statusGui = String.format("gui %s %s%% %s",
                 newLocale.getDisplayLanguage(newLocale),
-                Float.valueOf((float) (countGui.get() * 100) / propertiesRoot.entrySet().size()).intValue(),
+                (countGui.get() * 100) / propertiesRoot.entrySet().size(),
                 countGui.get() <= 0 ? StringUtils.EMPTY : "("+ countGui.get() +" items)"
             );
         }
@@ -66,7 +67,7 @@ public class PropertiesUtil {
             .forEach(key -> countJvm.getAndIncrement());
             statusJvm = String.format("jvm %s %s%% %s",
                 Locale.getDefault().getDisplayLanguage(newLocale),
-                Float.valueOf((float) (countJvm.get() * 100) / propertiesRoot.entrySet().size()).intValue(),
+                (countJvm.get() * 100) / propertiesRoot.entrySet().size(),
                 countJvm.get() <= 0 ? StringUtils.EMPTY : " ("+ countJvm.get() +" items)"
             );
         }
@@ -92,7 +93,7 @@ public class PropertiesUtil {
                 .replaceAll("a");
             properties.load(new StringReader(rootI18nFixed));
         } catch (IOException | URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new JSqlRuntimeException(e);
         }
         return properties;
     }
