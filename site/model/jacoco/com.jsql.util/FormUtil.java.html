@@ -42,7 +42,7 @@ public class FormUtil {
 <span class="nc" id="L42">                String.format(</span>
                     &quot;%n&lt;form action=\&quot;%s\&quot; method=\&quot;%s\&quot; /&gt;&quot;,
 <span class="nc" id="L44">                    form.attr(&quot;action&quot;),</span>
-<span class="nc" id="L45">                    form.attr(FORM_ATTR_VALUE)</span>
+<span class="nc" id="L45">                    form.attr(FormUtil.FORM_ATTR_VALUE)</span>
                 )
             );
 <span class="nc bnc" id="L48" title="All 2 branches missed.">            for (Element input: form.select(&quot;input&quot;)) {</span>
@@ -50,7 +50,7 @@ public class FormUtil {
 <span class="nc" id="L50">                    String.format(</span>
                         &quot;%n    &lt;input name=\&quot;%s\&quot; value=\&quot;%s\&quot; /&gt;&quot;,
 <span class="nc" id="L52">                        input.attr(&quot;name&quot;),</span>
-<span class="nc" id="L53">                        input.attr(INPUT_ATTR_VALUE)</span>
+<span class="nc" id="L53">                        input.attr(FormUtil.INPUT_ATTR_VALUE)</span>
                     )
                 );
 <span class="nc" id="L56">                mapForms.get(form).add(input);</span>
@@ -75,20 +75,20 @@ public class FormUtil {
         
 <span class="nc bnc" id="L76" title="All 2 branches missed.">        for (Entry&lt;Element, List&lt;Element&gt;&gt; form: mapForms.entrySet()) {</span>
 <span class="nc bnc" id="L77" title="All 2 branches missed.">            for (Element input: form.getValue()) {</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">                if (&quot;get&quot;.equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">                if (StringUtil.GET.equalsIgnoreCase(form.getKey().attr(FormUtil.FORM_ATTR_VALUE))) {</span>
 <span class="nc" id="L79">                    this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(</span>
                         0,
                         new SimpleEntry&lt;&gt;(
 <span class="nc" id="L82">                            input.attr(&quot;name&quot;),</span>
-<span class="nc" id="L83">                            input.attr(INPUT_ATTR_VALUE)</span>
+<span class="nc" id="L83">                            input.attr(FormUtil.INPUT_ATTR_VALUE)</span>
                         )
                     );
-<span class="nc bnc" id="L86" title="All 2 branches missed.">                } else if (&quot;post&quot;.equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                } else if (StringUtil.POST.equalsIgnoreCase(form.getKey().attr(FormUtil.FORM_ATTR_VALUE))) {</span>
 <span class="nc" id="L87">                    this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(</span>
                         0,
                         new SimpleEntry&lt;&gt;(
 <span class="nc" id="L90">                            input.attr(&quot;name&quot;),</span>
-<span class="nc" id="L91">                            input.attr(INPUT_ATTR_VALUE)</span>
+<span class="nc" id="L91">                            input.attr(FormUtil.INPUT_ATTR_VALUE)</span>
                         )
                     );
                 }

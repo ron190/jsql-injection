@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.model.accessible;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.bean.database.AbstractElementDatabase;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.bean.database.MockElement;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.InjectionFailureException;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.StoppedByUserSlidingException;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.suspendable.SuspendableGetRows;
@@ -72,7 +72,7 @@
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>                  sourcePage,
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>                  false,
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>                  1,
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>                  AbstractElementDatabase.MOCK,
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>                  MockElement.MOCK,
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>                  <span class="jxr_string">"file"</span>
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>              );
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          } <strong class="jxr_keyword">catch</strong> (<a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> e) {

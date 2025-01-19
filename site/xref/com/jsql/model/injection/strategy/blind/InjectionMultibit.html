@@ -51,7 +51,7 @@
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 8 ; i++) {
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>              callablesId.add(
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>                  <strong class="jxr_keyword">new</strong> <a name="CallableMultibit" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableMultibit.html#CallableMultibit">CallableMultibit</a>(
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>                      <span class="jxr_string">""</span>+i,
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>                      String.valueOf(i),
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>                      <strong class="jxr_keyword">this</strong>,
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>                      <span class="jxr_string">"multi#ref~"</span> + i
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>                  )
@@ -69,10 +69,10 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>                  } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>                      <strong class="jxr_keyword">this</strong>.diffsCommonWithAllIds.retainAll(diffsWithReference);
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>                  }
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>                  diffsById.add(diffsWithReference);
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>                  <strong class="jxr_keyword">this</strong>.diffsById.add(diffsWithReference);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>              }
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>              <strong class="jxr_keyword">for</strong> (List&lt;Diff&gt; diffById : diffsById) {
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>              <strong class="jxr_keyword">for</strong> (List&lt;Diff&gt; diffById : <strong class="jxr_keyword">this</strong>.diffsById) {
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>                  diffById.removeAll(<strong class="jxr_keyword">this</strong>.diffsCommonWithAllIds);
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>              }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          } <strong class="jxr_keyword">catch</strong> (ExecutionException e) {
@@ -139,7 +139,7 @@
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">char</strong>[] initializeBinaryMask(List&lt;<strong class="jxr_keyword">char</strong>[]&gt; bytes, <a name="CallableMultibit" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableMultibit.html#CallableMultibit">CallableMultibit</a> currentCallable) {
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>         <em class="jxr_comment">// Bits for current url</em>
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>         <strong class="jxr_keyword">char</strong>[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>         extractBitsFromBlock(currentCallable, asciiCodeMask);
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>         <strong class="jxr_keyword">this</strong>.extractBitsFromBlock(currentCallable, asciiCodeMask);
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>         <strong class="jxr_keyword">return</strong> asciiCodeMask;
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     }
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> 
@@ -148,11 +148,11 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> extractBitsFromBlock(<a name="CallableMultibit" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableMultibit.html#CallableMultibit">CallableMultibit</a> currentCallable, <strong class="jxr_keyword">char</strong>[] bits) {
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>         <strong class="jxr_keyword">if</strong> (currentCallable.block == 1) {
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>             convertIdPageToBits(currentCallable.idPage, bits, 0, 1, 2);
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>             <strong class="jxr_keyword">this</strong>.convertIdPageToBits(currentCallable.idPage, bits, 0, 1, 2);
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (currentCallable.block == 2) {
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>             convertIdPageToBits(currentCallable.idPage, bits, 3, 4, 5);
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>             <strong class="jxr_keyword">this</strong>.convertIdPageToBits(currentCallable.idPage, bits, 3, 4, 5);
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (currentCallable.block == 3) {
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>             convertIdPageToBits(currentCallable.idPage, bits, -1, 6,7);
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>             <strong class="jxr_keyword">this</strong>.convertIdPageToBits(currentCallable.idPage, bits, -1, 6,7);
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>         }
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>     }
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
@@ -182,7 +182,7 @@
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>     }
 <a class="jxr_linenumber" name="L175" href="#L175">175</a> 
 <a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">public</strong> List&lt;List&lt;Diff&gt;&gt; getDiffsById() {
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>         <strong class="jxr_keyword">return</strong> diffsById;
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.diffsById;
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>     }
 <a class="jxr_linenumber" name="L179" href="#L179">179</a> }
 </pre>

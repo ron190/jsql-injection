@@ -11,11 +11,8 @@
 package com.jsql.view.swing.manager.util;
 
 import com.jsql.util.LogLevelUtil;
-import com.jsql.util.StringUtil;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.manager.ManagerCoder;
-import com.jsql.view.swing.util.UiUtil;
-import org.apache.commons.codec.DecoderException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,8 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
 
 /**
  * Action run when this.coderManager.encoding.
@@ -35,56 +30,52 @@ public class CoderListener implements ActionListener {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L38">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L33">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private final ManagerCoder coderManager;
     
-<span class="fc" id="L42">    public CoderListener(ManagerCoder coderManager) {</span>
-<span class="fc" id="L43">        this.coderManager = coderManager;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L37">    public CoderListener(ManagerCoder coderManager) {</span>
+<span class="fc" id="L38">        this.coderManager = coderManager;</span>
+<span class="fc" id="L39">    }</span>
     
-    public void actionPerformed() {
-<span class="fc" id="L47">        this.transform(this.coderManager.getMenuMethod().getText());</span>
-<span class="fc" id="L48">    }</span>
+    public void actionPerformed() {  // type
+<span class="fc" id="L42">        this.transform(this.coderManager.getMenuMethod().getText());</span>
+<span class="fc" id="L43">    }</span>
     
-    public void actionPerformed(String nameMethod) {
-<span class="fc" id="L51">        this.transform(nameMethod);</span>
-<span class="fc" id="L52">    }</span>
+    public void actionPerformed(String nameMethod) {  // hover
+<span class="fc" id="L46">        this.transform(nameMethod);</span>
+<span class="fc" id="L47">    }</span>
     
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-<span class="nc" id="L56">        this.transform(this.coderManager.getMenuMethod().getText());</span>
-<span class="nc" id="L57">    }</span>
+    public void actionPerformed(ActionEvent actionEvent) {  // click
+<span class="nc" id="L51">        this.coderManager.getMenuMethod().setText(actionEvent.getActionCommand());</span>
+<span class="nc" id="L52">        this.transform(this.coderManager.getMenuMethod().getText());</span>
+<span class="nc" id="L53">    }</span>
     
     private void transform(String labelMethodMenu) {
-<span class="fc" id="L60">        String nameMethod = labelMethodMenu.replace(&quot;Hash to &quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L56">        String nameMethod = labelMethodMenu.replace(&quot;Hash to &quot;, StringUtils.EMPTY);</span>
         String result;
-<span class="fc" id="L62">        String textInput = this.coderManager.getTextInput().getText();</span>
+<span class="fc" id="L58">        String textInput = this.coderManager.getTextInput().getText();</span>
         
         try {
-<span class="fc" id="L65">            if (</span>
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">                StringUtils.isEmpty(textInput)</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">                &amp;&amp; !Arrays.asList(ManagerCoder.HASHES_FOR_EMPTY_TEXT).contains(nameMethod)</span>
+<span class="fc" id="L61">            if (</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">                StringUtils.isEmpty(textInput)</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                &amp;&amp; !ActionCoder.getHashesEmpty().contains(nameMethod)</span>
             ) {
-<span class="nc" id="L69">                result = StringUtil.formatReport(LogLevelUtil.COLOR_RED, &quot;Text to convert not found&quot;);</span>
+<span class="nc" id="L65">                throw new IllegalArgumentException(&quot;text to convert not found&quot;);</span>
             } else {
-<span class="fc" id="L71">                result = ActionCoder.forName(nameMethod)</span>
-<span class="pc" id="L72">                    .orElseThrow(() -&gt; new NoSuchElementException(&quot;Unsupported encoding or decoding method&quot;))</span>
-<span class="fc" id="L73">                    .run(textInput);</span>
-<span class="fc" id="L74">                result = StringUtil.fromHtml(result);  // Prevent decoded HTML tags from result not rendered in Coder textPane</span>
+<span class="fc" id="L67">                result = ActionCoder.forName(nameMethod).orElseThrow().run(textInput);</span>
             }
-<span class="nc" id="L76">        } catch (IllegalArgumentException | NoSuchAlgorithmException | IOException | DecoderException e) {</span>
-<span class="nc" id="L77">            result = StringUtil.formatReport(LogLevelUtil.COLOR_RED, &quot;Decoding failed: &quot; + e.getMessage());</span>
-<span class="nc" id="L78">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="fc" id="L79">        }</span>
-        
-<span class="fc" id="L81">        this.coderManager.getResult().setText(</span>
-<span class="fc" id="L82">            String.format(</span>
-                &quot;&lt;html&gt;&lt;span style=\&quot;font-family:'%s'\&quot;&gt;%s&lt;/span&gt;&lt;/html&gt;&quot;,
-                UiUtil.FONT_NAME_MONO_NON_ASIAN,
-                result
-            )
-        );
-<span class="fc" id="L88">    }</span>
+<span class="nc" id="L69">        } catch (</span>
+            IllegalArgumentException  // also thrown by Base64
+            | IOException
+            | NoSuchAlgorithmException e
+        ) {
+<span class="nc" id="L74">            result = &quot;Coder failure: &quot; + e.getMessage();</span>
+<span class="nc" id="L75">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="fc" id="L76">        }</span>
+
+<span class="fc" id="L78">        this.coderManager.getResult().setText(result);</span>
+<span class="fc" id="L79">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

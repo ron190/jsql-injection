@@ -14,38 +14,29 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
+import javax.swing.*;
+
 /**
  * Create a new tab for the values.
  */
 public class CreateValuesTab extends CreateTabHelper implements InteractionCommand {
     
-    /**
-     * Array of column names, displayed in header table.
-     */
     private final String[] columnNames;
-
-    /**
-     * 2D array of values.
-     */
     private final String[][] data;
-
-    /**
-     * The table containing the data.
-     */
     private final AbstractElementDatabase table;
 
     /**
      * @param interactionParams Names of columns, table's values and corresponding table
      */
-<span class="fc" id="L40">    public CreateValuesTab(Object[] interactionParams) {</span>
-<span class="fc" id="L41">        this.columnNames = (String[]) interactionParams[0];  // Array of column names, displayed in header table</span>
-<span class="fc" id="L42">        this.data = (String[][]) interactionParams[1];  // 2D array of values</span>
-<span class="fc" id="L43">        this.table = (AbstractElementDatabase) interactionParams[2];  // The table containing the data</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L31">    public CreateValuesTab(Object[] interactionParams) {</span>
+<span class="fc" id="L32">        this.columnNames = (String[]) interactionParams[0];  // Array of column names, displayed in header table</span>
+<span class="fc" id="L33">        this.data = (String[][]) interactionParams[1];  // 2D array of values</span>
+<span class="fc" id="L34">        this.table = (AbstractElementDatabase) interactionParams[2];  // The table containing the data</span>
+<span class="fc" id="L35">    }</span>
 
     @Override
     public void execute() {
-<span class="fc" id="L48">        MediatorHelper.treeDatabase().createValuesTab(this.data, this.columnNames, this.table);</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L39">        SwingUtilities.invokeLater(() -&gt; MediatorHelper.treeDatabase().createValuesTab(this.data, this.columnNames, this.table));</span>
+<span class="fc" id="L40">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

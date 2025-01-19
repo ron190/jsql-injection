@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.action;
 
-import com.jsql.MainApplication;
+import com.jsql.MainApp;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.SystemUtils;
@@ -41,7 +41,7 @@ public class ActionNewWindow extends AbstractAction {
 <span class="fc" id="L41">    private static final List&lt;String&gt; COMMANDS_DEFAULT = Arrays.asList(</span>
         &quot;-cp&quot;,
         SystemUtils.JAVA_CLASS_PATH,
-<span class="fc" id="L44">        MainApplication.class.getName()</span>
+<span class="fc" id="L44">        MainApp.class.getName()</span>
     );
     
     private final List&lt;String&gt; commands;
@@ -53,9 +53,9 @@ public class ActionNewWindow extends AbstractAction {
 <span class="fc" id="L53">    }</span>
 
 <span class="fc" id="L55">    public ActionNewWindow(String name, String... commands) {</span>
-<span class="fc" id="L56">        this.commands = new ArrayList&lt;&gt;(List.of(PATH));</span>
+<span class="fc" id="L56">        this.commands = new ArrayList&lt;&gt;(List.of(ActionNewWindow.PATH));</span>
 <span class="fc" id="L57">        this.commands.addAll(Arrays.asList(commands));</span>
-<span class="fc" id="L58">        this.commands.addAll(COMMANDS_DEFAULT);</span>
+<span class="fc" id="L58">        this.commands.addAll(ActionNewWindow.COMMANDS_DEFAULT);</span>
 <span class="fc" id="L59">        this.putValue(Action.NAME, name);</span>
 <span class="fc" id="L60">    }</span>
 

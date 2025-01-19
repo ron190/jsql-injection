@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelSvgIcon.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.util</a> &gt; <span class="el_source">ModelSvgIcon.java</span></div><h1>ModelSvgIcon.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.util;
+
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Objects;
+
+public class ModelSvgIcon {
+    public final String name;
+    public final Color from;
+    public final String toDarkUi;
+    public final Color toDark;
+    public final float scale;
+    public final FlatSVGIcon icon;
+    public String keyLabel;
+    public String keyTooltip;
+
+    ModelSvgIcon(String name, float scale) {
+<span class="fc" id="L20">        this(name, Color.BLACK, &quot;ComboBox.foreground&quot;, scale);</span>
+<span class="fc" id="L21">    }</span>
+
+    ModelSvgIcon(String name, int from) {
+<span class="fc" id="L24">        this(name, new Color(from), &quot;ComboBox.foreground&quot;, 0.02f);</span>
+<span class="fc" id="L25">    }</span>
+
+    ModelSvgIcon(String name, Color from, String toDark, float scale) {
+<span class="fc" id="L28">        this(name, from, toDark, UIManager.getColor(toDark), scale);</span>
+<span class="fc" id="L29">    }</span>
+
+<span class="fc" id="L31">    ModelSvgIcon(String name, Color from, String toDarkUi, Color toDark, float scale) {</span>
+<span class="fc" id="L32">        this.name = name;</span>
+<span class="fc" id="L33">        this.from = from;</span>
+<span class="fc" id="L34">        this.toDarkUi = toDarkUi;</span>
+<span class="fc" id="L35">        this.toDark = toDark;</span>
+<span class="fc" id="L36">        this.scale = scale;</span>
+<span class="fc" id="L37">        this.icon = this.createSvgIcon(</span>
+            name,
+            from,
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            toDarkUi != null</span>
+<span class="fc" id="L41">            ? UIManager.getColor(toDarkUi)</span>
+<span class="fc" id="L42">            : toDark,</span>
+            scale
+        );
+<span class="fc" id="L45">    }</span>
+
+    public FlatSVGIcon createSvgIcon(String name, Color from, Color toDark, float scale) {
+<span class="fc" id="L48">        return new FlatSVGIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(String.format(</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            name.endsWith(&quot;.svg&quot;) ? &quot;%s&quot; : &quot;swing/images/icons/%s.svg&quot;,</span>
+            name
+        ))))
+<span class="fc" id="L52">        .setColorFilter(new FlatSVGIcon.ColorFilter().add(from, null, toDark))</span>
+<span class="fc" id="L53">        .derive(scale);</span>
+    }
+
+    public void setColorFilter() {
+<span class="fc" id="L57">        this.icon.setColorFilter(new FlatSVGIcon.ColorFilter().add(</span>
+            this.from,
+            null,
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            this.toDarkUi != null</span>
+<span class="fc" id="L61">            ? UIManager.getColor(this.toDarkUi)</span>
+<span class="fc" id="L62">            : this.toDark</span>
+        ));
+<span class="fc" id="L64">    }</span>
+
+    public ModelSvgIcon withTab(String keyLabel, String keyTooltip) {
+<span class="fc" id="L67">        this.keyLabel = keyLabel;</span>
+<span class="fc" id="L68">        this.keyTooltip = keyTooltip;</span>
+<span class="fc" id="L69">        return this;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

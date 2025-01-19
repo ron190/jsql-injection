@@ -26,7 +26,7 @@
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  		<strong class="jxr_keyword">this</strong>.countryRepository = countryRepository;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  	}
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  	@PayloadRoot(namespace = NAMESPACE_URI, localPart = <span class="jxr_string">"getCountryRequest"</span>)
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  	@PayloadRoot(namespace = CountryEndpoint.NAMESPACE_URI, localPart = <span class="jxr_string">"getCountryRequest"</span>)
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  	@ResponsePayload
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  	<strong class="jxr_keyword">public</strong> GetCountryResponse getCountry(@RequestPayload GetCountryRequest request) <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  	    

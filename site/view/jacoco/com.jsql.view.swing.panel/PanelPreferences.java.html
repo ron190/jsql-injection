@@ -50,17 +50,17 @@ public class PanelPreferences extends JPanel {
 <span class="fc" id="L50">        JList&lt;CategoryPreference&gt; categories = PanelPreferences.getCategories(cards);</span>
 <span class="fc" id="L51">        this.add(categories, BorderLayout.LINE_START);</span>
 
-<span class="fc" id="L53">        this.addToCard(cards, panelInjection, CategoryPreference.INJECTION);</span>
-<span class="fc" id="L54">        this.addToCard(cards, panelTampering, CategoryPreference.TAMPERING);</span>
-<span class="fc" id="L55">        this.addToCard(cards, panelConnection, CategoryPreference.CONNECTION);</span>
-<span class="fc" id="L56">        this.addToCard(cards, panelStrategies, CategoryPreference.STRATEGIES);</span>
-<span class="fc" id="L57">        this.addToCard(cards, panelAuthentication, CategoryPreference.AUTHENTICATION);</span>
-<span class="fc" id="L58">        this.addToCard(cards, panelUserAgent, CategoryPreference.USER_AGENT);</span>
-<span class="fc" id="L59">        this.addToCard(cards, panelProxy, CategoryPreference.PROXY);</span>
-<span class="fc" id="L60">        this.addToCard(cards, panelGeneral, CategoryPreference.GENERAL);</span>
+<span class="fc" id="L53">        this.addToCard(cards, this.panelInjection, CategoryPreference.INJECTION);</span>
+<span class="fc" id="L54">        this.addToCard(cards, this.panelTampering, CategoryPreference.TAMPERING);</span>
+<span class="fc" id="L55">        this.addToCard(cards, this.panelConnection, CategoryPreference.CONNECTION);</span>
+<span class="fc" id="L56">        this.addToCard(cards, this.panelStrategies, CategoryPreference.STRATEGIES);</span>
+<span class="fc" id="L57">        this.addToCard(cards, this.panelAuthentication, CategoryPreference.AUTHENTICATION);</span>
+<span class="fc" id="L58">        this.addToCard(cards, this.panelUserAgent, CategoryPreference.USER_AGENT);</span>
+<span class="fc" id="L59">        this.addToCard(cards, this.panelProxy, CategoryPreference.PROXY);</span>
+<span class="fc" id="L60">        this.addToCard(cards, this.panelGeneral, CategoryPreference.GENERAL);</span>
 <span class="fc" id="L61">        this.add(cards, BorderLayout.CENTER);</span>
 
-<span class="fc" id="L63">        SwingUtilities.invokeLater(() -&gt; MediatorHelper.menubar().switchLocale(I18nUtil.getLocaleDefault()));  // required for arabic</span>
+<span class="fc" id="L63">        SwingUtilities.invokeLater(() -&gt; MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale()));  // required for arabic</span>
 <span class="fc" id="L64">    }</span>
 
     private static JList&lt;CategoryPreference&gt; getCategories(JPanel cards) {
@@ -117,7 +117,7 @@ public class PanelPreferences extends JPanel {
     }
 
     public PanelUserAgent getPanelUserAgent() {
-<span class="fc" id="L120">        return panelUserAgent;</span>
+<span class="fc" id="L120">        return this.panelUserAgent;</span>
     }
 
     public ActionListener getActionListenerSave() {

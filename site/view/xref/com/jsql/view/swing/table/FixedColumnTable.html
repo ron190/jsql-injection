@@ -114,9 +114,9 @@
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">this</strong>.mainTable.getRowSorter().addRowSorterListener(rowSorterEvent -&gt; {
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>             modelFixedTable.fireTableDataChanged();
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>             <em class="jxr_comment">// Copy data from hidden column in main table</em>
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; FixedColumnTable.<strong class="jxr_keyword">this</strong>.mainTable.getRowCount() ; i++) {
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>                 FixedColumnTable.<strong class="jxr_keyword">this</strong>.fixedTable.setValueAt(FixedColumnTable.<strong class="jxr_keyword">this</strong>.mainTable.getValueAt(i, 0), i, 0);
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>                 FixedColumnTable.<strong class="jxr_keyword">this</strong>.fixedTable.setValueAt(FixedColumnTable.<strong class="jxr_keyword">this</strong>.mainTable.getValueAt(i, 1), i, 1);
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0; i &lt; <strong class="jxr_keyword">this</strong>.mainTable.getRowCount() ; i++) {
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>                 <strong class="jxr_keyword">this</strong>.fixedTable.setValueAt(<strong class="jxr_keyword">this</strong>.mainTable.getValueAt(i, 0), i, 0);
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>                 <strong class="jxr_keyword">this</strong>.fixedTable.setValueAt(<strong class="jxr_keyword">this</strong>.mainTable.getValueAt(i, 1), i, 1);
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>             }
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         });
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         

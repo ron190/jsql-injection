@@ -10,8 +10,11 @@
  ******************************************************************************/
 package com.jsql.view.swing.dialog;
 
+import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
+import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
@@ -38,134 +41,137 @@ public class DialogAbout extends JDialog {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L41">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L44">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Button receiving focus.
      */
-<span class="fc" id="L46">    private JButton buttonClose = null;</span>
+<span class="fc" id="L49">    private JButton buttonClose = null;</span>
 
     /**
      * Create a dialog about project general information.
      */
     public DialogAbout() {
-<span class="fc" id="L52">        super(MediatorHelper.frame(), &quot;About jSQL Injection&quot;, Dialog.ModalityType.MODELESS);</span>
-<span class="fc" id="L53">        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);</span>
-<span class="fc" id="L54">        this.setIconImages(UiUtil.getIcons());  // Define a small and large app icon</span>
+<span class="fc" id="L55">        super(MediatorHelper.frame(), I18nUtil.valueByKey(&quot;ABOUT_WINDOW_TITLE&quot;) +&quot; &quot;+ StringUtil.APP_NAME, Dialog.ModalityType.MODELESS);</span>
+<span class="fc" id="L56">        I18nViewUtil.addComponentForKey(&quot;ABOUT_WINDOW_TITLE&quot;, this);</span>
+<span class="fc" id="L57">        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);</span>
+<span class="fc" id="L58">        this.setIconImages(UiUtil.getIcons());  // Define a small and large app icon</span>
 
-<span class="fc" id="L56">        ActionListener escapeListener = actionEvent -&gt; DialogAbout.this.dispose();  // Action for ESCAPE key</span>
-<span class="fc" id="L57">        this.getRootPane().registerKeyboardAction(</span>
+<span class="fc" id="L60">        ActionListener escapeListener = actionEvent -&gt; this.dispose();  // Action for ESCAPE key</span>
+<span class="fc" id="L61">        this.getRootPane().registerKeyboardAction(</span>
             escapeListener,
-<span class="fc" id="L59">            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),</span>
+<span class="fc" id="L63">            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),</span>
             JComponent.WHEN_IN_FOCUSED_WINDOW
         );
         
-<span class="fc" id="L63">        this.setLayout(new BorderLayout());</span>
+<span class="fc" id="L67">        this.setLayout(new BorderLayout());</span>
 
-<span class="fc" id="L65">        Container dialogPane = this.getContentPane();</span>
-<span class="fc" id="L66">        JPanel lastLine = this.initializeLastLine(escapeListener);</span>
+<span class="fc" id="L69">        Container dialogPane = this.getContentPane();</span>
+<span class="fc" id="L70">        JPanel lastLine = this.initializeLastLine(escapeListener);</span>
 
-<span class="fc" id="L68">        var labelIcon = new JLabel(UiUtil.APP_ABOUT.icon);</span>
-<span class="fc" id="L69">        labelIcon.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));</span>
-<span class="fc" id="L70">        dialogPane.add(labelIcon, BorderLayout.WEST);</span>
-<span class="fc" id="L71">        dialogPane.add(lastLine, BorderLayout.SOUTH);</span>
+<span class="fc" id="L72">        var labelIcon = new JLabel(UiUtil.APP_ABOUT.icon);</span>
+<span class="fc" id="L73">        labelIcon.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));</span>
+<span class="fc" id="L74">        dialogPane.add(labelIcon, BorderLayout.WEST);</span>
+<span class="fc" id="L75">        dialogPane.add(lastLine, BorderLayout.SOUTH);</span>
 
-<span class="fc" id="L73">        final JEditorPane text = this.initializeEditorPane();  // Contact info, use HTML text</span>
-<span class="fc" id="L74">        dialogPane.add(new JScrollPane(text), BorderLayout.CENTER);</span>
+<span class="fc" id="L77">        final JEditorPane text = this.initializeEditorPane();  // Contact info, use HTML text</span>
+<span class="fc" id="L78">        dialogPane.add(new JScrollPane(text), BorderLayout.CENTER);</span>
 
-<span class="fc" id="L76">        this.initializeDialog();</span>
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L80">        this.initializeDialog();</span>
+<span class="fc" id="L81">    }</span>
 
     private JPanel initializeLastLine(ActionListener escapeListener) {
-<span class="fc" id="L80">        final var buttonWebpage = new JButton(&quot;Webpage&quot;);</span>
-<span class="fc" id="L81">        buttonWebpage.addActionListener(ev -&gt; {</span>
+<span class="fc" id="L84">        final var buttonWebpage = new JButton(I18nUtil.valueByKey(&quot;ABOUT_WEBPAGE&quot;));</span>
+<span class="fc" id="L85">        I18nViewUtil.addComponentForKey(&quot;ABOUT_WEBPAGE&quot;, buttonWebpage);</span>
+<span class="fc" id="L86">        buttonWebpage.addActionListener(ev -&gt; {</span>
             try {
-<span class="nc" id="L83">                Desktop.getDesktop().browse(new URI(MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.url&quot;)));</span>
-<span class="nc" id="L84">            } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
-<span class="nc" id="L85">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Browsing to Url failed&quot;, e);</span>
-<span class="nc" id="L86">            }</span>
-<span class="nc" id="L87">        });</span>
+<span class="nc" id="L88">                Desktop.getDesktop().browse(new URI(MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.url&quot;)));</span>
+<span class="nc" id="L89">            } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
+<span class="nc" id="L90">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Browsing to Url failed&quot;, e);</span>
+<span class="nc" id="L91">            }</span>
+<span class="nc" id="L92">        });</span>
 
-<span class="fc" id="L89">        this.buttonClose = new JButton(&quot;Close&quot;);</span>
-<span class="fc" id="L90">        this.buttonClose.addActionListener(escapeListener);</span>
+<span class="fc" id="L94">        this.buttonClose = new JButton(I18nUtil.valueByKey(&quot;ABOUT_CLOSE&quot;));</span>
+<span class="fc" id="L95">        I18nViewUtil.addComponentForKey(&quot;ABOUT_CLOSE&quot;, this.buttonClose);</span>
+<span class="fc" id="L96">        this.buttonClose.addActionListener(escapeListener);</span>
 
-<span class="fc" id="L92">        var lastLine = new JPanel();</span>
-<span class="fc" id="L93">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));</span>
-<span class="fc" id="L94">        lastLine.setBorder(UiUtil.BORDER_5PX);</span>
-<span class="fc" id="L95">        lastLine.add(buttonWebpage);</span>
-<span class="fc" id="L96">        lastLine.add(Box.createGlue());</span>
-<span class="fc" id="L97">        lastLine.add(this.buttonClose);</span>
-<span class="fc" id="L98">        return lastLine;</span>
+<span class="fc" id="L98">        var lastLine = new JPanel();</span>
+<span class="fc" id="L99">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));</span>
+<span class="fc" id="L100">        lastLine.setBorder(UiUtil.BORDER_5PX);</span>
+<span class="fc" id="L101">        lastLine.add(buttonWebpage);</span>
+<span class="fc" id="L102">        lastLine.add(Box.createGlue());</span>
+<span class="fc" id="L103">        lastLine.add(this.buttonClose);</span>
+<span class="fc" id="L104">        return lastLine;</span>
     }
 
     private JEditorPane initializeEditorPane() {
-<span class="fc" id="L102">        var editorPane = new JEditorPane();</span>
+<span class="fc" id="L108">        var editorPane = new JEditorPane();</span>
         
         // Fix #82540: NoClassDefFoundError on setText()
         try (
-<span class="fc" id="L106">            InputStream inputStream = DialogAbout.class.getClassLoader().getResourceAsStream(&quot;swing/about.htm&quot;);</span>
-<span class="fc" id="L107">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
-<span class="fc" id="L108">            var reader = new BufferedReader(inputStreamReader)</span>
+<span class="fc" id="L112">            InputStream inputStream = DialogAbout.class.getClassLoader().getResourceAsStream(&quot;swing/about.htm&quot;);</span>
+<span class="fc" id="L113">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
+<span class="fc" id="L114">            var reader = new BufferedReader(inputStreamReader)</span>
         ) {
-<span class="fc" id="L110">            editorPane.setContentType(&quot;text/html&quot;);</span>
-<span class="fc" id="L111">            var result = new StringBuilder();</span>
+<span class="fc" id="L116">            editorPane.setContentType(&quot;text/html&quot;);</span>
+<span class="fc" id="L117">            var result = new StringBuilder();</span>
             String line;
-<span class="fc bfc" id="L113" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
-<span class="fc" id="L114">                result.append(line);</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
+<span class="fc" id="L120">                result.append(line);</span>
             }
-<span class="fc" id="L116">            editorPane.setText(result.toString().replace(</span>
+<span class="fc" id="L122">            editorPane.setText(result.toString().replace(</span>
                 &quot;%JSQLVERSION%&quot;,
-<span class="fc" id="L118">                MediatorHelper.model().getPropertiesUtil().getVersionJsql()</span>
+<span class="fc" id="L124">                MediatorHelper.model().getPropertiesUtil().getVersionJsql()</span>
             ));
-<span class="nc" id="L120">        } catch (NoClassDefFoundError | IOException e) {</span>
-<span class="nc" id="L121">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L122">        }</span>
+<span class="nc" id="L126">        } catch (NoClassDefFoundError | IOException e) {</span>
+<span class="nc" id="L127">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L128">        }</span>
 
-<span class="fc" id="L124">        editorPane.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L130">        editorPane.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="nc" id="L127">                super.mousePressed(e);</span>
-<span class="nc" id="L128">                editorPane.requestFocusInWindow();</span>
-<span class="nc" id="L129">            }</span>
+<span class="nc" id="L133">                super.mousePressed(e);</span>
+<span class="nc" id="L134">                editorPane.requestFocusInWindow();</span>
+<span class="nc" id="L135">            }</span>
         });
-<span class="fc" id="L131">        editorPane.addFocusListener(new FocusAdapter() {</span>
+<span class="fc" id="L137">        editorPane.addFocusListener(new FocusAdapter() {</span>
             @Override
             public void focusGained(FocusEvent focusEvent) {
-<span class="nc" id="L134">                editorPane.getCaret().setVisible(true);</span>
-<span class="nc" id="L135">                editorPane.getCaret().setSelectionVisible(true);</span>
-<span class="nc" id="L136">            }</span>
+<span class="nc" id="L140">                editorPane.getCaret().setVisible(true);</span>
+<span class="nc" id="L141">                editorPane.getCaret().setSelectionVisible(true);</span>
+<span class="nc" id="L142">            }</span>
         });
 
-<span class="fc" id="L139">        editorPane.setDragEnabled(true);</span>
-<span class="fc" id="L140">        editorPane.setEditable(false);</span>
-<span class="fc" id="L141">        editorPane.getCaret().setBlinkRate(0);</span>
-<span class="fc" id="L142">        editorPane.setCaretPosition(0);</span>
-<span class="fc" id="L143">        editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));</span>
-<span class="fc" id="L144">        editorPane.addHyperlinkListener(linkEvent -&gt; {</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">            if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {</span>
+<span class="fc" id="L145">        editorPane.setDragEnabled(true);</span>
+<span class="fc" id="L146">        editorPane.setEditable(false);</span>
+<span class="fc" id="L147">        editorPane.getCaret().setBlinkRate(0);</span>
+<span class="fc" id="L148">        editorPane.setCaretPosition(0);</span>
+<span class="fc" id="L149">        editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));</span>
+<span class="fc" id="L150">        editorPane.addHyperlinkListener(linkEvent -&gt; {</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {</span>
                 try {
-<span class="nc" id="L147">                    Desktop.getDesktop().browse(linkEvent.getURL().toURI());</span>
-<span class="nc" id="L148">                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
-<span class="nc" id="L149">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Browsing to Url failed&quot;, e);</span>
-<span class="nc" id="L150">                }</span>
+<span class="nc" id="L153">                    Desktop.getDesktop().browse(linkEvent.getURL().toURI());</span>
+<span class="nc" id="L154">                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
+<span class="nc" id="L155">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Browsing to Url failed&quot;, e);</span>
+<span class="nc" id="L156">                }</span>
             }
-<span class="nc" id="L152">        });</span>
+<span class="nc" id="L158">        });</span>
         
-<span class="fc" id="L154">        return editorPane;</span>
+<span class="fc" id="L160">        return editorPane;</span>
     }
 
     /**
      * Set back default setting for About frame.
      */
     public final void initializeDialog() {
-<span class="fc" id="L161">        this.setSize(533, 400);</span>
-<span class="fc" id="L162">        this.setLocationRelativeTo(MediatorHelper.frame());</span>
-<span class="fc" id="L163">        this.buttonClose.requestFocusInWindow();</span>
-<span class="fc" id="L164">        this.getRootPane().setDefaultButton(this.buttonClose);</span>
-<span class="fc" id="L165">    }</span>
+<span class="fc" id="L167">        this.setSize(533, 400);</span>
+<span class="fc" id="L168">        this.setLocationRelativeTo(MediatorHelper.frame());</span>
+<span class="fc" id="L169">        this.buttonClose.requestFocusInWindow();</span>
+<span class="fc" id="L170">        this.getRootPane().setDefaultButton(this.buttonClose);</span>
+<span class="fc" id="L171">    }</span>
 
     public void requestButtonFocus() {
-<span class="fc" id="L168">        this.buttonClose.requestFocusInWindow();</span>
-<span class="fc" id="L169">    }</span>
+<span class="fc" id="L174">        this.buttonClose.requestFocusInWindow();</span>
+<span class="fc" id="L175">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

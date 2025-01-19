@@ -90,8 +90,8 @@
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      @Override
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">public</strong> <a name="CallableBlind" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableBlind.html#CallableBlind">CallableBlind</a> call() {
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          String result = <strong class="jxr_keyword">this</strong>.injectionBlind.callUrl(<strong class="jxr_keyword">this</strong>.booleanUrl, <strong class="jxr_keyword">this</strong>.metadataInjectionProcess, <strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">this</strong>.diffsWithReference = DIFF_MATCH_PATCH.diffMain(<strong class="jxr_keyword">this</strong>.injectionBlind.getSourceReferencePage(), result, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>          DIFF_MATCH_PATCH.diffCleanupEfficiency(<strong class="jxr_keyword">this</strong>.diffsWithReference);
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">this</strong>.diffsWithReference = CallableBlind.DIFF_MATCH_PATCH.diffMain(<strong class="jxr_keyword">this</strong>.injectionBlind.getSourceReferencePage(), result, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>          CallableBlind.DIFF_MATCH_PATCH.diffCleanupEfficiency(<strong class="jxr_keyword">this</strong>.diffsWithReference);
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>      }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>      

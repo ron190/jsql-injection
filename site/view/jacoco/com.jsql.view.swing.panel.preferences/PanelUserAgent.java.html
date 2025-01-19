@@ -42,7 +42,7 @@ public class PanelUserAgent extends JPanel {
 <span class="nc" id="L42">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="fc" id="L43">        }</span>
 
-<span class="fc" id="L45">        checkboxIsCustomUserAgent.addActionListener(panelPreferences.getActionListenerSave());</span>
+<span class="fc" id="L45">        this.checkboxIsCustomUserAgent.addActionListener(panelPreferences.getActionListenerSave());</span>
 <span class="fc" id="L46">        JTextArea textfieldCustomUserAgent = new JPopupTextArea(new JTextAreaPlaceholder(&quot;User agent list&quot;)).getProxy();</span>
 <span class="fc" id="L47">        textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));</span>
 <span class="fc" id="L48">        textfieldCustomUserAgent.getCaret().setBlinkRate(500);</span>
@@ -71,7 +71,7 @@ public class PanelUserAgent extends JPanel {
                 groupLayout
 <span class="fc" id="L72">                .createParallelGroup(GroupLayout.Alignment.LEADING, false)</span>
 <span class="fc" id="L73">                .addComponent(labelOrigin)</span>
-<span class="fc" id="L74">                .addComponent(checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L74">                .addComponent(this.checkboxIsCustomUserAgent)</span>
 <span class="fc" id="L75">                .addComponent(scrollPane)</span>
             )
         );
@@ -87,7 +87,7 @@ public class PanelUserAgent extends JPanel {
 <span class="fc" id="L87">            .addGroup(</span>
                 groupLayout
 <span class="fc" id="L89">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L90">                .addComponent(checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L90">                .addComponent(this.checkboxIsCustomUserAgent)</span>
             )
 <span class="fc" id="L92">            .addGroup(</span>
                 groupLayout
@@ -98,7 +98,7 @@ public class PanelUserAgent extends JPanel {
 <span class="fc" id="L98">    }</span>
 
     public JCheckBox getCheckboxIsCustomUserAgent() {
-<span class="fc" id="L101">        return checkboxIsCustomUserAgent;</span>
+<span class="fc" id="L101">        return this.checkboxIsCustomUserAgent;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

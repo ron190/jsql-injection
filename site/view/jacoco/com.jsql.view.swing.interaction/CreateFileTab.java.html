@@ -13,6 +13,8 @@ package com.jsql.view.swing.interaction;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
+import javax.swing.*;
+
 /**
  * Create a new tab for the file.
  */
@@ -36,15 +38,15 @@ public class CreateFileTab extends CreateTabHelper implements InteractionCommand
     /**
      * @param interactionParams Name, content and path of the file
      */
-<span class="fc" id="L39">    public CreateFileTab(Object[] interactionParams) {</span>
-<span class="fc" id="L40">        this.label = (String) interactionParams[0];</span>
-<span class="fc" id="L41">        this.content = (String) interactionParams[1];</span>
-<span class="fc" id="L42">        this.path = (String) interactionParams[2];</span>
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L41">    public CreateFileTab(Object[] interactionParams) {</span>
+<span class="fc" id="L42">        this.label = (String) interactionParams[0];</span>
+<span class="fc" id="L43">        this.content = (String) interactionParams[1];</span>
+<span class="fc" id="L44">        this.path = (String) interactionParams[2];</span>
+<span class="fc" id="L45">    }</span>
 
     @Override
     public void execute() {
-<span class="fc" id="L47">        MediatorHelper.tabResults().createFileTab(this.label, this.content, this.path);</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L49">        SwingUtilities.invokeLater(() -&gt; MediatorHelper.tabResults().addFileTab(this.label, this.content, this.path));</span>
+<span class="fc" id="L50">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

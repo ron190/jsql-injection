@@ -28,13 +28,13 @@
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>              MediatorHelper.tabResults().removeTabAt(closeTabNumber);
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>              <strong class="jxr_keyword">if</strong> (MediatorHelper.tabResults().getTabCount() == 0) {
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>                  <strong class="jxr_keyword">var</strong> splitPaneTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>                  JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitVerticalLeftRight();
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>                  <strong class="jxr_keyword">var</strong> splitPaneTopBottom = MediatorHelper.frame().getSplitNS();
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>                  JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitEW();
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>                  <strong class="jxr_keyword">int</strong> dividerLocation = splitPaneLeftRight.getDividerLocation();
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>                  <strong class="jxr_keyword">var</strong> label = <strong class="jxr_keyword">new</strong> JLabel(UiUtil.APP_RESULT.icon);
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>                  label.setMinimumSize(<strong class="jxr_keyword">new</strong> Dimension(100, 0));
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>                  <strong class="jxr_keyword">if</strong> (ComponentOrientation.LEFT_TO_RIGHT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>                  <strong class="jxr_keyword">if</strong> (ComponentOrientation.LEFT_TO_RIGHT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>                      splitPaneLeftRight.setRightComponent(label);
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>                  } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>                      splitPaneLeftRight.setLeftComponent(label);

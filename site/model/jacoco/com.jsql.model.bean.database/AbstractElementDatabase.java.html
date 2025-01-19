@@ -26,25 +26,6 @@ package com.jsql.model.bean.database;
     protected String elementValue;
 
     /**
-     * Used by non-progressing threads like File, metadata and shells.
-     * Required for suspendable concurrent map tracking.
-     */
-<span class="fc" id="L32">    public static final AbstractElementDatabase MOCK = new AbstractElementDatabase() {</span>
-        @Override
-        public AbstractElementDatabase getParent() {
-<span class="nc" id="L35">            return null;</span>
-        }
-        @Override
-        public int getChildCount() {
-<span class="nc" id="L39">            return 0;</span>
-        }
-        @Override
-        public String getLabelWithCount() {
-<span class="nc" id="L43">            return null;</span>
-        }
-    };
-    
-    /**
      * Traverse upward, and return the parent.
      */
     public abstract AbstractElementDatabase getParent();
@@ -66,11 +47,11 @@ package com.jsql.model.bean.database;
      */
     @Override
     public String toString() {
-<span class="fc" id="L69">        return this.elementValue;</span>
+<span class="fc" id="L50">        return this.elementValue;</span>
     }
     
     public void setElementValue(String elementValue) {
-<span class="nc" id="L73">        this.elementValue = elementValue;</span>
-<span class="nc" id="L74">    }</span>
+<span class="nc" id="L54">        this.elementValue = elementValue;</span>
+<span class="nc" id="L55">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

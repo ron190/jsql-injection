@@ -76,7 +76,7 @@
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>              .map(input -&gt;
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>                  <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>                      input.attr(<span class="jxr_string">"name"</span>),
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>                      input.attr(INPUT_ATTR_VALUE)
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>                      input.attr(CsrfUtil.INPUT_ATTR_VALUE)
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>                  )
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>              );
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          
@@ -99,7 +99,7 @@
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>                      tokenCsrfFound::getValue
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>                  );
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>              } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>                  LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>                  LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CsrfUtil.MSG_ENABLE_CSRF);
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>              }
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          }
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>      }
@@ -107,10 +107,10 @@
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> parseCsrfFromCookie(Map&lt;String, String&gt; mapResponse) {
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>         Optional&lt;SimpleEntry&lt;String, String&gt;&gt; optionalCookieCsrf = Optional.empty();
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>         
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>         <strong class="jxr_keyword">if</strong> (mapResponse.containsKey(SET_COOKIE_RESPONSE)) {
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>         <strong class="jxr_keyword">if</strong> (mapResponse.containsKey(CsrfUtil.SET_COOKIE_RESPONSE)) {
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>             <em class="jxr_comment">// Spring: Cookie XSRF-TOKEN =&gt; Header X-XSRF-TOKEN, GET/POST parameter _csrf</em>
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>             <em class="jxr_comment">// Laravel, Zend, Symfony</em>
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>             String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE_RESPONSE), <span class="jxr_string">";"</span>);
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>             String[] cookieValues = StringUtils.split(mapResponse.get(CsrfUtil.SET_COOKIE_RESPONSE), <span class="jxr_string">";"</span>);
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>             optionalCookieCsrf = Stream.of(cookieValues)
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>                 .filter(cookie -&gt; cookie.trim().toLowerCase().startsWith(<span class="jxr_string">"xsrf-token"</span>))
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>                 .map(cookie -&gt; {
@@ -141,7 +141,7 @@
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>             ) {
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>                 <strong class="jxr_keyword">this</strong>.tokenCsrf = headerCsrf;
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>             } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CsrfUtil.MSG_ENABLE_CSRF);
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>             }
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         }
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>     }

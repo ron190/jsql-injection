@@ -67,12 +67,12 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>              JList&lt;ItemList&gt; list = (JList&lt;ItemList&gt;) mouseEvent.getSource();
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>              JPopupMenu popupMenuList = <strong class="jxr_keyword">this</strong>.initializeMenu(mouseEvent);
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>              popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>              popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>              <em class="jxr_comment">// Fix #26274: IllegalComponentStateException on show()</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>              <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>                  popupMenuList.show(
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>                      list,
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>                      ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>                      ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>                      ? mouseEvent.getX() - popupMenuList.getWidth()
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>                      : mouseEvent.getX(),
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>                      mouseEvent.getY()
@@ -82,7 +82,7 @@
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>              }
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>              
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>              popupMenuList.setLocation(
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>                  ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>                  ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>                  ? mouseEvent.getXOnScreen() - popupMenuList.getWidth()
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>                  : mouseEvent.getXOnScreen(),
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>                  mouseEvent.getYOnScreen()
@@ -93,7 +93,7 @@
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>      <strong class="jxr_keyword">private</strong> JPopupMenu initializeMenu(<strong class="jxr_keyword">final</strong> MouseEvent mouseEvent) {
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          <strong class="jxr_keyword">var</strong> popupMenuList = <strong class="jxr_keyword">new</strong> JPopupMenu();
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>          <strong class="jxr_keyword">boolean</strong> isNonUbuntu = I18nViewUtil.isNonUbuntu(I18nUtil.getLocaleDefault());
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          <strong class="jxr_keyword">boolean</strong> isNonUbuntu = I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale());
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          JMenuItem menuImport = <strong class="jxr_keyword">new</strong> JMenuItem();
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>          JMenuItem menuExport = <strong class="jxr_keyword">new</strong> JMenuItem();

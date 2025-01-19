@@ -41,22 +41,22 @@ public class StrategyInjectionTime extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
 <span class="fc bfc" id="L43" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled()) {</span>
-<span class="fc" id="L44">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());</span>
+<span class="fc" id="L44">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());</span>
 <span class="fc" id="L45">            return;</span>
 <span class="fc bfc" id="L46" title="All 2 branches covered.">        } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBinaryTime())) {</span>
 <span class="fc" id="L47">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
-<span class="fc" id="L50">                getName(),</span>
+<span class="fc" id="L50">                this.getName(),</span>
 <span class="fc" id="L51">                this.injectionModel.getMediatorVendor().getVendor()</span>
             );
 <span class="fc" id="L53">            return;</span>
         }
 
-<span class="fc" id="L56">        checkInjection(BinaryMode.OR);</span>
-<span class="fc" id="L57">        checkInjection(BinaryMode.AND);</span>
-<span class="fc" id="L58">        checkInjection(BinaryMode.STACKED);</span>
-<span class="fc" id="L59">        checkInjection(BinaryMode.NO_MODE);</span>
+<span class="fc" id="L56">        this.checkInjection(BinaryMode.OR);</span>
+<span class="fc" id="L57">        this.checkInjection(BinaryMode.AND);</span>
+<span class="fc" id="L58">        this.checkInjection(BinaryMode.STACK);</span>
+<span class="fc" id="L59">        this.checkInjection(BinaryMode.NO_MODE);</span>
 
 <span class="pc bpc" id="L61" title="1 of 2 branches missed.">        if (this.isApplicable) {</span>
 <span class="fc" id="L62">            this.allow();</span>
@@ -77,7 +77,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
 <span class="fc" id="L77">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_DEFAULT,
             &quot;{} [{}] with [{}]...&quot;,
-<span class="fc" id="L80">            () -&gt; I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY),</span>
+<span class="fc" id="L80">            () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY),</span>
             this::getName,
 <span class="fc" id="L82">            () -&gt; binaryMode</span>
         );
@@ -88,7 +88,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
 <span class="fc" id="L88">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
                 &quot;{} [{}] injection with [{}]&quot;,
-<span class="fc" id="L91">                () -&gt; I18nUtil.valueByKey(KEY_LOG_VULNERABLE),</span>
+<span class="fc" id="L91">                () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),</span>
                 this::getName,
 <span class="fc" id="L93">                () -&gt; binaryMode</span>
             );
@@ -98,7 +98,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
     @Override
     public void allow(int... i) {
 <span class="fc" id="L100">        this.injectionModel.appendAnalysisReport(</span>
-<span class="fc" id="L101">            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, &quot;### Strategy: &quot; + getName())</span>
+<span class="fc" id="L101">            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, &quot;### Strategy: &quot; + this.getName())</span>
 <span class="fc" id="L102">            + this.injectionModel.getReportWithoutIndex(</span>
 <span class="fc" id="L103">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(</span>
 <span class="fc" id="L104">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, &quot;&amp;lt;query&amp;gt;&quot;), &quot;0&quot;, true),</span>

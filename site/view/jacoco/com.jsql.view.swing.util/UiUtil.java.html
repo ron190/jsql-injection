@@ -12,6 +12,7 @@ package com.jsql.view.swing.util;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.intellijthemes.FlatLightFlatIJTheme;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.console.JTextPaneAppender;
 import com.jsql.view.swing.sql.SqlEngine;
@@ -48,77 +49,85 @@ public class UiUtil {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L51">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L52">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
-<span class="fc" id="L53">    public static final Border BORDER_5PX = BorderFactory.createEmptyBorder(5, 5, 5, 5);</span>
+<span class="fc" id="L54">    public static final Border BORDER_5PX = BorderFactory.createEmptyBorder(5, 5, 5, 5);</span>
     public static final String TEXTPANE_FONT = &quot;TextPane.font&quot;;
 
-<span class="fc" id="L56">    public static final Icon ICON_FLAG_AR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/ar.png&quot;)));</span>
-<span class="fc" id="L57">    public static final Icon ICON_FLAG_ZH = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/zh.png&quot;)));</span>
-<span class="fc" id="L58">    public static final Icon ICON_FLAG_RU = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/ru.png&quot;)));</span>
-<span class="fc" id="L59">    public static final Icon ICON_FLAG_TR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/tr.png&quot;)));</span>
-<span class="fc" id="L60">    public static final Icon ICON_FLAG_EN = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/en.png&quot;)));</span>
-<span class="fc" id="L61">    public static final Icon ICON_FLAG_FR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/fr.png&quot;)));</span>
-<span class="fc" id="L62">    public static final Icon ICON_FLAG_HI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/hi.png&quot;)));</span>
-<span class="fc" id="L63">    public static final Icon ICON_FLAG_CS = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/cs.png&quot;)));</span>
-<span class="fc" id="L64">    public static final Icon ICON_FLAG_DE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/de.png&quot;)));</span>
-<span class="fc" id="L65">    public static final Icon ICON_FLAG_NL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/nl.png&quot;)));</span>
-<span class="fc" id="L66">    public static final Icon ICON_FLAG_IN = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/in.png&quot;)));</span>
-<span class="fc" id="L67">    public static final Icon ICON_FLAG_IT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/it.png&quot;)));</span>
-<span class="fc" id="L68">    public static final Icon ICON_FLAG_ES = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/es.png&quot;)));</span>
-<span class="fc" id="L69">    public static final Icon ICON_FLAG_PT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/pt.png&quot;)));</span>
-<span class="fc" id="L70">    public static final Icon ICON_FLAG_PL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/pl.png&quot;)));</span>
-<span class="fc" id="L71">    public static final Icon ICON_FLAG_JA = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/ja.png&quot;)));</span>
-<span class="fc" id="L72">    public static final Icon ICON_FLAG_KO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/ko.png&quot;)));</span>
-<span class="fc" id="L73">    public static final Icon ICON_FLAG_RO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/ro.png&quot;)));</span>
-<span class="fc" id="L74">    public static final Icon ICON_FLAG_LK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/lk.png&quot;)));</span>
-<span class="fc" id="L75">    public static final Icon ICON_FLAG_SE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/se.png&quot;)));</span>
-<span class="fc" id="L76">    public static final Icon ICON_FLAG_FI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/fi.png&quot;)));</span>
+<span class="fc" id="L57">    public static final ImageIcon ICON_FLAG_AR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/ar.png&quot;)));</span>
+<span class="fc" id="L58">    public static final ImageIcon ICON_FLAG_ZH = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/zh.png&quot;)));</span>
+<span class="fc" id="L59">    public static final ImageIcon ICON_FLAG_RU = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/ru.png&quot;)));</span>
+<span class="fc" id="L60">    public static final ImageIcon ICON_FLAG_TR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/tr.png&quot;)));</span>
+<span class="fc" id="L61">    public static final ImageIcon ICON_FLAG_EN = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/en.png&quot;)));</span>
+<span class="fc" id="L62">    public static final ImageIcon ICON_FLAG_FR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/fr.png&quot;)));</span>
+<span class="fc" id="L63">    public static final ImageIcon ICON_FLAG_HI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/hi.png&quot;)));</span>
+<span class="fc" id="L64">    public static final ImageIcon ICON_FLAG_CS = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/cs.png&quot;)));</span>
+<span class="fc" id="L65">    public static final ImageIcon ICON_FLAG_DE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/de.png&quot;)));</span>
+<span class="fc" id="L66">    public static final ImageIcon ICON_FLAG_NL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/nl.png&quot;)));</span>
+<span class="fc" id="L67">    public static final ImageIcon ICON_FLAG_IN = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/in.png&quot;)));</span>
+<span class="fc" id="L68">    public static final ImageIcon ICON_FLAG_IT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/it.png&quot;)));</span>
+<span class="fc" id="L69">    public static final ImageIcon ICON_FLAG_ES = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/es.png&quot;)));</span>
+<span class="fc" id="L70">    public static final ImageIcon ICON_FLAG_PT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/pt.png&quot;)));</span>
+<span class="fc" id="L71">    public static final ImageIcon ICON_FLAG_PL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/pl.png&quot;)));</span>
+<span class="fc" id="L72">    public static final ImageIcon ICON_FLAG_JA = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/ja.png&quot;)));</span>
+<span class="fc" id="L73">    public static final ImageIcon ICON_FLAG_KO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/ko.png&quot;)));</span>
+<span class="fc" id="L74">    public static final ImageIcon ICON_FLAG_RO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/ro.png&quot;)));</span>
+<span class="fc" id="L75">    public static final ImageIcon ICON_FLAG_LK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/lk.png&quot;)));</span>
+<span class="fc" id="L76">    public static final ImageIcon ICON_FLAG_SE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/se.png&quot;)));</span>
+<span class="fc" id="L77">    public static final ImageIcon ICON_FLAG_FI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/flags/fi.png&quot;)));</span>
 
-<span class="fc" id="L78">    public static final URL URL_ICON_16 = UiUtil.class.getClassLoader().getResource(&quot;swing/images/software/bug16.png&quot;);</span>
-<span class="fc" id="L79">    public static final URL URL_ICON_32 = UiUtil.class.getClassLoader().getResource(&quot;swing/images/software/bug32.png&quot;);</span>
-<span class="fc" id="L80">    public static final URL URL_ICON_96 = UiUtil.class.getClassLoader().getResource(&quot;swing/images/software/bug96.png&quot;);</span>
-<span class="fc" id="L81">    public static final URL URL_ICON_128 = UiUtil.class.getClassLoader().getResource(&quot;swing/images/software/bug128.png&quot;);</span>
+<span class="fc" id="L79">    public static final URL URL_ICON_16 = UiUtil.class.getClassLoader().getResource(&quot;swing/images/software/bug16.png&quot;);</span>
+<span class="fc" id="L80">    public static final URL URL_ICON_32 = UiUtil.class.getClassLoader().getResource(&quot;swing/images/software/bug32.png&quot;);</span>
+<span class="fc" id="L81">    public static final URL URL_ICON_96 = UiUtil.class.getClassLoader().getResource(&quot;swing/images/software/bug96.png&quot;);</span>
+<span class="fc" id="L82">    public static final URL URL_ICON_128 = UiUtil.class.getClassLoader().getResource(&quot;swing/images/software/bug128.png&quot;);</span>
 
-<span class="fc" id="L83">    public static final SvgIcon DATABASE_BOLD = new SvgIcon(&quot;database-bold&quot;, 0x1C274C, 0.02f);</span>
-<span class="fc" id="L84">    public static final SvgIcon ADMIN = new SvgIcon(&quot;admin&quot;, 0.02f);</span>
-<span class="fc" id="L85">    public static final SvgIcon DOWNLOAD = new SvgIcon(&quot;download&quot;, 0.55f);</span>
-<span class="fc" id="L86">    public static final SvgIcon TERMINAL = new SvgIcon(&quot;terminal&quot;, 0.50f);</span>
-<span class="fc" id="L87">    public static final SvgIcon UPLOAD = new SvgIcon(&quot;upload&quot;, 0.55f);</span>
-<span class="fc" id="L88">    public static final SvgIcon LOCK = new SvgIcon(&quot;lock&quot;, 0.02f);</span>
-<span class="fc" id="L89">    public static final SvgIcon TEXTFIELD = new SvgIcon(&quot;textfield&quot;, 0.02f);</span>
-<span class="fc" id="L90">    public static final SvgIcon BATCH = new SvgIcon(&quot;batch&quot;, 0.02f);</span>
+<span class="fc" id="L84">    public static final ModelSvgIcon DATABASE_BOLD = new ModelSvgIcon(&quot;database-bold&quot;, 0x1C274C)</span>
+<span class="fc" id="L85">        .withTab(&quot;DATABASE_TAB&quot;, &quot;DATABASE_TOOLTIP&quot;);</span>
+<span class="fc" id="L86">    public static final ModelSvgIcon ADMIN = new ModelSvgIcon(&quot;admin&quot;, 0.02f)</span>
+<span class="fc" id="L87">        .withTab(&quot;ADMINPAGE_TAB&quot;, &quot;ADMINPAGE_TOOLTIP&quot;);</span>
+<span class="fc" id="L88">    public static final ModelSvgIcon DOWNLOAD = new ModelSvgIcon(&quot;download&quot;, 0.55f)</span>
+<span class="fc" id="L89">        .withTab(&quot;FILE_TAB&quot;, &quot;FILE_TOOLTIP&quot;);</span>
+<span class="fc" id="L90">    public static final ModelSvgIcon TERMINAL = new ModelSvgIcon(&quot;terminal&quot;, 0.50f)</span>
+<span class="fc" id="L91">        .withTab(&quot;EXPLOIT_TAB&quot;, &quot;EXPLOIT_TOOLTIP&quot;);</span>
+<span class="fc" id="L92">    public static final ModelSvgIcon UPLOAD = new ModelSvgIcon(&quot;upload&quot;, 0.55f);</span>
+<span class="fc" id="L93">    public static final ModelSvgIcon LOCK = new ModelSvgIcon(&quot;lock&quot;, 0.02f)</span>
+<span class="fc" id="L94">        .withTab(&quot;BRUTEFORCE_TAB&quot;, &quot;BRUTEFORCE_TOOLTIP&quot;);</span>
+<span class="fc" id="L95">    public static final ModelSvgIcon TEXTFIELD = new ModelSvgIcon(&quot;textfield&quot;, 0.02f)</span>
+<span class="fc" id="L96">        .withTab(&quot;CODER_TAB&quot;, &quot;CODER_TOOLTIP&quot;);</span>
+<span class="fc" id="L97">    public static final ModelSvgIcon BATCH = new ModelSvgIcon(&quot;batch&quot;, 0.02f)</span>
+<span class="fc" id="L98">        .withTab(&quot;SCANLIST_TAB&quot;, &quot;SCANLIST_TOOLTIP&quot;);</span>
 
-<span class="fc" id="L92">    public static final SvgIcon TABLE_LINEAR = new SvgIcon(&quot;table-linear&quot;, 0x212121, 0.02f);</span>
-<span class="fc" id="L93">    public static final SvgIcon TABLE_BOLD = new SvgIcon(&quot;table-bold&quot;, 0x212121, 0.02f);</span>
-<span class="fc" id="L94">    public static final SvgIcon NETWORK = new SvgIcon(&quot;network&quot;, 0.02f);</span>
-<span class="fc" id="L95">    public static final SvgIcon DATABASE_LINEAR = new SvgIcon(&quot;database-linear&quot;, 0x1C274C, 0.02f);</span>
-<span class="fc" id="L96">    public static final SvgIcon CUP = new SvgIcon(&quot;cup&quot;, 0.02f);</span>
-<span class="fc" id="L97">    public static final SvgIcon CONSOLE = new SvgIcon(&quot;console&quot;, 0.02f);</span>
-<span class="fc" id="L98">    public static final SvgIcon BINARY = new SvgIcon(&quot;binary&quot;, 0.02f);</span>
-<span class="fc" id="L99">    public static final SvgIcon CHUNK = new SvgIcon(&quot;chunk&quot;, 0.02f);</span>
-<span class="fc" id="L100">    public static final SvgIcon COG = new SvgIcon(&quot;cog&quot;, 0.02f);</span>
+<span class="fc" id="L100">    public static final ModelSvgIcon TABLE_LINEAR = new ModelSvgIcon(&quot;table-linear&quot;, 0x212121);</span>
+<span class="fc" id="L101">    public static final ModelSvgIcon TABLE_BOLD = new ModelSvgIcon(&quot;table-bold&quot;, 0x212121);</span>
+<span class="fc" id="L102">    public static final ModelSvgIcon NETWORK = new ModelSvgIcon(&quot;network&quot;, 0.02f);</span>
+<span class="fc" id="L103">    public static final ModelSvgIcon DATABASE_LINEAR = new ModelSvgIcon(&quot;database-linear&quot;, 0x1C274C);</span>
+<span class="fc" id="L104">    public static final ModelSvgIcon CUP = new ModelSvgIcon(&quot;cup&quot;, 0.02f);</span>
+<span class="fc" id="L105">    public static final ModelSvgIcon CONSOLE = new ModelSvgIcon(&quot;console&quot;, 0.02f);</span>
+<span class="fc" id="L106">    public static final ModelSvgIcon BINARY = new ModelSvgIcon(&quot;binary&quot;, 0.02f);</span>
+<span class="fc" id="L107">    public static final ModelSvgIcon CHUNK = new ModelSvgIcon(&quot;chunk&quot;, 0.02f);</span>
+<span class="fc" id="L108">    public static final ModelSvgIcon COG = new ModelSvgIcon(&quot;cog&quot;, 0.02f);</span>
 
-<span class="fc" id="L102">    public static final SvgIcon CROSS_RED = new SvgIcon(&quot;cross&quot;, new Color(0x0F0F0F), null, LogLevelUtil.COLOR_RED, 0.025f);</span>
-<span class="fc" id="L103">    public static final SvgIcon ARROW = new SvgIcon(&quot;arrow&quot;, new Color(0x005a96), &quot;ComboBox.buttonArrowColor&quot;, 1f);</span>
-<span class="fc" id="L104">    public static final SvgIcon ARROW_HOVER = new SvgIcon(&quot;arrow&quot;, new Color(0x005a96), &quot;ComboBox.buttonHoverArrowColor&quot;, 1f);</span>
-<span class="fc" id="L105">    public static final SvgIcon ARROW_PRESSED = new SvgIcon(&quot;arrow&quot;, new Color(0x005a96), &quot;ComboBox.buttonPressedArrowColor&quot;, 1f);</span>
-<span class="fc" id="L106">    public static final SvgIcon EXPAND = new SvgIcon(&quot;expand&quot;, Color.BLACK, &quot;ComboBox.buttonArrowColor&quot;, 0.02f);</span>
-<span class="fc" id="L107">    public static final SvgIcon EXPAND_HOVER = new SvgIcon(&quot;expand&quot;, Color.BLACK, &quot;ComboBox.buttonHoverArrowColor&quot;, 0.02f);</span>
-<span class="fc" id="L108">    public static final SvgIcon EXPAND_PRESSED = new SvgIcon(&quot;expand&quot;, Color.BLACK, &quot;ComboBox.buttonPressedArrowColor&quot;, 0.02f);</span>
+<span class="fc" id="L110">    public static final ModelSvgIcon CROSS_RED = new ModelSvgIcon(&quot;cross&quot;, new Color(0x0F0F0F), null, LogLevelUtil.COLOR_RED, 0.025f);</span>
+    private static final String NAME_ARROW = &quot;arrow&quot;;
+<span class="fc" id="L112">    public static final ModelSvgIcon ARROW = new ModelSvgIcon(UiUtil.NAME_ARROW, new Color(0x005a96), &quot;ComboBox.buttonArrowColor&quot;, 1f);</span>
+<span class="fc" id="L113">    public static final ModelSvgIcon ARROW_HOVER = new ModelSvgIcon(UiUtil.NAME_ARROW, new Color(0x005a96), &quot;ComboBox.buttonHoverArrowColor&quot;, 1f);</span>
+<span class="fc" id="L114">    public static final ModelSvgIcon ARROW_PRESSED = new ModelSvgIcon(UiUtil.NAME_ARROW, new Color(0x005a96), &quot;ComboBox.buttonPressedArrowColor&quot;, 1f);</span>
+    private static final String NAME_EXPAND = &quot;expand&quot;;
+<span class="fc" id="L116">    public static final ModelSvgIcon EXPAND = new ModelSvgIcon(UiUtil.NAME_EXPAND, Color.BLACK, &quot;ComboBox.buttonArrowColor&quot;, 0.02f);</span>
+<span class="fc" id="L117">    public static final ModelSvgIcon EXPAND_HOVER = new ModelSvgIcon(UiUtil.NAME_EXPAND, Color.BLACK, &quot;ComboBox.buttonHoverArrowColor&quot;, 0.02f);</span>
+<span class="fc" id="L118">    public static final ModelSvgIcon EXPAND_PRESSED = new ModelSvgIcon(UiUtil.NAME_EXPAND, Color.BLACK, &quot;ComboBox.buttonPressedArrowColor&quot;, 0.02f);</span>
 
-<span class="fc" id="L110">    public static final SvgIcon HOURGLASS = new SvgIcon(&quot;hourglass&quot;, 0.02f);</span>
-<span class="fc" id="L111">    public static final SvgIcon ARROW_UP = new SvgIcon(&quot;arrow-up&quot;, 0.02f);</span>
-<span class="fc" id="L112">    public static final SvgIcon ARROW_DOWN = new SvgIcon(&quot;arrow-down&quot;, 0.02f);</span>
-<span class="fc" id="L113">    public static final SvgIcon SQUARE = new SvgIcon(&quot;square&quot;, 0.01f);</span>
-<span class="fc" id="L114">    public static final SvgIcon TICK_GREEN = new SvgIcon(&quot;tick&quot;, Color.BLACK, null, LogLevelUtil.COLOR_GREEN, 0.02f);</span>
-<span class="fc" id="L115">    public static final SvgIcon GLOBE = new SvgIcon(&quot;globe&quot;, 0.025f);</span>
-<span class="fc" id="L116">    public static final SvgIcon REPORT = new SvgIcon(&quot;swing/images/software/app.svg&quot;, 0.04f);</span>
-<span class="fc" id="L117">    public static final SvgIcon APP_RESULT = new SvgIcon(&quot;swing/images/software/app.svg&quot;, 0.5f);</span>
-<span class="fc" id="L118">    public static final SvgIcon APP_ABOUT = new SvgIcon(&quot;swing/images/software/app.svg&quot;, 0.25f);</span>
+<span class="fc" id="L120">    public static final ModelSvgIcon HOURGLASS = new ModelSvgIcon(&quot;hourglass&quot;, 0.02f);</span>
+<span class="fc" id="L121">    public static final ModelSvgIcon ARROW_UP = new ModelSvgIcon(&quot;arrow-up&quot;, 0.02f);</span>
+<span class="fc" id="L122">    public static final ModelSvgIcon ARROW_DOWN = new ModelSvgIcon(&quot;arrow-down&quot;, 0.02f);</span>
+<span class="fc" id="L123">    public static final ModelSvgIcon SQUARE = new ModelSvgIcon(&quot;square&quot;, 0.01f);</span>
+<span class="fc" id="L124">    public static final ModelSvgIcon TICK_GREEN = new ModelSvgIcon(&quot;tick&quot;, Color.BLACK, null, LogLevelUtil.COLOR_GREEN, 0.02f);</span>
+<span class="fc" id="L125">    public static final ModelSvgIcon GLOBE = new ModelSvgIcon(&quot;globe&quot;, 0.025f);</span>
+    private static final String PATH_APP_SVG = &quot;swing/images/software/app.svg&quot;;
+<span class="fc" id="L127">    public static final ModelSvgIcon REPORT = new ModelSvgIcon(UiUtil.PATH_APP_SVG, 0.04f);</span>
+<span class="fc" id="L128">    public static final ModelSvgIcon APP_RESULT = new ModelSvgIcon(UiUtil.PATH_APP_SVG, 0.5f);</span>
+<span class="fc" id="L129">    public static final ModelSvgIcon APP_ABOUT = new ModelSvgIcon(UiUtil.PATH_APP_SVG, 0.25f);</span>
 
-    public static final String PATH_WEB_FOLDERS = &quot;swing/list/payload.txt&quot;;
-    public static final String INPUT_STREAM_PAGES_SCAN = &quot;swing/list/scan-page.json&quot;;
     public static final String PATH_PAUSE = &quot;swing/images/icons/pause.png&quot;;
 
     public static final String FONT_NAME_MONO_NON_ASIAN = &quot;Ubuntu Mono&quot;;
@@ -130,35 +139,36 @@ public class UiUtil {
     // HTML engine considers Monospaced/Monospace to be the same Font
     // Java engine recognizes only Monospaced
     public static final String FONT_NAME_MONOSPACED = &quot;Monospaced&quot;;
-<span class="fc" id="L133">    public static final Font FONT_MONO_NON_ASIAN = new Font(</span>
+<span class="fc" id="L142">    public static final Font FONT_MONO_NON_ASIAN = new Font(</span>
         UiUtil.FONT_NAME_MONO_NON_ASIAN,
         Font.PLAIN,
-<span class="fc" id="L136">        UIManager.getDefaults().getFont(&quot;TextArea.font&quot;).getSize() + 2</span>
+<span class="fc" id="L145">        UIManager.getDefaults().getFont(&quot;TextArea.font&quot;).getSize() + 2</span>
     );
     
-<span class="fc" id="L139">    public static final Font FONT_MONO_ASIAN = new Font(</span>
+<span class="fc" id="L148">    public static final Font FONT_MONO_ASIAN = new Font(</span>
         UiUtil.FONT_NAME_MONO_ASIAN,
         Font.PLAIN,
-<span class="fc" id="L142">        UIManager.getDefaults().getFont(TEXTPANE_FONT).getSize()</span>
+<span class="fc" id="L151">        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize()</span>
     );
     
-<span class="fc" id="L145">    public static final Font FONT_NON_MONO = new Font(</span>
-        &quot;Segoe UI&quot;,
+<span class="fc" id="L154">    public static final Font FONT_MONO_ASIAN_BIG = new Font(</span>
+        UiUtil.FONT_NAME_MONO_ASIAN,
         Font.PLAIN,
-<span class="fc" id="L148">        UIManager.getDefaults().getFont(TEXTPANE_FONT).getSize()</span>
-    );
-    
-<span class="fc" id="L151">    public static final Font FONT_NON_MONO_BIG = new Font(</span>
-<span class="fc" id="L152">        UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getName(),</span>
-        Font.PLAIN,
-<span class="fc" id="L154">        UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getSize() + 2</span>
+<span class="fc" id="L157">        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize() + 2</span>
     );
 
-    public static final String CHUNK_VISIBLE = &quot;chunk_visible&quot;;
-    public static final String BINARY_VISIBLE = &quot;binary_visible&quot;;
-    public static final String NETWORK_VISIBLE = &quot;header_visible&quot;;
-    public static final String JAVA_VISIBLE = &quot;java_visible&quot;;
+<span class="fc" id="L160">    public static final Font FONT_NON_MONO = new Font(</span>
+        &quot;Segoe UI&quot;,
+        Font.PLAIN,
+<span class="fc" id="L163">        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize()</span>
+    );
     
+<span class="fc" id="L166">    public static final Font FONT_NON_MONO_BIG = new Font(</span>
+<span class="fc" id="L167">        UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getName(),</span>
+        Font.PLAIN,
+<span class="fc" id="L169">        UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getSize() + 2</span>
+    );
+
     private UiUtil() {
         // Utility class
     }
@@ -167,117 +177,125 @@ public class UiUtil {
      * Change the default style of various components.
      */
     public static void prepareGUI() {
-<span class="fc" id="L170">        UiUtil.loadFonts();</span>
+<span class="fc" id="L180">        UiUtil.loadFonts();</span>
         // timer before closing automatically tooltip
-<span class="fc" id="L172">        ToolTipManager.sharedInstance().setDismissDelay(3 * ToolTipManager.sharedInstance().getDismissDelay());</span>
-<span class="fc" id="L173">        UIManager.put(&quot;TextArea.font&quot;, UiUtil.FONT_MONO_NON_ASIAN);  // required for basic text like chunks tab</span>
-<span class="fc" id="L174">    }</span>
+<span class="fc" id="L182">        ToolTipManager.sharedInstance().setDismissDelay(3 * ToolTipManager.sharedInstance().getDismissDelay());</span>
+<span class="fc" id="L183">        UIManager.put(&quot;TextArea.font&quot;, UiUtil.FONT_MONO_NON_ASIAN);  // required for basic text like chunks tab</span>
+<span class="fc" id="L184">        UIManager.put(&quot;TextPane.font&quot;, UIManager.getFont(&quot;TextArea.font&quot;));  // align textpane font</span>
+<span class="fc" id="L185">    }</span>
 
     private static void loadFonts() {
-<span class="fc" id="L177">        var graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();</span>
-<span class="fc" id="L178">        try (InputStream fontStream = new BufferedInputStream(</span>
-<span class="fc" id="L179">            Objects.requireNonNull(UiUtil.class.getClassLoader().getResourceAsStream(&quot;swing/font/UbuntuMono-R-ctrlchar.ttf&quot;))</span>
+<span class="fc" id="L188">        var graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();</span>
+<span class="fc" id="L189">        try (InputStream fontStream = new BufferedInputStream(</span>
+<span class="fc" id="L190">            Objects.requireNonNull(UiUtil.class.getClassLoader().getResourceAsStream(&quot;swing/font/UbuntuMono-R-ctrlchar.ttf&quot;))</span>
         )) {
-<span class="fc" id="L181">            var ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);</span>
-<span class="fc" id="L182">            graphicsEnvironment.registerFont(ubuntuFont);</span>
-<span class="nc" id="L183">        } catch (FontFormatException | IOException e) {</span>
-<span class="nc" id="L184">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Loading Font Ubuntu Mono with control characters failed&quot;, e);</span>
-<span class="fc" id="L185">        }</span>
-<span class="fc" id="L186">    }</span>
+<span class="fc" id="L192">            var ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);</span>
+<span class="fc" id="L193">            graphicsEnvironment.registerFont(ubuntuFont);</span>
+<span class="nc" id="L194">        } catch (FontFormatException | IOException e) {</span>
+<span class="nc" id="L195">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Loading Font Ubuntu Mono with control characters failed&quot;, e);</span>
+<span class="fc" id="L196">        }</span>
+<span class="fc" id="L197">    }</span>
 
     /**
      * Icons for application window.
      * @return List of a 16x16 (default) and 32x32 icon (alt-tab, taskbar)
      */
     public static List&lt;Image&gt; getIcons() {
-<span class="fc" id="L193">        List&lt;Image&gt; images = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L204">        List&lt;Image&gt; images = new ArrayList&lt;&gt;();</span>
         // Fix #2154: NoClassDefFoundError on read()
         try {
-<span class="fc" id="L196">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_128)));</span>
-<span class="fc" id="L197">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_96)));</span>
-<span class="fc" id="L198">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_32)));</span>
-<span class="fc" id="L199">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_16)));</span>
+<span class="fc" id="L207">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_128)));</span>
+<span class="fc" id="L208">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_96)));</span>
+<span class="fc" id="L209">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_32)));</span>
+<span class="fc" id="L210">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_16)));</span>
             
-<span class="nc" id="L201">        } catch (NoClassDefFoundError | IOException e) {</span>
-<span class="nc" id="L202">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L203">        }</span>
-<span class="fc" id="L204">        return images;</span>
+<span class="nc" id="L212">        } catch (NoClassDefFoundError | IOException e) {</span>
+<span class="nc" id="L213">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L214">        }</span>
+<span class="fc" id="L215">        return images;</span>
     }
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText) {
-<span class="fc" id="L208">        drawPlaceholder(textComponent, g, placeholderText, 0, g.getFontMetrics().getAscent() + 2);</span>
-<span class="fc" id="L209">    }</span>
+<span class="fc" id="L219">        UiUtil.drawPlaceholder(textComponent, g, placeholderText, 0, g.getFontMetrics().getAscent() + 2);</span>
+<span class="fc" id="L220">    }</span>
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText, int x, int y) {
         
-<span class="fc" id="L213">        int w = textComponent.getWidth();</span>
+<span class="fc" id="L224">        int w = textComponent.getWidth();</span>
         
-<span class="fc" id="L215">        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);</span>
+<span class="fc" id="L226">        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);</span>
         
-<span class="fc" id="L217">        var ins = textComponent.getInsets();</span>
-<span class="fc" id="L218">        var fm = g.getFontMetrics();</span>
+<span class="fc" id="L228">        var ins = textComponent.getInsets();</span>
+<span class="fc" id="L229">        var fm = g.getFontMetrics();</span>
         
-<span class="fc" id="L220">        int c0 = textComponent.getBackground().getRGB();</span>
-<span class="fc" id="L221">        int c1 = textComponent.getForeground().getRGB();</span>
-<span class="fc" id="L222">        var m = 0xfefefefe;</span>
-<span class="fc" id="L223">        int c2 = ((c0 &amp; m) &gt;&gt;&gt; 1) + ((c1 &amp; m) &gt;&gt;&gt; 1);</span>
+<span class="fc" id="L231">        int c0 = textComponent.getBackground().getRGB();</span>
+<span class="fc" id="L232">        int c1 = textComponent.getForeground().getRGB();</span>
+<span class="fc" id="L233">        var m = 0xfefefefe;</span>
+<span class="fc" id="L234">        int c2 = ((c0 &amp; m) &gt;&gt;&gt; 1) + ((c1 &amp; m) &gt;&gt;&gt; 1);</span>
         
-<span class="fc" id="L225">        g.setColor(new Color(c2, true));</span>
-<span class="fc" id="L226">        g.setFont(textComponent.getFont().deriveFont(Font.ITALIC));</span>
+<span class="fc" id="L236">        g.setColor(new Color(c2, true));</span>
 
-<span class="fc" id="L228">        g.drawString(</span>
+<span class="fc" id="L238">        g.setFont(</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">            I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale())</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">            ? textComponent.getFont() == UiUtil.FONT_NON_MONO_BIG  // when address bar</span>
+<span class="nc" id="L241">            ? UiUtil.FONT_MONO_ASIAN_BIG.deriveFont(Font.ITALIC)  // bigger font</span>
+<span class="nc" id="L242">            : UiUtil.FONT_MONO_ASIAN.deriveFont(Font.ITALIC)  // fine for address bar, console, textfield</span>
+<span class="fc" id="L243">            : textComponent.getFont().deriveFont(Font.ITALIC)  // same</span>
+        );
+
+<span class="fc" id="L246">        g.drawString(</span>
             placeholderText,
             x +
-<span class="pc bpc" id="L231" title="1 of 2 branches missed.">            (ComponentOrientation.RIGHT_TO_LEFT.equals(textComponent.getComponentOrientation())</span>
-<span class="nc" id="L232">            ? w - (fm.stringWidth(placeholderText) + ins.left + 2)</span>
-<span class="fc" id="L233">            : ins.left + 2),</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">            (ComponentOrientation.RIGHT_TO_LEFT.equals(textComponent.getComponentOrientation())</span>
+<span class="nc" id="L250">            ? w - (fm.stringWidth(placeholderText) + ins.left + 2)</span>
+<span class="fc" id="L251">            : ins.left + 2),</span>
             y
         );
-<span class="fc" id="L236">    }</span>
+<span class="fc" id="L254">    }</span>
     
     public static void initialize(JTextComponent component) {
-<span class="fc" id="L239">        component.setCaret(new DefaultCaret() {</span>
+<span class="fc" id="L257">        component.setCaret(new DefaultCaret() {</span>
             @Override
             public void setSelectionVisible(boolean visible) {
-<span class="fc" id="L242">                super.setSelectionVisible(true);</span>
-<span class="fc" id="L243">            }</span>
+<span class="fc" id="L260">                super.setSelectionVisible(true);</span>
+<span class="fc" id="L261">            }</span>
         });
-<span class="fc" id="L245">        component.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());</span>
-<span class="fc" id="L246">        component.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());</span>
-<span class="fc" id="L247">    }</span>
+<span class="fc" id="L263">        component.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());</span>
+<span class="fc" id="L264">        component.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());</span>
+<span class="fc" id="L265">    }</span>
 
     public static void applyTheme(RSyntaxTextArea textarea) {
         try {
-<span class="fc" id="L251">            boolean isDark = UIManager.getLookAndFeel().getName().matches(&quot;.*(Dark|High contrast).*&quot;);</span>
-<span class="pc bpc" id="L252" title="1 of 2 branches missed.">            var xmlTheme = String.format(&quot;/org/fife/ui/rsyntaxtextarea/themes/%s.xml&quot;, isDark ? &quot;dark&quot; : &quot;default&quot;);</span>
-<span class="fc" id="L253">            Theme theme = Theme.load(SqlEngine.class.getResourceAsStream(xmlTheme));</span>
-<span class="fc" id="L254">            theme.apply(textarea);</span>
-<span class="nc" id="L255">        } catch (IOException e) {</span>
-<span class="nc" id="L256">            throw new RuntimeException(e);</span>
-<span class="fc" id="L257">        }</span>
-<span class="fc" id="L258">    }</span>
+<span class="fc" id="L269">            boolean isDark = UIManager.getLookAndFeel().getName().matches(&quot;.*(Dark|High contrast).*&quot;);</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">            var xmlTheme = String.format(&quot;/org/fife/ui/rsyntaxtextarea/themes/%s.xml&quot;, isDark ? &quot;dark&quot; : &quot;default&quot;);</span>
+<span class="fc" id="L271">            Theme theme = Theme.load(SqlEngine.class.getResourceAsStream(xmlTheme));</span>
+<span class="fc" id="L272">            theme.apply(textarea);</span>
+<span class="nc" id="L273">        } catch (IOException e) {</span>
+<span class="nc" id="L274">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L275">        }</span>
+<span class="fc" id="L276">    }</span>
 
     public static void applyTheme(String nameTheme) {
         try {
-<span class="pc bpc" id="L262" title="1 of 2 branches missed.">            Class&lt;?&gt; c = Class.forName(StringUtils.isEmpty(nameTheme) ? FlatLightFlatIJTheme.class.getName() : nameTheme);</span>
-<span class="fc" id="L263">            LookAndFeel lookAndFeel = (LookAndFeel) c.getDeclaredConstructor().newInstance();</span>
-<span class="fc" id="L264">            UIManager.setLookAndFeel(lookAndFeel);</span>
-<span class="nc" id="L265">        } catch (</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">            Class&lt;?&gt; c = Class.forName(StringUtils.isEmpty(nameTheme) ? FlatLightFlatIJTheme.class.getName() : nameTheme);</span>
+<span class="fc" id="L281">            LookAndFeel lookAndFeel = (LookAndFeel) c.getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L282">            UIManager.setLookAndFeel(lookAndFeel);</span>
+<span class="nc" id="L283">        } catch (</span>
             ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
             InvocationTargetException | UnsupportedLookAndFeelException e
         ) {
-<span class="nc" id="L269">            throw new RuntimeException(e);</span>
-<span class="fc" id="L270">        }</span>
-<span class="fc" id="L271">        FlatLaf.updateUI();  // required</span>
+<span class="nc" id="L287">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L288">        }</span>
+<span class="fc" id="L289">        FlatLaf.updateUI();  // required</span>
 
         // required ATTRIBUTE_ALL without color for compatibility with dark/light mode as text is white/black
-<span class="fc" id="L274">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_WARN, LogLevelUtil.COLOR_RED);</span>
-<span class="fc" id="L275">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_INFORM, LogLevelUtil.COLOR_BLU);</span>
-<span class="fc" id="L276">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_SUCCESS, LogLevelUtil.COLOR_GREEN);</span>
-<span class="fc" id="L277">    }</span>
+<span class="fc" id="L292">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_WARN, LogLevelUtil.COLOR_RED);</span>
+<span class="fc" id="L293">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_INFORM, LogLevelUtil.COLOR_BLU);</span>
+<span class="fc" id="L294">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_SUCCESS, LogLevelUtil.COLOR_GREEN);</span>
+<span class="fc" id="L295">    }</span>
 
     public static GridLayout getColumnLayout(int size) {
-<span class="fc" id="L280">        return new GridLayout((size + 1) / 2, 2);</span>
+<span class="fc" id="L298">        return new GridLayout((size + 1) / 2, 2);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

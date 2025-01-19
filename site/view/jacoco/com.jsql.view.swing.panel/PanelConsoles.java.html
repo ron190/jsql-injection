@@ -11,12 +11,14 @@
 package com.jsql.view.swing.panel;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.console.JTextPaneAppender;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
 import com.jsql.view.swing.panel.consoles.NetworkTable;
 import com.jsql.view.swing.panel.consoles.TabbedPaneNetworkTab;
-import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
+import com.jsql.view.swing.panel.split.SplitNS;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
@@ -44,12 +46,12 @@ public class PanelConsoles extends JPanel {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L47">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L49">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Console for java exception messages.
      */
-<span class="fc" id="L52">    private final SimpleConsoleAdapter javaTextPane = new SimpleConsoleAdapter(&quot;Java&quot;, &quot;Java unhandled exception&quot;);</span>
+<span class="fc" id="L54">    private final SimpleConsoleAdapter javaTextPane = new SimpleConsoleAdapter(&quot;Java&quot;, I18nUtil.valueByKey(&quot;CONSOLE_JAVA_TOOLTIP&quot;));</span>
     
     /**
      * Console for raw SQL results.
@@ -66,265 +68,280 @@ public class PanelConsoles extends JPanel {
      */
     private JTextArea binaryTextArea;
 
-<span class="fc" id="L69">    private final TabbedPaneWheeled tabConsoles = new TabbedPaneWheeled();</span>
+<span class="fc" id="L71">    private final TabbedPaneWheeled tabConsoles = new TabbedPaneWheeled();</span>
     private TabbedPaneNetworkTab tabbedPaneNetworkTab;
     private NetworkTable networkTable;
     
-<span class="fc" id="L73">    private final JLabel labelShowNorth = new JLabel(UiUtil.ARROW_UP.icon);</span>
-<span class="fc" id="L74">    private int dividerLocation = 0;</span>
+<span class="fc" id="L75">    private final JLabel labelShowNorth = new JLabel(UiUtil.ARROW_UP.icon);</span>
+<span class="fc" id="L76">    private int dividerLocation = 0;</span>
     
     /**
      * Create panel at the bottom with different consoles to report injection process.
      */
-<span class="fc" id="L79">    public PanelConsoles() {</span>
-<span class="fc" id="L80">        this.javaTextPane.getProxy().setEditable(false);</span>
-<span class="fc" id="L81">        JTextPaneAppender.registerJavaConsole(this.javaTextPane);</span>
+<span class="fc" id="L81">    public PanelConsoles() {</span>
+<span class="fc" id="L82">        I18nViewUtil.addComponentForKey(&quot;CONSOLE_JAVA_TOOLTIP&quot;, this.javaTextPane.getProxy());</span>
+<span class="fc" id="L83">        this.javaTextPane.getProxy().setEditable(false);</span>
+<span class="fc" id="L84">        JTextPaneAppender.registerJavaConsole(this.javaTextPane);</span>
         
-<span class="fc" id="L83">        this.initializeSplit();</span>
+<span class="fc" id="L86">        this.initializeSplit();</span>
 
-<span class="fc" id="L85">        MediatorHelper.register(this.tabConsoles);</span>
-<span class="fc" id="L86">        this.initializeTabsConsoles();</span>
-<span class="fc" id="L87">        this.setLayout(new BorderLayout());</span>
+<span class="fc" id="L88">        MediatorHelper.register(this.tabConsoles);</span>
+<span class="fc" id="L89">        this.initializeTabsConsoles();</span>
+<span class="fc" id="L90">        this.setLayout(new BorderLayout());</span>
 
-<span class="fc" id="L89">        JPanel expandPanel = this.initializeExpandPanel();</span>
-<span class="fc" id="L90">        this.tabConsoles.putClientProperty(&quot;JTabbedPane.trailingComponent&quot;, expandPanel);</span>
-<span class="fc" id="L91">        this.add(this.tabConsoles);</span>
+<span class="fc" id="L92">        JPanel expandPanel = this.initializeExpandPanel();</span>
+<span class="fc" id="L93">        this.tabConsoles.putClientProperty(&quot;JTabbedPane.trailingComponent&quot;, expandPanel);</span>
+<span class="fc" id="L94">        this.add(this.tabConsoles);</span>
 
-<span class="fc" id="L93">        this.tabConsoles.setAlignmentX(FlowLayout.LEADING);</span>
-<span class="fc" id="L94">    }</span>
+<span class="fc" id="L96">        this.tabConsoles.setAlignmentX(FlowLayout.LEADING);</span>
+<span class="fc" id="L97">    }</span>
 
     private void initializeSplit() {
-<span class="fc" id="L97">        this.networkSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);</span>
-<span class="fc" id="L98">        this.networkSplitPane.setDividerLocation(600);</span>
-<span class="fc" id="L99">        this.networkSplitPane.setPreferredSize(new Dimension(0,0));  // required for correct scroll placement</span>
+<span class="fc" id="L100">        this.networkSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);</span>
+<span class="fc" id="L101">        this.networkSplitPane.setDividerLocation(600);</span>
+<span class="fc" id="L102">        this.networkSplitPane.setPreferredSize(new Dimension(0,0));  // required for correct scroll placement</span>
 
-<span class="fc" id="L101">        this.tabbedPaneNetworkTab = new TabbedPaneNetworkTab();</span>
-<span class="fc" id="L102">        this.networkSplitPane.setRightComponent(this.tabbedPaneNetworkTab);</span>
-<span class="fc" id="L103">        this.networkTable = new NetworkTable(this.tabbedPaneNetworkTab);</span>
+<span class="fc" id="L104">        this.tabbedPaneNetworkTab = new TabbedPaneNetworkTab();</span>
+<span class="fc" id="L105">        this.networkSplitPane.setRightComponent(this.tabbedPaneNetworkTab);</span>
+<span class="fc" id="L106">        this.networkTable = new NetworkTable(this.tabbedPaneNetworkTab);</span>
         
-<span class="fc" id="L105">        JPanel panelTable = new JPanel(new BorderLayout());  // required for correct scroll placement</span>
-<span class="fc" id="L106">        panelTable.add(new JScrollPane(this.networkTable), BorderLayout.CENTER);</span>
-<span class="fc" id="L107">        this.networkSplitPane.setLeftComponent(panelTable);</span>
-<span class="fc" id="L108">    }</span>
+<span class="fc" id="L108">        JPanel panelTable = new JPanel(new BorderLayout());  // required for correct scroll placement</span>
+<span class="fc" id="L109">        panelTable.add(new JScrollPane(this.networkTable), BorderLayout.CENTER);</span>
+<span class="fc" id="L110">        this.networkSplitPane.setLeftComponent(panelTable);</span>
+<span class="fc" id="L111">    }</span>
 
     private void initializeTabsConsoles() {
-<span class="fc" id="L111">        this.chunkTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole(&quot;Raw data extracted during injection&quot;)).getProxy();</span>
-<span class="fc" id="L112">        this.chunkTextArea.setLineWrap(true);</span>
-<span class="fc" id="L113">        this.chunkTextArea.setEditable(false);</span>
+<span class="fc" id="L114">        var proxyChunk = new JTextAreaPlaceholderConsole(I18nUtil.valueByKey(&quot;CONSOLE_CHUNK_TOOLTIP&quot;));</span>
+<span class="fc" id="L115">        this.chunkTextArea = new JPopupTextArea(proxyChunk).getProxy();</span>
+<span class="fc" id="L116">        I18nViewUtil.addComponentForKey(&quot;CONSOLE_CHUNK_TOOLTIP&quot;, proxyChunk);</span>
+<span class="fc" id="L117">        this.chunkTextArea.setLineWrap(true);</span>
+<span class="fc" id="L118">        this.chunkTextArea.setEditable(false);</span>
 
-<span class="fc" id="L115">        this.binaryTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole(&quot;Characters extracted during blind or time injection&quot;)).getProxy();</span>
-<span class="fc" id="L116">        this.binaryTextArea.setLineWrap(true);</span>
-<span class="fc" id="L117">        this.binaryTextArea.setEditable(false);</span>
+<span class="fc" id="L120">        var proxyBinary = new JTextAreaPlaceholderConsole(I18nUtil.valueByKey(&quot;CONSOLE_BINARY_TOOLTIP&quot;));</span>
+<span class="fc" id="L121">        I18nViewUtil.addComponentForKey(&quot;CONSOLE_BINARY_TOOLTIP&quot;, proxyBinary);</span>
+<span class="fc" id="L122">        this.binaryTextArea = new JPopupTextArea(proxyBinary).getProxy();</span>
+<span class="fc" id="L123">        this.binaryTextArea.setLineWrap(true);</span>
+<span class="fc" id="L124">        this.binaryTextArea.setEditable(false);</span>
 
-<span class="fc" id="L119">        var consoleTextPane = new SimpleConsoleAdapter(&quot;Console&quot;, &quot;Event logging&quot;);</span>
-<span class="fc" id="L120">        consoleTextPane.getProxy().setEditable(false);</span>
-<span class="fc" id="L121">        JTextPaneAppender.register(consoleTextPane);</span>
+<span class="fc" id="L126">        var consoleTextPane = new SimpleConsoleAdapter(&quot;Console&quot;, I18nUtil.valueByKey(&quot;CONSOLE_MAIN_TOOLTIP&quot;));</span>
+<span class="fc" id="L127">        I18nViewUtil.addComponentForKey(&quot;CONSOLE_MAIN_TOOLTIP&quot;, consoleTextPane.getProxy());</span>
+<span class="fc" id="L128">        consoleTextPane.getProxy().setEditable(false);</span>
+<span class="fc" id="L129">        JTextPaneAppender.register(consoleTextPane);</span>
 
-<span class="fc" id="L123">        this.buildI18nTab(</span>
+<span class="fc" id="L131">        this.buildI18nTab(</span>
             &quot;CONSOLE_MAIN_LABEL&quot;,
             &quot;CONSOLE_MAIN_TOOLTIP&quot;,
             UiUtil.CONSOLE.icon,
-<span class="fc" id="L127">            new JScrollPane(consoleTextPane.getProxy()),</span>
+<span class="fc" id="L135">            new JScrollPane(consoleTextPane.getProxy()),</span>
             0
         );
 
-<span class="fc" id="L131">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());  // Order is important</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.JAVA_VISIBLE, false)) {</span>
-<span class="nc" id="L133">            this.insertJavaTab();</span>
+<span class="fc" id="L139">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());  // Order is important</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (preferences.getBoolean(PreferencesUtil.JAVA_VISIBLE, false)) {</span>
+<span class="nc" id="L141">            this.insertJavaTab();</span>
         }
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.NETWORK_VISIBLE, true)) {</span>
-<span class="fc" id="L136">            this.insertNetworkTab();</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        if (preferences.getBoolean(PreferencesUtil.NETWORK_VISIBLE, true)) {</span>
+<span class="fc" id="L144">            this.insertNetworkTab();</span>
         }
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.CHUNK_VISIBLE, true)) {</span>
-<span class="fc" id="L139">            this.insertChunkTab();</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (preferences.getBoolean(PreferencesUtil.CHUNK_VISIBLE, true)) {</span>
+<span class="fc" id="L147">            this.insertChunkTab();</span>
         }
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.BINARY_VISIBLE, true)) {</span>
-<span class="fc" id="L142">            this.insertBooleanTab();</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        if (preferences.getBoolean(PreferencesUtil.BINARY_VISIBLE, true)) {</span>
+<span class="fc" id="L150">            this.insertBooleanTab();</span>
         }
 
-<span class="fc" id="L145">        this.tabConsoles.addChangeListener(changeEvent -&gt; {  // Reset Font when tab is selected</span>
-<span class="fc" id="L146">            JTabbedPane tabs = this.tabConsoles;</span>
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">            if (tabs.getSelectedIndex() &gt; -1) {</span>
-<span class="fc" id="L148">                var currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());</span>
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">                if (currentTabHeader != null) {</span>
-<span class="fc" id="L150">                    currentTabHeader.setFont(currentTabHeader.getFont().deriveFont(Font.PLAIN));</span>
-<span class="fc" id="L151">                    currentTabHeader.setForeground(UIManager.getColor(&quot;TabbedPane.foreground&quot;));</span>
+<span class="fc" id="L153">        this.tabConsoles.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mousePressed(MouseEvent e) {
+<span class="nc" id="L156">                int tabIndex = PanelConsoles.this.tabConsoles.indexAtLocation(e.getX(), e.getY());</span>
+<span class="nc bnc" id="L157" title="All 4 branches missed.">                if (tabIndex == -1 &amp;&amp; e.getButton() == MouseEvent.BUTTON2) {  // middle click on header with no tab</span>
+<span class="nc" id="L158">                    SplitNS.getActionHideShowConsole().actionPerformed(null);</span>
+                }
+<span class="nc" id="L160">            }</span>
+        });
+<span class="fc" id="L162">        this.tabConsoles.addChangeListener(changeEvent -&gt; {  // Reset Font when tab is selected</span>
+<span class="fc" id="L163">            JTabbedPane tabs = this.tabConsoles;</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">            if (tabs.getSelectedIndex() &gt; -1) {</span>
+<span class="fc" id="L165">                var currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">                if (currentTabHeader != null) {</span>
+<span class="fc" id="L167">                    currentTabHeader.setFont(currentTabHeader.getFont().deriveFont(Font.PLAIN));</span>
+<span class="fc" id="L168">                    currentTabHeader.setForeground(UIManager.getColor(&quot;TabbedPane.foreground&quot;));</span>
                 }
             }
-<span class="fc" id="L154">        });</span>
-<span class="fc" id="L155">    }</span>
+<span class="fc" id="L171">        });</span>
+<span class="fc" id="L172">    }</span>
 
     private JPanel initializeExpandPanel() {
-<span class="fc" id="L158">        var labelShowSouth = new JLabel(UiUtil.ARROW_DOWN.icon);</span>
-<span class="fc" id="L159">        labelShowSouth.setName(&quot;buttonShowSouth&quot;);</span>
-<span class="fc" id="L160">        labelShowSouth.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L175">        var labelShowSouth = new JLabel(UiUtil.ARROW_DOWN.icon);</span>
+<span class="fc" id="L176">        labelShowSouth.setName(&quot;buttonShowSouth&quot;);</span>
+<span class="fc" id="L177">        labelShowSouth.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mouseClicked(MouseEvent e) {
-<span class="fc" id="L163">                SplitHorizontalTopBottom.getActionHideShowConsole().actionPerformed(null);</span>
-<span class="fc" id="L164">            }</span>
+<span class="fc" id="L180">                SplitNS.getActionHideShowConsole().actionPerformed(null);</span>
+<span class="fc" id="L181">            }</span>
         });
         
-<span class="fc" id="L167">        this.labelShowNorth.setName(&quot;buttonShowNorth&quot;);</span>
-<span class="fc" id="L168">        this.labelShowNorth.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L184">        this.labelShowNorth.setName(&quot;buttonShowNorth&quot;);</span>
+<span class="fc" id="L185">        this.labelShowNorth.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mouseClicked(MouseEvent e) {
-<span class="fc" id="L171">                SplitHorizontalTopBottom.getActionHideShowResult().actionPerformed(null);</span>
-<span class="fc" id="L172">            }</span>
+<span class="fc" id="L188">                SplitNS.getActionHideShowResult().actionPerformed(null);</span>
+<span class="fc" id="L189">            }</span>
         });
 
-<span class="fc" id="L175">        var panelExpander = new JPanel();</span>
-<span class="fc" id="L176">        panelExpander.setLayout(new BoxLayout(panelExpander, BoxLayout.X_AXIS));</span>
-<span class="fc" id="L177">        panelExpander.add(Box.createGlue());</span>
-<span class="fc" id="L178">        panelExpander.add(this.labelShowNorth);</span>
-<span class="fc" id="L179">        panelExpander.add(labelShowSouth);</span>
-<span class="fc" id="L180">        return panelExpander;</span>
+<span class="fc" id="L192">        var panelExpander = new JPanel();</span>
+<span class="fc" id="L193">        panelExpander.setLayout(new BoxLayout(panelExpander, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L194">        panelExpander.add(Box.createGlue());</span>
+<span class="fc" id="L195">        panelExpander.add(this.labelShowNorth);</span>
+<span class="fc" id="L196">        panelExpander.add(labelShowSouth);</span>
+<span class="fc" id="L197">        return panelExpander;</span>
     }
 
     public void reset() {
         // Empty infos tabs
-<span class="fc" id="L185">        this.chunkTextArea.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L186">        this.binaryTextArea.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L187">        this.javaTextPane.getProxy().setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L202">        this.chunkTextArea.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L203">        this.binaryTextArea.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L204">        this.javaTextPane.getProxy().setText(StringUtils.EMPTY);</span>
 
-<span class="fc" id="L189">        this.networkTable.getListHttpHeader().clear();</span>
+<span class="fc" id="L206">        this.networkTable.getListHttpHeader().clear();</span>
         // Fix #4657, Fix #1860: Multiple Exceptions on setRowCount()
         try {
-<span class="fc" id="L192">            ((DefaultTableModel) this.networkTable.getModel()).setRowCount(0);</span>
-<span class="nc" id="L193">        } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L194">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L195">        }</span>
+<span class="fc" id="L209">            ((DefaultTableModel) this.networkTable.getModel()).setRowCount(0);</span>
+<span class="nc" id="L210">        } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L211">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L212">        }</span>
 
-<span class="fc" id="L197">        this.tabbedPaneNetworkTab.reset();</span>
-<span class="fc" id="L198">    }</span>
+<span class="fc" id="L214">        this.tabbedPaneNetworkTab.reset();</span>
+<span class="fc" id="L215">    }</span>
 
     /**
      * Add Chunk console to bottom panel.
      */
     public void insertChunkTab() {
-<span class="fc" id="L204">        this.buildI18nTab(</span>
+<span class="fc" id="L221">        this.buildI18nTab(</span>
             &quot;CONSOLE_CHUNK_LABEL&quot;,
             &quot;CONSOLE_CHUNK_TOOLTIP&quot;,
             UiUtil.CHUNK.icon,
-            new JScrollPane(PanelConsoles.this.chunkTextArea),
+            new JScrollPane(this.chunkTextArea),
             1
         );
-<span class="fc" id="L211">    }</span>
+<span class="fc" id="L228">    }</span>
 
     /**
      * Add Binary console to bottom panel.
      */
     public void insertBooleanTab() {
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">        var positionFromChunk = this.tabConsoles.indexOfTab(UiUtil.CHUNK.icon) != -1 ? 1 : 0;</span>
-<span class="fc" id="L218">        this.buildI18nTab(</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        var positionFromChunk = this.tabConsoles.indexOfTab(UiUtil.CHUNK.icon) != -1 ? 1 : 0;</span>
+<span class="fc" id="L235">        this.buildI18nTab(</span>
             &quot;CONSOLE_BINARY_LABEL&quot;,
             &quot;CONSOLE_BINARY_TOOLTIP&quot;,
             UiUtil.BINARY.icon,
-            new JScrollPane(PanelConsoles.this.binaryTextArea),
+            new JScrollPane(this.binaryTextArea),
             1 + positionFromChunk
         );
-<span class="fc" id="L225">    }</span>
+<span class="fc" id="L242">    }</span>
 
     /**
      * Add Network tab to bottom panel.
      */
     public void insertNetworkTab() {
-<span class="pc bpc" id="L231" title="1 of 2 branches missed.">        var positionFromJava = this.tabConsoles.indexOfTab(UiUtil.CUP.icon) != -1 ? 1 : 0;</span>
-<span class="fc" id="L232">        this.buildI18nTab(</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">        var positionFromJava = this.tabConsoles.indexOfTab(UiUtil.CUP.icon) != -1 ? 1 : 0;</span>
+<span class="fc" id="L249">        this.buildI18nTab(</span>
             &quot;CONSOLE_NETWORK_LABEL&quot;,
             &quot;CONSOLE_NETWORK_TOOLTIP&quot;,
             UiUtil.NETWORK.icon,
-            new JScrollPane(PanelConsoles.this.networkSplitPane),
-<span class="fc" id="L237">            this.tabConsoles.getTabCount() - positionFromJava</span>
+            new JScrollPane(this.networkSplitPane),
+<span class="fc" id="L254">            this.tabConsoles.getTabCount() - positionFromJava</span>
         );
-<span class="fc" id="L239">    }</span>
+<span class="fc" id="L256">    }</span>
 
     /**
      * Add Java console to bottom panel.
      */
     public void insertJavaTab() {
-<span class="nc" id="L245">        this.buildI18nTab(</span>
+<span class="nc" id="L262">        this.buildI18nTab(</span>
             &quot;CONSOLE_JAVA_LABEL&quot;,
             &quot;CONSOLE_JAVA_TOOLTIP&quot;,
             UiUtil.CUP.icon,
-<span class="nc" id="L249">            new JScrollPane(this.javaTextPane.getProxy()),</span>
-<span class="nc" id="L250">            this.tabConsoles.getTabCount()</span>
+<span class="nc" id="L266">            new JScrollPane(this.javaTextPane.getProxy()),</span>
+<span class="nc" id="L267">            this.tabConsoles.getTabCount()</span>
         );
-<span class="nc" id="L252">    }</span>
+<span class="nc" id="L269">    }</span>
     
     private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager, int position) {
-<span class="fc" id="L255">        var refJToolTipI18n = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip)));</span>
+<span class="fc" id="L272">        var refJToolTipI18n = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip)));</span>
         
-<span class="fc" id="L257">        var labelTab = new JLabel(I18nViewUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {</span>
+<span class="fc" id="L274">        var labelTab = new JLabel(I18nViewUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {</span>
             @Override
             public JToolTip createToolTip() {
-<span class="nc" id="L260">                refJToolTipI18n.set(new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip)));</span>
-<span class="nc" id="L261">                return refJToolTipI18n.get();</span>
+<span class="nc" id="L277">                refJToolTipI18n.set(new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip)));</span>
+<span class="nc" id="L278">                return refJToolTipI18n.get();</span>
             }
         };
         
-<span class="fc" id="L265">        labelTab.setName(keyLabel);</span>
-<span class="fc" id="L266">        labelTab.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L282">        labelTab.setName(keyLabel);</span>
+<span class="fc" id="L283">        labelTab.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent event) {
                 // Fix #90428: IllegalArgumentException in setSelectedComponent()
                 // ArrayIndexOutOfBoundsException #92973 on setSelectedComponent()
                 try {
-<span class="fc" id="L272">                    PanelConsoles.this.tabConsoles.setSelectedComponent(manager);</span>
-<span class="nc" id="L273">                } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L274">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L275">                }</span>
-<span class="fc" id="L276">            }</span>
+<span class="fc" id="L289">                    PanelConsoles.this.tabConsoles.setSelectedComponent(manager);</span>
+<span class="nc" id="L290">                } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L291">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L292">                }</span>
+<span class="fc" id="L293">            }</span>
         });
         
-<span class="fc" id="L279">        this.tabConsoles.insertTab(I18nViewUtil.valueByKey(keyLabel), icon, manager, null, position);</span>
-<span class="fc" id="L280">        this.tabConsoles.setTabComponentAt(this.tabConsoles.indexOfTab(I18nViewUtil.valueByKey(keyLabel)), labelTab);</span>
+<span class="fc" id="L296">        this.tabConsoles.insertTab(I18nViewUtil.valueByKey(keyLabel), icon, manager, null, position);</span>
+<span class="fc" id="L297">        this.tabConsoles.setTabComponentAt(this.tabConsoles.indexOfTab(I18nViewUtil.valueByKey(keyLabel)), labelTab);</span>
         
-<span class="fc" id="L282">        I18nViewUtil.addComponentForKey(keyLabel, labelTab);</span>
-<span class="fc" id="L283">        I18nViewUtil.addComponentForKey(keyTooltip, refJToolTipI18n.get());</span>
-<span class="fc" id="L284">        labelTab.setToolTipText(I18nViewUtil.valueByKey(keyTooltip));</span>
-<span class="fc" id="L285">    }</span>
+<span class="fc" id="L299">        I18nViewUtil.addComponentForKey(keyLabel, labelTab);</span>
+<span class="fc" id="L300">        I18nViewUtil.addComponentForKey(keyTooltip, refJToolTipI18n.get());</span>
+<span class="fc" id="L301">        labelTab.setToolTipText(I18nViewUtil.valueByKey(keyTooltip));</span>
+<span class="fc" id="L302">    }</span>
     
     public void messageChunk(String text) {
         try {
-<span class="nc" id="L289">            this.chunkTextArea.append(text +&quot;\n&quot;);</span>
-<span class="nc" id="L290">            this.chunkTextArea.setCaretPosition(this.chunkTextArea.getDocument().getLength());</span>
-<span class="nc" id="L291">        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L306">            this.chunkTextArea.append(text +&quot;\n&quot;);</span>
+<span class="nc" id="L307">            this.chunkTextArea.setCaretPosition(this.chunkTextArea.getDocument().getLength());</span>
+<span class="nc" id="L308">        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
             // Fix #67063: NullPointerException on chunkTab.append()
             // Fix #4770 on chunkTab.append()
-<span class="nc" id="L294">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L295">        }</span>
-<span class="nc" id="L296">    }</span>
+<span class="nc" id="L311">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L312">        }</span>
+<span class="nc" id="L313">    }</span>
     
     public void messageBinary(String text) {
         try {
-<span class="nc" id="L300">            this.binaryTextArea.append(String.format(&quot;\t%s&quot;, text));</span>
-<span class="nc" id="L301">            this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());</span>
-<span class="nc" id="L302">        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L303">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L304">        }</span>
-<span class="nc" id="L305">    }</span>
+<span class="nc" id="L317">            this.binaryTextArea.append(String.format(&quot;\t%s&quot;, text));</span>
+<span class="nc" id="L318">            this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());</span>
+<span class="nc" id="L319">        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L320">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L321">        }</span>
+<span class="nc" id="L322">    }</span>
     
     
     // Getter and setter
 
     public int getDividerLocation() {
-<span class="fc" id="L311">        return this.dividerLocation;</span>
+<span class="fc" id="L328">        return this.dividerLocation;</span>
     }
 
     public void setDividerLocation(int location) {
-<span class="fc" id="L315">        this.dividerLocation = location;</span>
-<span class="fc" id="L316">    }</span>
+<span class="fc" id="L332">        this.dividerLocation = location;</span>
+<span class="fc" id="L333">    }</span>
 
     public JLabel getLabelShowNorth() {
-<span class="fc" id="L319">        return this.labelShowNorth;</span>
+<span class="fc" id="L336">        return this.labelShowNorth;</span>
     }
 
     public NetworkTable getNetworkTable() {
-<span class="fc" id="L323">        return this.networkTable;</span>
+<span class="fc" id="L340">        return this.networkTable;</span>
     }
 
     public TabbedPaneNetworkTab getTabbedPaneNetworkTab() {
-<span class="fc" id="L327">        return tabbedPaneNetworkTab;</span>
+<span class="fc" id="L344">        return this.tabbedPaneNetworkTab;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

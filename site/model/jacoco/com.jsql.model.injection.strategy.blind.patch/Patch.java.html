@@ -71,16 +71,16 @@ public class Patch {
 <span class="nc" id="L71">            .append(&quot;\n&quot;);</span>
 <span class="nc" id="L72">        }</span>
 
-<span class="nc" id="L74">        return unescapeForEncodeUriCompatability(text.toString());</span>
+<span class="nc" id="L74">        return Patch.unescapeForEncodeUriCompatability(text.toString());</span>
     }
     
     /**
-     * Unescape selected chars for compatability with JavaScript's encodeURI.
+     * Unescape selected chars for compatibility with JavaScript's encodeURI.
      * In speed critical applications this could be dropped since the
      * receiving application will certainly decode these fine.
-     * Note that this function is case-sensitive.  Thus &quot;%3f&quot; would not be
+     * Note that this function is case-sensitive. Thus, &quot;%3f&quot; would not be
      * unescaped.  But this is ok because it is only called with the output of
-     * URLEncoder.encode which returns uppercase hex.
+     * URLEncoder.encode() which returns uppercase hex.
      *
      * Example: &quot;%3F&quot; -&gt; &quot;?&quot;, &quot;%24&quot; -&gt; &quot;$&quot;, etc.
      *

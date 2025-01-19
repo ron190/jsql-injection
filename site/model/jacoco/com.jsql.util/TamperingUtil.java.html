@@ -45,7 +45,7 @@ import java.util.regex.Pattern;
 <span class="nc" id="L45">                throw new ScriptException(&quot;Tampering context is empty&quot;);</span>
             }
 
-<span class="fc" id="L48">            ScriptEngine nashornEngine = SCRIPT_ENGINE_MANAGER.getEngineByName(&quot;nashorn&quot;);</span>
+<span class="fc" id="L48">            ScriptEngine nashornEngine = TamperingUtil.SCRIPT_ENGINE_MANAGER.getEngineByName(&quot;nashorn&quot;);</span>
 <span class="fc" id="L49">            nashornEngine.eval(jsTampering);</span>
 
 <span class="fc" id="L51">            var nashornInvocable = (Invocable) nashornEngine;</span>
@@ -76,7 +76,7 @@ import java.util.regex.Pattern;
         String trail;
 
         // Transform only SQL query without HTTP parameters and syntax changed, like p=1'+[sql]
-<span class="fc" id="L79">        String regexToMatchTamperTags = String.format(&quot;(?s)(.*%s)(.*)(%s.*)&quot;, TAG_OPENED, TAG_CLOSED);</span>
+<span class="fc" id="L79">        String regexToMatchTamperTags = String.format(&quot;(?s)(.*%s)(.*)(%s.*)&quot;, TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);</span>
 <span class="fc" id="L80">        var matcherSql = Pattern.compile(regexToMatchTamperTags).matcher(sqlQueryDefault);</span>
 
 <span class="fc bfc" id="L82" title="All 2 branches covered.">        if (matcherSql.find()) {</span>
@@ -88,19 +88,19 @@ import java.util.regex.Pattern;
         }
 
 <span class="fc bfc" id="L90" title="All 2 branches covered.">        if (this.isEval) {</span>
-<span class="fc" id="L91">            sqlQuery = eval(sqlQuery, this.customTamper);</span>
+<span class="fc" id="L91">            sqlQuery = TamperingUtil.eval(sqlQuery, this.customTamper);</span>
         }
 
-<span class="fc" id="L94">        sqlQuery = transform(sqlQuery, this.isHexToChar, TamperingType.HEX_TO_CHAR);</span>
-<span class="fc" id="L95">        sqlQuery = transform(sqlQuery, this.isStringToChar, TamperingType.STRING_TO_CHAR);</span>
-<span class="fc" id="L96">        sqlQuery = transform(sqlQuery, this.isFunctionComment, TamperingType.COMMENT_TO_METHOD_SIGNATURE);</span>
-<span class="fc" id="L97">        sqlQuery = transform(sqlQuery, this.isVersionComment, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE);</span>
-<span class="fc" id="L98">        sqlQuery = transform(sqlQuery, this.isRandomCase, TamperingType.RANDOM_CASE);</span>
-<span class="fc" id="L99">        sqlQuery = transform(sqlQuery, this.isEqualToLike, TamperingType.EQUAL_TO_LIKE);</span>
+<span class="fc" id="L94">        sqlQuery = this.transform(sqlQuery, this.isHexToChar, TamperingType.HEX_TO_CHAR);</span>
+<span class="fc" id="L95">        sqlQuery = this.transform(sqlQuery, this.isStringToChar, TamperingType.STRING_TO_CHAR);</span>
+<span class="fc" id="L96">        sqlQuery = this.transform(sqlQuery, this.isFunctionComment, TamperingType.COMMENT_TO_METHOD_SIGNATURE);</span>
+<span class="fc" id="L97">        sqlQuery = this.transform(sqlQuery, this.isVersionComment, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE);</span>
+<span class="fc" id="L98">        sqlQuery = this.transform(sqlQuery, this.isRandomCase, TamperingType.RANDOM_CASE);</span>
+<span class="fc" id="L99">        sqlQuery = this.transform(sqlQuery, this.isEqualToLike, TamperingType.EQUAL_TO_LIKE);</span>
 
 <span class="fc" id="L101">        sqlQuery = lead + sqlQuery + trail;</span>
 
-<span class="fc" id="L103">        String regexToremoveTamperTags = String.format(&quot;(?i)%s|%s&quot;, TAG_OPENED, TAG_CLOSED);</span>
+<span class="fc" id="L103">        String regexToremoveTamperTags = String.format(&quot;(?i)%s|%s&quot;, TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);</span>
 <span class="fc" id="L104">        sqlQuery = sqlQuery.replaceAll(regexToremoveTamperTags, StringUtils.EMPTY);</span>
 
         // Empty when checking character insertion
@@ -112,21 +112,21 @@ import java.util.regex.Pattern;
 
         // Dependency to: EQUAL_TO_LIKE
 <span class="fc bfc" id="L114" title="All 2 branches covered.">        if (this.isSpaceToDashComment) {</span>
-<span class="fc" id="L115">            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_DASH_COMMENT.instance().getJavascript());</span>
+<span class="fc" id="L115">            sqlQuery = TamperingUtil.eval(sqlQuery, TamperingType.SPACE_TO_DASH_COMMENT.instance().getJavascript());</span>
 <span class="fc bfc" id="L116" title="All 2 branches covered.">        } else if (this.isSpaceToMultilineComment) {</span>
-<span class="fc" id="L117">            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getJavascript());</span>
+<span class="fc" id="L117">            sqlQuery = TamperingUtil.eval(sqlQuery, TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getJavascript());</span>
 <span class="fc bfc" id="L118" title="All 2 branches covered.">        } else if (this.isSpaceToSharpComment) {</span>
-<span class="fc" id="L119">            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_SHARP_COMMENT.instance().getJavascript());</span>
+<span class="fc" id="L119">            sqlQuery = TamperingUtil.eval(sqlQuery, TamperingType.SPACE_TO_SHARP_COMMENT.instance().getJavascript());</span>
         }
 
-<span class="fc" id="L122">        sqlQuery = transform(sqlQuery, this.isBase64, TamperingType.BASE64);</span>
-<span class="fc" id="L123">        sqlQuery = transform(sqlQuery, this.isQuoteToUtf8, TamperingType.QUOTE_TO_UTF8);  // char insertion included</span>
+<span class="fc" id="L122">        sqlQuery = this.transform(sqlQuery, this.isBase64, TamperingType.BASE64);</span>
+<span class="fc" id="L123">        sqlQuery = this.transform(sqlQuery, this.isQuoteToUtf8, TamperingType.QUOTE_TO_UTF8);  // char insertion included</span>
 <span class="fc" id="L124">        return sqlQuery;</span>
     }
 
     private String transform(String sqlQuery, boolean shouldApply, TamperingType tamperingType) {
 <span class="fc bfc" id="L128" title="All 2 branches covered.">        if (shouldApply) {</span>
-<span class="fc" id="L129">            return eval(sqlQuery, tamperingType.instance().getJavascript());</span>
+<span class="fc" id="L129">            return TamperingUtil.eval(sqlQuery, tamperingType.instance().getJavascript());</span>
         }
 <span class="fc" id="L131">        return sqlQuery;</span>
     }

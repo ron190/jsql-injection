@@ -13,6 +13,8 @@ package com.jsql.view.swing.interaction;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
+import javax.swing.*;
+
 /**
  * Mark the injection as vulnerable to a blind injection.
  */
@@ -20,13 +22,13 @@ public class CreateAnalysisReport extends CreateTabHelper implements Interaction
 
     private final String content;
 
-<span class="nc" id="L23">    public CreateAnalysisReport(Object[] interactionParams) {</span>
-<span class="nc" id="L24">        this.content = (String) interactionParams[0];</span>
-<span class="nc" id="L25">    }</span>
+<span class="nc" id="L25">    public CreateAnalysisReport(Object[] interactionParams) {</span>
+<span class="nc" id="L26">        this.content = (String) interactionParams[0];</span>
+<span class="nc" id="L27">    }</span>
 
     @Override
     public void execute() {
-<span class="nc" id="L29">        MediatorHelper.tabResults().createReportTab(this.content.trim());</span>
-<span class="nc" id="L30">    }</span>
+<span class="nc" id="L31">        SwingUtilities.invokeLater(() -&gt; MediatorHelper.tabResults().addReportTab(this.content.trim()));</span>
+<span class="nc" id="L32">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

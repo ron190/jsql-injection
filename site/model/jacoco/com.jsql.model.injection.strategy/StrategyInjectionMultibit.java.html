@@ -40,16 +40,16 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
 <span class="fc bfc" id="L42" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled()) {</span>
-<span class="fc" id="L43">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());</span>
+<span class="fc" id="L43">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());</span>
 <span class="fc" id="L44">            return;</span>
         }
-<span class="fc" id="L46">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} Multibit...&quot;, () -&gt; I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));</span>
+<span class="fc" id="L46">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} Multibit...&quot;, () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY));</span>
 
-<span class="fc" id="L48">        this.injectionMultibit = new InjectionMultibit(this.injectionModel, BinaryMode.STACKED);</span>
+<span class="fc" id="L48">        this.injectionMultibit = new InjectionMultibit(this.injectionModel, BinaryMode.STACK);</span>
 <span class="fc" id="L49">        this.isApplicable = this.injectionMultibit.isInjectable();</span>
 
 <span class="fc bfc" id="L51" title="All 2 branches covered.">        if (this.isApplicable) {</span>
-<span class="fc" id="L52">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;{} Multibit injection&quot;, () -&gt; I18nUtil.valueByKey(KEY_LOG_VULNERABLE));</span>
+<span class="fc" id="L52">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;{} Multibit injection&quot;, () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE));</span>
 <span class="fc" id="L53">            this.allow();</span>
 
 <span class="fc" id="L55">            var requestMessageBinary = new Request();</span>
@@ -64,9 +64,9 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     @Override
     public void allow(int... i) {
 <span class="fc" id="L66">        this.injectionModel.appendAnalysisReport(</span>
-<span class="fc" id="L67">            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, &quot;### Strategy: &quot; + getName())</span>
+<span class="fc" id="L67">            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, &quot;### Strategy: &quot; + this.getName())</span>
 <span class="fc" id="L68">            + this.injectionModel.getReportWithoutIndex(</span>
-<span class="fc" id="L69">                injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(</span>
+<span class="fc" id="L69">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(</span>
 <span class="fc" id="L70">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(</span>
 <span class="fc" id="L71">                        StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, &quot;&amp;lt;query&amp;gt;&quot;),</span>
                         &quot;0&quot;,

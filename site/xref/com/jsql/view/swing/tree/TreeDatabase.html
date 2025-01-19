@@ -142,7 +142,7 @@
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>             progressingTreeNodeModel.setIndexProgress(table.getChildCount());  <em class="jxr_comment">// Update the progress value of the model, end the progress</em>
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>             progressingTreeNodeModel.setRunning(false);  <em class="jxr_comment">// Mark the node model as 'no stop/pause/resume button'</em>
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>             MediatorHelper.tabResults().createValuesTab(data, columnNames, table);
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>             MediatorHelper.tabResults().addTabValues(data, columnNames, table);
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         }
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>     }
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>     

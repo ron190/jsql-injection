@@ -29,7 +29,7 @@ public class CookiesUtil {
 <span class="pc bpc" id="L29" title="1 of 2 branches missed.">            if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam()) {</span>
 <span class="nc" id="L30">                return false;</span>
             }
-<span class="fc" id="L32">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking cookies params...&quot;);</span>
+<span class="fc" id="L32">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;) +&quot; cookies...&quot;);</span>
         } else {
 <span class="fc" id="L34">            return true;</span>
         }
@@ -47,7 +47,7 @@ public class CookiesUtil {
 <span class="fc" id="L47">            .map(cookie -&gt; cookie.split(&quot;=&quot;, 2))</span>
 <span class="fc" id="L48">            .map(arrayEntry -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
 <span class="fc" id="L49">                arrayEntry[0].trim(),</span>
-<span class="pc bpc" id="L50" title="1 of 2 branches missed.">                arrayEntry[1] == null ? &quot;&quot; : arrayEntry[1].trim()</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">                arrayEntry[1] == null ? StringUtils.EMPTY : arrayEntry[1].trim()</span>
             ))
 <span class="fc" id="L52">            .collect(Collectors.toList());</span>
 
@@ -60,25 +60,26 @@ public class CookiesUtil {
             try {
 <span class="fc" id="L61">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_DEFAULT,
-                    &quot;Checking cookie {}={}&quot;,
-<span class="fc" id="L64">                    cookie::getKey,</span>
-<span class="fc" id="L65">                    () -&gt; cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+                    &quot;{} cookie {}={}&quot;,
+<span class="fc" id="L64">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;),</span>
+<span class="fc" id="L65">                    cookie::getKey,</span>
+<span class="fc" id="L66">                    () -&gt; cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                 );
-<span class="fc bfc" id="L67" title="All 2 branches covered.">                if (this.injectionModel.getMediatorMethod().getHeader().testParameters()) {</span>
-<span class="fc" id="L68">                    return true;</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">                if (this.injectionModel.getMediatorMethod().getHeader().testParameters()) {</span>
+<span class="fc" id="L69">                    return true;</span>
                 }
-<span class="nc" id="L70">            } catch (JSqlException e) {</span>
-<span class="nc" id="L71">                LOGGER.log(</span>
+<span class="nc" id="L71">            } catch (JSqlException e) {</span>
+<span class="nc" id="L72">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L73">                    String.format(</span>
+<span class="nc" id="L74">                    String.format(</span>
                         &quot;No Cookie injection for %s=%s&quot;,
-<span class="nc" id="L75">                        cookie.getKey(),</span>
-<span class="nc" id="L76">                        cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="nc" id="L76">                        cookie.getKey(),</span>
+<span class="nc" id="L77">                        cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                     )
                 );
-<span class="fc" id="L79">            }</span>
-<span class="fc" id="L80">        }</span>
-<span class="nc" id="L81">        return false;</span>
+<span class="fc" id="L80">            }</span>
+<span class="fc" id="L81">        }</span>
+<span class="nc" id="L82">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -67,7 +67,7 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          <em class="jxr_comment">// Side effect: disable caret blink, editable texts must restore blink rate</em>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.getProxy().addFocusListener(<strong class="jxr_keyword">new</strong> FocusAdapter() {
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>              @Override
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusGained(FocusEvent arg0) {
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusGained(FocusEvent focusEvent) {
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>                  <em class="jxr_comment">// Fix #95769: IllegalArgumentException on setVisible()</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>                  <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>                      JPopupTextArea.<strong class="jxr_keyword">this</strong>.getProxy().getCaret().setVisible(<strong class="jxr_keyword">true</strong>);

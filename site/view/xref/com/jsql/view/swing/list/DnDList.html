@@ -79,11 +79,11 @@
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">this</strong>.addMouseListener(<strong class="jxr_keyword">new</strong> <a name="MouseAdapterMenuAction" href="../../../../../com/jsql/view/swing/list/MouseAdapterMenuAction.html#MouseAdapterMenuAction">MouseAdapterMenuAction</a>(<strong class="jxr_keyword">this</strong>));
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">this</strong>.addFocusListener(<strong class="jxr_keyword">new</strong> FocusListener() {  <em class="jxr_comment">// Allows color change when list loses/gains focus</em>
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>              @Override
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusLost(FocusEvent arg0) {
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusLost(FocusEvent focusEvent) {
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>                  DnDList.<strong class="jxr_keyword">this</strong>.repaint();
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>              }
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>              @Override
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusGained(FocusEvent arg0) {
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusGained(FocusEvent focusEvent) {
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>                  DnDList.<strong class="jxr_keyword">this</strong>.repaint();
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>              }
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>          });
@@ -237,14 +237,14 @@
 <a class="jxr_linenumber" name="L229" href="#L229">229</a>             endPosition = <strong class="jxr_keyword">this</strong>.initializeItems(endPosition, file);
 <a class="jxr_linenumber" name="L230" href="#L230">230</a>         }
 <a class="jxr_linenumber" name="L231" href="#L231">231</a>         <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.listModel.isEmpty()) {
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>             DnDList.<strong class="jxr_keyword">this</strong>.setSelectionInterval(startPosition, endPosition - 1);
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>             <strong class="jxr_keyword">this</strong>.setSelectionInterval(startPosition, endPosition - 1);
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>         }
 <a class="jxr_linenumber" name="L234" href="#L234">234</a>         
 <a class="jxr_linenumber" name="L235" href="#L235">235</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>             DnDList.<strong class="jxr_keyword">this</strong>.scrollRectToVisible(
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>                 DnDList.<strong class="jxr_keyword">this</strong>.getCellBounds(
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>                     DnDList.<strong class="jxr_keyword">this</strong>.getMinSelectionIndex(),
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>                     DnDList.<strong class="jxr_keyword">this</strong>.getMaxSelectionIndex()
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>             <strong class="jxr_keyword">this</strong>.scrollRectToVisible(
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>                 <strong class="jxr_keyword">this</strong>.getCellBounds(
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>                     <strong class="jxr_keyword">this</strong>.getMinSelectionIndex(),
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>                     <strong class="jxr_keyword">this</strong>.getMaxSelectionIndex()
 <a class="jxr_linenumber" name="L240" href="#L240">240</a>                 )
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>             );
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException e) {

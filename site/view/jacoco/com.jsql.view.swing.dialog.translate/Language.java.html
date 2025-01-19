@@ -32,12 +32,12 @@ import java.util.Locale;
 <span class="fc" id="L32">    OT(&quot;another language&quot;, &quot;unknown&quot;, null);</span>
 
     private final String nameEnglish;  // required for default logging and english modal translate into
-    private final Icon flag;
+    private final ImageIcon flag;
     private final String languageTag;
     private final boolean isNonLatin;
     private final boolean isRightToLeft;
 
-<span class="fc" id="L40">    Language(String nameEnglish, String languageTag, Icon flag, boolean isNonLatin, boolean isRightToLeft) {</span>
+<span class="fc" id="L40">    Language(String nameEnglish, String languageTag, ImageIcon flag, boolean isNonLatin, boolean isRightToLeft) {</span>
 <span class="fc" id="L41">        this.nameEnglish = nameEnglish;</span>
 <span class="fc" id="L42">        this.flag = flag;</span>
 <span class="fc" id="L43">        this.languageTag = languageTag;</span>
@@ -45,11 +45,11 @@ import java.util.Locale;
 <span class="fc" id="L45">        this.isRightToLeft = isRightToLeft;</span>
 <span class="fc" id="L46">    }</span>
 
-    Language(String nameEnglish, String languageTag, Icon flag, boolean isNonLatin) {
+    Language(String nameEnglish, String languageTag, ImageIcon flag, boolean isNonLatin) {
 <span class="fc" id="L49">        this(nameEnglish, languageTag, flag, isNonLatin, false);</span>
 <span class="fc" id="L50">    }</span>
 
-    Language(String nameEnglish, String languageTag, Icon flag) {
+    Language(String nameEnglish, String languageTag, ImageIcon flag) {
 <span class="fc" id="L53">        this(nameEnglish, languageTag, flag, false, false);</span>
 <span class="fc" id="L54">    }</span>
 
@@ -62,12 +62,12 @@ import java.util.Locale;
 <span class="fc" id="L62">        return Locale.forLanguageTag(this.languageTag).getLanguage().equals(Locale.getDefault().getLanguage());</span>
     }
 
-    public Icon getFlag() {
+    public ImageIcon getFlag() {
 <span class="fc" id="L66">        return this.flag;</span>
     }
 
     public boolean isRightToLeft() {
-<span class="fc" id="L70">        return isRightToLeft;</span>
+<span class="fc" id="L70">        return this.isRightToLeft;</span>
     }
 
     public String getLanguageTag() {
@@ -76,7 +76,7 @@ import java.util.Locale;
 
     @Override
     public String toString() {
-<span class="fc" id="L79">        return this.nameEnglish;</span>
+<span class="nc" id="L79">        return this.nameEnglish;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

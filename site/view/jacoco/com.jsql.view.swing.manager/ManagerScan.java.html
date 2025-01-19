@@ -14,11 +14,10 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.vendor.model.Vendor;
-import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.list.*;
-import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -30,11 +29,12 @@ import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -55,7 +55,7 @@ public class ManagerScan extends AbstractManagerList {
      * Create admin page finder.
      */
     public ManagerScan() {
-<span class="fc" id="L58">        super(UiUtil.INPUT_STREAM_PAGES_SCAN, true);</span>
+<span class="fc" id="L58">        super(&quot;swing/list/scan-page.json&quot;);</span>
 
 <span class="fc" id="L60">        this.listPaths.setTransferHandler(null);</span>
 <span class="fc" id="L61">        this.listPaths.setTransferHandler(new ListTransfertHandlerScan());</span>
@@ -73,7 +73,7 @@ public class ManagerScan extends AbstractManagerList {
         
 <span class="fc" id="L74">        this.listPaths.setName(ManagerScan.NAME);</span>
 
-<span class="fc" id="L76">        JPanel lastLine = this.getLastLinePanel(this.listPaths);</span>
+<span class="fc" id="L76">        JPanel lastLine = this.getLastLinePanel();</span>
 <span class="fc" id="L77">        this.add(lastLine, BorderLayout.SOUTH);</span>
         
 <span class="fc" id="L79">        this.listPaths.addListSelectionListener(e -&gt; {</span>
@@ -90,7 +90,7 @@ public class ManagerScan extends AbstractManagerList {
 <span class="pc bpc" id="L90" title="2 of 4 branches missed.">            if (requestType != null &amp;&amp; !requestType.isEmpty()) {</span>
 <span class="fc" id="L91">                MediatorHelper.panelAddressBar().getAtomicRadioMethod().setText(requestType);</span>
             } else {
-<span class="nc" id="L93">                MediatorHelper.panelAddressBar().getAtomicRadioMethod().setText(&quot;GET&quot;);</span>
+<span class="nc" id="L93">                MediatorHelper.panelAddressBar().getAtomicRadioMethod().setText(StringUtil.GET);</span>
             }
             
 <span class="fc" id="L96">            AbstractMethodInjection method = beanInjection.getMethodInstance();</span>
@@ -104,83 +104,69 @@ public class ManagerScan extends AbstractManagerList {
 <span class="fc" id="L104">        });</span>
 <span class="fc" id="L105">    }</span>
 
-    private JPanel getLastLinePanel(final DnDList dndListScan) {
-<span class="fc" id="L108">        var lastLine = new JPanel();</span>
-<span class="fc" id="L109">        lastLine.setOpaque(false);</span>
-<span class="fc" id="L110">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));</span>
-
-<span class="fc" id="L112">        this.initializeRunButton(dndListScan);</span>
-
-<span class="fc" id="L114">        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));</span>
-<span class="fc" id="L115">        lastLine.add(this.horizontalGlue);</span>
-<span class="fc" id="L116">        lastLine.add(this.progressBar);</span>
-<span class="fc" id="L117">        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));</span>
-<span class="fc" id="L118">        lastLine.add(this.run);</span>
-<span class="fc" id="L119">        return lastLine;</span>
-    }
-
-    private List&lt;ItemList&gt; getItemList() {
-        
-<span class="nc" id="L124">        var jsonScan = new StringBuilder();</span>
+    @Override
+    public void buildList(String nameFile) {
+<span class="fc" id="L109">        var jsonScan = new StringBuilder();</span>
         try (
-<span class="nc" id="L126">            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.INPUT_STREAM_PAGES_SCAN);</span>
-<span class="nc" id="L127">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
-<span class="nc" id="L128">            var reader = new BufferedReader(inputStreamReader)</span>
+<span class="fc" id="L111">            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);</span>
+<span class="fc" id="L112">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
+<span class="fc" id="L113">            var reader = new BufferedReader(inputStreamReader)</span>
         ) {
             String line;
-<span class="nc bnc" id="L131" title="All 2 branches missed.">            while ((line = reader.readLine()) != null) {</span>
-<span class="nc" id="L132">                jsonScan.append(line);</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
+<span class="fc" id="L117">                jsonScan.append(line);</span>
             }
-<span class="nc" id="L134">        } catch (IOException e) {</span>
-<span class="nc" id="L135">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L136">        }</span>
-        
-<span class="nc" id="L138">        List&lt;ItemList&gt; itemsList = new ArrayList&lt;&gt;();</span>
-        try {
-<span class="nc" id="L140">            var jsonArrayScan = new JSONArray(jsonScan.toString());</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">            for (var i = 0 ; i &lt; jsonArrayScan.length() ; i++) {</span>
-<span class="nc" id="L142">                itemsList.add(new ItemListScan(jsonArrayScan.getJSONObject(i)));</span>
+<span class="fc" id="L119">            var jsonArrayScan = new JSONArray(jsonScan.toString());</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            for (var i = 0 ; i &lt; jsonArrayScan.length() ; i++) {</span>
+<span class="fc" id="L121">                this.itemsList.add(new ItemListScan(jsonArrayScan.getJSONObject(i)));</span>
             }
-<span class="nc" id="L144">        } catch (JSONException e) {</span>
-<span class="nc" id="L145">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L146">        }</span>
-        
-<span class="nc" id="L148">        return itemsList;</span>
+<span class="fc" id="L123">            this.listPaths = new DnDListScan(this.itemsList);</span>
+<span class="nc" id="L124">        } catch (JSONException | IOException e) {</span>
+<span class="nc" id="L125">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L126">        }</span>
+<span class="fc" id="L127">    }</span>
+
+    private JPanel getLastLinePanel() {
+<span class="fc" id="L130">        var lastLine = new JPanel();</span>
+<span class="fc" id="L131">        lastLine.setOpaque(false);</span>
+<span class="fc" id="L132">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));</span>
+
+<span class="fc" id="L134">        this.buildRunButton(&quot;SCAN_RUN_BUTTON_LABEL&quot;, &quot;SCAN_RUN_BUTTON_TOOLTIP&quot;);</span>
+<span class="fc" id="L135">        this.run.addActionListener(new ActionScan());</span>
+
+<span class="fc" id="L137">        lastLine.add(this.horizontalGlue);</span>
+<span class="fc" id="L138">        lastLine.add(this.progressBar);</span>
+<span class="fc" id="L139">        lastLine.add(this.run);</span>
+<span class="fc" id="L140">        return lastLine;</span>
     }
 
-    private void initializeRunButton(final DnDList dndListScan) {
-<span class="fc" id="L152">        this.defaultText = &quot;SCAN_RUN_BUTTON_LABEL&quot;;</span>
-<span class="fc" id="L153">        this.run = new JButtonStateful(this.defaultText);</span>
-<span class="fc" id="L154">        I18nViewUtil.addComponentForKey(&quot;SCAN_RUN_BUTTON_LABEL&quot;, this.run);</span>
-<span class="fc" id="L155">        this.run.setToolTipText(I18nUtil.valueByKey(&quot;SCAN_RUN_BUTTON_TOOLTIP&quot;));</span>
-<span class="fc" id="L156">        this.run.addActionListener(actionEvent -&gt; {</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">            if (dndListScan.getSelectedValuesList().isEmpty()) {</span>
-<span class="nc" id="L158">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select URL(s) to scan&quot;);</span>
-<span class="nc" id="L159">                return;</span>
+<span class="fc" id="L143">    private class ActionScan implements ActionListener {</span>
+        @Override
+        public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            if (ManagerScan.this.listPaths.getSelectedValuesList().isEmpty()) {</span>
+<span class="nc" id="L147">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select URL(s) to scan&quot;);</span>
+<span class="nc" id="L148">                return;</span>
             }
-<span class="nc" id="L161">            new Thread(</span>
-                () -&gt; {
-<span class="nc bnc" id="L163" title="All 2 branches missed.">                    if (this.run.getState() == StateButton.STARTABLE) {</span>
-<span class="nc" id="L164">                        this.run.setText(I18nViewUtil.valueByKey(&quot;SCAN_RUN_BUTTON_STOP&quot;));</span>
-<span class="nc" id="L165">                        this.run.setState(StateButton.STOPPABLE);</span>
-<span class="nc" id="L166">                        this.progressBar.setVisible(true);</span>
-<span class="nc" id="L167">                        this.horizontalGlue.setVisible(false);</span>
-<span class="nc" id="L168">                        DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) dndListScan.getModel();</span>
-<span class="nc bnc" id="L169" title="All 2 branches missed.">                        for (var i = 0 ; i &lt; listModel.getSize() ; i++) {</span>
-<span class="nc" id="L170">                            listModel.get(i).reset();</span>
-                        }
-<span class="nc" id="L172">                        this.scan(dndListScan.getSelectedValuesList());</span>
-<span class="nc" id="L173">                    } else {</span>
-<span class="nc" id="L174">                        MediatorHelper.model().getResourceAccess().setScanStopped(true);</span>
-<span class="nc" id="L175">                        MediatorHelper.model().setIsStoppedByUser(true);</span>
-<span class="nc" id="L176">                        this.run.setEnabled(false);</span>
-<span class="nc" id="L177">                        this.run.setState(StateButton.STOPPING);</span>
+<span class="nc" id="L150">            new Thread(() -&gt; {</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {</span>
+<span class="nc" id="L152">                    ManagerScan.this.run.setText(I18nViewUtil.valueByKey(&quot;SCAN_RUN_BUTTON_STOP&quot;));</span>
+<span class="nc" id="L153">                    ManagerScan.this.run.setState(StateButton.STOPPABLE);</span>
+<span class="nc" id="L154">                    ManagerScan.this.progressBar.setVisible(true);</span>
+<span class="nc" id="L155">                    ManagerScan.this.horizontalGlue.setVisible(false);</span>
+<span class="nc" id="L156">                    DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) ManagerScan.this.listPaths.getModel();</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">                    for (var i = 0 ; i &lt; listModel.getSize() ; i++) {</span>
+<span class="nc" id="L158">                        listModel.get(i).reset();</span>
                     }
-<span class="nc" id="L179">                },</span>
-                &quot;ThreadScan&quot;
-<span class="nc" id="L181">            ).start();</span>
-<span class="nc" id="L182">        });</span>
-<span class="fc" id="L183">    }</span>
+<span class="nc" id="L160">                    ManagerScan.this.scan(ManagerScan.this.listPaths.getSelectedValuesList());</span>
+<span class="nc" id="L161">                } else {</span>
+<span class="nc" id="L162">                    MediatorHelper.model().getResourceAccess().setScanStopped(true);</span>
+<span class="nc" id="L163">                    MediatorHelper.model().setIsStoppedByUser(true);</span>
+<span class="nc" id="L164">                    ManagerScan.this.run.setEnabled(false);</span>
+<span class="nc" id="L165">                    ManagerScan.this.run.setState(StateButton.STOPPING);</span>
+                }
+<span class="nc" id="L167">            }, &quot;ThreadScan&quot;).start();</span>
+<span class="nc" id="L168">        }</span>
+    }
     
     /**
      * Start fast scan of URLs in sequence and display result.
@@ -191,70 +177,70 @@ public class ManagerScan extends AbstractManagerList {
      * @param urlsItemList contains a list of String URL
      */
     public void scan(List&lt;ItemList&gt; urlsItemList) {
-<span class="nc" id="L194">        MediatorHelper.frame().resetInterface();  // Erase everything in the view from a previous injection</span>
+<span class="nc" id="L180">        MediatorHelper.frame().resetInterface();  // Erase everything in the view from a previous injection</span>
         
         // wait for ending of ongoing interaction between two injections
         try {
-<span class="nc" id="L198">            Thread.sleep(500);</span>
-<span class="nc" id="L199">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L200">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L201">            Thread.currentThread().interrupt();</span>
-<span class="nc" id="L202">        }</span>
+<span class="nc" id="L184">            Thread.sleep(500);</span>
+<span class="nc" id="L185">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L186">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L187">            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L188">        }</span>
 
         // Display result only in console
-<span class="nc" id="L205">        var requestUnsubscribe = new Request();</span>
-<span class="nc" id="L206">        requestUnsubscribe.setMessage(Interaction.UNSUBSCRIBE);</span>
-<span class="nc" id="L207">        MediatorHelper.model().sendToViews(requestUnsubscribe);</span>
-<span class="nc" id="L208">        MediatorHelper.model().subscribe(new ScanListTerminal());</span>
+<span class="nc" id="L191">        var requestUnsubscribe = new Request();</span>
+<span class="nc" id="L192">        requestUnsubscribe.setMessage(Interaction.UNSUBSCRIBE);</span>
+<span class="nc" id="L193">        MediatorHelper.model().sendToViews(requestUnsubscribe);</span>
+<span class="nc" id="L194">        MediatorHelper.model().subscribe(new ScanListTerminal());</span>
         
-<span class="nc" id="L210">        MediatorHelper.model().setIsScanning(true);</span>
-<span class="nc" id="L211">        MediatorHelper.model().getResourceAccess().setScanStopped(false);</span>
+<span class="nc" id="L196">        MediatorHelper.model().setIsScanning(true);</span>
+<span class="nc" id="L197">        MediatorHelper.model().getResourceAccess().setScanStopped(false);</span>
         
-<span class="nc bnc" id="L213" title="All 2 branches missed.">        for (ItemList urlItemList: urlsItemList) {</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        for (ItemList urlItemList: urlsItemList) {</span>
             if (  // detect interrupt by user to end intermediate scan
-<span class="nc bnc" id="L215" title="All 2 branches missed.">                MediatorHelper.model().isStoppedByUser()</span>
-<span class="nc bnc" id="L216" title="All 2 branches missed.">                || MediatorHelper.model().getResourceAccess().isScanStopped()</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">                MediatorHelper.model().isStoppedByUser()</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">                || MediatorHelper.model().getResourceAccess().isScanStopped()</span>
             ) {
-<span class="nc" id="L218">                break;</span>
+<span class="nc" id="L204">                break;</span>
             }
 
-<span class="nc" id="L221">            var urlItemListScan = (ItemListScan) urlItemList;</span>
-<span class="nc" id="L222">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Scanning {}&quot;, urlItemListScan.getBeanInjection().getUrl());</span>
+<span class="nc" id="L207">            var urlItemListScan = (ItemListScan) urlItemList;</span>
+<span class="nc" id="L208">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Scanning {}&quot;, urlItemListScan.getBeanInjection().getUrl());</span>
 
-<span class="nc" id="L224">            Optional&lt;Vendor&gt; optionalVendor = MediatorHelper.model().getMediatorVendor().getVendors()</span>
-<span class="nc" id="L225">                .stream()</span>
-<span class="nc" id="L226">                .filter(vendor -&gt; vendor.toString().equalsIgnoreCase(urlItemListScan.getBeanInjection().getVendor()))</span>
-<span class="nc" id="L227">                .findAny();</span>
+<span class="nc" id="L210">            Optional&lt;Vendor&gt; optionalVendor = MediatorHelper.model().getMediatorVendor().getVendors()</span>
+<span class="nc" id="L211">                .stream()</span>
+<span class="nc" id="L212">                .filter(vendor -&gt; vendor.toString().equalsIgnoreCase(urlItemListScan.getBeanInjection().getVendor()))</span>
+<span class="nc" id="L213">                .findAny();</span>
 
-<span class="nc" id="L229">            MediatorHelper.model().getMediatorVendor().setVendorByUser(</span>
-<span class="nc" id="L230">                optionalVendor.orElse(MediatorHelper.model().getMediatorVendor().getAuto())</span>
+<span class="nc" id="L215">            MediatorHelper.model().getMediatorVendor().setVendorByUser(</span>
+<span class="nc" id="L216">                optionalVendor.orElse(MediatorHelper.model().getMediatorVendor().getAuto())</span>
             );
-<span class="nc" id="L232">            MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(</span>
-<span class="nc" id="L233">                urlItemListScan.getBeanInjection().getUrl(),</span>
-<span class="nc" id="L234">                urlItemListScan.getBeanInjection().getRequest(),</span>
-<span class="nc" id="L235">                urlItemListScan.getBeanInjection().getHeader(),</span>
-<span class="nc" id="L236">                urlItemListScan.getBeanInjection().getMethodInstance(),</span>
-<span class="nc" id="L237">                urlItemListScan.getBeanInjection().getRequestType(),</span>
+<span class="nc" id="L218">            MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(</span>
+<span class="nc" id="L219">                urlItemListScan.getBeanInjection().getUrl(),</span>
+<span class="nc" id="L220">                urlItemListScan.getBeanInjection().getRequest(),</span>
+<span class="nc" id="L221">                urlItemListScan.getBeanInjection().getHeader(),</span>
+<span class="nc" id="L222">                urlItemListScan.getBeanInjection().getMethodInstance(),</span>
+<span class="nc" id="L223">                urlItemListScan.getBeanInjection().getRequestType(),</span>
                 true
             );
             
             try {
-<span class="nc" id="L242">                Thread.sleep(500);</span>
-<span class="nc" id="L243">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L244">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L245">                Thread.currentThread().interrupt();</span>
-<span class="nc" id="L246">            }</span>
-<span class="nc" id="L247">        }</span>
+<span class="nc" id="L228">                Thread.sleep(500);</span>
+<span class="nc" id="L229">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L230">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L231">                Thread.currentThread().interrupt();</span>
+<span class="nc" id="L232">            }</span>
+<span class="nc" id="L233">        }</span>
         
         // Get back the normal view
-<span class="nc" id="L250">        MediatorHelper.model().sendToViews(requestUnsubscribe);</span>
-<span class="nc" id="L251">        MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriber());</span>
+<span class="nc" id="L236">        MediatorHelper.model().sendToViews(requestUnsubscribe);</span>
+<span class="nc" id="L237">        MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriber());</span>
         
-<span class="nc" id="L253">        MediatorHelper.model().setIsScanning(false);</span>
-<span class="nc" id="L254">        MediatorHelper.model().setIsStoppedByUser(false);</span>
-<span class="nc" id="L255">        MediatorHelper.model().getResourceAccess().setScanStopped(false);</span>
+<span class="nc" id="L239">        MediatorHelper.model().setIsScanning(false);</span>
+<span class="nc" id="L240">        MediatorHelper.model().setIsStoppedByUser(false);</span>
+<span class="nc" id="L241">        MediatorHelper.model().getResourceAccess().setScanStopped(false);</span>
 
-<span class="nc" id="L257">        this.endProcess();</span>
-<span class="nc" id="L258">    }</span>
+<span class="nc" id="L243">        this.endProcess();</span>
+<span class="nc" id="L244">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

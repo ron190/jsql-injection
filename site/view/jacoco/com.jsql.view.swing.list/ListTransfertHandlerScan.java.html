@@ -102,9 +102,9 @@ import java.util.List;
     public static List&lt;ItemListScan&gt; parse(String clipboardText) {
 <span class="fc" id="L103">        List&lt;ItemListScan&gt; itemsParsed = new ArrayList&lt;&gt;();</span>
         try {
-<span class="fc" id="L105">            parseJsonArray(clipboardText, itemsParsed);</span>
+<span class="fc" id="L105">            ListTransfertHandlerScan.parseJsonArray(clipboardText, itemsParsed);</span>
 <span class="fc" id="L106">        } catch (JSONException eJsonArray) {</span>
-<span class="fc" id="L107">            parseJsonObject(clipboardText, itemsParsed);</span>
+<span class="fc" id="L107">            ListTransfertHandlerScan.parseJsonObject(clipboardText, itemsParsed);</span>
 <span class="fc" id="L108">        }</span>
 <span class="fc" id="L109">        return itemsParsed;</span>
     }

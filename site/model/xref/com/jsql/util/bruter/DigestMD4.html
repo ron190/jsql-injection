@@ -65,7 +65,7 @@
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment">     * 512 bits input buffer = 16 x 32-bit words holds until reaches 512 bits.</em>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">private</strong> byte[] buffer = <strong class="jxr_keyword">new</strong> byte[BLOCK_LENGTH];
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">private</strong> byte[] buffer = <strong class="jxr_keyword">new</strong> byte[DigestMD4.BLOCK_LENGTH];
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment">     * 512 bits work buffer = 16 x 32-bit words</em>
@@ -122,7 +122,7 @@
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">this</strong>.context[3] = 0x10325476;
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">this</strong>.count = 0L;
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>         
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; BLOCK_LENGTH; i++) {
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; DigestMD4.BLOCK_LENGTH; i++) {
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>             <strong class="jxr_keyword">this</strong>.buffer[i] = 0;
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>         }
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>     }
@@ -132,12 +132,12 @@
 <a class="jxr_linenumber" name="L124" href="#L124">124</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>     @Override
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> engineUpdate(byte b) {
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         <em class="jxr_comment">// compute number of bytes still unhashed; ie. present in buffer</em>
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">int</strong> i = (<strong class="jxr_keyword">int</strong>)(<strong class="jxr_keyword">this</strong>.count % BLOCK_LENGTH);
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         <em class="jxr_comment">// compute number of bytes still unhashed; i.e. present in buffer</em>
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">int</strong> i = (<strong class="jxr_keyword">int</strong>)(<strong class="jxr_keyword">this</strong>.count % DigestMD4.BLOCK_LENGTH);
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>         <strong class="jxr_keyword">this</strong>.count++;                                        <em class="jxr_comment">// update number of bytes</em>
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">this</strong>.buffer[i] = b;
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>         
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>         <strong class="jxr_keyword">if</strong> (i == BLOCK_LENGTH - 1) {
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>         <strong class="jxr_keyword">if</strong> (i == DigestMD4.BLOCK_LENGTH - 1) {
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>             <strong class="jxr_keyword">this</strong>.transform(<strong class="jxr_keyword">this</strong>.buffer, 0);
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>         }
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     }
@@ -161,10 +161,10 @@
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> ArrayIndexOutOfBoundsException();
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>         }
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>         <em class="jxr_comment">// compute number of bytes still unhashed; ie. present in buffer</em>
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">int</strong> bufferNdx = (<strong class="jxr_keyword">int</strong>)(<strong class="jxr_keyword">this</strong>.count % BLOCK_LENGTH);
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         <em class="jxr_comment">// compute number of bytes still unhashed; i.e. present in buffer</em>
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">int</strong> bufferNdx = (<strong class="jxr_keyword">int</strong>)(<strong class="jxr_keyword">this</strong>.count % DigestMD4.BLOCK_LENGTH);
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         <strong class="jxr_keyword">this</strong>.count += len;                                        <em class="jxr_comment">// update number of bytes</em>
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         <strong class="jxr_keyword">int</strong> partLen = BLOCK_LENGTH - bufferNdx;
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>         <strong class="jxr_keyword">int</strong> partLen = DigestMD4.BLOCK_LENGTH - bufferNdx;
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>         <strong class="jxr_keyword">int</strong> i = 0;
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>         
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>         <strong class="jxr_keyword">if</strong> (len &gt;= partLen) {
@@ -173,7 +173,7 @@
 <a class="jxr_linenumber" name="L165" href="#L165">165</a> 
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>             <strong class="jxr_keyword">this</strong>.transform(<strong class="jxr_keyword">this</strong>.buffer, 0);
 <a class="jxr_linenumber" name="L167" href="#L167">167</a> 
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>             <strong class="jxr_keyword">for</strong> (i = partLen; i + BLOCK_LENGTH - 1 &lt; len; i+= BLOCK_LENGTH) {
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>             <strong class="jxr_keyword">for</strong> (i = partLen; i + DigestMD4.BLOCK_LENGTH - 1 &lt; len; i+= DigestMD4.BLOCK_LENGTH) {
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>                 <strong class="jxr_keyword">this</strong>.transform(input, offset + i);
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>             }
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>             
@@ -196,7 +196,7 @@
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>     @Override
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>     <strong class="jxr_keyword">public</strong> byte[] engineDigest() {
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>         <em class="jxr_comment">// pad output to 56 mod 64; as RFC1320 puts it: congruent to 448 mod 512</em>
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <strong class="jxr_keyword">int</strong> bufferNdx = (<strong class="jxr_keyword">int</strong>)(<strong class="jxr_keyword">this</strong>.count % BLOCK_LENGTH);
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <strong class="jxr_keyword">int</strong> bufferNdx = (<strong class="jxr_keyword">int</strong>)(<strong class="jxr_keyword">this</strong>.count % DigestMD4.BLOCK_LENGTH);
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>         <strong class="jxr_keyword">int</strong> padLen = bufferNdx &lt; 56 ? 56 - bufferNdx : 120 - bufferNdx;
 <a class="jxr_linenumber" name="L193" href="#L193">193</a> 
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         <em class="jxr_comment">// padding is alwas binary 1 followed by binary 0s</em>

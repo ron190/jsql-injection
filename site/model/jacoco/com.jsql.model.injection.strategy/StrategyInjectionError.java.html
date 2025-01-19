@@ -39,13 +39,13 @@ public class StrategyInjectionError extends AbstractStrategy {
 <span class="fc" id="L39">        var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();</span>
 
 <span class="fc bfc" id="L41" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled()) {</span>
-<span class="fc" id="L42">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());</span>
+<span class="fc" id="L42">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());</span>
 <span class="fc" id="L43">            return;</span>
 <span class="fc bfc" id="L44" title="All 2 branches covered.">        } else if (strategyYaml.getError().getMethod().isEmpty()) {</span>
 <span class="fc" id="L45">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
-<span class="fc" id="L48">                getName(),</span>
+<span class="fc" id="L48">                this.getName(),</span>
 <span class="fc" id="L49">                this.injectionModel.getMediatorVendor().getVendor()</span>
             );
 <span class="fc" id="L51">            return;</span>
@@ -142,7 +142,7 @@ public class StrategyInjectionError extends AbstractStrategy {
 <span class="fc" id="L142">        this.injectionModel.appendAnalysisReport(</span>
 <span class="fc" id="L143">            StringUtil.formatReport(</span>
                 LogLevelUtil.COLOR_BLU,
-<span class="fc" id="L145">                &quot;### Strategy: &quot; + getName() + &quot;:&quot; + this.injectionModel.getMediatorVendor().getVendor().instance()</span>
+<span class="fc" id="L145">                &quot;### Strategy: &quot;+ this.getName() +&quot;:&quot;+ this.injectionModel.getMediatorVendor().getVendor().instance()</span>
 <span class="fc" id="L146">                .getModelYaml()</span>
 <span class="fc" id="L147">                .getStrategy()</span>
 <span class="fc" id="L148">                .getError()</span>

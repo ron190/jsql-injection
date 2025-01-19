@@ -33,11 +33,11 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>      
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>      <strong class="jxr_keyword">public</strong> <a name="PanelAuthentication" href="../../../../../../com/jsql/view/swing/panel/preferences/PanelAuthentication.html#PanelAuthentication">PanelAuthentication</a>(<a name="PanelPreferences" href="../../../../../../com/jsql/view/swing/panel/PanelPreferences.html#PanelPreferences">PanelPreferences</a> panelPreferences) {
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>          <strong class="jxr_keyword">this</strong>.checkboxUseDigestAuthentication.setToolTipText(
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>              TAG_HTML_ON
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>              PanelAuthentication.TAG_HTML_ON
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>              + <span class="jxr_string">"Enable &lt;b&gt;Basic&lt;/b&gt;, &lt;b&gt;Digest&lt;/b&gt;, &lt;b&gt;NTLM&lt;/b&gt; authentication (e.g. WWW-Authenticate).&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>              + <span class="jxr_string">"Then define username and password for the host.&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>              + <span class="jxr_string">"&lt;i&gt;&lt;b&gt;Negotiate&lt;/b&gt; authentication is defined in URL.&lt;/i&gt;"</span>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>              + TAG_HTML_OFF
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>              + PanelAuthentication.TAG_HTML_OFF
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          );
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          <strong class="jxr_keyword">var</strong> panelUsername = <strong class="jxr_keyword">new</strong> JPanel();
@@ -53,15 +53,15 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>          panelPassword.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(325, <strong class="jxr_keyword">this</strong>.textDigestAuthenticationPassword.getPreferredSize().height));
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>          panelPassword.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>          String tooltipUseKerberos = TAG_HTML_ON
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>          String tooltipUseKerberos = PanelAuthentication.TAG_HTML_ON
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>              + <span class="jxr_string">"Enable Kerberos authentication, then define path to &lt;b&gt;login.conf&lt;/b&gt; and &lt;b&gt;krb5.conf&lt;/b&gt;.&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>              + <span class="jxr_string">"Path to &lt;b&gt;.keytab&lt;/b&gt; file is defined in login.conf ; name of &lt;b&gt;principal&lt;/b&gt; must be correct.&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              + <span class="jxr_string">"&lt;b&gt;Realm&lt;/b&gt; and &lt;b&gt;kdc&lt;/b&gt; are defined in krb5.conf.&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>              + <span class="jxr_string">"Finally use the &lt;b&gt;correct hostname&lt;/b&gt; in URL, e.g. http://servicename.corp.test/[..]"</span>
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>              + TAG_HTML_OFF;
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>              + PanelAuthentication.TAG_HTML_OFF;
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">this</strong>.textKerberosLoginConf.setToolTipText(
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>              TAG_HTML_ON
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>              PanelAuthentication.TAG_HTML_ON
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>              + <span class="jxr_string">"Define the path to &lt;b&gt;login.conf&lt;/b&gt;. Sample :&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>              + <span class="jxr_string">"&amp;emsp;&lt;b&gt;entry-name&lt;/b&gt; {&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>              + <span class="jxr_string">"&amp;emsp;&amp;emsp;com.sun.security.auth.module.Krb5LoginModule&lt;br&gt;"</span>
@@ -72,9 +72,9 @@
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>              + <span class="jxr_string">"&amp;emsp;&amp;emsp;debug=false;&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>              + <span class="jxr_string">"&amp;emsp;}&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>              + <span class="jxr_string">"&lt;i&gt;Principal name is case sensitive ; entry-name is read automatically.&lt;/i&gt;"</span>
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>              + TAG_HTML_OFF);
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>              + PanelAuthentication.TAG_HTML_OFF);
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">this</strong>.textKerberosKrb5Conf.setToolTipText(
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>              TAG_HTML_ON
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>              PanelAuthentication.TAG_HTML_ON
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>              + <span class="jxr_string">"Define the path to &lt;b&gt;krb5.conf&lt;/b&gt;. Sample :&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>              + <span class="jxr_string">"&amp;emsp;[libdefaults]&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>              + <span class="jxr_string">"&amp;emsp;&amp;emsp;default_realm = &lt;b&gt;CORP.TEST&lt;/b&gt;&lt;br&gt;"</span>
@@ -84,7 +84,7 @@
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>              + <span class="jxr_string">"&amp;emsp;&amp;emsp;&amp;emsp;kdc = &lt;b&gt;127.0.0.1:88&lt;/b&gt;&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>              + <span class="jxr_string">"&amp;emsp;&amp;emsp;}&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>              + <span class="jxr_string">"&lt;i&gt;Realm and kdc are case sensitives.&lt;/i&gt;"</span>
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>              + TAG_HTML_OFF);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>              + PanelAuthentication.TAG_HTML_OFF);
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">this</strong>.checkboxUseKerberos.setToolTipText(tooltipUseKerberos);
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">var</strong> panelLoginConf = <strong class="jxr_keyword">new</strong> JPanel();

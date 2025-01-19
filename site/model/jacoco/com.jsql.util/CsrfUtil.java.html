@@ -68,7 +68,7 @@ public class CsrfUtil {
 <span class="fc" id="L68">            .map(input -&gt;</span>
 <span class="nc" id="L69">                new SimpleEntry&lt;&gt;(</span>
 <span class="nc" id="L70">                    input.attr(&quot;name&quot;),</span>
-<span class="nc" id="L71">                    input.attr(INPUT_ATTR_VALUE)</span>
+<span class="nc" id="L71">                    input.attr(CsrfUtil.INPUT_ATTR_VALUE)</span>
                 )
             );
         
@@ -91,7 +91,7 @@ public class CsrfUtil {
 <span class="nc" id="L91">                    tokenCsrfFound::getValue</span>
                 );
             } else {
-<span class="nc" id="L94">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);</span>
+<span class="nc" id="L94">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CsrfUtil.MSG_ENABLE_CSRF);</span>
             }
         }
 <span class="fc" id="L97">    }</span>
@@ -99,10 +99,10 @@ public class CsrfUtil {
     private void parseCsrfFromCookie(Map&lt;String, String&gt; mapResponse) {
 <span class="fc" id="L100">        Optional&lt;SimpleEntry&lt;String, String&gt;&gt; optionalCookieCsrf = Optional.empty();</span>
         
-<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (mapResponse.containsKey(SET_COOKIE_RESPONSE)) {</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (mapResponse.containsKey(CsrfUtil.SET_COOKIE_RESPONSE)) {</span>
             // Spring: Cookie XSRF-TOKEN =&gt; Header X-XSRF-TOKEN, GET/POST parameter _csrf
             // Laravel, Zend, Symfony
-<span class="fc" id="L105">            String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE_RESPONSE), &quot;;&quot;);</span>
+<span class="fc" id="L105">            String[] cookieValues = StringUtils.split(mapResponse.get(CsrfUtil.SET_COOKIE_RESPONSE), &quot;;&quot;);</span>
 <span class="fc" id="L106">            optionalCookieCsrf = Stream.of(cookieValues)</span>
 <span class="fc" id="L107">                .filter(cookie -&gt; cookie.trim().toLowerCase().startsWith(&quot;xsrf-token&quot;))</span>
 <span class="fc" id="L108">                .map(cookie -&gt; {</span>
@@ -133,7 +133,7 @@ public class CsrfUtil {
             ) {
 <span class="fc" id="L134">                this.tokenCsrf = headerCsrf;</span>
             } else {
-<span class="nc" id="L136">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);</span>
+<span class="nc" id="L136">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CsrfUtil.MSG_ENABLE_CSRF);</span>
             }
         }
 <span class="fc" id="L139">    }</span>

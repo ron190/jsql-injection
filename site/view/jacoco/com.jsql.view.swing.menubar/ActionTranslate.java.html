@@ -2,7 +2,6 @@
 
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.dialog.translate.Language;
-import com.jsql.view.swing.util.MediatorHelper;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,21 +11,15 @@ public class ActionTranslate implements ActionListener {
     private final DialogTranslate dialogTranslate;
     private final Language language;
 
-<span class="fc" id="L15">    ActionTranslate(DialogTranslate dialogTranslate, Language language) {</span>
-<span class="fc" id="L16">        this.dialogTranslate = dialogTranslate;</span>
-<span class="fc" id="L17">        this.language = language;</span>
-<span class="fc" id="L18">    }</span>
+<span class="fc" id="L14">    ActionTranslate(DialogTranslate dialogTranslate, Language language) {</span>
+<span class="fc" id="L15">        this.dialogTranslate = dialogTranslate;</span>
+<span class="fc" id="L16">        this.language = language;</span>
+<span class="fc" id="L17">    }</span>
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-<span class="fc" id="L22">        dialogTranslate.initializeDialog(this.language);</span>
-<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if (!dialogTranslate.isVisible()) {  // Center the dialog</span>
-<span class="fc" id="L24">            dialogTranslate.setSize(640, 460);</span>
-<span class="fc" id="L25">            dialogTranslate.setLocationRelativeTo(MediatorHelper.frame());</span>
-<span class="fc" id="L26">            dialogTranslate.getRootPane().setDefaultButton(dialogTranslate.getButtonSend());</span>
-        }
-<span class="fc" id="L28">        dialogTranslate.setVisible(true);</span>
-<span class="fc" id="L29">    }</span>
+    public void actionPerformed(ActionEvent actionEvent) {
+<span class="fc" id="L21">        this.dialogTranslate.initializeDialog(this.language);</span>
+<span class="fc" id="L22">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

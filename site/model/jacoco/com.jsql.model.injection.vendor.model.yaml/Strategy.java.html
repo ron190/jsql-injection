@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 <span class="fc" id="L10">    private Configuration configuration = new Configuration();</span>
 <span class="fc" id="L11">    private Normal normal = new Normal();</span>
-<span class="fc" id="L12">    private String stacked = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private String stack = StringUtils.EMPTY;</span>
 <span class="fc" id="L13">    private Binary binary = new Binary();</span>
 <span class="fc" id="L14">    private Error error = new Error();</span>
 
@@ -45,12 +45,12 @@ import java.io.Serializable;
 <span class="fc" id="L45">        this.error = error;</span>
 <span class="fc" id="L46">    }</span>
 
-    public String getStacked() {
-<span class="fc" id="L49">        return stacked;</span>
+    public String getStack() {
+<span class="fc" id="L49">        return this.stack;</span>
     }
 
-    public void setStacked(String stacked) {
-<span class="fc" id="L53">        this.stacked = stacked;</span>
+    public void setStack(String stack) {
+<span class="fc" id="L53">        this.stack = stack;</span>
 <span class="fc" id="L54">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

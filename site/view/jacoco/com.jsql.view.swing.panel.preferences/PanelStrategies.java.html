@@ -12,7 +12,7 @@ public class PanelStrategies extends JPanel {
 <span class="fc" id="L12">    private final JCheckBox checkboxIsStrategyBlindDisabled = new JCheckBox(&quot;Disable Blind&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled());</span>
 <span class="fc" id="L13">    private final JCheckBox checkboxIsStrategyMultibitDisabled = new JCheckBox(&quot;Disable Multibit&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled());</span>
 <span class="fc" id="L14">    private final JCheckBox checkboxIsStrategyErrorDisabled = new JCheckBox(&quot;Disable Error&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());</span>
-<span class="fc" id="L15">    private final JCheckBox checkboxIsStrategyStackedDisabled = new JCheckBox(&quot;Disable Stacked&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackedDisabled());</span>
+<span class="fc" id="L15">    private final JCheckBox checkboxIsStrategyStackDisabled = new JCheckBox(&quot;Disable Stack&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackDisabled());</span>
 <span class="fc" id="L16">    private final JCheckBox checkboxIsStrategyNormalDisabled = new JCheckBox(&quot;Disable Normal&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled());</span>
 
 <span class="fc" id="L18">    public PanelStrategies(PanelPreferences panelPreferences) {</span>
@@ -20,7 +20,7 @@ public class PanelStrategies extends JPanel {
 <span class="fc" id="L20">        this.checkboxIsStrategyBlindDisabled.setToolTipText(&quot;Skip Blind strategy processing&quot;);</span>
 <span class="fc" id="L21">        this.checkboxIsStrategyMultibitDisabled.setToolTipText(&quot;Skip Multibit strategy processing&quot;);</span>
 <span class="fc" id="L22">        this.checkboxIsStrategyErrorDisabled.setToolTipText(&quot;Skip Error strategy processing&quot;);</span>
-<span class="fc" id="L23">        this.checkboxIsStrategyStackedDisabled.setToolTipText(&quot;Skip Stacked strategy processing&quot;);</span>
+<span class="fc" id="L23">        this.checkboxIsStrategyStackDisabled.setToolTipText(&quot;Skip Stack strategy processing&quot;);</span>
 <span class="fc" id="L24">        this.checkboxIsStrategyNormalDisabled.setToolTipText(&quot;Skip Normal strategy processing&quot;);</span>
 
 <span class="fc" id="L26">        Stream.of(</span>
@@ -28,7 +28,7 @@ public class PanelStrategies extends JPanel {
             this.checkboxIsStrategyBlindDisabled,
             this.checkboxIsStrategyMultibitDisabled,
             this.checkboxIsStrategyErrorDisabled,
-            this.checkboxIsStrategyStackedDisabled,
+            this.checkboxIsStrategyStackDisabled,
             this.checkboxIsStrategyNormalDisabled
         )
 <span class="fc" id="L34">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
@@ -50,7 +50,7 @@ public class PanelStrategies extends JPanel {
 <span class="fc" id="L50">                .addComponent(this.checkboxIsStrategyBlindDisabled)</span>
 <span class="fc" id="L51">                .addComponent(this.checkboxIsStrategyMultibitDisabled)</span>
 <span class="fc" id="L52">                .addComponent(this.checkboxIsStrategyErrorDisabled)</span>
-<span class="fc" id="L53">                .addComponent(this.checkboxIsStrategyStackedDisabled)</span>
+<span class="fc" id="L53">                .addComponent(this.checkboxIsStrategyStackDisabled)</span>
 <span class="fc" id="L54">                .addComponent(this.checkboxIsStrategyNormalDisabled)</span>
             )
         );
@@ -86,7 +86,7 @@ public class PanelStrategies extends JPanel {
 <span class="fc" id="L86">            .addGroup(</span>
                 groupLayout
 <span class="fc" id="L88">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L89">                .addComponent(this.checkboxIsStrategyStackedDisabled)</span>
+<span class="fc" id="L89">                .addComponent(this.checkboxIsStrategyStackDisabled)</span>
             )
 <span class="fc" id="L91">            .addGroup(</span>
                 groupLayout
@@ -100,27 +100,27 @@ public class PanelStrategies extends JPanel {
     // Getter and setter
 
     public JCheckBox getCheckboxIsStrategyTimeDisabled() {
-<span class="fc" id="L103">        return checkboxIsStrategyTimeDisabled;</span>
+<span class="fc" id="L103">        return this.checkboxIsStrategyTimeDisabled;</span>
     }
 
     public JCheckBox getCheckboxIsStrategyBlindDisabled() {
-<span class="fc" id="L107">        return checkboxIsStrategyBlindDisabled;</span>
+<span class="fc" id="L107">        return this.checkboxIsStrategyBlindDisabled;</span>
     }
 
-    public JCheckBox getCheckboxIsStrategyStackedDisabled() {
-<span class="fc" id="L111">        return checkboxIsStrategyStackedDisabled;</span>
+    public JCheckBox getCheckboxIsStrategyStackDisabled() {
+<span class="fc" id="L111">        return this.checkboxIsStrategyStackDisabled;</span>
     }
 
     public JCheckBox getCheckboxIsStrategyMultibitDisabled() {
-<span class="fc" id="L115">        return checkboxIsStrategyMultibitDisabled;</span>
+<span class="fc" id="L115">        return this.checkboxIsStrategyMultibitDisabled;</span>
     }
 
     public JCheckBox getCheckboxIsStrategyErrorDisabled() {
-<span class="fc" id="L119">        return checkboxIsStrategyErrorDisabled;</span>
+<span class="fc" id="L119">        return this.checkboxIsStrategyErrorDisabled;</span>
     }
 
     public JCheckBox getCheckboxIsStrategyNormalDisabled() {
-<span class="fc" id="L123">        return checkboxIsStrategyNormalDisabled;</span>
+<span class="fc" id="L123">        return this.checkboxIsStrategyNormalDisabled;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

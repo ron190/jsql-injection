@@ -28,7 +28,7 @@ public class MediatorStrategy {
     private final AbstractStrategy multibit;
     private final StrategyInjectionError error;
     private final AbstractStrategy normal;
-    private final AbstractStrategy stacked;
+    private final AbstractStrategy stack;
 
     private final List&lt;AbstractStrategy&gt; strategies;
     
@@ -47,9 +47,9 @@ public class MediatorStrategy {
 <span class="fc" id="L47">        this.multibit = new StrategyInjectionMultibit(this.injectionModel);</span>
 <span class="fc" id="L48">        this.error = new StrategyInjectionError(this.injectionModel);</span>
 <span class="fc" id="L49">        this.normal = new StrategyInjectionNormal(this.injectionModel);</span>
-<span class="fc" id="L50">        this.stacked = new StrategyInjectionStacked(this.injectionModel);</span>
+<span class="fc" id="L50">        this.stack = new StrategyInjectionStack(this.injectionModel);</span>
 
-<span class="fc" id="L52">        this.strategies = Arrays.asList(this.time, this.blind, this.multibit, this.error, this.stacked, this.normal);</span>
+<span class="fc" id="L52">        this.strategies = Arrays.asList(this.time, this.blind, this.multibit, this.error, this.stack, this.normal);</span>
 <span class="fc" id="L53">    }</span>
     
     public String getMeta() {
@@ -126,7 +126,7 @@ public class MediatorStrategy {
      * Find the insertion character, test each strategy, inject metadata and list databases.
      * @param parameterToInject to be tested, null when injection point
      * @return true when successful injection
-     * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
+     * @throws JSqlException when no params integrity, process stopped by user, or injection failure
      */
     public boolean testStrategies(SimpleEntry&lt;String, String&gt; parameterToInject) throws JSqlException {
         // Define insertionCharacter, i.e, -1 in &quot;[..].php?id=-1 union select[..]&quot;,
@@ -157,7 +157,7 @@ public class MediatorStrategy {
 <span class="fc" id="L157">                parameterToInject.setValue(characterInsertion.replaceAll(&quot;(\\w)$&quot;, &quot;$1+&quot;) + InjectionModel.STAR);</span>
             }
 <span class="fc bfc" id="L159" title="All 2 branches covered.">        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)) {</span>
-<span class="fc" id="L160">            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(&quot;&quot;);</span>
+<span class="fc" id="L160">            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(StringUtils.EMPTY);</span>
 <span class="fc" id="L161">            String urlBase = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();</span>
 <span class="fc" id="L162">            this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(</span>
                 // Space %20 for URL, do not use +
@@ -186,12 +186,12 @@ public class MediatorStrategy {
         }
 
 <span class="fc" id="L188">        this.error.checkApplicability();</span>
-<span class="fc" id="L189">        this.stacked.checkApplicability();</span>
+<span class="fc" id="L189">        this.stack.checkApplicability();</span>
 <span class="fc" id="L190">        this.normal.checkApplicability();</span>
 
         // Set most efficient strategy
 <span class="fc" id="L193">        this.normal.activateWhenApplicable();</span>
-<span class="fc" id="L194">        this.stacked.activateWhenApplicable();</span>
+<span class="fc" id="L194">        this.stack.activateWhenApplicable();</span>
 <span class="fc" id="L195">        this.error.activateWhenApplicable();</span>
 <span class="fc" id="L196">        this.multibit.activateWhenApplicable();</span>
 <span class="fc" id="L197">        this.blind.activateWhenApplicable();</span>
@@ -238,8 +238,8 @@ public class MediatorStrategy {
 <span class="fc" id="L238">        return this.time;</span>
     }
 
-    public AbstractStrategy getStacked() {
-<span class="fc" id="L242">        return this.stacked;</span>
+    public AbstractStrategy getStack() {
+<span class="fc" id="L242">        return this.stack;</span>
     }
 
     public List&lt;AbstractStrategy&gt; getStrategies() {

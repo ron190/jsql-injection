@@ -14,17 +14,12 @@ import java.util.prefs.Preferences;
  * Utility class managing proxy settings.
  * The proxy configuration is saved as preferences and applied to the JVM.
  */
-public class ProxyUtil {
+<span class="fc" id="L17">public class ProxyUtil {</span>
     
     /**
      * Log4j logger sent to view.
      */
 <span class="fc" id="L22">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
-    
-    private final String httpProxyDefaultAddress;
-    private final String httpProxyDefaultPort;
-    private final String httpsProxyDefaultAddress;
-    private final String httpsProxyDefaultPort;
     
     /**
      * Proxy IP address or name.
@@ -41,20 +36,13 @@ public class ProxyUtil {
     /**
      * True if connection is proxified.
      */
-<span class="fc" id="L44">    private boolean isUsingProxyHttp = false;</span>
-<span class="fc" id="L45">    private boolean isUsingProxyHttps = false;</span>
+<span class="fc" id="L39">    private boolean isUsingProxyHttp = false;</span>
+<span class="fc" id="L40">    private boolean isUsingProxyHttps = false;</span>
     
     private static final String PROPERTIES_HTTP_PROXY_HOST = &quot;http.proxyHost&quot;;
     private static final String PROPERTIES_HTTP_PROXY_PORT = &quot;http.proxyPort&quot;;
     private static final String PROPERTIES_HTTPS_PROXY_HOST = &quot;https.proxyHost&quot;;
     private static final String PROPERTIES_HTTPS_PROXY_PORT = &quot;https.proxyPort&quot;;
-    
-<span class="fc" id="L52">    public ProxyUtil(InjectionModel injectionModel) {</span>
-<span class="fc" id="L53">        this.httpProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;http.proxy.default.ip&quot;);</span>
-<span class="fc" id="L54">        this.httpProxyDefaultPort = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;http.proxy.default.port&quot;);</span>
-<span class="fc" id="L55">        this.httpsProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;https.proxy.default.ip&quot;);</span>
-<span class="fc" id="L56">        this.httpsProxyDefaultPort = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;https.proxy.default.port&quot;);</span>
-<span class="fc" id="L57">    }</span>
     
     /**
      * Save proxy configuration into the JVM preferences.
@@ -67,69 +55,69 @@ public class ProxyUtil {
         boolean isUsingProxyHttps, String proxyAddressHttps, String proxyPortHttps
     ) {
         // Set the application proxy settings
-<span class="nc" id="L70">        this.setUsingProxyHttp(isUsingProxyHttp);</span>
-<span class="nc" id="L71">        this.setProxyAddressHttp(proxyAddressHttp);</span>
-<span class="nc" id="L72">        this.setProxyPortHttp(proxyPortHttp);</span>
+<span class="nc" id="L58">        this.setUsingProxyHttp(isUsingProxyHttp);</span>
+<span class="nc" id="L59">        this.setProxyAddressHttp(proxyAddressHttp);</span>
+<span class="nc" id="L60">        this.setProxyPortHttp(proxyPortHttp);</span>
         
-<span class="nc" id="L74">        this.setUsingProxyHttps(isUsingProxyHttps);</span>
-<span class="nc" id="L75">        this.setProxyAddressHttps(proxyAddressHttps);</span>
-<span class="nc" id="L76">        this.setProxyPortHttps(proxyPortHttps);</span>
+<span class="nc" id="L62">        this.setUsingProxyHttps(isUsingProxyHttps);</span>
+<span class="nc" id="L63">        this.setProxyAddressHttps(proxyAddressHttps);</span>
+<span class="nc" id="L64">        this.setProxyPortHttps(proxyPortHttps);</span>
 
         // Save the settings in the JVM
-<span class="nc" id="L79">        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());</span>
-<span class="nc" id="L80">        prefs.putBoolean(&quot;isUsingProxy&quot;, this.isUsingProxyHttp());</span>
-<span class="nc" id="L81">        prefs.put(&quot;proxyAddress&quot;, this.getProxyAddressHttp());</span>
-<span class="nc" id="L82">        prefs.put(&quot;proxyPort&quot;, this.getProxyPortHttp());</span>
+<span class="nc" id="L67">        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="nc" id="L68">        prefs.putBoolean(&quot;isUsingProxy&quot;, this.isUsingProxyHttp());</span>
+<span class="nc" id="L69">        prefs.put(&quot;proxyAddress&quot;, this.getProxyAddressHttp());</span>
+<span class="nc" id="L70">        prefs.put(&quot;proxyPort&quot;, this.getProxyPortHttp());</span>
         
-<span class="nc" id="L84">        prefs.putBoolean(&quot;isUsingProxyHttps&quot;, this.isUsingProxyHttps());</span>
-<span class="nc" id="L85">        prefs.put(&quot;proxyAddressHttps&quot;, this.getProxyAddressHttps());</span>
-<span class="nc" id="L86">        prefs.put(&quot;proxyPortHttps&quot;, this.getProxyPortHttps());</span>
+<span class="nc" id="L72">        prefs.putBoolean(&quot;isUsingProxyHttps&quot;, this.isUsingProxyHttps());</span>
+<span class="nc" id="L73">        prefs.put(&quot;proxyAddressHttps&quot;, this.getProxyAddressHttps());</span>
+<span class="nc" id="L74">        prefs.put(&quot;proxyPortHttps&quot;, this.getProxyPortHttps());</span>
 
         // Change the JVM configuration
-<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (this.isUsingProxyHttp()) {</span>
-<span class="nc" id="L90">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddressHttp());</span>
-<span class="nc" id="L91">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPortHttp());</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (this.isUsingProxyHttp()) {</span>
+<span class="nc" id="L78">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddressHttp());</span>
+<span class="nc" id="L79">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPortHttp());</span>
         } else {
-<span class="nc" id="L93">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, &quot;&quot;);</span>
-<span class="nc" id="L94">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, &quot;&quot;);</span>
+<span class="nc" id="L81">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, StringUtils.EMPTY);</span>
+<span class="nc" id="L82">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, StringUtils.EMPTY);</span>
         }
-<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (this.isUsingProxyHttps()) {</span>
-<span class="nc" id="L97">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());</span>
-<span class="nc" id="L98">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (this.isUsingProxyHttps()) {</span>
+<span class="nc" id="L85">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());</span>
+<span class="nc" id="L86">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());</span>
         } else {
-<span class="nc" id="L100">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, &quot;&quot;);</span>
-<span class="nc" id="L101">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, &quot;&quot;);</span>
+<span class="nc" id="L88">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, StringUtils.EMPTY);</span>
+<span class="nc" id="L89">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, StringUtils.EMPTY);</span>
         }
-<span class="nc" id="L103">    }</span>
+<span class="nc" id="L91">    }</span>
     
     /**
      * Initialize proxy information from JVM already saved preferences.
      */
     public void initializeProxy() {
         // Use Preferences API to persist proxy configuration
-<span class="nc" id="L110">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="nc" id="L98">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
 
         // Default proxy disabled
-<span class="nc" id="L113">        this.setUsingProxyHttp(preferences.getBoolean(&quot;isUsingProxy&quot;, false));</span>
-<span class="nc" id="L114">        this.setUsingProxyHttps(preferences.getBoolean(&quot;isUsingProxyHttps&quot;, false));</span>
+<span class="nc" id="L101">        this.setUsingProxyHttp(preferences.getBoolean(&quot;isUsingProxy&quot;, false));</span>
+<span class="nc" id="L102">        this.setUsingProxyHttps(preferences.getBoolean(&quot;isUsingProxyHttps&quot;, false));</span>
 
         // Default proxy config
-<span class="nc" id="L117">        this.setProxyAddressHttp(preferences.get(&quot;proxyAddress&quot;, this.httpProxyDefaultAddress));</span>
-<span class="nc" id="L118">        this.setProxyPortHttp(preferences.get(&quot;proxyPort&quot;, this.httpProxyDefaultPort));</span>
+<span class="nc" id="L105">        this.setProxyAddressHttp(preferences.get(&quot;proxyAddress&quot;, &quot;127.0.0.1&quot;));</span>
+<span class="nc" id="L106">        this.setProxyPortHttp(preferences.get(&quot;proxyPort&quot;, &quot;8118&quot;));</span>
         
-<span class="nc" id="L120">        this.setProxyAddressHttps(preferences.get(&quot;proxyAddressHttps&quot;, this.httpsProxyDefaultAddress));</span>
-<span class="nc" id="L121">        this.setProxyPortHttps(preferences.get(&quot;proxyPortHttps&quot;, this.httpsProxyDefaultPort));</span>
+<span class="nc" id="L108">        this.setProxyAddressHttps(preferences.get(&quot;proxyAddressHttps&quot;, &quot;127.0.0.1&quot;));</span>
+<span class="nc" id="L109">        this.setProxyPortHttps(preferences.get(&quot;proxyPortHttps&quot;, &quot;8118&quot;));</span>
         
         // Change the JVM configuration
-<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (this.isUsingProxyHttp()) {</span>
-<span class="nc" id="L125">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddressHttp());</span>
-<span class="nc" id="L126">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPortHttp());</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (this.isUsingProxyHttp()) {</span>
+<span class="nc" id="L113">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddressHttp());</span>
+<span class="nc" id="L114">            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPortHttp());</span>
         }
-<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (this.isUsingProxyHttps()) {</span>
-<span class="nc" id="L129">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());</span>
-<span class="nc" id="L130">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (this.isUsingProxyHttps()) {</span>
+<span class="nc" id="L117">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());</span>
+<span class="nc" id="L118">            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());</span>
         }
-<span class="nc" id="L132">    }</span>
+<span class="nc" id="L120">    }</span>
     
     /**
      * Check if enabled proxies are up when application starts,
@@ -139,114 +127,114 @@ public class ProxyUtil {
      * @return true if enabled proxies are up
      */
     public boolean isNotLive(ShowOnConsole showOnConsole) {
-<span class="fc" id="L142">        var isLive = true;</span>
-<span class="fc" id="L143">        if (</span>
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">            this.isUsingProxyHttp()</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyAddressHttp())</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyPortHttp())</span>
+<span class="fc" id="L130">        var isLive = true;</span>
+<span class="fc" id="L131">        if (</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">            this.isUsingProxyHttp()</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyAddressHttp())</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyPortHttp())</span>
         ) {
-<span class="nc" id="L148">            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttp(), this.getProxyPortHttp(), &quot;HTTP&quot;);</span>
+<span class="nc" id="L136">            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttp(), this.getProxyPortHttp(), &quot;HTTP&quot;);</span>
         }
-<span class="fc" id="L150">        if (</span>
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">            this.isUsingProxyHttps()</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyAddressHttps())</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyPortHttps())</span>
+<span class="fc" id="L138">        if (</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">            this.isUsingProxyHttps()</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyAddressHttps())</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyPortHttps())</span>
         ) {
-<span class="nc" id="L155">            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttps(), this.getProxyPortHttps(), &quot;HTTPS&quot;);</span>
+<span class="nc" id="L143">            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttps(), this.getProxyPortHttps(), &quot;HTTPS&quot;);</span>
         }
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        return !isLive;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        return !isLive;</span>
     }
     
     private boolean isSocketOn(ShowOnConsole showOnConsole, String address, String port, String protocol) {
-<span class="nc" id="L161">        var isSocketOn = true;</span>
+<span class="nc" id="L149">        var isSocketOn = true;</span>
         try {
-<span class="nc" id="L163">            var socket = new Socket(address, Integer.parseInt(port));</span>
-<span class="nc" id="L164">            socket.close();</span>
-<span class="nc" id="L165">            this.logStatus(showOnConsole, address, port, protocol);</span>
-<span class="nc" id="L166">        } catch (Exception e) {</span>
-<span class="nc" id="L167">            isSocketOn = false;</span>
-<span class="nc" id="L168">            this.logStatus(showOnConsole, address, port, protocol, e);</span>
-<span class="nc" id="L169">        }</span>
-<span class="nc" id="L170">        return isSocketOn;</span>
+<span class="nc" id="L151">            var socket = new Socket(address, Integer.parseInt(port));</span>
+<span class="nc" id="L152">            socket.close();</span>
+<span class="nc" id="L153">            this.logStatus(showOnConsole, address, port, protocol);</span>
+<span class="nc" id="L154">        } catch (Exception e) {</span>
+<span class="nc" id="L155">            isSocketOn = false;</span>
+<span class="nc" id="L156">            this.logStatus(showOnConsole, address, port, protocol, e);</span>
+<span class="nc" id="L157">        }</span>
+<span class="nc" id="L158">        return isSocketOn;</span>
     }
     
     private void logStatus(ShowOnConsole showOnConsole, String address, String port, String protocol) {
-<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (showOnConsole == ShowOnConsole.YES) {</span>
-<span class="nc" id="L175">            LOGGER.log(</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (showOnConsole == ShowOnConsole.YES) {</span>
+<span class="nc" id="L163">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
                 &quot;Connection successful to {} proxy {}:{}&quot;,
-<span class="nc" id="L178">                () -&gt; protocol,</span>
-<span class="nc" id="L179">                () -&gt; address,</span>
-<span class="nc" id="L180">                () -&gt;port</span>
+<span class="nc" id="L166">                () -&gt; protocol,</span>
+<span class="nc" id="L167">                () -&gt; address,</span>
+<span class="nc" id="L168">                () -&gt;port</span>
             );
         }
-<span class="nc" id="L183">    }</span>
+<span class="nc" id="L171">    }</span>
     
     private void logStatus(ShowOnConsole showOnConsole, String address, String port, String protocol, Exception e) {
-<span class="nc bnc" id="L186" title="All 2 branches missed.">        if (showOnConsole == ShowOnConsole.YES) {</span>
-<span class="nc" id="L187">            String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);</span>
-<span class="nc" id="L188">            LOGGER.log(</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (showOnConsole == ShowOnConsole.YES) {</span>
+<span class="nc" id="L175">            String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);</span>
+<span class="nc" id="L176">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L190">                () -&gt; String.format(</span>
+<span class="nc" id="L178">                () -&gt; String.format(</span>
                     &quot;Connection to %s proxy %s:%s failed, verify your proxy settings: %s&quot;,
                     protocol,
                     address,
                     port,
-<span class="nc" id="L195">                    message.replace(e.getClass().getName() +&quot;: &quot;, StringUtils.EMPTY)</span>
+<span class="nc" id="L183">                    message.replace(e.getClass().getName() +&quot;: &quot;, StringUtils.EMPTY)</span>
                 )
             );
         }
-<span class="nc" id="L199">    }</span>
+<span class="nc" id="L187">    }</span>
     
     
     // Getters and setters
     
     public String getProxyAddressHttp() {
-<span class="nc" id="L205">        return this.proxyAddressHttp;</span>
+<span class="nc" id="L193">        return this.proxyAddressHttp;</span>
     }
 
     public void setProxyAddressHttp(String proxyAddressHttp) {
-<span class="nc" id="L209">        this.proxyAddressHttp = proxyAddressHttp;</span>
-<span class="nc" id="L210">    }</span>
+<span class="nc" id="L197">        this.proxyAddressHttp = proxyAddressHttp;</span>
+<span class="nc" id="L198">    }</span>
 
     public String getProxyPortHttp() {
-<span class="nc" id="L213">        return this.proxyPortHttp;</span>
+<span class="nc" id="L201">        return this.proxyPortHttp;</span>
     }
 
     public void setProxyPortHttp(String proxyPortHttp) {
-<span class="nc" id="L217">        this.proxyPortHttp = proxyPortHttp;</span>
-<span class="nc" id="L218">    }</span>
+<span class="nc" id="L205">        this.proxyPortHttp = proxyPortHttp;</span>
+<span class="nc" id="L206">    }</span>
 
     public boolean isUsingProxyHttp() {
-<span class="fc" id="L221">        return this.isUsingProxyHttp;</span>
+<span class="fc" id="L209">        return this.isUsingProxyHttp;</span>
     }
 
     public void setUsingProxyHttp(boolean isUsingProxyHttp) {
-<span class="nc" id="L225">        this.isUsingProxyHttp = isUsingProxyHttp;</span>
-<span class="nc" id="L226">    }</span>
+<span class="nc" id="L213">        this.isUsingProxyHttp = isUsingProxyHttp;</span>
+<span class="nc" id="L214">    }</span>
 
     public String getProxyAddressHttps() {
-<span class="nc" id="L229">        return this.proxyAddressHttps;</span>
+<span class="nc" id="L217">        return this.proxyAddressHttps;</span>
     }
 
     public void setProxyAddressHttps(String proxyAddressHttps) {
-<span class="nc" id="L233">        this.proxyAddressHttps = proxyAddressHttps;</span>
-<span class="nc" id="L234">    }</span>
+<span class="nc" id="L221">        this.proxyAddressHttps = proxyAddressHttps;</span>
+<span class="nc" id="L222">    }</span>
 
     public String getProxyPortHttps() {
-<span class="nc" id="L237">        return this.proxyPortHttps;</span>
+<span class="nc" id="L225">        return this.proxyPortHttps;</span>
     }
 
     public void setProxyPortHttps(String proxyPortHttps) {
-<span class="nc" id="L241">        this.proxyPortHttps = proxyPortHttps;</span>
-<span class="nc" id="L242">    }</span>
+<span class="nc" id="L229">        this.proxyPortHttps = proxyPortHttps;</span>
+<span class="nc" id="L230">    }</span>
 
     public boolean isUsingProxyHttps() {
-<span class="fc" id="L245">        return this.isUsingProxyHttps;</span>
+<span class="fc" id="L233">        return this.isUsingProxyHttps;</span>
     }
 
     public void setUsingProxyHttps(boolean isUsingProxyHttps) {
-<span class="nc" id="L249">        this.isUsingProxyHttps = isUsingProxyHttps;</span>
-<span class="nc" id="L250">    }</span>
+<span class="nc" id="L237">        this.isUsingProxyHttps = isUsingProxyHttps;</span>
+<span class="nc" id="L238">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

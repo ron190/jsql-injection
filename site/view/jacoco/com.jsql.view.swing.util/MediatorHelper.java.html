@@ -30,10 +30,8 @@ public final class MediatorHelper {
     
     private static ManagerScan managerScan;
     private static ManagerAdminPage managerAdminPage;
-    private static ManagerWebShell managerWebshell;
-    private static ManagerSqlShell managerSqlshell;
     private static ManagerFile managerFile;
-    private static ManagerUpload managerUpload;
+    private static ManagerExploit managerExploit;
     private static ManagerBruteForce managerBruteForce;
 
     private MediatorHelper() {
@@ -41,137 +39,119 @@ public final class MediatorHelper {
     }
 
     public static InjectionModel model() {
-<span class="fc" id="L44">        return model;</span>
+<span class="fc" id="L42">        return MediatorHelper.model;</span>
     }
     
     public static TreeDatabase treeDatabase() {
-<span class="fc" id="L48">        return treeDatabase;</span>
+<span class="fc" id="L46">        return MediatorHelper.treeDatabase;</span>
     }
     
     public static TabResults tabResults() {
-<span class="fc" id="L52">        return tabResults;</span>
+<span class="fc" id="L50">        return MediatorHelper.tabResults;</span>
     }
     
     public static TabManagersCards tabManagersCards() {
-<span class="fc" id="L56">        return tabManagersCards;</span>
+<span class="fc" id="L54">        return MediatorHelper.tabManagersCards;</span>
     }
      
     public static JFrameView frame() {
-<span class="fc" id="L60">        return frame;</span>
+<span class="fc" id="L58">        return MediatorHelper.frame;</span>
     }
     
     public static AppMenubar menubar() {
-<span class="fc" id="L64">        return appMenubar;</span>
+<span class="fc" id="L62">        return MediatorHelper.appMenubar;</span>
     }
     
     public static PanelAddressBar panelAddressBar() {
-<span class="fc" id="L68">        return panelAddressBar;</span>
+<span class="fc" id="L66">        return MediatorHelper.panelAddressBar;</span>
     }
     
     public static TabbedPaneWheeled tabConsoles() {
-<span class="fc" id="L72">        return tabConsoles;</span>
+<span class="fc" id="L70">        return MediatorHelper.tabConsoles;</span>
     }
     
     public static PanelConsoles panelConsoles() {
-<span class="fc" id="L76">        return panelConsoles;</span>
-    }
-     
-    public static ManagerWebShell managerWebshell() {
-<span class="fc" id="L80">        return managerWebshell;</span>
+<span class="fc" id="L74">        return MediatorHelper.panelConsoles;</span>
     }
     
     public static ManagerAdminPage managerAdminPage() {
-<span class="nc" id="L84">        return managerAdminPage;</span>
+<span class="nc" id="L78">        return MediatorHelper.managerAdminPage;</span>
     }
     
     public static ManagerFile managerFile() {
-<span class="fc" id="L88">        return managerFile;</span>
+<span class="fc" id="L82">        return MediatorHelper.managerFile;</span>
     }
-    
-    public static ManagerUpload managerUpload() {
-<span class="fc" id="L92">        return managerUpload;</span>
-    }
-    
-    public static ManagerSqlShell managerSqlshell() {
-<span class="fc" id="L96">        return managerSqlshell;</span>
+
+    public static ManagerExploit managerExploit() {
+<span class="fc" id="L86">        return MediatorHelper.managerExploit;</span>
     }
     
     public static ManagerScan managerScan() {
-<span class="nc" id="L100">        return managerScan;</span>
+<span class="nc" id="L90">        return MediatorHelper.managerScan;</span>
     }
     
     public static ManagerBruteForce managerBruteForce() {
-<span class="fc" id="L104">        return managerBruteForce;</span>
+<span class="fc" id="L94">        return MediatorHelper.managerBruteForce;</span>
     }
     
     
     // Registering GUI components
     
     public static void register(JFrameView frame) {
-<span class="fc" id="L111">        MediatorHelper.frame = frame;</span>
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L101">        MediatorHelper.frame = frame;</span>
+<span class="fc" id="L102">    }</span>
     
     public static void register(AppMenubar appMenubar) {
-<span class="fc" id="L115">        MediatorHelper.appMenubar = appMenubar;</span>
-<span class="fc" id="L116">    }</span>
+<span class="fc" id="L105">        MediatorHelper.appMenubar = appMenubar;</span>
+<span class="fc" id="L106">    }</span>
     
     public static void register(PanelAddressBar panelAddress) {
-<span class="fc" id="L119">        MediatorHelper.panelAddressBar = panelAddress;</span>
-<span class="fc" id="L120">    }</span>
+<span class="fc" id="L109">        MediatorHelper.panelAddressBar = panelAddress;</span>
+<span class="fc" id="L110">    }</span>
     
     public static void register(TabbedPaneWheeled tabConsoles) {
-<span class="fc" id="L123">        MediatorHelper.tabConsoles = tabConsoles;</span>
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L113">        MediatorHelper.tabConsoles = tabConsoles;</span>
+<span class="fc" id="L114">    }</span>
     
     public static void register(PanelConsoles panelConsoles) {
-<span class="fc" id="L127">        MediatorHelper.panelConsoles = panelConsoles;</span>
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L117">        MediatorHelper.panelConsoles = panelConsoles;</span>
+<span class="fc" id="L118">    }</span>
     
     public static void register(TreeDatabase treeDatabase) {
-<span class="fc" id="L131">        MediatorHelper.treeDatabase = treeDatabase;</span>
-<span class="fc" id="L132">    }</span>
+<span class="fc" id="L121">        MediatorHelper.treeDatabase = treeDatabase;</span>
+<span class="fc" id="L122">    }</span>
     
     public static void register(TabResults tabResults) {
-<span class="fc" id="L135">        MediatorHelper.tabResults = tabResults;</span>
-<span class="fc" id="L136">    }</span>
+<span class="fc" id="L125">        MediatorHelper.tabResults = tabResults;</span>
+<span class="fc" id="L126">    }</span>
     
     public static void register(TabManagersCards tabManagersCards) {
-<span class="fc" id="L139">        MediatorHelper.tabManagersCards = tabManagersCards;</span>
-<span class="fc" id="L140">    }</span>
+<span class="fc" id="L129">        MediatorHelper.tabManagersCards = tabManagersCards;</span>
+<span class="fc" id="L130">    }</span>
     
     
     // Registering Managers
-    
-    public static void register(ManagerWebShell managerWebshell) {
-<span class="fc" id="L146">        MediatorHelper.managerWebshell = managerWebshell;</span>
-<span class="fc" id="L147">    }</span>
-    
     public static void register(ManagerAdminPage managerAdminPage) {
-<span class="fc" id="L150">        MediatorHelper.managerAdminPage = managerAdminPage;</span>
-<span class="fc" id="L151">    }</span>
+<span class="fc" id="L135">        MediatorHelper.managerAdminPage = managerAdminPage;</span>
+<span class="fc" id="L136">    }</span>
     
     public static void register(ManagerFile managerFile) {
-<span class="fc" id="L154">        MediatorHelper.managerFile = managerFile;</span>
-<span class="fc" id="L155">    }</span>
-    
-    public static void register(ManagerUpload managerUpload) {
-<span class="fc" id="L158">        MediatorHelper.managerUpload = managerUpload;</span>
-<span class="fc" id="L159">    }</span>
-    
-    public static void register(ManagerSqlShell managerSqlshell) {
-<span class="fc" id="L162">        MediatorHelper.managerSqlshell = managerSqlshell;</span>
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L139">        MediatorHelper.managerFile = managerFile;</span>
+<span class="fc" id="L140">    }</span>
+    public static void register(ManagerExploit managerExploit) {
+<span class="fc" id="L142">        MediatorHelper.managerExploit = managerExploit;</span>
+<span class="fc" id="L143">    }</span>
     
     public static void register(ManagerScan managerScan) {
-<span class="fc" id="L166">        MediatorHelper.managerScan = managerScan;</span>
-<span class="fc" id="L167">    }</span>
+<span class="fc" id="L146">        MediatorHelper.managerScan = managerScan;</span>
+<span class="fc" id="L147">    }</span>
     
     public static void register(ManagerBruteForce managerBruteForce) {
-<span class="fc" id="L170">        MediatorHelper.managerBruteForce = managerBruteForce;</span>
-<span class="fc" id="L171">    }</span>
+<span class="fc" id="L150">        MediatorHelper.managerBruteForce = managerBruteForce;</span>
+<span class="fc" id="L151">    }</span>
 
     public static void register(InjectionModel model) {
-<span class="fc" id="L174">        MediatorHelper.model = model;</span>
-<span class="fc" id="L175">    }</span>
+<span class="fc" id="L154">        MediatorHelper.model = model;</span>
+<span class="fc" id="L155">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

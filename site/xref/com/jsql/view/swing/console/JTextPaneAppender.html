@@ -64,7 +64,7 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> append(LogEvent event) {
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <em class="jxr_comment">// Avoid errors which might occur in headless mode</em>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <em class="jxr_comment">// or logging that occurs before consoles are available</em>
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">if</strong> (consoleTextPane == <strong class="jxr_keyword">null</strong> || javaTextPane == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">if</strong> (JTextPaneAppender.consoleTextPane == <strong class="jxr_keyword">null</strong> || JTextPaneAppender.javaTextPane == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>              <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          }
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">var</strong> messageLogEvent = <strong class="jxr_keyword">new</strong> String[] {
@@ -78,15 +78,15 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          SwingUtilities.invokeLater(() -&gt; {
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>              String message = messageLogEvent[0];
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>              <strong class="jxr_keyword">if</strong> (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>                  javaTextPane.append(message, ATTRIBUTE_WARN);
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>                  JTextPaneAppender.javaTextPane.append(message, JTextPaneAppender.ATTRIBUTE_WARN);
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>              } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (level == LogLevelUtil.CONSOLE_ERROR.intLevel()) {
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>                  consoleTextPane.append(message, ATTRIBUTE_WARN);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>                  JTextPaneAppender.consoleTextPane.append(message, JTextPaneAppender.ATTRIBUTE_WARN);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>              } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (level == LogLevelUtil.CONSOLE_INFORM.intLevel()) {
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>                  consoleTextPane.append(message, ATTRIBUTE_INFORM);
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>                  JTextPaneAppender.consoleTextPane.append(message, JTextPaneAppender.ATTRIBUTE_INFORM);
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>              } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (level == LogLevelUtil.CONSOLE_SUCCESS.intLevel()) {
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>                  consoleTextPane.append(message, ATTRIBUTE_SUCCESS);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>                  JTextPaneAppender.consoleTextPane.append(message, JTextPaneAppender.ATTRIBUTE_SUCCESS);
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>              } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (level != LogLevelUtil.IGNORE.intLevel() &amp;&amp; level != Level.ERROR.intLevel()) {  <em class="jxr_comment">// ignore &amp; stdout when unhandled exception</em>
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>                  consoleTextPane.append(message, ATTRIBUTE_ALL);
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>                  JTextPaneAppender.consoleTextPane.append(message, JTextPaneAppender.ATTRIBUTE_ALL);
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>              }
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          });
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      }

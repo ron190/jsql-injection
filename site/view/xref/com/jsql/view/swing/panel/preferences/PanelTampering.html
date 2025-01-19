@@ -54,7 +54,7 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>          PanelTampering.textPaneEval.setPopupMenu(<strong class="jxr_keyword">new</strong> <a name="JPopupMenuComponent" href="../../../../../../com/jsql/view/swing/popupmenu/JPopupMenuComponent.html#JPopupMenuComponent">JPopupMenuComponent</a>(PanelTampering.textPaneEval));
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>          PanelTampering.applyTheme();
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">var</strong> textAreaIsTamperingEval = <strong class="jxr_keyword">new</strong> RTextScrollPane(PanelTampering.textPaneEval);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">var</strong> textAreaIsTamperingEval = <strong class="jxr_keyword">new</strong> RTextScrollPane(PanelTampering.textPaneEval, false);
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          textAreaIsTamperingEval.setMinimumSize(<strong class="jxr_keyword">new</strong> Dimension(800, 100));
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          PanelTampering.textPaneEval.getDocument().addDocumentListener(<strong class="jxr_keyword">new</strong> <a name="DocumentListenerEditing" href="../../../../../../com/jsql/view/swing/text/listener/DocumentListenerEditing.html#DocumentListenerEditing">DocumentListenerEditing</a>() {
@@ -220,7 +220,7 @@
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>     }
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> 
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> applyTheme() {
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>         UiUtil.applyTheme(textPaneEval);
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>         UiUtil.applyTheme(PanelTampering.textPaneEval);
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>     }
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>     
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>     

@@ -60,7 +60,7 @@ public class ConnectionUtil {
     /**
      * Default HTTP method. It can be changed to a custom method.
      */
-<span class="fc" id="L63">    private String typeRequest = &quot;GET&quot;;</span>
+<span class="fc" id="L63">    private String typeRequest = StringUtil.GET;</span>
 
 <span class="fc" id="L65">    private final Random randomForUserAgent = new Random();</span>
     
@@ -104,8 +104,8 @@ public class ConnectionUtil {
 
 
     public static &lt;T&gt; Map&lt;String, String&gt; getHeadersMap(HttpResponse&lt;T&gt; httpResponse) {
-<span class="fc" id="L107">        Map&lt;String, String&gt; sortedMap = getHeadersMap(httpResponse.headers());</span>
-<span class="fc" id="L108">        String responseCodeHttp = &quot;&quot;+ httpResponse.statusCode();</span>
+<span class="fc" id="L107">        Map&lt;String, String&gt; sortedMap = ConnectionUtil.getHeadersMap(httpResponse.headers());</span>
+<span class="fc" id="L108">        String responseCodeHttp = String.valueOf(httpResponse.statusCode());</span>
 <span class="fc" id="L109">        sortedMap.put(&quot;:status&quot;, responseCodeHttp);</span>
 <span class="fc" id="L110">        return sortedMap;</span>
     }
@@ -133,7 +133,7 @@ public class ConnectionUtil {
      */
     public HttpResponse&lt;String&gt; checkConnectionResponse() throws IOException, InterruptedException, JSqlException {
 <span class="fc" id="L135">        var queryString = this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();</span>
-<span class="fc" id="L136">        var testUrl = this.getUrlBase().replaceAll(&quot;\\?$&quot;, &quot;&quot;);</span>
+<span class="fc" id="L136">        var testUrl = this.getUrlBase().replaceAll(&quot;\\?$&quot;, StringUtils.EMPTY);</span>
 
 <span class="fc bfc" id="L138" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(queryString)) {</span>
 <span class="fc" id="L139">            testUrl += &quot;?&quot;+ queryString;</span>
@@ -250,7 +250,7 @@ public class ConnectionUtil {
     }
     
     /**
-     * Call an URL and return the source page.
+     * Call a URL and return the source page.
      * @param url to call
      * @return the source page of the URL
      */
@@ -329,7 +329,7 @@ public class ConnectionUtil {
     }
 
     public CookieManager getCookieManager() {
-<span class="fc" id="L332">        return cookieManager;</span>
+<span class="fc" id="L332">        return this.cookieManager;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

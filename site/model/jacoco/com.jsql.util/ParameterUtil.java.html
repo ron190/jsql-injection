@@ -124,7 +124,7 @@ public class ParameterUtil {
 <span class="fc" id="L124">        this.checkStarMatchMethod();</span>
 <span class="fc" id="L125">        this.checkMethodNotEmpty();</span>
 <span class="fc" id="L126">        this.checkMultipart();</span>
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (!isValidName(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (ParameterUtil.isInvalidName(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {</span>
 <span class="nc" id="L128">            throw new InjectionFailureException(String.format(</span>
                 &quot;Illegal method: \&quot;%s\&quot;&quot;,
 <span class="nc" id="L130">                this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest()</span>
@@ -142,25 +142,25 @@ public class ParameterUtil {
             &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;
 <span class="fc" id="L143">        ).toCharArray();</span>
 <span class="fc bfc" id="L144" title="All 2 branches covered.">        for (char c : allowedTokenChars) {</span>
-<span class="fc" id="L145">            tchar[c] = true;</span>
+<span class="fc" id="L145">            ParameterUtil.tchar[c] = true;</span>
         }
 <span class="fc" id="L147">    }</span>
 
     /*
      * Validates a RFC 7230 field-name.
      */
-    public static boolean isValidName(String token) {
+    public static boolean isInvalidName(String token) {
 <span class="fc bfc" id="L153" title="All 2 branches covered.">        for (int i = 0; i &lt; token.length(); i++) {</span>
 <span class="fc" id="L154">            char c = token.charAt(i);</span>
-<span class="pc bpc" id="L155" title="2 of 4 branches missed.">            if (c &gt; 255 || !tchar[c]) {</span>
-<span class="nc" id="L156">                return false;</span>
+<span class="pc bpc" id="L155" title="2 of 4 branches missed.">            if (c &gt; 255 || !ParameterUtil.tchar[c]) {</span>
+<span class="nc" id="L156">                return true;</span>
             }
         }
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        return !token.isEmpty();</span>
+<span class="fc" id="L159">        return token.isEmpty();</span>
     }
 
     private void checkMultipart() throws InjectionFailureException {
-<span class="fc" id="L163">        isMultipartRequest = false;</span>
+<span class="fc" id="L163">        this.isMultipartRequest = false;</span>
 
 <span class="fc" id="L165">        if (</span>
 <span class="fc" id="L166">            this.getListHeader()</span>
@@ -181,7 +181,7 @@ public class ParameterUtil {
 <span class="nc" id="L181">                        String.format(&quot;Incorrect multipart data, boundary not found in body: %s&quot;, boundary)</span>
                     );
                 } else {
-<span class="fc" id="L184">                    isMultipartRequest = true;</span>
+<span class="fc" id="L184">                    this.isMultipartRequest = true;</span>
                 }
             }
         }
@@ -314,7 +314,7 @@ public class ParameterUtil {
                 // Pass request containing star * param without any parsing
 <span class="fc" id="L315">                this.listRequest = new ArrayList&lt;&gt;(List.of(new SimpleEntry&lt;&gt;(</span>
                     rawRequest,
-                    &quot;&quot;
+                    StringUtils.EMPTY
                 )));
             } else {
 <span class="fc" id="L320">                this.listRequest = Pattern.compile(&quot;&amp;&quot;)</span>
@@ -353,9 +353,9 @@ public class ParameterUtil {
 <span class="pc bpc" id="L353" title="1 of 2 branches missed.">                    &amp;&amp; entry.getValue() != null</span>
 <span class="fc bfc" id="L354" title="All 2 branches covered.">                    &amp;&amp; entry.getValue().contains(InjectionModel.STAR)</span>
                 ) {
-<span class="fc" id="L356">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);</span>
+<span class="fc" id="L356">                    return String.format(ParameterUtil.FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);</span>
                 } else {
-<span class="fc" id="L358">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L358">                    return String.format(ParameterUtil.FORMAT_KEY_VALUE, entry.getKey(), entry.getValue());</span>
                 }
             })
 <span class="fc" id="L361">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
@@ -365,9 +365,9 @@ public class ParameterUtil {
 <span class="fc" id="L365">        return this.listRequest.stream()</span>
 <span class="fc" id="L366">            .filter(Objects::nonNull)</span>
 <span class="fc" id="L367">            .map(entry -&gt; String.format(</span>
-                FORMAT_KEY_VALUE,
+                ParameterUtil.FORMAT_KEY_VALUE,
 <span class="fc" id="L369">                entry.getKey(),</span>
-<span class="fc bfc" id="L370" title="All 2 branches covered.">                StringUtils.isEmpty(entry.getValue()) ? &quot;&quot; : entry.getValue()</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">                StringUtils.isEmpty(entry.getValue()) ? StringUtils.EMPTY : entry.getValue()</span>
             ))
 <span class="fc" id="L372">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
     }

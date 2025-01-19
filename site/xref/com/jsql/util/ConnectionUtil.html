@@ -68,7 +68,7 @@
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  <em class="jxr_javadoccomment">     * Default HTTP method. It can be changed to a custom method.</em>
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">private</strong> String typeRequest = <span class="jxr_string">"GET"</span>;
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">private</strong> String typeRequest = StringUtil.GET;
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Random randomForUserAgent = <strong class="jxr_keyword">new</strong> Random();
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>      
@@ -112,8 +112,8 @@
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> 
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> 
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> &lt;T&gt; Map&lt;String, String&gt; getHeadersMap(HttpResponse&lt;T&gt; httpResponse) {
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>         Map&lt;String, String&gt; sortedMap = getHeadersMap(httpResponse.headers());
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>         String responseCodeHttp = <span class="jxr_string">""</span>+ httpResponse.statusCode();
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         Map&lt;String, String&gt; sortedMap = ConnectionUtil.getHeadersMap(httpResponse.headers());
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>         String responseCodeHttp = String.valueOf(httpResponse.statusCode());
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>         sortedMap.put(<span class="jxr_string">":status"</span>, responseCodeHttp);
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         <strong class="jxr_keyword">return</strong> sortedMap;
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>     }
@@ -141,7 +141,7 @@
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">public</strong> HttpResponse&lt;String&gt; checkConnectionResponse() <strong class="jxr_keyword">throws</strong> IOException, InterruptedException, <a name="JSqlException" href="../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>         <strong class="jxr_keyword">var</strong> queryString = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>         <strong class="jxr_keyword">var</strong> testUrl = <strong class="jxr_keyword">this</strong>.getUrlBase().replaceAll(<span class="jxr_string">"&#92;&#92;?$"</span>, <span class="jxr_string">""</span>);
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         <strong class="jxr_keyword">var</strong> testUrl = <strong class="jxr_keyword">this</strong>.getUrlBase().replaceAll(<span class="jxr_string">"&#92;&#92;?$"</span>, StringUtils.EMPTY);
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> 
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         <strong class="jxr_keyword">if</strong> (StringUtils.isNotEmpty(queryString)) {
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>             testUrl += <span class="jxr_string">"?"</span>+ queryString;
@@ -258,7 +258,7 @@
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>     }
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>     
 <a class="jxr_linenumber" name="L252" href="#L252">252</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L253" href="#L253">253</a> <em class="jxr_javadoccomment">     * Call an URL and return the source page.</em>
+<a class="jxr_linenumber" name="L253" href="#L253">253</a> <em class="jxr_javadoccomment">     * Call a URL and return the source page.</em>
 <a class="jxr_linenumber" name="L254" href="#L254">254</a> <em class="jxr_javadoccomment">     * @param url to call</em>
 <a class="jxr_linenumber" name="L255" href="#L255">255</a> <em class="jxr_javadoccomment">     * @return the source page of the URL</em>
 <a class="jxr_linenumber" name="L256" href="#L256">256</a> <em class="jxr_javadoccomment">     */</em>
@@ -337,7 +337,7 @@
 <a class="jxr_linenumber" name="L329" href="#L329">329</a>     }
 <a class="jxr_linenumber" name="L330" href="#L330">330</a> 
 <a class="jxr_linenumber" name="L331" href="#L331">331</a>     <strong class="jxr_keyword">public</strong> CookieManager getCookieManager() {
-<a class="jxr_linenumber" name="L332" href="#L332">332</a>         <strong class="jxr_keyword">return</strong> cookieManager;
+<a class="jxr_linenumber" name="L332" href="#L332">332</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.cookieManager;
 <a class="jxr_linenumber" name="L333" href="#L333">333</a>     }
 <a class="jxr_linenumber" name="L334" href="#L334">334</a> }
 </pre>

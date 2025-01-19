@@ -36,7 +36,7 @@
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> multibit;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="StrategyInjectionError" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionError.html#StrategyInjectionError">StrategyInjectionError</a> error;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> normal;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> stacked;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> stack;
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;AbstractStrategy&gt; strategies;
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      
@@ -55,9 +55,9 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">this</strong>.multibit = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionMultibit" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionMultibit.html#StrategyInjectionMultibit">StrategyInjectionMultibit</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">this</strong>.error = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionError" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionError.html#StrategyInjectionError">StrategyInjectionError</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">this</strong>.normal = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionNormal" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionNormal.html#StrategyInjectionNormal">StrategyInjectionNormal</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">this</strong>.stacked = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionStacked" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionStacked.html#StrategyInjectionStacked">StrategyInjectionStacked</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">this</strong>.stack = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionStack" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionStack.html#StrategyInjectionStack">StrategyInjectionStack</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>.strategies = Arrays.asList(<strong class="jxr_keyword">this</strong>.time, <strong class="jxr_keyword">this</strong>.blind, <strong class="jxr_keyword">this</strong>.multibit, <strong class="jxr_keyword">this</strong>.error, <strong class="jxr_keyword">this</strong>.stacked, <strong class="jxr_keyword">this</strong>.normal);
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>.strategies = Arrays.asList(<strong class="jxr_keyword">this</strong>.time, <strong class="jxr_keyword">this</strong>.blind, <strong class="jxr_keyword">this</strong>.multibit, <strong class="jxr_keyword">this</strong>.error, <strong class="jxr_keyword">this</strong>.stack, <strong class="jxr_keyword">this</strong>.normal);
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">public</strong> String getMeta() {
@@ -134,7 +134,7 @@
 <a class="jxr_linenumber" name="L126" href="#L126">126</a> <em class="jxr_javadoccomment">     * Find the insertion character, test each strategy, inject metadata and list databases.</em>
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> <em class="jxr_javadoccomment">     * @param parameterToInject to be tested, null when injection point</em>
 <a class="jxr_linenumber" name="L128" href="#L128">128</a> <em class="jxr_javadoccomment">     * @return true when successful injection</em>
-<a class="jxr_linenumber" name="L129" href="#L129">129</a> <em class="jxr_javadoccomment">     * @throws JSqlException when no params' integrity, process stopped by user, or injection failure</em>
+<a class="jxr_linenumber" name="L129" href="#L129">129</a> <em class="jxr_javadoccomment">     * @throws JSqlException when no params integrity, process stopped by user, or injection failure</em>
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> testStrategies(SimpleEntry&lt;String, String&gt; parameterToInject) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>         <em class="jxr_comment">// Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",</em>
@@ -165,7 +165,7 @@
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>                 parameterToInject.setValue(characterInsertion.replaceAll(<span class="jxr_string">"(&#92;&#92;w)$"</span>, <span class="jxr_string">"$1+"</span>) + InjectionModel.STAR);
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>             }
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>             String characterInsertion = <strong class="jxr_keyword">new</strong> <a name="SuspendableGetCharInsertion" href="../../../../../com/jsql/model/suspendable/SuspendableGetCharInsertion.html#SuspendableGetCharInsertion">SuspendableGetCharInsertion</a>(<strong class="jxr_keyword">this</strong>.injectionModel).run(<span class="jxr_string">""</span>);
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>             String characterInsertion = <strong class="jxr_keyword">new</strong> <a name="SuspendableGetCharInsertion" href="../../../../../com/jsql/model/suspendable/SuspendableGetCharInsertion.html#SuspendableGetCharInsertion">SuspendableGetCharInsertion</a>(<strong class="jxr_keyword">this</strong>.injectionModel).run(StringUtils.EMPTY);
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>             String urlBase = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>                 <em class="jxr_comment">// Space %20 for URL, do not use +</em>
@@ -194,12 +194,12 @@
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>         }
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> 
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         <strong class="jxr_keyword">this</strong>.error.checkApplicability();
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <strong class="jxr_keyword">this</strong>.stacked.checkApplicability();
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <strong class="jxr_keyword">this</strong>.stack.checkApplicability();
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">this</strong>.normal.checkApplicability();
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> 
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>         <em class="jxr_comment">// Set most efficient strategy</em>
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         <strong class="jxr_keyword">this</strong>.normal.activateWhenApplicable();
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         <strong class="jxr_keyword">this</strong>.stacked.activateWhenApplicable();
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>         <strong class="jxr_keyword">this</strong>.stack.activateWhenApplicable();
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>         <strong class="jxr_keyword">this</strong>.error.activateWhenApplicable();
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>         <strong class="jxr_keyword">this</strong>.multibit.activateWhenApplicable();
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>         <strong class="jxr_keyword">this</strong>.blind.activateWhenApplicable();
@@ -246,8 +246,8 @@
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.time;
 <a class="jxr_linenumber" name="L239" href="#L239">239</a>     }
 <a class="jxr_linenumber" name="L240" href="#L240">240</a> 
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <strong class="jxr_keyword">public</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> getStacked() {
-<a class="jxr_linenumber" name="L242" href="#L242">242</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.stacked;
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <strong class="jxr_keyword">public</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> getStack() {
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.stack;
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>     }
 <a class="jxr_linenumber" name="L244" href="#L244">244</a> 
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>     <strong class="jxr_keyword">public</strong> List&lt;AbstractStrategy&gt; getStrategies() {

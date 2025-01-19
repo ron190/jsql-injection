@@ -127,24 +127,17 @@ public class ManagerDatabase extends JPanel {
 <span class="fc" id="L127">            ManagerDatabase.this.tree.treeDidChange();</span>
 <span class="fc" id="L128">        }</span>
         @Override
-        public void treeStructureChanged(TreeModelEvent arg0) {
+        public void treeStructureChanged(TreeModelEvent treeModelEvent) {
             // Do nothing
 <span class="fc" id="L132">        }</span>
         @Override
-        public void treeNodesRemoved(TreeModelEvent arg0) {
+        public void treeNodesRemoved(TreeModelEvent treeModelEvent) {
             // Do nothing
 <span class="nc" id="L136">        }</span>
         @Override
-        public void treeNodesInserted(TreeModelEvent arg0) {
+        public void treeNodesInserted(TreeModelEvent treeModelEvent) {
             // Do nothing
 <span class="fc" id="L140">        }</span>
-    }
-
-    
-    // Getter and setter
-
-    public JTree getTree() {
-<span class="nc" id="L147">        return this.tree;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -31,7 +31,7 @@ public class ActionHideShowConsole implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-<span class="fc" id="L34">        var split = MediatorHelper.frame().getSplitHorizontalTopBottom();</span>
+<span class="fc" id="L34">        var split = MediatorHelper.frame().getSplitNS();</span>
 <span class="fc bfc" id="L35" title="All 4 branches covered.">        if (split.getTopComponent().isVisible() &amp;&amp; split.getBottomComponent().isVisible()) {</span>
 <span class="fc" id="L36">            MediatorHelper.panelConsoles().setDividerLocation(split.getDividerLocation());</span>
 <span class="fc" id="L37">            split.getBottomComponent().setVisible(false);</span>

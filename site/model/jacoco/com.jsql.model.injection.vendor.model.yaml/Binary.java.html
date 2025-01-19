@@ -13,7 +13,7 @@ import java.io.Serializable;
 <span class="fc" id="L13">    private String multibit = StringUtils.EMPTY;</span>
 <span class="fc" id="L14">    private String modeAnd = &quot;and&quot;;</span>
 <span class="fc" id="L15">    private String modeOr = &quot;or&quot;;</span>
-<span class="fc" id="L16">    private String modeStacked = &quot;;&quot;;</span>
+<span class="fc" id="L16">    private String modeStack = &quot;;&quot;;</span>
 
     public Test getTest() {
 <span class="fc" id="L19">        return this.test;</span>
@@ -55,16 +55,16 @@ import java.io.Serializable;
 <span class="fc" id="L55">        this.modeOr = modeOr;</span>
 <span class="fc" id="L56">    }</span>
 
-    public String getModeStacked() {
-<span class="fc" id="L59">        return this.modeStacked;</span>
+    public String getModeStack() {
+<span class="fc" id="L59">        return this.modeStack;</span>
     }
 
-    public void setModeStacked(String modeStacked) {
-<span class="fc" id="L63">        this.modeStacked = modeStacked;</span>
+    public void setModeStack(String modeStack) {
+<span class="fc" id="L63">        this.modeStack = modeStack;</span>
 <span class="fc" id="L64">    }</span>
 
     public String getMultibit() {
-<span class="fc" id="L67">        return multibit;</span>
+<span class="fc" id="L67">        return this.multibit;</span>
     }
 
     public void setMultibit(String multibit) {

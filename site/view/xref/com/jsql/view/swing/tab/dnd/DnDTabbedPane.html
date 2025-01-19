@@ -85,17 +85,17 @@
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> autoScrollTest(Point pt) {
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>          Rectangle r = <strong class="jxr_keyword">this</strong>.getTabAreaBounds();
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>          
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">if</strong> (isTopBottomTabPlacement(<strong class="jxr_keyword">this</strong>.getTabPlacement())) {
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>              RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>              RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">if</strong> (DnDTabbedPane.isTopBottomTabPlacement(<strong class="jxr_keyword">this</strong>.getTabPlacement())) {
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>              DnDTabbedPane.RECT_BACKWARD.setBounds(r.x, r.y, DnDTabbedPane.SCROLL_SIZE, r.height);
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>              DnDTabbedPane.RECT_FORWARD.setBounds(r.x + r.width - DnDTabbedPane.SCROLL_SIZE - DnDTabbedPane.BUTTON_SIZE, r.y, DnDTabbedPane.SCROLL_SIZE + DnDTabbedPane.BUTTON_SIZE, r.height);
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>              RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>              RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>              DnDTabbedPane.RECT_BACKWARD.setBounds(r.x, r.y, r.width, DnDTabbedPane.SCROLL_SIZE);
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>              DnDTabbedPane.RECT_FORWARD.setBounds(r.x, r.y + r.height - DnDTabbedPane.SCROLL_SIZE - DnDTabbedPane.BUTTON_SIZE, r.width, DnDTabbedPane.SCROLL_SIZE + DnDTabbedPane.BUTTON_SIZE);
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          }
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>          <strong class="jxr_keyword">if</strong> (RECT_BACKWARD.contains(pt)) {
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          <strong class="jxr_keyword">if</strong> (DnDTabbedPane.RECT_BACKWARD.contains(pt)) {
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>              <strong class="jxr_keyword">this</strong>.clickArrowButton(<span class="jxr_string">"scrollTabsBackwardAction"</span>);
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>          } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (RECT_FORWARD.contains(pt)) {
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>          } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (DnDTabbedPane.RECT_FORWARD.contains(pt)) {
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>              <strong class="jxr_keyword">this</strong>.clickArrowButton(<span class="jxr_string">"scrollTabsForwardAction"</span>);
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>          }
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      }
@@ -186,20 +186,20 @@
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>             .orElse(-1);
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>         
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">if</strong> (index &lt; 0) {
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>             RECT_LINE.setBounds(0, 0, 0, 0);
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>             DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>             <strong class="jxr_keyword">return</strong> Optional.empty();
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>         }
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>         
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>         <strong class="jxr_keyword">int</strong> a = Math.min(index, 1);
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>         Rectangle r = <strong class="jxr_keyword">this</strong>.getBoundsAt(a * (index - 1));
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>         
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>         <strong class="jxr_keyword">if</strong> (isTopBottomTabPlacement(<strong class="jxr_keyword">this</strong>.getTabPlacement())) {
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>             RECT_LINE.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>         <strong class="jxr_keyword">if</strong> (DnDTabbedPane.isTopBottomTabPlacement(<strong class="jxr_keyword">this</strong>.getTabPlacement())) {
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>             DnDTabbedPane.RECT_LINE.setBounds(r.x - DnDTabbedPane.LINE_WIDTH / 2 + r.width * a, r.y, DnDTabbedPane.LINE_WIDTH, r.height);
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>             RECT_LINE.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>             DnDTabbedPane.RECT_LINE.setBounds(r.x, r.y - DnDTabbedPane.LINE_WIDTH / 2 + r.height * a, r.width, DnDTabbedPane.LINE_WIDTH);
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>         }
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         <strong class="jxr_keyword">return</strong> Optional.of(RECT_LINE);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>         <strong class="jxr_keyword">return</strong> Optional.of(DnDTabbedPane.RECT_LINE);
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>     }
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>     
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     <strong class="jxr_keyword">public</strong> Rectangle getTabAreaBounds() {
@@ -213,14 +213,14 @@
 <a class="jxr_linenumber" name="L205" href="#L205">205</a> 
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>         <strong class="jxr_keyword">int</strong> tabPlacement = <strong class="jxr_keyword">this</strong>.getTabPlacement();
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>         
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <strong class="jxr_keyword">if</strong> (isTopBottomTabPlacement(tabPlacement)) {
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <strong class="jxr_keyword">if</strong> (DnDTabbedPane.isTopBottomTabPlacement(tabPlacement)) {
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>             tabbedRect.height = tabbedRect.height - compRect.height;
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>             <strong class="jxr_keyword">if</strong> (tabPlacement == BOTTOM) {
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>             <strong class="jxr_keyword">if</strong> (tabPlacement == SwingConstants.BOTTOM) {
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>                 tabbedRect.y += compRect.y + compRect.height;
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>             }
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>         } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>             tabbedRect.width = tabbedRect.width - compRect.width;
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>             <strong class="jxr_keyword">if</strong> (tabPlacement == RIGHT) {
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>             <strong class="jxr_keyword">if</strong> (tabPlacement == SwingConstants.RIGHT) {
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>                 tabbedRect.x += compRect.x + compRect.width;
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>             }
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         }
@@ -293,8 +293,8 @@
 <a class="jxr_linenumber" name="L285" href="#L285">285</a>                 
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>                 <em class="jxr_comment">// Unhandled NoClassDefFoundError #56620: Could not initialize class java.awt.dnd.DragSource</em>
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>                 th.exportAsDrag(src, e, TransferHandler.MOVE);
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>                 
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>                 RECT_LINE.setBounds(0, 0, 0, 0);
+<a class="jxr_linenumber" name="L288" href="#L288">288</a> 
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>                 DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>                 src.getRootPane().getGlassPane().setVisible(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L291" href="#L291">291</a>                 src.setDropLocation(<strong class="jxr_keyword">new</strong> DnDDropLocation(tabPt, -1), <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>                 

@@ -26,7 +26,7 @@ public class InjectionCharInsertion {
      */
 <span class="fc" id="L27">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
-    // Source code of the FALSE web page (eg. ?id=-123456789)
+    // Source code of the FALSE web page (e.g. ?id=-123456789)
     private String blankFalseMark;
 
     /**
@@ -65,7 +65,7 @@ public class InjectionCharInsertion {
         // Call the SQL request which must be FALSE (usually ?id=-123456879)
 <span class="fc" id="L66">        this.blankFalseMark = this.callUrl(</span>
             falseCharInsertion,
-<span class="fc" id="L68">            &quot;prefix:&quot; + prefixSuffix.replace(PREFIX, StringUtils.EMPTY)</span>
+<span class="fc" id="L68">            &quot;prefix:&quot; + prefixSuffix.replace(InjectionCharInsertion.PREFIX, StringUtils.EMPTY)</span>
         );
 
         // Concurrent calls to the FALSE statements,
@@ -78,7 +78,7 @@ public class InjectionCharInsertion {
                 new CallableCharInsertion(
 <span class="fc" id="L79">                    String.join(</span>
                         StringUtils.SPACE,
-<span class="fc" id="L81">                        prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, &quot;345&quot;)),</span>
+<span class="fc" id="L81">                        prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, &quot;345&quot;)),</span>
 <span class="fc" id="L82">                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
                         urlTest
                     ),
@@ -126,7 +126,7 @@ public class InjectionCharInsertion {
                 new CallableCharInsertion(
 <span class="fc" id="L127">                    String.join(</span>
                         StringUtils.SPACE,
-<span class="fc" id="L129">                        this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, &quot;345&quot;)),</span>
+<span class="fc" id="L129">                        this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, &quot;345&quot;)),</span>
 <span class="fc" id="L130">                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
                         urlTest
                     ),
@@ -164,7 +164,7 @@ public class InjectionCharInsertion {
 <span class="fc" id="L164">        var blindTest = new CallableCharInsertion(</span>
 <span class="fc" id="L165">            String.join(</span>
                 StringUtils.SPACE,
-<span class="fc" id="L167">                this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, &quot;678&quot;)),</span>
+<span class="fc" id="L167">                this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, &quot;678&quot;)),</span>
 <span class="fc" id="L168">                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
 <span class="fc" id="L169">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()</span>
             ),

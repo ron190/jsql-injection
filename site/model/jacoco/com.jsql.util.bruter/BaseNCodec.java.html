@@ -176,7 +176,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         final int lineLength,
         final int chunkSeparatorLength
     ) {
-<span class="nc" id="L179">        this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, PAD_DEFAULT);</span>
+<span class="nc" id="L179">        this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, BaseNCodec.PAD_DEFAULT);</span>
 <span class="nc" id="L180">    }</span>
 
     /**
@@ -195,7 +195,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         final int chunkSeparatorLength,
         final byte pad
     ) {
-<span class="nc" id="L198">        this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, pad, DECODING_POLICY_DEFAULT);</span>
+<span class="nc" id="L198">        this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, pad, BaseNCodec.DECODING_POLICY_DEFAULT);</span>
 <span class="nc" id="L199">    }</span>
 
     /**
@@ -263,7 +263,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         // Integer.MAX_VALUE length array.
         // The result is that we may have to allocate an array of this size more than once if
         // the capacity must be expanded again.
-<span class="nc" id="L266">        return Math.max(minCapacity, MAX_BUFFER_SIZE);</span>
+<span class="nc" id="L266">        return Math.max(minCapacity, BaseNCodec.MAX_BUFFER_SIZE);</span>
     }
 
     /**
@@ -274,7 +274,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @since 1.15
      */
     public static byte[] getChunkSeparator() {
-<span class="nc" id="L277">        return CHUNK_SEPARATOR.clone();</span>
+<span class="nc" id="L277">        return BaseNCodec.CHUNK_SEPARATOR.clone();</span>
     }
 
     /**
@@ -306,12 +306,12 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     private static byte[] resizeBuffer(final Context context, final int minCapacity) {
         // Overflow-conscious code treats the min and new capacity as unsigned.
 <span class="nc" id="L308">        final int oldCapacity = context.buffer.length;</span>
-<span class="nc" id="L309">        int newCapacity = oldCapacity * DEFAULT_BUFFER_RESIZE_FACTOR;</span>
-<span class="nc bnc" id="L310" title="All 2 branches missed.">        if (compareUnsigned(newCapacity, minCapacity) &lt; 0) {</span>
+<span class="nc" id="L309">        int newCapacity = oldCapacity * BaseNCodec.DEFAULT_BUFFER_RESIZE_FACTOR;</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">        if (BaseNCodec.compareUnsigned(newCapacity, minCapacity) &lt; 0) {</span>
 <span class="nc" id="L311">            newCapacity = minCapacity;</span>
         }
-<span class="nc bnc" id="L313" title="All 2 branches missed.">        if (compareUnsigned(newCapacity, MAX_BUFFER_SIZE) &gt; 0) {</span>
-<span class="nc" id="L314">            newCapacity = createPositiveCapacity(minCapacity);</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">        if (BaseNCodec.compareUnsigned(newCapacity, BaseNCodec.MAX_BUFFER_SIZE) &gt; 0) {</span>
+<span class="nc" id="L314">            newCapacity = BaseNCodec.createPositiveCapacity(minCapacity);</span>
         }
 <span class="nc" id="L316">        final var b = new byte[newCapacity];</span>
 <span class="nc" id="L317">        System.arraycopy(context.buffer, 0, b, 0, context.buffer.length);</span>
@@ -364,7 +364,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         }
 <span class="fc" id="L365">        final var context = new Context();</span>
 <span class="fc" id="L366">        this.decode(pArray, 0, pArray.length, context);</span>
-<span class="fc" id="L367">        this.decode(pArray, 0, EOF, context); // Notify decoder of EOF.</span>
+<span class="fc" id="L367">        this.decode(pArray, 0, BaseNCodec.EOF, context); // Notify decoder of EOF.</span>
 <span class="fc" id="L368">        final var result = new byte[context.pos];</span>
 <span class="fc" id="L369">        this.readResults(result, 0, result.length, context);</span>
 <span class="fc" id="L370">        return result;</span>
@@ -440,7 +440,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         }
 <span class="fc" id="L441">        final var context = new Context();</span>
 <span class="fc" id="L442">        this.encode(pArray, offset, length, context);</span>
-<span class="fc" id="L443">        this.encode(pArray, offset, EOF, context); // Notify encoder of EOF.</span>
+<span class="fc" id="L443">        this.encode(pArray, offset, BaseNCodec.EOF, context); // Notify encoder of EOF.</span>
 <span class="fc" id="L444">        final var buf = new byte[context.pos - context.readPos];</span>
 <span class="fc" id="L445">        this.readResults(buf, 0, buf.length, context);</span>
 <span class="fc" id="L446">        return buf;</span>
@@ -507,7 +507,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
             // Overflow-conscious:
             // x + y &gt; z  ==  x + y - z &gt; 0
 <span class="nc bnc" id="L509" title="All 2 branches missed.">        } else if (context.pos + size - context.buffer.length &gt; 0) {</span>
-<span class="nc" id="L510">            return resizeBuffer(context, context.pos + size);</span>
+<span class="nc" id="L510">            return BaseNCodec.resizeBuffer(context, context.pos + size);</span>
         }
 <span class="fc" id="L512">        return context.buffer;</span>
     }
@@ -521,11 +521,10 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * trailing bits into 8-bit bytes and discard the remainder.
      * &lt;/p&gt;
      *
-     * @return true if using strict decoding
      * @since 1.15
      */
     public CodecPolicy getCodecPolicy() {
-<span class="nc" id="L528">        return this.decodingPolicy;</span>
+<span class="nc" id="L527">        return this.decodingPolicy;</span>
     }
 
     /**
@@ -534,7 +533,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return the default buffer size.
      */
     protected int getDefaultBufferSize() {
-<span class="fc" id="L537">        return DEFAULT_BUFFER_SIZE;</span>
+<span class="fc" id="L536">        return BaseNCodec.DEFAULT_BUFFER_SIZE;</span>
     }
 
     /**
@@ -542,18 +541,18 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *
      * @param pArray byte[] array which will later be encoded
      *
-     * @return amount of space needed to encoded the supplied array.
+     * @return amount of space needed to encode the supplied array.
      * Returns a long since a max-len array will require &amp;gt; Integer.MAX_VALUE
      */
     public long getEncodedLength(final byte[] pArray) {
         // Calculate non-chunked size - rounded up to allow for padding
         // cast to long is needed to avoid possibility of overflow
-<span class="nc" id="L551">        long len = ((pArray.length + this.unencodedBlockSize-1)  / this.unencodedBlockSize) * (long) this.encodedBlockSize;</span>
-<span class="nc bnc" id="L552" title="All 2 branches missed.">        if (this.lineLength &gt; 0) { // We're using chunking</span>
+<span class="nc" id="L550">        long len = ((pArray.length + this.unencodedBlockSize-1)  / this.unencodedBlockSize) * (long) this.encodedBlockSize;</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">        if (this.lineLength &gt; 0) { // We're using chunking</span>
             // Round up to nearest multiple
-<span class="nc" id="L554">            len += ((len + this.lineLength-1) / this.lineLength) * this.chunkSeparatorLength;</span>
+<span class="nc" id="L553">            len += ((len + this.lineLength-1) / this.lineLength) * this.chunkSeparatorLength;</span>
         }
-<span class="nc" id="L556">        return len;</span>
+<span class="nc" id="L555">        return len;</span>
     }
 
     /**
@@ -563,11 +562,11 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return true if there is data still available for reading.
      */
     public boolean hasData(final Context context) {  // package protected for access from I/O streams
-<span class="nc bnc" id="L566" title="All 2 branches missed.">        return context.buffer != null;</span>
+<span class="nc bnc" id="L565" title="All 2 branches missed.">        return context.buffer != null;</span>
     }
 
     /**
-     * Returns whether or not the {@code octet} is in the current alphabet.
+     * Returns whether the {@code octet} is in the current alphabet.
      * Does not allow whitespace or pad.
      *
      * @param value The value to test
@@ -587,16 +586,16 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *         {@code false}, otherwise
      */
     public boolean isInAlphabet(final byte[] arrayOctet, final boolean allowWSPad) {
-<span class="nc bnc" id="L590" title="All 2 branches missed.">        for (final byte octet : arrayOctet) {</span>
-<span class="nc" id="L591">            if (</span>
-<span class="nc bnc" id="L592" title="All 6 branches missed.">                !this.isInAlphabet(octet)</span>
+<span class="nc bnc" id="L589" title="All 2 branches missed.">        for (final byte octet : arrayOctet) {</span>
+<span class="nc" id="L590">            if (</span>
+<span class="nc bnc" id="L591" title="All 6 branches missed.">                !this.isInAlphabet(octet)</span>
                 &amp;&amp; (!allowWSPad || (octet != this.pad)
-<span class="nc bnc" id="L594" title="All 2 branches missed.">                &amp;&amp; !isWhiteSpace(octet))</span>
+<span class="nc bnc" id="L593" title="All 2 branches missed.">                &amp;&amp; !BaseNCodec.isWhiteSpace(octet))</span>
             ) {
-<span class="nc" id="L596">                return false;</span>
+<span class="nc" id="L595">                return false;</span>
             }
         }
-<span class="nc" id="L599">        return true;</span>
+<span class="nc" id="L598">        return true;</span>
     }
 
     /**
@@ -609,7 +608,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @see #isInAlphabet(byte[], boolean)
      */
     public boolean isInAlphabet(final String basen) {
-<span class="nc" id="L612">        return this.isInAlphabet(StringUtils.getBytesUtf8(basen), true);</span>
+<span class="nc" id="L611">        return this.isInAlphabet(StringUtils.getBytesUtf8(basen), true);</span>
     }
 
     /**
@@ -625,7 +624,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @since 1.15
      */
     public boolean isStrictDecoding() {
-<span class="nc bnc" id="L628" title="All 2 branches missed.">        return this.decodingPolicy == CodecPolicy.STRICT;</span>
+<span class="nc bnc" id="L627" title="All 2 branches missed.">        return this.decodingPolicy == CodecPolicy.STRICT;</span>
     }
 
     /**
@@ -634,28 +633,21 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * &lt;p&gt;
      * Package protected for access from I/O streams.
      *
-     * @param b
-     *            byte[] array to extract the buffered data into.
-     * @param bPos
-     *            position in byte[] array to start extraction at.
-     * @param bAvail
-     *            amount of bytes we're allowed to extract. We may extract fewer (if fewer are available).
-     * @param context
-     *            the context to be used
-     * @return The number of bytes successfully extracted into the provided byte[] array.
+     * @param b       byte[] array to extract the buffered data into.
+     * @param bPos    position in byte[] array to start extraction at.
+     * @param bAvail  amount of bytes we're allowed to extract. We may extract fewer (if fewer are available).
+     * @param context the context to be used
      */
-    private int readResults(final byte[] b, final int bPos, final int bAvail, final Context context) {
-<span class="pc bpc" id="L648" title="1 of 2 branches missed.">        if (context.buffer != null) {</span>
-<span class="fc" id="L649">            final int len = Math.min(this.available(context), bAvail);</span>
-<span class="fc" id="L650">            System.arraycopy(context.buffer, context.readPos, b, bPos, len);</span>
-<span class="fc" id="L651">            context.readPos += len;</span>
-<span class="pc bpc" id="L652" title="1 of 2 branches missed.">            if (context.readPos &gt;= context.pos) {</span>
-<span class="fc" id="L653">                context.buffer = null; // so hasData() will return false, and this method can return -1</span>
+    private void readResults(final byte[] b, final int bPos, final int bAvail, final Context context) {
+<span class="pc bpc" id="L642" title="1 of 2 branches missed.">        if (context.buffer != null) {</span>
+<span class="fc" id="L643">            final int len = Math.min(this.available(context), bAvail);</span>
+<span class="fc" id="L644">            System.arraycopy(context.buffer, context.readPos, b, bPos, len);</span>
+<span class="fc" id="L645">            context.readPos += len;</span>
+<span class="pc bpc" id="L646" title="1 of 2 branches missed.">            if (context.readPos &gt;= context.pos) {</span>
+<span class="fc" id="L647">                context.buffer = null; // so hasData() will return false, and this method can return -1</span>
             }
-<span class="fc" id="L655">            return len;</span>
         }
-<span class="nc bnc" id="L657" title="All 2 branches missed.">        return context.eof ? EOF : 0;</span>
-    }
+<span class="fc" id="L650">    }</span>
 
     /**
      * Holds thread context so classes can be thread-safe.
@@ -664,16 +656,16 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *
      * @since 1.7
      */
-<span class="fc" id="L667">    protected static class Context {</span>
+<span class="fc" id="L659">    protected static class Context {</span>
 
         /**
-         * Place holder for the bytes we're dealing with for our based logic.
+         * Placeholder for the bytes we're dealing with for our based logic.
          * Bitwise operations store and extract the encoding or decoding from this variable.
          */
         protected int ibitWorkArea;
 
         /**
-         * Place holder for the bytes we're dealing with for our based logic.
+         * Placeholder for the bytes we're dealing with for our based logic.
          * Bitwise operations store and extract the encoding or decoding from this variable.
          */
         protected long lbitWorkArea;
@@ -719,17 +711,17 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         @SuppressWarnings(&quot;boxing&quot;) // OK to ignore boxing here
         @Override
         public String toString() {
-<span class="nc" id="L722">            return String.format(</span>
+<span class="nc" id="L714">            return String.format(</span>
                 &quot;%s[buffer=%s, currentLinePos=%s, eof=%s, ibitWorkArea=%s, lbitWorkArea=%s, modulus=%s, pos=%s, readPos=%s]&quot;,
-<span class="nc" id="L724">                this.getClass().getSimpleName(),</span>
-<span class="nc" id="L725">                Arrays.toString(this.buffer),</span>
-<span class="nc" id="L726">                this.currentLinePos,</span>
-<span class="nc" id="L727">                this.eof,</span>
-<span class="nc" id="L728">                this.ibitWorkArea,</span>
-<span class="nc" id="L729">                this.lbitWorkArea,</span>
-<span class="nc" id="L730">                this.modulus,</span>
-<span class="nc" id="L731">                this.pos,</span>
-<span class="nc" id="L732">                this.readPos</span>
+<span class="nc" id="L716">                this.getClass().getSimpleName(),</span>
+<span class="nc" id="L717">                Arrays.toString(this.buffer),</span>
+<span class="nc" id="L718">                this.currentLinePos,</span>
+<span class="nc" id="L719">                this.eof,</span>
+<span class="nc" id="L720">                this.ibitWorkArea,</span>
+<span class="nc" id="L721">                this.lbitWorkArea,</span>
+<span class="nc" id="L722">                this.modulus,</span>
+<span class="nc" id="L723">                this.pos,</span>
+<span class="nc" id="L724">                this.readPos</span>
             );
         }
     }

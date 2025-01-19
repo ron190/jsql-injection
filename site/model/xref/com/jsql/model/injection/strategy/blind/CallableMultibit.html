@@ -57,8 +57,8 @@
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      @Override
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">public</strong> <a name="CallableMultibit" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableMultibit.html#CallableMultibit">CallableMultibit</a> call() {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          String result = <strong class="jxr_keyword">this</strong>.injectionMultibit.callUrl(<strong class="jxr_keyword">this</strong>.booleanUrl, <strong class="jxr_keyword">this</strong>.metadataInjectionProcess, <strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>.diffsWithReference = DIFF_MATCH_PATCH.diffMain(<strong class="jxr_keyword">this</strong>.injectionMultibit.getSourceReference(), result, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          DIFF_MATCH_PATCH.diffCleanupEfficiency(<strong class="jxr_keyword">this</strong>.diffsWithReference);
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>.diffsWithReference = CallableMultibit.DIFF_MATCH_PATCH.diffMain(<strong class="jxr_keyword">this</strong>.injectionMultibit.getSourceReference(), result, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          CallableMultibit.DIFF_MATCH_PATCH.diffCleanupEfficiency(<strong class="jxr_keyword">this</strong>.diffsWithReference);
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">this</strong>.diffsWithReference.removeAll(<strong class="jxr_keyword">this</strong>.injectionMultibit.getDiffsCommonWithAllIds());
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  

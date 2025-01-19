@@ -110,9 +110,9 @@
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> List&lt;ItemListScan&gt; parse(String clipboardText) {
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         List&lt;ItemListScan&gt; itemsParsed = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>             parseJsonArray(clipboardText, itemsParsed);
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>             ListTransfertHandlerScan.parseJsonArray(clipboardText, itemsParsed);
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         } <strong class="jxr_keyword">catch</strong> (JSONException eJsonArray) {
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>             parseJsonObject(clipboardText, itemsParsed);
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>             ListTransfertHandlerScan.parseJsonObject(clipboardText, itemsParsed);
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         }
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>         <strong class="jxr_keyword">return</strong> itemsParsed;
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>     }

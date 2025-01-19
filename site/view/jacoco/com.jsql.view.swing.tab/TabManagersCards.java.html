@@ -19,79 +19,74 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
  */
 public class TabManagersCards extends JPanel {
     
-<span class="fc" id="L28">    private final ManagerWebShell managerWebShell = new ManagerWebShell();</span>
 <span class="fc" id="L29">    private final ManagerFile managerFile = new ManagerFile();</span>
-<span class="fc" id="L30">    private final ManagerUpload managerUpload = new ManagerUpload();</span>
-<span class="fc" id="L31">    private final ManagerSqlShell managerSqlShell = new ManagerSqlShell();</span>
-    
+<span class="fc" id="L30">    private final ManagerExploit managerExploit = new ManagerExploit();</span>
+
     /**
      * Create manager panel.
      */
-<span class="fc" id="L36">    public TabManagersCards() {</span>
-        
-<span class="fc" id="L38">        this.setName(&quot;tabManagersProxy&quot;);</span>
-<span class="fc" id="L39">        this.setLayout(new CardLayout());</span>
-<span class="fc" id="L40">        this.setMinimumSize(new Dimension(100, 0));  // allow proper minimize</span>
+<span class="fc" id="L35">    public TabManagersCards() {</span>
+<span class="fc" id="L36">        this.setName(&quot;tabManagersProxy&quot;);</span>
+<span class="fc" id="L37">        this.setLayout(new CardLayout());</span>
+<span class="fc" id="L38">        this.setMinimumSize(new Dimension(100, 0));  // allow proper minimize</span>
 
-<span class="fc" id="L42">        var managerScanList = new ManagerScan();</span>
-<span class="fc" id="L43">        var managerDatabase = new ManagerDatabase();</span>
-<span class="fc" id="L44">        var managerAdminPage = new ManagerAdminPage();</span>
-<span class="fc" id="L45">        var managerBruteForce = new ManagerBruteForce();</span>
+<span class="fc" id="L40">        var managerScanList = new ManagerScan();</span>
+<span class="fc" id="L41">        var managerDatabase = new ManagerDatabase();</span>
+<span class="fc" id="L42">        var managerAdminPage = new ManagerAdminPage();</span>
+<span class="fc" id="L43">        var managerBruteForce = new ManagerBruteForce();</span>
 
-<span class="fc" id="L47">        MediatorHelper.register(this.managerWebShell);</span>
-<span class="fc" id="L48">        MediatorHelper.register(this.managerFile);</span>
-<span class="fc" id="L49">        MediatorHelper.register(this.managerUpload);</span>
-<span class="fc" id="L50">        MediatorHelper.register(this.managerSqlShell);</span>
-<span class="fc" id="L51">        MediatorHelper.register(managerScanList);</span>
-<span class="fc" id="L52">        MediatorHelper.register(managerAdminPage);</span>
-<span class="fc" id="L53">        MediatorHelper.register(managerBruteForce);</span>
+<span class="fc" id="L45">        MediatorHelper.register(this.managerFile);</span>
+<span class="fc" id="L46">        MediatorHelper.register(this.managerExploit);</span>
+<span class="fc" id="L47">        MediatorHelper.register(managerScanList);</span>
+<span class="fc" id="L48">        MediatorHelper.register(managerAdminPage);</span>
+<span class="fc" id="L49">        MediatorHelper.register(managerBruteForce);</span>
 
-<span class="fc" id="L55">        this.buildI18nTab(&quot;DATABASE_TAB&quot;, managerDatabase);</span>
-<span class="fc" id="L56">        this.buildI18nTab(&quot;ADMINPAGE_TAB&quot;, managerAdminPage);</span>
-<span class="fc" id="L57">        this.buildI18nTab(&quot;FILE_TAB&quot;, this.managerFile);</span>
-<span class="fc" id="L58">        this.buildI18nTab(&quot;WEBSHELL_TAB&quot;, this.managerWebShell);</span>
-<span class="fc" id="L59">        this.buildI18nTab(&quot;SQLSHELL_TAB&quot;, this.managerSqlShell);</span>
-<span class="fc" id="L60">        this.buildI18nTab(&quot;UPLOAD_TAB&quot;, this.managerUpload);</span>
-<span class="fc" id="L61">        this.buildI18nTab(&quot;BRUTEFORCE_TAB&quot;, managerBruteForce);</span>
-<span class="fc" id="L62">        this.buildI18nTab(&quot;CODER_TAB&quot;, new ManagerCoder());</span>
-<span class="fc" id="L63">        this.buildI18nTab(&quot;SCANLIST_TAB&quot;, managerScanList);</span>
+<span class="fc" id="L51">        var managers = Arrays.asList(</span>
+            managerDatabase, managerAdminPage, this.managerFile, this.managerExploit, managerBruteForce,
+            new ManagerCoder(), managerScanList
+        );
+<span class="fc" id="L55">        AtomicInteger i = new AtomicInteger();</span>
+<span class="fc" id="L56">        TabManagers.TABS.forEach(modelSvgIcon -&gt; this.buildI18nTab(</span>
+            modelSvgIcon.keyLabel,
+<span class="fc" id="L58">            managers.get(i.getAndIncrement())</span>
+        ));
 
-<span class="fc" id="L65">        MediatorHelper.register(this);</span>
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L61">        MediatorHelper.register(this);</span>
+<span class="fc" id="L62">    }</span>
 
     public void addToLists(String path, String name) {
-<span class="fc" id="L69">        Arrays.asList(this.managerWebShell, this.managerSqlShell, this.managerUpload)</span>
-<span class="fc" id="L70">            .forEach(manager -&gt; manager.addToList(path.replace(name, StringUtils.EMPTY)));</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L65">        this.managerExploit.addToList(path.replace(name, StringUtils.EMPTY));</span>
+<span class="fc" id="L66">    }</span>
     
     public void markFileSystemInvulnerable() {
-<span class="nc" id="L74">        this.getManagers().forEach(manager -&gt; {</span>
-<span class="nc" id="L75">            manager.changePrivilegeIcon(UiUtil.CROSS_RED.icon);</span>
-<span class="nc" id="L76">            manager.endProcess();</span>
-<span class="nc" id="L77">        });</span>
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L69">        this.getManagers().forEach(manager -&gt; {</span>
+<span class="nc" id="L70">            manager.changePrivilegeIcon(UiUtil.CROSS_RED.icon);</span>
+<span class="nc" id="L71">            manager.endProcess();</span>
+<span class="nc" id="L72">        });</span>
+<span class="nc" id="L73">    }</span>
     
     public void endPreparation() {
-<span class="nc" id="L81">        this.getManagers().forEach(manager -&gt; manager.setButtonEnable(true));</span>
-<span class="nc" id="L82">    }</span>
+<span class="nc" id="L76">        this.getManagers().forEach(manager -&gt; manager.setButtonEnable(true));</span>
+<span class="nc" id="L77">    }</span>
     
     public void markFileSystemVulnerable() {
-<span class="nc" id="L85">        this.getManagers().forEach(manager -&gt; manager.changePrivilegeIcon(UiUtil.TICK_GREEN.icon));</span>
-<span class="nc" id="L86">    }</span>
+<span class="nc" id="L80">        this.getManagers().forEach(manager -&gt; manager.changePrivilegeIcon(UiUtil.TICK_GREEN.icon));</span>
+<span class="nc" id="L81">    }</span>
 
     private void buildI18nTab(String keyLabel, Component manager) {
-<span class="fc" id="L89">        manager.setName(keyLabel);</span>
-<span class="fc" id="L90">        this.add(manager, keyLabel);</span>
-<span class="fc" id="L91">    }</span>
+<span class="fc" id="L84">        manager.setName(keyLabel);</span>
+<span class="fc" id="L85">        this.add(manager, keyLabel);</span>
+<span class="fc" id="L86">    }</span>
 
     private List&lt;AbstractManagerList&gt; getManagers() {
-<span class="nc" id="L94">        return Arrays.asList(this.managerFile, this.managerWebShell, this.managerSqlShell, this.managerUpload);</span>
+<span class="nc" id="L89">        return Arrays.asList(this.managerFile, this.managerExploit);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

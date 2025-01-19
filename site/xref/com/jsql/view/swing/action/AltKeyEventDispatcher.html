@@ -71,7 +71,7 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">if</strong> (wasAltPressedAlready) {
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>              <strong class="jxr_keyword">if</strong> (MenuSelectionManager.defaultManager().getSelectedPath().length &gt; 0) {
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>                  MenuSelectionManager.defaultManager().clearSelectedPath();
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>              } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (!MediatorHelper.panelAddressBar().isAdvanceActivated()) {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>              } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (MediatorHelper.panelAddressBar().isAdvanceActivated()) {
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>                  MediatorHelper.menubar().setVisible(!MediatorHelper.menubar().isVisible());
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>                  <strong class="jxr_keyword">this</strong>.wasAltGraphPressed = false;
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>              }
@@ -84,7 +84,7 @@
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> hideMenuBar() {  <em class="jxr_comment">// Avoid flickering and AltGr pollution</em>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">if</strong> (
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>              !MediatorHelper.panelAddressBar().isAdvanceActivated()
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>              MediatorHelper.panelAddressBar().isAdvanceActivated()
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>              &amp;&amp; MediatorHelper.menubar().isVisible()
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>          ) {
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>              MenuSelectionManager.defaultManager().clearSelectedPath();

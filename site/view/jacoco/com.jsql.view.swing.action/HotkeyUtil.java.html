@@ -56,8 +56,8 @@ public final class HotkeyUtil {
      * Add action to a single tabbedpane (ctrl-tab, ctrl-shift-tab).
      */
     public static void addShortcut(JTabbedPane tabbedPane) {
-<span class="fc" id="L59">        var ctrlTab = KeyStroke.getKeyStroke(STR_CTRL_TAB);</span>
-<span class="fc" id="L60">        var ctrlShiftTab = KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB);</span>
+<span class="fc" id="L59">        var ctrlTab = KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_TAB);</span>
+<span class="fc" id="L60">        var ctrlShiftTab = KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_SHIFT_TAB);</span>
 
         // Remove ctrl-tab from normal focus traversal
 <span class="fc" id="L63">        Set&lt;AWTKeyStroke&gt; forwardKeys = new HashSet&lt;&gt;(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));</span>
@@ -108,11 +108,11 @@ public final class HotkeyUtil {
         };
         
 <span class="fc" id="L110">        Set&lt;AWTKeyStroke&gt; forwardKeys = new HashSet&lt;&gt;(rootPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));</span>
-<span class="fc" id="L111">        forwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_TAB));</span>
+<span class="fc" id="L111">        forwardKeys.remove(KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_TAB));</span>
 <span class="fc" id="L112">        rootPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);</span>
         
 <span class="fc" id="L114">        Set&lt;AWTKeyStroke&gt; backwardKeys = new HashSet&lt;&gt;(rootPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));</span>
-<span class="fc" id="L115">        backwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB));</span>
+<span class="fc" id="L115">        backwardKeys.remove(KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_SHIFT_TAB));</span>
 <span class="fc" id="L116">        rootPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);</span>
         
 <span class="fc" id="L118">        var inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);</span>
@@ -121,20 +121,20 @@ public final class HotkeyUtil {
 <span class="fc" id="L121">        inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl W&quot;), &quot;actionString-closeTab&quot;);</span>
 <span class="fc" id="L122">        actionMap.put(&quot;actionString-closeTab&quot;, closeTab);</span>
         
-<span class="fc" id="L124">        inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_TAB), &quot;actionString-nextTab&quot;);</span>
+<span class="fc" id="L124">        inputMap.put(KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_TAB), &quot;actionString-nextTab&quot;);</span>
 <span class="fc" id="L125">        actionMap.put(&quot;actionString-nextTab&quot;, nextTab);</span>
 
-<span class="fc" id="L127">        inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB), &quot;actionString-previousTab&quot;);</span>
+<span class="fc" id="L127">        inputMap.put(KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_SHIFT_TAB), &quot;actionString-previousTab&quot;);</span>
 <span class="fc" id="L128">        actionMap.put(&quot;actionString-previousTab&quot;, previousTab);</span>
 
 <span class="fc" id="L130">        int tabCount = MediatorHelper.tabManagersCards().getComponentCount();</span>
         
 <span class="fc bfc" id="L132" title="All 2 branches covered.">        for (var currentTab = 1 ; currentTab &lt;= tabCount ; currentTab++) {</span>
-<span class="fc" id="L133">            inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl &quot;+ currentTab), STR_SELECT_TAB + currentTab);</span>
-<span class="fc" id="L134">            inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl NUMPAD&quot;+ currentTab), STR_SELECT_TAB + currentTab);</span>
+<span class="fc" id="L133">            inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl &quot;+ currentTab), HotkeyUtil.STR_SELECT_TAB + currentTab);</span>
+<span class="fc" id="L134">            inputMap.put(KeyStroke.getKeyStroke(&quot;ctrl NUMPAD&quot;+ currentTab), HotkeyUtil.STR_SELECT_TAB + currentTab);</span>
             
 <span class="fc" id="L136">            final int currentTabFinal = currentTab;</span>
-<span class="fc" id="L137">            actionMap.put(STR_SELECT_TAB + currentTab, new AbstractAction() {</span>
+<span class="fc" id="L137">            actionMap.put(HotkeyUtil.STR_SELECT_TAB + currentTab, new AbstractAction() {</span>
                 @Override
                 public void actionPerformed(ActionEvent e) {
 <span class="nc" id="L140">                    MediatorHelper.frame().getTabManagers().setSelectedIndex(currentTabFinal - 1);</span>
@@ -157,7 +157,7 @@ public final class HotkeyUtil {
                 if (
                     // Fix #40924: NullPointerException on MediatorGui.panelAddressBar()
 <span class="pc bpc" id="L159" title="1 of 2 branches missed.">                    MediatorHelper.panelAddressBar() != null</span>
-<span class="fc bfc" id="L160" title="All 2 branches covered.">                    &amp;&amp; !MediatorHelper.panelAddressBar().isAdvanceActivated()</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">                    &amp;&amp; MediatorHelper.panelAddressBar().isAdvanceActivated()</span>
                 ) {
 <span class="fc" id="L162">                    appMenubar.setVisible(false);</span>
                 }

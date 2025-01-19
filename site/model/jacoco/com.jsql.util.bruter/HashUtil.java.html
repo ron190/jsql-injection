@@ -31,7 +31,7 @@ public class HashUtil {
     }
     
     public static String toMySql(String textInput) throws NoSuchAlgorithmException {
-<span class="fc" id="L34">        var messageDigest = MessageDigest.getInstance(&quot;sha-1&quot;);</span>
+<span class="fc" id="L34">        var messageDigest = MessageDigest.getInstance(Coder.SHA1.label);</span>
         
 <span class="fc" id="L36">        var password = String.valueOf(textInput.toCharArray());</span>
         

@@ -13,14 +13,16 @@ package com.jsql.view.terminal.interaction;
 import com.jsql.model.bean.util.Header;
 import com.jsql.util.AnsiColorUtil;
 import com.jsql.view.interaction.InteractionCommand;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class MessageHeader implements InteractionCommand {
     
-<span class="fc" id="L23">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L25">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     private final String url;
     private final String post;
@@ -29,25 +31,25 @@ public class MessageHeader implements InteractionCommand {
     private final String source;
 
     @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L32">    public MessageHeader(Object[] interactionParams) {</span>
-<span class="fc" id="L33">        Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
-<span class="fc" id="L34">        this.url = (String) params.get(Header.URL);</span>
-<span class="fc" id="L35">        this.post = (String) params.get(Header.POST);</span>
-<span class="fc" id="L36">        this.header = (Map&lt;String, String&gt;) params.get(Header.HEADER);</span>
-<span class="fc" id="L37">        this.response = (Map&lt;String, String&gt;) params.get(Header.RESPONSE);</span>
-<span class="fc" id="L38">        this.source = (String) params.get(Header.SOURCE);</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L34">    public MessageHeader(Object[] interactionParams) {</span>
+<span class="fc" id="L35">        Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
+<span class="fc" id="L36">        this.url = (String) params.getOrDefault(Header.URL, StringUtils.EMPTY);</span>
+<span class="fc" id="L37">        this.post = (String) params.getOrDefault(Header.POST, StringUtils.EMPTY);</span>
+<span class="fc" id="L38">        this.header = (Map&lt;String, String&gt;) params.getOrDefault(Header.HEADER, Collections.EMPTY_MAP);</span>
+<span class="fc" id="L39">        this.response = (Map&lt;String, String&gt;) params.getOrDefault(Header.RESPONSE, Collections.EMPTY_MAP);</span>
+<span class="fc" id="L40">        this.source = (String) params.getOrDefault(Header.SOURCE, StringUtils.EMPTY);</span>
+<span class="fc" id="L41">    }</span>
 
     @Override
     public void execute() {
-<span class="pc" id="L43">        LOGGER.debug(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
-<span class="pc" id="L44">        LOGGER.debug(&quot;Method: {}&quot;, () -&gt; this.response.get(&quot;Method&quot;));</span>
-<span class="fc" id="L45">        LOGGER.debug(&quot;Url: {}&quot;, this.url);</span>
-<span class="fc" id="L46">        LOGGER.debug(&quot;Post: {}&quot;, this.post);</span>
-<span class="fc" id="L47">        LOGGER.debug(&quot;Header: {}&quot;, this.header);</span>
-<span class="pc" id="L48">        LOGGER.debug(&quot;Content-Length: {}&quot;, () -&gt; this.response.get(&quot;Content-Length&quot;));</span>
-<span class="pc" id="L49">        LOGGER.debug(&quot;Content-Type: {}&quot;, () -&gt; this.response.get(&quot;Content-Type&quot;));</span>
-<span class="pc" id="L50">        LOGGER.debug(&quot;Source: {}&quot;, () -&gt; this.source);</span>
-<span class="fc" id="L51">    }</span>
+<span class="pc" id="L45">        LOGGER.debug(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
+<span class="pc" id="L46">        LOGGER.debug(&quot;Method: {}&quot;, () -&gt; this.response.get(&quot;Method&quot;));</span>
+<span class="fc" id="L47">        LOGGER.debug(&quot;Url: {}&quot;, this.url);</span>
+<span class="fc" id="L48">        LOGGER.debug(&quot;Post: {}&quot;, this.post);</span>
+<span class="fc" id="L49">        LOGGER.debug(&quot;Header: {}&quot;, this.header);</span>
+<span class="pc" id="L50">        LOGGER.debug(&quot;Content-Length: {}&quot;, () -&gt; this.response.get(&quot;Content-Length&quot;));</span>
+<span class="pc" id="L51">        LOGGER.debug(&quot;Content-Type: {}&quot;, () -&gt; this.response.get(&quot;Content-Type&quot;));</span>
+<span class="pc" id="L52">        LOGGER.debug(&quot;Source: {}&quot;, () -&gt; this.source);</span>
+<span class="fc" id="L53">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -63,7 +63,7 @@ import java.awt.event.KeyEvent;
 <span class="nc bnc" id="L63" title="All 2 branches missed.">        if (wasAltPressedAlready) {</span>
 <span class="nc bnc" id="L64" title="All 2 branches missed.">            if (MenuSelectionManager.defaultManager().getSelectedPath().length &gt; 0) {</span>
 <span class="nc" id="L65">                MenuSelectionManager.defaultManager().clearSelectedPath();</span>
-<span class="nc bnc" id="L66" title="All 2 branches missed.">            } else if (!MediatorHelper.panelAddressBar().isAdvanceActivated()) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            } else if (MediatorHelper.panelAddressBar().isAdvanceActivated()) {</span>
 <span class="nc bnc" id="L67" title="All 2 branches missed.">                MediatorHelper.menubar().setVisible(!MediatorHelper.menubar().isVisible());</span>
 <span class="nc" id="L68">                this.wasAltGraphPressed = false;</span>
             }
@@ -76,7 +76,7 @@ import java.awt.event.KeyEvent;
 
     private void hideMenuBar() {  // Avoid flickering and AltGr pollution
         if (
-<span class="nc bnc" id="L79" title="All 2 branches missed.">            !MediatorHelper.panelAddressBar().isAdvanceActivated()</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            MediatorHelper.panelAddressBar().isAdvanceActivated()</span>
 <span class="nc bnc" id="L80" title="All 2 branches missed.">            &amp;&amp; MediatorHelper.menubar().isVisible()</span>
         ) {
 <span class="nc" id="L82">            MenuSelectionManager.defaultManager().clearSelectedPath();</span>

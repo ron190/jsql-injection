@@ -18,7 +18,7 @@
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> ******************************************************************************/</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">package</strong> com.jsql.view.swing.action;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> com.jsql.MainApplication;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> com.jsql.MainApp;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> com.jsql.util.I18nUtil;
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> com.jsql.util.LogLevelUtil;
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.lang3.SystemUtils;
@@ -49,7 +49,7 @@
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; COMMANDS_DEFAULT = Arrays.asList(
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>          <span class="jxr_string">"-cp"</span>,
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>          SystemUtils.JAVA_CLASS_PATH,
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          MainApplication.<strong class="jxr_keyword">class</strong>.getName()
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>          MainApp.<strong class="jxr_keyword">class</strong>.getName()
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      );
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; commands;
@@ -61,9 +61,9 @@
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">public</strong> <a name="ActionNewWindow" href="../../../../../com/jsql/view/swing/action/ActionNewWindow.html#ActionNewWindow">ActionNewWindow</a>(String name, String... commands) {
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">this</strong>.commands = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;(List.of(PATH));
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">this</strong>.commands = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;(List.of(ActionNewWindow.PATH));
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">this</strong>.commands.addAll(Arrays.asList(commands));
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">this</strong>.commands.addAll(COMMANDS_DEFAULT);
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">this</strong>.commands.addAll(ActionNewWindow.COMMANDS_DEFAULT);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">this</strong>.putValue(Action.NAME, name);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      }
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  

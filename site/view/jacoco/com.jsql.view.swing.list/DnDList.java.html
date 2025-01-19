@@ -71,11 +71,11 @@ public class DnDList extends JList&lt;ItemList&gt; {
 <span class="fc" id="L71">        this.addMouseListener(new MouseAdapterMenuAction(this));</span>
 <span class="fc" id="L72">        this.addFocusListener(new FocusListener() {  // Allows color change when list loses/gains focus</span>
             @Override
-            public void focusLost(FocusEvent arg0) {
+            public void focusLost(FocusEvent focusEvent) {
 <span class="fc" id="L75">                DnDList.this.repaint();</span>
 <span class="fc" id="L76">            }</span>
             @Override
-            public void focusGained(FocusEvent arg0) {
+            public void focusGained(FocusEvent focusEvent) {
 <span class="fc" id="L79">                DnDList.this.repaint();</span>
 <span class="fc" id="L80">            }</span>
         });
@@ -229,14 +229,14 @@ public class DnDList extends JList&lt;ItemList&gt; {
 <span class="nc" id="L229">            endPosition = this.initializeItems(endPosition, file);</span>
 <span class="nc" id="L230">        }</span>
 <span class="nc bnc" id="L231" title="All 2 branches missed.">        if (!this.listModel.isEmpty()) {</span>
-<span class="nc" id="L232">            DnDList.this.setSelectionInterval(startPosition, endPosition - 1);</span>
+<span class="nc" id="L232">            this.setSelectionInterval(startPosition, endPosition - 1);</span>
         }
         
         try {
-<span class="nc" id="L236">            DnDList.this.scrollRectToVisible(</span>
-<span class="nc" id="L237">                DnDList.this.getCellBounds(</span>
-<span class="nc" id="L238">                    DnDList.this.getMinSelectionIndex(),</span>
-<span class="nc" id="L239">                    DnDList.this.getMaxSelectionIndex()</span>
+<span class="nc" id="L236">            this.scrollRectToVisible(</span>
+<span class="nc" id="L237">                this.getCellBounds(</span>
+<span class="nc" id="L238">                    this.getMinSelectionIndex(),</span>
+<span class="nc" id="L239">                    this.getMaxSelectionIndex()</span>
                 )
             );
 <span class="nc" id="L242">        } catch (NullPointerException e) {</span>

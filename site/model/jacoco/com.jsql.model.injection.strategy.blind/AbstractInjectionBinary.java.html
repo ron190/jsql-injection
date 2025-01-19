@@ -35,7 +35,7 @@ public abstract class AbstractInjectionBinary&lt;T extends AbstractCallableBinar
     protected final List&lt;String&gt; truthy;
     
 <span class="fc" id="L37">    public enum BinaryMode {</span>
-<span class="fc" id="L38">        AND, OR, STACKED, NO_MODE</span>
+<span class="fc" id="L38">        AND, OR, STACK, NO_MODE</span>
     }
     
     protected final InjectionModel injectionModel;
@@ -115,7 +115,7 @@ public abstract class AbstractInjectionBinary&lt;T extends AbstractCallableBinar
 <span class="fc" id="L115">                this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);</span>
 <span class="fc" id="L116">                this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);</span>
 
-<span class="fc" id="L118">                String result = convert(bytes);</span>
+<span class="fc" id="L118">                String result = AbstractInjectionBinary.convert(bytes);</span>
 <span class="fc bfc" id="L119" title="All 2 branches covered.">                if (result.matches(&quot;(?s).*&quot;+ DataAccess.TRAIL_RGX +&quot;.*&quot;)) {</span>
 <span class="fc" id="L120">                    countTasksSubmitted.set(0);</span>
 <span class="fc" id="L121">                    break;</span>
@@ -160,11 +160,11 @@ public abstract class AbstractInjectionBinary&lt;T extends AbstractCallableBinar
         // Inform the View if bits array is complete, else nothing #Need fix
 <span class="fc bfc" id="L161" title="All 2 branches covered.">        if (asciiCodeBinary.matches(&quot;^[01]{8}$&quot;)) {</span>
 <span class="fc" id="L162">            var asciiCode = Integer.parseInt(asciiCodeBinary, 2);</span>
-<span class="pc bpc" id="L163" title="1 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
-<span class="pc bpc" id="L164" title="2 of 4 branches missed.">                if (countTasksSubmitted.get() != 0 &amp;&amp; countBadAsciiCode.get() &gt; 15) {</span>
+<span class="pc bpc" id="L163" title="2 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">                if (countTasksSubmitted.get() != 0 &amp;&amp; countBadAsciiCode.get() &gt; 15) {</span>
 <span class="nc" id="L165">                    throw new InjectionFailureException(&quot;Boolean false positive, stopping...&quot;);</span>
                 }
-<span class="fc" id="L167">                countBadAsciiCode.incrementAndGet();</span>
+<span class="nc" id="L167">                countBadAsciiCode.incrementAndGet();</span>
             }
 
 <span class="fc" id="L170">            currentCallable.charText = Character.toString((char) asciiCode);</span>

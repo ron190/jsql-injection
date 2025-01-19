@@ -59,12 +59,12 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 <span class="fc" id="L59">            JList&lt;ItemList&gt; list = (JList&lt;ItemList&gt;) mouseEvent.getSource();</span>
 
 <span class="fc" id="L61">            JPopupMenu popupMenuList = this.initializeMenu(mouseEvent);</span>
-<span class="fc" id="L62">            popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
+<span class="fc" id="L62">            popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));</span>
             // Fix #26274: IllegalComponentStateException on show()
             try {
 <span class="fc" id="L65">                popupMenuList.show(</span>
                     list,
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
 <span class="nc" id="L68">                    ? mouseEvent.getX() - popupMenuList.getWidth()</span>
 <span class="fc" id="L69">                    : mouseEvent.getX(),</span>
 <span class="fc" id="L70">                    mouseEvent.getY()</span>
@@ -74,7 +74,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 <span class="fc" id="L74">            }</span>
             
 <span class="fc" id="L76">            popupMenuList.setLocation(</span>
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">                ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">                ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
 <span class="nc" id="L78">                ? mouseEvent.getXOnScreen() - popupMenuList.getWidth()</span>
 <span class="fc" id="L79">                : mouseEvent.getXOnScreen(),</span>
 <span class="fc" id="L80">                mouseEvent.getYOnScreen()</span>
@@ -85,7 +85,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     private JPopupMenu initializeMenu(final MouseEvent mouseEvent) {
 <span class="fc" id="L86">        var popupMenuList = new JPopupMenu();</span>
         
-<span class="fc" id="L88">        boolean isNonUbuntu = I18nViewUtil.isNonUbuntu(I18nUtil.getLocaleDefault());</span>
+<span class="fc" id="L88">        boolean isNonUbuntu = I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale());</span>
         
 <span class="fc" id="L90">        JMenuItem menuImport = new JMenuItem();</span>
 <span class="fc" id="L91">        JMenuItem menuExport = new JMenuItem();</span>

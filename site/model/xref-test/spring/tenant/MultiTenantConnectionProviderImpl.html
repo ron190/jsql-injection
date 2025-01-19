@@ -17,15 +17,15 @@
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>       
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>      @Override
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>      <strong class="jxr_keyword">protected</strong> ConnectionProvider getAnyConnectionProvider() {
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>          <strong class="jxr_keyword">return</strong> MASTER_SERVICE.getDataSourceHashMap().get(<span class="jxr_string">"h2"</span>);
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>          <strong class="jxr_keyword">return</strong> MultiTenantConnectionProviderImpl.MASTER_SERVICE.getDataSourceHashMap().get(<span class="jxr_string">"h2"</span>);
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>      }
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>      @Override
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      <strong class="jxr_keyword">protected</strong> ConnectionProvider selectConnectionProvider(String tenant) {
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>          <strong class="jxr_keyword">return</strong> MASTER_SERVICE.getDataSourceHashMap().getOrDefault(
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>          <strong class="jxr_keyword">return</strong> MultiTenantConnectionProviderImpl.MASTER_SERVICE.getDataSourceHashMap().getOrDefault(
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>              tenant,
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>              <em class="jxr_comment">// Provide default connection to prevent error logs when tenant is undefined</em>
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>              getAnyConnectionProvider()
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>              <strong class="jxr_keyword">this</strong>.getAnyConnectionProvider()
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>          );
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>      }
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  }

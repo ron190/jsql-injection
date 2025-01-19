@@ -43,7 +43,7 @@ public class InjectionMultibit extends AbstractInjectionBinary&lt;CallableMultib
 <span class="fc bfc" id="L43" title="All 2 branches covered.">        for (int i = 0; i &lt; 8 ; i++) {</span>
 <span class="fc" id="L44">            callablesId.add(</span>
                 new CallableMultibit(
-                    &quot;&quot;+i,
+<span class="fc" id="L46">                    String.valueOf(i),</span>
                     this,
                     &quot;multi#ref~&quot; + i
                 )
@@ -61,10 +61,10 @@ public class InjectionMultibit extends AbstractInjectionBinary&lt;CallableMultib
                 } else {
 <span class="fc" id="L62">                    this.diffsCommonWithAllIds.retainAll(diffsWithReference);</span>
                 }
-<span class="fc" id="L64">                diffsById.add(diffsWithReference);</span>
+<span class="fc" id="L64">                this.diffsById.add(diffsWithReference);</span>
 <span class="fc" id="L65">            }</span>
 
-<span class="fc bfc" id="L67" title="All 2 branches covered.">            for (List&lt;Diff&gt; diffById : diffsById) {</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            for (List&lt;Diff&gt; diffById : this.diffsById) {</span>
 <span class="fc" id="L68">                diffById.removeAll(this.diffsCommonWithAllIds);</span>
 <span class="fc" id="L69">            }</span>
 <span class="nc" id="L70">        } catch (ExecutionException e) {</span>
@@ -131,7 +131,7 @@ public class InjectionMultibit extends AbstractInjectionBinary&lt;CallableMultib
     public char[] initializeBinaryMask(List&lt;char[]&gt; bytes, CallableMultibit currentCallable) {
         // Bits for current url
 <span class="fc" id="L133">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);</span>
-<span class="fc" id="L134">        extractBitsFromBlock(currentCallable, asciiCodeMask);</span>
+<span class="fc" id="L134">        this.extractBitsFromBlock(currentCallable, asciiCodeMask);</span>
 <span class="fc" id="L135">        return asciiCodeMask;</span>
     }
 
@@ -140,11 +140,11 @@ public class InjectionMultibit extends AbstractInjectionBinary&lt;CallableMultib
      */
     private void extractBitsFromBlock(CallableMultibit currentCallable, char[] bits) {
 <span class="fc bfc" id="L142" title="All 2 branches covered.">        if (currentCallable.block == 1) {</span>
-<span class="fc" id="L143">            convertIdPageToBits(currentCallable.idPage, bits, 0, 1, 2);</span>
+<span class="fc" id="L143">            this.convertIdPageToBits(currentCallable.idPage, bits, 0, 1, 2);</span>
 <span class="fc bfc" id="L144" title="All 2 branches covered.">        } else if (currentCallable.block == 2) {</span>
-<span class="fc" id="L145">            convertIdPageToBits(currentCallable.idPage, bits, 3, 4, 5);</span>
+<span class="fc" id="L145">            this.convertIdPageToBits(currentCallable.idPage, bits, 3, 4, 5);</span>
 <span class="pc bpc" id="L146" title="1 of 2 branches missed.">        } else if (currentCallable.block == 3) {</span>
-<span class="fc" id="L147">            convertIdPageToBits(currentCallable.idPage, bits, -1, 6,7);</span>
+<span class="fc" id="L147">            this.convertIdPageToBits(currentCallable.idPage, bits, -1, 6,7);</span>
         }
 <span class="fc" id="L149">    }</span>
 
@@ -174,7 +174,7 @@ public class InjectionMultibit extends AbstractInjectionBinary&lt;CallableMultib
     }
 
     public List&lt;List&lt;Diff&gt;&gt; getDiffsById() {
-<span class="fc" id="L177">        return diffsById;</span>
+<span class="fc" id="L177">        return this.diffsById;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

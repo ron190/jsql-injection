@@ -58,22 +58,22 @@ import javax.swing.text.html.ParagraphView;
 
                     @Override
                     public int getBreakWeight(int axis, float pos, float len) {
-<span class="fc" id="L61">                        return GoodBreakWeight;</span>
+<span class="fc" id="L61">                        return View.GoodBreakWeight;</span>
                     }
 
                     @Override
                     public View breakView(int axis, int p0, float pos, float len) {
                         
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">                        if (axis == View.X_AXIS) {</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                        if (axis == View.X_AXIS) {</span>
                             
-<span class="fc" id="L69">                            this.checkPainter();</span>
-<span class="fc" id="L70">                            int p1 = this.getGlyphPainter().getBoundedPosition(this, p0, pos, len);</span>
+<span class="nc" id="L69">                            this.checkPainter();</span>
+<span class="nc" id="L70">                            int p1 = this.getGlyphPainter().getBoundedPosition(this, p0, pos, len);</span>
                             
-<span class="pc bpc" id="L72" title="2 of 4 branches missed.">                            if (p0 == this.getStartOffset() &amp;&amp; p1 == this.getEndOffset()) {</span>
+<span class="nc bnc" id="L72" title="All 4 branches missed.">                            if (p0 == this.getStartOffset() &amp;&amp; p1 == this.getEndOffset()) {</span>
 <span class="nc" id="L73">                                return this;</span>
                             }
                             
-<span class="fc" id="L76">                            return this.createFragment(p0, p1);</span>
+<span class="nc" id="L76">                            return this.createFragment(p0, p1);</span>
                         }
                         
 <span class="nc" id="L79">                        return this;</span>

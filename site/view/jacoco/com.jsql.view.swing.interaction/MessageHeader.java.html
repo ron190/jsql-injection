@@ -17,17 +17,19 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.panel.consoles.NetworkTable;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 public class MessageHeader implements InteractionCommand {
     
-<span class="fc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L32">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private final String url;
     private final String post;
@@ -40,19 +42,17 @@ public class MessageHeader implements InteractionCommand {
     private final AbstractCallableBinary&lt;?&gt; metadataBoolean;
 
     @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L43">    public MessageHeader(Object[] interactionParams) {</span>
-        
-<span class="fc" id="L45">        Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
-        
-<span class="fc" id="L47">        this.url = (String) params.get(Header.URL);</span>
-<span class="fc" id="L48">        this.post = (String) params.get(Header.POST);</span>
-<span class="fc" id="L49">        this.header = (Map&lt;String, String&gt;) params.get(Header.HEADER);</span>
-<span class="fc" id="L50">        this.response = (Map&lt;String, String&gt;) params.get(Header.RESPONSE);</span>
-<span class="fc" id="L51">        this.source = (String) params.get(Header.SOURCE);</span>
-<span class="fc" id="L52">        this.size = (String) params.get(Header.PAGE_SIZE);</span>
-<span class="fc" id="L53">        this.metadataProcess = (String) params.get(Header.METADATA_PROCESS);</span>
-<span class="fc" id="L54">        this.metadataStrategy = (String) params.get(Header.METADATA_STRATEGY);</span>
-<span class="fc" id="L55">        this.metadataBoolean = (AbstractCallableBinary&lt;?&gt;) params.get(Header.METADATA_BOOLEAN);</span>
+<span class="fc" id="L45">    public MessageHeader(Object[] interactionParams) {</span>
+<span class="fc" id="L46">        Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
+<span class="fc" id="L47">        this.url = (String) params.getOrDefault(Header.URL, StringUtils.EMPTY);</span>
+<span class="fc" id="L48">        this.post = (String) params.getOrDefault(Header.POST, StringUtils.EMPTY);</span>
+<span class="fc" id="L49">        this.header = (Map&lt;String, String&gt;) params.getOrDefault(Header.HEADER, Collections.EMPTY_MAP);</span>
+<span class="fc" id="L50">        this.response = (Map&lt;String, String&gt;) params.getOrDefault(Header.RESPONSE, Collections.EMPTY_MAP);</span>
+<span class="fc" id="L51">        this.source = (String) params.getOrDefault(Header.SOURCE, StringUtils.EMPTY);</span>
+<span class="fc" id="L52">        this.size = (String) params.getOrDefault(Header.PAGE_SIZE, StringUtils.EMPTY);</span>
+<span class="fc" id="L53">        this.metadataProcess = (String) params.getOrDefault(Header.METADATA_PROCESS, StringUtils.EMPTY);</span>
+<span class="fc" id="L54">        this.metadataStrategy = (String) params.getOrDefault(Header.METADATA_STRATEGY, StringUtils.EMPTY);</span>
+<span class="fc" id="L55">        this.metadataBoolean = (AbstractCallableBinary&lt;?&gt;) params.getOrDefault(Header.METADATA_BOOLEAN, null);</span>
 <span class="fc" id="L56">    }</span>
 
     @Override

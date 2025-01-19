@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>I18nUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util</a> &gt; <span class="el_source">I18nUtil.java</span></div><h1>I18nUtil.java</h1><pre class="source lang-java linenums">package com.jsql.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,29 +17,30 @@ import java.util.ResourceBundle;
  */
 public class I18nUtil {
     
-<span class="fc" id="L19">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
-    
+<span class="fc" id="L20">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    public static final String BASE_NAME = &quot;i18n.jsql&quot;;
+
     /**
      * Bundle of standard i18n keys and translated text for root language English
      */
-<span class="fc" id="L24">    private static final ResourceBundle LOCALE_ROOT = ResourceBundle.getBundle(&quot;i18n.jsql&quot;, Locale.ROOT);</span>
+<span class="fc" id="L26">    public static final ResourceBundle BUNDLE_ROOT = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.ROOT);</span>
     
     /**
      * Bundle of i18n keys and translated text for the current system language
      */
-<span class="fc" id="L29">    private static ResourceBundle localeDefault = ResourceBundle.getBundle(&quot;i18n.jsql&quot;, Locale.getDefault());</span>
+<span class="fc" id="L31">    private static ResourceBundle currentBundle = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.getDefault());</span>
 
     private I18nUtil() {
         // Utility class
     }
     
     /**
-     * Return the text corresponding to a i18n key in the properties.
-     * @param key a i18n key in the properties
+     * Return the text corresponding to an i18n key in the properties.
+     * @param key an i18n key in the properties
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-<span class="fc" id="L41">        return (String) I18nUtil.localeDefault.getObject(key);</span>
+<span class="fc" id="L43">        return I18nUtil.currentBundle.getString(key);</span>
     }
     
     /**
@@ -46,38 +48,30 @@ public class I18nUtil {
      * If not then it invites the user to use the translation process.
      */
     public static void checkCurrentLanguage() {
-<span class="nc" id="L49">        URL path = I18nUtil.class.getClassLoader().getResource(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
-<span class="nc bnc" id="L50" title="All 4 branches missed.">        if (!&quot;en&quot;.equals(Locale.getDefault().getLanguage()) &amp;&amp; path == null) {</span>
-<span class="nc" id="L51">            String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);</span>
-<span class="nc" id="L52">            LOGGER.log(</span>
+<span class="nc" id="L51">        URL path = I18nUtil.class.getClassLoader().getResource(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
+<span class="nc bnc" id="L52" title="All 4 branches missed.">        if (!&quot;en&quot;.equals(Locale.getDefault().getLanguage()) &amp;&amp; path == null) {</span>
+<span class="nc" id="L53">            String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);</span>
+<span class="nc" id="L54">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
-<span class="nc" id="L54">                () -&gt; String.join(</span>
-                    &quot;&quot;,
-                    &quot;Contribute and translate parts of jSQL Injection into &quot;,
-                    languageHost,
-                    &quot;: &quot;,
+<span class="nc" id="L56">                () -&gt; String.join(</span>
+                    StringUtils.EMPTY,
+                    &quot;Contribute and translate parts of &quot;, StringUtil.APP_NAME, &quot; into &quot;, languageHost, &quot;: &quot;,
                     &quot;click on the top right button and open menu [Community], choose [I help translate jSQL into &gt; another language...] and &quot;,
-                    &quot;translate some text into &quot;,
-                    languageHost,
-                    &quot; then click on [Send]. Your translation will be integrated to the next release by the developer.&quot;
+                    &quot;translate some text into &quot;, languageHost, &quot; then click on [Send]. Your translation will be integrated to the next release by the developer.&quot;
                 )
             );
         }
-<span class="nc" id="L66">    }</span>
+<span class="nc" id="L64">    }</span>
     
     
     // Getters and setters
     
-    public static void setLocaleDefault(ResourceBundle localeDefault) {
-<span class="nc" id="L72">        I18nUtil.localeDefault = localeDefault;</span>
-<span class="nc" id="L73">    }</span>
+    public static void setCurrentBundle(Locale newLocale) {
+<span class="nc" id="L70">        I18nUtil.currentBundle = ResourceBundle.getBundle(I18nUtil.BASE_NAME, newLocale);</span>
+<span class="nc" id="L71">    }</span>
     
-    public static Locale getLocaleDefault() {
-<span class="nc" id="L76">        return I18nUtil.localeDefault.getLocale();</span>
-    }
-
-    public static ResourceBundle getLocaleRoot() {
-<span class="nc" id="L80">        return LOCALE_ROOT;</span>
+    public static Locale getCurrentLocale() {
+<span class="nc" id="L74">        return I18nUtil.currentBundle.getLocale();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

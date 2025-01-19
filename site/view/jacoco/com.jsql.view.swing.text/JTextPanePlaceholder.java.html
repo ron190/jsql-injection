@@ -24,17 +24,16 @@ public class JTextPanePlaceholder extends JTextPane {
     /**
      * Text to display when empty.
      */
-    private final String placeholderText;
+    private String placeholderText;
 
     /**
      * Create a textfield with hint.
      * @param placeholder Text displayed when empty
      */
 <span class="fc" id="L33">    public JTextPanePlaceholder(String placeholder) {</span>
-        
-<span class="fc" id="L35">        this.placeholderText = placeholder;</span>
-<span class="fc" id="L36">        UiUtil.initialize(this);</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L34">        this.placeholderText = placeholder;</span>
+<span class="fc" id="L35">        UiUtil.initialize(this);</span>
+<span class="fc" id="L36">    }</span>
 
     @Override
     public void paint(Graphics g) {
@@ -44,14 +43,17 @@ public class JTextPanePlaceholder extends JTextPane {
         // Fix #48915: ClassCastException on paint()
         // Unhandled IllegalArgumentException #91471 on paint()
         try {
-<span class="fc" id="L47">            super.paint(g);</span>
-            
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            if (StringUtils.isEmpty(Jsoup.parse(this.getText()).text().trim())) {</span>
-<span class="nc" id="L50">                UiUtil.drawPlaceholder(this, g, this.placeholderText);</span>
+<span class="fc" id="L46">            super.paint(g);</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">            if (StringUtils.isEmpty(Jsoup.parse(this.getText()).text().trim())) {</span>
+<span class="nc" id="L48">                UiUtil.drawPlaceholder(this, g, this.placeholderText);</span>
             }
-<span class="nc" id="L52">        } catch (IllegalArgumentException | ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {</span>
-<span class="nc" id="L53">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L54">        }</span>
-<span class="fc" id="L55">    }</span>
+<span class="nc" id="L50">        } catch (IllegalArgumentException | ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {</span>
+<span class="nc" id="L51">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L52">        }</span>
+<span class="fc" id="L53">    }</span>
+
+    public void setPlaceholderText(String placeholderText) {
+<span class="fc" id="L56">        this.placeholderText = placeholderText;</span>
+<span class="fc" id="L57">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -43,7 +43,7 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; truthy;
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">public</strong> enum BinaryMode {
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          AND, OR, STACKED, NO_MODE
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          AND, OR, STACK, NO_MODE
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      }
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> <a name="InjectionModel" href="../../../../../../com/jsql/model/InjectionModel.html#InjectionModel">InjectionModel</a> injectionModel;
@@ -123,7 +123,7 @@
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>                 <strong class="jxr_keyword">this</strong>.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>                 <strong class="jxr_keyword">this</strong>.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
 <a class="jxr_linenumber" name="L117" href="#L117">117</a> 
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>                 String result = convert(bytes);
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>                 String result = AbstractInjectionBinary.convert(bytes);
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>                 <strong class="jxr_keyword">if</strong> (result.matches(<span class="jxr_string">"(?s).*"</span>+ DataAccess.TRAIL_RGX +<span class="jxr_string">".*"</span>)) {
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>                     countTasksSubmitted.set(0);
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>                     <strong class="jxr_keyword">break</strong>;

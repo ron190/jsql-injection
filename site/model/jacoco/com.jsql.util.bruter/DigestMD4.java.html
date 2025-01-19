@@ -57,7 +57,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
     /**
      * 512 bits input buffer = 16 x 32-bit words holds until reaches 512 bits.
      */
-<span class="fc" id="L60">    private byte[] buffer = new byte[BLOCK_LENGTH];</span>
+<span class="fc" id="L60">    private byte[] buffer = new byte[DigestMD4.BLOCK_LENGTH];</span>
 
     /**
      * 512 bits work buffer = 16 x 32-bit words
@@ -114,7 +114,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
 <span class="fc" id="L114">        this.context[3] = 0x10325476;</span>
 <span class="fc" id="L115">        this.count = 0L;</span>
         
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        for (int i = 0; i &lt; BLOCK_LENGTH; i++) {</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        for (int i = 0; i &lt; DigestMD4.BLOCK_LENGTH; i++) {</span>
 <span class="fc" id="L118">            this.buffer[i] = 0;</span>
         }
 <span class="fc" id="L120">    }</span>
@@ -124,12 +124,12 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      */
     @Override
     public void engineUpdate(byte b) {
-        // compute number of bytes still unhashed; ie. present in buffer
-<span class="nc" id="L128">        int i = (int)(this.count % BLOCK_LENGTH);</span>
+        // compute number of bytes still unhashed; i.e. present in buffer
+<span class="nc" id="L128">        int i = (int)(this.count % DigestMD4.BLOCK_LENGTH);</span>
 <span class="nc" id="L129">        this.count++;                                        // update number of bytes</span>
 <span class="nc" id="L130">        this.buffer[i] = b;</span>
         
-<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (i == BLOCK_LENGTH - 1) {</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (i == DigestMD4.BLOCK_LENGTH - 1) {</span>
 <span class="nc" id="L133">            this.transform(this.buffer, 0);</span>
         }
 <span class="nc" id="L135">    }</span>
@@ -153,10 +153,10 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
 <span class="nc" id="L153">            throw new ArrayIndexOutOfBoundsException();</span>
         }
         
-        // compute number of bytes still unhashed; ie. present in buffer
-<span class="fc" id="L157">        int bufferNdx = (int)(this.count % BLOCK_LENGTH);</span>
+        // compute number of bytes still unhashed; i.e. present in buffer
+<span class="fc" id="L157">        int bufferNdx = (int)(this.count % DigestMD4.BLOCK_LENGTH);</span>
 <span class="fc" id="L158">        this.count += len;                                        // update number of bytes</span>
-<span class="fc" id="L159">        int partLen = BLOCK_LENGTH - bufferNdx;</span>
+<span class="fc" id="L159">        int partLen = DigestMD4.BLOCK_LENGTH - bufferNdx;</span>
 <span class="fc" id="L160">        int i = 0;</span>
         
 <span class="fc bfc" id="L162" title="All 2 branches covered.">        if (len &gt;= partLen) {</span>
@@ -165,7 +165,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
 
 <span class="fc" id="L166">            this.transform(this.buffer, 0);</span>
 
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">            for (i = partLen; i + BLOCK_LENGTH - 1 &lt; len; i+= BLOCK_LENGTH) {</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">            for (i = partLen; i + DigestMD4.BLOCK_LENGTH - 1 &lt; len; i+= DigestMD4.BLOCK_LENGTH) {</span>
 <span class="nc" id="L169">                this.transform(input, offset + i);</span>
             }
             
@@ -188,7 +188,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
     @Override
     public byte[] engineDigest() {
         // pad output to 56 mod 64; as RFC1320 puts it: congruent to 448 mod 512
-<span class="fc" id="L191">        int bufferNdx = (int)(this.count % BLOCK_LENGTH);</span>
+<span class="fc" id="L191">        int bufferNdx = (int)(this.count % DigestMD4.BLOCK_LENGTH);</span>
 <span class="pc bpc" id="L192" title="1 of 2 branches missed.">        int padLen = bufferNdx &lt; 56 ? 56 - bufferNdx : 120 - bufferNdx;</span>
 
         // padding is alwas binary 1 followed by binary 0s

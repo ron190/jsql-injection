@@ -58,17 +58,17 @@
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          JList&lt;CategoryPreference&gt; categories = PanelPreferences.getCategories(cards);
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          <strong class="jxr_keyword">this</strong>.add(categories, BorderLayout.LINE_START);
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, panelInjection, CategoryPreference.INJECTION);
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, panelTampering, CategoryPreference.TAMPERING);
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, panelConnection, CategoryPreference.CONNECTION);
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, panelStrategies, CategoryPreference.STRATEGIES);
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, panelAuthentication, CategoryPreference.AUTHENTICATION);
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, panelUserAgent, CategoryPreference.USER_AGENT);
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, panelProxy, CategoryPreference.PROXY);
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, panelGeneral, CategoryPreference.GENERAL);
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, <strong class="jxr_keyword">this</strong>.panelInjection, CategoryPreference.INJECTION);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, <strong class="jxr_keyword">this</strong>.panelTampering, CategoryPreference.TAMPERING);
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, <strong class="jxr_keyword">this</strong>.panelConnection, CategoryPreference.CONNECTION);
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, <strong class="jxr_keyword">this</strong>.panelStrategies, CategoryPreference.STRATEGIES);
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, <strong class="jxr_keyword">this</strong>.panelAuthentication, CategoryPreference.AUTHENTICATION);
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, <strong class="jxr_keyword">this</strong>.panelUserAgent, CategoryPreference.USER_AGENT);
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, <strong class="jxr_keyword">this</strong>.panelProxy, CategoryPreference.PROXY);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.addToCard(cards, <strong class="jxr_keyword">this</strong>.panelGeneral, CategoryPreference.GENERAL);
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">this</strong>.add(cards, BorderLayout.CENTER);
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          SwingUtilities.invokeLater(() -&gt; MediatorHelper.menubar().switchLocale(I18nUtil.getLocaleDefault()));  <em class="jxr_comment">// required for arabic</em>
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          SwingUtilities.invokeLater(() -&gt; MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale()));  <em class="jxr_comment">// required for arabic</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      }
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> JList&lt;CategoryPreference&gt; getCategories(JPanel cards) {
@@ -125,7 +125,7 @@
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>     }
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> 
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>     <strong class="jxr_keyword">public</strong> <a name="PanelUserAgent" href="../../../../../com/jsql/view/swing/panel/preferences/PanelUserAgent.html#PanelUserAgent">PanelUserAgent</a> getPanelUserAgent() {
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">return</strong> panelUserAgent;
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.panelUserAgent;
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>     }
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> 
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>     <strong class="jxr_keyword">public</strong> ActionListener getActionListenerSave() {

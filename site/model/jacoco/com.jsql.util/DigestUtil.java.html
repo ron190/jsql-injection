@@ -37,7 +37,7 @@ public class DigestUtil {
 <span class="pc bpc" id="L37" title="1 of 2 branches missed.">            &amp;&amp; mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).trim().startsWith(&quot;Digest&quot;)</span>
         ) {
 <span class="fc" id="L39">            String[] digestParts = StringUtils.split(</span>
-<span class="fc" id="L40">                mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).replaceAll(&quot;(?i)^\\s*Digest&quot;, &quot;&quot;),</span>
+<span class="fc" id="L40">                mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).replaceAll(&quot;(?i)^\\s*Digest&quot;, StringUtils.EMPTY),</span>
                 &quot;,&quot;
             );
 
@@ -53,9 +53,9 @@ public class DigestUtil {
 <span class="fc" id="L53">                    Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)</span>
                 );
 
-<span class="fc" id="L56">            String realm = cookieValues.get(&quot;realm&quot;).replace(&quot;\&quot;&quot;, &quot;&quot;);</span>
-<span class="fc" id="L57">            String qop = cookieValues.get(&quot;qop&quot;).replace(&quot;\&quot;&quot;, &quot;&quot;);</span>
-<span class="fc" id="L58">            String nonce = cookieValues.get(&quot;nonce&quot;).replace(&quot;\&quot;&quot;, &quot;&quot;);</span>
+<span class="fc" id="L56">            String realm = cookieValues.get(&quot;realm&quot;).replace(&quot;\&quot;&quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L57">            String qop = cookieValues.get(&quot;qop&quot;).replace(&quot;\&quot;&quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L58">            String nonce = cookieValues.get(&quot;nonce&quot;).replace(&quot;\&quot;&quot;, StringUtils.EMPTY);</span>
 
             try {
 <span class="fc" id="L61">                String username = this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication();</span>
@@ -102,7 +102,7 @@ public class DigestUtil {
 <span class="fc" id="L102">    }</span>
 
     public String getTokenDigest() {
-<span class="fc" id="L105">        return tokenDigest;</span>
+<span class="fc" id="L105">        return this.tokenDigest;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -78,7 +78,7 @@ public class Base16 extends BaseNCodec {
     };
 
     /**
-     * This array is a lookup table that translates Unicode characters drawn from the a lower-case &quot;Base16 Alphabet&quot;
+     * This array is a lookup table that translates Unicode characters drawn from a lower-case &quot;Base16 Alphabet&quot;
      * into their 4-bit positive integer equivalents. Characters that are not in the Base16
      * alphabet but fall within the bounds of the array are translated to -1.
      */
@@ -128,7 +128,7 @@ public class Base16 extends BaseNCodec {
      * @param lowerCase if {@code true} then use a lower-case Base16 alphabet.
      */
     public Base16(final boolean lowerCase) {
-<span class="fc" id="L131">        this(lowerCase, DECODING_POLICY_DEFAULT);</span>
+<span class="fc" id="L131">        this(lowerCase, BaseNCodec.DECODING_POLICY_DEFAULT);</span>
 <span class="fc" id="L132">    }</span>
 
     /**
@@ -138,13 +138,13 @@ public class Base16 extends BaseNCodec {
      * @param decodingPolicy Decoding policy.
      */
     public Base16(final boolean lowerCase, final CodecPolicy decodingPolicy) {
-<span class="fc" id="L141">        super(BYTES_PER_UNENCODED_BLOCK, BYTES_PER_ENCODED_BLOCK, 0, 0, PAD_DEFAULT, decodingPolicy);</span>
+<span class="fc" id="L141">        super(Base16.BYTES_PER_UNENCODED_BLOCK, Base16.BYTES_PER_ENCODED_BLOCK, 0, 0, BaseNCodec.PAD_DEFAULT, decodingPolicy);</span>
 <span class="pc bpc" id="L142" title="1 of 2 branches missed.">        if (lowerCase) {</span>
-<span class="nc" id="L143">            this.encodeTable = LOWER_CASE_ENCODE_TABLE;</span>
-<span class="nc" id="L144">            this.decodeTable = LOWER_CASE_DECODE_TABLE;</span>
+<span class="nc" id="L143">            this.encodeTable = Base16.LOWER_CASE_ENCODE_TABLE;</span>
+<span class="nc" id="L144">            this.decodeTable = Base16.LOWER_CASE_DECODE_TABLE;</span>
         } else {
-<span class="fc" id="L146">            this.encodeTable = UPPER_CASE_ENCODE_TABLE;</span>
-<span class="fc" id="L147">            this.decodeTable = UPPER_CASE_DECODE_TABLE;</span>
+<span class="fc" id="L146">            this.encodeTable = Base16.UPPER_CASE_ENCODE_TABLE;</span>
+<span class="fc" id="L147">            this.decodeTable = Base16.UPPER_CASE_DECODE_TABLE;</span>
         }
 <span class="fc" id="L149">    }</span>
 
@@ -170,14 +170,14 @@ public class Base16 extends BaseNCodec {
         }
 
         // we must have an even number of chars to decode
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        final int charsToProcess = availableChars % BYTES_PER_ENCODED_BLOCK == 0 ? availableChars : availableChars - 1;</span>
-<span class="fc" id="L174">        final byte[] buffer = this.ensureBufferSize(charsToProcess / BYTES_PER_ENCODED_BLOCK, context);</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        final int charsToProcess = availableChars % Base16.BYTES_PER_ENCODED_BLOCK == 0 ? availableChars : availableChars - 1;</span>
+<span class="fc" id="L174">        final byte[] buffer = this.ensureBufferSize(charsToProcess / Base16.BYTES_PER_ENCODED_BLOCK, context);</span>
 
         int result;
 <span class="fc" id="L177">        var i = 0;</span>
 <span class="pc bpc" id="L178" title="1 of 2 branches missed.">        if (dataLen &lt; availableChars) {</span>
             // we have 1/2 byte from previous invocation to decode
-<span class="nc" id="L180">            result = (context.ibitWorkArea - 1) &lt;&lt; BITS_PER_ENCODED_BYTE;</span>
+<span class="nc" id="L180">            result = (context.ibitWorkArea - 1) &lt;&lt; Base16.BITS_PER_ENCODED_BYTE;</span>
 <span class="nc" id="L181">            result |= this.decodeOctet(data[offset++]);</span>
 <span class="nc" id="L182">            i = 2;</span>
 <span class="nc" id="L183">            buffer[context.pos++] = (byte) result;</span>
@@ -186,7 +186,7 @@ public class Base16 extends BaseNCodec {
         }
 
 <span class="fc bfc" id="L188" title="All 2 branches covered.">        while (i &lt; charsToProcess) {</span>
-<span class="fc" id="L189">            result = this.decodeOctet(data[offset++]) &lt;&lt; BITS_PER_ENCODED_BYTE;</span>
+<span class="fc" id="L189">            result = this.decodeOctet(data[offset++]) &lt;&lt; Base16.BITS_PER_ENCODED_BYTE;</span>
 <span class="fc" id="L190">            result |= this.decodeOctet(data[offset++]);</span>
 <span class="fc" id="L191">            i += 2;</span>
 <span class="fc" id="L192">            buffer[context.pos++] = (byte) result;</span>
@@ -218,7 +218,7 @@ public class Base16 extends BaseNCodec {
 <span class="fc" id="L218">            context.eof = true;</span>
 <span class="fc" id="L219">            return;</span>
         }
-<span class="fc" id="L221">        final int size = length * BYTES_PER_ENCODED_BLOCK;</span>
+<span class="fc" id="L221">        final int size = length * Base16.BYTES_PER_ENCODED_BLOCK;</span>
 <span class="pc bpc" id="L222" title="1 of 2 branches missed.">        if (size &lt; 0) {</span>
 <span class="nc" id="L223">            throw new IllegalArgumentException(&quot;Input length exceeds maximum size for encoded data: &quot; + length);</span>
         }
@@ -226,8 +226,8 @@ public class Base16 extends BaseNCodec {
 <span class="fc" id="L226">        final int end = offset + length;</span>
 <span class="fc bfc" id="L227" title="All 2 branches covered.">        for (int i = offset; i &lt; end; i++) {</span>
 <span class="fc" id="L228">            final int value = data[i];</span>
-<span class="fc" id="L229">            final int high = (value &gt;&gt; BITS_PER_ENCODED_BYTE) &amp; MASK_4BITS;</span>
-<span class="fc" id="L230">            final int low = value &amp; MASK_4BITS;</span>
+<span class="fc" id="L229">            final int high = (value &gt;&gt; Base16.BITS_PER_ENCODED_BYTE) &amp; Base16.MASK_4BITS;</span>
+<span class="fc" id="L230">            final int low = value &amp; Base16.MASK_4BITS;</span>
 <span class="fc" id="L231">            buffer[context.pos++] = this.encodeTable[high];</span>
 <span class="fc" id="L232">            buffer[context.pos++] = this.encodeTable[low];</span>
         }

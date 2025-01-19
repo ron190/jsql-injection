@@ -36,7 +36,7 @@
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment"> * Runnable class, define insertionCharacter to be used during injection,</em>
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> * i.e -1 in "[..].php?id=-1 union select[..]", sometimes it's -1, 0', 0, etc.</em>
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> * i.e -1 in "...php?id=-1 union select..", sometimes it's -1, 0', 0, etc.</em>
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> * Find working insertion char when error message occurs in source.</em>
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> * Force to 1 if no insertion char works and empty value from user,</em>
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * Force to user's value if no insertion char works,</em>
@@ -161,15 +161,15 @@
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> 
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">private</strong> List&lt;String&gt; initializeCallables(CompletionService&lt;CallablePageSource&gt; taskCompletionService, String[] charFromBooleanMatch) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         List&lt;String&gt; prefixValues = Arrays.asList(
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>             RandomStringUtils.random(10, <span class="jxr_string">"012"</span>),  <em class="jxr_comment">// to trigger probable failure</em>
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>             RandomStringUtils.insecure().next(10, <span class="jxr_string">"012"</span>),  <em class="jxr_comment">// to trigger probable failure</em>
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>             <span class="jxr_string">"1"</span>  <em class="jxr_comment">// to trigger eventual success</em>
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         );
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>         List&lt;String&gt; prefixQuotes = Arrays.asList(
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>             LABEL_PREFIX +<span class="jxr_string">"'"</span>,
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>             LABEL_PREFIX,
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>             LABEL_PREFIX +<span class="jxr_string">"`"</span>,  <em class="jxr_comment">// TODO add ITs</em>
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>             LABEL_PREFIX +<span class="jxr_string">"\&quot;"</span>,
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>             LABEL_PREFIX +<span class="jxr_string">"%bf'"</span>  <em class="jxr_comment">// GBK slash encoding use case</em>
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>             SuspendableGetCharInsertion.LABEL_PREFIX +<span class="jxr_string">"'"</span>,
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>             SuspendableGetCharInsertion.LABEL_PREFIX,
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>             SuspendableGetCharInsertion.LABEL_PREFIX +<span class="jxr_string">"`"</span>,  <em class="jxr_comment">// TODO add ITs</em>
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>             SuspendableGetCharInsertion.LABEL_PREFIX +<span class="jxr_string">"\&quot;"</span>,
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>             SuspendableGetCharInsertion.LABEL_PREFIX +<span class="jxr_string">"%bf'"</span>  <em class="jxr_comment">// GBK slash encoding use case</em>
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>         );
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>         List&lt;String&gt; prefixParentheses = Arrays.asList(StringUtils.EMPTY, <span class="jxr_string">")"</span>, <span class="jxr_string">"))"</span>);
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>         List&lt;String&gt; charactersInsertion = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
@@ -203,7 +203,7 @@
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>         String prefixQuote,
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>         String prefixParenthesis
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     ) <strong class="jxr_keyword">throws</strong> <a name="StoppedByUserSlidingException" href="../../../../com/jsql/model/exception/StoppedByUserSlidingException.html#StoppedByUserSlidingException">StoppedByUserSlidingException</a> {
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         String characterInsertion = prefixQuote.replace(LABEL_PREFIX, prefixValue) + prefixParenthesis;
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         String characterInsertion = prefixQuote.replace(SuspendableGetCharInsertion.LABEL_PREFIX, prefixValue) + prefixParenthesis;
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         charactersInsertion.add(characterInsertion);
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>         <em class="jxr_comment">// Skipping Boolean match when already found</em>
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">if</strong> (charFromBooleanMatch[0] == <strong class="jxr_keyword">null</strong>) {

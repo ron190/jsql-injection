@@ -54,7 +54,7 @@ public class TabMouseAdapter extends MouseAdapter {
 <span class="nc" id="L54">        var componentSource = (Component) event.getSource();</span>
 <span class="nc" id="L55">        menu.show(componentSource, event.getX(), event.getY());</span>
 <span class="nc" id="L56">        menu.setLocation(</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
 <span class="nc" id="L58">            ? event.getXOnScreen() - menu.getWidth()</span>
 <span class="nc" id="L59">            : event.getXOnScreen(),</span>
 <span class="nc" id="L60">            event.getYOnScreen()</span>

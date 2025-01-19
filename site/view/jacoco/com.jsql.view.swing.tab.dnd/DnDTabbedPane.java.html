@@ -77,17 +77,17 @@ public class DnDTabbedPane extends JTabbedPane {
     public void autoScrollTest(Point pt) {
 <span class="fc" id="L78">        Rectangle r = this.getTabAreaBounds();</span>
         
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (isTopBottomTabPlacement(this.getTabPlacement())) {</span>
-<span class="fc" id="L81">            RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);</span>
-<span class="fc" id="L82">            RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (DnDTabbedPane.isTopBottomTabPlacement(this.getTabPlacement())) {</span>
+<span class="fc" id="L81">            DnDTabbedPane.RECT_BACKWARD.setBounds(r.x, r.y, DnDTabbedPane.SCROLL_SIZE, r.height);</span>
+<span class="fc" id="L82">            DnDTabbedPane.RECT_FORWARD.setBounds(r.x + r.width - DnDTabbedPane.SCROLL_SIZE - DnDTabbedPane.BUTTON_SIZE, r.y, DnDTabbedPane.SCROLL_SIZE + DnDTabbedPane.BUTTON_SIZE, r.height);</span>
         } else {
-<span class="nc" id="L84">            RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SIZE);</span>
-<span class="nc" id="L85">            RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);</span>
+<span class="nc" id="L84">            DnDTabbedPane.RECT_BACKWARD.setBounds(r.x, r.y, r.width, DnDTabbedPane.SCROLL_SIZE);</span>
+<span class="nc" id="L85">            DnDTabbedPane.RECT_FORWARD.setBounds(r.x, r.y + r.height - DnDTabbedPane.SCROLL_SIZE - DnDTabbedPane.BUTTON_SIZE, r.width, DnDTabbedPane.SCROLL_SIZE + DnDTabbedPane.BUTTON_SIZE);</span>
         }
         
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (RECT_BACKWARD.contains(pt)) {</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (DnDTabbedPane.RECT_BACKWARD.contains(pt)) {</span>
 <span class="nc" id="L89">            this.clickArrowButton(&quot;scrollTabsBackwardAction&quot;);</span>
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        } else if (RECT_FORWARD.contains(pt)) {</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        } else if (DnDTabbedPane.RECT_FORWARD.contains(pt)) {</span>
 <span class="nc" id="L91">            this.clickArrowButton(&quot;scrollTabsForwardAction&quot;);</span>
         }
 <span class="fc" id="L93">    }</span>
@@ -178,20 +178,20 @@ public class DnDTabbedPane extends JTabbedPane {
 <span class="fc" id="L178">            .orElse(-1);</span>
         
 <span class="fc bfc" id="L180" title="All 2 branches covered.">        if (index &lt; 0) {</span>
-<span class="fc" id="L181">            RECT_LINE.setBounds(0, 0, 0, 0);</span>
+<span class="fc" id="L181">            DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);</span>
 <span class="fc" id="L182">            return Optional.empty();</span>
         }
         
 <span class="fc" id="L185">        int a = Math.min(index, 1);</span>
 <span class="fc" id="L186">        Rectangle r = this.getBoundsAt(a * (index - 1));</span>
         
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (isTopBottomTabPlacement(this.getTabPlacement())) {</span>
-<span class="fc" id="L189">            RECT_LINE.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (DnDTabbedPane.isTopBottomTabPlacement(this.getTabPlacement())) {</span>
+<span class="fc" id="L189">            DnDTabbedPane.RECT_LINE.setBounds(r.x - DnDTabbedPane.LINE_WIDTH / 2 + r.width * a, r.y, DnDTabbedPane.LINE_WIDTH, r.height);</span>
         } else {
-<span class="nc" id="L191">            RECT_LINE.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);</span>
+<span class="nc" id="L191">            DnDTabbedPane.RECT_LINE.setBounds(r.x, r.y - DnDTabbedPane.LINE_WIDTH / 2 + r.height * a, r.width, DnDTabbedPane.LINE_WIDTH);</span>
         }
         
-<span class="fc" id="L194">        return Optional.of(RECT_LINE);</span>
+<span class="fc" id="L194">        return Optional.of(DnDTabbedPane.RECT_LINE);</span>
     }
     
     public Rectangle getTabAreaBounds() {
@@ -205,14 +205,14 @@ public class DnDTabbedPane extends JTabbedPane {
 
 <span class="fc" id="L206">        int tabPlacement = this.getTabPlacement();</span>
         
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">        if (isTopBottomTabPlacement(tabPlacement)) {</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">        if (DnDTabbedPane.isTopBottomTabPlacement(tabPlacement)) {</span>
 <span class="fc" id="L209">            tabbedRect.height = tabbedRect.height - compRect.height;</span>
-<span class="pc bpc" id="L210" title="1 of 2 branches missed.">            if (tabPlacement == BOTTOM) {</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">            if (tabPlacement == SwingConstants.BOTTOM) {</span>
 <span class="nc" id="L211">                tabbedRect.y += compRect.y + compRect.height;</span>
             }
         } else {
 <span class="nc" id="L214">            tabbedRect.width = tabbedRect.width - compRect.width;</span>
-<span class="nc bnc" id="L215" title="All 2 branches missed.">            if (tabPlacement == RIGHT) {</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            if (tabPlacement == SwingConstants.RIGHT) {</span>
 <span class="nc" id="L216">                tabbedRect.x += compRect.x + compRect.width;</span>
             }
         }
@@ -285,8 +285,8 @@ public class DnDTabbedPane extends JTabbedPane {
                 
                 // Unhandled NoClassDefFoundError #56620: Could not initialize class java.awt.dnd.DragSource
 <span class="fc" id="L287">                th.exportAsDrag(src, e, TransferHandler.MOVE);</span>
-                
-<span class="fc" id="L289">                RECT_LINE.setBounds(0, 0, 0, 0);</span>
+
+<span class="fc" id="L289">                DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);</span>
 <span class="fc" id="L290">                src.getRootPane().getGlassPane().setVisible(true);</span>
 <span class="fc" id="L291">                src.setDropLocation(new DnDDropLocation(tabPt, -1), true);</span>
                 

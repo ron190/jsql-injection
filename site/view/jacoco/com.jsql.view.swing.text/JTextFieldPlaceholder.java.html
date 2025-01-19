@@ -57,7 +57,7 @@ public class JTextFieldPlaceholder extends JTextField {
 <span class="fc bfc" id="L57" title="All 2 branches covered.">        if (this.getText().isEmpty()) {</span>
 <span class="fc" id="L58">            int h = this.getHeight();</span>
 <span class="fc" id="L59">            var fm = g.getFontMetrics();</span>
-<span class="fc" id="L60">            UiUtil.drawPlaceholder(this, g, this.placeholderText, xOffset, h / 2 + fm.getAscent() / 2 - 1);</span>
+<span class="fc" id="L60">            UiUtil.drawPlaceholder(this, g, this.placeholderText, this.xOffset, h / 2 + fm.getAscent() / 2 - 1);</span>
         }
 <span class="fc" id="L62">    }</span>
 

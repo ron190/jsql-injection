@@ -12,6 +12,7 @@ package com.jsql.view.swing.tree.model;
 
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.StringUtil;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.tree.custom.CheckBoxMenuItemIconCustom;
 import com.jsql.view.swing.tree.ImageOverlap;
@@ -38,173 +39,173 @@ public class NodeModelTable extends AbstractNodeModel {
      * @param table Element table coming from model
      */
     public NodeModelTable(Table table) {
-<span class="fc" id="L41">        super(table);</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L42">        super(table);</span>
+<span class="fc" id="L43">    }</span>
 
     @Override
     protected Icon getLeafIcon(boolean leaf) {
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (leaf) {</span>
-<span class="fc" id="L47">            return UiUtil.TABLE_LINEAR.icon;</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (leaf) {</span>
+<span class="fc" id="L48">            return UiUtil.TABLE_LINEAR.icon;</span>
         } else {
-<span class="fc" id="L49">            return UiUtil.TABLE_BOLD.icon;</span>
+<span class="fc" id="L50">            return UiUtil.TABLE_BOLD.icon;</span>
         }
     }
 
     @Override
     protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
-<span class="nc bnc" id="L55" title="All 2 branches missed.">        if (&quot;information_schema&quot;.equals(this.getParent().toString())) {</span>
-<span class="nc" id="L56">            panelNode.showLoader();</span>
-<span class="nc" id="L57">            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());</span>
-<span class="nc bnc" id="L58" title="All 4 branches missed.">            if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
-<span class="nc" id="L59">                panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.icon, UiUtil.PATH_PAUSE));</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (StringUtil.INFORMATION_SCHEMA.equals(this.getParent().toString())) {</span>
+<span class="nc" id="L57">            panelNode.showLoader();</span>
+<span class="nc" id="L58">            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());</span>
+<span class="nc bnc" id="L59" title="All 4 branches missed.">            if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
+<span class="nc" id="L60">                panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.icon, UiUtil.PATH_PAUSE));</span>
             }
-<span class="nc" id="L61">        } else {</span>
-<span class="nc" id="L62">            super.displayProgress(panelNode, currentNode);</span>
+<span class="nc" id="L62">        } else {</span>
+<span class="nc" id="L63">            super.displayProgress(panelNode, currentNode);</span>
         }
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L65">    }</span>
 
     @Override
     public void runAction() {
-<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (this.isRunning()) {  // Prevent double thread run</span>
-<span class="nc" id="L69">            return;</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (this.isRunning()) {  // Prevent double thread run</span>
+<span class="nc" id="L70">            return;</span>
         }
             
-<span class="nc" id="L72">        DefaultMutableTreeNode treeNode = MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase());</span>
-<span class="nc" id="L73">        treeNode.removeAllChildren();</span>
+<span class="nc" id="L73">        DefaultMutableTreeNode treeNode = MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase());</span>
+<span class="nc" id="L74">        treeNode.removeAllChildren();</span>
         
-<span class="nc" id="L75">        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();</span>
-<span class="nc" id="L76">        treeModel.reload(treeNode);</span>
+<span class="nc" id="L76">        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();</span>
+<span class="nc" id="L77">        treeModel.reload(treeNode);</span>
 
-<span class="nc" id="L78">        new SwingWorker&lt;&gt;() {</span>
+<span class="nc" id="L79">        new SwingWorker&lt;&gt;() {</span>
             @Override
             protected Object doInBackground() throws Exception {
-<span class="nc" id="L81">                Thread.currentThread().setName(&quot;SwingWorkerNodeModelTable&quot;);</span>
-<span class="nc" id="L82">                var selectedTable = (Table) NodeModelTable.this.getElementDatabase();</span>
-<span class="nc" id="L83">                return MediatorHelper.model().getDataAccess().listColumns(selectedTable);</span>
+<span class="nc" id="L82">                Thread.currentThread().setName(&quot;SwingWorkerNodeModelTable&quot;);</span>
+<span class="nc" id="L83">                var selectedTable = (Table) NodeModelTable.this.getElementDatabase();</span>
+<span class="nc" id="L84">                return MediatorHelper.model().getDataAccess().listColumns(selectedTable);</span>
             }
-<span class="nc" id="L85">        }.execute();</span>
+<span class="nc" id="L86">        }.execute();</span>
         
-<span class="nc" id="L87">        this.setRunning(true);</span>
-<span class="nc" id="L88">    }</span>
+<span class="nc" id="L88">        this.setRunning(true);</span>
+<span class="nc" id="L89">    }</span>
 
     @Override
     protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, final TreePath path) {
-<span class="fc" id="L92">        this.addCheckUncheckItems(tablePopupMenu, path);</span>
+<span class="fc" id="L93">        this.addCheckUncheckItems(tablePopupMenu, path);</span>
         // this.addCustomLoadItems(tablePopupMenu);
-<span class="fc" id="L94">    }</span>
+<span class="fc" id="L95">    }</span>
 
     private void addCustomLoadItems(JPopupMenuCustomExtract tablePopupMenu) {
         
-<span class="nc" id="L98">        var menuCustomLoad = new JMenu(&quot;Custom load&quot;);</span>
+<span class="nc" id="L99">        var menuCustomLoad = new JMenu(&quot;Custom load&quot;);</span>
         
-<span class="nc" id="L100">        var buttonGroupLoadRows = new ButtonGroup();</span>
+<span class="nc" id="L101">        var buttonGroupLoadRows = new ButtonGroup();</span>
         
-<span class="nc" id="L102">        JMenuItem menuItemLoadAllRows = new JRadioButtonMenuItem(&quot;Load all rows (default)&quot;, true);</span>
-<span class="nc" id="L103">        JMenuItem menuItemLoadOneRow = new JRadioButtonMenuItem(&quot;Load first row only&quot;);</span>
-<span class="nc" id="L104">        JMenuItem menuItemDump = new JCheckBoxMenuItem(&quot;Dump to a file&quot;);</span>
+<span class="nc" id="L103">        JMenuItem menuItemLoadAllRows = new JRadioButtonMenuItem(&quot;Load all rows (default)&quot;, true);</span>
+<span class="nc" id="L104">        JMenuItem menuItemLoadOneRow = new JRadioButtonMenuItem(&quot;Load first row only&quot;);</span>
+<span class="nc" id="L105">        JMenuItem menuItemDump = new JCheckBoxMenuItem(&quot;Dump to a file&quot;);</span>
         
-<span class="nc" id="L106">        var panelCustomFromRow = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L107">        final JTextField inputCustomFromRow = new JPopupTextField(&quot;no.&quot;, &quot;1&quot;).getProxy();</span>
-<span class="nc" id="L108">        inputCustomFromRow.setHorizontalAlignment(SwingConstants.TRAILING);</span>
-<span class="nc" id="L109">        var d = new Dimension(</span>
-<span class="nc" id="L110">            (int) inputCustomFromRow.getPreferredSize().getWidth() + 50,</span>
-<span class="nc" id="L111">            (int) inputCustomFromRow.getPreferredSize().getHeight()</span>
+<span class="nc" id="L107">        var panelCustomFromRow = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L108">        final JTextField inputCustomFromRow = new JPopupTextField(&quot;no.&quot;, &quot;1&quot;).getProxy();</span>
+<span class="nc" id="L109">        inputCustomFromRow.setHorizontalAlignment(SwingConstants.TRAILING);</span>
+<span class="nc" id="L110">        var d = new Dimension(</span>
+<span class="nc" id="L111">            (int) inputCustomFromRow.getPreferredSize().getWidth() + 50,</span>
+<span class="nc" id="L112">            (int) inputCustomFromRow.getPreferredSize().getHeight()</span>
         );
-<span class="nc" id="L113">        inputCustomFromRow.setPreferredSize(d);</span>
+<span class="nc" id="L114">        inputCustomFromRow.setPreferredSize(d);</span>
 
-<span class="nc" id="L115">        final var radioCustomFromRow = new JCheckBox(&quot;&lt;html&gt;&lt;pre style=\&quot;font-family:'Segoe UI';padding-left: 1px;\&quot;&gt;Load from row no.&amp;#9;&lt;/pre&gt;&lt;/html&gt;&quot;);</span>
-<span class="nc" id="L116">        radioCustomFromRow.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
-<span class="nc" id="L117">        radioCustomFromRow.setIcon(new CheckBoxMenuItemIconCustom());</span>
-<span class="nc" id="L118">        radioCustomFromRow.setFocusPainted(false);</span>
+<span class="nc" id="L116">        final var radioCustomFromRow = new JCheckBox(&quot;&lt;html&gt;&lt;pre style=\&quot;font-family:'Segoe UI';padding-left: 1px;\&quot;&gt;Load from row no.&amp;#9;&lt;/pre&gt;&lt;/html&gt;&quot;);</span>
+<span class="nc" id="L117">        radioCustomFromRow.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
+<span class="nc" id="L118">        radioCustomFromRow.setIcon(new CheckBoxMenuItemIconCustom());</span>
+<span class="nc" id="L119">        radioCustomFromRow.setFocusPainted(false);</span>
         
-<span class="nc" id="L120">        panelCustomFromRow.add(radioCustomFromRow, BorderLayout.LINE_START);</span>
-<span class="nc" id="L121">        panelCustomFromRow.add(inputCustomFromRow, BorderLayout.CENTER);</span>
+<span class="nc" id="L121">        panelCustomFromRow.add(radioCustomFromRow, BorderLayout.LINE_START);</span>
+<span class="nc" id="L122">        panelCustomFromRow.add(inputCustomFromRow, BorderLayout.CENTER);</span>
         
-<span class="nc" id="L123">        var panelCustomToRow = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L124">        final JTextField inputCustomToRow = new JPopupTextField(&quot;no.&quot;, &quot;65565&quot;).getProxy();</span>
-<span class="nc" id="L125">        inputCustomToRow.setHorizontalAlignment(SwingConstants.TRAILING);</span>
-<span class="nc" id="L126">        inputCustomToRow.setPreferredSize(d);</span>
+<span class="nc" id="L124">        var panelCustomToRow = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L125">        final JTextField inputCustomToRow = new JPopupTextField(&quot;no.&quot;, &quot;65565&quot;).getProxy();</span>
+<span class="nc" id="L126">        inputCustomToRow.setHorizontalAlignment(SwingConstants.TRAILING);</span>
+<span class="nc" id="L127">        inputCustomToRow.setPreferredSize(d);</span>
 
-<span class="nc" id="L128">        final var radioCustomToRow = new JCheckBox(&quot;&lt;html&gt;&lt;pre style=\&quot;font-family:'Segoe UI';padding-left: 1px;\&quot;&gt;Load to row no.&amp;#9;&amp;#9;&amp;#9;&amp;#9;&amp;#9;&amp;#9;&lt;/pre&gt;&lt;/html&gt;&quot;);</span>
-<span class="nc" id="L129">        radioCustomToRow.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
-<span class="nc" id="L130">        radioCustomToRow.setIcon(new CheckBoxMenuItemIconCustom());</span>
-<span class="nc" id="L131">        radioCustomToRow.setFocusPainted(false);</span>
+<span class="nc" id="L129">        final var radioCustomToRow = new JCheckBox(&quot;&lt;html&gt;&lt;pre style=\&quot;font-family:'Segoe UI';padding-left: 1px;\&quot;&gt;Load to row no.&amp;#9;&amp;#9;&amp;#9;&amp;#9;&amp;#9;&amp;#9;&lt;/pre&gt;&lt;/html&gt;&quot;);</span>
+<span class="nc" id="L130">        radioCustomToRow.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
+<span class="nc" id="L131">        radioCustomToRow.setIcon(new CheckBoxMenuItemIconCustom());</span>
+<span class="nc" id="L132">        radioCustomToRow.setFocusPainted(false);</span>
         
-<span class="nc" id="L133">        panelCustomToRow.add(radioCustomToRow, BorderLayout.LINE_START);</span>
-<span class="nc" id="L134">        panelCustomToRow.add(inputCustomToRow, BorderLayout.CENTER);</span>
+<span class="nc" id="L134">        panelCustomToRow.add(radioCustomToRow, BorderLayout.LINE_START);</span>
+<span class="nc" id="L135">        panelCustomToRow.add(inputCustomToRow, BorderLayout.CENTER);</span>
         
-<span class="nc" id="L136">        var panelCustomFromChar = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L137">        final JTextField inputCustomFromChar = new JPopupTextField(&quot;no.&quot;, &quot;1&quot;).getProxy();</span>
-<span class="nc" id="L138">        inputCustomFromChar.setHorizontalAlignment(SwingConstants.TRAILING);</span>
-<span class="nc" id="L139">        inputCustomFromChar.setPreferredSize(d);</span>
+<span class="nc" id="L137">        var panelCustomFromChar = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L138">        final JTextField inputCustomFromChar = new JPopupTextField(&quot;no.&quot;, &quot;1&quot;).getProxy();</span>
+<span class="nc" id="L139">        inputCustomFromChar.setHorizontalAlignment(SwingConstants.TRAILING);</span>
+<span class="nc" id="L140">        inputCustomFromChar.setPreferredSize(d);</span>
 
-<span class="nc" id="L141">        final var radioCustomFromChar = new JCheckBox(&quot;&lt;html&gt;&lt;pre style=\&quot;font-family:'Segoe UI';padding-left: 1px;\&quot;&gt;Load from char no.&lt;/pre&gt;&lt;/html&gt;&quot;);</span>
-<span class="nc" id="L142">        radioCustomFromChar.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
-<span class="nc" id="L143">        radioCustomFromChar.setIcon(new CheckBoxMenuItemIconCustom());</span>
-<span class="nc" id="L144">        radioCustomFromChar.setFocusPainted(false);</span>
+<span class="nc" id="L142">        final var radioCustomFromChar = new JCheckBox(&quot;&lt;html&gt;&lt;pre style=\&quot;font-family:'Segoe UI';padding-left: 1px;\&quot;&gt;Load from char no.&lt;/pre&gt;&lt;/html&gt;&quot;);</span>
+<span class="nc" id="L143">        radioCustomFromChar.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
+<span class="nc" id="L144">        radioCustomFromChar.setIcon(new CheckBoxMenuItemIconCustom());</span>
+<span class="nc" id="L145">        radioCustomFromChar.setFocusPainted(false);</span>
         
-<span class="nc" id="L146">        panelCustomFromChar.add(radioCustomFromChar, BorderLayout.LINE_START);</span>
-<span class="nc" id="L147">        panelCustomFromChar.add(inputCustomFromChar, BorderLayout.CENTER);</span>
+<span class="nc" id="L147">        panelCustomFromChar.add(radioCustomFromChar, BorderLayout.LINE_START);</span>
+<span class="nc" id="L148">        panelCustomFromChar.add(inputCustomFromChar, BorderLayout.CENTER);</span>
         
-<span class="nc" id="L149">        var panelCustomToChar = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L150">        final JTextField inputCustomToChar = new JPopupTextField(&quot;no.&quot;, &quot;65565&quot;).getProxy();</span>
-<span class="nc" id="L151">        inputCustomToChar.setHorizontalAlignment(SwingConstants.TRAILING);</span>
-<span class="nc" id="L152">        inputCustomToChar.setPreferredSize(d);</span>
+<span class="nc" id="L150">        var panelCustomToChar = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L151">        final JTextField inputCustomToChar = new JPopupTextField(&quot;no.&quot;, &quot;65565&quot;).getProxy();</span>
+<span class="nc" id="L152">        inputCustomToChar.setHorizontalAlignment(SwingConstants.TRAILING);</span>
+<span class="nc" id="L153">        inputCustomToChar.setPreferredSize(d);</span>
 
-<span class="nc" id="L154">        final var radioCustomToChar = new JCheckBox(&quot;&lt;html&gt;&lt;pre style=\&quot;font-family:'Segoe UI';padding-left: 1px;\&quot;&gt;Load to char no.&amp;#9;&amp;#9;&amp;#9;&amp;#9;&amp;#9;&lt;/pre&gt;&lt;/html&gt;&quot;);</span>
-<span class="nc" id="L155">        radioCustomToChar.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
-<span class="nc" id="L156">        radioCustomToChar.setIcon(new CheckBoxMenuItemIconCustom());</span>
-<span class="nc" id="L157">        radioCustomToChar.setFocusPainted(false);</span>
+<span class="nc" id="L155">        final var radioCustomToChar = new JCheckBox(&quot;&lt;html&gt;&lt;pre style=\&quot;font-family:'Segoe UI';padding-left: 1px;\&quot;&gt;Load to char no.&amp;#9;&amp;#9;&amp;#9;&amp;#9;&amp;#9;&lt;/pre&gt;&lt;/html&gt;&quot;);</span>
+<span class="nc" id="L156">        radioCustomToChar.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
+<span class="nc" id="L157">        radioCustomToChar.setIcon(new CheckBoxMenuItemIconCustom());</span>
+<span class="nc" id="L158">        radioCustomToChar.setFocusPainted(false);</span>
         
-<span class="nc" id="L159">        panelCustomToChar.add(radioCustomToChar, BorderLayout.LINE_START);</span>
-<span class="nc" id="L160">        panelCustomToChar.add(inputCustomToChar, BorderLayout.CENTER);</span>
+<span class="nc" id="L160">        panelCustomToChar.add(radioCustomToChar, BorderLayout.LINE_START);</span>
+<span class="nc" id="L161">        panelCustomToChar.add(inputCustomToChar, BorderLayout.CENTER);</span>
 
-<span class="nc" id="L162">        buttonGroupLoadRows.add(menuItemLoadAllRows);</span>
-<span class="nc" id="L163">        buttonGroupLoadRows.add(menuItemLoadOneRow);</span>
+<span class="nc" id="L163">        buttonGroupLoadRows.add(menuItemLoadAllRows);</span>
+<span class="nc" id="L164">        buttonGroupLoadRows.add(menuItemLoadOneRow);</span>
       
-<span class="nc" id="L165">        menuCustomLoad.add(menuItemLoadAllRows);</span>
-<span class="nc" id="L166">        menuCustomLoad.add(menuItemLoadOneRow);</span>
-<span class="nc" id="L167">        menuCustomLoad.add(new JSeparator());</span>
-<span class="nc" id="L168">        menuCustomLoad.add(panelCustomFromRow);</span>
-<span class="nc" id="L169">        menuCustomLoad.add(panelCustomToRow);</span>
-<span class="nc" id="L170">        menuCustomLoad.add(panelCustomFromChar);</span>
-<span class="nc" id="L171">        menuCustomLoad.add(panelCustomToChar);</span>
-<span class="nc" id="L172">        menuCustomLoad.add(new JSeparator());</span>
-<span class="nc" id="L173">        menuCustomLoad.add(menuItemDump);</span>
+<span class="nc" id="L166">        menuCustomLoad.add(menuItemLoadAllRows);</span>
+<span class="nc" id="L167">        menuCustomLoad.add(menuItemLoadOneRow);</span>
+<span class="nc" id="L168">        menuCustomLoad.add(new JSeparator());</span>
+<span class="nc" id="L169">        menuCustomLoad.add(panelCustomFromRow);</span>
+<span class="nc" id="L170">        menuCustomLoad.add(panelCustomToRow);</span>
+<span class="nc" id="L171">        menuCustomLoad.add(panelCustomFromChar);</span>
+<span class="nc" id="L172">        menuCustomLoad.add(panelCustomToChar);</span>
+<span class="nc" id="L173">        menuCustomLoad.add(new JSeparator());</span>
+<span class="nc" id="L174">        menuCustomLoad.add(menuItemDump);</span>
 
-<span class="nc" id="L175">        tablePopupMenu.add(new JSeparator());</span>
-<span class="nc" id="L176">        tablePopupMenu.add(menuCustomLoad);</span>
+<span class="nc" id="L176">        tablePopupMenu.add(new JSeparator());</span>
+<span class="nc" id="L177">        tablePopupMenu.add(menuCustomLoad);</span>
         
-<span class="nc" id="L178">        tablePopupMenu.setButtonGroupLoadRows(buttonGroupLoadRows);</span>
-<span class="nc" id="L179">        tablePopupMenu.setRadioCustomFromChar(radioCustomFromChar);</span>
-<span class="nc" id="L180">        tablePopupMenu.setRadioCustomToChar(radioCustomToChar);</span>
-<span class="nc" id="L181">        tablePopupMenu.setRadioCustomFromRow(radioCustomFromRow);</span>
-<span class="nc" id="L182">        tablePopupMenu.setRadioCustomToRow(radioCustomToRow);</span>
-<span class="nc" id="L183">    }</span>
+<span class="nc" id="L179">        tablePopupMenu.setButtonGroupLoadRows(buttonGroupLoadRows);</span>
+<span class="nc" id="L180">        tablePopupMenu.setRadioCustomFromChar(radioCustomFromChar);</span>
+<span class="nc" id="L181">        tablePopupMenu.setRadioCustomToChar(radioCustomToChar);</span>
+<span class="nc" id="L182">        tablePopupMenu.setRadioCustomFromRow(radioCustomFromRow);</span>
+<span class="nc" id="L183">        tablePopupMenu.setRadioCustomToRow(radioCustomToRow);</span>
+<span class="nc" id="L184">    }</span>
 
     private void addCheckUncheckItems(JPopupMenuCustomExtract tablePopupMenu, final TreePath path) {
-<span class="fc" id="L186">        JMenuItem menuItemCheckAll = new JMenuItem(I18nViewUtil.valueByKey(&quot;COLUMNS_CHECK_ALL&quot;), 'C');</span>
-<span class="fc" id="L187">        I18nViewUtil.addComponentForKey(&quot;COLUMNS_CHECK_ALL&quot;, menuItemCheckAll);</span>
+<span class="fc" id="L187">        JMenuItem menuItemCheckAll = new JMenuItem(I18nViewUtil.valueByKey(&quot;COLUMNS_CHECK_ALL&quot;), 'C');</span>
+<span class="fc" id="L188">        I18nViewUtil.addComponentForKey(&quot;COLUMNS_CHECK_ALL&quot;, menuItemCheckAll);</span>
         
-<span class="fc" id="L189">        JMenuItem menuItemUncheckAll = new JMenuItem(I18nViewUtil.valueByKey(&quot;COLUMNS_UNCHECK_ALL&quot;), 'U');</span>
-<span class="fc" id="L190">        I18nViewUtil.addComponentForKey(&quot;COLUMNS_UNCHECK_ALL&quot;, menuItemUncheckAll);</span>
+<span class="fc" id="L190">        JMenuItem menuItemUncheckAll = new JMenuItem(I18nViewUtil.valueByKey(&quot;COLUMNS_UNCHECK_ALL&quot;), 'U');</span>
+<span class="fc" id="L191">        I18nViewUtil.addComponentForKey(&quot;COLUMNS_UNCHECK_ALL&quot;, menuItemUncheckAll);</span>
 
-<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        if (!this.isLoaded()) {</span>
-<span class="nc" id="L193">            menuItemCheckAll.setEnabled(false);</span>
-<span class="nc" id="L194">            menuItemUncheckAll.setEnabled(false);</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">        if (!this.isLoaded()) {</span>
+<span class="nc" id="L194">            menuItemCheckAll.setEnabled(false);</span>
+<span class="nc" id="L195">            menuItemUncheckAll.setEnabled(false);</span>
         }
 
-<span class="fc" id="L197">        menuItemCheckAll.addActionListener(new ActionCheckAll(true, path));</span>
-<span class="fc" id="L198">        menuItemUncheckAll.addActionListener(new ActionCheckAll(false, path));</span>
+<span class="fc" id="L198">        menuItemCheckAll.addActionListener(new ActionCheckAll(true, path));</span>
+<span class="fc" id="L199">        menuItemUncheckAll.addActionListener(new ActionCheckAll(false, path));</span>
 
-<span class="fc" id="L200">        tablePopupMenu.add(new JSeparator());</span>
-<span class="fc" id="L201">        tablePopupMenu.add(menuItemCheckAll);</span>
-<span class="fc" id="L202">        tablePopupMenu.add(menuItemUncheckAll);</span>
-<span class="fc" id="L203">    }</span>
+<span class="fc" id="L201">        tablePopupMenu.add(new JSeparator());</span>
+<span class="fc" id="L202">        tablePopupMenu.add(menuItemCheckAll);</span>
+<span class="fc" id="L203">        tablePopupMenu.add(menuItemUncheckAll);</span>
+<span class="fc" id="L204">    }</span>
     
     @Override
     public boolean isPopupDisplayable() {
-<span class="pc bpc" id="L207" title="5 of 6 branches missed.">        return this.isLoaded() || !this.isLoaded() &amp;&amp; this.isRunning();</span>
+<span class="pc bpc" id="L208" title="5 of 6 branches missed.">        return this.isLoaded() || !this.isLoaded() &amp;&amp; this.isRunning();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlockSelectionTextArea.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql</a> &gt; <span class="el_source">BlockSelectionTextArea.java</span></div><h1>BlockSelectionTextArea.java</h1><pre class="source lang-java linenums">package com.jsql;
+
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import java.awt.*;
+import java.awt.event.*;
+
+public class BlockSelectionTextArea extends JTextArea {
+
+<span class="nc" id="L10">    private int startRow = -1, startCol = -1;</span>
+<span class="nc" id="L11">    private int endRow = -1, endCol = -1;</span>
+
+<span class="nc" id="L13">    public BlockSelectionTextArea() {</span>
+        // Mouse listener to initiate and handle the selection
+<span class="nc" id="L15">        this.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // Record the initial mouse press position (row, col)
+<span class="nc" id="L19">                int row = BlockSelectionTextArea.this.getRowAtPosition(e.getPoint());</span>
+<span class="nc" id="L20">                int col = BlockSelectionTextArea.this.getColumnAtPosition(e.getPoint());</span>
+<span class="nc" id="L21">                BlockSelectionTextArea.this.startRow = row;</span>
+<span class="nc" id="L22">                BlockSelectionTextArea.this.startCol = col;</span>
+<span class="nc" id="L23">            }</span>
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // Finalize the block selection on mouse release
+<span class="nc" id="L28">                int row = BlockSelectionTextArea.this.getRowAtPosition(e.getPoint());</span>
+<span class="nc" id="L29">                int col = BlockSelectionTextArea.this.getColumnAtPosition(e.getPoint());</span>
+<span class="nc" id="L30">                BlockSelectionTextArea.this.endRow = row;</span>
+<span class="nc" id="L31">                BlockSelectionTextArea.this.endCol = col;</span>
+
+                // Update the selection based on the rectangular block
+                try {
+<span class="nc" id="L35">                    BlockSelectionTextArea.this.setBlockSelection(BlockSelectionTextArea.this.startRow, BlockSelectionTextArea.this.startCol, BlockSelectionTextArea.this.endRow, BlockSelectionTextArea.this.endCol);</span>
+<span class="nc" id="L36">                } catch (BadLocationException ex) {</span>
+<span class="nc" id="L37">                    throw new RuntimeException(ex);</span>
+<span class="nc" id="L38">                }</span>
+<span class="nc" id="L39">            }</span>
+        });
+
+        // Mouse motion listener for drag behavior
+<span class="nc" id="L43">        this.addMouseMotionListener(new MouseMotionAdapter() {</span>
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                // Update the block selection as the mouse is dragged
+<span class="nc" id="L47">                int row = BlockSelectionTextArea.this.getRowAtPosition(e.getPoint());</span>
+<span class="nc" id="L48">                int col = BlockSelectionTextArea.this.getColumnAtPosition(e.getPoint());</span>
+<span class="nc" id="L49">                BlockSelectionTextArea.this.endRow = row;</span>
+<span class="nc" id="L50">                BlockSelectionTextArea.this.endCol = col;</span>
+
+                // Update the selection during dragging
+                try {
+<span class="nc" id="L54">                    BlockSelectionTextArea.this.setBlockSelection(BlockSelectionTextArea.this.startRow, BlockSelectionTextArea.this.startCol, BlockSelectionTextArea.this.endRow, BlockSelectionTextArea.this.endCol);</span>
+<span class="nc" id="L55">                } catch (BadLocationException ex) {</span>
+<span class="nc" id="L56">                    throw new RuntimeException(ex);</span>
+<span class="nc" id="L57">                }</span>
+<span class="nc" id="L58">            }</span>
+        });
+<span class="nc" id="L60">    }</span>
+
+    // Converts the mouse position to the corresponding row
+    private int getRowAtPosition(Point p) {
+<span class="nc" id="L64">        int offset = this.viewToModel(p);</span>
+        try {
+<span class="nc" id="L66">            return this.getLineOfOffset(offset);</span>
+<span class="nc" id="L67">        } catch (BadLocationException e) {</span>
+<span class="nc" id="L68">            return 0;</span>
+        }
+    }
+
+    // Converts the mouse position to the corresponding column
+    private int getColumnAtPosition(Point p) {
+<span class="nc" id="L74">        int offset = this.viewToModel(p);</span>
+        try {
+<span class="nc" id="L76">            int row = this.getLineOfOffset(offset);</span>
+<span class="nc" id="L77">            return offset - this.getLineStartOffset(row);</span>
+<span class="nc" id="L78">        } catch (BadLocationException e) {</span>
+<span class="nc" id="L79">            return 0;</span>
+        }
+    }
+
+    // Set the block selection between start and end coordinates (row, col)
+    private void setBlockSelection(int startRow, int startCol, int endRow, int endCol) throws BadLocationException {
+        // Normalize the selection direction (so it always goes from top-left to bottom-right)
+<span class="nc bnc" id="L86" title="All 6 branches missed.">        if (startRow &gt; endRow || (startRow == endRow &amp;&amp; startCol &gt; endCol)) {</span>
+<span class="nc" id="L87">            int tempRow = startRow;</span>
+<span class="nc" id="L88">            int tempCol = startCol;</span>
+<span class="nc" id="L89">            startRow = endRow;</span>
+<span class="nc" id="L90">            startCol = endCol;</span>
+<span class="nc" id="L91">            endRow = tempRow;</span>
+<span class="nc" id="L92">            endCol = tempCol;</span>
+        }
+
+        // Convert row/column to character offsets
+<span class="nc" id="L96">        int startOffset = this.getLineStartOffset(startRow) + startCol;</span>
+<span class="nc" id="L97">        int endOffset = this.getLineStartOffset(endRow) + endCol;</span>
+
+        // Adjust the selection range to reflect the rectangular block
+<span class="nc" id="L100">        this.setSelectionStart(startOffset);</span>
+<span class="nc" id="L101">        this.setSelectionEnd(endOffset);</span>
+<span class="nc" id="L102">    }</span>
+
+    public static void main(String[] args) {
+        // Create a frame with block selection text area
+<span class="nc" id="L106">        JFrame frame = new JFrame(&quot;Block Selection Example&quot;);</span>
+<span class="nc" id="L107">        BlockSelectionTextArea textArea = new BlockSelectionTextArea();</span>
+<span class="nc" id="L108">        textArea.setText(&quot;This is a test.\nThis is another test.\nBlock selection here.&quot;);</span>
+<span class="nc" id="L109">        textArea.setFont(new Font(&quot;Monospaced&quot;, Font.PLAIN, 16));</span>
+<span class="nc" id="L110">        frame.add(new JScrollPane(textArea));</span>
+<span class="nc" id="L111">        frame.setSize(400, 300);</span>
+<span class="nc" id="L112">        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L113">        frame.setVisible(true);</span>
+<span class="nc" id="L114">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

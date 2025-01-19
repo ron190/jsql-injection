@@ -106,9 +106,9 @@ import java.beans.PropertyChangeListener;
 <span class="fc" id="L106">        this.mainTable.getRowSorter().addRowSorterListener(rowSorterEvent -&gt; {</span>
 <span class="nc" id="L107">            modelFixedTable.fireTableDataChanged();</span>
             // Copy data from hidden column in main table
-<span class="nc bnc" id="L109" title="All 2 branches missed.">            for (var i = 0 ; i &lt; FixedColumnTable.this.mainTable.getRowCount() ; i++) {</span>
-<span class="nc" id="L110">                FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 0), i, 0);</span>
-<span class="nc" id="L111">                FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 1), i, 1);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            for (var i = 0; i &lt; this.mainTable.getRowCount() ; i++) {</span>
+<span class="nc" id="L110">                this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 0), i, 0);</span>
+<span class="nc" id="L111">                this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 1), i, 1);</span>
             }
 <span class="nc" id="L113">        });</span>
         

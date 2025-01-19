@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Coder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util.bruter</a> &gt; <span class="el_source">Coder.java</span></div><h1>Coder.java</h1><pre class="source lang-java linenums">package com.jsql.util.bruter;
+
+<span class="fc" id="L3">public enum Coder {</span>
+<span class="fc" id="L4">    MD2(&quot;Md2&quot;),</span>
+<span class="fc" id="L5">    MD4(&quot;Md4&quot;),</span>
+<span class="fc" id="L6">    MD5(&quot;Md5&quot;),</span>
+<span class="fc" id="L7">    SHA1(&quot;Sha-1&quot;),</span>
+<span class="fc" id="L8">    SHA256(&quot;Sha-256&quot;),</span>
+<span class="fc" id="L9">    SHA384(&quot;Sha-384&quot;),</span>
+<span class="fc" id="L10">    SHA512(&quot;Sha-512&quot;),</span>
+<span class="fc" id="L11">    MYSQL(&quot;Mysql&quot;),</span>
+<span class="fc" id="L12">    ADLER32(&quot;Adler32&quot;),</span>
+<span class="fc" id="L13">    CRC16(&quot;Crc16&quot;),</span>
+<span class="fc" id="L14">    CRC32(&quot;Crc32&quot;),</span>
+<span class="fc" id="L15">    CRC64(&quot;Crc64&quot;),</span>
+<span class="fc" id="L16">    HEX(&quot;Hex&quot;),</span>
+<span class="fc" id="L17">    HEX_ZIP(&quot;Hex(zipped)&quot;),</span>
+<span class="fc" id="L18">    BASE64_ZIP(&quot;Base64(zipped)&quot;),</span>
+<span class="fc" id="L19">    BASE64(&quot;Base64&quot;),</span>
+<span class="fc" id="L20">    BASE32(&quot;Base32&quot;),</span>
+<span class="fc" id="L21">    BASE58(&quot;Base58&quot;),</span>
+<span class="fc" id="L22">    BASE16(&quot;Base16&quot;),</span>
+<span class="fc" id="L23">    HTML(&quot;Html&quot;),</span>
+<span class="fc" id="L24">    HTML_DECIMAL(&quot;Html (decimal)&quot;),</span>
+<span class="fc" id="L25">    URL(&quot;Url&quot;),</span>
+<span class="fc" id="L26">    UNICODE(&quot;Unicode&quot;);</span>
+
+    public final String label;
+
+<span class="fc" id="L30">    Coder(String label) {</span>
+<span class="fc" id="L31">        this.label = label;</span>
+<span class="fc" id="L32">    }</span>
+
+    @Override
+    public String toString() {
+<span class="fc" id="L36">        return this.label;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

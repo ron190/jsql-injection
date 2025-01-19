@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ComboBoxMethodRenderer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.manager.util</a> &gt; <span class="el_source">ComboBoxMethodRenderer.java</span></div><h1>ComboBoxMethodRenderer.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.manager.util;
+
+import com.jsql.model.accessible.ExploitMethod;
+import com.jsql.view.swing.util.I18nViewUtil;
+
+import javax.swing.*;
+import java.awt.*;
+
+<span class="fc" id="L9">public class ComboBoxMethodRenderer extends JLabel implements ListCellRenderer&lt;Object&gt; {</span>
+<span class="fc" id="L10">    public static final JSeparator SEPARATOR = new JSeparator();</span>
+
+    public Component getListCellRendererComponent(
+        JList&lt;?&gt; list, Object value, int index, boolean isSelected, boolean cellHasFocus
+    ) {
+<span class="fc bfc" id="L15" title="All 2 branches covered.">        if (value == ComboBoxMethodRenderer.SEPARATOR) {</span>
+<span class="fc" id="L16">            return ComboBoxMethodRenderer.SEPARATOR;</span>
+        }
+<span class="fc" id="L18">        var exploitMethods = (ExploitMethod) value;</span>
+<span class="fc" id="L19">        this.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.getKeyTooltip()));</span>
+<span class="fc" id="L20">        this.setText(I18nViewUtil.valueByKey(exploitMethods.getKeyLabel()));</span>
+<span class="fc" id="L21">        this.setForeground(UIManager.getColor(&quot;ComboBox.foreground&quot;));</span>
+<span class="fc" id="L22">        this.setBackground(UIManager.getColor(&quot;ComboBox.background&quot;));</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if (isSelected) {</span>
+<span class="nc" id="L24">            this.setForeground(UIManager.getColor(&quot;ComboBox.selectionForeground&quot;));</span>
+<span class="nc" id="L25">            this.setBackground(UIManager.getColor(&quot;ComboBox.selectionBackground&quot;));</span>
+        }
+<span class="fc" id="L27">        this.setFont(list.getFont());</span>
+<span class="fc" id="L28">        return this;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
