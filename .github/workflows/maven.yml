@@ -19,11 +19,11 @@ jobs:
     outputs:
       DOCKER_RESOURCES: ${{ steps.set-vars.outputs.DOCKER_RESOURCES }}
 
-#  build-jdk11:
-#    needs: set-global-env-var
-#    uses: ./.github/workflows/build-jdk11.yml
-#    with:
-#      DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+  build-jdk11:
+    needs: set-global-env-var
+    uses: ./.github/workflows/build-jdk11.yml
+    with:
+      DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
 
   build-additional:
     needs: set-global-env-var
@@ -42,7 +42,6 @@ jobs:
     uses: ./.github/workflows/codeql.yml
 
   release:
-    needs: [build, build-additional, codeql]
-#    needs: [build-jdk11, build, build-additional, codeql]
+    needs: [build-jdk11, build, build-additional, codeql]
     uses: ./.github/workflows/release.yml
     secrets: inherit

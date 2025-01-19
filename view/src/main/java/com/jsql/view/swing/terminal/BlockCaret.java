@@ -71,13 +71,15 @@ public class BlockCaret extends DefaultCaret {
         }
 
         int dot = this.getDot();
-        Rectangle r;
+        Rectangle r = null;
         char dotChar;
         
         try {
-            r = comp.modelToView2D(dot).getBounds();
-            if (r == null) {
-                return;
+            if (comp.modelToView2D(dot) != null) {
+                r = comp.modelToView2D(dot).getBounds();
+                if (r == null) {
+                    return;
+                }
             }
             dotChar = comp.getText(dot, 1).charAt(0);
         } catch (BadLocationException e) {
