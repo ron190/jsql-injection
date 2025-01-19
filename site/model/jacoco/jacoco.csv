@@ -8,11 +8,11 @@ model,com.jsql.model.bean.util,Header,0,75,0,0,0,13,0,1,0,1
 model,com.jsql.model.bean.util,Request,0,17,0,0,0,7,0,5,0,5
 model,com.jsql.model.bean.util,Interaction,0,329,0,0,0,50,0,3,0,3
 model,com.jsql.model.bean.util,HttpHeader,36,0,0,0,13,0,7,0,7,0
-model,com.jsql.model.accessible,UdfAccess,245,559,34,32,43,106,28,19,2,12
+model,com.jsql.model.accessible,UdfAccess,252,550,34,32,44,104,28,19,2,12
 model,com.jsql.model.accessible,CallableHttpHead,62,137,2,2,12,38,3,6,1,6
 model,com.jsql.model.accessible,ExploitMethod,18,46,0,0,5,9,4,2,4,2
 model,com.jsql.model.accessible,DataAccess,135,838,6,22,34,164,9,20,3,12
-model,com.jsql.model.accessible,ResourceAccess,483,1313,42,74,113,273,46,46,10,24
+model,com.jsql.model.accessible,ResourceAccess,512,1345,46,80,120,278,50,48,10,25
 model,com.jsql.model.accessible,CallableFile,26,84,4,0,8,19,2,6,0,6
 model,com.jsql.model.injection.strategy,StrategyInjectionTime,10,266,1,13,3,56,2,21,1,15
 model,com.jsql.model.injection.strategy,AbstractStrategy,0,70,0,2,0,18,0,6,0,5
@@ -170,7 +170,7 @@ model,com.jsql.util,ThreadUtil,26,82,2,4,6,24,3,8,1,7
 model,com.jsql.util,ExceptionUtil.ExceptionHandler,134,0,14,0,30,0,11,0,4,0
 model,com.jsql.util,FormUtil,232,18,17,1,43,7,13,3,4,3
 model,com.jsql.util,LogLevelUtil,0,40,0,0,0,9,0,1,0,1
-model,com.jsql.util,PropertiesUtil,252,33,27,1,45,11,20,4,6,4
+model,com.jsql.util,PropertiesUtil,244,33,27,1,45,11,20,4,6,4
 model,com.jsql.util,AuthenticationUtil,114,150,11,5,21,46,11,13,4,12
 model,com.jsql.util,CookiesUtil,29,171,5,9,7,34,5,12,0,10
 model,com.jsql.util,MultipartUtil,23,121,2,6,6,28,2,9,0,7

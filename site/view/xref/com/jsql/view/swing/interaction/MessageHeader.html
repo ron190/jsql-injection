@@ -54,8 +54,8 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>          Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">this</strong>.url = (String) params.getOrDefault(Header.URL, StringUtils.EMPTY);
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">this</strong>.post = (String) params.getOrDefault(Header.POST, StringUtils.EMPTY);
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">this</strong>.header = (Map&lt;String, String&gt;) params.getOrDefault(Header.HEADER, Collections.EMPTY_MAP);
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">this</strong>.response = (Map&lt;String, String&gt;) params.getOrDefault(Header.RESPONSE, Collections.EMPTY_MAP);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">this</strong>.header = (Map&lt;String, String&gt;) params.getOrDefault(Header.HEADER, Collections.emptyMap());
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">this</strong>.response = (Map&lt;String, String&gt;) params.getOrDefault(Header.RESPONSE, Collections.emptyMap());
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          <strong class="jxr_keyword">this</strong>.source = (String) params.getOrDefault(Header.SOURCE, StringUtils.EMPTY);
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>.size = (String) params.getOrDefault(Header.PAGE_SIZE, StringUtils.EMPTY);
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">this</strong>.metadataProcess = (String) params.getOrDefault(Header.METADATA_PROCESS, StringUtils.EMPTY);

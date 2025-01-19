@@ -109,7 +109,7 @@
 <a class="jxr_linenumber" name="L101" href="#L101">101</a> 
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> logFileNotFound(IOException e) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.propertiesLanguageToTranslate.isEmpty()) {
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, I18nUtil.valueByKey(<span class="jxr_string">"LOG_I18N_TEXT_NOT_FOUND"</span>), e);
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_I18N_TEXT_NOT_FOUND"</span>), e);
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.propertiesRoot.isEmpty()) {
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(<span class="jxr_string">"Reference language not found"</span>);
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>         }

@@ -37,7 +37,7 @@ public class SoapUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
 <span class="fc bfc" id="L39" title="All 2 branches covered.">        if (!hasFoundInjection) {</span>
-<span class="fc" id="L40">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;) +&quot; SOAP...&quot;);</span>
+<span class="fc" id="L40">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} SOAP...&quot;, I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
         } else {
 <span class="fc" id="L42">            return true;</span>
         }

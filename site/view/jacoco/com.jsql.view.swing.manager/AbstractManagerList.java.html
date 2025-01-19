@@ -40,14 +40,15 @@ import java.util.stream.StreamSupport;
  * Abstract manager containing a drag and drop list of item.
  */
 public abstract class AbstractManagerList extends JPanel {
-    
+
     /**
      * Log4j logger sent to view.
      */
 <span class="fc" id="L47">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
-    
-<span class="fc" id="L49">    protected final transient List&lt;ItemList&gt; itemsList = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L50">    protected final JPanel lastLine = new JPanel();</span>
+
+    public static final String PRIVILEGE_TOOLTIP = &quot;PRIVILEGE_TOOLTIP&quot;;
+<span class="fc" id="L50">    protected final transient List&lt;ItemList&gt; itemsList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L51">    protected final JPanel lastLine = new JPanel();</span>
 
     /**
      * Contains the paths of files.
@@ -75,129 +76,129 @@ public abstract class AbstractManagerList extends JPanel {
     /**
      * An animated bar displayed during processing.
      */
-<span class="fc" id="L78">    protected final JProgressBar progressBar = new JProgressBar();</span>
-<span class="fc" id="L79">    protected final Component horizontalGlue = Box.createHorizontalGlue();</span>
+<span class="fc" id="L79">    protected final JProgressBar progressBar = new JProgressBar();</span>
+<span class="fc" id="L80">    protected final Component horizontalGlue = Box.createHorizontalGlue();</span>
 
-<span class="fc" id="L81">    protected AbstractManagerList(String nameFile) {</span>
-<span class="fc" id="L82">        this.setLayout(new BorderLayout());</span>
+<span class="fc" id="L82">    protected AbstractManagerList(String nameFile) {</span>
+<span class="fc" id="L83">        this.setLayout(new BorderLayout());</span>
 
-<span class="fc" id="L84">        this.buildList(nameFile);</span>
-<span class="fc" id="L85">        this.progressBar.setIndeterminate(true);</span>
-<span class="fc" id="L86">        this.progressBar.setVisible(false);</span>
-<span class="fc" id="L87">        this.progressBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));</span>
-<span class="fc" id="L88">        this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L85">        this.buildList(nameFile);</span>
+<span class="fc" id="L86">        this.progressBar.setIndeterminate(true);</span>
+<span class="fc" id="L87">        this.progressBar.setVisible(false);</span>
+<span class="fc" id="L88">        this.progressBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));</span>
+<span class="fc" id="L89">        this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.X_AXIS));</span>
 
-<span class="fc" id="L90">        this.scrollListPaths = new JScrollPane(this.listPaths);</span>
-<span class="fc" id="L91">        this.add(this.scrollListPaths, BorderLayout.CENTER);</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L91">        this.scrollListPaths = new JScrollPane(this.listPaths);</span>
+<span class="fc" id="L92">        this.add(this.scrollListPaths, BorderLayout.CENTER);</span>
+<span class="fc" id="L93">    }</span>
 
     public void buildRunButton(String labelI18n, String tooltipI18n) {
-<span class="fc" id="L95">        this.labelI18nRunButton = labelI18n;</span>
-<span class="fc" id="L96">        this.tooltipI18nRunButton = tooltipI18n;</span>
-<span class="fc" id="L97">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(this.tooltipI18nRunButton)));</span>
-<span class="fc" id="L98">        this.run = new JButtonStateful(this.labelI18nRunButton) {</span>
+<span class="fc" id="L96">        this.labelI18nRunButton = labelI18n;</span>
+<span class="fc" id="L97">        this.tooltipI18nRunButton = tooltipI18n;</span>
+<span class="fc" id="L98">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(this.tooltipI18nRunButton)));</span>
+<span class="fc" id="L99">        this.run = new JButtonStateful(this.labelI18nRunButton) {</span>
             @Override
             public JToolTip createToolTip() {
-<span class="nc" id="L101">                return tooltip.get();</span>
+<span class="nc" id="L102">                return tooltip.get();</span>
             }
         };
-<span class="fc" id="L104">        I18nViewUtil.addComponentForKey(this.labelI18nRunButton, this.run);</span>
-<span class="fc" id="L105">        I18nViewUtil.addComponentForKey(this.tooltipI18nRunButton, tooltip.get());</span>
-<span class="fc" id="L106">        this.run.setToolTipText(I18nUtil.valueByKey(this.tooltipI18nRunButton));</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L105">        I18nViewUtil.addComponentForKey(this.labelI18nRunButton, this.run);</span>
+<span class="fc" id="L106">        I18nViewUtil.addComponentForKey(this.tooltipI18nRunButton, tooltip.get());</span>
+<span class="fc" id="L107">        this.run.setToolTipText(I18nUtil.valueByKey(this.tooltipI18nRunButton));</span>
+<span class="fc" id="L108">    }</span>
 
     public void buildList(String nameFile) {
         try (
-<span class="fc" id="L111">            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);</span>
-<span class="fc" id="L112">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
-<span class="fc" id="L113">            var reader = new BufferedReader(inputStreamReader)</span>
+<span class="fc" id="L112">            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);</span>
+<span class="fc" id="L113">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
+<span class="fc" id="L114">            var reader = new BufferedReader(inputStreamReader)</span>
         ) {
             String line;
-<span class="fc bfc" id="L116" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
-<span class="fc" id="L117">                this.itemsList.add(new ItemList(line));</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
+<span class="fc" id="L118">                this.itemsList.add(new ItemList(line));</span>
             }
-<span class="fc" id="L119">            this.listPaths = new DnDList(this.itemsList);</span>
-<span class="nc" id="L120">        } catch (IOException e) {</span>
-<span class="nc" id="L121">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L122">        }</span>
-<span class="fc" id="L123">    }</span>
+<span class="fc" id="L120">            this.listPaths = new DnDList(this.itemsList);</span>
+<span class="nc" id="L121">        } catch (IOException e) {</span>
+<span class="nc" id="L122">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L123">        }</span>
+<span class="fc" id="L124">    }</span>
 
     public void buildPrivilege() {
-<span class="fc" id="L126">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(&quot;PRIVILEGE_TOOLTIP&quot;)));</span>
-<span class="fc" id="L127">        this.privilege = new JLabel(I18nUtil.valueByKey(&quot;PRIVILEGE_LABEL&quot;), UiUtil.SQUARE.icon, SwingConstants.LEFT) {</span>
+<span class="fc" id="L127">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(AbstractManagerList.PRIVILEGE_TOOLTIP)));</span>
+<span class="fc" id="L128">        this.privilege = new JLabel(I18nUtil.valueByKey(&quot;PRIVILEGE_LABEL&quot;), UiUtil.SQUARE.icon, SwingConstants.LEFT) {</span>
             @Override
             public JToolTip createToolTip() {
-<span class="nc" id="L130">                return tooltip.get();</span>
+<span class="nc" id="L131">                return tooltip.get();</span>
             }
         };
-<span class="fc" id="L133">        I18nViewUtil.addComponentForKey(&quot;PRIVILEGE_LABEL&quot;, this.privilege);</span>
-<span class="fc" id="L134">        I18nViewUtil.addComponentForKey(&quot;PRIVILEGE_TOOLTIP&quot;, tooltip.get());</span>
-<span class="fc" id="L135">        this.privilege.setToolTipText(I18nUtil.valueByKey(&quot;PRIVILEGE_TOOLTIP&quot;));</span>
+<span class="fc" id="L134">        I18nViewUtil.addComponentForKey(&quot;PRIVILEGE_LABEL&quot;, this.privilege);</span>
+<span class="fc" id="L135">        I18nViewUtil.addComponentForKey(AbstractManagerList.PRIVILEGE_TOOLTIP, tooltip.get());</span>
+<span class="fc" id="L136">        this.privilege.setToolTipText(I18nUtil.valueByKey(AbstractManagerList.PRIVILEGE_TOOLTIP));</span>
 
-<span class="fc" id="L137">        this.lastLine.add(Box.createHorizontalStrut(5));</span>
-<span class="fc" id="L138">        this.lastLine.add(this.privilege);</span>
-<span class="fc" id="L139">        this.lastLine.add(this.horizontalGlue);</span>
-<span class="fc" id="L140">        this.lastLine.add(this.progressBar);</span>
-<span class="fc" id="L141">        this.lastLine.add(this.run);</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L138">        this.lastLine.add(Box.createHorizontalStrut(5));</span>
+<span class="fc" id="L139">        this.lastLine.add(this.privilege);</span>
+<span class="fc" id="L140">        this.lastLine.add(this.horizontalGlue);</span>
+<span class="fc" id="L141">        this.lastLine.add(this.progressBar);</span>
+<span class="fc" id="L142">        this.lastLine.add(this.run);</span>
+<span class="fc" id="L143">    }</span>
 
     /**
      * Add a new string to the list if it's not a duplicate.
      * @param element The string to add to the list
      */
     public void addToList(String element) {
-<span class="fc" id="L149">        AtomicBoolean isFound = new AtomicBoolean(false);</span>
+<span class="fc" id="L150">        AtomicBoolean isFound = new AtomicBoolean(false);</span>
 
-<span class="fc" id="L151">        DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) this.listPaths.getModel();</span>
-<span class="fc" id="L152">        Iterable&lt;ItemList&gt; iterable = () -&gt; listModel.elements().asIterator();</span>
-<span class="fc" id="L153">        StreamSupport.stream(iterable.spliterator(), false)</span>
-<span class="fc" id="L154">            .filter(itemList -&gt; itemList.toString().equals(element))</span>
-<span class="fc" id="L155">            .forEach(itemList -&gt; isFound.set(true));</span>
+<span class="fc" id="L152">        DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) this.listPaths.getModel();</span>
+<span class="fc" id="L153">        Iterable&lt;ItemList&gt; iterable = () -&gt; listModel.elements().asIterator();</span>
+<span class="fc" id="L154">        StreamSupport.stream(iterable.spliterator(), false)</span>
+<span class="fc" id="L155">            .filter(itemList -&gt; itemList.toString().equals(element))</span>
+<span class="fc" id="L156">            .forEach(itemList -&gt; isFound.set(true));</span>
 
-<span class="fc bfc" id="L157" title="All 2 branches covered.">        if (!isFound.get()) {</span>
-<span class="fc" id="L158">            listModel.add(0, new ItemList(element));</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (!isFound.get()) {</span>
+<span class="fc" id="L159">            listModel.add(0, new ItemList(element));</span>
         }
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L161">    }</span>
     
     public void highlight(String url, String tag) {
-<span class="nc" id="L163">        var itemLabel = String.format(&quot; [%s]&quot;, tag);</span>
-<span class="nc" id="L164">        DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) this.listPaths.getModel();</span>
-<span class="nc bnc" id="L165" title="All 2 branches missed.">        for (var i = 0 ; i &lt; listModel.getSize() ; i++) {</span>
-<span class="nc" id="L166">            ItemList itemList = listModel.getElementAt(i);</span>
-<span class="nc bnc" id="L167" title="All 2 branches missed.">            if (url.contains(itemList.getOriginalString())) {</span>
-<span class="nc" id="L168">                itemList.setVulnerable(true);</span>
-<span class="nc" id="L169">                itemList.setInternalString(</span>
-<span class="nc" id="L170">                    itemList.getInternalString().replace(itemLabel, StringUtils.EMPTY) + itemLabel</span>
+<span class="nc" id="L164">        var itemLabel = String.format(&quot; [%s]&quot;, tag);</span>
+<span class="nc" id="L165">        DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) this.listPaths.getModel();</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        for (var i = 0 ; i &lt; listModel.getSize() ; i++) {</span>
+<span class="nc" id="L167">            ItemList itemList = listModel.getElementAt(i);</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">            if (url.contains(itemList.getOriginalString())) {</span>
+<span class="nc" id="L169">                itemList.setVulnerable(true);</span>
+<span class="nc" id="L170">                itemList.setInternalString(</span>
+<span class="nc" id="L171">                    itemList.getInternalString().replace(itemLabel, StringUtils.EMPTY) + itemLabel</span>
                 );
-<span class="nc" id="L172">                listModel.setElementAt(itemList, i);</span>
+<span class="nc" id="L173">                listModel.setElementAt(itemList, i);</span>
             }
         }
-<span class="nc" id="L175">    }</span>
+<span class="nc" id="L176">    }</span>
     
     public void endProcess() {
-<span class="nc" id="L178">        SwingUtilities.invokeLater(() -&gt; {  // required to prevent scan glitches</span>
-<span class="nc" id="L179">            this.run.setText(I18nViewUtil.valueByKey(this.labelI18nRunButton));</span>
-<span class="nc" id="L180">            this.setButtonEnable(true);</span>
-<span class="nc" id="L181">            this.progressBar.setVisible(false);</span>
-<span class="nc" id="L182">            this.horizontalGlue.setVisible(true);</span>
-<span class="nc" id="L183">            this.run.setState(StateButton.STARTABLE);</span>
-<span class="nc" id="L184">        });</span>
-<span class="nc" id="L185">    }</span>
+<span class="nc" id="L179">        SwingUtilities.invokeLater(() -&gt; {  // required to prevent scan glitches</span>
+<span class="nc" id="L180">            this.run.setText(I18nViewUtil.valueByKey(this.labelI18nRunButton));</span>
+<span class="nc" id="L181">            this.setButtonEnable(true);</span>
+<span class="nc" id="L182">            this.progressBar.setVisible(false);</span>
+<span class="nc" id="L183">            this.horizontalGlue.setVisible(true);</span>
+<span class="nc" id="L184">            this.run.setState(StateButton.STARTABLE);</span>
+<span class="nc" id="L185">        });</span>
+<span class="nc" id="L186">    }</span>
 
     /**
      * Enable or disable the button.
      * @param isEnable The new state of the button
      */
     public void setButtonEnable(boolean isEnable) {
-<span class="fc" id="L192">        this.run.setEnabled(isEnable);</span>
-<span class="fc" id="L193">    }</span>
+<span class="fc" id="L193">        this.run.setEnabled(isEnable);</span>
+<span class="fc" id="L194">    }</span>
 
     /**
      * Display another icon to the Privilege label.
      * @param icon The new icon
      */
     public void changePrivilegeIcon(Icon icon) {
-<span class="fc" id="L200">        this.privilege.setIcon(icon);</span>
-<span class="fc" id="L201">    }</span>
+<span class="fc" id="L201">        this.privilege.setIcon(icon);</span>
+<span class="fc" id="L202">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

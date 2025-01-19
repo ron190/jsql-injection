@@ -139,34 +139,35 @@ public class UiUtil {
     // HTML engine considers Monospaced/Monospace to be the same Font
     // Java engine recognizes only Monospaced
     public static final String FONT_NAME_MONOSPACED = &quot;Monospaced&quot;;
-<span class="fc" id="L142">    public static final Font FONT_MONO_NON_ASIAN = new Font(</span>
+    public static final String TEXT_AREA_FONT = &quot;TextArea.font&quot;;
+<span class="fc" id="L143">    public static final Font FONT_MONO_NON_ASIAN = new Font(</span>
         UiUtil.FONT_NAME_MONO_NON_ASIAN,
         Font.PLAIN,
-<span class="fc" id="L145">        UIManager.getDefaults().getFont(&quot;TextArea.font&quot;).getSize() + 2</span>
+<span class="fc" id="L146">        UIManager.getDefaults().getFont(UiUtil.TEXT_AREA_FONT).getSize() + 2</span>
     );
     
-<span class="fc" id="L148">    public static final Font FONT_MONO_ASIAN = new Font(</span>
+<span class="fc" id="L149">    public static final Font FONT_MONO_ASIAN = new Font(</span>
         UiUtil.FONT_NAME_MONO_ASIAN,
         Font.PLAIN,
-<span class="fc" id="L151">        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize()</span>
+<span class="fc" id="L152">        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize()</span>
     );
     
-<span class="fc" id="L154">    public static final Font FONT_MONO_ASIAN_BIG = new Font(</span>
+<span class="fc" id="L155">    public static final Font FONT_MONO_ASIAN_BIG = new Font(</span>
         UiUtil.FONT_NAME_MONO_ASIAN,
         Font.PLAIN,
-<span class="fc" id="L157">        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize() + 2</span>
+<span class="fc" id="L158">        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize() + 2</span>
     );
 
-<span class="fc" id="L160">    public static final Font FONT_NON_MONO = new Font(</span>
+<span class="fc" id="L161">    public static final Font FONT_NON_MONO = new Font(</span>
         &quot;Segoe UI&quot;,
         Font.PLAIN,
-<span class="fc" id="L163">        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize()</span>
+<span class="fc" id="L164">        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize()</span>
     );
     
-<span class="fc" id="L166">    public static final Font FONT_NON_MONO_BIG = new Font(</span>
-<span class="fc" id="L167">        UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getName(),</span>
+<span class="fc" id="L167">    public static final Font FONT_NON_MONO_BIG = new Font(</span>
+<span class="fc" id="L168">        UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getName(),</span>
         Font.PLAIN,
-<span class="fc" id="L169">        UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getSize() + 2</span>
+<span class="fc" id="L170">        UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getSize() + 2</span>
     );
 
     private UiUtil() {
@@ -177,125 +178,126 @@ public class UiUtil {
      * Change the default style of various components.
      */
     public static void prepareGUI() {
-<span class="fc" id="L180">        UiUtil.loadFonts();</span>
+<span class="fc" id="L181">        UiUtil.loadFonts();</span>
         // timer before closing automatically tooltip
-<span class="fc" id="L182">        ToolTipManager.sharedInstance().setDismissDelay(3 * ToolTipManager.sharedInstance().getDismissDelay());</span>
-<span class="fc" id="L183">        UIManager.put(&quot;TextArea.font&quot;, UiUtil.FONT_MONO_NON_ASIAN);  // required for basic text like chunks tab</span>
-<span class="fc" id="L184">        UIManager.put(&quot;TextPane.font&quot;, UIManager.getFont(&quot;TextArea.font&quot;));  // align textpane font</span>
-<span class="fc" id="L185">    }</span>
+<span class="fc" id="L183">        ToolTipManager.sharedInstance().setDismissDelay(3 * ToolTipManager.sharedInstance().getDismissDelay());</span>
+<span class="fc" id="L184">        UIManager.put(UiUtil.TEXT_AREA_FONT, UiUtil.FONT_MONO_NON_ASIAN);  // required for basic text like chunks tab</span>
+<span class="fc" id="L185">        UIManager.put(UiUtil.TEXTPANE_FONT, UIManager.getFont(UiUtil.TEXT_AREA_FONT));  // align textpane font</span>
+<span class="fc" id="L186">    }</span>
 
     private static void loadFonts() {
-<span class="fc" id="L188">        var graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();</span>
-<span class="fc" id="L189">        try (InputStream fontStream = new BufferedInputStream(</span>
-<span class="fc" id="L190">            Objects.requireNonNull(UiUtil.class.getClassLoader().getResourceAsStream(&quot;swing/font/UbuntuMono-R-ctrlchar.ttf&quot;))</span>
+<span class="fc" id="L189">        var graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();</span>
+<span class="fc" id="L190">        try (InputStream fontStream = new BufferedInputStream(</span>
+<span class="fc" id="L191">            Objects.requireNonNull(UiUtil.class.getClassLoader().getResourceAsStream(&quot;swing/font/UbuntuMono-R-ctrlchar.ttf&quot;))</span>
         )) {
-<span class="fc" id="L192">            var ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);</span>
-<span class="fc" id="L193">            graphicsEnvironment.registerFont(ubuntuFont);</span>
-<span class="nc" id="L194">        } catch (FontFormatException | IOException e) {</span>
-<span class="nc" id="L195">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Loading Font Ubuntu Mono with control characters failed&quot;, e);</span>
-<span class="fc" id="L196">        }</span>
-<span class="fc" id="L197">    }</span>
+<span class="fc" id="L193">            var ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);</span>
+<span class="fc" id="L194">            graphicsEnvironment.registerFont(ubuntuFont);</span>
+<span class="nc" id="L195">        } catch (FontFormatException | IOException e) {</span>
+<span class="nc" id="L196">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Loading Font Ubuntu Mono with control characters failed&quot;, e);</span>
+<span class="fc" id="L197">        }</span>
+<span class="fc" id="L198">    }</span>
 
     /**
      * Icons for application window.
      * @return List of a 16x16 (default) and 32x32 icon (alt-tab, taskbar)
      */
     public static List&lt;Image&gt; getIcons() {
-<span class="fc" id="L204">        List&lt;Image&gt; images = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L205">        List&lt;Image&gt; images = new ArrayList&lt;&gt;();</span>
         // Fix #2154: NoClassDefFoundError on read()
         try {
-<span class="fc" id="L207">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_128)));</span>
-<span class="fc" id="L208">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_96)));</span>
-<span class="fc" id="L209">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_32)));</span>
-<span class="fc" id="L210">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_16)));</span>
+<span class="fc" id="L208">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_128)));</span>
+<span class="fc" id="L209">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_96)));</span>
+<span class="fc" id="L210">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_32)));</span>
+<span class="fc" id="L211">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_16)));</span>
             
-<span class="nc" id="L212">        } catch (NoClassDefFoundError | IOException e) {</span>
-<span class="nc" id="L213">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L214">        }</span>
-<span class="fc" id="L215">        return images;</span>
+<span class="nc" id="L213">        } catch (NoClassDefFoundError | IOException e) {</span>
+<span class="nc" id="L214">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L215">        }</span>
+<span class="fc" id="L216">        return images;</span>
     }
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText) {
-<span class="fc" id="L219">        UiUtil.drawPlaceholder(textComponent, g, placeholderText, 0, g.getFontMetrics().getAscent() + 2);</span>
-<span class="fc" id="L220">    }</span>
+<span class="fc" id="L220">        UiUtil.drawPlaceholder(textComponent, g, placeholderText, 0, g.getFontMetrics().getAscent() + 2);</span>
+<span class="fc" id="L221">    }</span>
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText, int x, int y) {
         
-<span class="fc" id="L224">        int w = textComponent.getWidth();</span>
+<span class="fc" id="L225">        int w = textComponent.getWidth();</span>
         
-<span class="fc" id="L226">        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);</span>
+<span class="fc" id="L227">        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);</span>
         
-<span class="fc" id="L228">        var ins = textComponent.getInsets();</span>
-<span class="fc" id="L229">        var fm = g.getFontMetrics();</span>
+<span class="fc" id="L229">        var ins = textComponent.getInsets();</span>
+<span class="fc" id="L230">        var fm = g.getFontMetrics();</span>
         
-<span class="fc" id="L231">        int c0 = textComponent.getBackground().getRGB();</span>
-<span class="fc" id="L232">        int c1 = textComponent.getForeground().getRGB();</span>
-<span class="fc" id="L233">        var m = 0xfefefefe;</span>
-<span class="fc" id="L234">        int c2 = ((c0 &amp; m) &gt;&gt;&gt; 1) + ((c1 &amp; m) &gt;&gt;&gt; 1);</span>
+<span class="fc" id="L232">        int c0 = textComponent.getBackground().getRGB();</span>
+<span class="fc" id="L233">        int c1 = textComponent.getForeground().getRGB();</span>
+<span class="fc" id="L234">        var m = 0xfefefefe;</span>
+<span class="fc" id="L235">        int c2 = ((c0 &amp; m) &gt;&gt;&gt; 1) + ((c1 &amp; m) &gt;&gt;&gt; 1);</span>
         
-<span class="fc" id="L236">        g.setColor(new Color(c2, true));</span>
+<span class="fc" id="L237">        g.setColor(new Color(c2, true));</span>
 
-<span class="fc" id="L238">        g.setFont(</span>
-<span class="pc bpc" id="L239" title="1 of 2 branches missed.">            I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale())</span>
-<span class="nc bnc" id="L240" title="All 2 branches missed.">            ? textComponent.getFont() == UiUtil.FONT_NON_MONO_BIG  // when address bar</span>
-<span class="nc" id="L241">            ? UiUtil.FONT_MONO_ASIAN_BIG.deriveFont(Font.ITALIC)  // bigger font</span>
-<span class="nc" id="L242">            : UiUtil.FONT_MONO_ASIAN.deriveFont(Font.ITALIC)  // fine for address bar, console, textfield</span>
-<span class="fc" id="L243">            : textComponent.getFont().deriveFont(Font.ITALIC)  // same</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        var fontNonUbuntu = textComponent.getFont() == UiUtil.FONT_NON_MONO_BIG  // when address bar</span>
+<span class="fc" id="L240">            ? UiUtil.FONT_MONO_ASIAN_BIG.deriveFont(Font.ITALIC)  // bigger font</span>
+<span class="fc" id="L241">            : UiUtil.FONT_MONO_ASIAN.deriveFont(Font.ITALIC);  // fine for address bar, console, textfield</span>
+<span class="fc" id="L242">        g.setFont(</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">            I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale())</span>
+<span class="nc" id="L244">            ? fontNonUbuntu</span>
+<span class="fc" id="L245">            : textComponent.getFont().deriveFont(Font.ITALIC)  // same</span>
         );
 
-<span class="fc" id="L246">        g.drawString(</span>
+<span class="fc" id="L248">        g.drawString(</span>
             placeholderText,
             x +
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">            (ComponentOrientation.RIGHT_TO_LEFT.equals(textComponent.getComponentOrientation())</span>
-<span class="nc" id="L250">            ? w - (fm.stringWidth(placeholderText) + ins.left + 2)</span>
-<span class="fc" id="L251">            : ins.left + 2),</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">            (ComponentOrientation.RIGHT_TO_LEFT.equals(textComponent.getComponentOrientation())</span>
+<span class="nc" id="L252">            ? w - (fm.stringWidth(placeholderText) + ins.left + 2)</span>
+<span class="fc" id="L253">            : ins.left + 2),</span>
             y
         );
-<span class="fc" id="L254">    }</span>
+<span class="fc" id="L256">    }</span>
     
     public static void initialize(JTextComponent component) {
-<span class="fc" id="L257">        component.setCaret(new DefaultCaret() {</span>
+<span class="fc" id="L259">        component.setCaret(new DefaultCaret() {</span>
             @Override
             public void setSelectionVisible(boolean visible) {
-<span class="fc" id="L260">                super.setSelectionVisible(true);</span>
-<span class="fc" id="L261">            }</span>
+<span class="fc" id="L262">                super.setSelectionVisible(true);</span>
+<span class="fc" id="L263">            }</span>
         });
-<span class="fc" id="L263">        component.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());</span>
-<span class="fc" id="L264">        component.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());</span>
-<span class="fc" id="L265">    }</span>
+<span class="fc" id="L265">        component.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());</span>
+<span class="fc" id="L266">        component.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());</span>
+<span class="fc" id="L267">    }</span>
 
     public static void applyTheme(RSyntaxTextArea textarea) {
         try {
-<span class="fc" id="L269">            boolean isDark = UIManager.getLookAndFeel().getName().matches(&quot;.*(Dark|High contrast).*&quot;);</span>
-<span class="fc bfc" id="L270" title="All 2 branches covered.">            var xmlTheme = String.format(&quot;/org/fife/ui/rsyntaxtextarea/themes/%s.xml&quot;, isDark ? &quot;dark&quot; : &quot;default&quot;);</span>
-<span class="fc" id="L271">            Theme theme = Theme.load(SqlEngine.class.getResourceAsStream(xmlTheme));</span>
-<span class="fc" id="L272">            theme.apply(textarea);</span>
-<span class="nc" id="L273">        } catch (IOException e) {</span>
-<span class="nc" id="L274">            throw new IllegalArgumentException(e);</span>
-<span class="fc" id="L275">        }</span>
-<span class="fc" id="L276">    }</span>
+<span class="fc" id="L271">            boolean isDark = UIManager.getLookAndFeel().getName().matches(&quot;.*(Dark|High contrast).*&quot;);</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">            var xmlTheme = String.format(&quot;/org/fife/ui/rsyntaxtextarea/themes/%s.xml&quot;, isDark ? &quot;dark&quot; : &quot;default&quot;);</span>
+<span class="fc" id="L273">            Theme theme = Theme.load(SqlEngine.class.getResourceAsStream(xmlTheme));</span>
+<span class="fc" id="L274">            theme.apply(textarea);</span>
+<span class="nc" id="L275">        } catch (IOException e) {</span>
+<span class="nc" id="L276">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L277">        }</span>
+<span class="fc" id="L278">    }</span>
 
     public static void applyTheme(String nameTheme) {
         try {
-<span class="fc bfc" id="L280" title="All 2 branches covered.">            Class&lt;?&gt; c = Class.forName(StringUtils.isEmpty(nameTheme) ? FlatLightFlatIJTheme.class.getName() : nameTheme);</span>
-<span class="fc" id="L281">            LookAndFeel lookAndFeel = (LookAndFeel) c.getDeclaredConstructor().newInstance();</span>
-<span class="fc" id="L282">            UIManager.setLookAndFeel(lookAndFeel);</span>
-<span class="nc" id="L283">        } catch (</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">            Class&lt;?&gt; c = Class.forName(StringUtils.isEmpty(nameTheme) ? FlatLightFlatIJTheme.class.getName() : nameTheme);</span>
+<span class="fc" id="L283">            LookAndFeel lookAndFeel = (LookAndFeel) c.getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L284">            UIManager.setLookAndFeel(lookAndFeel);</span>
+<span class="nc" id="L285">        } catch (</span>
             ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
             InvocationTargetException | UnsupportedLookAndFeelException e
         ) {
-<span class="nc" id="L287">            throw new IllegalArgumentException(e);</span>
-<span class="fc" id="L288">        }</span>
-<span class="fc" id="L289">        FlatLaf.updateUI();  // required</span>
+<span class="nc" id="L289">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L290">        }</span>
+<span class="fc" id="L291">        FlatLaf.updateUI();  // required</span>
 
         // required ATTRIBUTE_ALL without color for compatibility with dark/light mode as text is white/black
-<span class="fc" id="L292">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_WARN, LogLevelUtil.COLOR_RED);</span>
-<span class="fc" id="L293">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_INFORM, LogLevelUtil.COLOR_BLU);</span>
-<span class="fc" id="L294">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_SUCCESS, LogLevelUtil.COLOR_GREEN);</span>
-<span class="fc" id="L295">    }</span>
+<span class="fc" id="L294">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_WARN, LogLevelUtil.COLOR_RED);</span>
+<span class="fc" id="L295">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_INFORM, LogLevelUtil.COLOR_BLU);</span>
+<span class="fc" id="L296">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_SUCCESS, LogLevelUtil.COLOR_GREEN);</span>
+<span class="fc" id="L297">    }</span>
 
     public static GridLayout getColumnLayout(int size) {
-<span class="fc" id="L298">        return new GridLayout((size + 1) / 2, 2);</span>
+<span class="fc" id="L300">        return new GridLayout((size + 1) / 2, 2);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

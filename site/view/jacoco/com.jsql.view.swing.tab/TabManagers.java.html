@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class TabManagers extends TabbedPaneWheeled {
 
-<span class="fc" id="L34">    public static final List&lt;ModelSvgIcon&gt; TABS = Arrays.asList(</span>
+<span class="fc" id="L34">    private final List&lt;ModelSvgIcon&gt; iconsTabs = Arrays.asList(</span>
         UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH
     );
 
@@ -46,7 +46,7 @@ public class TabManagers extends TabbedPaneWheeled {
 <span class="fc" id="L46">        this.addMouseClickMenu();</span>
 
 <span class="fc" id="L48">        AtomicInteger indexTab = new AtomicInteger();</span>
-<span class="fc" id="L49">        TabManagers.TABS.forEach(modelSvgIcon -&gt; this.buildI18nTab(modelSvgIcon, indexTab.getAndIncrement()));</span>
+<span class="fc" id="L49">        this.iconsTabs.forEach(modelSvgIcon -&gt; this.buildI18nTab(modelSvgIcon, indexTab.getAndIncrement()));</span>
 <span class="fc" id="L50">        this.addChangeListener(e -&gt; {</span>
 <span class="fc" id="L51">            CardLayout cardLayout = (CardLayout) MediatorHelper.tabManagersCards().getLayout();</span>
 <span class="fc" id="L52">            cardLayout.show(MediatorHelper.tabManagersCards(), this.getTabComponentAt(this.getSelectedIndex()).getName());</span>
@@ -88,5 +88,9 @@ public class TabManagers extends TabbedPaneWheeled {
 <span class="fc" id="L88">        labelTab.setToolTipText(I18nUtil.valueByKey(keyTooltip));</span>
 <span class="fc" id="L89">        labelTab.addMouseListener(new TabMouseAdapter(this));  // required as label incorrectly focused</span>
 <span class="fc" id="L90">    }</span>
+
+    public List&lt;ModelSvgIcon&gt; getIconsTabs() {
+<span class="fc" id="L93">        return this.iconsTabs;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

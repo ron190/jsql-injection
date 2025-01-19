@@ -103,7 +103,7 @@ public class MenuWindows extends JMenu {
 
 <span class="fc" id="L104">        AtomicInteger accelerator = new AtomicInteger(0x31);</span>
 <span class="fc" id="L105">        AtomicInteger tabPosition = new AtomicInteger();</span>
-<span class="fc" id="L106">        TabManagers.TABS.forEach(entry -&gt; {</span>
+<span class="fc" id="L106">        MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(entry -&gt; {</span>
 <span class="fc" id="L107">            var menuItem = new JMenuItem(I18nUtil.valueByKey(entry.keyLabel), entry.icon);</span>
 <span class="fc" id="L108">            I18nViewUtil.addComponentForKey(entry.keyLabel, menuItem);</span>
 <span class="fc" id="L109">            menuItem.setName(entry.keyLabel);  // required by card manager switch</span>

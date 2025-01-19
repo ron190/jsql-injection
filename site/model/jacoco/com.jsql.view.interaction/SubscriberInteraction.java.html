@@ -56,9 +56,9 @@ public class SubscriberInteraction implements Subscriber&lt;Request&gt; {
 <span class="fc" id="L56">                Class&lt;?&gt; cl = Class.forName(this.packageInteraction +&quot;.&quot;+ request.getMessage());</span>
 <span class="fc" id="L57">                var types = new Class[]{ Object[].class };</span>
 <span class="fc" id="L58">                Constructor&lt;?&gt; constructor = cl.getConstructor(types);</span>
-                @SuppressWarnings(&quot;java:S1905&quot;)
+                @SuppressWarnings({&quot;java:S1905&quot;, &quot;java:S3878&quot;})  // rules opposite by intellij and sonar
 <span class="fc" id="L60">                InteractionCommand interactionCommand = (InteractionCommand) constructor.newInstance(</span>
-<span class="fc" id="L61">                    new Object[] {  request.getParameters() }  // cast for sonar disambiguation</span>
+<span class="fc" id="L61">                    new Object[] {  request.getParameters() }</span>
                 );
 <span class="fc" id="L63">                interactionCommand.execute();</span>
 <span class="fc" id="L64">            } catch (ClassNotFoundException e) {</span>

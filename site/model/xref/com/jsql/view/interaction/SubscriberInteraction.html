@@ -64,9 +64,9 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>                  Class&lt;?&gt; cl = Class.forName(<strong class="jxr_keyword">this</strong>.packageInteraction +<span class="jxr_string">"."</span>+ request.getMessage());
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>                  <strong class="jxr_keyword">var</strong> types = <strong class="jxr_keyword">new</strong> Class[]{ Object[].<strong class="jxr_keyword">class</strong> };
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>                  Constructor&lt;?&gt; constructor = cl.getConstructor(types);
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>                  @SuppressWarnings(<span class="jxr_string">"java:S1905"</span>)
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>                  @SuppressWarnings({<span class="jxr_string">"java:S1905"</span>, <span class="jxr_string">"java:S3878"</span>})  <em class="jxr_comment">// rules opposite by intellij and sonar</em>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>                  <a name="InteractionCommand" href="../../../../com/jsql/view/interaction/InteractionCommand.html#InteractionCommand">InteractionCommand</a> interactionCommand = (<a name="InteractionCommand" href="../../../../com/jsql/view/interaction/InteractionCommand.html#InteractionCommand">InteractionCommand</a>) constructor.newInstance(
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>                      <strong class="jxr_keyword">new</strong> Object[] {  request.getParameters() }  <em class="jxr_comment">// cast for sonar disambiguation</em>
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>                      <strong class="jxr_keyword">new</strong> Object[] {  request.getParameters() }
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>                  );
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>                  interactionCommand.execute();
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>              } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException e) {

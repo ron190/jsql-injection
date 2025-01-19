@@ -57,7 +57,7 @@ public class JFrameView extends JFrame {
      */
 <span class="fc" id="L58">    private final Map&lt;UUID, AbstractExploit&gt; mapUuidShell = new HashMap&lt;&gt;();</span>
 <span class="fc" id="L59">    private final transient SubscriberInteraction subscriber = new SubscriberInteraction(&quot;com.jsql.view.swing.interaction&quot;);</span>
-    private JTabbedPane tabManagers;
+    private TabManagers tabManagers;
 <span class="fc" id="L61">    private boolean isMaximized = false;</span>
     private final InjectionModel injectionModel;
     private SplitNS splitNS;  // main
@@ -88,15 +88,15 @@ public class JFrameView extends JFrame {
 <span class="fc" id="L88">    }</span>
 
     private void initializePaneComponents() {
-<span class="fc" id="L91">        var menubar = new AppMenubar();</span>
-<span class="fc" id="L92">        this.setJMenuBar(menubar);</span>
-<span class="fc" id="L93">        MediatorHelper.register(menubar);</span>
-
         // Define the default panel: each component on a vertical line
-<span class="fc" id="L96">        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));</span>
+<span class="fc" id="L92">        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));</span>
 
-<span class="fc" id="L98">        this.tabManagers = new TabManagers();  // Tab manager linked to cards</span>
-<span class="fc" id="L99">        this.add(this.tabManagers);</span>
+<span class="fc" id="L94">        this.tabManagers = new TabManagers();  // Tab manager linked to cards</span>
+<span class="fc" id="L95">        this.add(this.tabManagers);</span>
+
+<span class="fc" id="L97">        var menubar = new AppMenubar();</span>
+<span class="fc" id="L98">        this.setJMenuBar(menubar);</span>
+<span class="fc" id="L99">        MediatorHelper.register(menubar);</span>
 
 <span class="fc" id="L101">        var panelAddressBar = new PanelAddressBar();  // Textfield at the top</span>
 <span class="fc" id="L102">        MediatorHelper.register(panelAddressBar);</span>
@@ -118,7 +118,7 @@ public class JFrameView extends JFrame {
             @Override
             public void windowOpened(WindowEvent event) {
 <span class="pc bpc" id="L120" title="1 of 2 branches missed.">                if (preferences.getBoolean(PreferencesUtil.IS_MAXIMIZED, false)) {</span>
-<span class="nc" id="L121">                    JFrameView.this.setExtendedState(JFrame.MAXIMIZED_BOTH);</span>
+<span class="nc" id="L121">                    JFrameView.this.setExtendedState(Frame.MAXIMIZED_BOTH);</span>
                 }
 <span class="fc" id="L123">                var horizontalTopBottomSplitter = preferences.getDouble(PreferencesUtil.NS_SPLIT, 0.75);</span>
 <span class="pc bpc" id="L124" title="2 of 4 branches missed.">                if (!(0.0 &lt;= horizontalTopBottomSplitter &amp;&amp; horizontalTopBottomSplitter &lt;= 1.0)) {</span>
@@ -232,8 +232,8 @@ public class JFrameView extends JFrame {
 <span class="fc" id="L232">        return this.splitNS;</span>
     }
 
-    public JTabbedPane getTabManagers() {
-<span class="nc" id="L236">        return this.tabManagers;</span>
+    public TabManagers getTabManagers() {
+<span class="fc" id="L236">        return this.tabManagers;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

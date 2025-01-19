@@ -46,8 +46,8 @@ public class MessageHeader implements InteractionCommand {
 <span class="fc" id="L46">        Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
 <span class="fc" id="L47">        this.url = (String) params.getOrDefault(Header.URL, StringUtils.EMPTY);</span>
 <span class="fc" id="L48">        this.post = (String) params.getOrDefault(Header.POST, StringUtils.EMPTY);</span>
-<span class="fc" id="L49">        this.header = (Map&lt;String, String&gt;) params.getOrDefault(Header.HEADER, Collections.EMPTY_MAP);</span>
-<span class="fc" id="L50">        this.response = (Map&lt;String, String&gt;) params.getOrDefault(Header.RESPONSE, Collections.EMPTY_MAP);</span>
+<span class="fc" id="L49">        this.header = (Map&lt;String, String&gt;) params.getOrDefault(Header.HEADER, Collections.emptyMap());</span>
+<span class="fc" id="L50">        this.response = (Map&lt;String, String&gt;) params.getOrDefault(Header.RESPONSE, Collections.emptyMap());</span>
 <span class="fc" id="L51">        this.source = (String) params.getOrDefault(Header.SOURCE, StringUtils.EMPTY);</span>
 <span class="fc" id="L52">        this.size = (String) params.getOrDefault(Header.PAGE_SIZE, StringUtils.EMPTY);</span>
 <span class="fc" id="L53">        this.metadataProcess = (String) params.getOrDefault(Header.METADATA_PROCESS, StringUtils.EMPTY);</span>

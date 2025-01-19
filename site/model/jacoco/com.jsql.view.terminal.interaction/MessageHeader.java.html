@@ -35,8 +35,8 @@ public class MessageHeader implements InteractionCommand {
 <span class="fc" id="L35">        Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
 <span class="fc" id="L36">        this.url = (String) params.getOrDefault(Header.URL, StringUtils.EMPTY);</span>
 <span class="fc" id="L37">        this.post = (String) params.getOrDefault(Header.POST, StringUtils.EMPTY);</span>
-<span class="fc" id="L38">        this.header = (Map&lt;String, String&gt;) params.getOrDefault(Header.HEADER, Collections.EMPTY_MAP);</span>
-<span class="fc" id="L39">        this.response = (Map&lt;String, String&gt;) params.getOrDefault(Header.RESPONSE, Collections.EMPTY_MAP);</span>
+<span class="fc" id="L38">        this.header = (Map&lt;String, String&gt;) params.getOrDefault(Header.HEADER, Collections.emptyMap());</span>
+<span class="fc" id="L39">        this.response = (Map&lt;String, String&gt;) params.getOrDefault(Header.RESPONSE, Collections.emptyMap());</span>
 <span class="fc" id="L40">        this.source = (String) params.getOrDefault(Header.SOURCE, StringUtils.EMPTY);</span>
 <span class="fc" id="L41">    }</span>
 

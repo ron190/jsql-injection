@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PropertiesUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util</a> &gt; <span class="el_source">PropertiesUtil.java</span></div><h1>PropertiesUtil.java</h1><pre class="source lang-java linenums">package com.jsql.util;
 
+import com.jsql.model.exception.JSqlRuntimeException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,86 +24,86 @@ public class PropertiesUtil {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L27">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
-<span class="fc" id="L28">    private final Properties properties = new Properties();</span>
+<span class="fc" id="L29">    private final Properties properties = new Properties();</span>
 
-<span class="fc" id="L30">    public PropertiesUtil() {</span>
-<span class="fc" id="L31">        var filename = &quot;config.properties&quot;;</span>
-<span class="fc" id="L32">        try (InputStream input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename)) {</span>
-<span class="pc bpc" id="L33" title="1 of 2 branches missed.">            if (input == null) {</span>
-<span class="nc" id="L34">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Properties file {} not found&quot;, filename);</span>
-<span class="nc" id="L35">                return;</span>
+<span class="fc" id="L31">    public PropertiesUtil() {</span>
+<span class="fc" id="L32">        var filename = &quot;config.properties&quot;;</span>
+<span class="fc" id="L33">        try (InputStream input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename)) {</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">            if (input == null) {</span>
+<span class="nc" id="L35">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Properties file {} not found&quot;, filename);</span>
+<span class="nc" id="L36">                return;</span>
             }
-<span class="fc" id="L37">            this.getProperties().load(input);  // load a properties file from class path, inside static method</span>
-<span class="nc bnc" id="L38" title="All 2 branches missed.">        } catch (IOException e) {</span>
-<span class="nc" id="L39">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L40">        }</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L38">            this.getProperties().load(input);  // load a properties file from class path, inside static method</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        } catch (IOException e) {</span>
+<span class="nc" id="L40">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L41">        }</span>
+<span class="fc" id="L42">    }</span>
 
     public void displayStatus(Locale newLocale) {
-<span class="nc" id="L44">        AtomicInteger countJvm = new AtomicInteger();</span>
-<span class="nc" id="L45">        var statusJvm = StringUtils.EMPTY;</span>
-<span class="nc" id="L46">        AtomicInteger countGui = new AtomicInteger();</span>
-<span class="nc" id="L47">        var statusGui = StringUtils.EMPTY;</span>
-<span class="nc" id="L48">        var propertiesRoot = PropertiesUtil.getProperties(&quot;i18n/jsql.properties&quot;);</span>
+<span class="nc" id="L45">        AtomicInteger countJvm = new AtomicInteger();</span>
+<span class="nc" id="L46">        var statusJvm = StringUtils.EMPTY;</span>
+<span class="nc" id="L47">        AtomicInteger countGui = new AtomicInteger();</span>
+<span class="nc" id="L48">        var statusGui = StringUtils.EMPTY;</span>
+<span class="nc" id="L49">        var propertiesRoot = PropertiesUtil.getProperties(&quot;i18n/jsql.properties&quot;);</span>
 
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (!Arrays.asList(StringUtils.EMPTY, &quot;en&quot;).contains(newLocale.getLanguage())) {</span>
-<span class="nc" id="L51">            var bundleUser = PropertiesUtil.getProperties(&quot;i18n/jsql_&quot; + newLocale.getLanguage() + &quot;.properties&quot;);</span>
-<span class="nc" id="L52">            propertiesRoot.entrySet().stream()</span>
-<span class="nc bnc" id="L53" title="All 4 branches missed.">            .filter(key -&gt; bundleUser.isEmpty() || !bundleUser.containsKey(key.getKey()))</span>
-<span class="nc" id="L54">            .forEach(key -&gt; countGui.getAndIncrement());</span>
-<span class="nc" id="L55">            statusGui = String.format(&quot;gui %s %s%% %s&quot;,</span>
-<span class="nc" id="L56">                newLocale.getDisplayLanguage(newLocale),</span>
-<span class="nc" id="L57">                Float.valueOf((float) (countGui.get() * 100) / propertiesRoot.entrySet().size()).intValue(),</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">                countGui.get() &lt;= 0 ? StringUtils.EMPTY : &quot;(&quot;+ countGui.get() +&quot; items)&quot;</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (!Arrays.asList(StringUtils.EMPTY, &quot;en&quot;).contains(newLocale.getLanguage())) {</span>
+<span class="nc" id="L52">            var bundleUser = PropertiesUtil.getProperties(&quot;i18n/jsql_&quot; + newLocale.getLanguage() + &quot;.properties&quot;);</span>
+<span class="nc" id="L53">            propertiesRoot.entrySet().stream()</span>
+<span class="nc bnc" id="L54" title="All 4 branches missed.">            .filter(key -&gt; bundleUser.isEmpty() || !bundleUser.containsKey(key.getKey()))</span>
+<span class="nc" id="L55">            .forEach(key -&gt; countGui.getAndIncrement());</span>
+<span class="nc" id="L56">            statusGui = String.format(&quot;gui %s %s%% %s&quot;,</span>
+<span class="nc" id="L57">                newLocale.getDisplayLanguage(newLocale),</span>
+<span class="nc" id="L58">                (countGui.get() * 100) / propertiesRoot.entrySet().size(),</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">                countGui.get() &lt;= 0 ? StringUtils.EMPTY : &quot;(&quot;+ countGui.get() +&quot; items)&quot;</span>
             );
         }
 
-<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (!Locale.getDefault().getLanguage().equals(&quot;en&quot;)) {</span>
-<span class="nc" id="L63">            var propertiesJvm = PropertiesUtil.getProperties(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
-<span class="nc" id="L64">            propertiesRoot.entrySet().stream()</span>
-<span class="nc bnc" id="L65" title="All 4 branches missed.">            .filter(key -&gt; propertiesJvm.isEmpty() || !propertiesJvm.containsKey(key.getKey()))</span>
-<span class="nc" id="L66">            .forEach(key -&gt; countJvm.getAndIncrement());</span>
-<span class="nc" id="L67">            statusJvm = String.format(&quot;jvm %s %s%% %s&quot;,</span>
-<span class="nc" id="L68">                Locale.getDefault().getDisplayLanguage(newLocale),</span>
-<span class="nc" id="L69">                Float.valueOf((float) (countJvm.get() * 100) / propertiesRoot.entrySet().size()).intValue(),</span>
-<span class="nc bnc" id="L70" title="All 2 branches missed.">                countJvm.get() &lt;= 0 ? StringUtils.EMPTY : &quot; (&quot;+ countJvm.get() +&quot; items)&quot;</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (!Locale.getDefault().getLanguage().equals(&quot;en&quot;)) {</span>
+<span class="nc" id="L64">            var propertiesJvm = PropertiesUtil.getProperties(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
+<span class="nc" id="L65">            propertiesRoot.entrySet().stream()</span>
+<span class="nc bnc" id="L66" title="All 4 branches missed.">            .filter(key -&gt; propertiesJvm.isEmpty() || !propertiesJvm.containsKey(key.getKey()))</span>
+<span class="nc" id="L67">            .forEach(key -&gt; countJvm.getAndIncrement());</span>
+<span class="nc" id="L68">            statusJvm = String.format(&quot;jvm %s %s%% %s&quot;,</span>
+<span class="nc" id="L69">                Locale.getDefault().getDisplayLanguage(newLocale),</span>
+<span class="nc" id="L70">                (countJvm.get() * 100) / propertiesRoot.entrySet().size(),</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                countJvm.get() &lt;= 0 ? StringUtils.EMPTY : &quot; (&quot;+ countJvm.get() +&quot; items)&quot;</span>
             );
         }
 
-<span class="nc bnc" id="L74" title="All 4 branches missed.">        if (countJvm.get() &gt; 0 || countGui.get() &gt; 0) {</span>
-<span class="nc" id="L75">            LOGGER.info(</span>
+<span class="nc bnc" id="L75" title="All 4 branches missed.">        if (countJvm.get() &gt; 0 || countGui.get() &gt; 0) {</span>
+<span class="nc" id="L76">            LOGGER.info(</span>
                 &quot;i18n status: {}{}&quot;,
-<span class="nc bnc" id="L77" title="All 2 branches missed.">                countJvm.get() &gt; 0 ? statusJvm : StringUtils.EMPTY,</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">                countGui.get() &gt; 0 ? statusGui : StringUtils.EMPTY</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">                countJvm.get() &gt; 0 ? statusJvm : StringUtils.EMPTY,</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">                countGui.get() &gt; 0 ? statusGui : StringUtils.EMPTY</span>
             );
         }
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L82">    }</span>
 
     private static Properties getProperties(String name) {
-<span class="nc" id="L84">        var properties = new Properties();</span>
+<span class="nc" id="L85">        var properties = new Properties();</span>
         try {
-<span class="nc" id="L86">            var uri = ClassLoader.getSystemResource(name).toURI();</span>
-<span class="nc" id="L87">            var path = Paths.get(uri);</span>
-<span class="nc" id="L88">            byte[] root = Files.readAllBytes(path);</span>
-<span class="nc" id="L89">            var rootI18n = new String(root, StandardCharsets.UTF_8);</span>
-<span class="nc" id="L90">            String rootI18nFixed = Pattern.compile(&quot;\\\\[\n\r]+&quot;)</span>
-<span class="nc" id="L91">                .matcher(Matcher.quoteReplacement(rootI18n))</span>
-<span class="nc" id="L92">                .replaceAll(&quot;a&quot;);</span>
-<span class="nc" id="L93">            properties.load(new StringReader(rootI18nFixed));</span>
-<span class="nc" id="L94">        } catch (IOException | URISyntaxException e) {</span>
-<span class="nc" id="L95">            throw new RuntimeException(e);</span>
-<span class="nc" id="L96">        }</span>
-<span class="nc" id="L97">        return properties;</span>
+<span class="nc" id="L87">            var uri = ClassLoader.getSystemResource(name).toURI();</span>
+<span class="nc" id="L88">            var path = Paths.get(uri);</span>
+<span class="nc" id="L89">            byte[] root = Files.readAllBytes(path);</span>
+<span class="nc" id="L90">            var rootI18n = new String(root, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L91">            String rootI18nFixed = Pattern.compile(&quot;\\\\[\n\r]+&quot;)</span>
+<span class="nc" id="L92">                .matcher(Matcher.quoteReplacement(rootI18n))</span>
+<span class="nc" id="L93">                .replaceAll(&quot;a&quot;);</span>
+<span class="nc" id="L94">            properties.load(new StringReader(rootI18nFixed));</span>
+<span class="nc" id="L95">        } catch (IOException | URISyntaxException e) {</span>
+<span class="nc" id="L96">            throw new JSqlRuntimeException(e);</span>
+<span class="nc" id="L97">        }</span>
+<span class="nc" id="L98">        return properties;</span>
     }
 
     public String getVersionJsql() {
-<span class="fc" id="L101">        return this.properties.getProperty(&quot;jsql.version&quot;);</span>
+<span class="fc" id="L102">        return this.properties.getProperty(&quot;jsql.version&quot;);</span>
     }
 
     public Properties getProperties() {
-<span class="fc" id="L105">        return this.properties;</span>
+<span class="fc" id="L106">        return this.properties;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

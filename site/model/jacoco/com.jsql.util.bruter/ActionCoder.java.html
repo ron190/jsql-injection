@@ -83,127 +83,127 @@ import java.util.stream.Collectors;
 <span class="nc" id="L83">            return HashUtil.toCrc64(value);</span>
         }
     },
-<span class="fc" id="L86">    ENCODE_TO_HEX(&quot;Encode to &quot;+ Coder.HEX) {</span>
+<span class="fc" id="L86">    ENCODE_TO_HEX(StringUtil.ENCODE_TO + Coder.HEX) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L89">            return StringUtil.toHex(value);</span>
         }
     },
-<span class="fc" id="L92">    ENCODE_TO_HEX_ZIP(&quot;Encode to &quot;+ Coder.HEX_ZIP) {</span>
+<span class="fc" id="L92">    ENCODE_TO_HEX_ZIP(StringUtil.ENCODE_TO + Coder.HEX_ZIP) {</span>
         @Override
         public String run(String value) throws IOException {
 <span class="nc" id="L95">            return StringUtil.toHexZip(value);</span>
         }
     },
-<span class="fc" id="L98">    ENCODE_TO_BASE64_ZIP(&quot;Encode to &quot;+ Coder.BASE64_ZIP) {</span>
+<span class="fc" id="L98">    ENCODE_TO_BASE64_ZIP(StringUtil.ENCODE_TO + Coder.BASE64_ZIP) {</span>
         @Override
         public String run(String value) throws IOException {
 <span class="nc" id="L101">            return StringUtil.toBase64Zip(value);</span>
         }
     },
-<span class="fc" id="L104">    ENCODE_TO_BASE64(&quot;Encode to &quot;+ Coder.BASE64) {</span>
+<span class="fc" id="L104">    ENCODE_TO_BASE64(StringUtil.ENCODE_TO + Coder.BASE64) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L107">            return StringUtil.base64Encode(value);</span>
         }
     },
-<span class="fc" id="L110">    ENCODE_TO_BASE32(&quot;Encode to &quot;+ Coder.BASE32) {</span>
+<span class="fc" id="L110">    ENCODE_TO_BASE32(StringUtil.ENCODE_TO + Coder.BASE32) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L113">            return StringUtil.base32Encode(value);</span>
         }
     },
-<span class="fc" id="L116">    ENCODE_TO_BASE58(&quot;Encode to &quot;+ Coder.BASE58) {</span>
+<span class="fc" id="L116">    ENCODE_TO_BASE58(StringUtil.ENCODE_TO + Coder.BASE58) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L119">            return StringUtil.base58Encode(value);</span>
         }
     },
-<span class="fc" id="L122">    ENCODE_TO_BASE16(&quot;Encode to &quot;+ Coder.BASE16) {</span>
+<span class="fc" id="L122">    ENCODE_TO_BASE16(StringUtil.ENCODE_TO + Coder.BASE16) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L125">            return StringUtil.base16Encode(value);</span>
         }
     },
-<span class="fc" id="L128">    ENCODE_TO_HTML(&quot;Encode to &quot;+ Coder.HTML) {</span>
+<span class="fc" id="L128">    ENCODE_TO_HTML(StringUtil.ENCODE_TO + Coder.HTML) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L131">            return StringUtil.toHtml(value);</span>
         }
     },
-<span class="fc" id="L134">    ENCODE_TO_HTML_DECIMAL(&quot;Encode to &quot;+ Coder.HTML_DECIMAL) {</span>
+<span class="fc" id="L134">    ENCODE_TO_HTML_DECIMAL(StringUtil.ENCODE_TO + Coder.HTML_DECIMAL) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L137">            return StringUtil.toHtmlDecimal(value);</span>
         }
     },
-<span class="fc" id="L140">    ENCODE_TO_URL(&quot;Encode to &quot;+ Coder.URL) {</span>
+<span class="fc" id="L140">    ENCODE_TO_URL(StringUtil.ENCODE_TO + Coder.URL) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L143">            return StringUtil.toUrl(value);</span>
         }
     },
-<span class="fc" id="L146">    ENCODE_TO_UNICODE(&quot;Encode to &quot;+ Coder.UNICODE) {</span>
+<span class="fc" id="L146">    ENCODE_TO_UNICODE(StringUtil.ENCODE_TO + Coder.UNICODE) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L149">            return StringEscapeUtils.escapeJava(value);</span>
         }
     },
-<span class="fc" id="L152">    DECODE_FROM_HEX(&quot;Decode from &quot;+ Coder.HEX) {</span>
+<span class="fc" id="L152">    DECODE_FROM_HEX(StringUtil.DECODE_FROM + Coder.HEX) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L155">            return StringUtil.fromHex(value);</span>
         }
     },
-<span class="fc" id="L158">    DECODE_FROM_HEX_ZIP(&quot;Decode from &quot;+ Coder.HEX_ZIP) {</span>
+<span class="fc" id="L158">    DECODE_FROM_HEX_ZIP(StringUtil.DECODE_FROM + Coder.HEX_ZIP) {</span>
         @Override
         public String run(String value) throws IOException {
 <span class="nc" id="L161">            return StringUtil.fromHexZip(value);</span>
         }
     },
-<span class="fc" id="L164">    DECODE_FROM_BASE64_ZIP(&quot;Decode from &quot;+ Coder.BASE64_ZIP) {</span>
+<span class="fc" id="L164">    DECODE_FROM_BASE64_ZIP(StringUtil.DECODE_FROM + Coder.BASE64_ZIP) {</span>
         @Override
         public String run(String value) throws IOException {
 <span class="nc" id="L167">            return StringUtil.fromBase64Zip(value);</span>
         }
     },
-<span class="fc" id="L170">    DECODE_FROM_BASE64(&quot;Decode from &quot;+ Coder.BASE64) {</span>
+<span class="fc" id="L170">    DECODE_FROM_BASE64(StringUtil.DECODE_FROM + Coder.BASE64) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L173">            return StringUtil.base64Decode(value);</span>
         }
     },
-<span class="fc" id="L176">    DECODE_FROM_BASE32(&quot;Decode from &quot;+ Coder.BASE32) {</span>
+<span class="fc" id="L176">    DECODE_FROM_BASE32(StringUtil.DECODE_FROM + Coder.BASE32) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L179">            return StringUtil.base32Decode(value);</span>
         }
     },
-<span class="fc" id="L182">    DECODE_FROM_BASE58(&quot;Decode from &quot;+ Coder.BASE58) {</span>
+<span class="fc" id="L182">    DECODE_FROM_BASE58(StringUtil.DECODE_FROM + Coder.BASE58) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L185">            return StringUtil.base58Decode(value);</span>
         }
     },
-<span class="fc" id="L188">    DECODE_FROM_BASE16(&quot;Decode from &quot;+ Coder.BASE16) {</span>
+<span class="fc" id="L188">    DECODE_FROM_BASE16(StringUtil.DECODE_FROM + Coder.BASE16) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L191">            return StringUtil.base16Decode(value);</span>
         }
     },
-<span class="fc" id="L194">    DECODE_FROM_HTML(&quot;Decode from &quot;+ Coder.HTML) {</span>
+<span class="fc" id="L194">    DECODE_FROM_HTML(StringUtil.DECODE_FROM + Coder.HTML) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L197">            return StringUtil.fromHtml(value);</span>
         }
     },
-<span class="fc" id="L200">    DECODE_FROM_UNICODE(&quot;Decode from &quot;+ Coder.UNICODE) {</span>
+<span class="fc" id="L200">    DECODE_FROM_UNICODE(StringUtil.DECODE_FROM + Coder.UNICODE) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L203">            return StringEscapeUtils.unescapeJava(value);</span>
         }
     },
-<span class="fc" id="L206">    DECODE_FROM_URL(&quot;Decode from &quot;+ Coder.URL) {</span>
+<span class="fc" id="L206">    DECODE_FROM_URL(StringUtil.DECODE_FROM + Coder.URL) {</span>
         @Override
         public String run(String value) {
 <span class="nc" id="L209">            return StringUtil.fromUrl(value);</span>

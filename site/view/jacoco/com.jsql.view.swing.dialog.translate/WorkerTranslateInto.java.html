@@ -101,7 +101,7 @@ public class WorkerTranslateInto extends SwingWorker&lt;Object, Object&gt; {
 
     private void logFileNotFound(IOException e) throws IOException {
 <span class="nc bnc" id="L103" title="All 2 branches missed.">        if (this.propertiesLanguageToTranslate.isEmpty()) {</span>
-<span class="nc" id="L104">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, I18nUtil.valueByKey(&quot;LOG_I18N_TEXT_NOT_FOUND&quot;), e);</span>
+<span class="nc" id="L104">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_I18N_TEXT_NOT_FOUND&quot;), e);</span>
 <span class="nc bnc" id="L105" title="All 2 branches missed.">        } else if (this.propertiesRoot.isEmpty()) {</span>
 <span class="nc" id="L106">            throw new IOException(&quot;Reference language not found&quot;);</span>
         }

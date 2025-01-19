@@ -39,7 +39,7 @@
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="TabManagers" href="../../../../../com/jsql/view/swing/tab/TabManagers.html#TabManagers">TabManagers</a> <strong class="jxr_keyword">extends</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a> {
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> List&lt;ModelSvgIcon&gt; TABS = Arrays.asList(
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;ModelSvgIcon&gt; iconsTabs = Arrays.asList(
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      );
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
@@ -54,7 +54,7 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>          <strong class="jxr_keyword">this</strong>.addMouseClickMenu();
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>          AtomicInteger indexTab = <strong class="jxr_keyword">new</strong> AtomicInteger();
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>          TabManagers.TABS.forEach(modelSvgIcon -&gt; <strong class="jxr_keyword">this</strong>.buildI18nTab(modelSvgIcon, indexTab.getAndIncrement()));
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">this</strong>.iconsTabs.forEach(modelSvgIcon -&gt; <strong class="jxr_keyword">this</strong>.buildI18nTab(modelSvgIcon, indexTab.getAndIncrement()));
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">this</strong>.addChangeListener(e -&gt; {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              CardLayout cardLayout = (CardLayout) MediatorHelper.tabManagersCards().getLayout();
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>              cardLayout.show(MediatorHelper.tabManagersCards(), <strong class="jxr_keyword">this</strong>.getTabComponentAt(<strong class="jxr_keyword">this</strong>.getSelectedIndex()).getName());
@@ -96,7 +96,11 @@
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>          labelTab.setToolTipText(I18nUtil.valueByKey(keyTooltip));
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          labelTab.addMouseListener(<strong class="jxr_keyword">new</strong> <a name="TabMouseAdapter" href="../../../../../com/jsql/view/swing/tab/TabMouseAdapter.html#TabMouseAdapter">TabMouseAdapter</a>(<strong class="jxr_keyword">this</strong>));  <em class="jxr_comment">// required as label incorrectly focused</em>
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>      }
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>  }
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>  
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      <strong class="jxr_keyword">public</strong> List&lt;ModelSvgIcon&gt; getIconsTabs() {
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.iconsTabs;
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>      }
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2025. All rights reserved.</div>

@@ -111,7 +111,7 @@
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> 
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>         AtomicInteger accelerator = <strong class="jxr_keyword">new</strong> AtomicInteger(0x31);
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>         AtomicInteger tabPosition = <strong class="jxr_keyword">new</strong> AtomicInteger();
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>         TabManagers.TABS.forEach(entry -&gt; {
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(entry -&gt; {
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>             <strong class="jxr_keyword">var</strong> menuItem = <strong class="jxr_keyword">new</strong> JMenuItem(I18nUtil.valueByKey(entry.keyLabel), entry.icon);
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>             I18nViewUtil.addComponentForKey(entry.keyLabel, menuItem);
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>             menuItem.setName(entry.keyLabel);  <em class="jxr_comment">// required by card manager switch</em>
