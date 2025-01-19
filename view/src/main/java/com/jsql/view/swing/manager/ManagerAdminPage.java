@@ -13,7 +13,6 @@ package com.jsql.view.swing.manager;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.list.ItemList;
-import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -21,7 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.stream.Collectors;
 
@@ -41,19 +39,13 @@ public class ManagerAdminPage extends AbstractManagerList {
     public ManagerAdminPage() {
         super("swing/list/admin-page.txt");
 
-        this.defaultText = "ADMIN_PAGE_RUN_BUTTON_LABEL";
-        this.run = new JButtonStateful(this.defaultText);
+        this.buildRunButton("ADMIN_PAGE_RUN_BUTTON_LABEL", "ADMIN_PAGE_RUN_BUTTON_TOOLTIP");
         this.run.setName("runManagerAdminPage");
-        I18nViewUtil.addComponentForKey("ADMIN_PAGE_RUN_BUTTON_LABEL", this.run);
-        this.run.setToolTipText(I18nUtil.valueByKey("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
         this.run.addActionListener(actionEvent -> this.runSearch());
+        this.listPaths.setName("listManagerAdminPage");  // no tooltip, too annoying
 
-        this.listPaths.setName("listManagerAdminPage");
-
-        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         this.lastLine.add(this.horizontalGlue);
         this.lastLine.add(this.progressBar);
-        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         this.lastLine.add(this.run);
         this.add(this.lastLine, BorderLayout.SOUTH);
     }
@@ -84,7 +76,7 @@ public class ManagerAdminPage extends AbstractManagerList {
             if (StringUtils.isEmpty(urlAddressBar)) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing URL in address bar");
             } else {
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking admin page(s)...");
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey("LOG_CHECKING") +" admin pages...");
                 this.run.setText(I18nViewUtil.valueByKey("ADMIN_PAGE_RUN_BUTTON_STOP"));
                 this.run.setState(StateButton.STOPPABLE);
                 this.progressBar.setVisible(true);
@@ -93,13 +85,12 @@ public class ManagerAdminPage extends AbstractManagerList {
                     urlAddressBar,
                     this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList())
                 );
+                this.endProcess();
             }
         } else if (this.run.getState() == StateButton.STOPPABLE) {
-            MediatorHelper.model().getResourceAccess().setSearchAdminStopped(true);
+            MediatorHelper.model().getResourceAccess().stopSearchAdmin();
             this.run.setEnabled(false);
             this.run.setState(StateButton.STOPPING);
-            this.progressBar.setVisible(false);
-            this.horizontalGlue.setVisible(true);
         }
     }
 }

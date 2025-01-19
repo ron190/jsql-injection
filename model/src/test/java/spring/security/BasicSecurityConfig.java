@@ -31,9 +31,9 @@ public class BasicSecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-            .withUser(BASIC_USERNAME)
-            .password(passwordEncoder().encode(BASIC_PASSWORD))
-            .authorities(BASIC_ROLE);
+            .withUser(BasicSecurityConfig.BASIC_USERNAME)
+            .password(this.passwordEncoder().encode(BasicSecurityConfig.BASIC_PASSWORD))
+            .authorities(BasicSecurityConfig.BASIC_ROLE);
     }
 
     @Bean
@@ -41,9 +41,9 @@ public class BasicSecurityConfig {
         return http.securityMatcher("/basic/**")
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/basic/**")).hasAuthority(BASIC_ROLE)
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/basic/**")).hasAuthority(BasicSecurityConfig.BASIC_ROLE)
             )
-            .addFilterAfter(FILTER, AuthorizationFilter.class)
+            .addFilterAfter(BasicSecurityConfig.FILTER, AuthorizationFilter.class)
             .httpBasic(Customizer.withDefaults())
             .build();
     }

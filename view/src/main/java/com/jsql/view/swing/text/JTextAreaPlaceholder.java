@@ -22,14 +22,13 @@ public class JTextAreaPlaceholder extends JTextArea {
     /**
      * Text to display when empty.
      */
-    private final String placeholderText;
+    private String placeholderText;
     
     /**
      * Create a textfield with hint.
      * @param placeholder Text displayed when empty
      */
     public JTextAreaPlaceholder(String placeholder) {
-        
         this.placeholderText = placeholder;
         UiUtil.initialize(this);
     }
@@ -42,12 +41,15 @@ public class JTextAreaPlaceholder extends JTextArea {
         // StateInvariantError possible on jdk 8 when WrappedPlainView.drawLine in paint()
         try {
             super.paint(g);
-            
             if (StringUtils.isEmpty(this.getText())) {
                 UiUtil.drawPlaceholder(this, g, this.placeholderText);
             }
         } catch (IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
+    }
+
+    public void setPlaceholderText(String placeholderText) {
+        this.placeholderText = placeholderText;
     }
 }

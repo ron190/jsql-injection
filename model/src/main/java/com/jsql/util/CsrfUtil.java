@@ -68,7 +68,7 @@ public class CsrfUtil {
             .map(input ->
                 new SimpleEntry<>(
                     input.attr("name"),
-                    input.attr(INPUT_ATTR_VALUE)
+                    input.attr(CsrfUtil.INPUT_ATTR_VALUE)
                 )
             );
         
@@ -91,7 +91,7 @@ public class CsrfUtil {
                     tokenCsrfFound::getValue
                 );
             } else {
-                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CsrfUtil.MSG_ENABLE_CSRF);
             }
         }
     }
@@ -99,10 +99,10 @@ public class CsrfUtil {
     private void parseCsrfFromCookie(Map<String, String> mapResponse) {
         Optional<SimpleEntry<String, String>> optionalCookieCsrf = Optional.empty();
         
-        if (mapResponse.containsKey(SET_COOKIE_RESPONSE)) {
+        if (mapResponse.containsKey(CsrfUtil.SET_COOKIE_RESPONSE)) {
             // Spring: Cookie XSRF-TOKEN => Header X-XSRF-TOKEN, GET/POST parameter _csrf
             // Laravel, Zend, Symfony
-            String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE_RESPONSE), ";");
+            String[] cookieValues = StringUtils.split(mapResponse.get(CsrfUtil.SET_COOKIE_RESPONSE), ";");
             optionalCookieCsrf = Stream.of(cookieValues)
                 .filter(cookie -> cookie.trim().toLowerCase().startsWith("xsrf-token"))
                 .map(cookie -> {
@@ -133,7 +133,7 @@ public class CsrfUtil {
             ) {
                 this.tokenCsrf = headerCsrf;
             } else {
-                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CsrfUtil.MSG_ENABLE_CSRF);
             }
         }
     }

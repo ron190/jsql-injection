@@ -2,7 +2,7 @@ package com.test.vendor.cubrid;
 
 import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
-import spring.SpringTargetApplication;
+import spring.SpringApp;
 
 public abstract class ConcreteCubridSuiteIT extends AbstractTestSuite {
 
@@ -12,9 +12,9 @@ public abstract class ConcreteCubridSuiteIT extends AbstractTestSuite {
 
     public void config() {
 
-        this.jdbcURL = SpringTargetApplication.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringTargetApplication.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringTargetApplication.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        this.jdbcURL = SpringApp.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = SpringApp.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = SpringApp.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.jsqlDatabaseName = "PUBLIC";
         this.jsqlTableName = "student";

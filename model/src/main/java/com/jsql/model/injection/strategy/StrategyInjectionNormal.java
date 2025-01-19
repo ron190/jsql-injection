@@ -29,7 +29,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
-     * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body.
+     * i.e, 2 in "..union select 1,2,..", if 2 is found in HTML body.
      */
     protected String visibleIndex;
 
@@ -38,6 +38,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
      * multiple fields selection (select 1,2,3,..).
      */
     protected String sourceIndexesFound = StringUtils.EMPTY;
+    private int nbIndexesFound = 0;
 
     private String performanceLength = "0";
     
@@ -48,7 +49,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     @Override
     public void checkApplicability() throws JSqlException {
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled()) {
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         }
 
@@ -60,7 +61,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         );
         this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());
 
-        // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body
+        // Define visibleIndex, i.e, 2 in "..union select 1,2,..", if 2 is found in HTML body
         if (StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())) {
             this.visibleIndex = this.getVisibleIndex(this.sourceIndexesFound);
         }
@@ -87,7 +88,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     @Override
     public void allow(int... i) {
         this.injectionModel.appendAnalysisReport(
-            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + getName())
+            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithIndexes(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
                 "metadataInjectionProcess"
@@ -225,5 +226,13 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     public void setSourceIndexesFound(String sourceIndexesFound) {
         this.sourceIndexesFound = sourceIndexesFound;
+    }
+
+    public int getNbIndexesFound() {
+        return this.nbIndexesFound;
+    }
+
+    public void setNbIndexesFound(int nbIndexesFound) {
+        this.nbIndexesFound = nbIndexesFound;
     }
 }

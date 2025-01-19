@@ -49,8 +49,8 @@ public class CallableMultibit extends AbstractCallableBinary<CallableMultibit> {
     @Override
     public CallableMultibit call() {
         String result = this.injectionMultibit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        this.diffsWithReference = DIFF_MATCH_PATCH.diffMain(this.injectionMultibit.getSourceReference(), result, true);
-        DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
+        this.diffsWithReference = CallableMultibit.DIFF_MATCH_PATCH.diffMain(this.injectionMultibit.getSourceReference(), result, true);
+        CallableMultibit.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
 
         this.diffsWithReference.removeAll(this.injectionMultibit.getDiffsCommonWithAllIds());
 

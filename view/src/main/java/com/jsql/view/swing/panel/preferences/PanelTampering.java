@@ -46,7 +46,7 @@ public class PanelTampering extends JPanel {
         PanelTampering.textPaneEval.setPopupMenu(new JPopupMenuComponent(PanelTampering.textPaneEval));
         PanelTampering.applyTheme();
 
-        var textAreaIsTamperingEval = new RTextScrollPane(PanelTampering.textPaneEval);
+        var textAreaIsTamperingEval = new RTextScrollPane(PanelTampering.textPaneEval, false);
         textAreaIsTamperingEval.setMinimumSize(new Dimension(800, 100));
 
         PanelTampering.textPaneEval.getDocument().addDocumentListener(new DocumentListenerEditing() {
@@ -212,7 +212,7 @@ public class PanelTampering extends JPanel {
     }
 
     public static void applyTheme() {
-        UiUtil.applyTheme(textPaneEval);
+        UiUtil.applyTheme(PanelTampering.textPaneEval);
     }
     
     

@@ -59,7 +59,7 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
         // Side effect: disable caret blink, editable texts must restore blink rate
         this.getProxy().addFocusListener(new FocusAdapter() {
             @Override
-            public void focusGained(FocusEvent arg0) {
+            public void focusGained(FocusEvent focusEvent) {
                 // Fix #95769: IllegalArgumentException on setVisible()
                 try {
                     JPopupTextArea.this.getProxy().getCaret().setVisible(true);

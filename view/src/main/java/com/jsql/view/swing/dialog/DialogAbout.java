@@ -10,8 +10,11 @@
  ******************************************************************************/
 package com.jsql.view.swing.dialog;
 
+import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
+import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
@@ -49,11 +52,12 @@ public class DialogAbout extends JDialog {
      * Create a dialog about project general information.
      */
     public DialogAbout() {
-        super(MediatorHelper.frame(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
+        super(MediatorHelper.frame(), I18nUtil.valueByKey("ABOUT_WINDOW_TITLE") +" "+ StringUtil.APP_NAME, Dialog.ModalityType.MODELESS);
+        I18nViewUtil.addComponentForKey("ABOUT_WINDOW_TITLE", this);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setIconImages(UiUtil.getIcons());  // Define a small and large app icon
 
-        ActionListener escapeListener = actionEvent -> DialogAbout.this.dispose();  // Action for ESCAPE key
+        ActionListener escapeListener = actionEvent -> this.dispose();  // Action for ESCAPE key
         this.getRootPane().registerKeyboardAction(
             escapeListener,
             KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
@@ -77,7 +81,8 @@ public class DialogAbout extends JDialog {
     }
 
     private JPanel initializeLastLine(ActionListener escapeListener) {
-        final var buttonWebpage = new JButton("Webpage");
+        final var buttonWebpage = new JButton(I18nUtil.valueByKey("ABOUT_WEBPAGE"));
+        I18nViewUtil.addComponentForKey("ABOUT_WEBPAGE", buttonWebpage);
         buttonWebpage.addActionListener(ev -> {
             try {
                 Desktop.getDesktop().browse(new URI(MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.url")));
@@ -86,7 +91,8 @@ public class DialogAbout extends JDialog {
             }
         });
 
-        this.buttonClose = new JButton("Close");
+        this.buttonClose = new JButton(I18nUtil.valueByKey("ABOUT_CLOSE"));
+        I18nViewUtil.addComponentForKey("ABOUT_CLOSE", this.buttonClose);
         this.buttonClose.addActionListener(escapeListener);
 
         var lastLine = new JPanel();

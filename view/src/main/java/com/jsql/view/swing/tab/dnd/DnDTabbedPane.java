@@ -77,17 +77,17 @@ public class DnDTabbedPane extends JTabbedPane {
     public void autoScrollTest(Point pt) {
         Rectangle r = this.getTabAreaBounds();
         
-        if (isTopBottomTabPlacement(this.getTabPlacement())) {
-            RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
-            RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
+        if (DnDTabbedPane.isTopBottomTabPlacement(this.getTabPlacement())) {
+            DnDTabbedPane.RECT_BACKWARD.setBounds(r.x, r.y, DnDTabbedPane.SCROLL_SIZE, r.height);
+            DnDTabbedPane.RECT_FORWARD.setBounds(r.x + r.width - DnDTabbedPane.SCROLL_SIZE - DnDTabbedPane.BUTTON_SIZE, r.y, DnDTabbedPane.SCROLL_SIZE + DnDTabbedPane.BUTTON_SIZE, r.height);
         } else {
-            RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
-            RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
+            DnDTabbedPane.RECT_BACKWARD.setBounds(r.x, r.y, r.width, DnDTabbedPane.SCROLL_SIZE);
+            DnDTabbedPane.RECT_FORWARD.setBounds(r.x, r.y + r.height - DnDTabbedPane.SCROLL_SIZE - DnDTabbedPane.BUTTON_SIZE, r.width, DnDTabbedPane.SCROLL_SIZE + DnDTabbedPane.BUTTON_SIZE);
         }
         
-        if (RECT_BACKWARD.contains(pt)) {
+        if (DnDTabbedPane.RECT_BACKWARD.contains(pt)) {
             this.clickArrowButton("scrollTabsBackwardAction");
-        } else if (RECT_FORWARD.contains(pt)) {
+        } else if (DnDTabbedPane.RECT_FORWARD.contains(pt)) {
             this.clickArrowButton("scrollTabsForwardAction");
         }
     }
@@ -178,20 +178,20 @@ public class DnDTabbedPane extends JTabbedPane {
             .orElse(-1);
         
         if (index < 0) {
-            RECT_LINE.setBounds(0, 0, 0, 0);
+            DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);
             return Optional.empty();
         }
         
         int a = Math.min(index, 1);
         Rectangle r = this.getBoundsAt(a * (index - 1));
         
-        if (isTopBottomTabPlacement(this.getTabPlacement())) {
-            RECT_LINE.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
+        if (DnDTabbedPane.isTopBottomTabPlacement(this.getTabPlacement())) {
+            DnDTabbedPane.RECT_LINE.setBounds(r.x - DnDTabbedPane.LINE_WIDTH / 2 + r.width * a, r.y, DnDTabbedPane.LINE_WIDTH, r.height);
         } else {
-            RECT_LINE.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
+            DnDTabbedPane.RECT_LINE.setBounds(r.x, r.y - DnDTabbedPane.LINE_WIDTH / 2 + r.height * a, r.width, DnDTabbedPane.LINE_WIDTH);
         }
         
-        return Optional.of(RECT_LINE);
+        return Optional.of(DnDTabbedPane.RECT_LINE);
     }
     
     public Rectangle getTabAreaBounds() {
@@ -205,14 +205,14 @@ public class DnDTabbedPane extends JTabbedPane {
 
         int tabPlacement = this.getTabPlacement();
         
-        if (isTopBottomTabPlacement(tabPlacement)) {
+        if (DnDTabbedPane.isTopBottomTabPlacement(tabPlacement)) {
             tabbedRect.height = tabbedRect.height - compRect.height;
-            if (tabPlacement == BOTTOM) {
+            if (tabPlacement == SwingConstants.BOTTOM) {
                 tabbedRect.y += compRect.y + compRect.height;
             }
         } else {
             tabbedRect.width = tabbedRect.width - compRect.width;
-            if (tabPlacement == RIGHT) {
+            if (tabPlacement == SwingConstants.RIGHT) {
                 tabbedRect.x += compRect.x + compRect.width;
             }
         }
@@ -285,8 +285,8 @@ public class DnDTabbedPane extends JTabbedPane {
                 
                 // Unhandled NoClassDefFoundError #56620: Could not initialize class java.awt.dnd.DragSource
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
-                
-                RECT_LINE.setBounds(0, 0, 0, 0);
+
+                DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);
                 src.getRootPane().getGlassPane().setVisible(true);
                 src.setDropLocation(new DnDDropLocation(tabPt, -1), true);
                 

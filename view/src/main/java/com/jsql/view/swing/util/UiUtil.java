@@ -12,6 +12,7 @@ package com.jsql.view.swing.util;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.intellijthemes.FlatLightFlatIJTheme;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.console.JTextPaneAppender;
 import com.jsql.view.swing.sql.SqlEngine;
@@ -53,74 +54,80 @@ public class UiUtil {
     public static final Border BORDER_5PX = BorderFactory.createEmptyBorder(5, 5, 5, 5);
     public static final String TEXTPANE_FONT = "TextPane.font";
 
-    public static final Icon ICON_FLAG_AR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ar.png")));
-    public static final Icon ICON_FLAG_ZH = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/zh.png")));
-    public static final Icon ICON_FLAG_RU = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ru.png")));
-    public static final Icon ICON_FLAG_TR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/tr.png")));
-    public static final Icon ICON_FLAG_EN = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/en.png")));
-    public static final Icon ICON_FLAG_FR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/fr.png")));
-    public static final Icon ICON_FLAG_HI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/hi.png")));
-    public static final Icon ICON_FLAG_CS = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/cs.png")));
-    public static final Icon ICON_FLAG_DE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/de.png")));
-    public static final Icon ICON_FLAG_NL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/nl.png")));
-    public static final Icon ICON_FLAG_IN = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/in.png")));
-    public static final Icon ICON_FLAG_IT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/it.png")));
-    public static final Icon ICON_FLAG_ES = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/es.png")));
-    public static final Icon ICON_FLAG_PT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/pt.png")));
-    public static final Icon ICON_FLAG_PL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/pl.png")));
-    public static final Icon ICON_FLAG_JA = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ja.png")));
-    public static final Icon ICON_FLAG_KO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ko.png")));
-    public static final Icon ICON_FLAG_RO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ro.png")));
-    public static final Icon ICON_FLAG_LK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/lk.png")));
-    public static final Icon ICON_FLAG_SE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/se.png")));
-    public static final Icon ICON_FLAG_FI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/fi.png")));
+    public static final ImageIcon ICON_FLAG_AR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ar.png")));
+    public static final ImageIcon ICON_FLAG_ZH = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/zh.png")));
+    public static final ImageIcon ICON_FLAG_RU = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ru.png")));
+    public static final ImageIcon ICON_FLAG_TR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/tr.png")));
+    public static final ImageIcon ICON_FLAG_EN = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/en.png")));
+    public static final ImageIcon ICON_FLAG_FR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/fr.png")));
+    public static final ImageIcon ICON_FLAG_HI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/hi.png")));
+    public static final ImageIcon ICON_FLAG_CS = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/cs.png")));
+    public static final ImageIcon ICON_FLAG_DE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/de.png")));
+    public static final ImageIcon ICON_FLAG_NL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/nl.png")));
+    public static final ImageIcon ICON_FLAG_IN = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/in.png")));
+    public static final ImageIcon ICON_FLAG_IT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/it.png")));
+    public static final ImageIcon ICON_FLAG_ES = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/es.png")));
+    public static final ImageIcon ICON_FLAG_PT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/pt.png")));
+    public static final ImageIcon ICON_FLAG_PL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/pl.png")));
+    public static final ImageIcon ICON_FLAG_JA = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ja.png")));
+    public static final ImageIcon ICON_FLAG_KO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ko.png")));
+    public static final ImageIcon ICON_FLAG_RO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ro.png")));
+    public static final ImageIcon ICON_FLAG_LK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/lk.png")));
+    public static final ImageIcon ICON_FLAG_SE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/se.png")));
+    public static final ImageIcon ICON_FLAG_FI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/fi.png")));
 
     public static final URL URL_ICON_16 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug16.png");
     public static final URL URL_ICON_32 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug32.png");
     public static final URL URL_ICON_96 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug96.png");
     public static final URL URL_ICON_128 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug128.png");
 
-    public static final SvgIcon DATABASE_BOLD = new SvgIcon("database-bold", 0x1C274C, 0.02f);
-    public static final SvgIcon ADMIN = new SvgIcon("admin", 0.02f);
-    public static final SvgIcon DOWNLOAD = new SvgIcon("download", 0.55f);
-    public static final SvgIcon TERMINAL = new SvgIcon("terminal", 0.50f);
-    public static final SvgIcon UPLOAD = new SvgIcon("upload", 0.55f);
-    public static final SvgIcon LOCK = new SvgIcon("lock", 0.02f);
-    public static final SvgIcon TEXTFIELD = new SvgIcon("textfield", 0.02f);
-    public static final SvgIcon BATCH = new SvgIcon("batch", 0.02f);
+    public static final ModelSvgIcon DATABASE_BOLD = new ModelSvgIcon("database-bold", 0x1C274C)
+        .withTab("DATABASE_TAB", "DATABASE_TOOLTIP");
+    public static final ModelSvgIcon ADMIN = new ModelSvgIcon("admin", 0.02f)
+        .withTab("ADMINPAGE_TAB", "ADMINPAGE_TOOLTIP");
+    public static final ModelSvgIcon DOWNLOAD = new ModelSvgIcon("download", 0.55f)
+        .withTab("FILE_TAB", "FILE_TOOLTIP");
+    public static final ModelSvgIcon TERMINAL = new ModelSvgIcon("terminal", 0.50f)
+        .withTab("EXPLOIT_TAB", "EXPLOIT_TOOLTIP");
+    public static final ModelSvgIcon UPLOAD = new ModelSvgIcon("upload", 0.55f);
+    public static final ModelSvgIcon LOCK = new ModelSvgIcon("lock", 0.02f)
+        .withTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP");
+    public static final ModelSvgIcon TEXTFIELD = new ModelSvgIcon("textfield", 0.02f)
+        .withTab("CODER_TAB", "CODER_TOOLTIP");
+    public static final ModelSvgIcon BATCH = new ModelSvgIcon("batch", 0.02f)
+        .withTab("SCANLIST_TAB", "SCANLIST_TOOLTIP");
 
-    public static final SvgIcon TABLE_LINEAR = new SvgIcon("table-linear", 0x212121, 0.02f);
-    public static final SvgIcon TABLE_BOLD = new SvgIcon("table-bold", 0x212121, 0.02f);
-    public static final SvgIcon NETWORK = new SvgIcon("network", 0.02f);
-    public static final SvgIcon DATABASE_LINEAR = new SvgIcon("database-linear", 0x1C274C, 0.02f);
-    public static final SvgIcon CUP = new SvgIcon("cup", 0.02f);
-    public static final SvgIcon CONSOLE = new SvgIcon("console", 0.02f);
-    public static final SvgIcon BINARY = new SvgIcon("binary", 0.02f);
-    public static final SvgIcon CHUNK = new SvgIcon("chunk", 0.02f);
-    public static final SvgIcon COG = new SvgIcon("cog", 0.02f);
+    public static final ModelSvgIcon TABLE_LINEAR = new ModelSvgIcon("table-linear", 0x212121);
+    public static final ModelSvgIcon TABLE_BOLD = new ModelSvgIcon("table-bold", 0x212121);
+    public static final ModelSvgIcon NETWORK = new ModelSvgIcon("network", 0.02f);
+    public static final ModelSvgIcon DATABASE_LINEAR = new ModelSvgIcon("database-linear", 0x1C274C);
+    public static final ModelSvgIcon CUP = new ModelSvgIcon("cup", 0.02f);
+    public static final ModelSvgIcon CONSOLE = new ModelSvgIcon("console", 0.02f);
+    public static final ModelSvgIcon BINARY = new ModelSvgIcon("binary", 0.02f);
+    public static final ModelSvgIcon CHUNK = new ModelSvgIcon("chunk", 0.02f);
+    public static final ModelSvgIcon COG = new ModelSvgIcon("cog", 0.02f);
 
-    public static final SvgIcon CROSS_RED = new SvgIcon("cross", new Color(0x0F0F0F), null, LogLevelUtil.COLOR_RED, 0.025f);
+    public static final ModelSvgIcon CROSS_RED = new ModelSvgIcon("cross", new Color(0x0F0F0F), null, LogLevelUtil.COLOR_RED, 0.025f);
     private static final String NAME_ARROW = "arrow";
-    public static final SvgIcon ARROW = new SvgIcon(NAME_ARROW, new Color(0x005a96), "ComboBox.buttonArrowColor", 1f);
-    public static final SvgIcon ARROW_HOVER = new SvgIcon(NAME_ARROW, new Color(0x005a96), "ComboBox.buttonHoverArrowColor", 1f);
-    public static final SvgIcon ARROW_PRESSED = new SvgIcon(NAME_ARROW, new Color(0x005a96), "ComboBox.buttonPressedArrowColor", 1f);
+    public static final ModelSvgIcon ARROW = new ModelSvgIcon(UiUtil.NAME_ARROW, new Color(0x005a96), "ComboBox.buttonArrowColor", 1f);
+    public static final ModelSvgIcon ARROW_HOVER = new ModelSvgIcon(UiUtil.NAME_ARROW, new Color(0x005a96), "ComboBox.buttonHoverArrowColor", 1f);
+    public static final ModelSvgIcon ARROW_PRESSED = new ModelSvgIcon(UiUtil.NAME_ARROW, new Color(0x005a96), "ComboBox.buttonPressedArrowColor", 1f);
     private static final String NAME_EXPAND = "expand";
-    public static final SvgIcon EXPAND = new SvgIcon(NAME_EXPAND, Color.BLACK, "ComboBox.buttonArrowColor", 0.02f);
-    public static final SvgIcon EXPAND_HOVER = new SvgIcon(NAME_EXPAND, Color.BLACK, "ComboBox.buttonHoverArrowColor", 0.02f);
-    public static final SvgIcon EXPAND_PRESSED = new SvgIcon(NAME_EXPAND, Color.BLACK, "ComboBox.buttonPressedArrowColor", 0.02f);
+    public static final ModelSvgIcon EXPAND = new ModelSvgIcon(UiUtil.NAME_EXPAND, Color.BLACK, "ComboBox.buttonArrowColor", 0.02f);
+    public static final ModelSvgIcon EXPAND_HOVER = new ModelSvgIcon(UiUtil.NAME_EXPAND, Color.BLACK, "ComboBox.buttonHoverArrowColor", 0.02f);
+    public static final ModelSvgIcon EXPAND_PRESSED = new ModelSvgIcon(UiUtil.NAME_EXPAND, Color.BLACK, "ComboBox.buttonPressedArrowColor", 0.02f);
 
-    public static final SvgIcon HOURGLASS = new SvgIcon("hourglass", 0.02f);
-    public static final SvgIcon ARROW_UP = new SvgIcon("arrow-up", 0.02f);
-    public static final SvgIcon ARROW_DOWN = new SvgIcon("arrow-down", 0.02f);
-    public static final SvgIcon SQUARE = new SvgIcon("square", 0.01f);
-    public static final SvgIcon TICK_GREEN = new SvgIcon("tick", Color.BLACK, null, LogLevelUtil.COLOR_GREEN, 0.02f);
-    public static final SvgIcon GLOBE = new SvgIcon("globe", 0.025f);
+    public static final ModelSvgIcon HOURGLASS = new ModelSvgIcon("hourglass", 0.02f);
+    public static final ModelSvgIcon ARROW_UP = new ModelSvgIcon("arrow-up", 0.02f);
+    public static final ModelSvgIcon ARROW_DOWN = new ModelSvgIcon("arrow-down", 0.02f);
+    public static final ModelSvgIcon SQUARE = new ModelSvgIcon("square", 0.01f);
+    public static final ModelSvgIcon TICK_GREEN = new ModelSvgIcon("tick", Color.BLACK, null, LogLevelUtil.COLOR_GREEN, 0.02f);
+    public static final ModelSvgIcon GLOBE = new ModelSvgIcon("globe", 0.025f);
     private static final String PATH_APP_SVG = "swing/images/software/app.svg";
-    public static final SvgIcon REPORT = new SvgIcon(PATH_APP_SVG, 0.04f);
-    public static final SvgIcon APP_RESULT = new SvgIcon(PATH_APP_SVG, 0.5f);
-    public static final SvgIcon APP_ABOUT = new SvgIcon(PATH_APP_SVG, 0.25f);
+    public static final ModelSvgIcon REPORT = new ModelSvgIcon(UiUtil.PATH_APP_SVG, 0.04f);
+    public static final ModelSvgIcon APP_RESULT = new ModelSvgIcon(UiUtil.PATH_APP_SVG, 0.5f);
+    public static final ModelSvgIcon APP_ABOUT = new ModelSvgIcon(UiUtil.PATH_APP_SVG, 0.25f);
 
-    public static final String PATH_WEB_FOLDERS = "swing/list/payload.txt";
     public static final String PATH_PAUSE = "swing/images/icons/pause.png";
 
     public static final String FONT_NAME_MONO_NON_ASIAN = "Ubuntu Mono";
@@ -141,13 +148,19 @@ public class UiUtil {
     public static final Font FONT_MONO_ASIAN = new Font(
         UiUtil.FONT_NAME_MONO_ASIAN,
         Font.PLAIN,
-        UIManager.getDefaults().getFont(TEXTPANE_FONT).getSize()
+        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize()
     );
     
+    public static final Font FONT_MONO_ASIAN_BIG = new Font(
+        UiUtil.FONT_NAME_MONO_ASIAN,
+        Font.PLAIN,
+        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize() + 2
+    );
+
     public static final Font FONT_NON_MONO = new Font(
         "Segoe UI",
         Font.PLAIN,
-        UIManager.getDefaults().getFont(TEXTPANE_FONT).getSize()
+        UIManager.getDefaults().getFont(UiUtil.TEXTPANE_FONT).getSize()
     );
     
     public static final Font FONT_NON_MONO_BIG = new Font(
@@ -156,11 +169,6 @@ public class UiUtil {
         UIManager.getDefaults().getFont("TextField.font").getSize() + 2
     );
 
-    public static final String CHUNK_VISIBLE = "chunk_visible";
-    public static final String BINARY_VISIBLE = "binary_visible";
-    public static final String NETWORK_VISIBLE = "header_visible";
-    public static final String JAVA_VISIBLE = "java_visible";
-    
     private UiUtil() {
         // Utility class
     }
@@ -173,6 +181,7 @@ public class UiUtil {
         // timer before closing automatically tooltip
         ToolTipManager.sharedInstance().setDismissDelay(3 * ToolTipManager.sharedInstance().getDismissDelay());
         UIManager.put("TextArea.font", UiUtil.FONT_MONO_NON_ASIAN);  // required for basic text like chunks tab
+        UIManager.put("TextPane.font", UIManager.getFont("TextArea.font"));  // align textpane font
     }
 
     private static void loadFonts() {
@@ -207,7 +216,7 @@ public class UiUtil {
     }
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText) {
-        drawPlaceholder(textComponent, g, placeholderText, 0, g.getFontMetrics().getAscent() + 2);
+        UiUtil.drawPlaceholder(textComponent, g, placeholderText, 0, g.getFontMetrics().getAscent() + 2);
     }
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText, int x, int y) {
@@ -225,7 +234,14 @@ public class UiUtil {
         int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
         
         g.setColor(new Color(c2, true));
-        g.setFont(textComponent.getFont().deriveFont(Font.ITALIC));
+
+        g.setFont(
+            I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale())
+            ? textComponent.getFont() == UiUtil.FONT_NON_MONO_BIG  // when address bar
+            ? UiUtil.FONT_MONO_ASIAN_BIG.deriveFont(Font.ITALIC)  // bigger font
+            : UiUtil.FONT_MONO_ASIAN.deriveFont(Font.ITALIC)  // fine for address bar, console, textfield
+            : textComponent.getFont().deriveFont(Font.ITALIC)  // same
+        );
 
         g.drawString(
             placeholderText,

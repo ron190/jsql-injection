@@ -14,24 +14,15 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
+import javax.swing.*;
+
 /**
  * Create a new tab for the values.
  */
 public class CreateValuesTab extends CreateTabHelper implements InteractionCommand {
     
-    /**
-     * Array of column names, displayed in header table.
-     */
     private final String[] columnNames;
-
-    /**
-     * 2D array of values.
-     */
     private final String[][] data;
-
-    /**
-     * The table containing the data.
-     */
     private final AbstractElementDatabase table;
 
     /**
@@ -45,6 +36,6 @@ public class CreateValuesTab extends CreateTabHelper implements InteractionComma
 
     @Override
     public void execute() {
-        MediatorHelper.treeDatabase().createValuesTab(this.data, this.columnNames, this.table);
+        SwingUtilities.invokeLater(() -> MediatorHelper.treeDatabase().createValuesTab(this.data, this.columnNames, this.table));
     }
 }

@@ -40,7 +40,7 @@ public class Fingerprint implements Serializable {
     }
 
     public String getVendorSpecific() {
-        return vendorSpecific;
+        return this.vendorSpecific;
     }
 
     public void setVendorSpecific(String vendorSpecific) {

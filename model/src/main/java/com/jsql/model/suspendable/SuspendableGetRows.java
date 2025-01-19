@@ -103,8 +103,8 @@ public class SuspendableGetRows extends AbstractSuspendable {
             // Fix #95382: IllegalArgumentException on URLDecoder.decode()
             try {
                 String currentChunk = regexLeadFound.group(1);
-                currentChunk = decodeUnicode(currentChunk);
-                currentChunk = decodeUrl(currentChunk);
+                currentChunk = this.decodeUnicode(currentChunk, initialSqlQuery);
+                currentChunk = this.decodeUrl(currentChunk);
 
                 countInfiniteLoop = this.checkInfinite(countInfiniteLoop, previousChunk, currentChunk, slidingWindowCurrentRow, slidingWindowAllRows);
                 
@@ -166,8 +166,12 @@ public class SuspendableGetRows extends AbstractSuspendable {
         return currentChunk;
     }
 
-    private String decodeUnicode(String currentChunk) {
-        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
+    private String decodeUnicode(String currentChunk, String initialSqlQuery) {
+        if (
+            !this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()
+            && !"select@@plugin_dir".equals(initialSqlQuery)  // can give C:\path\
+            && initialSqlQuery != null && !initialSqlQuery.matches("(?si).*select.*sys_eval\\('.*'\\).*")
+        ) {
             return StringEscapeUtils.unescapeJava(  // transform \u0000 entities to text
                 currentChunk.replaceAll("\\\\u.{0,3}$", StringUtils.EMPTY)  // remove incorrect entities
             );
@@ -307,7 +311,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private Matcher parseTrailOnlyFound(String sourcePage) {
-        String sourcePageUnicodeDecoded = decodeUnicode(sourcePage);
+        String sourcePageUnicodeDecoded = this.decodeUnicode(sourcePage, null);
         // TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX
         // It creates extra query which can be endless if not nullified
         return Pattern.compile(
@@ -318,7 +322,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     /**
      * After ${lead} tag, gets characters between 1 and maxPerf
-     * performanceQuery() gets 65536 characters or less
+     * performanceQuery() gets 65536 characters or fewer
      * ${lead}blahblah1337      ] : end or limit+1
      * ${lead}blahblah      blah] : continue substr()
      */

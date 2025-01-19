@@ -82,8 +82,8 @@ public class CallableBlind extends AbstractCallableBinary<CallableBlind> {
     @Override
     public CallableBlind call() {
         String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        this.diffsWithReference = DIFF_MATCH_PATCH.diffMain(this.injectionBlind.getSourceReferencePage(), result, true);
-        DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
+        this.diffsWithReference = CallableBlind.DIFF_MATCH_PATCH.diffMain(this.injectionBlind.getSourceReferencePage(), result, true);
+        CallableBlind.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
         return this;
     }
     

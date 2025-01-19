@@ -37,7 +37,7 @@ public class SoapUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
         if (!hasFoundInjection) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking SOAP params...");
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey("LOG_CHECKING") +" SOAP...");
         } else {
             return true;
         }
@@ -84,7 +84,8 @@ public class SoapUtil {
                 try {
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_INFORM,
-                        "Checking SOAP Request injection for {}={}",
+                        "{} SOAP {}={}",
+                        () -> I18nUtil.valueByKey("LOG_CHECKING"),
                         () -> currentNode.getParentNode().getNodeName(),
                         () -> currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY)
                     );

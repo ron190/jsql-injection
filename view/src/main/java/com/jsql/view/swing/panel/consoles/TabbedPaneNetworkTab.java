@@ -36,21 +36,27 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private final JTextArea textAreaNetworkTabUrl = new JPopupTextArea("Request URL").getProxy();
-    private final JTextArea textAreaNetworkTabResponse = new JPopupTextArea("Response headers").getProxy();
-    private final RSyntaxTextArea textAreaNetworkTabSource = new RSyntaxTextArea("Page source");
-    private final JTextPane textAreaNetworkTabPreview = new JPopupTextComponent<>(new JTextPanePlaceholder("Page rendering"){
+    private final JTextArea textAreaNetworkTabUrl = new JPopupTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_URL")).getProxy();
+    private final JTextArea textAreaNetworkTabResponse = new JPopupTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_RESPONSE")).getProxy();
+    private final RSyntaxTextArea textAreaNetworkTabSource = new RSyntaxTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_SOURCE"));
+    private final JTextPane textAreaNetworkTabPreview = new JPopupTextComponent<>(new JTextPanePlaceholder(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_PREVIEW")){
         @Override
         public boolean isEditable() {
             return false;
         }
     }).getProxy();
-    private final JTextArea textAreaNetworkTabHeader = new JPopupTextArea("Request headers").getProxy();
-    private final JTextArea textAreaNetworkTabParams = new JPopupTextArea("Request body").getProxy();
+    private final JTextArea textAreaNetworkTabHeader = new JPopupTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_HEADERS")).getProxy();
+    private final JTextArea textAreaNetworkTabParams = new JPopupTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_REQUEST")).getProxy();
     
     public TabbedPaneNetworkTab() {
         this.setName("tabNetwork");
-        
+
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_URL", this.textAreaNetworkTabUrl);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_RESPONSE", this.textAreaNetworkTabResponse);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_SOURCE", this.textAreaNetworkTabSource);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_PREVIEW", this.textAreaNetworkTabPreview);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_HEADERS", this.textAreaNetworkTabHeader);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_REQUEST", this.textAreaNetworkTabParams);
         Stream.of(
             new SimpleEntry<>("NETWORK_TAB_URL_LABEL", this.textAreaNetworkTabUrl),
             new SimpleEntry<>("NETWORK_TAB_HEADERS_LABEL", this.textAreaNetworkTabHeader),
@@ -63,7 +69,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             this.addTab(
                 I18nUtil.valueByKey(entry.getKey()),
                 entry.getValue() == this.textAreaNetworkTabSource
-                ? new RTextScrollPane(entry.getValue())
+                ? new RTextScrollPane(entry.getValue(), false)
                 : new JScrollPane(entry.getValue())
             );
             var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
@@ -85,7 +91,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         this.textAreaNetworkTabSource.getCaret().setBlinkRate(0);
         this.textAreaNetworkTabSource.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusGained(FocusEvent arg0) {
+            public void focusGained(FocusEvent focusEvent) {
                 TabbedPaneNetworkTab.this.textAreaNetworkTabSource.getCaret().setVisible(true);
                 TabbedPaneNetworkTab.this.textAreaNetworkTabSource.getCaret().setSelectionVisible(true);
             }
@@ -107,7 +113,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         this.textAreaNetworkTabPreview.getCaret().setBlinkRate(0);
         this.textAreaNetworkTabPreview.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusGained(FocusEvent arg0) {
+            public void focusGained(FocusEvent focusEvent) {
                 TabbedPaneNetworkTab.this.textAreaNetworkTabPreview.getCaret().setVisible(true);
                 TabbedPaneNetworkTab.this.textAreaNetworkTabPreview.getCaret().setSelectionVisible(true);
             }
@@ -133,13 +139,12 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
                 this.textAreaNetworkTabResponse.append("\n");
             }
         }
-        
+
         // Fix #53736: ArrayIndexOutOfBoundsException on setText()
         // Fix #54573: NullPointerException on setText()
         try {
             this.textAreaNetworkTabSource.setText(
-                StringUtil
-                .detectUtf8(networkData.getSource())
+                StringUtil.detectUtf8(networkData.getSource())
                 .replaceAll("#{5,}", "#*")
                 .trim()
             );
@@ -170,9 +175,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
                         "<input[^>]*>",
                         "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"
                     ),
-                    Safelist.relaxed()
-                        .addTags("center", "div", "span")
-                        .addAttributes(":all", "style")
+                    Safelist.relaxed().addTags("center", "div", "span").addAttributes(":all", "style")
                 )
             );
         } catch (Exception | ExceptionInInitializerError e) {
@@ -202,6 +205,6 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     }
 
     public void applyTheme() {
-        UiUtil.applyTheme(textAreaNetworkTabSource);
+        UiUtil.applyTheme(this.textAreaNetworkTabSource);
     }
 }

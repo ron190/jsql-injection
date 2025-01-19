@@ -127,23 +127,16 @@ public class ManagerDatabase extends JPanel {
             ManagerDatabase.this.tree.treeDidChange();
         }
         @Override
-        public void treeStructureChanged(TreeModelEvent arg0) {
+        public void treeStructureChanged(TreeModelEvent treeModelEvent) {
             // Do nothing
         }
         @Override
-        public void treeNodesRemoved(TreeModelEvent arg0) {
+        public void treeNodesRemoved(TreeModelEvent treeModelEvent) {
             // Do nothing
         }
         @Override
-        public void treeNodesInserted(TreeModelEvent arg0) {
+        public void treeNodesInserted(TreeModelEvent treeModelEvent) {
             // Do nothing
         }
-    }
-
-    
-    // Getter and setter
-
-    public JTree getTree() {
-        return this.tree;
     }
 }

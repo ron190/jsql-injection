@@ -102,6 +102,6 @@ public class DigestUtil {
     }
 
     public String getTokenDigest() {
-        return tokenDigest;
+        return this.tokenDigest;
     }
 }

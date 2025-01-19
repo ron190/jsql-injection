@@ -124,7 +124,7 @@ public class ParameterUtil {
         this.checkStarMatchMethod();
         this.checkMethodNotEmpty();
         this.checkMultipart();
-        if (!isValidName(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {
+        if (ParameterUtil.isInvalidName(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {
             throw new InjectionFailureException(String.format(
                 "Illegal method: \"%s\"",
                 this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest()
@@ -142,25 +142,25 @@ public class ParameterUtil {
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         ).toCharArray();
         for (char c : allowedTokenChars) {
-            tchar[c] = true;
+            ParameterUtil.tchar[c] = true;
         }
     }
 
     /*
      * Validates a RFC 7230 field-name.
      */
-    public static boolean isValidName(String token) {
+    public static boolean isInvalidName(String token) {
         for (int i = 0; i < token.length(); i++) {
             char c = token.charAt(i);
-            if (c > 255 || !tchar[c]) {
-                return false;
+            if (c > 255 || !ParameterUtil.tchar[c]) {
+                return true;
             }
         }
-        return !token.isEmpty();
+        return token.isEmpty();
     }
 
     private void checkMultipart() throws InjectionFailureException {
-        isMultipartRequest = false;
+        this.isMultipartRequest = false;
 
         if (
             this.getListHeader()
@@ -181,7 +181,7 @@ public class ParameterUtil {
                         String.format("Incorrect multipart data, boundary not found in body: %s", boundary)
                     );
                 } else {
-                    isMultipartRequest = true;
+                    this.isMultipartRequest = true;
                 }
             }
         }
@@ -353,9 +353,9 @@ public class ParameterUtil {
                     && entry.getValue() != null
                     && entry.getValue().contains(InjectionModel.STAR)
                 ) {
-                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);
+                    return String.format(ParameterUtil.FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);
                 } else {
-                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), entry.getValue());
+                    return String.format(ParameterUtil.FORMAT_KEY_VALUE, entry.getKey(), entry.getValue());
                 }
             })
             .collect(Collectors.joining("&"));
@@ -365,7 +365,7 @@ public class ParameterUtil {
         return this.listRequest.stream()
             .filter(Objects::nonNull)
             .map(entry -> String.format(
-                FORMAT_KEY_VALUE,
+                ParameterUtil.FORMAT_KEY_VALUE,
                 entry.getKey(),
                 StringUtils.isEmpty(entry.getValue()) ? StringUtils.EMPTY : entry.getValue()
             ))

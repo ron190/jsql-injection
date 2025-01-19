@@ -24,8 +24,8 @@ public class CustomFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        LOGGER.debug("CustomFilter: {}", nameConfig);
-        count++;
+        LOGGER.debug("CustomFilter: {}", this.nameConfig);
+        this.count++;
 
         filterChain.doFilter(servletRequest, servletResponse);
     }

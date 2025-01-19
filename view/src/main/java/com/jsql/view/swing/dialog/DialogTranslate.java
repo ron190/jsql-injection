@@ -11,12 +11,14 @@
 package com.jsql.view.swing.dialog;
 
 import com.jsql.util.GitUtil.ShowOnConsole;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.dialog.translate.Language;
 import com.jsql.view.swing.dialog.translate.WorkerTranslateInto;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
+import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +28,8 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * A dialog displaying current locale translation percentage.
@@ -40,17 +44,12 @@ public class DialogTranslate extends JDialog {
     /**
      * Button receiving focus.
      */
-    private final JButton buttonSend = new JButton("Send");
-    
-    private Language language;
-    
-    private final JLabel labelTranslation = new JLabel();
-    
-    // Contact info, use HTML text
-    private final JTextArea textToTranslate = new JPopupTextArea(new JTextAreaPlaceholder("Text to translate")).getProxy();
-    
-    private final JProgressBar progressBarTranslation = new JProgressBar();
+    private final JButton buttonSend = new JButton(I18nViewUtil.valueByKey("TRANSLATION_SEND"));
 
+    private Language languageInto;
+    private final JLabel labelTranslation = new JLabel();
+    private final JTextArea textToTranslate = new JPopupTextArea(new JTextAreaPlaceholder(I18nViewUtil.valueByKey("TRANSLATION_PLACEHOLDER"))).getProxy();
+    private final JProgressBar progressBarTranslation = new JProgressBar();
     private String textBeforeChange = StringUtils.EMPTY;
 
     /**
@@ -61,7 +60,7 @@ public class DialogTranslate extends JDialog {
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setIconImages(UiUtil.getIcons());  // Define a small and large app icon
 
-        ActionListener escapeListener = actionEvent -> DialogTranslate.this.dispose();  // Action for ESCAPE key
+        ActionListener escapeListener = actionEvent -> this.dispose();  // Action for ESCAPE key
         this.getRootPane().registerKeyboardAction(
             escapeListener,
             KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
@@ -84,39 +83,27 @@ public class DialogTranslate extends JDialog {
      * Set back default setting for About frame.
      */
     public final void initializeDialog(final Language language) {
-        
         this.progressBarTranslation.setValue(0);
         this.progressBarTranslation.setString("Loading...");
-        
-        this.language = language;
-        
-        this.labelTranslation.setText(
-            String.join(
-                StringUtils.EMPTY,
-                "<html>",
-                "<b>Contribute and translate parts of jSQL Injection into ",
-                language.toString(),
-                "</b><br>",
-                "Help the community and translate some buttons, menus, tabs and tooltips into ",
-                language.toString(),
-                ", ",
-                "then click on Send to forward your changes to the developer on GitHub.<br>",
-                "<i>E.g. for French, change <b>CONTEXT_MENU_COPY = Copy</b> to <b>CONTEXT_MENU_COPY = Copier</b>, then click on Send. The list only displays what needs to be translated ",
-                "and is updated as soon as the developer processes your request.</i>",
-                "</html>"
+        this.languageInto = language;
+
+        var bundleInto = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.forLanguageTag(language.getLanguageTag()));
+        var localeInto = Locale.forLanguageTag(language.getLanguageTag());
+        this.labelTranslation.setText(  // set language into
+            String.format(
+                bundleInto.getString("TRANSLATION_TEXT"),
+                localeInto.getDisplayLanguage(localeInto),
+                localeInto.getDisplayLanguage(localeInto)
             )
         );
-        this.labelTranslation.setIcon(language.getFlag());
-        this.labelTranslation.setIconTextGap(8);
-        
-        this.setTitle("Translate to "+ language);
+
         this.textToTranslate.setText(null);
         this.textToTranslate.setEditable(false);
-        this.buttonSend.setEnabled(false);
+        this.buttonSend.setEnabled(false);  // will be enabled when done with GitHub
         
         // Ubuntu Regular is compatible with all required languages, this includes Chinese and Arabic,
         // but it's not a technical Mono Font.
-        // Only Monospaced works both for copy/paste utf8 foreign characters in JTextArea and
+        // Only Monospaced works both for copy/paste utf8 foreign characters in JTextArea, and
         // it's a technical Mono Font.
         this.textToTranslate.setFont(new Font(
             UiUtil.FONT_NAME_MONOSPACED,
@@ -125,6 +112,15 @@ public class DialogTranslate extends JDialog {
         ));
         
         new WorkerTranslateInto(this).execute();
+
+        this.setIconImage(language.getFlag().getImage());
+        this.setTitle(bundleInto.getString("TRANSLATION_TITLE") +" "+ localeInto.getDisplayLanguage(localeInto));
+        if (!this.isVisible()) {  // Center the dialog
+            this.setSize(640, 460);
+            this.setLocationRelativeTo(MediatorHelper.frame());
+            this.getRootPane().setDefaultButton(this.getButtonSend());
+        }
+        this.setVisible(true);
     }
 
     private JPanel initializeLastLine() {
@@ -158,7 +154,7 @@ public class DialogTranslate extends JDialog {
             MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(
                 clientDescription,
                 ShowOnConsole.YES,
-                this.language +" translation"
+                this.languageInto +" translation"
             );
             this.setVisible(false);
         });
@@ -184,7 +180,7 @@ public class DialogTranslate extends JDialog {
         });
         this.textToTranslate.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusGained(FocusEvent arg0) {
+            public void focusGained(FocusEvent focusEvent) {
                 DialogTranslate.this.textToTranslate.getCaret().setVisible(true);
                 DialogTranslate.this.textToTranslate.getCaret().setSelectionVisible(true);
             }
@@ -198,8 +194,8 @@ public class DialogTranslate extends JDialog {
     
     // Getter / Setter
 
-    public Language getLanguage() {
-        return this.language;
+    public Language getLanguageInto() {
+        return this.languageInto;
     }
 
     public String getTextBeforeChange() {

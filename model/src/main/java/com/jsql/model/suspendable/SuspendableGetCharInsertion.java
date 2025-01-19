@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 /**
  * Runnable class, define insertionCharacter to be used during injection,
- * i.e -1 in "[..].php?id=-1 union select[..]", sometimes it's -1, 0', 0, etc.
+ * i.e -1 in "...php?id=-1 union select..", sometimes it's -1, 0', 0, etc.
  * Find working insertion char when error message occurs in source.
  * Force to 1 if no insertion char works and empty value from user,
  * Force to user's value if no insertion char works,
@@ -153,15 +153,15 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 
     private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService, String[] charFromBooleanMatch) throws JSqlException {
         List<String> prefixValues = Arrays.asList(
-            RandomStringUtils.random(10, "012"),  // to trigger probable failure
+            RandomStringUtils.insecure().next(10, "012"),  // to trigger probable failure
             "1"  // to trigger eventual success
         );
         List<String> prefixQuotes = Arrays.asList(
-            LABEL_PREFIX +"'",
-            LABEL_PREFIX,
-            LABEL_PREFIX +"`",  // TODO add ITs
-            LABEL_PREFIX +"\"",
-            LABEL_PREFIX +"%bf'"  // GBK slash encoding use case
+            SuspendableGetCharInsertion.LABEL_PREFIX +"'",
+            SuspendableGetCharInsertion.LABEL_PREFIX,
+            SuspendableGetCharInsertion.LABEL_PREFIX +"`",  // TODO add ITs
+            SuspendableGetCharInsertion.LABEL_PREFIX +"\"",
+            SuspendableGetCharInsertion.LABEL_PREFIX +"%bf'"  // GBK slash encoding use case
         );
         List<String> prefixParentheses = Arrays.asList(StringUtils.EMPTY, ")", "))");
         List<String> charactersInsertion = new ArrayList<>();
@@ -195,7 +195,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         String prefixQuote,
         String prefixParenthesis
     ) throws StoppedByUserSlidingException {
-        String characterInsertion = prefixQuote.replace(LABEL_PREFIX, prefixValue) + prefixParenthesis;
+        String characterInsertion = prefixQuote.replace(SuspendableGetCharInsertion.LABEL_PREFIX, prefixValue) + prefixParenthesis;
         charactersInsertion.add(characterInsertion);
         // Skipping Boolean match when already found
         if (charFromBooleanMatch[0] == null) {

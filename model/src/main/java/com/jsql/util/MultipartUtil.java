@@ -24,7 +24,7 @@ public class MultipartUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
         if (!hasFoundInjection) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking multipart params...");
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey("LOG_CHECKING") +"Checking multipart...");
         } else {
             return true;
         }
@@ -44,7 +44,7 @@ public class MultipartUtil {
             .matcher(rawRequest);
 
         while (matcherFormDataParameters.find()) {
-            if (isBoundaryInjectable(rawRequest, boundary, matcherFormDataParameters)) {
+            if (this.isBoundaryInjectable(rawRequest, boundary, matcherFormDataParameters)) {
                 return true;
             }
         }
@@ -65,7 +65,8 @@ public class MultipartUtil {
         try {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
-                "Checking Multipart boundary injection for {}={}",
+                "{} multipart boundary {}={}",
+                () -> I18nUtil.valueByKey("LOG_CHECKING"),
                 () -> nameParameter,
                 () -> valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)
             );

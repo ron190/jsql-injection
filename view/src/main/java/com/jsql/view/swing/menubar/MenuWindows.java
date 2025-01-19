@@ -1,6 +1,5 @@
 package com.jsql.view.swing.menubar;
 
-import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.intellijthemes.FlatDarkFlatIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatHighContrastIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatLightFlatIJTheme;
@@ -10,12 +9,13 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.dialog.translate.Language;
-import com.jsql.view.swing.interaction.CreateTabHelper;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.tab.TabHeader;
+import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -34,8 +34,8 @@ import java.util.prefs.Preferences;
 
 public class MenuWindows extends JMenu {
 
-    private static final String KEY_MENU_SQL_ENGINE = "MENUBAR_SQL_ENGINE";
-    private static final String KEY_MENU_PREFERENCES = "MENUBAR_PREFERENCES";
+    private static final String I18N_SQL_ENGINE = "MENUBAR_SQL_ENGINE";
+    private static final String I18N_PREFERENCES = "MENUBAR_PREFERENCES";
     private final AppMenubar appMenubar;
 
     private final JMenu menuView;
@@ -53,7 +53,8 @@ public class MenuWindows extends JMenu {
         I18nViewUtil.addComponentForKey("NEW_WINDOW_MENU", itemNewWindows);
 
         this.add(itemNewWindows);
-        var menuAppearance = new JMenu("Appearance");
+        var menuAppearance = new JMenu(I18nUtil.valueByKey("MENUBAR_APPEARANCE"));
+        I18nViewUtil.addComponentForKey("MENUBAR_APPEARANCE", menuAppearance);
         menuAppearance.setMnemonic('A');
 
         JMenuItem itemNewWindows4k = new JMenuItem(
@@ -62,7 +63,8 @@ public class MenuWindows extends JMenu {
         menuAppearance.add(itemNewWindows4k);
 
         var groupRadio = new ButtonGroup();
-        var menuThemes = new JMenu("Themes");
+        var menuThemes = new JMenu(I18nUtil.valueByKey("MENUBAR_THEMES"));
+        I18nViewUtil.addComponentForKey("MENUBAR_THEMES", menuAppearance);
         menuThemes.setMnemonic('T');
 
         Arrays.asList(
@@ -101,27 +103,16 @@ public class MenuWindows extends JMenu {
 
         AtomicInteger accelerator = new AtomicInteger(0x31);
         AtomicInteger tabPosition = new AtomicInteger();
-        Arrays.asList(
-            new AbstractMap.SimpleEntry<>("DATABASE_TAB", UiUtil.DATABASE_BOLD),
-            new AbstractMap.SimpleEntry<>("ADMINPAGE_TAB", UiUtil.ADMIN),
-            new AbstractMap.SimpleEntry<>("FILE_TAB", UiUtil.DOWNLOAD),
-            new AbstractMap.SimpleEntry<>("WEBSHELL_TAB", UiUtil.TERMINAL),
-            new AbstractMap.SimpleEntry<>("SQLSHELL_TAB", UiUtil.TERMINAL),
-            new AbstractMap.SimpleEntry<>("UPLOAD_TAB", UiUtil.UPLOAD),
-            new AbstractMap.SimpleEntry<>("BRUTEFORCE_TAB", UiUtil.LOCK),
-            new AbstractMap.SimpleEntry<>("CODER_TAB", UiUtil.TEXTFIELD),
-            new AbstractMap.SimpleEntry<>("SCANLIST_TAB", UiUtil.BATCH)
-        ).forEach(entry -> {
-            var menuItem = new JMenuItem(I18nUtil.valueByKey(entry.getKey()), entry.getValue().icon);
-            I18nViewUtil.addComponentForKey(entry.getKey(), menuItem);
-            menuItem.setName(entry.getKey());  // required by card manager switch
+        TabManagers.TABS.forEach(entry -> {
+            var menuItem = new JMenuItem(I18nUtil.valueByKey(entry.keyLabel), entry.icon);
+            I18nViewUtil.addComponentForKey(entry.keyLabel, menuItem);
+            menuItem.setName(entry.keyLabel);  // required by card manager switch
             this.menuView.add(menuItem);
 
             menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.getExtendedKeyCodeForChar(accelerator.get()),
+                KeyEvent.getExtendedKeyCodeForChar(accelerator.getAndIncrement()),
                 InputEvent.CTRL_DOWN_MASK
             ));
-            accelerator.getAndIncrement();
 
             final var position = tabPosition.get();  // required by closure
             menuItem.addActionListener(actionEvent -> {  // setAction() could set action+text+icon but i18n not easy
@@ -143,25 +134,25 @@ public class MenuWindows extends JMenu {
         Arrays.asList(
             new ModelCheckboxMenu(
                 "CONSOLE_CHUNK_LABEL",
-                UiUtil.CHUNK_VISIBLE, 
+                PreferencesUtil.CHUNK_VISIBLE,
                 () -> MediatorHelper.panelConsoles().insertChunkTab(),
                 UiUtil.CHUNK.icon
             ),
             new ModelCheckboxMenu(
                 "CONSOLE_BINARY_LABEL",
-                UiUtil.BINARY_VISIBLE,
+                PreferencesUtil.BINARY_VISIBLE,
                 () -> MediatorHelper.panelConsoles().insertBooleanTab(),
                 UiUtil.BINARY.icon
             ),
             new ModelCheckboxMenu(
                 "CONSOLE_NETWORK_LABEL",
-                UiUtil.NETWORK_VISIBLE,
+                PreferencesUtil.NETWORK_VISIBLE,
                 () -> MediatorHelper.panelConsoles().insertNetworkTab(),
                 UiUtil.NETWORK.icon
             ),
             new ModelCheckboxMenu(
                 "CONSOLE_JAVA_LABEL",
-                UiUtil.JAVA_VISIBLE,
+                PreferencesUtil.JAVA_VISIBLE,
                 () -> MediatorHelper.panelConsoles().insertJavaTab(),
                 UiUtil.CUP.icon
             )
@@ -190,8 +181,8 @@ public class MenuWindows extends JMenu {
     }
 
     private JMenuItem getMenuItemSqlEngine() {
-        var itemSqlEngine = new JMenuItem(I18nUtil.valueByKey(KEY_MENU_SQL_ENGINE));
-        I18nViewUtil.addComponentForKey(KEY_MENU_SQL_ENGINE, itemSqlEngine);
+        var itemSqlEngine = new JMenuItem(I18nUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE));
+        I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, itemSqlEngine);
         itemSqlEngine.setName("itemSqlEngine");
         itemSqlEngine.setMnemonic('S');
 
@@ -206,30 +197,27 @@ public class MenuWindows extends JMenu {
                 }
             }
 
-            CreateTabHelper.initializeSplitOrientation();
+            MediatorHelper.frame().getSplitNS().initializeSplitOrientation();
 
             var panelSqlEngine = new SqlEngine();
             MediatorHelper.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);
             MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);  // Focus on the new tab
 
             // Create a custom tab header
-            var header = new TabHeader(I18nViewUtil.valueByKey(KEY_MENU_SQL_ENGINE), UiUtil.COG.icon);
-            I18nViewUtil.addComponentForKey(KEY_MENU_SQL_ENGINE, header.getTabLabel());
+            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.icon);
+            I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, header.getTabLabel());
 
             // Apply the custom header to the tab
             MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelSqlEngine), header);
-
-            FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
-            MediatorHelper.frame().revalidate();
-            MediatorHelper.frame().repaint();
+            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark => light artifacts
         });
 
         return itemSqlEngine;
     }
 
     private JMenuItem getMenuItemPreferences() {
-        JMenuItem itemPreferences = new JMenuItem(I18nUtil.valueByKey(KEY_MENU_PREFERENCES), 'P');
-        I18nViewUtil.addComponentForKey(KEY_MENU_PREFERENCES, itemPreferences);
+        JMenuItem itemPreferences = new JMenuItem(I18nUtil.valueByKey(MenuWindows.I18N_PREFERENCES), 'P');
+        I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, itemPreferences);
         itemPreferences.setName("itemPreferences");
 
         // Render the Preferences dialog behind scene
@@ -243,22 +231,20 @@ public class MenuWindows extends JMenu {
                 }
             }
 
-            CreateTabHelper.initializeSplitOrientation();
+            MediatorHelper.frame().getSplitNS().initializeSplitOrientation();
 
             var panelPreferences = new PanelPreferences();
             MediatorHelper.tabResults().addTab(titleTabPreferences, panelPreferences);
             MediatorHelper.tabResults().setSelectedComponent(panelPreferences);  // Focus on the new tab
 
             // Create a custom tab header
-            var header = new TabHeader(I18nViewUtil.valueByKey(KEY_MENU_PREFERENCES), UiUtil.COG.icon);
-            I18nViewUtil.addComponentForKey(KEY_MENU_PREFERENCES, header.getTabLabel());
+            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.icon);
+            I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, header.getTabLabel());
 
             // Apply the custom header to the tab
             MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelPreferences), header);
 
-            FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
-            MediatorHelper.frame().revalidate();
-            MediatorHelper.frame().repaint();
+            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark => light artifacts
         });
 
         return itemPreferences;
@@ -272,7 +258,7 @@ public class MenuWindows extends JMenu {
 
         var groupRadioLanguage = new ButtonGroup();
         var atomicIsAnySelected = new AtomicBoolean(false);
-        AppMenubar.modelsItem.forEach(model -> {
+        AppMenubar.MODELS_ITEM.forEach(model -> {
             atomicIsAnySelected.set(atomicIsAnySelected.get() || model.getLanguage().isCurrentLanguage());
             model.setMenuItem(new JRadioButtonMenuItem(
                 model.getLanguage().getMenuItemLabel(),
@@ -291,22 +277,22 @@ public class MenuWindows extends JMenu {
             groupRadioLanguage.add(model.getMenuItem());
         });
 
-        AppMenubar.modelsItem.stream().filter(modelItem -> modelItem.getLanguage() == Language.EN)
+        AppMenubar.MODELS_ITEM.stream().filter(model -> model.getLanguage() == Language.EN)
         .forEach(modelItem -> {
             modelItem.getMenuItem().setSelected(!atomicIsAnySelected.get());
             modelItem.getMenuItem().setName("itemEnglish");
         });
-        AppMenubar.modelsItem.stream().filter(modelItem -> modelItem.getLanguage() == Language.RU)
+        AppMenubar.MODELS_ITEM.stream().filter(model -> model.getLanguage() == Language.RU)
         .forEach(modelItem -> modelItem.getMenuItem().setName("itemRussian"));
-        AppMenubar.modelsItem.stream().filter(modelItem -> modelItem.getLanguage() == Language.AR)
+        AppMenubar.MODELS_ITEM.stream().filter(model -> model.getLanguage() == Language.AR)
         .forEach(modelItem -> modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
 
         return menuTranslation;
     }
 
     public void switchLocaleFromPreferences() {
-        AppMenubar.modelsItem.stream()
-        .filter(modelItem -> modelItem.getLanguage().getLanguageTag().equals(
+        AppMenubar.MODELS_ITEM.stream()
+        .filter(model -> model.getLanguage().getLanguageTag().equals(
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()
         ))
         .forEach(modelItem -> modelItem.getMenuItem().doClick());
@@ -316,6 +302,6 @@ public class MenuWindows extends JMenu {
     // Getter and setter
 
     public JMenu getMenuView() {
-        return menuView;
+        return this.menuView;
     }
 }

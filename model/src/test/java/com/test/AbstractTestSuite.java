@@ -17,7 +17,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.boot.SpringApplication;
-import spring.SpringTargetApplication;
+import spring.SpringApp;
 
 import java.sql.*;
 import java.time.Duration;
@@ -68,8 +68,8 @@ public abstract class AbstractTestSuite {
         if (AbstractTestSuite.isSetupStarted.compareAndSet(false, true)) {
             
             LOGGER.info("@BeforeClass: loading Hibernate and Spring...");
-            SpringTargetApplication.initializeDatabases();
-            SpringApplication.run(SpringTargetApplication.class);
+            SpringApp.initializeDatabases();
+            SpringApplication.run(SpringApp.class);
             
             AbstractTestSuite.isSetupDone.set(true);
         }
@@ -145,7 +145,7 @@ public abstract class AbstractTestSuite {
                 .collect(Collectors.toList());
 
             setValuesFromInjection.addAll(databases);
-            setValuesFromJdbc.addAll(AbstractTestSuite.this.databasesFromJdbc);
+            setValuesFromJdbc.addAll(this.databasesFromJdbc);
 
             LOGGER.info("ListDatabases: found {}, to find {}", setValuesFromInjection, setValuesFromJdbc);
 
@@ -174,13 +174,13 @@ public abstract class AbstractTestSuite {
 
         try {
             List<String> tables = this.injectionModel.getDataAccess()
-                .listTables(new Database(AbstractTestSuite.this.jsqlDatabaseName, "0"))
+                .listTables(new Database(this.jsqlDatabaseName, "0"))
                 .stream()
                 .map(Table::toString)
                 .collect(Collectors.toList());
 
             setValuesFromInjection.addAll(tables);
-            setValuesFromJdbc.addAll(AbstractTestSuite.this.tablesFromJdbc);
+            setValuesFromJdbc.addAll(this.tablesFromJdbc);
 
             LOGGER.info("Tables: found {}, to find {}", setValuesFromInjection, setValuesFromJdbc);
             Assertions.assertTrue(
@@ -209,8 +209,8 @@ public abstract class AbstractTestSuite {
         try {
             List<String> columns = this.injectionModel.getDataAccess()
                 .listColumns(
-                    new Table(AbstractTestSuite.this.jsqlTableName, "0",
-                        new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")
+                    new Table(this.jsqlTableName, "0",
+                        new Database(this.jsqlDatabaseName, "0")
                     )
                 )
                 .stream()
@@ -218,7 +218,7 @@ public abstract class AbstractTestSuite {
                 .collect(Collectors.toList());
 
             setValuesFromInjection.addAll(columns);
-            setValuesFromJdbc.addAll(this.parse(AbstractTestSuite.this.columnsFromJdbc));
+            setValuesFromJdbc.addAll(this.parse(this.columnsFromJdbc));
 
             LOGGER.info("listColumns: found {}, to find {}", setValuesFromInjection, setValuesFromJdbc);
             Assertions.assertTrue(
@@ -254,9 +254,9 @@ public abstract class AbstractTestSuite {
 
         try {
             String[][] rows = this.injectionModel.getDataAccess().listValues(List.of(
-                new Column(AbstractTestSuite.this.jsqlColumnName,
-                    new Table(AbstractTestSuite.this.jsqlTableName, "0",
-                        new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")
+                new Column(this.jsqlColumnName,
+                    new Table(this.jsqlTableName, "0",
+                        new Database(this.jsqlDatabaseName, "0")
                     )
                 )
             ));
@@ -267,7 +267,7 @@ public abstract class AbstractTestSuite {
                 .collect(Collectors.toList());
 
             setValuesFromInjection.addAll(valuesFound);
-            setValuesFromJdbc.addAll(AbstractTestSuite.this.valuesFromJdbc);
+            setValuesFromJdbc.addAll(this.valuesFromJdbc);
 
             String logValuesFromInjection = setValuesFromInjection.toString()
                 .replaceAll("\n", "[n]")

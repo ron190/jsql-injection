@@ -24,16 +24,13 @@ public class HibernateConf {
 
     @Bean
     public PlatformTransactionManager hibernateTransactionManager() {
-
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-
+        transactionManager.setSessionFactory(this.sessionFactory().getObject());
         return transactionManager;
     }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
-
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
         hibernateProperties.setProperty(AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER, "spring.tenant.MultiTenantConnectionProviderImpl");
@@ -42,13 +39,11 @@ public class HibernateConf {
 
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setHibernateProperties(hibernateProperties);
-
         return sessionFactory;
     }
 
     @Bean
     public StrictHttpFirewall httpFirewall() {
-
         StrictHttpFirewall firewall = new StrictHttpFirewall();
 
         List<String> httpMethods = Stream.concat(
@@ -59,7 +54,6 @@ public class HibernateConf {
 
         firewall.setAllowedHttpMethods(httpMethods);
         firewall.setUnsafeAllowAnyHttpMethod(true);
-
         return firewall;
     }
 }

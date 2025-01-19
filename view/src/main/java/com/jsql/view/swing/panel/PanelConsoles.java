@@ -11,12 +11,14 @@
 package com.jsql.view.swing.panel;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.console.JTextPaneAppender;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
 import com.jsql.view.swing.panel.consoles.NetworkTable;
 import com.jsql.view.swing.panel.consoles.TabbedPaneNetworkTab;
-import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
+import com.jsql.view.swing.panel.split.SplitNS;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
@@ -49,7 +51,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for java exception messages.
      */
-    private final SimpleConsoleAdapter javaTextPane = new SimpleConsoleAdapter("Java", "Java unhandled exception");
+    private final SimpleConsoleAdapter javaTextPane = new SimpleConsoleAdapter("Java", I18nUtil.valueByKey("CONSOLE_JAVA_TOOLTIP"));
     
     /**
      * Console for raw SQL results.
@@ -77,6 +79,7 @@ public class PanelConsoles extends JPanel {
      * Create panel at the bottom with different consoles to report injection process.
      */
     public PanelConsoles() {
+        I18nViewUtil.addComponentForKey("CONSOLE_JAVA_TOOLTIP", this.javaTextPane.getProxy());
         this.javaTextPane.getProxy().setEditable(false);
         JTextPaneAppender.registerJavaConsole(this.javaTextPane);
         
@@ -108,15 +111,20 @@ public class PanelConsoles extends JPanel {
     }
 
     private void initializeTabsConsoles() {
-        this.chunkTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole("Raw data extracted during injection")).getProxy();
+        var proxyChunk = new JTextAreaPlaceholderConsole(I18nUtil.valueByKey("CONSOLE_CHUNK_TOOLTIP"));
+        this.chunkTextArea = new JPopupTextArea(proxyChunk).getProxy();
+        I18nViewUtil.addComponentForKey("CONSOLE_CHUNK_TOOLTIP", proxyChunk);
         this.chunkTextArea.setLineWrap(true);
         this.chunkTextArea.setEditable(false);
 
-        this.binaryTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole("Characters extracted during blind or time injection")).getProxy();
+        var proxyBinary = new JTextAreaPlaceholderConsole(I18nUtil.valueByKey("CONSOLE_BINARY_TOOLTIP"));
+        I18nViewUtil.addComponentForKey("CONSOLE_BINARY_TOOLTIP", proxyBinary);
+        this.binaryTextArea = new JPopupTextArea(proxyBinary).getProxy();
         this.binaryTextArea.setLineWrap(true);
         this.binaryTextArea.setEditable(false);
 
-        var consoleTextPane = new SimpleConsoleAdapter("Console", "Event logging");
+        var consoleTextPane = new SimpleConsoleAdapter("Console", I18nUtil.valueByKey("CONSOLE_MAIN_TOOLTIP"));
+        I18nViewUtil.addComponentForKey("CONSOLE_MAIN_TOOLTIP", consoleTextPane.getProxy());
         consoleTextPane.getProxy().setEditable(false);
         JTextPaneAppender.register(consoleTextPane);
 
@@ -129,19 +137,28 @@ public class PanelConsoles extends JPanel {
         );
 
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());  // Order is important
-        if (preferences.getBoolean(UiUtil.JAVA_VISIBLE, false)) {
+        if (preferences.getBoolean(PreferencesUtil.JAVA_VISIBLE, false)) {
             this.insertJavaTab();
         }
-        if (preferences.getBoolean(UiUtil.NETWORK_VISIBLE, true)) {
+        if (preferences.getBoolean(PreferencesUtil.NETWORK_VISIBLE, true)) {
             this.insertNetworkTab();
         }
-        if (preferences.getBoolean(UiUtil.CHUNK_VISIBLE, true)) {
+        if (preferences.getBoolean(PreferencesUtil.CHUNK_VISIBLE, true)) {
             this.insertChunkTab();
         }
-        if (preferences.getBoolean(UiUtil.BINARY_VISIBLE, true)) {
+        if (preferences.getBoolean(PreferencesUtil.BINARY_VISIBLE, true)) {
             this.insertBooleanTab();
         }
 
+        this.tabConsoles.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int tabIndex = PanelConsoles.this.tabConsoles.indexAtLocation(e.getX(), e.getY());
+                if (tabIndex == -1 && e.getButton() == MouseEvent.BUTTON2) {  // middle click on header with no tab
+                    SplitNS.getActionHideShowConsole().actionPerformed(null);
+                }
+            }
+        });
         this.tabConsoles.addChangeListener(changeEvent -> {  // Reset Font when tab is selected
             JTabbedPane tabs = this.tabConsoles;
             if (tabs.getSelectedIndex() > -1) {
@@ -160,7 +177,7 @@ public class PanelConsoles extends JPanel {
         labelShowSouth.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                SplitHorizontalTopBottom.getActionHideShowConsole().actionPerformed(null);
+                SplitNS.getActionHideShowConsole().actionPerformed(null);
             }
         });
         
@@ -168,7 +185,7 @@ public class PanelConsoles extends JPanel {
         this.labelShowNorth.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                SplitHorizontalTopBottom.getActionHideShowResult().actionPerformed(null);
+                SplitNS.getActionHideShowResult().actionPerformed(null);
             }
         });
 
@@ -205,7 +222,7 @@ public class PanelConsoles extends JPanel {
             "CONSOLE_CHUNK_LABEL",
             "CONSOLE_CHUNK_TOOLTIP",
             UiUtil.CHUNK.icon,
-            new JScrollPane(PanelConsoles.this.chunkTextArea),
+            new JScrollPane(this.chunkTextArea),
             1
         );
     }
@@ -219,7 +236,7 @@ public class PanelConsoles extends JPanel {
             "CONSOLE_BINARY_LABEL",
             "CONSOLE_BINARY_TOOLTIP",
             UiUtil.BINARY.icon,
-            new JScrollPane(PanelConsoles.this.binaryTextArea),
+            new JScrollPane(this.binaryTextArea),
             1 + positionFromChunk
         );
     }
@@ -233,7 +250,7 @@ public class PanelConsoles extends JPanel {
             "CONSOLE_NETWORK_LABEL",
             "CONSOLE_NETWORK_TOOLTIP",
             UiUtil.NETWORK.icon,
-            new JScrollPane(PanelConsoles.this.networkSplitPane),
+            new JScrollPane(this.networkSplitPane),
             this.tabConsoles.getTabCount() - positionFromJava
         );
     }
@@ -324,6 +341,6 @@ public class PanelConsoles extends JPanel {
     }
 
     public TabbedPaneNetworkTab getTabbedPaneNetworkTab() {
-        return tabbedPaneNetworkTab;
+        return this.tabbedPaneNetworkTab;
     }
 }

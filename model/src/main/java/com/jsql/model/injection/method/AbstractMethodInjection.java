@@ -3,6 +3,7 @@ package com.jsql.model.injection.method;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.JsonUtil;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +36,12 @@ public abstract class AbstractMethodInjection implements Serializable {
     
     public boolean testParameters(boolean hasFoundInjection) throws JSqlException {
         if (!hasFoundInjection) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking {} params...", () -> name().toLowerCase());
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_DEFAULT,
+                "{} {} params...",
+                () -> I18nUtil.valueByKey("LOG_CHECKING"),
+                () -> this.name().toLowerCase()
+            );
             return this.testParameters();
         }
         return true;
@@ -45,7 +51,7 @@ public abstract class AbstractMethodInjection implements Serializable {
      * Verify if injection works for specific Method using 3 modes: standard (last param), injection point
      * and full params injection. Special injections like JSON and SOAP are checked.
      * @return true if injection didn't fail
-     * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
+     * @throws JSqlException when no params integrity, process stopped by user, or injection failure
      */
     public boolean testParameters() throws JSqlException {
         var hasFoundInjection = false;
@@ -93,7 +99,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         // for JSON injection of last param
         SimpleEntry<String, String> parameterToInject = this.getParams().stream()
             .reduce((a, b) -> b)
-            .orElseThrow(NullPointerException::new);
+            .orElseThrow(() -> new JSqlException("Missing last parameter"));
         return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
     }
 
@@ -108,7 +114,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         // inner loop will erase mark * otherwise
         for (SimpleEntry<String, String> paramBase: this.getParams()) {
             // This param is the current tested one.
-            // For JSON value attributes are traversed one by one to test every values.
+            // For JSON value attributes are traversed one by one to test every value.
             // For standard value mark * is simply added to the end of its value.
             for (SimpleEntry<String, String> paramStar: this.getParams()) {
                 if (paramStar == paramBase) {
@@ -135,8 +141,8 @@ public abstract class AbstractMethodInjection implements Serializable {
         List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
         
         // When option 'Inject JSON' is selected and there's a JSON entity to inject
-        // then loop through each paths to add * at the end of value and test each strategies.
-        // Marks * are erased between each tests.
+        // then loop through each path to add * at the end of value and test each strategy.
+        // Marks * are erased between each test.
         if (!attributesJson.isEmpty() && this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam()) {
             hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParam(this, paramStar);
         } else {
@@ -153,7 +159,8 @@ public abstract class AbstractMethodInjection implements Serializable {
         try {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
-                "Checking {} parameter {}={}",
+                "{} {} parameter {}={}",
+                () -> I18nUtil.valueByKey("LOG_CHECKING"),
                 this::name,
                 paramStar::getKey,
                 () -> paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)

@@ -32,12 +32,12 @@ public enum Language {
     OT("another language", "unknown", null);
 
     private final String nameEnglish;  // required for default logging and english modal translate into
-    private final Icon flag;
+    private final ImageIcon flag;
     private final String languageTag;
     private final boolean isNonLatin;
     private final boolean isRightToLeft;
 
-    Language(String nameEnglish, String languageTag, Icon flag, boolean isNonLatin, boolean isRightToLeft) {
+    Language(String nameEnglish, String languageTag, ImageIcon flag, boolean isNonLatin, boolean isRightToLeft) {
         this.nameEnglish = nameEnglish;
         this.flag = flag;
         this.languageTag = languageTag;
@@ -45,11 +45,11 @@ public enum Language {
         this.isRightToLeft = isRightToLeft;
     }
 
-    Language(String nameEnglish, String languageTag, Icon flag, boolean isNonLatin) {
+    Language(String nameEnglish, String languageTag, ImageIcon flag, boolean isNonLatin) {
         this(nameEnglish, languageTag, flag, isNonLatin, false);
     }
 
-    Language(String nameEnglish, String languageTag, Icon flag) {
+    Language(String nameEnglish, String languageTag, ImageIcon flag) {
         this(nameEnglish, languageTag, flag, false, false);
     }
 
@@ -62,12 +62,12 @@ public enum Language {
         return Locale.forLanguageTag(this.languageTag).getLanguage().equals(Locale.getDefault().getLanguage());
     }
 
-    public Icon getFlag() {
+    public ImageIcon getFlag() {
         return this.flag;
     }
 
     public boolean isRightToLeft() {
-        return isRightToLeft;
+        return this.isRightToLeft;
     }
 
     public String getLanguageTag() {

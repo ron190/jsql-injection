@@ -23,20 +23,20 @@ public class I18nUtil {
     /**
      * Bundle of standard i18n keys and translated text for root language English
      */
-    public static final ResourceBundle BUNDLE_ROOT = ResourceBundle.getBundle(BASE_NAME, Locale.ROOT);
+    public static final ResourceBundle BUNDLE_ROOT = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.ROOT);
     
     /**
      * Bundle of i18n keys and translated text for the current system language
      */
-    private static ResourceBundle currentBundle = ResourceBundle.getBundle(BASE_NAME, Locale.getDefault());
+    private static ResourceBundle currentBundle = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.getDefault());
 
     private I18nUtil() {
         // Utility class
     }
     
     /**
-     * Return the text corresponding to a i18n key in the properties.
-     * @param key a i18n key in the properties
+     * Return the text corresponding to an i18n key in the properties.
+     * @param key an i18n key in the properties
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
@@ -55,13 +55,9 @@ public class I18nUtil {
                 LogLevelUtil.CONSOLE_SUCCESS,
                 () -> String.join(
                     StringUtils.EMPTY,
-                    "Contribute and translate parts of jSQL Injection into ",
-                    languageHost,
-                    ": ",
+                    "Contribute and translate parts of ", StringUtil.APP_NAME, " into ", languageHost, ": ",
                     "click on the top right button and open menu [Community], choose [I help translate jSQL into > another language...] and ",
-                    "translate some text into ",
-                    languageHost,
-                    " then click on [Send]. Your translation will be integrated to the next release by the developer."
+                    "translate some text into ", languageHost, " then click on [Send]. Your translation will be integrated to the next release by the developer."
                 )
             );
         }
@@ -71,7 +67,7 @@ public class I18nUtil {
     // Getters and setters
     
     public static void setCurrentBundle(Locale newLocale) {
-        I18nUtil.currentBundle = ResourceBundle.getBundle(BASE_NAME, newLocale);
+        I18nUtil.currentBundle = ResourceBundle.getBundle(I18nUtil.BASE_NAME, newLocale);
     }
     
     public static Locale getCurrentLocale() {

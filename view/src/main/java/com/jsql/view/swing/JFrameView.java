@@ -11,14 +11,13 @@
 package com.jsql.view.swing;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevelUtil;
+import com.jsql.util.*;
 import com.jsql.view.interaction.SubscriberInteraction;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.menubar.AppMenubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
-import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
-import com.jsql.view.swing.shell.AbstractShell;
+import com.jsql.view.swing.panel.split.SplitNS;
+import com.jsql.view.swing.terminal.AbstractExploit;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -33,7 +32,6 @@ import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.prefs.Preferences;
@@ -54,27 +52,39 @@ public class JFrameView extends JFrame {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    // Main center panel
-    private SplitHorizontalTopBottom splitHorizontalTopBottom;
-
     /**
-     * Get list of terminal by unique identifier.
-     * Map of key/value UUID => Terminal
+     * Map of terminal by unique identifier.
      */
-    private final Map<UUID, AbstractShell> mapUuidShell = new HashMap<>();
-    
+    private final Map<UUID, AbstractExploit> mapUuidShell = new HashMap<>();
     private final transient SubscriberInteraction subscriber = new SubscriberInteraction("com.jsql.view.swing.interaction");
-
     private JTabbedPane tabManagers;
-    
-    public JFrameView() {  // Build the GUI: add app icon, tree icons, the 3 main panels
-        super("jSQL Injection");
+    private boolean isMaximized = false;
+    private final InjectionModel injectionModel;
+    private SplitNS splitNS;  // main
+
+    public JFrameView(InjectionModel injectionModel) {  // Build the GUI: add app icon, tree icons, the 3 main panels
+        super(StringUtil.APP_NAME);
+        this.injectionModel = injectionModel;
         MediatorHelper.register(this);
         UiUtil.prepareGUI();  // Load UI before any component
         this.initializePaneComponents();
         this.initializeWindow();
         this.initializeShortcuts();
         this.displayVersion();
+        I18nUtil.checkCurrentLanguage();
+        this.check4K();
+
+        SwingUtilities.invokeLater(() -> {  // paint native blu svg in theme color behind scene
+            AppMenubar.applyTheme(injectionModel.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName());  // refresh missing components
+            if (injectionModel.getMediatorUtils().getProxyUtil().isNotLive(GitUtil.ShowOnConsole.YES)) {  // network access
+                return;
+            }
+            if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingUpdate()) {
+                injectionModel.getMediatorUtils().getGitUtil().checkUpdate(GitUtil.ShowOnConsole.NO);
+            }
+            injectionModel.getMediatorUtils().getGitUtil().showNews();
+            this.setVisible(true);
+        });
     }
 
     private void initializePaneComponents() {
@@ -85,88 +95,81 @@ public class JFrameView extends JFrame {
         // Define the default panel: each component on a vertical line
         this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 
-        tabManagers = new TabManagers();  // Tab manager linked to cards
-        this.add(tabManagers);
+        this.tabManagers = new TabManagers();  // Tab manager linked to cards
+        this.add(this.tabManagers);
 
         var panelAddressBar = new PanelAddressBar();  // Textfield at the top
         MediatorHelper.register(panelAddressBar);
         this.add(panelAddressBar);
 
         var mainPanel = new JPanel(new BorderLayout());  // Main panel for tree and tables in the middle
-        this.splitHorizontalTopBottom = new SplitHorizontalTopBottom();
-        mainPanel.add(this.splitHorizontalTopBottom);
+        this.splitNS = new SplitNS();
+        mainPanel.add(this.splitNS);
         this.add(mainPanel);
 
         menubar.getMenuWindows().switchLocaleFromPreferences();
     }
 
     private void initializeWindow() {
-        
         this.setIconImages(UiUtil.getIcons());  // define small and large app icons
-
+        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        this.addWindowStateListener(e -> this.isMaximized = (e.getNewState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH);
         this.addWindowListener(new WindowAdapter() {
-            
             @Override
             public void windowOpened(WindowEvent event) {
-                super.windowOpened(event);
-                
-                var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
-                var horizontalTopBottomSplitter = preferences.getDouble(SplitHorizontalTopBottom.NAME_TOP_BOTTOM_SPLITPANE, 0.75);
-
+                if (preferences.getBoolean(PreferencesUtil.IS_MAXIMIZED, false)) {
+                    JFrameView.this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+                var horizontalTopBottomSplitter = preferences.getDouble(PreferencesUtil.NS_SPLIT, 0.75);
                 if (!(0.0 <= horizontalTopBottomSplitter && horizontalTopBottomSplitter <= 1.0)) {
                     horizontalTopBottomSplitter = 0.75;
                 }
-                JFrameView.this.splitHorizontalTopBottom.setDividerLocation(horizontalTopBottomSplitter);
+                JFrameView.this.splitNS.setDividerLocation(horizontalTopBottomSplitter);
             }
-            
+
             @Override
             public void windowClosing(WindowEvent e) {
-                
-                var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+                preferences.putBoolean(PreferencesUtil.IS_MAXIMIZED, JFrameView.this.isMaximized);
                 preferences.putInt(
-                    SplitHorizontalTopBottom.NAME_LEFT_RIGHT_SPLITPANE,
+                    PreferencesUtil.EW_SPLIT,
                     // TODO not compatible arabic location
-                    JFrameView.this.splitHorizontalTopBottom.getSplitVerticalLeftRight().getDividerLocation()
+                    JFrameView.this.splitNS.getSplitEW().getDividerLocation()
                 );
                 
                 var percentTopBottom = BigDecimal.valueOf(
-                    JFrameView.this.splitHorizontalTopBottom.getDividerLocation() * 100.0
-                    / JFrameView.this.splitHorizontalTopBottom.getHeight()
+                    JFrameView.this.splitNS.getDividerLocation() * 100.0
+                    / JFrameView.this.splitNS.getHeight()
                     / 100
                 );
                 percentTopBottom = percentTopBottom.setScale(2, RoundingMode.HALF_UP);
                 
                 // Divider location change when window is maximized, we can't save getDividerLocation()
                 preferences.putDouble(
-                    SplitHorizontalTopBottom.NAME_TOP_BOTTOM_SPLITPANE,
+                    PreferencesUtil.NS_SPLIT,
                     percentTopBottom.doubleValue() - 0.01  // Fix scale
                 );
-                
-                preferences.putBoolean(UiUtil.BINARY_VISIBLE, false);
-                preferences.putBoolean(UiUtil.CHUNK_VISIBLE, false);
-                preferences.putBoolean(UiUtil.NETWORK_VISIBLE, false);
-                preferences.putBoolean(UiUtil.JAVA_VISIBLE, false);
-                
+
+                preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, false);
+                preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, false);
+                preferences.putBoolean(PreferencesUtil.NETWORK_VISIBLE, false);
+                preferences.putBoolean(PreferencesUtil.JAVA_VISIBLE, false);
                 for (var i = 0 ; i < MediatorHelper.tabConsoles().getTabCount() ; i++) {
                     if ("CONSOLE_BINARY_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
-                        preferences.putBoolean(UiUtil.BINARY_VISIBLE, true);
+                        preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, true);
                     } else if ("CONSOLE_CHUNK_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
-                        preferences.putBoolean(UiUtil.CHUNK_VISIBLE, true);
+                        preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, true);
                     } else if ("CONSOLE_NETWORK_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
-                        preferences.putBoolean(UiUtil.NETWORK_VISIBLE, true);
+                        preferences.putBoolean(PreferencesUtil.NETWORK_VISIBLE, true);
                     } else if ("CONSOLE_JAVA_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
-                        preferences.putBoolean(UiUtil.JAVA_VISIBLE, true);
+                        preferences.putBoolean(PreferencesUtil.JAVA_VISIBLE, true);
                     }
                 }
             }
         });
         
         this.setSize(1024, 768);
-        this.setVisible(true);
         this.setLocationRelativeTo(null);  // center the window
-        this.setVisible(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        
         MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
     }
 
@@ -188,13 +191,7 @@ public class JFrameView extends JFrame {
             }
         }
         
-        Stream.of(
-            MediatorHelper.managerUpload(),
-            MediatorHelper.managerFile(),
-            MediatorHelper.managerWebshell(),
-            MediatorHelper.managerSqlshell()
-        )
-        .forEach(managerList -> {
+        Stream.of(MediatorHelper.managerFile(), MediatorHelper.managerExploit()).forEach(managerList -> {
             managerList.setButtonEnable(false);
             managerList.changePrivilegeIcon(UiUtil.SQUARE.icon);
         });
@@ -203,18 +200,27 @@ public class JFrameView extends JFrame {
     private void displayVersion() {
         LOGGER.log(
             LogLevelUtil.CONSOLE_DEFAULT,
-            "jSQL Injection v{} on Java {}-{}-{}",
-            () -> MediatorHelper.model().getPropertiesUtil().getVersionJsql(),
+            "{} v{} on Java {}-{}-{}",
+            () -> StringUtil.APP_NAME,
+            () -> this.injectionModel.getPropertiesUtil().getVersionJsql(),
             () -> SystemUtils.JAVA_VERSION,
             () -> SystemUtils.OS_ARCH,
             () -> SystemUtils.USER_LANGUAGE
         );
     }
 
+    private void check4K() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int) screenSize.getWidth();
+        if (width >= 3840 && !this.injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Screen compatible with resolution 4K, enable high-definition in Preferences");
+        }
+    }
+
 
     // Getters and setters
 
-    public final Map<UUID, AbstractShell> getMapUuidShell() {
+    public final Map<UUID, AbstractExploit> getMapUuidShell() {
         return this.mapUuidShell;
     }
 
@@ -222,11 +228,11 @@ public class JFrameView extends JFrame {
         return this.subscriber;
     }
 
-    public SplitHorizontalTopBottom getSplitHorizontalTopBottom() {
-        return this.splitHorizontalTopBottom;
+    public SplitNS getSplitNS() {
+        return this.splitNS;
     }
 
     public JTabbedPane getTabManagers() {
-        return tabManagers;
+        return this.tabManagers;
     }
 }

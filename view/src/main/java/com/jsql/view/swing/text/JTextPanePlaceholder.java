@@ -24,14 +24,13 @@ public class JTextPanePlaceholder extends JTextPane {
     /**
      * Text to display when empty.
      */
-    private final String placeholderText;
+    private String placeholderText;
 
     /**
      * Create a textfield with hint.
      * @param placeholder Text displayed when empty
      */
     public JTextPanePlaceholder(String placeholder) {
-        
         this.placeholderText = placeholder;
         UiUtil.initialize(this);
     }
@@ -45,12 +44,15 @@ public class JTextPanePlaceholder extends JTextPane {
         // Unhandled IllegalArgumentException #91471 on paint()
         try {
             super.paint(g);
-            
             if (StringUtils.isEmpty(Jsoup.parse(this.getText()).text().trim())) {
                 UiUtil.drawPlaceholder(this, g, this.placeholderText);
             }
         } catch (IllegalArgumentException | ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
+    }
+
+    public void setPlaceholderText(String placeholderText) {
+        this.placeholderText = placeholderText;
     }
 }

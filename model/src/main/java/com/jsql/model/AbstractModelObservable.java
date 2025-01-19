@@ -79,7 +79,7 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
      * @param request The event bean corresponding to the interaction
      */
     public void sendToViews(final Request request) {
-        AbstractModelObservable.this.submit(request);
+        this.submit(request);
     }
 
     

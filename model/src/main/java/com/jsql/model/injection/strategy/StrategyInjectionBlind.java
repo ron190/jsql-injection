@@ -41,22 +41,22 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled()) {
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBinaryBlind())) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
-                getName(),
+                this.getName(),
                 this.injectionModel.getMediatorVendor().getVendor()
             );
             return;
         }
 
-        checkInjection(BinaryMode.OR);
-        checkInjection(BinaryMode.AND);
-        checkInjection(BinaryMode.STACKED);
-        checkInjection(BinaryMode.NO_MODE);
+        this.checkInjection(BinaryMode.OR);
+        this.checkInjection(BinaryMode.AND);
+        this.checkInjection(BinaryMode.STACK);
+        this.checkInjection(BinaryMode.NO_MODE);
 
         if (this.isApplicable) {
             this.allow();
@@ -78,7 +78,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         LOGGER.log(
             LogLevelUtil.CONSOLE_DEFAULT,
             "{} [{}] with [{}]...",
-            () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY),
+            () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY),
             this::getName,
             () -> binaryMode
         );
@@ -89,7 +89,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
                 "{} [{}] injection with [{}]",
-                () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE),
+                () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
                 this::getName,
                 () -> binaryMode
             );
@@ -99,7 +99,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void allow(int... i) {
         this.injectionModel.appendAnalysisReport(
-            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + getName())
+            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithoutIndex(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(

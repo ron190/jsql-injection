@@ -28,7 +28,7 @@ public class MediatorStrategy {
     private final AbstractStrategy multibit;
     private final StrategyInjectionError error;
     private final AbstractStrategy normal;
-    private final AbstractStrategy stacked;
+    private final AbstractStrategy stack;
 
     private final List<AbstractStrategy> strategies;
     
@@ -47,9 +47,9 @@ public class MediatorStrategy {
         this.multibit = new StrategyInjectionMultibit(this.injectionModel);
         this.error = new StrategyInjectionError(this.injectionModel);
         this.normal = new StrategyInjectionNormal(this.injectionModel);
-        this.stacked = new StrategyInjectionStacked(this.injectionModel);
+        this.stack = new StrategyInjectionStack(this.injectionModel);
 
-        this.strategies = Arrays.asList(this.time, this.blind, this.multibit, this.error, this.stacked, this.normal);
+        this.strategies = Arrays.asList(this.time, this.blind, this.multibit, this.error, this.stack, this.normal);
     }
     
     public String getMeta() {
@@ -126,7 +126,7 @@ public class MediatorStrategy {
      * Find the insertion character, test each strategy, inject metadata and list databases.
      * @param parameterToInject to be tested, null when injection point
      * @return true when successful injection
-     * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
+     * @throws JSqlException when no params integrity, process stopped by user, or injection failure
      */
     public boolean testStrategies(SimpleEntry<String, String> parameterToInject) throws JSqlException {
         // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
@@ -186,12 +186,12 @@ public class MediatorStrategy {
         }
 
         this.error.checkApplicability();
-        this.stacked.checkApplicability();
+        this.stack.checkApplicability();
         this.normal.checkApplicability();
 
         // Set most efficient strategy
         this.normal.activateWhenApplicable();
-        this.stacked.activateWhenApplicable();
+        this.stack.activateWhenApplicable();
         this.error.activateWhenApplicable();
         this.multibit.activateWhenApplicable();
         this.blind.activateWhenApplicable();
@@ -238,8 +238,8 @@ public class MediatorStrategy {
         return this.time;
     }
 
-    public AbstractStrategy getStacked() {
-        return this.stacked;
+    public AbstractStrategy getStack() {
+        return this.stack;
     }
 
     public List<AbstractStrategy> getStrategies() {

@@ -5,7 +5,7 @@ import org.hibernate.cfg.JdbcSettings;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import spring.SpringTargetApplication;
+import spring.SpringApp;
 
 import java.sql.DriverManager;
 import java.util.AbstractMap;
@@ -17,11 +17,9 @@ public class MasterService {
     private final HashMap<String, ConnectionProvider> hashMap = new HashMap<>();
     
     public MasterService() {
-        
         DriverManager.setLogWriter(null);  // remove annoying logs from jdbc driver
         
-        SpringTargetApplication.getPropertiesFilterByProfile().map(AbstractMap.SimpleEntry::getKey).forEach(props -> {
-            
+        SpringApp.getPropertiesFilterByProfile().map(AbstractMap.SimpleEntry::getKey).forEach(props -> {
             DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
             
             DriverManagerDataSource dataSource = new DriverManagerDataSource();

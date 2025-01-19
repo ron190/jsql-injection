@@ -30,10 +30,8 @@ public final class MediatorHelper {
     
     private static ManagerScan managerScan;
     private static ManagerAdminPage managerAdminPage;
-    private static ManagerWebShell managerWebshell;
-    private static ManagerSqlShell managerSqlshell;
     private static ManagerFile managerFile;
-    private static ManagerUpload managerUpload;
+    private static ManagerExploit managerExploit;
     private static ManagerBruteForce managerBruteForce;
 
     private MediatorHelper() {
@@ -41,67 +39,59 @@ public final class MediatorHelper {
     }
 
     public static InjectionModel model() {
-        return model;
+        return MediatorHelper.model;
     }
     
     public static TreeDatabase treeDatabase() {
-        return treeDatabase;
+        return MediatorHelper.treeDatabase;
     }
     
     public static TabResults tabResults() {
-        return tabResults;
+        return MediatorHelper.tabResults;
     }
     
     public static TabManagersCards tabManagersCards() {
-        return tabManagersCards;
+        return MediatorHelper.tabManagersCards;
     }
      
     public static JFrameView frame() {
-        return frame;
+        return MediatorHelper.frame;
     }
     
     public static AppMenubar menubar() {
-        return appMenubar;
+        return MediatorHelper.appMenubar;
     }
     
     public static PanelAddressBar panelAddressBar() {
-        return panelAddressBar;
+        return MediatorHelper.panelAddressBar;
     }
     
     public static TabbedPaneWheeled tabConsoles() {
-        return tabConsoles;
+        return MediatorHelper.tabConsoles;
     }
     
     public static PanelConsoles panelConsoles() {
-        return panelConsoles;
-    }
-     
-    public static ManagerWebShell managerWebshell() {
-        return managerWebshell;
+        return MediatorHelper.panelConsoles;
     }
     
     public static ManagerAdminPage managerAdminPage() {
-        return managerAdminPage;
+        return MediatorHelper.managerAdminPage;
     }
     
     public static ManagerFile managerFile() {
-        return managerFile;
+        return MediatorHelper.managerFile;
     }
-    
-    public static ManagerUpload managerUpload() {
-        return managerUpload;
-    }
-    
-    public static ManagerSqlShell managerSqlshell() {
-        return managerSqlshell;
+
+    public static ManagerExploit managerExploit() {
+        return MediatorHelper.managerExploit;
     }
     
     public static ManagerScan managerScan() {
-        return managerScan;
+        return MediatorHelper.managerScan;
     }
     
     public static ManagerBruteForce managerBruteForce() {
-        return managerBruteForce;
+        return MediatorHelper.managerBruteForce;
     }
     
     
@@ -141,11 +131,6 @@ public final class MediatorHelper {
     
     
     // Registering Managers
-    
-    public static void register(ManagerWebShell managerWebshell) {
-        MediatorHelper.managerWebshell = managerWebshell;
-    }
-    
     public static void register(ManagerAdminPage managerAdminPage) {
         MediatorHelper.managerAdminPage = managerAdminPage;
     }
@@ -153,13 +138,8 @@ public final class MediatorHelper {
     public static void register(ManagerFile managerFile) {
         MediatorHelper.managerFile = managerFile;
     }
-    
-    public static void register(ManagerUpload managerUpload) {
-        MediatorHelper.managerUpload = managerUpload;
-    }
-    
-    public static void register(ManagerSqlShell managerSqlshell) {
-        MediatorHelper.managerSqlshell = managerSqlshell;
+    public static void register(ManagerExploit managerExploit) {
+        MediatorHelper.managerExploit = managerExploit;
     }
     
     public static void register(ManagerScan managerScan) {

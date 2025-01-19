@@ -11,11 +11,8 @@
 package com.jsql.view.swing.manager.util;
 
 import com.jsql.util.LogLevelUtil;
-import com.jsql.util.StringUtil;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.manager.ManagerCoder;
-import com.jsql.view.swing.util.UiUtil;
-import org.apache.commons.codec.DecoderException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,8 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
 
 /**
  * Action run when this.coderManager.encoding.
@@ -43,16 +38,17 @@ public class CoderListener implements ActionListener {
         this.coderManager = coderManager;
     }
     
-    public void actionPerformed() {
+    public void actionPerformed() {  // type
         this.transform(this.coderManager.getMenuMethod().getText());
     }
     
-    public void actionPerformed(String nameMethod) {
+    public void actionPerformed(String nameMethod) {  // hover
         this.transform(nameMethod);
     }
     
     @Override
-    public void actionPerformed(ActionEvent arg0) {
+    public void actionPerformed(ActionEvent actionEvent) {  // click
+        this.coderManager.getMenuMethod().setText(actionEvent.getActionCommand());
         this.transform(this.coderManager.getMenuMethod().getText());
     }
     
@@ -64,26 +60,21 @@ public class CoderListener implements ActionListener {
         try {
             if (
                 StringUtils.isEmpty(textInput)
-                && !Arrays.asList(ManagerCoder.HASHES_FOR_EMPTY_TEXT).contains(nameMethod)
+                && !ActionCoder.getHashesEmpty().contains(nameMethod)
             ) {
-                result = StringUtil.formatReport(LogLevelUtil.COLOR_RED, "Text to convert not found");
+                throw new IllegalArgumentException("text to convert not found");
             } else {
-                result = ActionCoder.forName(nameMethod)
-                    .orElseThrow(() -> new NoSuchElementException("Unsupported encoding or decoding method"))
-                    .run(textInput);
-                result = StringUtil.fromHtml(result);  // Prevent decoded HTML tags from result not rendered in Coder textPane
+                result = ActionCoder.forName(nameMethod).orElseThrow().run(textInput);
             }
-        } catch (IllegalArgumentException | NoSuchAlgorithmException | IOException | DecoderException e) {
-            result = StringUtil.formatReport(LogLevelUtil.COLOR_RED, "Decoding failed: " + e.getMessage());
+        } catch (
+            IllegalArgumentException  // also thrown by Base64
+            | IOException
+            | NoSuchAlgorithmException e
+        ) {
+            result = "Coder failure: " + e.getMessage();
             LOGGER.log(LogLevelUtil.IGNORE, e);
         }
-        
-        this.coderManager.getResult().setText(
-            String.format(
-                "<html><span style=\"font-family:'%s'\">%s</span></html>",
-                UiUtil.FONT_NAME_MONO_NON_ASIAN,
-                result
-            )
-        );
+
+        this.coderManager.getResult().setText(result);
     }
 }

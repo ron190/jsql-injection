@@ -2,7 +2,7 @@ package com.test.vendor.db2;
 
 import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
-import spring.SpringTargetApplication;
+import spring.SpringApp;
 
 public abstract class ConcreteDb2SuiteIT extends AbstractTestSuite {
 
@@ -12,9 +12,9 @@ public abstract class ConcreteDb2SuiteIT extends AbstractTestSuite {
     
     public void config() {
 
-        this.jdbcURL = SpringTargetApplication.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringTargetApplication.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringTargetApplication.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        this.jdbcURL = SpringApp.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = SpringApp.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = SpringApp.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.jsqlDatabaseName = "DB2INST1";
         this.jsqlTableName = "STUDENT";

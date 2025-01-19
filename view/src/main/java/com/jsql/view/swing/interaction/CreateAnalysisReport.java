@@ -13,6 +13,8 @@ package com.jsql.view.swing.interaction;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
+import javax.swing.*;
+
 /**
  * Mark the injection as vulnerable to a blind injection.
  */
@@ -26,6 +28,6 @@ public class CreateAnalysisReport extends CreateTabHelper implements Interaction
 
     @Override
     public void execute() {
-        MediatorHelper.tabResults().createReportTab(this.content.trim());
+        SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addReportTab(this.content.trim()));
     }
 }

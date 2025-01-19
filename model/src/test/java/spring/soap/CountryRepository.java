@@ -32,11 +32,8 @@ public class CountryRepository {
 
     @Transactional
 	public Country findCountry(String name) throws JsonProcessingException {
-	    
         Country country = new Country();
-
         Session session = this.sessionFactory.getCurrentSession();
-
         String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
 
         try {
@@ -48,14 +45,12 @@ public class CountryRepository {
             List<Object> results = query.getResultList();
 
             country.setName(URLEncoder.encode(
-                TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results)),
+                CountryRepository.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results)),
                 StandardCharsets.UTF_8
             ));
         } catch (Exception e) {
-            
             // Required by multiple columns
             country.setName(URLEncoder.encode(this.initializeErrorMessage(e).getContent(), StandardCharsets.UTF_8));
-            
             // Required by transaction rollback
             throw e;
         }
@@ -64,11 +59,8 @@ public class CountryRepository {
 	}
 
     private Greeting initializeErrorMessage(Exception e) {
-        
         String stacktrace = ExceptionUtils.getStackTrace(e);
-        
         LOGGER.debug(stacktrace);
-
-        return new Greeting(TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
+        return new Greeting(CountryRepository.TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
     }
 }

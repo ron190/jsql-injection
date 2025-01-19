@@ -78,7 +78,7 @@ public class Base16 extends BaseNCodec {
     };
 
     /**
-     * This array is a lookup table that translates Unicode characters drawn from the a lower-case "Base16 Alphabet"
+     * This array is a lookup table that translates Unicode characters drawn from a lower-case "Base16 Alphabet"
      * into their 4-bit positive integer equivalents. Characters that are not in the Base16
      * alphabet but fall within the bounds of the array are translated to -1.
      */
@@ -128,7 +128,7 @@ public class Base16 extends BaseNCodec {
      * @param lowerCase if {@code true} then use a lower-case Base16 alphabet.
      */
     public Base16(final boolean lowerCase) {
-        this(lowerCase, DECODING_POLICY_DEFAULT);
+        this(lowerCase, BaseNCodec.DECODING_POLICY_DEFAULT);
     }
 
     /**
@@ -138,13 +138,13 @@ public class Base16 extends BaseNCodec {
      * @param decodingPolicy Decoding policy.
      */
     public Base16(final boolean lowerCase, final CodecPolicy decodingPolicy) {
-        super(BYTES_PER_UNENCODED_BLOCK, BYTES_PER_ENCODED_BLOCK, 0, 0, PAD_DEFAULT, decodingPolicy);
+        super(Base16.BYTES_PER_UNENCODED_BLOCK, Base16.BYTES_PER_ENCODED_BLOCK, 0, 0, BaseNCodec.PAD_DEFAULT, decodingPolicy);
         if (lowerCase) {
-            this.encodeTable = LOWER_CASE_ENCODE_TABLE;
-            this.decodeTable = LOWER_CASE_DECODE_TABLE;
+            this.encodeTable = Base16.LOWER_CASE_ENCODE_TABLE;
+            this.decodeTable = Base16.LOWER_CASE_DECODE_TABLE;
         } else {
-            this.encodeTable = UPPER_CASE_ENCODE_TABLE;
-            this.decodeTable = UPPER_CASE_DECODE_TABLE;
+            this.encodeTable = Base16.UPPER_CASE_ENCODE_TABLE;
+            this.decodeTable = Base16.UPPER_CASE_DECODE_TABLE;
         }
     }
 
@@ -170,14 +170,14 @@ public class Base16 extends BaseNCodec {
         }
 
         // we must have an even number of chars to decode
-        final int charsToProcess = availableChars % BYTES_PER_ENCODED_BLOCK == 0 ? availableChars : availableChars - 1;
-        final byte[] buffer = this.ensureBufferSize(charsToProcess / BYTES_PER_ENCODED_BLOCK, context);
+        final int charsToProcess = availableChars % Base16.BYTES_PER_ENCODED_BLOCK == 0 ? availableChars : availableChars - 1;
+        final byte[] buffer = this.ensureBufferSize(charsToProcess / Base16.BYTES_PER_ENCODED_BLOCK, context);
 
         int result;
         var i = 0;
         if (dataLen < availableChars) {
             // we have 1/2 byte from previous invocation to decode
-            result = (context.ibitWorkArea - 1) << BITS_PER_ENCODED_BYTE;
+            result = (context.ibitWorkArea - 1) << Base16.BITS_PER_ENCODED_BYTE;
             result |= this.decodeOctet(data[offset++]);
             i = 2;
             buffer[context.pos++] = (byte) result;
@@ -186,7 +186,7 @@ public class Base16 extends BaseNCodec {
         }
 
         while (i < charsToProcess) {
-            result = this.decodeOctet(data[offset++]) << BITS_PER_ENCODED_BYTE;
+            result = this.decodeOctet(data[offset++]) << Base16.BITS_PER_ENCODED_BYTE;
             result |= this.decodeOctet(data[offset++]);
             i += 2;
             buffer[context.pos++] = (byte) result;
@@ -218,7 +218,7 @@ public class Base16 extends BaseNCodec {
             context.eof = true;
             return;
         }
-        final int size = length * BYTES_PER_ENCODED_BLOCK;
+        final int size = length * Base16.BYTES_PER_ENCODED_BLOCK;
         if (size < 0) {
             throw new IllegalArgumentException("Input length exceeds maximum size for encoded data: " + length);
         }
@@ -226,8 +226,8 @@ public class Base16 extends BaseNCodec {
         final int end = offset + length;
         for (int i = offset; i < end; i++) {
             final int value = data[i];
-            final int high = (value >> BITS_PER_ENCODED_BYTE) & MASK_4BITS;
-            final int low = value & MASK_4BITS;
+            final int high = (value >> Base16.BITS_PER_ENCODED_BYTE) & Base16.MASK_4BITS;
+            final int low = value & Base16.MASK_4BITS;
             buffer[context.pos++] = this.encodeTable[high];
             buffer[context.pos++] = this.encodeTable[low];
         }

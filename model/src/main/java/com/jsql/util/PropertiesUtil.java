@@ -45,10 +45,10 @@ public class PropertiesUtil {
         var statusJvm = StringUtils.EMPTY;
         AtomicInteger countGui = new AtomicInteger();
         var statusGui = StringUtils.EMPTY;
-        var propertiesRoot = getProperties("i18n/jsql.properties");
+        var propertiesRoot = PropertiesUtil.getProperties("i18n/jsql.properties");
 
         if (!Arrays.asList(StringUtils.EMPTY, "en").contains(newLocale.getLanguage())) {
-            var bundleUser = getProperties("i18n/jsql_" + newLocale.getLanguage() + ".properties");
+            var bundleUser = PropertiesUtil.getProperties("i18n/jsql_" + newLocale.getLanguage() + ".properties");
             propertiesRoot.entrySet().stream()
             .filter(key -> bundleUser.isEmpty() || !bundleUser.containsKey(key.getKey()))
             .forEach(key -> countGui.getAndIncrement());
@@ -60,7 +60,7 @@ public class PropertiesUtil {
         }
 
         if (!Locale.getDefault().getLanguage().equals("en")) {
-            var propertiesJvm = getProperties("i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
+            var propertiesJvm = PropertiesUtil.getProperties("i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
             propertiesRoot.entrySet().stream()
             .filter(key -> propertiesJvm.isEmpty() || !propertiesJvm.containsKey(key.getKey()))
             .forEach(key -> countJvm.getAndIncrement());

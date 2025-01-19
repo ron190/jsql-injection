@@ -13,9 +13,11 @@ package com.jsql.view.terminal.interaction;
 import com.jsql.model.bean.util.Header;
 import com.jsql.util.AnsiColorUtil;
 import com.jsql.view.interaction.InteractionCommand;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class MessageHeader implements InteractionCommand {
@@ -31,11 +33,11 @@ public class MessageHeader implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
-        this.url = (String) params.get(Header.URL);
-        this.post = (String) params.get(Header.POST);
-        this.header = (Map<String, String>) params.get(Header.HEADER);
-        this.response = (Map<String, String>) params.get(Header.RESPONSE);
-        this.source = (String) params.get(Header.SOURCE);
+        this.url = (String) params.getOrDefault(Header.URL, StringUtils.EMPTY);
+        this.post = (String) params.getOrDefault(Header.POST, StringUtils.EMPTY);
+        this.header = (Map<String, String>) params.getOrDefault(Header.HEADER, Collections.EMPTY_MAP);
+        this.response = (Map<String, String>) params.getOrDefault(Header.RESPONSE, Collections.EMPTY_MAP);
+        this.source = (String) params.getOrDefault(Header.SOURCE, StringUtils.EMPTY);
     }
 
     @Override

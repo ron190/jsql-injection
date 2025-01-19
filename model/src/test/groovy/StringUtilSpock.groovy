@@ -1,4 +1,5 @@
 import com.jsql.util.StringUtil
+import com.jsql.util.bruter.ActionCoder
 import com.jsql.util.bruter.HashUtil
 import org.apache.commons.lang3.StringUtils
 import spock.lang.Specification
@@ -10,7 +11,6 @@ class StringUtilSpock extends Specification {
     def 'Check encoding/decoding methods from StringUtil and HashUtil'() {
         
         expect:
-            StringUtil.decimalHtmlEncode('יאח') == '&#233;&#224;&#231;'
             StringUtil.hexstr('313233616263') == '123abc'
             !StringUtil.isUtf8('eca')
             !StringUtil.isUtf8(null)
@@ -31,9 +31,6 @@ class StringUtilSpock extends Specification {
                 c  d
             ''') == '/**//*!*/a a-b b-c c d'
 
-            StringUtil.compress(null) == null
-            StringUtil.decompress(null) == null
-            
             HashUtil.toMd4('eac') == '128A23E4553B3EE368109E5CEE8CF2C1'
             HashUtil.toAdler32('eac') == '39256362'
             HashUtil.toCrc16('eac') == 'a679'
@@ -42,29 +39,38 @@ class StringUtilSpock extends Specification {
             HashUtil.toMySql('eac') != null  // unstable
             HashUtil.toHash('md5', 'eac') == '31E0E4C9C2AEE79C4BFC58C460F4DDBF'
 
-            StringUtil.toHex('eac') == '656163'
-            StringUtil.fromHex('656163') == 'eac'
-            [
-                '1fc28b08000000000000004b4d4c0600c39dc2ba001903000000',     // Java 11
-                '1fc28b08000000000000c3bf4b4d4c0600c39dc2ba001903000000'    // Java >=17
-            ].contains(StringUtil.toHexZip('eac'))
-            StringUtil.fromHexZip('1fc28b08000000000000004b4d4c0600c39dc2ba001903000000') == 'eac'
-            [
-                'H8KLCAAAAAAAAABLTUwGAMOdwroAGQMAAAA=', // Java 11
-                'H8KLCAAAAAAAAMO/S01MBgDDncK6ABkDAAAA'  // Java >=17
-            ].contains(StringUtil.toBase64Zip('eac'))
-            StringUtil.fromBase64Zip('H8KLCAAAAAAAAABLTUwGAMOdwroAGQMAAAA=') == 'eac'
             StringUtil.toUrl('eac') == 'eac'
             StringUtil.fromUrl('eac') == 'eac'
-            StringUtil.fromHtml('&eacute;&agrave;&ccedil;') == 'יאח'
-            StringUtil.decimalHtmlEncode('<>&יאח', false) == '<>&&#233;&#224;&#231;'
+            StringUtil.toHex('eac') == '656163'
+            StringUtil.fromHex('656163') == 'eac'
 
-            // Additional & for html parsing in textpane
-            StringUtil.toHtml('יאח') == '&amp;eacute;&amp;agrave;&amp;ccedil;'
-            StringUtil.decimalHtmlEncode('<>&יאח', true) == '&amp;lt;&amp;gt;&amp;&amp;#233;&amp;#224;&amp;#231;'
-            
+            StringUtil.toHexZip('eac') == '789c4b4d4c06000257012a'
+            StringUtil.fromHexZip('789c4b4d4c06000257012a') == 'eac'
+            StringUtil.toBase64Zip('eac') == 'eJxLTUwGAAJXASo='
+            StringUtil.fromBase64Zip('eJxLTUwGAAJXASo=') == 'eac'
+
+            var specialChars = '<>>#78970-ט_)אח-_ט!,:;?§./.?*ש^$µ%£'
+            var specialCharsEncode = StandardCharsets.UTF_8.encode(specialChars).toString()
+            var hexZip = '789ccb4a2c4bd4cbcbccd7f3484d2c70aa2c49752a4d4b4b2d8a2ec82fb63550c8c9ccb5353156484e2cb035378f050067db0f2d'
+            var b64Zip = 'eJzLSixL1MvLzNfzSE0scKosSXUqTUtLLYouyC+2NVDIycy1NTFWSE4ssDU3jwUAZ9sPLQ=='
+            var url = '%3C%3E%3E%2378970-%C3%A8_%29%C3%A0%C3%A7-_%C3%A8%21%2C%3A%3B%3F%C2%A7.%2F.%3F*%C3%B9%5E%24%C2%B5%25%C2%A3'
+            StringUtil.toHexZip(specialCharsEncode) == hexZip
+            StringUtil.fromHexZip(hexZip) == specialCharsEncode
+            StringUtil.toBase64Zip(specialCharsEncode) == b64Zip
+            StringUtil.fromBase64Zip(b64Zip) == specialCharsEncode
+            StringUtil.toUrl(specialChars) == url
+            StringUtil.fromUrl(url) == specialChars
+
+            StringUtil.fromHtml('&eacute;&agrave;&ccedil;') == 'יאח'
+            StringUtil.toHtml('יאח') == '&eacute;&agrave;&ccedil;'
+            StringUtil.toHtmlDecimal('<>&יאח') == '<>&&#233;&#224;&#231;'
+
             StringUtil.detectUtf8(null) == StringUtils.EMPTY
             StringUtil.detectUtf8("יאחט") == new String("יאחט".getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8)
             StringUtil.detectUtf8("eace") == "eace"
+
+            ActionCoder.getHashesEmpty().forEach {
+                assert ActionCoder.forName(it).orElseThrow().run('') ==~ /[A-Z0-9]{25,}/
+            }
     }
 }

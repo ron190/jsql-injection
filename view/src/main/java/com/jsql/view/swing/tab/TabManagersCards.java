@@ -19,17 +19,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
  */
 public class TabManagersCards extends JPanel {
     
-    private final ManagerWebShell managerWebShell = new ManagerWebShell();
     private final ManagerFile managerFile = new ManagerFile();
-    private final ManagerUpload managerUpload = new ManagerUpload();
-    private final ManagerSqlShell managerSqlShell = new ManagerSqlShell();
-    
+    private final ManagerExploit managerExploit = new ManagerExploit();
+
     /**
      * Create manager panel.
      */
@@ -43,30 +42,27 @@ public class TabManagersCards extends JPanel {
         var managerAdminPage = new ManagerAdminPage();
         var managerBruteForce = new ManagerBruteForce();
 
-        MediatorHelper.register(this.managerWebShell);
         MediatorHelper.register(this.managerFile);
-        MediatorHelper.register(this.managerUpload);
-        MediatorHelper.register(this.managerSqlShell);
+        MediatorHelper.register(this.managerExploit);
         MediatorHelper.register(managerScanList);
         MediatorHelper.register(managerAdminPage);
         MediatorHelper.register(managerBruteForce);
 
-        this.buildI18nTab("DATABASE_TAB", managerDatabase);
-        this.buildI18nTab("ADMINPAGE_TAB", managerAdminPage);
-        this.buildI18nTab("FILE_TAB", this.managerFile);
-        this.buildI18nTab("WEBSHELL_TAB", this.managerWebShell);
-        this.buildI18nTab("SQLSHELL_TAB", this.managerSqlShell);
-        this.buildI18nTab("UPLOAD_TAB", this.managerUpload);
-        this.buildI18nTab("BRUTEFORCE_TAB", managerBruteForce);
-        this.buildI18nTab("CODER_TAB", new ManagerCoder());
-        this.buildI18nTab("SCANLIST_TAB", managerScanList);
+        var managers = Arrays.asList(
+            managerDatabase, managerAdminPage, this.managerFile, this.managerExploit, managerBruteForce,
+            new ManagerCoder(), managerScanList
+        );
+        AtomicInteger i = new AtomicInteger();
+        TabManagers.TABS.forEach(modelSvgIcon -> this.buildI18nTab(
+            modelSvgIcon.keyLabel,
+            managers.get(i.getAndIncrement())
+        ));
 
         MediatorHelper.register(this);
     }
 
     public void addToLists(String path, String name) {
-        Arrays.asList(this.managerWebShell, this.managerSqlShell, this.managerUpload)
-            .forEach(manager -> manager.addToList(path.replace(name, StringUtils.EMPTY)));
+        this.managerExploit.addToList(path.replace(name, StringUtils.EMPTY));
     }
     
     public void markFileSystemInvulnerable() {
@@ -90,6 +86,6 @@ public class TabManagersCards extends JPanel {
     }
 
     private List<AbstractManagerList> getManagers() {
-        return Arrays.asList(this.managerFile, this.managerWebShell, this.managerSqlShell, this.managerUpload);
+        return Arrays.asList(this.managerFile, this.managerExploit);
     }
 }

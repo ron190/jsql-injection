@@ -24,21 +24,27 @@ import java.util.concurrent.atomic.AtomicReference;
  * A button displayed in address.
  */
 public class ButtonStart extends JButton {
+    private static final String BUTTON_START_TOOLTIP = "BUTTON_START_TOOLTIP";
 
     /**
      * State of current injection.
      */
     private StateButton state = StateButton.STARTABLE;
-    private static final String BUTTON_START_TOOLTIP = "BUTTON_START_TOOLTIP";
 
-    private final AtomicReference<JToolTipI18n> tooltipRadio = new AtomicReference<>(
-        new JToolTipI18n(I18nUtil.valueByKey(BUTTON_START_TOOLTIP))
+    private final AtomicReference<JToolTipI18n> tooltip = new AtomicReference<>(
+        new JToolTipI18n(I18nUtil.valueByKey(ButtonStart.BUTTON_START_TOOLTIP))
     );
 
     @Override
     public JToolTip createToolTip() {
-        tooltipRadio.set(new JToolTipI18n(I18nUtil.valueByKey(BUTTON_START_TOOLTIP)));
-        return tooltipRadio.get();
+        if (this.state == StateButton.STARTABLE) {
+            this.tooltip.get().setText(I18nUtil.valueByKey(ButtonStart.BUTTON_START_TOOLTIP));
+        } else if (this.state == StateButton.STOPPABLE) {
+            this.tooltip.get().setText(I18nUtil.valueByKey("BUTTON_STOP_TOOLTIP"));
+        } else if (this.state == StateButton.STOPPING) {
+            this.tooltip.get().setText(I18nUtil.valueByKey("BUTTON_STOPPING_TOOLTIP"));
+        }
+        return this.tooltip.get();
     }
 
     /**
@@ -46,8 +52,8 @@ public class ButtonStart extends JButton {
      */
     public ButtonStart() {
         this.setName("buttonInUrl");
-        this.setToolTipText(I18nUtil.valueByKey(BUTTON_START_TOOLTIP));
-        I18nViewUtil.addComponentForKey(BUTTON_START_TOOLTIP, tooltipRadio.get());
+        this.setToolTipText(I18nUtil.valueByKey(ButtonStart.BUTTON_START_TOOLTIP));
+        I18nViewUtil.addComponentForKey(ButtonStart.BUTTON_START_TOOLTIP, this.tooltip.get());
 
         this.setPreferredSize(new Dimension(18, 16));
         this.setOpaque(false);
@@ -82,7 +88,6 @@ public class ButtonStart extends JButton {
         this.setRolloverEnabled(false);
         this.setEnabled(true);
         this.setIcon(UiUtil.CROSS_RED.icon);
-        this.setToolTipText(I18nUtil.valueByKey("BUTTON_STOP_TOOLTIP"));
     }
 
     /**
@@ -94,7 +99,6 @@ public class ButtonStart extends JButton {
         this.setRolloverEnabled(false);
         this.setEnabled(false);
         this.setIcon(UiUtil.HOURGLASS.icon);
-        this.setToolTipText(I18nUtil.valueByKey("BUTTON_STOPPING_TOOLTIP"));
     }
 
     /**

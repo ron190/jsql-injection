@@ -36,200 +36,200 @@ public class SqlEngine extends JPanel {
         
         // Default
         DATABASE_DEFAULT(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getSchema().setDatabase(v),
-            () -> modelYaml.getResource().getSchema().getDatabase()
+            v -> SqlEngine.modelYaml.getResource().getSchema().setDatabase(v),
+            () -> SqlEngine.modelYaml.getResource().getSchema().getDatabase()
         )),
         TABLE_DEFAULT(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getSchema().setTable(v),
-            () -> modelYaml.getResource().getSchema().getTable()
+            v -> SqlEngine.modelYaml.getResource().getSchema().setTable(v),
+            () -> SqlEngine.modelYaml.getResource().getSchema().getTable()
         )),
         COLUMN_DEFAULT(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getSchema().setColumn(v),
-            () -> modelYaml.getResource().getSchema().getColumn()
+            v -> SqlEngine.modelYaml.getResource().getSchema().setColumn(v),
+            () -> SqlEngine.modelYaml.getResource().getSchema().getColumn()
         )),
         QUERY_DEFAULT(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getSchema().getRow().setQuery(v),
-            () -> modelYaml.getResource().getSchema().getRow().getQuery()
+            v -> SqlEngine.modelYaml.getResource().getSchema().getRow().setQuery(v),
+            () -> SqlEngine.modelYaml.getResource().getSchema().getRow().getQuery()
         )),
         FIELD_DEFAULT(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getSchema().getRow().getFields().setField(v),
-            () -> modelYaml.getResource().getSchema().getRow().getFields().getField()
+            v -> SqlEngine.modelYaml.getResource().getSchema().getRow().getFields().setField(v),
+            () -> SqlEngine.modelYaml.getResource().getSchema().getRow().getFields().getField()
         )),
         CONCAT_DEFAULT(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getSchema().getRow().getFields().setConcat(v),
-            () -> modelYaml.getResource().getSchema().getRow().getFields().getConcat()
+            v -> SqlEngine.modelYaml.getResource().getSchema().getRow().getFields().setConcat(v),
+            () -> SqlEngine.modelYaml.getResource().getSchema().getRow().getFields().getConcat()
         )),
         
         // Zip
         DATABASE_ZIP(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getZip().setDatabase(v),
-            () -> modelYaml.getResource().getZip().getDatabase()
+            v -> SqlEngine.modelYaml.getResource().getZip().setDatabase(v),
+            () -> SqlEngine.modelYaml.getResource().getZip().getDatabase()
         )),
         TABLE_ZIP(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getZip().setTable(v),
-            () -> modelYaml.getResource().getZip().getTable()
+            v -> SqlEngine.modelYaml.getResource().getZip().setTable(v),
+            () -> SqlEngine.modelYaml.getResource().getZip().getTable()
         )),
         COLUMN_ZIP(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getZip().setColumn(v),
-            () -> modelYaml.getResource().getZip().getColumn()
+            v -> SqlEngine.modelYaml.getResource().getZip().setColumn(v),
+            () -> SqlEngine.modelYaml.getResource().getZip().getColumn()
         )),
         QUERY_ZIP(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getZip().getRow().setQuery(v),
-            () -> modelYaml.getResource().getZip().getRow().getQuery()
+            v -> SqlEngine.modelYaml.getResource().getZip().getRow().setQuery(v),
+            () -> SqlEngine.modelYaml.getResource().getZip().getRow().getQuery()
         )),
         FIELD_ZIP(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getZip().getRow().getFields().setField(v),
-            () -> modelYaml.getResource().getZip().getRow().getFields().getField()
+            v -> SqlEngine.modelYaml.getResource().getZip().getRow().getFields().setField(v),
+            () -> SqlEngine.modelYaml.getResource().getZip().getRow().getFields().getField()
         )),
         CONCAT_ZIP(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getZip().getRow().getFields().setConcat(v),
-            () -> modelYaml.getResource().getZip().getRow().getFields().getConcat()
+            v -> SqlEngine.modelYaml.getResource().getZip().getRow().getFields().setConcat(v),
+            () -> SqlEngine.modelYaml.getResource().getZip().getRow().getFields().getConcat()
         )),
         
         // Dios
         DATABASE_DIOS(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getDios().setDatabase(v),
-            () -> modelYaml.getResource().getDios().getDatabase()
+            v -> SqlEngine.modelYaml.getResource().getDios().setDatabase(v),
+            () -> SqlEngine.modelYaml.getResource().getDios().getDatabase()
         )),
         TABLE_DIOS(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getDios().setTable(v),
-            () -> modelYaml.getResource().getDios().getTable()
+            v -> SqlEngine.modelYaml.getResource().getDios().setTable(v),
+            () -> SqlEngine.modelYaml.getResource().getDios().getTable()
         )),
         COLUMN_DIOS(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getDios().setColumn(v),
-            () -> modelYaml.getResource().getDios().getColumn()
+            v -> SqlEngine.modelYaml.getResource().getDios().setColumn(v),
+            () -> SqlEngine.modelYaml.getResource().getDios().getColumn()
         )),
         QUERY_DIOS(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getDios().getRow().setQuery(v),
-            () -> modelYaml.getResource().getDios().getRow().getQuery()
+            v -> SqlEngine.modelYaml.getResource().getDios().getRow().setQuery(v),
+            () -> SqlEngine.modelYaml.getResource().getDios().getRow().getQuery()
         )),
         FIELD_DIOS(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getDios().getRow().getFields().setField(v),
-            () -> modelYaml.getResource().getDios().getRow().getFields().getField()
+            v -> SqlEngine.modelYaml.getResource().getDios().getRow().getFields().setField(v),
+            () -> SqlEngine.modelYaml.getResource().getDios().getRow().getFields().getField()
         )),
         CONCAT_DIOS(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getDios().getRow().getFields().setConcat(v),
-            () -> modelYaml.getResource().getDios().getRow().getFields().getConcat()
+            v -> SqlEngine.modelYaml.getResource().getDios().getRow().getFields().setConcat(v),
+            () -> SqlEngine.modelYaml.getResource().getDios().getRow().getFields().getConcat()
         )),
         
         INFO(new JSyntaxTextArea(
-            v -> modelYaml.getResource().setInfo(v),
-            () -> modelYaml.getResource().getInfo()
+            v -> SqlEngine.modelYaml.getResource().setInfo(v),
+            () -> SqlEngine.modelYaml.getResource().getInfo()
         )),
 
         // Configuration
         SLIDING_WINDOW(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getConfiguration().setSlidingWindow(v),
-            () -> modelYaml.getStrategy().getConfiguration().getSlidingWindow()
+            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().setSlidingWindow(v),
+            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getSlidingWindow()
         )),
         LIMIT(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getConfiguration().setLimit(v),
-            () -> modelYaml.getStrategy().getConfiguration().getLimit()
+            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().setLimit(v),
+            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getLimit()
         )),
         FAILSAFE(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getConfiguration().setFailsafe(v),
-            () -> modelYaml.getStrategy().getConfiguration().getFailsafe()
+            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().setFailsafe(v),
+            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFailsafe()
         )),
         CALIBRATOR(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getConfiguration().setCalibrator(v),
-            () -> modelYaml.getStrategy().getConfiguration().getCalibrator()
+            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().setCalibrator(v),
+            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getCalibrator()
         )),
         ENDING_COMMENT(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getConfiguration().setEndingComment(v),
-            () -> modelYaml.getStrategy().getConfiguration().getEndingComment()
+            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().setEndingComment(v),
+            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getEndingComment()
         )),
         LIMIT_BOUNDARY(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getConfiguration().setLimitBoundary(v),
-            () -> modelYaml.getStrategy().getConfiguration().getLimitBoundary()
+            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().setLimitBoundary(v),
+            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getLimitBoundary()
         )),
         
         // Normal
         INDICES(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getNormal().setIndices(v),
-            () -> modelYaml.getStrategy().getNormal().getIndices()
+            v -> SqlEngine.modelYaml.getStrategy().getNormal().setIndices(v),
+            () -> SqlEngine.modelYaml.getStrategy().getNormal().getIndices()
         )),
         CAPACITY(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getNormal().setCapacity(v),
-            () -> modelYaml.getStrategy().getNormal().getCapacity()
+            v -> SqlEngine.modelYaml.getStrategy().getNormal().setCapacity(v),
+            () -> SqlEngine.modelYaml.getStrategy().getNormal().getCapacity()
         )),
 
-        STACKED(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().setStacked(v),
-            () -> modelYaml.getStrategy().getStacked()
+        STACK(new JSyntaxTextArea(
+            v -> SqlEngine.modelYaml.getStrategy().setStack(v),
+            () -> SqlEngine.modelYaml.getStrategy().getStack()
         )),
 
         // Boolean
         MODE_AND(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getBinary().setModeAnd(v),
-            () -> modelYaml.getStrategy().getBinary().getModeAnd()
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().setModeAnd(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getModeAnd()
         )),
         MODE_OR(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getBinary().setModeOr(v),
-            () -> modelYaml.getStrategy().getBinary().getModeOr()
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().setModeOr(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getModeOr()
         )),
-        MODE_STACKED(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getBinary().setModeStacked(v),
-            () -> modelYaml.getStrategy().getBinary().getModeStacked()
+        MODE_STACK(new JSyntaxTextArea(
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().setModeStack(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getModeStack()
         )),
         BLIND(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getBinary().setBlind(v),
-            () -> modelYaml.getStrategy().getBinary().getBlind()
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().setBlind(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getBlind()
         )),
         TIME(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getBinary().setTime(v),
-            () -> modelYaml.getStrategy().getBinary().getTime()
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().setTime(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTime()
         )),
         MULTIBIT(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getBinary().setMultibit(v),
-            () -> modelYaml.getStrategy().getBinary().getMultibit()
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().setMultibit(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getMultibit()
         )),
         BIT_TEST(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getBinary().getTest().setBit(v),
-            () -> modelYaml.getStrategy().getBinary().getTest().getBit()
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setBit(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getBit()
         )),
 
         // File
         FILE_PRIVILEGE(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getFile().setPrivilege(v),
-            () -> modelYaml.getResource().getFile().getPrivilege()
+            v -> SqlEngine.modelYaml.getResource().getFile().setPrivilege(v),
+            () -> SqlEngine.modelYaml.getResource().getFile().getPrivilege()
         )),
         FILE_READ(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getFile().setRead(v),
-            () -> modelYaml.getResource().getFile().getRead()
+            v -> SqlEngine.modelYaml.getResource().getFile().setRead(v),
+            () -> SqlEngine.modelYaml.getResource().getFile().getRead()
         )),
         FILE_WRITE_BODY(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getFile().getWrite().setBody(v),
-            () -> modelYaml.getResource().getFile().getWrite().getBody()
+            v -> SqlEngine.modelYaml.getResource().getFile().getWrite().setBody(v),
+            () -> SqlEngine.modelYaml.getResource().getFile().getWrite().getBody()
         )),
         FILE_WRITE_PATH(new JSyntaxTextArea(
-            v -> modelYaml.getResource().getFile().getWrite().setPath(v),
-            () -> modelYaml.getResource().getFile().getWrite().getPath()
+            v -> SqlEngine.modelYaml.getResource().getFile().getWrite().setPath(v),
+            () -> SqlEngine.modelYaml.getResource().getFile().getWrite().getPath()
         )),
 
         // Fingerprint
         TRUTHY(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getBinary().getTest().setTruthy(v),
-            () -> modelYaml.getStrategy().getBinary().getTest().getTruthyAsString()
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setTruthy(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getTruthyAsString()
         )),
         FALSY(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getBinary().getTest().setFalsy(v),
-            () -> modelYaml.getStrategy().getBinary().getTest().getFalsyAsString()
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setFalsy(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getFalsyAsString()
         )),
         INCORRECT_STRING_ERROR_MESSAGE(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),
-            () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()
+            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),
+            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()
         )),
         ORDER_BY_ERROR_MESSAGE(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),
-            () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
+            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),
+            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
         )),
         ORDER_BY(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getNormal().setOrderBy(v),
-            () -> modelYaml.getStrategy().getNormal().getOrderBy()
+            v -> SqlEngine.modelYaml.getStrategy().getNormal().setOrderBy(v),
+            () -> SqlEngine.modelYaml.getStrategy().getNormal().getOrderBy()
         )),
         VENDOR_SPECIFIC(new JSyntaxTextArea(
-            v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),
-            () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
+            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),
+            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
         )),
         ;
         
@@ -303,7 +303,7 @@ public class SqlEngine extends JPanel {
             new SimpleEntry<>("SQLENGINE_METADATA", TextareaWithColor.INFO.getTextArea())
         )
         .forEach(entry -> {
-            tabsDefault.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue()));
+            tabsDefault.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue(), false));
             var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             tabsDefault.setTabComponentAt(tabsDefault.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
@@ -319,7 +319,7 @@ public class SqlEngine extends JPanel {
             new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_ZIP.getTextArea())
         )
         .forEach(entry -> {
-            tabsZip.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue()));
+            tabsZip.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue(), false));
             var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             tabsZip.setTabComponentAt(tabsZip.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
@@ -335,7 +335,7 @@ public class SqlEngine extends JPanel {
             new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_DIOS.getTextArea())
         )
         .forEach(entry -> {
-            tabsDios.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue()));
+            tabsDios.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue(), false));
             var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             tabsDios.setTabComponentAt(tabsDios.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
@@ -358,31 +358,31 @@ public class SqlEngine extends JPanel {
 
     private JTabbedPane getPanelFile() {
         JTabbedPane tabs = new TabbedPaneWheeled();
-        tabs.addTab("Privilege", new RTextScrollPane(TextareaWithColor.FILE_PRIVILEGE.getTextArea()));
-        tabs.addTab("Read", new RTextScrollPane(TextareaWithColor.FILE_READ.getTextArea()));
-        tabs.addTab("Write body", new RTextScrollPane(TextareaWithColor.FILE_WRITE_BODY.getTextArea()));
-        tabs.addTab("Write path", new RTextScrollPane(TextareaWithColor.FILE_WRITE_PATH.getTextArea()));
+        tabs.addTab("Privilege", new RTextScrollPane(TextareaWithColor.FILE_PRIVILEGE.getTextArea(), false));
+        tabs.addTab("Read", new RTextScrollPane(TextareaWithColor.FILE_READ.getTextArea(), false));
+        tabs.addTab("Write body", new RTextScrollPane(TextareaWithColor.FILE_WRITE_BODY.getTextArea(), false));
+        tabs.addTab("Write path", new RTextScrollPane(TextareaWithColor.FILE_WRITE_PATH.getTextArea(), false));
         return tabs;
     }
 
     private JTabbedPane getPanelStrategy() {
         JTabbedPane tabs = new TabbedPaneWheeled();
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new RTextScrollPane(TextareaWithColor.INDICES.getTextArea()));
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_STACKED"), new RTextScrollPane(TextareaWithColor.STACKED.getTextArea()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new RTextScrollPane(TextareaWithColor.INDICES.getTextArea(), false));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_STACK"), new RTextScrollPane(TextareaWithColor.STACK.getTextArea(), false));
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), SqlEngine.tabsError);
 
         JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT);
         Stream.of(
             new SimpleEntry<>("AND mode", TextareaWithColor.MODE_AND.getTextArea()),
             new SimpleEntry<>("OR mode", TextareaWithColor.MODE_OR.getTextArea()),
-            new SimpleEntry<>("Stacked mode", TextareaWithColor.MODE_STACKED.getTextArea()),
+            new SimpleEntry<>("Stack mode", TextareaWithColor.MODE_STACK.getTextArea()),
             new SimpleEntry<>("Blind", TextareaWithColor.BLIND.getTextArea()),
             new SimpleEntry<>("Time", TextareaWithColor.TIME.getTextArea()),
             new SimpleEntry<>("Multibit", TextareaWithColor.MULTIBIT.getTextArea()),
             new SimpleEntry<>("Bit test", TextareaWithColor.BIT_TEST.getTextArea())
         )
         .forEach(entry -> {
-            tabsBoolean.addTab(entry.getKey(), new RTextScrollPane(entry.getValue()));
+            tabsBoolean.addTab(entry.getKey(), new RTextScrollPane(entry.getValue(), false));
             tabsBoolean.setTitleAt(
                 tabsBoolean.getTabCount() - 1,
                 String.format(
@@ -395,7 +395,7 @@ public class SqlEngine extends JPanel {
 
         Stream.of(
             "SQLENGINE_NORMAL",
-            "SQLENGINE_STACKED",
+            "SQLENGINE_STACK",
             "SQLENGINE_ERROR",
             "SQLENGINE_BOOLEAN"
         )
@@ -409,37 +409,32 @@ public class SqlEngine extends JPanel {
 
     private JTabbedPane getPanelConfiguration() {
         JTabbedPane tabs = new TabbedPaneWheeled();
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new RTextScrollPane(TextareaWithColor.SLIDING_WINDOW.getTextArea()));
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new RTextScrollPane(TextareaWithColor.LIMIT.getTextArea()));
-        tabs.addTab("Limit start index", new RTextScrollPane(TextareaWithColor.LIMIT_BOUNDARY.getTextArea()));
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CAPACITY"), new RTextScrollPane(TextareaWithColor.CAPACITY.getTextArea()));
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CALIBRATOR"), new RTextScrollPane(TextareaWithColor.CALIBRATOR.getTextArea()));
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_FAILSAFE"), new RTextScrollPane(TextareaWithColor.FAILSAFE.getTextArea()));
-        tabs.addTab("End comment", new RTextScrollPane(TextareaWithColor.ENDING_COMMENT.getTextArea()));
-        
         Stream.of(
-            "SQLENGINE_CHARACTERS_SLIDINGWINDOW",
-            "SQLENGINE_ROWS_SLIDINGWINDOW",
-            "SQLENGINE_CAPACITY",
-            "SQLENGINE_CALIBRATOR",
-            "SQLENGINE_FAILSAFE"
+            new SimpleEntry<>("SQLENGINE_CHARACTERS_SLIDINGWINDOW", new RTextScrollPane(TextareaWithColor.SLIDING_WINDOW.getTextArea(), false)),
+            new SimpleEntry<>("SQLENGINE_ROWS_SLIDINGWINDOW", new RTextScrollPane(TextareaWithColor.LIMIT.getTextArea(), false)),
+            new SimpleEntry<>("SQLENGINE_LIMIT_START_INDEX", new RTextScrollPane(TextareaWithColor.LIMIT_BOUNDARY.getTextArea(), false)),
+            new SimpleEntry<>("SQLENGINE_CAPACITY", new RTextScrollPane(TextareaWithColor.CAPACITY.getTextArea(), false)),
+            new SimpleEntry<>("SQLENGINE_CALIBRATOR", new RTextScrollPane(TextareaWithColor.CALIBRATOR.getTextArea(), false)),
+            new SimpleEntry<>("SQLENGINE_FAILSAFE", new RTextScrollPane(TextareaWithColor.FAILSAFE.getTextArea(), false)),
+            new SimpleEntry<>("SQLENGINE_END_COMMENT", new RTextScrollPane(TextareaWithColor.ENDING_COMMENT.getTextArea(), false))
         )
         .forEach(keyI18n -> {
-            var label = new JLabel(I18nUtil.valueByKey(keyI18n));
-            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)), label);
-            I18nViewUtil.addComponentForKey(keyI18n, label);
+            tabs.addTab(I18nUtil.valueByKey(keyI18n.getKey()), keyI18n.getValue());
+            var label = new JLabel(I18nUtil.valueByKey(keyI18n.getKey()));
+            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n.getKey())), label);
+            I18nViewUtil.addComponentForKey(keyI18n.getKey(), label);
         });
         return tabs;
     }
     
     private JTabbedPane getPanelFingerprinting() {
         JTabbedPane tabs = new TabbedPaneWheeled();
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new RTextScrollPane(TextareaWithColor.ORDER_BY.getTextArea()));
-        tabs.addTab("Order by error", new RTextScrollPane(TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getTextArea()));
-        tabs.addTab("String error", new RTextScrollPane(TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getTextArea()));
-        tabs.addTab("Vendor specific", new RTextScrollPane(TextareaWithColor.VENDOR_SPECIFIC.getTextArea()));
-        tabs.addTab("Truthy", new RTextScrollPane(TextareaWithColor.TRUTHY.getTextArea()));
-        tabs.addTab("Falsy", new RTextScrollPane(TextareaWithColor.FALSY.getTextArea()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new RTextScrollPane(TextareaWithColor.ORDER_BY.getTextArea(), false));
+        tabs.addTab("Order by error", new RTextScrollPane(TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getTextArea(), false));
+        tabs.addTab("String error", new RTextScrollPane(TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getTextArea(), false));
+        tabs.addTab("Vendor specific", new RTextScrollPane(TextareaWithColor.VENDOR_SPECIFIC.getTextArea(), false));
+        tabs.addTab("Truthy", new RTextScrollPane(TextareaWithColor.TRUTHY.getTextArea(), false));
+        tabs.addTab("Falsy", new RTextScrollPane(TextareaWithColor.FALSY.getTextArea(), false));
         
         Stream.of("SQLENGINE_ORDER_BY").forEach(keyI18n -> {
             var label = new JLabel(I18nUtil.valueByKey(keyI18n));
@@ -531,7 +526,7 @@ public class SqlEngine extends JPanel {
             SqlEngine.reset(textareaError);
             textareaError.setText(methodError.getQuery().trim());
             textareaError.setCaretPosition(0);
-            panelError.add(new RTextScrollPane(textareaError), BorderLayout.CENTER);
+            panelError.add(new RTextScrollPane(textareaError, false), BorderLayout.CENTER);
             
             var panelLimit = new JPanel();  // TODO Integrate Error limit
             panelLimit.setLayout(new BoxLayout(panelLimit, BoxLayout.LINE_AXIS));

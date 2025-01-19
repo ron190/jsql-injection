@@ -29,7 +29,7 @@ public class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
         .getPreferencesUtil()
         .withIsNotSearchingCharInsertion(true)
         .withIsStrategyBlindDisabled(true)
-        .withIsStrategyStackedDisabled(true);
+        .withIsStrategyStackDisabled(true);
 
         model
         .getMediatorUtils()

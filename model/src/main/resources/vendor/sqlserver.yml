@@ -217,7 +217,7 @@ strategy:
   capacity: (select concat('${lead}${indice}', ${calibrator}))
   orderBy: order by 1337
 
- stacked: ; select ${window}
+ stack: ; select ${window}
 
  binary:
   test:
@@ -274,7 +274,7 @@ strategy:
       ))
      capacity: 1991       
   
-   - name: Cast:stacked explicit
+   - name: Cast:stack explicit
      # TODO Not tested
      query: |
       ; select convert(int,(
@@ -297,7 +297,7 @@ strategy:
       )
      capacity: 1991       
   
-   - name: Cast:stacked implicit
+   - name: Cast:stack implicit
      # TODO Not tested
      query: |
       ; select 1/(
@@ -320,7 +320,7 @@ strategy:
       ))
      capacity: 1991       
   
-   - name: User_name:stacked
+   - name: User_name:stack
      # TODO Not tested
      query: |
       ; select user_name((

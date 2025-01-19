@@ -42,7 +42,7 @@ public class FormUtil {
                 String.format(
                     "%n<form action=\"%s\" method=\"%s\" />",
                     form.attr("action"),
-                    form.attr(FORM_ATTR_VALUE)
+                    form.attr(FormUtil.FORM_ATTR_VALUE)
                 )
             );
             for (Element input: form.select("input")) {
@@ -50,7 +50,7 @@ public class FormUtil {
                     String.format(
                         "%n    <input name=\"%s\" value=\"%s\" />",
                         input.attr("name"),
-                        input.attr(INPUT_ATTR_VALUE)
+                        input.attr(FormUtil.INPUT_ATTR_VALUE)
                     )
                 );
                 mapForms.get(form).add(input);
@@ -75,20 +75,20 @@ public class FormUtil {
         
         for (Entry<Element, List<Element>> form: mapForms.entrySet()) {
             for (Element input: form.getValue()) {
-                if ("get".equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {
+                if (StringUtil.GET.equalsIgnoreCase(form.getKey().attr(FormUtil.FORM_ATTR_VALUE))) {
                     this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(
                         0,
                         new SimpleEntry<>(
                             input.attr("name"),
-                            input.attr(INPUT_ATTR_VALUE)
+                            input.attr(FormUtil.INPUT_ATTR_VALUE)
                         )
                     );
-                } else if ("post".equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {
+                } else if (StringUtil.POST.equalsIgnoreCase(form.getKey().attr(FormUtil.FORM_ATTR_VALUE))) {
                     this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(
                         0,
                         new SimpleEntry<>(
                             input.attr("name"),
-                            input.attr(INPUT_ATTR_VALUE)
+                            input.attr(FormUtil.INPUT_ATTR_VALUE)
                         )
                     );
                 }

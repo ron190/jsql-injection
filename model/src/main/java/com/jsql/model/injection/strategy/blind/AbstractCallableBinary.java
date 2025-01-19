@@ -49,10 +49,10 @@ public abstract class AbstractCallableBinary<T extends AbstractCallableBinary<T>
     }
 
     public String getCharText() {
-        return charText;
+        return this.charText;
     }
 
     public boolean isMultibit() {
-        return isMultibit;
+        return this.isMultibit;
     }
 }

@@ -3,7 +3,7 @@ package com.test.vendor.sqlite;
 import com.jsql.model.accessible.DataAccess;
 import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
-import spring.SpringTargetApplication;
+import spring.SpringApp;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,9 +19,9 @@ public abstract class ConcreteSqliteSuiteIT extends AbstractTestSuite {
     
     public void config() {
 
-        this.jdbcURL = SpringTargetApplication.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringTargetApplication.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringTargetApplication.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        this.jdbcURL = SpringApp.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = SpringApp.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = SpringApp.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.jsqlDatabaseName = "musicstore";
         this.jsqlTableName = "Student";
@@ -40,7 +40,7 @@ public abstract class ConcreteSqliteSuiteIT extends AbstractTestSuite {
     @Override
     protected Collection<String> parse(List<String> rawColumns) {
         
-        String modelColumns = rawColumns.stream().findFirst().orElseThrow(IllegalArgumentException::new);
+        String modelColumns = rawColumns.stream().findFirst().orElseThrow();
         String columnsToParse = this.injectionModel.getMediatorVendor().getSqlite().transformSqlite(modelColumns);
         
         Matcher regexSearch = Pattern.compile(

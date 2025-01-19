@@ -11,75 +11,36 @@
 package com.jsql.view.swing.manager;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.manager.util.ActionBruteForce;
 import com.jsql.view.swing.manager.util.JButtonStateful;
+import com.jsql.view.swing.manager.util.ModelBrute;
+import com.jsql.view.swing.manager.util.ModelSpinner;
 import com.jsql.view.swing.panel.preferences.listener.SpinnerMouseWheelListener;
-import com.jsql.view.swing.text.JPopupTextField;
-import com.jsql.view.swing.text.JPopupTextPane;
+import com.jsql.view.swing.text.*;
 import com.jsql.view.swing.util.I18nViewUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Manager to brute force a hash of various types.
  */
 public class ManagerBruteForce extends JPanel {
     
-    /**
-     * Button running the attack.
-     */
     private JButtonStateful run;
-    
-    /**
-     * Input for hash to brute force.
-     */
     private JTextField hash;
-    
-    /**
-     * Combobox of hashing methods.
-     */
     private JComboBox<String> hashTypes;
-    
-    /**
-     * Enable injection of lowercase characters.
-     */
-    private JCheckBox lowerCaseCharacters;
-    
-    /**
-     * Enable injection of uppercase characters.
-     */
-    private JCheckBox upperCaseCharacters;
-    
-    /**
-     * Enable injection of numeric characters.
-     */
-    private JCheckBox numericCharacters;
-    
-    /**
-     * Enable injection of special characters.
-     */
-    private JCheckBox specialCharacters;
-    
-    /**
-     * List of characters to exclude from the attack.
-     */
+    private final AtomicReference<JCheckBox> lowerCaseCharacters = new AtomicReference<>();
+    private final AtomicReference<JCheckBox> upperCaseCharacters = new AtomicReference<>();
+    private final AtomicReference<JCheckBox> numericCharacters = new AtomicReference<>();
+    private final AtomicReference<JCheckBox> specialCharacters = new AtomicReference<>();
     private JTextField exclude;
-    
-    /**
-     * Minimum length of string to attack.
-     */
-    private JSpinner minimumLength;
-    
-    /**
-     * Maximum length of string to attack.
-     */
-    private JSpinner maximumLength;
-    
-    /**
-     * Textarea displaying result.
-     */
+    private final AtomicReference<JSpinner> minimumLength = new AtomicReference<>();
+    private final AtomicReference<JSpinner> maximumLength = new AtomicReference<>();
     private final JTextPane result;
     
     /**
@@ -97,7 +58,9 @@ public class ManagerBruteForce extends JPanel {
         JPanel panelOptions = this.initializeOptionsPanel();
         this.add(panelOptions, BorderLayout.NORTH);
 
-        this.result = new JPopupTextPane("Result of brute force processing").getProxy();
+        var placeholder = new JTextPanePlaceholder(I18nUtil.valueByKey("BRUTEFORCE_RESULT"));
+        this.result = new JPopupTextPane(placeholder).getProxy();
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_RESULT", placeholder);
         this.result.setName("managerBruterResult");
         this.add(new JScrollPane(this.result), BorderLayout.CENTER);
 
@@ -109,20 +72,27 @@ public class ManagerBruteForce extends JPanel {
         var lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
 
-        this.run = new JButtonStateful("BRUTEFORCE_RUN_BUTTON_LABEL");
+        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP")));
+        this.run = new JButtonStateful("BRUTEFORCE_RUN_BUTTON_LABEL") {
+            @Override
+            public JToolTip createToolTip() {
+                return tooltip.get();
+            }
+        };
         I18nViewUtil.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP", tooltip.get());
         this.run.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
+
         this.run.setName("managerBruterRun");
         this.run.addActionListener(new ActionBruteForce(this));
 
         this.progressBar = new JProgressBar();
         this.progressBar.setIndeterminate(true);
         this.progressBar.setVisible(false);
+        this.progressBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
-        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         lastLine.add(this.horizontalGlue);
         lastLine.add(this.progressBar);
-        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         lastLine.add(this.run);
         return lastLine;
     }
@@ -148,7 +118,16 @@ public class ManagerBruteForce extends JPanel {
     }
 
     private JPanel initializeFirstLine() {
-        this.hash = new JPopupTextField(I18nUtil.valueByKey("BRUTEFORCE_HASH_LABEL")).getProxy();
+        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("BRUTEFORCE_HASH_TOOLTIP")));
+        var placeholder = new JTextFieldPlaceholder(I18nUtil.valueByKey("BRUTEFORCE_HASH_LABEL")) {
+            @Override
+            public JToolTip createToolTip() {
+                return tooltip.get();
+            }
+        };
+        this.hash = new JPopupTextField(placeholder).getProxy();
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_HASH_TOOLTIP", tooltip.get());
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_HASH_LABEL", this.hash);
         this.hash.setName("managerBruterHash");
         this.hash.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
 
@@ -161,30 +140,31 @@ public class ManagerBruteForce extends JPanel {
         final var secondLine = new JPanel();
         secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));
 
-        this.lowerCaseCharacters = new JCheckBox("a-z", true);
-        this.upperCaseCharacters = new JCheckBox("A-Z", true);
-        this.numericCharacters = new JCheckBox("0-9", true);
-        this.specialCharacters = new JCheckBox("Special", true);
-
-        this.hashTypes = new JComboBox<>(ManagerCoder.HASHES);
+        this.hashTypes = new JComboBox<>(ActionCoder.getHashes().toArray(String[]::new));
         this.hashTypes.setSelectedIndex(6);
         this.hashTypes.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_HASH_TYPE_TOOLTIP"));
-
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_HASH_TYPE_TOOLTIP", this.hashTypes);
         secondLine.add(this.hashTypes);
-        secondLine.add(Box.createHorizontalStrut(5));
-        secondLine.add(this.lowerCaseCharacters);
-        secondLine.add(Box.createHorizontalStrut(5));
-        secondLine.add(this.upperCaseCharacters);
-        secondLine.add(Box.createHorizontalStrut(5));
-        secondLine.add(this.numericCharacters);
-        secondLine.add(Box.createHorizontalStrut(5));
-        secondLine.add(this.specialCharacters);
 
-        this.lowerCaseCharacters.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_LCASE_TOOLTIP"));
-        this.upperCaseCharacters.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_UCASE_TOOLTIP"));
-        this.numericCharacters.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_NUM_TOOLTIP"));
-        this.specialCharacters.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_SPEC_TOOLTIP"));
-        
+        Arrays.asList(
+            new ModelBrute(this.lowerCaseCharacters, "a-z", "BRUTEFORCE_LCASE_TOOLTIP"),
+            new ModelBrute(this.upperCaseCharacters, "A-Z", "BRUTEFORCE_UCASE_TOOLTIP"),
+            new ModelBrute(this.numericCharacters, "0-9", "BRUTEFORCE_NUM_TOOLTIP"),
+            new ModelBrute(this.specialCharacters, "Special", "BRUTEFORCE_SPEC_TOOLTIP")
+        ).forEach(modelBrute -> {
+            var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(modelBrute.i18nTooltip)));
+            modelBrute.checkbox.set(new JCheckBox(modelBrute.text, true) {
+                @Override
+                public JToolTip createToolTip() {
+                    return tooltip.get();
+                }
+            });
+            modelBrute.checkbox.get().setToolTipText(I18nUtil.valueByKey(modelBrute.i18nTooltip));
+            I18nViewUtil.addComponentForKey(modelBrute.i18nTooltip, tooltip.get());
+            secondLine.add(Box.createHorizontalStrut(5));
+            secondLine.add(modelBrute.checkbox.get());
+        });
+
         return secondLine;
     }
 
@@ -192,39 +172,53 @@ public class ManagerBruteForce extends JPanel {
         var thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
 
-        this.exclude = new JPopupTextField(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_LABEL")).getProxy();
+        final var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP")));
+        var placeholderTooltip = new JTextFieldPlaceholder(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_LABEL")) {
+            @Override
+            public JToolTip createToolTip() {
+                return tooltip.get();
+            }
+        };
+        this.exclude = new JPopupTextField(placeholderTooltip).getProxy();
         this.exclude.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP"));
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_EXCLUDE_LABEL", this.exclude);
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_EXCLUDE_TOOLTIP", tooltip.get());
         thirdLine.add(this.exclude);
 
-        this.minimumLength = new JSpinner();
-        this.minimumLength.setModel(new SpinnerNumberModel(1, 1, 10000, 1));
-        this.minimumLength.addMouseWheelListener(new SpinnerMouseWheelListener());
-        this.minimumLength.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_MIN_TOOLTIP"));
-
-        this.maximumLength = new JSpinner();
-        this.maximumLength.setModel(new SpinnerNumberModel(5, 1, 10000, 1));
-        this.maximumLength.addMouseWheelListener(new SpinnerMouseWheelListener());
-        this.maximumLength.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_MAX_TOOLTIP"));
-
-        var dimension = new Dimension(52, (int) this.minimumLength.getPreferredSize().getHeight());
-        this.minimumLength.setPreferredSize(dimension);
-        this.minimumLength.setMaximumSize(dimension);
-        this.minimumLength.setMinimumSize(dimension);
-        this.maximumLength.setPreferredSize(dimension);
-        this.maximumLength.setMaximumSize(dimension);
-        this.maximumLength.setMinimumSize(dimension);
+        Arrays.asList(
+            new ModelSpinner(1, this.minimumLength, "BRUTEFORCE_MIN_TOOLTIP"),
+            new ModelSpinner(5, this.maximumLength, "BRUTEFORCE_MAX_TOOLTIP")
+        ).forEach(model -> {
+            final var tooltipMax = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(model.i18n)));
+            model.spinner.set(new JSpinner() {
+                @Override
+                public JToolTip createToolTip() {
+                    return tooltipMax.get();
+                }
+            });
+            model.spinner.get().setModel(new SpinnerNumberModel(model.value, 1, 10000, 1));
+            model.spinner.get().addMouseWheelListener(new SpinnerMouseWheelListener());
+            model.spinner.get().setToolTipText(I18nUtil.valueByKey(model.i18n));
+            I18nViewUtil.addComponentForKey(model.i18n, tooltipMax.get());
+            model.spinner.get().setPreferredSize(new Dimension(
+                (int) (model.spinner.get().getPreferredSize().width/1.8),
+                model.spinner.get().getPreferredSize().height
+            ));
+        });
 
         var labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
+        labelMin.setMaximumSize(new Dimension(labelMin.getPreferredSize().width, labelMin.getPreferredSize().height));
         thirdLine.add(Box.createHorizontalStrut(5));
         thirdLine.add(labelMin);
         I18nViewUtil.addComponentForKey("BRUTEFORCE_MIN_LABEL", labelMin);
-        thirdLine.add(this.minimumLength);
+        thirdLine.add(this.minimumLength.get());
 
         var labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
+        labelMax.setMaximumSize(new Dimension(labelMax.getPreferredSize().width, labelMax.getPreferredSize().height));
         thirdLine.add(Box.createHorizontalStrut(5));
         thirdLine.add(labelMax);
         I18nViewUtil.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
-        thirdLine.add(this.maximumLength);
+        thirdLine.add(this.maximumLength.get());
         return thirdLine;
     }
 
@@ -244,19 +238,19 @@ public class ManagerBruteForce extends JPanel {
     }
 
     public JCheckBox getLowerCaseCharacters() {
-        return this.lowerCaseCharacters;
+        return this.lowerCaseCharacters.get();
     }
 
     public JCheckBox getUpperCaseCharacters() {
-        return this.upperCaseCharacters;
+        return this.upperCaseCharacters.get();
     }
 
     public JCheckBox getNumericCharacters() {
-        return this.numericCharacters;
+        return this.numericCharacters.get();
     }
 
     public JCheckBox getSpecialCharacters() {
-        return this.specialCharacters;
+        return this.specialCharacters.get();
     }
 
     public JTextField getExclude() {
@@ -264,11 +258,11 @@ public class ManagerBruteForce extends JPanel {
     }
 
     public JSpinner getMinimumLength() {
-        return this.minimumLength;
+        return this.minimumLength.get();
     }
 
     public JSpinner getMaximumLength() {
-        return this.maximumLength;
+        return this.maximumLength.get();
     }
 
     public JTextPane getResult() {

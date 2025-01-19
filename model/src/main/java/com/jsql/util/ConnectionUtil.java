@@ -60,7 +60,7 @@ public class ConnectionUtil {
     /**
      * Default HTTP method. It can be changed to a custom method.
      */
-    private String typeRequest = "GET";
+    private String typeRequest = StringUtil.GET;
 
     private final Random randomForUserAgent = new Random();
     
@@ -104,7 +104,7 @@ public class ConnectionUtil {
 
 
     public static <T> Map<String, String> getHeadersMap(HttpResponse<T> httpResponse) {
-        Map<String, String> sortedMap = getHeadersMap(httpResponse.headers());
+        Map<String, String> sortedMap = ConnectionUtil.getHeadersMap(httpResponse.headers());
         String responseCodeHttp = String.valueOf(httpResponse.statusCode());
         sortedMap.put(":status", responseCodeHttp);
         return sortedMap;
@@ -250,7 +250,7 @@ public class ConnectionUtil {
     }
     
     /**
-     * Call an URL and return the source page.
+     * Call a URL and return the source page.
      * @param url to call
      * @return the source page of the URL
      */
@@ -329,6 +329,6 @@ public class ConnectionUtil {
     }
 
     public CookieManager getCookieManager() {
-        return cookieManager;
+        return this.cookieManager;
     }
 }

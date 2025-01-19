@@ -58,7 +58,7 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
 
                     @Override
                     public int getBreakWeight(int axis, float pos, float len) {
-                        return GoodBreakWeight;
+                        return View.GoodBreakWeight;
                     }
 
                     @Override

@@ -4,7 +4,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary;
@@ -30,7 +29,7 @@ public class SuspendableGetVendor extends AbstractSuspendable {
     }
 
     @Override
-    public String run(Object... args) throws JSqlException {
+    public String run(Object... args) {
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting vendor with Boolean match...");
 
         AtomicBoolean isVendorFound = new AtomicBoolean(false);

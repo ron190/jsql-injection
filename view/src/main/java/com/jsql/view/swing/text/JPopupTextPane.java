@@ -40,7 +40,7 @@ public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements De
 
         this.getProxy().addFocusListener(new FocusAdapter() {
             @Override
-            public void focusGained(FocusEvent arg0) {
+            public void focusGained(FocusEvent focusEvent) {
                 JPopupTextPane.this.getProxy().getCaret().setVisible(true);
                 JPopupTextPane.this.getProxy().getCaret().setSelectionVisible(true);
             }

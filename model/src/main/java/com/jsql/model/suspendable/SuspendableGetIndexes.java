@@ -52,14 +52,14 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                 new CallablePageSource(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
                     this.injectionModel,
-                    "normal#" + nbIndex
+                    "normal#" + nbIndex,
+                    nbIndex
                 )
             );
         }
         
         nbIndex = 1;
         try {
-            // Start from 10 to 100 requests
             while (nbIndex <= countNormalIndex) {
                 if (this.isSuspended()) {
                     throw new StoppedByUserSlidingException();
@@ -70,6 +70,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                 String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, "\\d+");
                 if (Pattern.compile("(?s).*"+ regexAllIndexes +".*").matcher(currentCallable.getContent()).matches()) {
                     
+                    this.injectionModel.getMediatorStrategy().getSpecificNormal().setNbIndexesFound(currentCallable.getNbIndex());
                     this.injectionModel.getMediatorStrategy().getSpecificNormal().setSourceIndexesFound(currentCallable.getContent());
                     initialQuery = currentCallable.getQuery().replace("0%2b1", "1");
                     

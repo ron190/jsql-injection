@@ -41,9 +41,9 @@ public class SubscriberInteraction implements Subscriber<Request> {
 
     @Override
     public void onNext(Request request) {
-        subscription.request(1);
+        this.subscription.request(1);
         if (Interaction.UNSUBSCRIBE.equals(request.getMessage())) {
-            subscription.cancel();
+            this.subscription.cancel();
             return;
         }
         
@@ -58,9 +58,7 @@ public class SubscriberInteraction implements Subscriber<Request> {
                 Constructor<?> constructor = cl.getConstructor(types);
                 @SuppressWarnings("java:S1905")
                 InteractionCommand interactionCommand = (InteractionCommand) constructor.newInstance(
-                    (Object[]) new Object[] {  // cast for sonar disambiguation
-                        request.getParameters()
-                    }
+                    new Object[] {  request.getParameters() }  // cast for sonar disambiguation
                 );
                 interactionCommand.execute();
             } catch (ClassNotFoundException e) {

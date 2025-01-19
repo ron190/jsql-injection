@@ -29,7 +29,7 @@ public class CookiesUtil {
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam()) {
                 return false;
             }
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking cookies params...");
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey("LOG_CHECKING") +" cookies...");
         } else {
             return true;
         }
@@ -60,7 +60,8 @@ public class CookiesUtil {
             try {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_DEFAULT,
-                    "Checking cookie {}={}",
+                    "{} cookie {}={}",
+                    () -> I18nUtil.valueByKey("LOG_CHECKING"),
                     cookie::getKey,
                     () -> cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
                 );

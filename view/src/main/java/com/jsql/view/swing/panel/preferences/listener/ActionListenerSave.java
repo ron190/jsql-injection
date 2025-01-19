@@ -75,7 +75,7 @@ public class ActionListenerSave implements ActionListener {
         .withIsStrategyTimeDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyTimeDisabled().isSelected())
         .withIsStrategyBlindDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyBlindDisabled().isSelected())
         .withIsStrategyMultibitDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyMultibitDisabled().isSelected())
-        .withIsStrategyStackedDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyStackedDisabled().isSelected())
+        .withIsStrategyStackDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyStackDisabled().isSelected())
         .withIsStrategyErrorDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyErrorDisabled().isSelected())
         .withIsStrategyNormalDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyNormalDisabled().isSelected())
 

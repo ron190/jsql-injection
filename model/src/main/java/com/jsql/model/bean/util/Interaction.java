@@ -8,14 +8,11 @@ public enum Interaction {
     
     CREATE_ADMIN_PAGE_TAB("CreateAdminPageTab"),
     CREATE_FILE_TAB("CreateFileTab"),
-    CREATE_SHELL_TAB("CreateShellTab"),
-    CREATE_SQL_SHELL_TAB("CreateSQLShellTab"),
+    ADD_TAB_EXPLOIT_WEB("AddTabExploitWeb"),
+    ADD_TAB_EXPLOIT_SQL("AddTabExploitSql"),
+    ADD_TAB_EXPLOIT_UDF("AddTabExploitUdf"),
     CREATE_VALUES_TAB("CreateValuesTab"),
     CREATE_ANALYSIS_REPORT("CreateAnalysisReport"),
-    
-    END_ADMIN_SEARCH("EndAdminSearch"),
-    END_FILE_SEARCH("EndFileSearch"),
-    END_UPLOAD("EndUpload"),
 
     START_PROGRESS("StartProgress"),
     END_PROGRESS("EndProgress"),
@@ -26,8 +23,9 @@ public enum Interaction {
     
     MARK_FILE_SYSTEM_INVULNERABLE("MarkFileSystemInvulnerable"),
     MARK_FILE_SYSTEM_VULNERABLE("MarkFileSystemVulnerable"),
-    GET_WEB_SHELL_RESULT("GetWebShellResult"),
-    GET_SQL_SHELL_RESULT("GetSQLShellResult"),
+    GET_EXPLOIT_WEB_RESULT("GetExploitWebResult"),
+    GET_EXPLOIT_SQL_RESULT("GetExploitSqlResult"),
+    GET_EXPLOIT_UDF_RESULT("GetUdfShellResult"),
 
     MARK_MULTI_INVULNERABLE("MarkMultiInvulnerable"),
     MARK_MULTI_STRATEGY("MarkMultiStrategy"),
@@ -44,9 +42,9 @@ public enum Interaction {
     MARK_TIME_INVULNERABLE("MarkTimeInvulnerable"),
     MARK_TIME_STRATEGY("MarkTimeStrategy"),
     MARK_TIME_VULNERABLE("MarkTimeVulnerable"),
-    MARK_STACKED_INVULNERABLE("MarkStackedInvulnerable"),
-    MARK_STACKED_STRATEGY("MarkStackedStrategy"),
-    MARK_STACKED_VULNERABLE("MarkStackedVulnerable"),
+    MARK_STACK_INVULNERABLE("MarkStackInvulnerable"),
+    MARK_STACK_STRATEGY("MarkStackStrategy"),
+    MARK_STACK_VULNERABLE("MarkStackVulnerable"),
 
     MESSAGE_BINARY("MessageBinary"),
     MESSAGE_CHUNK("MessageChunk"),

@@ -13,6 +13,8 @@ package com.jsql.view.swing.interaction;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
+import javax.swing.*;
+
 /**
  * Create a new tab for the file.
  */
@@ -44,6 +46,6 @@ public class CreateFileTab extends CreateTabHelper implements InteractionCommand
 
     @Override
     public void execute() {
-        MediatorHelper.tabResults().createFileTab(this.label, this.content, this.path);
+        SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addFileTab(this.label, this.content, this.path));
     }
 }

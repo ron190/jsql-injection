@@ -14,15 +14,16 @@ public class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
-
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://jsql-lamp:8079/php/get.php?id="
+            "http://jsql-lamp:8079/php/get-pdo.php?id="
         );
+
+        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
@@ -35,7 +36,7 @@ public class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
         .getPreferencesUtil()
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true)
-        .withIsStrategyStackedDisabled(true)
+        .withIsStrategyStackDisabled(true)
         .withIsStrategyMultibitDisabled(true)
         .withIsStrategyErrorDisabled(true);
 
@@ -44,13 +45,10 @@ public class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
 
     @RetryingTest(3)
     public void readFile() throws JSqlException, ExecutionException, InterruptedException {
-
         List<String> contents = this.injectionModel.getResourceAccess().readFile(
-            Collections.singletonList("/var/www/html/php/get.php")
+            Collections.singletonList("/var/www/html/php/get-pdo.php")
         );
-
         LOGGER.info("ReadFile: found {}, to find {}", String.join(",", contents).trim(), "<?php");
-
         Assertions.assertTrue(String.join(",", contents).trim().contains("<?php"));
     }
 }

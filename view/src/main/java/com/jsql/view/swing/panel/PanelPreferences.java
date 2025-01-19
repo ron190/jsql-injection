@@ -50,14 +50,14 @@ public class PanelPreferences extends JPanel {
         JList<CategoryPreference> categories = PanelPreferences.getCategories(cards);
         this.add(categories, BorderLayout.LINE_START);
 
-        this.addToCard(cards, panelInjection, CategoryPreference.INJECTION);
-        this.addToCard(cards, panelTampering, CategoryPreference.TAMPERING);
-        this.addToCard(cards, panelConnection, CategoryPreference.CONNECTION);
-        this.addToCard(cards, panelStrategies, CategoryPreference.STRATEGIES);
-        this.addToCard(cards, panelAuthentication, CategoryPreference.AUTHENTICATION);
-        this.addToCard(cards, panelUserAgent, CategoryPreference.USER_AGENT);
-        this.addToCard(cards, panelProxy, CategoryPreference.PROXY);
-        this.addToCard(cards, panelGeneral, CategoryPreference.GENERAL);
+        this.addToCard(cards, this.panelInjection, CategoryPreference.INJECTION);
+        this.addToCard(cards, this.panelTampering, CategoryPreference.TAMPERING);
+        this.addToCard(cards, this.panelConnection, CategoryPreference.CONNECTION);
+        this.addToCard(cards, this.panelStrategies, CategoryPreference.STRATEGIES);
+        this.addToCard(cards, this.panelAuthentication, CategoryPreference.AUTHENTICATION);
+        this.addToCard(cards, this.panelUserAgent, CategoryPreference.USER_AGENT);
+        this.addToCard(cards, this.panelProxy, CategoryPreference.PROXY);
+        this.addToCard(cards, this.panelGeneral, CategoryPreference.GENERAL);
         this.add(cards, BorderLayout.CENTER);
 
         SwingUtilities.invokeLater(() -> MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale()));  // required for arabic
@@ -117,7 +117,7 @@ public class PanelPreferences extends JPanel {
     }
 
     public PanelUserAgent getPanelUserAgent() {
-        return panelUserAgent;
+        return this.panelUserAgent;
     }
 
     public ActionListener getActionListenerSave() {

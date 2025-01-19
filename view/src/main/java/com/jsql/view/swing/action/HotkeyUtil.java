@@ -56,8 +56,8 @@ public final class HotkeyUtil {
      * Add action to a single tabbedpane (ctrl-tab, ctrl-shift-tab).
      */
     public static void addShortcut(JTabbedPane tabbedPane) {
-        var ctrlTab = KeyStroke.getKeyStroke(STR_CTRL_TAB);
-        var ctrlShiftTab = KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB);
+        var ctrlTab = KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_TAB);
+        var ctrlShiftTab = KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_SHIFT_TAB);
 
         // Remove ctrl-tab from normal focus traversal
         Set<AWTKeyStroke> forwardKeys = new HashSet<>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
@@ -108,11 +108,11 @@ public final class HotkeyUtil {
         };
         
         Set<AWTKeyStroke> forwardKeys = new HashSet<>(rootPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-        forwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_TAB));
+        forwardKeys.remove(KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_TAB));
         rootPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
         
         Set<AWTKeyStroke> backwardKeys = new HashSet<>(rootPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
-        backwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB));
+        backwardKeys.remove(KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_SHIFT_TAB));
         rootPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
         
         var inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -121,20 +121,20 @@ public final class HotkeyUtil {
         inputMap.put(KeyStroke.getKeyStroke("ctrl W"), "actionString-closeTab");
         actionMap.put("actionString-closeTab", closeTab);
         
-        inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_TAB), "actionString-nextTab");
+        inputMap.put(KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_TAB), "actionString-nextTab");
         actionMap.put("actionString-nextTab", nextTab);
 
-        inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB), "actionString-previousTab");
+        inputMap.put(KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_SHIFT_TAB), "actionString-previousTab");
         actionMap.put("actionString-previousTab", previousTab);
 
         int tabCount = MediatorHelper.tabManagersCards().getComponentCount();
         
         for (var currentTab = 1 ; currentTab <= tabCount ; currentTab++) {
-            inputMap.put(KeyStroke.getKeyStroke("ctrl "+ currentTab), STR_SELECT_TAB + currentTab);
-            inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ currentTab), STR_SELECT_TAB + currentTab);
+            inputMap.put(KeyStroke.getKeyStroke("ctrl "+ currentTab), HotkeyUtil.STR_SELECT_TAB + currentTab);
+            inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ currentTab), HotkeyUtil.STR_SELECT_TAB + currentTab);
             
             final int currentTabFinal = currentTab;
-            actionMap.put(STR_SELECT_TAB + currentTab, new AbstractAction() {
+            actionMap.put(HotkeyUtil.STR_SELECT_TAB + currentTab, new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     MediatorHelper.frame().getTabManagers().setSelectedIndex(currentTabFinal - 1);
@@ -157,7 +157,7 @@ public final class HotkeyUtil {
                 if (
                     // Fix #40924: NullPointerException on MediatorGui.panelAddressBar()
                     MediatorHelper.panelAddressBar() != null
-                    && !MediatorHelper.panelAddressBar().isAdvanceActivated()
+                    && MediatorHelper.panelAddressBar().isAdvanceActivated()
                 ) {
                     appMenubar.setVisible(false);
                 }

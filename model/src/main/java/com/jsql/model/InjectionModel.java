@@ -12,6 +12,7 @@ package com.jsql.model;
 
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.ResourceAccess;
+import com.jsql.model.accessible.UdfAccess;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -70,6 +71,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     private final transient MediatorStrategy mediatorStrategy;
     private final transient PropertiesUtil propertiesUtil = new PropertiesUtil();
     private final transient DataAccess dataAccess = new DataAccess(this);
+    private final transient UdfAccess udfAccess = new UdfAccess(this);
     private final transient ResourceAccess resourceAccess = new ResourceAccess(this);
     
     public static final String STAR = "*";
@@ -103,7 +105,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorUtils.setCookiesUtil(new CookiesUtil(this));
         this.mediatorUtils.setJsonUtil(new JsonUtil(this));
         this.mediatorUtils.setPreferencesUtil(new PreferencesUtil());
-        this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
+        this.mediatorUtils.setProxyUtil(new ProxyUtil());
         this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
         this.mediatorUtils.setTamperingUtil(new TamperingUtil());
         this.mediatorUtils.setUserAgentUtil(new UserAgentUtil());
@@ -123,7 +125,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorStrategy.getBlind().setApplicable(false);
         this.mediatorStrategy.getMultibit().setApplicable(false);
         this.mediatorStrategy.getTime().setApplicable(false);
-        this.mediatorStrategy.getStacked().setApplicable(false);
+        this.mediatorStrategy.getStack().setApplicable(false);
         this.mediatorStrategy.setStrategy(null);
 
         this.indexesInUrl = StringUtils.EMPTY;
@@ -192,12 +194,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             Thread.currentThread().interrupt();
         } catch (JSqlRuntimeException | JSqlException | IOException e) {  // Catch expected exceptions only
             if (e.getMessage() == null) {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Unexpected: {}", getImplicitReason(e));
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Interruption: {}", InjectionModel.getImplicitReason(e));
             } else {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Unexpected: {}", e.getMessage());
-            }
-            if (e.toString().contains("HTTP/1.1")) {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Something went wrong with HTTP/2, try to switch manually to HTTP/1.1 in preferences");
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Interruption: {}", e.getMessage());
             }
         } finally {
             var request = new Request();
@@ -212,7 +211,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             message += ": "+ e.getMessage();
         }
         if (e.getCause() != null && !e.equals(e.getCause())) {
-            message += " > "+ getImplicitReason(e.getCause());
+            message += " > "+ InjectionModel.getImplicitReason(e.getCause());
         }
         return message;
     }
@@ -662,7 +661,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     }
 
     public PropertiesUtil getPropertiesUtil() {
-        return propertiesUtil;
+        return this.propertiesUtil;
     }
 
     public MediatorUtils getMediatorUtils() {
@@ -683,6 +682,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
     public ResourceAccess getResourceAccess() {
         return this.resourceAccess;
+    }
+
+    public UdfAccess getUdfAccess() {
+        return this.udfAccess;
     }
 
     public MediatorStrategy getMediatorStrategy() {

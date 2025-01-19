@@ -12,7 +12,15 @@ import java.util.prefs.Preferences;
  * like those for proxy are defined from specific utility classes.
  */
 public class PreferencesUtil {
-    
+
+    public static final String EW_SPLIT = "verticalSplitter";
+    public static final String NS_SPLIT = "horizontalSplitter";
+    public static final String CHUNK_VISIBLE = "chunk_visible";
+    public static final String BINARY_VISIBLE = "binary_visible";
+    public static final String NETWORK_VISIBLE = "header_visible";
+    public static final String JAVA_VISIBLE = "java_visible";
+    public static final String IS_MAXIMIZED = "is_maximized";
+
     // File path saved in preference.
     private String pathFile;
 
@@ -74,7 +82,7 @@ public class PreferencesUtil {
     private boolean isStrategyTimeDisabled = false;
     private boolean isStrategyBlindDisabled = false;
     private boolean isStrategyMultibitDisabled = false;
-    private boolean isStrategyStackedDisabled = false;
+    private boolean isStrategyStackDisabled = false;
     private boolean isStrategyErrorDisabled = false;
     private boolean isStrategyNormalDisabled = false;
 
@@ -156,7 +164,7 @@ public class PreferencesUtil {
         this.isStrategyTimeDisabled = preferences.getBoolean("isStrategyTimeDisabled", false);
         this.isStrategyBlindDisabled = preferences.getBoolean("isStrategyBlindDisabled", false);
         this.isStrategyMultibitDisabled = preferences.getBoolean("isStrategyMultibitDisabled", false);
-        this.isStrategyStackedDisabled = preferences.getBoolean("isStrategyStackedDisabled", false);
+        this.isStrategyStackDisabled = preferences.getBoolean("isStrategyStackDisabled", false);
         this.isStrategyErrorDisabled = preferences.getBoolean("isStrategyErrorDisabled", false);
         this.isStrategyNormalDisabled = preferences.getBoolean("isStrategyNormalDisabled", false);
 
@@ -230,7 +238,7 @@ public class PreferencesUtil {
         preferences.putBoolean("isStrategyTimeDisabled", this.isStrategyTimeDisabled);
         preferences.putBoolean("isStrategyBlindDisabled", this.isStrategyBlindDisabled);
         preferences.putBoolean("isStrategyMultibitDisabled", this.isStrategyMultibitDisabled);
-        preferences.putBoolean("isStrategyStackedDisabled", this.isStrategyStackedDisabled);
+        preferences.putBoolean("isStrategyStackDisabled", this.isStrategyStackDisabled);
         preferences.putBoolean("isStrategyErrorDisabled", this.isStrategyErrorDisabled);
         preferences.putBoolean("isStrategyNormalDisabled", this.isStrategyNormalDisabled);
 
@@ -461,8 +469,8 @@ public class PreferencesUtil {
         return this.isStrategyMultibitDisabled;
     }
 
-    public boolean isStrategyStackedDisabled() {
-        return this.isStrategyStackedDisabled;
+    public boolean isStrategyStackDisabled() {
+        return this.isStrategyStackDisabled;
     }
 
     public boolean isStrategyErrorDisabled() {
@@ -743,8 +751,8 @@ public class PreferencesUtil {
         return this;
     }
 
-    public PreferencesUtil withIsStrategyStackedDisabled(boolean isStrategyStackedDisabled) {
-        this.isStrategyStackedDisabled = isStrategyStackedDisabled;
+    public PreferencesUtil withIsStrategyStackDisabled(boolean isStrategyStackDisabled) {
+        this.isStrategyStackDisabled = isStrategyStackDisabled;
         return this;
     }
 

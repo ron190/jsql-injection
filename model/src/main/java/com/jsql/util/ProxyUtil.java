@@ -21,11 +21,6 @@ public class ProxyUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private final String httpProxyDefaultAddress;
-    private final String httpProxyDefaultPort;
-    private final String httpsProxyDefaultAddress;
-    private final String httpsProxyDefaultPort;
-    
     /**
      * Proxy IP address or name.
      */
@@ -48,13 +43,6 @@ public class ProxyUtil {
     private static final String PROPERTIES_HTTP_PROXY_PORT = "http.proxyPort";
     private static final String PROPERTIES_HTTPS_PROXY_HOST = "https.proxyHost";
     private static final String PROPERTIES_HTTPS_PROXY_PORT = "https.proxyPort";
-    
-    public ProxyUtil(InjectionModel injectionModel) {
-        this.httpProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.ip");
-        this.httpProxyDefaultPort = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.port");
-        this.httpsProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.ip");
-        this.httpsProxyDefaultPort = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.port");
-    }
     
     /**
      * Save proxy configuration into the JVM preferences.
@@ -114,11 +102,11 @@ public class ProxyUtil {
         this.setUsingProxyHttps(preferences.getBoolean("isUsingProxyHttps", false));
 
         // Default proxy config
-        this.setProxyAddressHttp(preferences.get("proxyAddress", this.httpProxyDefaultAddress));
-        this.setProxyPortHttp(preferences.get("proxyPort", this.httpProxyDefaultPort));
+        this.setProxyAddressHttp(preferences.get("proxyAddress", "127.0.0.1"));
+        this.setProxyPortHttp(preferences.get("proxyPort", "8118"));
         
-        this.setProxyAddressHttps(preferences.get("proxyAddressHttps", this.httpsProxyDefaultAddress));
-        this.setProxyPortHttps(preferences.get("proxyPortHttps", this.httpsProxyDefaultPort));
+        this.setProxyAddressHttps(preferences.get("proxyAddressHttps", "127.0.0.1"));
+        this.setProxyPortHttps(preferences.get("proxyPortHttps", "8118"));
         
         // Change the JVM configuration
         if (this.isUsingProxyHttp()) {

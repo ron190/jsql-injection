@@ -42,7 +42,7 @@ public class CsrfWebSecurity {
                     )
                 )
             )
-            .addFilterAfter(FILTER, AuthorizationFilter.class)
+            .addFilterAfter(CsrfWebSecurity.FILTER, AuthorizationFilter.class)
             .exceptionHandling(Customizer.withDefaults())
             .build();
     }

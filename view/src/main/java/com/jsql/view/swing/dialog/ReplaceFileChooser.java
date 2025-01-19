@@ -31,7 +31,7 @@ public class ReplaceFileChooser extends JFileChooser {
     
     @Override
     public void approveSelection() {
-        if (this.getDialogType() == SAVE_DIALOG) {
+        if (this.getDialogType() == JFileChooser.SAVE_DIALOG) {
             var file = this.getSelectedFile();
             if (file.exists()) {
                 int result = JOptionPane.showConfirmDialog(

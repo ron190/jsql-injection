@@ -76,8 +76,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
                 .timeout(Duration.ofSeconds(4));
             
             Stream.of(
-                this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries()
-                .split("\\\\r\\\\n")
+                this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries().split("\\\\r\\\\n")
             )
             .map(e -> {
                 if (e.split(":").length == 2) {
@@ -93,18 +92,15 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             .forEach(e -> builderHttpRequest.header(e.getKey(), e.getValue()));
             
             var httpRequest = builderHttpRequest.build();
-            
             var httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(4))
                 .build();
-            
             HttpResponse<Void> response = httpClient.send(httpRequest, BodyHandlers.discarding());
 
             this.responseCodeHttp = String.valueOf(response.statusCode());
 
             Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
             msgHeader.put(Header.URL, this.urlAdminPage);
-            msgHeader.put(Header.POST, StringUtils.EMPTY);
             msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
             msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(response));
             msgHeader.put(Header.METADATA_PROCESS, this.metadataInjectionProcess);

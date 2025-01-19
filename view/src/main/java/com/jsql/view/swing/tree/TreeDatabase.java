@@ -134,7 +134,7 @@ public class TreeDatabase extends JTree {
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             progressingTreeNodeModel.setIndexProgress(table.getChildCount());  // Update the progress value of the model, end the progress
             progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'
-            MediatorHelper.tabResults().createValuesTab(data, columnNames, table);
+            MediatorHelper.tabResults().addTabValues(data, columnNames, table);
         }
     }
     

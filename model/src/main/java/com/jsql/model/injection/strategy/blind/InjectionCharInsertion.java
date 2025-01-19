@@ -26,7 +26,7 @@ public class InjectionCharInsertion {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    // Source code of the FALSE web page (eg. ?id=-123456789)
+    // Source code of the FALSE web page (e.g. ?id=-123456789)
     private String blankFalseMark;
 
     /**
@@ -65,7 +65,7 @@ public class InjectionCharInsertion {
         // Call the SQL request which must be FALSE (usually ?id=-123456879)
         this.blankFalseMark = this.callUrl(
             falseCharInsertion,
-            "prefix:" + prefixSuffix.replace(PREFIX, StringUtils.EMPTY)
+            "prefix:" + prefixSuffix.replace(InjectionCharInsertion.PREFIX, StringUtils.EMPTY)
         );
 
         // Concurrent calls to the FALSE statements,
@@ -78,7 +78,7 @@ public class InjectionCharInsertion {
                 new CallableCharInsertion(
                     String.join(
                         StringUtils.SPACE,
-                        prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
+                        prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, "345")),
                         this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
                         urlTest
                     ),
@@ -126,7 +126,7 @@ public class InjectionCharInsertion {
                 new CallableCharInsertion(
                     String.join(
                         StringUtils.SPACE,
-                        this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
+                        this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, "345")),
                         this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
                         urlTest
                     ),
@@ -164,7 +164,7 @@ public class InjectionCharInsertion {
         var blindTest = new CallableCharInsertion(
             String.join(
                 StringUtils.SPACE,
-                this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "678")),
+                this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, "678")),
                 this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()
             ),

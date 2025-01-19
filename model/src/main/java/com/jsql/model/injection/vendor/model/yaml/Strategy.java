@@ -9,7 +9,7 @@ public class Strategy implements Serializable {
 
     private Configuration configuration = new Configuration();
     private Normal normal = new Normal();
-    private String stacked = StringUtils.EMPTY;
+    private String stack = StringUtils.EMPTY;
     private Binary binary = new Binary();
     private Error error = new Error();
 
@@ -45,11 +45,11 @@ public class Strategy implements Serializable {
         this.error = error;
     }
 
-    public String getStacked() {
-        return stacked;
+    public String getStack() {
+        return this.stack;
     }
 
-    public void setStacked(String stacked) {
-        this.stacked = stacked;
+    public void setStack(String stack) {
+        this.stack = stack;
     }
 }

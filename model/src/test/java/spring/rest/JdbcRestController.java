@@ -27,12 +27,10 @@ public class JdbcRestController {
     private final Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-
     // Integration tests on docker
 
     @RequestMapping("/monetdb")
     public Greeting greetingMonetDB(@RequestParam(value="name", defaultValue="World") String name) {
-
         Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
@@ -45,8 +43,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -56,11 +53,9 @@ public class JdbcRestController {
 
     @RequestMapping("/neo4j")
     public Greeting greetingNeo4j(@RequestParam(value="name", defaultValue="World") String name) {
-
         Greeting greeting;
 
         try (org.neo4j.driver.Session session = this.driver.session()) {
-
             Result result = session.run("MATCH (n:Person) where 1="+ name +" RETURN n.name, n.from, n.title, n.hobby");
 
             String a = result.stream().map(driverRecord -> driverRecord
@@ -70,8 +65,7 @@ public class JdbcRestController {
                     .collect(Collectors.joining(", ", "{", "}"))
                 ).collect(Collectors.joining());
 
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a)));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a)));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -81,7 +75,6 @@ public class JdbcRestController {
 
     @RequestMapping("/mimer")
     public Greeting greetingMimerSQL(@RequestParam(value="name", defaultValue="World") String name) {
-
         Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
@@ -94,8 +87,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -105,7 +97,6 @@ public class JdbcRestController {
 
     @RequestMapping("/mckoi")
     public Greeting greetingMckoi(@RequestParam(value="name", defaultValue="World") String name) {
-
         Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
@@ -118,8 +109,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -129,7 +119,6 @@ public class JdbcRestController {
 
     @RequestMapping("/vertica")
     public Greeting greetingVertica(@RequestParam(value="name", defaultValue="World") String name) {
-
         Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
@@ -142,8 +131,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -163,7 +151,6 @@ public class JdbcRestController {
         // startup service
         // Connecting to the DB server...............................Startup Failure. Check
         // Your Environment.
-
         Class.forName("Altibase.jdbc.driver.AltibaseDriver");
 
         Greeting greeting;
@@ -178,8 +165,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -206,8 +192,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -235,8 +220,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -264,8 +248,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -300,8 +283,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -332,8 +314,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -361,8 +342,7 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
@@ -390,15 +370,14 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
     }
-    
+
     @RequestMapping("/oracle")
     public Greeting greetingOracle(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         // 19.3.0/LINUX.X64_193000_db_home.zip
@@ -413,11 +392,11 @@ public class JdbcRestController {
         // jdbc:oracle:thin:@localhost:11521:ORCLCDB
         // system Password1_One
         Class.forName("oracle.jdbc.OracleDriver");
-        
+
         Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
-        
+
         try (
             Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:11521:ORCLCDB", "system", "Password1_One");
             PreparedStatement pstmt = con.prepareStatement("select distinct owner from all_tables where '1' = '"+ inject +"'")
@@ -426,15 +405,38 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-
+            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             greeting = this.initializeErrorMessage(e);
         }
-        
+
         return greeting;
     }
-    
+
+    @RequestMapping("/mysql")
+    public Greeting greetingMysql(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        Greeting greeting;
+        String inject = name.replace(":", "\\:");
+        StringBuilder result = new StringBuilder();
+
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/?allowMultiQueries=true", "test193746285", "~Aa1");
+            PreparedStatement pstmt = con.prepareStatement("select TABLE_SCHEMA from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"+ inject +"'")
+        ) {
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                result.append(rs.getString(1));
+            }
+            greeting = new Greeting(JdbcRestController.TEMPLATE + result);
+        } catch (Exception e) {
+            greeting = this.initializeErrorMessage(e);
+        }
+
+        return greeting;
+    }
+
 
     // missing hana: docker fails 13.9GB image
 // jdbc:sap://127.0.0.1:30115
@@ -462,9 +464,8 @@ public class JdbcRestController {
 //# dbadmin password
 
     private Greeting initializeErrorMessage(Exception e) {
-        
         String stacktrace = ExceptionUtils.getStackTrace(e);
         LOGGER.debug(stacktrace);
-        return new Greeting(TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
+        return new Greeting(JdbcRestController.TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
     }
 }

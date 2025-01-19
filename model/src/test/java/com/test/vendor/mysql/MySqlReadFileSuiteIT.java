@@ -24,6 +24,8 @@ public class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
             "http://localhost:8080/normal?tenant=mysql&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
@@ -35,7 +37,7 @@ public class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
         .getPreferencesUtil()
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true)
-        .withIsStrategyStackedDisabled(true)
+        .withIsStrategyStackDisabled(true)
         .withIsStrategyMultibitDisabled(true)
         .withIsStrategyErrorDisabled(true);
         

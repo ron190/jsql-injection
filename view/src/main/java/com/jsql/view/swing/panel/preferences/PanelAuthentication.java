@@ -25,11 +25,11 @@ public class PanelAuthentication extends JPanel {
     
     public PanelAuthentication(PanelPreferences panelPreferences) {
         this.checkboxUseDigestAuthentication.setToolTipText(
-            TAG_HTML_ON
+            PanelAuthentication.TAG_HTML_ON
             + "Enable <b>Basic</b>, <b>Digest</b>, <b>NTLM</b> authentication (e.g. WWW-Authenticate).<br>"
             + "Then define username and password for the host.<br>"
             + "<i><b>Negotiate</b> authentication is defined in URL.</i>"
-            + TAG_HTML_OFF
+            + PanelAuthentication.TAG_HTML_OFF
         );
 
         var panelUsername = new JPanel();
@@ -45,15 +45,15 @@ public class PanelAuthentication extends JPanel {
         panelPassword.setMaximumSize(new Dimension(325, this.textDigestAuthenticationPassword.getPreferredSize().height));
         panelPassword.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
 
-        String tooltipUseKerberos = TAG_HTML_ON
+        String tooltipUseKerberos = PanelAuthentication.TAG_HTML_ON
             + "Enable Kerberos authentication, then define path to <b>login.conf</b> and <b>krb5.conf</b>.<br>"
             + "Path to <b>.keytab</b> file is defined in login.conf ; name of <b>principal</b> must be correct.<br>"
             + "<b>Realm</b> and <b>kdc</b> are defined in krb5.conf.<br>"
             + "Finally use the <b>correct hostname</b> in URL, e.g. http://servicename.corp.test/[..]"
-            + TAG_HTML_OFF;
+            + PanelAuthentication.TAG_HTML_OFF;
 
         this.textKerberosLoginConf.setToolTipText(
-            TAG_HTML_ON
+            PanelAuthentication.TAG_HTML_ON
             + "Define the path to <b>login.conf</b>. Sample :<br>"
             + "&emsp;<b>entry-name</b> {<br>"
             + "&emsp;&emsp;com.sun.security.auth.module.Krb5LoginModule<br>"
@@ -64,9 +64,9 @@ public class PanelAuthentication extends JPanel {
             + "&emsp;&emsp;debug=false;<br>"
             + "&emsp;}<br>"
             + "<i>Principal name is case sensitive ; entry-name is read automatically.</i>"
-            + TAG_HTML_OFF);
+            + PanelAuthentication.TAG_HTML_OFF);
         this.textKerberosKrb5Conf.setToolTipText(
-            TAG_HTML_ON
+            PanelAuthentication.TAG_HTML_ON
             + "Define the path to <b>krb5.conf</b>. Sample :<br>"
             + "&emsp;[libdefaults]<br>"
             + "&emsp;&emsp;default_realm = <b>CORP.TEST</b><br>"
@@ -76,7 +76,7 @@ public class PanelAuthentication extends JPanel {
             + "&emsp;&emsp;&emsp;kdc = <b>127.0.0.1:88</b><br>"
             + "&emsp;&emsp;}<br>"
             + "<i>Realm and kdc are case sensitives.</i>"
-            + TAG_HTML_OFF);
+            + PanelAuthentication.TAG_HTML_OFF);
         this.checkboxUseKerberos.setToolTipText(tooltipUseKerberos);
 
         var panelLoginConf = new JPanel();

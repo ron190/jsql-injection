@@ -26,7 +26,7 @@ public class MediatorUtils {
     private CertificateUtil certificateUtil;
 
     public CookiesUtil getCookiesUtil() {
-        return cookiesUtil;
+        return this.cookiesUtil;
     }
 
     public void setCookiesUtil(CookiesUtil cookiesUtil) {
@@ -34,7 +34,7 @@ public class MediatorUtils {
     }
 
     public MultipartUtil getMultipartUtil() {
-        return multipartUtil;
+        return this.multipartUtil;
     }
 
     public void setMultipartUtil(MultipartUtil multipartUtil) {
@@ -163,7 +163,7 @@ public class MediatorUtils {
     }
 
     public DigestUtil getDigestUtil() {
-        return digestUtil;
+        return this.digestUtil;
     }
 
     public void setDigestUtil(DigestUtil digestUtil) {

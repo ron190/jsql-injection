@@ -59,21 +59,21 @@ public class PanelTrailingAddress extends JPanel {
                 itemRadioStrategy.getComponent().setName("itemRadioStrategyError");
             } else {
                 var atomicTooltip = new AtomicReference<>(new JToolTipI18n(
-                    I18nUtil.valueByKey(String.format(I18N_TOOLTIP_STRATEGY, nameStrategy))
+                    I18nUtil.valueByKey(String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy))
                 ));
                 itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString()) {
                     @Override
                     public JToolTip createToolTip() {
                         atomicTooltip.set(new JToolTipI18n(
                             I18nUtil.valueByKey(
-                                String.format(I18N_TOOLTIP_STRATEGY, nameStrategy)
+                                String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy)
                             )
                         ));
                         return atomicTooltip.get();
                     }
                 };
                 I18nViewUtil.addComponentForKey(
-                    String.format(I18N_TOOLTIP_STRATEGY, nameStrategy),
+                    String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy),
                     atomicTooltip.get()
                 );
                 itemRadioStrategy.getComponent().setName("itemRadioStrategy" + strategy);
@@ -86,7 +86,7 @@ public class PanelTrailingAddress extends JPanel {
 
             this.popupMenuStrategies.add(itemRadioStrategy);
             itemRadioStrategy.setToolTipText(
-                I18nUtil.valueByKey(String.format(I18N_TOOLTIP_STRATEGY, nameStrategy))
+                I18nUtil.valueByKey(String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy))
             );
             itemRadioStrategy.setEnabled(false);
         }
@@ -102,7 +102,7 @@ public class PanelTrailingAddress extends JPanel {
                 this.labelVendor.setText(vendor.toString());
                 MediatorHelper.model().getMediatorVendor().setVendorByUser(vendor);
             });
-            popupMenuVendors.add(itemRadioVendor);
+            this.popupMenuVendors.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
         }
 
@@ -112,27 +112,27 @@ public class PanelTrailingAddress extends JPanel {
         this.loader.setIndeterminate(true);
         this.add(this.loader);
 
-        labelVendor.addMouseListener(new MouseAdapter() {
+        this.labelVendor.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Arrays.stream(popupMenuVendors.getComponents())
+                Arrays.stream(PanelTrailingAddress.this.popupMenuVendors.getComponents())
                     .map(JComponent.class::cast)
                     .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
-                popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch
-                popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
-                popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+                PanelTrailingAddress.this.popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch
+                PanelTrailingAddress.this.popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
+                PanelTrailingAddress.this.popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
             }
         });
-        labelStrategy.addMouseListener(new MouseAdapter() {
+        this.labelStrategy.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Arrays.stream(popupMenuStrategies.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
-                for (var i = 0 ; i < getMenuError().getItemCount() ; i++) {
-                    getMenuError().getItem(i).updateUI();  // required: incorrect when dark/light mode switch
+                Arrays.stream(PanelTrailingAddress.this.popupMenuStrategies.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
+                for (var i = 0; i < PanelTrailingAddress.this.getMenuError().getItemCount() ; i++) {
+                    PanelTrailingAddress.this.getMenuError().getItem(i).updateUI();  // required: incorrect when dark/light mode switch
                 }
-                popupMenuStrategies.updateUI();  // required: incorrect when dark/light mode switch
-                popupMenuStrategies.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
-                popupMenuStrategies.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+                PanelTrailingAddress.this.popupMenuStrategies.updateUI();  // required: incorrect when dark/light mode switch
+                PanelTrailingAddress.this.popupMenuStrategies.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
+                PanelTrailingAddress.this.popupMenuStrategies.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
             }
         });
 
@@ -211,6 +211,7 @@ public class PanelTrailingAddress extends JPanel {
             .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
             .map(JMenu.class::cast)
+            .filter(jMenuItem -> jMenuItem.getItem(indexMethodError) != null)  // Fix #95855: NPE on setEnabled()
             .forEach(jMenuItem -> jMenuItem.getItem(indexMethodError).setEnabled(false));
     }
     
@@ -244,12 +245,10 @@ public class PanelTrailingAddress extends JPanel {
             .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
             .map(JMenu.class::cast)
+            .filter(jMenuItem -> jMenuItem.getItem(indexMethodError) != null)  // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
             .forEach(jMenuItem -> {
                 jMenuItem.setEnabled(true);
-                // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
-                if (0 <= indexMethodError && indexMethodError < jMenuItem.getItemCount()) {
-                    jMenuItem.getItem(indexMethodError).setEnabled(true);
-                }
+                jMenuItem.getItem(indexMethodError).setEnabled(true);
             });
     }
     

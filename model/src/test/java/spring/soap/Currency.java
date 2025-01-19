@@ -41,6 +41,6 @@ public enum Currency {
     }
 
     public static Currency fromValue(String v) {
-        return valueOf(v);
+        return Currency.valueOf(v);
     }
 }

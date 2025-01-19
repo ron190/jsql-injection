@@ -45,7 +45,7 @@ public class TamperingUtil {
                 throw new ScriptException("Tampering context is empty");
             }
 
-            ScriptEngine nashornEngine = SCRIPT_ENGINE_MANAGER.getEngineByName("nashorn");
+            ScriptEngine nashornEngine = TamperingUtil.SCRIPT_ENGINE_MANAGER.getEngineByName("nashorn");
             nashornEngine.eval(jsTampering);
 
             var nashornInvocable = (Invocable) nashornEngine;
@@ -76,7 +76,7 @@ public class TamperingUtil {
         String trail;
 
         // Transform only SQL query without HTTP parameters and syntax changed, like p=1'+[sql]
-        String regexToMatchTamperTags = String.format("(?s)(.*%s)(.*)(%s.*)", TAG_OPENED, TAG_CLOSED);
+        String regexToMatchTamperTags = String.format("(?s)(.*%s)(.*)(%s.*)", TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);
         var matcherSql = Pattern.compile(regexToMatchTamperTags).matcher(sqlQueryDefault);
 
         if (matcherSql.find()) {
@@ -88,19 +88,19 @@ public class TamperingUtil {
         }
 
         if (this.isEval) {
-            sqlQuery = eval(sqlQuery, this.customTamper);
+            sqlQuery = TamperingUtil.eval(sqlQuery, this.customTamper);
         }
 
-        sqlQuery = transform(sqlQuery, this.isHexToChar, TamperingType.HEX_TO_CHAR);
-        sqlQuery = transform(sqlQuery, this.isStringToChar, TamperingType.STRING_TO_CHAR);
-        sqlQuery = transform(sqlQuery, this.isFunctionComment, TamperingType.COMMENT_TO_METHOD_SIGNATURE);
-        sqlQuery = transform(sqlQuery, this.isVersionComment, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE);
-        sqlQuery = transform(sqlQuery, this.isRandomCase, TamperingType.RANDOM_CASE);
-        sqlQuery = transform(sqlQuery, this.isEqualToLike, TamperingType.EQUAL_TO_LIKE);
+        sqlQuery = this.transform(sqlQuery, this.isHexToChar, TamperingType.HEX_TO_CHAR);
+        sqlQuery = this.transform(sqlQuery, this.isStringToChar, TamperingType.STRING_TO_CHAR);
+        sqlQuery = this.transform(sqlQuery, this.isFunctionComment, TamperingType.COMMENT_TO_METHOD_SIGNATURE);
+        sqlQuery = this.transform(sqlQuery, this.isVersionComment, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE);
+        sqlQuery = this.transform(sqlQuery, this.isRandomCase, TamperingType.RANDOM_CASE);
+        sqlQuery = this.transform(sqlQuery, this.isEqualToLike, TamperingType.EQUAL_TO_LIKE);
 
         sqlQuery = lead + sqlQuery + trail;
 
-        String regexToremoveTamperTags = String.format("(?i)%s|%s", TAG_OPENED, TAG_CLOSED);
+        String regexToremoveTamperTags = String.format("(?i)%s|%s", TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);
         sqlQuery = sqlQuery.replaceAll(regexToremoveTamperTags, StringUtils.EMPTY);
 
         // Empty when checking character insertion
@@ -112,21 +112,21 @@ public class TamperingUtil {
 
         // Dependency to: EQUAL_TO_LIKE
         if (this.isSpaceToDashComment) {
-            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_DASH_COMMENT.instance().getJavascript());
+            sqlQuery = TamperingUtil.eval(sqlQuery, TamperingType.SPACE_TO_DASH_COMMENT.instance().getJavascript());
         } else if (this.isSpaceToMultilineComment) {
-            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getJavascript());
+            sqlQuery = TamperingUtil.eval(sqlQuery, TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getJavascript());
         } else if (this.isSpaceToSharpComment) {
-            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_SHARP_COMMENT.instance().getJavascript());
+            sqlQuery = TamperingUtil.eval(sqlQuery, TamperingType.SPACE_TO_SHARP_COMMENT.instance().getJavascript());
         }
 
-        sqlQuery = transform(sqlQuery, this.isBase64, TamperingType.BASE64);
-        sqlQuery = transform(sqlQuery, this.isQuoteToUtf8, TamperingType.QUOTE_TO_UTF8);  // char insertion included
+        sqlQuery = this.transform(sqlQuery, this.isBase64, TamperingType.BASE64);
+        sqlQuery = this.transform(sqlQuery, this.isQuoteToUtf8, TamperingType.QUOTE_TO_UTF8);  // char insertion included
         return sqlQuery;
     }
 
     private String transform(String sqlQuery, boolean shouldApply, TamperingType tamperingType) {
         if (shouldApply) {
-            return eval(sqlQuery, tamperingType.instance().getJavascript());
+            return TamperingUtil.eval(sqlQuery, tamperingType.instance().getJavascript());
         }
         return sqlQuery;
     }

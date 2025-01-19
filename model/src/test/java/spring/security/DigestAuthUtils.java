@@ -15,6 +15,7 @@
  */
 package spring.security;
 
+import com.jsql.util.bruter.Coder;
 import org.springframework.security.crypto.codec.Hex;
 
 import java.security.MessageDigest;
@@ -26,7 +27,7 @@ final class DigestAuthUtils {
 	    
 		String a1 = username + ":" + realm + ":" + password;
 
-		return md5Hex(a1);
+		return DigestAuthUtils.md5Hex(a1);
 	}
 
 	private static String md5Hex(String data) {
@@ -34,7 +35,7 @@ final class DigestAuthUtils {
 		MessageDigest digest;
 		
 		try {
-			digest = MessageDigest.getInstance("MD5");
+			digest = MessageDigest.getInstance(Coder.MD5.label);
 		} catch (NoSuchAlgorithmException e) {
 			throw new IllegalStateException("No MD5 algorithm available!");
 		}

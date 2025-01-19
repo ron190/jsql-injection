@@ -19,17 +19,13 @@ import com.jsql.view.swing.console.JTextPaneAppender;
 import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.dialog.translate.Language;
-import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.panel.preferences.PanelTampering;
 import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
-import com.jsql.view.swing.text.JTextFieldPlaceholder;
-import com.jsql.view.swing.text.JToolTipI18n;
-import com.jsql.view.swing.tree.model.NodeModelEmpty;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.SvgIcon;
+import com.jsql.view.swing.util.ModelSvgIcon;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +34,6 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
-import javax.swing.text.JTextComponent;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -63,15 +58,15 @@ public class AppMenubar extends JMenuBar {
 
     private final MenuWindows menuWindows;
 
-    protected static final List<ModelItem> modelsItem = Stream.of(
-        Language.EN, Language.RU, Language.ZH, Language.ES, Language.FR, Language.TR, Language.KO, Language.SE, Language.FI,
+    protected static final List<ModelItemTranslate> MODELS_ITEM = Stream.of(
+        Language.EN, Language.FR, Language.RU, Language.ZH, Language.ES, Language.TR, Language.KO, Language.SE, Language.FI,
         Language.AR, Language.CS, Language.IT, Language.PT, Language.PL, Language.IN, Language.NL, Language.RO, Language.DE
-    ).map(ModelItem::new).collect(Collectors.toList());
+    ).map(ModelItemTranslate::new).collect(Collectors.toList());
 
-    private static final List<ModelItem> modelsItemInto = Stream.of(
+    private static final List<ModelItemTranslate> MODELS_ITEM_INTO = Stream.of(
         Language.FR, Language.ES, Language.SE, Language.FI, Language.TR, Language.CS, Language.RO, Language.IT, Language.PT, Language.AR,
         Language.PL, Language.RU, Language.ZH, Language.DE, Language.IN, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA
-    ).map(ModelItem::new).collect(Collectors.toList());
+    ).map(ModelItemTranslate::new).collect(Collectors.toList());
 
     /**
      * Create a menubar on main frame.
@@ -97,7 +92,7 @@ public class AppMenubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_FILE_EXIT", itemExit);
         itemExit.addActionListener(actionEvent -> MediatorHelper.frame().dispose());
 
-        HotkeyUtil.addShortcut(AppMenubar.this);
+        HotkeyUtil.addShortcut(this);
 
         menuFile.add(itemSave);
         menuFile.add(new JSeparator());
@@ -163,7 +158,7 @@ public class AppMenubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_HELPTRANSLATE", menuI18nContribution);
 
         final var dialogTranslate = new DialogTranslate();  // Render the About dialog behind scene
-        this.modelsItemInto.forEach(model -> {
+        AppMenubar.MODELS_ITEM_INTO.forEach(model -> {
             model.setMenuItem(new JMenuItem(model.getLanguage().getMenuItemLabel(), model.getLanguage().getFlag()));
             model.getMenuItem().addActionListener(new ActionTranslate(dialogTranslate, model.getLanguage()));
             menuI18nContribution.add(model.getMenuItem());
@@ -172,10 +167,10 @@ public class AppMenubar extends JMenuBar {
         var itemIntoOther = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);
 
-        this.modelsItemInto.stream().filter(modelItem -> modelItem.getLanguage() == Language.AR)
-        .forEach(modelItem -> modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
-        this.modelsItemInto.stream().filter(modelItem -> modelItem.getLanguage() == Language.FR)
-        .forEach(modelItem -> modelItem.getMenuItem().setName("itemIntoFrench"));
+        AppMenubar.MODELS_ITEM_INTO.stream().filter(model -> model.getLanguage() == Language.AR)
+        .forEach(modelItemTranslate -> modelItemTranslate.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
+        AppMenubar.MODELS_ITEM_INTO.stream().filter(model -> model.getLanguage() == Language.FR)
+        .forEach(modelItemTranslate -> modelItemTranslate.getMenuItem().setName("itemIntoFrench"));
 
         menuI18nContribution.add(new JSeparator());
         menuI18nContribution.add(itemIntoOther);
@@ -281,7 +276,7 @@ public class AppMenubar extends JMenuBar {
             UiUtil.ARROW, UiUtil.ARROW_HOVER, UiUtil.ARROW_PRESSED, UiUtil.EXPAND, UiUtil.EXPAND_HOVER, UiUtil.EXPAND_PRESSED,
             UiUtil.HOURGLASS, UiUtil.ARROW_DOWN, UiUtil.ARROW_UP, UiUtil.SQUARE, UiUtil.GLOBE, UiUtil.TICK_GREEN, UiUtil.CROSS_RED,
             UiUtil.REPORT, UiUtil.APP_RESULT, UiUtil.APP_ABOUT
-        ).forEach(SvgIcon::setColorFilter);
+        ).forEach(ModelSvgIcon::setColorFilter);
 
         SqlEngine.applyTheme();
         PanelTampering.applyTheme();
@@ -296,7 +291,7 @@ public class AppMenubar extends JMenuBar {
     }
     
     public void switchLocaleWithStatus(Locale oldLocale, Locale newLocale, boolean isStartup) {
-        switchLocale(oldLocale, newLocale, isStartup);
+        this.switchLocale(oldLocale, newLocale, isStartup);
         MediatorHelper.model().getPropertiesUtil().displayStatus(newLocale);
     }
 
@@ -317,7 +312,7 @@ public class AppMenubar extends JMenuBar {
         MediatorHelper.managerBruteForce().getResult().setFont(I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_MONO_ASIAN : UiUtil.FONT_MONO_NON_ASIAN);
 
         this.switchNetworkTable();
-        this.switchI18nComponents(newLocale);
+        I18nViewUtil.switchI18nComponents();
         this.switchOrientation(oldLocale, newLocale, isStartup);
         this.switchMenuItems();  // required to restore proper language orientation
         
@@ -337,7 +332,7 @@ public class AppMenubar extends JMenuBar {
         
         if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {
             
-            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();
+            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitNS().getSplitEW();
             var componentLeft = splitPaneLeftRight.getLeftComponent();
             var componentRight = splitPaneLeftRight.getRightComponent();
 
@@ -363,36 +358,10 @@ public class AppMenubar extends JMenuBar {
         MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));
     }
 
-    private void switchI18nComponents(Locale newLocale) {
-        for (String key: I18nViewUtil.keys()) {
-            String textI18n = I18nViewUtil.valueByKey(key, newLocale);
-            for (Object componentSwing: I18nViewUtil.componentsByKey(key)) {  // instanceof as no common parent with setText()
-                if (componentSwing instanceof JTextFieldPlaceholder) {
-                    // Textfield does not need <html> tags for asian fonts
-                    ((JTextFieldPlaceholder) componentSwing).setPlaceholderText(I18nUtil.valueByKey(key));
-                } else if (componentSwing instanceof JToolTipI18n) {
-                    ((JToolTipI18n) componentSwing).setText(textI18n);
-                } else if (componentSwing instanceof JLabel) {
-                    ((JLabel) componentSwing).setText(textI18n);
-                } else if (componentSwing instanceof JCheckBoxMenuItem) {
-                    ((JCheckBoxMenuItem) componentSwing).setText(textI18n);
-                } else if (componentSwing instanceof JMenuItem) {
-                    ((JMenuItem) componentSwing).setText(textI18n);
-                } else if (componentSwing instanceof JButtonStateful) {
-                    ((JButtonStateful) componentSwing).setText(textI18n);
-                } else if (componentSwing instanceof NodeModelEmpty) {
-                    ((NodeModelEmpty) componentSwing).setText(textI18n);
-                } else {
-                    ((JTextComponent) componentSwing).setText(textI18n);
-                }
-            }
-        }
-    }
-
     private void switchMenuItems() {
-        Stream.concat(AppMenubar.modelsItem.stream(), AppMenubar.modelsItemInto.stream())
-        .forEach(modelItemInto -> modelItemInto.getMenuItem().setComponentOrientation(
-            modelItemInto.getLanguage().isRightToLeft()
+        Stream.concat(AppMenubar.MODELS_ITEM.stream(), AppMenubar.MODELS_ITEM_INTO.stream())
+        .forEach(model -> model.getMenuItem().setComponentOrientation(
+            model.getLanguage().isRightToLeft()
             ? ComponentOrientation.RIGHT_TO_LEFT
             : ComponentOrientation.LEFT_TO_RIGHT
         ));

@@ -1,9 +1,11 @@
 {
     "version": "0.103",
     "news": [
-        "[New year's greetings] As era 2024 crawled away through passing times, let's face upcoming adversities and kick ass already to 2025",
-        "[Dark mode] I deeply reworked the GUI for dark mode with themes, so now you'll enjoy hacking also during semi dark winter evenings",
-        "[Features highlight] Logs all requests, tamper script, select theme and language, integrated shell, translate GUI inline",
-        "[Pinned] Report any bugs or thoughts and add your star to the project at https://github.com/ron190/jsql-injection"
+        "[New feature, thanks @mrdragonblack] UDF shell added to new tab Exploit, now run system command on remote easily",
+        "[UDF coming doc] Find what is UDF and how to use it on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
+        "[Contribute] Some translation is still missing, open menu Community and translate a single item to make progress",
+        "[Pinned] Report any bugs and thoughts and add your star to the project at https://github.com/ron190/jsql-injection",
+        "[Dark mode] GUI has been reworked for dark mode, now you'll enjoy hacking also during semi dark winter evenings",
+        "[Community] Propose features you want, what is currently missing in the tool?"
     ]
 }

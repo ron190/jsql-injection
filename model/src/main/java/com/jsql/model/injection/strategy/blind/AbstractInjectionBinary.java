@@ -35,7 +35,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
     protected final List<String> truthy;
     
     public enum BinaryMode {
-        AND, OR, STACKED, NO_MODE
+        AND, OR, STACK, NO_MODE
     }
     
     protected final InjectionModel injectionModel;
@@ -115,7 +115,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
                 this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
                 this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
 
-                String result = convert(bytes);
+                String result = AbstractInjectionBinary.convert(bytes);
                 if (result.matches("(?s).*"+ DataAccess.TRAIL_RGX +".*")) {
                     countTasksSubmitted.set(0);
                     break;

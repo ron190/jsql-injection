@@ -5,10 +5,11 @@ set -x
 {
   echo [mysqld]
   echo port=3308
-  echo secure_file_priv=''
+  echo secure_file_priv=""
 } >> /etc/mysql/my.cnf
 
 service mysql start
+chmod 777 /usr/lib/mysql/plugin/
 
 mysql -uroot -ppassword --port=3308 -e "
   SHOW VARIABLES like 'secure_file_priv';

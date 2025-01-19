@@ -12,6 +12,7 @@ package com.jsql.view.swing.tree.model;
 
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.StringUtil;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.tree.custom.CheckBoxMenuItemIconCustom;
 import com.jsql.view.swing.tree.ImageOverlap;
@@ -52,7 +53,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
-        if ("information_schema".equals(this.getParent().toString())) {
+        if (StringUtil.INFORMATION_SCHEMA.equals(this.getParent().toString())) {
             panelNode.showLoader();
             AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
             if (suspendableTask != null && suspendableTask.isPaused()) {

@@ -17,6 +17,7 @@ public class CallablePageSource implements Callable<CallablePageSource> {
      * URL to load.
      */
     private final String query;
+    private final int nbIndex;
     private final String metadataInjectionProcess;
 
     /**
@@ -34,8 +35,9 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     /**
      * Create a callable to get initial query or insertion character.
      */
-    public CallablePageSource(String query, InjectionModel injectionModel, String metadataInjectionProcess) {
+    public CallablePageSource(String query, InjectionModel injectionModel, String metadataInjectionProcess, int nbIndex) {
         this.query = query;
+        this.nbIndex = nbIndex;
         this.injectionModel = injectionModel;
         this.metadataInjectionProcess = metadataInjectionProcess;
     }
@@ -49,7 +51,7 @@ public class CallablePageSource implements Callable<CallablePageSource> {
         InjectionModel injectionModel,
         String metadataInjectionProcess
     ) {
-        this(query, injectionModel, metadataInjectionProcess);
+        this(query, injectionModel, metadataInjectionProcess, 0);
         this.characterInsertion = characterInsertion;
     }
     
@@ -72,5 +74,9 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     
     public String getCharacterInsertion() {
         return this.characterInsertion;
+    }
+
+    public int getNbIndex() {
+        return this.nbIndex;
     }
 }

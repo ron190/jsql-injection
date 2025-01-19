@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.action;
 
-import com.jsql.MainApplication;
+import com.jsql.MainApp;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.SystemUtils;
@@ -41,7 +41,7 @@ public class ActionNewWindow extends AbstractAction {
     private static final List<String> COMMANDS_DEFAULT = Arrays.asList(
         "-cp",
         SystemUtils.JAVA_CLASS_PATH,
-        MainApplication.class.getName()
+        MainApp.class.getName()
     );
     
     private final List<String> commands;
@@ -53,9 +53,9 @@ public class ActionNewWindow extends AbstractAction {
     }
 
     public ActionNewWindow(String name, String... commands) {
-        this.commands = new ArrayList<>(List.of(PATH));
+        this.commands = new ArrayList<>(List.of(ActionNewWindow.PATH));
         this.commands.addAll(Arrays.asList(commands));
-        this.commands.addAll(COMMANDS_DEFAULT);
+        this.commands.addAll(ActionNewWindow.COMMANDS_DEFAULT);
         this.putValue(Action.NAME, name);
     }
 

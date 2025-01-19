@@ -13,7 +13,7 @@ public class Binary implements Serializable {
     private String multibit = StringUtils.EMPTY;
     private String modeAnd = "and";
     private String modeOr = "or";
-    private String modeStacked = ";";
+    private String modeStack = ";";
 
     public Test getTest() {
         return this.test;
@@ -55,16 +55,16 @@ public class Binary implements Serializable {
         this.modeOr = modeOr;
     }
 
-    public String getModeStacked() {
-        return this.modeStacked;
+    public String getModeStack() {
+        return this.modeStack;
     }
 
-    public void setModeStacked(String modeStacked) {
-        this.modeStacked = modeStacked;
+    public void setModeStack(String modeStack) {
+        this.modeStack = modeStack;
     }
 
     public String getMultibit() {
-        return multibit;
+        return this.multibit;
     }
 
     public void setMultibit(String multibit) {

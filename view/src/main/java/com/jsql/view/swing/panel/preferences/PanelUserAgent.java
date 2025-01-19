@@ -42,7 +42,7 @@ public class PanelUserAgent extends JPanel {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
-        checkboxIsCustomUserAgent.addActionListener(panelPreferences.getActionListenerSave());
+        this.checkboxIsCustomUserAgent.addActionListener(panelPreferences.getActionListenerSave());
         JTextArea textfieldCustomUserAgent = new JPopupTextArea(new JTextAreaPlaceholder("User agent list")).getProxy();
         textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));
         textfieldCustomUserAgent.getCaret().setBlinkRate(500);
@@ -71,7 +71,7 @@ public class PanelUserAgent extends JPanel {
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.LEADING, false)
                 .addComponent(labelOrigin)
-                .addComponent(checkboxIsCustomUserAgent)
+                .addComponent(this.checkboxIsCustomUserAgent)
                 .addComponent(scrollPane)
             )
         );
@@ -87,7 +87,7 @@ public class PanelUserAgent extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(checkboxIsCustomUserAgent)
+                .addComponent(this.checkboxIsCustomUserAgent)
             )
             .addGroup(
                 groupLayout
@@ -98,6 +98,6 @@ public class PanelUserAgent extends JPanel {
     }
 
     public JCheckBox getCheckboxIsCustomUserAgent() {
-        return checkboxIsCustomUserAgent;
+        return this.checkboxIsCustomUserAgent;
     }
 }

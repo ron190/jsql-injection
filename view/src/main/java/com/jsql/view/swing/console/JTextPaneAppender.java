@@ -56,7 +56,7 @@ public class JTextPaneAppender extends AbstractAppender {
     public void append(LogEvent event) {
         // Avoid errors which might occur in headless mode
         // or logging that occurs before consoles are available
-        if (consoleTextPane == null || javaTextPane == null) {
+        if (JTextPaneAppender.consoleTextPane == null || JTextPaneAppender.javaTextPane == null) {
             return;
         }
         var messageLogEvent = new String[] {
@@ -70,15 +70,15 @@ public class JTextPaneAppender extends AbstractAppender {
         SwingUtilities.invokeLater(() -> {
             String message = messageLogEvent[0];
             if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {
-                javaTextPane.append(message, ATTRIBUTE_WARN);
+                JTextPaneAppender.javaTextPane.append(message, JTextPaneAppender.ATTRIBUTE_WARN);
             } else if (level == LogLevelUtil.CONSOLE_ERROR.intLevel()) {
-                consoleTextPane.append(message, ATTRIBUTE_WARN);
+                JTextPaneAppender.consoleTextPane.append(message, JTextPaneAppender.ATTRIBUTE_WARN);
             } else if (level == LogLevelUtil.CONSOLE_INFORM.intLevel()) {
-                consoleTextPane.append(message, ATTRIBUTE_INFORM);
+                JTextPaneAppender.consoleTextPane.append(message, JTextPaneAppender.ATTRIBUTE_INFORM);
             } else if (level == LogLevelUtil.CONSOLE_SUCCESS.intLevel()) {
-                consoleTextPane.append(message, ATTRIBUTE_SUCCESS);
+                JTextPaneAppender.consoleTextPane.append(message, JTextPaneAppender.ATTRIBUTE_SUCCESS);
             } else if (level != LogLevelUtil.IGNORE.intLevel() && level != Level.ERROR.intLevel()) {  // ignore & stdout when unhandled exception
-                consoleTextPane.append(message, ATTRIBUTE_ALL);
+                JTextPaneAppender.consoleTextPane.append(message, JTextPaneAppender.ATTRIBUTE_ALL);
             }
         });
     }

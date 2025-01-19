@@ -48,7 +48,7 @@ public class MenuActionExport implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
+    public void actionPerformed(ActionEvent actionEvent) {
         final JFileChooser importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {
             @Override
             public void approveSelection() {

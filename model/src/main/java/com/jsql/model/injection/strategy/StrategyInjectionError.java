@@ -39,13 +39,13 @@ public class StrategyInjectionError extends AbstractStrategy {
         var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled()) {
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         } else if (strategyYaml.getError().getMethod().isEmpty()) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
-                getName(),
+                this.getName(),
                 this.injectionModel.getMediatorVendor().getVendor()
             );
             return;
@@ -142,7 +142,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         this.injectionModel.appendAnalysisReport(
             StringUtil.formatReport(
                 LogLevelUtil.COLOR_BLU,
-                "### Strategy: " + getName() + ":" + this.injectionModel.getMediatorVendor().getVendor().instance()
+                "### Strategy: "+ this.getName() +":"+ this.injectionModel.getMediatorVendor().getVendor().instance()
                 .getModelYaml()
                 .getStrategy()
                 .getError()

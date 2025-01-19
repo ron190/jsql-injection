@@ -1,6 +1,7 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.util.bruter.Coder;
 import com.jsql.util.bruter.HashUtil;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
@@ -65,7 +66,7 @@ public class ExceptionUtil {
                 }
 
                 try {
-                    var messageDigest = MessageDigest.getInstance("Md5");
+                    var messageDigest = MessageDigest.getInstance(Coder.MD5.label);
 
                     String stackTrace = ExceptionUtils.getStackTrace(throwable).trim();
                     var passwordString = String.valueOf(stackTrace.toCharArray());

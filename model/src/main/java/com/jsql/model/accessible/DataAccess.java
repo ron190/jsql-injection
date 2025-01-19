@@ -11,10 +11,7 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.database.AbstractElementDatabase;
-import com.jsql.model.bean.database.Column;
-import com.jsql.model.bean.database.Database;
-import com.jsql.model.bean.database.Table;
+import com.jsql.model.bean.database.*;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.AbstractSlidingException;
@@ -90,7 +87,7 @@ public class DataAccess {
      * Expected schema of a table cell data is
      * <pre>x04[table cell]x05[number of occurrences]x04
      */
-    public static final String CELL_TABLE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)"+ SEPARATOR_QTE_RGX +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
+    public static final String CELL_TABLE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)"+ DataAccess.SEPARATOR_QTE_RGX +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
 
     private final InjectionModel injectionModel;
     
@@ -114,11 +111,11 @@ public class DataAccess {
                 sourcePage,
                 false,
                 0,
-                AbstractElementDatabase.MOCK,
+                MockElement.MOCK,
                 "metadata"
             );
         } catch (AbstractSlidingException e) {
-            resultToParse = getPartialResultAndLog(e, resultToParse);
+            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
@@ -128,10 +125,10 @@ public class DataAccess {
         }
         
         try {
-            String versionDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[0].replaceAll("\\s+", StringUtils.SPACE);
-            String nameDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[1];
-            String username = resultToParse.split(ENCLOSE_VALUE_RGX)[2];
-            
+            String versionDatabase = resultToParse.split(DataAccess.ENCLOSE_VALUE_RGX)[0].replaceAll("\\s+", StringUtils.SPACE);
+            String nameDatabase = resultToParse.split(DataAccess.ENCLOSE_VALUE_RGX)[1];
+            String username = resultToParse.split(DataAccess.ENCLOSE_VALUE_RGX)[2];
+
             var infos = String.format(
                 "Database [%s] on %s [%s] for user [%s]",
                 nameDatabase,
@@ -170,21 +167,21 @@ public class DataAccess {
                 sourcePage,
                 true,
                 0,
-                AbstractElementDatabase.MOCK,
+                MockElement.MOCK,
                 "databases"
             );
         } catch (AbstractSlidingException e) {
-            resultToParse = getPartialResultAndLog(e, resultToParse);
+            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
         // Parse all data we have retrieved
         var regexSearch = Pattern.compile(
-                MODE
-                + ENCLOSE_VALUE_RGX
-                + CELL_TABLE
-                + ENCLOSE_VALUE_RGX
+                DataAccess.MODE
+                + DataAccess.ENCLOSE_VALUE_RGX
+                + DataAccess.CELL_TABLE
+                + DataAccess.ENCLOSE_VALUE_RGX
             )
             .matcher(resultToParse);
         if (!regexSearch.find()) {
@@ -243,17 +240,17 @@ public class DataAccess {
                 "tables"
             );
         } catch (AbstractSlidingException e) {
-            resultToParse = getPartialResultAndLog(e, resultToParse);
+            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
         // Parse all the data we have retrieved
         var regexSearch = Pattern.compile(
-                MODE
-                + ENCLOSE_VALUE_RGX
-                + CELL_TABLE
-                + ENCLOSE_VALUE_RGX
+                DataAccess.MODE
+                + DataAccess.ENCLOSE_VALUE_RGX
+                + DataAccess.CELL_TABLE
+                + DataAccess.ENCLOSE_VALUE_RGX
             )
             .matcher(resultToParse);
         
@@ -317,7 +314,7 @@ public class DataAccess {
                 "columns"
             );
         } catch (AbstractSlidingException e) {
-            resultToParse = getPartialResultAndLog(e, resultToParse);
+            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
@@ -329,10 +326,10 @@ public class DataAccess {
         
         // Parse all the data we have retrieved
         var regexSearch = Pattern.compile(
-                MODE
-                + ENCLOSE_VALUE_RGX
-                + CELL_TABLE
-                + ENCLOSE_VALUE_RGX
+                DataAccess.MODE
+                + DataAccess.ENCLOSE_VALUE_RGX
+                + DataAccess.CELL_TABLE
+                + DataAccess.ENCLOSE_VALUE_RGX
             )
             .matcher(resultToParse);
 
@@ -432,7 +429,7 @@ public class DataAccess {
                 "rows"
             );
         } catch (AbstractSlidingException e) {  // Catch all exceptions but prevent detecting bug
-            resultToParse = getPartialResultAndLog(e, resultToParse);
+            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);
         } catch (Exception e) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }

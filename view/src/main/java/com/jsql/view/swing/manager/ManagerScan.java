@@ -14,11 +14,10 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.vendor.model.Vendor;
-import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.list.*;
-import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -30,11 +29,12 @@ import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -73,7 +73,7 @@ public class ManagerScan extends AbstractManagerList {
         
         this.listPaths.setName(ManagerScan.NAME);
 
-        JPanel lastLine = this.getLastLinePanel(this.listPaths);
+        JPanel lastLine = this.getLastLinePanel();
         this.add(lastLine, BorderLayout.SOUTH);
         
         this.listPaths.addListSelectionListener(e -> {
@@ -90,7 +90,7 @@ public class ManagerScan extends AbstractManagerList {
             if (requestType != null && !requestType.isEmpty()) {
                 MediatorHelper.panelAddressBar().getAtomicRadioMethod().setText(requestType);
             } else {
-                MediatorHelper.panelAddressBar().getAtomicRadioMethod().setText("GET");
+                MediatorHelper.panelAddressBar().getAtomicRadioMethod().setText(StringUtil.GET);
             }
             
             AbstractMethodInjection method = beanInjection.getMethodInstance();
@@ -126,53 +126,46 @@ public class ManagerScan extends AbstractManagerList {
         }
     }
 
-    private JPanel getLastLinePanel(final DnDList dndListScan) {
+    private JPanel getLastLinePanel() {
         var lastLine = new JPanel();
         lastLine.setOpaque(false);
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
 
-        this.initializeRunButton(dndListScan);
+        this.buildRunButton("SCAN_RUN_BUTTON_LABEL", "SCAN_RUN_BUTTON_TOOLTIP");
+        this.run.addActionListener(new ActionScan());
 
-        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         lastLine.add(this.horizontalGlue);
         lastLine.add(this.progressBar);
-        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         lastLine.add(this.run);
         return lastLine;
     }
 
-    private void initializeRunButton(final DnDList dndListScan) {
-        this.defaultText = "SCAN_RUN_BUTTON_LABEL";
-        this.run = new JButtonStateful(this.defaultText);
-        I18nViewUtil.addComponentForKey("SCAN_RUN_BUTTON_LABEL", this.run);
-        this.run.setToolTipText(I18nUtil.valueByKey("SCAN_RUN_BUTTON_TOOLTIP"));
-        this.run.addActionListener(actionEvent -> {
-            if (dndListScan.getSelectedValuesList().isEmpty()) {
+    private class ActionScan implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (ManagerScan.this.listPaths.getSelectedValuesList().isEmpty()) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select URL(s) to scan");
                 return;
             }
-            new Thread(
-                () -> {
-                    if (this.run.getState() == StateButton.STARTABLE) {
-                        this.run.setText(I18nViewUtil.valueByKey("SCAN_RUN_BUTTON_STOP"));
-                        this.run.setState(StateButton.STOPPABLE);
-                        this.progressBar.setVisible(true);
-                        this.horizontalGlue.setVisible(false);
-                        DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) dndListScan.getModel();
-                        for (var i = 0 ; i < listModel.getSize() ; i++) {
-                            listModel.get(i).reset();
-                        }
-                        this.scan(dndListScan.getSelectedValuesList());
-                    } else {
-                        MediatorHelper.model().getResourceAccess().setScanStopped(true);
-                        MediatorHelper.model().setIsStoppedByUser(true);
-                        this.run.setEnabled(false);
-                        this.run.setState(StateButton.STOPPING);
+            new Thread(() -> {
+                if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
+                    ManagerScan.this.run.setText(I18nViewUtil.valueByKey("SCAN_RUN_BUTTON_STOP"));
+                    ManagerScan.this.run.setState(StateButton.STOPPABLE);
+                    ManagerScan.this.progressBar.setVisible(true);
+                    ManagerScan.this.horizontalGlue.setVisible(false);
+                    DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) ManagerScan.this.listPaths.getModel();
+                    for (var i = 0 ; i < listModel.getSize() ; i++) {
+                        listModel.get(i).reset();
                     }
-                },
-                "ThreadScan"
-            ).start();
-        });
+                    ManagerScan.this.scan(ManagerScan.this.listPaths.getSelectedValuesList());
+                } else {
+                    MediatorHelper.model().getResourceAccess().setScanStopped(true);
+                    MediatorHelper.model().setIsStoppedByUser(true);
+                    ManagerScan.this.run.setEnabled(false);
+                    ManagerScan.this.run.setState(StateButton.STOPPING);
+                }
+            }, "ThreadScan").start();
+        }
     }
     
     /**

@@ -44,7 +44,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
+    public void actionPerformed(ActionEvent actionEvent) {
         if (this.bruteForceManager.getRun().getState() == StateButton.STOPPABLE) {
             this.bruteForceManager.getRun().setEnabled(false);
             this.isStopped = true;

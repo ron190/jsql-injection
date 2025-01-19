@@ -1,5 +1,3 @@
-package com.jsql.util.bruter;
-
 /*******************************************************************************
  * Copyright (c) 2009, 2012 Mountainminds GmbH & Co. KG and Contributors
  * All rights reserved. This program and the accompanying materials
@@ -9,8 +7,9 @@ package com.jsql.util.bruter;
  *
  * Contributors:
  *    Marc R. Hoffmann - initial API and implementation
- * 
+ *
  *******************************************************************************/
+package com.jsql.util.bruter;
 
 /**
  * CRC64 checksum calculator based on the polynom specified in ISO 3309. The
@@ -37,12 +36,12 @@ public class Crc64Helper {
             long v = i;
             for (int j = 0; j < 8; j++) {
                 if ((v & 1) == 1) {
-                    v = (v >>> 1) ^ POLY64REV;
+                    v = (v >>> 1) ^ Crc64Helper.POLY64REV;
                 } else {
                     v = v >>> 1;
                 }
             }
-            LOOKUPTABLE[i] = v;
+            Crc64Helper.LOOKUPTABLE[i] = v;
         }
     }
 
@@ -57,7 +56,7 @@ public class Crc64Helper {
         long sum = 0;
         for (byte element : data) {
             final int lookupidx = ((int) sum ^ element) & 0xff;
-            sum = (sum >>> 8) ^ LOOKUPTABLE[lookupidx];
+            sum = (sum >>> 8) ^ Crc64Helper.LOOKUPTABLE[lookupidx];
         }
         return String.valueOf(sum);
     }

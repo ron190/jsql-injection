@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.jsql.view.swing.tab;
 
-import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
@@ -19,8 +18,9 @@ import com.jsql.util.StringUtil;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
-import com.jsql.view.swing.shell.ShellSql;
-import com.jsql.view.swing.shell.ShellWeb;
+import com.jsql.view.swing.terminal.ExploitSql;
+import com.jsql.view.swing.terminal.ExploitUdf;
+import com.jsql.view.swing.terminal.ExploitWeb;
 import com.jsql.view.swing.tab.dnd.DnDTabbedPane;
 import com.jsql.view.swing.tab.dnd.TabTransferHandler;
 import com.jsql.view.swing.table.PanelTable;
@@ -40,7 +40,6 @@ import java.awt.event.FocusEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.IntConsumer;
 
@@ -69,16 +68,16 @@ public class TabResults extends DnDTabbedPane {
         MediatorHelper.register(this);
     }
 
-    public void createFileTab(String label, String content, String path) {
+    public void addFileTab(String label, String content, String path) {
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(content);
         fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
         fileText.setCaretPosition(0);
-        this.createTextTab(label, path, fileText, UiUtil.DOWNLOAD.icon);
+        this.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.icon);
         MediatorHelper.tabManagersCards().addToLists(path, label);
     }
 
-    public void createReportTab(String content) {
+    public void addReportTab(String content) {
         JEditorPane editorPane = new JEditorPane();
         editorPane.setContentType("text/html");
         editorPane.setText("<html><span style=\"white-space: nowrap; font-family:'"+ UiUtil.FONT_NAME_MONO_NON_ASIAN +"'\">" + content + "</span></html>");
@@ -100,7 +99,7 @@ public class TabResults extends DnDTabbedPane {
         });
         editorPane.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusGained(FocusEvent arg0) {
+            public void focusGained(FocusEvent focusEvent) {
                 editorPane.getCaret().setVisible(true);
                 editorPane.getCaret().setSelectionVisible(true);
                 editorPane.getCaret().setBlinkRate(0);
@@ -108,10 +107,10 @@ public class TabResults extends DnDTabbedPane {
         });
         UiUtil.initialize(editorPane);  // silent delete
 
-        this.createTextTab("Vulnerability report", "Analysis report with all payloads detected", editorPane, UiUtil.REPORT.icon);
+        this.addTextTab("Vulnerability report", "Analysis report with all payloads detected", editorPane, UiUtil.REPORT.icon);
     }
 
-    public void createTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
+    public void addTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
         var scroller = new JScrollPane(componentText);
         this.addTab(label + StringUtils.SPACE, scroller);
         this.setSelectedComponent(scroller);  // Focus on the new tab
@@ -119,95 +118,80 @@ public class TabResults extends DnDTabbedPane {
         var header = new TabHeader(label, icon);
         this.setTabComponentAt(this.indexOfComponent(scroller), header);
 
-        FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
-        MediatorHelper.frame().revalidate();
-        MediatorHelper.frame().repaint();
+        this.updateUI();  // required: light, open/close prefs, dark => light artifacts
     }
 
-    public void createShell(String url, String path) {
+    public void addTabExploitWeb(String url) {
         try {
             var terminalID = UUID.randomUUID();
-            var terminal = new ShellWeb(terminalID, url);
+            var terminal = new ExploitWeb(terminalID, url);
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JScrollPane scroller = new JScrollPane(terminal);
             this.addTab("Web shell", scroller);
             this.setSelectedComponent(scroller);  // Focus on the new tab
-            this.setToolTipTextAt(
-                this.indexOfComponent(scroller),
-                String.format(
-                    "<html><b>URL</b><br>%s<br><b>Path</b><br>%s%s</html>",
-                    url,
-                    path,
-                    MediatorHelper.model().getResourceAccess().filenameWebshell
-                )
-            );
 
             var header = new TabHeader("Web shell", UiUtil.TERMINAL.icon);
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 
-            FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
-            MediatorHelper.frame().revalidate();
-            MediatorHelper.frame().repaint();
+            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
         } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Tab exploit failure: incorrect URL", e);
         }
     }
-    
-    public void createSQLShellTab(String url, String user, String pass, String path) {
+
+    public void addTabExploitUdf() {
         try {
             var terminalID = UUID.randomUUID();
-            var terminal = new ShellSql(terminalID, url, user, pass);
+            var terminal = new ExploitUdf(terminalID);
+            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+
+            JScrollPane scroller = new JScrollPane(terminal);
+            this.addTab("UDF shell", scroller);
+            this.setSelectedComponent(scroller);  // Focus on the new tab
+
+            var header = new TabHeader("UDF shell", UiUtil.TERMINAL.icon);
+            this.setTabComponentAt(this.indexOfComponent(scroller), header);
+            terminal.requestFocusInWindow();
+
+            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
+        } catch (MalformedURLException | URISyntaxException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Tab exploit failure: incorrect URL", e);
+        }
+    }
+
+    public void addTabExploitSql(String url, String user, String pass) {
+        try {
+            var terminalID = UUID.randomUUID();
+            var terminal = new ExploitSql(terminalID, url, user, pass);
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JScrollPane scroller = new JScrollPane(terminal);
             this.addTab("SQL shell", scroller);
             this.setSelectedComponent(scroller);  // Focus on the new tab
-            this.setToolTipTextAt(
-                this.indexOfComponent(scroller),
-                String.format(
-                    "<html><b>URL</b><br>%s<br><b>Path</b><br>%s%s</html>",
-                    url,
-                    path,
-                    MediatorHelper.model().getResourceAccess().filenameSqlshell
-                )
-            );
 
             var header = new TabHeader("SQL shell", UiUtil.TERMINAL.icon);
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 
-            FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
-            MediatorHelper.frame().revalidate();
-            MediatorHelper.frame().repaint();
+            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
         } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Tab exploit failure: incorrect URL", e);
         }
     }
     
-    public void createValuesTab(String[][] data, String[] columnNames, AbstractElementDatabase table) {
+    public void addTabValues(String[][] data, String[] columnNames, AbstractElementDatabase table) {
         var panelTable = new PanelTable(data, columnNames);
         
         this.addTab(StringUtil.detectUtf8(table.toString()), panelTable);
         panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
         
         this.setSelectedComponent(panelTable);  // Focus on the new tab
-        this.setToolTipTextAt(
-            this.indexOfComponent(panelTable),
-            String.format(
-                "<html><b>%s.%s</b><br><i>%s</i></html>",
-                table.getParent(),
-                table,
-                String.join("<br>", Arrays.copyOfRange(columnNames, 2, columnNames.length))
-            )
-        );
 
         var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.icon);
         this.setTabComponentAt(this.indexOfComponent(panelTable), header);
 
-        FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
-        MediatorHelper.frame().revalidate();
-        MediatorHelper.frame().repaint();
+        this.updateUI();  // required: light, open/close prefs, dark => light artifacts
     }
 }

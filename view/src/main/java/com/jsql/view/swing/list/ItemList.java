@@ -55,10 +55,10 @@ public class ItemList {
     }
 
     public boolean isVulnerable() {
-        return isVulnerable;
+        return this.isVulnerable;
     }
 
     public void setVulnerable(boolean vulnerable) {
-        isVulnerable = vulnerable;
+        this.isVulnerable = vulnerable;
     }
 }

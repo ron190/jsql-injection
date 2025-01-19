@@ -20,8 +20,8 @@ public class ActionCloseTabResult extends AbstractAction {
             MediatorHelper.tabResults().removeTabAt(closeTabNumber);
 
             if (MediatorHelper.tabResults().getTabCount() == 0) {
-                var splitPaneTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();
-                JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitVerticalLeftRight();
+                var splitPaneTopBottom = MediatorHelper.frame().getSplitNS();
+                JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitEW();
                 int dividerLocation = splitPaneLeftRight.getDividerLocation();
 
                 var label = new JLabel(UiUtil.APP_RESULT.icon);

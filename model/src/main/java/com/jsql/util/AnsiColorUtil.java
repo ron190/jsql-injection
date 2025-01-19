@@ -13,20 +13,20 @@ public class AnsiColorUtil {
     
     private static final String SUFFIX = "m";
     
-    private static final String END_COLOR = PREFIX + SUFFIX;
+    private static final String END_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.SUFFIX;
 
-    private static final String ERROR_COLOR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_RED + SUFFIX;
-    private static final String INFO_COLOR = PREFIX + NORMAL+ SEPARATOR + FOREGROUND_GREEN + SUFFIX;
+    private static final String ERROR_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.NORMAL + AnsiColorUtil.SEPARATOR + AnsiColorUtil.FOREGROUND_RED + AnsiColorUtil.SUFFIX;
+    private static final String INFO_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.NORMAL + AnsiColorUtil.SEPARATOR + AnsiColorUtil.FOREGROUND_GREEN + AnsiColorUtil.SUFFIX;
 
     private AnsiColorUtil() {
         // Utility class
     }
 
     public static String addGreenColor(String text) {
-        return INFO_COLOR + text + END_COLOR;
+        return AnsiColorUtil.INFO_COLOR + text + AnsiColorUtil.END_COLOR;
     }
     
     public static String addRedColor(String text) {
-        return ERROR_COLOR + text + END_COLOR;
+        return AnsiColorUtil.ERROR_COLOR + text + AnsiColorUtil.END_COLOR;
     }
 }

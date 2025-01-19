@@ -22,7 +22,7 @@ public class DigestSecurityConfig {
     private static final String DIGEST_REALM = "Digest Realm";
     public static final String DIGEST_USERNAME = "login-digest";
     public static final String DIGEST_PASSWORD = "password-digest";
-    private static final String DIGEST_PASSWORD_ENCODED = DigestAuthUtils.encodePasswordInA1Format(DIGEST_USERNAME, DIGEST_REALM, DIGEST_PASSWORD);
+    private static final String DIGEST_PASSWORD_ENCODED = DigestAuthUtils.encodePasswordInA1Format(DigestSecurityConfig.DIGEST_USERNAME, DigestSecurityConfig.DIGEST_REALM, DigestSecurityConfig.DIGEST_PASSWORD);
     public static final CustomFilter FILTER = new CustomFilter("digest");
 
     @Bean
@@ -31,9 +31,9 @@ public class DigestSecurityConfig {
         return http.securityMatcher("/digest/**")
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/digest/**")).hasAuthority(DIGEST_AUTHORITY)
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/digest/**")).hasAuthority(DigestSecurityConfig.DIGEST_AUTHORITY)
             )
-            .addFilterAfter(FILTER, AuthorizationFilter.class)
+            .addFilterAfter(DigestSecurityConfig.FILTER, AuthorizationFilter.class)
             .addFilter(this.digestAuthenticationFilter())
             .exceptionHandling()
             // Deprecated but no compatible entry point setting available
@@ -45,9 +45,9 @@ public class DigestSecurityConfig {
     public Filter digestAuthenticationFilter() {
 
         UserDetails user = User.builder()
-            .username(DIGEST_USERNAME)
-            .password(DIGEST_PASSWORD_ENCODED)
-            .authorities(DIGEST_AUTHORITY)
+            .username(DigestSecurityConfig.DIGEST_USERNAME)
+            .password(DigestSecurityConfig.DIGEST_PASSWORD_ENCODED)
+            .authorities(DigestSecurityConfig.DIGEST_AUTHORITY)
             .build();
 
         DigestAuthenticationFilter digestAuthenticationFilter = new DigestAuthenticationFilter();
@@ -64,7 +64,7 @@ public class DigestSecurityConfig {
 
         DigestAuthenticationEntryPoint digestAuthenticationEntryPoint = new DigestAuthenticationEntryPoint();
         digestAuthenticationEntryPoint.setKey("mykey");
-        digestAuthenticationEntryPoint.setRealmName(DIGEST_REALM);
+        digestAuthenticationEntryPoint.setRealmName(DigestSecurityConfig.DIGEST_REALM);
 
         return digestAuthenticationEntryPoint;
     }

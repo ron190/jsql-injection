@@ -106,9 +106,9 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         this.mainTable.getRowSorter().addRowSorterListener(rowSorterEvent -> {
             modelFixedTable.fireTableDataChanged();
             // Copy data from hidden column in main table
-            for (var i = 0 ; i < FixedColumnTable.this.mainTable.getRowCount() ; i++) {
-                FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 0), i, 0);
-                FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 1), i, 1);
+            for (var i = 0; i < this.mainTable.getRowCount() ; i++) {
+                this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 0), i, 0);
+                this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 1), i, 1);
             }
         });
         

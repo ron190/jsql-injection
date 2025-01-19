@@ -1,7 +1,7 @@
 package com.test.vendor.mysql;
 
 import org.hibernate.cfg.JdbcSettings;
-import spring.SpringTargetApplication;
+import spring.SpringApp;
 
 public abstract class ConcreteMySqlErrorSuiteIT extends ConcreteMySqlSuiteIT {
 
@@ -10,6 +10,6 @@ public abstract class ConcreteMySqlErrorSuiteIT extends ConcreteMySqlSuiteIT {
         
         super.config();
 
-        this.jdbcURL = SpringTargetApplication.propsMysqlError.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcURL = SpringApp.propsMysqlError.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
     }
 }

@@ -29,24 +29,6 @@ public class JsonUtil {
         this.injectionModel = injectionModel;
     }
 
-    public static boolean isJson(String param) {
-        var isJson = false;
-        try {
-            // Test for JSON Object
-            new JSONObject(param);
-            isJson = true;
-        } catch (JSONException exceptionJSONObject) {
-            try {
-                // Test for JSON Array
-                new JSONArray(param);
-                isJson = true;
-            } catch (JSONException exceptionJSONArray) {
-                // Not a JSON entity
-            }
-        }
-        return isJson;
-    }
-
     public static Object getJson(String param) {
         Object jsonEntity;  // Will test if current value is a JSON entity
         try {
@@ -140,10 +122,11 @@ public class JsonUtil {
             try {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_INFORM,
-                    "Checking JSON {} parameter {}={}",
-                    methodInjection::name,
+                    "{} JSON {}={} with {}",
+                    () -> I18nUtil.valueByKey("LOG_CHECKING"),
                     parentXPath::getKey,
-                    () -> parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
+                    () -> parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY),
+                    methodInjection::name
                 );
                 
                 // Test current JSON value marked with * for injection

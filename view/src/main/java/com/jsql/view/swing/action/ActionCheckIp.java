@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Action performing a IP localization test.
+ * Action performing an IP localization test.
  */
 public class ActionCheckIp implements ActionListener, Runnable {
     

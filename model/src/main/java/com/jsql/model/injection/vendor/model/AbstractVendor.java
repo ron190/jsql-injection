@@ -24,12 +24,12 @@ public interface AbstractVendor {
     String sqlError(String sqlQuery, String startPosition, int indexMethodError, boolean isReport);
     String sqlBlind(String sqlQuery, String startPosition, boolean isReport);
     String sqlTime(String sqlQuery, String startPosition, boolean isReport);
-    String sqlStacked(String sqlQuery, String startPosition, boolean isReport);
+    String sqlStack(String sqlQuery, String startPosition, boolean isReport);
 
     String sqlCapacity(String[] indexes);
     String sqlIndices(Integer nbFields);
     String sqlOrderBy();
-    String sqlLimit(Integer limitSQLResult);
+    String sqlLimit(Integer limitSqlResult);
     String endingComment();
     String fingerprintErrorsAsRegex();
     

@@ -11,8 +11,8 @@ public class JButtonStateful extends JButton {
      */
     private StateButton state = StateButton.STARTABLE;
     
-    public JButtonStateful(String defaultText) {
-        super(I18nViewUtil.valueByKey(defaultText));
+    public JButtonStateful(String keyI18nRunButton) {
+        super(I18nViewUtil.valueByKey(keyI18nRunButton));
     }
     
     

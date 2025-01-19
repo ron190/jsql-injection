@@ -37,7 +37,7 @@ class BeanDatabaseSpock extends Specification {
             table = new Table("table", "0", database)
     }
 
-    def 'Check bean database hierarchie and labels with incorrect count'() {
+    def 'Check bean database hierarchies and labels with incorrect count'() {
         
         expect:
             database.getParent() == null
@@ -51,7 +51,7 @@ class BeanDatabaseSpock extends Specification {
             table = new Table("table", "X", database)
     }
 
-    def 'Check bean database hierarchie and labels with information_schema'() {
+    def 'Check bean database hierarchies and labels with information_schema'() {
         
         expect:
             database.getParent() == null

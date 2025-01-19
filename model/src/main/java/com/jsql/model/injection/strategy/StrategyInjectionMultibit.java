@@ -40,16 +40,16 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled()) {
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         }
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Multibit...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Multibit...", () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY));
 
-        this.injectionMultibit = new InjectionMultibit(this.injectionModel, BinaryMode.STACKED);
+        this.injectionMultibit = new InjectionMultibit(this.injectionModel, BinaryMode.STACK);
         this.isApplicable = this.injectionMultibit.isInjectable();
 
         if (this.isApplicable) {
-            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Multibit injection", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Multibit injection", () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE));
             this.allow();
 
             var requestMessageBinary = new Request();
@@ -64,9 +64,9 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     @Override
     public void allow(int... i) {
         this.injectionModel.appendAnalysisReport(
-            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + getName())
+            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithoutIndex(
-                injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(
                         StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"),
                         "0",

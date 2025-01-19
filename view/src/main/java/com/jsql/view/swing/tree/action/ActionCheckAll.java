@@ -24,7 +24,7 @@ public class ActionCheckAll implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
+    public void actionPerformed(ActionEvent actionEvent) {
         DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) this.path.getLastPathComponent();
         AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();

@@ -71,11 +71,11 @@ public class DnDList extends JList<ItemList> {
         this.addMouseListener(new MouseAdapterMenuAction(this));
         this.addFocusListener(new FocusListener() {  // Allows color change when list loses/gains focus
             @Override
-            public void focusLost(FocusEvent arg0) {
+            public void focusLost(FocusEvent focusEvent) {
                 DnDList.this.repaint();
             }
             @Override
-            public void focusGained(FocusEvent arg0) {
+            public void focusGained(FocusEvent focusEvent) {
                 DnDList.this.repaint();
             }
         });
@@ -229,14 +229,14 @@ public class DnDList extends JList<ItemList> {
             endPosition = this.initializeItems(endPosition, file);
         }
         if (!this.listModel.isEmpty()) {
-            DnDList.this.setSelectionInterval(startPosition, endPosition - 1);
+            this.setSelectionInterval(startPosition, endPosition - 1);
         }
         
         try {
-            DnDList.this.scrollRectToVisible(
-                DnDList.this.getCellBounds(
-                    DnDList.this.getMinSelectionIndex(),
-                    DnDList.this.getMaxSelectionIndex()
+            this.scrollRectToVisible(
+                this.getCellBounds(
+                    this.getMinSelectionIndex(),
+                    this.getMaxSelectionIndex()
                 )
             );
         } catch (NullPointerException e) {

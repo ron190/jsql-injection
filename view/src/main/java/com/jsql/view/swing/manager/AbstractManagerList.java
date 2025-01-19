@@ -10,11 +10,13 @@
  ******************************************************************************/
 package com.jsql.view.swing.manager;
 
+import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
+import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.StreamSupport;
 
 /**
@@ -50,6 +53,7 @@ public abstract class AbstractManagerList extends JPanel {
      * Contains the paths of files.
      */
     protected DnDList listPaths;
+    protected final JScrollPane scrollListPaths;
 
     /**
      * Starts the upload process.
@@ -65,25 +69,41 @@ public abstract class AbstractManagerList extends JPanel {
      * Text of the button that start the upload process.
      * Used to get back the default text after a search (defaultText->"Stop"->defaultText).
      */
-    protected String defaultText;
+    protected String labelI18nRunButton;
+    protected String tooltipI18nRunButton;
 
     /**
-     * A animated GIF displayed during processing.
+     * An animated bar displayed during processing.
      */
     protected final JProgressBar progressBar = new JProgressBar();
     protected final Component horizontalGlue = Box.createHorizontalGlue();
 
-    protected AbstractManagerList() {
-        // Nothing
-    }
-    
     protected AbstractManagerList(String nameFile) {
+        this.setLayout(new BorderLayout());
+
+        this.buildList(nameFile);
         this.progressBar.setIndeterminate(true);
         this.progressBar.setVisible(false);
-        this.setLayout(new BorderLayout());
-        this.buildList(nameFile);
+        this.progressBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
         this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.X_AXIS));
-        this.add(new JScrollPane(this.listPaths), BorderLayout.CENTER);
+
+        this.scrollListPaths = new JScrollPane(this.listPaths);
+        this.add(this.scrollListPaths, BorderLayout.CENTER);
+    }
+
+    public void buildRunButton(String labelI18n, String tooltipI18n) {
+        this.labelI18nRunButton = labelI18n;
+        this.tooltipI18nRunButton = tooltipI18n;
+        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(this.tooltipI18nRunButton)));
+        this.run = new JButtonStateful(this.labelI18nRunButton) {
+            @Override
+            public JToolTip createToolTip() {
+                return tooltip.get();
+            }
+        };
+        I18nViewUtil.addComponentForKey(this.labelI18nRunButton, this.run);
+        I18nViewUtil.addComponentForKey(this.tooltipI18nRunButton, tooltip.get());
+        this.run.setToolTipText(I18nUtil.valueByKey(this.tooltipI18nRunButton));
     }
 
     public void buildList(String nameFile) {
@@ -102,6 +122,25 @@ public abstract class AbstractManagerList extends JPanel {
         }
     }
 
+    public void buildPrivilege() {
+        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("PRIVILEGE_TOOLTIP")));
+        this.privilege = new JLabel(I18nUtil.valueByKey("PRIVILEGE_LABEL"), UiUtil.SQUARE.icon, SwingConstants.LEFT) {
+            @Override
+            public JToolTip createToolTip() {
+                return tooltip.get();
+            }
+        };
+        I18nViewUtil.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
+        I18nViewUtil.addComponentForKey("PRIVILEGE_TOOLTIP", tooltip.get());
+        this.privilege.setToolTipText(I18nUtil.valueByKey("PRIVILEGE_TOOLTIP"));
+
+        this.lastLine.add(Box.createHorizontalStrut(5));
+        this.lastLine.add(this.privilege);
+        this.lastLine.add(this.horizontalGlue);
+        this.lastLine.add(this.progressBar);
+        this.lastLine.add(this.run);
+    }
+
     /**
      * Add a new string to the list if it's not a duplicate.
      * @param element The string to add to the list
@@ -116,7 +155,7 @@ public abstract class AbstractManagerList extends JPanel {
             .forEach(itemList -> isFound.set(true));
 
         if (!isFound.get()) {
-            listModel.addElement(new ItemList(element));
+            listModel.add(0, new ItemList(element));
         }
     }
     
@@ -137,19 +176,12 @@ public abstract class AbstractManagerList extends JPanel {
     
     public void endProcess() {
         SwingUtilities.invokeLater(() -> {  // required to prevent scan glitches
-            this.run.setText(I18nViewUtil.valueByKey(this.defaultText));
+            this.run.setText(I18nViewUtil.valueByKey(this.labelI18nRunButton));
             this.setButtonEnable(true);
             this.progressBar.setVisible(false);
             this.horizontalGlue.setVisible(true);
             this.run.setState(StateButton.STARTABLE);
         });
-    }
-
-    /**
-     * Unselect every element of the list.
-     */
-    public void clearSelection() {
-        this.listPaths.clearSelection();
     }
 
     /**

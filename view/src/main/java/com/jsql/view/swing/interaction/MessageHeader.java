@@ -17,12 +17,14 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.panel.consoles.NetworkTable;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 public class MessageHeader implements InteractionCommand {
@@ -41,18 +43,16 @@ public class MessageHeader implements InteractionCommand {
 
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
-        
         Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
-        
-        this.url = (String) params.get(Header.URL);
-        this.post = (String) params.get(Header.POST);
-        this.header = (Map<String, String>) params.get(Header.HEADER);
-        this.response = (Map<String, String>) params.get(Header.RESPONSE);
-        this.source = (String) params.get(Header.SOURCE);
-        this.size = (String) params.get(Header.PAGE_SIZE);
-        this.metadataProcess = (String) params.get(Header.METADATA_PROCESS);
-        this.metadataStrategy = (String) params.get(Header.METADATA_STRATEGY);
-        this.metadataBoolean = (AbstractCallableBinary<?>) params.get(Header.METADATA_BOOLEAN);
+        this.url = (String) params.getOrDefault(Header.URL, StringUtils.EMPTY);
+        this.post = (String) params.getOrDefault(Header.POST, StringUtils.EMPTY);
+        this.header = (Map<String, String>) params.getOrDefault(Header.HEADER, Collections.EMPTY_MAP);
+        this.response = (Map<String, String>) params.getOrDefault(Header.RESPONSE, Collections.EMPTY_MAP);
+        this.source = (String) params.getOrDefault(Header.SOURCE, StringUtils.EMPTY);
+        this.size = (String) params.getOrDefault(Header.PAGE_SIZE, StringUtils.EMPTY);
+        this.metadataProcess = (String) params.getOrDefault(Header.METADATA_PROCESS, StringUtils.EMPTY);
+        this.metadataStrategy = (String) params.getOrDefault(Header.METADATA_STRATEGY, StringUtils.EMPTY);
+        this.metadataBoolean = (AbstractCallableBinary<?>) params.getOrDefault(Header.METADATA_BOOLEAN, null);
     }
 
     @Override

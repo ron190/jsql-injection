@@ -188,16 +188,16 @@ public abstract class AbstractNodeModel {
         
         JMenuItem menuItemReload = new JMenuItem(textReload);
         menuItemReload.setEnabled(!this.isRunning);
-        menuItemReload.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
+        menuItemReload.addActionListener(actionEvent -> this.runAction());
         
         JMenuItem menuItemRename = new JMenuItem(I18nViewUtil.valueByKey("RENAME_NODE"));
         menuItemRename.setEnabled(!this.isRunning);
         menuItemRename.addActionListener(actionEvent -> {
             AbstractNodeModel nodeModel = (AbstractNodeModel) currentTableNode.getUserObject();
             nodeModel.setIsEdited(true);
-            
-            AbstractNodeModel.this.getPanel().getNodeLabel().setVisible(false);
-            AbstractNodeModel.this.getPanel().getTextFieldEditable().setVisible(true);
+
+            this.getPanel().getNodeLabel().setVisible(false);
+            this.getPanel().getTextFieldEditable().setVisible(true);
             
             MediatorHelper.treeDatabase().setSelectionPath(path);
         });
@@ -259,7 +259,7 @@ public abstract class AbstractNodeModel {
                 : UIManager.getColor("Tree.selectionInactiveBackground")
             );  // required for transparency
         } else {
-            this.panelNode.setBackground(UIManager.getColor(TREE_BACKGROUND));  // required for transparency
+            this.panelNode.setBackground(UIManager.getColor(AbstractNodeModel.TREE_BACKGROUND));  // required for transparency
         }
 
         this.initializeIcon(isLeaf);
@@ -314,11 +314,11 @@ public abstract class AbstractNodeModel {
         } else {
             if (hasFocus) {
                 nodeLabel.setBackground(UIManager.getColor("Tree.foreground"));  // required by macOS light (opposite text color)
-                nodeLabel.setBackground(UIManager.getColor(TREE_BACKGROUND));
+                nodeLabel.setBackground(UIManager.getColor(AbstractNodeModel.TREE_BACKGROUND));
                 nodeLabel.setBorder(new LineBorder(UIManager.getColor("Tree.selectionBorderColor"), 1, false));
             } else {
                 nodeLabel.setBackground(UIManager.getColor("Tree.foreground"));  // required by macOS light (opposite text color)
-                nodeLabel.setBackground(UIManager.getColor(TREE_BACKGROUND));
+                nodeLabel.setBackground(UIManager.getColor(AbstractNodeModel.TREE_BACKGROUND));
                 nodeLabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
             }
         }

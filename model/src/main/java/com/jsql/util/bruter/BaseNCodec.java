@@ -176,7 +176,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         final int lineLength,
         final int chunkSeparatorLength
     ) {
-        this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, PAD_DEFAULT);
+        this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, BaseNCodec.PAD_DEFAULT);
     }
 
     /**
@@ -195,7 +195,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         final int chunkSeparatorLength,
         final byte pad
     ) {
-        this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, pad, DECODING_POLICY_DEFAULT);
+        this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, pad, BaseNCodec.DECODING_POLICY_DEFAULT);
     }
 
     /**
@@ -263,7 +263,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         // Integer.MAX_VALUE length array.
         // The result is that we may have to allocate an array of this size more than once if
         // the capacity must be expanded again.
-        return Math.max(minCapacity, MAX_BUFFER_SIZE);
+        return Math.max(minCapacity, BaseNCodec.MAX_BUFFER_SIZE);
     }
 
     /**
@@ -274,7 +274,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @since 1.15
      */
     public static byte[] getChunkSeparator() {
-        return CHUNK_SEPARATOR.clone();
+        return BaseNCodec.CHUNK_SEPARATOR.clone();
     }
 
     /**
@@ -306,12 +306,12 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     private static byte[] resizeBuffer(final Context context, final int minCapacity) {
         // Overflow-conscious code treats the min and new capacity as unsigned.
         final int oldCapacity = context.buffer.length;
-        int newCapacity = oldCapacity * DEFAULT_BUFFER_RESIZE_FACTOR;
-        if (compareUnsigned(newCapacity, minCapacity) < 0) {
+        int newCapacity = oldCapacity * BaseNCodec.DEFAULT_BUFFER_RESIZE_FACTOR;
+        if (BaseNCodec.compareUnsigned(newCapacity, minCapacity) < 0) {
             newCapacity = minCapacity;
         }
-        if (compareUnsigned(newCapacity, MAX_BUFFER_SIZE) > 0) {
-            newCapacity = createPositiveCapacity(minCapacity);
+        if (BaseNCodec.compareUnsigned(newCapacity, BaseNCodec.MAX_BUFFER_SIZE) > 0) {
+            newCapacity = BaseNCodec.createPositiveCapacity(minCapacity);
         }
         final var b = new byte[newCapacity];
         System.arraycopy(context.buffer, 0, b, 0, context.buffer.length);
@@ -364,7 +364,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         }
         final var context = new Context();
         this.decode(pArray, 0, pArray.length, context);
-        this.decode(pArray, 0, EOF, context); // Notify decoder of EOF.
+        this.decode(pArray, 0, BaseNCodec.EOF, context); // Notify decoder of EOF.
         final var result = new byte[context.pos];
         this.readResults(result, 0, result.length, context);
         return result;
@@ -440,7 +440,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         }
         final var context = new Context();
         this.encode(pArray, offset, length, context);
-        this.encode(pArray, offset, EOF, context); // Notify encoder of EOF.
+        this.encode(pArray, offset, BaseNCodec.EOF, context); // Notify encoder of EOF.
         final var buf = new byte[context.pos - context.readPos];
         this.readResults(buf, 0, buf.length, context);
         return buf;
@@ -507,7 +507,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
             // Overflow-conscious:
             // x + y > z  ==  x + y - z > 0
         } else if (context.pos + size - context.buffer.length > 0) {
-            return resizeBuffer(context, context.pos + size);
+            return BaseNCodec.resizeBuffer(context, context.pos + size);
         }
         return context.buffer;
     }
@@ -521,7 +521,6 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * trailing bits into 8-bit bytes and discard the remainder.
      * </p>
      *
-     * @return true if using strict decoding
      * @since 1.15
      */
     public CodecPolicy getCodecPolicy() {
@@ -534,7 +533,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return the default buffer size.
      */
     protected int getDefaultBufferSize() {
-        return DEFAULT_BUFFER_SIZE;
+        return BaseNCodec.DEFAULT_BUFFER_SIZE;
     }
 
     /**
@@ -542,7 +541,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *
      * @param pArray byte[] array which will later be encoded
      *
-     * @return amount of space needed to encoded the supplied array.
+     * @return amount of space needed to encode the supplied array.
      * Returns a long since a max-len array will require &gt; Integer.MAX_VALUE
      */
     public long getEncodedLength(final byte[] pArray) {
@@ -567,7 +566,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     }
 
     /**
-     * Returns whether or not the {@code octet} is in the current alphabet.
+     * Returns whether the {@code octet} is in the current alphabet.
      * Does not allow whitespace or pad.
      *
      * @param value The value to test
@@ -591,7 +590,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
             if (
                 !this.isInAlphabet(octet)
                 && (!allowWSPad || (octet != this.pad)
-                && !isWhiteSpace(octet))
+                && !BaseNCodec.isWhiteSpace(octet))
             ) {
                 return false;
             }
@@ -634,17 +633,12 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * <p>
      * Package protected for access from I/O streams.
      *
-     * @param b
-     *            byte[] array to extract the buffered data into.
-     * @param bPos
-     *            position in byte[] array to start extraction at.
-     * @param bAvail
-     *            amount of bytes we're allowed to extract. We may extract fewer (if fewer are available).
-     * @param context
-     *            the context to be used
-     * @return The number of bytes successfully extracted into the provided byte[] array.
+     * @param b       byte[] array to extract the buffered data into.
+     * @param bPos    position in byte[] array to start extraction at.
+     * @param bAvail  amount of bytes we're allowed to extract. We may extract fewer (if fewer are available).
+     * @param context the context to be used
      */
-    private int readResults(final byte[] b, final int bPos, final int bAvail, final Context context) {
+    private void readResults(final byte[] b, final int bPos, final int bAvail, final Context context) {
         if (context.buffer != null) {
             final int len = Math.min(this.available(context), bAvail);
             System.arraycopy(context.buffer, context.readPos, b, bPos, len);
@@ -652,9 +646,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
             if (context.readPos >= context.pos) {
                 context.buffer = null; // so hasData() will return false, and this method can return -1
             }
-            return len;
         }
-        return context.eof ? EOF : 0;
     }
 
     /**
@@ -667,13 +659,13 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     protected static class Context {
 
         /**
-         * Place holder for the bytes we're dealing with for our based logic.
+         * Placeholder for the bytes we're dealing with for our based logic.
          * Bitwise operations store and extract the encoding or decoding from this variable.
          */
         protected int ibitWorkArea;
 
         /**
-         * Place holder for the bytes we're dealing with for our based logic.
+         * Placeholder for the bytes we're dealing with for our based logic.
          * Bitwise operations store and extract the encoding or decoding from this variable.
          */
         protected long lbitWorkArea;

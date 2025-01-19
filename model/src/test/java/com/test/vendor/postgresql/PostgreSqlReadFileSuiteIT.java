@@ -24,6 +24,8 @@ public class PostgreSqlReadFileSuiteIT extends ConcretePostgreSqlSuiteIT {
             "http://localhost:8080/normal?tenant=postgresql&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
@@ -35,7 +37,7 @@ public class PostgreSqlReadFileSuiteIT extends ConcretePostgreSqlSuiteIT {
         .getPreferencesUtil()
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true)
-        .withIsStrategyStackedDisabled(true)
+        .withIsStrategyStackDisabled(true)
         .withIsStrategyErrorDisabled(true);
 
         model.beginInjection();

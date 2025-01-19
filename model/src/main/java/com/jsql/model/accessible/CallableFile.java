@@ -1,7 +1,7 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.database.AbstractElementDatabase;
+import com.jsql.model.bean.database.MockElement;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
@@ -64,7 +64,7 @@ public class CallableFile implements Callable<CallableFile> {
                 sourcePage,
                 false,
                 1,
-                AbstractElementDatabase.MOCK,
+                MockElement.MOCK,
                 "file"
             );
         } catch (InjectionFailureException e) {

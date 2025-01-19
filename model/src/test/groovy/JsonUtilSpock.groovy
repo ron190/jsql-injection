@@ -112,12 +112,4 @@ class JsonUtilSpock extends Specification {
         and: JsonUtil.getJson("[]") instanceof JSONArray
         and: JsonUtil.getJson("0") instanceof Object
     }
-    
-    def 'Test json container'() {
-        
-        expect:
-            JsonUtil.isJson("{}")
-            JsonUtil.isJson("[]")
-            !JsonUtil.isJson("0")
-    }
 }

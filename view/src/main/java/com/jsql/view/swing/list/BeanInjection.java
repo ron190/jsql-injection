@@ -2,6 +2,7 @@ package com.jsql.view.swing.list;
 
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.util.StringUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,7 +22,7 @@ public class BeanInjection {
         this.url = url;
         this.method = MediatorHelper.model().getMediatorMethod().getQuery();
         this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
-        this.requestType = "GET";
+        this.requestType = StringUtil.GET;
     }
     
     public BeanInjection(String url, String request, String header, String nameMethod, String vendor, String requestType) {
@@ -47,7 +48,7 @@ public class BeanInjection {
             this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
         }
         
-        this.requestType = requestType.isEmpty() ? "GET" : requestType;
+        this.requestType = requestType.isEmpty() ? StringUtil.GET : requestType;
     }
     
     

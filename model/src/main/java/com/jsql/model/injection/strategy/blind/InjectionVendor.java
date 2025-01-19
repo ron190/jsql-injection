@@ -24,7 +24,7 @@ public class InjectionVendor {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    // Source code of the FALSE web page (eg. ?id=-123456789)
+    // Source code of the FALSE web page (e.g. ?id=-123456789)
     private String blankFalseMark;
 
     private List<Diff> constantTrueMark = new ArrayList<>();

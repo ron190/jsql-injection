@@ -12,7 +12,7 @@ public class PanelStrategies extends JPanel {
     private final JCheckBox checkboxIsStrategyBlindDisabled = new JCheckBox("Disable Blind", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled());
     private final JCheckBox checkboxIsStrategyMultibitDisabled = new JCheckBox("Disable Multibit", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled());
     private final JCheckBox checkboxIsStrategyErrorDisabled = new JCheckBox("Disable Error", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());
-    private final JCheckBox checkboxIsStrategyStackedDisabled = new JCheckBox("Disable Stacked", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackedDisabled());
+    private final JCheckBox checkboxIsStrategyStackDisabled = new JCheckBox("Disable Stack", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackDisabled());
     private final JCheckBox checkboxIsStrategyNormalDisabled = new JCheckBox("Disable Normal", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled());
 
     public PanelStrategies(PanelPreferences panelPreferences) {
@@ -20,7 +20,7 @@ public class PanelStrategies extends JPanel {
         this.checkboxIsStrategyBlindDisabled.setToolTipText("Skip Blind strategy processing");
         this.checkboxIsStrategyMultibitDisabled.setToolTipText("Skip Multibit strategy processing");
         this.checkboxIsStrategyErrorDisabled.setToolTipText("Skip Error strategy processing");
-        this.checkboxIsStrategyStackedDisabled.setToolTipText("Skip Stacked strategy processing");
+        this.checkboxIsStrategyStackDisabled.setToolTipText("Skip Stack strategy processing");
         this.checkboxIsStrategyNormalDisabled.setToolTipText("Skip Normal strategy processing");
 
         Stream.of(
@@ -28,7 +28,7 @@ public class PanelStrategies extends JPanel {
             this.checkboxIsStrategyBlindDisabled,
             this.checkboxIsStrategyMultibitDisabled,
             this.checkboxIsStrategyErrorDisabled,
-            this.checkboxIsStrategyStackedDisabled,
+            this.checkboxIsStrategyStackDisabled,
             this.checkboxIsStrategyNormalDisabled
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
@@ -50,7 +50,7 @@ public class PanelStrategies extends JPanel {
                 .addComponent(this.checkboxIsStrategyBlindDisabled)
                 .addComponent(this.checkboxIsStrategyMultibitDisabled)
                 .addComponent(this.checkboxIsStrategyErrorDisabled)
-                .addComponent(this.checkboxIsStrategyStackedDisabled)
+                .addComponent(this.checkboxIsStrategyStackDisabled)
                 .addComponent(this.checkboxIsStrategyNormalDisabled)
             )
         );
@@ -86,7 +86,7 @@ public class PanelStrategies extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsStrategyStackedDisabled)
+                .addComponent(this.checkboxIsStrategyStackDisabled)
             )
             .addGroup(
                 groupLayout
@@ -100,26 +100,26 @@ public class PanelStrategies extends JPanel {
     // Getter and setter
 
     public JCheckBox getCheckboxIsStrategyTimeDisabled() {
-        return checkboxIsStrategyTimeDisabled;
+        return this.checkboxIsStrategyTimeDisabled;
     }
 
     public JCheckBox getCheckboxIsStrategyBlindDisabled() {
-        return checkboxIsStrategyBlindDisabled;
+        return this.checkboxIsStrategyBlindDisabled;
     }
 
-    public JCheckBox getCheckboxIsStrategyStackedDisabled() {
-        return checkboxIsStrategyStackedDisabled;
+    public JCheckBox getCheckboxIsStrategyStackDisabled() {
+        return this.checkboxIsStrategyStackDisabled;
     }
 
     public JCheckBox getCheckboxIsStrategyMultibitDisabled() {
-        return checkboxIsStrategyMultibitDisabled;
+        return this.checkboxIsStrategyMultibitDisabled;
     }
 
     public JCheckBox getCheckboxIsStrategyErrorDisabled() {
-        return checkboxIsStrategyErrorDisabled;
+        return this.checkboxIsStrategyErrorDisabled;
     }
 
     public JCheckBox getCheckboxIsStrategyNormalDisabled() {
-        return checkboxIsStrategyNormalDisabled;
+        return this.checkboxIsStrategyNormalDisabled;
     }
 }

@@ -44,7 +44,7 @@ public class ActionSaveTab extends AbstractAction {
         // Unhandled InternalError #93015 on constructor: InvocationTargetException
         // Unhandled NullPointerException #95805 on constructor: desktop null on Windows
         try {
-            replaceFileChooser = new ReplaceFileChooser(
+            this.replaceFileChooser = new ReplaceFileChooser(
                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()
             );
         } catch (NoSuchMethodError | InternalError | NullPointerException e) {

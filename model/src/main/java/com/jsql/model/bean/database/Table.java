@@ -11,6 +11,7 @@
 package com.jsql.model.bean.database;
 
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,7 +62,7 @@ public class Table extends AbstractElementDatabase {
      */
     @Override
     public String getLabelWithCount() {
-        String nbRow = "information_schema".equals(this.parentDatabase.toString())
+        String nbRow = StringUtil.INFORMATION_SCHEMA.equals(this.parentDatabase.toString())
             ? "?"
             : this.rowCount;
         

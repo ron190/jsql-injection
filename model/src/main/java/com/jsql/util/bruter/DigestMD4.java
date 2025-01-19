@@ -57,7 +57,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
     /**
      * 512 bits input buffer = 16 x 32-bit words holds until reaches 512 bits.
      */
-    private byte[] buffer = new byte[BLOCK_LENGTH];
+    private byte[] buffer = new byte[DigestMD4.BLOCK_LENGTH];
 
     /**
      * 512 bits work buffer = 16 x 32-bit words
@@ -114,7 +114,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
         this.context[3] = 0x10325476;
         this.count = 0L;
         
-        for (int i = 0; i < BLOCK_LENGTH; i++) {
+        for (int i = 0; i < DigestMD4.BLOCK_LENGTH; i++) {
             this.buffer[i] = 0;
         }
     }
@@ -124,12 +124,12 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      */
     @Override
     public void engineUpdate(byte b) {
-        // compute number of bytes still unhashed; ie. present in buffer
-        int i = (int)(this.count % BLOCK_LENGTH);
+        // compute number of bytes still unhashed; i.e. present in buffer
+        int i = (int)(this.count % DigestMD4.BLOCK_LENGTH);
         this.count++;                                        // update number of bytes
         this.buffer[i] = b;
         
-        if (i == BLOCK_LENGTH - 1) {
+        if (i == DigestMD4.BLOCK_LENGTH - 1) {
             this.transform(this.buffer, 0);
         }
     }
@@ -153,10 +153,10 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
             throw new ArrayIndexOutOfBoundsException();
         }
         
-        // compute number of bytes still unhashed; ie. present in buffer
-        int bufferNdx = (int)(this.count % BLOCK_LENGTH);
+        // compute number of bytes still unhashed; i.e. present in buffer
+        int bufferNdx = (int)(this.count % DigestMD4.BLOCK_LENGTH);
         this.count += len;                                        // update number of bytes
-        int partLen = BLOCK_LENGTH - bufferNdx;
+        int partLen = DigestMD4.BLOCK_LENGTH - bufferNdx;
         int i = 0;
         
         if (len >= partLen) {
@@ -165,7 +165,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
 
             this.transform(this.buffer, 0);
 
-            for (i = partLen; i + BLOCK_LENGTH - 1 < len; i+= BLOCK_LENGTH) {
+            for (i = partLen; i + DigestMD4.BLOCK_LENGTH - 1 < len; i+= DigestMD4.BLOCK_LENGTH) {
                 this.transform(input, offset + i);
             }
             
@@ -188,7 +188,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
     @Override
     public byte[] engineDigest() {
         // pad output to 56 mod 64; as RFC1320 puts it: congruent to 448 mod 512
-        int bufferNdx = (int)(this.count % BLOCK_LENGTH);
+        int bufferNdx = (int)(this.count % DigestMD4.BLOCK_LENGTH);
         int padLen = bufferNdx < 56 ? 56 - bufferNdx : 120 - bufferNdx;
 
         // padding is alwas binary 1 followed by binary 0s

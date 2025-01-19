@@ -102,9 +102,9 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     public static List<ItemListScan> parse(String clipboardText) {
         List<ItemListScan> itemsParsed = new ArrayList<>();
         try {
-            parseJsonArray(clipboardText, itemsParsed);
+            ListTransfertHandlerScan.parseJsonArray(clipboardText, itemsParsed);
         } catch (JSONException eJsonArray) {
-            parseJsonObject(clipboardText, itemsParsed);
+            ListTransfertHandlerScan.parseJsonObject(clipboardText, itemsParsed);
         }
         return itemsParsed;
     }

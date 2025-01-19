@@ -65,7 +65,7 @@ public class Bruter {
     }
 
     public void addSpecialCharacters() {
-        for (char c: specialCharacters) {
+        for (char c: Bruter.specialCharacters) {
             this.characters.add(String.valueOf(c));
         }
     }

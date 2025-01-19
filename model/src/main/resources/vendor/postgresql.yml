@@ -224,7 +224,7 @@ strategy:
       )
      capacity: 255
 
-   - name: Cast:stacked
+   - name: Cast:stack
      query: |
       ; select cast((
           ${window}

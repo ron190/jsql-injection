@@ -8,6 +8,7 @@ import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
@@ -185,15 +186,17 @@ public class MediatorVendor {
             vendorFound = this.initializeVendor(vendorFound);
         }
 
+        var urlGitHub = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.url");
         this.injectionModel.appendAnalysisReport(
-            "# Date: " + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
-            + "<br># Tested on: " + String.format("%s (v%s)", SystemUtils.OS_NAME, SystemUtils.OS_VERSION)
-            + "<br># Tool: jSQL Injection v" + this.injectionModel.getPropertiesUtil().getVersionJsql()
-                + " (<a href="+this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")+">"
-                + this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")
-                + "</a>)"
-            + "<br># Database: " + vendorFound
-            + "<br><br>## Vulnerability summary</span>",
+            String.join(
+                StringUtils.EMPTY,
+                "# Date: ", LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
+                "<br># Tested on: ", SystemUtils.OS_NAME, " (", SystemUtils.OS_VERSION, ")",
+                "<br># Tool: ", StringUtil.APP_NAME, " v", this.injectionModel.getPropertiesUtil().getVersionJsql(),
+                " (<a href=", urlGitHub, ">", urlGitHub, "</a>)",
+                "<br># Database: ", vendorFound.toString(),
+                "<br><br>## Vulnerability summary</span>"
+            ),
             true
         );
 
@@ -312,30 +315,30 @@ public class MediatorVendor {
     }
 
     public Vendor getFirebird() {
-        return firebird;
+        return this.firebird;
     }
 
     public Vendor getMonetdb() {
-        return monetdb;
+        return this.monetdb;
     }
 
     public Vendor getMimer() {
-        return mimer;
+        return this.mimer;
     }
 
     public Vendor getMckoi() {
-        return mckoi;
+        return this.mckoi;
     }
 
     public Vendor getInformix() {
-        return informix;
+        return this.informix;
     }
 
     public Vendor getSybase() {
-        return sybase;
+        return this.sybase;
     }
 
     public Vendor getVertica() {
-        return vertica;
+        return this.vertica;
     }
 }

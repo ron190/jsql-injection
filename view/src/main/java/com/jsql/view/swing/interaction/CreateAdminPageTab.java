@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.formdev.flatlaf.FlatLaf;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
@@ -56,7 +55,6 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
 
     @Override
     public void execute() {
-        
         String htmlSource = StringUtils.EMPTY;
         
         // Fix #4081: SocketTimeoutException on get()
@@ -126,7 +124,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
 
         itemCopyUrl.addActionListener(actionEvent -> {
-            var stringSelection = new StringSelection(CreateAdminPageTab.this.url);
+            var stringSelection = new StringSelection(this.url);
             var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(stringSelection, null);
         });
@@ -182,11 +180,8 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             UiUtil.ADMIN.icon
         );
         MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  // Apply the custom header to the tab
-        browser.requestFocusInWindow();  // Give focus to the admin page
-        SwingUtilities.invokeLater(() -> scroller.getViewport().setViewPosition(new Point(0, 0)));  // Get back to the top
+        browser.setCaretPosition(0);
 
-        FlatLaf.updateUI();  // required: light, open/close prefs, dark => light artifacts
-        MediatorHelper.frame().revalidate();
-        MediatorHelper.frame().repaint();
+        MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark => light artifacts
     }
 }

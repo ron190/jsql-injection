@@ -63,7 +63,7 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         if (wasAltPressedAlready) {
             if (MenuSelectionManager.defaultManager().getSelectedPath().length > 0) {
                 MenuSelectionManager.defaultManager().clearSelectedPath();
-            } else if (!MediatorHelper.panelAddressBar().isAdvanceActivated()) {
+            } else if (MediatorHelper.panelAddressBar().isAdvanceActivated()) {
                 MediatorHelper.menubar().setVisible(!MediatorHelper.menubar().isVisible());
                 this.wasAltGraphPressed = false;
             }
@@ -76,7 +76,7 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
 
     private void hideMenuBar() {  // Avoid flickering and AltGr pollution
         if (
-            !MediatorHelper.panelAddressBar().isAdvanceActivated()
+            MediatorHelper.panelAddressBar().isAdvanceActivated()
             && MediatorHelper.menubar().isVisible()
         ) {
             MenuSelectionManager.defaultManager().clearSelectedPath();

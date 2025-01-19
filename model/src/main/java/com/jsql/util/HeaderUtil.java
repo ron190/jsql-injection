@@ -174,50 +174,50 @@ public class HeaderUtil {
                 + "add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
         } else if (Pattern.matches("1\\d\\d", responseCode)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} {} Informational", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} {} Informational", HeaderUtil.FOUND_STATUS_HTTP, responseCode);
         } else if (Pattern.matches("2\\d\\d", responseCode)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} {} Success", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} {} Success", HeaderUtil.FOUND_STATUS_HTTP, responseCode);
         } else if (Pattern.matches("3\\d\\d", responseCode)) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Redirection", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Redirection", HeaderUtil.FOUND_STATUS_HTTP, responseCode);
             
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "If injection fails retry with option 'Follow HTTP redirection' activated");
             } else {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Redirecting to the next page...");
             }
-        } else if (Pattern.matches(REGEX_HTTP_STATUS, responseCode)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Client Error", FOUND_STATUS_HTTP, responseCode);
+        } else if (Pattern.matches(HeaderUtil.REGEX_HTTP_STATUS, responseCode)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Client Error", HeaderUtil.FOUND_STATUS_HTTP, responseCode);
         } else if (Pattern.matches("5\\d\\d", responseCode)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Server Error", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Server Error", HeaderUtil.FOUND_STATUS_HTTP, responseCode);
         } else {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} {} Unknown", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} {} Unknown", HeaderUtil.FOUND_STATUS_HTTP, responseCode);
         }
     }
     
     private boolean isNegotiate(String responseCode, Map<String, String> mapResponse) {
-        return Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
-            && "Negotiate".equals(mapResponse.get(WWW_AUTHENTICATE_RESPONSE));
+        return Pattern.matches(HeaderUtil.REGEX_HTTP_STATUS, responseCode)
+            && mapResponse.containsKey(HeaderUtil.WWW_AUTHENTICATE_RESPONSE)
+            && "Negotiate".equals(mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE));
     }
 
     private boolean isDigest(String responseCode, Map<String, String> mapResponse) {
-        return Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
-            && mapResponse.get(WWW_AUTHENTICATE_RESPONSE) != null
-            && mapResponse.get(WWW_AUTHENTICATE_RESPONSE).startsWith("Digest ");
+        return Pattern.matches(HeaderUtil.REGEX_HTTP_STATUS, responseCode)
+            && mapResponse.containsKey(HeaderUtil.WWW_AUTHENTICATE_RESPONSE)
+            && mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE) != null
+            && mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).startsWith("Digest ");
     }
 
     private boolean isNtlm(String responseCode, Map<String, String> mapResponse) {
-        return Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
-            && "NTLM".equals(mapResponse.get(WWW_AUTHENTICATE_RESPONSE));
+        return Pattern.matches(HeaderUtil.REGEX_HTTP_STATUS, responseCode)
+            && mapResponse.containsKey(HeaderUtil.WWW_AUTHENTICATE_RESPONSE)
+            && "NTLM".equals(mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE));
     }
 
     private boolean isBasicAuth(String responseCode, Map<String, String> mapResponse) {
-        return Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
-            && mapResponse.get(WWW_AUTHENTICATE_RESPONSE) != null
-            && mapResponse.get(WWW_AUTHENTICATE_RESPONSE).startsWith("Basic ");
+        return Pattern.matches(HeaderUtil.REGEX_HTTP_STATUS, responseCode)
+            && mapResponse.containsKey(HeaderUtil.WWW_AUTHENTICATE_RESPONSE)
+            && mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE) != null
+            && mapResponse.get(HeaderUtil.WWW_AUTHENTICATE_RESPONSE).startsWith("Basic ");
     }
 }
