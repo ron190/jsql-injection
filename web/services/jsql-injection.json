@@ -1,5 +1,5 @@
 {
-    "version": "0.103",
+    "version": "0.104",
     "news": [
         "[New feature, thanks @mrdragonblack] UDF shell added to new tab Exploit, now run system command on remote easily",
         "[UDF] What is UDF and how to use it explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
