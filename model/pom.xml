@@ -58,7 +58,7 @@
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <h2.version>2.3.232</h2.version>
-        <hsqldb.version>2.7.3</hsqldb.version>
+        <hsqldb.version>2.7.4</hsqldb.version>
         <informix.jdbc.version>4.50.11</informix.jdbc.version>
         <javafaker.version>1.0.2</javafaker.version>
         <jaxb-api.version>2.1</jaxb-api.version>
