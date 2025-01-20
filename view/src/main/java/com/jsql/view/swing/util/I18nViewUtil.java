@@ -3,10 +3,7 @@ package com.jsql.view.swing.util;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.dialog.DialogAbout;
-import com.jsql.view.swing.text.JTextAreaPlaceholder;
-import com.jsql.view.swing.text.JTextFieldPlaceholder;
-import com.jsql.view.swing.text.JTextPanePlaceholder;
-import com.jsql.view.swing.text.JToolTipI18n;
+import com.jsql.view.swing.text.*;
 import com.jsql.view.swing.tree.model.NodeModelEmpty;
 import org.apache.commons.lang3.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -62,6 +59,8 @@ public class I18nViewUtil {
                     ((JTextAreaPlaceholder) componentSwing).setPlaceholderText(I18nUtil.valueByKey(key));
                 } else if (componentSwing instanceof JTextPanePlaceholder) {
                     ((JTextPanePlaceholder) componentSwing).setPlaceholderText(I18nUtil.valueByKey(key));
+                } else if (componentSwing instanceof JPasswordFieldPlaceholder) {
+                    ((JPasswordFieldPlaceholder) componentSwing).setPlaceholderText(I18nUtil.valueByKey(key));
                 } else if (componentSwing instanceof RSyntaxTextArea) {
                     ((RSyntaxTextArea) componentSwing).setText(I18nUtil.valueByKey(key));
                 } else if (componentSwing instanceof JToolTipI18n) {

@@ -297,7 +297,7 @@ public class ResourceAccess {
             );
         }
         if (StringUtils.isEmpty(nameExploitValidated) && exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {
-            var nameExploitRandom = RandomStringUtils.insecure().nextAlphabetic(8) +"-"+ nameExploit;
+            var nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +"-"+ nameExploit;
             this.injectionModel.getUdfAccess().byTable(
                 UdfAccess.toHexChunks(bodyExploit.getBytes()),
                 pathRemoteFolder + nameExploitRandom

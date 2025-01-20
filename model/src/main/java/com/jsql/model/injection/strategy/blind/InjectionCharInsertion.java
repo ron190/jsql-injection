@@ -78,7 +78,7 @@ public class InjectionCharInsertion {
                 new CallableCharInsertion(
                     String.join(
                         StringUtils.SPACE,
-                        prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, "345")),
+                        prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, "345")),
                         this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
                         urlTest
                     ),
@@ -126,7 +126,7 @@ public class InjectionCharInsertion {
                 new CallableCharInsertion(
                     String.join(
                         StringUtils.SPACE,
-                        this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, "345")),
+                        this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, "345")),
                         this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
                         urlTest
                     ),
@@ -164,7 +164,7 @@ public class InjectionCharInsertion {
         var blindTest = new CallableCharInsertion(
             String.join(
                 StringUtils.SPACE,
-                this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, "678")),
+                this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, "678")),
                 this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()
             ),

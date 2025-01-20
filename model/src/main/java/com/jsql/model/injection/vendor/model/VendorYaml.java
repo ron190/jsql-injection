@@ -624,7 +624,7 @@ public class VendorYaml implements AbstractVendor {
             return this.modelYaml.getStrategy().getConfiguration().getEndingComment();
         } else {
             return this.modelYaml.getStrategy().getConfiguration().getEndingComment()
-                + RandomStringUtils.insecure().nextAlphanumeric(4);  // Allows binary match fingerprinting on host errors
+                + RandomStringUtils.secure().nextAlphanumeric(4);  // Allows binary match fingerprinting on host errors
         }
     }
 

