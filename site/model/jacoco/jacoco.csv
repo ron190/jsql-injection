@@ -41,7 +41,7 @@ model,com.jsql.model.injection.strategy.blind,AbstractInjectionMonobit,0,137,0,4
 model,com.jsql.model.injection.strategy.blind,InjectionTime,47,209,7,19,18,41,7,12,0,6
 model,com.jsql.model.injection.strategy.blind,CallableCharInsertion,0,76,0,4,0,19,0,7,0,5
 model,com.jsql.model.injection.strategy.blind,InjectionBlind,44,244,7,19,17,45,7,14,0,8
-model,com.jsql.model.injection.strategy.blind,AbstractInjectionBinary,48,262,8,12,13,62,6,13,0,9
+model,com.jsql.model.injection.strategy.blind,AbstractInjectionBinary,38,272,5,15,11,64,5,14,0,9
 model,com.jsql.model.injection.strategy.blind,InjectionVendor,43,252,5,19,16,48,5,15,0,8
 model,com.jsql.model.injection.strategy.blind,CallableMultibit,2,111,0,4,1,23,1,8,1,6
 model,com.jsql.model.injection.strategy.blind,InjectionMultibit,20,376,5,23,7,63,5,21,0,12
