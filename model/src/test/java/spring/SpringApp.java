@@ -98,7 +98,7 @@ public class SpringApp {
             try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getValue())) {
                 simpleEntry.getKey().load(inputStream);
             } catch (IOException e) {
-                SpringApp.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
         });
     }
@@ -196,9 +196,9 @@ public class SpringApp {
             session.run("MATCH (n) DETACH DELETE n");
             
             Result result = session.run(graphMovie);
-            result.forEachRemaining(SpringApp.LOGGER::info);
+            result.forEachRemaining(LOGGER::info);
         } catch (Exception e) {
-            SpringApp.LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         driver.close();
     }

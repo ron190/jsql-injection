@@ -9,16 +9,18 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.dialog.translate.Language;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.tab.TabHeader;
-import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +35,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.prefs.Preferences;
 
 public class MenuWindows extends JMenu {
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private static final String I18N_SQL_ENGINE = "MENUBAR_SQL_ENGINE";
     private static final String I18N_PREFERENCES = "MENUBAR_PREFERENCES";
@@ -169,7 +176,11 @@ public class MenuWindows extends JMenu {
                 if (menuItem.isSelected()) {
                     model.runnableInsertTab.run();
                 } else {
-                    MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(model.icon));
+                    try {  // fix #95874: IndexOutOfBoundsException on remove()
+                        MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(model.icon));
+                    } catch (IndexOutOfBoundsException e) {  // should not occur
+                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+                    }
                 }
             });
         });

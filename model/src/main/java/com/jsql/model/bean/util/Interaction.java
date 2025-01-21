@@ -25,7 +25,7 @@ public enum Interaction {
     MARK_FILE_SYSTEM_VULNERABLE("MarkFileSystemVulnerable"),
     GET_EXPLOIT_WEB_RESULT("GetExploitWebResult"),
     GET_EXPLOIT_SQL_RESULT("GetExploitSqlResult"),
-    GET_EXPLOIT_UDF_RESULT("GetUdfShellResult"),
+    GET_EXPLOIT_UDF_RESULT("GetExploitUdfResult"),
 
     MARK_MULTI_INVULNERABLE("MarkMultiInvulnerable"),
     MARK_MULTI_STRATEGY("MarkMultiStrategy"),

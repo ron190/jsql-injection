@@ -22,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -280,28 +279,14 @@ public class UdfAccess {
 
     private static List<String> toHexChunks(String filename) throws JSqlException {
         try {
-            byte[] fileData = Objects.requireNonNull(
-                // getResource > toURI > toPath > readAllBytes() not possible
-                UdfAccess.class.getClassLoader().getResourceAsStream("udf/" + filename)
+            byte[] fileData = Objects.requireNonNull(  // getResource > toURI > toPath > readAllBytes() not possible in .jar
+                UdfAccess.class.getClassLoader().getResourceAsStream("udf/"+ filename +".cloak")
             ).readAllBytes();
-            return UdfAccess.toHexChunks(fileData);
+            fileData = StringUtil.uncloak(fileData);
+            return StringUtil.toHexChunks(fileData);
         } catch (IOException e) {
             throw new JSqlException(e);
         }
-    }
-
-    public static List<String> toHexChunks(byte[] fileData) {
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : fileData) {
-            hexString.append(String.format("%02X", b));
-        }
-        int chunkSize = 900; // 450 bytes = 900 hex characters
-        List<String> chunks = new ArrayList<>();
-        for (int i = 0; i < hexString.length(); i += chunkSize) {
-            int endIndex = Math.min(i + chunkSize, hexString.length());
-            chunks.add(hexString.substring(i, endIndex));
-        }
-        return chunks;
     }
 
     private String getResult(String query, String metadata) throws JSqlException {

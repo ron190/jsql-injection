@@ -83,6 +83,7 @@ public class ResourceAccess {
      */
     private final List<CallableFile> callablesReadFile = new ArrayList<>();
     private final InjectionModel injectionModel;
+    public static final String SQL_DOT_PHP = "sql.php";
 
     public ResourceAccess(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
@@ -227,14 +228,14 @@ public class ResourceAccess {
             }
             return StringUtils.EMPTY;
         };
-        var urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysqli", "sql.php", biFuncGetRequest, pathNetshare, exploitMethod);
+        var urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysqli", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMethod);
         if (StringUtils.isEmpty(urlSuccess)) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with mysqli_query(), trying with pdo()...");
-            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.pdo", "sql.php", biFuncGetRequest, pathNetshare, exploitMethod);
+            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.pdo", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMethod);
         }
         if (StringUtils.isEmpty(urlSuccess)) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with pdo(), trying with mysql_query()...");
-            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysql", "sql.php", biFuncGetRequest, pathNetshare, exploitMethod);
+            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysql", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMethod);
         }
         if (StringUtils.isEmpty(urlSuccess)) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with pdo(), trying with mysql_query()...");
@@ -292,14 +293,14 @@ public class ResourceAccess {
                 nbIndexesFound,
                 pathRemoteFolder,
                 nameExploit,
-                UdfAccess.toHexChunks(bodyExploit.getBytes()),
+                StringUtil.toHexChunks(bodyExploit.getBytes()),
                 biPredConfirm
             );
         }
         if (StringUtils.isEmpty(nameExploitValidated) && exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {
             var nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +"-"+ nameExploit;
             this.injectionModel.getUdfAccess().byTable(
-                UdfAccess.toHexChunks(bodyExploit.getBytes()),
+                StringUtil.toHexChunks(bodyExploit.getBytes()),
                 pathRemoteFolder + nameExploitRandom
             );
             if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {

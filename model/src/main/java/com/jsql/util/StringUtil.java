@@ -13,6 +13,7 @@ package com.jsql.util;
 import com.jsql.util.bruter.Base16;
 import com.jsql.util.bruter.Base58;
 import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +27,9 @@ import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterOutputStream;
 
@@ -47,8 +50,6 @@ public final class StringUtil {
     public static final String POST = "POST";
     public static final String INFORMATION_SCHEMA = "information_schema";
     public static final String APP_NAME = "jSQL Injection";
-    public static final String ENCODE_TO = "Encode to ";
-    public static final String DECODE_FROM = "Decode from ";
 
     /**
      * This utility class defines a schema used to encode a text into a specialized
@@ -328,5 +329,33 @@ public final class StringUtil {
 
     private static String newStringUtf8(byte[] bytes) {
         return bytes == null ? null : new String(bytes, StandardCharsets.UTF_8);
+    }
+
+    public static byte[] xor(byte[] plaintext, int key) {
+        var ciphertext = new byte[plaintext.length];
+        for (var i = 0; i < plaintext.length; i++) {
+            ciphertext[i] = (byte) (plaintext[i] ^ (key >>> (8 * (i % 4))));
+        }
+        return ciphertext;
+    }
+
+    public static List<String> toHexChunks(byte[] fileData) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : fileData) {
+            hexString.append(String.format("%02X", b));
+        }
+        int chunkSize = 900; // 450 bytes = 900 hex characters
+        List<String> chunks = new ArrayList<>();
+        for (int i = 0; i < hexString.length(); i += chunkSize) {
+            int endIndex = Math.min(i + chunkSize, hexString.length());
+            chunks.add(hexString.substring(i, endIndex));
+        }
+        return chunks;
+    }
+
+    public static byte[] uncloak(byte[] fileData) {
+        fileData = StringUtil.xor(fileData, 353837730);
+        ArrayUtils.reverse(fileData);
+        return fileData;
     }
 }
