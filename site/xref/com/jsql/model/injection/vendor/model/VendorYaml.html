@@ -632,7 +632,7 @@
 <a class="jxr_linenumber" name="L624" href="#L624">624</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getEndingComment();
 <a class="jxr_linenumber" name="L625" href="#L625">625</a>         } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L626" href="#L626">626</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getEndingComment()
-<a class="jxr_linenumber" name="L627" href="#L627">627</a>                 + RandomStringUtils.insecure().nextAlphanumeric(4);  <em class="jxr_comment">// Allows binary match fingerprinting on host errors</em>
+<a class="jxr_linenumber" name="L627" href="#L627">627</a>                 + RandomStringUtils.secure().nextAlphanumeric(4);  <em class="jxr_comment">// Allows binary match fingerprinting on host errors</em>
 <a class="jxr_linenumber" name="L628" href="#L628">628</a>         }
 <a class="jxr_linenumber" name="L629" href="#L629">629</a>     }
 <a class="jxr_linenumber" name="L630" href="#L630">630</a> 
@@ -643,6 +643,6 @@
 <a class="jxr_linenumber" name="L635" href="#L635">635</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
+<div id="footer">© 2025</div>
 </body>
 </html>

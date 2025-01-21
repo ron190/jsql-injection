@@ -161,7 +161,7 @@
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> 
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">private</strong> List&lt;String&gt; initializeCallables(CompletionService&lt;CallablePageSource&gt; taskCompletionService, String[] charFromBooleanMatch) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         List&lt;String&gt; prefixValues = Arrays.asList(
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>             RandomStringUtils.insecure().next(10, <span class="jxr_string">"012"</span>),  <em class="jxr_comment">// to trigger probable failure</em>
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>             RandomStringUtils.secure().next(10, <span class="jxr_string">"012"</span>),  <em class="jxr_comment">// to trigger probable failure</em>
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>             <span class="jxr_string">"1"</span>  <em class="jxr_comment">// to trigger eventual success</em>
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         );
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>         List&lt;String&gt; prefixQuotes = Arrays.asList(
@@ -263,6 +263,6 @@
 <a class="jxr_linenumber" name="L255" href="#L255">255</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
+<div id="footer">© 2025</div>
 </body>
 </html>

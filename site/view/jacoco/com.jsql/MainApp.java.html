@@ -56,10 +56,10 @@ public class MainApp {
 <span class="nc" id="L56">            MediatorHelper.register(view);</span>
 <span class="nc" id="L57">            MainApp.INJECTION_MODEL.subscribe(view.getSubscriber());</span>
 <span class="nc" id="L58">        } catch (HeadlessException e) {</span>
-<span class="nc" id="L59">            MainApp.LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;HeadlessException, command line execution not supported: %s&quot;, e);</span>
+<span class="nc" id="L59">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;HeadlessException, command line execution not supported: %s&quot;, e);</span>
 <span class="nc" id="L60">        } catch (AWTError e) {</span>
             // Fix #22668: Assistive Technology not found
-<span class="nc" id="L62">            MainApp.LOGGER.log(LogLevelUtil.CONSOLE_JAVA, String.format(</span>
+<span class="nc" id="L62">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, String.format(</span>
                 &quot;Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: %s&quot;,
 <span class="nc" id="L64">                e.getMessage()</span>
             ), e);

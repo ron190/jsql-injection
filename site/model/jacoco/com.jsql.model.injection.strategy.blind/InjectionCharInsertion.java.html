@@ -78,7 +78,7 @@ public class InjectionCharInsertion {
                 new CallableCharInsertion(
 <span class="fc" id="L79">                    String.join(</span>
                         StringUtils.SPACE,
-<span class="fc" id="L81">                        prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, &quot;345&quot;)),</span>
+<span class="fc" id="L81">                        prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, &quot;345&quot;)),</span>
 <span class="fc" id="L82">                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
                         urlTest
                     ),
@@ -126,7 +126,7 @@ public class InjectionCharInsertion {
                 new CallableCharInsertion(
 <span class="fc" id="L127">                    String.join(</span>
                         StringUtils.SPACE,
-<span class="fc" id="L129">                        this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, &quot;345&quot;)),</span>
+<span class="fc" id="L129">                        this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, &quot;345&quot;)),</span>
 <span class="fc" id="L130">                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
                         urlTest
                     ),
@@ -164,7 +164,7 @@ public class InjectionCharInsertion {
 <span class="fc" id="L164">        var blindTest = new CallableCharInsertion(</span>
 <span class="fc" id="L165">            String.join(</span>
                 StringUtils.SPACE,
-<span class="fc" id="L167">                this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, &quot;678&quot;)),</span>
+<span class="fc" id="L167">                this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, &quot;678&quot;)),</span>
 <span class="fc" id="L168">                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
 <span class="fc" id="L169">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()</span>
             ),

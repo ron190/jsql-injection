@@ -153,7 +153,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 
     private List&lt;String&gt; initializeCallables(CompletionService&lt;CallablePageSource&gt; taskCompletionService, String[] charFromBooleanMatch) throws JSqlException {
 <span class="fc" id="L155">        List&lt;String&gt; prefixValues = Arrays.asList(</span>
-<span class="fc" id="L156">            RandomStringUtils.insecure().next(10, &quot;012&quot;),  // to trigger probable failure</span>
+<span class="fc" id="L156">            RandomStringUtils.secure().next(10, &quot;012&quot;),  // to trigger probable failure</span>
             &quot;1&quot;  // to trigger eventual success
         );
 <span class="fc" id="L159">        List&lt;String&gt; prefixQuotes = Arrays.asList(</span>

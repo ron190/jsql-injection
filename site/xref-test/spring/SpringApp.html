@@ -106,7 +106,7 @@
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>              <strong class="jxr_keyword">try</strong> (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getValue())) {
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>                  simpleEntry.getKey().load(inputStream);
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>             } <strong class="jxr_keyword">catch</strong> (IOException e) {
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>                 SpringApp.LOGGER.error(e, e);
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>                 LOGGER.error(e, e);
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>             }
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         });
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     }
@@ -204,9 +204,9 @@
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>             session.run(<span class="jxr_string">"MATCH (n) DETACH DELETE n"</span>);
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>             
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>             Result result = session.run(graphMovie);
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>             result.forEachRemaining(SpringApp.LOGGER::info);
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>             result.forEachRemaining(LOGGER::info);
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>             SpringApp.LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>         }
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>         driver.close();
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>     }
@@ -239,6 +239,6 @@
 <a class="jxr_linenumber" name="L231" href="#L231">231</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
+<div id="footer">© 2025</div>
 </body>
 </html>

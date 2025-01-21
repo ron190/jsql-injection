@@ -86,7 +86,7 @@
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>                  <strong class="jxr_keyword">new</strong> <a name="CallableCharInsertion" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableCharInsertion.html#CallableCharInsertion">CallableCharInsertion</a>(
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>                      String.join(
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>                          StringUtils.SPACE,
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>                          prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, <span class="jxr_string">"345"</span>)),
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>                          prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, <span class="jxr_string">"345"</span>)),
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>                          <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>                          urlTest
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>                      ),
@@ -134,7 +134,7 @@
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>                 <strong class="jxr_keyword">new</strong> <a name="CallableCharInsertion" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableCharInsertion.html#CallableCharInsertion">CallableCharInsertion</a>(
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>                     String.join(
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>                         StringUtils.SPACE,
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>                         <strong class="jxr_keyword">this</strong>.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, <span class="jxr_string">"345"</span>)),
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>                         <strong class="jxr_keyword">this</strong>.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, <span class="jxr_string">"345"</span>)),
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>                         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>                         urlTest
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>                     ),
@@ -172,7 +172,7 @@
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>         <strong class="jxr_keyword">var</strong> blindTest = <strong class="jxr_keyword">new</strong> <a name="CallableCharInsertion" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableCharInsertion.html#CallableCharInsertion">CallableCharInsertion</a>(
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>             String.join(
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>                 StringUtils.SPACE,
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>                 <strong class="jxr_keyword">this</strong>.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.insecure().next(10, <span class="jxr_string">"678"</span>)),
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>                 <strong class="jxr_keyword">this</strong>.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, <span class="jxr_string">"678"</span>)),
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>             ),
@@ -208,6 +208,6 @@
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
+<div id="footer">© 2025</div>
 </body>
 </html>

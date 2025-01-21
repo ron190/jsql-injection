@@ -64,10 +64,10 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>              MediatorHelper.register(view);
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>              MainApp.INJECTION_MODEL.subscribe(view.getSubscriber());
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          } <strong class="jxr_keyword">catch</strong> (HeadlessException e) {
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>              MainApp.LOGGER.log(LogLevelUtil.CONSOLE_JAVA, <span class="jxr_string">"HeadlessException, command line execution not supported: %s"</span>, e);
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>              LOGGER.log(LogLevelUtil.CONSOLE_JAVA, <span class="jxr_string">"HeadlessException, command line execution not supported: %s"</span>, e);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          } <strong class="jxr_keyword">catch</strong> (AWTError e) {
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>              <em class="jxr_comment">// Fix #22668: Assistive Technology not found</em>
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>              MainApp.LOGGER.log(LogLevelUtil.CONSOLE_JAVA, String.format(
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>              LOGGER.log(LogLevelUtil.CONSOLE_JAVA, String.format(
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>                  <span class="jxr_string">"Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: %s"</span>,
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>                  e.getMessage()
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>              ), e);
@@ -82,6 +82,6 @@
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2025. All rights reserved.</div>
+<div id="footer">© 2025</div>
 </body>
 </html>
