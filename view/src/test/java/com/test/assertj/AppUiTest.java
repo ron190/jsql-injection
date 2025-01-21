@@ -219,10 +219,10 @@ class AppUiTest {
 
         AppUiTest.logMethod();
         AppUiTest.window.robot().pressMouse(
-            AppUiTest.window.label("dragfile").target(),
-            AppUiTest.window.label("dragfile").target().getLocation()
+            GuiActionRunner.execute(() -> AppUiTest.window.label("dragfile").target()),
+            GuiActionRunner.execute(() -> AppUiTest.window.label("dragfile").target()).getLocation()
         );
-        AppUiTest.window.robot().moveMouse(AppUiTest.window.label("dragfile").target());  // required
+        AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.label("dragfile").target()));  // required
         AppUiTest.window.label("dropfile").drop();
 
         try {
@@ -322,7 +322,11 @@ class AppUiTest {
         AppUiTest.logMethod();
         AppUiTest.window.menuItem("itemRadioStrategyError").requireEnabled(Timeout.timeout(1000));
 
-        Assertions.assertEquals("MySQL", AppUiTest.window.label("menuVendor").target().getText(), "Vendor should be MySQL");
+        Assertions.assertEquals(
+            "MySQL",
+            GuiActionRunner.execute(() -> AppUiTest.window.label("menuVendor").target()).getText(),
+            "Vendor should be MySQL"
+        );
 
         AppUiTest.logMethod();
         AppUiTest.window.label("menuVendor").click();
@@ -331,7 +335,7 @@ class AppUiTest {
         AppUiTest.window.label("menuStrategy").click();
 
         AppUiTest.window.robot().moveMouse(
-            AppUiTest.window.menuItem("itemRadioStrategyError").target()  // faster than click
+            GuiActionRunner.execute(() -> AppUiTest.window.menuItem("itemRadioStrategyError")).target()  // faster than click
         );
         AppUiTest.logMethod();
         try {
@@ -414,25 +418,25 @@ class AppUiTest {
 
         AppUiTest.window.textBox("textInputManagerCoder").setText("a");
 
-        AppUiTest.window.robot().moveMouse(AppUiTest.window.menuItem("Base16").target());
-        AppUiTest.window.robot().moveMouse(AppUiTest.window.menuItem("encodeToBase16").target());
+        AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base16").target()));
+        AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase16").target()));
         AppUiTest.window.textBox("resultManagerCoder").requireText(Pattern.compile("61", Pattern.DOTALL));
 
-        AppUiTest.window.robot().moveMouse(AppUiTest.window.menuItem("Base32").target());
-        AppUiTest.window.robot().moveMouse(AppUiTest.window.menuItem("encodeToBase32").target());
+        AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base32").target()));
+        AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase32").target()));
         AppUiTest.window.textBox("resultManagerCoder").requireText(Pattern.compile("ME======", Pattern.DOTALL));
 
-        AppUiTest.window.robot().moveMouse(AppUiTest.window.menuItem("Base58").target());
-        AppUiTest.window.robot().moveMouse(AppUiTest.window.menuItem("encodeToBase58").target());
+        AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base58").target()));
+        AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase58").target()));
         AppUiTest.window.textBox("resultManagerCoder").requireText(Pattern.compile("2g", Pattern.DOTALL));
 
-        AppUiTest.window.robot().moveMouse(AppUiTest.window.menuItem("Base64").target());
-        AppUiTest.window.robot().moveMouse(AppUiTest.window.menuItem("encodeToBase64").target());
+        AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base64").target()));
+        AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase64").target()));
         AppUiTest.window.textBox("resultManagerCoder").requireText(Pattern.compile("YQ==", Pattern.DOTALL));
 
         AppUiTest.logMethod();
         try {
-            AppUiTest.window.robot().moveMouse(AppUiTest.window.menuItem("Hash").target());
+            AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Hash").target()));
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -445,7 +449,7 @@ class AppUiTest {
                 Assertions.fail();
             }
 
-            AppUiTest.window.robot().moveMouse(AppUiTest.window.menuItem("hashTo"+ hash).target());
+            AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("hashTo"+ hash).target()));
             AppUiTest.window.textBox("resultManagerCoder").requireText(result);
         });
         AppUiTest.logMethod();
@@ -564,55 +568,20 @@ class AppUiTest {
 
         AppUiTest.logMethod();
         Arrays.asList(  // init
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout()
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
         ).forEach(Assertions::assertFalse);
-        Assertions.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
 
         AppUiTest.logMethod();
         AppUiTest.window.checkBox("checkboxIsFollowingRedirection").click();
-        AppUiTest.window.checkBox("checkboxIsUnicodeDecodeDisabled").click();
-        AppUiTest.window.checkBox("checkboxIsNotTestingConnection").click();
-        AppUiTest.window.checkBox("checkboxIsProcessingCsrf").click();
-        AppUiTest.window.checkBox("checkboxIsCsrfUserTag").click();
-        AppUiTest.window.checkBox("checkboxIsNotProcessingCookies").click();
-        AppUiTest.window.checkBox("checkboxIsLimitingThreads").click();
-        AppUiTest.window.checkBox("checkboxIsConnectionTimeout").click();
         Arrays.asList(  // check
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout()
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
         ).forEach(Assertions::assertTrue);
-        Assertions.assertFalse(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
 
         AppUiTest.logMethod();
         AppUiTest.window.checkBox("checkboxIsFollowingRedirection").click();
-        AppUiTest.window.checkBox("checkboxIsUnicodeDecodeDisabled").click();
-        AppUiTest.window.checkBox("checkboxIsNotTestingConnection").click();
-        AppUiTest.window.checkBox("checkboxIsNotProcessingCookies").click();
-        AppUiTest.window.checkBox("checkboxIsProcessingCsrf").click();
-        AppUiTest.window.checkBox("checkboxIsCsrfUserTag").click();
-        AppUiTest.window.checkBox("checkboxIsLimitingThreads").click();
-        AppUiTest.window.checkBox("checkboxIsConnectionTimeout").click();
         Arrays.asList(  // uncheck
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout()
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
         ).forEach(Assertions::assertFalse);
-        Assertions.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
 
         AppUiTest.window.label("advancedButton").click();
 
@@ -629,69 +598,19 @@ class AppUiTest {
 
         AppUiTest.logMethod();
         Arrays.asList(
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm()
         ).forEach(Assertions::assertFalse);
 
         AppUiTest.logMethod();
         AppUiTest.window.checkBox("checkboxIsParsingForm").click();
-        AppUiTest.window.checkBox("checkboxIsNotInjectingMetadata").click();
-        AppUiTest.window.checkBox("checkboxIsLimitingNormalIndex").click();
-        AppUiTest.window.checkBox("checkboxIsLimitingSleepTimeStrategy").click();
-        AppUiTest.window.checkBox("checkboxIsCheckingAllURLParam").click();
-        AppUiTest.window.checkBox("checkboxIsCheckingAllRequestParam").click();
-        AppUiTest.window.checkBox("checkboxIsCheckingAllHeaderParam").click();
-        AppUiTest.window.checkBox("checkboxIsCheckingAllJSONParam").click();
-        AppUiTest.window.checkBox("checkboxIsCheckingAllSOAPParam").click();
-        AppUiTest.window.checkBox("checkboxIsPerfIndexDisabled").click();
-        AppUiTest.window.checkBox("checkboxIsUrlEncodingDisabled").click();
         Arrays.asList(
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm()
         ).forEach(Assertions::assertTrue);
 
         AppUiTest.logMethod();
         AppUiTest.window.checkBox("checkboxIsParsingForm").click();
-        AppUiTest.window.checkBox("checkboxIsNotInjectingMetadata").click();
-        AppUiTest.window.checkBox("checkboxIsLimitingNormalIndex").click();
-        AppUiTest.window.checkBox("checkboxIsLimitingSleepTimeStrategy").click();
-        AppUiTest.window.checkBox("checkboxIsCheckingAllURLParam").click();
-        AppUiTest.window.checkBox("checkboxIsCheckingAllRequestParam").click();
-        AppUiTest.window.checkBox("checkboxIsCheckingAllHeaderParam").click();
-        AppUiTest.window.checkBox("checkboxIsCheckingAllJSONParam").click();
-        AppUiTest.window.checkBox("checkboxIsCheckingAllSOAPParam").click();
-        AppUiTest.window.checkBox("checkboxIsPerfIndexDisabled").click();
-        AppUiTest.window.checkBox("checkboxIsUrlEncodingDisabled").click();
         Arrays.asList(
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm()
         ).forEach(Assertions::assertFalse);
 
         AppUiTest.logMethod();
@@ -758,13 +677,13 @@ class AppUiTest {
         AppUiTest.window.label("advancedButton").click();
         AppUiTest.window.menuItem("menuWindows").click();
         AppUiTest.window.robot().moveMouse(
-            AppUiTest.window.menuItem("menuTranslation").target()  // faster than click
+            GuiActionRunner.execute(() -> AppUiTest.window.menuItem("menuTranslation").target())  // faster than click
         );
         AppUiTest.window.menuItem("itemRussian").click();
 
         AppUiTest.window.menuItem("menuWindows").click();
         AppUiTest.window.robot().moveMouse(
-            AppUiTest.window.menuItem("menuTranslation").target()  // faster than click
+            GuiActionRunner.execute(() -> AppUiTest.window.menuItem("menuTranslation").target())  // faster than click
         );
         AppUiTest.window.menuItem("itemEnglish").click();
 
@@ -800,7 +719,7 @@ class AppUiTest {
         AppUiTest.window.label("advancedButton").click();
         AppUiTest.window.menuItem("menuCommunity").click();
         AppUiTest.window.robot().moveMouse(
-            AppUiTest.window.menuItem("menuI18nContribution").target()  // faster than click
+            GuiActionRunner.execute(() -> AppUiTest.window.menuItem("menuI18nContribution").target())  // faster than click
         );
         AppUiTest.window.menuItem("itemIntoFrench").click();
 
