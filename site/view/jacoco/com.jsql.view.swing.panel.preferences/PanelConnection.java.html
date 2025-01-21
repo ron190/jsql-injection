@@ -128,12 +128,12 @@ public class PanelConnection extends JPanel {
         });
         
 <span class="fc" id="L130">        ActionListener actionListenerNotProcessingCookies = actionEvent -&gt; {</span>
-<span class="fc bfc" id="L131" title="All 2 branches covered.">            this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="fc bfc" id="L132" title="All 2 branches covered.">            this.textfieldCustomCsrfInputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">            this.textfieldCustomCsrfOutputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="fc bfc" id="L134" title="All 2 branches covered.">            this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="fc" id="L135">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="fc" id="L136">        };</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">            this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            this.textfieldCustomCsrfInputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            this.textfieldCustomCsrfOutputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="nc" id="L135">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L136">        };</span>
 <span class="fc" id="L137">        this.checkboxIsNotProcessingCookies.addActionListener(actionListenerNotProcessingCookies);</span>
         
 <span class="pc bpc" id="L139" title="1 of 2 branches missed.">        this.textfieldCustomCsrfInputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
