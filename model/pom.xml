@@ -83,7 +83,7 @@
         <snakeyaml.version>2.3</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
         <spock-core.version>2.4-M5-groovy-4.0</spock-core.version>
-        <spring-boot-dependencies.version>3.4.1</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>3.4.2</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
         <sqlite-jdbc.version>3.47.1.0</sqlite-jdbc.version>
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
