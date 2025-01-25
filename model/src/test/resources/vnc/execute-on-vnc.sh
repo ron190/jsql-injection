@@ -29,7 +29,7 @@ OLD_DISPLAY=${DISPLAY}
 touch ~/.Xauthority
 
 echo "Starting vncserver..."
-vncsession ":${NEW_DISPLAY}"
+vncsession "$(whoami)" ":${NEW_DISPLAY}"
 
 export DISPLAY=:${NEW_DISPLAY}
 
