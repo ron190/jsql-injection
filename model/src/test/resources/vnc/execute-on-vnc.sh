@@ -30,10 +30,10 @@ touch ~/.Xauthority
 
 echo "Starting vncserver..."
 export DISPLAY=:${NEW_DISPLAY}
-vncsession "$(whoami)" ":${NEW_DISPLAY}" || true
-vncserver -localhost no || true
-(Xvfb -ac ":${NEW_DISPLAY}" -screen 0 1280x1024x24 > /dev/null 2>&1 &) || true
-vncserver  || true
+#vncsession "$(whoami)" ":${NEW_DISPLAY}" || true
+#vncserver -localhost no || true
+#(Xvfb -ac ":${NEW_DISPLAY}" -screen 0 1280x1024x24 > /dev/null 2>&1 &) || true
+#vncserver  || true
 
 # Start up the standard system desktop
 unset SESSION_MANAGER
