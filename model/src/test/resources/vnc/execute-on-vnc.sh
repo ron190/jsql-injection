@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NEW_DISPLAY=0
+NEW_DISPLAY=1
 DONE="no"
 
 while [ "$DONE" = "no" ]; do
@@ -29,7 +29,7 @@ OLD_DISPLAY=${DISPLAY}
 touch ~/.Xauthority
 
 echo "Starting vncserver..."
-xvnc "localhost:${NEW_DISPLAY}" -localhost -geometry 800x600
+vncserver "localhost:${NEW_DISPLAY}" -localhost -geometry 800x600
 
 export DISPLAY=:${NEW_DISPLAY}
 
