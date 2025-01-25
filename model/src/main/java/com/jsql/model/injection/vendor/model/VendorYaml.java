@@ -68,8 +68,8 @@ public class VendorYaml implements AbstractVendor {
      */
     public static final String ENCLOSE_VALUE_SQL = "%04";
 
-    public static final String CALIBRATOR_SQL = "%23";
-    public static final String CALIBRATOR_HEX = "0x23";
+    public static final String CALIBRATOR_SQL = "a";
+    public static final String CALIBRATOR_HEX = "0x61";
     
     public static final String FORMAT_INDEX = "1337%s7331";
 

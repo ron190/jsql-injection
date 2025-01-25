@@ -319,7 +319,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             msgHeader.put(
                 Header.SOURCE,
                 pageSource
-                .replaceAll("(#){60,}", "$1...")  // Remove ranges of # created by calibration
+                .replaceAll("("+ VendorYaml.CALIBRATOR_SQL +"){60,}", "$1...")  // Remove ranges of # created by calibration
                 .replaceAll("(jIyM){60,}", "$1...")  // Remove batch of chars created by Dios
             );
             msgHeader.put(Header.METADATA_PROCESS, metadataInjectionProcess);

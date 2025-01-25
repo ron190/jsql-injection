@@ -136,7 +136,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         try {
             this.textAreaSource.setText(
                 StringUtil.detectUtf8(this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getSource()) : networkData.getSource())
-                .replaceAll("#{5,}", "#*")
+                .replaceAll("a{5,}", "a*")
                 .trim()
             );
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {

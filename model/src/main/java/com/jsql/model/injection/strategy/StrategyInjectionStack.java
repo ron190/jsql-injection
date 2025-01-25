@@ -109,7 +109,7 @@ public class StrategyInjectionStack extends AbstractStrategy {
             ),
             "stack#size"
         );
-        return Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceSourcePage);
+        return Pattern.compile("(?s)"+ DataAccess.LEAD +"("+ VendorYaml.CALIBRATOR_SQL +"+)").matcher(performanceSourcePage);
     }
 
     @Override

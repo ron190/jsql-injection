@@ -163,7 +163,7 @@ public class StrategyInjectionUnion extends AbstractStrategy {
         // Build a 2D array of string with:
         //     column 1: index
         //     column 2: # found, so #######...#######
-        regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(\\d+)(#+)").matcher(performanceSourcePage);
+        regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(\\d+)("+ VendorYaml.CALIBRATOR_SQL +"+)").matcher(performanceSourcePage);
         List<String[]> performanceResults = new ArrayList<>();
         while (regexSearch.find()) {
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
