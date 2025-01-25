@@ -26,14 +26,8 @@ EOF
 chmod 600 "$HOME/.vnc/passwd"
 
 OLD_DISPLAY=${DISPLAY}
+vncserver ":${NEW_DISPLAY}" -localhost -geometry 800x600 -depth 16
 export DISPLAY=:${NEW_DISPLAY}
-
-unset SESSION_MANAGER
-unset DBUS_SESSION_BUS_ADDRESS
-/usr/bin/startxfce4 || true
-[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup || true
-[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources || true
-(x-window-manager &) || true
 
 echo MAVEN_NASHORN="${MAVEN_NASHORN}"
 echo MAVEN_BYTEBUDDY="${MAVEN_BYTEBUDDY}"
