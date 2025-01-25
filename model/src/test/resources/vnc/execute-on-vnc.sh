@@ -17,16 +17,21 @@ done
 
 echo "Using first available display :${NEW_DISPLAY}"
 
+echo "Adding $HOME/.vnc/passwd"
 mkdir "$HOME/.vnc/"
 vncpasswd -f > "$HOME/.vnc/passwd" <<EOF
 123456
 123456
 EOF
-
 chmod 600 "$HOME/.vnc/passwd"
 
 OLD_DISPLAY=${DISPLAY}
+touch ~/.Xauthority
+
+echo "Starting vncserver..."
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 800x600
+
+echo "Starting xtigervncviewer..."
 xtigervncviewer -SecurityTypes VncAuth -passwd "$HOME/.vnc/passwd" ":${NEW_DISPLAY}"
 export DISPLAY=:${NEW_DISPLAY}
 
