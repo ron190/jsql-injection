@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NEW_DISPLAY=42
+NEW_DISPLAY=0
 DONE="no"
 
 while [ "$DONE" = "no" ]; do
@@ -26,7 +26,7 @@ EOF
 chmod 600 "$HOME/.vnc/passwd"
 
 OLD_DISPLAY=${DISPLAY}
-vncserver ":${NEW_DISPLAY}" -localhost -geometry 800x600 -depth 16
+vncserver ":${NEW_DISPLAY}" -localhost -geometry 800x600
 export DISPLAY=:${NEW_DISPLAY}
 
 echo MAVEN_NASHORN="${MAVEN_NASHORN}"
