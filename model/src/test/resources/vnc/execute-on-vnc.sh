@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NEW_DISPLAY=0
+NEW_DISPLAY=1
 DONE="no"
 
 while [ "$DONE" = "no" ]; do
