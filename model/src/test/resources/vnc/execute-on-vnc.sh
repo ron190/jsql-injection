@@ -30,6 +30,7 @@ touch ~/.Xauthority
 
 echo "Starting vncserver..."
 export DISPLAY=:${NEW_DISPLAY}
+unset DISPLAY
 #vncsession "$(whoami)" ":${NEW_DISPLAY}" || true
 #vncserver -localhost no || true
 #(Xvfb -ac ":${NEW_DISPLAY}" -screen 0 1280x1024x24 > /dev/null 2>&1 &) || true
