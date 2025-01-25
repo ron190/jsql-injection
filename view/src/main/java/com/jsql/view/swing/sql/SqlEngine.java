@@ -281,7 +281,10 @@ public class SqlEngine extends JPanel {
         tabsBottom.putClientProperty("JTabbedPane.trailingComponent", panelCombo);
         this.add(tabsBottom);
 
-        SwingUtilities.invokeLater(() -> MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale()));  // required for arabic
+        SwingUtilities.invokeLater(() -> {
+            MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale());  // required for arabic
+            SqlEngine.tabsError.updateUI();  // required for theme switch when tabs closed
+        });
     }
 
     private JTabbedPane getPanelStructure() {

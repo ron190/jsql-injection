@@ -29,7 +29,7 @@ OLD_DISPLAY=${DISPLAY}
 touch ~/.Xauthority
 
 echo "Starting vncserver..."
-vncserver "localhost:${NEW_DISPLAY}" -localhost -geometry 800x600
+tigervncserver -xstartup /usr/bin/xterm -geometry 800x600
 
 export DISPLAY=:${NEW_DISPLAY}
 

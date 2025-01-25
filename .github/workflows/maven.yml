@@ -24,6 +24,7 @@ jobs:
     uses: ./.github/workflows/build-jdk11.yml
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+    secrets: inherit
 
   build-additional:
     needs: set-global-env-var

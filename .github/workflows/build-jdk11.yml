@@ -69,7 +69,7 @@ jobs:
           for i in {1..10}; do
             response=$(
               curl -X GET "https://www.virustotal.com/api/v3/analyses/$analysis_id" \
-              -H "x-apikey: $VT_API_KEY"
+              -H "x-apikey: ${{ secrets.VT_API_KEY }}"
             )
             echo "VirusTotal response: $response"
             status=$(echo $response | jq -r '.data.attributes.status')
