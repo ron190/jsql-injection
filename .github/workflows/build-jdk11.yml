@@ -39,19 +39,41 @@ jobs:
       - name: Install Maven dependencies
         run: mvn clean install -DskipTests dependency:tree
 
-      - name: Send to VirusTotal
+      - name: Upload to VirusTotal
+        id: upload
         run: |
-          for i in {1..3}; do
-            curl -X POST 'https://www.virustotal.com/api/v3/files' \
+          PATH_JAR="$(find . -name '*-jar-with-dependencies.jar' -type f)"
+          echo "PATH_JAR=$PATH_JAR"
+          response=$(curl -X POST 'https://www.virustotal.com/api/v3/files' \
             -H 'x-apikey: ${{ secrets.VT_API_KEY }}' \
-            -F 'file=@view-v0.106-jar-with-dependencies.jar' && break || sleep 10;
-          done        
+            -F 'file=@'$PATH_JAR)
+          echo "VirusTotal response: $response"
+          analysis_id=$(echo $response | jq -r '.data.id')
+          echo "::set-output name=analysis_id::$analysis_id"
 
-      - name: VirusTotal scan
-        uses: crazy-max/ghaction-virustotal@v4
-        with:
-          vt_api_key: ${{ secrets.VT_API_KEY }}
-          files: '**/view-v*-jar-with-dependencies.jar'
+      - name: Check VirusTotal Report
+        id: check_report
+        run: |
+          analysis_id=${{ steps.upload.outputs.analysis_id }}
+          for i in {1..10}; do
+           response=$(curl -X GET "https://www.virustotal.com/api/v3/analyses/$analysis_id" \
+            -H "x-apikey: ${{ secrets.VT_API_KEY }}")
+           echo "VirusTotal response: $response"
+           status=$(echo $response | jq -r '.data.attributes.status')
+           if [ "$status" == "completed" ]; then
+             malicious=$(echo $response | jq -r '.data.attributes.stats.malicious')
+             if [ "$malicious" -gt 0 ]; then
+               echo "Malicious file detected!"
+               exit 1
+             else
+               echo "File is clean."
+               exit 0
+             fi
+           fi
+           sleep 15
+          done
+          echo "VirusTotal report not completed in time."
+          exit 1
 
       - name: Build project container
         run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .

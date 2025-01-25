@@ -27,6 +27,7 @@ chmod 600 "$HOME/.vnc/passwd"
 
 OLD_DISPLAY=${DISPLAY}
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 800x600
+xtigervncviewer -SecurityTypes VncAuth -passwd "$HOME/.vnc/passwd" ":${NEW_DISPLAY}"
 export DISPLAY=:${NEW_DISPLAY}
 
 echo MAVEN_NASHORN="${MAVEN_NASHORN}"
