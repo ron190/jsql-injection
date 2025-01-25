@@ -27,7 +27,7 @@ public class ButtonExpandText extends JButton {
     /**
      * Create a button in address bar.
      */
-<span class="fc" id="L30">    public ButtonExpandText(String titleFrame, JTextField textFieldHeader) {</span>
+<span class="fc" id="L30">    public ButtonExpandText(String titleFrame, JTextField sourceTextField) {</span>
 <span class="fc" id="L31">        this.setPreferredSize(new Dimension(16, 16));</span>
 <span class="fc" id="L32">        this.setContentAreaFilled(false);</span>
 
@@ -35,18 +35,18 @@ public class ButtonExpandText extends JButton {
 <span class="fc" id="L35">        this.setRolloverIcon(UiUtil.EXPAND_HOVER.icon);</span>
 <span class="fc" id="L36">        this.setPressedIcon(UiUtil.EXPAND_PRESSED.icon);</span>
 
-<span class="fc" id="L38">        JTextArea textArea = new JPopupTextArea(new JTextAreaPlaceholder(&quot;Multiline text&quot;)).getProxy();</span>
-<span class="fc" id="L39">        textArea.getCaret().setBlinkRate(500);</span>
+<span class="fc" id="L38">        JTextArea textAreaInDialog = new JPopupTextArea(new JTextAreaPlaceholder(&quot;Multiline text&quot;)).getProxy();</span>
+<span class="fc" id="L39">        textAreaInDialog.getCaret().setBlinkRate(500);</span>
 
 <span class="fc" id="L41">        final JDialog dialogWithTextarea = new JDialog(MediatorHelper.frame(), titleFrame, true);</span>
-<span class="fc" id="L42">        dialogWithTextarea.getContentPane().add(new JScrollPane(textArea));</span>
+<span class="fc" id="L42">        dialogWithTextarea.getContentPane().add(new JScrollPane(textAreaInDialog));</span>
 <span class="fc" id="L43">        dialogWithTextarea.pack();</span>
 <span class="fc" id="L44">        dialogWithTextarea.setSize(400, 300);</span>
 <span class="fc" id="L45">        dialogWithTextarea.setLocationRelativeTo(null);</span>
 <span class="fc" id="L46">        dialogWithTextarea.addWindowListener(new WindowAdapter() {</span>
             @Override
             public void windowClosing(WindowEvent e) {
-<span class="nc" id="L49">                textFieldHeader.setText(textArea.getText().replace(&quot;\n&quot;, &quot;\\n&quot;).replace(&quot;\r&quot;, &quot;\\r&quot;));</span>
+<span class="nc" id="L49">                sourceTextField.setText(textAreaInDialog.getText().replace(&quot;\n&quot;, &quot;\\n&quot;).replace(&quot;\r&quot;, &quot;\\r&quot;));</span>
 <span class="nc" id="L50">                super.windowClosing(e);</span>
 <span class="nc" id="L51">            }</span>
         });
@@ -54,7 +54,7 @@ public class ButtonExpandText extends JButton {
 <span class="fc" id="L54">        this.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mouseClicked(MouseEvent e) {
-<span class="nc" id="L57">                textArea.setText(textFieldHeader.getText().replace(&quot;\\n&quot;, &quot;\n&quot;).replace(&quot;\\r&quot;, &quot;\r&quot;));</span>
+<span class="nc" id="L57">                textAreaInDialog.setText(sourceTextField.getText().replace(&quot;\\n&quot;, &quot;\n&quot;).replace(&quot;\\r&quot;, &quot;\r&quot;));</span>
 <span class="nc bnc" id="L58" title="All 2 branches missed.">                dialogWithTextarea.setVisible(!dialogWithTextarea.isVisible());</span>
 <span class="nc" id="L59">            }</span>
         });

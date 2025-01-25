@@ -46,7 +46,7 @@ public class ModelSvgIcon {
 
     public FlatSVGIcon createSvgIcon(String name, Color from, Color toDark, float scale) {
 <span class="fc" id="L48">        return new FlatSVGIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(String.format(</span>
-<span class="fc bfc" id="L49" title="All 2 branches covered.">            name.endsWith(&quot;.svg&quot;) ? &quot;%s&quot; : &quot;swing/images/icons/%s.svg&quot;,</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            name.endsWith(&quot;.svg&quot;) ? &quot;%s&quot; : &quot;swing/images/icons/%s.svg&quot;,</span>
             name
         ))))
 <span class="fc" id="L52">        .setColorFilter(new FlatSVGIcon.ColorFilter().add(from, null, toDark))</span>

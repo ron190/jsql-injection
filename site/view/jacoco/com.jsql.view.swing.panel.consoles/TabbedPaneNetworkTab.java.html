@@ -5,12 +5,12 @@ import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
-import com.jsql.view.swing.popupmenu.JPopupMenuComponent;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
-import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextComponent;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
+import com.jsql.view.swing.text.SyntaxTextArea;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -23,10 +23,10 @@ import org.jsoup.safety.Safelist;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
-import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
@@ -36,176 +36,173 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
      */
 <span class="fc" id="L37">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
-<span class="fc" id="L39">    private final JTextArea textAreaNetworkTabUrl = new JPopupTextArea(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_URL&quot;)).getProxy();</span>
-<span class="fc" id="L40">    private final JTextArea textAreaNetworkTabResponse = new JPopupTextArea(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_RESPONSE&quot;)).getProxy();</span>
-<span class="fc" id="L41">    private final RSyntaxTextArea textAreaNetworkTabSource = new RSyntaxTextArea(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_SOURCE&quot;));</span>
-<span class="fc" id="L42">    private final JTextPane textAreaNetworkTabPreview = new JPopupTextComponent&lt;&gt;(new JTextPanePlaceholder(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_PREVIEW&quot;)){</span>
+<span class="fc" id="L39">    private final RSyntaxTextArea textAreaUrl = new SyntaxTextArea(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_URL&quot;));</span>
+<span class="fc" id="L40">    private final RSyntaxTextArea textAreaResponse = new SyntaxTextArea(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_RESPONSE&quot;));</span>
+<span class="fc" id="L41">    private final RSyntaxTextArea textAreaSource = new SyntaxTextArea(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_SOURCE&quot;));</span>
+<span class="fc" id="L42">    private final JTextPane textPanePreview = new JPopupTextComponent&lt;&gt;(new JTextPanePlaceholder(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_PREVIEW&quot;)){</span>
         @Override
         public boolean isEditable() {
 <span class="fc" id="L45">            return false;</span>
         }
 <span class="fc" id="L47">    }).getProxy();</span>
-<span class="fc" id="L48">    private final JTextArea textAreaNetworkTabHeader = new JPopupTextArea(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_HEADERS&quot;)).getProxy();</span>
-<span class="fc" id="L49">    private final JTextArea textAreaNetworkTabParams = new JPopupTextArea(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_REQUEST&quot;)).getProxy();</span>
-    
-<span class="fc" id="L51">    public TabbedPaneNetworkTab() {</span>
-<span class="fc" id="L52">        this.setName(&quot;tabNetwork&quot;);</span>
+<span class="fc" id="L48">    private final RSyntaxTextArea textAreaHeader = new SyntaxTextArea(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_HEADERS&quot;));</span>
+<span class="fc" id="L49">    private final RSyntaxTextArea textAreaRequest = new SyntaxTextArea(I18nUtil.valueByKey(&quot;NETWORK_LINE_PLACEHOLDER_REQUEST&quot;));</span>
+<span class="fc" id="L50">    private final JCheckBox checkBoxDecode = new JCheckBox(&quot;Decode&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlDecodeNetworkTab());</span>
 
-<span class="fc" id="L54">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_URL&quot;, this.textAreaNetworkTabUrl);</span>
-<span class="fc" id="L55">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_RESPONSE&quot;, this.textAreaNetworkTabResponse);</span>
-<span class="fc" id="L56">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_SOURCE&quot;, this.textAreaNetworkTabSource);</span>
-<span class="fc" id="L57">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_PREVIEW&quot;, this.textAreaNetworkTabPreview);</span>
-<span class="fc" id="L58">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_HEADERS&quot;, this.textAreaNetworkTabHeader);</span>
-<span class="fc" id="L59">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_REQUEST&quot;, this.textAreaNetworkTabParams);</span>
-<span class="fc" id="L60">        Stream.of(</span>
-            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_URL_LABEL&quot;, this.textAreaNetworkTabUrl),
-            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_HEADERS_LABEL&quot;, this.textAreaNetworkTabHeader),
-            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_PARAMS_LABEL&quot;, this.textAreaNetworkTabParams),
-            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_RESPONSE_LABEL&quot;, this.textAreaNetworkTabResponse),
-            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_SOURCE_LABEL&quot;, this.textAreaNetworkTabSource),
-            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_PREVIEW_LABEL&quot;, this.textAreaNetworkTabPreview)
+<span class="fc" id="L52">    public TabbedPaneNetworkTab() {</span>
+<span class="fc" id="L53">        this.setName(&quot;tabNetwork&quot;);</span>
+<span class="fc" id="L54">        this.putClientProperty(&quot;JTabbedPane.trailingComponent&quot;, this.checkBoxDecode);</span>
+<span class="fc" id="L55">        this.checkBoxDecode.setHorizontalTextPosition(SwingConstants.LEFT);</span>
+
+<span class="fc" id="L57">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_URL&quot;, this.textAreaUrl);</span>
+<span class="fc" id="L58">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_RESPONSE&quot;, this.textAreaResponse);</span>
+<span class="fc" id="L59">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_SOURCE&quot;, this.textAreaSource);</span>
+<span class="fc" id="L60">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_PREVIEW&quot;, this.textPanePreview);</span>
+<span class="fc" id="L61">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_HEADERS&quot;, this.textAreaHeader);</span>
+<span class="fc" id="L62">        I18nViewUtil.addComponentForKey(&quot;NETWORK_LINE_PLACEHOLDER_REQUEST&quot;, this.textAreaRequest);</span>
+<span class="fc" id="L63">        Stream.of(</span>
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_URL_LABEL&quot;, this.textAreaUrl),
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_HEADERS_LABEL&quot;, this.textAreaHeader),
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_PARAMS_LABEL&quot;, this.textAreaRequest),
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_RESPONSE_LABEL&quot;, this.textAreaResponse),
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_SOURCE_LABEL&quot;, this.textAreaSource),
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_PREVIEW_LABEL&quot;, this.textPanePreview)
         )
-<span class="fc" id="L68">        .forEach(entry -&gt; {</span>
-<span class="fc" id="L69">            this.addTab(</span>
-<span class="fc" id="L70">                I18nUtil.valueByKey(entry.getKey()),</span>
-<span class="fc bfc" id="L71" title="All 2 branches covered.">                entry.getValue() == this.textAreaNetworkTabSource</span>
-<span class="fc" id="L72">                ? new RTextScrollPane(entry.getValue(), false)</span>
-<span class="fc" id="L73">                : new JScrollPane(entry.getValue())</span>
+<span class="fc" id="L71">        .forEach(entry -&gt; {</span>
+<span class="fc" id="L72">            this.addTab(</span>
+<span class="fc" id="L73">                I18nUtil.valueByKey(entry.getKey()),</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">                entry.getValue() == this.textAreaSource</span>
+<span class="fc" id="L75">                ? new RTextScrollPane(entry.getValue(), false)</span>
+<span class="fc" id="L76">                : new JScrollPane(entry.getValue())</span>
             );
-<span class="fc" id="L75">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
-<span class="fc" id="L76">            label.setName(&quot;label&quot;+ entry.getKey());</span>
-<span class="fc" id="L77">            this.setTabComponentAt(</span>
-<span class="fc" id="L78">                this.indexOfTab(I18nUtil.valueByKey(entry.getKey())),</span>
+<span class="fc" id="L78">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
+<span class="fc" id="L79">            label.setName(&quot;label&quot;+ entry.getKey());</span>
+<span class="fc" id="L80">            this.setTabComponentAt(</span>
+<span class="fc" id="L81">                this.indexOfTab(I18nUtil.valueByKey(entry.getKey())),</span>
                 label
             );
-<span class="fc" id="L81">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
+<span class="fc" id="L84">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
 
-<span class="fc" id="L83">            entry.getValue().setName(&quot;text&quot;+ entry.getKey());</span>
+<span class="fc" id="L86">            entry.getValue().setName(&quot;text&quot;+ entry.getKey());</span>
 
-<span class="fc" id="L85">            DefaultCaret caret = (DefaultCaret) entry.getValue().getCaret();</span>
-<span class="fc" id="L86">            caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);</span>
-<span class="fc" id="L87">        });</span>
+<span class="fc" id="L88">            DefaultCaret caret = (DefaultCaret) entry.getValue().getCaret();</span>
+<span class="fc" id="L89">            caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);</span>
+<span class="fc" id="L90">        });</span>
 
-<span class="fc" id="L89">        this.textAreaNetworkTabSource.setPopupMenu(new JPopupMenuComponent(this.textAreaNetworkTabSource));</span>
-<span class="fc" id="L90">        this.textAreaNetworkTabSource.setEditable(false);</span>
-<span class="fc" id="L91">        this.textAreaNetworkTabSource.getCaret().setBlinkRate(0);</span>
-<span class="fc" id="L92">        this.textAreaNetworkTabSource.addFocusListener(new FocusAdapter() {</span>
-            @Override
-            public void focusGained(FocusEvent focusEvent) {
-<span class="nc" id="L95">                TabbedPaneNetworkTab.this.textAreaNetworkTabSource.getCaret().setVisible(true);</span>
-<span class="nc" id="L96">                TabbedPaneNetworkTab.this.textAreaNetworkTabSource.getCaret().setSelectionVisible(true);</span>
-<span class="nc" id="L97">            }</span>
-        });
-<span class="fc" id="L99">        this.textAreaNetworkTabSource.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));</span>
-<span class="fc" id="L100">        this.textAreaNetworkTabSource.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);</span>
-<span class="fc" id="L101">        this.textAreaNetworkTabSource.setHighlightSecondaryLanguages(true);</span>
-<span class="fc" id="L102">        this.applyTheme();</span>
-
-<span class="fc" id="L104">        this.textAreaNetworkTabHeader.setLineWrap(true);</span>
-<span class="fc" id="L105">        this.textAreaNetworkTabParams.setLineWrap(true);</span>
-<span class="fc" id="L106">        this.textAreaNetworkTabResponse.setLineWrap(true);</span>
-<span class="fc" id="L107">        this.textAreaNetworkTabUrl.setLineWrap(true);</span>
-<span class="fc" id="L108">        this.textAreaNetworkTabSource.setLineWrap(true);</span>
+<span class="fc" id="L92">        Arrays.asList(this.textAreaUrl, this.textAreaHeader, this.textAreaRequest, this.textAreaResponse, this.textAreaSource).forEach(entry -&gt; {</span>
+<span class="fc" id="L93">            entry.setEditable(false);</span>
+<span class="fc" id="L94">            entry.setLineWrap(true);</span>
+<span class="fc" id="L95">        });</span>
+<span class="fc" id="L96">        this.textAreaResponse.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);</span>
+<span class="fc" id="L97">        this.textAreaSource.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);</span>
+<span class="fc" id="L98">        this.textAreaSource.setHighlightSecondaryLanguages(true);</span>
+<span class="fc" id="L99">        this.applyTheme();</span>
         
-<span class="fc" id="L110">        this.textAreaNetworkTabPreview.setEditorKit(new HTMLEditorKitTextPaneWrap());</span>
-<span class="fc" id="L111">        this.textAreaNetworkTabPreview.setContentType(&quot;text/html&quot;);</span>
-<span class="fc" id="L112">        this.textAreaNetworkTabPreview.setEditable(false);</span>
-<span class="fc" id="L113">        this.textAreaNetworkTabPreview.getCaret().setBlinkRate(0);</span>
-<span class="fc" id="L114">        this.textAreaNetworkTabPreview.addFocusListener(new FocusAdapter() {</span>
+<span class="fc" id="L101">        this.textPanePreview.setEditorKit(new HTMLEditorKitTextPaneWrap());</span>
+<span class="fc" id="L102">        this.textPanePreview.setContentType(&quot;text/html&quot;);</span>
+<span class="fc" id="L103">        this.textPanePreview.setEditable(false);</span>
+<span class="fc" id="L104">        this.textPanePreview.getCaret().setBlinkRate(0);</span>
+<span class="fc" id="L105">        this.textPanePreview.addFocusListener(new FocusAdapter() {</span>
             @Override
             public void focusGained(FocusEvent focusEvent) {
-<span class="nc" id="L117">                TabbedPaneNetworkTab.this.textAreaNetworkTabPreview.getCaret().setVisible(true);</span>
-<span class="nc" id="L118">                TabbedPaneNetworkTab.this.textAreaNetworkTabPreview.getCaret().setSelectionVisible(true);</span>
-<span class="nc" id="L119">            }</span>
+<span class="nc" id="L108">                TabbedPaneNetworkTab.this.textPanePreview.getCaret().setVisible(true);</span>
+<span class="nc" id="L109">                TabbedPaneNetworkTab.this.textPanePreview.getCaret().setSelectionVisible(true);</span>
+<span class="nc" id="L110">            }</span>
         });
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L112">    }</span>
     
     public void changeTextNetwork(HttpHeader networkData) {
-<span class="fc" id="L124">        this.textAreaNetworkTabParams.setText(networkData.getPost());</span>
-<span class="fc" id="L125">        this.textAreaNetworkTabUrl.setText(networkData.getUrl());</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        this.textAreaRequest.setText(this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getPost()) : networkData.getPost());</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        this.textAreaUrl.setText(this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getUrl()) : networkData.getUrl());</span>
 
-<span class="fc" id="L127">        this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (networkData.getHeader() != null) {</span>
-<span class="fc bfc" id="L129" title="All 2 branches covered.">            for (String key: networkData.getHeader().keySet()) {</span>
-<span class="fc" id="L130">                this.textAreaNetworkTabHeader.append(key + &quot;: &quot; + networkData.getHeader().get(key));</span>
-<span class="fc" id="L131">                this.textAreaNetworkTabHeader.append(&quot;\n&quot;);</span>
-<span class="fc" id="L132">            }</span>
+<span class="fc" id="L118">        this.textAreaHeader.setText(StringUtils.EMPTY);</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (networkData.getHeader() != null) {</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            for (String key: networkData.getHeader().keySet()) {</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">                this.textAreaHeader.append(key + &quot;: &quot; + (this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getHeader().get(key)) : networkData.getHeader().get(key)));</span>
+<span class="fc" id="L122">                this.textAreaHeader.append(&quot;\n&quot;);</span>
+<span class="fc" id="L123">            }</span>
         }
 
-<span class="fc" id="L135">        this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (networkData.getResponse() != null) {</span>
-<span class="fc bfc" id="L137" title="All 2 branches covered.">            for (String key: networkData.getResponse().keySet()) {</span>
-<span class="fc" id="L138">                this.textAreaNetworkTabResponse.append(key + &quot;: &quot; + networkData.getResponse().get(key));</span>
-<span class="fc" id="L139">                this.textAreaNetworkTabResponse.append(&quot;\n&quot;);</span>
-<span class="fc" id="L140">            }</span>
+<span class="fc" id="L126">        this.textAreaResponse.setText(StringUtils.EMPTY);</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (networkData.getResponse() != null) {</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">            for (String key: networkData.getResponse().keySet()) {</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">                this.textAreaResponse.append(key + &quot;: &quot; + (this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getResponse().get(key)) : networkData.getResponse().get(key)));</span>
+<span class="fc" id="L130">                this.textAreaResponse.append(&quot;\n&quot;);</span>
+<span class="fc" id="L131">            }</span>
         }
 
         // Fix #53736: ArrayIndexOutOfBoundsException on setText()
         // Fix #54573: NullPointerException on setText()
         try {
-<span class="fc" id="L146">            this.textAreaNetworkTabSource.setText(</span>
-<span class="fc" id="L147">                StringUtil.detectUtf8(networkData.getSource())</span>
-<span class="fc" id="L148">                .replaceAll(&quot;#{5,}&quot;, &quot;#*&quot;)</span>
-<span class="fc" id="L149">                .trim()</span>
+<span class="fc" id="L137">            this.textAreaSource.setText(</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">                StringUtil.detectUtf8(this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getSource()) : networkData.getSource())</span>
+<span class="fc" id="L139">                .replaceAll(&quot;#{5,}&quot;, &quot;#*&quot;)</span>
+<span class="fc" id="L140">                .trim()</span>
             );
-<span class="nc" id="L151">        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {</span>
-<span class="nc" id="L152">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L153">        }</span>
+<span class="nc" id="L142">        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {</span>
+<span class="nc" id="L143">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L144">        }</span>
         
-<span class="fc" id="L155">        this.textAreaNetworkTabPreview.getEditorKit().createDefaultDocument();  // Reset EditorKit to disable previous document effect</span>
+<span class="fc" id="L146">        this.textPanePreview.getEditorKit().createDefaultDocument();  // Reset EditorKit to disable previous document effect</span>
         // Proxy is used by jsoup to display &lt;img&gt; tags
         // Previous test for 2xx Success and 3xx Redirection was Header only, now get the HTML content
         // Fix #35352: EmptyStackException on setText()
         // Fix #39841: RuntimeException on setText()
         // Fix #42523: ExceptionInInitializerError on clean()
         try {
-<span class="fc" id="L162">            this.textAreaNetworkTabPreview.setText(</span>
-<span class="fc" id="L163">                Jsoup.clean(</span>
-<span class="fc" id="L164">                    String.format(</span>
+<span class="fc" id="L153">            this.textPanePreview.setText(</span>
+<span class="fc" id="L154">                Jsoup.clean(</span>
+<span class="fc" id="L155">                    String.format(</span>
                         &quot;&lt;html&gt;%s&lt;/html&gt;&quot;,
-<span class="fc" id="L166">                        StringUtil.detectUtf8(networkData.getSource())</span>
+<span class="fc" id="L157">                        StringUtil.detectUtf8(networkData.getSource())</span>
                     )
-<span class="fc" id="L168">                    .replaceAll(&quot;&lt;img[^&gt;]*&gt;&quot;,StringUtils.EMPTY)  // avoid loading external resources</span>
-<span class="fc" id="L169">                    .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?.*&gt;&quot;, StringUtils.EMPTY)</span>
-<span class="fc" id="L170">                    .replaceAll(</span>
+<span class="fc" id="L159">                    .replaceAll(&quot;&lt;img[^&gt;]*&gt;&quot;,StringUtils.EMPTY)  // avoid loading external resources</span>
+<span class="fc" id="L160">                    .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?.*&gt;&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L161">                    .replaceAll(</span>
                         &quot;&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?.*&gt;&quot;,
                         &quot;&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;&quot;
                     )
-<span class="fc" id="L174">                    .replaceAll(</span>
+<span class="fc" id="L165">                    .replaceAll(</span>
                         &quot;&lt;input[^&gt;]*&gt;&quot;,
                         &quot;&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;&quot;
                     ),
-<span class="fc" id="L178">                    Safelist.relaxed().addTags(&quot;center&quot;, &quot;div&quot;, &quot;span&quot;).addAttributes(&quot;:all&quot;, &quot;style&quot;)</span>
+<span class="fc" id="L169">                    Safelist.relaxed().addTags(&quot;center&quot;, &quot;div&quot;, &quot;span&quot;).addAttributes(&quot;:all&quot;, &quot;style&quot;)</span>
                 )
             );
-<span class="nc" id="L181">        } catch (Exception | ExceptionInInitializerError e) {</span>
-<span class="nc" id="L182">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L183">        }</span>
-<span class="fc" id="L184">    }</span>
+<span class="nc" id="L172">        } catch (Exception | ExceptionInInitializerError e) {</span>
+<span class="nc" id="L173">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L174">        }</span>
+<span class="fc" id="L175">    }</span>
     
     public void reset() {
-<span class="fc" id="L187">        this.textAreaNetworkTabUrl.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L188">        this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L189">        this.textAreaNetworkTabParams.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L190">        this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L178">        this.textAreaUrl.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L179">        this.textAreaHeader.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L180">        this.textAreaRequest.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L181">        this.textAreaResponse.setText(StringUtils.EMPTY);</span>
         
         // Fix #54572: NullPointerException on setText()
         try {
-<span class="fc" id="L194">            this.textAreaNetworkTabSource.setText(StringUtils.EMPTY);</span>
-<span class="nc" id="L195">        } catch (NullPointerException e) {</span>
-<span class="nc" id="L196">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L197">        }</span>
+<span class="fc" id="L185">            this.textAreaSource.setText(StringUtils.EMPTY);</span>
+<span class="nc" id="L186">        } catch (NullPointerException e) {</span>
+<span class="nc" id="L187">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L188">        }</span>
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
         try {
-<span class="fc" id="L201">            this.textAreaNetworkTabPreview.setText(StringUtils.EMPTY);</span>
-<span class="nc" id="L202">        } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L203">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L204">        }</span>
-<span class="fc" id="L205">    }</span>
+<span class="fc" id="L192">            this.textPanePreview.setText(StringUtils.EMPTY);</span>
+<span class="nc" id="L193">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L194">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L195">        }</span>
+<span class="fc" id="L196">    }</span>
 
     public void applyTheme() {
-<span class="fc" id="L208">        UiUtil.applyTheme(this.textAreaNetworkTabSource);</span>
-<span class="fc" id="L209">    }</span>
+<span class="fc" id="L199">        Arrays.asList(</span>
+            this.textAreaUrl, this.textAreaHeader, this.textAreaRequest, this.textAreaResponse, this.textAreaSource
+<span class="fc" id="L201">        ).forEach(UiUtil::applySyntaxTheme);</span>
+<span class="fc" id="L202">    }</span>
+
+    public JCheckBox getCheckBoxDecode() {
+<span class="fc" id="L205">        return this.checkBoxDecode;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

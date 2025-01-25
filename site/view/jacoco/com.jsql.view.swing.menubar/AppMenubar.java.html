@@ -275,117 +275,118 @@ public class AppMenubar extends JMenuBar {
             UiUtil.TABLE_LINEAR, UiUtil.TABLE_BOLD, UiUtil.NETWORK, UiUtil.DATABASE_LINEAR, UiUtil.COG, UiUtil.CUP, UiUtil.CONSOLE, UiUtil.BINARY, UiUtil.CHUNK,
             UiUtil.ARROW, UiUtil.ARROW_HOVER, UiUtil.ARROW_PRESSED, UiUtil.EXPAND, UiUtil.EXPAND_HOVER, UiUtil.EXPAND_PRESSED,
             UiUtil.HOURGLASS, UiUtil.ARROW_DOWN, UiUtil.ARROW_UP, UiUtil.SQUARE, UiUtil.GLOBE, UiUtil.TICK_GREEN, UiUtil.CROSS_RED,
-            UiUtil.REPORT, UiUtil.APP_RESULT, UiUtil.APP_ABOUT
+            UiUtil.APP_ICON, UiUtil.APP_BIG, UiUtil.APP_MIDDLE
 <span class="fc" id="L279">        ).forEach(ModelSvgIcon::setColorFilter);</span>
 
 <span class="fc" id="L281">        SqlEngine.applyTheme();</span>
 <span class="fc" id="L282">        PanelTampering.applyTheme();</span>
 <span class="fc" id="L283">        MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyTheme();</span>
-<span class="fc" id="L284">        MediatorHelper.frame().revalidate();</span>
+<span class="fc" id="L284">        MediatorHelper.frame().setIconImages(UiUtil.getIcons());</span>
+<span class="fc" id="L285">        MediatorHelper.frame().revalidate();</span>
 
-<span class="fc" id="L286">        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withThemeFlatLafName(theme).persist();</span>
-<span class="fc" id="L287">    }</span>
+<span class="fc" id="L287">        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withThemeFlatLafName(theme).persist();</span>
+<span class="fc" id="L288">    }</span>
     
     public void switchLocale(Locale newLocale) {
-<span class="fc" id="L290">        this.switchLocale(I18nUtil.getCurrentLocale(), newLocale, false);</span>
-<span class="fc" id="L291">    }</span>
+<span class="fc" id="L291">        this.switchLocale(I18nUtil.getCurrentLocale(), newLocale, false);</span>
+<span class="fc" id="L292">    }</span>
     
     public void switchLocaleWithStatus(Locale oldLocale, Locale newLocale, boolean isStartup) {
-<span class="nc" id="L294">        this.switchLocale(oldLocale, newLocale, isStartup);</span>
-<span class="nc" id="L295">        MediatorHelper.model().getPropertiesUtil().displayStatus(newLocale);</span>
-<span class="nc" id="L296">    }</span>
+<span class="nc" id="L295">        this.switchLocale(oldLocale, newLocale, isStartup);</span>
+<span class="nc" id="L296">        MediatorHelper.model().getPropertiesUtil().displayStatus(newLocale);</span>
+<span class="nc" id="L297">    }</span>
 
     public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
-<span class="fc" id="L299">        I18nUtil.setCurrentBundle(newLocale);</span>
+<span class="fc" id="L300">        I18nUtil.setCurrentBundle(newLocale);</span>
 
-<span class="fc" id="L301">        Stream.of(</span>
+<span class="fc" id="L302">        Stream.of(</span>
             JTextPaneAppender.ATTRIBUTE_WARN,
             JTextPaneAppender.ATTRIBUTE_INFORM,
             JTextPaneAppender.ATTRIBUTE_SUCCESS,
             JTextPaneAppender.ATTRIBUTE_ALL
         )
-<span class="fc" id="L307">        .forEach(attribute -&gt; {</span>
-<span class="pc bpc" id="L308" title="1 of 2 branches missed.">            StyleConstants.setFontFamily(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_NAME_MONO_ASIAN : UiUtil.FONT_NAME_MONO_NON_ASIAN);</span>
-<span class="pc bpc" id="L309" title="1 of 2 branches missed.">            StyleConstants.setFontSize(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_SIZE_MONO_ASIAN : UiUtil.FONT_SIZE_MONO_NON_ASIAN);</span>
-<span class="fc" id="L310">        });</span>
+<span class="fc" id="L308">        .forEach(attribute -&gt; {</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">            StyleConstants.setFontFamily(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_NAME_MONO_ASIAN : UiUtil.FONT_NAME_MONO_NON_ASIAN);</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">            StyleConstants.setFontSize(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_SIZE_MONO_ASIAN : UiUtil.FONT_SIZE_MONO_NON_ASIAN);</span>
+<span class="fc" id="L311">        });</span>
 
-<span class="pc bpc" id="L312" title="1 of 2 branches missed.">        MediatorHelper.managerBruteForce().getResult().setFont(I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_MONO_ASIAN : UiUtil.FONT_MONO_NON_ASIAN);</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">        MediatorHelper.managerBruteForce().getResult().setFont(I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_MONO_ASIAN : UiUtil.FONT_MONO_NON_ASIAN);</span>
 
-<span class="fc" id="L314">        this.switchNetworkTable();</span>
-<span class="fc" id="L315">        I18nViewUtil.switchI18nComponents();</span>
-<span class="fc" id="L316">        this.switchOrientation(oldLocale, newLocale, isStartup);</span>
-<span class="fc" id="L317">        this.switchMenuItems();  // required to restore proper language orientation</span>
+<span class="fc" id="L315">        this.switchNetworkTable();</span>
+<span class="fc" id="L316">        I18nViewUtil.switchI18nComponents();</span>
+<span class="fc" id="L317">        this.switchOrientation(oldLocale, newLocale, isStartup);</span>
+<span class="fc" id="L318">        this.switchMenuItems();  // required to restore proper language orientation</span>
         
-<span class="fc" id="L319">        MediatorHelper.treeDatabase().reloadNodes();</span>
+<span class="fc" id="L320">        MediatorHelper.treeDatabase().reloadNodes();</span>
 
         // IllegalArgumentException #92981 on revalidate()
         try {
-<span class="fc" id="L323">            MediatorHelper.frame().revalidate();  // Fix glitches on Linux</span>
-<span class="nc" id="L324">        } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L325">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L326">        }</span>
-<span class="fc" id="L327">    }</span>
+<span class="fc" id="L324">            MediatorHelper.frame().revalidate();  // Fix glitches on Linux</span>
+<span class="nc" id="L325">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L326">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L327">        }</span>
+<span class="fc" id="L328">    }</span>
 
     private void switchOrientation(Locale oldLocale, Locale newLocale, boolean isStartup) {
-<span class="fc" id="L330">        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
-<span class="fc" id="L331">        MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
+<span class="fc" id="L331">        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
+<span class="fc" id="L332">        MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
         
-<span class="pc bpc" id="L333" title="1 of 2 branches missed.">        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {</span>
             
-<span class="nc" id="L335">            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitNS().getSplitEW();</span>
-<span class="nc" id="L336">            var componentLeft = splitPaneLeftRight.getLeftComponent();</span>
-<span class="nc" id="L337">            var componentRight = splitPaneLeftRight.getRightComponent();</span>
+<span class="nc" id="L336">            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitNS().getSplitEW();</span>
+<span class="nc" id="L337">            var componentLeft = splitPaneLeftRight.getLeftComponent();</span>
+<span class="nc" id="L338">            var componentRight = splitPaneLeftRight.getRightComponent();</span>
 
             // Reset components
-<span class="nc" id="L340">            splitPaneLeftRight.setLeftComponent(null);</span>
-<span class="nc" id="L341">            splitPaneLeftRight.setRightComponent(null);</span>
-<span class="nc" id="L342">            splitPaneLeftRight.setLeftComponent(componentRight);</span>
-<span class="nc" id="L343">            splitPaneLeftRight.setRightComponent(componentLeft);</span>
+<span class="nc" id="L341">            splitPaneLeftRight.setLeftComponent(null);</span>
+<span class="nc" id="L342">            splitPaneLeftRight.setRightComponent(null);</span>
+<span class="nc" id="L343">            splitPaneLeftRight.setLeftComponent(componentRight);</span>
+<span class="nc" id="L344">            splitPaneLeftRight.setRightComponent(componentLeft);</span>
 
-<span class="nc bnc" id="L345" title="All 2 branches missed.">            if (isStartup) {</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">            if (isStartup) {</span>
                 // TODO unclear and not working properly when starting as locale arabic
-<span class="nc" id="L347">                splitPaneLeftRight.setDividerLocation(</span>
-<span class="nc" id="L348">                    splitPaneLeftRight.getDividerLocation()</span>
+<span class="nc" id="L348">                splitPaneLeftRight.setDividerLocation(</span>
+<span class="nc" id="L349">                    splitPaneLeftRight.getDividerLocation()</span>
                 );
             } else {  // required as switch to arabic uses reversed location
-<span class="nc" id="L351">                splitPaneLeftRight.setDividerLocation(</span>
-<span class="nc" id="L352">                    splitPaneLeftRight.getWidth() -</span>
-<span class="nc" id="L353">                    splitPaneLeftRight.getDividerLocation()</span>
+<span class="nc" id="L352">                splitPaneLeftRight.setDividerLocation(</span>
+<span class="nc" id="L353">                    splitPaneLeftRight.getWidth() -</span>
+<span class="nc" id="L354">                    splitPaneLeftRight.getDividerLocation()</span>
                 );
             }
         }
         
-<span class="fc" id="L358">        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
-<span class="fc" id="L359">    }</span>
+<span class="fc" id="L359">        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
+<span class="fc" id="L360">    }</span>
 
     private void switchMenuItems() {
-<span class="fc" id="L362">        Stream.concat(AppMenubar.MODELS_ITEM.stream(), AppMenubar.MODELS_ITEM_INTO.stream())</span>
-<span class="fc" id="L363">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
-<span class="fc bfc" id="L364" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
-<span class="fc" id="L365">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
-<span class="fc" id="L366">            : ComponentOrientation.LEFT_TO_RIGHT</span>
+<span class="fc" id="L363">        Stream.concat(AppMenubar.MODELS_ITEM.stream(), AppMenubar.MODELS_ITEM_INTO.stream())</span>
+<span class="fc" id="L364">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
+<span class="fc bfc" id="L365" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
+<span class="fc" id="L366">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
+<span class="fc" id="L367">            : ComponentOrientation.LEFT_TO_RIGHT</span>
         ));
-<span class="fc" id="L368">    }</span>
+<span class="fc" id="L369">    }</span>
 
     private void switchNetworkTable() {
-<span class="fc" id="L371">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
-<span class="fc" id="L372">        TableColumnModel columnModel = header.getColumnModel();</span>
-<span class="fc" id="L373">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
-<span class="fc" id="L374">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
-<span class="fc" id="L375">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
-<span class="fc" id="L376">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
-<span class="fc" id="L377">        header.repaint();</span>
-<span class="fc" id="L378">    }</span>
+<span class="fc" id="L372">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
+<span class="fc" id="L373">        TableColumnModel columnModel = header.getColumnModel();</span>
+<span class="fc" id="L374">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
+<span class="fc" id="L375">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
+<span class="fc" id="L376">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
+<span class="fc" id="L377">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
+<span class="fc" id="L378">        header.repaint();</span>
+<span class="fc" id="L379">    }</span>
     
     
     // Getter and setter
 
     public JMenu getMenuView() {
-<span class="nc" id="L384">        return this.menuWindows.getMenuView();</span>
+<span class="nc" id="L385">        return this.menuWindows.getMenuView();</span>
     }
 
     public MenuWindows getMenuWindows() {
-<span class="fc" id="L388">        return this.menuWindows;</span>
+<span class="fc" id="L389">        return this.menuWindows;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

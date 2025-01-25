@@ -49,81 +49,80 @@ public class SplitNS extends JSplitPane {
      * and consoles in the bottom.
      */
     public SplitNS() {
-        
-<span class="fc" id="L53">        super(JSplitPane.VERTICAL_SPLIT);</span>
-<span class="fc" id="L54">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
-<span class="fc" id="L55">        var verticalLeftRightSplitter = preferences.getInt(PreferencesUtil.EW_SPLIT, 350);</span>
-<span class="fc" id="L56">        var tabManagersProxy = new TabManagersCards();</span>
-<span class="fc" id="L57">        new TabResults();  // initialized but hidden</span>
+<span class="fc" id="L52">        super(JSplitPane.VERTICAL_SPLIT);</span>
+<span class="fc" id="L53">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="fc" id="L54">        var verticalLeftRightSplitter = preferences.getInt(PreferencesUtil.EW_SPLIT, 350);</span>
+<span class="fc" id="L55">        var tabManagersProxy = new TabManagersCards();</span>
+<span class="fc" id="L56">        new TabResults();  // initialized but hidden</span>
 
         // Tree and tabs on top
-<span class="fc" id="L60">        this.splitEW.setLeftComponent(tabManagersProxy);</span>
-<span class="fc" id="L61">        JLabel labelApp = new JLabel(UiUtil.APP_RESULT.icon);</span>
-<span class="fc" id="L62">        labelApp.setMinimumSize(new Dimension(100, 0));</span>
-<span class="fc" id="L63">        this.splitEW.setRightComponent(labelApp);</span>
-<span class="fc" id="L64">        this.splitEW.setDividerLocation(verticalLeftRightSplitter);</span>
+<span class="fc" id="L59">        this.splitEW.setLeftComponent(tabManagersProxy);</span>
+<span class="fc" id="L60">        JLabel labelApp = new JLabel(UiUtil.APP_BIG.icon);</span>
+<span class="fc" id="L61">        labelApp.setMinimumSize(new Dimension(100, 0));</span>
+<span class="fc" id="L62">        this.splitEW.setRightComponent(labelApp);</span>
+<span class="fc" id="L63">        this.splitEW.setDividerLocation(verticalLeftRightSplitter);</span>
 
-<span class="fc" id="L66">        JLabel labelShowConsoles = new JLabel(UiUtil.ARROW_UP.icon);</span>
-<span class="fc" id="L67">        labelShowConsoles.setBorder(BorderFactory.createEmptyBorder());</span>
-<span class="fc" id="L68">        labelShowConsoles.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L65">        JLabel labelShowConsoles = new JLabel(UiUtil.ARROW_UP.icon);</span>
+<span class="fc" id="L66">        labelShowConsoles.setBorder(BorderFactory.createEmptyBorder());</span>
+<span class="fc" id="L67">        labelShowConsoles.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mouseClicked(MouseEvent e) {
-<span class="fc" id="L71">                SplitNS.ACTION_HIDE_SHOW_CONSOLE.actionPerformed(null);</span>
-<span class="fc" id="L72">            }</span>
+<span class="fc" id="L70">                SplitNS.ACTION_HIDE_SHOW_CONSOLE.actionPerformed(null);</span>
+<span class="fc" id="L71">            }</span>
         });
-<span class="fc" id="L74">        labelShowConsoles.setName(&quot;buttonShowConsolesHidden&quot;);</span>
-<span class="fc" id="L75">        SplitNS.PANEL_HIDDEN_CONSOLES.setLayout(new BorderLayout());</span>
-<span class="fc" id="L76">        SplitNS.PANEL_HIDDEN_CONSOLES.add(labelShowConsoles, BorderLayout.LINE_END);</span>
-<span class="fc" id="L77">        SplitNS.PANEL_HIDDEN_CONSOLES.setVisible(false);</span>
-<span class="fc" id="L78">        SplitNS.PANEL_HIDDEN_CONSOLES.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L73">        labelShowConsoles.setName(&quot;buttonShowConsolesHidden&quot;);</span>
+<span class="fc" id="L74">        SplitNS.PANEL_HIDDEN_CONSOLES.setLayout(new BorderLayout());</span>
+<span class="fc" id="L75">        SplitNS.PANEL_HIDDEN_CONSOLES.add(labelShowConsoles, BorderLayout.LINE_END);</span>
+<span class="fc" id="L76">        SplitNS.PANEL_HIDDEN_CONSOLES.setVisible(false);</span>
+<span class="fc" id="L77">        SplitNS.PANEL_HIDDEN_CONSOLES.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="nc bnc" id="L81" title="All 2 branches missed.">                if (e.getButton() == MouseEvent.BUTTON2) {  // middle click on header with no tab</span>
-<span class="nc" id="L82">                    SplitNS.ACTION_HIDE_SHOW_CONSOLE.actionPerformed(null);</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">                if (e.getButton() == MouseEvent.BUTTON2) {  // middle click on header with no tab</span>
+<span class="nc" id="L81">                    SplitNS.ACTION_HIDE_SHOW_CONSOLE.actionPerformed(null);</span>
                 }
-<span class="nc" id="L84">            }</span>
+<span class="nc" id="L83">            }</span>
         });
 
-<span class="fc" id="L87">        var panelManagerResult = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L88">        panelManagerResult.add(this.splitEW, BorderLayout.CENTER);</span>
-<span class="fc" id="L89">        panelManagerResult.add(SplitNS.PANEL_HIDDEN_CONSOLES, BorderLayout.SOUTH);</span>
-<span class="fc" id="L90">        this.setTopComponent(panelManagerResult);</span>
+<span class="fc" id="L86">        var panelManagerResult = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L87">        panelManagerResult.add(this.splitEW, BorderLayout.CENTER);</span>
+<span class="fc" id="L88">        panelManagerResult.add(SplitNS.PANEL_HIDDEN_CONSOLES, BorderLayout.SOUTH);</span>
+<span class="fc" id="L89">        this.setTopComponent(panelManagerResult);</span>
 
-<span class="fc" id="L92">        var panelConsoles = new PanelConsoles();</span>
-<span class="fc" id="L93">        MediatorHelper.register(panelConsoles);</span>
-<span class="fc" id="L94">        this.setBottomComponent(panelConsoles);</span>
+<span class="fc" id="L91">        var panelConsoles = new PanelConsoles();</span>
+<span class="fc" id="L92">        MediatorHelper.register(panelConsoles);</span>
+<span class="fc" id="L93">        this.setBottomComponent(panelConsoles);</span>
 
-<span class="fc" id="L96">        this.setResizeWeight(1);</span>
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L95">        this.setResizeWeight(1);</span>
+<span class="fc" id="L96">    }</span>
 
     /**
      * Switch left component with right component when locale orientation requires this.
      */
     public void initializeSplitOrientation() {
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (MediatorHelper.tabResults().getTabCount() == 0) {</span>
-<span class="fc" id="L104">            int dividerLocation = this.splitEW.getDividerLocation();</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">            if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {</span>
-<span class="nc" id="L106">                this.splitEW.setLeftComponent(MediatorHelper.tabResults());</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (MediatorHelper.tabResults().getTabCount() == 0) {</span>
+<span class="fc" id="L103">            int dividerLocation = this.splitEW.getDividerLocation();</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">            if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {</span>
+<span class="nc" id="L105">                this.splitEW.setLeftComponent(MediatorHelper.tabResults());</span>
             } else {
-<span class="fc" id="L108">                this.splitEW.setRightComponent(MediatorHelper.tabResults());</span>
+<span class="fc" id="L107">                this.splitEW.setRightComponent(MediatorHelper.tabResults());</span>
             }
-<span class="fc" id="L110">            this.splitEW.setDividerLocation(dividerLocation);</span>
+<span class="fc" id="L109">            this.splitEW.setDividerLocation(dividerLocation);</span>
         }
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L111">    }</span>
 
 
     // Getter and setter
 
     public JSplitPane getSplitEW() {
-<span class="nc" id="L118">        return this.splitEW;</span>
+<span class="nc" id="L117">        return this.splitEW;</span>
     }
 
     public static ActionHideShowConsole getActionHideShowConsole() {
-<span class="fc" id="L122">        return SplitNS.ACTION_HIDE_SHOW_CONSOLE;</span>
+<span class="fc" id="L121">        return SplitNS.ACTION_HIDE_SHOW_CONSOLE;</span>
     }
     
     public static ActionHideShowResult getActionHideShowResult() {
-<span class="fc" id="L126">        return SplitNS.ACTION_HIDE_SHOW_RESULT;</span>
+<span class="fc" id="L125">        return SplitNS.ACTION_HIDE_SHOW_RESULT;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

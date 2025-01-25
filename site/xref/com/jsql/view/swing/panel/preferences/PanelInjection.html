@@ -83,7 +83,7 @@
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>              <span class="jxr_string">"- ...&amp;injectMe=) union select...&lt;br&gt;"</span> +
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>              <span class="jxr_string">"Default is searching for the prefix but can be disabled to save time when prefix is already set by the user.&lt;/html&gt;"</span>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          );
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy.setToolTipText(<span class="jxr_string">"&lt;html&gt;Time strategy waits an arbitrary number of seconds for a page to respond.&lt;br&gt;Amount of seconds can be lowered on a stable environment like local tests in order to save time.&lt;/html&gt;"</span>);
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy.setToolTipText(<span class="jxr_string">"&lt;html&gt;Time strategy waits a given number of seconds for a page to respond (fallback to default if unchecked).&lt;br&gt;Amount of seconds can be lowered on a stable environment to save time (e.g. local tests).&lt;/html&gt;"</span>);
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">var</strong> panelSleepTimeStrategy = <strong class="jxr_keyword">new</strong> JPanel();
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>          panelSleepTimeStrategy.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelSleepTimeStrategy, BoxLayout.X_AXIS));

@@ -75,7 +75,7 @@ public class PanelInjection extends JPanel {
             &quot;- ...&amp;injectMe=) union select...&lt;br&gt;&quot; +
             &quot;Default is searching for the prefix but can be disabled to save time when prefix is already set by the user.&lt;/html&gt;&quot;
         );
-<span class="fc" id="L78">        this.checkboxIsLimitingSleepTimeStrategy.setToolTipText(&quot;&lt;html&gt;Time strategy waits an arbitrary number of seconds for a page to respond.&lt;br&gt;Amount of seconds can be lowered on a stable environment like local tests in order to save time.&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L78">        this.checkboxIsLimitingSleepTimeStrategy.setToolTipText(&quot;&lt;html&gt;Time strategy waits a given number of seconds for a page to respond (fallback to default if unchecked).&lt;br&gt;Amount of seconds can be lowered on a stable environment to save time (e.g. local tests).&lt;/html&gt;&quot;);</span>
 
 <span class="fc" id="L80">        var panelSleepTimeStrategy = new JPanel();</span>
 <span class="fc" id="L81">        panelSleepTimeStrategy.setLayout(new BoxLayout(panelSleepTimeStrategy, BoxLayout.X_AXIS));</span>

