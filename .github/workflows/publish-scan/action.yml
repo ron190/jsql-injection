@@ -45,8 +45,8 @@ runs:
         rm -r site/ || echo 'Folder(s) not found'
         cp -r "shared-resources/site/." "site/"
         for i in view model; do
-        mkdir -p "site/$i/" && cp -r "shared-resources/$i/target/site/." "site/$i/"
-        mkdir -p "site/$i/pit-reports/" && cp -r "shared-resources/$i/target/pit-reports/." "site/$i/pit-reports/"
+          mkdir -p "site/$i/" && cp -r "shared-resources/$i/target/site/." "site/$i/"
+          mkdir -p "site/$i/pit-reports/" && cp -r "shared-resources/$i/target/pit-reports/." "site/$i/pit-reports/"
         done;
         
         git add -f site/

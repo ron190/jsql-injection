@@ -238,7 +238,7 @@ public class ResourceAccess {
             urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysql", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMethod);
         }
         if (StringUtils.isEmpty(urlSuccess)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with pdo(), trying with mysql_query()...");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "No connection to the database");
         }
         return urlSuccess;
     }

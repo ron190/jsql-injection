@@ -1,11 +1,11 @@
 {
     "version": "0.106",
     "news": [
-        "[New feature, credit: @mrdragonblack] UDF shell added to new tab Exploit, now run system command on remote easily",
-        "[UDF] What is UDF and how to use it explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
-        "[Contribute] Some translation is still missing, open menu Community and translate a single item to make progress",
+        "[Credit: @selectfromblackhydra] RCE shell for oracle added to tab Exploits, needs reviewers and testers",
+        "[Credit: @mrdragonblack] UDF shell for mysql added to tab Exploits, now run system command on remote easily",
+        "[HowTo UDF/RCE] How to use shells explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
         "[Pinned] Report any bugs and thoughts and add your star to the project at https://github.com/ron190/jsql-injection",
-        "[Dark mode] GUI has been reworked for dark mode, now you'll enjoy hacking also during semi dark winter evenings",
-        "[Community] Propose features you want, what is currently missing in the tool?"
+        "[Community] Improve your CTF and bounty research, what should be done by jSQL that you do manually?",
+        "[Contribute] Some translation is still missing, open menu Community and translate a single item to make progress"
     ]
 }

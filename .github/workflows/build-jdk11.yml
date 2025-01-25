@@ -6,6 +6,7 @@ on:
         required: true
 
 jobs:
+
   build-jdk11:
     name: Test view on Docker
     runs-on: ubuntu-latest
@@ -39,7 +40,18 @@ jobs:
         run: mvn clean install -DskipTests dependency:tree
 
       - name: Build project container
-        run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
+        run: docker build -t jsql:latest --name docker_jsql-container --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
+
+      - name: Copy app from container
+        shell: bash
+        run: |
+          docker cp docker_jsql-container:view/target/view-v*-jar-with-dependencies.jar .
+
+      - name: VirusTotal scan
+        uses: crazy-max/ghaction-virustotal@v4
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          files: ./view-v*-jar-with-dependencies.jar
 
       - name: Unit tests
         run: $DOCKER_RESOURCES/scripts/run-on-docker-no-network.sh 'cd view/ && mvn clean install -P tests'

@@ -15,9 +15,11 @@ public class ComboBoxMethodRenderer extends JLabel implements ListCellRenderer<O
         if (value == ComboBoxMethodRenderer.SEPARATOR) {
             return ComboBoxMethodRenderer.SEPARATOR;
         }
-        var exploitMethods = (ExploitMethod) value;
-        this.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.getKeyTooltip()));
-        this.setText(I18nViewUtil.valueByKey(exploitMethods.getKeyLabel()));
+        if (value instanceof ExploitMethod) {
+            var exploitMethods = (ExploitMethod) value;
+            this.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.getKeyTooltip()));
+            this.setText(I18nViewUtil.valueByKey(exploitMethods.getKeyLabel()));
+        }
         this.setForeground(UIManager.getColor("ComboBox.foreground"));
         this.setBackground(UIManager.getColor("ComboBox.background"));
         if (isSelected) {

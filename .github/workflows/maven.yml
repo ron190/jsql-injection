@@ -41,7 +41,18 @@ jobs:
   codeql:
     uses: ./.github/workflows/codeql.yml
 
+  virustotal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: VirusTotal Scan
+        uses: crazy-max/ghaction-virustotal@v4
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          update_release_body: true
+          files: jsql-injection-v*.jar
+
   release:
-    needs: [build-jdk11, build, build-additional, codeql]
+    needs: [build-jdk11, build, build-additional, codeql, virustotal]
     uses: ./.github/workflows/release.yml
     secrets: inherit

