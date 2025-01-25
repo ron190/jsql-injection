@@ -11,6 +11,7 @@ public enum Interaction {
     ADD_TAB_EXPLOIT_WEB("AddTabExploitWeb"),
     ADD_TAB_EXPLOIT_SQL("AddTabExploitSql"),
     ADD_TAB_EXPLOIT_UDF("AddTabExploitUdf"),
+    ADD_TAB_EXPLOIT_RCE("AddTabExploitRce"),
     CREATE_VALUES_TAB("CreateValuesTab"),
     CREATE_ANALYSIS_REPORT("CreateAnalysisReport"),
 
@@ -26,6 +27,7 @@ public enum Interaction {
     GET_EXPLOIT_WEB_RESULT("GetExploitWebResult"),
     GET_EXPLOIT_SQL_RESULT("GetExploitSqlResult"),
     GET_EXPLOIT_UDF_RESULT("GetExploitUdfResult"),
+    GET_EXPLOIT_RCE_RESULT("GetExploitRceResult"),
 
     MARK_MULTI_INVULNERABLE("MarkMultiInvulnerable"),
     MARK_MULTI_STRATEGY("MarkMultiStrategy"),

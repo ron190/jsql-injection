@@ -4,6 +4,7 @@ import com.jsql.util.tampering.TamperingType;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.panel.preferences.listener.TamperingMouseAdapter;
 import com.jsql.view.swing.popupmenu.JPopupMenuComponent;
+import com.jsql.view.swing.text.SyntaxTextArea;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -34,15 +35,13 @@ public class PanelTampering extends JPanel {
     private final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton(TamperingType.SPACE_TO_DASH_COMMENT.instance().getDescription());
     private final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton(TamperingType.SPACE_TO_SHARP_COMMENT.instance().getDescription());
 
-    private static final RSyntaxTextArea textPaneEval = new RSyntaxTextArea();
+    private static final RSyntaxTextArea textPaneEval = new SyntaxTextArea("Click on a tamper to paste source and edit custom script");
 
     public PanelTampering(PanelPreferences panelPreferences) {
         this.checkboxIsTamperingEval.setToolTipText("Custom tamper in JavaScript and Java, e.g. sql.replace(/\\+/gm,'/**/')");
 
         PanelTampering.textPaneEval.setText(StringUtils.EMPTY);
         PanelTampering.textPaneEval.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-        PanelTampering.textPaneEval.setCodeFoldingEnabled(true);
-        PanelTampering.textPaneEval.setMarkOccurrences(true);
         PanelTampering.textPaneEval.setPopupMenu(new JPopupMenuComponent(PanelTampering.textPaneEval));
         PanelTampering.applyTheme();
 
@@ -212,7 +211,7 @@ public class PanelTampering extends JPanel {
     }
 
     public static void applyTheme() {
-        UiUtil.applyTheme(PanelTampering.textPaneEval);
+        UiUtil.applySyntaxTheme(PanelTampering.textPaneEval);
     }
     
     

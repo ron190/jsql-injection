@@ -61,8 +61,8 @@ public class I18nViewUtil {
                     ((JTextPanePlaceholder) componentSwing).setPlaceholderText(I18nUtil.valueByKey(key));
                 } else if (componentSwing instanceof JPasswordFieldPlaceholder) {
                     ((JPasswordFieldPlaceholder) componentSwing).setPlaceholderText(I18nUtil.valueByKey(key));
-                } else if (componentSwing instanceof RSyntaxTextArea) {
-                    ((RSyntaxTextArea) componentSwing).setText(I18nUtil.valueByKey(key));
+                } else if (componentSwing instanceof SyntaxTextArea) {
+                    ((SyntaxTextArea) componentSwing).setPlaceholderText(I18nUtil.valueByKey(key));
                 } else if (componentSwing instanceof JToolTipI18n) {
                     ((JToolTipI18n) componentSwing).setText(textI18n);
                 } else if (componentSwing instanceof JLabel) {

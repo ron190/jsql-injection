@@ -154,8 +154,14 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         return this.isTimeInjectable && timeTest.isTrue();
     }
 
+    public int getSleepTime() {
+        return this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
+            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
+            : 5;
+    }
+
     @Override
     public String getInfoMessage() {
-        return "- Strategy Time: query True when delaying for 5s\n\n";
+        return "- Strategy Time: query True when delays for "+ this.getSleepTime() +"s\n\n";
     }
 }

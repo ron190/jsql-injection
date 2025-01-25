@@ -3,6 +3,7 @@ package com.jsql.view.swing.panel.consoles;
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
+import com.jsql.view.swing.util.MediatorHelper;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -100,6 +101,15 @@ public class NetworkTable extends JTable {
         
         this.getSelectionModel().addListSelectionListener(event -> {
             if (!event.getValueIsAdjusting() && this.getSelectedRow() > -1) {  // prevent double event
+                var httpHeader = this.listHttpHeader.get(this.getSelectedRow());
+                tabbedPaneNetworkTab.changeTextNetwork(httpHeader);
+            }
+        });
+        tabbedPaneNetworkTab.getCheckBoxDecode().addActionListener(e -> {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withIsUrlDecodeNetworkTab(
+                tabbedPaneNetworkTab.getCheckBoxDecode().isSelected()
+            ).persist();
+            if (this.getSelectedRow() > -1) {  // prevent double event
                 var httpHeader = this.listHttpHeader.get(this.getSelectedRow());
                 tabbedPaneNetworkTab.changeTextNetwork(httpHeader);
             }

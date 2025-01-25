@@ -73,7 +73,7 @@
         <mimjdbc.version>3.42.3</mimjdbc.version>
         <monetdb-jdbc.version>2.29</monetdb-jdbc.version>
         <mssql-jdbc.version>12.8.1.jre11</mssql-jdbc.version>
-        <mysql-connector-j.version>9.1.0</mysql-connector-j.version>
+        <mysql-connector-j.version>9.2.0</mysql-connector-j.version>
         <nashorn-core.version>15.6</nashorn-core.version>
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
@@ -83,9 +83,9 @@
         <snakeyaml.version>2.3</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
         <spock-core.version>2.4-M5-groovy-4.0</spock-core.version>
-        <spring-boot-dependencies.version>3.4.1</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>3.4.2</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
-        <sqlite-jdbc.version>3.47.1.0</sqlite-jdbc.version>
+        <sqlite-jdbc.version>3.48.0.0</sqlite-jdbc.version>
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
         <stomp-websocket.version>2.3.4</stomp-websocket.version>
         <sybase-jconn4.version>16.0</sybase-jconn4.version>

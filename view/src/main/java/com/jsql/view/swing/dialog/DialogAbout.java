@@ -69,7 +69,7 @@ public class DialogAbout extends JDialog {
         Container dialogPane = this.getContentPane();
         JPanel lastLine = this.initializeLastLine(escapeListener);
 
-        var labelIcon = new JLabel(UiUtil.APP_ABOUT.icon);
+        var labelIcon = new JLabel(UiUtil.APP_MIDDLE.icon);
         labelIcon.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         dialogPane.add(labelIcon, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);

@@ -275,12 +275,13 @@ public class AppMenubar extends JMenuBar {
             UiUtil.TABLE_LINEAR, UiUtil.TABLE_BOLD, UiUtil.NETWORK, UiUtil.DATABASE_LINEAR, UiUtil.COG, UiUtil.CUP, UiUtil.CONSOLE, UiUtil.BINARY, UiUtil.CHUNK,
             UiUtil.ARROW, UiUtil.ARROW_HOVER, UiUtil.ARROW_PRESSED, UiUtil.EXPAND, UiUtil.EXPAND_HOVER, UiUtil.EXPAND_PRESSED,
             UiUtil.HOURGLASS, UiUtil.ARROW_DOWN, UiUtil.ARROW_UP, UiUtil.SQUARE, UiUtil.GLOBE, UiUtil.TICK_GREEN, UiUtil.CROSS_RED,
-            UiUtil.REPORT, UiUtil.APP_RESULT, UiUtil.APP_ABOUT
+            UiUtil.APP_ICON, UiUtil.APP_BIG, UiUtil.APP_MIDDLE
         ).forEach(ModelSvgIcon::setColorFilter);
 
         SqlEngine.applyTheme();
         PanelTampering.applyTheme();
         MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyTheme();
+        MediatorHelper.frame().setIconImages(UiUtil.getIcons());
         MediatorHelper.frame().revalidate();
 
         MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withThemeFlatLafName(theme).persist();

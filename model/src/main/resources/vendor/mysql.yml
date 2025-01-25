@@ -248,7 +248,8 @@ strategy:
     - tidb
    orderByErrorMessage:
     - Unknown column '1337' in 'order clause'
-   vendorSpecific: if(${test}, 'a', 'b')='a'
+   # disambiguation with binary(): if() introduced to sqlite in v3.48.0.0
+   vendorSpecific: if(${test}, binary('a'), 'b')=binary('a')
 
  normal:
   indices: union select ${indices}

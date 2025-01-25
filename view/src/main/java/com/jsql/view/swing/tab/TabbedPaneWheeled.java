@@ -60,11 +60,4 @@ public class TabbedPaneWheeled extends JTabbedPane {
             }
         }
     }
-
-    /**
-     * Display popupmenu with a list of tabs.
-     */
-    public void addMouseClickMenu() {
-        this.addMouseListener(new TabMouseAdapter(this));
-    }
 }

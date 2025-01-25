@@ -17,6 +17,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @RestController
@@ -393,24 +395,27 @@ public class JdbcRestController {
         // system Password1_One
         Class.forName("oracle.jdbc.OracleDriver");
 
-        Greeting greeting;
+        AtomicReference<Greeting> greeting = new AtomicReference<>();
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
 
-        try (
-            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:11521:ORCLCDB", "system", "Password1_One");
-            PreparedStatement pstmt = con.prepareStatement("select distinct owner from all_tables where '1' = '"+ inject +"'")
-        ) {
-            ResultSet rs = pstmt.executeQuery();
-            while(rs.next()) {
-                result.append(rs.getString(1));
+        Arrays.stream(inject.split(";")).map(String::trim).forEach(query -> {
+            query = query +";";
+            try (
+                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:11521:ORCLCDB", "system", "Password1_One");
+                PreparedStatement pstmt = con.prepareStatement("select distinct owner from all_tables where '1' = '"+ query +"'")
+            ) {
+                ResultSet rs = pstmt.executeQuery();
+                while(rs.next()) {
+                    result.append(rs.getString(1));
+                }
+                greeting.set(new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString())));
+            } catch (Exception e) {
+                greeting.set(this.initializeErrorMessage(e));
             }
-            greeting = new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-        } catch (Exception e) {
-            greeting = this.initializeErrorMessage(e);
-        }
+        });
 
-        return greeting;
+        return greeting.get();
     }
 
     @RequestMapping("/mysql")

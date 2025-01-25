@@ -506,7 +506,7 @@ public class SqlEngine extends JPanel {
     }
 
     public static void applyTheme() {
-        SqlEngine.getTextareas().forEach(UiUtil::applyTheme);
+        SqlEngine.getTextareas().forEach(UiUtil::applySyntaxTheme);
     }
 
     /**

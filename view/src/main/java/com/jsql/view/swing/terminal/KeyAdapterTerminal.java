@@ -78,6 +78,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
                     root.getElement(lineNumber).getEndOffset() - root.getElement(lineNumber).getStartOffset()
                 )
                 .replace(this.terminal.getPrompt(), StringUtils.EMPTY)
+                .trim()
             );
     
             if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {  // Validate user input ; disable text editing
@@ -169,7 +170,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             if (
                 this.commandsHistory.size() > 1
                 && this.indexCommandsHistory == this.commandsHistory.size() - 1
-                && StringUtils.isNotEmpty(command.get().trim())
+                && StringUtils.isNotEmpty(command.get())
             ) {
                 this.indexCommandsHistory--;
             }
@@ -190,8 +191,8 @@ public class KeyAdapterTerminal extends KeyAdapter {
         this.terminal.setEditable(false);
    
         // Populate cmd list for key up/down
-        if (StringUtils.isNotEmpty(command.get().trim())) {
-            this.commandsHistory.add(command.get().trim());
+        if (StringUtils.isNotEmpty(command.get())) {
+            this.commandsHistory.add(command.get());
             this.indexCommandsHistory = this.commandsHistory.size();
         }
 
@@ -204,7 +205,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 AbstractExploit terminalCommand = KeyAdapterTerminal.this.terminal;
                 terminalCommand.append("\n");
                 
-                if (StringUtils.isNotEmpty(command.get().trim())) {
+                if (StringUtils.isNotEmpty(command.get())) {
                     terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());
                     terminalCommand.action(
                         command.get(),

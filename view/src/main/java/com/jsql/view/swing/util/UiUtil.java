@@ -24,7 +24,6 @@ import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.DefaultCaret;
@@ -36,7 +35,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +50,6 @@ public class UiUtil {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final Border BORDER_5PX = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-    public static final String TEXTPANE_FONT = "TextPane.font";
 
     public static final ImageIcon ICON_FLAG_AR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ar.png")));
     public static final ImageIcon ICON_FLAG_ZH = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/zh.png")));
@@ -75,11 +72,6 @@ public class UiUtil {
     public static final ImageIcon ICON_FLAG_LK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/lk.png")));
     public static final ImageIcon ICON_FLAG_SE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/se.png")));
     public static final ImageIcon ICON_FLAG_FI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/fi.png")));
-
-    public static final URL URL_ICON_16 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug16.png");
-    public static final URL URL_ICON_32 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug32.png");
-    public static final URL URL_ICON_96 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug96.png");
-    public static final URL URL_ICON_128 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug128.png");
 
     public static final ModelSvgIcon DATABASE_BOLD = new ModelSvgIcon("database-bold", 0x1C274C)
         .withTab("DATABASE_TAB", "DATABASE_TOOLTIP");
@@ -123,10 +115,9 @@ public class UiUtil {
     public static final ModelSvgIcon SQUARE = new ModelSvgIcon("square", 0.01f);
     public static final ModelSvgIcon TICK_GREEN = new ModelSvgIcon("tick", Color.BLACK, null, LogLevelUtil.COLOR_GREEN, 0.02f);
     public static final ModelSvgIcon GLOBE = new ModelSvgIcon("globe", 0.025f);
-    private static final String PATH_APP_SVG = "swing/images/software/app.svg";
-    public static final ModelSvgIcon REPORT = new ModelSvgIcon(UiUtil.PATH_APP_SVG, 0.04f);
-    public static final ModelSvgIcon APP_RESULT = new ModelSvgIcon(UiUtil.PATH_APP_SVG, 0.5f);
-    public static final ModelSvgIcon APP_ABOUT = new ModelSvgIcon(UiUtil.PATH_APP_SVG, 0.25f);
+    public static final ModelSvgIcon APP_ICON = new ModelSvgIcon("app", 0.04f);
+    public static final ModelSvgIcon APP_BIG = new ModelSvgIcon("app", 0.5f);
+    public static final ModelSvgIcon APP_MIDDLE = new ModelSvgIcon("app", 0.25f);
 
     public static final String PATH_PAUSE = "swing/images/icons/pause.png";
 
@@ -139,11 +130,12 @@ public class UiUtil {
     // HTML engine considers Monospaced/Monospace to be the same Font
     // Java engine recognizes only Monospaced
     public static final String FONT_NAME_MONOSPACED = "Monospaced";
-    public static final String TEXT_AREA_FONT = "TextArea.font";
+    public static final String TEXTAREA_FONT = "TextArea.font";
+    public static final String TEXTPANE_FONT = "TextPane.font";
     public static final Font FONT_MONO_NON_ASIAN = new Font(
         UiUtil.FONT_NAME_MONO_NON_ASIAN,
         Font.PLAIN,
-        UIManager.getDefaults().getFont(UiUtil.TEXT_AREA_FONT).getSize() + 2
+        UIManager.getDefaults().getFont(UiUtil.TEXTAREA_FONT).getSize() + 2
     );
     
     public static final Font FONT_MONO_ASIAN = new Font(
@@ -181,8 +173,8 @@ public class UiUtil {
         UiUtil.loadFonts();
         // timer before closing automatically tooltip
         ToolTipManager.sharedInstance().setDismissDelay(3 * ToolTipManager.sharedInstance().getDismissDelay());
-        UIManager.put(UiUtil.TEXT_AREA_FONT, UiUtil.FONT_MONO_NON_ASIAN);  // required for basic text like chunks tab
-        UIManager.put(UiUtil.TEXTPANE_FONT, UIManager.getFont(UiUtil.TEXT_AREA_FONT));  // align textpane font
+        UIManager.put(UiUtil.TEXTAREA_FONT, UiUtil.FONT_MONO_NON_ASIAN);  // required for basic text like chunks tab
+        UIManager.put(UiUtil.TEXTPANE_FONT, UIManager.getFont(UiUtil.TEXTAREA_FONT));  // align textpane font
     }
 
     private static void loadFonts() {
@@ -205,12 +197,10 @@ public class UiUtil {
         List<Image> images = new ArrayList<>();
         // Fix #2154: NoClassDefFoundError on read()
         try {
-            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_128)));
-            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_96)));
-            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_32)));
-            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_16)));
-            
-        } catch (NoClassDefFoundError | IOException e) {
+            images.add(UiUtil.APP_ICON.icon.getImage());
+            images.add(UiUtil.APP_MIDDLE.icon.getImage());
+            images.add(UiUtil.APP_BIG.icon.getImage());
+        } catch (NoClassDefFoundError e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         return images;
@@ -221,7 +211,6 @@ public class UiUtil {
     }
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText, int x, int y) {
-        
         int w = textComponent.getWidth();
         
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -229,8 +218,8 @@ public class UiUtil {
         var ins = textComponent.getInsets();
         var fm = g.getFontMetrics();
         
-        int c0 = textComponent.getBackground().getRGB();
-        int c1 = textComponent.getForeground().getRGB();
+        int c0 = UIManager.getColor("TextArea.background").getRGB();
+        int c1 = UIManager.getColor("TextArea.foreground").getRGB();
         var m = 0xfefefefe;
         int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
         
@@ -266,12 +255,12 @@ public class UiUtil {
         component.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());
     }
 
-    public static void applyTheme(RSyntaxTextArea textarea) {
+    public static void applySyntaxTheme(RSyntaxTextArea textArea) {
         try {
             boolean isDark = UIManager.getLookAndFeel().getName().matches(".*(Dark|High contrast).*");
             var xmlTheme = String.format("/org/fife/ui/rsyntaxtextarea/themes/%s.xml", isDark ? "dark" : "default");
             Theme theme = Theme.load(SqlEngine.class.getResourceAsStream(xmlTheme));
-            theme.apply(textarea);
+            theme.apply(textArea);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }

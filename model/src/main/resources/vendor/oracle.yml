@@ -255,7 +255,12 @@ strategy:
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}
-  
+  time: |
+   ${binary.mode} -1=(select dbms_pipe.receive_message(
+      '1337',
+      case when ${test} then 1 else ${sleep_time} end
+   ) from dual)
+
  error:
   method:
   

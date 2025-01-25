@@ -29,7 +29,8 @@ class StringUtilSpock extends Specification {
                 */-  b  
                 b  -  c
                 c  d
-            ''') == '/**//*!*/a a-b b-c c d'
+            ''') == '/**//*!*/a a-b b-c c d'  // var integer operation in a-b
+            StringUtil.cleanSql('ls -l') == 'ls-l'  // not SQL, bypassed with encoding
 
             HashUtil.toMd4('eac') == '128A23E4553B3EE368109E5CEE8CF2C1'
             HashUtil.toAdler32('eac') == '39256362'

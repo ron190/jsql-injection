@@ -94,6 +94,7 @@ public class PreferencesUtil {
     private String themeFlatLafName = StringUtils.EMPTY;
     private String languageTag = StringUtils.EMPTY;
     private boolean isUserAgentRandom = false;
+    private boolean isUrlDecodeNetworkTab = false;
 
     /**
      * Initialize the utility class with previously saved JVM preferences and apply
@@ -172,6 +173,7 @@ public class PreferencesUtil {
 
         this.themeFlatLafName = preferences.get("themeFlatLafName", StringUtils.EMPTY);
         this.languageTag = preferences.get("languageTag", StringUtils.EMPTY);
+        this.isUrlDecodeNetworkTab = preferences.getBoolean("isUrlDecodeNetworkTab", false);
     }
     
     /**
@@ -243,6 +245,7 @@ public class PreferencesUtil {
         preferences.putBoolean("isStrategyNormalDisabled", this.isStrategyNormalDisabled);
 
         preferences.putBoolean("isUserAgentRandom", this.isUserAgentRandom);
+        preferences.putBoolean("isUrlDecodeNetworkTab", this.isUrlDecodeNetworkTab);
 
         preferences.put("themeFlatLafName", this.themeFlatLafName);
         preferences.put("languageTag", this.languageTag);
@@ -491,6 +494,10 @@ public class PreferencesUtil {
 
     public String getLanguageTag() {
         return this.languageTag;
+    }
+
+    public boolean isUrlDecodeNetworkTab() {
+        return this.isUrlDecodeNetworkTab;
     }
 
     
@@ -768,6 +775,11 @@ public class PreferencesUtil {
 
     public PreferencesUtil withThemeFlatLafName(String themeFlatLafName) {
         this.themeFlatLafName = themeFlatLafName;
+        return this;
+    }
+
+    public PreferencesUtil withIsUrlDecodeNetworkTab(boolean isUrlDecodeNetworkTab) {
+        this.isUrlDecodeNetworkTab = isUrlDecodeNetworkTab;
         return this;
     }
 

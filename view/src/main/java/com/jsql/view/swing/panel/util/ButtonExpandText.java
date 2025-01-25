@@ -27,7 +27,7 @@ public class ButtonExpandText extends JButton {
     /**
      * Create a button in address bar.
      */
-    public ButtonExpandText(String titleFrame, JTextField textFieldHeader) {
+    public ButtonExpandText(String titleFrame, JTextField sourceTextField) {
         this.setPreferredSize(new Dimension(16, 16));
         this.setContentAreaFilled(false);
 
@@ -35,18 +35,18 @@ public class ButtonExpandText extends JButton {
         this.setRolloverIcon(UiUtil.EXPAND_HOVER.icon);
         this.setPressedIcon(UiUtil.EXPAND_PRESSED.icon);
 
-        JTextArea textArea = new JPopupTextArea(new JTextAreaPlaceholder("Multiline text")).getProxy();
-        textArea.getCaret().setBlinkRate(500);
+        JTextArea textAreaInDialog = new JPopupTextArea(new JTextAreaPlaceholder("Multiline text")).getProxy();
+        textAreaInDialog.getCaret().setBlinkRate(500);
 
         final JDialog dialogWithTextarea = new JDialog(MediatorHelper.frame(), titleFrame, true);
-        dialogWithTextarea.getContentPane().add(new JScrollPane(textArea));
+        dialogWithTextarea.getContentPane().add(new JScrollPane(textAreaInDialog));
         dialogWithTextarea.pack();
         dialogWithTextarea.setSize(400, 300);
         dialogWithTextarea.setLocationRelativeTo(null);
         dialogWithTextarea.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                textFieldHeader.setText(textArea.getText().replace("\n", "\\n").replace("\r", "\\r"));
+                sourceTextField.setText(textAreaInDialog.getText().replace("\n", "\\n").replace("\r", "\\r"));
                 super.windowClosing(e);
             }
         });
@@ -54,7 +54,7 @@ public class ButtonExpandText extends JButton {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                textArea.setText(textFieldHeader.getText().replace("\\n", "\n").replace("\\r", "\r"));
+                textAreaInDialog.setText(sourceTextField.getText().replace("\\n", "\n").replace("\\r", "\r"));
                 dialogWithTextarea.setVisible(!dialogWithTextarea.isVisible());
             }
         });

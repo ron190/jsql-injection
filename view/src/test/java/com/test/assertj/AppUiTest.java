@@ -562,8 +562,7 @@ class AppUiTest {
     void shouldFindConnectionPreferences() {
         AppUiTest.logMethod();
         AppUiTest.window.label("advancedButton").click();
-        AppUiTest.window.menuItem("menuWindows").click();
-        AppUiTest.window.menuItem("itemPreferences").click();
+        AppUiTest.window.menuItemWithPath("Windows", "Preferences").click();
         AppUiTest.window.list("listCategoriesPreference").selectItem(Pattern.compile(".*Connection.*"));
 
         AppUiTest.logMethod();
@@ -593,8 +592,7 @@ class AppUiTest {
     void shouldFindInjectionPreferences() {
         AppUiTest.logMethod();
         AppUiTest.window.label("advancedButton").click();
-        AppUiTest.window.menuItem("menuWindows").click();
-        AppUiTest.window.menuItem("itemPreferences").click();
+        AppUiTest.window.menuItemWithPath("Windows", "Preferences").click();
 
         AppUiTest.logMethod();
         Arrays.asList(
@@ -659,8 +657,7 @@ class AppUiTest {
     void shouldFindSqlEngine() {
         AppUiTest.logMethod();
         AppUiTest.window.label("advancedButton").click();
-        AppUiTest.window.menuItem("menuWindows").click();
-        AppUiTest.window.menuItem("itemSqlEngine").click();
+        AppUiTest.window.menuItemWithPath("Windows", "SQL Engine").click();
 
         AppUiTest.logMethod();
         try {

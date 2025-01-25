@@ -5,12 +5,12 @@ import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
-import com.jsql.view.swing.popupmenu.JPopupMenuComponent;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
-import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextComponent;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
+import com.jsql.view.swing.text.SyntaxTextArea;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -23,10 +23,10 @@ import org.jsoup.safety.Safelist;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
-import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
@@ -36,39 +36,42 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private final JTextArea textAreaNetworkTabUrl = new JPopupTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_URL")).getProxy();
-    private final JTextArea textAreaNetworkTabResponse = new JPopupTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_RESPONSE")).getProxy();
-    private final RSyntaxTextArea textAreaNetworkTabSource = new RSyntaxTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_SOURCE"));
-    private final JTextPane textAreaNetworkTabPreview = new JPopupTextComponent<>(new JTextPanePlaceholder(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_PREVIEW")){
+    private final RSyntaxTextArea textAreaUrl = new SyntaxTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_URL"));
+    private final RSyntaxTextArea textAreaResponse = new SyntaxTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_RESPONSE"));
+    private final RSyntaxTextArea textAreaSource = new SyntaxTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_SOURCE"));
+    private final JTextPane textPanePreview = new JPopupTextComponent<>(new JTextPanePlaceholder(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_PREVIEW")){
         @Override
         public boolean isEditable() {
             return false;
         }
     }).getProxy();
-    private final JTextArea textAreaNetworkTabHeader = new JPopupTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_HEADERS")).getProxy();
-    private final JTextArea textAreaNetworkTabParams = new JPopupTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_REQUEST")).getProxy();
-    
+    private final RSyntaxTextArea textAreaHeader = new SyntaxTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_HEADERS"));
+    private final RSyntaxTextArea textAreaRequest = new SyntaxTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_REQUEST"));
+    private final JCheckBox checkBoxDecode = new JCheckBox("Decode", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlDecodeNetworkTab());
+
     public TabbedPaneNetworkTab() {
         this.setName("tabNetwork");
+        this.putClientProperty("JTabbedPane.trailingComponent", this.checkBoxDecode);
+        this.checkBoxDecode.setHorizontalTextPosition(SwingConstants.LEFT);
 
-        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_URL", this.textAreaNetworkTabUrl);
-        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_RESPONSE", this.textAreaNetworkTabResponse);
-        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_SOURCE", this.textAreaNetworkTabSource);
-        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_PREVIEW", this.textAreaNetworkTabPreview);
-        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_HEADERS", this.textAreaNetworkTabHeader);
-        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_REQUEST", this.textAreaNetworkTabParams);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_URL", this.textAreaUrl);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_RESPONSE", this.textAreaResponse);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_SOURCE", this.textAreaSource);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_PREVIEW", this.textPanePreview);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_HEADERS", this.textAreaHeader);
+        I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_REQUEST", this.textAreaRequest);
         Stream.of(
-            new SimpleEntry<>("NETWORK_TAB_URL_LABEL", this.textAreaNetworkTabUrl),
-            new SimpleEntry<>("NETWORK_TAB_HEADERS_LABEL", this.textAreaNetworkTabHeader),
-            new SimpleEntry<>("NETWORK_TAB_PARAMS_LABEL", this.textAreaNetworkTabParams),
-            new SimpleEntry<>("NETWORK_TAB_RESPONSE_LABEL", this.textAreaNetworkTabResponse),
-            new SimpleEntry<>("NETWORK_TAB_SOURCE_LABEL", this.textAreaNetworkTabSource),
-            new SimpleEntry<>("NETWORK_TAB_PREVIEW_LABEL", this.textAreaNetworkTabPreview)
+            new SimpleEntry<>("NETWORK_TAB_URL_LABEL", this.textAreaUrl),
+            new SimpleEntry<>("NETWORK_TAB_HEADERS_LABEL", this.textAreaHeader),
+            new SimpleEntry<>("NETWORK_TAB_PARAMS_LABEL", this.textAreaRequest),
+            new SimpleEntry<>("NETWORK_TAB_RESPONSE_LABEL", this.textAreaResponse),
+            new SimpleEntry<>("NETWORK_TAB_SOURCE_LABEL", this.textAreaSource),
+            new SimpleEntry<>("NETWORK_TAB_PREVIEW_LABEL", this.textPanePreview)
         )
         .forEach(entry -> {
             this.addTab(
                 I18nUtil.valueByKey(entry.getKey()),
-                entry.getValue() == this.textAreaNetworkTabSource
+                entry.getValue() == this.textAreaSource
                 ? new RTextScrollPane(entry.getValue(), false)
                 : new JScrollPane(entry.getValue())
             );
@@ -86,65 +89,53 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         });
 
-        this.textAreaNetworkTabSource.setPopupMenu(new JPopupMenuComponent(this.textAreaNetworkTabSource));
-        this.textAreaNetworkTabSource.setEditable(false);
-        this.textAreaNetworkTabSource.getCaret().setBlinkRate(0);
-        this.textAreaNetworkTabSource.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent focusEvent) {
-                TabbedPaneNetworkTab.this.textAreaNetworkTabSource.getCaret().setVisible(true);
-                TabbedPaneNetworkTab.this.textAreaNetworkTabSource.getCaret().setSelectionVisible(true);
-            }
+        Arrays.asList(this.textAreaUrl, this.textAreaHeader, this.textAreaRequest, this.textAreaResponse, this.textAreaSource).forEach(entry -> {
+            entry.setEditable(false);
+            entry.setLineWrap(true);
         });
-        this.textAreaNetworkTabSource.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-        this.textAreaNetworkTabSource.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
-        this.textAreaNetworkTabSource.setHighlightSecondaryLanguages(true);
+        this.textAreaResponse.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
+        this.textAreaSource.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
+        this.textAreaSource.setHighlightSecondaryLanguages(true);
         this.applyTheme();
-
-        this.textAreaNetworkTabHeader.setLineWrap(true);
-        this.textAreaNetworkTabParams.setLineWrap(true);
-        this.textAreaNetworkTabResponse.setLineWrap(true);
-        this.textAreaNetworkTabUrl.setLineWrap(true);
-        this.textAreaNetworkTabSource.setLineWrap(true);
         
-        this.textAreaNetworkTabPreview.setEditorKit(new HTMLEditorKitTextPaneWrap());
-        this.textAreaNetworkTabPreview.setContentType("text/html");
-        this.textAreaNetworkTabPreview.setEditable(false);
-        this.textAreaNetworkTabPreview.getCaret().setBlinkRate(0);
-        this.textAreaNetworkTabPreview.addFocusListener(new FocusAdapter() {
+        this.textPanePreview.setEditorKit(new HTMLEditorKitTextPaneWrap());
+        this.textPanePreview.setContentType("text/html");
+        this.textPanePreview.setEditable(false);
+        this.textPanePreview.getCaret().setBlinkRate(0);
+        this.textPanePreview.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent focusEvent) {
-                TabbedPaneNetworkTab.this.textAreaNetworkTabPreview.getCaret().setVisible(true);
-                TabbedPaneNetworkTab.this.textAreaNetworkTabPreview.getCaret().setSelectionVisible(true);
+                TabbedPaneNetworkTab.this.textPanePreview.getCaret().setVisible(true);
+                TabbedPaneNetworkTab.this.textPanePreview.getCaret().setSelectionVisible(true);
             }
         });
     }
     
     public void changeTextNetwork(HttpHeader networkData) {
-        this.textAreaNetworkTabParams.setText(networkData.getPost());
-        this.textAreaNetworkTabUrl.setText(networkData.getUrl());
+        this.textAreaRequest.setText(this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getPost()) : networkData.getPost());
+        this.textAreaUrl.setText(this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getUrl()) : networkData.getUrl());
 
-        this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);
+        this.textAreaHeader.setText(StringUtils.EMPTY);
         if (networkData.getHeader() != null) {
             for (String key: networkData.getHeader().keySet()) {
-                this.textAreaNetworkTabHeader.append(key + ": " + networkData.getHeader().get(key));
-                this.textAreaNetworkTabHeader.append("\n");
+                this.textAreaHeader.append(key + ": " + (this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getHeader().get(key)) : networkData.getHeader().get(key)));
+                this.textAreaHeader.append("\n");
             }
         }
 
-        this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);
+        this.textAreaResponse.setText(StringUtils.EMPTY);
         if (networkData.getResponse() != null) {
             for (String key: networkData.getResponse().keySet()) {
-                this.textAreaNetworkTabResponse.append(key + ": " + networkData.getResponse().get(key));
-                this.textAreaNetworkTabResponse.append("\n");
+                this.textAreaResponse.append(key + ": " + (this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getResponse().get(key)) : networkData.getResponse().get(key)));
+                this.textAreaResponse.append("\n");
             }
         }
 
         // Fix #53736: ArrayIndexOutOfBoundsException on setText()
         // Fix #54573: NullPointerException on setText()
         try {
-            this.textAreaNetworkTabSource.setText(
-                StringUtil.detectUtf8(networkData.getSource())
+            this.textAreaSource.setText(
+                StringUtil.detectUtf8(this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getSource()) : networkData.getSource())
                 .replaceAll("#{5,}", "#*")
                 .trim()
             );
@@ -152,14 +143,14 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
-        this.textAreaNetworkTabPreview.getEditorKit().createDefaultDocument();  // Reset EditorKit to disable previous document effect
+        this.textPanePreview.getEditorKit().createDefaultDocument();  // Reset EditorKit to disable previous document effect
         // Proxy is used by jsoup to display <img> tags
         // Previous test for 2xx Success and 3xx Redirection was Header only, now get the HTML content
         // Fix #35352: EmptyStackException on setText()
         // Fix #39841: RuntimeException on setText()
         // Fix #42523: ExceptionInInitializerError on clean()
         try {
-            this.textAreaNetworkTabPreview.setText(
+            this.textPanePreview.setText(
                 Jsoup.clean(
                     String.format(
                         "<html>%s</html>",
@@ -184,27 +175,33 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     }
     
     public void reset() {
-        this.textAreaNetworkTabUrl.setText(StringUtils.EMPTY);
-        this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);
-        this.textAreaNetworkTabParams.setText(StringUtils.EMPTY);
-        this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);
+        this.textAreaUrl.setText(StringUtils.EMPTY);
+        this.textAreaHeader.setText(StringUtils.EMPTY);
+        this.textAreaRequest.setText(StringUtils.EMPTY);
+        this.textAreaResponse.setText(StringUtils.EMPTY);
         
         // Fix #54572: NullPointerException on setText()
         try {
-            this.textAreaNetworkTabSource.setText(StringUtils.EMPTY);
+            this.textAreaSource.setText(StringUtils.EMPTY);
         } catch (NullPointerException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
         try {
-            this.textAreaNetworkTabPreview.setText(StringUtils.EMPTY);
+            this.textPanePreview.setText(StringUtils.EMPTY);
         } catch (ArrayIndexOutOfBoundsException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 
     public void applyTheme() {
-        UiUtil.applyTheme(this.textAreaNetworkTabSource);
+        Arrays.asList(
+            this.textAreaUrl, this.textAreaHeader, this.textAreaRequest, this.textAreaResponse, this.textAreaSource
+        ).forEach(UiUtil::applySyntaxTheme);
+    }
+
+    public JCheckBox getCheckBoxDecode() {
+        return this.checkBoxDecode;
     }
 }

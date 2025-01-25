@@ -49,7 +49,6 @@ public class SplitNS extends JSplitPane {
      * and consoles in the bottom.
      */
     public SplitNS() {
-        
         super(JSplitPane.VERTICAL_SPLIT);
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         var verticalLeftRightSplitter = preferences.getInt(PreferencesUtil.EW_SPLIT, 350);
@@ -58,7 +57,7 @@ public class SplitNS extends JSplitPane {
 
         // Tree and tabs on top
         this.splitEW.setLeftComponent(tabManagersProxy);
-        JLabel labelApp = new JLabel(UiUtil.APP_RESULT.icon);
+        JLabel labelApp = new JLabel(UiUtil.APP_BIG.icon);
         labelApp.setMinimumSize(new Dimension(100, 0));
         this.splitEW.setRightComponent(labelApp);
         this.splitEW.setDividerLocation(verticalLeftRightSplitter);

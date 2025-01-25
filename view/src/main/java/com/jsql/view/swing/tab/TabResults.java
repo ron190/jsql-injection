@@ -18,6 +18,7 @@ import com.jsql.util.StringUtil;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
+import com.jsql.view.swing.terminal.ExploitRce;
 import com.jsql.view.swing.terminal.ExploitSql;
 import com.jsql.view.swing.terminal.ExploitUdf;
 import com.jsql.view.swing.terminal.ExploitWeb;
@@ -109,7 +110,7 @@ public class TabResults extends DnDTabbedPane {
         });
         UiUtil.initialize(editorPane);  // silent delete
 
-        this.addTextTab("Vulnerability report", "Analysis report with all payloads detected", editorPane, UiUtil.REPORT.icon);
+        this.addTextTab("Vulnerability report", "Analysis report with all payloads detected", editorPane, UiUtil.APP_ICON.icon);
     }
 
     public void addTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
@@ -154,6 +155,26 @@ public class TabResults extends DnDTabbedPane {
             this.setSelectedComponent(scroller);  // Focus on the new tab
 
             var header = new TabHeader("UDF shell", UiUtil.TERMINAL.icon);
+            this.setTabComponentAt(this.indexOfComponent(scroller), header);
+            terminal.requestFocusInWindow();
+
+            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
+        } catch (MalformedURLException | URISyntaxException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
+        }
+    }
+
+    public void addTabExploitRce() {
+        try {
+            var terminalID = UUID.randomUUID();
+            var terminal = new ExploitRce(terminalID);
+            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+
+            JScrollPane scroller = new JScrollPane(terminal);
+            this.addTab("RCE shell", scroller);
+            this.setSelectedComponent(scroller);  // Focus on the new tab
+
+            var header = new TabHeader("RCE shell", UiUtil.TERMINAL.icon);
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 

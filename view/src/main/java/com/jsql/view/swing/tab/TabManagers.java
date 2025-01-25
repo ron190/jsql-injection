@@ -42,8 +42,6 @@ public class TabManagers extends TabbedPaneWheeled {
         this.setName("tabManagers");
         this.setMaximumSize(new Dimension(this.getMaximumSize().width, 35));
         this.setPreferredSize(new Dimension(this.getPreferredSize().width, 35));
-        this.addMouseListener(new TabMouseAdapter(this));
-        this.addMouseClickMenu();
 
         AtomicInteger indexTab = new AtomicInteger();
         this.iconsTabs.forEach(modelSvgIcon -> this.buildI18nTab(modelSvgIcon, indexTab.getAndIncrement()));
@@ -86,7 +84,6 @@ public class TabManagers extends TabbedPaneWheeled {
         I18nViewUtil.addComponentForKey(keyTooltip, tooltipAtomic.get());
         
         labelTab.setToolTipText(I18nUtil.valueByKey(keyTooltip));
-        labelTab.addMouseListener(new TabMouseAdapter(this));  // required as label incorrectly focused
     }
 
     public List<ModelSvgIcon> getIconsTabs() {
