@@ -51,7 +51,7 @@ jobs:
               -F 'file=@'$PATH_JAR
             )
             echo "VirusTotal response: $response"
-            analysis_id=$(echo $response | jq -r '.data.id')
+            analysis_id=$(echo $response | jq -r '.data.id' || echo "")
             if [ -n "$analysis_id" ]; then
               echo "::set-output name=analysis_id::$analysis_id"
               break

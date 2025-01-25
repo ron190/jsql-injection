@@ -29,10 +29,8 @@ OLD_DISPLAY=${DISPLAY}
 touch ~/.Xauthority
 
 echo "Starting vncserver..."
-vncserver ":${NEW_DISPLAY}" -localhost -geometry 800x600
+xvnc "localhost:${NEW_DISPLAY}" -localhost -geometry 800x600
 
-echo "Starting xtigervncviewer..."
-xtigervncviewer -SecurityTypes VncAuth -passwd "$HOME/.vnc/passwd" ":${NEW_DISPLAY}"
 export DISPLAY=:${NEW_DISPLAY}
 
 echo MAVEN_NASHORN="${MAVEN_NASHORN}"
