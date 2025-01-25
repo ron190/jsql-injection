@@ -8,24 +8,32 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.swing.interaction;
+package com.jsql.view.scan.interaction;
 
+import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
+import java.util.Map;
+
 /**
- * Mark the injection as vulnerable to a normal injection.
+ * Mark the injection as vulnerable to a basic injection.
  */
-public class MarkNormalStrategy implements InteractionCommand {
+public class MarkUnionVulnerable implements InteractionCommand {
+
+    private final String url;
     
-    public MarkNormalStrategy(Object[] interactionParams) {
-        // Do nothing
+    @SuppressWarnings("unchecked")
+    public MarkUnionVulnerable(Object[] interactionParams) {
+        Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
+        this.url = (String) params.get(Header.URL);
     }
 
     @Override
     public void execute() {
-        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getNormal();
-        MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(strategy);
+        
+        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getUnion();
+        MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

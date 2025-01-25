@@ -141,7 +141,7 @@ strategy:
    orderByErrorMessage:
     - 'DB2 SQL Error: SQLCODE=.*, SQLSTATE=.*, SQLERRMC=null, DRIVER=.*'
 
- normal:
+ union:
   indices: union select ${indices} from sysibm.sysdummy1
   capacity: |
    /**

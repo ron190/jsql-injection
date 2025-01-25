@@ -26,12 +26,12 @@ public class PanelInjection extends JPanel {
     private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("Inject every cookie parameters", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
     private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox("Inject SOAP parameters in Request body", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam());
 
-    private final JCheckBox checkboxIsLimitingNormalIndex = new JCheckBox("Limit Normal UNION strategy :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex());
-    private final JSpinner spinnerNormalIndexCount = new JSpinner();
+    private final JCheckBox checkboxIsLimitingUnionIndex = new JCheckBox("Limit Union strategy :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingUnionIndex());
+    private final JSpinner spinnerUnionIndexCount = new JSpinner();
     private final JCheckBox checkboxIsLimitingSleepTimeStrategy = new JCheckBox("Delay Time strategy :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy());
     private final JSpinner spinnerSleepTimeStrategyCount = new JSpinner();
 
-    private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox("Disable calibration (smaller SQL query during Normal index selection only)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
+    private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox("Disable calibration (smaller SQL query during Union index selection only)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
     private final JRadioButton radioIsDefaultStrategy = new JRadioButton("Use Default mode (keep unchanged ; URL and processing unchanged)", true);
     private final JRadioButton radioIsZipStrategy = new JRadioButton("Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
     private final JRadioButton radioIsDiosStrategy = new JRadioButton("Use Dios mode (less queries ; do not use with Error strategies)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
@@ -56,11 +56,11 @@ public class PanelInjection extends JPanel {
         this.radioIsDiosStrategy.setName("radioIsDiosStrategy");
         this.checkboxIsUrlEncodingDisabled.setName("checkboxIsUrlEncodingDisabled");
         this.checkboxIsUrlRandomSuffixDisabled.setName("checkboxIsUrlRandomSuffixDisabled");
-        this.checkboxIsLimitingNormalIndex.setName("checkboxIsLimitingNormalIndex");
+        this.checkboxIsLimitingUnionIndex.setName("checkboxIsLimitingUnionIndex");
         this.checkboxIsLimitingSleepTimeStrategy.setName("checkboxIsLimitingSleepTimeStrategy");
         
         this.checkboxIsPerfIndexDisabled.setToolTipText(
-            "<html>Reduce Normal calibration URL, useful when host rejects large URL."
+            "<html>Reduce Union calibration URL, useful when host rejects large URL."
             + "<br>Should be enabled when Zip mode is activated.</html>"
         );
         this.checkboxIsParsingForm.setToolTipText(
@@ -94,28 +94,28 @@ public class PanelInjection extends JPanel {
         this.spinnerSleepTimeStrategyCount.addMouseWheelListener(new SpinnerMouseWheelListener());
         this.spinnerSleepTimeStrategyCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
 
-        this.checkboxIsLimitingNormalIndex.setToolTipText("Maximum number of columns to check on UNION based queries");
+        this.checkboxIsLimitingUnionIndex.setToolTipText("Maximum number of columns to check on UNION based queries");
 
-        var panelIsLimitingNormalIndex = new JPanel();
-        panelIsLimitingNormalIndex.setLayout(new BoxLayout(panelIsLimitingNormalIndex, BoxLayout.X_AXIS));
-        panelIsLimitingNormalIndex.add(new JLabel("Search for up to "));
-        panelIsLimitingNormalIndex.add(this.spinnerNormalIndexCount);
-        panelIsLimitingNormalIndex.add(new JLabel(" column(s) ; default 50 columns"));
-        panelIsLimitingNormalIndex.setMaximumSize(new Dimension(325, this.spinnerNormalIndexCount.getPreferredSize().height));
-        int countNormalIndex = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countNormalIndex();
-        var spinnerCountNormalIndex = new SpinnerNumberModel(
-            countNormalIndex <= 0 ? 50 : countNormalIndex,
+        var panelIsLimitingUnionIndex = new JPanel();
+        panelIsLimitingUnionIndex.setLayout(new BoxLayout(panelIsLimitingUnionIndex, BoxLayout.X_AXIS));
+        panelIsLimitingUnionIndex.add(new JLabel("Search for up to "));
+        panelIsLimitingUnionIndex.add(this.spinnerUnionIndexCount);
+        panelIsLimitingUnionIndex.add(new JLabel(" column(s) ; default 50 columns"));
+        panelIsLimitingUnionIndex.setMaximumSize(new Dimension(325, this.spinnerUnionIndexCount.getPreferredSize().height));
+        int countUnionIndex = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countUnionIndex();
+        var spinnerCountUnionIndex = new SpinnerNumberModel(
+            countUnionIndex <= 0 ? 50 : countUnionIndex,
             1,
             200,
             1
         );
-        this.spinnerNormalIndexCount.setModel(spinnerCountNormalIndex);
-        this.spinnerNormalIndexCount.addMouseWheelListener(new SpinnerMouseWheelListener());
-        this.spinnerNormalIndexCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
+        this.spinnerUnionIndexCount.setModel(spinnerCountUnionIndex);
+        this.spinnerUnionIndexCount.addMouseWheelListener(new SpinnerMouseWheelListener());
+        this.spinnerUnionIndexCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
 
         this.radioIsDiosStrategy.setToolTipText(
             "<html>Mode Dump In One Shot injects a single query that gets all the data at once."
-            + "<br>Faster than default mode for Normal and Error strats but requires volume of data to not be huge.</html>"
+            + "<br>Faster than default mode for Union and Error strats but requires volume of data to not be huge.</html>"
         );
         this.radioIsZipStrategy.setToolTipText(
             "<html>Zip mode injects small queries, useful when host rejects large URL."
@@ -168,7 +168,7 @@ public class PanelInjection extends JPanel {
             this.radioIsDefaultStrategy,
             this.checkboxIsUrlEncodingDisabled,
             this.checkboxIsUrlRandomSuffixDisabled,
-            this.checkboxIsLimitingNormalIndex,
+            this.checkboxIsLimitingUnionIndex,
             this.checkboxIsLimitingSleepTimeStrategy
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
@@ -192,8 +192,8 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 .addComponent(this.checkboxIsNotSearchingCharInsertion)
                 .addComponent(this.checkboxIsNotShowingVulnReport)
-                .addComponent(this.checkboxIsLimitingNormalIndex)
-                .addComponent(panelIsLimitingNormalIndex)
+                .addComponent(this.checkboxIsLimitingUnionIndex)
+                .addComponent(panelIsLimitingUnionIndex)
                 .addComponent(this.checkboxIsLimitingSleepTimeStrategy)
                 .addComponent(panelSleepTimeStrategy)
 
@@ -250,12 +250,12 @@ public class PanelInjection extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsLimitingNormalIndex)
+                .addComponent(this.checkboxIsLimitingUnionIndex)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(panelIsLimitingNormalIndex)
+                .addComponent(panelIsLimitingUnionIndex)
             )
             .addGroup(
                 groupLayout
@@ -433,12 +433,12 @@ public class PanelInjection extends JPanel {
         return this.checkboxIsUrlRandomSuffixDisabled;
     }
 
-    public JCheckBox getCheckboxIsLimitingNormalIndex() {
-        return this.checkboxIsLimitingNormalIndex;
+    public JCheckBox getCheckboxIsLimitingUnionIndex() {
+        return this.checkboxIsLimitingUnionIndex;
     }
     
-    public JSpinner getSpinnerNormalIndexCount() {
-        return this.spinnerNormalIndexCount;
+    public JSpinner getSpinnerUnionIndexCount() {
+        return this.spinnerUnionIndexCount;
     }
     
     public JCheckBox getCheckboxIsLimitingSleepTimeStrategy() {

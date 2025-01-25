@@ -148,7 +148,7 @@ strategy:
     - ORDER BY term out of range - should be between
    vendorSpecific: case when ${test} then 'a' else 'b' end=printf('a')
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: (select '${lead}${indice}' || ${calibrator})
   orderBy: order by 1337

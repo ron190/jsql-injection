@@ -18,7 +18,7 @@ public abstract class AbstractStrategy {
 
     protected static final String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
     protected static final String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
-    protected static final String FORMAT_STRATEGY_NOT_IMPLEMENTED = "Strategy [{}] for [{}] missing";
+    protected static final String FORMAT_STRATEGY_NOT_IMPLEMENTED = "Strategy [{}] for [{}] not implemented, speed up release by posting a working example to GitHub";
     protected static final String FORMAT_SKIP_STRATEGY_DISABLED = "Skipping strategy [{}] disabled";
     protected static final String FORMAT_CHECKING_STRATEGY = "{} [{}]...";
 
@@ -56,7 +56,7 @@ public abstract class AbstractStrategy {
     
     /**
      * Change model strategy to current applicable strategy only when not already set.
-     * Normal > Stacked > Error > Multibit > Blind > Time
+     * Union > Stacked > Error > Multibit > Blind > Time
      */
     public abstract void activateWhenApplicable();
     

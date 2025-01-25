@@ -1,4 +1,4 @@
-package com.test.vendor.oracle;
+package com.test.vendor.monetdb;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,8 +7,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class OracleNormalSuiteIgnoreIT extends ConcreteOracleSuiteIT {
-    
+public class MonetDbUnionGetSuiteIgnoreIT extends ConcreteMonetDbSuiteIgnoreIT {
+    // Error during jdbc connection on GitHub Actions (works on local)
+    // SQLNonTransientConnectionException: Unable to connect (jsql-monetdb:50001): Connection refused
+
     @Override
     public void setupInjection() throws Exception {
         
@@ -18,7 +20,7 @@ public class OracleNormalSuiteIgnoreIT extends ConcreteOracleSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=oracle&name="
+            "http://localhost:8080/monetdb?name="
         );
         
         model
@@ -26,8 +28,8 @@ public class OracleNormalSuiteIgnoreIT extends ConcreteOracleSuiteIT {
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getOracle());
+
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMonetdb());
         model.beginInjection();
     }
     
@@ -58,7 +60,7 @@ public class OracleNormalSuiteIgnoreIT extends ConcreteOracleSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

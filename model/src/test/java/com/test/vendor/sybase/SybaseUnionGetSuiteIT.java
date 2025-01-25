@@ -1,4 +1,4 @@
-package com.test.vendor.mysql;
+package com.test.vendor.sybase;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class MySqlNormalSuiteIT extends ConcreteMySqlSuiteIT {
+public class SybaseUnionGetSuiteIT extends ConcreteSybaseSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -18,21 +18,16 @@ public class MySqlNormalSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=mysql&name="
+            "http://localhost:8080/union?tenant=sybase&name="
         );
-
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsStrategyBlindDisabled(true)
-        .withIsStrategyTimeDisabled(true);
-
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-
+        
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSybase());
         model.beginInjection();
     }
     
@@ -63,7 +58,7 @@ public class MySqlNormalSuiteIT extends ConcreteMySqlSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

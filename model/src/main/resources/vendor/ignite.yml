@@ -120,7 +120,7 @@ strategy:
    errorMessage:
     - Ignite
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: |
    (

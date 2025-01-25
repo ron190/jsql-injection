@@ -129,7 +129,7 @@ strategy:
    orderByErrorMessage:
     - Illegal sort specification in ORDER BY
 
- normal:
+ union:
   indices: union select top 1 ${indices} from information_schema.schemata
   capacity: |
    '${lead}'

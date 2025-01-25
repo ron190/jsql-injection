@@ -102,7 +102,7 @@ strategy:
    orderByErrorMessage:
     - Column position '1337' is out of range for the query expression
 
- normal:
+ union:
   indices: union select ${indices} from sysibm.sysdummy1
   capacity: (select '${lead}${indice}' || ${calibrator} from sysibm.sysdummy1)
   orderBy: order by 1337

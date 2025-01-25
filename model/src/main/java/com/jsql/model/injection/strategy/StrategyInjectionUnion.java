@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class StrategyInjectionNormal extends AbstractStrategy {
+public class StrategyInjectionUnion extends AbstractStrategy {
     
     /**
      * Log4j logger sent to view.
@@ -42,13 +42,13 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     private String performanceLength = "0";
     
-    public StrategyInjectionNormal(InjectionModel injectionModel) {
+    public StrategyInjectionUnion(InjectionModel injectionModel) {
         super(injectionModel);
     }
 
     @Override
     public void checkApplicability() throws JSqlException {
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyUnionDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         }
@@ -67,7 +67,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         }
         
         this.isApplicable = StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())
-            && Integer.parseInt(this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength()) > 0
+            && Integer.parseInt(this.injectionModel.getMediatorStrategy().getUnion().getPerformanceLength()) > 0
             && StringUtils.isNotBlank(this.visibleIndex);
         
         if (this.isApplicable) {
@@ -90,22 +90,22 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         this.injectionModel.appendAnalysisReport(
             StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithIndexes(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlUnion(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
                 "metadataInjectionProcess"
             )
         );
-        this.markVulnerability(Interaction.MARK_NORMAL_VULNERABLE);
+        this.markVulnerability(Interaction.MARK_UNION_VULNERABLE);
     }
 
     @Override
     public void unallow(int... i) {
-        this.markVulnerability(Interaction.MARK_NORMAL_INVULNERABLE);
+        this.markVulnerability(Interaction.MARK_UNION_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
         return this.injectionModel.injectWithIndexes(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition, false),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlUnion(sqlQuery, startPosition, false),
             metadataInjectionProcess
         );
     }
@@ -119,10 +119,10 @@ public class StrategyInjectionNormal extends AbstractStrategy {
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName
             );
-            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getNormal());
+            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getUnion());
 
             var request = new Request();
-            request.setMessage(Interaction.MARK_NORMAL_STRATEGY);
+            request.setMessage(Interaction.MARK_UNION_STRATEGY);
             this.injectionModel.sendToViews(request);
         }
     }
@@ -158,7 +158,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         // ==> ${lead}(index)######...######
         // Search for index that displays the most #
         String performanceQuery = this.injectionModel.getMediatorVendor().getVendor().instance().sqlCapacity(indexes);
-        String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery, "normal#size");
+        String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery, "union#size");
 
         // Build a 2D array of string with:
         //     column 1: index
@@ -213,7 +213,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     
     @Override
     public String getName() {
-        return "Normal";
+        return "Union";
     }
 
     public String getVisibleIndex() {

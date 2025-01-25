@@ -130,7 +130,7 @@ strategy:
    orderByErrorMessage:
     - ORDER BY position 1337 is not in target list
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: |
    (

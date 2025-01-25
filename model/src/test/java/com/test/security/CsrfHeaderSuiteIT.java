@@ -52,7 +52,7 @@ public class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

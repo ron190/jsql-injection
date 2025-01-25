@@ -123,7 +123,7 @@ strategy:
     - maxdb.query
     - "\\): Invalid end of SQL statement"
 
- normal:
+ union:
   indices: union select ${result_range} from (${indice_unique})z
   capacity: (select '${lead}${indice}' || ${calibrator} from dual)
   orderBy: order by 1337

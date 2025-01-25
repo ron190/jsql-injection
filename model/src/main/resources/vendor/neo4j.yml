@@ -109,7 +109,7 @@ strategy:
    errorMessage:
     - neo4j
 
- normal:
+ union:
   indices: return 'A' as A union ${indices}
   capacity: ${calibrator}
   orderBy: order by 1337

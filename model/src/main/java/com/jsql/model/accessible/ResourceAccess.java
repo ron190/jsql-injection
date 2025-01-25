@@ -276,7 +276,7 @@ public class ResourceAccess {
             }
         };
 
-        var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificNormal().getNbIndexesFound() - 1;
+        var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificUnion().getNbIndexesFound() - 1;
         String nameExploitValidated = StringUtils.EMPTY;
 
         if (exploitMethod == ExploitMethod.NETSHARE) {
@@ -446,7 +446,7 @@ public class ResourceAccess {
             urlExploit + "?c="+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)
         );
         if (StringUtils.isBlank(result)) {
-            // TODO Payload should redirect directly error to normal output
+            // TODO Payload should redirect directly error to default output
             result = "No result.\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
         }
 

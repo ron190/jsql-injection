@@ -129,7 +129,7 @@ strategy:
    orderByErrorMessage:
     - Column number specified in ORDER does not match the SELECT list
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: |
    (

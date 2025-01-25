@@ -1,14 +1,15 @@
-package com.test.vendor.h2;
+package com.test.vendor.cubrid;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junitpioneer.jupiter.RetryingTest;
+import org.junit.jupiter.api.RepeatedTest;
 
-public class H2NormalGetSuiteIT extends ConcreteH2SuiteIT {
-    
+@SuppressWarnings("java:S2699")
+public class CubridUnionSuiteIT extends ConcreteCubridSuiteIT {
+
     @Override
     public void setupInjection() throws Exception {
         
@@ -18,39 +19,39 @@ public class H2NormalGetSuiteIT extends ConcreteH2SuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=h2&name="
+            "http://localhost:8080/union?tenant=cubrid&name="
         );
-        
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getH2());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getCubrid());
         model.beginInjection();
     }
     
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
     
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
     
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
     
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
@@ -58,7 +59,7 @@ public class H2NormalGetSuiteIT extends ConcreteH2SuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

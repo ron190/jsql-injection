@@ -1,15 +1,14 @@
-package com.test.vendor.cubrid;
+package com.test.vendor.mysql;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junitpioneer.jupiter.RetryingTest;
 
-@SuppressWarnings("java:S2699")
-public class CubridNormalSuiteIT extends ConcreteCubridSuiteIT {
-
+public class MySqlUnionSuiteIT extends ConcreteMySqlSuiteIT {
+    
     @Override
     public void setupInjection() throws Exception {
         
@@ -19,39 +18,44 @@ public class CubridNormalSuiteIT extends ConcreteCubridSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=cubrid&name="
+            "http://localhost:8080/union?tenant=mysql&name="
         );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
 
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getCubrid());
+
         model.beginInjection();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
@@ -59,7 +63,7 @@ public class CubridNormalSuiteIT extends ConcreteCubridSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

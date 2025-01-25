@@ -129,7 +129,7 @@ strategy:
    orderByErrorMessage:
     - Order by expression "1337" must be in the result list in this case
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: |
    (

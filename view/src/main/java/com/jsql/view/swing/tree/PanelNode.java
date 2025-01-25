@@ -146,7 +146,7 @@ public class PanelNode extends JPanel {
     }
     
     /**
-     * Display the normal text icon to the left.
+     * Display text icon to the left.
      */
     public void showIcon() {
         this.iconNode.setVisible(true);

@@ -84,10 +84,10 @@ public class PreferencesUtil {
     private boolean isStrategyMultibitDisabled = false;
     private boolean isStrategyStackDisabled = false;
     private boolean isStrategyErrorDisabled = false;
-    private boolean isStrategyNormalDisabled = false;
+    private boolean isStrategyUnionDisabled = false;
 
-    private boolean isLimitingNormalIndex = false;
-    private int countNormalIndex = 50;
+    private boolean isLimitingUnionIndex = false;
+    private int countUnionIndex = 50;
     private boolean isLimitingSleepTimeStrategy = false;
     private int countSleepTimeStrategy = 5;
 
@@ -157,8 +157,8 @@ public class PreferencesUtil {
         this.countConnectionTimeout = preferences.getInt("countConnectionTimeout", 15);
         this.isUnicodeDecodeDisabled = preferences.getBoolean("isUnicodeDecodeDisabled", false);
         this.isUrlDecodeDisabled = preferences.getBoolean("isUrlDecodeDisabled", false);
-        this.countNormalIndex = preferences.getInt("countNormalIndex", 50);
-        this.isLimitingNormalIndex = preferences.getBoolean("isLimitingNormalIndex", false);
+        this.countUnionIndex = preferences.getInt("countUnionIndex", 50);
+        this.isLimitingUnionIndex = preferences.getBoolean("isLimitingUnionIndex", false);
         this.countSleepTimeStrategy = preferences.getInt("countSleepTimeStrategy", 5);
         this.isLimitingSleepTimeStrategy = preferences.getBoolean("isLimitingSleepTimeStrategy", false);
 
@@ -167,7 +167,7 @@ public class PreferencesUtil {
         this.isStrategyMultibitDisabled = preferences.getBoolean("isStrategyMultibitDisabled", false);
         this.isStrategyStackDisabled = preferences.getBoolean("isStrategyStackDisabled", false);
         this.isStrategyErrorDisabled = preferences.getBoolean("isStrategyErrorDisabled", false);
-        this.isStrategyNormalDisabled = preferences.getBoolean("isStrategyNormalDisabled", false);
+        this.isStrategyUnionDisabled = preferences.getBoolean("isStrategyUnionDisabled", false);
 
         this.isUserAgentRandom = preferences.getBoolean("isUserAgentRandom", false);
 
@@ -193,8 +193,8 @@ public class PreferencesUtil {
         preferences.putInt("countLimitingThreads", this.countLimitingThreads);
         preferences.putBoolean("isConnectionTimeout", this.isConnectionTimeout);
         preferences.putInt("countConnectionTimeout", this.countConnectionTimeout);
-        preferences.putBoolean("isLimitingNormalIndex", this.isLimitingNormalIndex);
-        preferences.putInt("countNormalIndex", this.countNormalIndex);
+        preferences.putBoolean("isLimitingUnionIndex", this.isLimitingUnionIndex);
+        preferences.putInt("countUnionIndex", this.countUnionIndex);
         preferences.putBoolean("isLimitingSleepTimeStrategy", this.isLimitingSleepTimeStrategy);
         preferences.putInt("countSleepTimeStrategy", this.countSleepTimeStrategy);
         preferences.putBoolean("isCsrfUserTag", this.isCsrfUserTag);
@@ -242,7 +242,7 @@ public class PreferencesUtil {
         preferences.putBoolean("isStrategyMultibitDisabled", this.isStrategyMultibitDisabled);
         preferences.putBoolean("isStrategyStackDisabled", this.isStrategyStackDisabled);
         preferences.putBoolean("isStrategyErrorDisabled", this.isStrategyErrorDisabled);
-        preferences.putBoolean("isStrategyNormalDisabled", this.isStrategyNormalDisabled);
+        preferences.putBoolean("isStrategyUnionDisabled", this.isStrategyUnionDisabled);
 
         preferences.putBoolean("isUserAgentRandom", this.isUserAgentRandom);
         preferences.putBoolean("isUrlDecodeNetworkTab", this.isUrlDecodeNetworkTab);
@@ -412,16 +412,16 @@ public class PreferencesUtil {
         return this.countConnectionTimeout;
     }
     
-    public int countNormalIndex() {
-        return this.countNormalIndex;
+    public int countUnionIndex() {
+        return this.countUnionIndex;
     }
     
     public int countSleepTimeStrategy() {
         return this.countSleepTimeStrategy;
     }
     
-    public boolean isLimitingNormalIndex() {
-        return this.isLimitingNormalIndex;
+    public boolean isLimitingUnionIndex() {
+        return this.isLimitingUnionIndex;
     }
     
     public boolean isCsrfUserTag() {
@@ -480,8 +480,8 @@ public class PreferencesUtil {
         return this.isStrategyErrorDisabled;
     }
 
-    public boolean isStrategyNormalDisabled() {
-        return this.isStrategyNormalDisabled;
+    public boolean isStrategyUnionDisabled() {
+        return this.isStrategyUnionDisabled;
     }
 
     public boolean isUserAgentRandom() {
@@ -733,13 +733,13 @@ public class PreferencesUtil {
         return this;
     }
 
-    public PreferencesUtil withIsLimitingNormalIndex(boolean isLimitingNormalIndex) {
-        this.isLimitingNormalIndex = isLimitingNormalIndex;
+    public PreferencesUtil withIsLimitingUnionIndex(boolean isLimitingUnionIndex) {
+        this.isLimitingUnionIndex = isLimitingUnionIndex;
         return this;
     }
 
-    public PreferencesUtil withCountNormalIndex(int countNormalIndex) {
-        this.countNormalIndex = countNormalIndex;
+    public PreferencesUtil withCountUnionIndex(int countUnionIndex) {
+        this.countUnionIndex = countUnionIndex;
         return this;
     }
 
@@ -768,8 +768,8 @@ public class PreferencesUtil {
         return this;
     }
 
-    public PreferencesUtil withIsStrategyNormalDisabled(boolean isStrategyNormalDisabled) {
-        this.isStrategyNormalDisabled = isStrategyNormalDisabled;
+    public PreferencesUtil withIsStrategyUnionDisabled(boolean isStrategyUnionDisabled) {
+        this.isStrategyUnionDisabled = isStrategyUnionDisabled;
         return this;
     }
 

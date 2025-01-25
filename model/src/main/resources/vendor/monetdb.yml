@@ -123,7 +123,7 @@ strategy:
    orderByErrorMessage:
     - relational query without result
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: |
    (

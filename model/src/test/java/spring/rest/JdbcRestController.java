@@ -232,7 +232,7 @@ public class JdbcRestController {
     
     @RequestMapping("/ignite")
     public Greeting greetingIgnite(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
-        // Fail: Normal tables and system views cannot be used in the same query.
+        // Fail: tables and system views cannot be used in the same query.
         // docker run -d -p 10800:10800 apacheignite/ignite
         // jdbc:ignite:thin://127.0.0.1
         // ignite ignite

@@ -129,8 +129,9 @@ strategy:
    orderByErrorMessage:
 #    Collision with postgres
 #    - ORDER BY position 1337 is not in select list
+    - Collision postgres ORDER BY position 1337 is not in select list
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: |
    (

@@ -131,7 +131,7 @@ strategy:
    orderByErrorMessage:
     - "Semantic: 1337 in sort spec is out of range"
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: (select concat('${lead}', ${indice}, ${calibrator}))
   orderBy: order by 1337

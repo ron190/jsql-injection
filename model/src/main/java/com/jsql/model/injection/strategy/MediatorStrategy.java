@@ -27,7 +27,7 @@ public class MediatorStrategy {
     private final AbstractStrategy blind;
     private final AbstractStrategy multibit;
     private final StrategyInjectionError error;
-    private final AbstractStrategy normal;
+    private final AbstractStrategy union;
     private final AbstractStrategy stack;
 
     private final List<AbstractStrategy> strategies;
@@ -46,10 +46,10 @@ public class MediatorStrategy {
         this.blind = new StrategyInjectionBlind(this.injectionModel);
         this.multibit = new StrategyInjectionMultibit(this.injectionModel);
         this.error = new StrategyInjectionError(this.injectionModel);
-        this.normal = new StrategyInjectionNormal(this.injectionModel);
+        this.union = new StrategyInjectionUnion(this.injectionModel);
         this.stack = new StrategyInjectionStack(this.injectionModel);
 
-        this.strategies = Arrays.asList(this.time, this.blind, this.multibit, this.error, this.stack, this.normal);
+        this.strategies = Arrays.asList(this.time, this.blind, this.multibit, this.error, this.stack, this.union);
     }
     
     public String getMeta() {
@@ -83,7 +83,7 @@ public class MediatorStrategy {
                     InjectionModel.STAR,
                     this.encodePath(
                         this.injectionModel.getIndexesInUrl().replaceAll(
-                            String.format(VendorYaml.FORMAT_INDEX, this.getSpecificNormal().getVisibleIndex()),
+                            String.format(VendorYaml.FORMAT_INDEX, this.getSpecificUnion().getVisibleIndex()),
                             Matcher.quoteReplacement(sqlTrail)  // Oracle column can contain regex char $ => quoteReplacement()
                         )
                     )
@@ -169,8 +169,8 @@ public class MediatorStrategy {
             new SuspendableGetVendor(this.injectionModel).run();
         }
 
-        // Test each injection strategies: time < blind < error < normal
-        // Choose the most efficient strategy: normal > error > blind > time
+        // Test each injection strategies: time < blind < error < union
+        // Choose the most efficient strategy: union > error > blind > time
         this.time.checkApplicability();
         this.blind.checkApplicability();
 
@@ -187,10 +187,10 @@ public class MediatorStrategy {
 
         this.error.checkApplicability();
         this.stack.checkApplicability();
-        this.normal.checkApplicability();
+        this.union.checkApplicability();
 
         // Set most efficient strategy
-        this.normal.activateWhenApplicable();
+        this.union.activateWhenApplicable();
         this.stack.activateWhenApplicable();
         this.error.activateWhenApplicable();
         this.multibit.activateWhenApplicable();
@@ -214,12 +214,12 @@ public class MediatorStrategy {
     
     // Getter and setter
 
-    public AbstractStrategy getNormal() {
-        return this.normal;
+    public AbstractStrategy getUnion() {
+        return this.union;
     }
 
-    public StrategyInjectionNormal getSpecificNormal() {
-        return (StrategyInjectionNormal) this.normal;
+    public StrategyInjectionUnion getSpecificUnion() {
+        return (StrategyInjectionUnion) this.union;
     }
 
     public StrategyInjectionError getError() {

@@ -1,11 +1,13 @@
-package com.test.vendor.neo4j;
+package com.test.vendor.firebird;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class Neo4jNormalGetSuiteIT extends ConcreteNeo4jSuiteIT {
+public class FirebirdUnionGetSuiteIT extends ConcreteFirebirdSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -16,16 +18,16 @@ public class Neo4jNormalGetSuiteIT extends ConcreteNeo4jSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/neo4j?name=1"
+            "http://localhost:8080/union?tenant=firebird&name='"
         );
-
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getNeo4j());
+        
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getFirebird());
         model.beginInjection();
     }
     
@@ -51,5 +53,13 @@ public class Neo4jNormalGetSuiteIT extends ConcreteNeo4jSuiteIT {
     @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

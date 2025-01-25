@@ -1,4 +1,4 @@
-package com.test.vendor.mckoi;
+package com.test.vendor.h2;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class MckoiNormalGetSuiteIT extends ConcreteMckoiSuiteIT {
+public class H2UnionGetSuiteIT extends ConcreteH2SuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -18,21 +18,16 @@ public class MckoiNormalGetSuiteIT extends ConcreteMckoiSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/mckoi?name=2+*"
+            "http://localhost:8080/union?tenant=h2&name="
         );
-
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsNotSearchingCharInsertion(true);
-
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMckoi());
+        
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getH2());
         model.beginInjection();
     }
     
@@ -63,7 +58,7 @@ public class MckoiNormalGetSuiteIT extends ConcreteMckoiSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

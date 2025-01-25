@@ -19,7 +19,7 @@ public class SelfSignedCertSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "https://localhost:8443/normal?tenant=mysql&name="
+            "https://localhost:8443/union?tenant=mysql&name="
         );
 
         model
@@ -48,7 +48,7 @@ public class SelfSignedCertSuiteIT extends ConcreteMySqlSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

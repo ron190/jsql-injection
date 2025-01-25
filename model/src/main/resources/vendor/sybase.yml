@@ -133,7 +133,7 @@ strategy:
     - Invalid SQL statement or JDBC escape, terminating '
     - sybase
 
- normal:
+ union:
   indices: union select ${result_range} from (${indice_unique}) b
   capacity: (select '${lead}${indice}' %2b ${calibrator})
   orderBy: order by 1337

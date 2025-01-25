@@ -16,18 +16,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Mark the injection as vulnerable to a basic injection.
+ * Mark the injection as invulnerable to a union injection.
  */
-public class MarkNormalVulnerable implements InteractionCommand {
+public class MarkUnionInvulnerable implements InteractionCommand {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    public MarkNormalVulnerable(Object[] interactionParams) {
+    public MarkUnionInvulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
+        LOGGER.debug(() -> AnsiColorUtil.addRedColor(this.getClass().getSimpleName()));
     }
 }

@@ -110,7 +110,7 @@ strategy:
    orderByErrorMessage:
     - invalid ORDER BY expression
 
- normal:
+ union:
   indices: union select ${result_range} from (${indice_unique})
   capacity: (select '${lead}${indice}' %26${calibrator} from dual)
   orderBy: order by 1337

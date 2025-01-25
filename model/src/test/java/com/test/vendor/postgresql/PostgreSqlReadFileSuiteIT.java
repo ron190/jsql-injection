@@ -21,7 +21,7 @@ public class PostgreSqlReadFileSuiteIT extends ConcretePostgreSqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=postgresql&name="
+            "http://localhost:8080/union?tenant=postgresql&name="
         );
 
         model.setIsScanning(true);

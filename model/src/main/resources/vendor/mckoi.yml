@@ -113,7 +113,7 @@ strategy:
    errorMessage:
     - mckoi
 
- normal:
+ union:
   indices: union all select rr from (${indice_unique})b
   capacity: "'${lead}${indice}' || ${calibrator}"
   orderBy: order by 1337

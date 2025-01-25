@@ -117,7 +117,7 @@ strategy:
    errorMessage:
     - Non-terminated string
 
- normal:
+ union:
   indices: union select ${result_range} from (${indice_unique})b
   capacity: "'${lead}${indice}' || ${calibrator}"
   orderBy: order by 1337

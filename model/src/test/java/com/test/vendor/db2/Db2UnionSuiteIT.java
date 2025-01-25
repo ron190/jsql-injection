@@ -1,16 +1,15 @@
-package com.test.vendor.monetdb;
+package com.test.vendor.db2;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junitpioneer.jupiter.RetryingTest;
+import org.junit.jupiter.api.RepeatedTest;
 
-public class MonetDbNormalGetSuiteIgnoreIT extends ConcreteMonetDbSuiteIgnoreIT {
-    // Error during jdbc connection on GitHub Actions (works on local)
-    // SQLNonTransientConnectionException: Unable to connect (jsql-monetdb:50001): Connection refused
-
+@SuppressWarnings("java:S2699")
+public class Db2UnionSuiteIT extends ConcreteDb2SuiteIT {
+    
     @Override
     public void setupInjection() throws Exception {
         
@@ -19,40 +18,48 @@ public class MonetDbNormalGetSuiteIgnoreIT extends ConcreteMonetDbSuiteIgnoreIT 
 
         model.subscribe(new SystemOutTerminal());
 
+        // Slow fingerprinting => star
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/monetdb?name="
+            "http://localhost:8080/union?tenant=db2&name='"
         );
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsNotSearchingCharInsertion(true)
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyStackDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMonetdb());
+        
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getDb2());
         model.beginInjection();
     }
     
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
     
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
     
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
     
     @Override
-    @RetryingTest(3)
+    @RepeatedTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
@@ -60,7 +67,7 @@ public class MonetDbNormalGetSuiteIgnoreIT extends ConcreteMonetDbSuiteIgnoreIT 
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

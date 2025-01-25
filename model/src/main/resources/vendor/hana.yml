@@ -136,7 +136,7 @@ strategy:
    errorMessage:
     - Hana database
 
- normal:
+ union:
   indices: union select ${indices} from dummy
   capacity: ('${lead}'|| ${indice}|| ${calibrator})
   orderBy: order by 1337

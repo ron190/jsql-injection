@@ -90,7 +90,7 @@ strategy:
    orderByErrorMessage:
     - Invalid column position used in the ORDER BY clause
 
- normal:
+ union:
   indices: union select ${indices} from rdb$database
   capacity: (select '${lead}${indice}' || ${calibrator} from rdb\$database)
   orderBy: order by 1337

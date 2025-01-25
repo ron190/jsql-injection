@@ -1,12 +1,13 @@
-package com.test.insertion;
+package com.test.vendor.sqlite;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class EmptyIntegerNormalSuiteIT extends ConcreteMySqlSuiteIT {
+public class SqliteUnionSuiteIT extends ConcreteSqliteSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -17,16 +18,13 @@ public class EmptyIntegerNormalSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/integer-insertion-char?tenant=mysql&name="
+            "http://localhost:8080/union?tenant=sqlite&name="
         );
-
-        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindDisabled(true)
-        .withIsStrategyTimeDisabled(true);
+        .withIsStrategyBlindDisabled(true);
         
         model
         .getMediatorUtils()
@@ -41,5 +39,31 @@ public class EmptyIntegerNormalSuiteIT extends ConcreteMySqlSuiteIT {
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+
+    @Override
+    @RetryingTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+
+    @Override
+    @RetryingTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+
+    @Override
+    @RetryingTest(3)
+    public void listValues() throws JSqlException {
+        super.listValues();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

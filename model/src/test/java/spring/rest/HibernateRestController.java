@@ -114,8 +114,8 @@ public class HibernateRestController {
 
     // Visible injection
 
-    @RequestMapping("/normal")
-    public Greeting endpointNormal(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {
+    @RequestMapping("/union")
+    public Greeting endpointUnion(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {
         return this.getResponse(name, "select First_Name from Student where '1' = '%s'", false, false, true);
     }
 

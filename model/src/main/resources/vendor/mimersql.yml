@@ -124,7 +124,7 @@ strategy:
    orderByErrorMessage:
     - ORDER BY clause invalid because it includes an integer which does not identify a column of the result table
 
- normal:
+ union:
   indices: union select ${result_range} from (${indice_unique}) b
   capacity: |
    (

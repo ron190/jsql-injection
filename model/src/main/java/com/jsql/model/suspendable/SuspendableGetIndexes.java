@@ -40,19 +40,19 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
         String initialQuery = StringUtils.EMPTY;
         int nbIndex;
         
-        int countNormalIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex()
-            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countNormalIndex()
+        int countUnionIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingUnionIndex()
+            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countUnionIndex()
             : 50;
 
         // SQL fields are built like 1337[index]7330+1
         // 7330+1 allows to exclude false positive when page contains injection URL
         // Search if the source contains 1337[index]7331
-        for (nbIndex = 1 ; nbIndex <= countNormalIndex ; nbIndex++) {
+        for (nbIndex = 1 ; nbIndex <= countUnionIndex ; nbIndex++) {
             taskCompletionService.submit(
                 new CallablePageSource(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
                     this.injectionModel,
-                    "normal#" + nbIndex,
+                    "union#" + nbIndex,
                     nbIndex
                 )
             );
@@ -60,7 +60,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
         
         nbIndex = 1;
         try {
-            while (nbIndex <= countNormalIndex) {
+            while (nbIndex <= countUnionIndex) {
                 if (this.isSuspended()) {
                     throw new StoppedByUserSlidingException();
                 }
@@ -70,8 +70,8 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                 String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, "\\d+");
                 if (Pattern.compile("(?s).*"+ regexAllIndexes +".*").matcher(currentCallable.getContent()).matches()) {
                     
-                    this.injectionModel.getMediatorStrategy().getSpecificNormal().setNbIndexesFound(currentCallable.getNbIndex());
-                    this.injectionModel.getMediatorStrategy().getSpecificNormal().setSourceIndexesFound(currentCallable.getContent());
+                    this.injectionModel.getMediatorStrategy().getSpecificUnion().setNbIndexesFound(currentCallable.getNbIndex());
+                    this.injectionModel.getMediatorStrategy().getSpecificUnion().setSourceIndexesFound(currentCallable.getContent());
                     initialQuery = currentCallable.getQuery().replace("0%2b1", "1");
                     
                     if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {
@@ -81,7 +81,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     }
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_INFORM,
-                        "Strategy [Normal] triggered by [{}]",
+                        "Strategy [Union] triggered by [{}]",
                         () -> currentCallable.getQuery().trim().replaceAll("1337(\\d*)7330%2b1", "$1")
                     );
                     break;

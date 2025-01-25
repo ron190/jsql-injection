@@ -251,7 +251,7 @@ strategy:
    # disambiguation with binary(): if() introduced to sqlite in v3.48.0.0
    vendorSpecific: if(${test}, binary('a'), 'b')=binary('a')
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: |
    (

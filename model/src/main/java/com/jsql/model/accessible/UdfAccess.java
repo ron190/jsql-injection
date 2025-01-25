@@ -115,7 +115,7 @@ public class UdfAccess {
             return;
         }
 
-        var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificNormal().getNbIndexesFound() - 1;
+        var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificUnion().getNbIndexesFound() - 1;
         var pathPlugin = this.getResult("select@@plugin_dir", "udf#dir");
         if (StringUtils.isEmpty(pathPlugin)) {
             throw new JSqlException("Incorrect plugin folder: path is empty");

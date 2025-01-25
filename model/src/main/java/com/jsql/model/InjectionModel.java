@@ -118,9 +118,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * Reset each injection attributes: Database metadata, General Thread status, Strategy.
      */
     public void resetModel() {
-        this.mediatorStrategy.getSpecificNormal().setVisibleIndex(null);
+        this.mediatorStrategy.getSpecificUnion().setVisibleIndex(null);
         
-        this.mediatorStrategy.getNormal().setApplicable(false);
+        this.mediatorStrategy.getUnion().setApplicable(false);
         this.mediatorStrategy.getError().setApplicable(false);
         this.mediatorStrategy.getBlind().setApplicable(false);
         this.mediatorStrategy.getMultibit().setApplicable(false);
@@ -530,10 +530,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // in that case concat SQL expression to the end of param.
             query = paramLead + sqlTrail;
         } else {
-            // Concat indexes found for Normal strategy to params
+            // Concat indexes found for Union strategy to params
             // and use visible Index for injection
             query = paramLead + this.indexesInUrl.replaceAll(
-                String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificNormal().getVisibleIndex()),
+                String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),
                 // Oracle column often contains $, which is reserved for regex.
                 // => need to be escape with quoteReplacement()
                 Matcher.quoteReplacement(sqlTrail)
@@ -555,12 +555,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 sqlTrail + this.mediatorVendor.getVendor().instance().endingComment()
             );
         } else {
-            // Replace injection point by indexes found for Normal strategy
+            // Replace injection point by indexes found for Union strategy
             // and use visible Index for injection
             query = paramLead.replace(
                 InjectionModel.STAR,
                 this.indexesInUrl.replace(
-                    String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificNormal().getVisibleIndex()),
+                    String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),
                     sqlTrail
                 )
                 + this.mediatorVendor.getVendor().instance().endingComment()

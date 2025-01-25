@@ -43,8 +43,8 @@ public class ActionListenerSave implements ActionListener {
         .withIsNotInjectingMetadata(this.panelPreferences.getPanelInjection().getCheckboxIsNotInjectingMetadata().isSelected())
         .withIsNotSearchingCharInsertion(this.panelPreferences.getPanelInjection().getCheckboxIsNotSearchingCharInsertion().isSelected())
         .withIsNotShowingVulnReport(this.panelPreferences.getPanelInjection().getCheckboxIsNotShowingVulnReport().isSelected())
-        .withIsLimitingNormalIndex(this.panelPreferences.getPanelInjection().getCheckboxIsLimitingNormalIndex().isSelected())
-        .withCountNormalIndex((Integer) this.panelPreferences.getPanelInjection().getSpinnerNormalIndexCount().getValue())
+        .withIsLimitingUnionIndex(this.panelPreferences.getPanelInjection().getCheckboxIsLimitingUnionIndex().isSelected())
+        .withCountUnionIndex((Integer) this.panelPreferences.getPanelInjection().getSpinnerUnionIndexCount().getValue())
         .withIsCheckingAllParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllParam().isSelected())
         .withIsCheckingAllURLParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllURLParam().isSelected())
         .withIsCheckingAllRequestParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllRequestParam().isSelected())
@@ -77,7 +77,7 @@ public class ActionListenerSave implements ActionListener {
         .withIsStrategyMultibitDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyMultibitDisabled().isSelected())
         .withIsStrategyStackDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyStackDisabled().isSelected())
         .withIsStrategyErrorDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyErrorDisabled().isSelected())
-        .withIsStrategyNormalDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyNormalDisabled().isSelected())
+        .withIsStrategyUnionDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyUnionDisabled().isSelected())
 
         .withIsUserAgentRandom(this.panelPreferences.getPanelUserAgent().getCheckboxIsCustomUserAgent().isSelected())
 

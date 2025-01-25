@@ -13,7 +13,7 @@ public class PanelStrategies extends JPanel {
     private final JCheckBox checkboxIsStrategyMultibitDisabled = new JCheckBox("Disable Multibit", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled());
     private final JCheckBox checkboxIsStrategyErrorDisabled = new JCheckBox("Disable Error", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());
     private final JCheckBox checkboxIsStrategyStackDisabled = new JCheckBox("Disable Stack", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackDisabled());
-    private final JCheckBox checkboxIsStrategyNormalDisabled = new JCheckBox("Disable Normal", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled());
+    private final JCheckBox checkboxIsStrategyUnionDisabled = new JCheckBox("Disable Union", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyUnionDisabled());
 
     public PanelStrategies(PanelPreferences panelPreferences) {
         this.checkboxIsStrategyTimeDisabled.setToolTipText("Skip Time strategy processing");
@@ -21,7 +21,7 @@ public class PanelStrategies extends JPanel {
         this.checkboxIsStrategyMultibitDisabled.setToolTipText("Skip Multibit strategy processing");
         this.checkboxIsStrategyErrorDisabled.setToolTipText("Skip Error strategy processing");
         this.checkboxIsStrategyStackDisabled.setToolTipText("Skip Stack strategy processing");
-        this.checkboxIsStrategyNormalDisabled.setToolTipText("Skip Normal strategy processing");
+        this.checkboxIsStrategyUnionDisabled.setToolTipText("Skip Union strategy processing");
 
         Stream.of(
             this.checkboxIsStrategyTimeDisabled,
@@ -29,7 +29,7 @@ public class PanelStrategies extends JPanel {
             this.checkboxIsStrategyMultibitDisabled,
             this.checkboxIsStrategyErrorDisabled,
             this.checkboxIsStrategyStackDisabled,
-            this.checkboxIsStrategyNormalDisabled
+            this.checkboxIsStrategyUnionDisabled
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
 
@@ -51,7 +51,7 @@ public class PanelStrategies extends JPanel {
                 .addComponent(this.checkboxIsStrategyMultibitDisabled)
                 .addComponent(this.checkboxIsStrategyErrorDisabled)
                 .addComponent(this.checkboxIsStrategyStackDisabled)
-                .addComponent(this.checkboxIsStrategyNormalDisabled)
+                .addComponent(this.checkboxIsStrategyUnionDisabled)
             )
         );
         
@@ -91,7 +91,7 @@ public class PanelStrategies extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsStrategyNormalDisabled)
+                .addComponent(this.checkboxIsStrategyUnionDisabled)
             )
         );
     }
@@ -119,7 +119,7 @@ public class PanelStrategies extends JPanel {
         return this.checkboxIsStrategyErrorDisabled;
     }
 
-    public JCheckBox getCheckboxIsStrategyNormalDisabled() {
-        return this.checkboxIsStrategyNormalDisabled;
+    public JCheckBox getCheckboxIsStrategyUnionDisabled() {
+        return this.checkboxIsStrategyUnionDisabled;
     }
 }

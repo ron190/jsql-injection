@@ -112,7 +112,7 @@ strategy:
    errorMessage:
     - nuodb
 
- normal:
+ union:
   indices: union select ${result_range} from (${indice_unique})
   capacity: (select '${lead}${indice}' || ${calibrator} from dual)
   orderBy: order by 1337

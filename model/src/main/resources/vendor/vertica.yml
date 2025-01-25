@@ -125,7 +125,7 @@ strategy:
     # Collision with postgres
     - (?!.*Vertica)ORDER BY position 1337 is not in select list
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: (select '${lead}' || ${indice} || ${calibrator})
   orderBy: order by 1337

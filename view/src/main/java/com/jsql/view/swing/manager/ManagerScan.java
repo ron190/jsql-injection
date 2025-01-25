@@ -173,7 +173,7 @@ public class ManagerScan extends AbstractManagerList {
      * Unplug any existing view and plug a console-like view in order to
      * respond appropriately to GUI message with simple text result instead of
      * build complex graphical components during the multi website injections.
-     * At the end of the scan it plugs again the normal view.
+     * At the end of the scan it plugs again the default view.
      * @param urlsItemList contains a list of String URL
      */
     public void scan(List<ItemList> urlsItemList) {
@@ -232,7 +232,7 @@ public class ManagerScan extends AbstractManagerList {
             }
         }
         
-        // Get back the normal view
+        // Get back the default view
         MediatorHelper.model().sendToViews(requestUnsubscribe);
         MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriber());
         

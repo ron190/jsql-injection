@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 
-public class Normal implements Serializable {
+public class Union implements Serializable {
 
     private String indices = StringUtils.EMPTY;
     private String capacity = StringUtils.EMPTY;

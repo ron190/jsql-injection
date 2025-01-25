@@ -143,14 +143,14 @@ public class SqlEngine extends JPanel {
             () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getLimitBoundary()
         )),
         
-        // Normal
+        // Union
         INDICES(new JSyntaxTextArea(
-            v -> SqlEngine.modelYaml.getStrategy().getNormal().setIndices(v),
-            () -> SqlEngine.modelYaml.getStrategy().getNormal().getIndices()
+            v -> SqlEngine.modelYaml.getStrategy().getUnion().setIndices(v),
+            () -> SqlEngine.modelYaml.getStrategy().getUnion().getIndices()
         )),
         CAPACITY(new JSyntaxTextArea(
-            v -> SqlEngine.modelYaml.getStrategy().getNormal().setCapacity(v),
-            () -> SqlEngine.modelYaml.getStrategy().getNormal().getCapacity()
+            v -> SqlEngine.modelYaml.getStrategy().getUnion().setCapacity(v),
+            () -> SqlEngine.modelYaml.getStrategy().getUnion().getCapacity()
         )),
 
         STACK(new JSyntaxTextArea(
@@ -224,8 +224,8 @@ public class SqlEngine extends JPanel {
             () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
         )),
         ORDER_BY(new JSyntaxTextArea(
-            v -> SqlEngine.modelYaml.getStrategy().getNormal().setOrderBy(v),
-            () -> SqlEngine.modelYaml.getStrategy().getNormal().getOrderBy()
+            v -> SqlEngine.modelYaml.getStrategy().getUnion().setOrderBy(v),
+            () -> SqlEngine.modelYaml.getStrategy().getUnion().getOrderBy()
         )),
         VENDOR_SPECIFIC(new JSyntaxTextArea(
             v -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),
@@ -367,7 +367,7 @@ public class SqlEngine extends JPanel {
 
     private JTabbedPane getPanelStrategy() {
         JTabbedPane tabs = new TabbedPaneWheeled();
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new RTextScrollPane(TextareaWithColor.INDICES.getTextArea(), false));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_UNION"), new RTextScrollPane(TextareaWithColor.INDICES.getTextArea(), false));
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_STACK"), new RTextScrollPane(TextareaWithColor.STACK.getTextArea(), false));
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), SqlEngine.tabsError);
 
@@ -394,7 +394,7 @@ public class SqlEngine extends JPanel {
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_BOOLEAN"), tabsBoolean);
 
         Stream.of(
-            "SQLENGINE_NORMAL",
+            "SQLENGINE_UNION",
             "SQLENGINE_STACK",
             "SQLENGINE_ERROR",
             "SQLENGINE_BOOLEAN"

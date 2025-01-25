@@ -211,7 +211,7 @@ strategy:
     - ORDER BY item must be the number of a SELECT-list expression
    vendorSpecific: 0 != bitand(case when ${test} then 1 else 2 end, 1)
 
- normal:
+ union:
   indices: union select ${indices} from dual
   capacity: |
    (

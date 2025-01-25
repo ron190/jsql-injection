@@ -21,7 +21,7 @@ public class PathParamIntegerSuiteIT extends ConcreteMySqlSuiteIT {
         // TODO Test all PathParam URL segments
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
             // Can work on Error:crud 'or <Error> or'
-            // Must also work on Normal
+            // Must also work on union
             "http://localhost:8080/path-integer/*/suffix?tenant=mysql&fake="
         );
         
@@ -51,7 +51,7 @@ public class PathParamIntegerSuiteIT extends ConcreteMySqlSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

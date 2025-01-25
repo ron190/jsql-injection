@@ -17,15 +17,15 @@ import com.jsql.view.swing.util.MediatorHelper;
 /**
  * Mark the injection as vulnerable to a basic injection.
  */
-public class MarkNormalVulnerable implements InteractionCommand {
+public class MarkUnionVulnerable implements InteractionCommand {
     
-    public MarkNormalVulnerable(Object[] interactionParams) {
+    public MarkUnionVulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getNormal();
+        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getUnion();
         MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(strategy);
     }
 }

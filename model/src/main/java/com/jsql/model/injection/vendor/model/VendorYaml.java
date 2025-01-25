@@ -302,7 +302,7 @@ public class VendorYaml implements AbstractVendor {
     public String sqlTextIntoFile(String body, String path) {
         String visibleIndex = String.format(
             VendorYaml.FORMAT_INDEX,
-            this.injectionModel.getMediatorStrategy().getSpecificNormal().getVisibleIndex()
+            this.injectionModel.getMediatorStrategy().getSpecificUnion().getVisibleIndex()
         );
         return this.injectionModel.getIndexesInUrl()
             .replaceAll(
@@ -464,12 +464,12 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlNormal(String sqlQuery, String startPosition, boolean isReport) {
+    public String sqlUnion(String sqlQuery, String startPosition, boolean isReport) {
         return VendorYaml.replaceTags(
             this.getSlidingWindow(isReport)
             .replace(VendorYaml.INJECTION, sqlQuery)
             .replace(VendorYaml.WINDOW_CHAR, startPosition)
-            .replace(VendorYaml.CAPACITY, this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength())
+            .replace(VendorYaml.CAPACITY, this.injectionModel.getMediatorStrategy().getUnion().getPerformanceLength())
         );
     }
 
@@ -493,7 +493,7 @@ public class VendorYaml implements AbstractVendor {
         return this.injectionModel.getIndexesInUrl().replaceAll(
             String.format(regexVisibleIndexesToFind, regexIndexes),
             VendorYaml.replaceTags(
-                this.modelYaml.getStrategy().getNormal().getCapacity()
+                this.modelYaml.getStrategy().getUnion().getCapacity()
                 .replace(VendorYaml.CALIBRATOR, this.modelYaml.getStrategy().getConfiguration().getCalibrator())
                 .replace(VendorYaml.INDICE, "$1")
             )
@@ -511,7 +511,7 @@ public class VendorYaml implements AbstractVendor {
             replaceTag = field;
         }
         indice--;
-        return this.modelYaml.getStrategy().getNormal()
+        return this.modelYaml.getStrategy().getUnion()
             .getIndices()
             .replace(
                 VendorYaml.INDICES,
@@ -615,7 +615,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlOrderBy() {
-        return this.modelYaml.getStrategy().getNormal().getOrderBy();
+        return this.modelYaml.getStrategy().getUnion().getOrderBy();
     }
     
     @Override

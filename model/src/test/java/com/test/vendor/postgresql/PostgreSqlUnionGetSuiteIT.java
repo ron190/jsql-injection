@@ -1,4 +1,4 @@
-package com.test.vendor.derby;
+package com.test.vendor.postgresql;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class DerbyNormalGetSuiteIT extends ConcreteDerbySuiteIT {
+public class PostgreSqlUnionGetSuiteIT extends ConcretePostgreSqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -18,16 +18,21 @@ public class DerbyNormalGetSuiteIT extends ConcreteDerbySuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=derby&name="
+            "http://localhost:8080/union?tenant=postgresql&name="
         );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getDerby());
+
         model.beginInjection();
     }
     
@@ -36,19 +41,19 @@ public class DerbyNormalGetSuiteIT extends ConcreteDerbySuiteIT {
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
-    
+
     @Override
     @RetryingTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
-    
+
     @Override
     @RetryingTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
-    
+
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
@@ -58,7 +63,7 @@ public class DerbyNormalGetSuiteIT extends ConcreteDerbySuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

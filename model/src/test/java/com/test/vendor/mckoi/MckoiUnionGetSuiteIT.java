@@ -1,4 +1,4 @@
-package com.test.vendor.hsqldb;
+package com.test.vendor.mckoi;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class HsqldbNormalGetSuiteIT extends ConcreteHsqldbSuiteIT {
+public class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -18,16 +18,21 @@ public class HsqldbNormalGetSuiteIT extends ConcreteHsqldbSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=hsqldb&name="
+            "http://localhost:8080/mckoi?name=2+*"
         );
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsNotSearchingCharInsertion(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getHsqldb());
+
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMckoi());
         model.beginInjection();
     }
     
@@ -58,7 +63,7 @@ public class HsqldbNormalGetSuiteIT extends ConcreteHsqldbSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

@@ -1,4 +1,4 @@
-package com.test.vendor.mimer;
+package com.test.vendor.derby;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class MimerNormalGetSuiteIT extends ConcreteMimerSuiteIT {
+public class DerbyUnionGetSuiteIT extends ConcreteDerbySuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -18,7 +18,7 @@ public class MimerNormalGetSuiteIT extends ConcreteMimerSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/mimer?name="
+            "http://localhost:8080/union?tenant=derby&name="
         );
         
         model
@@ -26,8 +26,8 @@ public class MimerNormalGetSuiteIT extends ConcreteMimerSuiteIT {
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMimer());
+        
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getDerby());
         model.beginInjection();
     }
     
@@ -58,7 +58,7 @@ public class MimerNormalGetSuiteIT extends ConcreteMimerSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

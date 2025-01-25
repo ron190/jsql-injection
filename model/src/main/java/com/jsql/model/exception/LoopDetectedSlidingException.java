@@ -11,7 +11,7 @@
 package com.jsql.model.exception;
 
 /**
- * Exception class thrown during normal injection process,
+ * Exception class thrown during injection process,
  * concerns every step when user interact with
  * database elements (database, table, column).
  */

@@ -19,7 +19,7 @@ public class StarOnlySuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?fake=empty&name=*&tenant=mysql"
+            "http://localhost:8080/union?fake=empty&name=*&tenant=mysql"
         );
 
         model
@@ -48,7 +48,7 @@ public class StarOnlySuiteIT extends ConcreteMySqlSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

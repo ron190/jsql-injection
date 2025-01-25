@@ -21,7 +21,7 @@ public class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=mysql&name="
+            "http://localhost:8080/union?tenant=mysql&name="
         );
 
         model.setIsScanning(true);

@@ -111,7 +111,7 @@ strategy:
    orderByErrorMessage:
     - Invalid position value in ORDER BY clause
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: |
    (

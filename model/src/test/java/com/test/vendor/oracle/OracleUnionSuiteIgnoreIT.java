@@ -1,4 +1,4 @@
-package com.test.vendor.sybase;
+package com.test.vendor.oracle;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class SybaseNormalGetSuiteIT extends ConcreteSybaseSuiteIT {
+public class OracleUnionSuiteIgnoreIT extends ConcreteOracleSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -18,7 +18,7 @@ public class SybaseNormalGetSuiteIT extends ConcreteSybaseSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=sybase&name="
+            "http://localhost:8080/union?tenant=oracle&name="
         );
         
         model
@@ -27,7 +27,7 @@ public class SybaseNormalGetSuiteIT extends ConcreteSybaseSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSybase());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getOracle());
         model.beginInjection();
     }
     
@@ -58,7 +58,7 @@ public class SybaseNormalGetSuiteIT extends ConcreteSybaseSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

@@ -18,7 +18,7 @@ public interface AbstractVendor {
     String sqlColumns(Table table);
     String sqlRows(String[] arrayColumns, Database database, Table table);
 
-    String sqlNormal(String sqlQuery, String startPosition, boolean isReport);
+    String sqlUnion(String sqlQuery, String startPosition, boolean isReport);
     String sqlErrorIndice(Method errorMethod);
     String sqlErrorCalibrator(Method errorMethod);
     String sqlError(String sqlQuery, String startPosition, int indexMethodError, boolean isReport);

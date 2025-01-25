@@ -161,7 +161,7 @@ strategy:
     - (?<!Vertica.*)ORDER BY position 1337 is not in select list
    vendorSpecific: case when ${test} then'a'else'b'end='a'::text
 
- normal:
+ union:
   indices: union select ${indices}
   capacity: (select '${lead_pipe}' || ${indice} || ${calibrator})
   orderBy: order by 1337

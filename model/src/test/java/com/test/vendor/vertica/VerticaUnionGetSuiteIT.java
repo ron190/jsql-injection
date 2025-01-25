@@ -1,4 +1,4 @@
-package com.test.vendor.firebird;
+package com.test.vendor.vertica;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class FirebirdNormalGetSuiteIT extends ConcreteFirebirdSuiteIT {
+public class VerticaUnionGetSuiteIT extends ConcreteVerticaSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -18,7 +18,7 @@ public class FirebirdNormalGetSuiteIT extends ConcreteFirebirdSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=firebird&name='"
+            "http://localhost:8080/vertica?name="
         );
         
         model
@@ -27,7 +27,6 @@ public class FirebirdNormalGetSuiteIT extends ConcreteFirebirdSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getFirebird());
         model.beginInjection();
     }
     
@@ -58,7 +57,7 @@ public class FirebirdNormalGetSuiteIT extends ConcreteFirebirdSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }
