@@ -57,12 +57,12 @@ public class SplitNS extends JSplitPane {
 
         // Tree and tabs on top
         this.splitEW.setLeftComponent(tabManagersProxy);
-        JLabel labelApp = new JLabel(UiUtil.APP_BIG.icon);
+        JLabel labelApp = new JLabel(UiUtil.APP_BIG.getIcon());
         labelApp.setMinimumSize(new Dimension(100, 0));
         this.splitEW.setRightComponent(labelApp);
         this.splitEW.setDividerLocation(verticalLeftRightSplitter);
 
-        JLabel labelShowConsoles = new JLabel(UiUtil.ARROW_UP.icon);
+        JLabel labelShowConsoles = new JLabel(UiUtil.ARROW_UP.getIcon());
         labelShowConsoles.setBorder(BorderFactory.createEmptyBorder());
         labelShowConsoles.addMouseListener(new MouseAdapter() {
             @Override
@@ -98,7 +98,7 @@ public class SplitNS extends JSplitPane {
     /**
      * Switch left component with right component when locale orientation requires this.
      */
-    public void initializeSplitOrientation() {
+    public void initSplitOrientation() {
         if (MediatorHelper.tabResults().getTabCount() == 0) {
             int dividerLocation = this.splitEW.getDividerLocation();
             if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {

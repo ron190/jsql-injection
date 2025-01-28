@@ -150,8 +150,8 @@ public abstract class AbstractNodeModel {
         var popupMenu = new JPopupMenuCustomExtract();
         AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
 
-        this.initializeItemLoadPause(currentTableNode, popupMenu, suspendableTask);
-        this.initializeItemRenameReload(currentTableNode, path, popupMenu);
+        this.initItemLoadPause(currentTableNode, popupMenu, suspendableTask);
+        this.initItemRenameReload(currentTableNode, path, popupMenu);
         this.buildMenu(popupMenu, path);
         this.displayPopupMenu(e, popupMenu);
     }
@@ -175,7 +175,7 @@ public abstract class AbstractNodeModel {
         );
     }
 
-    private void initializeItemRenameReload(DefaultMutableTreeNode currentTableNode, TreePath path, JPopupMenuCustomExtract popupMenu) {
+    private void initItemRenameReload(DefaultMutableTreeNode currentTableNode, TreePath path, JPopupMenuCustomExtract popupMenu) {
         String textReload;
         
         if (this instanceof NodeModelDatabase) {
@@ -207,7 +207,7 @@ public abstract class AbstractNodeModel {
         popupMenu.add(menuItemReload);
     }
 
-    private void initializeItemLoadPause(
+    private void initItemLoadPause(
         DefaultMutableTreeNode currentTableNode,
         JPopupMenuCustomExtract popupMenu,
         AbstractSuspendable suspendableTask
@@ -262,22 +262,22 @@ public abstract class AbstractNodeModel {
             this.panelNode.setBackground(UIManager.getColor(AbstractNodeModel.TREE_BACKGROUND));  // required for transparency
         }
 
-        this.initializeIcon(isLeaf);
+        this.initIcon(isLeaf);
         
         AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
-        this.initializeEditable(nodeModel.isEdited);
-        this.initializeLabel(isSelected, hasFocus, nodeModel.isEdited);
-        this.initializeProgress(currentNode);
+        this.initEditable(nodeModel.isEdited);
+        this.initLabel(isSelected, hasFocus, nodeModel.isEdited);
+        this.initProgress(currentNode);
         
         return this.panelNode;
     }
 
-    private void initializeIcon(boolean isLeaf) {
+    private void initIcon(boolean isLeaf) {
         this.panelNode.showIcon();
         this.panelNode.setIconNode(this.getLeafIcon(isLeaf));
     }
 
-    private void initializeProgress(DefaultMutableTreeNode currentNode) {
+    private void initProgress(DefaultMutableTreeNode currentNode) {
         if (this.isLoading) {
             this.displayProgress(this.panelNode, currentNode);
             this.panelNode.hideIcon();
@@ -287,12 +287,12 @@ public abstract class AbstractNodeModel {
 
             AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
-                this.panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.icon, UiUtil.PATH_PAUSE));
+                this.panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.getIcon(), UiUtil.PATH_PAUSE));
             }
         }
     }
 
-    private void initializeLabel(final boolean isSelected, boolean hasFocus, boolean isEdited) {
+    private void initLabel(final boolean isSelected, boolean hasFocus, boolean isEdited) {
         // Fix #90521: NullPointerException on setText()
         JLabel nodeLabel = this.panelNode.getNodeLabel();
         try {
@@ -324,7 +324,7 @@ public abstract class AbstractNodeModel {
         }
     }
 
-    private void initializeEditable(boolean isEdited) {
+    private void initEditable(boolean isEdited) {
         if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
             this.panelNode.getTextFieldEditable().setFont(UiUtil.FONT_MONO_ASIAN);
         } else {

@@ -156,7 +156,7 @@ public class GitUtil {
             .build();
             
         try {
-            HttpResponse<String> response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());
+            HttpResponse<String> response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());
             this.readGithubResponse(response, showOnConsole);
         } catch (InterruptedException | IOException e) {
             if (showOnConsole == ShowOnConsole.YES) {

@@ -47,8 +47,8 @@ import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.BinaryOperator;
 import java.util.regex.Pattern;
 
 /**
@@ -186,7 +186,7 @@ public class ResourceAccess {
     }
 
     public String createExploitWeb(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod) throws JSqlException {
-        BiFunction<String, String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+        BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             var request = new Request();
             request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
             request.setParameters(urlSuccess);
@@ -197,7 +197,7 @@ public class ResourceAccess {
     }
 
     public void createExploitUpload(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, File fileToUpload) throws JSqlException {
-        BiFunction<String, String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+        BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
                 HttpResponse<String> result = this.upload(fileToUpload, urlSuccess, streamToUpload);
                 if (result.body().contains(DataAccess.LEAD + "y")) {
@@ -217,7 +217,7 @@ public class ResourceAccess {
     }
 
     public String createExploitSql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, String username, String password) throws JSqlException {
-        BiFunction<String, String, String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+        BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             var resultQuery = this.runSqlShell("select 1337", null, urlSuccess, username, password, false);
             if (resultQuery != null && resultQuery.contains("| 1337 |")) {
                 var request = new Request();
@@ -252,7 +252,7 @@ public class ResourceAccess {
         String urlExploit,
         String keyPropertyExploit,
         String nameExploit,
-        BiFunction<String, String, String> biFuncGetRequest,
+        BinaryOperator<String> biFuncGetRequest,
         String pathNetshareFolder,
         ExploitMethod exploitMethod
     ) throws JSqlException {
@@ -318,7 +318,7 @@ public class ResourceAccess {
         return this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
     }
 
-    private String checkUrls(String urlExploit, String nameExploit, BiFunction<String, String, String> biFuncGetRequest) {
+    private String checkUrls(String urlExploit, String nameExploit, BinaryOperator<String> biFuncGetRequest) {
         String urlExploitFixed = urlExploit;
         if (!urlExploitFixed.isEmpty()) {
             urlExploitFixed = urlExploitFixed.replaceAll("/*$", StringUtils.EMPTY) +"/";
@@ -591,7 +591,7 @@ public class ResourceAccess {
             .setHeader("Content-Type", "multipart/form-data; boundary=" + boundary)
             .build();
 
-        var response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());
+        var response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());
         HttpHeaders httpHeaders = response.headers();
         String pageSource = response.body();
 
@@ -744,7 +744,6 @@ public class ResourceAccess {
         } else {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);
         }
-
         return results;
     }
     

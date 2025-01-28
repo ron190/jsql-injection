@@ -40,7 +40,7 @@ public interface AbstractVendor {
     List<String> getFalsy();
     List<String> getTruthy();
 
-    String sqlTestBinaryInitialization();
+    String sqlTestBinaryInit();
     String sqlTestBlind(String check, BinaryMode blindMode);
     String sqlBitTestBlind(String inj, int indexCharacter, int bit, BinaryMode blindMode);
     String sqlTimeTest(String check, BinaryMode blindMode);

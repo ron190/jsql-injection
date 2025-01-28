@@ -51,12 +51,12 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         // Listen for undo and redo events
         doc.addUndoableEditListener(undoableEditEvent -> undoRedoManager.addEdit(undoableEditEvent.getEdit()));
 
-        this.initializeUndo(undoRedoManager);
-        this.initializeRedo(undoRedoManager);
+        this.initUndo(undoRedoManager);
+        this.initRedo(undoRedoManager);
         this.makeDeleteSilent();
     }
 
-    private void initializeUndo(final UndoManager undo) {
+    private void initUndo(final UndoManager undo) {
         final var undoIdentifier = "Undo";  // Create an undo action and add it to the text component
         
         this.getProxy().getActionMap().put(undoIdentifier, new AbstractAction(undoIdentifier) {
@@ -77,7 +77,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         this.getProxy().getInputMap().put(KeyStroke.getKeyStroke("control Z"), undoIdentifier);
     }
 
-    private void initializeRedo(final UndoManager undo) {
+    private void initRedo(final UndoManager undo) {
         final var redoIdentifier = "Redo";  // Create a redo action and add it to the text component
         
         this.getProxy().getActionMap().put(redoIdentifier, new AbstractAction(redoIdentifier) {

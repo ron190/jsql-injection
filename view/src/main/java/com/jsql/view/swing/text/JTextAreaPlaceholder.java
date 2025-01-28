@@ -30,7 +30,7 @@ public class JTextAreaPlaceholder extends JTextArea {
      */
     public JTextAreaPlaceholder(String placeholder) {
         this.placeholderText = placeholder;
-        UiUtil.initialize(this);
+        UiUtil.init(this);
     }
 
     @Override

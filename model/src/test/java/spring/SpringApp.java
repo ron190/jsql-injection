@@ -65,7 +65,7 @@ public class SpringApp {
     public static final Properties propsH2 = new Properties();
     public static final Properties propsMysql = new Properties();
     public static final Properties propsMysqlError = new Properties();
-    public static final Properties propsPostgreSql = new Properties();
+    public static final Properties propsPostgres = new Properties();
     public static final Properties propsSqlServer = new Properties();
     public static final Properties propsSqlite = new Properties();
     public static final Properties propsCubrid = new Properties();
@@ -80,7 +80,7 @@ public class SpringApp {
         new SimpleEntry<>(SpringApp.propsH2, "hibernate/hibernate.h2.properties"),
         new SimpleEntry<>(SpringApp.propsMysql, "hibernate/hibernate.mysql.properties"),
         new SimpleEntry<>(SpringApp.propsMysqlError, "hibernate/hibernate.mysql-5-5-40.properties"),
-        new SimpleEntry<>(SpringApp.propsPostgreSql, "hibernate/hibernate.postgresql.properties"),
+        new SimpleEntry<>(SpringApp.propsPostgres, "hibernate/hibernate.postgres.properties"),
         new SimpleEntry<>(SpringApp.propsSqlServer, "hibernate/hibernate.sqlserver.properties"),
         new SimpleEntry<>(SpringApp.propsCubrid, "hibernate/hibernate.cubrid.properties"),
         new SimpleEntry<>(SpringApp.propsSqlite, "hibernate/hibernate.sqlite.properties"),
@@ -103,13 +103,13 @@ public class SpringApp {
         });
     }
 
-    public static void initializeDatabases() throws Exception {
+    public static void initDatabases() throws Exception {
         if (System.getProperty("profileId") == null || "tests".equals(System.getProperty("profileId"))) {
-            SpringApp.initializeHsqldb();
-            SpringApp.initializeH2();
-            SpringApp.initializeNeo4j();
-            SpringApp.initializeDerby();
-            SpringApp.initializeMckoi();
+            SpringApp.initHsqldb();
+            SpringApp.initH2();
+            SpringApp.initNeo4j();
+            SpringApp.initDerby();
+            SpringApp.initMckoi();
         }
 
         SpringApp.getPropertiesFilterByProfile()
@@ -138,12 +138,12 @@ public class SpringApp {
         });
     }
 
-    private static void initializeDerby() throws Exception {
+    private static void initDerby() throws Exception {
         SpringApp.serverDerby = new NetworkServerControl();
         SpringApp.serverDerby.start(null);
     }
 
-    private static void initializeHsqldb() {
+    private static void initHsqldb() {
         SpringApp.serverHsqldb = new org.hsqldb.server.Server();
         SpringApp.serverHsqldb.setSilent(true);
         SpringApp.serverHsqldb.setDatabaseName(0, "mainDb");
@@ -152,7 +152,7 @@ public class SpringApp {
         SpringApp.serverHsqldb.start();
     }
 
-    private static void initializeMckoi() throws SQLException, IOException {
+    private static void initMckoi() throws SQLException, IOException {
         DefaultDBConfig config = new DefaultDBConfig(File.createTempFile("mckoi.config", null));
         config.setMinimumDebugLevel(Lvl.ERROR);
 
@@ -180,12 +180,12 @@ public class SpringApp {
         }
     }
 
-    private static void initializeH2() throws SQLException {
+    private static void initH2() throws SQLException {
         SpringApp.serverH2 = Server.createTcpServer();
         SpringApp.serverH2.start();
     }
 
-    private static void initializeNeo4j() throws IOException {
+    private static void initNeo4j() throws IOException {
         String graphMovie;
         try (InputStream stream = new ClassPathResource("neo4j/movie-graph.txt").getInputStream()) {
             graphMovie = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
@@ -214,7 +214,7 @@ public class SpringApp {
      * For debug purpose only.
      */
     public static void main(String[] args) throws Exception {
-        SpringApp.initializeDatabases();
+        SpringApp.initDatabases();
         SpringApplication.run(SpringApp.class, args);
     }
     

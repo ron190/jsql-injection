@@ -10,14 +10,13 @@ public class TamperingSuiteIT extends ConcreteMySqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
-        
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/post?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().initializeRequest("name=");
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/post?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().initRequest("name=");
 
         model
         .getMediatorUtils()

@@ -27,7 +27,6 @@ public class DigestSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChainDigest(HttpSecurity http) throws Exception {
-
         return http.securityMatcher("/digest/**")
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
@@ -43,7 +42,6 @@ public class DigestSecurityConfig {
     }
 
     public Filter digestAuthenticationFilter() {
-
         UserDetails user = User.builder()
             .username(DigestSecurityConfig.DIGEST_USERNAME)
             .password(DigestSecurityConfig.DIGEST_PASSWORD_ENCODED)
@@ -61,11 +59,9 @@ public class DigestSecurityConfig {
 
     @Bean
     public DigestAuthenticationEntryPoint digestEntryPoint() {
-
         DigestAuthenticationEntryPoint digestAuthenticationEntryPoint = new DigestAuthenticationEntryPoint();
         digestAuthenticationEntryPoint.setKey("mykey");
         digestAuthenticationEntryPoint.setRealmName(DigestSecurityConfig.DIGEST_REALM);
-
         return digestAuthenticationEntryPoint;
     }
 }

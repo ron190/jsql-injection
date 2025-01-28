@@ -33,7 +33,7 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     @Override
-    protected String initializeTransferable() {
+    protected String initTransferable() {
         var stringTransferable = new StringBuilder();
         for (ItemList itemPath: this.dragPaths) {
             stringTransferable.append(itemPath).append("\n");
@@ -90,7 +90,7 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
     }
 
     @Override
-    protected List<Integer> initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel<ItemList> listModel) {
+    protected List<Integer> initStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel<ItemList> listModel) {
         int selectedIndexTo = selectedIndexFrom;
         List<Integer> selectedIndexes = new ArrayList<>();
         for (String line: clipboardText.split("\\n")) {

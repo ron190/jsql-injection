@@ -240,7 +240,7 @@ strategy:
     - 1 = 1
     - 2 = 2
     - 1 %21= 2
-   initialization: 0%2b1 = 1
+   init: 0%2b1 = 1
    bit: |
     0 != bitand(
         ascii(

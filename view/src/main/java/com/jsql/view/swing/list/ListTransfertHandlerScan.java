@@ -36,7 +36,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     @Override
-    protected List<Integer> initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel<ItemList> listModel) {
+    protected List<Integer> initStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel<ItemList> listModel) {
         int selectedIndexTo = selectedIndexFrom;
         List<Integer> selectedIndexes = new ArrayList<>();
         for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {
@@ -47,7 +47,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     }
 
     @Override
-    protected String initializeTransferable() {
+    protected String initTransferable() {
         List<JSONObject> jsons = new ArrayList<>();
         var stringTransferable = new StringBuilder();
         try {

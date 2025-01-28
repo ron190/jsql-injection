@@ -59,7 +59,7 @@ public class MediatorVendor {
     private final Vendor mysql;
     private final Vendor neo4j;
     private final Vendor oracle;
-    private final Vendor postgresql;
+    private final Vendor postgres;
     private final Vendor sqlite;
     private final Vendor sqlserver;
     private final Vendor sybase;
@@ -100,7 +100,7 @@ public class MediatorVendor {
         this.mysql = new Vendor(new VendorYaml("mysql.yml", injectionModel));
         this.neo4j = new Vendor(new VendorYaml("neo4j.yml", injectionModel));
         this.oracle = new Vendor(new VendorYaml("oracle.yml", injectionModel));
-        this.postgresql = new Vendor(new VendorYaml("postgresql.yml", injectionModel));
+        this.postgres = new Vendor(new VendorYaml("postgres.yml", injectionModel));
         this.sqlite = new Vendor(new VendorYaml("sqlite.yml", injectionModel)) {
             @Override
             public String transformSqlite(String resultToParse) {
@@ -138,7 +138,7 @@ public class MediatorVendor {
         this.vendors = Arrays.asList(
             this.auto, access, altibase, ctreeace, this.cubrid, this.db2, this.derby, exasol, this.firebird, frontbase, this.h2,
             hana, this.hsqldb, this.informix, ingres, iris, maxdb, this.mckoi, this.mimer, this.monetdb, this.mysql, this.neo4j,
-            netezza, nuodb, this.oracle, this.postgresql, presto, this.sqlite, this.sqlserver, this.sybase, teradata, this.vertica
+            netezza, nuodb, this.oracle, this.postgres, presto, this.sqlite, this.sqlserver, this.sybase, teradata, this.vertica
         );
         
         this.setVendor(this.mysql);
@@ -183,7 +183,7 @@ public class MediatorVendor {
                     break;
                 }
             }
-            vendorFound = this.initializeVendor(vendorFound);
+            vendorFound = this.initVendor(vendorFound);
         }
 
         var urlGitHub = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.url");
@@ -211,7 +211,7 @@ public class MediatorVendor {
         return vendorFound;
     }
 
-    public Vendor initializeVendor(Vendor vendor) {
+    public Vendor initVendor(Vendor vendor) {
         var vendorFixed = vendor;
         if (vendorFixed == null) {
             vendorFixed = this.injectionModel.getMediatorVendor().getMysql();
@@ -258,8 +258,8 @@ public class MediatorVendor {
         return this.h2;
     }
 
-    public Vendor getPostgresql() {
-        return this.postgresql;
+    public Vendor getPostgres() {
+        return this.postgres;
     }
 
     public Vendor getMysql() {

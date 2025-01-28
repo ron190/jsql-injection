@@ -168,7 +168,7 @@ public class ManagerCoder extends JPanel {
             popupMenu.add(menu);
         }
 
-        JLabel labelMenu = new JLabel(UiUtil.ARROW_DOWN.icon, SwingConstants.LEFT);
+        JLabel labelMenu = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
         this.menuMethod = labelMenu;
         labelMenu.setText(ManagerCoder.ENCODE_TO + Coder.BASE64.label);
         labelMenu.setName("menuMethodManagerCoder");

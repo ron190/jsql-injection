@@ -10,13 +10,12 @@ public class EmptyIntegerUnionSuiteIT extends ConcreteMySqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
-        
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+        model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://localhost:8080/integer-insertion-char?tenant=mysql&name="
         );
 

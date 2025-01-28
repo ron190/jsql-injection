@@ -46,7 +46,6 @@ public class PanelTampering extends JPanel {
         PanelTampering.applyTheme();
 
         var textAreaIsTamperingEval = new RTextScrollPane(PanelTampering.textPaneEval, false);
-        textAreaIsTamperingEval.setMinimumSize(new Dimension(800, 100));
 
         PanelTampering.textPaneEval.getDocument().addDocumentListener(new DocumentListenerEditing() {
             @Override
@@ -104,7 +103,7 @@ public class PanelTampering extends JPanel {
             .createSequentialGroup()
             .addGroup(
                 groupLayout
-                .createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                .createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(labelCommonConversion)
                 .addComponent(this.checkboxIsTamperingBase64)
                 .addComponent(this.checkboxIsTamperingFunctionComment)

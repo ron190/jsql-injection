@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class TabManagers extends TabbedPaneWheeled {
 
-    private final List<ModelSvgIcon> iconsTabs = Arrays.asList(
+    private final transient List<ModelSvgIcon> iconsTabs = Arrays.asList(
         UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH
     );
 
@@ -52,9 +52,9 @@ public class TabManagers extends TabbedPaneWheeled {
     }
     
     private void buildI18nTab(ModelSvgIcon modelSvgIcon, int index) {
-        Icon icon = modelSvgIcon.icon;
-        String keyLabel = modelSvgIcon.keyLabel;
-        String keyTooltip = modelSvgIcon.keyTooltip;
+        Icon icon = modelSvgIcon.getIcon();
+        String keyLabel = modelSvgIcon.getKeyLabel();
+        String keyTooltip = modelSvgIcon.getKeyTooltip();
         AtomicReference<JToolTipI18n> tooltipAtomic = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(keyTooltip)));
         JLabel labelTab = new JLabel(I18nUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {
             @Override

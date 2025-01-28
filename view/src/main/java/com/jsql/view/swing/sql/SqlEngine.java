@@ -248,7 +248,7 @@ public class SqlEngine extends JPanel {
         // user can switch to another vendor then close, so restore current vendor
         SqlEngine.modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
-        SqlEngine.initializeTextComponents();
+        SqlEngine.initTextComponents();
 
         JTabbedPane panelStructure = this.getPanelStructure();
         JTabbedPane panelFile = this.getPanelFile();
@@ -277,7 +277,7 @@ public class SqlEngine extends JPanel {
 
         this.setLayout(new BorderLayout());
 
-        JPanel panelCombo = SqlEngine.initializeMenuVendor();
+        JPanel panelCombo = SqlEngine.initMenuVendor();
         tabsBottom.putClientProperty("JTabbedPane.trailingComponent", panelCombo);
         this.add(tabsBottom);
 
@@ -447,14 +447,14 @@ public class SqlEngine extends JPanel {
         return tabs;
     }
 
-    private static JPanel initializeMenuVendor() {
+    private static JPanel initMenuVendor() {
         var panelMenuVendor = new JPanel();  // required for label on right
         panelMenuVendor.setLayout(new BorderLayout());
 
         JPopupMenu popupMenuVendors = new JPopupMenu();
         popupMenuVendors.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorVendor().getVendors().size()));
 
-        JLabel labelVendor = new JLabel(MediatorHelper.model().getMediatorVendor().getVendor().toString(), UiUtil.ARROW_DOWN.icon, SwingConstants.LEFT);
+        JLabel labelVendor = new JLabel(MediatorHelper.model().getMediatorVendor().getVendor().toString(), UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
         labelVendor.setBorder(UiUtil.BORDER_5PX);  // required for padding
         labelVendor.addMouseListener(new MouseAdapter() {
             @Override
@@ -478,7 +478,7 @@ public class SqlEngine extends JPanel {
             
             itemRadioVendor.addActionListener(actionEvent -> {
                 SqlEngine.modelYaml = vendor.instance().getModelYaml();
-                SqlEngine.initializeTextComponents();
+                SqlEngine.initTextComponents();
                 labelVendor.setText(vendor.toString());
             });
             
@@ -493,7 +493,7 @@ public class SqlEngine extends JPanel {
     /**
      * Configure all text components with new coloring and new modelYaml setter.
      */
-    private static void initializeTextComponents() {
+    private static void initTextComponents() {
         SqlEngine.getTextareas().forEach(SqlEngine::reset);
         SqlEngine.getTextareas().forEach(textPaneLexer -> textPaneLexer.setText(StringUtils.EMPTY));
 

@@ -45,6 +45,7 @@ services:
     ports:
       - "8079:80"
       - "3308:3308"
+      - "6000:5432"  # 5433 not working
     networks:
       - jsql-network
 
@@ -106,15 +107,15 @@ services:
     networks:
       - jsql-network
 
-  postgresql:
+  postgres:
     ports:
       - "5432:5432"
     build:
       context: .
-      dockerfile: Dockerfile.postgresql
+      dockerfile: Dockerfile.postgres
     environment:
       POSTGRES_PASSWORD: my-secret-pw
-    container_name: jsql-postgresql
+    container_name: jsql-postgres
     networks:
       - jsql-network
 

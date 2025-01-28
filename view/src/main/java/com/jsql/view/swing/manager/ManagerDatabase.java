@@ -50,16 +50,12 @@ public class ManagerDatabase extends JPanel {
      */
     public ManagerDatabase() {
         super(new BorderLayout());
-        this.initializeTree();
-        this.add(new JScrollPane(this.tree), BorderLayout.CENTER);
-    }
 
-    private void initializeTree() {
         // First node in tree
         AbstractNodeModel nodeModelEmpty = new NodeModelEmpty(I18nViewUtil.valueByKey("DATABASE_EMPTY"));
         var root = new DefaultMutableTreeNode(nodeModelEmpty);
         I18nViewUtil.addComponentForKey("DATABASE_EMPTY", nodeModelEmpty);
-        
+
         this.tree = new TreeDatabase(root);
         this.tree.setName("treeDatabases");
         MediatorHelper.register(this.tree);
@@ -72,6 +68,8 @@ public class ManagerDatabase extends JPanel {
         this.tree.setShowsRootHandles(true);
         this.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         this.tree.getModel().addTreeModelListener(new TreeModelProgressListener());  // required to repaint progress bar
+
+        this.add(new JScrollPane(this.tree), BorderLayout.CENTER);
     }
 
     private KeyAdapter getTreeKeyListener() {

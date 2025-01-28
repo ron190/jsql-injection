@@ -6,16 +6,14 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.net.Authenticator;
-import java.net.CookieManager;
-import java.net.PasswordAuthentication;
-import java.net.URI;
+import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Version;
 import java.net.http.HttpHeaders;
@@ -72,7 +70,7 @@ public class ConnectionUtil {
         this.injectionModel = injectionModel;
     }
     
-    public HttpClient getHttpClient() {
+    public HttpClient.Builder getHttpClient() {
         var httpClientBuilder = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(this.getTimeout()))
             .sslContext(this.injectionModel.getMediatorUtils().getCertificateUtil().getSslContext())
@@ -98,10 +96,8 @@ public class ConnectionUtil {
                 }
             });
         }
-                
-        return httpClientBuilder.build();
+        return httpClientBuilder;
     }
-
 
     public static <T> Map<String, String> getHeadersMap(HttpResponse<T> httpResponse) {
         Map<String, String> sortedMap = ConnectionUtil.getHeadersMap(httpResponse.headers());
@@ -220,11 +216,11 @@ public class ConnectionUtil {
             
             HttpHeaders httpHeaders;
             if (lineFeed) {
-                HttpResponse<Stream<String>> response = this.getHttpClient().send(httpRequest, BodyHandlers.ofLines());
+                HttpResponse<Stream<String>> response = this.getHttpClient().build().send(httpRequest, BodyHandlers.ofLines());
                 pageSource = response.body().collect(Collectors.joining("\n"));
                 httpHeaders = response.headers();
             } else {
-                HttpResponse<String> response = this.getHttpClient().send(httpRequest, BodyHandlers.ofString());
+                HttpResponse<String> response = this.getHttpClient().build().send(httpRequest, BodyHandlers.ofString());
                 pageSource = response.body();
                 httpHeaders = response.headers();
             }

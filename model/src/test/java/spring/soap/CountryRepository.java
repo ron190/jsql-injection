@@ -50,7 +50,7 @@ public class CountryRepository {
             ));
         } catch (Exception e) {
             // Required by multiple columns
-            country.setName(URLEncoder.encode(this.initializeErrorMessage(e).getContent(), StandardCharsets.UTF_8));
+            country.setName(URLEncoder.encode(this.initErrorMessage(e).getContent(), StandardCharsets.UTF_8));
             // Required by transaction rollback
             throw e;
         }
@@ -58,7 +58,7 @@ public class CountryRepository {
         return country;
 	}
 
-    private Greeting initializeErrorMessage(Exception e) {
+    private Greeting initErrorMessage(Exception e) {
         String stacktrace = ExceptionUtils.getStackTrace(e);
         LOGGER.debug(stacktrace);
         return new Greeting(CountryRepository.TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));

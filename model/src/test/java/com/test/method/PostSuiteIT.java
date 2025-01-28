@@ -10,14 +10,13 @@ public class PostSuiteIT extends ConcreteMySqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
-        
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/post");
-        model.getMediatorUtils().getParameterUtil().initializeRequest("tenant=mysql&name=");
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/post");
+        model.getMediatorUtils().getParameterUtil().initRequest("tenant=mysql&name=");
 
         model.setIsScanning(true);
 

@@ -67,20 +67,20 @@ public class DialogAbout extends JDialog {
         this.setLayout(new BorderLayout());
 
         Container dialogPane = this.getContentPane();
-        JPanel lastLine = this.initializeLastLine(escapeListener);
+        JPanel lastLine = this.initLastLine(escapeListener);
 
-        var labelIcon = new JLabel(UiUtil.APP_MIDDLE.icon);
+        var labelIcon = new JLabel(UiUtil.APP_MIDDLE.getIcon());
         labelIcon.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         dialogPane.add(labelIcon, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 
-        final JEditorPane text = this.initializeEditorPane();  // Contact info, use HTML text
+        final JEditorPane text = this.initEditorPane();  // Contact info, use HTML text
         dialogPane.add(new JScrollPane(text), BorderLayout.CENTER);
 
-        this.initializeDialog();
+        this.initDialog();
     }
 
-    private JPanel initializeLastLine(ActionListener escapeListener) {
+    private JPanel initLastLine(ActionListener escapeListener) {
         final var buttonWebpage = new JButton(I18nUtil.valueByKey("ABOUT_WEBPAGE"));
         I18nViewUtil.addComponentForKey("ABOUT_WEBPAGE", buttonWebpage);
         buttonWebpage.addActionListener(ev -> {
@@ -104,7 +104,7 @@ public class DialogAbout extends JDialog {
         return lastLine;
     }
 
-    private JEditorPane initializeEditorPane() {
+    private JEditorPane initEditorPane() {
         var editorPane = new JEditorPane();
         
         // Fix #82540: NoClassDefFoundError on setText()
@@ -163,7 +163,7 @@ public class DialogAbout extends JDialog {
     /**
      * Set back default setting for About frame.
      */
-    public final void initializeDialog() {
+    public final void initDialog() {
         this.setSize(533, 400);
         this.setLocationRelativeTo(MediatorHelper.frame());
         this.buttonClose.requestFocusInWindow();

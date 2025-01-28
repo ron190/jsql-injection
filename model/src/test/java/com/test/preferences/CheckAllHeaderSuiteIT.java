@@ -10,14 +10,13 @@ public class CheckAllHeaderSuiteIT extends ConcreteMySqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
-        
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/header?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().initializeHeader("fake1:\\r\\nname:\\r\\nfake2:");
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/header?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().initHeader("fake1:\\r\\nname:\\r\\nfake2:");
         
         model.setIsScanning(true);
         

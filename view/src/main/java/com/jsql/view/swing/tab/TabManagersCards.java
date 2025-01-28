@@ -54,7 +54,7 @@ public class TabManagersCards extends JPanel {
         );
         AtomicInteger i = new AtomicInteger();
         MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(modelSvgIcon -> this.buildI18nTab(
-            modelSvgIcon.keyLabel,
+            modelSvgIcon.getKeyLabel(),
             managers.get(i.getAndIncrement())
         ));
 
@@ -67,7 +67,7 @@ public class TabManagersCards extends JPanel {
     
     public void markFileSystemInvulnerable() {
         this.getManagers().forEach(manager -> {
-            manager.changePrivilegeIcon(UiUtil.CROSS_RED.icon);
+            manager.changePrivilegeIcon(UiUtil.CROSS_RED.getIcon());
             manager.endProcess();
         });
     }
@@ -77,7 +77,7 @@ public class TabManagersCards extends JPanel {
     }
     
     public void markFileSystemVulnerable() {
-        this.getManagers().forEach(manager -> manager.changePrivilegeIcon(UiUtil.TICK_GREEN.icon));
+        this.getManagers().forEach(manager -> manager.changePrivilegeIcon(UiUtil.TICK_GREEN.getIcon()));
     }
 
     private void buildI18nTab(String keyLabel, Component manager) {

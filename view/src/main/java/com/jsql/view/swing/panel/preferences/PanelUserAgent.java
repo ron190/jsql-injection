@@ -69,7 +69,7 @@ public class PanelUserAgent extends JPanel {
             .createSequentialGroup()
             .addGroup(
                 groupLayout
-                .createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                .createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(labelOrigin)
                 .addComponent(this.checkboxIsCustomUserAgent)
                 .addComponent(scrollPane)

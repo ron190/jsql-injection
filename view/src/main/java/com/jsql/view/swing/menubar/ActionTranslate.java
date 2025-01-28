@@ -18,7 +18,7 @@ public class ActionTranslate implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        this.dialogTranslate.initializeDialog(this.language);
+        this.dialogTranslate.initDialog(this.language);
     }
 }
 

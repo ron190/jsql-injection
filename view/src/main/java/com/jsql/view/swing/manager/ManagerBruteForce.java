@@ -59,7 +59,7 @@ public class ManagerBruteForce extends JPanel {
     public ManagerBruteForce() {
         super(new BorderLayout());
 
-        JPanel panelOptions = this.initializeOptionsPanel();
+        JPanel panelOptions = this.initOptionsPanel();
         this.add(panelOptions, BorderLayout.NORTH);
 
         var placeholder = new JTextPanePlaceholder(I18nUtil.valueByKey("BRUTEFORCE_RESULT"));
@@ -68,11 +68,11 @@ public class ManagerBruteForce extends JPanel {
         this.result.setName("managerBruterResult");
         this.add(new JScrollPane(this.result), BorderLayout.CENTER);
 
-        JPanel panelButton = this.initializePanelButton();
+        JPanel panelButton = this.initPanelButton();
         this.add(panelButton, BorderLayout.SOUTH);
     }
 
-    private JPanel initializePanelButton() {
+    private JPanel initPanelButton() {
         var lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
 
@@ -106,11 +106,11 @@ public class ManagerBruteForce extends JPanel {
         this.horizontalGlue.setVisible(!isVisible);
     }
 
-    private JPanel initializeOptionsPanel() {
+    private JPanel initOptionsPanel() {
         var options = new JPanel(new BorderLayout());
-        JPanel firstLine = this.initializeFirstLine();
-        final JPanel secondLine = this.initializeSecondLine();
-        JPanel thirdLine = this.initializeThirdLine();
+        JPanel firstLine = this.initFirstLine();
+        final JPanel secondLine = this.initSecondLine();
+        JPanel thirdLine = this.initThirdLine();
         
         final var secondAndThirdLine = new JPanel(new BorderLayout());
         secondAndThirdLine.add(secondLine, BorderLayout.NORTH);
@@ -121,7 +121,7 @@ public class ManagerBruteForce extends JPanel {
         return options;
     }
 
-    private JPanel initializeFirstLine() {
+    private JPanel initFirstLine() {
         var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP)));
         var placeholder = new JTextFieldPlaceholder(I18nUtil.valueByKey("BRUTEFORCE_HASH_LABEL")) {
             @Override
@@ -140,7 +140,7 @@ public class ManagerBruteForce extends JPanel {
         return firstLine;
     }
 
-    private JPanel initializeSecondLine() {
+    private JPanel initSecondLine() {
         final var secondLine = new JPanel();
         secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));
 
@@ -172,7 +172,7 @@ public class ManagerBruteForce extends JPanel {
         return secondLine;
     }
 
-    private JPanel initializeThirdLine() {
+    private JPanel initThirdLine() {
         var thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
 

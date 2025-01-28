@@ -156,7 +156,7 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         }
         
         var blindTest = new CallableBlind(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization(),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),
             this.injectionModel,
             this,
             this.binaryMode,

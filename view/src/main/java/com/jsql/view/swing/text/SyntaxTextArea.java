@@ -1,7 +1,6 @@
 package com.jsql.view.swing.text;
 
 import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.panel.preferences.PanelTampering;
 import com.jsql.view.swing.popupmenu.JPopupMenuComponent;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;

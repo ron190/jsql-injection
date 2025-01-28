@@ -67,9 +67,9 @@ public class JFrameView extends JFrame {
         this.injectionModel = injectionModel;
         MediatorHelper.register(this);
         UiUtil.prepareGUI();  // Load UI before any component
-        this.initializePaneComponents();
-        this.initializeWindow();
-        this.initializeShortcuts();
+        this.initPaneComponents();
+        this.initWindow();
+        this.initShortcuts();
         this.displayVersion();
         I18nUtil.checkCurrentLanguage();
         this.check4K();
@@ -87,7 +87,7 @@ public class JFrameView extends JFrame {
         });
     }
 
-    private void initializePaneComponents() {
+    private void initPaneComponents() {
         // Define the default panel: each component on a vertical line
         this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 
@@ -110,7 +110,7 @@ public class JFrameView extends JFrame {
         menubar.getMenuWindows().switchLocaleFromPreferences();
     }
 
-    private void initializeWindow() {
+    private void initWindow() {
         this.setIconImages(UiUtil.getIcons());  // define small and large app icons
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         this.addWindowStateListener(e -> this.isMaximized = (e.getNewState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH);
@@ -173,7 +173,7 @@ public class JFrameView extends JFrame {
         MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
     }
 
-    private void initializeShortcuts() {
+    private void initShortcuts() {
         HotkeyUtil.addShortcut(this.getRootPane(), MediatorHelper.tabResults());
         HotkeyUtil.addTextFieldShortcutSelectAll();
     }
@@ -193,7 +193,7 @@ public class JFrameView extends JFrame {
         
         Stream.of(MediatorHelper.managerFile(), MediatorHelper.managerExploit()).forEach(managerList -> {
             managerList.setButtonEnable(false);
-            managerList.changePrivilegeIcon(UiUtil.SQUARE.icon);
+            managerList.changePrivilegeIcon(UiUtil.SQUARE.getIcon());
         });
     }
 

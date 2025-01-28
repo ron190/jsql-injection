@@ -55,7 +55,6 @@ public abstract class AbstractTestSuite {
     protected String jsqlColumnName;
     
     private static final AtomicBoolean isSetupStarted = new AtomicBoolean(false);
-    
     protected static final AtomicBoolean isSetupDone = new AtomicBoolean(false);
     
     protected InjectionModel injectionModel;
@@ -63,12 +62,10 @@ public abstract class AbstractTestSuite {
     public abstract void setupInjection() throws Exception;
     
     @BeforeAll
-    public synchronized void initializeBackend() throws Exception {
-        
+    public synchronized void initBackend() throws Exception {
         if (AbstractTestSuite.isSetupStarted.compareAndSet(false, true)) {
-            
             LOGGER.info("@BeforeClass: loading Hibernate and Spring...");
-            SpringApp.initializeDatabases();
+            SpringApp.initDatabases();
             SpringApplication.run(SpringApp.class);
             
             AbstractTestSuite.isSetupDone.set(true);
@@ -78,16 +75,9 @@ public abstract class AbstractTestSuite {
         Awaitility.await().atMost(Duration.ofMinutes(2)).until(AbstractTestSuite.isSetupDone::get);
 
         if (this.injectionModel == null) {
-            
             this.requestJdbc();
             this.setupInjection();
         }
-    }
-
-    public void initialize() throws Exception {
-        
-        LOGGER.warn("For initialization only, run concrete test suite instead.");
-        throw new InjectionFailureException();
     }
 
     public void requestJdbc() {
@@ -107,22 +97,18 @@ public abstract class AbstractTestSuite {
             ResultSet resultSetValues = statementValues.executeQuery(this.jdbcQueryForValues)
         ) {
             while (resultSetDatabase.next()) {
-                
                 String dbName = resultSetDatabase.getString(this.jdbcColumnForDatabaseName);
                 this.databasesFromJdbc.add(dbName);
             }
             while (resultSetTable.next()) {
-                
                 String tableName = resultSetTable.getString(this.jdbcColumnForTableName);
                 this.tablesFromJdbc.add(tableName);
             }
             while (resultSetColumn.next()) {
-                
                 String colName = resultSetColumn.getString(this.jdbcColumnForColumnName);
                 this.columnsFromJdbc.add(colName);
             }
             while (resultSetValues.next()) {
-                
                 String value = resultSetValues.getString(this.jsqlColumnName);
                 this.valuesFromJdbc.add(value);
             }
@@ -133,7 +119,6 @@ public abstract class AbstractTestSuite {
 
     @Ignore("Enabled on inherit")
     public void listDatabases() throws JSqlException {
-        
         Set<String> setValuesFromInjection = new HashSet<>();
         Set<String> setValuesFromJdbc = new HashSet<>();
         
@@ -155,7 +140,6 @@ public abstract class AbstractTestSuite {
                 && setValuesFromInjection.containsAll(setValuesFromJdbc)
             );
         } catch (AssertionError e) {
-            
             Set<String> tablesUnkown = Stream.concat(
                 setValuesFromInjection.stream().filter(value -> !setValuesFromJdbc.contains(value)),
                 setValuesFromJdbc.stream().filter(value -> !setValuesFromInjection.contains(value))
@@ -168,7 +152,6 @@ public abstract class AbstractTestSuite {
 
     @Ignore("Enabled on inherit")
     public void listTables() throws JSqlException {
-        
         Set<String> setValuesFromInjection = new HashSet<>();
         Set<String> setValuesFromJdbc = new HashSet<>();
 
@@ -189,7 +172,6 @@ public abstract class AbstractTestSuite {
                 && setValuesFromInjection.equals(setValuesFromJdbc)
             );
         } catch (AssertionError e) {
-            
             Set<String> tablesUnkown = Stream.concat(
                 setValuesFromInjection.stream().filter(value -> !setValuesFromJdbc.contains(value)),
                 setValuesFromJdbc.stream().filter(value -> !setValuesFromInjection.contains(value))
@@ -202,7 +184,6 @@ public abstract class AbstractTestSuite {
 
     @Ignore("Enabled on inherit")
     public void listColumns() throws JSqlException {
-        
         Set<String> setValuesFromInjection = new HashSet<>();
         Set<String> setValuesFromJdbc = new HashSet<>();
 
@@ -227,7 +208,6 @@ public abstract class AbstractTestSuite {
                 && setValuesFromInjection.equals(setValuesFromJdbc)
             );
         } catch (AssertionError e) {
-            
             Set<String> columnsUnkown = Stream.concat(
                 setValuesFromInjection.stream().filter(value -> !setValuesFromJdbc.contains(value)),
                 setValuesFromJdbc.stream().filter(value -> !setValuesFromInjection.contains(value))
@@ -248,7 +228,6 @@ public abstract class AbstractTestSuite {
 
     @Ignore("Enabled on inherit")
     public void listValues() throws JSqlException {
-        
         Set<String> setValuesFromInjection = new TreeSet<>();
         Set<String> setValuesFromJdbc = new TreeSet<>();
 
@@ -286,7 +265,6 @@ public abstract class AbstractTestSuite {
                 && setValuesFromInjection.containsAll(setValuesFromJdbc)
             );
         } catch (AssertionError e) {
-            
             Set<String> valuesUnknown = Stream.concat(
                 setValuesFromInjection.stream().filter(value -> !setValuesFromJdbc.contains(value)),
                 setValuesFromJdbc.stream().filter(value -> !setValuesFromInjection.contains(value))

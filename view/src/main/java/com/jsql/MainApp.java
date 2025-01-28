@@ -48,7 +48,7 @@ public class MainApp {
         MediatorHelper.register(MainApp.INJECTION_MODEL);
 
         MainApp.INJECTION_MODEL.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();
-        MainApp.INJECTION_MODEL.getMediatorUtils().getProxyUtil().initializeProxy();
+        MainApp.INJECTION_MODEL.getMediatorUtils().getProxyUtil().initProxy();
         MainApp.INJECTION_MODEL.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();
 
         try {

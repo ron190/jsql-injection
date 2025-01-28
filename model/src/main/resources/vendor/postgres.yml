@@ -1,4 +1,4 @@
-vendor: PostgreSQL
+vendor: Postgres
 
 resource:
  info: |
@@ -133,7 +133,7 @@ strategy:
        || '${trail_sql}'
   limit: limit 65536 offset ${limit.value}
   failsafe: (1337${indice}7330%2b1)::text
-  calibrator: repeat(chr(35), 1024)
+  calibrator: repeat('${calibrator_sql}', 1024)
   limitBoundary: 0
   endingComment: --+-
   fingerprint:
@@ -152,7 +152,7 @@ strategy:
     - enterprisedb
     - greenplum
     - opengauss
-    - postgresql
+    - postgres
     - redshift
     - timescaleDB
     - yugabytedb

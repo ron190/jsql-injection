@@ -93,9 +93,9 @@ public class ParameterUtil {
                 urlQueryFixed = urlQueryFixed.replace(authority, authorityPunycode);
             }
 
-            this.initializeQueryString(urlQueryFixed);
-            this.initializeHeader(rawHeader);
-            this.initializeRequest(rawRequest);
+            this.initQueryString(urlQueryFixed);
+            this.initHeader(rawHeader);
+            this.initRequest(rawRequest);
 
             this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);
             this.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);
@@ -260,7 +260,7 @@ public class ParameterUtil {
         }
     }
     
-    public String initializeStar(SimpleEntry<String, String> parameterToInject) {
+    public String initStar(SimpleEntry<String, String> parameterToInject) {
         String characterInsertionByUser;
         if (parameterToInject == null) {
             characterInsertionByUser = InjectionModel.STAR;
@@ -271,7 +271,7 @@ public class ParameterUtil {
         return characterInsertionByUser;
     }
 
-    public void initializeQueryString(String urlQuery) throws MalformedURLException, URISyntaxException {
+    public void initQueryString(String urlQuery) throws MalformedURLException, URISyntaxException {
         // Format and get rid of anchor fragment using native URL
         var url = new URI(urlQuery).toURL();
         
@@ -306,7 +306,7 @@ public class ParameterUtil {
         }
     }
 
-    public void initializeRequest(String rawRequest) {
+    public void initRequest(String rawRequest) {
         this.rawRequest = rawRequest;
         this.listRequest.clear();
         if (StringUtils.isNotEmpty(rawRequest)) {
@@ -329,7 +329,7 @@ public class ParameterUtil {
         }
     }
 
-    public void initializeHeader(String rawHeader) {
+    public void initHeader(String rawHeader) {
         this.rawHeader = rawHeader;
         this.listHeader.clear();
         if (StringUtils.isNotEmpty(rawHeader)) {

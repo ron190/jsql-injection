@@ -55,7 +55,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
      */
     public abstract boolean isInjectable() throws StoppedByUserSlidingException;
 
-    public abstract void initializeNextCharacters(
+    public abstract void initNextChars(
         String sqlQuery,
         List<char[]> bytes,
         AtomicInteger indexCharacter,
@@ -63,7 +63,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
         AtomicInteger countTasksSubmitted
     );
 
-    public abstract char[] initializeBinaryMask(List<char[]> bytes, T currentCallable);
+    public abstract char[] initBinaryMask(List<char[]> bytes, T currentCallable);
 
     /**
      * Display a message to explain how is blind/time working.
@@ -92,7 +92,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
         var countTasksSubmitted = new AtomicInteger(0);
         var countBadAsciiCode = new AtomicInteger(0);
 
-        this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
+        this.initNextChars(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
 
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
@@ -113,7 +113,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
                 // and define a new array of 8 undefined bit.
                 // Then add 8 bits requests for that new character.
                 this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
-                this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
+                this.initNextChars(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
 
                 String result = AbstractInjectionBinary.convert(bytes);
                 if (result.matches("(?s).*"+ DataAccess.TRAIL_RGX +".*")) {
@@ -154,7 +154,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
         // Process url that has just checked one bit, convert bits to chars,
         // and change current bit from undefined to 0 or 1
         
-        char[] asciiCodeMask = this.initializeBinaryMask(bytes, currentCallable);
+        char[] asciiCodeMask = this.initBinaryMask(bytes, currentCallable);
         var asciiCodeBinary = new String(asciiCodeMask);
 
         // Inform the View if bits array is complete, else nothing #Need fix

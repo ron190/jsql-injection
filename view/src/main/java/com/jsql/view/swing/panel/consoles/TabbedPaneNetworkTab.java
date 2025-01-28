@@ -23,6 +23,7 @@ import org.jsoup.safety.Safelist;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
+import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.AbstractMap.SimpleEntry;
@@ -51,8 +52,10 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
 
     public TabbedPaneNetworkTab() {
         this.setName("tabNetwork");
-        this.putClientProperty("JTabbedPane.trailingComponent", this.checkBoxDecode);
-        this.checkBoxDecode.setHorizontalTextPosition(SwingConstants.LEFT);
+        var panelDecode = new JPanel(new BorderLayout());
+        panelDecode.add(this.checkBoxDecode, BorderLayout.EAST);  // reduce to minimum size as checkbox expands by the label
+        this.putClientProperty("JTabbedPane.trailingComponent", panelDecode);
+        this.checkBoxDecode.setHorizontalTextPosition(SwingConstants.TRAILING);
 
         I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_URL", this.textAreaUrl);
         I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_RESPONSE", this.textAreaResponse);
@@ -135,7 +138,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         // Fix #54573: NullPointerException on setText()
         try {
             this.textAreaSource.setText(
-                StringUtil.detectUtf8(this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getSource()) : networkData.getSource())
+                StringUtil.detectUtf8(networkData.getSource())
                 .replaceAll("a{5,}", "a*")
                 .trim()
             );

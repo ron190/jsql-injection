@@ -60,14 +60,14 @@ public class DnDList extends JList<ItemList> {
         }
 
         this.setModel(this.listModel);
-        this.initializeActionMap();
-        this.initializeListener();
+        this.initActionMap();
+        this.initListener();
         this.setDragEnabled(true);
         this.setDropMode(DropMode.INSERT);
         this.setTransferHandler(new ListTransfertHandler());  // Set Drag and Drop
     }
 
-    private void initializeListener() {
+    private void initListener() {
         this.addMouseListener(new MouseAdapterMenuAction(this));
         this.addFocusListener(new FocusListener() {  // Allows color change when list loses/gains focus
             @Override
@@ -89,7 +89,7 @@ public class DnDList extends JList<ItemList> {
         });
     }
 
-    private void initializeActionMap() {
+    private void initActionMap() {
         var listActionMap = this.getActionMap();  // Transform Cut, selects next value
         listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
             @Override
@@ -226,7 +226,7 @@ public class DnDList extends JList<ItemList> {
     private void addItems(final List<File> filesToImport, int startPosition) {
         int endPosition = startPosition;
         for (File file: filesToImport) {
-            endPosition = this.initializeItems(endPosition, file);
+            endPosition = this.initItems(endPosition, file);
         }
         if (!this.listModel.isEmpty()) {
             this.setSelectionInterval(startPosition, endPosition - 1);
@@ -245,7 +245,7 @@ public class DnDList extends JList<ItemList> {
         }
     }
 
-    private int initializeItems(int startPosition, File file) {
+    private int initItems(int startPosition, File file) {
         int endPosition = startPosition;
         
         try (

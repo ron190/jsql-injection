@@ -9,26 +9,25 @@ class ParameterUtilSpock extends Specification {
     ParameterUtil parameterUtil
 
     def 'Check STAR is used by correct method injection when check all param is disabled'() {
-        
-        when: parameterUtil.initializeQueryString('http://127.0.0.1?a=a*')
-        and: parameterUtil.initializeHeader('')
-        and: parameterUtil.initializeRequest('')
+        when: parameterUtil.initQueryString('http://127.0.0.1?a=a*')
+        and: parameterUtil.initHeader('')
+        and: parameterUtil.initRequest('')
         and:
             injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.header
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
         
-        when: parameterUtil.initializeQueryString('http://127.0.0.1')
-        and: parameterUtil.initializeHeader('a: a*')
-        and: parameterUtil.initializeRequest('')
+        when: parameterUtil.initQueryString('http://127.0.0.1')
+        and: parameterUtil.initHeader('a: a*')
+        and: parameterUtil.initRequest('')
         and:
             injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.request
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
         
-        when: parameterUtil.initializeQueryString('http://127.0.0.1')
-        and: parameterUtil.initializeHeader('')
-        and: parameterUtil.initializeRequest('a=a*')
+        when: parameterUtil.initQueryString('http://127.0.0.1')
+        and: parameterUtil.initHeader('')
+        and: parameterUtil.initRequest('a=a*')
         and:
             injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.query
             parameterUtil.checkParametersFormat()
@@ -36,8 +35,7 @@ class ParameterUtilSpock extends Specification {
     }
 
     def 'Check that empty query string, request and header is not allowed'() {
-        
-        when: parameterUtil.initializeQueryString('http://127.0.0.1')
+        when: parameterUtil.initQueryString('http://127.0.0.1')
         
         and:
             injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.query
@@ -56,10 +54,9 @@ class ParameterUtilSpock extends Specification {
     }
 
     def 'Check STAR is used one time only'() {
-        
-        when: parameterUtil.initializeQueryString('http://127.0.0.1?a=a*&b=b')
-        and: parameterUtil.initializeRequest('a=a*&b=b')
-        and: parameterUtil.initializeHeader('''
+        when: parameterUtil.initQueryString('http://127.0.0.1?a=a*&b=b')
+        and: parameterUtil.initRequest('a=a*&b=b')
+        and: parameterUtil.initHeader('''
             a: a*
             b: b
         ''')
@@ -69,7 +66,6 @@ class ParameterUtilSpock extends Specification {
     }
     
     def setup() {
-        
         injectionModel = new InjectionModel()
         parameterUtil = injectionModel.mediatorUtils.parameterUtil
     }

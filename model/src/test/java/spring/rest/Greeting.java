@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 
 public class Greeting {
 
-    private final String content;
+    private String content;
 
     public Greeting(String content) {
         this.content = content;
@@ -13,5 +13,9 @@ public class Greeting {
     @JsonRawValue
     public String getContent() {
         return this.content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

@@ -57,7 +57,7 @@ public class PanelNode extends JPanel {
      * @param currentNode Node to draw in the tree
      */
     public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {
-        this.loaderWait.setIcon(UiUtil.HOURGLASS.icon);
+        this.loaderWait.setIcon(UiUtil.HOURGLASS.getIcon());
         this.loaderWait.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
         this.progressBar.setPreferredSize(new Dimension(20, 20));
@@ -83,10 +83,10 @@ public class PanelNode extends JPanel {
         
         this.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
         
-        this.initializeTextFieldEditable(tree, currentNode);
+        this.initTextFieldEditable(tree, currentNode);
     }
 
-    private void initializeTextFieldEditable(final JTree tree, final DefaultMutableTreeNode currentNode) {
+    private void initTextFieldEditable(final JTree tree, final DefaultMutableTreeNode currentNode) {
         this.textFieldEditable.addActionListener(e -> {
             AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
             nodeModel.setIsEdited(false);

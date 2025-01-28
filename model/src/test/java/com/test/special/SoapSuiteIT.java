@@ -12,14 +12,13 @@ public class SoapSuiteIT extends ConcreteMySqlErrorSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
-        
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/ws");
-        model.getMediatorUtils().getParameterUtil().initializeRequest(
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/ws");
+        model.getMediatorUtils().getParameterUtil().initRequest(
             "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:gs=\"http://www.baeldung.com/springsoap/gen\">" +
             "    <soapenv:Header/>" +
             "    <soapenv:Body>" +

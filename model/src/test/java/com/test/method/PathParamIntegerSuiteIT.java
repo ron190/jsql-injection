@@ -12,14 +12,13 @@ public class PathParamIntegerSuiteIT extends ConcreteMySqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
-        
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
         // TODO Test all PathParam URL segments
-        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+        model.getMediatorUtils().getParameterUtil().initQueryString(
             // Can work on Error:crud 'or <Error> or'
             // Must also work on union
             "http://localhost:8080/path-integer/*/suffix?tenant=mysql&fake="

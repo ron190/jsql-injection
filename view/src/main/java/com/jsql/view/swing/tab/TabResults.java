@@ -76,7 +76,7 @@ public class TabResults extends DnDTabbedPane {
         fileText.setText(content);
         fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
         fileText.setCaretPosition(0);
-        this.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.icon);
+        this.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.getIcon());
         MediatorHelper.tabManagersCards().addToLists(path, label);
     }
 
@@ -108,9 +108,9 @@ public class TabResults extends DnDTabbedPane {
                 editorPane.getCaret().setBlinkRate(0);
             }
         });
-        UiUtil.initialize(editorPane);  // silent delete
+        UiUtil.init(editorPane);  // silent delete
 
-        this.addTextTab("Vulnerability report", "Analysis report with all payloads detected", editorPane, UiUtil.APP_ICON.icon);
+        this.addTextTab("Vulnerability report", "Analysis report with all payloads detected", editorPane, UiUtil.APP_ICON.getIcon());
     }
 
     public void addTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
@@ -134,7 +134,7 @@ public class TabResults extends DnDTabbedPane {
             this.addTab("Web shell", scroller);
             this.setSelectedComponent(scroller);  // Focus on the new tab
 
-            var header = new TabHeader("Web shell", UiUtil.TERMINAL.icon);
+            var header = new TabHeader("Web shell", UiUtil.TERMINAL.getIcon());
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 
@@ -154,7 +154,7 @@ public class TabResults extends DnDTabbedPane {
             this.addTab("UDF shell", scroller);
             this.setSelectedComponent(scroller);  // Focus on the new tab
 
-            var header = new TabHeader("UDF shell", UiUtil.TERMINAL.icon);
+            var header = new TabHeader("UDF shell", UiUtil.TERMINAL.getIcon());
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 
@@ -174,7 +174,7 @@ public class TabResults extends DnDTabbedPane {
             this.addTab("RCE shell", scroller);
             this.setSelectedComponent(scroller);  // Focus on the new tab
 
-            var header = new TabHeader("RCE shell", UiUtil.TERMINAL.icon);
+            var header = new TabHeader("RCE shell", UiUtil.TERMINAL.getIcon());
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 
@@ -194,7 +194,7 @@ public class TabResults extends DnDTabbedPane {
             this.addTab("SQL shell", scroller);
             this.setSelectedComponent(scroller);  // Focus on the new tab
 
-            var header = new TabHeader("SQL shell", UiUtil.TERMINAL.icon);
+            var header = new TabHeader("SQL shell", UiUtil.TERMINAL.getIcon());
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 
@@ -212,7 +212,7 @@ public class TabResults extends DnDTabbedPane {
         
         this.setSelectedComponent(panelTable);  // Focus on the new tab
 
-        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.icon);
+        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());
         this.setTabComponentAt(this.indexOfComponent(panelTable), header);
 
         this.updateUI();  // required: light, open/close prefs, dark => light artifacts

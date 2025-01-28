@@ -12,14 +12,13 @@ public class CustomMethodSuiteIT extends ConcreteMySqlErrorSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
-        
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/custom?name=");
-        model.getMediatorUtils().getParameterUtil().initializeRequest("tenant=mysql-error");
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/custom?name=");
+        model.getMediatorUtils().getParameterUtil().initRequest("tenant=mysql-error");
 
         model.setIsScanning(true);
 

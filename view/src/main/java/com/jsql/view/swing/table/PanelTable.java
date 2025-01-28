@@ -70,20 +70,20 @@ public class PanelTable extends JPanel {
         this.tableValues.setRowSelectionAllowed(true);
         this.tableValues.setCellSelectionEnabled(true);
 
-        this.initializeRenderer();
+        this.initRenderer();
 
         this.tableValues.getTableHeader().setReorderingAllowed(false);
 
-        this.initializeMouseEvent();
-        this.initializeTabShortcut();
+        this.initMouseEvent();
+        this.initTabShortcut();
 
         var columnAdjuster = new AdjusterTableColumn(this.tableValues);
         columnAdjuster.adjustColumns();
 
         final TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(this.tableValues.getModel());
         this.tableValues.setRowSorter(rowSorter);
-        this.initializeTableScroller();
-        this.initializePanelSearch(rowSorter);
+        this.initTableScroller();
+        this.initPanelSearch(rowSorter);
 
         Comparator<Object> comparatorNumeric = new ComparatorColumn<>();
         for (var i = 0 ; i < this.tableValues.getColumnCount() ; i++) {
@@ -91,7 +91,7 @@ public class PanelTable extends JPanel {
         }
     }
 
-    private void initializeMouseEvent() {
+    private void initMouseEvent() {
         this.tableValues.setDragEnabled(true);
         this.tableValues.addMouseListener(new MouseAdapter() {
             @Override
@@ -112,7 +112,7 @@ public class PanelTable extends JPanel {
         });
     }
 
-    private void initializeRenderer() {
+    private void initRenderer() {
         final TableCellRenderer cellRendererHeader = this.tableValues.getTableHeader().getDefaultRenderer();
         this.tableValues.getTableHeader().setDefaultRenderer(
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> cellRendererHeader.getTableCellRendererComponent(
@@ -144,14 +144,14 @@ public class PanelTable extends JPanel {
         );
     }
 
-    private void initializeTableScroller() {
+    private void initTableScroller() {
         var scroller = new JScrollPane(this.tableValues);
         var tableFixedColumn = new FixedColumnTable();
         tableFixedColumn.fixColumnSize(2, scroller);
         this.add(scroller, BorderLayout.CENTER);
     }
 
-    private void initializePanelSearch(final TableRowSorter<TableModel> rowSorter) {
+    private void initPanelSearch(final TableRowSorter<TableModel> rowSorter) {
         final var panelSearch = new JPanel(new BorderLayout());
 
         final JTextField textFilter = new JTextFieldPlaceholder("Find in table");
@@ -200,7 +200,7 @@ public class PanelTable extends JPanel {
         this.add(panelSearch, BorderLayout.SOUTH);
     }
 
-    private void initializeTabShortcut() {
+    private void initTabShortcut() {
         this.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
             KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0),
             null

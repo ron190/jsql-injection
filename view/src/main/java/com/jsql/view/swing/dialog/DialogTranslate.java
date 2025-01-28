@@ -67,14 +67,14 @@ public class DialogTranslate extends JDialog {
             JComponent.WHEN_IN_FOCUSED_WINDOW
         );
 
-        JPanel lastLine = this.initializeLastLine();
+        JPanel lastLine = this.initLastLine();
 
         this.labelTranslation.setBorder(UiUtil.BORDER_5PX);
         var contentPane = this.getContentPane();
         contentPane.add(this.labelTranslation, BorderLayout.NORTH);
         contentPane.add(lastLine, BorderLayout.SOUTH);
 
-        this.initializeTextToTranslate();
+        this.initTextToTranslate();
 
         contentPane.add(new JScrollPane(this.textToTranslate), BorderLayout.CENTER);
     }
@@ -82,7 +82,7 @@ public class DialogTranslate extends JDialog {
     /**
      * Set back default setting for About frame.
      */
-    public final void initializeDialog(final Language language) {
+    public final void initDialog(final Language language) {
         this.progressBarTranslation.setValue(0);
         this.progressBarTranslation.setString("Loading...");
         this.languageInto = language;
@@ -123,8 +123,7 @@ public class DialogTranslate extends JDialog {
         this.setVisible(true);
     }
 
-    private JPanel initializeLastLine() {
-        
+    private JPanel initLastLine() {
         var lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
         lastLine.setBorder(UiUtil.BORDER_5PX);
@@ -170,7 +169,7 @@ public class DialogTranslate extends JDialog {
         return lastLine;
     }
 
-    private void initializeTextToTranslate() {
+    private void initTextToTranslate() {
         this.textToTranslate.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

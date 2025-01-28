@@ -101,7 +101,7 @@ public class MenuWindows extends JMenu {
         this.add(menuAppearance);
         this.add(menuThemes);
         this.add(new JSeparator());
-        this.add(this.initializeMenuTranslation());
+        this.add(this.initMenuTranslation());
         this.add(new JSeparator());
 
         this.menuView = new JMenu(I18nUtil.valueByKey("MENUBAR_VIEW"));
@@ -111,9 +111,9 @@ public class MenuWindows extends JMenu {
         AtomicInteger accelerator = new AtomicInteger(0x31);
         AtomicInteger tabPosition = new AtomicInteger();
         MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(entry -> {
-            var menuItem = new JMenuItem(I18nUtil.valueByKey(entry.keyLabel), entry.icon);
-            I18nViewUtil.addComponentForKey(entry.keyLabel, menuItem);
-            menuItem.setName(entry.keyLabel);  // required by card manager switch
+            var menuItem = new JMenuItem(I18nUtil.valueByKey(entry.getKeyLabel()), entry.getIcon());
+            I18nViewUtil.addComponentForKey(entry.getKeyLabel(), menuItem);
+            menuItem.setName(entry.getKeyLabel());  // required by card manager switch
             this.menuView.add(menuItem);
 
             menuItem.setAccelerator(KeyStroke.getKeyStroke(
@@ -143,25 +143,25 @@ public class MenuWindows extends JMenu {
                 "CONSOLE_CHUNK_LABEL",
                 PreferencesUtil.CHUNK_VISIBLE,
                 () -> MediatorHelper.panelConsoles().insertChunkTab(),
-                UiUtil.CHUNK.icon
+                UiUtil.CHUNK.getIcon()
             ),
             new ModelCheckboxMenu(
                 "CONSOLE_BINARY_LABEL",
                 PreferencesUtil.BINARY_VISIBLE,
                 () -> MediatorHelper.panelConsoles().insertBooleanTab(),
-                UiUtil.BINARY.icon
+                UiUtil.BINARY.getIcon()
             ),
             new ModelCheckboxMenu(
                 "CONSOLE_NETWORK_LABEL",
                 PreferencesUtil.NETWORK_VISIBLE,
                 () -> MediatorHelper.panelConsoles().insertNetworkTab(),
-                UiUtil.NETWORK.icon
+                UiUtil.NETWORK.getIcon()
             ),
             new ModelCheckboxMenu(
                 "CONSOLE_JAVA_LABEL",
                 PreferencesUtil.JAVA_VISIBLE,
                 () -> MediatorHelper.panelConsoles().insertJavaTab(),
-                UiUtil.CUP.icon
+                UiUtil.CUP.getIcon()
             )
         ).forEach(model -> {
             var menuItem = new JCheckBoxMenuItem(
@@ -208,14 +208,14 @@ public class MenuWindows extends JMenu {
                 }
             }
 
-            MediatorHelper.frame().getSplitNS().initializeSplitOrientation();
+            MediatorHelper.frame().getSplitNS().initSplitOrientation();
 
             var panelSqlEngine = new SqlEngine();
             MediatorHelper.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);
             MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);  // Focus on the new tab
 
             // Create a custom tab header
-            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.icon);
+            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.getIcon());
             I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, header.getTabLabel());
 
             // Apply the custom header to the tab
@@ -242,14 +242,14 @@ public class MenuWindows extends JMenu {
                 }
             }
 
-            MediatorHelper.frame().getSplitNS().initializeSplitOrientation();
+            MediatorHelper.frame().getSplitNS().initSplitOrientation();
 
             var panelPreferences = new PanelPreferences();
             MediatorHelper.tabResults().addTab(titleTabPreferences, panelPreferences);
             MediatorHelper.tabResults().setSelectedComponent(panelPreferences);  // Focus on the new tab
 
             // Create a custom tab header
-            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.icon);
+            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.getIcon());
             I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, header.getTabLabel());
 
             // Apply the custom header to the tab
@@ -261,7 +261,7 @@ public class MenuWindows extends JMenu {
         return itemPreferences;
     }
 
-    private JMenu initializeMenuTranslation() {
+    private JMenu initMenuTranslation() {
         var menuTranslation = new JMenu(I18nUtil.valueByKey("MENUBAR_LANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
         menuTranslation.setName("menuTranslation");

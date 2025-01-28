@@ -7,14 +7,12 @@ import java.awt.*;
 import java.util.Objects;
 
 public class ModelSvgIcon {
-    public final String name;
-    public final Color from;
-    public final String toDarkUi;
-    public final Color toDark;
-    public final float scale;
-    public final FlatSVGIcon icon;
-    public String keyLabel;
-    public String keyTooltip;
+    private final Color from;
+    private final String toDarkUi;
+    private final Color toDark;
+    private final FlatSVGIcon icon;
+    private String keyLabel;
+    private String keyTooltip;
 
     ModelSvgIcon(String name, float scale) {
         this(name, Color.BLACK, "ComboBox.foreground", scale);
@@ -29,11 +27,9 @@ public class ModelSvgIcon {
     }
 
     ModelSvgIcon(String name, Color from, String toDarkUi, Color toDark, float scale) {
-        this.name = name;
         this.from = from;
         this.toDarkUi = toDarkUi;
         this.toDark = toDark;
-        this.scale = scale;
         this.icon = this.createSvgIcon(
             name,
             from,
@@ -67,5 +63,17 @@ public class ModelSvgIcon {
         this.keyLabel = keyLabel;
         this.keyTooltip = keyTooltip;
         return this;
+    }
+
+    public FlatSVGIcon getIcon() {
+        return icon;
+    }
+
+    public String getKeyLabel() {
+        return keyLabel;
+    }
+
+    public String getKeyTooltip() {
+        return keyTooltip;
     }
 }

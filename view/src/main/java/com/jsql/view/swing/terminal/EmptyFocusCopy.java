@@ -8,15 +8,16 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Cancel every mouse click, only gives focus.
  */
-public class EmptyFocus implements MouseListener {
+public class EmptyFocusCopy implements MouseListener {
     
     private final AbstractExploit abstractExploit;
     
-    public EmptyFocus(AbstractExploit abstractExploit) {
+    public EmptyFocusCopy(AbstractExploit abstractExploit) {
         this.abstractExploit = abstractExploit;
     }
 
@@ -25,10 +26,10 @@ public class EmptyFocus implements MouseListener {
         e.consume();
         this.abstractExploit.requestFocusInWindow();
         this.abstractExploit.setCaretPosition(this.abstractExploit.getDocument().getLength());
-        if (e.getButton() == MouseEvent.BUTTON3) {
+        if (Arrays.asList(MouseEvent.BUTTON2, MouseEvent.BUTTON3).contains(e.getButton())) {
             try {
                 String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-                abstractExploit.append(data);
+                this.abstractExploit.append(data);
             } catch (UnsupportedFlavorException | IOException ex) {
                 throw new JSqlRuntimeException(ex);
             }

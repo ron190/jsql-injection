@@ -28,7 +28,7 @@ public class CenterRendererWithIcon extends CenterRenderer {
         if (column == 3 && objectCallableBoolean != null) {
             AbstractCallableBinary<?> callableBoolean = (AbstractCallableBinary<?>) objectCallableBoolean;
             if (!callableBoolean.isMultibit()) {
-                label.setIcon(callableBoolean.isTrue() ? UiUtil.TICK_GREEN.icon : UiUtil.CROSS_RED.icon);
+                label.setIcon(callableBoolean.isTrue() ? UiUtil.TICK_GREEN.getIcon() : UiUtil.CROSS_RED.getIcon());
             }
         }
         return label;

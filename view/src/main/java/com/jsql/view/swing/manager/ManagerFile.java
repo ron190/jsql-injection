@@ -22,6 +22,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,18 @@ public class ManagerFile extends AbstractManagerList {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (ManagerFile.this.listPaths.getSelectedValuesList().isEmpty()) {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select at least one file to read in the list");
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select in the list at least one file to read");
+                return;
+            }
+            if (!Arrays.asList(
+                MediatorHelper.model().getMediatorVendor().getMysql(),
+                MediatorHelper.model().getMediatorVendor().getPostgres()
+            ).contains(MediatorHelper.model().getMediatorVendor().getVendor())) {
+                LOGGER.log(
+                    LogLevelUtil.CONSOLE_ERROR,
+                    "Read file for [{}] not implemented, share a working example to GitHub to speed up release",
+                    MediatorHelper.model().getMediatorVendor().getVendor()
+                );
                 return;
             }
             new SwingWorker<>() {

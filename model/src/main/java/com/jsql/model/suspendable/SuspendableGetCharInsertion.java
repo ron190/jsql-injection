@@ -55,7 +55,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         var charFromBooleanMatch = new String[1];
-        List<String> charactersInsertion = this.initializeCallables(taskCompletionService, charFromBooleanMatch);
+        List<String> charactersInsertion = this.initCallables(taskCompletionService, charFromBooleanMatch);
         
         var mediatorVendor = this.injectionModel.getMediatorVendor();
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database and character insertion with Order by match...");
@@ -111,8 +111,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         ) {
             mediatorVendor.setVendor(vendorsOrderByMatch.get(0));
         } else if (vendorsOrderByMatch.size() > 1) {
-            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgresql())) {
-                mediatorVendor.setVendor(mediatorVendor.getPostgresql());
+            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgres())) {
+                mediatorVendor.setVendor(mediatorVendor.getPostgres());
             } else if (vendorsOrderByMatch.contains(mediatorVendor.getMysql())) {
                 mediatorVendor.setVendor(mediatorVendor.getMysql());
             } else {
@@ -151,7 +151,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             .collect(Collectors.toList());
     }
 
-    private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService, String[] charFromBooleanMatch) throws JSqlException {
+    private List<String> initCallables(CompletionService<CallablePageSource> taskCompletionService, String[] charFromBooleanMatch) throws JSqlException {
         List<String> prefixValues = Arrays.asList(
             RandomStringUtils.secure().next(10, "012"),  // to trigger probable failure
             "1"  // to trigger eventual success

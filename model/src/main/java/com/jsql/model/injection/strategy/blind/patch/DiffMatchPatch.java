@@ -1621,7 +1621,7 @@ public class DiffMatchPatch {
      */
     protected int matchBitap(String text, String pattern, int loc) {
 
-        // Initialise the alphabet.
+        // Initialize the alphabet.
         Map<Character, Integer> s = this.matchAlphabet(pattern);
 
         // Highest score beyond which we give up.
@@ -1639,7 +1639,7 @@ public class DiffMatchPatch {
             }
         }
 
-        // Initialise the bit arrays.
+        // Initialize the bit arrays.
         int matchmask = 1 << (pattern.length() - 1);
         bestLoc = -1;
 
@@ -1732,7 +1732,7 @@ public class DiffMatchPatch {
     }
 
     /**
-     * Initialise the alphabet for the Bitap algorithm.
+     * Initialize the alphabet for the Bitap algorithm.
      * @param pattern The text to encode.
      * @return Hash of character locations.
      */

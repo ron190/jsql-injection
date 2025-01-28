@@ -28,7 +28,7 @@ public class Test implements Serializable {
         "1 %21= 2"
     );
 
-    private String initialization = "0%2b1 = 1";
+    private String init = "0%2b1 = 1";
     private String bit = StringUtils.EMPTY;
     private String length = StringUtils.EMPTY;
 
@@ -48,12 +48,12 @@ public class Test implements Serializable {
         this.falsy = falsy;
     }
 
-    public String getInitialization() {
-        return this.initialization;
+    public String getInit() {
+        return this.init;
     }
 
-    public void setInitialization(String initialization) {
-        this.initialization = initialization;
+    public void setInit(String init) {
+        this.init = init;
     }
 
     public String getBit() {

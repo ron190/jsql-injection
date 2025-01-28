@@ -23,6 +23,9 @@ su postgres -c '
   ./usr/lib/postgresql/10/bin/initdb /usr/local/pgsql/data/
   ./usr/lib/postgresql/10/bin/pg_ctl -D /usr/local/pgsql/data start
   ./usr/lib/postgresql/10/bin/createdb test
+  psql -U postgres <<SQL
+    ALTER USER postgres PASSWORD 'my-secret-pw';
+  SQL
 '
 
 echo "Listen 8079" >> /etc/apache2/ports.conf

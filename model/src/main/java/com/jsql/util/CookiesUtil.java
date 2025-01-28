@@ -29,7 +29,7 @@ public class CookiesUtil {
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam()) {
                 return false;
             }
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} cookies...", I18nUtil.valueByKey("LOG_CHECKING"));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} cookies...", () -> I18nUtil.valueByKey("LOG_CHECKING"));
         } else {
             return true;
         }
@@ -55,7 +55,7 @@ public class CookiesUtil {
             String keyValue = cookie.getKey() + "=" + cookie.getValue();
             String headerCookieWithStar = rawHeader.replace(keyValue, keyValue + InjectionModel.STAR);
 
-            this.injectionModel.getMediatorUtils().getParameterUtil().initializeHeader(headerCookieWithStar);
+            this.injectionModel.getMediatorUtils().getParameterUtil().initHeader(headerCookieWithStar);
 
             try {
                 LOGGER.log(

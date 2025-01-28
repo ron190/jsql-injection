@@ -45,9 +45,9 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     protected Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return UiUtil.TABLE_LINEAR.icon;
+            return UiUtil.TABLE_LINEAR.getIcon();
         } else {
-            return UiUtil.TABLE_BOLD.icon;
+            return UiUtil.TABLE_BOLD.getIcon();
         }
     }
 
@@ -57,7 +57,7 @@ public class NodeModelTable extends AbstractNodeModel {
             panelNode.showLoader();
             AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
             if (suspendableTask != null && suspendableTask.isPaused()) {
-                panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.icon, UiUtil.PATH_PAUSE));
+                panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.getIcon(), UiUtil.PATH_PAUSE));
             }
         } else {
             super.displayProgress(panelNode, currentNode);

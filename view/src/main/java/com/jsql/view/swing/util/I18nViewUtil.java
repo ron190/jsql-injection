@@ -6,7 +6,6 @@ import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.text.*;
 import com.jsql.view.swing.tree.model.NodeModelEmpty;
 import org.apache.commons.lang3.StringUtils;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

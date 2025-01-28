@@ -32,7 +32,7 @@ public class JTextPanePlaceholder extends JTextPane {
      */
     public JTextPanePlaceholder(String placeholder) {
         this.placeholderText = placeholder;
-        UiUtil.initialize(this);
+        UiUtil.init(this);
     }
 
     @Override

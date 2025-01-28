@@ -24,7 +24,7 @@ public class ActionCloseTabResult extends AbstractAction {
                 JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitEW();
                 int dividerLocation = splitPaneLeftRight.getDividerLocation();
 
-                var label = new JLabel(UiUtil.APP_BIG.icon);
+                var label = new JLabel(UiUtil.APP_BIG.getIcon());
                 label.setMinimumSize(new Dimension(100, 0));
                 if (ComponentOrientation.LEFT_TO_RIGHT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {
                     splitPaneLeftRight.setRightComponent(label);

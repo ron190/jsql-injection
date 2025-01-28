@@ -77,7 +77,7 @@ public class PanelConsoles extends JPanel {
     private TabbedPaneNetworkTab tabbedPaneNetworkTab;
     private NetworkTable networkTable;
     
-    private final JLabel labelShowNorth = new JLabel(UiUtil.ARROW_UP.icon);
+    private final JLabel labelShowNorth = new JLabel(UiUtil.ARROW_UP.getIcon());
     private int dividerLocation = 0;
     
     /**
@@ -88,20 +88,20 @@ public class PanelConsoles extends JPanel {
         this.javaTextPane.getProxy().setEditable(false);
         JTextPaneAppender.registerJavaConsole(this.javaTextPane);
         
-        this.initializeSplit();
+        this.initSplit();
 
         MediatorHelper.register(this.tabConsoles);
-        this.initializeTabsConsoles();
+        this.initTabsConsoles();
         this.setLayout(new BorderLayout());
 
-        JPanel expandPanel = this.initializeExpandPanel();
+        JPanel expandPanel = this.initExpandPanel();
         this.tabConsoles.putClientProperty("JTabbedPane.trailingComponent", expandPanel);
         this.add(this.tabConsoles);
 
         this.tabConsoles.setAlignmentX(FlowLayout.LEADING);
     }
 
-    private void initializeSplit() {
+    private void initSplit() {
         this.networkSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         this.networkSplitPane.setDividerLocation(600);
         this.networkSplitPane.setPreferredSize(new Dimension(0,0));  // required for correct scroll placement
@@ -115,7 +115,7 @@ public class PanelConsoles extends JPanel {
         this.networkSplitPane.setLeftComponent(panelTable);
     }
 
-    private void initializeTabsConsoles() {
+    private void initTabsConsoles() {
         var proxyChunk = new JTextAreaPlaceholderConsole(I18nUtil.valueByKey(PanelConsoles.CONSOLE_CHUNK_TOOLTIP));
         this.chunkTextArea = new JPopupTextArea(proxyChunk).getProxy();
         I18nViewUtil.addComponentForKey(PanelConsoles.CONSOLE_CHUNK_TOOLTIP, proxyChunk);
@@ -136,7 +136,7 @@ public class PanelConsoles extends JPanel {
         this.buildI18nTab(
             "CONSOLE_MAIN_LABEL",
             PanelConsoles.CONSOLE_MAIN_TOOLTIP,
-            UiUtil.CONSOLE.icon,
+                UiUtil.CONSOLE.getIcon(),
             new JScrollPane(consoleTextPane.getProxy()),
             0
         );
@@ -176,8 +176,8 @@ public class PanelConsoles extends JPanel {
         });
     }
 
-    private JPanel initializeExpandPanel() {
-        var labelShowSouth = new JLabel(UiUtil.ARROW_DOWN.icon);
+    private JPanel initExpandPanel() {
+        var labelShowSouth = new JLabel(UiUtil.ARROW_DOWN.getIcon());
         labelShowSouth.setName("buttonShowSouth");
         labelShowSouth.addMouseListener(new MouseAdapter() {
             @Override
@@ -226,7 +226,7 @@ public class PanelConsoles extends JPanel {
         this.buildI18nTab(
             "CONSOLE_CHUNK_LABEL",
             PanelConsoles.CONSOLE_CHUNK_TOOLTIP,
-            UiUtil.CHUNK.icon,
+            UiUtil.CHUNK.getIcon(),
             new JScrollPane(this.chunkTextArea),
             1
         );
@@ -236,11 +236,11 @@ public class PanelConsoles extends JPanel {
      * Add Binary console to bottom panel.
      */
     public void insertBooleanTab() {
-        var positionFromChunk = this.tabConsoles.indexOfTab(UiUtil.CHUNK.icon) != -1 ? 1 : 0;
+        var positionFromChunk = this.tabConsoles.indexOfTab(UiUtil.CHUNK.getIcon()) != -1 ? 1 : 0;
         this.buildI18nTab(
             "CONSOLE_BINARY_LABEL",
-                PanelConsoles.CONSOLE_BINARY_TOOLTIP,
-            UiUtil.BINARY.icon,
+            PanelConsoles.CONSOLE_BINARY_TOOLTIP,
+            UiUtil.BINARY.getIcon(),
             new JScrollPane(this.binaryTextArea),
             1 + positionFromChunk
         );
@@ -250,11 +250,11 @@ public class PanelConsoles extends JPanel {
      * Add Network tab to bottom panel.
      */
     public void insertNetworkTab() {
-        var positionFromJava = this.tabConsoles.indexOfTab(UiUtil.CUP.icon) != -1 ? 1 : 0;
+        var positionFromJava = this.tabConsoles.indexOfTab(UiUtil.CUP.getIcon()) != -1 ? 1 : 0;
         this.buildI18nTab(
             "CONSOLE_NETWORK_LABEL",
             "CONSOLE_NETWORK_TOOLTIP",
-            UiUtil.NETWORK.icon,
+            UiUtil.NETWORK.getIcon(),
             new JScrollPane(this.networkSplitPane),
             this.tabConsoles.getTabCount() - positionFromJava
         );
@@ -267,7 +267,7 @@ public class PanelConsoles extends JPanel {
         this.buildI18nTab(
             "CONSOLE_JAVA_LABEL",
             PanelConsoles.CONSOLE_JAVA_TOOLTIP,
-            UiUtil.CUP.icon,
+            UiUtil.CUP.getIcon(),
             new JScrollPane(this.javaTextPane.getProxy()),
             this.tabConsoles.getTabCount()
         );

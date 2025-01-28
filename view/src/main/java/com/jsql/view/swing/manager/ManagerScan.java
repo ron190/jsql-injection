@@ -65,7 +65,7 @@ public class ManagerScan extends AbstractManagerList {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 ItemList itemList = (ItemList) value;
                 if (itemList.isVulnerable()) {
-                    label.setIcon(UiUtil.TICK_GREEN.icon);
+                    label.setIcon(UiUtil.TICK_GREEN.getIcon());
                 }
                 return label;
             }

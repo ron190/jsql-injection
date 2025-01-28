@@ -72,15 +72,15 @@ public class AppMenubar extends JMenuBar {
      * Create a menubar on main frame.
      */
     public AppMenubar() {
-        this.add(this.initializeMenuFile());
-        this.add(this.initializeMenuEdit());
-        this.add(this.initializeMenuCommunity());
+        this.add(this.initMenuFile());
+        this.add(this.initMenuEdit());
+        this.add(this.initMenuCommunity());
         this.menuWindows = new MenuWindows(this);
         this.add(this.menuWindows);
-        this.add(this.initializeMenuHelp());
+        this.add(this.initMenuHelp());
     }
 
-    private JMenu initializeMenuFile() {
+    private JMenu initMenuFile() {
         var menuFile = new JMenu(I18nUtil.valueByKey("MENUBAR_FILE"));
         I18nViewUtil.addComponentForKey("MENUBAR_FILE", menuFile);
         menuFile.setMnemonic('F');
@@ -100,7 +100,7 @@ public class AppMenubar extends JMenuBar {
         return menuFile;
     }
 
-    private JMenu initializeMenuEdit() {
+    private JMenu initMenuEdit() {
         var menuEdit = new JMenu(I18nUtil.valueByKey("MENUBAR_EDIT"));
         I18nViewUtil.addComponentForKey("MENUBAR_EDIT", menuEdit);
         menuEdit.setMnemonic('E');
@@ -135,16 +135,16 @@ public class AppMenubar extends JMenuBar {
         return menuEdit;
     }
 
-    private JMenu initializeMenuCommunity() {
+    private JMenu initMenuCommunity() {
         var menuCommunity = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY"));
         menuCommunity.setMnemonic('C');
         menuCommunity.setName("menuCommunity");
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY", menuCommunity);
 
-        JMenu menuI18nContribution = this.initializeMenuI18nContribution();
+        JMenu menuI18nContribution = this.initMenuI18nContribution();
         menuI18nContribution.setName("menuI18nContribution");
 
-        JMenuItem itemReportIssue = this.initializeItemReportIssue();
+        JMenuItem itemReportIssue = this.initItemReportIssue();
         itemReportIssue.setName("itemReportIssue");
 
         menuCommunity.add(menuI18nContribution);
@@ -153,7 +153,7 @@ public class AppMenubar extends JMenuBar {
         return menuCommunity;
     }
 
-    private JMenu initializeMenuI18nContribution() {
+    private JMenu initMenuI18nContribution() {
         var menuI18nContribution = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY_HELPTRANSLATE"));
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_HELPTRANSLATE", menuI18nContribution);
 
@@ -179,7 +179,7 @@ public class AppMenubar extends JMenuBar {
         return menuI18nContribution;
     }
 
-    private JMenuItem initializeItemReportIssue() {
+    private JMenuItem initItemReportIssue() {
         JMenuItem itemReportIssue = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_REPORTISSUE"), 'R');
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_REPORTISSUE", itemReportIssue);
 
@@ -222,7 +222,7 @@ public class AppMenubar extends JMenuBar {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 new String[] {
-                    "Report",
+                    "Send",
                     I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
                 },
                 I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
@@ -236,7 +236,7 @@ public class AppMenubar extends JMenuBar {
         return itemReportIssue;
     }
 
-    private JMenu initializeMenuHelp() {
+    private JMenu initMenuHelp() {
         var menuHelp = new JMenu(I18nUtil.valueByKey("MENUBAR_HELP"));
         menuHelp.setMnemonic('H');
         I18nViewUtil.addComponentForKey("MENUBAR_HELP", menuHelp);
@@ -253,7 +253,7 @@ public class AppMenubar extends JMenuBar {
         itemHelp.addActionListener(actionEvent -> {
             final var dialogAbout = new DialogAbout();
             if (!dialogAbout.isVisible()) {
-                dialogAbout.initializeDialog();
+                dialogAbout.initDialog();
                 dialogAbout.setVisible(true);  // needed here for button focus
                 dialogAbout.requestButtonFocus();
             }

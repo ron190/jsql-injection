@@ -106,7 +106,7 @@ public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit>
     }
 
     @Override
-    public void initializeNextCharacters(
+    public void initNextChars(
         String sqlQuery,
         List<char[]> bytes,
         AtomicInteger indexCharacter,
@@ -128,7 +128,7 @@ public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit>
     }
 
     @Override
-    public char[] initializeBinaryMask(List<char[]> bytes, CallableMultibit currentCallable) {
+    public char[] initBinaryMask(List<char[]> bytes, CallableMultibit currentCallable) {
         // Bits for current url
         char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
         this.extractBitsFromBlock(currentCallable, asciiCodeMask);

@@ -39,11 +39,11 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
      */
     protected transient List<ItemList> dragPaths = null;
     
-    protected abstract String initializeTransferable();
+    protected abstract String initTransferable();
     
     protected abstract void parseStringDrop(TransferSupport support, DnDList list, DefaultListModel<ItemList> listModel);
     
-    protected abstract List<Integer> initializeStringPaste(String clipboardText, int selectedIndex, DefaultListModel<ItemList> listModel);
+    protected abstract List<Integer> initStringPaste(String clipboardText, int selectedIndex, DefaultListModel<ItemList> listModel);
     
     @Override
     public int getSourceActions(JComponent c) {
@@ -54,7 +54,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     protected Transferable createTransferable(JComponent component) {
         DnDList list = (DnDList) component;
         this.dragPaths = list.getSelectedValuesList();
-        var stringTransferable = this.initializeTransferable();
+        var stringTransferable = this.initTransferable();
         return new StringSelection(stringTransferable.trim());
     }
 
@@ -131,7 +131,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
             String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
             var selectedIndexPaste = Math.max(list.getSelectedIndex(), 0);
             list.clearSelection();
-            List<Integer> selectedIndexes = this.initializeStringPaste(clipboardText, selectedIndexPaste, listModel);
+            List<Integer> selectedIndexes = this.initStringPaste(clipboardText, selectedIndexPaste, listModel);
             var selectedIndexesPasted = new int[selectedIndexes.size()];
             var i = 0;
             

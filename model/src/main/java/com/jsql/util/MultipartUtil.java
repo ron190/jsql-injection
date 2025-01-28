@@ -24,7 +24,7 @@ public class MultipartUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
         if (!hasFoundInjection) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} multipart...", I18nUtil.valueByKey("LOG_CHECKING"));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} multipart...", () -> I18nUtil.valueByKey("LOG_CHECKING"));
         } else {
             return true;
         }
@@ -60,7 +60,7 @@ public class MultipartUtil {
             "$1" + InjectionModel.STAR + "$2"
         );
 
-        this.injectionModel.getMediatorUtils().getParameterUtil().initializeRequest(rawRequestWithStar);
+        this.injectionModel.getMediatorUtils().getParameterUtil().initRequest(rawRequestWithStar);
 
         try {
             LOGGER.log(

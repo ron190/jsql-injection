@@ -243,7 +243,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        urlObject = this.initializeQueryString(  // TODO identique urlInjection == urlObject
+        urlObject = this.initQueryString(  // TODO identique urlInjection == urlObject
             isUsingIndex,
             urlInjection,
             dataInjection,
@@ -264,8 +264,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             this.mediatorUtils.getDigestUtil().addHeaderToken(httpRequestBuilder);
             this.mediatorUtils.getConnectionUtil().setCustomUserAgent(httpRequestBuilder);
 
-            String body = this.initializeRequest(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);
-            this.initializeHeader(isUsingIndex, dataInjection, httpRequestBuilder);
+            String body = this.initRequest(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);
+            this.initHeader(isUsingIndex, dataInjection, httpRequestBuilder);
             
             var httpRequest = httpRequestBuilder.build();
 
@@ -288,7 +288,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 return report;
             }
             
-            HttpResponse<String> response = this.getMediatorUtils().getConnectionUtil().getHttpClient().send(
+            HttpResponse<String> response = this.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(
                 httpRequestBuilder.build(),
                 BodyHandlers.ofString()
             );
@@ -345,7 +345,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return pageSource;
     }
 
-    private URL initializeQueryString(
+    private URL initQueryString(
         boolean isUsingIndex,
         String urlInjection,
         String dataInjection,
@@ -389,7 +389,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return urlObjectFixed;
     }
 
-    private void initializeHeader(
+    private void initHeader(
         boolean isUsingIndex,
         String dataInjection,
         Builder httpRequest
@@ -422,7 +422,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
     }
 
-    private String initializeRequest(
+    private String initRequest(
         boolean isUsingIndex,
         String dataInjection,
         Builder httpRequest,
@@ -508,9 +508,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // then replace injection point by SQL expression in this parameter
             paramLeadFixed.contains(InjectionModel.STAR)
         ) {
-            query = this.initializeStarInjection(paramLeadFixed, isUsingIndex, sqlTrail);
+            query = this.initStarInjection(paramLeadFixed, isUsingIndex, sqlTrail);
         } else {
-            query = this.initializeRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);
+            query = this.initRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);
         }
         // Remove comments except empty /**/
         query = this.cleanQuery(methodInjection, query);
@@ -521,7 +521,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return this.applyEncoding(methodInjection, query);
     }
 
-    private String initializeRawInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
+    private String initRawInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
         String query;
         // Method is selected by user and there's no injection point
         if (!isUsingIndex) {
@@ -543,7 +543,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return query + this.mediatorVendor.getVendor().instance().endingComment();
     }
 
-    private String initializeStarInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
+    private String initStarInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
         String query;
         // Several SQL expressions does not use indexes in SELECT,
         // like Boolean, Error, Shell and search for character insertion,
@@ -625,7 +625,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 // For cookies in Spring (confirmed, covered by integration tests)
                 queryFixed = queryFixed.replace("+", "%20");
                 queryFixed = queryFixed.replace(",", "%2c");
-                queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);
+                try {  // fix #95709: IllegalArgumentException on decode()
+                    queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);
+                } catch (IllegalArgumentException e) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect values in [{}], please check the parameters", methodInjection.name());
+                    throw new JSqlRuntimeException(e);
+                }
             }
         }
         return queryFixed;

@@ -150,7 +150,7 @@ public class PanelAddressBar extends JPanel {
 
         this.panelTrailingAddress = new PanelTrailingAddress(this);
         this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, this.panelTrailingAddress);
-        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, UiUtil.GLOBE.icon);
+        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, UiUtil.GLOBE.getIcon());
         this.atomicTextFieldRequest.get().putClientProperty(
             FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT,
             new ButtonExpandText("Add request body", this.atomicTextFieldRequest.get())
@@ -160,11 +160,11 @@ public class PanelAddressBar extends JPanel {
             new ButtonExpandText("Add header body", this.atomicTextFieldHeader.get())
         );
 
-        this.initializeLayout();
+        this.initLayout();
     }
 
-    private void initializeLayout() {
-        final JLabel advancedButton = this.initializeAdvancedButton();
+    private void initLayout() {
+        final JLabel advancedButton = this.initAdvancedButton();
         
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
@@ -353,9 +353,9 @@ public class PanelAddressBar extends JPanel {
         }
     }
 
-    private JLabel initializeAdvancedButton() {
+    private JLabel initAdvancedButton() {
         var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(PanelAddressBar.BUTTON_ADVANCED)));
-        var advancedButton = new JLabel(UiUtil.ARROW_DOWN.icon) {
+        var advancedButton = new JLabel(UiUtil.ARROW_DOWN.getIcon()) {
             @Override
             public JToolTip createToolTip() {
                 return tooltip.get();
@@ -367,7 +367,7 @@ public class PanelAddressBar extends JPanel {
         advancedButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                boolean isVisible = advancedButton.getIcon() == UiUtil.ARROW_DOWN.icon;
+                boolean isVisible = advancedButton.getIcon() == UiUtil.ARROW_DOWN.getIcon();
                 PanelAddressBar.this.atomicTextFieldRequest.get().setVisible(isVisible);
                 PanelAddressBar.this.atomicTextFieldHeader.get().setVisible(isVisible);
                 PanelAddressBar.this.atomicRadioRequest.get().setVisible(isVisible);
@@ -375,7 +375,7 @@ public class PanelAddressBar extends JPanel {
                 PanelAddressBar.this.atomicRadioHeader.get().setVisible(isVisible);
                 PanelAddressBar.this.isAdvanceActivated = isVisible;
                 MediatorHelper.menubar().setVisible(isVisible);
-                advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.icon : UiUtil.ARROW_DOWN.icon);
+                advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.getIcon() : UiUtil.ARROW_DOWN.getIcon());
             }
         });
         return advancedButton;

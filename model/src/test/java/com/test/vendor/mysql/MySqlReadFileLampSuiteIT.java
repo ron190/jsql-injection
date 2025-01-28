@@ -19,7 +19,7 @@ public class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+        model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://jsql-lamp:8079/php/get-pdo.php?id="
         );
 

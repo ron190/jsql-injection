@@ -112,10 +112,10 @@ public class InjectionCharInsertion {
             Thread.currentThread().interrupt();
         }
         
-        this.initializeFalseMarks();
+        this.initFalseMarks();
     }
     
-    private void initializeFalseMarks() {
+    private void initFalseMarks() {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
@@ -166,7 +166,7 @@ public class InjectionCharInsertion {
                 StringUtils.SPACE,
                 this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, "678")),
                 this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit()
             ),
             this,
             "prefix#confirm"

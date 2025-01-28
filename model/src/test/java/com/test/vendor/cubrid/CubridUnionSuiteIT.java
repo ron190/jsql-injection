@@ -12,13 +12,12 @@ public class CubridUnionSuiteIT extends ConcreteCubridSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
-        
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+        model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://localhost:8080/union?tenant=cubrid&name="
         );
 

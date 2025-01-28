@@ -87,7 +87,7 @@ public class HeaderUtil {
      */
     public HttpResponse<String> checkResponseHeader(Builder httpRequestBuilder, String body) throws IOException, InterruptedException {
         var httpRequest = httpRequestBuilder.build();
-        HttpResponse<String> httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(
+        HttpResponse<String> httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(
             httpRequest,
             BodyHandlers.ofString()
         );

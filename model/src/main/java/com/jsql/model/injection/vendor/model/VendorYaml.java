@@ -295,7 +295,7 @@ public class VendorYaml implements AbstractVendor {
     public String sqlFileRead(String filePath) {
         return this.modelYaml.getResource().getFile().getRead()
             .replace(VendorYaml.FILEPATH_HEX, Hex.encodeHexString(filePath.getBytes(StandardCharsets.UTF_8)))  // MySQL
-            .replace(VendorYaml.FILEPATH, filePath);  // PostgreSQL
+            .replace(VendorYaml.FILEPATH, filePath);  // postgres
     }
 
     @Override
@@ -304,20 +304,15 @@ public class VendorYaml implements AbstractVendor {
             VendorYaml.FORMAT_INDEX,
             this.injectionModel.getMediatorStrategy().getSpecificUnion().getVisibleIndex()
         );
-        return this.injectionModel.getIndexesInUrl()
-            .replaceAll(
+        return this.injectionModel.getIndexesInUrl().replaceAll(
                 visibleIndex,
-                this.modelYaml.getResource().getFile().getWrite()
-                .getBody()
-                .replace(
+                this.modelYaml.getResource().getFile().getWrite().getBody().replace(
                     VendorYaml.BODY_HEX,
                     Hex.encodeHexString(body.getBytes(StandardCharsets.UTF_8))
                 )
             )
             + StringUtils.SPACE
-            + this.modelYaml.getResource().getFile().getWrite()
-            .getPath()
-            .replace(VendorYaml.FILEPATH, path);
+            + this.modelYaml.getResource().getFile().getWrite().getPath().replace(VendorYaml.FILEPATH, path);
     }
 
     @Override
@@ -609,8 +604,8 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestBinaryInitialization() {
-        return this.modelYaml.getStrategy().getBinary().getTest().getInitialization();
+    public String sqlTestBinaryInit() {
+        return this.modelYaml.getStrategy().getBinary().getTest().getInit();
     }
 
     @Override

@@ -70,13 +70,13 @@ public class AuthenticationUtil {
         String kerberosKrb5Conf,
         String kerberosLoginConf
     ) {
-        boolean isRestartRequired = this.initializeKerberos(isKerberos, kerberosKrb5Conf, kerberosLoginConf);
-        this.initializeSimpleAuthorization(isAuthentication, usernameAuthentication, passwordAuthentication);
+        boolean isRestartRequired = this.initKerberos(isKerberos, kerberosKrb5Conf, kerberosLoginConf);
+        this.initSimpleAuthorization(isAuthentication, usernameAuthentication, passwordAuthentication);
         this.setAuthentication();
         return isRestartRequired;
     }
 
-    public void initializeSimpleAuthorization(boolean isAuthentication, String usernameAuthentication, String passwordAuthentication) {
+    public void initSimpleAuthorization(boolean isAuthentication, String usernameAuthentication, String passwordAuthentication) {
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         preferences.putBoolean("isAuthentication", isAuthentication);
         preferences.put("usernameAuthentication", usernameAuthentication);
@@ -87,7 +87,7 @@ public class AuthenticationUtil {
         this.passwordAuthentication = passwordAuthentication;
     }
 
-    private boolean initializeKerberos(boolean isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
+    private boolean initKerberos(boolean isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
         // Persist to JVM
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         

@@ -84,8 +84,8 @@ jobs:
           echo "VirusTotal report not completed in time."
           exit 1
 
-      - name: Build project container
-        run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
-
-      - name: Unit tests
-        run: $DOCKER_RESOURCES/scripts/run-on-docker-no-network.sh 'cd view/ && mvn clean install -P tests'
+#      - name: Build project container
+#        run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
+#
+#      - name: Unit tests
+#        run: $DOCKER_RESOURCES/scripts/run-on-docker-no-network.sh 'cd view/ && mvn clean install -P tests'

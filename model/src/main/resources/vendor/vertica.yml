@@ -115,7 +115,7 @@ strategy:
        )
   limit: limit 1 offset ${limit.value}
   failsafe: cast((1337${indice}7330%2b1) as varchar)
-  calibrator: repeat(chr(35), 1024)
+  calibrator: repeat('${calibrator_sql}', 1024)
   limitBoundary: 0
   endingComment: --+-
   fingerprint:

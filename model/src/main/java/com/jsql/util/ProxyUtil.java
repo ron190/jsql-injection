@@ -93,7 +93,7 @@ public class ProxyUtil {
     /**
      * Initialize proxy information from JVM already saved preferences.
      */
-    public void initializeProxy() {
+    public void initProxy() {
         // Use Preferences API to persist proxy configuration
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 

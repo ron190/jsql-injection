@@ -8,6 +8,6 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class CreateTabHelper {
     protected CreateTabHelper() {
-        MediatorHelper.frame().getSplitNS().initializeSplitOrientation();
+        MediatorHelper.frame().getSplitNS().initSplitOrientation();
     }
 }

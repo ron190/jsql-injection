@@ -98,14 +98,14 @@ public class HibernateRestController {
             }
         } catch (Exception e) {
             if (isError) {  // Hide useless SQL error messages except for error base injection
-                return this.initializeErrorMessage(e);
+                return this.initErrorMessage(e);
             }
         }
 
         return null;
     }
 
-    private Greeting initializeErrorMessage(Exception e) {
+    private Greeting initErrorMessage(Exception e) {
         String stacktrace = ExceptionUtils.getStackTrace(e);
         LOGGER.debug(stacktrace);
         return new Greeting(HibernateRestController.TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
@@ -125,6 +125,19 @@ public class HibernateRestController {
             return null;
         }
         return this.getResponse(name, "select First_Name from Student where '1' = '%s'", false, false, true, false, false, true);
+    }
+
+    @RequestMapping("/stack2")
+    public Greeting endpointStack2(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {
+        Greeting greeting = new Greeting(null);
+        var result = new StringBuilder();
+        Arrays.stream(name.split(";")).map(String::trim).forEach(query -> {
+            query = query +";";
+            Greeting g = this.getResponse(query, "select First_Name from Student where '1' = '%s'", true, false, true, false, false, false);
+            if (g != null) result.append(g.getContent());
+        });
+        greeting.setContent(result.toString());
+        return greeting;
     }
 
 
@@ -193,7 +206,7 @@ public class HibernateRestController {
 
     @RequestMapping("/multiple-index")
     public Greeting endpointMultipleIndex(@RequestParam(value="name", defaultValue="World") String name) {
-        // PostgreSQL union int on ()::text fails: PSQLException: ERROR: UNION types integer and text cannot be matched
+        // Postgres union int on ()::text fails: PSQLException: ERROR: UNION types integer and text cannot be matched
         return this.getResponse(name, "select 1,2,3,4,First_Name,5,6 from Student where 1 = %s", true, false, true);
     }
 

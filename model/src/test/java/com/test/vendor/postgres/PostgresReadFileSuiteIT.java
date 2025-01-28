@@ -1,4 +1,4 @@
-package com.test.vendor.postgresql;
+package com.test.vendor.postgres;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -10,18 +10,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class PostgreSqlReadFileSuiteIT extends ConcretePostgreSqlSuiteIT {
+public class PostgresReadFileSuiteIT extends ConcretePostgresSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
-        
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/union?tenant=postgresql&name="
+        model.getMediatorUtils().getParameterUtil().initQueryString(
+            "http://localhost:8080/union?tenant=postgres&name="
         );
 
         model.setIsScanning(true);

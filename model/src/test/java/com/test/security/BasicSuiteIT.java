@@ -13,13 +13,12 @@ public class BasicSuiteIT extends ConcreteMySqlErrorSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
-        
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+        model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://localhost:8080/basic?tenant=mysql-error&name="
         );
 

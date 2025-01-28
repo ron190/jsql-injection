@@ -31,9 +31,9 @@ public class ButtonExpandText extends JButton {
         this.setPreferredSize(new Dimension(16, 16));
         this.setContentAreaFilled(false);
 
-        this.setIcon(UiUtil.EXPAND.icon);
-        this.setRolloverIcon(UiUtil.EXPAND_HOVER.icon);
-        this.setPressedIcon(UiUtil.EXPAND_PRESSED.icon);
+        this.setIcon(UiUtil.EXPAND.getIcon());
+        this.setRolloverIcon(UiUtil.EXPAND_HOVER.getIcon());
+        this.setPressedIcon(UiUtil.EXPAND_PRESSED.getIcon());
 
         JTextArea textAreaInDialog = new JPopupTextArea(new JTextAreaPlaceholder("Multiline text")).getProxy();
         textAreaInDialog.getCaret().setBlinkRate(500);

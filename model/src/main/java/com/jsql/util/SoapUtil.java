@@ -37,7 +37,7 @@ public class SoapUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
         if (!hasFoundInjection) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} SOAP...", I18nUtil.valueByKey("LOG_CHECKING"));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} SOAP...", () -> I18nUtil.valueByKey("LOG_CHECKING"));
         } else {
             return true;
         }
@@ -79,7 +79,7 @@ public class SoapUtil {
                 
                 SoapUtil.removeInjectionPoint(doc, doc.getDocumentElement());
                 currentNode.setTextContent(currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY) + InjectionModel.STAR);
-                this.injectionModel.getMediatorUtils().getParameterUtil().initializeRequest(SoapUtil.convertDocumentToString(doc));
+                this.injectionModel.getMediatorUtils().getParameterUtil().initRequest(SoapUtil.convertDocumentToString(doc));
                 
                 try {
                     LOGGER.log(

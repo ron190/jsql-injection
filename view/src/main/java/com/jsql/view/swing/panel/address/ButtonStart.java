@@ -65,9 +65,9 @@ public class ButtonStart extends JButton {
 
     private void setIcons() {
         // required to get correct color at startup instead of blu
-        this.setIcon(UiUtil.ARROW.icon);
-        this.setRolloverIcon(UiUtil.ARROW_HOVER.icon);
-        this.setPressedIcon(UiUtil.ARROW_PRESSED.icon);
+        this.setIcon(UiUtil.ARROW.getIcon());
+        this.setRolloverIcon(UiUtil.ARROW_HOVER.getIcon());
+        this.setPressedIcon(UiUtil.ARROW_PRESSED.getIcon());
     }
 
     /**
@@ -87,7 +87,7 @@ public class ButtonStart extends JButton {
         this.state = StateButton.STOPPABLE;
         this.setRolloverEnabled(false);
         this.setEnabled(true);
-        this.setIcon(UiUtil.CROSS_RED.icon);
+        this.setIcon(UiUtil.CROSS_RED.getIcon());
     }
 
     /**
@@ -98,7 +98,7 @@ public class ButtonStart extends JButton {
         this.state = StateButton.STOPPING;
         this.setRolloverEnabled(false);
         this.setEnabled(false);
-        this.setIcon(UiUtil.HOURGLASS.icon);
+        this.setIcon(UiUtil.HOURGLASS.getIcon());
     }
 
     /**

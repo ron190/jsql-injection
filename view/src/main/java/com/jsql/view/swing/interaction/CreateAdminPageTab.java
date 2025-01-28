@@ -177,7 +177,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         // Create a custom tab header
         var header = new TabHeader(
             this.url.replaceAll(".*/", StringUtils.EMPTY),
-            UiUtil.ADMIN.icon
+                UiUtil.ADMIN.getIcon()
         );
         MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  // Apply the custom header to the tab
         browser.setCaretPosition(0);

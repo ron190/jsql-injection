@@ -146,7 +146,7 @@ public class MediatorStrategy {
             parameterOriginalValue = parameterToInject.getValue();
                      
             // Test for params integrity
-            String characterInsertionByUser = this.injectionModel.getMediatorUtils().getParameterUtil().initializeStar(parameterToInject);
+            String characterInsertionByUser = this.injectionModel.getMediatorUtils().getParameterUtil().initStar(parameterToInject);
             
             String characterInsertion = this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion()
                 ? characterInsertionByUser

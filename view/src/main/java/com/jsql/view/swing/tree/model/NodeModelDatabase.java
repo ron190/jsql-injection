@@ -43,9 +43,9 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     protected Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return UiUtil.DATABASE_LINEAR.icon;
+            return UiUtil.DATABASE_LINEAR.getIcon();
         } else {
-            return UiUtil.DATABASE_BOLD.icon;
+            return UiUtil.DATABASE_BOLD.getIcon();
         }
     }
 
