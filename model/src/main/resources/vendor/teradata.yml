@@ -97,15 +97,7 @@ strategy:
         )
   limit: and rnum between ${limit.value} and ${limit.value}
   failsafe: trim('' || (1337${indice}7330%2b1))
-  calibrator: |
-   cast(
-       rpad(
-           '${calibrator_sql}',
-           1024,
-           '${calibrator_sql}'
-       )
-       as varchar(1024)
-   )
+  calibrator: cast(rpad('${calibrator_sql}', 1024, '${calibrator_sql}')as varchar(1024))
   limitBoundary: 1
   endingComment: --+-
   fingerprint:

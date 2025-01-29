@@ -112,12 +112,7 @@ strategy:
        (1337${indice}7330%2b1)
        || '' r
    from table(set{1})
-  calibrator: |
-   rpad(
-       '${calibrator_sql}',
-       1024,
-       '${calibrator_sql}'
-   )
+  calibrator: rpad('${calibrator_sql}', 1024, '${calibrator_sql}')
   limitBoundary: 1
   endingComment: --+-
   fingerprint:

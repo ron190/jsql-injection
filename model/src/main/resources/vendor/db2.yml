@@ -122,12 +122,7 @@ strategy:
    )
   limit: limit ${limit.value}, 5
   failsafe: varchar('' || (1337${indice}7330%2b1), 1024)
-  calibrator: |
-   rpad(
-       '${calibrator_sql}',
-       1024,
-       '${calibrator_sql}'
-   )
+  calibrator: rpad('${calibrator_sql}', 1024, '${calibrator_sql}')
   limitBoundary: 0
   endingComment: --+-
   fingerprint:

@@ -182,12 +182,7 @@ strategy:
    )
   limit: having count(*) between ${limit.value} and 65536
   failsafe: to_char(1337${indice}7330%2b1)
-  calibrator: |
-   rpad(
-       '${calibrator_sql}',
-       1024,
-       '${calibrator_sql}'
-   )
+  calibrator: rpad('${calibrator_sql}', 1024, '${calibrator_sql}')
   limitBoundary: 1
   endingComment: --+-
   fingerprint:

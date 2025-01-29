@@ -74,12 +74,7 @@ strategy:
   limit: rows ${limit.value} to ${limit.value}
   failsafe: (1337${indice}7330%2b1)
   # calibrator fine at 1024, except for Error strategy
-  calibrator: |
-   rpad(
-       '${calibrator_sql}',
-       48,
-       '${calibrator_sql}'
-   )
+  calibrator: rpad('${calibrator_sql}', 48, '${calibrator_sql}')
   limitBoundary: 1
   endingComment: --+-
   fingerprint:

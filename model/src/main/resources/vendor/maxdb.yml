@@ -108,13 +108,7 @@ strategy:
    ) x
   limit: having count(*) between ${limit.value} and ${limit.value}
   failsafe: select (1337${indice}7330%2b1) r from dual
-  calibrator: |
-   rpad(
-       '${calibrator_sql}',
-       1024,
-       '${calibrator_sql}',
-       1025
-   )
+  calibrator: rpad('${calibrator_sql}', 1024, '${calibrator_sql}', 1025)
   limitBoundary: 1
   endingComment: --+-
   fingerprint:

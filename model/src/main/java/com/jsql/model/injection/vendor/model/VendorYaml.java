@@ -553,6 +553,7 @@ public class VendorYaml implements AbstractVendor {
             .replace("${separator_cell_sql}", VendorYaml.SEPARATOR_CELL_SQL)
             .replace("${separator_cell_hex}", VendorYaml.SEPARATOR_CELL_HEX)
             .replace("${calibrator_sql}", VendorYaml.CALIBRATOR_SQL)
+            .replace("${calibrator_raw}", VendorYaml.CALIBRATOR_SQL.repeat(100))
             .replace("${calibrator_hex}", VendorYaml.CALIBRATOR_HEX)
             .replace("${trail_sql}", VendorYaml.TRAIL_SQL)
             .replace("${trail_hex}", VendorYaml.TRAIL_HEX)

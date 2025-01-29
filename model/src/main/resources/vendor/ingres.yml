@@ -106,12 +106,7 @@ strategy:
    )
   limit: having count(*) between ${limit.value} and ${limit.value}
   failsafe: select 1337${indice}7330%2b1 r
-  calibrator: |
-   rpad(
-       '${calibrator_sql}',
-       1024,
-       '${calibrator_sql}'
-   )
+  calibrator: rpad('${calibrator_sql}', 1024, '${calibrator_sql}')
   limitBoundary: 1
   fingerprint:
    errorMessage:

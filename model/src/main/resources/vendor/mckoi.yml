@@ -107,7 +107,7 @@ strategy:
   limit: having count(*) between ${limit.value} and ${limit.value}
   failsafe: select cast(x.rrr as char)rr from (select 1337${indice}7330%2b1 rrr)x
   # No method repeat() found
-  calibrator: "'%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'"
+  calibrator: "'${calibrator_raw}'"
   limitBoundary: 1
   fingerprint:
    errorMessage:

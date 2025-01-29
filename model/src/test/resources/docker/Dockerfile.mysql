@@ -1,4 +1,4 @@
-FROM mysql:8.0.34
-#FROM mysql:5.7.44
+# needs oraclelinux8, oraclelinux9 ko
+FROM mysql:8.4.0-oraclelinux8
 RUN echo inside > /var/lib/mysql-files/file-injection.txt
 EXPOSE 3306
