@@ -14,6 +14,7 @@ import com.jsql.view.swing.manager.ManagerScan;
 import com.jsql.view.swing.menubar.AppMenubar;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.assertj.swing.core.BasicRobot;
 import org.assertj.swing.core.Robot;
@@ -309,7 +310,7 @@ class AppUiTest {
         MediatorHelper.model().sendToViews(request);
 
         msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, "");
+        msgHeader.put(Header.URL, StringUtils.EMPTY);
         msgHeader.put(Header.INDEX_ERROR_STRATEGY, 0);
         msgHeader.put(Header.INJECTION_MODEL, MediatorHelper.model());
         msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMysql());
@@ -515,8 +516,8 @@ class AppUiTest {
 
         var arrayColumns = new String[] { Strings.EMPTY, Strings.EMPTY, nameColumn0, nameColumn1 };
         var tableDatas = new String[][] {
-            { "", "", "[0, 0]", "[0, 1]" },
-            { "", "", "[1, 0]", "[1, 1]" }
+            { StringUtils.EMPTY, StringUtils.EMPTY, "[0, 0]", "[0, 1]" },
+            { StringUtils.EMPTY, StringUtils.EMPTY, "[1, 0]", "[1, 1]" }
         };
         var objectData = new Object[]{ arrayColumns, tableDatas, table };
         var requestValues = new Request();

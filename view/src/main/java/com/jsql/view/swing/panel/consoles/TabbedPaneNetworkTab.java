@@ -1,6 +1,7 @@
 package com.jsql.view.swing.panel.consoles;
 
 import com.jsql.model.bean.util.HttpHeader;
+import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
@@ -139,7 +140,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         try {
             this.textAreaSource.setText(
                 StringUtil.detectUtf8(networkData.getSource())
-                .replaceAll("a{5,}", "a*")
+                .replaceAll(VendorYaml.CALIBRATOR_SQL +"{5,}", VendorYaml.CALIBRATOR_SQL +"*")
                 .trim()
             );
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {

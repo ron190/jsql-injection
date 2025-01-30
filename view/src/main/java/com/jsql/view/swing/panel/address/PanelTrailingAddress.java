@@ -5,11 +5,14 @@ import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +24,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.StreamSupport;
 
 public class PanelTrailingAddress extends JPanel {
-    
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = LogManager.getRootLogger();
+
     private JMenu itemRadioStrategyError;
 
     private final JLabel labelVendor = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
@@ -207,11 +215,23 @@ public class PanelTrailingAddress extends JPanel {
     
     public void markErrorInvulnerable(int indexMethodError) {
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();
-        Arrays.stream(this.popupMenuStrategies.getComponents())
+        Arrays.stream(this.popupMenuStrategies.getSubElements())
             .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
             .map(JMenu.class::cast)
-            .filter(jMenuItem -> jMenuItem.getItem(indexMethodError) != null)  // Fix #95855: NPE on setEnabled()
+            .filter(jMenuItem -> {
+                var isNotNull = true;
+                // Fix #36975: ArrayIndexOutOfBoundsException on getItem()
+                // Fix #40352: NullPointerException on ?
+                // Fix #95855: NPE on setEnabled()
+                try {
+                    isNotNull = jMenuItem.getItem(indexMethodError) != null;
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+                    return false;
+                }
+                return isNotNull;
+            })
             .forEach(jMenuItem -> jMenuItem.getItem(indexMethodError).setEnabled(false));
     }
     

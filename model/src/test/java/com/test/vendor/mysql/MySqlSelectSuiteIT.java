@@ -3,6 +3,7 @@ package com.test.vendor.mysql;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
@@ -22,7 +23,7 @@ public class MySqlSelectSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.setIsScanning(true);
 
-        model.getMediatorVendor().getMysql().instance().getModelYaml().getStrategy().getConfiguration().setEndingComment("");
+        model.getMediatorVendor().getMysql().instance().getModelYaml().getStrategy().getConfiguration().setEndingComment(StringUtils.EMPTY);
 
         model
         .getMediatorUtils()

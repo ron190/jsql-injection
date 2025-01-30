@@ -1,6 +1,7 @@
 package spring.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -278,7 +279,7 @@ public class JdbcRestController {
         StringBuilder result = new StringBuilder();
         
         try (
-            Connection con = DriverManager.getConnection("jdbc:FrontBase://127.0.0.1/firstdb", "_system", "");
+            Connection con = DriverManager.getConnection("jdbc:FrontBase://127.0.0.1/firstdb", "_system", StringUtils.EMPTY);
             PreparedStatement pstmt = con.prepareStatement("select \"SCHEMA_NAME\" from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
@@ -337,7 +338,7 @@ public class JdbcRestController {
         StringBuilder result = new StringBuilder();
         
         try (
-            Connection con = DriverManager.getConnection("jdbc:presto://127.0.0.1:8078/system", "test", "");
+            Connection con = DriverManager.getConnection("jdbc:presto://127.0.0.1:8078/system", "test", StringUtils.EMPTY);
             PreparedStatement pstmt = con.prepareStatement("select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();

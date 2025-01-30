@@ -19,6 +19,7 @@
 package com.jsql.model.injection.strategy.blind.patch;
 
 import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -315,7 +316,7 @@ public class DiffMatchPatch {
 
         // Rediff any replacement blocks, this time character-by-character.
         // Add a dummy entry at the end.
-        diffs.add(new Diff(Operation.EQUAL, ""));
+        diffs.add(new Diff(Operation.EQUAL, StringUtils.EMPTY));
         int countDelete = 0;
         int countInsert = 0;
         StringBuilder textDelete = new StringBuilder();
@@ -524,7 +525,7 @@ public class DiffMatchPatch {
 
         // "\x00" is a valid character, but various debuggers don't like it.
         // So we'll insert a junk entry to avoid generating a null character.
-        lineArray.add("");
+        lineArray.add(StringUtils.EMPTY);
 
         String chars1 = this.diffLinesToCharsMunge(text1, lineArray, lineHash);
         String chars2 = this.diffLinesToCharsMunge(text2, lineArray, lineHash);
@@ -732,11 +733,11 @@ public class DiffMatchPatch {
         // Start with a 1/4 length substring at position i as a seed.
         String seed = longtext.substring(i, i + longtext.length() / 4);
         int j = -1;
-        String bestCommon = "";
-        String bestLongtextA = "";
-        String bestLongtextB = "";
-        String bestShorttextA = "";
-        String bestShorttextB = "";
+        String bestCommon = StringUtils.EMPTY;
+        String bestLongtextA = StringUtils.EMPTY;
+        String bestLongtextB = StringUtils.EMPTY;
+        String bestShorttextA = StringUtils.EMPTY;
+        String bestShorttextB = StringUtils.EMPTY;
         while ((j = shorttext.indexOf(seed, j + 1)) != -1) {
             int prefixLength = this.diffCommonPrefix(longtext.substring(i),
                     shorttext.substring(j));
@@ -1182,7 +1183,7 @@ public class DiffMatchPatch {
      */
     public void diffCleanupMerge(LinkedList<Diff> diffs) {
 
-        diffs.add(new Diff(Operation.EQUAL, ""));  // Add a dummy entry at the end.
+        diffs.add(new Diff(Operation.EQUAL, StringUtils.EMPTY));  // Add a dummy entry at the end.
         ListIterator<Diff> pointer = diffs.listIterator();
         int countDelete = 0;
         int countInsert = 0;
@@ -2159,7 +2160,7 @@ public class DiffMatchPatch {
             pointer.remove();
             start1 = bigpatch.getStart1();
             start2 = bigpatch.getStart2();
-            precontext = "";
+            precontext = StringUtils.EMPTY;
 
             while (!bigpatch.getDiffs().isEmpty()) {
                 // Create one of several smaller patches.

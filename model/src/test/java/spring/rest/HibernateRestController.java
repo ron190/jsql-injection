@@ -3,6 +3,7 @@ package spring.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.method.CustomMethodSuiteIT;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -263,12 +264,12 @@ public class HibernateRestController {
     )
     public Greeting endpointPostMultipart(HttpServletRequest request) {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        String name = String.join("", multipartRequest.getParameterValues("name"));
+        String name = String.join(StringUtils.EMPTY, multipartRequest.getParameterValues("name"));
         return this.getResponse(name, "select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '%s'", true, false, true);
     }
 
     @GetMapping("/cookie")
-    public Greeting endpointCookie(HttpServletRequest request, @CookieValue(name = "name", required = false, defaultValue = "") String name) {
+    public Greeting endpointCookie(HttpServletRequest request, @CookieValue(name = "name", required = false, defaultValue = StringUtils.EMPTY) String name) {
 
         String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
         return this.getResponse(nameUrlDecoded, "select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'", true, false, true);

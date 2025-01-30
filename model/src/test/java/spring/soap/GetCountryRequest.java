@@ -9,6 +9,7 @@
 package spring.soap;
 
 import jakarta.xml.bind.annotation.*;
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -31,7 +32,7 @@ import jakarta.xml.bind.annotation.*;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
+@XmlType(name = StringUtils.EMPTY, propOrder = {
     "name"
 })
 @XmlRootElement(namespace = "http://www.baeldung.com/springsoap/gen", name = "getCountryRequest")
