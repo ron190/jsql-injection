@@ -26,7 +26,7 @@ EOF
 chmod 600 "$HOME/.vnc/passwd"
 
 OLD_DISPLAY=${DISPLAY}
-vncserver ":${NEW_DISPLAY}" -localhost -geometry 800x600 -depth 16
+vncserver ":${NEW_DISPLAY}" -localhost -geometry 1024x780 -depth 16
 export DISPLAY=:${NEW_DISPLAY}
 
 echo MAVEN_NASHORN="${MAVEN_NASHORN}"
