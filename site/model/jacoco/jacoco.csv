@@ -165,7 +165,7 @@ model,com.jsql.util,AuthenticationUtil.new Authenticator() {...},11,6,0,0,2,1,1,
 model,com.jsql.util,GitUtil.ShowOnConsole,0,15,0,0,0,1,0,1,0,1
 model,com.jsql.util,SoapUtil,28,254,3,19,8,59,3,19,0,11
 model,com.jsql.util,TamperingUtil,107,308,2,14,36,80,15,24,13,18
-model,com.jsql.util,GitUtil,408,9,20,0,84,4,19,2,9,2
+model,com.jsql.util,GitUtil,417,9,20,0,87,4,19,2,9,2
 model,com.jsql.util,ThreadUtil,26,82,2,4,6,24,3,8,1,7
 model,com.jsql.util,ExceptionUtil.ExceptionHandler,134,0,14,0,30,0,11,0,4,0
 model,com.jsql.util,FormUtil,232,18,17,1,43,7,13,3,4,3
