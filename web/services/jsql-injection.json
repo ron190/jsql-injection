@@ -1,5 +1,5 @@
 {
-    "version": "0.107",
+    "version": "0.108",
     "news": [
         "[v0.107] New SQLite php shell, including MySQL php shell, Oracle RCE and MySQL UDF shell",
         "[UDF/RCE] How to use shells explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
