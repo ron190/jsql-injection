@@ -65,7 +65,7 @@
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  <em class="jxr_javadoccomment">     * @param currentNode Node to draw in the tree</em>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">public</strong> <a name="PanelNode" href="../../../../../com/jsql/view/swing/tree/PanelNode.html#PanelNode">PanelNode</a>(<strong class="jxr_keyword">final</strong> JTree tree, <strong class="jxr_keyword">final</strong> DefaultMutableTreeNode currentNode) {
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.loaderWait.setIcon(UiUtil.HOURGLASS.icon);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.loaderWait.setIcon(UiUtil.HOURGLASS.getIcon());
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">this</strong>.loaderWait.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">this</strong>.progressBar.setPreferredSize(<strong class="jxr_keyword">new</strong> Dimension(20, 20));
@@ -91,10 +91,10 @@
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">this</strong>.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>          <strong class="jxr_keyword">this</strong>.initializeTextFieldEditable(tree, currentNode);
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>          <strong class="jxr_keyword">this</strong>.initTextFieldEditable(tree, currentNode);
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>      }
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeTextFieldEditable(<strong class="jxr_keyword">final</strong> JTree tree, <strong class="jxr_keyword">final</strong> DefaultMutableTreeNode currentNode) {
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initTextFieldEditable(<strong class="jxr_keyword">final</strong> JTree tree, <strong class="jxr_keyword">final</strong> DefaultMutableTreeNode currentNode) {
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          <strong class="jxr_keyword">this</strong>.textFieldEditable.addActionListener(e -&gt; {
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>              <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> nodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) currentNode.getUserObject();
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>              nodeModel.setIsEdited(false);
@@ -154,7 +154,7 @@
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>     }
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>     
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L149" href="#L149">149</a> <em class="jxr_javadoccomment">     * Display the normal text icon to the left.</em>
+<a class="jxr_linenumber" name="L149" href="#L149">149</a> <em class="jxr_javadoccomment">     * Display text icon to the left.</em>
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> showIcon() {
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>         <strong class="jxr_keyword">this</strong>.iconNode.setVisible(<strong class="jxr_keyword">true</strong>);

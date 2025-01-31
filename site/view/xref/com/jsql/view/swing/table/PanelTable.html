@@ -78,20 +78,20 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">this</strong>.tableValues.setRowSelectionAllowed(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">this</strong>.tableValues.setCellSelectionEnabled(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">this</strong>.initializeRenderer();
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">this</strong>.initRenderer();
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          <strong class="jxr_keyword">this</strong>.tableValues.getTableHeader().setReorderingAllowed(false);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">this</strong>.initializeMouseEvent();
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">this</strong>.initializeTabShortcut();
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">this</strong>.initMouseEvent();
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">this</strong>.initTabShortcut();
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">var</strong> columnAdjuster = <strong class="jxr_keyword">new</strong> <a name="AdjusterTableColumn" href="../../../../../com/jsql/view/swing/table/AdjusterTableColumn.html#AdjusterTableColumn">AdjusterTableColumn</a>(<strong class="jxr_keyword">this</strong>.tableValues);
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>          columnAdjuster.adjustColumns();
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">final</strong> TableRowSorter&lt;TableModel&gt; rowSorter = <strong class="jxr_keyword">new</strong> TableRowSorter&lt;&gt;(<strong class="jxr_keyword">this</strong>.tableValues.getModel());
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">this</strong>.tableValues.setRowSorter(rowSorter);
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">this</strong>.initializeTableScroller();
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>          <strong class="jxr_keyword">this</strong>.initializePanelSearch(rowSorter);
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">this</strong>.initTableScroller();
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>          <strong class="jxr_keyword">this</strong>.initPanelSearch(rowSorter);
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>          Comparator&lt;Object&gt; comparatorNumeric = <strong class="jxr_keyword">new</strong> ComparatorColumn&lt;&gt;();
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; <strong class="jxr_keyword">this</strong>.tableValues.getColumnCount() ; i++) {
@@ -99,7 +99,7 @@
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>          }
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      }
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeMouseEvent() {
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initMouseEvent() {
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>          <strong class="jxr_keyword">this</strong>.tableValues.setDragEnabled(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          <strong class="jxr_keyword">this</strong>.tableValues.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>              @Override
@@ -120,7 +120,7 @@
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>         });
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>     }
 <a class="jxr_linenumber" name="L114" href="#L114">114</a> 
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeRenderer() {
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initRenderer() {
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>         <strong class="jxr_keyword">final</strong> TableCellRenderer cellRendererHeader = <strong class="jxr_keyword">this</strong>.tableValues.getTableHeader().getDefaultRenderer();
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>         <strong class="jxr_keyword">this</strong>.tableValues.getTableHeader().setDefaultRenderer(
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>             (JTable table, Object value, <strong class="jxr_keyword">boolean</strong> isSelected, <strong class="jxr_keyword">boolean</strong> hasFocus, <strong class="jxr_keyword">int</strong> row, <strong class="jxr_keyword">int</strong> column) -&gt; cellRendererHeader.getTableCellRendererComponent(
@@ -152,14 +152,14 @@
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         );
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>     }
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> 
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeTableScroller() {
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initTableScroller() {
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>         <strong class="jxr_keyword">var</strong> scroller = <strong class="jxr_keyword">new</strong> JScrollPane(<strong class="jxr_keyword">this</strong>.tableValues);
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>         <strong class="jxr_keyword">var</strong> tableFixedColumn = <strong class="jxr_keyword">new</strong> <a name="FixedColumnTable" href="../../../../../com/jsql/view/swing/table/FixedColumnTable.html#FixedColumnTable">FixedColumnTable</a>();
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>         tableFixedColumn.fixColumnSize(2, scroller);
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">this</strong>.add(scroller, BorderLayout.CENTER);
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>     }
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> 
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializePanelSearch(<strong class="jxr_keyword">final</strong> TableRowSorter&lt;TableModel&gt; rowSorter) {
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initPanelSearch(<strong class="jxr_keyword">final</strong> TableRowSorter&lt;TableModel&gt; rowSorter) {
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> panelSearch = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
 <a class="jxr_linenumber" name="L156" href="#L156">156</a> 
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">final</strong> JTextField textFilter = <strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(<span class="jxr_string">"Find in table"</span>);
@@ -208,7 +208,7 @@
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>         <strong class="jxr_keyword">this</strong>.add(panelSearch, BorderLayout.SOUTH);
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>     }
 <a class="jxr_linenumber" name="L202" href="#L202">202</a> 
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeTabShortcut() {
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initTabShortcut() {
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>         <strong class="jxr_keyword">this</strong>.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>             KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0),
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>             <strong class="jxr_keyword">null</strong>

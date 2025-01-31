@@ -185,7 +185,7 @@
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>         <em class="jxr_comment">// Create a custom tab header</em>
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>         <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">this</strong>.url.replaceAll(<span class="jxr_string">".*/"</span>, StringUtils.EMPTY),
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>             UiUtil.ADMIN.icon
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>                 UiUtil.ADMIN.getIcon()
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>         );
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>         MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  <em class="jxr_comment">// Apply the custom header to the tab</em>
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>         browser.setCaretPosition(0);

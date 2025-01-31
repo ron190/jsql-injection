@@ -84,7 +84,7 @@
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          fileText.setText(content);
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          fileText.setFont(<strong class="jxr_keyword">new</strong> Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>          fileText.setCaretPosition(0);
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>          <strong class="jxr_keyword">this</strong>.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.icon);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          <strong class="jxr_keyword">this</strong>.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.getIcon());
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          MediatorHelper.tabManagersCards().addToLists(path, label);
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      }
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  
@@ -116,9 +116,9 @@
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>                 editorPane.getCaret().setBlinkRate(0);
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>             }
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         });
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>         UiUtil.initialize(editorPane);  <em class="jxr_comment">// silent delete</em>
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         UiUtil.init(editorPane);  <em class="jxr_comment">// silent delete</em>
 <a class="jxr_linenumber" name="L112" href="#L112">112</a> 
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">this</strong>.addTextTab(<span class="jxr_string">"Vulnerability report"</span>, <span class="jxr_string">"Analysis report with all payloads detected"</span>, editorPane, UiUtil.APP_ICON.icon);
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">this</strong>.addTextTab(<span class="jxr_string">"Vulnerability report"</span>, <span class="jxr_string">"Analysis report with all payloads detected"</span>, editorPane, UiUtil.APP_ICON.getIcon());
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     }
 <a class="jxr_linenumber" name="L115" href="#L115">115</a> 
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
@@ -142,7 +142,7 @@
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>             <strong class="jxr_keyword">this</strong>.addTab(<span class="jxr_string">"Web shell"</span>, scroller);
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> 
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"Web shell"</span>, UiUtil.TERMINAL.icon);
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"Web shell"</span>, UiUtil.TERMINAL.getIcon());
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>             terminal.requestFocusInWindow();
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> 
@@ -162,7 +162,7 @@
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>             <strong class="jxr_keyword">this</strong>.addTab(<span class="jxr_string">"UDF shell"</span>, scroller);
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
 <a class="jxr_linenumber" name="L156" href="#L156">156</a> 
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"UDF shell"</span>, UiUtil.TERMINAL.icon);
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"UDF shell"</span>, UiUtil.TERMINAL.getIcon());
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>             terminal.requestFocusInWindow();
 <a class="jxr_linenumber" name="L160" href="#L160">160</a> 
@@ -182,7 +182,7 @@
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>             <strong class="jxr_keyword">this</strong>.addTab(<span class="jxr_string">"RCE shell"</span>, scroller);
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
 <a class="jxr_linenumber" name="L176" href="#L176">176</a> 
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"RCE shell"</span>, UiUtil.TERMINAL.icon);
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"RCE shell"</span>, UiUtil.TERMINAL.getIcon());
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>             terminal.requestFocusInWindow();
 <a class="jxr_linenumber" name="L180" href="#L180">180</a> 
@@ -202,7 +202,7 @@
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>             <strong class="jxr_keyword">this</strong>.addTab(<span class="jxr_string">"SQL shell"</span>, scroller);
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> 
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"SQL shell"</span>, UiUtil.TERMINAL.icon);
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"SQL shell"</span>, UiUtil.TERMINAL.getIcon());
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>             terminal.requestFocusInWindow();
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> 
@@ -220,7 +220,7 @@
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>         
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>         <strong class="jxr_keyword">this</strong>.setSelectedComponent(panelTable);  <em class="jxr_comment">// Focus on the new tab</em>
 <a class="jxr_linenumber" name="L214" href="#L214">214</a> 
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>         <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.icon);
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>         <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>         <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(panelTable), header);
 <a class="jxr_linenumber" name="L217" href="#L217">217</a> 
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>

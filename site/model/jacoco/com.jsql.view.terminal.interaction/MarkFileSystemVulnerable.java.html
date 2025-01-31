@@ -16,7 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Mark the injection as invulnerable to a normal injection.
+ * Mark the injection as invulnerable to a union injection.
  */
 public class MarkFileSystemVulnerable implements InteractionCommand {
 

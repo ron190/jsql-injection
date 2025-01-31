@@ -27,7 +27,7 @@ public class MediatorStrategy {
     private final AbstractStrategy blind;
     private final AbstractStrategy multibit;
     private final StrategyInjectionError error;
-    private final AbstractStrategy normal;
+    private final AbstractStrategy union;
     private final AbstractStrategy stack;
 
     private final List&lt;AbstractStrategy&gt; strategies;
@@ -46,10 +46,10 @@ public class MediatorStrategy {
 <span class="fc" id="L46">        this.blind = new StrategyInjectionBlind(this.injectionModel);</span>
 <span class="fc" id="L47">        this.multibit = new StrategyInjectionMultibit(this.injectionModel);</span>
 <span class="fc" id="L48">        this.error = new StrategyInjectionError(this.injectionModel);</span>
-<span class="fc" id="L49">        this.normal = new StrategyInjectionNormal(this.injectionModel);</span>
+<span class="fc" id="L49">        this.union = new StrategyInjectionUnion(this.injectionModel);</span>
 <span class="fc" id="L50">        this.stack = new StrategyInjectionStack(this.injectionModel);</span>
 
-<span class="fc" id="L52">        this.strategies = Arrays.asList(this.time, this.blind, this.multibit, this.error, this.stack, this.normal);</span>
+<span class="fc" id="L52">        this.strategies = Arrays.asList(this.time, this.blind, this.multibit, this.error, this.stack, this.union);</span>
 <span class="fc" id="L53">    }</span>
     
     public String getMeta() {
@@ -83,7 +83,7 @@ public class MediatorStrategy {
                     InjectionModel.STAR,
 <span class="fc" id="L84">                    this.encodePath(</span>
 <span class="fc" id="L85">                        this.injectionModel.getIndexesInUrl().replaceAll(</span>
-<span class="fc" id="L86">                            String.format(VendorYaml.FORMAT_INDEX, this.getSpecificNormal().getVisibleIndex()),</span>
+<span class="fc" id="L86">                            String.format(VendorYaml.FORMAT_INDEX, this.getSpecificUnion().getVisibleIndex()),</span>
 <span class="fc" id="L87">                            Matcher.quoteReplacement(sqlTrail)  // Oracle column can contain regex char $ =&gt; quoteReplacement()</span>
                         )
                     )
@@ -146,7 +146,7 @@ public class MediatorStrategy {
 <span class="fc" id="L146">            parameterOriginalValue = parameterToInject.getValue();</span>
                      
             // Test for params integrity
-<span class="fc" id="L149">            String characterInsertionByUser = this.injectionModel.getMediatorUtils().getParameterUtil().initializeStar(parameterToInject);</span>
+<span class="fc" id="L149">            String characterInsertionByUser = this.injectionModel.getMediatorUtils().getParameterUtil().initStar(parameterToInject);</span>
             
 <span class="fc bfc" id="L151" title="All 2 branches covered.">            String characterInsertion = this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion()</span>
 <span class="fc" id="L152">                ? characterInsertionByUser</span>
@@ -169,8 +169,8 @@ public class MediatorStrategy {
 <span class="fc" id="L169">            new SuspendableGetVendor(this.injectionModel).run();</span>
         }
 
-        // Test each injection strategies: time &lt; blind &lt; error &lt; normal
-        // Choose the most efficient strategy: normal &gt; error &gt; blind &gt; time
+        // Test each injection strategies: time &lt; blind &lt; error &lt; union
+        // Choose the most efficient strategy: union &gt; error &gt; blind &gt; time
 <span class="fc" id="L174">        this.time.checkApplicability();</span>
 <span class="fc" id="L175">        this.blind.checkApplicability();</span>
 
@@ -187,10 +187,10 @@ public class MediatorStrategy {
 
 <span class="fc" id="L188">        this.error.checkApplicability();</span>
 <span class="fc" id="L189">        this.stack.checkApplicability();</span>
-<span class="fc" id="L190">        this.normal.checkApplicability();</span>
+<span class="fc" id="L190">        this.union.checkApplicability();</span>
 
         // Set most efficient strategy
-<span class="fc" id="L193">        this.normal.activateWhenApplicable();</span>
+<span class="fc" id="L193">        this.union.activateWhenApplicable();</span>
 <span class="fc" id="L194">        this.stack.activateWhenApplicable();</span>
 <span class="fc" id="L195">        this.error.activateWhenApplicable();</span>
 <span class="fc" id="L196">        this.multibit.activateWhenApplicable();</span>
@@ -214,12 +214,12 @@ public class MediatorStrategy {
     
     // Getter and setter
 
-    public AbstractStrategy getNormal() {
-<span class="fc" id="L218">        return this.normal;</span>
+    public AbstractStrategy getUnion() {
+<span class="fc" id="L218">        return this.union;</span>
     }
 
-    public StrategyInjectionNormal getSpecificNormal() {
-<span class="fc" id="L222">        return (StrategyInjectionNormal) this.normal;</span>
+    public StrategyInjectionUnion getSpecificUnion() {
+<span class="fc" id="L222">        return (StrategyInjectionUnion) this.union;</span>
     }
 
     public StrategyInjectionError getError() {

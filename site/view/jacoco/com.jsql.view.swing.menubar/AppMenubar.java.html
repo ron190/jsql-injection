@@ -72,15 +72,15 @@ public class AppMenubar extends JMenuBar {
      * Create a menubar on main frame.
      */
 <span class="fc" id="L74">    public AppMenubar() {</span>
-<span class="fc" id="L75">        this.add(this.initializeMenuFile());</span>
-<span class="fc" id="L76">        this.add(this.initializeMenuEdit());</span>
-<span class="fc" id="L77">        this.add(this.initializeMenuCommunity());</span>
+<span class="fc" id="L75">        this.add(this.initMenuFile());</span>
+<span class="fc" id="L76">        this.add(this.initMenuEdit());</span>
+<span class="fc" id="L77">        this.add(this.initMenuCommunity());</span>
 <span class="fc" id="L78">        this.menuWindows = new MenuWindows(this);</span>
 <span class="fc" id="L79">        this.add(this.menuWindows);</span>
-<span class="fc" id="L80">        this.add(this.initializeMenuHelp());</span>
+<span class="fc" id="L80">        this.add(this.initMenuHelp());</span>
 <span class="fc" id="L81">    }</span>
 
-    private JMenu initializeMenuFile() {
+    private JMenu initMenuFile() {
 <span class="fc" id="L84">        var menuFile = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_FILE&quot;));</span>
 <span class="fc" id="L85">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_FILE&quot;, menuFile);</span>
 <span class="fc" id="L86">        menuFile.setMnemonic('F');</span>
@@ -100,7 +100,7 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L100">        return menuFile;</span>
     }
 
-    private JMenu initializeMenuEdit() {
+    private JMenu initMenuEdit() {
 <span class="fc" id="L104">        var menuEdit = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_EDIT&quot;));</span>
 <span class="fc" id="L105">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_EDIT&quot;, menuEdit);</span>
 <span class="fc" id="L106">        menuEdit.setMnemonic('E');</span>
@@ -135,16 +135,16 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L135">        return menuEdit;</span>
     }
 
-    private JMenu initializeMenuCommunity() {
+    private JMenu initMenuCommunity() {
 <span class="fc" id="L139">        var menuCommunity = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY&quot;));</span>
 <span class="fc" id="L140">        menuCommunity.setMnemonic('C');</span>
 <span class="fc" id="L141">        menuCommunity.setName(&quot;menuCommunity&quot;);</span>
 <span class="fc" id="L142">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY&quot;, menuCommunity);</span>
 
-<span class="fc" id="L144">        JMenu menuI18nContribution = this.initializeMenuI18nContribution();</span>
+<span class="fc" id="L144">        JMenu menuI18nContribution = this.initMenuI18nContribution();</span>
 <span class="fc" id="L145">        menuI18nContribution.setName(&quot;menuI18nContribution&quot;);</span>
 
-<span class="fc" id="L147">        JMenuItem itemReportIssue = this.initializeItemReportIssue();</span>
+<span class="fc" id="L147">        JMenuItem itemReportIssue = this.initItemReportIssue();</span>
 <span class="fc" id="L148">        itemReportIssue.setName(&quot;itemReportIssue&quot;);</span>
 
 <span class="fc" id="L150">        menuCommunity.add(menuI18nContribution);</span>
@@ -153,7 +153,7 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L153">        return menuCommunity;</span>
     }
 
-    private JMenu initializeMenuI18nContribution() {
+    private JMenu initMenuI18nContribution() {
 <span class="fc" id="L157">        var menuI18nContribution = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY_HELPTRANSLATE&quot;));</span>
 <span class="fc" id="L158">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_HELPTRANSLATE&quot;, menuI18nContribution);</span>
 
@@ -179,7 +179,7 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L179">        return menuI18nContribution;</span>
     }
 
-    private JMenuItem initializeItemReportIssue() {
+    private JMenuItem initItemReportIssue() {
 <span class="fc" id="L183">        JMenuItem itemReportIssue = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY_REPORTISSUE&quot;), 'R');</span>
 <span class="fc" id="L184">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_REPORTISSUE&quot;, itemReportIssue);</span>
 
@@ -222,7 +222,7 @@ public class AppMenubar extends JMenuBar {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 new String[] {
-                    &quot;Report&quot;,
+                    &quot;Send&quot;,
 <span class="nc" id="L226">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
                 },
 <span class="nc" id="L228">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
@@ -236,7 +236,7 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L236">        return itemReportIssue;</span>
     }
 
-    private JMenu initializeMenuHelp() {
+    private JMenu initMenuHelp() {
 <span class="fc" id="L240">        var menuHelp = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_HELP&quot;));</span>
 <span class="fc" id="L241">        menuHelp.setMnemonic('H');</span>
 <span class="fc" id="L242">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP&quot;, menuHelp);</span>
@@ -253,7 +253,7 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L253">        itemHelp.addActionListener(actionEvent -&gt; {</span>
 <span class="fc" id="L254">            final var dialogAbout = new DialogAbout();</span>
 <span class="pc bpc" id="L255" title="1 of 2 branches missed.">            if (!dialogAbout.isVisible()) {</span>
-<span class="fc" id="L256">                dialogAbout.initializeDialog();</span>
+<span class="fc" id="L256">                dialogAbout.initDialog();</span>
 <span class="fc" id="L257">                dialogAbout.setVisible(true);  // needed here for button focus</span>
 <span class="fc" id="L258">                dialogAbout.requestButtonFocus();</span>
             }

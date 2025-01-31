@@ -62,7 +62,7 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>          );
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          AtomicInteger i = <strong class="jxr_keyword">new</strong> AtomicInteger();
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(modelSvgIcon -&gt; <strong class="jxr_keyword">this</strong>.buildI18nTab(
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>              modelSvgIcon.keyLabel,
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>              modelSvgIcon.getKeyLabel(),
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>              managers.get(i.getAndIncrement())
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          ));
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
@@ -75,7 +75,7 @@
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> markFileSystemInvulnerable() {
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          <strong class="jxr_keyword">this</strong>.getManagers().forEach(manager -&gt; {
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>              manager.changePrivilegeIcon(UiUtil.CROSS_RED.icon);
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>              manager.changePrivilegeIcon(UiUtil.CROSS_RED.getIcon());
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>              manager.endProcess();
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          });
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>      }
@@ -85,7 +85,7 @@
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      }
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>      
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> markFileSystemVulnerable() {
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">this</strong>.getManagers().forEach(manager -&gt; manager.changePrivilegeIcon(UiUtil.TICK_GREEN.icon));
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">this</strong>.getManagers().forEach(manager -&gt; manager.changePrivilegeIcon(UiUtil.TICK_GREEN.getIcon()));
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      }
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> buildI18nTab(String keyLabel, Component manager) {

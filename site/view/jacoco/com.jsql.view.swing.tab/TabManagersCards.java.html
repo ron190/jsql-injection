@@ -54,7 +54,7 @@ public class TabManagersCards extends JPanel {
         );
 <span class="fc" id="L55">        AtomicInteger i = new AtomicInteger();</span>
 <span class="fc" id="L56">        MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(modelSvgIcon -&gt; this.buildI18nTab(</span>
-            modelSvgIcon.keyLabel,
+<span class="fc" id="L57">            modelSvgIcon.getKeyLabel(),</span>
 <span class="fc" id="L58">            managers.get(i.getAndIncrement())</span>
         ));
 
@@ -67,7 +67,7 @@ public class TabManagersCards extends JPanel {
     
     public void markFileSystemInvulnerable() {
 <span class="nc" id="L69">        this.getManagers().forEach(manager -&gt; {</span>
-<span class="nc" id="L70">            manager.changePrivilegeIcon(UiUtil.CROSS_RED.icon);</span>
+<span class="nc" id="L70">            manager.changePrivilegeIcon(UiUtil.CROSS_RED.getIcon());</span>
 <span class="nc" id="L71">            manager.endProcess();</span>
 <span class="nc" id="L72">        });</span>
 <span class="nc" id="L73">    }</span>
@@ -77,7 +77,7 @@ public class TabManagersCards extends JPanel {
 <span class="nc" id="L77">    }</span>
     
     public void markFileSystemVulnerable() {
-<span class="nc" id="L80">        this.getManagers().forEach(manager -&gt; manager.changePrivilegeIcon(UiUtil.TICK_GREEN.icon));</span>
+<span class="nc" id="L80">        this.getManagers().forEach(manager -&gt; manager.changePrivilegeIcon(UiUtil.TICK_GREEN.getIcon()));</span>
 <span class="nc" id="L81">    }</span>
 
     private void buildI18nTab(String keyLabel, Component manager) {

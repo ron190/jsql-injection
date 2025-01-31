@@ -88,10 +88,10 @@ public class InjectionVendor {
 <span class="nc" id="L88">            Thread.currentThread().interrupt();</span>
 <span class="pc" id="L89">        }</span>
         
-<span class="fc" id="L91">        this.initializeFalseMarks(vendorSpecificWithMode);</span>
+<span class="fc" id="L91">        this.initFalseMarks(vendorSpecificWithMode);</span>
 <span class="fc" id="L92">    }</span>
     
-    private void initializeFalseMarks(String vendorSpecificWithMode) {
+    private void initFalseMarks(String vendorSpecificWithMode) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
 <span class="fc" id="L97">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableVendorTagFalse&quot;);</span>
@@ -136,7 +136,7 @@ public class InjectionVendor {
         }
 
 <span class="fc" id="L138">        var blindTest = new CallableVendor(</span>
-<span class="fc" id="L139">            vendorSpecificWithMode.replace(VendorYaml.TEST, this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()),</span>
+<span class="fc" id="L139">            vendorSpecificWithMode.replace(VendorYaml.TEST, this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit()),</span>
             this,
             &quot;vendor#confirm&quot;
         );

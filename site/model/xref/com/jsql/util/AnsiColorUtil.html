@@ -12,7 +12,7 @@
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>       
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>       <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String PREFIX = <span class="jxr_string">"\u001b["</span>;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>       
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>       <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> NORMAL = 0;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>       <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> DEFAULT = 0;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>       
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>       <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">char</strong> SEPARATOR = ';';
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>      
@@ -23,8 +23,8 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>      
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String END_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.SUFFIX;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ERROR_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.NORMAL + AnsiColorUtil.SEPARATOR + AnsiColorUtil.FOREGROUND_RED + AnsiColorUtil.SUFFIX;
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String INFO_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.NORMAL + AnsiColorUtil.SEPARATOR + AnsiColorUtil.FOREGROUND_GREEN + AnsiColorUtil.SUFFIX;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ERROR_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.DEFAULT + AnsiColorUtil.SEPARATOR + AnsiColorUtil.FOREGROUND_RED + AnsiColorUtil.SUFFIX;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String INFO_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.DEFAULT + AnsiColorUtil.SEPARATOR + AnsiColorUtil.FOREGROUND_GREEN + AnsiColorUtil.SUFFIX;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>      <strong class="jxr_keyword">private</strong> <a name="AnsiColorUtil" href="../../../com/jsql/util/AnsiColorUtil.html#AnsiColorUtil">AnsiColorUtil</a>() {
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          <em class="jxr_comment">// Utility class</em>

@@ -43,9 +43,9 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     protected Icon getLeafIcon(boolean leaf) {
 <span class="fc bfc" id="L45" title="All 2 branches covered.">        if (leaf) {</span>
-<span class="fc" id="L46">            return UiUtil.DATABASE_LINEAR.icon;</span>
+<span class="fc" id="L46">            return UiUtil.DATABASE_LINEAR.getIcon();</span>
         } else {
-<span class="fc" id="L48">            return UiUtil.DATABASE_BOLD.icon;</span>
+<span class="fc" id="L48">            return UiUtil.DATABASE_BOLD.getIcon();</span>
         }
     }
 

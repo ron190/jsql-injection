@@ -36,7 +36,7 @@ import java.util.List;
 <span class="fc" id="L36">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     @Override
-    protected List&lt;Integer&gt; initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
+    protected List&lt;Integer&gt; initStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
 <span class="fc" id="L40">        int selectedIndexTo = selectedIndexFrom;</span>
 <span class="fc" id="L41">        List&lt;Integer&gt; selectedIndexes = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L42" title="All 2 branches covered.">        for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {</span>
@@ -47,7 +47,7 @@ import java.util.List;
     }
 
     @Override
-    protected String initializeTransferable() {
+    protected String initTransferable() {
 <span class="fc" id="L51">        List&lt;JSONObject&gt; jsons = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L52">        var stringTransferable = new StringBuilder();</span>
         try {

@@ -59,7 +59,7 @@ public class MediatorVendor {
     private final Vendor mysql;
     private final Vendor neo4j;
     private final Vendor oracle;
-    private final Vendor postgresql;
+    private final Vendor postgres;
     private final Vendor sqlite;
     private final Vendor sqlserver;
     private final Vendor sybase;
@@ -100,7 +100,7 @@ public class MediatorVendor {
 <span class="fc" id="L100">        this.mysql = new Vendor(new VendorYaml(&quot;mysql.yml&quot;, injectionModel));</span>
 <span class="fc" id="L101">        this.neo4j = new Vendor(new VendorYaml(&quot;neo4j.yml&quot;, injectionModel));</span>
 <span class="fc" id="L102">        this.oracle = new Vendor(new VendorYaml(&quot;oracle.yml&quot;, injectionModel));</span>
-<span class="fc" id="L103">        this.postgresql = new Vendor(new VendorYaml(&quot;postgresql.yml&quot;, injectionModel));</span>
+<span class="fc" id="L103">        this.postgres = new Vendor(new VendorYaml(&quot;postgres.yml&quot;, injectionModel));</span>
 <span class="fc" id="L104">        this.sqlite = new Vendor(new VendorYaml(&quot;sqlite.yml&quot;, injectionModel)) {</span>
             @Override
             public String transformSqlite(String resultToParse) {
@@ -138,7 +138,7 @@ public class MediatorVendor {
 <span class="fc" id="L138">        this.vendors = Arrays.asList(</span>
             this.auto, access, altibase, ctreeace, this.cubrid, this.db2, this.derby, exasol, this.firebird, frontbase, this.h2,
             hana, this.hsqldb, this.informix, ingres, iris, maxdb, this.mckoi, this.mimer, this.monetdb, this.mysql, this.neo4j,
-            netezza, nuodb, this.oracle, this.postgresql, presto, this.sqlite, this.sqlserver, this.sybase, teradata, this.vertica
+            netezza, nuodb, this.oracle, this.postgres, presto, this.sqlite, this.sqlserver, this.sybase, teradata, this.vertica
         );
         
 <span class="fc" id="L144">        this.setVendor(this.mysql);</span>
@@ -183,7 +183,7 @@ public class MediatorVendor {
 <span class="fc" id="L183">                    break;</span>
                 }
             }
-<span class="fc" id="L186">            vendorFound = this.initializeVendor(vendorFound);</span>
+<span class="fc" id="L186">            vendorFound = this.initVendor(vendorFound);</span>
         }
 
 <span class="fc" id="L189">        var urlGitHub = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.url&quot;);</span>
@@ -211,7 +211,7 @@ public class MediatorVendor {
 <span class="fc" id="L211">        return vendorFound;</span>
     }
 
-    public Vendor initializeVendor(Vendor vendor) {
+    public Vendor initVendor(Vendor vendor) {
 <span class="fc" id="L215">        var vendorFixed = vendor;</span>
 <span class="fc bfc" id="L216" title="All 2 branches covered.">        if (vendorFixed == null) {</span>
 <span class="fc" id="L217">            vendorFixed = this.injectionModel.getMediatorVendor().getMysql();</span>
@@ -258,8 +258,8 @@ public class MediatorVendor {
 <span class="fc" id="L258">        return this.h2;</span>
     }
 
-    public Vendor getPostgresql() {
-<span class="fc" id="L262">        return this.postgresql;</span>
+    public Vendor getPostgres() {
+<span class="fc" id="L262">        return this.postgres;</span>
     }
 
     public Vendor getMysql() {

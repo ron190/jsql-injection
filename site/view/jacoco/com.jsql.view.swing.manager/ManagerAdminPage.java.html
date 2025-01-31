@@ -76,7 +76,7 @@ public class ManagerAdminPage extends AbstractManagerList {
 <span class="nc bnc" id="L76" title="All 2 branches missed.">            if (StringUtils.isEmpty(urlAddressBar)) {</span>
 <span class="nc" id="L77">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing URL in address bar&quot;);</span>
             } else {
-<span class="nc" id="L79">                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} admin pages...&quot;, I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
+<span class="nc" id="L79">                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} admin pages...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
 <span class="nc" id="L80">                this.run.setText(I18nViewUtil.valueByKey(&quot;ADMIN_PAGE_RUN_BUTTON_STOP&quot;));</span>
 <span class="nc" id="L81">                this.run.setState(StateButton.STOPPABLE);</span>
 <span class="nc" id="L82">                this.progressBar.setVisible(true);</span>

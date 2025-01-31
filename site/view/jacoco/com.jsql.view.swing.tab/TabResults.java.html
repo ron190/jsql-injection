@@ -76,7 +76,7 @@ public class TabResults extends DnDTabbedPane {
 <span class="fc" id="L76">        fileText.setText(content);</span>
 <span class="fc" id="L77">        fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));</span>
 <span class="fc" id="L78">        fileText.setCaretPosition(0);</span>
-<span class="fc" id="L79">        this.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.icon);</span>
+<span class="fc" id="L79">        this.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.getIcon());</span>
 <span class="fc" id="L80">        MediatorHelper.tabManagersCards().addToLists(path, label);</span>
 <span class="fc" id="L81">    }</span>
 
@@ -108,9 +108,9 @@ public class TabResults extends DnDTabbedPane {
 <span class="nc" id="L108">                editorPane.getCaret().setBlinkRate(0);</span>
 <span class="nc" id="L109">            }</span>
         });
-<span class="nc" id="L111">        UiUtil.initialize(editorPane);  // silent delete</span>
+<span class="nc" id="L111">        UiUtil.init(editorPane);  // silent delete</span>
 
-<span class="nc" id="L113">        this.addTextTab(&quot;Vulnerability report&quot;, &quot;Analysis report with all payloads detected&quot;, editorPane, UiUtil.APP_ICON.icon);</span>
+<span class="nc" id="L113">        this.addTextTab(&quot;Vulnerability report&quot;, &quot;Analysis report with all payloads detected&quot;, editorPane, UiUtil.APP_ICON.getIcon());</span>
 <span class="nc" id="L114">    }</span>
 
     public void addTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
@@ -134,7 +134,7 @@ public class TabResults extends DnDTabbedPane {
 <span class="fc" id="L134">            this.addTab(&quot;Web shell&quot;, scroller);</span>
 <span class="fc" id="L135">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
 
-<span class="fc" id="L137">            var header = new TabHeader(&quot;Web shell&quot;, UiUtil.TERMINAL.icon);</span>
+<span class="fc" id="L137">            var header = new TabHeader(&quot;Web shell&quot;, UiUtil.TERMINAL.getIcon());</span>
 <span class="fc" id="L138">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
 <span class="fc" id="L139">            terminal.requestFocusInWindow();</span>
 
@@ -154,7 +154,7 @@ public class TabResults extends DnDTabbedPane {
 <span class="nc" id="L154">            this.addTab(&quot;UDF shell&quot;, scroller);</span>
 <span class="nc" id="L155">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
 
-<span class="nc" id="L157">            var header = new TabHeader(&quot;UDF shell&quot;, UiUtil.TERMINAL.icon);</span>
+<span class="nc" id="L157">            var header = new TabHeader(&quot;UDF shell&quot;, UiUtil.TERMINAL.getIcon());</span>
 <span class="nc" id="L158">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
 <span class="nc" id="L159">            terminal.requestFocusInWindow();</span>
 
@@ -174,7 +174,7 @@ public class TabResults extends DnDTabbedPane {
 <span class="nc" id="L174">            this.addTab(&quot;RCE shell&quot;, scroller);</span>
 <span class="nc" id="L175">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
 
-<span class="nc" id="L177">            var header = new TabHeader(&quot;RCE shell&quot;, UiUtil.TERMINAL.icon);</span>
+<span class="nc" id="L177">            var header = new TabHeader(&quot;RCE shell&quot;, UiUtil.TERMINAL.getIcon());</span>
 <span class="nc" id="L178">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
 <span class="nc" id="L179">            terminal.requestFocusInWindow();</span>
 
@@ -194,7 +194,7 @@ public class TabResults extends DnDTabbedPane {
 <span class="fc" id="L194">            this.addTab(&quot;SQL shell&quot;, scroller);</span>
 <span class="fc" id="L195">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
 
-<span class="fc" id="L197">            var header = new TabHeader(&quot;SQL shell&quot;, UiUtil.TERMINAL.icon);</span>
+<span class="fc" id="L197">            var header = new TabHeader(&quot;SQL shell&quot;, UiUtil.TERMINAL.getIcon());</span>
 <span class="fc" id="L198">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
 <span class="fc" id="L199">            terminal.requestFocusInWindow();</span>
 
@@ -212,7 +212,7 @@ public class TabResults extends DnDTabbedPane {
         
 <span class="fc" id="L213">        this.setSelectedComponent(panelTable);  // Focus on the new tab</span>
 
-<span class="fc" id="L215">        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.icon);</span>
+<span class="fc" id="L215">        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());</span>
 <span class="fc" id="L216">        this.setTabComponentAt(this.indexOfComponent(panelTable), header);</span>
 
 <span class="fc" id="L218">        this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>

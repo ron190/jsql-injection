@@ -73,7 +73,7 @@
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Properties propsH2 = <strong class="jxr_keyword">new</strong> Properties();
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Properties propsMysql = <strong class="jxr_keyword">new</strong> Properties();
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Properties propsMysqlError = <strong class="jxr_keyword">new</strong> Properties();
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Properties propsPostgreSql = <strong class="jxr_keyword">new</strong> Properties();
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Properties propsPostgres = <strong class="jxr_keyword">new</strong> Properties();
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Properties propsSqlServer = <strong class="jxr_keyword">new</strong> Properties();
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Properties propsSqlite = <strong class="jxr_keyword">new</strong> Properties();
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Properties propsCubrid = <strong class="jxr_keyword">new</strong> Properties();
@@ -88,7 +88,7 @@
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(SpringApp.propsH2, <span class="jxr_string">"hibernate/hibernate.h2.properties"</span>),
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>          <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(SpringApp.propsMysql, <span class="jxr_string">"hibernate/hibernate.mysql.properties"</span>),
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(SpringApp.propsMysqlError, <span class="jxr_string">"hibernate/hibernate.mysql-5-5-40.properties"</span>),
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(SpringApp.propsPostgreSql, <span class="jxr_string">"hibernate/hibernate.postgresql.properties"</span>),
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(SpringApp.propsPostgres, <span class="jxr_string">"hibernate/hibernate.postgres.properties"</span>),
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(SpringApp.propsSqlServer, <span class="jxr_string">"hibernate/hibernate.sqlserver.properties"</span>),
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(SpringApp.propsCubrid, <span class="jxr_string">"hibernate/hibernate.cubrid.properties"</span>),
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(SpringApp.propsSqlite, <span class="jxr_string">"hibernate/hibernate.sqlite.properties"</span>),
@@ -111,13 +111,13 @@
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         });
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     }
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> 
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initializeDatabases() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initDatabases() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>         <strong class="jxr_keyword">if</strong> (System.getProperty(<span class="jxr_string">"profileId"</span>) == <strong class="jxr_keyword">null</strong> || <span class="jxr_string">"tests"</span>.equals(System.getProperty(<span class="jxr_string">"profileId"</span>))) {
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>             SpringApp.initializeHsqldb();
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>             SpringApp.initializeH2();
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>             SpringApp.initializeNeo4j();
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>             SpringApp.initializeDerby();
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>             SpringApp.initializeMckoi();
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>             SpringApp.initHsqldb();
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>             SpringApp.initH2();
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>             SpringApp.initNeo4j();
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>             SpringApp.initDerby();
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>             SpringApp.initMckoi();
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         }
 <a class="jxr_linenumber" name="L114" href="#L114">114</a> 
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>         SpringApp.getPropertiesFilterByProfile()
@@ -146,12 +146,12 @@
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         });
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>     }
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> 
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initializeDerby() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initDerby() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>         SpringApp.serverDerby = <strong class="jxr_keyword">new</strong> NetworkServerControl();
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>         SpringApp.serverDerby.start(<strong class="jxr_keyword">null</strong>);
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>     }
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> 
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initializeHsqldb() {
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initHsqldb() {
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>         SpringApp.serverHsqldb = <strong class="jxr_keyword">new</strong> org.hsqldb.server.Server();
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>         SpringApp.serverHsqldb.setSilent(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>         SpringApp.serverHsqldb.setDatabaseName(0, <span class="jxr_string">"mainDb"</span>);
@@ -160,7 +160,7 @@
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>         SpringApp.serverHsqldb.start();
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>     }
 <a class="jxr_linenumber" name="L154" href="#L154">154</a> 
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initializeMckoi() <strong class="jxr_keyword">throws</strong> SQLException, IOException {
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initMckoi() <strong class="jxr_keyword">throws</strong> SQLException, IOException {
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>         DefaultDBConfig config = <strong class="jxr_keyword">new</strong> DefaultDBConfig(File.createTempFile(<span class="jxr_string">"mckoi.config"</span>, <strong class="jxr_keyword">null</strong>));
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         config.setMinimumDebugLevel(Lvl.ERROR);
 <a class="jxr_linenumber" name="L158" href="#L158">158</a> 
@@ -188,12 +188,12 @@
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>         }
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>     }
 <a class="jxr_linenumber" name="L182" href="#L182">182</a> 
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initializeH2() <strong class="jxr_keyword">throws</strong> SQLException {
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initH2() <strong class="jxr_keyword">throws</strong> SQLException {
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>         SpringApp.serverH2 = Server.createTcpServer();
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>         SpringApp.serverH2.start();
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>     }
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> 
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initializeNeo4j() <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initNeo4j() <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>         String graphMovie;
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">try</strong> (InputStream stream = <strong class="jxr_keyword">new</strong> ClassPathResource(<span class="jxr_string">"neo4j/movie-graph.txt"</span>).getInputStream()) {
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>             graphMovie = <strong class="jxr_keyword">new</strong> String(stream.readAllBytes(), StandardCharsets.UTF_8);
@@ -222,7 +222,7 @@
 <a class="jxr_linenumber" name="L214" href="#L214">214</a> <em class="jxr_javadoccomment">     * For debug purpose only.</em>
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>         SpringApp.initializeDatabases();
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>         SpringApp.initDatabases();
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         SpringApplication.run(SpringApp.<strong class="jxr_keyword">class</strong>, args);
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>     }
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>     

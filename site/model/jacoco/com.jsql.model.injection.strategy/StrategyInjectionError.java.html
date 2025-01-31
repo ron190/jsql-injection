@@ -110,7 +110,7 @@ public class StrategyInjectionError extends AbstractStrategy {
 <span class="fc" id="L110">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorCalibrator(errorMethod),</span>
             &quot;error#size&quot;
         );
-<span class="fc" id="L113">        return Pattern.compile(&quot;(?s)&quot;+ DataAccess.LEAD +&quot;(#+)&quot;).matcher(performanceErrorSourcePage);</span>
+<span class="fc" id="L113">        return Pattern.compile(&quot;(?s)&quot;+ DataAccess.LEAD +&quot;(&quot;+ VendorYaml.CALIBRATOR_SQL +&quot;+)&quot;).matcher(performanceErrorSourcePage);</span>
     }
 
     private int getCapacity(int indexErrorMethod, int errorCapacityDefault, Method errorMethod, Matcher regexSearch) {

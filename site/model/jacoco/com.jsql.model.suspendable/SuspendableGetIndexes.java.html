@@ -40,19 +40,19 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
 <span class="fc" id="L40">        String initialQuery = StringUtils.EMPTY;</span>
         int nbIndex;
         
-<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        int countNormalIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex()</span>
-<span class="nc" id="L44">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countNormalIndex()</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        int countUnionIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingUnionIndex()</span>
+<span class="nc" id="L44">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countUnionIndex()</span>
 <span class="fc" id="L45">            : 50;</span>
 
         // SQL fields are built like 1337[index]7330+1
         // 7330+1 allows to exclude false positive when page contains injection URL
         // Search if the source contains 1337[index]7331
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (nbIndex = 1 ; nbIndex &lt;= countNormalIndex ; nbIndex++) {</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (nbIndex = 1 ; nbIndex &lt;= countUnionIndex ; nbIndex++) {</span>
 <span class="fc" id="L51">            taskCompletionService.submit(</span>
                 new CallablePageSource(
 <span class="fc" id="L53">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),</span>
                     this.injectionModel,
-                    &quot;normal#&quot; + nbIndex,
+                    &quot;union#&quot; + nbIndex,
                     nbIndex
                 )
             );
@@ -60,7 +60,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
         
 <span class="fc" id="L61">        nbIndex = 1;</span>
         try {
-<span class="fc bfc" id="L63" title="All 2 branches covered.">            while (nbIndex &lt;= countNormalIndex) {</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            while (nbIndex &lt;= countUnionIndex) {</span>
 <span class="pc bpc" id="L64" title="1 of 2 branches missed.">                if (this.isSuspended()) {</span>
 <span class="nc" id="L65">                    throw new StoppedByUserSlidingException();</span>
                 }
@@ -70,8 +70,8 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
 <span class="fc" id="L70">                String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, &quot;\\d+&quot;);</span>
 <span class="fc bfc" id="L71" title="All 2 branches covered.">                if (Pattern.compile(&quot;(?s).*&quot;+ regexAllIndexes +&quot;.*&quot;).matcher(currentCallable.getContent()).matches()) {</span>
                     
-<span class="fc" id="L73">                    this.injectionModel.getMediatorStrategy().getSpecificNormal().setNbIndexesFound(currentCallable.getNbIndex());</span>
-<span class="fc" id="L74">                    this.injectionModel.getMediatorStrategy().getSpecificNormal().setSourceIndexesFound(currentCallable.getContent());</span>
+<span class="fc" id="L73">                    this.injectionModel.getMediatorStrategy().getSpecificUnion().setNbIndexesFound(currentCallable.getNbIndex());</span>
+<span class="fc" id="L74">                    this.injectionModel.getMediatorStrategy().getSpecificUnion().setSourceIndexesFound(currentCallable.getContent());</span>
 <span class="fc" id="L75">                    initialQuery = currentCallable.getQuery().replace(&quot;0%2b1&quot;, &quot;1&quot;);</span>
                     
 <span class="pc bpc" id="L77" title="1 of 2 branches missed.">                    if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {</span>
@@ -81,7 +81,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     }
 <span class="fc" id="L82">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_INFORM,
-                        &quot;Strategy [Normal] triggered by [{}]&quot;,
+                        &quot;Strategy [Union] triggered by [{}]&quot;,
 <span class="fc" id="L85">                        () -&gt; currentCallable.getQuery().trim().replaceAll(&quot;1337(\\d*)7330%2b1&quot;, &quot;$1&quot;)</span>
                     );
 <span class="fc" id="L87">                    break;</span>

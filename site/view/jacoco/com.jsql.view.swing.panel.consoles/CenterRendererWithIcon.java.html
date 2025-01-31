@@ -28,7 +28,7 @@ import java.util.List;
 <span class="pc bpc" id="L28" title="2 of 4 branches missed.">        if (column == 3 &amp;&amp; objectCallableBoolean != null) {</span>
 <span class="nc" id="L29">            AbstractCallableBinary&lt;?&gt; callableBoolean = (AbstractCallableBinary&lt;?&gt;) objectCallableBoolean;</span>
 <span class="nc bnc" id="L30" title="All 2 branches missed.">            if (!callableBoolean.isMultibit()) {</span>
-<span class="nc bnc" id="L31" title="All 2 branches missed.">                label.setIcon(callableBoolean.isTrue() ? UiUtil.TICK_GREEN.icon : UiUtil.CROSS_RED.icon);</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">                label.setIcon(callableBoolean.isTrue() ? UiUtil.TICK_GREEN.getIcon() : UiUtil.CROSS_RED.getIcon());</span>
             }
         }
 <span class="fc" id="L34">        return label;</span>

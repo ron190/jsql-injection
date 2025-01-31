@@ -55,7 +55,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 <span class="fc" id="L55">        CompletionService&lt;CallablePageSource&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
 <span class="fc" id="L57">        var charFromBooleanMatch = new String[1];</span>
-<span class="fc" id="L58">        List&lt;String&gt; charactersInsertion = this.initializeCallables(taskCompletionService, charFromBooleanMatch);</span>
+<span class="fc" id="L58">        List&lt;String&gt; charactersInsertion = this.initCallables(taskCompletionService, charFromBooleanMatch);</span>
         
 <span class="fc" id="L60">        var mediatorVendor = this.injectionModel.getMediatorVendor();</span>
 <span class="fc" id="L61">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database and character insertion with Order by match...&quot;);</span>
@@ -111,8 +111,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         ) {
 <span class="nc" id="L112">            mediatorVendor.setVendor(vendorsOrderByMatch.get(0));</span>
 <span class="fc bfc" id="L113" title="All 2 branches covered.">        } else if (vendorsOrderByMatch.size() &gt; 1) {</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgresql())) {</span>
-<span class="fc" id="L115">                mediatorVendor.setVendor(mediatorVendor.getPostgresql());</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgres())) {</span>
+<span class="fc" id="L115">                mediatorVendor.setVendor(mediatorVendor.getPostgres());</span>
 <span class="nc bnc" id="L116" title="All 2 branches missed.">            } else if (vendorsOrderByMatch.contains(mediatorVendor.getMysql())) {</span>
 <span class="nc" id="L117">                mediatorVendor.setVendor(mediatorVendor.getMysql());</span>
             } else {
@@ -151,7 +151,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 <span class="fc" id="L151">            .collect(Collectors.toList());</span>
     }
 
-    private List&lt;String&gt; initializeCallables(CompletionService&lt;CallablePageSource&gt; taskCompletionService, String[] charFromBooleanMatch) throws JSqlException {
+    private List&lt;String&gt; initCallables(CompletionService&lt;CallablePageSource&gt; taskCompletionService, String[] charFromBooleanMatch) throws JSqlException {
 <span class="fc" id="L155">        List&lt;String&gt; prefixValues = Arrays.asList(</span>
 <span class="fc" id="L156">            RandomStringUtils.secure().next(10, &quot;012&quot;),  // to trigger probable failure</span>
             &quot;1&quot;  // to trigger eventual success

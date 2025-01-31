@@ -92,10 +92,10 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isStrategyMultibitDisabled = false;
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isStrategyStackDisabled = false;
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isStrategyErrorDisabled = false;
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isStrategyNormalDisabled = false;
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isStrategyUnionDisabled = false;
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isLimitingNormalIndex = false;
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> countNormalIndex = 50;
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isLimitingUnionIndex = false;
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> countUnionIndex = 50;
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isLimitingSleepTimeStrategy = false;
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> countSleepTimeStrategy = 5;
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  
@@ -165,8 +165,8 @@
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">this</strong>.countConnectionTimeout = preferences.getInt(<span class="jxr_string">"countConnectionTimeout"</span>, 15);
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         <strong class="jxr_keyword">this</strong>.isUnicodeDecodeDisabled = preferences.getBoolean(<span class="jxr_string">"isUnicodeDecodeDisabled"</span>, false);
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>         <strong class="jxr_keyword">this</strong>.isUrlDecodeDisabled = preferences.getBoolean(<span class="jxr_string">"isUrlDecodeDisabled"</span>, false);
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>         <strong class="jxr_keyword">this</strong>.countNormalIndex = preferences.getInt(<span class="jxr_string">"countNormalIndex"</span>, 50);
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>         <strong class="jxr_keyword">this</strong>.isLimitingNormalIndex = preferences.getBoolean(<span class="jxr_string">"isLimitingNormalIndex"</span>, false);
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>         <strong class="jxr_keyword">this</strong>.countUnionIndex = preferences.getInt(<span class="jxr_string">"countUnionIndex"</span>, 50);
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>         <strong class="jxr_keyword">this</strong>.isLimitingUnionIndex = preferences.getBoolean(<span class="jxr_string">"isLimitingUnionIndex"</span>, false);
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>         <strong class="jxr_keyword">this</strong>.countSleepTimeStrategy = preferences.getInt(<span class="jxr_string">"countSleepTimeStrategy"</span>, 5);
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">this</strong>.isLimitingSleepTimeStrategy = preferences.getBoolean(<span class="jxr_string">"isLimitingSleepTimeStrategy"</span>, false);
 <a class="jxr_linenumber" name="L164" href="#L164">164</a> 
@@ -175,7 +175,7 @@
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">this</strong>.isStrategyMultibitDisabled = preferences.getBoolean(<span class="jxr_string">"isStrategyMultibitDisabled"</span>, false);
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">this</strong>.isStrategyStackDisabled = preferences.getBoolean(<span class="jxr_string">"isStrategyStackDisabled"</span>, false);
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>         <strong class="jxr_keyword">this</strong>.isStrategyErrorDisabled = preferences.getBoolean(<span class="jxr_string">"isStrategyErrorDisabled"</span>, false);
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">this</strong>.isStrategyNormalDisabled = preferences.getBoolean(<span class="jxr_string">"isStrategyNormalDisabled"</span>, false);
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">this</strong>.isStrategyUnionDisabled = preferences.getBoolean(<span class="jxr_string">"isStrategyUnionDisabled"</span>, false);
 <a class="jxr_linenumber" name="L171" href="#L171">171</a> 
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>         <strong class="jxr_keyword">this</strong>.isUserAgentRandom = preferences.getBoolean(<span class="jxr_string">"isUserAgentRandom"</span>, false);
 <a class="jxr_linenumber" name="L173" href="#L173">173</a> 
@@ -201,8 +201,8 @@
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         preferences.putInt(<span class="jxr_string">"countLimitingThreads"</span>, <strong class="jxr_keyword">this</strong>.countLimitingThreads);
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         preferences.putBoolean(<span class="jxr_string">"isConnectionTimeout"</span>, <strong class="jxr_keyword">this</strong>.isConnectionTimeout);
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>         preferences.putInt(<span class="jxr_string">"countConnectionTimeout"</span>, <strong class="jxr_keyword">this</strong>.countConnectionTimeout);
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>         preferences.putBoolean(<span class="jxr_string">"isLimitingNormalIndex"</span>, <strong class="jxr_keyword">this</strong>.isLimitingNormalIndex);
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>         preferences.putInt(<span class="jxr_string">"countNormalIndex"</span>, <strong class="jxr_keyword">this</strong>.countNormalIndex);
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>         preferences.putBoolean(<span class="jxr_string">"isLimitingUnionIndex"</span>, <strong class="jxr_keyword">this</strong>.isLimitingUnionIndex);
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         preferences.putInt(<span class="jxr_string">"countUnionIndex"</span>, <strong class="jxr_keyword">this</strong>.countUnionIndex);
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>         preferences.putBoolean(<span class="jxr_string">"isLimitingSleepTimeStrategy"</span>, <strong class="jxr_keyword">this</strong>.isLimitingSleepTimeStrategy);
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         preferences.putInt(<span class="jxr_string">"countSleepTimeStrategy"</span>, <strong class="jxr_keyword">this</strong>.countSleepTimeStrategy);
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>         preferences.putBoolean(<span class="jxr_string">"isCsrfUserTag"</span>, <strong class="jxr_keyword">this</strong>.isCsrfUserTag);
@@ -250,7 +250,7 @@
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>         preferences.putBoolean(<span class="jxr_string">"isStrategyMultibitDisabled"</span>, <strong class="jxr_keyword">this</strong>.isStrategyMultibitDisabled);
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>         preferences.putBoolean(<span class="jxr_string">"isStrategyStackDisabled"</span>, <strong class="jxr_keyword">this</strong>.isStrategyStackDisabled);
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>         preferences.putBoolean(<span class="jxr_string">"isStrategyErrorDisabled"</span>, <strong class="jxr_keyword">this</strong>.isStrategyErrorDisabled);
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>         preferences.putBoolean(<span class="jxr_string">"isStrategyNormalDisabled"</span>, <strong class="jxr_keyword">this</strong>.isStrategyNormalDisabled);
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>         preferences.putBoolean(<span class="jxr_string">"isStrategyUnionDisabled"</span>, <strong class="jxr_keyword">this</strong>.isStrategyUnionDisabled);
 <a class="jxr_linenumber" name="L246" href="#L246">246</a> 
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>         preferences.putBoolean(<span class="jxr_string">"isUserAgentRandom"</span>, <strong class="jxr_keyword">this</strong>.isUserAgentRandom);
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>         preferences.putBoolean(<span class="jxr_string">"isUrlDecodeNetworkTab"</span>, <strong class="jxr_keyword">this</strong>.isUrlDecodeNetworkTab);
@@ -420,16 +420,16 @@
 <a class="jxr_linenumber" name="L412" href="#L412">412</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.countConnectionTimeout;
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>     }
 <a class="jxr_linenumber" name="L414" href="#L414">414</a>     
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> countNormalIndex() {
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.countNormalIndex;
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> countUnionIndex() {
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.countUnionIndex;
 <a class="jxr_linenumber" name="L417" href="#L417">417</a>     }
 <a class="jxr_linenumber" name="L418" href="#L418">418</a>     
 <a class="jxr_linenumber" name="L419" href="#L419">419</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> countSleepTimeStrategy() {
 <a class="jxr_linenumber" name="L420" href="#L420">420</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.countSleepTimeStrategy;
 <a class="jxr_linenumber" name="L421" href="#L421">421</a>     }
 <a class="jxr_linenumber" name="L422" href="#L422">422</a>     
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isLimitingNormalIndex() {
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.isLimitingNormalIndex;
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isLimitingUnionIndex() {
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.isLimitingUnionIndex;
 <a class="jxr_linenumber" name="L425" href="#L425">425</a>     }
 <a class="jxr_linenumber" name="L426" href="#L426">426</a>     
 <a class="jxr_linenumber" name="L427" href="#L427">427</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isCsrfUserTag() {
@@ -488,8 +488,8 @@
 <a class="jxr_linenumber" name="L480" href="#L480">480</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.isStrategyErrorDisabled;
 <a class="jxr_linenumber" name="L481" href="#L481">481</a>     }
 <a class="jxr_linenumber" name="L482" href="#L482">482</a> 
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isStrategyNormalDisabled() {
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.isStrategyNormalDisabled;
+<a class="jxr_linenumber" name="L483" href="#L483">483</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isStrategyUnionDisabled() {
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.isStrategyUnionDisabled;
 <a class="jxr_linenumber" name="L485" href="#L485">485</a>     }
 <a class="jxr_linenumber" name="L486" href="#L486">486</a> 
 <a class="jxr_linenumber" name="L487" href="#L487">487</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isUserAgentRandom() {
@@ -741,13 +741,13 @@
 <a class="jxr_linenumber" name="L733" href="#L733">733</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L734" href="#L734">734</a>     }
 <a class="jxr_linenumber" name="L735" href="#L735">735</a> 
-<a class="jxr_linenumber" name="L736" href="#L736">736</a>     <strong class="jxr_keyword">public</strong> <a name="PreferencesUtil" href="../../../com/jsql/util/PreferencesUtil.html#PreferencesUtil">PreferencesUtil</a> withIsLimitingNormalIndex(<strong class="jxr_keyword">boolean</strong> isLimitingNormalIndex) {
-<a class="jxr_linenumber" name="L737" href="#L737">737</a>         <strong class="jxr_keyword">this</strong>.isLimitingNormalIndex = isLimitingNormalIndex;
+<a class="jxr_linenumber" name="L736" href="#L736">736</a>     <strong class="jxr_keyword">public</strong> <a name="PreferencesUtil" href="../../../com/jsql/util/PreferencesUtil.html#PreferencesUtil">PreferencesUtil</a> withIsLimitingUnionIndex(<strong class="jxr_keyword">boolean</strong> isLimitingUnionIndex) {
+<a class="jxr_linenumber" name="L737" href="#L737">737</a>         <strong class="jxr_keyword">this</strong>.isLimitingUnionIndex = isLimitingUnionIndex;
 <a class="jxr_linenumber" name="L738" href="#L738">738</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L739" href="#L739">739</a>     }
 <a class="jxr_linenumber" name="L740" href="#L740">740</a> 
-<a class="jxr_linenumber" name="L741" href="#L741">741</a>     <strong class="jxr_keyword">public</strong> <a name="PreferencesUtil" href="../../../com/jsql/util/PreferencesUtil.html#PreferencesUtil">PreferencesUtil</a> withCountNormalIndex(<strong class="jxr_keyword">int</strong> countNormalIndex) {
-<a class="jxr_linenumber" name="L742" href="#L742">742</a>         <strong class="jxr_keyword">this</strong>.countNormalIndex = countNormalIndex;
+<a class="jxr_linenumber" name="L741" href="#L741">741</a>     <strong class="jxr_keyword">public</strong> <a name="PreferencesUtil" href="../../../com/jsql/util/PreferencesUtil.html#PreferencesUtil">PreferencesUtil</a> withCountUnionIndex(<strong class="jxr_keyword">int</strong> countUnionIndex) {
+<a class="jxr_linenumber" name="L742" href="#L742">742</a>         <strong class="jxr_keyword">this</strong>.countUnionIndex = countUnionIndex;
 <a class="jxr_linenumber" name="L743" href="#L743">743</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L744" href="#L744">744</a>     }
 <a class="jxr_linenumber" name="L745" href="#L745">745</a> 
@@ -776,8 +776,8 @@
 <a class="jxr_linenumber" name="L768" href="#L768">768</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L769" href="#L769">769</a>     }
 <a class="jxr_linenumber" name="L770" href="#L770">770</a> 
-<a class="jxr_linenumber" name="L771" href="#L771">771</a>     <strong class="jxr_keyword">public</strong> <a name="PreferencesUtil" href="../../../com/jsql/util/PreferencesUtil.html#PreferencesUtil">PreferencesUtil</a> withIsStrategyNormalDisabled(<strong class="jxr_keyword">boolean</strong> isStrategyNormalDisabled) {
-<a class="jxr_linenumber" name="L772" href="#L772">772</a>         <strong class="jxr_keyword">this</strong>.isStrategyNormalDisabled = isStrategyNormalDisabled;
+<a class="jxr_linenumber" name="L771" href="#L771">771</a>     <strong class="jxr_keyword">public</strong> <a name="PreferencesUtil" href="../../../com/jsql/util/PreferencesUtil.html#PreferencesUtil">PreferencesUtil</a> withIsStrategyUnionDisabled(<strong class="jxr_keyword">boolean</strong> isStrategyUnionDisabled) {
+<a class="jxr_linenumber" name="L772" href="#L772">772</a>         <strong class="jxr_keyword">this</strong>.isStrategyUnionDisabled = isStrategyUnionDisabled;
 <a class="jxr_linenumber" name="L773" href="#L773">773</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L774" href="#L774">774</a>     }
 <a class="jxr_linenumber" name="L775" href="#L775">775</a> 

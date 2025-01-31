@@ -67,12 +67,12 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">var</strong> ctrlTab = KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_TAB);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">var</strong> ctrlShiftTab = KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_SHIFT_TAB);
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <em class="jxr_comment">// Remove ctrl-tab from normal focus traversal</em>
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <em class="jxr_comment">// Remove ctrl-tab from default focus traversal</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          Set&lt;AWTKeyStroke&gt; forwardKeys = <strong class="jxr_keyword">new</strong> HashSet&lt;&gt;(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          forwardKeys.remove(ctrlTab);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          <em class="jxr_comment">// Remove ctrl-shift-tab from normal focus traversal</em>
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          <em class="jxr_comment">// Remove ctrl-shift-tab from default focus traversal</em>
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          Set&lt;AWTKeyStroke&gt; backwardKeys = <strong class="jxr_keyword">new</strong> HashSet&lt;&gt;(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          backwardKeys.remove(ctrlShiftTab);
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);

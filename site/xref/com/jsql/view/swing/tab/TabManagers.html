@@ -39,7 +39,7 @@
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="TabManagers" href="../../../../../com/jsql/view/swing/tab/TabManagers.html#TabManagers">TabManagers</a> <strong class="jxr_keyword">extends</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a> {
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;ModelSvgIcon&gt; iconsTabs = Arrays.asList(
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> List&lt;ModelSvgIcon&gt; iconsTabs = Arrays.asList(
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      );
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
@@ -60,9 +60,9 @@
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      }
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> buildI18nTab(<a name="ModelSvgIcon" href="../../../../../com/jsql/view/swing/util/ModelSvgIcon.html#ModelSvgIcon">ModelSvgIcon</a> modelSvgIcon, <strong class="jxr_keyword">int</strong> index) {
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          Icon icon = modelSvgIcon.icon;
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          String keyLabel = modelSvgIcon.keyLabel;
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>          String keyTooltip = modelSvgIcon.keyTooltip;
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          Icon icon = modelSvgIcon.getIcon();
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          String keyLabel = modelSvgIcon.getKeyLabel();
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          String keyTooltip = modelSvgIcon.getKeyTooltip();
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          AtomicReference&lt;JToolTipI18n&gt; tooltipAtomic = <strong class="jxr_keyword">new</strong> AtomicReference&lt;&gt;(<strong class="jxr_keyword">new</strong> <a name="JToolTipI18n" href="../../../../../com/jsql/view/swing/text/JToolTipI18n.html#JToolTipI18n">JToolTipI18n</a>(I18nUtil.valueByKey(keyTooltip)));
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          JLabel labelTab = <strong class="jxr_keyword">new</strong> JLabel(I18nUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>              @Override

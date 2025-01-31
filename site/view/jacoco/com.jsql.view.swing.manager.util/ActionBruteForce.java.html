@@ -84,7 +84,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
 <span class="nc" id="L84">        this.bruteForceManager.getResult().setText(null);</span>
 
 <span class="nc" id="L86">        final var hashBruter = new HashBruter();</span>
-<span class="nc" id="L87">        this.initializeBruter(hashBruter);</span>
+<span class="nc" id="L87">        this.initBruter(hashBruter);</span>
 
         // Begin the reverse hashing process
 <span class="nc" id="L90">        new Thread(hashBruter::tryBruteForce, &quot;ThreadRunBruteForce&quot;).start();</span>
@@ -153,7 +153,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         );
 <span class="nc" id="L154">    }</span>
 
-    private void initializeBruter(final HashBruter hashBruter) {
+    private void initBruter(final HashBruter hashBruter) {
 <span class="nc" id="L157">        hashBruter.setMinLength(Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString()));</span>
 <span class="nc" id="L158">        hashBruter.setMaxLength(Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString()));</span>
 

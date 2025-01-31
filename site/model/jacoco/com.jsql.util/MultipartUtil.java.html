@@ -24,7 +24,7 @@ public class MultipartUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
 <span class="fc bfc" id="L26" title="All 2 branches covered.">        if (!hasFoundInjection) {</span>
-<span class="fc" id="L27">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} multipart...&quot;, I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
+<span class="fc" id="L27">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} multipart...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
         } else {
 <span class="fc" id="L29">            return true;</span>
         }
@@ -60,7 +60,7 @@ public class MultipartUtil {
             &quot;$1&quot; + InjectionModel.STAR + &quot;$2&quot;
         );
 
-<span class="fc" id="L63">        this.injectionModel.getMediatorUtils().getParameterUtil().initializeRequest(rawRequestWithStar);</span>
+<span class="fc" id="L63">        this.injectionModel.getMediatorUtils().getParameterUtil().initRequest(rawRequestWithStar);</span>
 
         try {
 <span class="fc" id="L66">            LOGGER.log(</span>

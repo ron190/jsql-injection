@@ -65,7 +65,7 @@ public class ManagerScan extends AbstractManagerList {
 <span class="fc" id="L65">                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);</span>
 <span class="fc" id="L66">                ItemList itemList = (ItemList) value;</span>
 <span class="pc bpc" id="L67" title="1 of 2 branches missed.">                if (itemList.isVulnerable()) {</span>
-<span class="nc" id="L68">                    label.setIcon(UiUtil.TICK_GREEN.icon);</span>
+<span class="nc" id="L68">                    label.setIcon(UiUtil.TICK_GREEN.getIcon());</span>
                 }
 <span class="fc" id="L70">                return label;</span>
             }
@@ -173,7 +173,7 @@ public class ManagerScan extends AbstractManagerList {
      * Unplug any existing view and plug a console-like view in order to
      * respond appropriately to GUI message with simple text result instead of
      * build complex graphical components during the multi website injections.
-     * At the end of the scan it plugs again the normal view.
+     * At the end of the scan it plugs again the default view.
      * @param urlsItemList contains a list of String URL
      */
     public void scan(List&lt;ItemList&gt; urlsItemList) {
@@ -232,7 +232,7 @@ public class ManagerScan extends AbstractManagerList {
 <span class="nc" id="L232">            }</span>
 <span class="nc" id="L233">        }</span>
         
-        // Get back the normal view
+        // Get back the default view
 <span class="nc" id="L236">        MediatorHelper.model().sendToViews(requestUnsubscribe);</span>
 <span class="nc" id="L237">        MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriber());</span>
         

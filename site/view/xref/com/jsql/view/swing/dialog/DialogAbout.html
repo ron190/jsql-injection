@@ -75,20 +75,20 @@
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          <strong class="jxr_keyword">this</strong>.setLayout(<strong class="jxr_keyword">new</strong> BorderLayout());
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          Container dialogPane = <strong class="jxr_keyword">this</strong>.getContentPane();
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          JPanel lastLine = <strong class="jxr_keyword">this</strong>.initializeLastLine(escapeListener);
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>          JPanel lastLine = <strong class="jxr_keyword">this</strong>.initLastLine(escapeListener);
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">var</strong> labelIcon = <strong class="jxr_keyword">new</strong> JLabel(UiUtil.APP_MIDDLE.icon);
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">var</strong> labelIcon = <strong class="jxr_keyword">new</strong> JLabel(UiUtil.APP_MIDDLE.getIcon());
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>          labelIcon.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          dialogPane.add(labelIcon, BorderLayout.WEST);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          dialogPane.add(lastLine, BorderLayout.SOUTH);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">final</strong> JEditorPane text = <strong class="jxr_keyword">this</strong>.initializeEditorPane();  <em class="jxr_comment">// Contact info, use HTML text</em>
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">final</strong> JEditorPane text = <strong class="jxr_keyword">this</strong>.initEditorPane();  <em class="jxr_comment">// Contact info, use HTML text</em>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>          dialogPane.add(<strong class="jxr_keyword">new</strong> JScrollPane(text), BorderLayout.CENTER);
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">this</strong>.initializeDialog();
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">this</strong>.initDialog();
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      }
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">private</strong> JPanel initializeLastLine(ActionListener escapeListener) {
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">private</strong> JPanel initLastLine(ActionListener escapeListener) {
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> buttonWebpage = <strong class="jxr_keyword">new</strong> JButton(I18nUtil.valueByKey(<span class="jxr_string">"ABOUT_WEBPAGE"</span>));
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          I18nViewUtil.addComponentForKey(<span class="jxr_string">"ABOUT_WEBPAGE"</span>, buttonWebpage);
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          buttonWebpage.addActionListener(ev -&gt; {
@@ -112,7 +112,7 @@
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>         <strong class="jxr_keyword">return</strong> lastLine;
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>     }
 <a class="jxr_linenumber" name="L106" href="#L106">106</a> 
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">private</strong> JEditorPane initializeEditorPane() {
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">private</strong> JEditorPane initEditorPane() {
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">var</strong> editorPane = <strong class="jxr_keyword">new</strong> JEditorPane();
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>         
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         <em class="jxr_comment">// Fix #82540: NoClassDefFoundError on setText()</em>
@@ -171,7 +171,7 @@
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">     * Set back default setting for About frame.</em>
 <a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">void</strong> initializeDialog() {
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">void</strong> initDialog() {
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">this</strong>.setSize(533, 400);
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">this</strong>.setLocationRelativeTo(MediatorHelper.frame());
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>         <strong class="jxr_keyword">this</strong>.buttonClose.requestFocusInWindow();

@@ -59,12 +59,12 @@ public final class HotkeyUtil {
 <span class="fc" id="L59">        var ctrlTab = KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_TAB);</span>
 <span class="fc" id="L60">        var ctrlShiftTab = KeyStroke.getKeyStroke(HotkeyUtil.STR_CTRL_SHIFT_TAB);</span>
 
-        // Remove ctrl-tab from normal focus traversal
+        // Remove ctrl-tab from default focus traversal
 <span class="fc" id="L63">        Set&lt;AWTKeyStroke&gt; forwardKeys = new HashSet&lt;&gt;(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));</span>
 <span class="fc" id="L64">        forwardKeys.remove(ctrlTab);</span>
 <span class="fc" id="L65">        tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);</span>
 
-        // Remove ctrl-shift-tab from normal focus traversal
+        // Remove ctrl-shift-tab from default focus traversal
 <span class="fc" id="L68">        Set&lt;AWTKeyStroke&gt; backwardKeys = new HashSet&lt;&gt;(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));</span>
 <span class="fc" id="L69">        backwardKeys.remove(ctrlShiftTab);</span>
 <span class="fc" id="L70">        tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);</span>

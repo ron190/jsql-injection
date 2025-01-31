@@ -44,7 +44,7 @@
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Logger LOGGER = LogManager.getRootLogger();
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>      @Override
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">protected</strong> List&lt;Integer&gt; initializeStringPaste(String clipboardText, <strong class="jxr_keyword">int</strong> selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">protected</strong> List&lt;Integer&gt; initStringPaste(String clipboardText, <strong class="jxr_keyword">int</strong> selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">int</strong> selectedIndexTo = selectedIndexFrom;
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          List&lt;Integer&gt; selectedIndexes = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>          <strong class="jxr_keyword">for</strong> (<a name="ItemListScan" href="../../../../../com/jsql/view/swing/list/ItemListScan.html#ItemListScan">ItemListScan</a> itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {
@@ -55,7 +55,7 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      }
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      @Override
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">protected</strong> String initializeTransferable() {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">protected</strong> String initTransferable() {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          List&lt;JSONObject&gt; jsons = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">var</strong> stringTransferable = <strong class="jxr_keyword">new</strong> StringBuilder();
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">try</strong> {

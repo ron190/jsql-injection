@@ -59,7 +59,7 @@ public class ManagerBruteForce extends JPanel {
     public ManagerBruteForce() {
 <span class="fc" id="L60">        super(new BorderLayout());</span>
 
-<span class="fc" id="L62">        JPanel panelOptions = this.initializeOptionsPanel();</span>
+<span class="fc" id="L62">        JPanel panelOptions = this.initOptionsPanel();</span>
 <span class="fc" id="L63">        this.add(panelOptions, BorderLayout.NORTH);</span>
 
 <span class="fc" id="L65">        var placeholder = new JTextPanePlaceholder(I18nUtil.valueByKey(&quot;BRUTEFORCE_RESULT&quot;));</span>
@@ -68,11 +68,11 @@ public class ManagerBruteForce extends JPanel {
 <span class="fc" id="L68">        this.result.setName(&quot;managerBruterResult&quot;);</span>
 <span class="fc" id="L69">        this.add(new JScrollPane(this.result), BorderLayout.CENTER);</span>
 
-<span class="fc" id="L71">        JPanel panelButton = this.initializePanelButton();</span>
+<span class="fc" id="L71">        JPanel panelButton = this.initPanelButton();</span>
 <span class="fc" id="L72">        this.add(panelButton, BorderLayout.SOUTH);</span>
 <span class="fc" id="L73">    }</span>
 
-    private JPanel initializePanelButton() {
+    private JPanel initPanelButton() {
 <span class="fc" id="L76">        var lastLine = new JPanel();</span>
 <span class="fc" id="L77">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));</span>
 
@@ -106,11 +106,11 @@ public class ManagerBruteForce extends JPanel {
 <span class="nc bnc" id="L106" title="All 2 branches missed.">        this.horizontalGlue.setVisible(!isVisible);</span>
 <span class="nc" id="L107">    }</span>
 
-    private JPanel initializeOptionsPanel() {
+    private JPanel initOptionsPanel() {
 <span class="fc" id="L110">        var options = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L111">        JPanel firstLine = this.initializeFirstLine();</span>
-<span class="fc" id="L112">        final JPanel secondLine = this.initializeSecondLine();</span>
-<span class="fc" id="L113">        JPanel thirdLine = this.initializeThirdLine();</span>
+<span class="fc" id="L111">        JPanel firstLine = this.initFirstLine();</span>
+<span class="fc" id="L112">        final JPanel secondLine = this.initSecondLine();</span>
+<span class="fc" id="L113">        JPanel thirdLine = this.initThirdLine();</span>
         
 <span class="fc" id="L115">        final var secondAndThirdLine = new JPanel(new BorderLayout());</span>
 <span class="fc" id="L116">        secondAndThirdLine.add(secondLine, BorderLayout.NORTH);</span>
@@ -121,7 +121,7 @@ public class ManagerBruteForce extends JPanel {
 <span class="fc" id="L121">        return options;</span>
     }
 
-    private JPanel initializeFirstLine() {
+    private JPanel initFirstLine() {
 <span class="fc" id="L125">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP)));</span>
 <span class="fc" id="L126">        var placeholder = new JTextFieldPlaceholder(I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_LABEL&quot;)) {</span>
             @Override
@@ -140,7 +140,7 @@ public class ManagerBruteForce extends JPanel {
 <span class="fc" id="L140">        return firstLine;</span>
     }
 
-    private JPanel initializeSecondLine() {
+    private JPanel initSecondLine() {
 <span class="fc" id="L144">        final var secondLine = new JPanel();</span>
 <span class="fc" id="L145">        secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));</span>
 
@@ -172,7 +172,7 @@ public class ManagerBruteForce extends JPanel {
 <span class="fc" id="L172">        return secondLine;</span>
     }
 
-    private JPanel initializeThirdLine() {
+    private JPanel initThirdLine() {
 <span class="fc" id="L176">        var thirdLine = new JPanel();</span>
 <span class="fc" id="L177">        thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));</span>
 

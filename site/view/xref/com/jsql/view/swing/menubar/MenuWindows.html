@@ -109,7 +109,7 @@
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">this</strong>.add(menuAppearance);
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         <strong class="jxr_keyword">this</strong>.add(menuThemes);
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">this</strong>.add(<strong class="jxr_keyword">new</strong> JSeparator());
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>         <strong class="jxr_keyword">this</strong>.add(<strong class="jxr_keyword">this</strong>.initializeMenuTranslation());
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>         <strong class="jxr_keyword">this</strong>.add(<strong class="jxr_keyword">this</strong>.initMenuTranslation());
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>         <strong class="jxr_keyword">this</strong>.add(<strong class="jxr_keyword">new</strong> JSeparator());
 <a class="jxr_linenumber" name="L106" href="#L106">106</a> 
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>         <strong class="jxr_keyword">this</strong>.menuView = <strong class="jxr_keyword">new</strong> JMenu(I18nUtil.valueByKey(<span class="jxr_string">"MENUBAR_VIEW"</span>));
@@ -119,9 +119,9 @@
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         AtomicInteger accelerator = <strong class="jxr_keyword">new</strong> AtomicInteger(0x31);
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>         AtomicInteger tabPosition = <strong class="jxr_keyword">new</strong> AtomicInteger();
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(entry -&gt; {
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>             <strong class="jxr_keyword">var</strong> menuItem = <strong class="jxr_keyword">new</strong> JMenuItem(I18nUtil.valueByKey(entry.keyLabel), entry.icon);
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>             I18nViewUtil.addComponentForKey(entry.keyLabel, menuItem);
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>             menuItem.setName(entry.keyLabel);  <em class="jxr_comment">// required by card manager switch</em>
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>             <strong class="jxr_keyword">var</strong> menuItem = <strong class="jxr_keyword">new</strong> JMenuItem(I18nUtil.valueByKey(entry.getKeyLabel()), entry.getIcon());
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>             I18nViewUtil.addComponentForKey(entry.getKeyLabel(), menuItem);
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>             menuItem.setName(entry.getKeyLabel());  <em class="jxr_comment">// required by card manager switch</em>
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>             <strong class="jxr_keyword">this</strong>.menuView.add(menuItem);
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> 
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>             menuItem.setAccelerator(KeyStroke.getKeyStroke(
@@ -151,25 +151,25 @@
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>                 <span class="jxr_string">"CONSOLE_CHUNK_LABEL"</span>,
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>                 PreferencesUtil.CHUNK_VISIBLE,
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>                 () -&gt; MediatorHelper.panelConsoles().insertChunkTab(),
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>                 UiUtil.CHUNK.icon
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>                 UiUtil.CHUNK.getIcon()
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>             ),
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>             <strong class="jxr_keyword">new</strong> <a name="ModelCheckboxMenu" href="../../../../../com/jsql/view/swing/menubar/ModelCheckboxMenu.html#ModelCheckboxMenu">ModelCheckboxMenu</a>(
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>                 <span class="jxr_string">"CONSOLE_BINARY_LABEL"</span>,
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>                 PreferencesUtil.BINARY_VISIBLE,
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>                 () -&gt; MediatorHelper.panelConsoles().insertBooleanTab(),
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>                 UiUtil.BINARY.icon
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>                 UiUtil.BINARY.getIcon()
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>             ),
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>             <strong class="jxr_keyword">new</strong> <a name="ModelCheckboxMenu" href="../../../../../com/jsql/view/swing/menubar/ModelCheckboxMenu.html#ModelCheckboxMenu">ModelCheckboxMenu</a>(
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>                 <span class="jxr_string">"CONSOLE_NETWORK_LABEL"</span>,
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>                 PreferencesUtil.NETWORK_VISIBLE,
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>                 () -&gt; MediatorHelper.panelConsoles().insertNetworkTab(),
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>                 UiUtil.NETWORK.icon
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>                 UiUtil.NETWORK.getIcon()
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>             ),
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>             <strong class="jxr_keyword">new</strong> <a name="ModelCheckboxMenu" href="../../../../../com/jsql/view/swing/menubar/ModelCheckboxMenu.html#ModelCheckboxMenu">ModelCheckboxMenu</a>(
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>                 <span class="jxr_string">"CONSOLE_JAVA_LABEL"</span>,
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>                 PreferencesUtil.JAVA_VISIBLE,
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>                 () -&gt; MediatorHelper.panelConsoles().insertJavaTab(),
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>                 UiUtil.CUP.icon
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>                 UiUtil.CUP.getIcon()
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>             )
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>         ).forEach(model -&gt; {
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>             <strong class="jxr_keyword">var</strong> menuItem = <strong class="jxr_keyword">new</strong> JCheckBoxMenuItem(
@@ -216,14 +216,14 @@
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>                 }
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>             }
 <a class="jxr_linenumber" name="L210" href="#L210">210</a> 
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>             MediatorHelper.frame().getSplitNS().initializeSplitOrientation();
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>             MediatorHelper.frame().getSplitNS().initSplitOrientation();
 <a class="jxr_linenumber" name="L212" href="#L212">212</a> 
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>             <strong class="jxr_keyword">var</strong> panelSqlEngine = <strong class="jxr_keyword">new</strong> <a name="SqlEngine" href="../../../../../com/jsql/view/swing/sql/SqlEngine.html#SqlEngine">SqlEngine</a>();
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>             MediatorHelper.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>             MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);  <em class="jxr_comment">// Focus on the new tab</em>
 <a class="jxr_linenumber" name="L216" href="#L216">216</a> 
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>             <em class="jxr_comment">// Create a custom tab header</em>
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.icon);
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.getIcon());
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>             I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, header.getTabLabel());
 <a class="jxr_linenumber" name="L220" href="#L220">220</a> 
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>             <em class="jxr_comment">// Apply the custom header to the tab</em>
@@ -250,14 +250,14 @@
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>                 }
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>             }
 <a class="jxr_linenumber" name="L244" href="#L244">244</a> 
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>             MediatorHelper.frame().getSplitNS().initializeSplitOrientation();
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>             MediatorHelper.frame().getSplitNS().initSplitOrientation();
 <a class="jxr_linenumber" name="L246" href="#L246">246</a> 
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>             <strong class="jxr_keyword">var</strong> panelPreferences = <strong class="jxr_keyword">new</strong> <a name="PanelPreferences" href="../../../../../com/jsql/view/swing/panel/PanelPreferences.html#PanelPreferences">PanelPreferences</a>();
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>             MediatorHelper.tabResults().addTab(titleTabPreferences, panelPreferences);
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>             MediatorHelper.tabResults().setSelectedComponent(panelPreferences);  <em class="jxr_comment">// Focus on the new tab</em>
 <a class="jxr_linenumber" name="L250" href="#L250">250</a> 
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>             <em class="jxr_comment">// Create a custom tab header</em>
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.icon);
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.getIcon());
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>             I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, header.getTabLabel());
 <a class="jxr_linenumber" name="L254" href="#L254">254</a> 
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>             <em class="jxr_comment">// Apply the custom header to the tab</em>
@@ -269,7 +269,7 @@
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>         <strong class="jxr_keyword">return</strong> itemPreferences;
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>     }
 <a class="jxr_linenumber" name="L263" href="#L263">263</a> 
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>     <strong class="jxr_keyword">private</strong> JMenu initializeMenuTranslation() {
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>     <strong class="jxr_keyword">private</strong> JMenu initMenuTranslation() {
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>         <strong class="jxr_keyword">var</strong> menuTranslation = <strong class="jxr_keyword">new</strong> JMenu(I18nUtil.valueByKey(<span class="jxr_string">"MENUBAR_LANGUAGE"</span>));
 <a class="jxr_linenumber" name="L266" href="#L266">266</a>         I18nViewUtil.addComponentForKey(<span class="jxr_string">"MENUBAR_LANGUAGE"</span>, menuTranslation);
 <a class="jxr_linenumber" name="L267" href="#L267">267</a>         menuTranslation.setName(<span class="jxr_string">"menuTranslation"</span>);

@@ -67,9 +67,9 @@ public class JFrameView extends JFrame {
 <span class="fc" id="L67">        this.injectionModel = injectionModel;</span>
 <span class="fc" id="L68">        MediatorHelper.register(this);</span>
 <span class="fc" id="L69">        UiUtil.prepareGUI();  // Load UI before any component</span>
-<span class="fc" id="L70">        this.initializePaneComponents();</span>
-<span class="fc" id="L71">        this.initializeWindow();</span>
-<span class="fc" id="L72">        this.initializeShortcuts();</span>
+<span class="fc" id="L70">        this.initPaneComponents();</span>
+<span class="fc" id="L71">        this.initWindow();</span>
+<span class="fc" id="L72">        this.initShortcuts();</span>
 <span class="fc" id="L73">        this.displayVersion();</span>
 <span class="fc" id="L74">        I18nUtil.checkCurrentLanguage();</span>
 <span class="fc" id="L75">        this.check4K();</span>
@@ -87,7 +87,7 @@ public class JFrameView extends JFrame {
 <span class="fc" id="L87">        });</span>
 <span class="fc" id="L88">    }</span>
 
-    private void initializePaneComponents() {
+    private void initPaneComponents() {
         // Define the default panel: each component on a vertical line
 <span class="fc" id="L92">        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));</span>
 
@@ -110,7 +110,7 @@ public class JFrameView extends JFrame {
 <span class="fc" id="L110">        menubar.getMenuWindows().switchLocaleFromPreferences();</span>
 <span class="fc" id="L111">    }</span>
 
-    private void initializeWindow() {
+    private void initWindow() {
 <span class="fc" id="L114">        this.setIconImages(UiUtil.getIcons());  // define small and large app icons</span>
 <span class="fc" id="L115">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
 <span class="pc bnc" id="L116" title="All 2 branches missed.">        this.addWindowStateListener(e -&gt; this.isMaximized = (e.getNewState() &amp; Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH);</span>
@@ -173,7 +173,7 @@ public class JFrameView extends JFrame {
 <span class="fc" id="L173">        MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();</span>
 <span class="fc" id="L174">    }</span>
 
-    private void initializeShortcuts() {
+    private void initShortcuts() {
 <span class="fc" id="L177">        HotkeyUtil.addShortcut(this.getRootPane(), MediatorHelper.tabResults());</span>
 <span class="fc" id="L178">        HotkeyUtil.addTextFieldShortcutSelectAll();</span>
 <span class="fc" id="L179">    }</span>
@@ -193,7 +193,7 @@ public class JFrameView extends JFrame {
         
 <span class="fc" id="L194">        Stream.of(MediatorHelper.managerFile(), MediatorHelper.managerExploit()).forEach(managerList -&gt; {</span>
 <span class="fc" id="L195">            managerList.setButtonEnable(false);</span>
-<span class="fc" id="L196">            managerList.changePrivilegeIcon(UiUtil.SQUARE.icon);</span>
+<span class="fc" id="L196">            managerList.changePrivilegeIcon(UiUtil.SQUARE.getIcon());</span>
 <span class="fc" id="L197">        });</span>
 <span class="fc" id="L198">    }</span>
 

@@ -77,7 +77,7 @@ public class PanelConsoles extends JPanel {
     private TabbedPaneNetworkTab tabbedPaneNetworkTab;
     private NetworkTable networkTable;
     
-<span class="fc" id="L80">    private final JLabel labelShowNorth = new JLabel(UiUtil.ARROW_UP.icon);</span>
+<span class="fc" id="L80">    private final JLabel labelShowNorth = new JLabel(UiUtil.ARROW_UP.getIcon());</span>
 <span class="fc" id="L81">    private int dividerLocation = 0;</span>
     
     /**
@@ -88,20 +88,20 @@ public class PanelConsoles extends JPanel {
 <span class="fc" id="L88">        this.javaTextPane.getProxy().setEditable(false);</span>
 <span class="fc" id="L89">        JTextPaneAppender.registerJavaConsole(this.javaTextPane);</span>
         
-<span class="fc" id="L91">        this.initializeSplit();</span>
+<span class="fc" id="L91">        this.initSplit();</span>
 
 <span class="fc" id="L93">        MediatorHelper.register(this.tabConsoles);</span>
-<span class="fc" id="L94">        this.initializeTabsConsoles();</span>
+<span class="fc" id="L94">        this.initTabsConsoles();</span>
 <span class="fc" id="L95">        this.setLayout(new BorderLayout());</span>
 
-<span class="fc" id="L97">        JPanel expandPanel = this.initializeExpandPanel();</span>
+<span class="fc" id="L97">        JPanel expandPanel = this.initExpandPanel();</span>
 <span class="fc" id="L98">        this.tabConsoles.putClientProperty(&quot;JTabbedPane.trailingComponent&quot;, expandPanel);</span>
 <span class="fc" id="L99">        this.add(this.tabConsoles);</span>
 
 <span class="fc" id="L101">        this.tabConsoles.setAlignmentX(FlowLayout.LEADING);</span>
 <span class="fc" id="L102">    }</span>
 
-    private void initializeSplit() {
+    private void initSplit() {
 <span class="fc" id="L105">        this.networkSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);</span>
 <span class="fc" id="L106">        this.networkSplitPane.setDividerLocation(600);</span>
 <span class="fc" id="L107">        this.networkSplitPane.setPreferredSize(new Dimension(0,0));  // required for correct scroll placement</span>
@@ -115,7 +115,7 @@ public class PanelConsoles extends JPanel {
 <span class="fc" id="L115">        this.networkSplitPane.setLeftComponent(panelTable);</span>
 <span class="fc" id="L116">    }</span>
 
-    private void initializeTabsConsoles() {
+    private void initTabsConsoles() {
 <span class="fc" id="L119">        var proxyChunk = new JTextAreaPlaceholderConsole(I18nUtil.valueByKey(PanelConsoles.CONSOLE_CHUNK_TOOLTIP));</span>
 <span class="fc" id="L120">        this.chunkTextArea = new JPopupTextArea(proxyChunk).getProxy();</span>
 <span class="fc" id="L121">        I18nViewUtil.addComponentForKey(PanelConsoles.CONSOLE_CHUNK_TOOLTIP, proxyChunk);</span>
@@ -136,7 +136,7 @@ public class PanelConsoles extends JPanel {
 <span class="fc" id="L136">        this.buildI18nTab(</span>
             &quot;CONSOLE_MAIN_LABEL&quot;,
             PanelConsoles.CONSOLE_MAIN_TOOLTIP,
-            UiUtil.CONSOLE.icon,
+<span class="fc" id="L139">                UiUtil.CONSOLE.getIcon(),</span>
 <span class="fc" id="L140">            new JScrollPane(consoleTextPane.getProxy()),</span>
             0
         );
@@ -176,8 +176,8 @@ public class PanelConsoles extends JPanel {
 <span class="fc" id="L176">        });</span>
 <span class="fc" id="L177">    }</span>
 
-    private JPanel initializeExpandPanel() {
-<span class="fc" id="L180">        var labelShowSouth = new JLabel(UiUtil.ARROW_DOWN.icon);</span>
+    private JPanel initExpandPanel() {
+<span class="fc" id="L180">        var labelShowSouth = new JLabel(UiUtil.ARROW_DOWN.getIcon());</span>
 <span class="fc" id="L181">        labelShowSouth.setName(&quot;buttonShowSouth&quot;);</span>
 <span class="fc" id="L182">        labelShowSouth.addMouseListener(new MouseAdapter() {</span>
             @Override
@@ -226,7 +226,7 @@ public class PanelConsoles extends JPanel {
 <span class="fc" id="L226">        this.buildI18nTab(</span>
             &quot;CONSOLE_CHUNK_LABEL&quot;,
             PanelConsoles.CONSOLE_CHUNK_TOOLTIP,
-            UiUtil.CHUNK.icon,
+<span class="fc" id="L229">            UiUtil.CHUNK.getIcon(),</span>
             new JScrollPane(this.chunkTextArea),
             1
         );
@@ -236,11 +236,11 @@ public class PanelConsoles extends JPanel {
      * Add Binary console to bottom panel.
      */
     public void insertBooleanTab() {
-<span class="pc bpc" id="L239" title="1 of 2 branches missed.">        var positionFromChunk = this.tabConsoles.indexOfTab(UiUtil.CHUNK.icon) != -1 ? 1 : 0;</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">        var positionFromChunk = this.tabConsoles.indexOfTab(UiUtil.CHUNK.getIcon()) != -1 ? 1 : 0;</span>
 <span class="fc" id="L240">        this.buildI18nTab(</span>
             &quot;CONSOLE_BINARY_LABEL&quot;,
-                PanelConsoles.CONSOLE_BINARY_TOOLTIP,
-            UiUtil.BINARY.icon,
+            PanelConsoles.CONSOLE_BINARY_TOOLTIP,
+<span class="fc" id="L243">            UiUtil.BINARY.getIcon(),</span>
             new JScrollPane(this.binaryTextArea),
             1 + positionFromChunk
         );
@@ -250,11 +250,11 @@ public class PanelConsoles extends JPanel {
      * Add Network tab to bottom panel.
      */
     public void insertNetworkTab() {
-<span class="pc bpc" id="L253" title="1 of 2 branches missed.">        var positionFromJava = this.tabConsoles.indexOfTab(UiUtil.CUP.icon) != -1 ? 1 : 0;</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">        var positionFromJava = this.tabConsoles.indexOfTab(UiUtil.CUP.getIcon()) != -1 ? 1 : 0;</span>
 <span class="fc" id="L254">        this.buildI18nTab(</span>
             &quot;CONSOLE_NETWORK_LABEL&quot;,
             &quot;CONSOLE_NETWORK_TOOLTIP&quot;,
-            UiUtil.NETWORK.icon,
+<span class="fc" id="L257">            UiUtil.NETWORK.getIcon(),</span>
             new JScrollPane(this.networkSplitPane),
 <span class="fc" id="L259">            this.tabConsoles.getTabCount() - positionFromJava</span>
         );
@@ -267,7 +267,7 @@ public class PanelConsoles extends JPanel {
 <span class="nc" id="L267">        this.buildI18nTab(</span>
             &quot;CONSOLE_JAVA_LABEL&quot;,
             PanelConsoles.CONSOLE_JAVA_TOOLTIP,
-            UiUtil.CUP.icon,
+<span class="nc" id="L270">            UiUtil.CUP.getIcon(),</span>
 <span class="nc" id="L271">            new JScrollPane(this.javaTextPane.getProxy()),</span>
 <span class="nc" id="L272">            this.tabConsoles.getTabCount()</span>
         );

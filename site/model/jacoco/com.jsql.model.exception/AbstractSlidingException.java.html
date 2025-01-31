@@ -33,16 +33,16 @@ public abstract class AbstractSlidingException extends JSqlException {
 <span class="nc" id="L33">    }</span>
 
     protected AbstractSlidingException(String string, String slidingWindowAllRows, String slidingWindowCurrentRows) {
-<span class="nc" id="L36">        super(string);</span>
+<span class="fc" id="L36">        super(string);</span>
         
-<span class="nc bnc" id="L38" title="All 2 branches missed.">        this.slidingWindowAllRows = StringUtils.isNotEmpty(slidingWindowAllRows)</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        this.slidingWindowAllRows = StringUtils.isNotEmpty(slidingWindowAllRows)</span>
 <span class="nc" id="L39">            ? slidingWindowAllRows</span>
-<span class="nc" id="L40">            : StringUtils.EMPTY;</span>
+<span class="fc" id="L40">            : StringUtils.EMPTY;</span>
         
-<span class="nc bnc" id="L42" title="All 2 branches missed.">        this.slidingWindowCurrentRows = StringUtils.isNotEmpty(slidingWindowCurrentRows)</span>
-<span class="nc" id="L43">            ? slidingWindowCurrentRows</span>
-<span class="nc" id="L44">            : StringUtils.EMPTY;</span>
-<span class="nc" id="L45">    }</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        this.slidingWindowCurrentRows = StringUtils.isNotEmpty(slidingWindowCurrentRows)</span>
+<span class="fc" id="L43">            ? slidingWindowCurrentRows</span>
+<span class="pc" id="L44">            : StringUtils.EMPTY;</span>
+<span class="fc" id="L45">    }</span>
 
     public String getSlidingWindowCurrentRows() {
 <span class="fc" id="L48">        return this.slidingWindowCurrentRows;</span>

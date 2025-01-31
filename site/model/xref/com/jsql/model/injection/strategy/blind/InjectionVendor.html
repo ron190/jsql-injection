@@ -96,10 +96,10 @@
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>              Thread.currentThread().interrupt();
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          }
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>          <strong class="jxr_keyword">this</strong>.initializeFalseMarks(vendorSpecificWithMode);
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          <strong class="jxr_keyword">this</strong>.initFalseMarks(vendorSpecificWithMode);
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      }
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeFalseMarks(String vendorSpecificWithMode) {
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initFalseMarks(String vendorSpecificWithMode) {
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>          <em class="jxr_comment">// Concurrent calls to the TRUE statements,</em>
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          <em class="jxr_comment">// it will use inject() from the model.</em>
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          ExecutorService taskExecutor = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(<span class="jxr_string">"CallableVendorTagFalse"</span>);
@@ -144,7 +144,7 @@
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>         }
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> 
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         <strong class="jxr_keyword">var</strong> blindTest = <strong class="jxr_keyword">new</strong> <a name="CallableVendor" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableVendor.html#CallableVendor">CallableVendor</a>(
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>             vendorSpecificWithMode.replace(VendorYaml.TEST, <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()),
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>             vendorSpecificWithMode.replace(VendorYaml.TEST, <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit()),
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>             <strong class="jxr_keyword">this</strong>,
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>             <span class="jxr_string">"vendor#confirm"</span>
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>         );

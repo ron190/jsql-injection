@@ -45,9 +45,9 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     protected Icon getLeafIcon(boolean leaf) {
 <span class="fc bfc" id="L47" title="All 2 branches covered.">        if (leaf) {</span>
-<span class="fc" id="L48">            return UiUtil.TABLE_LINEAR.icon;</span>
+<span class="fc" id="L48">            return UiUtil.TABLE_LINEAR.getIcon();</span>
         } else {
-<span class="fc" id="L50">            return UiUtil.TABLE_BOLD.icon;</span>
+<span class="fc" id="L50">            return UiUtil.TABLE_BOLD.getIcon();</span>
         }
     }
 
@@ -57,7 +57,7 @@ public class NodeModelTable extends AbstractNodeModel {
 <span class="nc" id="L57">            panelNode.showLoader();</span>
 <span class="nc" id="L58">            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());</span>
 <span class="nc bnc" id="L59" title="All 4 branches missed.">            if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
-<span class="nc" id="L60">                panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.icon, UiUtil.PATH_PAUSE));</span>
+<span class="nc" id="L60">                panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.getIcon(), UiUtil.PATH_PAUSE));</span>
             }
 <span class="nc" id="L62">        } else {</span>
 <span class="nc" id="L63">            super.displayProgress(panelNode, currentNode);</span>

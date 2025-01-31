@@ -41,7 +41,7 @@
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Logger LOGGER = LogManager.getRootLogger();
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      @Override
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">protected</strong> String initializeTransferable() {
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">protected</strong> String initTransferable() {
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">var</strong> stringTransferable = <strong class="jxr_keyword">new</strong> StringBuilder();
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>          <strong class="jxr_keyword">for</strong> (<a name="ItemList" href="../../../../../com/jsql/view/swing/list/ItemList.html#ItemList">ItemList</a> itemPath: <strong class="jxr_keyword">this</strong>.dragPaths) {
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>              stringTransferable.append(itemPath).append(<span class="jxr_string">"\n"</span>);
@@ -98,7 +98,7 @@
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>      }
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      @Override
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">protected</strong> List&lt;Integer&gt; initializeStringPaste(String clipboardText, <strong class="jxr_keyword">int</strong> selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">protected</strong> List&lt;Integer&gt; initStringPaste(String clipboardText, <strong class="jxr_keyword">int</strong> selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">int</strong> selectedIndexTo = selectedIndexFrom;
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>          List&lt;Integer&gt; selectedIndexes = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          <strong class="jxr_keyword">for</strong> (String line: clipboardText.split(<span class="jxr_string">"&#92;&#92;n"</span>)) {

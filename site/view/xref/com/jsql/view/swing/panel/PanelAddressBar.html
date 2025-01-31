@@ -158,7 +158,7 @@
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">this</strong>.panelTrailingAddress = <strong class="jxr_keyword">new</strong> <a name="PanelTrailingAddress" href="../../../../../com/jsql/view/swing/panel/address/PanelTrailingAddress.html#PanelTrailingAddress">PanelTrailingAddress</a>(<strong class="jxr_keyword">this</strong>);
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>         <strong class="jxr_keyword">this</strong>.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, <strong class="jxr_keyword">this</strong>.panelTrailingAddress);
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">this</strong>.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, UiUtil.GLOBE.icon);
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">this</strong>.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, UiUtil.GLOBE.getIcon());
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>         <strong class="jxr_keyword">this</strong>.atomicTextFieldRequest.get().putClientProperty(
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>             FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT,
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>             <strong class="jxr_keyword">new</strong> <a name="ButtonExpandText" href="../../../../../com/jsql/view/swing/panel/util/ButtonExpandText.html#ButtonExpandText">ButtonExpandText</a>(<span class="jxr_string">"Add request body"</span>, <strong class="jxr_keyword">this</strong>.atomicTextFieldRequest.get())
@@ -168,11 +168,11 @@
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>             <strong class="jxr_keyword">new</strong> <a name="ButtonExpandText" href="../../../../../com/jsql/view/swing/panel/util/ButtonExpandText.html#ButtonExpandText">ButtonExpandText</a>(<span class="jxr_string">"Add header body"</span>, <strong class="jxr_keyword">this</strong>.atomicTextFieldHeader.get())
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>         );
 <a class="jxr_linenumber" name="L162" href="#L162">162</a> 
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">this</strong>.initializeLayout();
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">this</strong>.initLayout();
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>     }
 <a class="jxr_linenumber" name="L165" href="#L165">165</a> 
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeLayout() {
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">final</strong> JLabel advancedButton = <strong class="jxr_keyword">this</strong>.initializeAdvancedButton();
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initLayout() {
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">final</strong> JLabel advancedButton = <strong class="jxr_keyword">this</strong>.initAdvancedButton();
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>         
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>         <strong class="jxr_keyword">this</strong>.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(<strong class="jxr_keyword">this</strong>, BoxLayout.PAGE_AXIS));
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>         
@@ -361,9 +361,9 @@
 <a class="jxr_linenumber" name="L353" href="#L353">353</a>         }
 <a class="jxr_linenumber" name="L354" href="#L354">354</a>     }
 <a class="jxr_linenumber" name="L355" href="#L355">355</a> 
-<a class="jxr_linenumber" name="L356" href="#L356">356</a>     <strong class="jxr_keyword">private</strong> JLabel initializeAdvancedButton() {
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>     <strong class="jxr_keyword">private</strong> JLabel initAdvancedButton() {
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>         <strong class="jxr_keyword">var</strong> tooltip = <strong class="jxr_keyword">new</strong> AtomicReference&lt;&gt;(<strong class="jxr_keyword">new</strong> <a name="JToolTipI18n" href="../../../../../com/jsql/view/swing/text/JToolTipI18n.html#JToolTipI18n">JToolTipI18n</a>(I18nUtil.valueByKey(PanelAddressBar.BUTTON_ADVANCED)));
-<a class="jxr_linenumber" name="L358" href="#L358">358</a>         <strong class="jxr_keyword">var</strong> advancedButton = <strong class="jxr_keyword">new</strong> JLabel(UiUtil.ARROW_DOWN.icon) {
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>         <strong class="jxr_keyword">var</strong> advancedButton = <strong class="jxr_keyword">new</strong> JLabel(UiUtil.ARROW_DOWN.getIcon()) {
 <a class="jxr_linenumber" name="L359" href="#L359">359</a>             @Override
 <a class="jxr_linenumber" name="L360" href="#L360">360</a>             <strong class="jxr_keyword">public</strong> JToolTip createToolTip() {
 <a class="jxr_linenumber" name="L361" href="#L361">361</a>                 <strong class="jxr_keyword">return</strong> tooltip.get();
@@ -375,7 +375,7 @@
 <a class="jxr_linenumber" name="L367" href="#L367">367</a>         advancedButton.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
 <a class="jxr_linenumber" name="L368" href="#L368">368</a>             @Override
 <a class="jxr_linenumber" name="L369" href="#L369">369</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mouseClicked(MouseEvent e) {
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>                 <strong class="jxr_keyword">boolean</strong> isVisible = advancedButton.getIcon() == UiUtil.ARROW_DOWN.icon;
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>                 <strong class="jxr_keyword">boolean</strong> isVisible = advancedButton.getIcon() == UiUtil.ARROW_DOWN.getIcon();
 <a class="jxr_linenumber" name="L371" href="#L371">371</a>                 PanelAddressBar.<strong class="jxr_keyword">this</strong>.atomicTextFieldRequest.get().setVisible(isVisible);
 <a class="jxr_linenumber" name="L372" href="#L372">372</a>                 PanelAddressBar.<strong class="jxr_keyword">this</strong>.atomicTextFieldHeader.get().setVisible(isVisible);
 <a class="jxr_linenumber" name="L373" href="#L373">373</a>                 PanelAddressBar.<strong class="jxr_keyword">this</strong>.atomicRadioRequest.get().setVisible(isVisible);
@@ -383,7 +383,7 @@
 <a class="jxr_linenumber" name="L375" href="#L375">375</a>                 PanelAddressBar.<strong class="jxr_keyword">this</strong>.atomicRadioHeader.get().setVisible(isVisible);
 <a class="jxr_linenumber" name="L376" href="#L376">376</a>                 PanelAddressBar.<strong class="jxr_keyword">this</strong>.isAdvanceActivated = isVisible;
 <a class="jxr_linenumber" name="L377" href="#L377">377</a>                 MediatorHelper.menubar().setVisible(isVisible);
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>                 advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.icon : UiUtil.ARROW_DOWN.icon);
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>                 advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.getIcon() : UiUtil.ARROW_DOWN.getIcon());
 <a class="jxr_linenumber" name="L379" href="#L379">379</a>             }
 <a class="jxr_linenumber" name="L380" href="#L380">380</a>         });
 <a class="jxr_linenumber" name="L381" href="#L381">381</a>         <strong class="jxr_keyword">return</strong> advancedButton;

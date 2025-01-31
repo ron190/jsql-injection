@@ -53,9 +53,9 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      @Override
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">protected</strong> Icon getLeafIcon(<strong class="jxr_keyword">boolean</strong> leaf) {
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">if</strong> (leaf) {
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>              <strong class="jxr_keyword">return</strong> UiUtil.TABLE_LINEAR.icon;
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>              <strong class="jxr_keyword">return</strong> UiUtil.TABLE_LINEAR.getIcon();
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>          } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>              <strong class="jxr_keyword">return</strong> UiUtil.TABLE_BOLD.icon;
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>              <strong class="jxr_keyword">return</strong> UiUtil.TABLE_BOLD.getIcon();
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          }
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      }
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
@@ -65,7 +65,7 @@
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>              panelNode.showLoader();
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>              <a name="AbstractSuspendable" href="../../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(<strong class="jxr_keyword">this</strong>.getElementDatabase());
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>              <strong class="jxr_keyword">if</strong> (suspendableTask != <strong class="jxr_keyword">null</strong> &amp;&amp; suspendableTask.isPaused()) {
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>                  panelNode.setLoaderIcon(<strong class="jxr_keyword">new</strong> <a name="ImageOverlap" href="../../../../../../com/jsql/view/swing/tree/ImageOverlap.html#ImageOverlap">ImageOverlap</a>(UiUtil.HOURGLASS.icon, UiUtil.PATH_PAUSE));
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>                  panelNode.setLoaderIcon(<strong class="jxr_keyword">new</strong> <a name="ImageOverlap" href="../../../../../../com/jsql/view/swing/tree/ImageOverlap.html#ImageOverlap">ImageOverlap</a>(UiUtil.HOURGLASS.getIcon(), UiUtil.PATH_PAUSE));
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>              }
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>              <strong class="jxr_keyword">super</strong>.displayProgress(panelNode, currentNode);

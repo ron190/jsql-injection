@@ -101,7 +101,7 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L101">        this.add(menuAppearance);</span>
 <span class="fc" id="L102">        this.add(menuThemes);</span>
 <span class="fc" id="L103">        this.add(new JSeparator());</span>
-<span class="fc" id="L104">        this.add(this.initializeMenuTranslation());</span>
+<span class="fc" id="L104">        this.add(this.initMenuTranslation());</span>
 <span class="fc" id="L105">        this.add(new JSeparator());</span>
 
 <span class="fc" id="L107">        this.menuView = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_VIEW&quot;));</span>
@@ -111,9 +111,9 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L111">        AtomicInteger accelerator = new AtomicInteger(0x31);</span>
 <span class="fc" id="L112">        AtomicInteger tabPosition = new AtomicInteger();</span>
 <span class="fc" id="L113">        MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(entry -&gt; {</span>
-<span class="fc" id="L114">            var menuItem = new JMenuItem(I18nUtil.valueByKey(entry.keyLabel), entry.icon);</span>
-<span class="fc" id="L115">            I18nViewUtil.addComponentForKey(entry.keyLabel, menuItem);</span>
-<span class="fc" id="L116">            menuItem.setName(entry.keyLabel);  // required by card manager switch</span>
+<span class="fc" id="L114">            var menuItem = new JMenuItem(I18nUtil.valueByKey(entry.getKeyLabel()), entry.getIcon());</span>
+<span class="fc" id="L115">            I18nViewUtil.addComponentForKey(entry.getKeyLabel(), menuItem);</span>
+<span class="fc" id="L116">            menuItem.setName(entry.getKeyLabel());  // required by card manager switch</span>
 <span class="fc" id="L117">            this.menuView.add(menuItem);</span>
 
 <span class="fc" id="L119">            menuItem.setAccelerator(KeyStroke.getKeyStroke(</span>
@@ -143,25 +143,25 @@ public class MenuWindows extends JMenu {
                 &quot;CONSOLE_CHUNK_LABEL&quot;,
                 PreferencesUtil.CHUNK_VISIBLE,
 <span class="nc" id="L145">                () -&gt; MediatorHelper.panelConsoles().insertChunkTab(),</span>
-                UiUtil.CHUNK.icon
+<span class="fc" id="L146">                UiUtil.CHUNK.getIcon()</span>
             ),
             new ModelCheckboxMenu(
                 &quot;CONSOLE_BINARY_LABEL&quot;,
                 PreferencesUtil.BINARY_VISIBLE,
 <span class="nc" id="L151">                () -&gt; MediatorHelper.panelConsoles().insertBooleanTab(),</span>
-                UiUtil.BINARY.icon
+<span class="fc" id="L152">                UiUtil.BINARY.getIcon()</span>
             ),
             new ModelCheckboxMenu(
                 &quot;CONSOLE_NETWORK_LABEL&quot;,
                 PreferencesUtil.NETWORK_VISIBLE,
 <span class="nc" id="L157">                () -&gt; MediatorHelper.panelConsoles().insertNetworkTab(),</span>
-                UiUtil.NETWORK.icon
+<span class="fc" id="L158">                UiUtil.NETWORK.getIcon()</span>
             ),
             new ModelCheckboxMenu(
                 &quot;CONSOLE_JAVA_LABEL&quot;,
                 PreferencesUtil.JAVA_VISIBLE,
 <span class="nc" id="L163">                () -&gt; MediatorHelper.panelConsoles().insertJavaTab(),</span>
-                UiUtil.CUP.icon
+<span class="fc" id="L164">                UiUtil.CUP.getIcon()</span>
             )
 <span class="fc" id="L166">        ).forEach(model -&gt; {</span>
 <span class="fc" id="L167">            var menuItem = new JCheckBoxMenuItem(</span>
@@ -208,14 +208,14 @@ public class MenuWindows extends JMenu {
                 }
             }
 
-<span class="fc" id="L211">            MediatorHelper.frame().getSplitNS().initializeSplitOrientation();</span>
+<span class="fc" id="L211">            MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
 
 <span class="fc" id="L213">            var panelSqlEngine = new SqlEngine();</span>
 <span class="fc" id="L214">            MediatorHelper.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);</span>
 <span class="fc" id="L215">            MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);  // Focus on the new tab</span>
 
             // Create a custom tab header
-<span class="fc" id="L218">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.icon);</span>
+<span class="fc" id="L218">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.getIcon());</span>
 <span class="fc" id="L219">            I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, header.getTabLabel());</span>
 
             // Apply the custom header to the tab
@@ -242,14 +242,14 @@ public class MenuWindows extends JMenu {
                 }
             }
 
-<span class="fc" id="L245">            MediatorHelper.frame().getSplitNS().initializeSplitOrientation();</span>
+<span class="fc" id="L245">            MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
 
 <span class="fc" id="L247">            var panelPreferences = new PanelPreferences();</span>
 <span class="fc" id="L248">            MediatorHelper.tabResults().addTab(titleTabPreferences, panelPreferences);</span>
 <span class="fc" id="L249">            MediatorHelper.tabResults().setSelectedComponent(panelPreferences);  // Focus on the new tab</span>
 
             // Create a custom tab header
-<span class="fc" id="L252">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.icon);</span>
+<span class="fc" id="L252">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.getIcon());</span>
 <span class="fc" id="L253">            I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, header.getTabLabel());</span>
 
             // Apply the custom header to the tab
@@ -261,7 +261,7 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L261">        return itemPreferences;</span>
     }
 
-    private JMenu initializeMenuTranslation() {
+    private JMenu initMenuTranslation() {
 <span class="fc" id="L265">        var menuTranslation = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_LANGUAGE&quot;));</span>
 <span class="fc" id="L266">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_LANGUAGE&quot;, menuTranslation);</span>
 <span class="fc" id="L267">        menuTranslation.setName(&quot;menuTranslation&quot;);</span>

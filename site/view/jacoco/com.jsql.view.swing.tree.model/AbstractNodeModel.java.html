@@ -150,8 +150,8 @@ public abstract class AbstractNodeModel {
 <span class="fc" id="L150">        var popupMenu = new JPopupMenuCustomExtract();</span>
 <span class="fc" id="L151">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);</span>
 
-<span class="fc" id="L153">        this.initializeItemLoadPause(currentTableNode, popupMenu, suspendableTask);</span>
-<span class="fc" id="L154">        this.initializeItemRenameReload(currentTableNode, path, popupMenu);</span>
+<span class="fc" id="L153">        this.initItemLoadPause(currentTableNode, popupMenu, suspendableTask);</span>
+<span class="fc" id="L154">        this.initItemRenameReload(currentTableNode, path, popupMenu);</span>
 <span class="fc" id="L155">        this.buildMenu(popupMenu, path);</span>
 <span class="fc" id="L156">        this.displayPopupMenu(e, popupMenu);</span>
 <span class="fc" id="L157">    }</span>
@@ -175,7 +175,7 @@ public abstract class AbstractNodeModel {
         );
 <span class="fc" id="L176">    }</span>
 
-    private void initializeItemRenameReload(DefaultMutableTreeNode currentTableNode, TreePath path, JPopupMenuCustomExtract popupMenu) {
+    private void initItemRenameReload(DefaultMutableTreeNode currentTableNode, TreePath path, JPopupMenuCustomExtract popupMenu) {
         String textReload;
         
 <span class="fc bfc" id="L181" title="All 2 branches covered.">        if (this instanceof NodeModelDatabase) {</span>
@@ -207,7 +207,7 @@ public abstract class AbstractNodeModel {
 <span class="fc" id="L207">        popupMenu.add(menuItemReload);</span>
 <span class="fc" id="L208">    }</span>
 
-    private void initializeItemLoadPause(
+    private void initItemLoadPause(
         DefaultMutableTreeNode currentTableNode,
         JPopupMenuCustomExtract popupMenu,
         AbstractSuspendable suspendableTask
@@ -262,22 +262,22 @@ public abstract class AbstractNodeModel {
 <span class="fc" id="L262">            this.panelNode.setBackground(UIManager.getColor(AbstractNodeModel.TREE_BACKGROUND));  // required for transparency</span>
         }
 
-<span class="fc" id="L265">        this.initializeIcon(isLeaf);</span>
+<span class="fc" id="L265">        this.initIcon(isLeaf);</span>
         
 <span class="fc" id="L267">        AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();</span>
-<span class="fc" id="L268">        this.initializeEditable(nodeModel.isEdited);</span>
-<span class="fc" id="L269">        this.initializeLabel(isSelected, hasFocus, nodeModel.isEdited);</span>
-<span class="fc" id="L270">        this.initializeProgress(currentNode);</span>
+<span class="fc" id="L268">        this.initEditable(nodeModel.isEdited);</span>
+<span class="fc" id="L269">        this.initLabel(isSelected, hasFocus, nodeModel.isEdited);</span>
+<span class="fc" id="L270">        this.initProgress(currentNode);</span>
         
 <span class="fc" id="L272">        return this.panelNode;</span>
     }
 
-    private void initializeIcon(boolean isLeaf) {
+    private void initIcon(boolean isLeaf) {
 <span class="fc" id="L276">        this.panelNode.showIcon();</span>
 <span class="fc" id="L277">        this.panelNode.setIconNode(this.getLeafIcon(isLeaf));</span>
 <span class="fc" id="L278">    }</span>
 
-    private void initializeProgress(DefaultMutableTreeNode currentNode) {
+    private void initProgress(DefaultMutableTreeNode currentNode) {
 <span class="pc bpc" id="L281" title="1 of 2 branches missed.">        if (this.isLoading) {</span>
 <span class="nc" id="L282">            this.displayProgress(this.panelNode, currentNode);</span>
 <span class="nc" id="L283">            this.panelNode.hideIcon();</span>
@@ -287,12 +287,12 @@ public abstract class AbstractNodeModel {
 
 <span class="nc" id="L288">            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);</span>
 <span class="nc bnc" id="L289" title="All 4 branches missed.">            if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
-<span class="nc" id="L290">                this.panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.icon, UiUtil.PATH_PAUSE));</span>
+<span class="nc" id="L290">                this.panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.getIcon(), UiUtil.PATH_PAUSE));</span>
             }
         }
 <span class="fc" id="L293">    }</span>
 
-    private void initializeLabel(final boolean isSelected, boolean hasFocus, boolean isEdited) {
+    private void initLabel(final boolean isSelected, boolean hasFocus, boolean isEdited) {
         // Fix #90521: NullPointerException on setText()
 <span class="fc" id="L297">        JLabel nodeLabel = this.panelNode.getNodeLabel();</span>
         try {
@@ -324,7 +324,7 @@ public abstract class AbstractNodeModel {
         }
 <span class="fc" id="L325">    }</span>
 
-    private void initializeEditable(boolean isEdited) {
+    private void initEditable(boolean isEdited) {
 <span class="pc bpc" id="L328" title="1 of 2 branches missed.">        if (StringUtil.isUtf8(this.getElementDatabase().toString())) {</span>
 <span class="nc" id="L329">            this.panelNode.getTextFieldEditable().setFont(UiUtil.FONT_MONO_ASIAN);</span>
         } else {

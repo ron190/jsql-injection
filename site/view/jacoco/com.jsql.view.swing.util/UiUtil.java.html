@@ -197,9 +197,9 @@ public class UiUtil {
 <span class="fc" id="L197">        List&lt;Image&gt; images = new ArrayList&lt;&gt;();</span>
         // Fix #2154: NoClassDefFoundError on read()
         try {
-<span class="fc" id="L200">            images.add(UiUtil.APP_ICON.icon.getImage());</span>
-<span class="fc" id="L201">            images.add(UiUtil.APP_MIDDLE.icon.getImage());</span>
-<span class="fc" id="L202">            images.add(UiUtil.APP_BIG.icon.getImage());</span>
+<span class="fc" id="L200">            images.add(UiUtil.APP_ICON.getIcon().getImage());</span>
+<span class="fc" id="L201">            images.add(UiUtil.APP_MIDDLE.getIcon().getImage());</span>
+<span class="fc" id="L202">            images.add(UiUtil.APP_BIG.getIcon().getImage());</span>
 <span class="nc" id="L203">        } catch (NoClassDefFoundError e) {</span>
 <span class="nc" id="L204">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="fc" id="L205">        }</span>
@@ -244,7 +244,7 @@ public class UiUtil {
         );
 <span class="fc" id="L245">    }</span>
     
-    public static void initialize(JTextComponent component) {
+    public static void init(JTextComponent component) {
 <span class="fc" id="L248">        component.setCaret(new DefaultCaret() {</span>
             @Override
             public void setSelectionVisible(boolean visible) {

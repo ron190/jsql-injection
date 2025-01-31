@@ -18,7 +18,7 @@ com.test.vendor.monetdb
 com.test.vendor.mysql
 com.test.vendor.neo4j
 com.test.vendor.oracle
-com.test.vendor.postgresql
+com.test.vendor.postgres
 com.test.vendor.sqlite
 com.test.vendor.sqlserver
 com.test.vendor.sybase

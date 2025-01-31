@@ -14,7 +14,7 @@ public abstract class AbstractInjectionMonobit&lt;T extends AbstractCallableBina
     
     abstract T getCallableBitTest(String sqlQuery, int indexCharacter, int bit);
 
-    public void initializeNextCharacters(
+    public void initNextChars(
         String sqlQuery,
         List&lt;char[]&gt; bytes,
         AtomicInteger indexCharacter,
@@ -41,7 +41,7 @@ public abstract class AbstractInjectionMonobit&lt;T extends AbstractCallableBina
         }
 <span class="fc" id="L42">    }</span>
 
-    public char[] initializeBinaryMask(List&lt;char[]&gt; bytes, T currentCallable) {
+    public char[] initBinaryMask(List&lt;char[]&gt; bytes, T currentCallable) {
         // Bits for current url
 <span class="fc" id="L46">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);</span>
 

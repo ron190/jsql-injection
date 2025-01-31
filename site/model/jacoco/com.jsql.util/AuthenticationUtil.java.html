@@ -70,13 +70,13 @@ import java.util.prefs.Preferences;
         String kerberosKrb5Conf,
         String kerberosLoginConf
     ) {
-<span class="fc" id="L73">        boolean isRestartRequired = this.initializeKerberos(isKerberos, kerberosKrb5Conf, kerberosLoginConf);</span>
-<span class="fc" id="L74">        this.initializeSimpleAuthorization(isAuthentication, usernameAuthentication, passwordAuthentication);</span>
+<span class="fc" id="L73">        boolean isRestartRequired = this.initKerberos(isKerberos, kerberosKrb5Conf, kerberosLoginConf);</span>
+<span class="fc" id="L74">        this.initSimpleAuthorization(isAuthentication, usernameAuthentication, passwordAuthentication);</span>
 <span class="fc" id="L75">        this.setAuthentication();</span>
 <span class="fc" id="L76">        return isRestartRequired;</span>
     }
 
-    public void initializeSimpleAuthorization(boolean isAuthentication, String usernameAuthentication, String passwordAuthentication) {
+    public void initSimpleAuthorization(boolean isAuthentication, String usernameAuthentication, String passwordAuthentication) {
 <span class="fc" id="L80">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
 <span class="fc" id="L81">        preferences.putBoolean(&quot;isAuthentication&quot;, isAuthentication);</span>
 <span class="fc" id="L82">        preferences.put(&quot;usernameAuthentication&quot;, usernameAuthentication);</span>
@@ -87,7 +87,7 @@ import java.util.prefs.Preferences;
 <span class="fc" id="L87">        this.passwordAuthentication = passwordAuthentication;</span>
 <span class="fc" id="L88">    }</span>
 
-    private boolean initializeKerberos(boolean isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
+    private boolean initKerberos(boolean isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
         // Persist to JVM
 <span class="fc" id="L92">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
         

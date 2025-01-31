@@ -21,7 +21,7 @@
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsStrategyMultibitDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable Multibit"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled());
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsStrategyErrorDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable Error"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsStrategyStackDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable Stack"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackDisabled());
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsStrategyNormalDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable Normal"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled());
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsStrategyUnionDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable Union"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyUnionDisabled());
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>      <strong class="jxr_keyword">public</strong> <a name="PanelStrategies" href="../../../../../../com/jsql/view/swing/panel/preferences/PanelStrategies.html#PanelStrategies">PanelStrategies</a>(<a name="PanelPreferences" href="../../../../../../com/jsql/view/swing/panel/PanelPreferences.html#PanelPreferences">PanelPreferences</a> panelPreferences) {
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">this</strong>.checkboxIsStrategyTimeDisabled.setToolTipText(<span class="jxr_string">"Skip Time strategy processing"</span>);
@@ -29,7 +29,7 @@
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">this</strong>.checkboxIsStrategyMultibitDisabled.setToolTipText(<span class="jxr_string">"Skip Multibit strategy processing"</span>);
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          <strong class="jxr_keyword">this</strong>.checkboxIsStrategyErrorDisabled.setToolTipText(<span class="jxr_string">"Skip Error strategy processing"</span>);
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>          <strong class="jxr_keyword">this</strong>.checkboxIsStrategyStackDisabled.setToolTipText(<span class="jxr_string">"Skip Stack strategy processing"</span>);
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>          <strong class="jxr_keyword">this</strong>.checkboxIsStrategyNormalDisabled.setToolTipText(<span class="jxr_string">"Skip Normal strategy processing"</span>);
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>          <strong class="jxr_keyword">this</strong>.checkboxIsStrategyUnionDisabled.setToolTipText(<span class="jxr_string">"Skip Union strategy processing"</span>);
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          Stream.of(
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>              <strong class="jxr_keyword">this</strong>.checkboxIsStrategyTimeDisabled,
@@ -37,7 +37,7 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>              <strong class="jxr_keyword">this</strong>.checkboxIsStrategyMultibitDisabled,
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>              <strong class="jxr_keyword">this</strong>.checkboxIsStrategyErrorDisabled,
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>              <strong class="jxr_keyword">this</strong>.checkboxIsStrategyStackDisabled,
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>              <strong class="jxr_keyword">this</strong>.checkboxIsStrategyNormalDisabled
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>              <strong class="jxr_keyword">this</strong>.checkboxIsStrategyUnionDisabled
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          )
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>          .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  
@@ -59,7 +59,7 @@
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>                  .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsStrategyMultibitDisabled)
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>                  .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsStrategyErrorDisabled)
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>                  .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsStrategyStackDisabled)
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>                  .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsStrategyNormalDisabled)
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>                  .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsStrategyUnionDisabled)
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>              )
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          );
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          
@@ -99,7 +99,7 @@
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>              .addGroup(
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>                  groupLayout
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>                  .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>                  .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsStrategyNormalDisabled)
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>                  .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsStrategyUnionDisabled)
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>              )
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          );
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>      }
@@ -127,8 +127,8 @@
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsStrategyErrorDisabled;
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>     }
 <a class="jxr_linenumber" name="L121" href="#L121">121</a> 
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsStrategyNormalDisabled() {
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsStrategyNormalDisabled;
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsStrategyUnionDisabled() {
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsStrategyUnionDisabled;
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>     }
 <a class="jxr_linenumber" name="L125" href="#L125">125</a> }
 </pre>

@@ -67,7 +67,7 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">public</strong> <a name="ManagerBruteForce" href="../../../../../com/jsql/view/swing/manager/ManagerBruteForce.html#ManagerBruteForce">ManagerBruteForce</a>() {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">super</strong>(<strong class="jxr_keyword">new</strong> BorderLayout());
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          JPanel panelOptions = <strong class="jxr_keyword">this</strong>.initializeOptionsPanel();
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          JPanel panelOptions = <strong class="jxr_keyword">this</strong>.initOptionsPanel();
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">this</strong>.add(panelOptions, BorderLayout.NORTH);
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">var</strong> placeholder = <strong class="jxr_keyword">new</strong> <a name="JTextPanePlaceholder" href="../../../../../com/jsql/view/swing/text/JTextPanePlaceholder.html#JTextPanePlaceholder">JTextPanePlaceholder</a>(I18nUtil.valueByKey(<span class="jxr_string">"BRUTEFORCE_RESULT"</span>));
@@ -76,11 +76,11 @@
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">this</strong>.result.setName(<span class="jxr_string">"managerBruterResult"</span>);
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          <strong class="jxr_keyword">this</strong>.add(<strong class="jxr_keyword">new</strong> JScrollPane(<strong class="jxr_keyword">this</strong>.result), BorderLayout.CENTER);
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          JPanel panelButton = <strong class="jxr_keyword">this</strong>.initializePanelButton();
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          JPanel panelButton = <strong class="jxr_keyword">this</strong>.initPanelButton();
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">this</strong>.add(panelButton, BorderLayout.SOUTH);
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>      }
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">private</strong> JPanel initializePanelButton() {
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">private</strong> JPanel initPanelButton() {
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">var</strong> lastLine = <strong class="jxr_keyword">new</strong> JPanel();
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          lastLine.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(lastLine, BoxLayout.X_AXIS));
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  
@@ -114,11 +114,11 @@
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">this</strong>.horizontalGlue.setVisible(!isVisible);
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>     }
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> 
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">private</strong> JPanel initializeOptionsPanel() {
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">private</strong> JPanel initOptionsPanel() {
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         <strong class="jxr_keyword">var</strong> options = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>         JPanel firstLine = <strong class="jxr_keyword">this</strong>.initializeFirstLine();
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">final</strong> JPanel secondLine = <strong class="jxr_keyword">this</strong>.initializeSecondLine();
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>         JPanel thirdLine = <strong class="jxr_keyword">this</strong>.initializeThirdLine();
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         JPanel firstLine = <strong class="jxr_keyword">this</strong>.initFirstLine();
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">final</strong> JPanel secondLine = <strong class="jxr_keyword">this</strong>.initSecondLine();
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         JPanel thirdLine = <strong class="jxr_keyword">this</strong>.initThirdLine();
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> secondAndThirdLine = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>         secondAndThirdLine.add(secondLine, BorderLayout.NORTH);
@@ -129,7 +129,7 @@
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">return</strong> options;
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>     }
 <a class="jxr_linenumber" name="L123" href="#L123">123</a> 
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>     <strong class="jxr_keyword">private</strong> JPanel initializeFirstLine() {
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>     <strong class="jxr_keyword">private</strong> JPanel initFirstLine() {
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>         <strong class="jxr_keyword">var</strong> tooltip = <strong class="jxr_keyword">new</strong> AtomicReference&lt;&gt;(<strong class="jxr_keyword">new</strong> <a name="JToolTipI18n" href="../../../../../com/jsql/view/swing/text/JToolTipI18n.html#JToolTipI18n">JToolTipI18n</a>(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP)));
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>         <strong class="jxr_keyword">var</strong> placeholder = <strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(I18nUtil.valueByKey(<span class="jxr_string">"BRUTEFORCE_HASH_LABEL"</span>)) {
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>             @Override
@@ -148,7 +148,7 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>         <strong class="jxr_keyword">return</strong> firstLine;
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     }
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> 
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">private</strong> JPanel initializeSecondLine() {
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">private</strong> JPanel initSecondLine() {
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> secondLine = <strong class="jxr_keyword">new</strong> JPanel();
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>         secondLine.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(secondLine, BoxLayout.X_AXIS));
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> 
@@ -180,7 +180,7 @@
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>         <strong class="jxr_keyword">return</strong> secondLine;
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>     }
 <a class="jxr_linenumber" name="L174" href="#L174">174</a> 
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>     <strong class="jxr_keyword">private</strong> JPanel initializeThirdLine() {
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>     <strong class="jxr_keyword">private</strong> JPanel initThirdLine() {
 <a class="jxr_linenumber" name="L176" href="#L176">176</a>         <strong class="jxr_keyword">var</strong> thirdLine = <strong class="jxr_keyword">new</strong> JPanel();
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>         thirdLine.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(thirdLine, BoxLayout.X_AXIS));
 <a class="jxr_linenumber" name="L178" href="#L178">178</a> 

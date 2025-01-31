@@ -57,7 +57,7 @@ public class PanelNode extends JPanel {
      * @param currentNode Node to draw in the tree
      */
 <span class="fc" id="L59">    public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {</span>
-<span class="fc" id="L60">        this.loaderWait.setIcon(UiUtil.HOURGLASS.icon);</span>
+<span class="fc" id="L60">        this.loaderWait.setIcon(UiUtil.HOURGLASS.getIcon());</span>
 <span class="fc" id="L61">        this.loaderWait.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));</span>
 
 <span class="fc" id="L63">        this.progressBar.setPreferredSize(new Dimension(20, 20));</span>
@@ -83,10 +83,10 @@ public class PanelNode extends JPanel {
         
 <span class="fc" id="L84">        this.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));</span>
         
-<span class="fc" id="L86">        this.initializeTextFieldEditable(tree, currentNode);</span>
+<span class="fc" id="L86">        this.initTextFieldEditable(tree, currentNode);</span>
 <span class="fc" id="L87">    }</span>
 
-    private void initializeTextFieldEditable(final JTree tree, final DefaultMutableTreeNode currentNode) {
+    private void initTextFieldEditable(final JTree tree, final DefaultMutableTreeNode currentNode) {
 <span class="fc" id="L90">        this.textFieldEditable.addActionListener(e -&gt; {</span>
 <span class="nc" id="L91">            AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();</span>
 <span class="nc" id="L92">            nodeModel.setIsEdited(false);</span>
@@ -146,7 +146,7 @@ public class PanelNode extends JPanel {
 <span class="fc" id="L146">    }</span>
     
     /**
-     * Display the normal text icon to the left.
+     * Display text icon to the left.
      */
     public void showIcon() {
 <span class="fc" id="L152">        this.iconNode.setVisible(true);</span>

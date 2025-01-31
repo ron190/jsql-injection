@@ -5,19 +5,25 @@ import com.jsql.view.swing.util.I18nViewUtil;
 import javax.swing.*;
 import java.awt.*;
 
-<span class="fc" id="L8">public class ComboBoxTypeRenderer extends JLabel implements ListCellRenderer&lt;ModelItemType&gt; {</span>
+<span class="fc" id="L8">public class ComboBoxTypeRenderer extends JLabel implements ListCellRenderer&lt;Object&gt; {</span>
     public Component getListCellRendererComponent(
-        JList&lt;? extends ModelItemType&gt; list, ModelItemType value, int index, boolean isSelected, boolean cellHasFocus
+        JList&lt;? extends Object&gt; list, Object value, int index, boolean isSelected, boolean cellHasFocus
     ) {
-<span class="fc" id="L12">        this.setToolTipText(I18nViewUtil.valueByKey(value.getKeyTooltip()));</span>
-<span class="fc" id="L13">        this.setText(I18nViewUtil.valueByKey(value.getKeyLabel()));</span>
-<span class="fc" id="L14">        this.setForeground(UIManager.getColor(&quot;ComboBox.foreground&quot;));</span>
-<span class="fc" id="L15">        this.setBackground(UIManager.getColor(&quot;ComboBox.background&quot;));</span>
-<span class="pc bpc" id="L16" title="1 of 2 branches missed.">        if (isSelected) {</span>
-<span class="nc" id="L17">            this.setForeground(UIManager.getColor(&quot;ComboBox.selectionForeground&quot;));</span>
-<span class="nc" id="L18">            this.setBackground(UIManager.getColor(&quot;ComboBox.selectionBackground&quot;));</span>
+<span class="fc bfc" id="L12" title="All 2 branches covered.">        if (value == ComboBoxMethodRenderer.SEPARATOR) {</span>
+<span class="fc" id="L13">            return ComboBoxMethodRenderer.SEPARATOR;</span>
         }
-<span class="fc" id="L20">        return this;</span>
+<span class="pc bpc" id="L15" title="1 of 2 branches missed.">        if (value instanceof ModelItemType) {</span>
+<span class="fc" id="L16">            var exploitMethods = (ModelItemType) value;</span>
+<span class="fc" id="L17">            this.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.getKeyTooltip()));</span>
+<span class="fc" id="L18">            this.setText(I18nViewUtil.valueByKey(exploitMethods.getKeyLabel()));</span>
+        }
+<span class="fc" id="L20">        this.setForeground(UIManager.getColor(&quot;ComboBox.foreground&quot;));</span>
+<span class="fc" id="L21">        this.setBackground(UIManager.getColor(&quot;ComboBox.background&quot;));</span>
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        if (isSelected) {</span>
+<span class="nc" id="L23">            this.setForeground(UIManager.getColor(&quot;ComboBox.selectionForeground&quot;));</span>
+<span class="nc" id="L24">            this.setBackground(UIManager.getColor(&quot;ComboBox.selectionBackground&quot;));</span>
+        }
+<span class="fc" id="L26">        return this;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

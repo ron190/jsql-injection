@@ -33,7 +33,7 @@ import java.util.List;
 <span class="fc" id="L33">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     @Override
-    protected String initializeTransferable() {
+    protected String initTransferable() {
 <span class="fc" id="L37">        var stringTransferable = new StringBuilder();</span>
 <span class="fc bfc" id="L38" title="All 2 branches covered.">        for (ItemList itemPath: this.dragPaths) {</span>
 <span class="fc" id="L39">            stringTransferable.append(itemPath).append(&quot;\n&quot;);</span>
@@ -90,7 +90,7 @@ import java.util.List;
 <span class="fc" id="L90">    }</span>
 
     @Override
-    protected List&lt;Integer&gt; initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
+    protected List&lt;Integer&gt; initStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
 <span class="fc" id="L94">        int selectedIndexTo = selectedIndexFrom;</span>
 <span class="fc" id="L95">        List&lt;Integer&gt; selectedIndexes = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L96" title="All 2 branches covered.">        for (String line: clipboardText.split(&quot;\\n&quot;)) {</span>

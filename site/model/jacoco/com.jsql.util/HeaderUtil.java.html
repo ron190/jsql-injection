@@ -87,7 +87,7 @@ public class HeaderUtil {
      */
     public HttpResponse&lt;String&gt; checkResponseHeader(Builder httpRequestBuilder, String body) throws IOException, InterruptedException {
 <span class="fc" id="L89">        var httpRequest = httpRequestBuilder.build();</span>
-<span class="fc" id="L90">        HttpResponse&lt;String&gt; httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(</span>
+<span class="fc" id="L90">        HttpResponse&lt;String&gt; httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(</span>
             httpRequest,
 <span class="fc" id="L92">            BodyHandlers.ofString()</span>
         );

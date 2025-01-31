@@ -15,7 +15,7 @@ import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
 /**
- * Mark the injection as invulnerable to a normal injection.
+ * Mark the injection as invulnerable to a union injection.
  */
 public class MarkStackInvulnerable implements InteractionCommand {
 

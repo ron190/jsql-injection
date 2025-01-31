@@ -34,12 +34,12 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllCookieParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject every cookie parameters"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllSOAPParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject SOAP parameters in Request body"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam());
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsLimitingNormalIndex = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Limit Normal UNION strategy :"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex());
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JSpinner spinnerNormalIndexCount = <strong class="jxr_keyword">new</strong> JSpinner();
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsLimitingUnionIndex = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Limit Union strategy :"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingUnionIndex());
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JSpinner spinnerUnionIndexCount = <strong class="jxr_keyword">new</strong> JSpinner();
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsLimitingSleepTimeStrategy = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Delay Time strategy :"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy());
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JSpinner spinnerSleepTimeStrategyCount = <strong class="jxr_keyword">new</strong> JSpinner();
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsPerfIndexDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable calibration (smaller SQL query during Normal index selection only)"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsPerfIndexDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable calibration (smaller SQL query during Union index selection only)"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsDefaultStrategy = <strong class="jxr_keyword">new</strong> JRadioButton(<span class="jxr_string">"Use Default mode (keep unchanged ; URL and processing unchanged)"</span>, <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsZipStrategy = <strong class="jxr_keyword">new</strong> JRadioButton(<span class="jxr_string">"Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsDiosStrategy = <strong class="jxr_keyword">new</strong> JRadioButton(<span class="jxr_string">"Use Dios mode (less queries ; do not use with Error strategies)"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
@@ -64,11 +64,11 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">this</strong>.radioIsDiosStrategy.setName(<span class="jxr_string">"radioIsDiosStrategy"</span>);
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">this</strong>.checkboxIsUrlEncodingDisabled.setName(<span class="jxr_string">"checkboxIsUrlEncodingDisabled"</span>);
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">this</strong>.checkboxIsUrlRandomSuffixDisabled.setName(<span class="jxr_string">"checkboxIsUrlRandomSuffixDisabled"</span>);
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">this</strong>.checkboxIsLimitingNormalIndex.setName(<span class="jxr_string">"checkboxIsLimitingNormalIndex"</span>);
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex.setName(<span class="jxr_string">"checkboxIsLimitingUnionIndex"</span>);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy.setName(<span class="jxr_string">"checkboxIsLimitingSleepTimeStrategy"</span>);
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">this</strong>.checkboxIsPerfIndexDisabled.setToolTipText(
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>              <span class="jxr_string">"&lt;html&gt;Reduce Normal calibration URL, useful when host rejects large URL."</span>
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>              <span class="jxr_string">"&lt;html&gt;Reduce Union calibration URL, useful when host rejects large URL."</span>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>              + <span class="jxr_string">"&lt;br&gt;Should be enabled when Zip mode is activated.&lt;/html&gt;"</span>
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          );
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">this</strong>.checkboxIsParsingForm.setToolTipText(
@@ -102,28 +102,28 @@
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">this</strong>.spinnerSleepTimeStrategyCount.addMouseWheelListener(<strong class="jxr_keyword">new</strong> <a name="SpinnerMouseWheelListener" href="../../../../../../com/jsql/view/swing/panel/preferences/listener/SpinnerMouseWheelListener.html#SpinnerMouseWheelListener">SpinnerMouseWheelListener</a>());
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>          <strong class="jxr_keyword">this</strong>.spinnerSleepTimeStrategyCount.addChangeListener(e -&gt; panelPreferences.getActionListenerSave().actionPerformed(<strong class="jxr_keyword">null</strong>));
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">this</strong>.checkboxIsLimitingNormalIndex.setToolTipText(<span class="jxr_string">"Maximum number of columns to check on UNION based queries"</span>);
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex.setToolTipText(<span class="jxr_string">"Maximum number of columns to check on UNION based queries"</span>);
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">var</strong> panelIsLimitingNormalIndex = <strong class="jxr_keyword">new</strong> JPanel();
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>         panelIsLimitingNormalIndex.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelIsLimitingNormalIndex, BoxLayout.X_AXIS));
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>         panelIsLimitingNormalIndex.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"Search for up to "</span>));
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>         panelIsLimitingNormalIndex.add(<strong class="jxr_keyword">this</strong>.spinnerNormalIndexCount);
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>         panelIsLimitingNormalIndex.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">" column(s) ; default 50 columns"</span>));
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>         panelIsLimitingNormalIndex.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(325, <strong class="jxr_keyword">this</strong>.spinnerNormalIndexCount.getPreferredSize().height));
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>         <strong class="jxr_keyword">int</strong> countNormalIndex = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countNormalIndex();
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">var</strong> spinnerCountNormalIndex = <strong class="jxr_keyword">new</strong> SpinnerNumberModel(
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>             countNormalIndex &lt;= 0 ? 50 : countNormalIndex,
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">var</strong> panelIsLimitingUnionIndex = <strong class="jxr_keyword">new</strong> JPanel();
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>         panelIsLimitingUnionIndex.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelIsLimitingUnionIndex, BoxLayout.X_AXIS));
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         panelIsLimitingUnionIndex.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"Search for up to "</span>));
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>         panelIsLimitingUnionIndex.add(<strong class="jxr_keyword">this</strong>.spinnerUnionIndexCount);
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         panelIsLimitingUnionIndex.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">" column(s) ; default 50 columns"</span>));
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>         panelIsLimitingUnionIndex.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(325, <strong class="jxr_keyword">this</strong>.spinnerUnionIndexCount.getPreferredSize().height));
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>         <strong class="jxr_keyword">int</strong> countUnionIndex = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countUnionIndex();
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">var</strong> spinnerCountUnionIndex = <strong class="jxr_keyword">new</strong> SpinnerNumberModel(
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>             countUnionIndex &lt;= 0 ? 50 : countUnionIndex,
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>             1,
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>             200,
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>             1
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         );
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">this</strong>.spinnerNormalIndexCount.setModel(spinnerCountNormalIndex);
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">this</strong>.spinnerNormalIndexCount.addMouseWheelListener(<strong class="jxr_keyword">new</strong> <a name="SpinnerMouseWheelListener" href="../../../../../../com/jsql/view/swing/panel/preferences/listener/SpinnerMouseWheelListener.html#SpinnerMouseWheelListener">SpinnerMouseWheelListener</a>());
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">this</strong>.spinnerNormalIndexCount.addChangeListener(e -&gt; panelPreferences.getActionListenerSave().actionPerformed(<strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">this</strong>.spinnerUnionIndexCount.setModel(spinnerCountUnionIndex);
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">this</strong>.spinnerUnionIndexCount.addMouseWheelListener(<strong class="jxr_keyword">new</strong> <a name="SpinnerMouseWheelListener" href="../../../../../../com/jsql/view/swing/panel/preferences/listener/SpinnerMouseWheelListener.html#SpinnerMouseWheelListener">SpinnerMouseWheelListener</a>());
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">this</strong>.spinnerUnionIndexCount.addChangeListener(e -&gt; panelPreferences.getActionListenerSave().actionPerformed(<strong class="jxr_keyword">null</strong>));
 <a class="jxr_linenumber" name="L115" href="#L115">115</a> 
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>         <strong class="jxr_keyword">this</strong>.radioIsDiosStrategy.setToolTipText(
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>             <span class="jxr_string">"&lt;html&gt;Mode Dump In One Shot injects a single query that gets all the data at once."</span>
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>             + <span class="jxr_string">"&lt;br&gt;Faster than default mode for Normal and Error strats but requires volume of data to not be huge.&lt;/html&gt;"</span>
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>             + <span class="jxr_string">"&lt;br&gt;Faster than default mode for Union and Error strats but requires volume of data to not be huge.&lt;/html&gt;"</span>
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>         );
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">this</strong>.radioIsZipStrategy.setToolTipText(
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>             <span class="jxr_string">"&lt;html&gt;Zip mode injects small queries, useful when host rejects large URL."</span>
@@ -176,7 +176,7 @@
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>             <strong class="jxr_keyword">this</strong>.radioIsDefaultStrategy,
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>             <strong class="jxr_keyword">this</strong>.checkboxIsUrlEncodingDisabled,
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>             <strong class="jxr_keyword">this</strong>.checkboxIsUrlRandomSuffixDisabled,
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>             <strong class="jxr_keyword">this</strong>.checkboxIsLimitingNormalIndex,
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>             <strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex,
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>             <strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>         )
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>         .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));
@@ -200,8 +200,8 @@
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsNotInjectingMetadata)
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsNotSearchingCharInsertion)
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsNotShowingVulnReport)
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsLimitingNormalIndex)
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>                 .addComponent(panelIsLimitingNormalIndex)
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex)
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>                 .addComponent(panelIsLimitingUnionIndex)
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy)
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>                 .addComponent(panelSleepTimeStrategy)
 <a class="jxr_linenumber" name="L199" href="#L199">199</a> 
@@ -258,12 +258,12 @@
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>             .addGroup(
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>                 groupLayout
 <a class="jxr_linenumber" name="L252" href="#L252">252</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsLimitingNormalIndex)
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex)
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>             )
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>             .addGroup(
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>                 groupLayout
 <a class="jxr_linenumber" name="L257" href="#L257">257</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>                 .addComponent(panelIsLimitingNormalIndex)
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>                 .addComponent(panelIsLimitingUnionIndex)
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>             )
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>             .addGroup(
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>                 groupLayout
@@ -441,12 +441,12 @@
 <a class="jxr_linenumber" name="L433" href="#L433">433</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsUrlRandomSuffixDisabled;
 <a class="jxr_linenumber" name="L434" href="#L434">434</a>     }
 <a class="jxr_linenumber" name="L435" href="#L435">435</a> 
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsLimitingNormalIndex() {
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsLimitingNormalIndex;
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsLimitingUnionIndex() {
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex;
 <a class="jxr_linenumber" name="L438" href="#L438">438</a>     }
 <a class="jxr_linenumber" name="L439" href="#L439">439</a>     
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>     <strong class="jxr_keyword">public</strong> JSpinner getSpinnerNormalIndexCount() {
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.spinnerNormalIndexCount;
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>     <strong class="jxr_keyword">public</strong> JSpinner getSpinnerUnionIndexCount() {
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.spinnerUnionIndexCount;
 <a class="jxr_linenumber" name="L442" href="#L442">442</a>     }
 <a class="jxr_linenumber" name="L443" href="#L443">443</a>     
 <a class="jxr_linenumber" name="L444" href="#L444">444</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsLimitingSleepTimeStrategy() {

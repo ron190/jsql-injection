@@ -22,6 +22,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,55 +34,66 @@ public class ManagerFile extends AbstractManagerList {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L36">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L37">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Create the manager panel to read a file.
      */
     public ManagerFile() {
-<span class="fc" id="L42">        super(&quot;swing/list/file.txt&quot;);</span>
-<span class="fc" id="L43">        this.buildRunButton(&quot;FILE_RUN_BUTTON_LABEL&quot;, &quot;FILE_RUN_BUTTON_TOOLTIP&quot;);</span>
-<span class="fc" id="L44">        this.run.setEnabled(false);</span>
-<span class="fc" id="L45">        this.run.addActionListener(new ActionFile());</span>
-<span class="fc" id="L46">        this.buildPrivilege();</span>
-<span class="fc" id="L47">        this.add(this.lastLine, BorderLayout.SOUTH);</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L43">        super(&quot;swing/list/file.txt&quot;);</span>
+<span class="fc" id="L44">        this.buildRunButton(&quot;FILE_RUN_BUTTON_LABEL&quot;, &quot;FILE_RUN_BUTTON_TOOLTIP&quot;);</span>
+<span class="fc" id="L45">        this.run.setEnabled(false);</span>
+<span class="fc" id="L46">        this.run.addActionListener(new ActionFile());</span>
+<span class="fc" id="L47">        this.buildPrivilege();</span>
+<span class="fc" id="L48">        this.add(this.lastLine, BorderLayout.SOUTH);</span>
+<span class="fc" id="L49">    }</span>
 
-<span class="fc" id="L50">    private class ActionFile implements ActionListener {</span>
+<span class="fc" id="L51">    private class ActionFile implements ActionListener {</span>
         @Override
         public void actionPerformed(ActionEvent e) {
-<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (ManagerFile.this.listPaths.getSelectedValuesList().isEmpty()) {</span>
-<span class="nc" id="L54">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select at least one file to read in the list&quot;);</span>
-<span class="nc" id="L55">                return;</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            if (ManagerFile.this.listPaths.getSelectedValuesList().isEmpty()) {</span>
+<span class="nc" id="L55">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select in the list at least one file to read&quot;);</span>
+<span class="nc" id="L56">                return;</span>
             }
-<span class="nc" id="L57">            new SwingWorker&lt;&gt;() {</span>
+<span class="nc" id="L58">            if (!Arrays.asList(</span>
+<span class="nc" id="L59">                MediatorHelper.model().getMediatorVendor().getMysql(),</span>
+<span class="nc" id="L60">                MediatorHelper.model().getMediatorVendor().getPostgres()</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            ).contains(MediatorHelper.model().getMediatorVendor().getVendor())) {</span>
+<span class="nc" id="L62">                LOGGER.log(</span>
+                    LogLevelUtil.CONSOLE_ERROR,
+                    &quot;Read file for [{}] not implemented, share a working example to GitHub to speed up release&quot;,
+<span class="nc" id="L65">                    MediatorHelper.model().getMediatorVendor().getVendor()</span>
+                );
+<span class="nc" id="L67">                return;</span>
+            }
+<span class="nc" id="L69">            new SwingWorker&lt;&gt;() {</span>
                 @Override
                 protected Object doInBackground() {
-<span class="nc" id="L60">                    Thread.currentThread().setName(&quot;SwingWorkerManagerFile&quot;);</span>
-<span class="nc bnc" id="L61" title="All 2 branches missed.">                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {</span>
-<span class="nc" id="L62">                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey(&quot;FILE_RUN_BUTTON_STOP&quot;));</span>
-<span class="nc" id="L63">                        ManagerFile.this.run.setState(StateButton.STOPPABLE);</span>
-<span class="nc" id="L64">                        ManagerFile.this.horizontalGlue.setVisible(false);</span>
-<span class="nc" id="L65">                        ManagerFile.this.progressBar.setVisible(true);</span>
+<span class="nc" id="L72">                    Thread.currentThread().setName(&quot;SwingWorkerManagerFile&quot;);</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {</span>
+<span class="nc" id="L74">                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey(&quot;FILE_RUN_BUTTON_STOP&quot;));</span>
+<span class="nc" id="L75">                        ManagerFile.this.run.setState(StateButton.STOPPABLE);</span>
+<span class="nc" id="L76">                        ManagerFile.this.horizontalGlue.setVisible(false);</span>
+<span class="nc" id="L77">                        ManagerFile.this.progressBar.setVisible(true);</span>
                         try {
-<span class="nc" id="L67">                            List&lt;String&gt; filePaths = ManagerFile.this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
-<span class="nc" id="L68">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
-<span class="nc" id="L69">                        } catch (InterruptedException e) {</span>
-<span class="nc" id="L70">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L71">                            Thread.currentThread().interrupt();</span>
-<span class="nc" id="L72">                        } catch (Exception e) {</span>
-<span class="nc" id="L73">                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);</span>
-<span class="nc" id="L74">                        }</span>
-<span class="nc" id="L75">                        ManagerFile.this.endProcess();</span>
+<span class="nc" id="L79">                            List&lt;String&gt; filePaths = ManagerFile.this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
+<span class="nc" id="L80">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
+<span class="nc" id="L81">                        } catch (InterruptedException e) {</span>
+<span class="nc" id="L82">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L83">                            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L84">                        } catch (Exception e) {</span>
+<span class="nc" id="L85">                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);</span>
+<span class="nc" id="L86">                        }</span>
+<span class="nc" id="L87">                        ManagerFile.this.endProcess();</span>
                     } else {
-<span class="nc" id="L77">                        MediatorHelper.model().getResourceAccess().stopSearchFile();</span>
-<span class="nc" id="L78">                        ManagerFile.this.run.setEnabled(false);</span>
-<span class="nc" id="L79">                        ManagerFile.this.run.setState(StateButton.STOPPING);</span>
+<span class="nc" id="L89">                        MediatorHelper.model().getResourceAccess().stopSearchFile();</span>
+<span class="nc" id="L90">                        ManagerFile.this.run.setEnabled(false);</span>
+<span class="nc" id="L91">                        ManagerFile.this.run.setState(StateButton.STOPPING);</span>
                     }
-<span class="nc" id="L81">                    return null;</span>
+<span class="nc" id="L93">                    return null;</span>
                 }
-<span class="nc" id="L83">            }.doInBackground();</span>
-<span class="nc" id="L84">        }</span>
+<span class="nc" id="L95">            }.doInBackground();</span>
+<span class="nc" id="L96">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

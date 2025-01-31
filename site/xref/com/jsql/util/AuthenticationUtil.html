@@ -78,13 +78,13 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          String kerberosKrb5Conf,
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          String kerberosLoginConf
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      ) {
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">boolean</strong> isRestartRequired = <strong class="jxr_keyword">this</strong>.initializeKerberos(isKerberos, kerberosKrb5Conf, kerberosLoginConf);
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          <strong class="jxr_keyword">this</strong>.initializeSimpleAuthorization(isAuthentication, usernameAuthentication, passwordAuthentication);
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">boolean</strong> isRestartRequired = <strong class="jxr_keyword">this</strong>.initKerberos(isKerberos, kerberosKrb5Conf, kerberosLoginConf);
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          <strong class="jxr_keyword">this</strong>.initSimpleAuthorization(isAuthentication, usernameAuthentication, passwordAuthentication);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          <strong class="jxr_keyword">this</strong>.setAuthentication();
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">return</strong> isRestartRequired;
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      }
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> initializeSimpleAuthorization(<strong class="jxr_keyword">boolean</strong> isAuthentication, String usernameAuthentication, String passwordAuthentication) {
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> initSimpleAuthorization(<strong class="jxr_keyword">boolean</strong> isAuthentication, String usernameAuthentication, String passwordAuthentication) {
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">var</strong> preferences = Preferences.userRoot().node(InjectionModel.<strong class="jxr_keyword">class</strong>.getName());
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>          preferences.putBoolean(<span class="jxr_string">"isAuthentication"</span>, isAuthentication);
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          preferences.put(<span class="jxr_string">"usernameAuthentication"</span>, usernameAuthentication);
@@ -95,7 +95,7 @@
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">this</strong>.passwordAuthentication = passwordAuthentication;
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>      }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> initializeKerberos(<strong class="jxr_keyword">boolean</strong> isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> initKerberos(<strong class="jxr_keyword">boolean</strong> isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>          <em class="jxr_comment">// Persist to JVM</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>          <strong class="jxr_keyword">var</strong> preferences = Preferences.userRoot().node(InjectionModel.<strong class="jxr_keyword">class</strong>.getName());
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>          

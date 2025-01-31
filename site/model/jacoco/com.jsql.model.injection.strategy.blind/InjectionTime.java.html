@@ -140,7 +140,7 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 <span class="nc" id="L140">            throw new StoppedByUserSlidingException();</span>
         }
 <span class="fc" id="L142">        var timeTest = new CallableTime(</span>
-<span class="fc" id="L143">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization(),</span>
+<span class="fc" id="L143">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),</span>
             this.injectionModel,
             this,
             this.binaryMode,

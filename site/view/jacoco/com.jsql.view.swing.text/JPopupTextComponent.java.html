@@ -51,12 +51,12 @@ public class JPopupTextComponent&lt;T extends JTextComponent&gt; extends JPopupC
         // Listen for undo and redo events
 <span class="fc" id="L52">        doc.addUndoableEditListener(undoableEditEvent -&gt; undoRedoManager.addEdit(undoableEditEvent.getEdit()));</span>
 
-<span class="fc" id="L54">        this.initializeUndo(undoRedoManager);</span>
-<span class="fc" id="L55">        this.initializeRedo(undoRedoManager);</span>
+<span class="fc" id="L54">        this.initUndo(undoRedoManager);</span>
+<span class="fc" id="L55">        this.initRedo(undoRedoManager);</span>
 <span class="fc" id="L56">        this.makeDeleteSilent();</span>
 <span class="fc" id="L57">    }</span>
 
-    private void initializeUndo(final UndoManager undo) {
+    private void initUndo(final UndoManager undo) {
 <span class="fc" id="L60">        final var undoIdentifier = &quot;Undo&quot;;  // Create an undo action and add it to the text component</span>
         
 <span class="fc" id="L62">        this.getProxy().getActionMap().put(undoIdentifier, new AbstractAction(undoIdentifier) {</span>
@@ -77,7 +77,7 @@ public class JPopupTextComponent&lt;T extends JTextComponent&gt; extends JPopupC
 <span class="fc" id="L77">        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke(&quot;control Z&quot;), undoIdentifier);</span>
 <span class="fc" id="L78">    }</span>
 
-    private void initializeRedo(final UndoManager undo) {
+    private void initRedo(final UndoManager undo) {
 <span class="fc" id="L81">        final var redoIdentifier = &quot;Redo&quot;;  // Create a redo action and add it to the text component</span>
         
 <span class="fc" id="L83">        this.getProxy().getActionMap().put(redoIdentifier, new AbstractAction(redoIdentifier) {</span>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmptyFocusCopy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.terminal</a> &gt; <span class="el_source">EmptyFocusCopy.java</span></div><h1>EmptyFocusCopy.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.terminal;
+
+import com.jsql.model.exception.JSqlRuntimeException;
+
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.util.Arrays;
+
+/**
+ * Cancel every mouse click, only gives focus.
+ */
+public class EmptyFocusCopy implements MouseListener {
+    
+    private final AbstractExploit abstractExploit;
+    
+<span class="fc" id="L20">    public EmptyFocusCopy(AbstractExploit abstractExploit) {</span>
+<span class="fc" id="L21">        this.abstractExploit = abstractExploit;</span>
+<span class="fc" id="L22">    }</span>
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+<span class="nc" id="L26">        e.consume();</span>
+<span class="nc" id="L27">        this.abstractExploit.requestFocusInWindow();</span>
+<span class="nc" id="L28">        this.abstractExploit.setCaretPosition(this.abstractExploit.getDocument().getLength());</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (Arrays.asList(MouseEvent.BUTTON2, MouseEvent.BUTTON3).contains(e.getButton())) {</span>
+            try {
+<span class="nc" id="L31">                String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);</span>
+<span class="nc" id="L32">                this.abstractExploit.append(data);</span>
+<span class="nc" id="L33">            } catch (UnsupportedFlavorException | IOException ex) {</span>
+<span class="nc" id="L34">                throw new JSqlRuntimeException(ex);</span>
+<span class="nc" id="L35">            }</span>
+        }
+<span class="nc" id="L37">    }</span>
+    
+    @Override
+    public void mouseReleased(MouseEvent e) {
+<span class="nc" id="L41">        e.consume();</span>
+<span class="nc" id="L42">    }</span>
+    
+    @Override
+    public void mouseExited(MouseEvent e) {
+<span class="nc" id="L46">        e.consume();</span>
+<span class="nc" id="L47">    }</span>
+    
+    @Override
+    public void mouseEntered(MouseEvent e) {
+<span class="fc" id="L51">        e.consume();</span>
+<span class="fc" id="L52">    }</span>
+    
+    @Override
+    public void mouseClicked(MouseEvent e) {
+<span class="nc" id="L56">        e.consume();</span>
+<span class="nc" id="L57">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

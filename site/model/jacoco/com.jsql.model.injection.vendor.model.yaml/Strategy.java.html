@@ -8,7 +8,7 @@ import java.io.Serializable;
 <span class="fc" id="L8">public class Strategy implements Serializable {</span>
 
 <span class="fc" id="L10">    private Configuration configuration = new Configuration();</span>
-<span class="fc" id="L11">    private Normal normal = new Normal();</span>
+<span class="fc" id="L11">    private Union union = new Union();</span>
 <span class="fc" id="L12">    private String stack = StringUtils.EMPTY;</span>
 <span class="fc" id="L13">    private Binary binary = new Binary();</span>
 <span class="fc" id="L14">    private Error error = new Error();</span>
@@ -21,12 +21,12 @@ import java.io.Serializable;
 <span class="fc" id="L21">        this.configuration = configuration;</span>
 <span class="fc" id="L22">    }</span>
 
-    public Normal getNormal() {
-<span class="fc" id="L25">        return this.normal;</span>
+    public Union getUnion() {
+<span class="fc" id="L25">        return this.union;</span>
     }
 
-    public void setNormal(Normal normal) {
-<span class="fc" id="L29">        this.normal = normal;</span>
+    public void setUnion(Union union) {
+<span class="fc" id="L29">        this.union = union;</span>
 <span class="fc" id="L30">    }</span>
 
     public Binary getBinary() {

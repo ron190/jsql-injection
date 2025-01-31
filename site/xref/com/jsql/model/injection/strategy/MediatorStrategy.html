@@ -35,7 +35,7 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> blind;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> multibit;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="StrategyInjectionError" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionError.html#StrategyInjectionError">StrategyInjectionError</a> error;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> normal;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> union;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> stack;
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;AbstractStrategy&gt; strategies;
@@ -54,10 +54,10 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>          <strong class="jxr_keyword">this</strong>.blind = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionBlind" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionBlind.html#StrategyInjectionBlind">StrategyInjectionBlind</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">this</strong>.multibit = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionMultibit" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionMultibit.html#StrategyInjectionMultibit">StrategyInjectionMultibit</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">this</strong>.error = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionError" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionError.html#StrategyInjectionError">StrategyInjectionError</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">this</strong>.normal = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionNormal" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionNormal.html#StrategyInjectionNormal">StrategyInjectionNormal</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">this</strong>.union = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionUnion" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionUnion.html#StrategyInjectionUnion">StrategyInjectionUnion</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">this</strong>.stack = <strong class="jxr_keyword">new</strong> <a name="StrategyInjectionStack" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionStack.html#StrategyInjectionStack">StrategyInjectionStack</a>(<strong class="jxr_keyword">this</strong>.injectionModel);
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>.strategies = Arrays.asList(<strong class="jxr_keyword">this</strong>.time, <strong class="jxr_keyword">this</strong>.blind, <strong class="jxr_keyword">this</strong>.multibit, <strong class="jxr_keyword">this</strong>.error, <strong class="jxr_keyword">this</strong>.stack, <strong class="jxr_keyword">this</strong>.normal);
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>.strategies = Arrays.asList(<strong class="jxr_keyword">this</strong>.time, <strong class="jxr_keyword">this</strong>.blind, <strong class="jxr_keyword">this</strong>.multibit, <strong class="jxr_keyword">this</strong>.error, <strong class="jxr_keyword">this</strong>.stack, <strong class="jxr_keyword">this</strong>.union);
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">public</strong> String getMeta() {
@@ -91,7 +91,7 @@
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>                      InjectionModel.STAR,
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>                      <strong class="jxr_keyword">this</strong>.encodePath(
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>                          <strong class="jxr_keyword">this</strong>.injectionModel.getIndexesInUrl().replaceAll(
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>                              String.format(VendorYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.getSpecificNormal().getVisibleIndex()),
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>                              String.format(VendorYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.getSpecificUnion().getVisibleIndex()),
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>                              Matcher.quoteReplacement(sqlTrail)  <em class="jxr_comment">// Oracle column can contain regex char $ =&gt; quoteReplacement()</em>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>                          )
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>                      )
@@ -154,7 +154,7 @@
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>             parameterOriginalValue = parameterToInject.getValue();
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>                      
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>             <em class="jxr_comment">// Test for params integrity</em>
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>             String characterInsertionByUser = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getParameterUtil().initializeStar(parameterToInject);
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>             String characterInsertionByUser = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getParameterUtil().initStar(parameterToInject);
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>             
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>             String characterInsertion = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion()
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>                 ? characterInsertionByUser
@@ -177,8 +177,8 @@
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>             <strong class="jxr_keyword">new</strong> <a name="SuspendableGetVendor" href="../../../../../com/jsql/model/suspendable/SuspendableGetVendor.html#SuspendableGetVendor">SuspendableGetVendor</a>(<strong class="jxr_keyword">this</strong>.injectionModel).run();
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>         }
 <a class="jxr_linenumber" name="L171" href="#L171">171</a> 
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>         <em class="jxr_comment">// Test each injection strategies: time &lt; blind &lt; error &lt; normal</em>
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>         <em class="jxr_comment">// Choose the most efficient strategy: normal &gt; error &gt; blind &gt; time</em>
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>         <em class="jxr_comment">// Test each injection strategies: time &lt; blind &lt; error &lt; union</em>
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>         <em class="jxr_comment">// Choose the most efficient strategy: union &gt; error &gt; blind &gt; time</em>
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>         <strong class="jxr_keyword">this</strong>.time.checkApplicability();
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>         <strong class="jxr_keyword">this</strong>.blind.checkApplicability();
 <a class="jxr_linenumber" name="L176" href="#L176">176</a> 
@@ -195,10 +195,10 @@
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> 
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         <strong class="jxr_keyword">this</strong>.error.checkApplicability();
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>         <strong class="jxr_keyword">this</strong>.stack.checkApplicability();
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">this</strong>.normal.checkApplicability();
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">this</strong>.union.checkApplicability();
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> 
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>         <em class="jxr_comment">// Set most efficient strategy</em>
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <strong class="jxr_keyword">this</strong>.normal.activateWhenApplicable();
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <strong class="jxr_keyword">this</strong>.union.activateWhenApplicable();
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         <strong class="jxr_keyword">this</strong>.stack.activateWhenApplicable();
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>         <strong class="jxr_keyword">this</strong>.error.activateWhenApplicable();
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>         <strong class="jxr_keyword">this</strong>.multibit.activateWhenApplicable();
@@ -222,12 +222,12 @@
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>     
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>     <em class="jxr_comment">// Getter and setter</em>
 <a class="jxr_linenumber" name="L216" href="#L216">216</a> 
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>     <strong class="jxr_keyword">public</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> getNormal() {
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.normal;
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>     <strong class="jxr_keyword">public</strong> <a name="AbstractStrategy" href="../../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> getUnion() {
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.union;
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>     }
 <a class="jxr_linenumber" name="L220" href="#L220">220</a> 
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>     <strong class="jxr_keyword">public</strong> <a name="StrategyInjectionNormal" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionNormal.html#StrategyInjectionNormal">StrategyInjectionNormal</a> getSpecificNormal() {
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>         <strong class="jxr_keyword">return</strong> (<a name="StrategyInjectionNormal" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionNormal.html#StrategyInjectionNormal">StrategyInjectionNormal</a>) <strong class="jxr_keyword">this</strong>.normal;
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>     <strong class="jxr_keyword">public</strong> <a name="StrategyInjectionUnion" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionUnion.html#StrategyInjectionUnion">StrategyInjectionUnion</a> getSpecificUnion() {
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>         <strong class="jxr_keyword">return</strong> (<a name="StrategyInjectionUnion" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionUnion.html#StrategyInjectionUnion">StrategyInjectionUnion</a>) <strong class="jxr_keyword">this</strong>.union;
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>     }
 <a class="jxr_linenumber" name="L224" href="#L224">224</a> 
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>     <strong class="jxr_keyword">public</strong> <a name="StrategyInjectionError" href="../../../../../com/jsql/model/injection/strategy/StrategyInjectionError.html#StrategyInjectionError">StrategyInjectionError</a> getError() {

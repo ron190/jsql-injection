@@ -156,7 +156,7 @@ public class GitUtil {
 <span class="nc" id="L156">            .build();</span>
             
         try {
-<span class="nc" id="L159">            HttpResponse&lt;String&gt; response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());</span>
+<span class="nc" id="L159">            HttpResponse&lt;String&gt; response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());</span>
 <span class="nc" id="L160">            this.readGithubResponse(response, showOnConsole);</span>
 <span class="nc" id="L161">        } catch (InterruptedException | IOException e) {</span>
 <span class="nc bnc" id="L162" title="All 2 branches missed.">            if (showOnConsole == ShowOnConsole.YES) {</span>

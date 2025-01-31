@@ -4,7 +4,7 @@ public class AnsiColorUtil {
     
     private static final String PREFIX = &quot;\u001b[&quot;;
     
-    private static final int NORMAL = 0;
+    private static final int DEFAULT = 0;
     
     private static final char SEPARATOR = ';';
     
@@ -15,8 +15,8 @@ public class AnsiColorUtil {
     
     private static final String END_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.SUFFIX;
 
-    private static final String ERROR_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.NORMAL + AnsiColorUtil.SEPARATOR + AnsiColorUtil.FOREGROUND_RED + AnsiColorUtil.SUFFIX;
-    private static final String INFO_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.NORMAL + AnsiColorUtil.SEPARATOR + AnsiColorUtil.FOREGROUND_GREEN + AnsiColorUtil.SUFFIX;
+    private static final String ERROR_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.DEFAULT + AnsiColorUtil.SEPARATOR + AnsiColorUtil.FOREGROUND_RED + AnsiColorUtil.SUFFIX;
+    private static final String INFO_COLOR = AnsiColorUtil.PREFIX + AnsiColorUtil.DEFAULT + AnsiColorUtil.SEPARATOR + AnsiColorUtil.FOREGROUND_GREEN + AnsiColorUtil.SUFFIX;
 
     private AnsiColorUtil() {
         // Utility class

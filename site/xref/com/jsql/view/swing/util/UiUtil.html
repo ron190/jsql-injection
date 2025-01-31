@@ -205,9 +205,9 @@
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>         List&lt;Image&gt; images = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>         <em class="jxr_comment">// Fix #2154: NoClassDefFoundError on read()</em>
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>             images.add(UiUtil.APP_ICON.icon.getImage());
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>             images.add(UiUtil.APP_MIDDLE.icon.getImage());
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>             images.add(UiUtil.APP_BIG.icon.getImage());
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>             images.add(UiUtil.APP_ICON.getIcon().getImage());
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>             images.add(UiUtil.APP_MIDDLE.getIcon().getImage());
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>             images.add(UiUtil.APP_BIG.getIcon().getImage());
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>         } <strong class="jxr_keyword">catch</strong> (NoClassDefFoundError e) {
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>         }
@@ -252,7 +252,7 @@
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>         );
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>     }
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>     
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initialize(JTextComponent component) {
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> init(JTextComponent component) {
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>         component.setCaret(<strong class="jxr_keyword">new</strong> DefaultCaret() {
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>             @Override
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setSelectionVisible(<strong class="jxr_keyword">boolean</strong> visible) {

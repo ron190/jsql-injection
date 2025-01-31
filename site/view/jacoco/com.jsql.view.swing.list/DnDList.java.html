@@ -60,14 +60,14 @@ public class DnDList extends JList&lt;ItemList&gt; {
 <span class="fc" id="L60">        }</span>
 
 <span class="fc" id="L62">        this.setModel(this.listModel);</span>
-<span class="fc" id="L63">        this.initializeActionMap();</span>
-<span class="fc" id="L64">        this.initializeListener();</span>
+<span class="fc" id="L63">        this.initActionMap();</span>
+<span class="fc" id="L64">        this.initListener();</span>
 <span class="fc" id="L65">        this.setDragEnabled(true);</span>
 <span class="fc" id="L66">        this.setDropMode(DropMode.INSERT);</span>
 <span class="fc" id="L67">        this.setTransferHandler(new ListTransfertHandler());  // Set Drag and Drop</span>
 <span class="fc" id="L68">    }</span>
 
-    private void initializeListener() {
+    private void initListener() {
 <span class="fc" id="L71">        this.addMouseListener(new MouseAdapterMenuAction(this));</span>
 <span class="fc" id="L72">        this.addFocusListener(new FocusListener() {  // Allows color change when list loses/gains focus</span>
             @Override
@@ -89,7 +89,7 @@ public class DnDList extends JList&lt;ItemList&gt; {
         });
 <span class="fc" id="L90">    }</span>
 
-    private void initializeActionMap() {
+    private void initActionMap() {
 <span class="fc" id="L93">        var listActionMap = this.getActionMap();  // Transform Cut, selects next value</span>
 <span class="fc" id="L94">        listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {</span>
             @Override
@@ -226,7 +226,7 @@ public class DnDList extends JList&lt;ItemList&gt; {
     private void addItems(final List&lt;File&gt; filesToImport, int startPosition) {
 <span class="nc" id="L227">        int endPosition = startPosition;</span>
 <span class="nc bnc" id="L228" title="All 2 branches missed.">        for (File file: filesToImport) {</span>
-<span class="nc" id="L229">            endPosition = this.initializeItems(endPosition, file);</span>
+<span class="nc" id="L229">            endPosition = this.initItems(endPosition, file);</span>
 <span class="nc" id="L230">        }</span>
 <span class="nc bnc" id="L231" title="All 2 branches missed.">        if (!this.listModel.isEmpty()) {</span>
 <span class="nc" id="L232">            this.setSelectionInterval(startPosition, endPosition - 1);</span>
@@ -245,7 +245,7 @@ public class DnDList extends JList&lt;ItemList&gt; {
 <span class="nc" id="L245">        }</span>
 <span class="nc" id="L246">    }</span>
 
-    private int initializeItems(int startPosition, File file) {
+    private int initItems(int startPosition, File file) {
 <span class="nc" id="L249">        int endPosition = startPosition;</span>
         
         try (

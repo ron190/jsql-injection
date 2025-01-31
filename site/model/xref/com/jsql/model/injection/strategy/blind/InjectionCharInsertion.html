@@ -120,10 +120,10 @@
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>             Thread.currentThread().interrupt();
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         }
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">this</strong>.initializeFalseMarks();
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">this</strong>.initFalseMarks();
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>     }
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>     
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeFalseMarks() {
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initFalseMarks() {
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>         <em class="jxr_comment">// Concurrent calls to the TRUE statements,</em>
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         <em class="jxr_comment">// it will use inject() from the model.</em>
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>         ExecutorService taskExecutor = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(<span class="jxr_string">"CallableGetBlindTagTrue"</span>);
@@ -174,7 +174,7 @@
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>                 StringUtils.SPACE,
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>                 <strong class="jxr_keyword">this</strong>.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, <span class="jxr_string">"678"</span>)),
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInitialization()
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit()
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>             ),
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>             <strong class="jxr_keyword">this</strong>,
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>             <span class="jxr_string">"prefix#confirm"</span>

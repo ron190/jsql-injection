@@ -39,11 +39,11 @@ import java.util.List;
      */
 <span class="fc" id="L40">    protected transient List&lt;ItemList&gt; dragPaths = null;</span>
     
-    protected abstract String initializeTransferable();
+    protected abstract String initTransferable();
     
     protected abstract void parseStringDrop(TransferSupport support, DnDList list, DefaultListModel&lt;ItemList&gt; listModel);
     
-    protected abstract List&lt;Integer&gt; initializeStringPaste(String clipboardText, int selectedIndex, DefaultListModel&lt;ItemList&gt; listModel);
+    protected abstract List&lt;Integer&gt; initStringPaste(String clipboardText, int selectedIndex, DefaultListModel&lt;ItemList&gt; listModel);
     
     @Override
     public int getSourceActions(JComponent c) {
@@ -54,7 +54,7 @@ import java.util.List;
     protected Transferable createTransferable(JComponent component) {
 <span class="fc" id="L55">        DnDList list = (DnDList) component;</span>
 <span class="fc" id="L56">        this.dragPaths = list.getSelectedValuesList();</span>
-<span class="fc" id="L57">        var stringTransferable = this.initializeTransferable();</span>
+<span class="fc" id="L57">        var stringTransferable = this.initTransferable();</span>
 <span class="fc" id="L58">        return new StringSelection(stringTransferable.trim());</span>
     }
 
@@ -131,7 +131,7 @@ import java.util.List;
 <span class="fc" id="L131">            String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);</span>
 <span class="fc" id="L132">            var selectedIndexPaste = Math.max(list.getSelectedIndex(), 0);</span>
 <span class="fc" id="L133">            list.clearSelection();</span>
-<span class="fc" id="L134">            List&lt;Integer&gt; selectedIndexes = this.initializeStringPaste(clipboardText, selectedIndexPaste, listModel);</span>
+<span class="fc" id="L134">            List&lt;Integer&gt; selectedIndexes = this.initStringPaste(clipboardText, selectedIndexPaste, listModel);</span>
 <span class="fc" id="L135">            var selectedIndexesPasted = new int[selectedIndexes.size()];</span>
 <span class="fc" id="L136">            var i = 0;</span>
             

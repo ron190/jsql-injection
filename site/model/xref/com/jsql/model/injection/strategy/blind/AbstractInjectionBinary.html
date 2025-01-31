@@ -63,7 +63,7 @@
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">boolean</strong> isInjectable() <strong class="jxr_keyword">throws</strong> StoppedByUserSlidingException;
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">void</strong> initializeNextCharacters(
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">void</strong> initNextChars(
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          String sqlQuery,
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          List&lt;<strong class="jxr_keyword">char</strong>[]&gt; bytes,
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          AtomicInteger indexCharacter,
@@ -71,7 +71,7 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          AtomicInteger countTasksSubmitted
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      );
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">char</strong>[] initializeBinaryMask(List&lt;<strong class="jxr_keyword">char</strong>[]&gt; bytes, T currentCallable);
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">char</strong>[] initBinaryMask(List&lt;<strong class="jxr_keyword">char</strong>[]&gt; bytes, T currentCallable);
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment">     * Display a message to explain how is blind/time working.</em>
@@ -100,7 +100,7 @@
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>          <strong class="jxr_keyword">var</strong> countTasksSubmitted = <strong class="jxr_keyword">new</strong> AtomicInteger(0);
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>          <strong class="jxr_keyword">var</strong> countBadAsciiCode = <strong class="jxr_keyword">new</strong> AtomicInteger(0);
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>  
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>          <strong class="jxr_keyword">this</strong>.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>          <strong class="jxr_keyword">this</strong>.initNextChars(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          <em class="jxr_comment">// Process the job until there is no more active task,</em>
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>          <em class="jxr_comment">// in other word until all HTTP requests are done</em>
@@ -121,7 +121,7 @@
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>                 <em class="jxr_comment">// and define a new array of 8 undefined bit.</em>
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>                 <em class="jxr_comment">// Then add 8 bits requests for that new character.</em>
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>                 <strong class="jxr_keyword">this</strong>.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>                 <strong class="jxr_keyword">this</strong>.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>                 <strong class="jxr_keyword">this</strong>.initNextChars(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
 <a class="jxr_linenumber" name="L117" href="#L117">117</a> 
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>                 String result = AbstractInjectionBinary.convert(bytes);
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>                 <strong class="jxr_keyword">if</strong> (result.matches(<span class="jxr_string">"(?s).*"</span>+ DataAccess.TRAIL_RGX +<span class="jxr_string">".*"</span>)) {
@@ -162,7 +162,7 @@
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>         <em class="jxr_comment">// Process url that has just checked one bit, convert bits to chars,</em>
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         <em class="jxr_comment">// and change current bit from undefined to 0 or 1</em>
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>         
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">char</strong>[] asciiCodeMask = <strong class="jxr_keyword">this</strong>.initializeBinaryMask(bytes, currentCallable);
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">char</strong>[] asciiCodeMask = <strong class="jxr_keyword">this</strong>.initBinaryMask(bytes, currentCallable);
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         <strong class="jxr_keyword">var</strong> asciiCodeBinary = <strong class="jxr_keyword">new</strong> String(asciiCodeMask);
 <a class="jxr_linenumber" name="L159" href="#L159">159</a> 
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>         <em class="jxr_comment">// Inform the View if bits array is complete, else nothing #Need fix</em>

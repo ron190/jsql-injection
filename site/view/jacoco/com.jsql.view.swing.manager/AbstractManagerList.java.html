@@ -125,7 +125,7 @@ public abstract class AbstractManagerList extends JPanel {
 
     public void buildPrivilege() {
 <span class="fc" id="L127">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(AbstractManagerList.PRIVILEGE_TOOLTIP)));</span>
-<span class="fc" id="L128">        this.privilege = new JLabel(I18nUtil.valueByKey(&quot;PRIVILEGE_LABEL&quot;), UiUtil.SQUARE.icon, SwingConstants.LEFT) {</span>
+<span class="fc" id="L128">        this.privilege = new JLabel(I18nUtil.valueByKey(&quot;PRIVILEGE_LABEL&quot;), UiUtil.SQUARE.getIcon(), SwingConstants.LEFT) {</span>
             @Override
             public JToolTip createToolTip() {
 <span class="nc" id="L131">                return tooltip.get();</span>

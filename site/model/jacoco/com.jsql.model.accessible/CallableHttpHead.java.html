@@ -92,7 +92,7 @@ public class CallableHttpHead implements Callable&lt;CallableHttpHead&gt; {
 <span class="pc" id="L92">            .forEach(e -&gt; builderHttpRequest.header(e.getKey(), e.getValue()));</span>
             
 <span class="fc" id="L94">            var httpRequest = builderHttpRequest.build();</span>
-<span class="fc" id="L95">            var httpClient = HttpClient.newBuilder()</span>
+<span class="fc" id="L95">            var httpClient = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient()</span>
 <span class="fc" id="L96">                .connectTimeout(Duration.ofSeconds(4))</span>
 <span class="fc" id="L97">                .build();</span>
 <span class="fc" id="L98">            HttpResponse&lt;Void&gt; response = httpClient.send(httpRequest, BodyHandlers.discarding());</span>

@@ -118,9 +118,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * Reset each injection attributes: Database metadata, General Thread status, Strategy.
      */
     public void resetModel() {
-<span class="fc" id="L121">        this.mediatorStrategy.getSpecificNormal().setVisibleIndex(null);</span>
+<span class="fc" id="L121">        this.mediatorStrategy.getSpecificUnion().setVisibleIndex(null);</span>
         
-<span class="fc" id="L123">        this.mediatorStrategy.getNormal().setApplicable(false);</span>
+<span class="fc" id="L123">        this.mediatorStrategy.getUnion().setApplicable(false);</span>
 <span class="fc" id="L124">        this.mediatorStrategy.getError().setApplicable(false);</span>
 <span class="fc" id="L125">        this.mediatorStrategy.getBlind().setApplicable(false);</span>
 <span class="fc" id="L126">        this.mediatorStrategy.getMultibit().setApplicable(false);</span>
@@ -243,7 +243,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L243">        }</span>
 
 <span class="fc" id="L245">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L246">        urlObject = this.initializeQueryString(  // TODO identique urlInjection == urlObject</span>
+<span class="fc" id="L246">        urlObject = this.initQueryString(  // TODO identique urlInjection == urlObject</span>
             isUsingIndex,
             urlInjection,
             dataInjection,
@@ -264,8 +264,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L264">            this.mediatorUtils.getDigestUtil().addHeaderToken(httpRequestBuilder);</span>
 <span class="fc" id="L265">            this.mediatorUtils.getConnectionUtil().setCustomUserAgent(httpRequestBuilder);</span>
 
-<span class="fc" id="L267">            String body = this.initializeRequest(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);</span>
-<span class="fc" id="L268">            this.initializeHeader(isUsingIndex, dataInjection, httpRequestBuilder);</span>
+<span class="fc" id="L267">            String body = this.initRequest(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);</span>
+<span class="fc" id="L268">            this.initHeader(isUsingIndex, dataInjection, httpRequestBuilder);</span>
             
 <span class="fc" id="L270">            var httpRequest = httpRequestBuilder.build();</span>
 
@@ -288,7 +288,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L288">                return report;</span>
             }
             
-<span class="fc" id="L291">            HttpResponse&lt;String&gt; response = this.getMediatorUtils().getConnectionUtil().getHttpClient().send(</span>
+<span class="fc" id="L291">            HttpResponse&lt;String&gt; response = this.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(</span>
 <span class="fc" id="L292">                httpRequestBuilder.build(),</span>
 <span class="fc" id="L293">                BodyHandlers.ofString()</span>
             );
@@ -319,7 +319,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L319">            msgHeader.put(</span>
                 Header.SOURCE,
                 pageSource
-<span class="fc" id="L322">                .replaceAll(&quot;(#){60,}&quot;, &quot;$1...&quot;)  // Remove ranges of # created by calibration</span>
+<span class="fc" id="L322">                .replaceAll(&quot;(&quot;+ VendorYaml.CALIBRATOR_SQL +&quot;){60,}&quot;, &quot;$1...&quot;)  // Remove ranges of # created by calibration</span>
 <span class="fc" id="L323">                .replaceAll(&quot;(jIyM){60,}&quot;, &quot;$1...&quot;)  // Remove batch of chars created by Dios</span>
             );
 <span class="fc" id="L325">            msgHeader.put(Header.METADATA_PROCESS, metadataInjectionProcess);</span>
@@ -345,7 +345,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L345">        return pageSource;</span>
     }
 
-    private URL initializeQueryString(
+    private URL initQueryString(
         boolean isUsingIndex,
         String urlInjection,
         String dataInjection,
@@ -389,7 +389,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L389">        return urlObjectFixed;</span>
     }
 
-    private void initializeHeader(
+    private void initHeader(
         boolean isUsingIndex,
         String dataInjection,
         Builder httpRequest
@@ -422,7 +422,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
 <span class="fc" id="L423">    }</span>
 
-    private String initializeRequest(
+    private String initRequest(
         boolean isUsingIndex,
         String dataInjection,
         Builder httpRequest,
@@ -508,9 +508,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // then replace injection point by SQL expression in this parameter
 <span class="fc bfc" id="L509" title="All 2 branches covered.">            paramLeadFixed.contains(InjectionModel.STAR)</span>
         ) {
-<span class="fc" id="L511">            query = this.initializeStarInjection(paramLeadFixed, isUsingIndex, sqlTrail);</span>
+<span class="fc" id="L511">            query = this.initStarInjection(paramLeadFixed, isUsingIndex, sqlTrail);</span>
         } else {
-<span class="fc" id="L513">            query = this.initializeRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);</span>
+<span class="fc" id="L513">            query = this.initRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);</span>
         }
         // Remove comments except empty /**/
 <span class="fc" id="L516">        query = this.cleanQuery(methodInjection, query);</span>
@@ -521,7 +521,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L521">        return this.applyEncoding(methodInjection, query);</span>
     }
 
-    private String initializeRawInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
+    private String initRawInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
         String query;
         // Method is selected by user and there's no injection point
 <span class="pc bpc" id="L527" title="1 of 2 branches missed.">        if (!isUsingIndex) {</span>
@@ -530,10 +530,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // in that case concat SQL expression to the end of param.
 <span class="fc" id="L531">            query = paramLead + sqlTrail;</span>
         } else {
-            // Concat indexes found for Normal strategy to params
+            // Concat indexes found for Union strategy to params
             // and use visible Index for injection
 <span class="nc" id="L535">            query = paramLead + this.indexesInUrl.replaceAll(</span>
-<span class="nc" id="L536">                String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificNormal().getVisibleIndex()),</span>
+<span class="nc" id="L536">                String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),</span>
                 // Oracle column often contains $, which is reserved for regex.
                 // =&gt; need to be escape with quoteReplacement()
 <span class="nc" id="L539">                Matcher.quoteReplacement(sqlTrail)</span>
@@ -543,7 +543,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L543">        return query + this.mediatorVendor.getVendor().instance().endingComment();</span>
     }
 
-    private String initializeStarInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
+    private String initStarInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
         String query;
         // Several SQL expressions does not use indexes in SELECT,
         // like Boolean, Error, Shell and search for character insertion,
@@ -555,12 +555,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L555">                sqlTrail + this.mediatorVendor.getVendor().instance().endingComment()</span>
             );
         } else {
-            // Replace injection point by indexes found for Normal strategy
+            // Replace injection point by indexes found for Union strategy
             // and use visible Index for injection
 <span class="fc" id="L560">            query = paramLead.replace(</span>
                 InjectionModel.STAR,
 <span class="fc" id="L562">                this.indexesInUrl.replace(</span>
-<span class="fc" id="L563">                    String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificNormal().getVisibleIndex()),</span>
+<span class="fc" id="L563">                    String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),</span>
                     sqlTrail
                 )
 <span class="fc" id="L566">                + this.mediatorVendor.getVendor().instance().endingComment()</span>
@@ -625,10 +625,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 // For cookies in Spring (confirmed, covered by integration tests)
 <span class="fc" id="L626">                queryFixed = queryFixed.replace(&quot;+&quot;, &quot;%20&quot;);</span>
 <span class="fc" id="L627">                queryFixed = queryFixed.replace(&quot;,&quot;, &quot;%2c&quot;);</span>
-<span class="fc" id="L628">                queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);</span>
+                try {  // fix #95709: IllegalArgumentException on decode()
+<span class="fc" id="L629">                    queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L630">                } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L631">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect values in [{}], please check the parameters&quot;, methodInjection.name());</span>
+<span class="nc" id="L632">                    throw new JSqlRuntimeException(e);</span>
+<span class="fc" id="L633">                }</span>
             }
         }
-<span class="fc" id="L631">        return queryFixed;</span>
+<span class="fc" id="L636">        return queryFixed;</span>
     }
     
     /**
@@ -637,67 +642,67 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * @param source Text to display in console
      */
     public void sendResponseFromSite(String message, String source) {
-<span class="fc" id="L640">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{}, response from site:&quot;, message);</span>
-<span class="fc" id="L641">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;&gt;&gt;&gt;{}&quot;, source);</span>
-<span class="fc" id="L642">    }</span>
+<span class="fc" id="L645">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{}, response from site:&quot;, message);</span>
+<span class="fc" id="L646">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;&gt;&gt;&gt;{}&quot;, source);</span>
+<span class="fc" id="L647">    }</span>
     
     
     // Getters and setters
 
     public String getIndexesInUrl() {
-<span class="fc" id="L648">        return this.indexesInUrl;</span>
+<span class="fc" id="L653">        return this.indexesInUrl;</span>
     }
 
     public void setIndexesInUrl(String indexesInUrl) {
-<span class="fc" id="L652">        this.indexesInUrl = indexesInUrl;</span>
-<span class="fc" id="L653">    }</span>
+<span class="fc" id="L657">        this.indexesInUrl = indexesInUrl;</span>
+<span class="fc" id="L658">    }</span>
 
     public boolean shouldErasePreviousInjection() {
-<span class="nc" id="L656">        return this.shouldErasePreviousInjection;</span>
+<span class="nc" id="L661">        return this.shouldErasePreviousInjection;</span>
     }
 
     public void setIsScanning(boolean isScanning) {
-<span class="fc" id="L660">        this.isScanning = isScanning;</span>
-<span class="fc" id="L661">    }</span>
+<span class="fc" id="L665">        this.isScanning = isScanning;</span>
+<span class="fc" id="L666">    }</span>
 
     public PropertiesUtil getPropertiesUtil() {
-<span class="fc" id="L664">        return this.propertiesUtil;</span>
+<span class="fc" id="L669">        return this.propertiesUtil;</span>
     }
 
     public MediatorUtils getMediatorUtils() {
-<span class="fc" id="L668">        return this.mediatorUtils;</span>
+<span class="fc" id="L673">        return this.mediatorUtils;</span>
     }
 
     public MediatorVendor getMediatorVendor() {
-<span class="fc" id="L672">        return this.mediatorVendor;</span>
+<span class="fc" id="L677">        return this.mediatorVendor;</span>
     }
 
     public MediatorMethod getMediatorMethod() {
-<span class="fc" id="L676">        return this.mediatorMethod;</span>
+<span class="fc" id="L681">        return this.mediatorMethod;</span>
     }
 
     public DataAccess getDataAccess() {
-<span class="fc" id="L680">        return this.dataAccess;</span>
+<span class="fc" id="L685">        return this.dataAccess;</span>
     }
 
     public ResourceAccess getResourceAccess() {
-<span class="fc" id="L684">        return this.resourceAccess;</span>
+<span class="fc" id="L689">        return this.resourceAccess;</span>
     }
 
     public UdfAccess getUdfAccess() {
-<span class="fc" id="L688">        return this.udfAccess;</span>
+<span class="fc" id="L693">        return this.udfAccess;</span>
     }
 
     public MediatorStrategy getMediatorStrategy() {
-<span class="fc" id="L692">        return this.mediatorStrategy;</span>
+<span class="fc" id="L697">        return this.mediatorStrategy;</span>
     }
 
     public void appendAnalysisReport(String analysisReport) {
-<span class="fc" id="L696">        this.appendAnalysisReport(analysisReport, false);</span>
-<span class="fc" id="L697">    }</span>
+<span class="fc" id="L701">        this.appendAnalysisReport(analysisReport, false);</span>
+<span class="fc" id="L702">    }</span>
 
     public void appendAnalysisReport(String analysisReport, boolean isInit) {
-<span class="fc bfc" id="L700" title="All 2 branches covered.">        this.analysisReport += (isInit ? StringUtils.EMPTY : &quot;&lt;br&gt;&lt;br&gt;&quot;) + analysisReport;</span>
-<span class="fc" id="L701">    }</span>
+<span class="fc bfc" id="L705" title="All 2 branches covered.">        this.analysisReport += (isInit ? StringUtils.EMPTY : &quot;&lt;br&gt;&lt;br&gt;&quot;) + analysisReport;</span>
+<span class="fc" id="L706">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

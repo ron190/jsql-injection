@@ -93,9 +93,9 @@ public class ParameterUtil {
 <span class="nc" id="L93">                urlQueryFixed = urlQueryFixed.replace(authority, authorityPunycode);</span>
             }
 
-<span class="nc" id="L96">            this.initializeQueryString(urlQueryFixed);</span>
-<span class="nc" id="L97">            this.initializeHeader(rawHeader);</span>
-<span class="nc" id="L98">            this.initializeRequest(rawRequest);</span>
+<span class="nc" id="L96">            this.initQueryString(urlQueryFixed);</span>
+<span class="nc" id="L97">            this.initHeader(rawHeader);</span>
+<span class="nc" id="L98">            this.initRequest(rawRequest);</span>
 
 <span class="nc" id="L100">            this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);</span>
 <span class="nc" id="L101">            this.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);</span>
@@ -260,7 +260,7 @@ public class ParameterUtil {
         }
 <span class="fc" id="L261">    }</span>
     
-    public String initializeStar(SimpleEntry&lt;String, String&gt; parameterToInject) {
+    public String initStar(SimpleEntry&lt;String, String&gt; parameterToInject) {
         String characterInsertionByUser;
 <span class="pc bpc" id="L265" title="1 of 2 branches missed.">        if (parameterToInject == null) {</span>
 <span class="nc" id="L266">            characterInsertionByUser = InjectionModel.STAR;</span>
@@ -271,7 +271,7 @@ public class ParameterUtil {
 <span class="fc" id="L271">        return characterInsertionByUser;</span>
     }
 
-    public void initializeQueryString(String urlQuery) throws MalformedURLException, URISyntaxException {
+    public void initQueryString(String urlQuery) throws MalformedURLException, URISyntaxException {
         // Format and get rid of anchor fragment using native URL
 <span class="fc" id="L276">        var url = new URI(urlQuery).toURL();</span>
         
@@ -306,7 +306,7 @@ public class ParameterUtil {
         }
 <span class="fc" id="L307">    }</span>
 
-    public void initializeRequest(String rawRequest) {
+    public void initRequest(String rawRequest) {
 <span class="fc" id="L310">        this.rawRequest = rawRequest;</span>
 <span class="fc" id="L311">        this.listRequest.clear();</span>
 <span class="fc bfc" id="L312" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawRequest)) {</span>
@@ -329,7 +329,7 @@ public class ParameterUtil {
         }
 <span class="fc" id="L330">    }</span>
 
-    public void initializeHeader(String rawHeader) {
+    public void initHeader(String rawHeader) {
 <span class="fc" id="L333">        this.rawHeader = rawHeader;</span>
 <span class="fc" id="L334">        this.listHeader.clear();</span>
 <span class="fc bfc" id="L335" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawHeader)) {</span>

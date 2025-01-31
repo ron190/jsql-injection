@@ -73,7 +73,7 @@
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>                  JLabel label = (JLabel) <strong class="jxr_keyword">super</strong>.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>                  <a name="ItemList" href="../../../../../com/jsql/view/swing/list/ItemList.html#ItemList">ItemList</a> itemList = (<a name="ItemList" href="../../../../../com/jsql/view/swing/list/ItemList.html#ItemList">ItemList</a>) value;
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>                  <strong class="jxr_keyword">if</strong> (itemList.isVulnerable()) {
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>                      label.setIcon(UiUtil.TICK_GREEN.icon);
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>                      label.setIcon(UiUtil.TICK_GREEN.getIcon());
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>                  }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>                  <strong class="jxr_keyword">return</strong> label;
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>              }
@@ -181,7 +181,7 @@
 <a class="jxr_linenumber" name="L173" href="#L173">173</a> <em class="jxr_javadoccomment">     * Unplug any existing view and plug a console-like view in order to</em>
 <a class="jxr_linenumber" name="L174" href="#L174">174</a> <em class="jxr_javadoccomment">     * respond appropriately to GUI message with simple text result instead of</em>
 <a class="jxr_linenumber" name="L175" href="#L175">175</a> <em class="jxr_javadoccomment">     * build complex graphical components during the multi website injections.</em>
-<a class="jxr_linenumber" name="L176" href="#L176">176</a> <em class="jxr_javadoccomment">     * At the end of the scan it plugs again the normal view.</em>
+<a class="jxr_linenumber" name="L176" href="#L176">176</a> <em class="jxr_javadoccomment">     * At the end of the scan it plugs again the default view.</em>
 <a class="jxr_linenumber" name="L177" href="#L177">177</a> <em class="jxr_javadoccomment">     * @param urlsItemList contains a list of String URL</em>
 <a class="jxr_linenumber" name="L178" href="#L178">178</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> scan(List&lt;ItemList&gt; urlsItemList) {
@@ -240,7 +240,7 @@
 <a class="jxr_linenumber" name="L232" href="#L232">232</a>             }
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>         }
 <a class="jxr_linenumber" name="L234" href="#L234">234</a>         
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>         <em class="jxr_comment">// Get back the normal view</em>
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>         <em class="jxr_comment">// Get back the default view</em>
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>         MediatorHelper.model().sendToViews(requestUnsubscribe);
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>         MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriber());
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>         

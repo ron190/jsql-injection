@@ -150,7 +150,7 @@ public class PanelAddressBar extends JPanel {
 
 <span class="fc" id="L151">        this.panelTrailingAddress = new PanelTrailingAddress(this);</span>
 <span class="fc" id="L152">        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, this.panelTrailingAddress);</span>
-<span class="fc" id="L153">        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, UiUtil.GLOBE.icon);</span>
+<span class="fc" id="L153">        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, UiUtil.GLOBE.getIcon());</span>
 <span class="fc" id="L154">        this.atomicTextFieldRequest.get().putClientProperty(</span>
             FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT,
 <span class="fc" id="L156">            new ButtonExpandText(&quot;Add request body&quot;, this.atomicTextFieldRequest.get())</span>
@@ -160,11 +160,11 @@ public class PanelAddressBar extends JPanel {
 <span class="fc" id="L160">            new ButtonExpandText(&quot;Add header body&quot;, this.atomicTextFieldHeader.get())</span>
         );
 
-<span class="fc" id="L163">        this.initializeLayout();</span>
+<span class="fc" id="L163">        this.initLayout();</span>
 <span class="fc" id="L164">    }</span>
 
-    private void initializeLayout() {
-<span class="fc" id="L167">        final JLabel advancedButton = this.initializeAdvancedButton();</span>
+    private void initLayout() {
+<span class="fc" id="L167">        final JLabel advancedButton = this.initAdvancedButton();</span>
         
 <span class="fc" id="L169">        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));</span>
         
@@ -353,9 +353,9 @@ public class PanelAddressBar extends JPanel {
         }
 <span class="nc" id="L354">    }</span>
 
-    private JLabel initializeAdvancedButton() {
+    private JLabel initAdvancedButton() {
 <span class="fc" id="L357">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(PanelAddressBar.BUTTON_ADVANCED)));</span>
-<span class="fc" id="L358">        var advancedButton = new JLabel(UiUtil.ARROW_DOWN.icon) {</span>
+<span class="fc" id="L358">        var advancedButton = new JLabel(UiUtil.ARROW_DOWN.getIcon()) {</span>
             @Override
             public JToolTip createToolTip() {
 <span class="nc" id="L361">                return tooltip.get();</span>
@@ -367,7 +367,7 @@ public class PanelAddressBar extends JPanel {
 <span class="fc" id="L367">        advancedButton.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mouseClicked(MouseEvent e) {
-<span class="fc bfc" id="L370" title="All 2 branches covered.">                boolean isVisible = advancedButton.getIcon() == UiUtil.ARROW_DOWN.icon;</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">                boolean isVisible = advancedButton.getIcon() == UiUtil.ARROW_DOWN.getIcon();</span>
 <span class="fc" id="L371">                PanelAddressBar.this.atomicTextFieldRequest.get().setVisible(isVisible);</span>
 <span class="fc" id="L372">                PanelAddressBar.this.atomicTextFieldHeader.get().setVisible(isVisible);</span>
 <span class="fc" id="L373">                PanelAddressBar.this.atomicRadioRequest.get().setVisible(isVisible);</span>
@@ -375,7 +375,7 @@ public class PanelAddressBar extends JPanel {
 <span class="fc" id="L375">                PanelAddressBar.this.atomicRadioHeader.get().setVisible(isVisible);</span>
 <span class="fc" id="L376">                PanelAddressBar.this.isAdvanceActivated = isVisible;</span>
 <span class="fc" id="L377">                MediatorHelper.menubar().setVisible(isVisible);</span>
-<span class="fc bfc" id="L378" title="All 2 branches covered.">                advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.icon : UiUtil.ARROW_DOWN.icon);</span>
+<span class="fc bfc" id="L378" title="All 2 branches covered.">                advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.getIcon() : UiUtil.ARROW_DOWN.getIcon());</span>
 <span class="fc" id="L379">            }</span>
         });
 <span class="fc" id="L381">        return advancedButton;</span>

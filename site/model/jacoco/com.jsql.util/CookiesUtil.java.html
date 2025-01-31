@@ -29,7 +29,7 @@ public class CookiesUtil {
 <span class="pc bpc" id="L29" title="1 of 2 branches missed.">            if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam()) {</span>
 <span class="nc" id="L30">                return false;</span>
             }
-<span class="fc" id="L32">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} cookies...&quot;, I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
+<span class="fc" id="L32">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} cookies...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
         } else {
 <span class="fc" id="L34">            return true;</span>
         }
@@ -55,7 +55,7 @@ public class CookiesUtil {
 <span class="fc" id="L55">            String keyValue = cookie.getKey() + &quot;=&quot; + cookie.getValue();</span>
 <span class="fc" id="L56">            String headerCookieWithStar = rawHeader.replace(keyValue, keyValue + InjectionModel.STAR);</span>
 
-<span class="fc" id="L58">            this.injectionModel.getMediatorUtils().getParameterUtil().initializeHeader(headerCookieWithStar);</span>
+<span class="fc" id="L58">            this.injectionModel.getMediatorUtils().getParameterUtil().initHeader(headerCookieWithStar);</span>
 
             try {
 <span class="fc" id="L61">                LOGGER.log(</span>

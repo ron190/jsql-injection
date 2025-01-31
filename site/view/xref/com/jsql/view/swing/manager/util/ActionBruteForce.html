@@ -92,7 +92,7 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">this</strong>.bruteForceManager.getResult().setText(<strong class="jxr_keyword">null</strong>);
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> hashBruter = <strong class="jxr_keyword">new</strong> HashBruter();
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">this</strong>.initializeBruter(hashBruter);
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">this</strong>.initBruter(hashBruter);
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          <em class="jxr_comment">// Begin the reverse hashing process</em>
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          <strong class="jxr_keyword">new</strong> Thread(hashBruter::tryBruteForce, <span class="jxr_string">"ThreadRunBruteForce"</span>).start();
@@ -161,7 +161,7 @@
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>         );
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>     }
 <a class="jxr_linenumber" name="L155" href="#L155">155</a> 
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeBruter(<strong class="jxr_keyword">final</strong> HashBruter hashBruter) {
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initBruter(<strong class="jxr_keyword">final</strong> HashBruter hashBruter) {
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         hashBruter.setMinLength(Integer.parseInt(<strong class="jxr_keyword">this</strong>.bruteForceManager.getMinimumLength().getValue().toString()));
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         hashBruter.setMaxLength(Integer.parseInt(<strong class="jxr_keyword">this</strong>.bruteForceManager.getMaximumLength().getValue().toString()));
 <a class="jxr_linenumber" name="L159" href="#L159">159</a> 

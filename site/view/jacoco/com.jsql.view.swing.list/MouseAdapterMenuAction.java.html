@@ -58,7 +58,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             
 <span class="fc" id="L59">            JList&lt;ItemList&gt; list = (JList&lt;ItemList&gt;) mouseEvent.getSource();</span>
 
-<span class="fc" id="L61">            JPopupMenu popupMenuList = this.initializeMenu(mouseEvent);</span>
+<span class="fc" id="L61">            JPopupMenu popupMenuList = this.initMenu(mouseEvent);</span>
 <span class="fc" id="L62">            popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));</span>
             // Fix #26274: IllegalComponentStateException on show()
             try {
@@ -82,7 +82,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         }
 <span class="fc" id="L83">    }</span>
 
-    private JPopupMenu initializeMenu(final MouseEvent mouseEvent) {
+    private JPopupMenu initMenu(final MouseEvent mouseEvent) {
 <span class="fc" id="L86">        var popupMenuList = new JPopupMenu();</span>
         
 <span class="fc" id="L88">        boolean isNonUbuntu = I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale());</span>

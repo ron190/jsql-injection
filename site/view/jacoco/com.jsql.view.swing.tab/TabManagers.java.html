@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class TabManagers extends TabbedPaneWheeled {
 
-<span class="fc" id="L34">    private final List&lt;ModelSvgIcon&gt; iconsTabs = Arrays.asList(</span>
+<span class="fc" id="L34">    private final transient List&lt;ModelSvgIcon&gt; iconsTabs = Arrays.asList(</span>
         UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH
     );
 
@@ -52,9 +52,9 @@ public class TabManagers extends TabbedPaneWheeled {
 <span class="fc" id="L52">    }</span>
     
     private void buildI18nTab(ModelSvgIcon modelSvgIcon, int index) {
-<span class="fc" id="L55">        Icon icon = modelSvgIcon.icon;</span>
-<span class="fc" id="L56">        String keyLabel = modelSvgIcon.keyLabel;</span>
-<span class="fc" id="L57">        String keyTooltip = modelSvgIcon.keyTooltip;</span>
+<span class="fc" id="L55">        Icon icon = modelSvgIcon.getIcon();</span>
+<span class="fc" id="L56">        String keyLabel = modelSvgIcon.getKeyLabel();</span>
+<span class="fc" id="L57">        String keyTooltip = modelSvgIcon.getKeyTooltip();</span>
 <span class="fc" id="L58">        AtomicReference&lt;JToolTipI18n&gt; tooltipAtomic = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(keyTooltip)));</span>
 <span class="fc" id="L59">        JLabel labelTab = new JLabel(I18nUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {</span>
             @Override

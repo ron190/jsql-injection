@@ -65,9 +65,9 @@ public class ButtonStart extends JButton {
 
     private void setIcons() {
         // required to get correct color at startup instead of blu
-<span class="fc" id="L68">        this.setIcon(UiUtil.ARROW.icon);</span>
-<span class="fc" id="L69">        this.setRolloverIcon(UiUtil.ARROW_HOVER.icon);</span>
-<span class="fc" id="L70">        this.setPressedIcon(UiUtil.ARROW_PRESSED.icon);</span>
+<span class="fc" id="L68">        this.setIcon(UiUtil.ARROW.getIcon());</span>
+<span class="fc" id="L69">        this.setRolloverIcon(UiUtil.ARROW_HOVER.getIcon());</span>
+<span class="fc" id="L70">        this.setPressedIcon(UiUtil.ARROW_PRESSED.getIcon());</span>
 <span class="fc" id="L71">    }</span>
 
     /**
@@ -87,7 +87,7 @@ public class ButtonStart extends JButton {
 <span class="fc" id="L87">        this.state = StateButton.STOPPABLE;</span>
 <span class="fc" id="L88">        this.setRolloverEnabled(false);</span>
 <span class="fc" id="L89">        this.setEnabled(true);</span>
-<span class="fc" id="L90">        this.setIcon(UiUtil.CROSS_RED.icon);</span>
+<span class="fc" id="L90">        this.setIcon(UiUtil.CROSS_RED.getIcon());</span>
 <span class="fc" id="L91">    }</span>
 
     /**
@@ -98,7 +98,7 @@ public class ButtonStart extends JButton {
 <span class="nc" id="L98">        this.state = StateButton.STOPPING;</span>
 <span class="nc" id="L99">        this.setRolloverEnabled(false);</span>
 <span class="nc" id="L100">        this.setEnabled(false);</span>
-<span class="nc" id="L101">        this.setIcon(UiUtil.HOURGLASS.icon);</span>
+<span class="nc" id="L101">        this.setIcon(UiUtil.HOURGLASS.getIcon());</span>
 <span class="nc" id="L102">    }</span>
 
     /**

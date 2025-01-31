@@ -70,20 +70,20 @@ public class PanelTable extends JPanel {
 <span class="fc" id="L70">        this.tableValues.setRowSelectionAllowed(true);</span>
 <span class="fc" id="L71">        this.tableValues.setCellSelectionEnabled(true);</span>
 
-<span class="fc" id="L73">        this.initializeRenderer();</span>
+<span class="fc" id="L73">        this.initRenderer();</span>
 
 <span class="fc" id="L75">        this.tableValues.getTableHeader().setReorderingAllowed(false);</span>
 
-<span class="fc" id="L77">        this.initializeMouseEvent();</span>
-<span class="fc" id="L78">        this.initializeTabShortcut();</span>
+<span class="fc" id="L77">        this.initMouseEvent();</span>
+<span class="fc" id="L78">        this.initTabShortcut();</span>
 
 <span class="fc" id="L80">        var columnAdjuster = new AdjusterTableColumn(this.tableValues);</span>
 <span class="fc" id="L81">        columnAdjuster.adjustColumns();</span>
 
 <span class="fc" id="L83">        final TableRowSorter&lt;TableModel&gt; rowSorter = new TableRowSorter&lt;&gt;(this.tableValues.getModel());</span>
 <span class="fc" id="L84">        this.tableValues.setRowSorter(rowSorter);</span>
-<span class="fc" id="L85">        this.initializeTableScroller();</span>
-<span class="fc" id="L86">        this.initializePanelSearch(rowSorter);</span>
+<span class="fc" id="L85">        this.initTableScroller();</span>
+<span class="fc" id="L86">        this.initPanelSearch(rowSorter);</span>
 
 <span class="fc" id="L88">        Comparator&lt;Object&gt; comparatorNumeric = new ComparatorColumn&lt;&gt;();</span>
 <span class="fc bfc" id="L89" title="All 2 branches covered.">        for (var i = 0 ; i &lt; this.tableValues.getColumnCount() ; i++) {</span>
@@ -91,7 +91,7 @@ public class PanelTable extends JPanel {
         }
 <span class="fc" id="L92">    }</span>
 
-    private void initializeMouseEvent() {
+    private void initMouseEvent() {
 <span class="fc" id="L95">        this.tableValues.setDragEnabled(true);</span>
 <span class="fc" id="L96">        this.tableValues.addMouseListener(new MouseAdapter() {</span>
             @Override
@@ -112,7 +112,7 @@ public class PanelTable extends JPanel {
         });
 <span class="fc" id="L113">    }</span>
 
-    private void initializeRenderer() {
+    private void initRenderer() {
 <span class="fc" id="L116">        final TableCellRenderer cellRendererHeader = this.tableValues.getTableHeader().getDefaultRenderer();</span>
 <span class="fc" id="L117">        this.tableValues.getTableHeader().setDefaultRenderer(</span>
 <span class="fc" id="L118">            (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -&gt; cellRendererHeader.getTableCellRendererComponent(</span>
@@ -144,14 +144,14 @@ public class PanelTable extends JPanel {
         );
 <span class="fc" id="L145">    }</span>
 
-    private void initializeTableScroller() {
+    private void initTableScroller() {
 <span class="fc" id="L148">        var scroller = new JScrollPane(this.tableValues);</span>
 <span class="fc" id="L149">        var tableFixedColumn = new FixedColumnTable();</span>
 <span class="fc" id="L150">        tableFixedColumn.fixColumnSize(2, scroller);</span>
 <span class="fc" id="L151">        this.add(scroller, BorderLayout.CENTER);</span>
 <span class="fc" id="L152">    }</span>
 
-    private void initializePanelSearch(final TableRowSorter&lt;TableModel&gt; rowSorter) {
+    private void initPanelSearch(final TableRowSorter&lt;TableModel&gt; rowSorter) {
 <span class="fc" id="L155">        final var panelSearch = new JPanel(new BorderLayout());</span>
 
 <span class="fc" id="L157">        final JTextField textFilter = new JTextFieldPlaceholder(&quot;Find in table&quot;);</span>
@@ -200,7 +200,7 @@ public class PanelTable extends JPanel {
 <span class="fc" id="L200">        this.add(panelSearch, BorderLayout.SOUTH);</span>
 <span class="fc" id="L201">    }</span>
 
-    private void initializeTabShortcut() {
+    private void initTabShortcut() {
 <span class="fc" id="L204">        this.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(</span>
 <span class="fc" id="L205">            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0),</span>
             null

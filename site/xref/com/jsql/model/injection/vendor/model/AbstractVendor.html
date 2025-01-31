@@ -26,7 +26,7 @@
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>      String sqlColumns(<a name="Table" href="../../../../../../com/jsql/model/bean/database/Table.html#Table">Table</a> table);
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>      String sqlRows(String[] arrayColumns, <a name="Database" href="../../../../../../com/jsql/model/bean/database/Database.html#Database">Database</a> database, <a name="Table" href="../../../../../../com/jsql/model/bean/database/Table.html#Table">Table</a> table);
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>      String sqlNormal(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport);
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>      String sqlUnion(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport);
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>      String sqlErrorIndice(<a name="Method" href="../../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod);
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      String sqlErrorCalibrator(<a name="Method" href="../../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod);
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>      String sqlError(String sqlQuery, String startPosition, <strong class="jxr_keyword">int</strong> indexMethodError, <strong class="jxr_keyword">boolean</strong> isReport);
@@ -48,7 +48,7 @@
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      List&lt;String&gt; getFalsy();
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      List&lt;String&gt; getTruthy();
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      String sqlTestBinaryInitialization();
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      String sqlTestBinaryInit();
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      String sqlTestBlind(String check, BinaryMode blindMode);
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      String sqlBitTestBlind(String inj, <strong class="jxr_keyword">int</strong> indexCharacter, <strong class="jxr_keyword">int</strong> bit, BinaryMode blindMode);
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      String sqlTimeTest(String check, BinaryMode blindMode);

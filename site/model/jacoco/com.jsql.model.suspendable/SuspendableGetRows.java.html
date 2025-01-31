@@ -92,7 +92,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L92">            if (</span>
 <span class="fc bfc" id="L93" title="All 6 branches covered.">                (!regexLeadFound.find() || regexTrailOnlyFound.find())</span>
                 &amp;&amp; isMultipleRows
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
             ) {
 <span class="fc" id="L97">                this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);</span>
 <span class="fc" id="L98">                break;</span>
@@ -123,7 +123,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
             // =&gt; \4xxxxxxxx\500\4\6\4...\4\1\3\3\7
 <span class="fc bfc" id="L124" title="All 2 branches covered.">            if (</span>
                 countChunkRows &gt; 0
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">                || slidingWindowCurrentRow.toString().matches(&quot;(?s).*&quot;+ TRAIL_RGX +&quot;.*&quot;)</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                || slidingWindowCurrentRow.toString().matches(&quot;(?s).*&quot;+ TRAIL_RGX +&quot;.*&quot;)</span>
             ) {
 <span class="fc" id="L128">                this.scrapeTrailJunk(slidingWindowCurrentRow);</span>
 <span class="fc" id="L129">                slidingWindowAllRows.append(slidingWindowCurrentRow);</span>
@@ -297,13 +297,13 @@ public class SuspendableGetRows extends AbstractSuspendable {
         StringBuilder slidingWindowAllRows
     ) throws LoopDetectedSlidingException {
 <span class="fc" id="L299">        int infiniteLoop = loop;</span>
-<span class="pc bpc" id="L300" title="1 of 2 branches missed.">        if (previousChunk.equals(currentChunk)) {</span>
-<span class="nc" id="L301">            infiniteLoop++;</span>
-<span class="nc bnc" id="L302" title="All 2 branches missed.">            if (infiniteLoop &gt;= 20) {</span>
-<span class="nc" id="L303">                this.stop();</span>
-<span class="nc" id="L304">                throw new LoopDetectedSlidingException(</span>
-<span class="nc" id="L305">                    slidingWindowAllRows.toString(),</span>
-<span class="nc" id="L306">                    slidingWindowCurrentRow.toString()</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">        if (previousChunk.equals(currentChunk)) {</span>
+<span class="fc" id="L301">            infiniteLoop++;</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">            if (infiniteLoop &gt;= 20) {</span>
+<span class="fc" id="L303">                this.stop();</span>
+<span class="fc" id="L304">                throw new LoopDetectedSlidingException(</span>
+<span class="fc" id="L305">                    slidingWindowAllRows.toString(),</span>
+<span class="fc" id="L306">                    slidingWindowCurrentRow.toString()</span>
                 );
             }
         }

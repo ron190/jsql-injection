@@ -75,9 +75,9 @@
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          <strong class="jxr_keyword">this</strong>.injectionModel = injectionModel;
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          MediatorHelper.register(<strong class="jxr_keyword">this</strong>);
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          UiUtil.prepareGUI();  <em class="jxr_comment">// Load UI before any component</em>
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">this</strong>.initializePaneComponents();
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">this</strong>.initializeWindow();
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">this</strong>.initializeShortcuts();
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">this</strong>.initPaneComponents();
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">this</strong>.initWindow();
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">this</strong>.initShortcuts();
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">this</strong>.displayVersion();
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          I18nUtil.checkCurrentLanguage();
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          <strong class="jxr_keyword">this</strong>.check4K();
@@ -95,7 +95,7 @@
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          });
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>      }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializePaneComponents() {
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initPaneComponents() {
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>          <em class="jxr_comment">// Define the default panel: each component on a vertical line</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>          <strong class="jxr_keyword">this</strong>.getContentPane().setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(<strong class="jxr_keyword">this</strong>.getContentPane(), BoxLayout.PAGE_AXIS));
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  
@@ -118,7 +118,7 @@
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         menubar.getMenuWindows().switchLocaleFromPreferences();
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>     }
 <a class="jxr_linenumber" name="L112" href="#L112">112</a> 
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeWindow() {
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initWindow() {
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">this</strong>.setIconImages(UiUtil.getIcons());  <em class="jxr_comment">// define small and large app icons</em>
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">var</strong> preferences = Preferences.userRoot().node(InjectionModel.<strong class="jxr_keyword">class</strong>.getName());
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>         <strong class="jxr_keyword">this</strong>.addWindowStateListener(e -&gt; <strong class="jxr_keyword">this</strong>.isMaximized = (e.getNewState() &amp; Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH);
@@ -181,7 +181,7 @@
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>         MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>     }
 <a class="jxr_linenumber" name="L175" href="#L175">175</a> 
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeShortcuts() {
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initShortcuts() {
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>         HotkeyUtil.addShortcut(<strong class="jxr_keyword">this</strong>.getRootPane(), MediatorHelper.tabResults());
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>         HotkeyUtil.addTextFieldShortcutSelectAll();
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>     }
@@ -201,7 +201,7 @@
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         Stream.of(MediatorHelper.managerFile(), MediatorHelper.managerExploit()).forEach(managerList -&gt; {
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>             managerList.setButtonEnable(false);
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>             managerList.changePrivilegeIcon(UiUtil.SQUARE.icon);
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>             managerList.changePrivilegeIcon(UiUtil.SQUARE.getIcon());
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>         });
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>     }
 <a class="jxr_linenumber" name="L199" href="#L199">199</a> 

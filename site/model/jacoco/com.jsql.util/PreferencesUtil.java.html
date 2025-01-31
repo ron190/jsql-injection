@@ -84,10 +84,10 @@ import java.util.prefs.Preferences;
 <span class="fc" id="L84">    private boolean isStrategyMultibitDisabled = false;</span>
 <span class="fc" id="L85">    private boolean isStrategyStackDisabled = false;</span>
 <span class="fc" id="L86">    private boolean isStrategyErrorDisabled = false;</span>
-<span class="fc" id="L87">    private boolean isStrategyNormalDisabled = false;</span>
+<span class="fc" id="L87">    private boolean isStrategyUnionDisabled = false;</span>
 
-<span class="fc" id="L89">    private boolean isLimitingNormalIndex = false;</span>
-<span class="fc" id="L90">    private int countNormalIndex = 50;</span>
+<span class="fc" id="L89">    private boolean isLimitingUnionIndex = false;</span>
+<span class="fc" id="L90">    private int countUnionIndex = 50;</span>
 <span class="fc" id="L91">    private boolean isLimitingSleepTimeStrategy = false;</span>
 <span class="fc" id="L92">    private int countSleepTimeStrategy = 5;</span>
 
@@ -157,8 +157,8 @@ import java.util.prefs.Preferences;
 <span class="fc" id="L157">        this.countConnectionTimeout = preferences.getInt(&quot;countConnectionTimeout&quot;, 15);</span>
 <span class="fc" id="L158">        this.isUnicodeDecodeDisabled = preferences.getBoolean(&quot;isUnicodeDecodeDisabled&quot;, false);</span>
 <span class="fc" id="L159">        this.isUrlDecodeDisabled = preferences.getBoolean(&quot;isUrlDecodeDisabled&quot;, false);</span>
-<span class="fc" id="L160">        this.countNormalIndex = preferences.getInt(&quot;countNormalIndex&quot;, 50);</span>
-<span class="fc" id="L161">        this.isLimitingNormalIndex = preferences.getBoolean(&quot;isLimitingNormalIndex&quot;, false);</span>
+<span class="fc" id="L160">        this.countUnionIndex = preferences.getInt(&quot;countUnionIndex&quot;, 50);</span>
+<span class="fc" id="L161">        this.isLimitingUnionIndex = preferences.getBoolean(&quot;isLimitingUnionIndex&quot;, false);</span>
 <span class="fc" id="L162">        this.countSleepTimeStrategy = preferences.getInt(&quot;countSleepTimeStrategy&quot;, 5);</span>
 <span class="fc" id="L163">        this.isLimitingSleepTimeStrategy = preferences.getBoolean(&quot;isLimitingSleepTimeStrategy&quot;, false);</span>
 
@@ -167,7 +167,7 @@ import java.util.prefs.Preferences;
 <span class="fc" id="L167">        this.isStrategyMultibitDisabled = preferences.getBoolean(&quot;isStrategyMultibitDisabled&quot;, false);</span>
 <span class="fc" id="L168">        this.isStrategyStackDisabled = preferences.getBoolean(&quot;isStrategyStackDisabled&quot;, false);</span>
 <span class="fc" id="L169">        this.isStrategyErrorDisabled = preferences.getBoolean(&quot;isStrategyErrorDisabled&quot;, false);</span>
-<span class="fc" id="L170">        this.isStrategyNormalDisabled = preferences.getBoolean(&quot;isStrategyNormalDisabled&quot;, false);</span>
+<span class="fc" id="L170">        this.isStrategyUnionDisabled = preferences.getBoolean(&quot;isStrategyUnionDisabled&quot;, false);</span>
 
 <span class="fc" id="L172">        this.isUserAgentRandom = preferences.getBoolean(&quot;isUserAgentRandom&quot;, false);</span>
 
@@ -193,8 +193,8 @@ import java.util.prefs.Preferences;
 <span class="fc" id="L193">        preferences.putInt(&quot;countLimitingThreads&quot;, this.countLimitingThreads);</span>
 <span class="fc" id="L194">        preferences.putBoolean(&quot;isConnectionTimeout&quot;, this.isConnectionTimeout);</span>
 <span class="fc" id="L195">        preferences.putInt(&quot;countConnectionTimeout&quot;, this.countConnectionTimeout);</span>
-<span class="fc" id="L196">        preferences.putBoolean(&quot;isLimitingNormalIndex&quot;, this.isLimitingNormalIndex);</span>
-<span class="fc" id="L197">        preferences.putInt(&quot;countNormalIndex&quot;, this.countNormalIndex);</span>
+<span class="fc" id="L196">        preferences.putBoolean(&quot;isLimitingUnionIndex&quot;, this.isLimitingUnionIndex);</span>
+<span class="fc" id="L197">        preferences.putInt(&quot;countUnionIndex&quot;, this.countUnionIndex);</span>
 <span class="fc" id="L198">        preferences.putBoolean(&quot;isLimitingSleepTimeStrategy&quot;, this.isLimitingSleepTimeStrategy);</span>
 <span class="fc" id="L199">        preferences.putInt(&quot;countSleepTimeStrategy&quot;, this.countSleepTimeStrategy);</span>
 <span class="fc" id="L200">        preferences.putBoolean(&quot;isCsrfUserTag&quot;, this.isCsrfUserTag);</span>
@@ -242,7 +242,7 @@ import java.util.prefs.Preferences;
 <span class="fc" id="L242">        preferences.putBoolean(&quot;isStrategyMultibitDisabled&quot;, this.isStrategyMultibitDisabled);</span>
 <span class="fc" id="L243">        preferences.putBoolean(&quot;isStrategyStackDisabled&quot;, this.isStrategyStackDisabled);</span>
 <span class="fc" id="L244">        preferences.putBoolean(&quot;isStrategyErrorDisabled&quot;, this.isStrategyErrorDisabled);</span>
-<span class="fc" id="L245">        preferences.putBoolean(&quot;isStrategyNormalDisabled&quot;, this.isStrategyNormalDisabled);</span>
+<span class="fc" id="L245">        preferences.putBoolean(&quot;isStrategyUnionDisabled&quot;, this.isStrategyUnionDisabled);</span>
 
 <span class="fc" id="L247">        preferences.putBoolean(&quot;isUserAgentRandom&quot;, this.isUserAgentRandom);</span>
 <span class="fc" id="L248">        preferences.putBoolean(&quot;isUrlDecodeNetworkTab&quot;, this.isUrlDecodeNetworkTab);</span>
@@ -412,16 +412,16 @@ import java.util.prefs.Preferences;
 <span class="fc" id="L412">        return this.countConnectionTimeout;</span>
     }
     
-    public int countNormalIndex() {
-<span class="nc" id="L416">        return this.countNormalIndex;</span>
+    public int countUnionIndex() {
+<span class="nc" id="L416">        return this.countUnionIndex;</span>
     }
     
     public int countSleepTimeStrategy() {
 <span class="nc" id="L420">        return this.countSleepTimeStrategy;</span>
     }
     
-    public boolean isLimitingNormalIndex() {
-<span class="fc" id="L424">        return this.isLimitingNormalIndex;</span>
+    public boolean isLimitingUnionIndex() {
+<span class="fc" id="L424">        return this.isLimitingUnionIndex;</span>
     }
     
     public boolean isCsrfUserTag() {
@@ -480,8 +480,8 @@ import java.util.prefs.Preferences;
 <span class="fc" id="L480">        return this.isStrategyErrorDisabled;</span>
     }
 
-    public boolean isStrategyNormalDisabled() {
-<span class="fc" id="L484">        return this.isStrategyNormalDisabled;</span>
+    public boolean isStrategyUnionDisabled() {
+<span class="fc" id="L484">        return this.isStrategyUnionDisabled;</span>
     }
 
     public boolean isUserAgentRandom() {
@@ -733,13 +733,13 @@ import java.util.prefs.Preferences;
 <span class="fc" id="L733">        return this;</span>
     }
 
-    public PreferencesUtil withIsLimitingNormalIndex(boolean isLimitingNormalIndex) {
-<span class="nc" id="L737">        this.isLimitingNormalIndex = isLimitingNormalIndex;</span>
+    public PreferencesUtil withIsLimitingUnionIndex(boolean isLimitingUnionIndex) {
+<span class="nc" id="L737">        this.isLimitingUnionIndex = isLimitingUnionIndex;</span>
 <span class="nc" id="L738">        return this;</span>
     }
 
-    public PreferencesUtil withCountNormalIndex(int countNormalIndex) {
-<span class="nc" id="L742">        this.countNormalIndex = countNormalIndex;</span>
+    public PreferencesUtil withCountUnionIndex(int countUnionIndex) {
+<span class="nc" id="L742">        this.countUnionIndex = countUnionIndex;</span>
 <span class="nc" id="L743">        return this;</span>
     }
 
@@ -768,8 +768,8 @@ import java.util.prefs.Preferences;
 <span class="fc" id="L768">        return this;</span>
     }
 
-    public PreferencesUtil withIsStrategyNormalDisabled(boolean isStrategyNormalDisabled) {
-<span class="nc" id="L772">        this.isStrategyNormalDisabled = isStrategyNormalDisabled;</span>
+    public PreferencesUtil withIsStrategyUnionDisabled(boolean isStrategyUnionDisabled) {
+<span class="nc" id="L772">        this.isStrategyUnionDisabled = isStrategyUnionDisabled;</span>
 <span class="nc" id="L773">        return this;</span>
     }
 

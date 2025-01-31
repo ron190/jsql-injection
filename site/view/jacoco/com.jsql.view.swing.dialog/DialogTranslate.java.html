@@ -67,14 +67,14 @@ public class DialogTranslate extends JDialog {
             JComponent.WHEN_IN_FOCUSED_WINDOW
         );
 
-<span class="fc" id="L70">        JPanel lastLine = this.initializeLastLine();</span>
+<span class="fc" id="L70">        JPanel lastLine = this.initLastLine();</span>
 
 <span class="fc" id="L72">        this.labelTranslation.setBorder(UiUtil.BORDER_5PX);</span>
 <span class="fc" id="L73">        var contentPane = this.getContentPane();</span>
 <span class="fc" id="L74">        contentPane.add(this.labelTranslation, BorderLayout.NORTH);</span>
 <span class="fc" id="L75">        contentPane.add(lastLine, BorderLayout.SOUTH);</span>
 
-<span class="fc" id="L77">        this.initializeTextToTranslate();</span>
+<span class="fc" id="L77">        this.initTextToTranslate();</span>
 
 <span class="fc" id="L79">        contentPane.add(new JScrollPane(this.textToTranslate), BorderLayout.CENTER);</span>
 <span class="fc" id="L80">    }</span>
@@ -82,7 +82,7 @@ public class DialogTranslate extends JDialog {
     /**
      * Set back default setting for About frame.
      */
-    public final void initializeDialog(final Language language) {
+    public final void initDialog(final Language language) {
 <span class="fc" id="L86">        this.progressBarTranslation.setValue(0);</span>
 <span class="fc" id="L87">        this.progressBarTranslation.setString(&quot;Loading...&quot;);</span>
 <span class="fc" id="L88">        this.languageInto = language;</span>
@@ -123,14 +123,13 @@ public class DialogTranslate extends JDialog {
 <span class="fc" id="L123">        this.setVisible(true);</span>
 <span class="fc" id="L124">    }</span>
 
-    private JPanel initializeLastLine() {
+    private JPanel initLastLine() {
+<span class="fc" id="L127">        var lastLine = new JPanel();</span>
+<span class="fc" id="L128">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));</span>
+<span class="fc" id="L129">        lastLine.setBorder(UiUtil.BORDER_5PX);</span>
         
-<span class="fc" id="L128">        var lastLine = new JPanel();</span>
-<span class="fc" id="L129">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));</span>
-<span class="fc" id="L130">        lastLine.setBorder(UiUtil.BORDER_5PX);</span>
-        
-<span class="fc" id="L132">        this.buttonSend.setToolTipText(</span>
-<span class="fc" id="L133">            String.join(</span>
+<span class="fc" id="L131">        this.buttonSend.setToolTipText(</span>
+<span class="fc" id="L132">            String.join(</span>
                 StringUtils.EMPTY,
                 &quot;&lt;html&gt;&quot;,
                 &quot;&lt;b&gt;Send your translation to the developer&lt;/b&gt;&lt;br&gt;&quot;,
@@ -139,83 +138,83 @@ public class DialogTranslate extends JDialog {
             )
         );
         
-<span class="fc" id="L142">        this.buttonSend.addActionListener(actionEvent -&gt; {</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">            if (this.textToTranslate.getText().equals(this.textBeforeChange)) {</span>
-<span class="nc" id="L144">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Nothing changed, translate a piece of text then click on Send&quot;);</span>
-<span class="nc" id="L145">                return;</span>
+<span class="fc" id="L141">        this.buttonSend.addActionListener(actionEvent -&gt; {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            if (this.textToTranslate.getText().equals(this.textBeforeChange)) {</span>
+<span class="nc" id="L143">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Nothing changed, translate a piece of text then click on Send&quot;);</span>
+<span class="nc" id="L144">                return;</span>
             }
             
             // Escape Markdown character # for h1 in .properties
-<span class="nc" id="L149">            String clientDescription = this.textToTranslate.getText()</span>
-<span class="nc" id="L150">                .replace(&quot;\\\\&quot;, &quot;\\\\\\\\&quot;)</span>
-<span class="nc" id="L151">                .replaceAll(&quot;(?m)^#&quot;,&quot;\\\\#&quot;)</span>
-<span class="nc" id="L152">                .replace(&quot;&lt;&quot;, &quot;\\&lt;&quot;);</span>
+<span class="nc" id="L148">            String clientDescription = this.textToTranslate.getText()</span>
+<span class="nc" id="L149">                .replace(&quot;\\\\&quot;, &quot;\\\\\\\\&quot;)</span>
+<span class="nc" id="L150">                .replaceAll(&quot;(?m)^#&quot;,&quot;\\\\#&quot;)</span>
+<span class="nc" id="L151">                .replace(&quot;&lt;&quot;, &quot;\\&lt;&quot;);</span>
               
-<span class="nc" id="L154">            MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(</span>
+<span class="nc" id="L153">            MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(</span>
                 clientDescription,
                 ShowOnConsole.YES,
                 this.languageInto +&quot; translation&quot;
             );
-<span class="nc" id="L159">            this.setVisible(false);</span>
-<span class="nc" id="L160">        });</span>
+<span class="nc" id="L158">            this.setVisible(false);</span>
+<span class="nc" id="L159">        });</span>
 
-<span class="fc" id="L162">        this.setLayout(new BorderLayout());</span>
+<span class="fc" id="L161">        this.setLayout(new BorderLayout());</span>
         
-<span class="fc" id="L164">        this.progressBarTranslation.setStringPainted(true);</span>
-<span class="fc" id="L165">        this.progressBarTranslation.setValue(0);</span>
+<span class="fc" id="L163">        this.progressBarTranslation.setStringPainted(true);</span>
+<span class="fc" id="L164">        this.progressBarTranslation.setValue(0);</span>
         
-<span class="fc" id="L167">        lastLine.add(this.progressBarTranslation);</span>
-<span class="fc" id="L168">        lastLine.add(Box.createGlue());</span>
-<span class="fc" id="L169">        lastLine.add(this.buttonSend);</span>
-<span class="fc" id="L170">        return lastLine;</span>
+<span class="fc" id="L166">        lastLine.add(this.progressBarTranslation);</span>
+<span class="fc" id="L167">        lastLine.add(Box.createGlue());</span>
+<span class="fc" id="L168">        lastLine.add(this.buttonSend);</span>
+<span class="fc" id="L169">        return lastLine;</span>
     }
 
-    private void initializeTextToTranslate() {
-<span class="fc" id="L174">        this.textToTranslate.addMouseListener(new MouseAdapter() {</span>
+    private void initTextToTranslate() {
+<span class="fc" id="L173">        this.textToTranslate.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="nc" id="L177">                super.mousePressed(e);</span>
-<span class="nc" id="L178">                DialogTranslate.this.textToTranslate.requestFocusInWindow();</span>
-<span class="nc" id="L179">            }</span>
+<span class="nc" id="L176">                super.mousePressed(e);</span>
+<span class="nc" id="L177">                DialogTranslate.this.textToTranslate.requestFocusInWindow();</span>
+<span class="nc" id="L178">            }</span>
         });
-<span class="fc" id="L181">        this.textToTranslate.addFocusListener(new FocusAdapter() {</span>
+<span class="fc" id="L180">        this.textToTranslate.addFocusListener(new FocusAdapter() {</span>
             @Override
             public void focusGained(FocusEvent focusEvent) {
-<span class="fc" id="L184">                DialogTranslate.this.textToTranslate.getCaret().setVisible(true);</span>
-<span class="fc" id="L185">                DialogTranslate.this.textToTranslate.getCaret().setSelectionVisible(true);</span>
-<span class="fc" id="L186">            }</span>
+<span class="fc" id="L183">                DialogTranslate.this.textToTranslate.getCaret().setVisible(true);</span>
+<span class="fc" id="L184">                DialogTranslate.this.textToTranslate.getCaret().setSelectionVisible(true);</span>
+<span class="fc" id="L185">            }</span>
         });
-<span class="fc" id="L188">        this.textToTranslate.setBorder(UiUtil.BORDER_5PX);</span>
-<span class="fc" id="L189">        this.textToTranslate.setDragEnabled(true);</span>
-<span class="fc" id="L190">        this.textToTranslate.getCaret().setBlinkRate(500);</span>
-<span class="fc" id="L191">        this.textToTranslate.setComponentPopupMenu(new JPopupMenuText(this.textToTranslate));</span>
-<span class="fc" id="L192">    }</span>
+<span class="fc" id="L187">        this.textToTranslate.setBorder(UiUtil.BORDER_5PX);</span>
+<span class="fc" id="L188">        this.textToTranslate.setDragEnabled(true);</span>
+<span class="fc" id="L189">        this.textToTranslate.getCaret().setBlinkRate(500);</span>
+<span class="fc" id="L190">        this.textToTranslate.setComponentPopupMenu(new JPopupMenuText(this.textToTranslate));</span>
+<span class="fc" id="L191">    }</span>
     
     
     // Getter / Setter
 
     public Language getLanguageInto() {
-<span class="fc" id="L198">        return this.languageInto;</span>
+<span class="fc" id="L197">        return this.languageInto;</span>
     }
 
     public String getTextBeforeChange() {
-<span class="nc" id="L202">        return this.textBeforeChange;</span>
+<span class="nc" id="L201">        return this.textBeforeChange;</span>
     }
 
     public void setTextBeforeChange(String textBeforeChange) {
-<span class="fc" id="L206">        this.textBeforeChange = textBeforeChange;</span>
-<span class="fc" id="L207">    }</span>
+<span class="fc" id="L205">        this.textBeforeChange = textBeforeChange;</span>
+<span class="fc" id="L206">    }</span>
 
     public JButton getButtonSend() {
-<span class="fc" id="L210">        return this.buttonSend;</span>
+<span class="fc" id="L209">        return this.buttonSend;</span>
     }
 
     public JTextArea getTextToTranslate() {
-<span class="nc" id="L214">        return this.textToTranslate;</span>
+<span class="nc" id="L213">        return this.textToTranslate;</span>
     }
 
     public JProgressBar getProgressBarTranslation() {
-<span class="fc" id="L218">        return this.progressBarTranslation;</span>
+<span class="fc" id="L217">        return this.progressBarTranslation;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
