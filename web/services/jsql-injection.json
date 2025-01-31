@@ -1,11 +1,10 @@
 {
     "version": "0.106",
     "news": [
-        "[Credit: @selectfromblackhydra] RCE shell for oracle added to tab Exploits, needs reviewers and testers",
-        "[Credit: @mrdragonblack] UDF shell for mysql added to tab Exploits, now run system command on remote easily",
-        "[HowTo UDF/RCE] How to use shells explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
+        "[v0.107] New SQLite php shell, including MySQL php shell, Oracle RCE and MySQL UDF shell",
+        "[UDF/RCE] How to use shells explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
         "[Pinned] Report any bugs and thoughts and add your star to the project at https://github.com/ron190/jsql-injection",
-        "[Community] Improve your CTF and bounty research, what should be done by jSQL that you do manually?",
-        "[Contribute] Some translation is still missing, open menu Community and translate a single item to make progress"
+        "[Community] What should be done by jSQL that you do manually? Improve your CTF and bounty research by contributing",
+        "[Contribute] Some button translation is still missing, open menu Community and translate a single item to make progress"
     ]
 }

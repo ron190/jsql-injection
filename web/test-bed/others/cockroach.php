@@ -3,7 +3,7 @@ require_once 'PJBS.php';
 
 $drv = new PJBS(null, null);
 
-$drv->connect('jdbc:postgres://ip:port/db', 'login', 'password');
+$drv->connect('jdbc:postgresql://ip:port/db', 'login', 'password');
 
 $res = $drv->exec("SELECT col1, col2 FROM my_table where id=$_GET[lib]");
 
