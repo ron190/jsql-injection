@@ -1,6 +1,7 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlRuntimeException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -137,15 +138,18 @@ public class GitUtil {
             return;
         }
 
+        String token;
+        try {
+            token = StringUtil.fromHexZip(
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.token")
+            );
+        } catch (IOException e) {
+            throw new JSqlRuntimeException(e);
+        }
+
         var httpRequest = HttpRequest.newBuilder()
             .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.issues.url")))
-            .setHeader(
-                "Authorization",
-                "token "
-                + StringUtil.base64Decode(
-                    this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.token")
-                )
-            )
+            .setHeader("Authorization", "token "+ token)
             .POST(BodyPublishers.ofString(
                 new JSONObject()
                 .put("title", reportTitle)
