@@ -23,14 +23,14 @@ For programmers, access the generated [Maven reports](https://ron190.github.io/j
 To implement new modules, refer to the [API documentation](https://ron190.github.io/jsql-injection/site/xref/index.html)
 
 ## Install
-First, install :coffee: [Java](http://java.com) 11 or up to version 23, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.106.jar` to run the software.
+First, install :coffee: [Java](http://java.com) 11 or up to version 23, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.108.jar` to run the software.
 
-You can also type `java -jar jsql-injection-v0.106.jar` in your terminal to start the program.
+You can also type `java -jar jsql-injection-v0.108.jar` in your terminal to start the program.
 
 If you use Kali Linux then get the latest version with `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 > [!NOTE]
-> Download the latest version from GitHub: [jsql-injection-v0.106.jar](https://github.com/ron190/jsql-injection/releases/download/v0.106/jsql-injection-v0.106.jar)
+> Download the latest version from GitHub: [jsql-injection-v0.106.jar](https://github.com/ron190/jsql-injection/releases/download/v0.108/jsql-injection-v0.108.jar)
 ___
 ## Screenshots
 [<img src=https://github.com/ron190/jsql-injection/raw/master/web/images/app/theme-light.png width=404/>](https://github.com/ron190/jsql-injection/raw/master/web/images/app/theme-light.png)
