@@ -4,7 +4,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

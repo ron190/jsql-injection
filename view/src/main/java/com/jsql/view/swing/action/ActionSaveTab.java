@@ -43,14 +43,14 @@ public class ActionSaveTab extends AbstractAction {
         // Unhandled NoSuchMethodError #82561 on constructor: NoSuchMethodError
         // Unhandled InternalError #93015 on constructor: InvocationTargetException
         // Unhandled NullPointerException #95805 on constructor: desktop null on Windows
+        // Unhandled IllegalArgumentException #95985 on constructor: Comparison method violates its general contract!
         try {
             this.replaceFileChooser = new ReplaceFileChooser(
                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()
             );
-        } catch (NoSuchMethodError | InternalError | NullPointerException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Internal error in JFileChooser: {}", e.getMessage());
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Please verify your system and the error stacktrace in tab Java");
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Internal error", e);
+        } catch (IllegalArgumentException | NoSuchMethodError | InternalError | NullPointerException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Internal error in JFileChooser, verify your system and see stacktrace in tab Java: {}", e.getMessage());
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
         }
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);

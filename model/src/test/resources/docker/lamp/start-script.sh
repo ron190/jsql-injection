@@ -29,7 +29,5 @@ su postgres -c '
 '
 
 echo "Listen 8079" >> /etc/apache2/ports.conf
-sed -i 's/^;extension=sqlite3/extension=sqlite3/' /etc/php/7.2/apache2/php.ini
-sed -i 's/^;extension=sqlite3/extension=sqlite3/' /etc/php/7.2/cli/php.ini
-
+sed -i 's/^;extension=sqlite3/extension=sqlite3/' /etc/php/7.2/cli/php.ini /etc/php/7.2/apache2/php.ini
 apache2ctl -D FOREGROUND

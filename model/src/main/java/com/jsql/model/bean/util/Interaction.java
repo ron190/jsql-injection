@@ -11,7 +11,8 @@ public enum Interaction {
     ADD_TAB_EXPLOIT_WEB("AddTabExploitWeb"),
     ADD_TAB_EXPLOIT_SQL("AddTabExploitSql"),
     ADD_TAB_EXPLOIT_UDF("AddTabExploitUdf"),
-    ADD_TAB_EXPLOIT_RCE("AddTabExploitRce"),
+    ADD_TAB_EXPLOIT_RCE_ORACLE("AddTabExploitRceOracle"),
+    ADD_TAB_EXPLOIT_RCE_POSTGRES("AddTabExploitRcePostgres"),
     CREATE_VALUES_TAB("CreateValuesTab"),
     CREATE_ANALYSIS_REPORT("CreateAnalysisReport"),
 

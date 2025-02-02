@@ -14,7 +14,6 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.stream.Stream;

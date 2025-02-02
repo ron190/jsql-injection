@@ -29,7 +29,7 @@ public enum Language {
     TA("Tamil", "ta", UiUtil.ICON_FLAG_LK),
     SE("Swedish", "se", UiUtil.ICON_FLAG_SE),
     FI("Finnish", "fi", UiUtil.ICON_FLAG_FI),
-    OT("another language", "unknown", null);
+    OT("another language", "unknown", new ImageIcon());
 
     private final String nameEnglish;  // required for default logging and english modal translate into
     private final ImageIcon flag;

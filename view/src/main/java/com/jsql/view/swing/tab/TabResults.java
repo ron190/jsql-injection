@@ -18,10 +18,7 @@ import com.jsql.util.StringUtil;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
-import com.jsql.view.swing.terminal.ExploitRce;
-import com.jsql.view.swing.terminal.ExploitSql;
-import com.jsql.view.swing.terminal.ExploitUdf;
-import com.jsql.view.swing.terminal.ExploitWeb;
+import com.jsql.view.swing.terminal.*;
 import com.jsql.view.swing.tab.dnd.DnDTabbedPane;
 import com.jsql.view.swing.tab.dnd.TabTransferHandler;
 import com.jsql.view.swing.table.PanelTable;
@@ -164,10 +161,30 @@ public class TabResults extends DnDTabbedPane {
         }
     }
 
-    public void addTabExploitRce() {
+    public void addTabExploitRceOracle() {
         try {
             var terminalID = UUID.randomUUID();
-            var terminal = new ExploitRce(terminalID);
+            var terminal = new ExploitRceOracle(terminalID);
+            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+
+            JScrollPane scroller = new JScrollPane(terminal);
+            this.addTab("RCE shell", scroller);
+            this.setSelectedComponent(scroller);  // Focus on the new tab
+
+            var header = new TabHeader("RCE shell", UiUtil.TERMINAL.getIcon());
+            this.setTabComponentAt(this.indexOfComponent(scroller), header);
+            terminal.requestFocusInWindow();
+
+            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
+        } catch (MalformedURLException | URISyntaxException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
+        }
+    }
+
+    public void addTabExploitRcePostgres() {
+        try {
+            var terminalID = UUID.randomUUID();
+            var terminal = new ExploitRcePostgres(terminalID);
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JScrollPane scroller = new JScrollPane(terminal);
