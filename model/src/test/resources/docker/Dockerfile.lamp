@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 ENV MYSQL_ROOT_PASSWORD password
 ENV POSTGRES_USER postgres
 ENV POSTGRES_PASSWORD postgres
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y dos2unix php php-mysql libapache2-mod-php mysql-server postgresql php-pgsql php-sqlite3 postgresql-plpython3
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y dos2unix php php-mysql libapache2-mod-php mysql-server postgresql php-pgsql php-sqlite3 postgresql-plperl postgresql-plpython3
 EXPOSE 8079 3308 6000
 COPY ./lamp/ /var/www/html/
 RUN chmod 777 /var/www/html/

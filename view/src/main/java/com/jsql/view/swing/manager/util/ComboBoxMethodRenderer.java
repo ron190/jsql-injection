@@ -1,6 +1,6 @@
 package com.jsql.view.swing.manager.util;
 
-import com.jsql.model.accessible.ExploitMethod;
+import com.jsql.model.accessible.ExploitMode;
 import com.jsql.view.swing.util.I18nViewUtil;
 
 import javax.swing.*;
@@ -15,8 +15,8 @@ public class ComboBoxMethodRenderer extends JLabel implements ListCellRenderer<O
         if (value == ComboBoxMethodRenderer.SEPARATOR) {
             return ComboBoxMethodRenderer.SEPARATOR;
         }
-        if (value instanceof ExploitMethod) {
-            var exploitMethods = (ExploitMethod) value;
+        if (value instanceof ExploitMode) {
+            var exploitMethods = (ExploitMode) value;
             this.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.getKeyTooltip()));
             this.setText(I18nViewUtil.valueByKey(exploitMethods.getKeyLabel()));
         }

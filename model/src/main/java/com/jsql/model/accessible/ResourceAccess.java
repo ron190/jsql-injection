@@ -260,7 +260,7 @@ public class ResourceAccess {
         return this.checkUrls(urlShell, nameExploit, biFuncGetRequest);
     }
 
-    public String createExploitWebMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod) throws JSqlException {
+    public String createExploitWebMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMode exploitMode) throws JSqlException {
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             var request = new Request();
             request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
@@ -268,10 +268,10 @@ public class ResourceAccess {
             this.injectionModel.sendToViews(request);
             return urlSuccess;
         };
-        return this.createExploit(pathExploit, urlExploit, "exploit.web", "web.php", biFuncGetRequest, pathNetshare, exploitMethod);
+        return this.createExploit(pathExploit, urlExploit, "exploit.web", "web.php", biFuncGetRequest, pathNetshare, exploitMode);
     }
 
-    public void createExploitUploadMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, File fileToUpload) throws JSqlException {
+    public void createExploitUploadMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMode exploitMode, File fileToUpload) throws JSqlException {
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
                 HttpResponse<String> result = this.upload(fileToUpload, urlSuccess, streamToUpload);
@@ -288,10 +288,10 @@ public class ResourceAccess {
             }
             return urlSuccess;
         };
-        this.createExploit(pathExploit, urlExploit, "exploit.upl", "upl.php", biFuncGetRequest, pathNetshare, exploitMethod);
+        this.createExploit(pathExploit, urlExploit, "exploit.upl", "upl.php", biFuncGetRequest, pathNetshare, exploitMode);
     }
 
-    public String createExploitSqlMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, String username, String password) throws JSqlException {
+    public String createExploitSqlMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMode exploitMode, String username, String password) throws JSqlException {
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             var resultQuery = this.runSqlShell("select 1337", null, urlSuccess, username, password, false);
             if (resultQuery != null && resultQuery.contains("| 1337 |")) {
@@ -303,14 +303,14 @@ public class ResourceAccess {
             }
             return StringUtils.EMPTY;
         };
-        var urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysqli", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMethod);
+        var urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysqli", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMode);
         if (StringUtils.isEmpty(urlSuccess)) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with mysqli_query(), trying with pdo()...");
-            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.pdo", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMethod);
+            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.pdo", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMode);
         }
         if (StringUtils.isEmpty(urlSuccess)) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with pdo(), trying with mysql_query()...");
-            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysql", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMethod);
+            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysql", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMode);
         }
         if (StringUtils.isEmpty(urlSuccess)) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "No connection to the database");
@@ -329,7 +329,7 @@ public class ResourceAccess {
         String nameExploit,
         BinaryOperator<String> biFuncGetRequest,
         String pathNetshareFolder,
-        ExploitMethod exploitMethod
+        ExploitMode exploitMode
     ) throws JSqlException {
         if (this.isReadingNotAllowed()) {
             return null;
@@ -354,7 +354,7 @@ public class ResourceAccess {
         var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificUnion().getNbIndexesFound() - 1;
         String nameExploitValidated = StringUtils.EMPTY;
 
-        if (exploitMethod == ExploitMethod.NETSHARE) {
+        if (exploitMode == ExploitMode.NETSHARE) {
             ResourceAccess.copyToShare(pathNetshareFolder + nameExploit, bodyExploit);
             nameExploitValidated = this.injectionModel.getUdfAccess().byNetshare(
                 nbIndexesFound,
@@ -363,7 +363,7 @@ public class ResourceAccess {
                 pathRemoteFolder,
                 biPredConfirm
             );
-        } else if (exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.QUERY_BODY) {
+        } else if (exploitMode == ExploitMode.AUTO || exploitMode == ExploitMode.QUERY_BODY) {
             nameExploitValidated = this.injectionModel.getUdfAccess().byQueryBody(
                 nbIndexesFound,
                 pathRemoteFolder,
@@ -372,7 +372,7 @@ public class ResourceAccess {
                 biPredConfirm
             );
         }
-        if (StringUtils.isEmpty(nameExploitValidated) && exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {
+        if (StringUtils.isEmpty(nameExploitValidated) && exploitMode == ExploitMode.AUTO || exploitMode == ExploitMode.TEMP_TABLE) {
             var nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +"-"+ nameExploit;
             this.injectionModel.getUdfAccess().byTable(
                 StringUtil.toHexChunks(bodyExploit.getBytes()),
