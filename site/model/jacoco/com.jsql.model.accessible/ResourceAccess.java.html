@@ -260,7 +260,7 @@ public class ResourceAccess {
 <span class="fc" id="L260">        return this.checkUrls(urlShell, nameExploit, biFuncGetRequest);</span>
     }
 
-    public String createExploitWebMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod) throws JSqlException {
+    public String createExploitWebMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMode exploitMode) throws JSqlException {
 <span class="fc" id="L264">        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {</span>
 <span class="fc" id="L265">            var request = new Request();</span>
 <span class="fc" id="L266">            request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);</span>
@@ -268,10 +268,10 @@ public class ResourceAccess {
 <span class="fc" id="L268">            this.injectionModel.sendToViews(request);</span>
 <span class="fc" id="L269">            return urlSuccess;</span>
         };
-<span class="fc" id="L271">        return this.createExploit(pathExploit, urlExploit, &quot;exploit.web&quot;, &quot;web.php&quot;, biFuncGetRequest, pathNetshare, exploitMethod);</span>
+<span class="fc" id="L271">        return this.createExploit(pathExploit, urlExploit, &quot;exploit.web&quot;, &quot;web.php&quot;, biFuncGetRequest, pathNetshare, exploitMode);</span>
     }
 
-    public void createExploitUploadMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, File fileToUpload) throws JSqlException {
+    public void createExploitUploadMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMode exploitMode, File fileToUpload) throws JSqlException {
 <span class="nc" id="L275">        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {</span>
 <span class="nc" id="L276">            try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {</span>
 <span class="nc" id="L277">                HttpResponse&lt;String&gt; result = this.upload(fileToUpload, urlSuccess, streamToUpload);</span>
@@ -288,10 +288,10 @@ public class ResourceAccess {
 <span class="nc" id="L288">            }</span>
 <span class="nc" id="L289">            return urlSuccess;</span>
         };
-<span class="nc" id="L291">        this.createExploit(pathExploit, urlExploit, &quot;exploit.upl&quot;, &quot;upl.php&quot;, biFuncGetRequest, pathNetshare, exploitMethod);</span>
+<span class="nc" id="L291">        this.createExploit(pathExploit, urlExploit, &quot;exploit.upl&quot;, &quot;upl.php&quot;, biFuncGetRequest, pathNetshare, exploitMode);</span>
 <span class="nc" id="L292">    }</span>
 
-    public String createExploitSqlMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMethod exploitMethod, String username, String password) throws JSqlException {
+    public String createExploitSqlMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMode exploitMode, String username, String password) throws JSqlException {
 <span class="fc" id="L295">        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {</span>
 <span class="fc" id="L296">            var resultQuery = this.runSqlShell(&quot;select 1337&quot;, null, urlSuccess, username, password, false);</span>
 <span class="pc bpc" id="L297" title="2 of 4 branches missed.">            if (resultQuery != null &amp;&amp; resultQuery.contains(&quot;| 1337 |&quot;)) {</span>
@@ -303,14 +303,14 @@ public class ResourceAccess {
             }
 <span class="nc" id="L304">            return StringUtils.EMPTY;</span>
         };
-<span class="fc" id="L306">        var urlSuccess = this.createExploit(pathExploit, urlExploit, &quot;exploit.sql.mysqli&quot;, ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMethod);</span>
+<span class="fc" id="L306">        var urlSuccess = this.createExploit(pathExploit, urlExploit, &quot;exploit.sql.mysqli&quot;, ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMode);</span>
 <span class="pc bpc" id="L307" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(urlSuccess)) {</span>
 <span class="nc" id="L308">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Failure with mysqli_query(), trying with pdo()...&quot;);</span>
-<span class="nc" id="L309">            urlSuccess = this.createExploit(pathExploit, urlExploit, &quot;exploit.sql.pdo&quot;, ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMethod);</span>
+<span class="nc" id="L309">            urlSuccess = this.createExploit(pathExploit, urlExploit, &quot;exploit.sql.pdo&quot;, ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMode);</span>
         }
 <span class="pc bpc" id="L311" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(urlSuccess)) {</span>
 <span class="nc" id="L312">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Failure with pdo(), trying with mysql_query()...&quot;);</span>
-<span class="nc" id="L313">            urlSuccess = this.createExploit(pathExploit, urlExploit, &quot;exploit.sql.mysql&quot;, ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMethod);</span>
+<span class="nc" id="L313">            urlSuccess = this.createExploit(pathExploit, urlExploit, &quot;exploit.sql.mysql&quot;, ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMode);</span>
         }
 <span class="pc bpc" id="L315" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(urlSuccess)) {</span>
 <span class="nc" id="L316">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;No connection to the database&quot;);</span>
@@ -329,7 +329,7 @@ public class ResourceAccess {
         String nameExploit,
         BinaryOperator&lt;String&gt; biFuncGetRequest,
         String pathNetshareFolder,
-        ExploitMethod exploitMethod
+        ExploitMode exploitMode
     ) throws JSqlException {
 <span class="pc bpc" id="L334" title="1 of 2 branches missed.">        if (this.isReadingNotAllowed()) {</span>
 <span class="nc" id="L335">            return null;</span>
@@ -354,7 +354,7 @@ public class ResourceAccess {
 <span class="fc" id="L354">        var nbIndexesFound = this.injectionModel.getMediatorStrategy().getSpecificUnion().getNbIndexesFound() - 1;</span>
 <span class="fc" id="L355">        String nameExploitValidated = StringUtils.EMPTY;</span>
 
-<span class="pc bpc" id="L357" title="1 of 2 branches missed.">        if (exploitMethod == ExploitMethod.NETSHARE) {</span>
+<span class="pc bpc" id="L357" title="1 of 2 branches missed.">        if (exploitMode == ExploitMode.NETSHARE) {</span>
 <span class="nc" id="L358">            ResourceAccess.copyToShare(pathNetshareFolder + nameExploit, bodyExploit);</span>
 <span class="nc" id="L359">            nameExploitValidated = this.injectionModel.getUdfAccess().byNetshare(</span>
                 nbIndexesFound,
@@ -363,7 +363,7 @@ public class ResourceAccess {
                 pathRemoteFolder,
                 biPredConfirm
             );
-<span class="fc bfc" id="L366" title="All 4 branches covered.">        } else if (exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.QUERY_BODY) {</span>
+<span class="fc bfc" id="L366" title="All 4 branches covered.">        } else if (exploitMode == ExploitMode.AUTO || exploitMode == ExploitMode.QUERY_BODY) {</span>
 <span class="fc" id="L367">            nameExploitValidated = this.injectionModel.getUdfAccess().byQueryBody(</span>
                 nbIndexesFound,
                 pathRemoteFolder,
@@ -372,7 +372,7 @@ public class ResourceAccess {
                 biPredConfirm
             );
         }
-<span class="pc bpc" id="L375" title="1 of 6 branches missed.">        if (StringUtils.isEmpty(nameExploitValidated) &amp;&amp; exploitMethod == ExploitMethod.AUTO || exploitMethod == ExploitMethod.TEMP_TABLE) {</span>
+<span class="pc bpc" id="L375" title="1 of 6 branches missed.">        if (StringUtils.isEmpty(nameExploitValidated) &amp;&amp; exploitMode == ExploitMode.AUTO || exploitMode == ExploitMode.TEMP_TABLE) {</span>
 <span class="fc" id="L376">            var nameExploitRandom = RandomStringUtils.secure().nextAlphabetic(8) +&quot;-&quot;+ nameExploit;</span>
 <span class="fc" id="L377">            this.injectionModel.getUdfAccess().byTable(</span>
 <span class="fc" id="L378">                StringUtil.toHexChunks(bodyExploit.getBytes()),</span>

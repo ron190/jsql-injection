@@ -8,7 +8,7 @@
 <div id="overview"><a href="../../../../../../../apidocs/com/jsql/view/swing/manager/util/ComboBoxMethodRenderer.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.view.swing.manager.util;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.accessible.ExploitMethod;
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.accessible.ExploitMode;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.I18nViewUtil;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> javax.swing.*;
@@ -23,8 +23,8 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>          <strong class="jxr_keyword">if</strong> (value == ComboBoxMethodRenderer.SEPARATOR) {
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>              <strong class="jxr_keyword">return</strong> ComboBoxMethodRenderer.SEPARATOR;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>          }
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">if</strong> (value instanceof ExploitMethod) {
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>              <strong class="jxr_keyword">var</strong> exploitMethods = (ExploitMethod) value;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">if</strong> (value instanceof ExploitMode) {
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>              <strong class="jxr_keyword">var</strong> exploitMethods = (ExploitMode) value;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>              <strong class="jxr_keyword">this</strong>.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.getKeyTooltip()));
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>              <strong class="jxr_keyword">this</strong>.setText(I18nViewUtil.valueByKey(exploitMethods.getKeyLabel()));
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          }
