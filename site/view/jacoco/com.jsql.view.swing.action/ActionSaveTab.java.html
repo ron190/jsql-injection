@@ -43,14 +43,14 @@ public class ActionSaveTab extends AbstractAction {
         // Unhandled NoSuchMethodError #82561 on constructor: NoSuchMethodError
         // Unhandled InternalError #93015 on constructor: InvocationTargetException
         // Unhandled NullPointerException #95805 on constructor: desktop null on Windows
+        // Unhandled IllegalArgumentException #95985 on constructor: Comparison method violates its general contract!
         try {
-<span class="fc" id="L47">            this.replaceFileChooser = new ReplaceFileChooser(</span>
-<span class="fc" id="L48">                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()</span>
+<span class="fc" id="L48">            this.replaceFileChooser = new ReplaceFileChooser(</span>
+<span class="fc" id="L49">                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()</span>
             );
-<span class="nc" id="L50">        } catch (NoSuchMethodError | InternalError | NullPointerException e) {</span>
-<span class="nc" id="L51">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Internal error in JFileChooser: {}&quot;, e.getMessage());</span>
-<span class="nc" id="L52">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Please verify your system and the error stacktrace in tab Java&quot;);</span>
-<span class="nc" id="L53">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Internal error&quot;, e);</span>
+<span class="nc" id="L51">        } catch (IllegalArgumentException | NoSuchMethodError | InternalError | NullPointerException e) {</span>
+<span class="nc" id="L52">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Internal error in JFileChooser, verify your system and see stacktrace in tab Java: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L53">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
 <span class="fc" id="L54">        }</span>
 <span class="fc" id="L55">        this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));</span>
 <span class="fc" id="L56">        this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);</span>

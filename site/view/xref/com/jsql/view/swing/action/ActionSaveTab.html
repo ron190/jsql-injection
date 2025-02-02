@@ -51,14 +51,14 @@
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>          <em class="jxr_comment">// Unhandled NoSuchMethodError #82561 on constructor: NoSuchMethodError</em>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>          <em class="jxr_comment">// Unhandled InternalError #93015 on constructor: InvocationTargetException</em>
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>          <em class="jxr_comment">// Unhandled NullPointerException #95805 on constructor: desktop null on Windows</em>
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>          <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>              <strong class="jxr_keyword">this</strong>.replaceFileChooser = <strong class="jxr_keyword">new</strong> <a name="ReplaceFileChooser" href="../../../../../com/jsql/view/swing/dialog/ReplaceFileChooser.html#ReplaceFileChooser">ReplaceFileChooser</a>(
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>                  MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>              );
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>          } <strong class="jxr_keyword">catch</strong> (NoSuchMethodError | InternalError | NullPointerException e) {
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>              LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Internal error in JFileChooser: {}"</span>, e.getMessage());
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>              LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Please verify your system and the error stacktrace in tab Java"</span>);
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>              LOGGER.log(LogLevelUtil.CONSOLE_JAVA, <span class="jxr_string">"Internal error"</span>, e);
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          <em class="jxr_comment">// Unhandled IllegalArgumentException #95985 on constructor: Comparison method violates its general contract!</em>
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>              <strong class="jxr_keyword">this</strong>.replaceFileChooser = <strong class="jxr_keyword">new</strong> <a name="ReplaceFileChooser" href="../../../../../com/jsql/view/swing/dialog/ReplaceFileChooser.html#ReplaceFileChooser">ReplaceFileChooser</a>(
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>                  MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>              );
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          } <strong class="jxr_keyword">catch</strong> (IllegalArgumentException | NoSuchMethodError | InternalError | NullPointerException e) {
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>              LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Internal error in JFileChooser, verify your system and see stacktrace in tab Java: {}"</span>, e.getMessage());
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>              LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>          }
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">this</strong>.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">this</strong>.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
