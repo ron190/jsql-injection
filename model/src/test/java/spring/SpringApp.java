@@ -26,6 +26,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.core.io.ClassPathResource;
 import spring.rest.Student;
+import spring.rest.StudentForDelete;
 
 import java.io.File;
 import java.io.IOException;
@@ -112,12 +113,12 @@ public class SpringApp {
             SpringApp.initMckoi();
         }
 
-        SpringApp.getPropertiesFilterByProfile()
-        .forEach(propertyByEngine -> {
+        SpringApp.getPropertiesFilterByProfile().forEach(propertyByEngine -> {
             Configuration configuration = new Configuration();
             configuration.addProperties(propertyByEngine.getKey()).configure("hibernate/hibernate.cfg.xml");
             configuration.addAnnotatedClass(Student.class);
-            
+            configuration.addAnnotatedClass(StudentForDelete.class);
+
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
             try (
                 SessionFactory factory = configuration.buildSessionFactory(builder.build());
@@ -130,7 +131,7 @@ public class SpringApp {
                 student.setClassName("className");
                 student.setLastName("lastName");
                 student.setRollNo("rollNo");
-                session.persist(student);
+                session.persist(new StudentForDelete());
                 transaction.commit();
             } catch (Exception e) {
                 LOGGER.error(e);

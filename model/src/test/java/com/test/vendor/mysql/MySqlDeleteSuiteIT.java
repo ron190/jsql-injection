@@ -33,11 +33,11 @@ public class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
         
         model.beginInjection();
     }
-    
+
     @Override
     @RetryingTest(3)
-    public void listValues() throws JSqlException {
-        super.listValues();
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()
