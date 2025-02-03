@@ -131,6 +131,7 @@ public class SpringApp {
                 student.setClassName("className");
                 student.setLastName("lastName");
                 student.setRollNo("rollNo");
+                session.persist(new Student());
                 session.persist(new StudentForDelete());
                 transaction.commit();
             } catch (Exception e) {
