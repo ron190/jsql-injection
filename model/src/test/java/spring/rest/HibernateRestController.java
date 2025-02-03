@@ -174,7 +174,7 @@ public class HibernateRestController {
 
     @RequestMapping("/delete")
     public Greeting endpointDelete(@RequestParam(value="name", defaultValue="World") String name) {
-        return this.getResponse(name, "delete from Student where 'not_found' = '%s'", true, true, false);
+        return this.getResponse(name, "delete from StudentForDelete where 'not_found' = '%s'", true, true, false);
     }
     
     @RequestMapping("/insert")

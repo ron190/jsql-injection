@@ -6,8 +6,11 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class MySqlDeleteSuiteIgnoreIT extends ConcreteMySqlErrorSuiteIT {
-    // TODO Test removes rows, should be used on a dedicated table
+public class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
+
+    public void initTable() {
+        this.jsqlTableName = "StudentForDelete";
+    }
 
     @Override
     public void setupInjection() throws Exception {

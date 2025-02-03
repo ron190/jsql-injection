@@ -3,7 +3,7 @@ package spring.rest;
 import jakarta.persistence.*;
 
 @Entity
-public class Student {
+public class StudentForDelete {
     
     @Id
     @Column(name = "Student_Id")

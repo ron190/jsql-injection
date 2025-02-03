@@ -10,14 +10,17 @@ public abstract class ConcreteMySqlSuiteIT extends AbstractTestSuite {
         this.config();
     }
     
-    public void config() {
+    public void initTable() {
+        this.jsqlTableName = "Student";
+    }
 
+    public void config() {
         this.jdbcURL = SpringApp.propsMysql.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
         this.jdbcUser = SpringApp.propsMysql.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
         this.jdbcPass = SpringApp.propsMysql.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.jsqlDatabaseName = "musicstore";
-        this.jsqlTableName = "Student";
+        this.initTable();
         this.jsqlColumnName = "Student_Id";
         
         this.jdbcColumnForDatabaseName = "TABLE_SCHEMA";

