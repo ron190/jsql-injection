@@ -196,7 +196,7 @@ public class UdfAccess {
         this.injectionModel.sendToViews(request);
     }
 
-    public void createUdf(String pathNetshareFolder, ExploitMode exploitMode) throws JSqlException {
+    public void createExploitUdfMysql(String pathNetshareFolder, ExploitMode exploitMode) throws JSqlException {
         if (this.injectionModel.getResourceAccess().isReadingNotAllowed()) {
             return;
         }
@@ -460,7 +460,7 @@ public class UdfAccess {
         return result;
     }
 
-    public String runCommand(String command, UUID uuidShell) {
+    public String runCommandUdfMysql(String command, UUID uuidShell) {
         String result;
         try {
             result = this.getResult(  // 0xff splits single result in many chunks => replace by space

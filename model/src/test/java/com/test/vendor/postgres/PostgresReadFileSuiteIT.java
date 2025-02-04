@@ -44,12 +44,8 @@ public class PostgresReadFileSuiteIT extends ConcretePostgresSuiteIT {
     
     @RetryingTest(3)
     public void readFile() throws JSqlException, ExecutionException, InterruptedException {
-
-        List<String> contents = this.injectionModel.getResourceAccess()
-            .readFile(Collections.singletonList("PG_VERSION"));
-
+        List<String> contents = this.injectionModel.getResourceAccess().readFile(Collections.singletonList("PG_VERSION"));
         LOGGER.info("ReadFile: found {}, to find {}", String.join(",", contents).trim(), "9.6");
-
         Assertions.assertEquals("9.6", String.join(",", contents).trim());
     }
 }

