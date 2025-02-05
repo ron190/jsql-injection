@@ -43,7 +43,7 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>                  LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Properties file {} not found"</span>, filename);
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>                  <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>              }
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>              <strong class="jxr_keyword">this</strong>.getProperties().load(input);  <em class="jxr_comment">// load a properties file from class path, inside static method</em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>              <strong class="jxr_keyword">this</strong>.properties.load(input);  <em class="jxr_comment">// load a properties file from class path, inside static method</em>
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>          } <strong class="jxr_keyword">catch</strong> (IOException e) {
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>              LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          }
@@ -110,8 +110,8 @@
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.properties.getProperty(<span class="jxr_string">"jsql.version"</span>);
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>     }
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> 
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">public</strong> Properties getProperties() {
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.properties;
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">public</strong> String getProperty(String property) {
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.properties.getProperty(property);
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>     }
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> }
 </pre>

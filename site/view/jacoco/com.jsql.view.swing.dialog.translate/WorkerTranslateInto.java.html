@@ -110,7 +110,7 @@ public class WorkerTranslateInto extends SwingWorker&lt;Object, Object&gt; {
     private void loadRootFromGithub() throws IOException, URISyntaxException {
         try {
 <span class="fc" id="L112">            String pageSourceRoot = this.connectionUtil.getSourceLineFeed(</span>
-<span class="fc" id="L113">                this.propertiesUtil.getProperties().getProperty(&quot;github.webservice.i18n.root&quot;)</span>
+<span class="fc" id="L113">                this.propertiesUtil.getProperty(&quot;github.webservice.i18n.root&quot;)</span>
             );
 <span class="fc" id="L115">            String pageSourceRootFixed = Pattern.compile(WorkerTranslateInto.LINE_FEED).matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll(WorkerTranslateInto.LINE_FEED_ESCAPE);</span>
 <span class="fc" id="L116">            this.propertiesRoot.load(new StringReader(pageSourceRootFixed));</span>
@@ -131,7 +131,7 @@ public class WorkerTranslateInto extends SwingWorker&lt;Object, Object&gt; {
 <span class="fc" id="L131">            String pageSourceLanguage = this.connectionUtil.getSourceLineFeed(</span>
 <span class="fc" id="L132">                String.format(</span>
                     &quot;%sjsql_%s.properties&quot;,
-<span class="fc" id="L134">                    this.propertiesUtil.getProperties().getProperty(&quot;github.webservice.i18n.locale&quot;),</span>
+<span class="fc" id="L134">                    this.propertiesUtil.getProperty(&quot;github.webservice.i18n.locale&quot;),</span>
 <span class="fc" id="L135">                    this.dialogTranslate.getLanguageInto().getLanguageTag()</span>
                 )
             );

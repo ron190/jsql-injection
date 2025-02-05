@@ -141,14 +141,14 @@ public class GitUtil {
         String token;
         try {
 <span class="nc" id="L143">            token = StringUtil.fromHexZip(</span>
-<span class="nc" id="L144">                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.token&quot;)</span>
+<span class="nc" id="L144">                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(&quot;github.token&quot;)</span>
             );
 <span class="nc" id="L146">        } catch (IOException e) {</span>
 <span class="nc" id="L147">            throw new JSqlRuntimeException(e);</span>
 <span class="nc" id="L148">        }</span>
 
 <span class="nc" id="L150">        var httpRequest = HttpRequest.newBuilder()</span>
-<span class="nc" id="L151">            .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.issues.url&quot;)))</span>
+<span class="nc" id="L151">            .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(&quot;github.issues.url&quot;)))</span>
 <span class="nc" id="L152">            .setHeader(&quot;Authorization&quot;, &quot;token &quot;+ token)</span>
 <span class="nc" id="L153">            .POST(BodyPublishers.ofString(</span>
                 new JSONObject()
@@ -207,7 +207,7 @@ public class GitUtil {
     public JSONObject callService() {
 <span class="nc bnc" id="L208" title="All 2 branches missed.">        if (this.jsonObject == null) {</span>
 <span class="nc" id="L209">            String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(</span>
-<span class="nc" id="L210">                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.webservice.url&quot;)</span>
+<span class="nc" id="L210">                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(&quot;github.webservice.url&quot;)</span>
             );
             // Fix #45349: JSONException on new JSONObject(json)
             try {

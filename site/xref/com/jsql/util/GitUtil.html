@@ -149,14 +149,14 @@
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>         String token;
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>             token = StringUtil.fromHexZip(
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(<span class="jxr_string">"github.token"</span>)
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(<span class="jxr_string">"github.token"</span>)
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>             );
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>         } <strong class="jxr_keyword">catch</strong> (IOException e) {
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="JSqlRuntimeException" href="../../../com/jsql/model/exception/JSqlRuntimeException.html#JSqlRuntimeException">JSqlRuntimeException</a>(e);
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>         }
 <a class="jxr_linenumber" name="L149" href="#L149">149</a> 
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>         <strong class="jxr_keyword">var</strong> httpRequest = HttpRequest.newBuilder()
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>             .uri(URI.create(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(<span class="jxr_string">"github.issues.url"</span>)))
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>             .uri(URI.create(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(<span class="jxr_string">"github.issues.url"</span>)))
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>             .setHeader(<span class="jxr_string">"Authorization"</span>, <span class="jxr_string">"token "</span>+ token)
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>             .POST(BodyPublishers.ofString(
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>                 <strong class="jxr_keyword">new</strong> JSONObject()
@@ -215,7 +215,7 @@
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>     <strong class="jxr_keyword">public</strong> JSONObject callService() {
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.jsonObject == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>             String json = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getSource(
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(<span class="jxr_string">"github.webservice.url"</span>)
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(<span class="jxr_string">"github.webservice.url"</span>)
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>             );
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>             <em class="jxr_comment">// Fix #45349: JSONException on new JSONObject(json)</em>
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>             <strong class="jxr_keyword">try</strong> {

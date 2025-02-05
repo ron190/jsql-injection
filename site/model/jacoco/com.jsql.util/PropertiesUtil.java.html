@@ -35,7 +35,7 @@ public class PropertiesUtil {
 <span class="nc" id="L35">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Properties file {} not found&quot;, filename);</span>
 <span class="nc" id="L36">                return;</span>
             }
-<span class="fc" id="L38">            this.getProperties().load(input);  // load a properties file from class path, inside static method</span>
+<span class="fc" id="L38">            this.properties.load(input);  // load a properties file from class path, inside static method</span>
 <span class="nc bnc" id="L39" title="All 2 branches missed.">        } catch (IOException e) {</span>
 <span class="nc" id="L40">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="fc" id="L41">        }</span>
@@ -102,8 +102,8 @@ public class PropertiesUtil {
 <span class="fc" id="L102">        return this.properties.getProperty(&quot;jsql.version&quot;);</span>
     }
 
-    public Properties getProperties() {
-<span class="fc" id="L106">        return this.properties;</span>
+    public String getProperty(String property) {
+<span class="fc" id="L106">        return this.properties.getProperty(property);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -118,7 +118,7 @@
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> loadRootFromGithub() <strong class="jxr_keyword">throws</strong> IOException, URISyntaxException {
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>             String pageSourceRoot = <strong class="jxr_keyword">this</strong>.connectionUtil.getSourceLineFeed(
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>                 <strong class="jxr_keyword">this</strong>.propertiesUtil.getProperties().getProperty(<span class="jxr_string">"github.webservice.i18n.root"</span>)
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>                 <strong class="jxr_keyword">this</strong>.propertiesUtil.getProperty(<span class="jxr_string">"github.webservice.i18n.root"</span>)
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>             );
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>             String pageSourceRootFixed = Pattern.compile(WorkerTranslateInto.LINE_FEED).matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll(WorkerTranslateInto.LINE_FEED_ESCAPE);
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>             <strong class="jxr_keyword">this</strong>.propertiesRoot.load(<strong class="jxr_keyword">new</strong> StringReader(pageSourceRootFixed));
@@ -139,7 +139,7 @@
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>             String pageSourceLanguage = <strong class="jxr_keyword">this</strong>.connectionUtil.getSourceLineFeed(
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>                 String.format(
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>                     <span class="jxr_string">"%sjsql_%s.properties"</span>,
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>                     <strong class="jxr_keyword">this</strong>.propertiesUtil.getProperties().getProperty(<span class="jxr_string">"github.webservice.i18n.locale"</span>),
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>                     <strong class="jxr_keyword">this</strong>.propertiesUtil.getProperty(<span class="jxr_string">"github.webservice.i18n.locale"</span>),
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>                     <strong class="jxr_keyword">this</strong>.dialogTranslate.getLanguageInto().getLanguageTag()
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>                 )
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>             );

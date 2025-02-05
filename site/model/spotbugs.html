@@ -85,7 +85,7 @@
 <th>Missing Classes</th></tr>
 <tr class="b">
 <td>187</td>
-<td>149</td>
+<td>153</td>
 <td>0</td>
 <td>0</td></tr></table></section><section>
 <h1>Files</h1>
@@ -110,10 +110,10 @@
 <td>1</td></tr>
 <tr class="a">
 <td><a href="#com.jsql.model.accessible.ResourceAccess">com.jsql.model.accessible.ResourceAccess</a></td>
-<td>3</td></tr>
+<td>5</td></tr>
 <tr class="b">
 <td><a href="#com.jsql.model.accessible.UdfAccess">com.jsql.model.accessible.UdfAccess</a></td>
-<td>1</td></tr>
+<td>4</td></tr>
 <tr class="a">
 <td><a href="#com.jsql.model.bean.database.Column">com.jsql.model.bean.database.Column</a></td>
 <td>2</td></tr>
@@ -247,24 +247,21 @@
 <td><a href="#com.jsql.util.ParameterUtil">com.jsql.util.ParameterUtil</a></td>
 <td>4</td></tr>
 <tr class="a">
-<td><a href="#com.jsql.util.PropertiesUtil">com.jsql.util.PropertiesUtil</a></td>
-<td>1</td></tr>
-<tr class="b">
 <td><a href="#com.jsql.util.SoapUtil">com.jsql.util.SoapUtil</a></td>
 <td>2</td></tr>
-<tr class="a">
+<tr class="b">
 <td><a href="#com.jsql.util.StringUtil">com.jsql.util.StringUtil</a></td>
 <td>3</td></tr>
-<tr class="b">
+<tr class="a">
 <td><a href="#com.jsql.util.ThreadUtil">com.jsql.util.ThreadUtil</a></td>
 <td>1</td></tr>
-<tr class="a">
+<tr class="b">
 <td><a href="#com.jsql.util.bruter.Bruter">com.jsql.util.bruter.Bruter</a></td>
 <td>1</td></tr>
-<tr class="b">
+<tr class="a">
 <td><a href="#com.jsql.util.bruter.DigestMD4">com.jsql.util.bruter.DigestMD4</a></td>
 <td>2</td></tr>
-<tr class="a">
+<tr class="b">
 <td><a href="#com.jsql.util.tampering.TamperingType">com.jsql.util.tampering.TamperingType</a></td>
 <td>1</td></tr></table></section><a name="com.jsql.model.InjectionModel"></a><section>
 <h2>com.jsql.model.InjectionModel</h2>
@@ -505,19 +502,31 @@
 <td>Found reliance on default encoding in com.jsql.model.accessible.ResourceAccess.copyToShare(String, String): String.getBytes()</td>
 <td>I18N</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#DM_DEFAULT_ENCODING">DM_DEFAULT_ENCODING</a></td>
-<td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L548">548</a></td>
+<td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L573">573</a></td>
 <td>High</td></tr>
 <tr class="a">
 <td>Found reliance on default encoding in com.jsql.model.accessible.ResourceAccess.createExploit(String, String, String, String, BinaryOperator, String, ExploitMode): String.getBytes()</td>
 <td>I18N</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#DM_DEFAULT_ENCODING">DM_DEFAULT_ENCODING</a></td>
-<td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L486">486</a></td>
+<td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L511">511</a></td>
 <td>High</td></tr>
 <tr class="b">
 <td>new com.jsql.model.accessible.ResourceAccess(InjectionModel) may expose internal representation by storing an externally mutable object into ResourceAccess.injectionModel</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L89">89</a></td>
+<td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L96">96</a></td>
+<td>Medium</td></tr>
+<tr class="a">
+<td>Format string should use %n rather than \n in com.jsql.model.accessible.ResourceAccess.callCommand(String)</td>
+<td>BAD_PRACTICE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#VA_FORMAT_STRING_USES_NEWLINE">VA_FORMAT_STRING_USES_NEWLINE</a></td>
+<td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L646">646</a></td>
+<td>Medium</td></tr>
+<tr class="b">
+<td>Format string should use %n rather than \n in com.jsql.model.accessible.ResourceAccess.runWebShell(String, UUID, String)</td>
+<td>BAD_PRACTICE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#VA_FORMAT_STRING_USES_NEWLINE">VA_FORMAT_STRING_USES_NEWLINE</a></td>
+<td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L662">662</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.UdfAccess"></a><section>
 <h2>com.jsql.model.accessible.UdfAccess</h2>
 <table class="table table-striped">
@@ -531,7 +540,25 @@
 <td>new com.jsql.model.accessible.UdfAccess(InjectionModel) may expose internal representation by storing an externally mutable object into UdfAccess.injectionModel</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/accessible/UdfAccess.html#L54">54</a></td>
+<td><a href="./xref/com/jsql/model/accessible/UdfAccess.html#L59">59</a></td>
+<td>Medium</td></tr>
+<tr class="a">
+<td>Format string should use %n rather than \n in com.jsql.model.accessible.UdfAccess.runCommandRceOracle(String, UUID)</td>
+<td>BAD_PRACTICE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#VA_FORMAT_STRING_USES_NEWLINE">VA_FORMAT_STRING_USES_NEWLINE</a></td>
+<td><a href="./xref/com/jsql/model/accessible/UdfAccess.html#L435">435</a></td>
+<td>Medium</td></tr>
+<tr class="b">
+<td>Format string should use %n rather than \n in com.jsql.model.accessible.UdfAccess.runCommandRcePostgres(String, UUID)</td>
+<td>BAD_PRACTICE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#VA_FORMAT_STRING_USES_NEWLINE">VA_FORMAT_STRING_USES_NEWLINE</a></td>
+<td><a href="./xref/com/jsql/model/accessible/UdfAccess.html#L466">466</a></td>
+<td>Medium</td></tr>
+<tr class="a">
+<td>Format string should use %n rather than \n in com.jsql.model.accessible.UdfAccess.runCommandUdfMysql(String, UUID)</td>
+<td>BAD_PRACTICE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#VA_FORMAT_STRING_USES_NEWLINE">VA_FORMAT_STRING_USES_NEWLINE</a></td>
+<td><a href="./xref/com/jsql/model/accessible/UdfAccess.html#L483">483</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.bean.database.Column"></a><section>
 <h2>com.jsql.model.bean.database.Column</h2>
 <table class="table table-striped">
@@ -1502,20 +1529,6 @@
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
 <td><a href="./xref/com/jsql/util/ParameterUtil.html#L56">56</a></td>
-<td>Medium</td></tr></table></section><a name="com.jsql.util.PropertiesUtil"></a><section>
-<h2>com.jsql.util.PropertiesUtil</h2>
-<table class="table table-striped">
-<tr class="a">
-<th>Bug</th>
-<th>Category</th>
-<th>Details</th>
-<th>Line</th>
-<th>Priority</th></tr>
-<tr class="b">
-<td>com.jsql.util.PropertiesUtil.getProperties() may expose internal representation by returning PropertiesUtil.properties</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/util/PropertiesUtil.html#L106">106</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.util.SoapUtil"></a><section>
 <h2>com.jsql.util.SoapUtil</h2>
 <table class="table table-striped">
