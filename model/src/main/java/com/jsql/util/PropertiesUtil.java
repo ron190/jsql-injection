@@ -35,7 +35,7 @@ public class PropertiesUtil {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Properties file {} not found", filename);
                 return;
             }
-            this.getProperties().load(input);  // load a properties file from class path, inside static method
+            this.properties.load(input);  // load a properties file from class path, inside static method
         } catch (IOException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
@@ -102,7 +102,7 @@ public class PropertiesUtil {
         return this.properties.getProperty("jsql.version");
     }
 
-    public Properties getProperties() {
-        return this.properties;
+    public String getProperty(String property) {
+        return this.properties.getProperty(property);
     }
 }

@@ -8,6 +8,7 @@ import org.junitpioneer.jupiter.RetryingTest;
 
 public class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
+    @Override
     public void initTable() {
         this.jsqlTableName = "StudentForDelete";
     }

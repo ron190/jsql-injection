@@ -110,7 +110,7 @@ public class WorkerTranslateInto extends SwingWorker<Object, Object> {
     private void loadRootFromGithub() throws IOException, URISyntaxException {
         try {
             String pageSourceRoot = this.connectionUtil.getSourceLineFeed(
-                this.propertiesUtil.getProperties().getProperty("github.webservice.i18n.root")
+                this.propertiesUtil.getProperty("github.webservice.i18n.root")
             );
             String pageSourceRootFixed = Pattern.compile(WorkerTranslateInto.LINE_FEED).matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll(WorkerTranslateInto.LINE_FEED_ESCAPE);
             this.propertiesRoot.load(new StringReader(pageSourceRootFixed));
@@ -131,7 +131,7 @@ public class WorkerTranslateInto extends SwingWorker<Object, Object> {
             String pageSourceLanguage = this.connectionUtil.getSourceLineFeed(
                 String.format(
                     "%sjsql_%s.properties",
-                    this.propertiesUtil.getProperties().getProperty("github.webservice.i18n.locale"),
+                    this.propertiesUtil.getProperty("github.webservice.i18n.locale"),
                     this.dialogTranslate.getLanguageInto().getLanguageTag()
                 )
             );

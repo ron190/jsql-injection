@@ -141,14 +141,14 @@ public class GitUtil {
         String token;
         try {
             token = StringUtil.fromHexZip(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.token")
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("github.token")
             );
         } catch (IOException e) {
             throw new JSqlRuntimeException(e);
         }
 
         var httpRequest = HttpRequest.newBuilder()
-            .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.issues.url")))
+            .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("github.issues.url")))
             .setHeader("Authorization", "token "+ token)
             .POST(BodyPublishers.ofString(
                 new JSONObject()
@@ -207,7 +207,7 @@ public class GitUtil {
     public JSONObject callService() {
         if (this.jsonObject == null) {
             String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.webservice.url")
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("github.webservice.url")
             );
             // Fix #45349: JSONException on new JSONObject(json)
             try {

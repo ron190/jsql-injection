@@ -186,7 +186,7 @@ public class MediatorVendor {
             vendorFound = this.initVendor(vendorFound);
         }
 
-        var urlGitHub = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.url");
+        var urlGitHub = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("github.url");
         this.injectionModel.appendAnalysisReport(
             String.join(
                 StringUtils.EMPTY,

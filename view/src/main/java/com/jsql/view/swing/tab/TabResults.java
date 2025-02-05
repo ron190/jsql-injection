@@ -52,6 +52,7 @@ public class TabResults extends DnDTabbedPane {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final String TAB_EXPLOIT_FAILURE_INCORRECT_URL = "Tab exploit failure: incorrect URL";
+    public static final String RCE_SHELL = "RCE shell";
 
     /**
      * Create the panel containing injection results.
@@ -168,10 +169,10 @@ public class TabResults extends DnDTabbedPane {
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab("RCE shell", scroller);
+            this.addTab(TabResults.RCE_SHELL, scroller);
             this.setSelectedComponent(scroller);  // Focus on the new tab
 
-            var header = new TabHeader("RCE shell", UiUtil.TERMINAL.getIcon());
+            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 
@@ -188,10 +189,10 @@ public class TabResults extends DnDTabbedPane {
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab("RCE shell", scroller);
+            this.addTab(TabResults.RCE_SHELL, scroller);
             this.setSelectedComponent(scroller);  // Focus on the new tab
 
-            var header = new TabHeader("RCE shell", UiUtil.TERMINAL.getIcon());
+            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 

