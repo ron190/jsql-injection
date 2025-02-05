@@ -41,12 +41,7 @@ public class StrategyInjectionStack extends AbstractStrategy {
         var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
         var configurationYaml = strategyYaml.getConfiguration();
 
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_DEFAULT,
-            AbstractStrategy.FORMAT_CHECKING_STRATEGY,
-            () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"),
-            this::getName
-        );
+        this.logChecking();
 
         boolean methodIsApplicable = this.isApplicable(configurationYaml, strategyYaml.getStack());
         if (methodIsApplicable) {

@@ -7,6 +7,10 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -15,6 +19,11 @@ import java.util.Map;
  * Define a strategy to inject SQL with methods like Error and Time.
  */
 public abstract class AbstractStrategy {
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     protected static final String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
     protected static final String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
@@ -69,6 +78,10 @@ public abstract class AbstractStrategy {
      * Get the injection strategy name.
      */
     public abstract String getName();
+
+    public void logChecking() {
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, AbstractStrategy.FORMAT_CHECKING_STRATEGY, () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY), this::getName);
+    }
     
     public void markVulnerability(Interaction message, int... indexErrorStrategy) {
         var request = new Request();

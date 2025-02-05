@@ -51,13 +51,8 @@ public class StrategyInjectionError extends AbstractStrategy {
             return;
         }
 
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_DEFAULT,
-            AbstractStrategy.FORMAT_CHECKING_STRATEGY,
-            () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"),
-            this::getName
-        );
-        
+        this.logChecking();
+
         this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];
         var indexErrorMethod = 0;
         var errorCapacity = 0;

@@ -53,12 +53,8 @@ public class StrategyInjectionUnion extends AbstractStrategy {
             return;
         }
 
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_DEFAULT,
-            AbstractStrategy.FORMAT_CHECKING_STRATEGY,
-            () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"),
-            this::getName
-        );
+        this.logChecking();
+
         this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());
 
         // Define visibleIndex, i.e, 2 in "..union select 1,2,..", if 2 is found in HTML body

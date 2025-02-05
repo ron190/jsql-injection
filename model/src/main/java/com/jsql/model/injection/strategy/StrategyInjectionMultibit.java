@@ -43,7 +43,7 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         }
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Multibit...", () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY));
+        this.logChecking();
 
         this.injectionMultibit = new InjectionMultibit(this.injectionModel, BinaryMode.STACK);
         this.isApplicable = this.injectionMultibit.isInjectable();
