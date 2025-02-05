@@ -58,14 +58,14 @@ public class StrategyInjectionTime extends AbstractStrategy {
 <span class="fc" id="L58">        this.checkInjection(BinaryMode.STACK);</span>
 <span class="fc" id="L59">        this.checkInjection(BinaryMode.NO_MODE);</span>
 
-<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        if (this.isApplicable) {</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (this.isApplicable) {</span>
 <span class="fc" id="L62">            this.allow();</span>
 <span class="fc" id="L63">            var requestMessageBinary = new Request();</span>
 <span class="fc" id="L64">            requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);</span>
 <span class="fc" id="L65">            requestMessageBinary.setParameters(this.injectionTime.getInfoMessage());</span>
 <span class="fc" id="L66">            this.injectionModel.sendToViews(requestMessageBinary);</span>
 <span class="fc" id="L67">        } else {</span>
-<span class="nc" id="L68">            this.unallow();</span>
+<span class="fc" id="L68">            this.unallow();</span>
         }
 <span class="fc" id="L70">    }</span>
 
@@ -113,8 +113,8 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
     @Override
     public void unallow(int... i) {
-<span class="nc" id="L116">        this.markVulnerability(Interaction.MARK_TIME_INVULNERABLE);</span>
-<span class="nc" id="L117">    }</span>
+<span class="fc" id="L116">        this.markVulnerability(Interaction.MARK_TIME_INVULNERABLE);</span>
+<span class="fc" id="L117">    }</span>
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {

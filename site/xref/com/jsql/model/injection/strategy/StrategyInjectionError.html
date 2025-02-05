@@ -59,168 +59,163 @@
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          }
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          LOGGER.log(
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>              LogLevelUtil.CONSOLE_DEFAULT,
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>              AbstractStrategy.FORMAT_CHECKING_STRATEGY,
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>              () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_CHECKING_STRATEGY"</span>),
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>              <strong class="jxr_keyword">this</strong>::getName
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          );
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">this</strong>.tabCapacityMethod = <strong class="jxr_keyword">new</strong> String[strategyYaml.getError().getMethod().size()];
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">var</strong> indexErrorMethod = 0;
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">var</strong> errorCapacity = 0;
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>          
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">for</strong> (<a name="Method" href="../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod: strategyYaml.getError().getMethod()) {
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>              <strong class="jxr_keyword">boolean</strong> methodIsApplicable = <strong class="jxr_keyword">this</strong>.isApplicable(errorMethod);
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>              <strong class="jxr_keyword">if</strong> (methodIsApplicable) {
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>                  Matcher regexSearch = <strong class="jxr_keyword">this</strong>.getPerformance(errorMethod);
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>                  <strong class="jxr_keyword">if</strong> (regexSearch.find()) {
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>                      errorCapacity = <strong class="jxr_keyword">this</strong>.getCapacity(indexErrorMethod, errorCapacity, errorMethod, regexSearch);
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>                  } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>                      LOGGER.log(
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>                          LogLevelUtil.CONSOLE_ERROR,
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>                          <span class="jxr_string">"{} {} but injectable size is incorrect"</span>,
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>                          () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_VULNERABLE"</span>),
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>                          errorMethod::getName
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>                      );
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>                      methodIsApplicable = false;
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>                  }
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>              }
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>              
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>              <strong class="jxr_keyword">if</strong> (methodIsApplicable) {
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>                  <strong class="jxr_keyword">this</strong>.allow(indexErrorMethod);
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>              } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>                  <strong class="jxr_keyword">this</strong>.unallow(indexErrorMethod);
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>              }
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>              indexErrorMethod++;
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>          }
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>      }
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>  
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isApplicable(<a name="Method" href="../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod) {
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>          <strong class="jxr_keyword">var</strong> methodIsApplicable = false;
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">this</strong>.logChecking();
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">this</strong>.tabCapacityMethod = <strong class="jxr_keyword">new</strong> String[strategyYaml.getError().getMethod().size()];
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">var</strong> indexErrorMethod = 0;
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">var</strong> errorCapacity = 0;
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">for</strong> (<a name="Method" href="../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod: strategyYaml.getError().getMethod()) {
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>              <strong class="jxr_keyword">boolean</strong> methodIsApplicable = <strong class="jxr_keyword">this</strong>.isApplicable(errorMethod);
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>              <strong class="jxr_keyword">if</strong> (methodIsApplicable) {
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>                  Matcher regexSearch = <strong class="jxr_keyword">this</strong>.getPerformance(errorMethod);
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>                  <strong class="jxr_keyword">if</strong> (regexSearch.find()) {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>                      errorCapacity = <strong class="jxr_keyword">this</strong>.getCapacity(indexErrorMethod, errorCapacity, errorMethod, regexSearch);
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>                  } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>                      LOGGER.log(
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>                          LogLevelUtil.CONSOLE_ERROR,
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>                          <span class="jxr_string">"{} {} but injectable size is incorrect"</span>,
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>                          () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_VULNERABLE"</span>),
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>                          errorMethod::getName
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>                      );
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>                      methodIsApplicable = false;
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>                  }
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>              }
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>              
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>              <strong class="jxr_keyword">if</strong> (methodIsApplicable) {
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>                  <strong class="jxr_keyword">this</strong>.allow(indexErrorMethod);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>              } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>                  <strong class="jxr_keyword">this</strong>.unallow(indexErrorMethod);
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>              }
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>              indexErrorMethod++;
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          }
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>      }
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>  
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isApplicable(<a name="Method" href="../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod) {
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">var</strong> methodIsApplicable = false;
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>  
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          String performanceSourcePage = <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorIndice(errorMethod),
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>              <span class="jxr_string">"error#confirm"</span>
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>          );
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          String performanceSourcePage = <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorIndice(errorMethod),
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>              <span class="jxr_string">"error#confirm"</span>
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          );
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>  
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">var</strong> indexZeroToFind = <span class="jxr_string">"0"</span>;
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>         String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">if</strong> (performanceSourcePage.matches(<span class="jxr_string">"(?s).*"</span>+ regexIndexZero +<span class="jxr_string">".*"</span>)) {
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>             methodIsApplicable = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>             <strong class="jxr_keyword">this</strong>.isApplicable = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>         }
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>         <strong class="jxr_keyword">return</strong> methodIsApplicable;
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>     }
-<a class="jxr_linenumber" name="L107" href="#L107">107</a> 
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>     <strong class="jxr_keyword">private</strong> Matcher getPerformance(<a name="Method" href="../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod) {
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>         String performanceErrorSourcePage = <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorCalibrator(errorMethod),
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>             <span class="jxr_string">"error#size"</span>
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         );
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">return</strong> Pattern.compile(<span class="jxr_string">"(?s)"</span>+ DataAccess.LEAD +<span class="jxr_string">"("</span>+ VendorYaml.CALIBRATOR_SQL +<span class="jxr_string">"+)"</span>).matcher(performanceErrorSourcePage);
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>     }
-<a class="jxr_linenumber" name="L115" href="#L115">115</a> 
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> getCapacity(<strong class="jxr_keyword">int</strong> indexErrorMethod, <strong class="jxr_keyword">int</strong> errorCapacityDefault, <a name="Method" href="../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod, Matcher regexSearch) {
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>         <strong class="jxr_keyword">int</strong> errorCapacityImproved = errorCapacityDefault;
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>         
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>         regexSearch.reset();
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">while</strong> (regexSearch.find()) {
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>             <strong class="jxr_keyword">if</strong> (errorCapacityImproved &lt; regexSearch.group(1).length()) {
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>                 <strong class="jxr_keyword">this</strong>.indexErrorStrategy = indexErrorMethod;
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>             }
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>             errorCapacityImproved = regexSearch.group(1).length();
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>             <strong class="jxr_keyword">this</strong>.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacityImproved);
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>         }
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">int</strong> logErrorCapacityImproved = errorCapacityImproved;
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>         LOGGER.log(
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>             LogLevelUtil.CONSOLE_SUCCESS,
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>             <span class="jxr_string">"{} [Error {}] showing [{}] characters"</span>,
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>             () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_VULNERABLE"</span>),
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>             errorMethod::getName,
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>             () -&gt; Integer.toString(logErrorCapacityImproved)
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         );
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>         
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>         <strong class="jxr_keyword">return</strong> errorCapacityImproved;
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>     }
-<a class="jxr_linenumber" name="L139" href="#L139">139</a> 
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>     @Override
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> allow(<strong class="jxr_keyword">int</strong>... indexError) {
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>         <strong class="jxr_keyword">this</strong>.injectionModel.appendAnalysisReport(
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>             StringUtil.formatReport(
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>                 LogLevelUtil.COLOR_BLU,
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>                 <span class="jxr_string">"### Strategy: "</span>+ <strong class="jxr_keyword">this</strong>.getName() +<span class="jxr_string">":"</span>+ <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance()
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>                 .getModelYaml()
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>                 .getStrategy()
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>                 .getError()
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>                 .getMethod()
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>                 .get(indexError[0])
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>                 .getName()
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>             )
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>             + <strong class="jxr_keyword">this</strong>.injectionModel.getReportWithoutIndex(
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlError(
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>                     StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, <span class="jxr_string">"&amp;lt;query&amp;gt;"</span>),
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>                     <span class="jxr_string">"0"</span>,
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>                     indexError[0],
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>                     <strong class="jxr_keyword">true</strong>
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>                 ),
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>                 <span class="jxr_string">"metadataInjectionProcess"</span>
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>             )
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>         );
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">this</strong>.markVulnerability(Interaction.MARK_ERROR_VULNERABLE, indexError[0]);
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">var</strong> indexZeroToFind = <span class="jxr_string">"0"</span>;
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>          String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>          <strong class="jxr_keyword">if</strong> (performanceSourcePage.matches(<span class="jxr_string">"(?s).*"</span>+ regexIndexZero +<span class="jxr_string">".*"</span>)) {
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>              methodIsApplicable = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>              <strong class="jxr_keyword">this</strong>.isApplicable = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          }
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>         <strong class="jxr_keyword">return</strong> methodIsApplicable;
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>     }
+<a class="jxr_linenumber" name="L102" href="#L102">102</a> 
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>     <strong class="jxr_keyword">private</strong> Matcher getPerformance(<a name="Method" href="../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod) {
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>         String performanceErrorSourcePage = <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorCalibrator(errorMethod),
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>             <span class="jxr_string">"error#size"</span>
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         );
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">return</strong> Pattern.compile(<span class="jxr_string">"(?s)"</span>+ DataAccess.LEAD +<span class="jxr_string">"("</span>+ VendorYaml.CALIBRATOR_SQL +<span class="jxr_string">"+)"</span>).matcher(performanceErrorSourcePage);
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>     }
+<a class="jxr_linenumber" name="L110" href="#L110">110</a> 
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> getCapacity(<strong class="jxr_keyword">int</strong> indexErrorMethod, <strong class="jxr_keyword">int</strong> errorCapacityDefault, <a name="Method" href="../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod, Matcher regexSearch) {
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">int</strong> errorCapacityImproved = errorCapacityDefault;
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         regexSearch.reset();
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">while</strong> (regexSearch.find()) {
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>             <strong class="jxr_keyword">if</strong> (errorCapacityImproved &lt; regexSearch.group(1).length()) {
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>                 <strong class="jxr_keyword">this</strong>.indexErrorStrategy = indexErrorMethod;
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>             }
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>             errorCapacityImproved = regexSearch.group(1).length();
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>             <strong class="jxr_keyword">this</strong>.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacityImproved);
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         }
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>         
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         <strong class="jxr_keyword">int</strong> logErrorCapacityImproved = errorCapacityImproved;
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         LOGGER.log(
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>             LogLevelUtil.CONSOLE_SUCCESS,
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>             <span class="jxr_string">"{} [Error {}] showing [{}] characters"</span>,
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>             () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_VULNERABLE"</span>),
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>             errorMethod::getName,
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>             () -&gt; Integer.toString(logErrorCapacityImproved)
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         );
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>         
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>         <strong class="jxr_keyword">return</strong> errorCapacityImproved;
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>     }
+<a class="jxr_linenumber" name="L134" href="#L134">134</a> 
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>     @Override
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> allow(<strong class="jxr_keyword">int</strong>... indexError) {
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         <strong class="jxr_keyword">this</strong>.injectionModel.appendAnalysisReport(
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>             StringUtil.formatReport(
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>                 LogLevelUtil.COLOR_BLU,
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>                 <span class="jxr_string">"### Strategy: "</span>+ <strong class="jxr_keyword">this</strong>.getName() +<span class="jxr_string">":"</span>+ <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance()
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>                 .getModelYaml()
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>                 .getStrategy()
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>                 .getError()
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>                 .getMethod()
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>                 .get(indexError[0])
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>                 .getName()
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>             )
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>             + <strong class="jxr_keyword">this</strong>.injectionModel.getReportWithoutIndex(
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlError(
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>                     StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, <span class="jxr_string">"&amp;lt;query&amp;gt;"</span>),
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>                     <span class="jxr_string">"0"</span>,
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>                     indexError[0],
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>                     <strong class="jxr_keyword">true</strong>
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>                 ),
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>                 <span class="jxr_string">"metadataInjectionProcess"</span>
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>             )
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>         );
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>         <strong class="jxr_keyword">this</strong>.markVulnerability(Interaction.MARK_ERROR_VULNERABLE, indexError[0]);
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>     }
+<a class="jxr_linenumber" name="L160" href="#L160">160</a> 
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>     @Override
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> unallow(<strong class="jxr_keyword">int</strong>... indexError) {
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">this</strong>.markVulnerability(Interaction.MARK_ERROR_INVULNERABLE, indexError[0]);
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>     }
 <a class="jxr_linenumber" name="L165" href="#L165">165</a> 
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>     @Override
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> unallow(<strong class="jxr_keyword">int</strong>... indexError) {
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">this</strong>.markVulnerability(Interaction.MARK_ERROR_INVULNERABLE, indexError[0]);
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>     }
-<a class="jxr_linenumber" name="L170" href="#L170">170</a> 
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>     @Override
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>     <strong class="jxr_keyword">public</strong> String inject(String sqlQuery, String startPosition, <a name="AbstractSuspendable" href="../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> stoppable, String metadataInjectionProcess) {
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition, <strong class="jxr_keyword">this</strong>.indexErrorStrategy, false),
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>             metadataInjectionProcess
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>         );
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>     }
-<a class="jxr_linenumber" name="L178" href="#L178">178</a> 
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>     @Override
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> activateWhenApplicable() {
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getStrategy() == <strong class="jxr_keyword">null</strong> &amp;&amp; <strong class="jxr_keyword">this</strong>.isApplicable()) {
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>             LOGGER.log(
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>                 LogLevelUtil.CONSOLE_INFORM,
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>                 <span class="jxr_string">"{} [{} {}]"</span>,
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>                 () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_USING_STRATEGY"</span>),
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>                 <strong class="jxr_keyword">this</strong>::getName,
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>                 () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy()
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>                 .getError().getMethod().get(<strong class="jxr_keyword">this</strong>.indexErrorStrategy).getName()
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>             );
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().setStrategy(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getError());
-<a class="jxr_linenumber" name="L191" href="#L191">191</a> 
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>             <strong class="jxr_keyword">var</strong> request = <strong class="jxr_keyword">new</strong> <a name="Request" href="../../../../../com/jsql/model/bean/util/Request.html#Request">Request</a>();
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>             request.setMessage(Interaction.MARK_ERROR_STRATEGY);
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(request);
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         }
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>     <strong class="jxr_keyword">public</strong> String inject(String sqlQuery, String startPosition, <a name="AbstractSuspendable" href="../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> stoppable, String metadataInjectionProcess) {
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition, <strong class="jxr_keyword">this</strong>.indexErrorStrategy, false),
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>             metadataInjectionProcess
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>         );
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>     }
+<a class="jxr_linenumber" name="L173" href="#L173">173</a> 
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>     @Override
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> activateWhenApplicable() {
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getStrategy() == <strong class="jxr_keyword">null</strong> &amp;&amp; <strong class="jxr_keyword">this</strong>.isApplicable()) {
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>             LOGGER.log(
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>                 LogLevelUtil.CONSOLE_INFORM,
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>                 <span class="jxr_string">"{} [{} {}]"</span>,
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>                 () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_USING_STRATEGY"</span>),
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>                 <strong class="jxr_keyword">this</strong>::getName,
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>                 () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy()
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>                 .getError().getMethod().get(<strong class="jxr_keyword">this</strong>.indexErrorStrategy).getName()
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>             );
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().setStrategy(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getError());
+<a class="jxr_linenumber" name="L186" href="#L186">186</a> 
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>             <strong class="jxr_keyword">var</strong> request = <strong class="jxr_keyword">new</strong> <a name="Request" href="../../../../../com/jsql/model/bean/util/Request.html#Request">Request</a>();
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>             request.setMessage(Interaction.MARK_ERROR_STRATEGY);
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(request);
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         }
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>     }
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>     
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>     @Override
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <strong class="jxr_keyword">public</strong> String getPerformanceLength() {
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.tabCapacityMethod[<strong class="jxr_keyword">this</strong>.indexErrorStrategy];
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>     }
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>     @Override
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">public</strong> String getPerformanceLength() {
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.tabCapacityMethod[<strong class="jxr_keyword">this</strong>.indexErrorStrategy];
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">public</strong> String getName() {
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>         <strong class="jxr_keyword">return</strong> <span class="jxr_string">"Error"</span>;
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>     }
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>     
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>     @Override
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>     <strong class="jxr_keyword">public</strong> String getName() {
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>         <strong class="jxr_keyword">return</strong> <span class="jxr_string">"Error"</span>;
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>     }
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>     
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>     <strong class="jxr_keyword">public</strong> Integer getIndexErrorStrategy() {
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.indexErrorStrategy;
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>     }
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>     
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setIndexErrorStrategy(<strong class="jxr_keyword">int</strong> indexErrorStrategy) {
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>         <strong class="jxr_keyword">this</strong>.indexErrorStrategy = indexErrorStrategy;
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>     }
-<a class="jxr_linenumber" name="L215" href="#L215">215</a> }
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>     <strong class="jxr_keyword">public</strong> Integer getIndexErrorStrategy() {
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.indexErrorStrategy;
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>     }
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>     
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setIndexErrorStrategy(<strong class="jxr_keyword">int</strong> indexErrorStrategy) {
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <strong class="jxr_keyword">this</strong>.indexErrorStrategy = indexErrorStrategy;
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>     }
+<a class="jxr_linenumber" name="L210" href="#L210">210</a> }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>

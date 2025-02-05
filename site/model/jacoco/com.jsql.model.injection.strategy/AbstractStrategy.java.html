@@ -7,6 +7,10 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -15,6 +19,11 @@ import java.util.Map;
  * Define a strategy to inject SQL with methods like Error and Time.
  */
 public abstract class AbstractStrategy {
+
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     protected static final String KEY_LOG_CHECKING_STRATEGY = &quot;LOG_CHECKING_STRATEGY&quot;;
     protected static final String KEY_LOG_VULNERABLE = &quot;LOG_VULNERABLE&quot;;
@@ -25,13 +34,13 @@ public abstract class AbstractStrategy {
     /**
      * True if injection can be used, false otherwise.
      */
-<span class="fc" id="L28">    protected boolean isApplicable = false;</span>
+<span class="fc" id="L37">    protected boolean isApplicable = false;</span>
 
     protected final InjectionModel injectionModel;
     
-<span class="fc" id="L32">    protected AbstractStrategy(InjectionModel injectionModel) {</span>
-<span class="fc" id="L33">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L41">    protected AbstractStrategy(InjectionModel injectionModel) {</span>
+<span class="fc" id="L42">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L43">    }</span>
 
     /**
      * Test if this strategy can be used to inject SQL.
@@ -69,38 +78,42 @@ public abstract class AbstractStrategy {
      * Get the injection strategy name.
      */
     public abstract String getName();
+
+    public void logChecking() {
+<span class="fc" id="L83">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, AbstractStrategy.FORMAT_CHECKING_STRATEGY, () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY), this::getName);</span>
+<span class="fc" id="L84">    }</span>
     
     public void markVulnerability(Interaction message, int... indexErrorStrategy) {
-<span class="fc" id="L74">        var request = new Request();</span>
-<span class="fc" id="L75">        request.setMessage(message);</span>
+<span class="fc" id="L87">        var request = new Request();</span>
+<span class="fc" id="L88">        request.setMessage(message);</span>
         
-<span class="fc" id="L77">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L78">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+<span class="fc" id="L90">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L91">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
         
         // Ellipse default to non null array
-<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (indexErrorStrategy.length &gt; 0) {</span>
-<span class="fc" id="L82">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
-<span class="fc" id="L83">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (indexErrorStrategy.length &gt; 0) {</span>
+<span class="fc" id="L95">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
+<span class="fc" id="L96">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
         }
 
-<span class="fc" id="L86">        request.setParameters(msgHeader);</span>
-<span class="fc" id="L87">        this.injectionModel.sendToViews(request);</span>
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L99">        request.setParameters(msgHeader);</span>
+<span class="fc" id="L100">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L101">    }</span>
     
     @Override
     public String toString() {
-<span class="fc" id="L92">        return this.getName();</span>
+<span class="fc" id="L105">        return this.getName();</span>
     }
 
 
     // Getter and setter
     
     public boolean isApplicable() {
-<span class="fc" id="L99">        return this.isApplicable;</span>
+<span class="fc" id="L112">        return this.isApplicable;</span>
     }
     
     public void setApplicable(boolean isApplicable) {
-<span class="fc" id="L103">        this.isApplicable = isApplicable;</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L116">        this.isApplicable = isApplicable;</span>
+<span class="fc" id="L117">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

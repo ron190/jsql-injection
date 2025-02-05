@@ -141,10 +141,10 @@ public class TabResults extends DnDTabbedPane {
 <span class="fc" id="L141">        }</span>
 <span class="fc" id="L142">    }</span>
 
-    public void addTabExploitUdf() {
+    public void addTabExploitUdfMysql() {
         try {
 <span class="nc" id="L146">            var terminalID = UUID.randomUUID();</span>
-<span class="nc" id="L147">            var terminal = new ExploitUdf(terminalID);</span>
+<span class="nc" id="L147">            var terminal = new ExploitUdfMysql(terminalID);</span>
 <span class="nc" id="L148">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
 
 <span class="nc" id="L150">            JScrollPane scroller = new JScrollPane(terminal);</span>

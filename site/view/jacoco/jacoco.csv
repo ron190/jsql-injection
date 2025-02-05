@@ -48,13 +48,13 @@ view,com.jsql.view.swing.manager,ManagerBruteForce.new JTextFieldPlaceholder() {
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JSpinner() {...},5,9,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JTextFieldPlaceholder() {...},5,10,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JCheckBox() {...},5,11,0,0,1,1,1,1,1,1
-view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit,288,9,38,0,65,3,21,1,2,1
+view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit,320,9,38,0,65,3,21,1,2,1
 view,com.jsql.view.swing.manager,ManagerDatabase.new KeyAdapter() {...},28,6,10,0,7,1,6,1,1,1
 view,com.jsql.view.swing.manager,ManagerDatabase.new MouseAdapter() {...},24,32,4,2,6,5,3,2,0,2
 view,com.jsql.view.swing.manager,ManagerFile.ActionFile.new SwingWorker() {...},96,0,2,0,20,0,3,0,2,0
 view,com.jsql.view.swing.manager,ManagerFile,0,29,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.manager,ManagerScan.new DefaultListCellRenderer() {...},4,23,1,1,1,5,1,2,0,2
-view,com.jsql.view.swing.manager,ManagerExploit,306,502,40,2,54,77,25,5,5,4
+view,com.jsql.view.swing.manager,ManagerExploit,361,530,46,2,62,77,28,5,5,4
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit.new SwingWorker() {...},17,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit.new SwingWorker() {...},66,0,0,0,10,0,3,0,3,0
 view,com.jsql.view.swing.manager,ManagerExploit.new JTextFieldPlaceholder() {...},5,10,0,0,1,1,1,1,1,1
@@ -107,12 +107,12 @@ view,com.jsql.view.swing.panel.address,PanelTrailingAddress,223,551,6,14,49,113,
 view,com.jsql.view.swing.terminal,AbstractExploit,53,267,5,9,9,66,5,16,0,14
 view,com.jsql.view.swing.terminal,ExploitRcePostgres,16,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.terminal,EmptyFocusCopy,58,9,2,0,16,5,5,2,4,2
-view,com.jsql.view.swing.terminal,ExploitUdf,16,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.terminal,ExploitSql,14,9,0,0,2,3,1,1,1,1
-view,com.jsql.view.swing.terminal,BlockCaret,10,116,4,14,6,33,4,9,0,4
+view,com.jsql.view.swing.terminal,BlockCaret,9,117,2,16,5,34,2,11,0,4
 view,com.jsql.view.swing.terminal,ExploitWeb,0,17,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.terminal,KeyAdapterTerminal.new SwingWorker() {...},0,47,0,2,0,12,0,3,0,2
 view,com.jsql.view.swing.terminal,KeyAdapterTerminal,144,262,21,37,26,63,16,23,1,9
+view,com.jsql.view.swing.terminal,ExploitUdfMysql,16,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.terminal,ExploitRceOracle,16,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.panel.util,ButtonExpandText.new WindowAdapter() {...},16,12,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.panel.util,ButtonExpandText.new MouseAdapter() {...},23,15,2,0,3,1,2,1,1,1
@@ -215,8 +215,8 @@ view,com.jsql.view.swing.panel,PanelPreferences.CategoryPreference,0,59,0,0,0,10
 view,com.jsql.view.swing.panel,PanelPreferences,0,240,0,0,0,53,0,14,0,14
 view,com.jsql.view.swing.panel,PanelAddressBar,80,790,4,4,14,142,10,18,8,16
 view,com.jsql.view.swing.panel,PanelConsoles,75,497,8,8,20,110,11,16,3,16
-view,com.jsql.view.swing.tab.dnd,TabTransferHandler,78,254,24,18,13,59,22,8,1,8
-view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,12,167,9,15,4,39,9,9,0,6
+view,com.jsql.view.swing.tab.dnd,TabTransferHandler,76,256,23,19,12,60,21,9,1,8
+view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,12,167,8,16,4,39,8,10,0,6
 view,com.jsql.view.swing.tab.dnd,DnDTabData,0,6,0,0,0,3,0,1,0,1
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.DnDDropLocation,0,20,0,0,0,8,0,4,0,4
 view,com.jsql.view.swing.tab.dnd,GhostGlassPane,0,45,0,0,0,15,0,4,0,4
