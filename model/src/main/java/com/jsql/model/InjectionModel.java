@@ -271,20 +271,20 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
             if (isReport) {
                 Color colorReport = UIManager.getColor("TextArea.inactiveForeground");
-                String report = "<br>" + StringUtil.formatReport(colorReport, "Method: ") + httpRequest.method();
-                report += "<br>" + StringUtil.formatReport(colorReport, "Path: ") + httpRequest.uri().getPath();
+                String report = "<br>&#10;" + StringUtil.formatReport(colorReport, "Method: ") + httpRequest.method();
+                report += "<br>&#10;" + StringUtil.formatReport(colorReport, "Path: ") + httpRequest.uri().getPath();
                 if (httpRequest.uri().getQuery() != null) {
-                    report += "<br>" + StringUtil.formatReport(colorReport, "Query: ") + httpRequest.uri().getQuery();
+                    report += "<br>&#10;" + StringUtil.formatReport(colorReport, "Query: ") + httpRequest.uri().getQuery();
                 }
                 if (
                     !(this.mediatorUtils.getParameterUtil().getListRequest().isEmpty()
                     && this.mediatorUtils.getCsrfUtil().getTokenCsrf() == null)
                 ) {
-                    report += "<br>" + StringUtil.formatReport(colorReport, "Body: ") + body;
+                    report += "<br>&#10;" + StringUtil.formatReport(colorReport, "Body: ") + body;
                 }
-                report += "<br>" + StringUtil.formatReport(colorReport, "Header: ") + httpRequest.headers().map().entrySet().stream()
+                report += "<br>&#10;" + StringUtil.formatReport(colorReport, "Header: ") + httpRequest.headers().map().entrySet().stream()
                     .map(entry -> String.format("%s: %s", entry.getKey(), String.join(StringUtils.EMPTY, entry.getValue())))
-                    .collect(Collectors.joining("<br>"));
+                    .collect(Collectors.joining("<br>&#10;"));
                 return report;
             }
             
@@ -702,6 +702,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     }
 
     public void appendAnalysisReport(String analysisReport, boolean isInit) {
-        this.analysisReport += (isInit ? StringUtils.EMPTY : "<br><br>") + analysisReport;
+        this.analysisReport += (isInit ? StringUtils.EMPTY : "<br>&#10;<br>&#10;") + analysisReport;
     }
 }

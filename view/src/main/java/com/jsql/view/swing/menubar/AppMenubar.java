@@ -34,6 +34,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -112,7 +113,7 @@ public class AppMenubar extends JMenuBar {
             if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {
                 ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).copyTable();
             } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {
-                ((JTextArea) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).copy();
+                ((JTextComponent) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).copy();
             }
         });
 
@@ -125,7 +126,7 @@ public class AppMenubar extends JMenuBar {
             } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {
                 // Textarea need focus to select all
                 ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
-                ((JTextArea) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
+                ((JTextComponent) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
             }
         });
 

@@ -191,11 +191,11 @@ public class MediatorVendor {
             String.join(
                 StringUtils.EMPTY,
                 "# Date: ", LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
-                "<br># Tested on: ", SystemUtils.OS_NAME, " (", SystemUtils.OS_VERSION, ")",
-                "<br># Tool: ", StringUtil.APP_NAME, " v", this.injectionModel.getPropertiesUtil().getVersionJsql(),
+                "<br>&#10;# Tested on: ", SystemUtils.OS_NAME, " (", SystemUtils.OS_VERSION, ")",
+                "<br>&#10;# Tool: ", StringUtil.APP_NAME, " v", this.injectionModel.getPropertiesUtil().getVersionJsql(),
                 " (<a href=", urlGitHub, ">", urlGitHub, "</a>)",
-                "<br># Database: ", vendorFound.toString(),
-                "<br><br>## Vulnerability summary</span>"
+                "<br>&#10;# Database: ", vendorFound.toString(),
+                "<br>&#10;<br>&#10;## Vulnerability summary</span>"
             ),
             true
         );
