@@ -199,11 +199,11 @@
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>             String.join(
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>                 StringUtils.EMPTY,
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>                 <span class="jxr_string">"# Date: "</span>, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>                 <span class="jxr_string">"&lt;br&gt;# Tested on: "</span>, SystemUtils.OS_NAME, <span class="jxr_string">" ("</span>, SystemUtils.OS_VERSION, <span class="jxr_string">")"</span>,
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>                 <span class="jxr_string">"&lt;br&gt;# Tool: "</span>, StringUtil.APP_NAME, <span class="jxr_string">" v"</span>, <strong class="jxr_keyword">this</strong>.injectionModel.getPropertiesUtil().getVersionJsql(),
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>                 <span class="jxr_string">"&lt;br&gt;&amp;#10;# Tested on: "</span>, SystemUtils.OS_NAME, <span class="jxr_string">" ("</span>, SystemUtils.OS_VERSION, <span class="jxr_string">")"</span>,
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>                 <span class="jxr_string">"&lt;br&gt;&amp;#10;# Tool: "</span>, StringUtil.APP_NAME, <span class="jxr_string">" v"</span>, <strong class="jxr_keyword">this</strong>.injectionModel.getPropertiesUtil().getVersionJsql(),
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>                 <span class="jxr_string">" (&lt;a href="</span>, urlGitHub, <span class="jxr_string">"&gt;"</span>, urlGitHub, <span class="jxr_string">"&lt;/a&gt;)"</span>,
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>                 <span class="jxr_string">"&lt;br&gt;# Database: "</span>, vendorFound.toString(),
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>                 <span class="jxr_string">"&lt;br&gt;&lt;br&gt;## Vulnerability summary&lt;/span&gt;"</span>
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>                 <span class="jxr_string">"&lt;br&gt;&amp;#10;# Database: "</span>, vendorFound.toString(),
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>                 <span class="jxr_string">"&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;## Vulnerability summary&lt;/span&gt;"</span>
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>             ),
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>             <strong class="jxr_keyword">true</strong>
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>         );

@@ -191,11 +191,11 @@ public class MediatorVendor {
 <span class="fc" id="L191">            String.join(</span>
                 StringUtils.EMPTY,
 <span class="fc" id="L193">                &quot;# Date: &quot;, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),</span>
-                &quot;&lt;br&gt;# Tested on: &quot;, SystemUtils.OS_NAME, &quot; (&quot;, SystemUtils.OS_VERSION, &quot;)&quot;,
-<span class="fc" id="L195">                &quot;&lt;br&gt;# Tool: &quot;, StringUtil.APP_NAME, &quot; v&quot;, this.injectionModel.getPropertiesUtil().getVersionJsql(),</span>
+                &quot;&lt;br&gt;&amp;#10;# Tested on: &quot;, SystemUtils.OS_NAME, &quot; (&quot;, SystemUtils.OS_VERSION, &quot;)&quot;,
+<span class="fc" id="L195">                &quot;&lt;br&gt;&amp;#10;# Tool: &quot;, StringUtil.APP_NAME, &quot; v&quot;, this.injectionModel.getPropertiesUtil().getVersionJsql(),</span>
                 &quot; (&lt;a href=&quot;, urlGitHub, &quot;&gt;&quot;, urlGitHub, &quot;&lt;/a&gt;)&quot;,
-<span class="fc" id="L197">                &quot;&lt;br&gt;# Database: &quot;, vendorFound.toString(),</span>
-                &quot;&lt;br&gt;&lt;br&gt;## Vulnerability summary&lt;/span&gt;&quot;
+<span class="fc" id="L197">                &quot;&lt;br&gt;&amp;#10;# Database: &quot;, vendorFound.toString(),</span>
+                &quot;&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;## Vulnerability summary&lt;/span&gt;&quot;
             ),
             true
         );

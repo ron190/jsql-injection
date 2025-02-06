@@ -271,20 +271,20 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
 <span class="fc bfc" id="L272" title="All 2 branches covered.">            if (isReport) {</span>
 <span class="fc" id="L273">                Color colorReport = UIManager.getColor(&quot;TextArea.inactiveForeground&quot;);</span>
-<span class="fc" id="L274">                String report = &quot;&lt;br&gt;&quot; + StringUtil.formatReport(colorReport, &quot;Method: &quot;) + httpRequest.method();</span>
-<span class="fc" id="L275">                report += &quot;&lt;br&gt;&quot; + StringUtil.formatReport(colorReport, &quot;Path: &quot;) + httpRequest.uri().getPath();</span>
+<span class="fc" id="L274">                String report = &quot;&lt;br&gt;&amp;#10;&quot; + StringUtil.formatReport(colorReport, &quot;Method: &quot;) + httpRequest.method();</span>
+<span class="fc" id="L275">                report += &quot;&lt;br&gt;&amp;#10;&quot; + StringUtil.formatReport(colorReport, &quot;Path: &quot;) + httpRequest.uri().getPath();</span>
 <span class="fc bfc" id="L276" title="All 2 branches covered.">                if (httpRequest.uri().getQuery() != null) {</span>
-<span class="fc" id="L277">                    report += &quot;&lt;br&gt;&quot; + StringUtil.formatReport(colorReport, &quot;Query: &quot;) + httpRequest.uri().getQuery();</span>
+<span class="fc" id="L277">                    report += &quot;&lt;br&gt;&amp;#10;&quot; + StringUtil.formatReport(colorReport, &quot;Query: &quot;) + httpRequest.uri().getQuery();</span>
                 }
 <span class="fc" id="L279">                if (</span>
 <span class="fc bfc" id="L280" title="All 2 branches covered.">                    !(this.mediatorUtils.getParameterUtil().getListRequest().isEmpty()</span>
 <span class="fc bfc" id="L281" title="All 2 branches covered.">                    &amp;&amp; this.mediatorUtils.getCsrfUtil().getTokenCsrf() == null)</span>
                 ) {
-<span class="fc" id="L283">                    report += &quot;&lt;br&gt;&quot; + StringUtil.formatReport(colorReport, &quot;Body: &quot;) + body;</span>
+<span class="fc" id="L283">                    report += &quot;&lt;br&gt;&amp;#10;&quot; + StringUtil.formatReport(colorReport, &quot;Body: &quot;) + body;</span>
                 }
-<span class="fc" id="L285">                report += &quot;&lt;br&gt;&quot; + StringUtil.formatReport(colorReport, &quot;Header: &quot;) + httpRequest.headers().map().entrySet().stream()</span>
+<span class="fc" id="L285">                report += &quot;&lt;br&gt;&amp;#10;&quot; + StringUtil.formatReport(colorReport, &quot;Header: &quot;) + httpRequest.headers().map().entrySet().stream()</span>
 <span class="fc" id="L286">                    .map(entry -&gt; String.format(&quot;%s: %s&quot;, entry.getKey(), String.join(StringUtils.EMPTY, entry.getValue())))</span>
-<span class="fc" id="L287">                    .collect(Collectors.joining(&quot;&lt;br&gt;&quot;));</span>
+<span class="fc" id="L287">                    .collect(Collectors.joining(&quot;&lt;br&gt;&amp;#10;&quot;));</span>
 <span class="fc" id="L288">                return report;</span>
             }
             
@@ -702,7 +702,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L702">    }</span>
 
     public void appendAnalysisReport(String analysisReport, boolean isInit) {
-<span class="fc bfc" id="L705" title="All 2 branches covered.">        this.analysisReport += (isInit ? StringUtils.EMPTY : &quot;&lt;br&gt;&lt;br&gt;&quot;) + analysisReport;</span>
+<span class="fc bfc" id="L705" title="All 2 branches covered.">        this.analysisReport += (isInit ? StringUtils.EMPTY : &quot;&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;&quot;) + analysisReport;</span>
 <span class="fc" id="L706">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

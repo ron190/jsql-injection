@@ -279,20 +279,20 @@
 <a class="jxr_linenumber" name="L271" href="#L271">271</a> 
 <a class="jxr_linenumber" name="L272" href="#L272">272</a>             <strong class="jxr_keyword">if</strong> (isReport) {
 <a class="jxr_linenumber" name="L273" href="#L273">273</a>                 Color colorReport = UIManager.getColor(<span class="jxr_string">"TextArea.inactiveForeground"</span>);
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>                 String report = <span class="jxr_string">"&lt;br&gt;"</span> + StringUtil.formatReport(colorReport, <span class="jxr_string">"Method: "</span>) + httpRequest.method();
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>                 report += <span class="jxr_string">"&lt;br&gt;"</span> + StringUtil.formatReport(colorReport, <span class="jxr_string">"Path: "</span>) + httpRequest.uri().getPath();
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>                 String report = <span class="jxr_string">"&lt;br&gt;&amp;#10;"</span> + StringUtil.formatReport(colorReport, <span class="jxr_string">"Method: "</span>) + httpRequest.method();
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>                 report += <span class="jxr_string">"&lt;br&gt;&amp;#10;"</span> + StringUtil.formatReport(colorReport, <span class="jxr_string">"Path: "</span>) + httpRequest.uri().getPath();
 <a class="jxr_linenumber" name="L276" href="#L276">276</a>                 <strong class="jxr_keyword">if</strong> (httpRequest.uri().getQuery() != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>                     report += <span class="jxr_string">"&lt;br&gt;"</span> + StringUtil.formatReport(colorReport, <span class="jxr_string">"Query: "</span>) + httpRequest.uri().getQuery();
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>                     report += <span class="jxr_string">"&lt;br&gt;&amp;#10;"</span> + StringUtil.formatReport(colorReport, <span class="jxr_string">"Query: "</span>) + httpRequest.uri().getQuery();
 <a class="jxr_linenumber" name="L278" href="#L278">278</a>                 }
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>                 <strong class="jxr_keyword">if</strong> (
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>                     !(<strong class="jxr_keyword">this</strong>.mediatorUtils.getParameterUtil().getListRequest().isEmpty()
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>                     &amp;&amp; <strong class="jxr_keyword">this</strong>.mediatorUtils.getCsrfUtil().getTokenCsrf() == <strong class="jxr_keyword">null</strong>)
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>                 ) {
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>                     report += <span class="jxr_string">"&lt;br&gt;"</span> + StringUtil.formatReport(colorReport, <span class="jxr_string">"Body: "</span>) + body;
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>                     report += <span class="jxr_string">"&lt;br&gt;&amp;#10;"</span> + StringUtil.formatReport(colorReport, <span class="jxr_string">"Body: "</span>) + body;
 <a class="jxr_linenumber" name="L284" href="#L284">284</a>                 }
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>                 report += <span class="jxr_string">"&lt;br&gt;"</span> + StringUtil.formatReport(colorReport, <span class="jxr_string">"Header: "</span>) + httpRequest.headers().map().entrySet().stream()
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>                 report += <span class="jxr_string">"&lt;br&gt;&amp;#10;"</span> + StringUtil.formatReport(colorReport, <span class="jxr_string">"Header: "</span>) + httpRequest.headers().map().entrySet().stream()
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>                     .map(entry -&gt; String.format(<span class="jxr_string">"%s: %s"</span>, entry.getKey(), String.join(StringUtils.EMPTY, entry.getValue())))
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>                     .collect(Collectors.joining(<span class="jxr_string">"&lt;br&gt;"</span>));
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>                     .collect(Collectors.joining(<span class="jxr_string">"&lt;br&gt;&amp;#10;"</span>));
 <a class="jxr_linenumber" name="L288" href="#L288">288</a>                 <strong class="jxr_keyword">return</strong> report;
 <a class="jxr_linenumber" name="L289" href="#L289">289</a>             }
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>             
@@ -710,7 +710,7 @@
 <a class="jxr_linenumber" name="L702" href="#L702">702</a>     }
 <a class="jxr_linenumber" name="L703" href="#L703">703</a> 
 <a class="jxr_linenumber" name="L704" href="#L704">704</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> appendAnalysisReport(String analysisReport, <strong class="jxr_keyword">boolean</strong> isInit) {
-<a class="jxr_linenumber" name="L705" href="#L705">705</a>         <strong class="jxr_keyword">this</strong>.analysisReport += (isInit ? StringUtils.EMPTY : <span class="jxr_string">"&lt;br&gt;&lt;br&gt;"</span>) + analysisReport;
+<a class="jxr_linenumber" name="L705" href="#L705">705</a>         <strong class="jxr_keyword">this</strong>.analysisReport += (isInit ? StringUtils.EMPTY : <span class="jxr_string">"&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;"</span>) + analysisReport;
 <a class="jxr_linenumber" name="L706" href="#L706">706</a>     }
 <a class="jxr_linenumber" name="L707" href="#L707">707</a> }
 </pre>
