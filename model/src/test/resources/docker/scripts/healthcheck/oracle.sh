@@ -19,4 +19,12 @@ do
   sleep 10
 done
 
+# bounce listener
+lsnrctl status
+chmod 777 /opt/oracle/product/18c/dbhomeXE/network/log/
+cat <<EOF | lsnrctl
+stop
+start
+EOF
+
 >&2 echo "Oracle is up - executing command"
