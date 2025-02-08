@@ -232,6 +232,7 @@
                                 <exclude>**/*Db2*SuiteIT.java</exclude>
                                 <exclude>**/*Vertica*SuiteIT.java</exclude>
                                 <exclude>**/*Sybase*SuiteIT.java</exclude>
+                                <exclude>**/*Oracle*SuiteIT.java</exclude>
                             </excludes>
                         </configuration>
                     </plugin>
