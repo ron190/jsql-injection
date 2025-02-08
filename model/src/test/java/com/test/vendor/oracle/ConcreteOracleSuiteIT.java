@@ -9,7 +9,7 @@ public abstract class ConcreteOracleSuiteIT extends AbstractTestSuite {
     }
     
     public void config() {
-        this.jdbcURL = "jdbc:oracle:thin:@localhost:1521:XE";
+        this.jdbcURL = "jdbc:oracle:thin:@jsql-oracle:1521:XE";
         this.jdbcUser = "system";
         this.jdbcPass = "Password1_One";
         this.jsqlDatabaseName = "XDB";

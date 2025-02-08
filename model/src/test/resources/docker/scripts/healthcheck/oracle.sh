@@ -4,7 +4,7 @@ set -e
 
 retry=0
 
-until cat <<EOF | docker exec -i jsql-oracle sqlplus system/Password1_One@XE
+until cat <<EOF | docker exec -i jsql-oracle sqlplus -S system/Password1_One@XE
 WHENEVER OSERROR EXIT FAILURE;
 WHENEVER SQLERROR EXIT SQL.SQLCODE;
 select 'jsqlValue' as jsqlColumn from dual;
@@ -16,7 +16,7 @@ do
   fi
 
   >&2 echo "Oracle is unavailable - sleeping #${retry}"
-  sleep 1
+  sleep 10
 done
 
 >&2 echo "Oracle is up - executing command"

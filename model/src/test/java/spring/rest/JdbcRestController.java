@@ -392,7 +392,7 @@ public class JdbcRestController {
         Arrays.stream(inject.split(";")).map(String::trim).forEach(query -> {
             query = query +";";
             try (
-                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "Password1_One");
+                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@jsql-oracle:1521:XE", "system", "Password1_One");
                 PreparedStatement pstmt = con.prepareStatement("select distinct owner from all_tables where '1' = '"+ query +"'")
             ) {
                 ResultSet rs = pstmt.executeQuery();
