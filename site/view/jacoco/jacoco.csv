@@ -54,7 +54,7 @@ view,com.jsql.view.swing.manager,ManagerDatabase.new MouseAdapter() {...},24,32,
 view,com.jsql.view.swing.manager,ManagerFile.ActionFile.new SwingWorker() {...},96,0,2,0,20,0,3,0,2,0
 view,com.jsql.view.swing.manager,ManagerFile,0,29,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.manager,ManagerScan.new DefaultListCellRenderer() {...},4,23,1,1,1,5,1,2,0,2
-view,com.jsql.view.swing.manager,ManagerExploit,461,530,62,2,81,77,37,5,6,4
+view,com.jsql.view.swing.manager,ManagerExploit,466,530,62,2,73,77,37,5,6,4
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit.new SwingWorker() {...},17,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit.new SwingWorker() {...},66,0,0,0,10,0,3,0,3,0
 view,com.jsql.view.swing.manager,ManagerExploit.new JTextFieldPlaceholder() {...},5,10,0,0,1,1,1,1,1,1
@@ -105,15 +105,15 @@ view,com.jsql.view.swing.panel.address,PanelTrailingAddress.new MouseAdapter() {
 view,com.jsql.view.swing.panel.address,ButtonStart,54,91,6,0,12,29,5,5,2,5
 view,com.jsql.view.swing.panel.address,PanelTrailingAddress,223,551,6,14,49,113,23,22,18,17
 view,com.jsql.view.swing.terminal,AbstractExploit,53,267,5,9,9,66,5,16,0,14
-view,com.jsql.view.swing.terminal,ExploitRcePostgres,16,0,0,0,5,0,2,0,2,0
+view,com.jsql.view.swing.terminal,ExploitRcePostgres,17,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.terminal,EmptyFocusCopy,58,9,2,0,16,5,5,2,4,2
 view,com.jsql.view.swing.terminal,ExploitSql,14,9,0,0,2,3,1,1,1,1
-view,com.jsql.view.swing.terminal,BlockCaret,9,117,2,16,5,34,2,11,0,4
+view,com.jsql.view.swing.terminal,BlockCaret,10,116,4,14,6,33,4,9,0,4
 view,com.jsql.view.swing.terminal,ExploitWeb,0,17,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.terminal,KeyAdapterTerminal.new SwingWorker() {...},0,47,0,2,0,12,0,3,0,2
 view,com.jsql.view.swing.terminal,KeyAdapterTerminal,144,262,21,37,26,63,16,23,1,9
-view,com.jsql.view.swing.terminal,ExploitUdfMysql,16,0,0,0,5,0,2,0,2,0
-view,com.jsql.view.swing.terminal,ExploitRceOracle,16,0,0,0,5,0,2,0,2,0
+view,com.jsql.view.swing.terminal,ExploitUdfMysql,17,0,0,0,5,0,2,0,2,0
+view,com.jsql.view.swing.terminal,ExploitRceOracle,17,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.panel.util,ButtonExpandText.new WindowAdapter() {...},16,12,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.panel.util,ButtonExpandText.new MouseAdapter() {...},23,15,2,0,3,1,2,1,1,1
 view,com.jsql.view.swing.panel.util,ButtonExpandText.new AbstractAction() {...},4,9,0,0,2,1,1,1,1,1

@@ -8,12 +8,11 @@ model,com.jsql.model.bean.util,Header,0,75,0,0,0,13,0,1,0,1
 model,com.jsql.model.bean.util,Request,0,17,0,0,0,7,0,5,0,5
 model,com.jsql.model.bean.util,Interaction,0,350,0,0,0,53,0,3,0,3
 model,com.jsql.model.bean.util,HttpHeader,36,0,0,0,13,0,7,0,7,0
-model,com.jsql.model.accessible,UdfAccess,715,679,57,39,107,130,47,19,4,14
 model,com.jsql.model.accessible,CallableHttpHead,62,141,2,2,12,38,3,6,1,6
 model,com.jsql.model.accessible,ExploitMode,18,46,0,0,5,9,4,2,4,2
 model,com.jsql.model.accessible,DataAccess,126,847,5,23,31,167,8,21,3,12
-model,com.jsql.model.accessible,ResourceAccess,861,1741,58,86,182,340,63,55,14,32
-model,com.jsql.model.accessible,CallableFile,101,209,7,5,19,36,5,8,0,7
+model,com.jsql.model.accessible,ResourceAccess,387,1190,34,62,89,243,37,42,8,23
+model,com.jsql.model.accessible,CallableFile,98,171,7,5,17,32,5,7,0,6
 model,com.jsql.model.injection.strategy,StrategyInjectionTime,0,276,0,14,0,59,0,23,0,16
 model,com.jsql.model.injection.strategy,AbstractStrategy,0,92,0,2,0,21,0,9,0,8
 model,com.jsql.model.injection.strategy,MediatorStrategy,3,467,2,26,1,102,3,27,1,15
@@ -23,7 +22,7 @@ model,com.jsql.model.injection.strategy,StrategyInjectionMultibit,0,191,0,8,0,41
 model,com.jsql.model.injection.strategy,StrategyInjectionError,31,390,1,21,7,85,4,26,3,16
 model,com.jsql.model.injection.strategy,StrategyInjectionBlind,0,276,0,14,0,60,0,23,0,16
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
-model,com.jsql.model,InjectionModel,139,1311,16,68,33,294,14,63,2,33
+model,com.jsql.model,InjectionModel,139,1302,16,68,33,292,14,62,2,32
 model,com.jsql.model,MediatorUtils,6,137,0,0,2,59,2,39,2,39
 model,com.jsql.model.injection.vendor,MediatorVendor.new Vendor() {...},0,85,2,6,0,17,2,4,0,2
 model,com.jsql.model.injection.vendor,MediatorVendor,18,894,0,12,6,114,6,39,6,33
@@ -41,7 +40,7 @@ model,com.jsql.model.injection.strategy.blind,AbstractInjectionMonobit,0,137,0,4
 model,com.jsql.model.injection.strategy.blind,InjectionTime,53,219,8,20,19,43,8,13,0,7
 model,com.jsql.model.injection.strategy.blind,CallableCharInsertion,0,76,0,4,0,19,0,7,0,5
 model,com.jsql.model.injection.strategy.blind,InjectionBlind,44,244,7,19,17,45,7,14,0,8
-model,com.jsql.model.injection.strategy.blind,AbstractInjectionBinary,48,262,8,12,13,62,6,13,0,9
+model,com.jsql.model.injection.strategy.blind,AbstractInjectionBinary,38,272,5,15,11,64,5,14,0,9
 model,com.jsql.model.injection.strategy.blind,InjectionVendor,43,252,5,19,16,48,5,15,0,8
 model,com.jsql.model.injection.strategy.blind,CallableMultibit,2,111,0,4,1,23,1,8,1,6
 model,com.jsql.model.injection.strategy.blind,InjectionMultibit,20,376,5,23,7,63,5,21,0,12
@@ -182,3 +181,7 @@ model,com.jsql.util,HeaderUtil,70,428,18,46,12,87,16,30,0,14
 model,com.jsql.util,ParameterUtil,157,690,33,79,37,160,28,62,1,33
 model,com.jsql.model.suspendable.callable,CallablePageSource,0,51,0,0,0,16,0,7,0,7
 model,com.jsql.model.suspendable.callable,ThreadFactoryCallable,0,13,0,0,0,4,0,2,0,2
+model,com.jsql.model.accessible.vendor,ExploitSqlite,188,168,3,1,26,23,4,4,2,4
+model,com.jsql.model.accessible.vendor,ExploitPostgres,301,430,28,16,64,78,24,9,2,9
+model,com.jsql.model.accessible.vendor,ExploitOracle,311,9,4,0,33,4,4,2,2,2
+model,com.jsql.model.accessible.vendor,ExploitMysql,412,723,46,46,78,141,42,26,5,17

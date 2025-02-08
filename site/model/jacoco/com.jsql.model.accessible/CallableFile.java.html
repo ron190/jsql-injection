@@ -82,9 +82,9 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
                     );
 <span class="fc" id="L83">                } catch (InjectionFailureException e) {</span>
 <span class="fc" id="L84">                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Read data folder failure, trying with large object&quot;);</span>
-<span class="fc" id="L85">                    var loid = this.getResult(&quot;SELECT lo_import('&quot;+ this.pathFile +&quot;')::text&quot;, &quot;pg#add-loid&quot;);</span>
+<span class="fc" id="L85">                    var loid = this.injectionModel.getResourceAccess().getResultWithCatch(&quot;SELECT lo_import('&quot;+ this.pathFile +&quot;')::text&quot;, &quot;pg#add-loid&quot;);</span>
 <span class="pc bpc" id="L86" title="1 of 2 branches missed.">                    if (StringUtils.isNotEmpty(loid)) {</span>
-<span class="fc" id="L87">                        resultToParse = this.getResult(&quot;SELECT convert_from(lo_get(&quot;+ loid +&quot;),'utf8')::text&quot;, &quot;pg#read-lo&quot;);</span>
+<span class="fc" id="L87">                        resultToParse = this.injectionModel.getResourceAccess().getResultWithCatch(&quot;SELECT convert_from(lo_get(&quot;+ loid +&quot;),'utf8')::text&quot;, &quot;pg#read-lo&quot;);</span>
                     }
 <span class="pc bpc" id="L89" title="1 of 2 branches missed.">                    if (StringUtils.isEmpty(resultToParse)) {</span>
 <span class="nc" id="L90">                        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Read large object failure, trying with stack read&quot;);</span>
@@ -121,34 +121,19 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
 <span class="fc" id="L121">        return this;</span>
     }
 
-    public String getResult(String query, String metadata) {
-<span class="fc" id="L125">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
-        try {
-<span class="fc" id="L127">            return new SuspendableGetRows(this.injectionModel).run(</span>
-                query,
-                sourcePage,
-<span class="fc" id="L130">                false,</span>
-<span class="fc" id="L131">                0,</span>
-                MockElement.MOCK,
-                metadata
-            );
-<span class="nc" id="L135">        } catch (JSqlException ignored) {</span>
-<span class="nc" id="L136">            return StringUtils.EMPTY;</span>
-        }
-    }
 
     // Getters
     
     public String getPathFile() {
-<span class="fc" id="L143">        return this.pathFile;</span>
+<span class="fc" id="L128">        return this.pathFile;</span>
     }
 
     public String getSourceFile() {
-<span class="fc" id="L147">        return this.sourceFile;</span>
+<span class="fc" id="L132">        return this.sourceFile;</span>
     }
 
     public SuspendableGetRows getSuspendableReadFile() {
-<span class="fc" id="L151">        return this.suspendableReadFile;</span>
+<span class="fc" id="L136">        return this.suspendableReadFile;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

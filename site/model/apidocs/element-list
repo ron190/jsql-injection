@@ -1,5 +1,6 @@
 com.jsql.model
 com.jsql.model.accessible
+com.jsql.model.accessible.vendor
 com.jsql.model.bean.database
 com.jsql.model.bean.util
 com.jsql.model.exception
