@@ -400,7 +400,7 @@
 <a class="jxr_linenumber" name="L392" href="#L392">392</a>         Arrays.stream(inject.split(<span class="jxr_string">";"</span>)).map(String::trim).forEach(query -&gt; {
 <a class="jxr_linenumber" name="L393" href="#L393">393</a>             query = query +<span class="jxr_string">";"</span>;
 <a class="jxr_linenumber" name="L394" href="#L394">394</a>             <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>                 Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:oracle:thin:@localhost:1521:XE"</span>, <span class="jxr_string">"system"</span>, <span class="jxr_string">"Password1_One"</span>);
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>                 Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:oracle:thin:@jsql-oracle:1521:XE"</span>, <span class="jxr_string">"system"</span>, <span class="jxr_string">"Password1_One"</span>);
 <a class="jxr_linenumber" name="L396" href="#L396">396</a>                 PreparedStatement pstmt = con.prepareStatement(<span class="jxr_string">"select distinct owner from all_tables where '1' = '"</span>+ query +<span class="jxr_string">"'"</span>)
 <a class="jxr_linenumber" name="L397" href="#L397">397</a>             ) {
 <a class="jxr_linenumber" name="L398" href="#L398">398</a>                 ResultSet rs = pstmt.executeQuery();
