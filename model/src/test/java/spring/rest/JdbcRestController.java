@@ -383,17 +383,6 @@ public class JdbcRestController {
 
     @RequestMapping("/oracle")
     public Greeting greetingOracle(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
-        // 19.3.0/LINUX.X64_193000_db_home.zip
-        // buildDockerImage.sh
-        // docker run --name oracle19ee \
-        // -p 1521:1521 -p 5500:5500 \
-        // -e ORACLE_SID=ORCLCDB \
-        // -e ORACLE_PDB=ORCLPDB1 \
-        // -e ORACLE_PWD=Password1_One \
-        // -e ORACLE_CHARACTERSET=AL32UTF8 \
-        // oracle/database:19.3.0-ee
-        // jdbc:oracle:thin:@localhost:11521:ORCLCDB
-        // system Password1_One
         Class.forName("oracle.jdbc.OracleDriver");
 
         AtomicReference<Greeting> greeting = new AtomicReference<>();
@@ -403,7 +392,7 @@ public class JdbcRestController {
         Arrays.stream(inject.split(";")).map(String::trim).forEach(query -> {
             query = query +";";
             try (
-                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:11521:ORCLCDB", "system", "Password1_One");
+                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "Password1_One");
                 PreparedStatement pstmt = con.prepareStatement("select distinct owner from all_tables where '1' = '"+ query +"'")
             ) {
                 ResultSet rs = pstmt.executeQuery();

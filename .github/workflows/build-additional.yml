@@ -39,6 +39,12 @@ jobs:
       - name: Install Maven dependencies
         run: mvn clean install -DskipTests dependency:tree
 
+      - name: Build oracle container
+        run: |
+          git clone https://github.com/oracle/docker-images.git
+          cd docker-images/OracleDatabase/SingleInstance/dockerfiles/
+          ./buildContainerImage.sh -v 18.4.0 -x
+
       - name: Run databases and LAMP
         run: |
           docker compose -f $DOCKER_RESOURCES/docker-compose-additional.yml build --parallel

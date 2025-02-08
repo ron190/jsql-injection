@@ -1,3 +1,2 @@
 FROM monetdb/monetdb-r-docker
-
 EXPOSE 50000

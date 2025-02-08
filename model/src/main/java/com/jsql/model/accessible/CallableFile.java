@@ -82,9 +82,9 @@ public class CallableFile implements Callable<CallableFile> {
                     );
                 } catch (InjectionFailureException e) {
                     LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Read data folder failure, trying with large object");
-                    var loid = this.getResult("SELECT lo_import('"+ this.pathFile +"')::text", "pg#add-loid");
+                    var loid = this.injectionModel.getResourceAccess().getResultWithCatch("SELECT lo_import('"+ this.pathFile +"')::text", "pg#add-loid");
                     if (StringUtils.isNotEmpty(loid)) {
-                        resultToParse = this.getResult("SELECT convert_from(lo_get("+ loid +"),'utf8')::text", "pg#read-lo");
+                        resultToParse = this.injectionModel.getResourceAccess().getResultWithCatch("SELECT convert_from(lo_get("+ loid +"),'utf8')::text", "pg#read-lo");
                     }
                     if (StringUtils.isEmpty(resultToParse)) {
                         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Read large object failure, trying with stack read");
@@ -121,21 +121,6 @@ public class CallableFile implements Callable<CallableFile> {
         return this;
     }
 
-    public String getResult(String query, String metadata) {
-        var sourcePage = new String[]{ StringUtils.EMPTY };
-        try {
-            return new SuspendableGetRows(this.injectionModel).run(
-                query,
-                sourcePage,
-                false,
-                0,
-                MockElement.MOCK,
-                metadata
-            );
-        } catch (JSqlException ignored) {
-            return StringUtils.EMPTY;
-        }
-    }
 
     // Getters
     

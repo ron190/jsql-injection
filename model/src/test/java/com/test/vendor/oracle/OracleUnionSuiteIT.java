@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class OracleUnionSuiteIgnoreIT extends ConcreteOracleSuiteIT {
+public class OracleUnionSuiteIT extends ConcreteOracleSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -17,16 +17,24 @@ public class OracleUnionSuiteIgnoreIT extends ConcreteOracleSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/union?tenant=oracle&name="
+            "http://localhost:8080/oracle?name="
         );
-        
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyMultibitDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getOracle());
         model.beginInjection();
     }
     

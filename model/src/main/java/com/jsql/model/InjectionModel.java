@@ -12,7 +12,6 @@ package com.jsql.model;
 
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.ResourceAccess;
-import com.jsql.model.accessible.UdfAccess;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -71,7 +70,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     private final transient MediatorStrategy mediatorStrategy;
     private final transient PropertiesUtil propertiesUtil = new PropertiesUtil();
     private final transient DataAccess dataAccess = new DataAccess(this);
-    private final transient UdfAccess udfAccess = new UdfAccess(this);
     private final transient ResourceAccess resourceAccess = new ResourceAccess(this);
     
     public static final String STAR = "*";
@@ -687,10 +685,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
     public ResourceAccess getResourceAccess() {
         return this.resourceAccess;
-    }
-
-    public UdfAccess getUdfAccess() {
-        return this.udfAccess;
     }
 
     public MediatorStrategy getMediatorStrategy() {
