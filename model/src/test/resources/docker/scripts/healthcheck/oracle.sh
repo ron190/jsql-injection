@@ -5,6 +5,8 @@ set -e
 retry=0
 
 until cat <<EOF | docker exec -i jsql-oracle sqlplus system/Password1_One@XE
+WHENEVER OSERROR EXIT FAILURE;
+WHENEVER SQLERROR EXIT SQL.SQLCODE;
 select 'jsqlValue' as jsqlColumn from dual;
 EOF
 do
