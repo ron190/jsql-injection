@@ -14,7 +14,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.vendor.ExploitMysql;
 import com.jsql.model.accessible.vendor.ExploitOracle;
 import com.jsql.model.accessible.vendor.ExploitPostgres;
-import com.jsql.model.accessible.vendor.ExploitSqlite;
+import com.jsql.model.accessible.vendor.sqlite.ExploitSqlite;
 import com.jsql.model.bean.database.MockElement;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -473,21 +473,10 @@ public class ResourceAccess {
      * @return True if user can read file, false otherwise
      * @throws JSqlException when an error occurs during injection
      */
-    public boolean isReadingNotAllowed() throws JSqlException {
-        // Unsupported Reading file when <file> is not present in current xmlModel
-        // Fix #41055: NullPointerException on getFile()
-        if (this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getResource().getFile() == null) {
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
-                "Reading file on {} is currently not supported",
-                () -> this.injectionModel.getMediatorVendor().getVendor()
-            );
-            return true;
-        }
-        
+    public boolean isMysqlReadDenied() throws JSqlException {
         var sourcePage = new String[]{ StringUtils.EMPTY };
         String resultInjection = new SuspendableGetRows(this.injectionModel).run(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlPrivilegeTest(),
+            this.injectionModel.getResourceAccess().getExploitMysql().getModelYaml().getFile().getPrivilege(),
             sourcePage,
             false,
             1,
@@ -529,7 +518,7 @@ public class ResourceAccess {
     public List<String> readFile(List<String> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
         if (
             this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMysql()
-            && this.isReadingNotAllowed()
+            && this.isMysqlReadDenied()
         ) {
             return Collections.emptyList();
         }

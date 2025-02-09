@@ -74,50 +74,31 @@ public class VendorYaml implements AbstractVendor {
     public static final String FORMAT_INDEX = "1337%s7331";
 
     private static final String BINARY_MODE = "${binary.mode}";
-
     public static final String LIMIT = "${limit}";
     private static final String LIMIT_VALUE = "${limit.value}";
-
     private static final String RESULT_RANGE = "${result_range}";
-
     private static final String INDICE_UNIQUE = "${indice_unique}";
-
     private static final String CALIBRATOR = "${calibrator}";
-
     private static final String INDICES = "${indices}";
     public static final String INDICE = "${indice}";
     public static final String WINDOW_CHAR = "${window.char}";
     public static final String BLOCK_MULTIBIT = "${multibit.block}";
-
     public static final String WINDOW = "${window}";
-
     public static final String CAPACITY = "${capacity}";
     public static final String DEFAULT_CAPACITY = "65565";
-
     private static final String SLEEP_TIME = "${sleep_time}";
-
     private static final String BIT = "${bit}";
-
     public static final String INJECTION = "${injection}";
-
     public static final String TEST = "${test}";
-
-    private static final String FILEPATH = "${filepath}";
-    private static final String FILEPATH_HEX = "${filepath.hex}";
-
-    private static final String BODY_HEX = "${body.hex}";
-
+    public static final String FILEPATH_HEX = "${filepath.hex}";
     private static final String FIELDS = "${fields}";
     private static final String FIELD = "${field.value}";
-
     private static final String TABLE = "${table}";
     private static final String DATABASE = "${database}";
-
     private static final String TABLE_HEX = "${table.hex}";
     private static final String DATABASE_HEX = "${database.hex}";
     
     private final ModelYaml modelYaml;
-    
     private final InjectionModel injectionModel;
     
     public VendorYaml(String fileYaml, InjectionModel injectionModel) {
@@ -289,30 +270,6 @@ public class VendorYaml implements AbstractVendor {
             )
             .replace(VendorYaml.DATABASE, nameDatabaseUtf8)
             .replace(VendorYaml.TABLE, nameTableUtf8);
-    }
-
-    @Override
-    public String sqlFileRead(String filePath) {
-        return this.modelYaml.getResource().getFile().getRead()
-            .replace(VendorYaml.FILEPATH_HEX, Hex.encodeHexString(filePath.getBytes(StandardCharsets.UTF_8)))  // MySQL
-            .replace(VendorYaml.FILEPATH, filePath);  // postgres
-    }
-
-    @Override
-    public String sqlTextIntoFile(String body, String path) {
-        String visibleIndex = String.format(
-            VendorYaml.FORMAT_INDEX,
-            this.injectionModel.getMediatorStrategy().getSpecificUnion().getVisibleIndex()
-        );
-        return this.injectionModel.getIndexesInUrl().replaceAll(
-                visibleIndex,
-                this.modelYaml.getResource().getFile().getWrite().getBody().replace(
-                    VendorYaml.BODY_HEX,
-                    Hex.encodeHexString(body.getBytes(StandardCharsets.UTF_8))
-                )
-            )
-            + StringUtils.SPACE
-            + this.modelYaml.getResource().getFile().getWrite().getPath().replace(VendorYaml.FILEPATH, path);
     }
 
     @Override
@@ -587,11 +544,6 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlInfos() {
         return this.modelYaml.getResource().getInfo();
-    }
-
-    @Override
-    public String sqlPrivilegeTest() {
-        return this.modelYaml.getResource().getFile().getPrivilege();
     }
 
     @Override

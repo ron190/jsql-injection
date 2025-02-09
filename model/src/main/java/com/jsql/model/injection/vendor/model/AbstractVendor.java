@@ -32,10 +32,6 @@ public interface AbstractVendor {
     String sqlLimit(Integer limitSqlResult);
     String endingComment();
     String fingerprintErrorsAsRegex();
-    
-    String sqlPrivilegeTest();
-    String sqlFileRead(String path);
-    String sqlTextIntoFile(String body, String path);
 
     List<String> getFalsy();
     List<String> getTruthy();

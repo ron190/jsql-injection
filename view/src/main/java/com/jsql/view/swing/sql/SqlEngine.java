@@ -188,22 +188,10 @@ public class SqlEngine extends JPanel {
             () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getBit()
         )),
 
-        // File
-        FILE_PRIVILEGE(new JSyntaxTextArea(
-            v -> SqlEngine.modelYaml.getResource().getFile().setPrivilege(v),
-            () -> SqlEngine.modelYaml.getResource().getFile().getPrivilege()
-        )),
-        FILE_READ(new JSyntaxTextArea(
-            v -> SqlEngine.modelYaml.getResource().getFile().setRead(v),
-            () -> SqlEngine.modelYaml.getResource().getFile().getRead()
-        )),
-        FILE_WRITE_BODY(new JSyntaxTextArea(
-            v -> SqlEngine.modelYaml.getResource().getFile().getWrite().setBody(v),
-            () -> SqlEngine.modelYaml.getResource().getFile().getWrite().getBody()
-        )),
-        FILE_WRITE_PATH(new JSyntaxTextArea(
-            v -> SqlEngine.modelYaml.getResource().getFile().getWrite().setPath(v),
-            () -> SqlEngine.modelYaml.getResource().getFile().getWrite().getPath()
+        // Exploit
+        EXPLOIT(new JSyntaxTextArea(
+            v -> SqlEngine.modelYaml.getResource().setExploit(v),
+            () -> SqlEngine.modelYaml.getResource().getExploit()
         )),
 
         // Fingerprint
@@ -251,7 +239,7 @@ public class SqlEngine extends JPanel {
         SqlEngine.initTextComponents();
 
         JTabbedPane panelStructure = this.getPanelStructure();
-        JTabbedPane panelFile = this.getPanelFile();
+        RTextScrollPane panelFile = new RTextScrollPane(TextareaWithColor.EXPLOIT.getTextArea(), false);
         JTabbedPane panelStrategy = this.getPanelStrategy();
         JTabbedPane panelConfiguration = this.getPanelConfiguration();
         JTabbedPane panelFingerprinting = this.getPanelFingerprinting();
@@ -263,7 +251,7 @@ public class SqlEngine extends JPanel {
             new SimpleEntry<>("SQLENGINE_STRATEGY", panelStrategy),
             new SimpleEntry<>("SQLENGINE_CONFIGURATION", panelConfiguration),
             new SimpleEntry<>("SQLENGINE_FINGERPRINTING", panelFingerprinting),
-            new SimpleEntry<>("SQLENGINE_FILE", panelFile)
+            new SimpleEntry<>("SQLENGINE_EXPLOIT", panelFile)
         )
         .forEach(entry -> {
             tabsBottom.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());
@@ -356,15 +344,6 @@ public class SqlEngine extends JPanel {
             tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
-        return tabs;
-    }
-
-    private JTabbedPane getPanelFile() {
-        JTabbedPane tabs = new TabbedPaneWheeled();
-        tabs.addTab("Privilege", new RTextScrollPane(TextareaWithColor.FILE_PRIVILEGE.getTextArea(), false));
-        tabs.addTab("Read", new RTextScrollPane(TextareaWithColor.FILE_READ.getTextArea(), false));
-        tabs.addTab("Write body", new RTextScrollPane(TextareaWithColor.FILE_WRITE_BODY.getTextArea(), false));
-        tabs.addTab("Write path", new RTextScrollPane(TextareaWithColor.FILE_WRITE_PATH.getTextArea(), false));
         return tabs;
     }
 

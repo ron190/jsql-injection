@@ -8,10 +8,10 @@ import java.io.Serializable;
 public class Resource implements Serializable {
 
     private String info = StringUtils.EMPTY;
+    private String exploit = StringUtils.EMPTY;
     private Schema schema = new Schema();
     private Schema zip = new Schema();
     private Schema dios = new Schema();
-    private File file = new File();
 
     public String getInfo() {
         return this.info;
@@ -45,11 +45,11 @@ public class Resource implements Serializable {
         this.dios = dios;
     }
 
-    public File getFile() {
-        return this.file;
+    public String getExploit() {
+        return this.exploit;
     }
 
-    public void setFile(File file) {
-        this.file = file;
+    public void setExploit(String exploit) {
+        this.exploit = exploit;
     }
 }

@@ -27,7 +27,7 @@ public class ButtonExpandText extends JButton {
     /**
      * Create a button in address bar.
      */
-    public ButtonExpandText(String titleFrame, JTextField sourceTextField) {
+    public ButtonExpandText(JTextField sourceTextField) {
         this.setPreferredSize(new Dimension(16, 16));
         this.setContentAreaFilled(false);
 
@@ -38,11 +38,17 @@ public class ButtonExpandText extends JButton {
         JTextArea textAreaInDialog = new JPopupTextArea(new JTextAreaPlaceholder("Multiline text")).getProxy();
         textAreaInDialog.getCaret().setBlinkRate(500);
 
-        final JDialog dialogWithTextarea = new JDialog(MediatorHelper.frame(), titleFrame, true);
+        final JDialog dialogWithTextarea = new JDialog();
+        dialogWithTextarea.setUndecorated(true);
         dialogWithTextarea.getContentPane().add(new JScrollPane(textAreaInDialog));
         dialogWithTextarea.pack();
-        dialogWithTextarea.setSize(400, 300);
-        dialogWithTextarea.setLocationRelativeTo(null);
+        dialogWithTextarea.addWindowFocusListener(new WindowAdapter() {
+            @Override
+            public void windowLostFocus(WindowEvent e) {
+                sourceTextField.setText(textAreaInDialog.getText().replace("\n", "\\n").replace("\r", "\\r"));
+                dialogWithTextarea.dispose();
+            }
+        });
         dialogWithTextarea.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -56,17 +62,17 @@ public class ButtonExpandText extends JButton {
             public void mouseClicked(MouseEvent e) {
                 textAreaInDialog.setText(sourceTextField.getText().replace("\\n", "\n").replace("\\r", "\r"));
                 dialogWithTextarea.setVisible(!dialogWithTextarea.isVisible());
+                dialogWithTextarea.setSize(sourceTextField.getWidth(), 300);
+                dialogWithTextarea.setLocation(sourceTextField.getLocationOnScreen());
             }
         });
 
-        dialogWithTextarea.getRootPane()
-            .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        dialogWithTextarea.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
             .put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                 "Cancel"
             );
-        dialogWithTextarea.getRootPane()
-            .getActionMap()
+        dialogWithTextarea.getRootPane().getActionMap()
             .put("Cancel", new AbstractAction() {
                 public void actionPerformed(ActionEvent e) {
                     dialogWithTextarea.dispose();

