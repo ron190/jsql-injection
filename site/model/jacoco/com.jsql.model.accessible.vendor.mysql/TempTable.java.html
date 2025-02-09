@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TempTable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.accessible.vendor.mysql</a> &gt; <span class="el_source">TempTable.java</span></div><h1>TempTable.java</h1><pre class="source lang-java linenums">package com.jsql.model.accessible.vendor.mysql;
+
+import org.apache.commons.lang3.StringUtils;
+
+<span class="fc" id="L5">public class TempTable {</span>
+
+<span class="fc" id="L7">    private String nameDatabase = StringUtils.EMPTY;</span>
+<span class="fc" id="L8">    private String drop = StringUtils.EMPTY;</span>
+<span class="fc" id="L9">    private String confirm = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String create = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private String insertChunks = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private String appendChunks = StringUtils.EMPTY;</span>
+<span class="fc" id="L13">    private String dump = StringUtils.EMPTY;</span>
+
+    public String getNameDatabase() {
+<span class="fc" id="L16">        return this.nameDatabase;</span>
+    }
+
+    public void setNameDatabase(String nameDatabase) {
+<span class="fc" id="L20">        this.nameDatabase = nameDatabase;</span>
+<span class="fc" id="L21">    }</span>
+
+    public String getDrop() {
+<span class="fc" id="L24">        return this.drop;</span>
+    }
+
+    public void setDrop(String drop) {
+<span class="fc" id="L28">        this.drop = drop;</span>
+<span class="fc" id="L29">    }</span>
+
+    public String getConfirm() {
+<span class="fc" id="L32">        return this.confirm;</span>
+    }
+
+    public void setConfirm(String confirm) {
+<span class="fc" id="L36">        this.confirm = confirm;</span>
+<span class="fc" id="L37">    }</span>
+
+    public String getCreate() {
+<span class="fc" id="L40">        return this.create;</span>
+    }
+
+    public void setCreate(String create) {
+<span class="fc" id="L44">        this.create = create;</span>
+<span class="fc" id="L45">    }</span>
+
+    public String getInsertChunks() {
+<span class="fc" id="L48">        return this.insertChunks;</span>
+    }
+
+    public void setInsertChunks(String insertChunks) {
+<span class="fc" id="L52">        this.insertChunks = insertChunks;</span>
+<span class="fc" id="L53">    }</span>
+
+    public String getAppendChunks() {
+<span class="fc" id="L56">        return this.appendChunks;</span>
+    }
+
+    public void setAppendChunks(String appendChunks) {
+<span class="fc" id="L60">        this.appendChunks = appendChunks;</span>
+<span class="fc" id="L61">    }</span>
+
+    public String getDump() {
+<span class="fc" id="L64">        return this.dump;</span>
+    }
+
+    public void setDump(String dump) {
+<span class="fc" id="L68">        this.dump = dump;</span>
+<span class="fc" id="L69">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

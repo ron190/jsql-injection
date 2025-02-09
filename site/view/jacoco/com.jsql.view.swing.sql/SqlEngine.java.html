@@ -188,391 +188,370 @@ public class SqlEngine extends JPanel {
 <span class="fc" id="L188">            () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getBit()</span>
         )),
 
-        // File
-<span class="fc" id="L192">        FILE_PRIVILEGE(new JSyntaxTextArea(</span>
-<span class="fc" id="L193">            v -&gt; SqlEngine.modelYaml.getResource().getFile().setPrivilege(v),</span>
-<span class="fc" id="L194">            () -&gt; SqlEngine.modelYaml.getResource().getFile().getPrivilege()</span>
-        )),
-<span class="fc" id="L196">        FILE_READ(new JSyntaxTextArea(</span>
-<span class="fc" id="L197">            v -&gt; SqlEngine.modelYaml.getResource().getFile().setRead(v),</span>
-<span class="fc" id="L198">            () -&gt; SqlEngine.modelYaml.getResource().getFile().getRead()</span>
-        )),
-<span class="fc" id="L200">        FILE_WRITE_BODY(new JSyntaxTextArea(</span>
-<span class="fc" id="L201">            v -&gt; SqlEngine.modelYaml.getResource().getFile().getWrite().setBody(v),</span>
-<span class="fc" id="L202">            () -&gt; SqlEngine.modelYaml.getResource().getFile().getWrite().getBody()</span>
-        )),
-<span class="fc" id="L204">        FILE_WRITE_PATH(new JSyntaxTextArea(</span>
-<span class="fc" id="L205">            v -&gt; SqlEngine.modelYaml.getResource().getFile().getWrite().setPath(v),</span>
-<span class="fc" id="L206">            () -&gt; SqlEngine.modelYaml.getResource().getFile().getWrite().getPath()</span>
+        // Exploit
+<span class="fc" id="L192">        EXPLOIT(new JSyntaxTextArea(</span>
+<span class="fc" id="L193">            v -&gt; SqlEngine.modelYaml.getResource().setExploit(v),</span>
+<span class="fc" id="L194">            () -&gt; SqlEngine.modelYaml.getResource().getExploit()</span>
         )),
 
         // Fingerprint
-<span class="fc" id="L210">        TRUTHY(new JSyntaxTextArea(</span>
-<span class="fc" id="L211">            v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().setTruthy(v),</span>
-<span class="fc" id="L212">            () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getTruthyAsString()</span>
+<span class="fc" id="L198">        TRUTHY(new JSyntaxTextArea(</span>
+<span class="fc" id="L199">            v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().setTruthy(v),</span>
+<span class="fc" id="L200">            () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getTruthyAsString()</span>
         )),
-<span class="fc" id="L214">        FALSY(new JSyntaxTextArea(</span>
-<span class="fc" id="L215">            v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().setFalsy(v),</span>
-<span class="fc" id="L216">            () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getFalsyAsString()</span>
+<span class="fc" id="L202">        FALSY(new JSyntaxTextArea(</span>
+<span class="fc" id="L203">            v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().setFalsy(v),</span>
+<span class="fc" id="L204">            () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getFalsyAsString()</span>
         )),
-<span class="fc" id="L218">        INCORRECT_STRING_ERROR_MESSAGE(new JSyntaxTextArea(</span>
-<span class="fc" id="L219">            v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),</span>
-<span class="fc" id="L220">            () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()</span>
+<span class="fc" id="L206">        INCORRECT_STRING_ERROR_MESSAGE(new JSyntaxTextArea(</span>
+<span class="fc" id="L207">            v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),</span>
+<span class="fc" id="L208">            () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()</span>
         )),
-<span class="fc" id="L222">        ORDER_BY_ERROR_MESSAGE(new JSyntaxTextArea(</span>
-<span class="fc" id="L223">            v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),</span>
-<span class="fc" id="L224">            () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()</span>
+<span class="fc" id="L210">        ORDER_BY_ERROR_MESSAGE(new JSyntaxTextArea(</span>
+<span class="fc" id="L211">            v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),</span>
+<span class="fc" id="L212">            () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()</span>
         )),
-<span class="fc" id="L226">        ORDER_BY(new JSyntaxTextArea(</span>
-<span class="fc" id="L227">            v -&gt; SqlEngine.modelYaml.getStrategy().getUnion().setOrderBy(v),</span>
-<span class="fc" id="L228">            () -&gt; SqlEngine.modelYaml.getStrategy().getUnion().getOrderBy()</span>
+<span class="fc" id="L214">        ORDER_BY(new JSyntaxTextArea(</span>
+<span class="fc" id="L215">            v -&gt; SqlEngine.modelYaml.getStrategy().getUnion().setOrderBy(v),</span>
+<span class="fc" id="L216">            () -&gt; SqlEngine.modelYaml.getStrategy().getUnion().getOrderBy()</span>
         )),
-<span class="fc" id="L230">        VENDOR_SPECIFIC(new JSyntaxTextArea(</span>
-<span class="fc" id="L231">            v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),</span>
-<span class="fc" id="L232">            () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getVendorSpecific()</span>
+<span class="fc" id="L218">        VENDOR_SPECIFIC(new JSyntaxTextArea(</span>
+<span class="fc" id="L219">            v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),</span>
+<span class="fc" id="L220">            () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getVendorSpecific()</span>
         )),
         ;
         
         final JSyntaxTextArea textarea;
 
         public JSyntaxTextArea getTextArea() {
-<span class="fc" id="L239">            return this.textarea;</span>
+<span class="fc" id="L227">            return this.textarea;</span>
         }
 
-<span class="fc" id="L242">        TextareaWithColor(JSyntaxTextArea textarea) {</span>
-<span class="fc" id="L243">            this.textarea = textarea;</span>
-<span class="fc" id="L244">        }</span>
+<span class="fc" id="L230">        TextareaWithColor(JSyntaxTextArea textarea) {</span>
+<span class="fc" id="L231">            this.textarea = textarea;</span>
+<span class="fc" id="L232">        }</span>
     }
     
-<span class="fc" id="L247">    public SqlEngine() {</span>
+<span class="fc" id="L235">    public SqlEngine() {</span>
         // user can switch to another vendor then close, so restore current vendor
-<span class="fc" id="L249">        SqlEngine.modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();</span>
+<span class="fc" id="L237">        SqlEngine.modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();</span>
 
-<span class="fc" id="L251">        SqlEngine.initTextComponents();</span>
+<span class="fc" id="L239">        SqlEngine.initTextComponents();</span>
 
-<span class="fc" id="L253">        JTabbedPane panelStructure = this.getPanelStructure();</span>
-<span class="fc" id="L254">        JTabbedPane panelFile = this.getPanelFile();</span>
-<span class="fc" id="L255">        JTabbedPane panelStrategy = this.getPanelStrategy();</span>
-<span class="fc" id="L256">        JTabbedPane panelConfiguration = this.getPanelConfiguration();</span>
-<span class="fc" id="L257">        JTabbedPane panelFingerprinting = this.getPanelFingerprinting();</span>
+<span class="fc" id="L241">        JTabbedPane panelStructure = this.getPanelStructure();</span>
+<span class="fc" id="L242">        RTextScrollPane panelFile = new RTextScrollPane(TextareaWithColor.EXPLOIT.getTextArea(), false);</span>
+<span class="fc" id="L243">        JTabbedPane panelStrategy = this.getPanelStrategy();</span>
+<span class="fc" id="L244">        JTabbedPane panelConfiguration = this.getPanelConfiguration();</span>
+<span class="fc" id="L245">        JTabbedPane panelFingerprinting = this.getPanelFingerprinting();</span>
 
-<span class="fc" id="L259">        JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM);</span>
+<span class="fc" id="L247">        JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM);</span>
         
-<span class="fc" id="L261">        Stream.of(</span>
+<span class="fc" id="L249">        Stream.of(</span>
             new SimpleEntry&lt;&gt;(&quot;SQLENGINE_STRUCTURE&quot;, panelStructure),
             new SimpleEntry&lt;&gt;(&quot;SQLENGINE_STRATEGY&quot;, panelStrategy),
             new SimpleEntry&lt;&gt;(&quot;SQLENGINE_CONFIGURATION&quot;, panelConfiguration),
             new SimpleEntry&lt;&gt;(&quot;SQLENGINE_FINGERPRINTING&quot;, panelFingerprinting),
-            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_FILE&quot;, panelFile)
+            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_EXPLOIT&quot;, panelFile)
         )
-<span class="fc" id="L268">        .forEach(entry -&gt; {</span>
-<span class="fc" id="L269">            tabsBottom.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());</span>
-<span class="fc" id="L270">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
-<span class="fc" id="L271">            tabsBottom.setTabComponentAt(</span>
-<span class="fc" id="L272">                tabsBottom.indexOfTab(I18nUtil.valueByKey(entry.getKey())),</span>
+<span class="fc" id="L256">        .forEach(entry -&gt; {</span>
+<span class="fc" id="L257">            tabsBottom.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());</span>
+<span class="fc" id="L258">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
+<span class="fc" id="L259">            tabsBottom.setTabComponentAt(</span>
+<span class="fc" id="L260">                tabsBottom.indexOfTab(I18nUtil.valueByKey(entry.getKey())),</span>
                 label
             );
-<span class="fc" id="L275">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
-<span class="fc" id="L276">        });</span>
+<span class="fc" id="L263">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
+<span class="fc" id="L264">        });</span>
 
-<span class="fc" id="L278">        this.setLayout(new BorderLayout());</span>
+<span class="fc" id="L266">        this.setLayout(new BorderLayout());</span>
 
-<span class="fc" id="L280">        JPanel panelCombo = SqlEngine.initMenuVendor();</span>
-<span class="fc" id="L281">        tabsBottom.putClientProperty(&quot;JTabbedPane.trailingComponent&quot;, panelCombo);</span>
-<span class="fc" id="L282">        this.add(tabsBottom);</span>
+<span class="fc" id="L268">        JPanel panelCombo = SqlEngine.initMenuVendor();</span>
+<span class="fc" id="L269">        tabsBottom.putClientProperty(&quot;JTabbedPane.trailingComponent&quot;, panelCombo);</span>
+<span class="fc" id="L270">        this.add(tabsBottom);</span>
 
-<span class="fc" id="L284">        SwingUtilities.invokeLater(() -&gt; {</span>
-<span class="fc" id="L285">            MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale());  // required for arabic</span>
-<span class="fc" id="L286">            SqlEngine.tabsError.updateUI();  // required for theme switch when tabs closed</span>
-<span class="fc" id="L287">        });</span>
-<span class="fc" id="L288">    }</span>
+<span class="fc" id="L272">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="fc" id="L273">            MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale());  // required for arabic</span>
+<span class="fc" id="L274">            SqlEngine.tabsError.updateUI();  // required for theme switch when tabs closed</span>
+<span class="fc" id="L275">        });</span>
+<span class="fc" id="L276">    }</span>
 
     private JTabbedPane getPanelStructure() {
-<span class="fc" id="L291">        final var keyDatabases = &quot;SQLENGINE_DATABASES&quot;;</span>
-<span class="fc" id="L292">        final var keyTables = &quot;SQLENGINE_TABLES&quot;;</span>
-<span class="fc" id="L293">        final var keyColumns = &quot;SQLENGINE_COLUMNS&quot;;</span>
-<span class="fc" id="L294">        final var keyRows = &quot;SQLENGINE_ROWS&quot;;</span>
-<span class="fc" id="L295">        final var keyField = &quot;SQLENGINE_FIELD&quot;;</span>
-<span class="fc" id="L296">        final var keyFieldSeparator = &quot;SQLENGINE_FIELDS_SEPARATOR&quot;;</span>
+<span class="fc" id="L279">        final var keyDatabases = &quot;SQLENGINE_DATABASES&quot;;</span>
+<span class="fc" id="L280">        final var keyTables = &quot;SQLENGINE_TABLES&quot;;</span>
+<span class="fc" id="L281">        final var keyColumns = &quot;SQLENGINE_COLUMNS&quot;;</span>
+<span class="fc" id="L282">        final var keyRows = &quot;SQLENGINE_ROWS&quot;;</span>
+<span class="fc" id="L283">        final var keyField = &quot;SQLENGINE_FIELD&quot;;</span>
+<span class="fc" id="L284">        final var keyFieldSeparator = &quot;SQLENGINE_FIELDS_SEPARATOR&quot;;</span>
 
-<span class="fc" id="L298">        JTabbedPane tabsDefault = new TabbedPaneWheeled();</span>
-<span class="fc" id="L299">        Stream.of(</span>
-<span class="fc" id="L300">            new SimpleEntry&lt;&gt;(keyDatabases, TextareaWithColor.DATABASE_DEFAULT.getTextArea()),</span>
-<span class="fc" id="L301">            new SimpleEntry&lt;&gt;(keyTables, TextareaWithColor.TABLE_DEFAULT.getTextArea()),</span>
-<span class="fc" id="L302">            new SimpleEntry&lt;&gt;(keyColumns, TextareaWithColor.COLUMN_DEFAULT.getTextArea()),</span>
-<span class="fc" id="L303">            new SimpleEntry&lt;&gt;(keyRows, TextareaWithColor.QUERY_DEFAULT.getTextArea()),</span>
-<span class="fc" id="L304">            new SimpleEntry&lt;&gt;(keyField, TextareaWithColor.FIELD_DEFAULT.getTextArea()),</span>
-<span class="fc" id="L305">            new SimpleEntry&lt;&gt;(keyFieldSeparator, TextareaWithColor.CONCAT_DEFAULT.getTextArea()),</span>
-<span class="fc" id="L306">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_METADATA&quot;, TextareaWithColor.INFO.getTextArea())</span>
+<span class="fc" id="L286">        JTabbedPane tabsDefault = new TabbedPaneWheeled();</span>
+<span class="fc" id="L287">        Stream.of(</span>
+<span class="fc" id="L288">            new SimpleEntry&lt;&gt;(keyDatabases, TextareaWithColor.DATABASE_DEFAULT.getTextArea()),</span>
+<span class="fc" id="L289">            new SimpleEntry&lt;&gt;(keyTables, TextareaWithColor.TABLE_DEFAULT.getTextArea()),</span>
+<span class="fc" id="L290">            new SimpleEntry&lt;&gt;(keyColumns, TextareaWithColor.COLUMN_DEFAULT.getTextArea()),</span>
+<span class="fc" id="L291">            new SimpleEntry&lt;&gt;(keyRows, TextareaWithColor.QUERY_DEFAULT.getTextArea()),</span>
+<span class="fc" id="L292">            new SimpleEntry&lt;&gt;(keyField, TextareaWithColor.FIELD_DEFAULT.getTextArea()),</span>
+<span class="fc" id="L293">            new SimpleEntry&lt;&gt;(keyFieldSeparator, TextareaWithColor.CONCAT_DEFAULT.getTextArea()),</span>
+<span class="fc" id="L294">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_METADATA&quot;, TextareaWithColor.INFO.getTextArea())</span>
         )
-<span class="fc" id="L308">        .forEach(entry -&gt; {</span>
-<span class="fc" id="L309">            tabsDefault.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue(), false));</span>
-<span class="fc" id="L310">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
-<span class="fc" id="L311">            tabsDefault.setTabComponentAt(tabsDefault.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);</span>
-<span class="fc" id="L312">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
-<span class="fc" id="L313">        });</span>
+<span class="fc" id="L296">        .forEach(entry -&gt; {</span>
+<span class="fc" id="L297">            tabsDefault.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue(), false));</span>
+<span class="fc" id="L298">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
+<span class="fc" id="L299">            tabsDefault.setTabComponentAt(tabsDefault.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);</span>
+<span class="fc" id="L300">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
+<span class="fc" id="L301">        });</span>
         
-<span class="fc" id="L315">        JTabbedPane tabsZip = new TabbedPaneWheeled();</span>
-<span class="fc" id="L316">        Stream.of(</span>
-<span class="fc" id="L317">            new SimpleEntry&lt;&gt;(keyDatabases, TextareaWithColor.DATABASE_ZIP.getTextArea()),</span>
-<span class="fc" id="L318">            new SimpleEntry&lt;&gt;(keyTables, TextareaWithColor.TABLE_ZIP.getTextArea()),</span>
-<span class="fc" id="L319">            new SimpleEntry&lt;&gt;(keyColumns, TextareaWithColor.COLUMN_ZIP.getTextArea()),</span>
-<span class="fc" id="L320">            new SimpleEntry&lt;&gt;(keyRows, TextareaWithColor.QUERY_ZIP.getTextArea()),</span>
-<span class="fc" id="L321">            new SimpleEntry&lt;&gt;(keyField, TextareaWithColor.FIELD_ZIP.getTextArea()),</span>
-<span class="fc" id="L322">            new SimpleEntry&lt;&gt;(keyFieldSeparator, TextareaWithColor.CONCAT_ZIP.getTextArea())</span>
+<span class="fc" id="L303">        JTabbedPane tabsZip = new TabbedPaneWheeled();</span>
+<span class="fc" id="L304">        Stream.of(</span>
+<span class="fc" id="L305">            new SimpleEntry&lt;&gt;(keyDatabases, TextareaWithColor.DATABASE_ZIP.getTextArea()),</span>
+<span class="fc" id="L306">            new SimpleEntry&lt;&gt;(keyTables, TextareaWithColor.TABLE_ZIP.getTextArea()),</span>
+<span class="fc" id="L307">            new SimpleEntry&lt;&gt;(keyColumns, TextareaWithColor.COLUMN_ZIP.getTextArea()),</span>
+<span class="fc" id="L308">            new SimpleEntry&lt;&gt;(keyRows, TextareaWithColor.QUERY_ZIP.getTextArea()),</span>
+<span class="fc" id="L309">            new SimpleEntry&lt;&gt;(keyField, TextareaWithColor.FIELD_ZIP.getTextArea()),</span>
+<span class="fc" id="L310">            new SimpleEntry&lt;&gt;(keyFieldSeparator, TextareaWithColor.CONCAT_ZIP.getTextArea())</span>
         )
-<span class="fc" id="L324">        .forEach(entry -&gt; {</span>
-<span class="fc" id="L325">            tabsZip.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue(), false));</span>
-<span class="fc" id="L326">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
-<span class="fc" id="L327">            tabsZip.setTabComponentAt(tabsZip.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);</span>
-<span class="fc" id="L328">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
-<span class="fc" id="L329">        });</span>
+<span class="fc" id="L312">        .forEach(entry -&gt; {</span>
+<span class="fc" id="L313">            tabsZip.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue(), false));</span>
+<span class="fc" id="L314">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
+<span class="fc" id="L315">            tabsZip.setTabComponentAt(tabsZip.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);</span>
+<span class="fc" id="L316">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
+<span class="fc" id="L317">        });</span>
         
-<span class="fc" id="L331">        JTabbedPane tabsDios = new TabbedPaneWheeled();</span>
-<span class="fc" id="L332">        Stream.of(</span>
-<span class="fc" id="L333">            new SimpleEntry&lt;&gt;(keyDatabases, TextareaWithColor.DATABASE_DIOS.getTextArea()),</span>
-<span class="fc" id="L334">            new SimpleEntry&lt;&gt;(keyTables, TextareaWithColor.TABLE_DIOS.getTextArea()),</span>
-<span class="fc" id="L335">            new SimpleEntry&lt;&gt;(keyColumns, TextareaWithColor.COLUMN_DIOS.getTextArea()),</span>
-<span class="fc" id="L336">            new SimpleEntry&lt;&gt;(keyRows, TextareaWithColor.QUERY_DIOS.getTextArea()),</span>
-<span class="fc" id="L337">            new SimpleEntry&lt;&gt;(keyField, TextareaWithColor.FIELD_DIOS.getTextArea()),</span>
-<span class="fc" id="L338">            new SimpleEntry&lt;&gt;(keyFieldSeparator, TextareaWithColor.CONCAT_DIOS.getTextArea())</span>
+<span class="fc" id="L319">        JTabbedPane tabsDios = new TabbedPaneWheeled();</span>
+<span class="fc" id="L320">        Stream.of(</span>
+<span class="fc" id="L321">            new SimpleEntry&lt;&gt;(keyDatabases, TextareaWithColor.DATABASE_DIOS.getTextArea()),</span>
+<span class="fc" id="L322">            new SimpleEntry&lt;&gt;(keyTables, TextareaWithColor.TABLE_DIOS.getTextArea()),</span>
+<span class="fc" id="L323">            new SimpleEntry&lt;&gt;(keyColumns, TextareaWithColor.COLUMN_DIOS.getTextArea()),</span>
+<span class="fc" id="L324">            new SimpleEntry&lt;&gt;(keyRows, TextareaWithColor.QUERY_DIOS.getTextArea()),</span>
+<span class="fc" id="L325">            new SimpleEntry&lt;&gt;(keyField, TextareaWithColor.FIELD_DIOS.getTextArea()),</span>
+<span class="fc" id="L326">            new SimpleEntry&lt;&gt;(keyFieldSeparator, TextareaWithColor.CONCAT_DIOS.getTextArea())</span>
         )
-<span class="fc" id="L340">        .forEach(entry -&gt; {</span>
-<span class="fc" id="L341">            tabsDios.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue(), false));</span>
-<span class="fc" id="L342">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
-<span class="fc" id="L343">            tabsDios.setTabComponentAt(tabsDios.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);</span>
-<span class="fc" id="L344">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
-<span class="fc" id="L345">        });</span>
+<span class="fc" id="L328">        .forEach(entry -&gt; {</span>
+<span class="fc" id="L329">            tabsDios.addTab(I18nUtil.valueByKey(entry.getKey()), new RTextScrollPane(entry.getValue(), false));</span>
+<span class="fc" id="L330">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
+<span class="fc" id="L331">            tabsDios.setTabComponentAt(tabsDios.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);</span>
+<span class="fc" id="L332">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
+<span class="fc" id="L333">        });</span>
 
-<span class="fc" id="L347">        JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.RIGHT);</span>
-<span class="fc" id="L348">        Stream.of(</span>
+<span class="fc" id="L335">        JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.RIGHT);</span>
+<span class="fc" id="L336">        Stream.of(</span>
             new SimpleEntry&lt;&gt;(&quot;SQLENGINE_STANDARD&quot;, tabsDefault),
             new SimpleEntry&lt;&gt;(&quot;SQLENGINE_ZIP&quot;, tabsZip),
             new SimpleEntry&lt;&gt;(&quot;SQLENGINE_DIOS&quot;, tabsDios)
         )
-<span class="fc" id="L353">        .forEach(entry -&gt; {</span>
-<span class="fc" id="L354">            tabs.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());</span>
-<span class="fc" id="L355">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
-<span class="fc" id="L356">            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);</span>
-<span class="fc" id="L357">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
-<span class="fc" id="L358">        });</span>
-<span class="fc" id="L359">        return tabs;</span>
-    }
-
-    private JTabbedPane getPanelFile() {
-<span class="fc" id="L363">        JTabbedPane tabs = new TabbedPaneWheeled();</span>
-<span class="fc" id="L364">        tabs.addTab(&quot;Privilege&quot;, new RTextScrollPane(TextareaWithColor.FILE_PRIVILEGE.getTextArea(), false));</span>
-<span class="fc" id="L365">        tabs.addTab(&quot;Read&quot;, new RTextScrollPane(TextareaWithColor.FILE_READ.getTextArea(), false));</span>
-<span class="fc" id="L366">        tabs.addTab(&quot;Write body&quot;, new RTextScrollPane(TextareaWithColor.FILE_WRITE_BODY.getTextArea(), false));</span>
-<span class="fc" id="L367">        tabs.addTab(&quot;Write path&quot;, new RTextScrollPane(TextareaWithColor.FILE_WRITE_PATH.getTextArea(), false));</span>
-<span class="fc" id="L368">        return tabs;</span>
+<span class="fc" id="L341">        .forEach(entry -&gt; {</span>
+<span class="fc" id="L342">            tabs.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());</span>
+<span class="fc" id="L343">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
+<span class="fc" id="L344">            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);</span>
+<span class="fc" id="L345">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
+<span class="fc" id="L346">        });</span>
+<span class="fc" id="L347">        return tabs;</span>
     }
 
     private JTabbedPane getPanelStrategy() {
-<span class="fc" id="L372">        JTabbedPane tabs = new TabbedPaneWheeled();</span>
-<span class="fc" id="L373">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_UNION&quot;), new RTextScrollPane(TextareaWithColor.INDICES.getTextArea(), false));</span>
-<span class="fc" id="L374">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_STACK&quot;), new RTextScrollPane(TextareaWithColor.STACK.getTextArea(), false));</span>
-<span class="fc" id="L375">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_ERROR&quot;), SqlEngine.tabsError);</span>
+<span class="fc" id="L351">        JTabbedPane tabs = new TabbedPaneWheeled();</span>
+<span class="fc" id="L352">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_UNION&quot;), new RTextScrollPane(TextareaWithColor.INDICES.getTextArea(), false));</span>
+<span class="fc" id="L353">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_STACK&quot;), new RTextScrollPane(TextareaWithColor.STACK.getTextArea(), false));</span>
+<span class="fc" id="L354">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_ERROR&quot;), SqlEngine.tabsError);</span>
 
-<span class="fc" id="L377">        JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT);</span>
-<span class="fc" id="L378">        Stream.of(</span>
-<span class="fc" id="L379">            new SimpleEntry&lt;&gt;(&quot;AND mode&quot;, TextareaWithColor.MODE_AND.getTextArea()),</span>
-<span class="fc" id="L380">            new SimpleEntry&lt;&gt;(&quot;OR mode&quot;, TextareaWithColor.MODE_OR.getTextArea()),</span>
-<span class="fc" id="L381">            new SimpleEntry&lt;&gt;(&quot;Stack mode&quot;, TextareaWithColor.MODE_STACK.getTextArea()),</span>
-<span class="fc" id="L382">            new SimpleEntry&lt;&gt;(&quot;Blind&quot;, TextareaWithColor.BLIND.getTextArea()),</span>
-<span class="fc" id="L383">            new SimpleEntry&lt;&gt;(&quot;Time&quot;, TextareaWithColor.TIME.getTextArea()),</span>
-<span class="fc" id="L384">            new SimpleEntry&lt;&gt;(&quot;Multibit&quot;, TextareaWithColor.MULTIBIT.getTextArea()),</span>
-<span class="fc" id="L385">            new SimpleEntry&lt;&gt;(&quot;Bit test&quot;, TextareaWithColor.BIT_TEST.getTextArea())</span>
+<span class="fc" id="L356">        JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT);</span>
+<span class="fc" id="L357">        Stream.of(</span>
+<span class="fc" id="L358">            new SimpleEntry&lt;&gt;(&quot;AND mode&quot;, TextareaWithColor.MODE_AND.getTextArea()),</span>
+<span class="fc" id="L359">            new SimpleEntry&lt;&gt;(&quot;OR mode&quot;, TextareaWithColor.MODE_OR.getTextArea()),</span>
+<span class="fc" id="L360">            new SimpleEntry&lt;&gt;(&quot;Stack mode&quot;, TextareaWithColor.MODE_STACK.getTextArea()),</span>
+<span class="fc" id="L361">            new SimpleEntry&lt;&gt;(&quot;Blind&quot;, TextareaWithColor.BLIND.getTextArea()),</span>
+<span class="fc" id="L362">            new SimpleEntry&lt;&gt;(&quot;Time&quot;, TextareaWithColor.TIME.getTextArea()),</span>
+<span class="fc" id="L363">            new SimpleEntry&lt;&gt;(&quot;Multibit&quot;, TextareaWithColor.MULTIBIT.getTextArea()),</span>
+<span class="fc" id="L364">            new SimpleEntry&lt;&gt;(&quot;Bit test&quot;, TextareaWithColor.BIT_TEST.getTextArea())</span>
         )
-<span class="fc" id="L387">        .forEach(entry -&gt; {</span>
-<span class="fc" id="L388">            tabsBoolean.addTab(entry.getKey(), new RTextScrollPane(entry.getValue(), false));</span>
-<span class="fc" id="L389">            tabsBoolean.setTitleAt(</span>
-<span class="fc" id="L390">                tabsBoolean.getTabCount() - 1,</span>
-<span class="fc" id="L391">                String.format(</span>
+<span class="fc" id="L366">        .forEach(entry -&gt; {</span>
+<span class="fc" id="L367">            tabsBoolean.addTab(entry.getKey(), new RTextScrollPane(entry.getValue(), false));</span>
+<span class="fc" id="L368">            tabsBoolean.setTitleAt(</span>
+<span class="fc" id="L369">                tabsBoolean.getTabCount() - 1,</span>
+<span class="fc" id="L370">                String.format(</span>
                     &quot;&lt;html&gt;&lt;div style=\&quot;text-align:left;width:60px;\&quot;&gt;%s&lt;/div&gt;&lt;/html&gt;&quot;,
-<span class="fc" id="L393">                    entry.getKey()</span>
+<span class="fc" id="L372">                    entry.getKey()</span>
                 )
             );
-<span class="fc" id="L396">        });</span>
-<span class="fc" id="L397">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_BOOLEAN&quot;), tabsBoolean);</span>
+<span class="fc" id="L375">        });</span>
+<span class="fc" id="L376">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_BOOLEAN&quot;), tabsBoolean);</span>
 
-<span class="fc" id="L399">        Stream.of(</span>
+<span class="fc" id="L378">        Stream.of(</span>
             &quot;SQLENGINE_UNION&quot;,
             &quot;SQLENGINE_STACK&quot;,
             &quot;SQLENGINE_ERROR&quot;,
             &quot;SQLENGINE_BOOLEAN&quot;
         )
-<span class="fc" id="L405">        .forEach(keyI18n -&gt; {</span>
-<span class="fc" id="L406">            var label = new JLabel(I18nUtil.valueByKey(keyI18n));</span>
-<span class="fc" id="L407">            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)), label);</span>
-<span class="fc" id="L408">            I18nViewUtil.addComponentForKey(keyI18n, label);</span>
-<span class="fc" id="L409">        });</span>
-<span class="fc" id="L410">        return tabs;</span>
+<span class="fc" id="L384">        .forEach(keyI18n -&gt; {</span>
+<span class="fc" id="L385">            var label = new JLabel(I18nUtil.valueByKey(keyI18n));</span>
+<span class="fc" id="L386">            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)), label);</span>
+<span class="fc" id="L387">            I18nViewUtil.addComponentForKey(keyI18n, label);</span>
+<span class="fc" id="L388">        });</span>
+<span class="fc" id="L389">        return tabs;</span>
     }
 
     private JTabbedPane getPanelConfiguration() {
-<span class="fc" id="L414">        JTabbedPane tabs = new TabbedPaneWheeled();</span>
-<span class="fc" id="L415">        Stream.of(</span>
-<span class="fc" id="L416">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_CHARACTERS_SLIDINGWINDOW&quot;, new RTextScrollPane(TextareaWithColor.SLIDING_WINDOW.getTextArea(), false)),</span>
-<span class="fc" id="L417">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_ROWS_SLIDINGWINDOW&quot;, new RTextScrollPane(TextareaWithColor.LIMIT.getTextArea(), false)),</span>
-<span class="fc" id="L418">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_LIMIT_START_INDEX&quot;, new RTextScrollPane(TextareaWithColor.LIMIT_BOUNDARY.getTextArea(), false)),</span>
-<span class="fc" id="L419">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_CAPACITY&quot;, new RTextScrollPane(TextareaWithColor.CAPACITY.getTextArea(), false)),</span>
-<span class="fc" id="L420">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_CALIBRATOR&quot;, new RTextScrollPane(TextareaWithColor.CALIBRATOR.getTextArea(), false)),</span>
-<span class="fc" id="L421">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_FAILSAFE&quot;, new RTextScrollPane(TextareaWithColor.FAILSAFE.getTextArea(), false)),</span>
-<span class="fc" id="L422">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_END_COMMENT&quot;, new RTextScrollPane(TextareaWithColor.ENDING_COMMENT.getTextArea(), false))</span>
+<span class="fc" id="L393">        JTabbedPane tabs = new TabbedPaneWheeled();</span>
+<span class="fc" id="L394">        Stream.of(</span>
+<span class="fc" id="L395">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_CHARACTERS_SLIDINGWINDOW&quot;, new RTextScrollPane(TextareaWithColor.SLIDING_WINDOW.getTextArea(), false)),</span>
+<span class="fc" id="L396">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_ROWS_SLIDINGWINDOW&quot;, new RTextScrollPane(TextareaWithColor.LIMIT.getTextArea(), false)),</span>
+<span class="fc" id="L397">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_LIMIT_START_INDEX&quot;, new RTextScrollPane(TextareaWithColor.LIMIT_BOUNDARY.getTextArea(), false)),</span>
+<span class="fc" id="L398">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_CAPACITY&quot;, new RTextScrollPane(TextareaWithColor.CAPACITY.getTextArea(), false)),</span>
+<span class="fc" id="L399">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_CALIBRATOR&quot;, new RTextScrollPane(TextareaWithColor.CALIBRATOR.getTextArea(), false)),</span>
+<span class="fc" id="L400">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_FAILSAFE&quot;, new RTextScrollPane(TextareaWithColor.FAILSAFE.getTextArea(), false)),</span>
+<span class="fc" id="L401">            new SimpleEntry&lt;&gt;(&quot;SQLENGINE_END_COMMENT&quot;, new RTextScrollPane(TextareaWithColor.ENDING_COMMENT.getTextArea(), false))</span>
         )
-<span class="fc" id="L424">        .forEach(keyI18n -&gt; {</span>
-<span class="fc" id="L425">            tabs.addTab(I18nUtil.valueByKey(keyI18n.getKey()), keyI18n.getValue());</span>
-<span class="fc" id="L426">            var label = new JLabel(I18nUtil.valueByKey(keyI18n.getKey()));</span>
-<span class="fc" id="L427">            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n.getKey())), label);</span>
-<span class="fc" id="L428">            I18nViewUtil.addComponentForKey(keyI18n.getKey(), label);</span>
-<span class="fc" id="L429">        });</span>
-<span class="fc" id="L430">        return tabs;</span>
+<span class="fc" id="L403">        .forEach(keyI18n -&gt; {</span>
+<span class="fc" id="L404">            tabs.addTab(I18nUtil.valueByKey(keyI18n.getKey()), keyI18n.getValue());</span>
+<span class="fc" id="L405">            var label = new JLabel(I18nUtil.valueByKey(keyI18n.getKey()));</span>
+<span class="fc" id="L406">            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n.getKey())), label);</span>
+<span class="fc" id="L407">            I18nViewUtil.addComponentForKey(keyI18n.getKey(), label);</span>
+<span class="fc" id="L408">        });</span>
+<span class="fc" id="L409">        return tabs;</span>
     }
     
     private JTabbedPane getPanelFingerprinting() {
-<span class="fc" id="L434">        JTabbedPane tabs = new TabbedPaneWheeled();</span>
-<span class="fc" id="L435">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_ORDER_BY&quot;), new RTextScrollPane(TextareaWithColor.ORDER_BY.getTextArea(), false));</span>
-<span class="fc" id="L436">        tabs.addTab(&quot;Order by error&quot;, new RTextScrollPane(TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getTextArea(), false));</span>
-<span class="fc" id="L437">        tabs.addTab(&quot;String error&quot;, new RTextScrollPane(TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getTextArea(), false));</span>
-<span class="fc" id="L438">        tabs.addTab(&quot;Vendor specific&quot;, new RTextScrollPane(TextareaWithColor.VENDOR_SPECIFIC.getTextArea(), false));</span>
-<span class="fc" id="L439">        tabs.addTab(&quot;Truthy&quot;, new RTextScrollPane(TextareaWithColor.TRUTHY.getTextArea(), false));</span>
-<span class="fc" id="L440">        tabs.addTab(&quot;Falsy&quot;, new RTextScrollPane(TextareaWithColor.FALSY.getTextArea(), false));</span>
+<span class="fc" id="L413">        JTabbedPane tabs = new TabbedPaneWheeled();</span>
+<span class="fc" id="L414">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_ORDER_BY&quot;), new RTextScrollPane(TextareaWithColor.ORDER_BY.getTextArea(), false));</span>
+<span class="fc" id="L415">        tabs.addTab(&quot;Order by error&quot;, new RTextScrollPane(TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getTextArea(), false));</span>
+<span class="fc" id="L416">        tabs.addTab(&quot;String error&quot;, new RTextScrollPane(TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getTextArea(), false));</span>
+<span class="fc" id="L417">        tabs.addTab(&quot;Vendor specific&quot;, new RTextScrollPane(TextareaWithColor.VENDOR_SPECIFIC.getTextArea(), false));</span>
+<span class="fc" id="L418">        tabs.addTab(&quot;Truthy&quot;, new RTextScrollPane(TextareaWithColor.TRUTHY.getTextArea(), false));</span>
+<span class="fc" id="L419">        tabs.addTab(&quot;Falsy&quot;, new RTextScrollPane(TextareaWithColor.FALSY.getTextArea(), false));</span>
         
-<span class="fc" id="L442">        Stream.of(&quot;SQLENGINE_ORDER_BY&quot;).forEach(keyI18n -&gt; {</span>
-<span class="fc" id="L443">            var label = new JLabel(I18nUtil.valueByKey(keyI18n));</span>
-<span class="fc" id="L444">            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)), label);</span>
-<span class="fc" id="L445">            I18nViewUtil.addComponentForKey(keyI18n, label);</span>
-<span class="fc" id="L446">        });</span>
-<span class="fc" id="L447">        return tabs;</span>
+<span class="fc" id="L421">        Stream.of(&quot;SQLENGINE_ORDER_BY&quot;).forEach(keyI18n -&gt; {</span>
+<span class="fc" id="L422">            var label = new JLabel(I18nUtil.valueByKey(keyI18n));</span>
+<span class="fc" id="L423">            tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)), label);</span>
+<span class="fc" id="L424">            I18nViewUtil.addComponentForKey(keyI18n, label);</span>
+<span class="fc" id="L425">        });</span>
+<span class="fc" id="L426">        return tabs;</span>
     }
 
     private static JPanel initMenuVendor() {
-<span class="fc" id="L451">        var panelMenuVendor = new JPanel();  // required for label on right</span>
-<span class="fc" id="L452">        panelMenuVendor.setLayout(new BorderLayout());</span>
+<span class="fc" id="L430">        var panelMenuVendor = new JPanel();  // required for label on right</span>
+<span class="fc" id="L431">        panelMenuVendor.setLayout(new BorderLayout());</span>
 
-<span class="fc" id="L454">        JPopupMenu popupMenuVendors = new JPopupMenu();</span>
-<span class="fc" id="L455">        popupMenuVendors.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorVendor().getVendors().size()));</span>
+<span class="fc" id="L433">        JPopupMenu popupMenuVendors = new JPopupMenu();</span>
+<span class="fc" id="L434">        popupMenuVendors.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorVendor().getVendors().size()));</span>
 
-<span class="fc" id="L457">        JLabel labelVendor = new JLabel(MediatorHelper.model().getMediatorVendor().getVendor().toString(), UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
-<span class="fc" id="L458">        labelVendor.setBorder(UiUtil.BORDER_5PX);  // required for padding</span>
-<span class="fc" id="L459">        labelVendor.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L436">        JLabel labelVendor = new JLabel(MediatorHelper.model().getMediatorVendor().getVendor().toString(), UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
+<span class="fc" id="L437">        labelVendor.setBorder(UiUtil.BORDER_5PX);  // required for padding</span>
+<span class="fc" id="L438">        labelVendor.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="nc" id="L462">                Arrays.stream(popupMenuVendors.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L463">                popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L464">                popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());</span>
-<span class="nc" id="L465">                popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
-<span class="nc" id="L466">            }</span>
+<span class="nc" id="L441">                Arrays.stream(popupMenuVendors.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L442">                popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L443">                popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());</span>
+<span class="nc" id="L444">                popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
+<span class="nc" id="L445">            }</span>
         });
 
-<span class="fc" id="L469">        List&lt;Vendor&gt; listVendors = new LinkedList&lt;&gt;(MediatorHelper.model().getMediatorVendor().getVendors());</span>
-<span class="fc bfc" id="L470" title="All 2 branches covered.">        listVendors.removeIf(vendor -&gt; vendor == MediatorHelper.model().getMediatorVendor().getAuto());</span>
+<span class="fc" id="L448">        List&lt;Vendor&gt; listVendors = new LinkedList&lt;&gt;(MediatorHelper.model().getMediatorVendor().getVendors());</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">        listVendors.removeIf(vendor -&gt; vendor == MediatorHelper.model().getMediatorVendor().getAuto());</span>
 
-<span class="fc" id="L472">        var groupVendor = new ButtonGroup();</span>
-<span class="fc bfc" id="L473" title="All 2 branches covered.">        for (final Vendor vendor: listVendors) {</span>
-<span class="fc" id="L474">            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(</span>
-<span class="fc" id="L475">                vendor.toString(),</span>
-<span class="fc bfc" id="L476" title="All 2 branches covered.">                vendor == MediatorHelper.model().getMediatorVendor().getVendor()</span>
+<span class="fc" id="L451">        var groupVendor = new ButtonGroup();</span>
+<span class="fc bfc" id="L452" title="All 2 branches covered.">        for (final Vendor vendor: listVendors) {</span>
+<span class="fc" id="L453">            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(</span>
+<span class="fc" id="L454">                vendor.toString(),</span>
+<span class="fc bfc" id="L455" title="All 2 branches covered.">                vendor == MediatorHelper.model().getMediatorVendor().getVendor()</span>
             );
             
-<span class="fc" id="L479">            itemRadioVendor.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L480">                SqlEngine.modelYaml = vendor.instance().getModelYaml();</span>
-<span class="nc" id="L481">                SqlEngine.initTextComponents();</span>
-<span class="nc" id="L482">                labelVendor.setText(vendor.toString());</span>
-<span class="nc" id="L483">            });</span>
+<span class="fc" id="L458">            itemRadioVendor.addActionListener(actionEvent -&gt; {</span>
+<span class="nc" id="L459">                SqlEngine.modelYaml = vendor.instance().getModelYaml();</span>
+<span class="nc" id="L460">                SqlEngine.initTextComponents();</span>
+<span class="nc" id="L461">                labelVendor.setText(vendor.toString());</span>
+<span class="nc" id="L462">            });</span>
             
-<span class="fc" id="L485">            groupVendor.add(itemRadioVendor);</span>
-<span class="fc" id="L486">            popupMenuVendors.add(itemRadioVendor);</span>
-<span class="fc" id="L487">        }</span>
+<span class="fc" id="L464">            groupVendor.add(itemRadioVendor);</span>
+<span class="fc" id="L465">            popupMenuVendors.add(itemRadioVendor);</span>
+<span class="fc" id="L466">        }</span>
         
-<span class="fc" id="L489">        panelMenuVendor.add(labelVendor, BorderLayout.LINE_END);  // required to set on right</span>
-<span class="fc" id="L490">        return panelMenuVendor;</span>
+<span class="fc" id="L468">        panelMenuVendor.add(labelVendor, BorderLayout.LINE_END);  // required to set on right</span>
+<span class="fc" id="L469">        return panelMenuVendor;</span>
     }
     
     /**
      * Configure all text components with new coloring and new modelYaml setter.
      */
     private static void initTextComponents() {
-<span class="fc" id="L497">        SqlEngine.getTextareas().forEach(SqlEngine::reset);</span>
-<span class="fc" id="L498">        SqlEngine.getTextareas().forEach(textPaneLexer -&gt; textPaneLexer.setText(StringUtils.EMPTY));</span>
+<span class="fc" id="L476">        SqlEngine.getTextareas().forEach(SqlEngine::reset);</span>
+<span class="fc" id="L477">        SqlEngine.getTextareas().forEach(textPaneLexer -&gt; textPaneLexer.setText(StringUtils.EMPTY));</span>
 
-<span class="fc" id="L500">        Stream.of(TextareaWithColor.values())</span>
-<span class="fc" id="L501">        .map(textareaWithColor -&gt; textareaWithColor.textarea)</span>
-<span class="fc" id="L502">        .forEach(textArea -&gt; {</span>
-<span class="fc" id="L503">            textArea.setText(textArea.getSupplierGetter().get().trim());</span>
-<span class="fc" id="L504">            textArea.setCaretPosition(0);</span>
-<span class="fc" id="L505">        });</span>
+<span class="fc" id="L479">        Stream.of(TextareaWithColor.values())</span>
+<span class="fc" id="L480">        .map(textareaWithColor -&gt; textareaWithColor.textarea)</span>
+<span class="fc" id="L481">        .forEach(textArea -&gt; {</span>
+<span class="fc" id="L482">            textArea.setText(textArea.getSupplierGetter().get().trim());</span>
+<span class="fc" id="L483">            textArea.setCaretPosition(0);</span>
+<span class="fc" id="L484">        });</span>
 
-<span class="fc" id="L507">        SqlEngine.populateTabError();</span>
-<span class="fc" id="L508">        SqlEngine.applyTheme();</span>
-<span class="fc" id="L509">    }</span>
+<span class="fc" id="L486">        SqlEngine.populateTabError();</span>
+<span class="fc" id="L487">        SqlEngine.applyTheme();</span>
+<span class="fc" id="L488">    }</span>
 
     public static void applyTheme() {
-<span class="fc" id="L512">        SqlEngine.getTextareas().forEach(UiUtil::applySyntaxTheme);</span>
-<span class="fc" id="L513">    }</span>
+<span class="fc" id="L491">        SqlEngine.getTextareas().forEach(UiUtil::applySyntaxTheme);</span>
+<span class="fc" id="L492">    }</span>
 
     /**
      * Dynamically add textPanes to Error tab for current vendor.
      */
     private static void populateTabError() {
-<span class="fc" id="L519">        SqlEngine.tabsError.removeAll();</span>
+<span class="fc" id="L498">        SqlEngine.tabsError.removeAll();</span>
 
-<span class="pc bpc" id="L521" title="1 of 2 branches missed.">        if (SqlEngine.modelYaml.getStrategy().getError() == null) {</span>
-<span class="nc" id="L522">            return;</span>
+<span class="pc bpc" id="L500" title="1 of 2 branches missed.">        if (SqlEngine.modelYaml.getStrategy().getError() == null) {</span>
+<span class="nc" id="L501">            return;</span>
         }
             
-<span class="fc bfc" id="L525" title="All 2 branches covered.">        for (Method methodError: SqlEngine.modelYaml.getStrategy().getError().getMethod()) {</span>
-<span class="fc" id="L526">            var panelError = new JPanel(new BorderLayout());</span>
+<span class="fc bfc" id="L504" title="All 2 branches covered.">        for (Method methodError: SqlEngine.modelYaml.getStrategy().getError().getMethod()) {</span>
+<span class="fc" id="L505">            var panelError = new JPanel(new BorderLayout());</span>
 
-<span class="fc" id="L528">            var textareaError = new JSyntaxTextArea(methodError::setQuery, methodError::getQuery);</span>
-<span class="fc" id="L529">            SqlEngine.reset(textareaError);</span>
-<span class="fc" id="L530">            textareaError.setText(methodError.getQuery().trim());</span>
-<span class="fc" id="L531">            textareaError.setCaretPosition(0);</span>
-<span class="fc" id="L532">            panelError.add(new RTextScrollPane(textareaError, false), BorderLayout.CENTER);</span>
+<span class="fc" id="L507">            var textareaError = new JSyntaxTextArea(methodError::setQuery, methodError::getQuery);</span>
+<span class="fc" id="L508">            SqlEngine.reset(textareaError);</span>
+<span class="fc" id="L509">            textareaError.setText(methodError.getQuery().trim());</span>
+<span class="fc" id="L510">            textareaError.setCaretPosition(0);</span>
+<span class="fc" id="L511">            panelError.add(new RTextScrollPane(textareaError, false), BorderLayout.CENTER);</span>
             
-<span class="fc" id="L534">            var panelLimit = new JPanel();  // TODO Integrate Error limit</span>
-<span class="fc" id="L535">            panelLimit.setLayout(new BoxLayout(panelLimit, BoxLayout.LINE_AXIS));</span>
-<span class="fc" id="L536">            panelLimit.add(new JLabel(&quot; Overflow limit: &quot;));</span>
-<span class="fc" id="L537">            panelLimit.add(new JTextField(Integer.toString(methodError.getCapacity())));</span>
-<span class="fc" id="L538">            panelError.add(panelLimit, BorderLayout.SOUTH);</span>
+<span class="fc" id="L513">            var panelLimit = new JPanel();  // TODO Integrate Error limit</span>
+<span class="fc" id="L514">            panelLimit.setLayout(new BoxLayout(panelLimit, BoxLayout.LINE_AXIS));</span>
+<span class="fc" id="L515">            panelLimit.add(new JLabel(&quot; Overflow limit: &quot;));</span>
+<span class="fc" id="L516">            panelLimit.add(new JTextField(Integer.toString(methodError.getCapacity())));</span>
+<span class="fc" id="L517">            panelError.add(panelLimit, BorderLayout.SOUTH);</span>
 
-<span class="fc" id="L540">            SqlEngine.tabsError.addTab(methodError.getName(), panelError);</span>
-<span class="fc" id="L541">            SqlEngine.tabsError.setTitleAt(</span>
-<span class="fc" id="L542">                SqlEngine.tabsError.getTabCount() - 1,</span>
-<span class="fc" id="L543">                String.format(</span>
+<span class="fc" id="L519">            SqlEngine.tabsError.addTab(methodError.getName(), panelError);</span>
+<span class="fc" id="L520">            SqlEngine.tabsError.setTitleAt(</span>
+<span class="fc" id="L521">                SqlEngine.tabsError.getTabCount() - 1,</span>
+<span class="fc" id="L522">                String.format(</span>
                     &quot;&lt;html&gt;&lt;div style=\&quot;text-align:left;width:100px;\&quot;&gt;%s&lt;/div&gt;&lt;/html&gt;&quot;,
-<span class="fc" id="L545">                    methodError.getName()</span>
+<span class="fc" id="L524">                    methodError.getName()</span>
                 )
             );
-<span class="fc" id="L548">            SqlEngine.listTextareasError.add(textareaError);</span>
-<span class="fc" id="L549">        }</span>
-<span class="fc" id="L550">    }</span>
+<span class="fc" id="L527">            SqlEngine.listTextareasError.add(textareaError);</span>
+<span class="fc" id="L528">        }</span>
+<span class="fc" id="L529">    }</span>
     
     /**
      * Reset the textarea colorer.
      * @param textarea which colorer will be reset.
      */
     private static void reset(JSyntaxTextArea textarea) {
-<span class="fc" id="L557">        textarea.setDocument(new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_SQL));  // required else empty on reopen</span>
-<span class="fc" id="L558">        textarea.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
+<span class="fc" id="L536">        textarea.setDocument(new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_SQL));  // required else empty on reopen</span>
+<span class="fc" id="L537">        textarea.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-<span class="fc" id="L561">                textarea.setAttribute();</span>
-<span class="fc" id="L562">            }</span>
+<span class="fc" id="L540">                textarea.setAttribute();</span>
+<span class="fc" id="L541">            }</span>
         });
-<span class="fc" id="L564">    }</span>
+<span class="fc" id="L543">    }</span>
     
     /**
      * Merge list of Error textPanes and list of other textAreas.
      * @return the merged list
      */
     private static List&lt;JSyntaxTextArea&gt; getTextareas() {
-<span class="fc" id="L571">        return Stream.concat(</span>
-<span class="fc" id="L572">            SqlEngine.listTextareasError.stream(),</span>
-<span class="fc" id="L573">            Stream.of(TextareaWithColor.values()).map(TextareaWithColor::getTextArea)</span>
+<span class="fc" id="L550">        return Stream.concat(</span>
+<span class="fc" id="L551">            SqlEngine.listTextareasError.stream(),</span>
+<span class="fc" id="L552">            Stream.of(TextareaWithColor.values()).map(TextareaWithColor::getTextArea)</span>
         )
-<span class="fc" id="L575">        .collect(Collectors.toList());</span>
+<span class="fc" id="L554">        .collect(Collectors.toList());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

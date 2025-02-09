@@ -153,11 +153,11 @@ public class PanelAddressBar extends JPanel {
 <span class="fc" id="L153">        this.atomicTextFieldAddress.get().putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, UiUtil.GLOBE.getIcon());</span>
 <span class="fc" id="L154">        this.atomicTextFieldRequest.get().putClientProperty(</span>
             FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT,
-<span class="fc" id="L156">            new ButtonExpandText(&quot;Add request body&quot;, this.atomicTextFieldRequest.get())</span>
+<span class="fc" id="L156">            new ButtonExpandText(this.atomicTextFieldRequest.get())</span>
         );
 <span class="fc" id="L158">        this.atomicTextFieldHeader.get().putClientProperty(</span>
             FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT,
-<span class="fc" id="L160">            new ButtonExpandText(&quot;Add header body&quot;, this.atomicTextFieldHeader.get())</span>
+<span class="fc" id="L160">            new ButtonExpandText(this.atomicTextFieldHeader.get())</span>
         );
 
 <span class="fc" id="L163">        this.initLayout();</span>

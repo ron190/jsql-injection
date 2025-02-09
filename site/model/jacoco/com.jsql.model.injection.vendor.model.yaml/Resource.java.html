@@ -8,10 +8,10 @@ import java.io.Serializable;
 <span class="fc" id="L8">public class Resource implements Serializable {</span>
 
 <span class="fc" id="L10">    private String info = StringUtils.EMPTY;</span>
-<span class="fc" id="L11">    private Schema schema = new Schema();</span>
-<span class="fc" id="L12">    private Schema zip = new Schema();</span>
-<span class="fc" id="L13">    private Schema dios = new Schema();</span>
-<span class="fc" id="L14">    private File file = new File();</span>
+<span class="fc" id="L11">    private String exploit = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private Schema schema = new Schema();</span>
+<span class="fc" id="L13">    private Schema zip = new Schema();</span>
+<span class="fc" id="L14">    private Schema dios = new Schema();</span>
 
     public String getInfo() {
 <span class="fc" id="L17">        return this.info;</span>
@@ -45,12 +45,12 @@ import java.io.Serializable;
 <span class="fc" id="L45">        this.dios = dios;</span>
 <span class="fc" id="L46">    }</span>
 
-    public File getFile() {
-<span class="fc" id="L49">        return this.file;</span>
+    public String getExploit() {
+<span class="fc" id="L49">        return this.exploit;</span>
     }
 
-    public void setFile(File file) {
-<span class="fc" id="L53">        this.file = file;</span>
+    public void setExploit(String exploit) {
+<span class="fc" id="L53">        this.exploit = exploit;</span>
 <span class="fc" id="L54">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

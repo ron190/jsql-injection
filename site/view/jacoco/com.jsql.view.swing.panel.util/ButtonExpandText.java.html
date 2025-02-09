@@ -27,7 +27,7 @@ public class ButtonExpandText extends JButton {
     /**
      * Create a button in address bar.
      */
-<span class="fc" id="L30">    public ButtonExpandText(String titleFrame, JTextField sourceTextField) {</span>
+<span class="fc" id="L30">    public ButtonExpandText(JTextField sourceTextField) {</span>
 <span class="fc" id="L31">        this.setPreferredSize(new Dimension(16, 16));</span>
 <span class="fc" id="L32">        this.setContentAreaFilled(false);</span>
 
@@ -38,40 +38,46 @@ public class ButtonExpandText extends JButton {
 <span class="fc" id="L38">        JTextArea textAreaInDialog = new JPopupTextArea(new JTextAreaPlaceholder(&quot;Multiline text&quot;)).getProxy();</span>
 <span class="fc" id="L39">        textAreaInDialog.getCaret().setBlinkRate(500);</span>
 
-<span class="fc" id="L41">        final JDialog dialogWithTextarea = new JDialog(MediatorHelper.frame(), titleFrame, true);</span>
-<span class="fc" id="L42">        dialogWithTextarea.getContentPane().add(new JScrollPane(textAreaInDialog));</span>
-<span class="fc" id="L43">        dialogWithTextarea.pack();</span>
-<span class="fc" id="L44">        dialogWithTextarea.setSize(400, 300);</span>
-<span class="fc" id="L45">        dialogWithTextarea.setLocationRelativeTo(null);</span>
-<span class="fc" id="L46">        dialogWithTextarea.addWindowListener(new WindowAdapter() {</span>
+<span class="fc" id="L41">        final JDialog dialogWithTextarea = new JDialog();</span>
+<span class="fc" id="L42">        dialogWithTextarea.setUndecorated(true);</span>
+<span class="fc" id="L43">        dialogWithTextarea.getContentPane().add(new JScrollPane(textAreaInDialog));</span>
+<span class="fc" id="L44">        dialogWithTextarea.pack();</span>
+<span class="fc" id="L45">        dialogWithTextarea.addWindowFocusListener(new WindowAdapter() {</span>
+            @Override
+            public void windowLostFocus(WindowEvent e) {
+<span class="nc" id="L48">                sourceTextField.setText(textAreaInDialog.getText().replace(&quot;\n&quot;, &quot;\\n&quot;).replace(&quot;\r&quot;, &quot;\\r&quot;));</span>
+<span class="nc" id="L49">                dialogWithTextarea.dispose();</span>
+<span class="nc" id="L50">            }</span>
+        });
+<span class="fc" id="L52">        dialogWithTextarea.addWindowListener(new WindowAdapter() {</span>
             @Override
             public void windowClosing(WindowEvent e) {
-<span class="nc" id="L49">                sourceTextField.setText(textAreaInDialog.getText().replace(&quot;\n&quot;, &quot;\\n&quot;).replace(&quot;\r&quot;, &quot;\\r&quot;));</span>
-<span class="nc" id="L50">                super.windowClosing(e);</span>
-<span class="nc" id="L51">            }</span>
+<span class="nc" id="L55">                sourceTextField.setText(textAreaInDialog.getText().replace(&quot;\n&quot;, &quot;\\n&quot;).replace(&quot;\r&quot;, &quot;\\r&quot;));</span>
+<span class="nc" id="L56">                super.windowClosing(e);</span>
+<span class="nc" id="L57">            }</span>
         });
 
-<span class="fc" id="L54">        this.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L60">        this.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mouseClicked(MouseEvent e) {
-<span class="nc" id="L57">                textAreaInDialog.setText(sourceTextField.getText().replace(&quot;\\n&quot;, &quot;\n&quot;).replace(&quot;\\r&quot;, &quot;\r&quot;));</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">                dialogWithTextarea.setVisible(!dialogWithTextarea.isVisible());</span>
-<span class="nc" id="L59">            }</span>
+<span class="nc" id="L63">                textAreaInDialog.setText(sourceTextField.getText().replace(&quot;\\n&quot;, &quot;\n&quot;).replace(&quot;\\r&quot;, &quot;\r&quot;));</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">                dialogWithTextarea.setVisible(!dialogWithTextarea.isVisible());</span>
+<span class="nc" id="L65">                dialogWithTextarea.setSize(sourceTextField.getWidth(), 300);</span>
+<span class="nc" id="L66">                dialogWithTextarea.setLocation(sourceTextField.getLocationOnScreen());</span>
+<span class="nc" id="L67">            }</span>
         });
 
-<span class="fc" id="L62">        dialogWithTextarea.getRootPane()</span>
-<span class="fc" id="L63">            .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)</span>
-<span class="fc" id="L64">            .put(</span>
-<span class="fc" id="L65">                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),</span>
+<span class="fc" id="L70">        dialogWithTextarea.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)</span>
+<span class="fc" id="L71">            .put(</span>
+<span class="fc" id="L72">                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),</span>
                 &quot;Cancel&quot;
             );
-<span class="fc" id="L68">        dialogWithTextarea.getRootPane()</span>
-<span class="fc" id="L69">            .getActionMap()</span>
-<span class="fc" id="L70">            .put(&quot;Cancel&quot;, new AbstractAction() {</span>
+<span class="fc" id="L75">        dialogWithTextarea.getRootPane().getActionMap()</span>
+<span class="fc" id="L76">            .put(&quot;Cancel&quot;, new AbstractAction() {</span>
                 public void actionPerformed(ActionEvent e) {
-<span class="nc" id="L72">                    dialogWithTextarea.dispose();</span>
-<span class="nc" id="L73">                }</span>
+<span class="nc" id="L78">                    dialogWithTextarea.dispose();</span>
+<span class="nc" id="L79">                }</span>
             });
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L81">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

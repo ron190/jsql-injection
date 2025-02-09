@@ -1,6 +1,10 @@
 com.jsql.model
 com.jsql.model.accessible
 com.jsql.model.accessible.vendor
+com.jsql.model.accessible.vendor.mysql
+com.jsql.model.accessible.vendor.oracle
+com.jsql.model.accessible.vendor.postgres
+com.jsql.model.accessible.vendor.sqlite
 com.jsql.model.bean.database
 com.jsql.model.bean.util
 com.jsql.model.exception

@@ -1,77 +1,109 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,5,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Patch,208,0,14,0,46,0,20,0,12,0
+model,com.jsql.model.injection.strategy.blind.patch,Diff,29,84,9,9,6,23,9,9,2,7
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3155,2128,397,290,647,464,244,149,23,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
-model,com.jsql.model.injection.strategy.blind.patch,Diff,29,84,9,9,6,23,9,9,2,7
-model,com.jsql.model.bean.util,Header,0,75,0,0,0,13,0,1,0,1
-model,com.jsql.model.bean.util,Request,0,17,0,0,0,7,0,5,0,5
-model,com.jsql.model.bean.util,Interaction,0,350,0,0,0,53,0,3,0,3
-model,com.jsql.model.bean.util,HttpHeader,36,0,0,0,13,0,7,0,7,0
-model,com.jsql.model.accessible,CallableHttpHead,62,141,2,2,12,38,3,6,1,6
-model,com.jsql.model.accessible,ExploitMode,18,46,0,0,5,9,4,2,4,2
-model,com.jsql.model.accessible,DataAccess,126,847,5,23,31,167,8,21,3,12
-model,com.jsql.model.accessible,ResourceAccess,387,1190,34,62,89,243,37,42,8,23
-model,com.jsql.model.accessible,CallableFile,98,171,7,5,17,32,5,7,0,6
-model,com.jsql.model.injection.strategy,StrategyInjectionTime,0,276,0,14,0,59,0,23,0,16
-model,com.jsql.model.injection.strategy,AbstractStrategy,0,92,0,2,0,21,0,9,0,8
-model,com.jsql.model.injection.strategy,MediatorStrategy,3,467,2,26,1,102,3,27,1,15
-model,com.jsql.model.injection.strategy,StrategyInjectionUnion,7,435,3,21,2,80,3,29,0,20
-model,com.jsql.model.injection.strategy,StrategyInjectionStack,22,272,1,13,4,63,3,20,2,14
-model,com.jsql.model.injection.strategy,StrategyInjectionMultibit,0,191,0,8,0,41,0,15,0,11
-model,com.jsql.model.injection.strategy,StrategyInjectionError,31,390,1,21,7,85,4,26,3,16
-model,com.jsql.model.injection.strategy,StrategyInjectionBlind,0,276,0,14,0,60,0,23,0,16
+model,com.jsql.model.accessible.vendor.postgres,Write,3,24,0,0,1,8,1,4,1,4
+model,com.jsql.model.accessible.vendor.postgres,LargeObject,0,43,0,0,0,17,0,9,0,9
+model,com.jsql.model.accessible.vendor.postgres,TempTable,9,24,0,0,3,10,3,4,3,4
+model,com.jsql.model.accessible.vendor.postgres,Shell,0,23,0,0,0,9,0,5,0,5
+model,com.jsql.model.accessible.vendor.postgres,Rce,0,77,0,0,0,29,0,15,0,15
+model,com.jsql.model.accessible.vendor.postgres,Read,3,32,0,0,1,12,1,6,1,6
+model,com.jsql.model.accessible.vendor.postgres,Confirm,0,23,0,0,0,9,0,5,0,5
+model,com.jsql.model.accessible.vendor.postgres,File,0,27,0,0,0,9,0,5,0,5
+model,com.jsql.model.accessible.vendor.postgres,Sql,0,75,0,0,0,29,0,15,0,15
+model,com.jsql.model.accessible.vendor.postgres,ModelYamlPostgres,0,39,0,0,0,13,0,7,0,7
+model,com.jsql.model.accessible.vendor.postgres,Extension,0,23,0,0,0,9,0,5,0,5
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
 model,com.jsql.model,InjectionModel,139,1302,16,68,33,292,14,62,2,32
 model,com.jsql.model,MediatorUtils,6,137,0,0,2,59,2,39,2,39
+model,com.jsql.model.injection.vendor,MediatorVendor,15,897,0,12,5,115,5,40,5,34
 model,com.jsql.model.injection.vendor,MediatorVendor.new Vendor() {...},0,85,2,6,0,17,2,4,0,2
-model,com.jsql.model.injection.vendor,MediatorVendor,18,894,0,12,6,114,6,39,6,33
 model,com.jsql.util.tampering,TamperingType,6,106,0,0,2,19,0,3,0,3
 model,com.jsql.util.tampering,ModelYamlTampering,9,22,0,0,3,10,3,6,3,6
-model,com.jsql.model.exception,LoopDetectedSlidingException,0,6,0,0,0,2,0,1,0,1
-model,com.jsql.model.exception,AbstractSlidingException,18,44,4,2,7,17,4,5,1,5
-model,com.jsql.model.exception,InjectionFailureException,4,9,0,0,2,4,1,2,1,2
-model,com.jsql.model.exception,JSqlRuntimeException,14,0,0,0,6,0,3,0,3,0
-model,com.jsql.model.exception,StoppedByUserSlidingException,15,0,0,0,6,0,3,0,3,0
-model,com.jsql.model.exception,JSqlException,5,9,0,0,2,4,1,2,1,2
-model,com.jsql.view.terminal,SystemOutTerminal,0,4,0,0,0,2,0,1,0,1
 model,com.jsql.view.interaction,SubscriberInteraction,17,78,1,1,7,23,3,5,2,5
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionMonobit,0,137,0,4,0,16,0,5,0,3
+model,com.jsql.model.injection.strategy.blind,InjectionVendor,43,252,5,19,16,48,5,15,0,8
+model,com.jsql.model.injection.strategy.blind,AbstractInjectionBinary.BinaryMode,0,27,0,0,0,2,0,1,0,1
+model,com.jsql.model.injection.strategy.blind,CallableTime,0,106,0,2,0,22,0,5,0,4
+model,com.jsql.model.injection.strategy.blind,CallableVendor,0,76,0,4,0,19,0,7,0,5
 model,com.jsql.model.injection.strategy.blind,InjectionTime,53,219,8,20,19,43,8,13,0,7
 model,com.jsql.model.injection.strategy.blind,CallableCharInsertion,0,76,0,4,0,19,0,7,0,5
 model,com.jsql.model.injection.strategy.blind,InjectionBlind,44,244,7,19,17,45,7,14,0,8
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionBinary,48,262,8,12,13,62,6,13,0,9
-model,com.jsql.model.injection.strategy.blind,InjectionVendor,43,252,5,19,16,48,5,15,0,8
 model,com.jsql.model.injection.strategy.blind,CallableMultibit,2,111,0,4,1,23,1,8,1,6
 model,com.jsql.model.injection.strategy.blind,InjectionMultibit,20,376,5,23,7,63,5,21,0,12
-model,com.jsql.model.injection.strategy.blind,AbstractInjectionBinary.BinaryMode,0,27,0,0,0,2,0,1,0,1
 model,com.jsql.model.injection.strategy.blind,AbstractCallableBinary,6,18,0,0,2,6,2,3,2,3
 model,com.jsql.model.injection.strategy.blind,InjectionCharInsertion,43,336,5,19,16,57,5,15,0,8
-model,com.jsql.model.injection.strategy.blind,CallableTime,0,106,0,2,0,22,0,5,0,4
-model,com.jsql.model.injection.strategy.blind,CallableVendor,0,76,0,4,0,19,0,7,0,5
 model,com.jsql.model.injection.strategy.blind,CallableBlind,0,112,0,4,0,24,0,8,0,6
+model,com.jsql.model.accessible.vendor.mysql,TempTable,0,73,0,0,0,29,0,15,0,15
+model,com.jsql.model.accessible.vendor.mysql,File,0,23,0,0,0,9,0,5,0,5
+model,com.jsql.model.accessible.vendor.mysql,AddFunction,0,33,0,0,0,13,0,7,0,7
+model,com.jsql.model.accessible.vendor.mysql,AddFile,3,32,0,0,1,12,1,6,1,6
+model,com.jsql.model.accessible.vendor.mysql,Udf,0,57,0,0,0,21,0,11,0,11
+model,com.jsql.model.accessible.vendor.mysql,ModelYamlMysql,0,27,0,0,0,9,0,5,0,5
 model,com.jsql.view.terminal.interaction,MessageBinary,0,21,0,0,0,6,0,3,0,3
 model,com.jsql.view.terminal.interaction,MarkFileSystemVulnerable,0,16,0,0,0,5,0,4,0,4
-model,com.jsql.view.terminal.interaction,MarkBlindVulnerable,0,16,0,0,0,5,0,4,0,4
 model,com.jsql.view.terminal.interaction,AbstractGetShellResult,0,16,0,0,0,5,0,4,0,4
-model,com.jsql.view.terminal.interaction,AddDatabases,0,37,0,2,0,9,0,5,0,4
-model,com.jsql.view.terminal.interaction,AddTables,0,37,0,2,0,9,0,5,0,4
 model,com.jsql.view.terminal.interaction,AddExploitWebTab,16,0,0,0,5,0,4,0,4,0
 model,com.jsql.view.terminal.interaction,MarkFileSystemInvulnerable,16,0,0,0,5,0,4,0,4,0
 model,com.jsql.view.terminal.interaction,MarkTimeVulnerable,0,16,0,0,0,5,0,4,0,4
 model,com.jsql.view.terminal.interaction,MarkMultiVulnerable,0,16,0,0,0,5,0,4,0,4
 model,com.jsql.view.terminal.interaction,MessageHeader,23,106,0,0,0,18,5,3,5,3
 model,com.jsql.view.terminal.interaction,AddColumns,0,37,0,2,0,9,0,5,0,4
-model,com.jsql.view.terminal.interaction,MarkStackVulnerable,0,16,0,0,0,5,0,4,0,4
 model,com.jsql.view.terminal.interaction,MarkErrorInvulnerable,16,29,0,0,10,8,1,3,1,3
-model,com.jsql.view.terminal.interaction,MarkBlindInvulnerable,5,11,0,0,0,5,1,3,1,3
 model,com.jsql.view.terminal.interaction,MarkTimeInvulnerable,5,11,0,0,0,5,1,3,1,3
 model,com.jsql.view.terminal.interaction,MarkErrorVulnerable,0,45,0,0,0,18,0,4,0,4
 model,com.jsql.view.terminal.interaction,MarkUnionVulnerable,0,16,0,0,0,5,0,4,0,4
+model,com.jsql.view.terminal.interaction,MarkUnionInvulnerable,5,11,0,0,0,5,1,3,1,3
+model,com.jsql.view.terminal.interaction,MarkBlindVulnerable,0,16,0,0,0,5,0,4,0,4
+model,com.jsql.view.terminal.interaction,AddDatabases,0,37,0,2,0,9,0,5,0,4
+model,com.jsql.view.terminal.interaction,AddTables,0,37,0,2,0,9,0,5,0,4
+model,com.jsql.view.terminal.interaction,MarkStackVulnerable,0,16,0,0,0,5,0,4,0,4
+model,com.jsql.view.terminal.interaction,MarkBlindInvulnerable,5,11,0,0,0,5,1,3,1,3
 model,com.jsql.view.terminal.interaction,CreateValuesTab,9,21,0,0,0,7,2,3,2,3
 model,com.jsql.view.terminal.interaction,GetExploitWebResult,0,4,0,0,0,2,0,1,0,1
-model,com.jsql.view.terminal.interaction,MarkUnionInvulnerable,5,11,0,0,0,5,1,3,1,3
-model,com.jsql.util.bruter,Coder,0,175,0,0,0,28,0,3,0,3
+model,com.jsql.model.accessible.vendor.oracle,Rce,21,52,0,0,7,22,7,8,7,8
+model,com.jsql.model.accessible.vendor.oracle,ModelYamlOracle,3,12,0,0,1,4,1,2,1,2
+model,com.jsql.model.injection.vendor.model.yaml,Union,0,33,0,0,0,13,0,7,0,7
+model,com.jsql.model.injection.vendor.model.yaml,Binary,0,75,0,0,0,29,0,15,0,15
+model,com.jsql.model.injection.vendor.model.yaml,Configuration,0,75,0,0,0,29,0,15,0,15
+model,com.jsql.model.injection.vendor.model.yaml,Fingerprint,15,35,0,0,3,13,2,7,2,7
+model,com.jsql.model.injection.vendor.model.yaml,Test,37,98,0,0,9,18,6,9,6,9
+model,com.jsql.model.injection.vendor.model.yaml,Error,0,15,0,0,0,5,0,3,0,3
+model,com.jsql.model.injection.vendor.model.yaml,Method,0,34,0,0,0,13,0,7,0,7
+model,com.jsql.model.injection.vendor.model.yaml,Fields,0,23,0,0,0,9,0,5,0,5
+model,com.jsql.model.injection.vendor.model.yaml,ModelYaml,0,37,0,0,0,13,0,7,0,7
+model,com.jsql.model.injection.vendor.model.yaml,Resource,0,59,0,0,0,21,0,11,0,11
+model,com.jsql.model.injection.vendor.model.yaml,Strategy,0,61,0,0,0,21,0,11,0,11
+model,com.jsql.model.injection.vendor.model.yaml,Row,0,25,0,0,0,9,0,5,0,5
+model,com.jsql.model.injection.vendor.model.yaml,Schema,0,45,0,0,0,17,0,9,0,9
+model,com.jsql.model.injection.vendor.model.yaml,Write,23,0,0,0,9,0,5,0,5,0
+model,com.jsql.model.bean.util,Header,0,75,0,0,0,13,0,1,0,1
+model,com.jsql.model.bean.util,Request,0,17,0,0,0,7,0,5,0,5
+model,com.jsql.model.bean.util,HttpHeader,36,0,0,0,13,0,7,0,7,0
+model,com.jsql.model.bean.util,Interaction,0,350,0,0,0,53,0,3,0,3
+model,com.jsql.model.accessible,ResourceAccess,369,1182,33,61,86,242,35,42,7,23
+model,com.jsql.model.accessible,CallableHttpHead,62,141,2,2,12,38,3,6,1,6
+model,com.jsql.model.accessible,ExploitMode,18,46,0,0,5,9,4,2,4,2
+model,com.jsql.model.accessible,DataAccess,126,847,5,23,31,167,8,21,3,12
+model,com.jsql.model.accessible,CallableFile,160,211,7,5,23,36,5,7,0,6
+model,com.jsql.model.injection.strategy,StrategyInjectionUnion,7,435,3,21,2,80,3,29,0,20
+model,com.jsql.model.injection.strategy,StrategyInjectionError,31,390,1,21,7,85,4,26,3,16
+model,com.jsql.model.injection.strategy,StrategyInjectionTime,0,276,0,14,0,59,0,23,0,16
+model,com.jsql.model.injection.strategy,AbstractStrategy,0,92,0,2,0,21,0,9,0,8
+model,com.jsql.model.injection.strategy,MediatorStrategy,3,467,2,26,1,102,3,27,1,15
+model,com.jsql.model.injection.strategy,StrategyInjectionStack,22,272,1,13,4,63,3,20,2,14
+model,com.jsql.model.injection.strategy,StrategyInjectionMultibit,0,191,0,8,0,41,0,15,0,11
+model,com.jsql.model.injection.strategy,StrategyInjectionBlind,0,276,0,14,0,60,0,23,0,16
+model,com.jsql.model.exception,AbstractSlidingException,18,44,4,2,7,17,4,5,1,5
+model,com.jsql.model.exception,JSqlRuntimeException,14,0,0,0,6,0,3,0,3,0
+model,com.jsql.model.exception,LoopDetectedSlidingException,0,6,0,0,0,2,0,1,0,1
+model,com.jsql.model.exception,InjectionFailureException,4,9,0,0,2,4,1,2,1,2
+model,com.jsql.model.exception,StoppedByUserSlidingException,15,0,0,0,6,0,3,0,3,0
+model,com.jsql.model.exception,JSqlException,5,9,0,0,2,4,1,2,1,2
+model,com.jsql.view.terminal,SystemOutTerminal,0,4,0,0,0,2,0,1,0,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,8,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,10,0,0,0,2,0,2,0,2
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,0,2
@@ -97,91 +129,78 @@ model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,Base58,26,284,14,30,7,64,14,14,0,6
-model,com.jsql.util.bruter,DigestMD4,68,961,7,19,15,105,9,15,3,8
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,Crc16Helper,0,1064,0,2,0,6,0,2,0,1
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,8,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,BaseNCodec.Context,59,3,0,0,10,1,1,1,1,1
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,8,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,8,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,Crc64Helper,0,78,0,8,0,14,0,6,0,2
 model,com.jsql.util.bruter,HashUtil,0,254,0,2,0,44,0,10,0,9
-model,com.jsql.util.bruter,Bruter,19,386,0,12,8,55,3,23,3,17
 model,com.jsql.util.bruter,BaseNCodec,288,202,54,12,56,43,50,11,17,11
-model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
 model,com.jsql.util.bruter,ActionCoder,19,369,0,4,5,50,4,11,4,9
+model,com.jsql.util.bruter,Coder,0,175,0,0,0,28,0,3,0,3
+model,com.jsql.util.bruter,Base58,26,284,14,30,7,64,14,14,0,6
+model,com.jsql.util.bruter,DigestMD4,68,961,7,19,15,105,9,15,3,8
+model,com.jsql.util.bruter,Crc16Helper,0,1064,0,2,0,6,0,2,0,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,8,0,0,1,1,1,1,1,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,8,0,0,1,1,1,1,1,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,8,0,0,1,1,1,1,1,1
+model,com.jsql.util.bruter,Bruter,19,386,0,12,8,55,3,23,3,17
+model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
+model,com.jsql.model.suspendable,SuspendableGetCharInsertion,70,513,7,35,14,107,8,33,2,18
 model,com.jsql.model.suspendable,SuspendableGetVendor,10,146,1,7,3,32,1,9,0,6
 model,com.jsql.model.suspendable,SuspendableGetRows,58,698,13,47,15,172,12,36,0,18
 model,com.jsql.model.suspendable,SuspendableGetIndexes,43,141,3,9,10,29,3,7,0,4
 model,com.jsql.model.suspendable,AbstractSuspendable,21,42,3,3,8,16,5,6,2,6
-model,com.jsql.model.suspendable,SuspendableGetCharInsertion,70,513,7,35,14,107,8,33,2,18
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
-model,com.jsql.model.injection.method,AbstractMethodInjection,33,279,3,23,11,60,4,26,1,16
 model,com.jsql.model.injection.method,MediatorMethod,3,53,0,0,1,9,1,4,1,4
+model,com.jsql.model.injection.method,AbstractMethodInjection,33,279,3,23,11,60,4,26,1,16
 model,com.jsql.model.bean.database,AbstractElementDatabase,4,6,0,0,2,2,1,2,1,2
 model,com.jsql.model.bean.database,Database,0,56,0,2,0,15,0,6,0,5
 model,com.jsql.model.bean.database,Table,0,71,0,4,0,20,0,7,0,5
 model,com.jsql.model.bean.database,MockElement,6,8,0,0,3,2,3,2,3,2
 model,com.jsql.model.bean.database,Column,2,15,0,0,1,6,1,3,1,3
 model,com.jsql.model.injection.vendor.model,Vendor,2,23,0,0,1,9,1,4,1,4
-model,com.jsql.model.injection.vendor.model,VendorYaml,190,1007,11,39,26,234,20,52,9,37
-model,com.jsql.model.injection.vendor.model.yaml,ModelYaml,0,37,0,0,0,13,0,7,0,7
-model,com.jsql.model.injection.vendor.model.yaml,File,3,32,0,0,1,12,1,6,1,6
-model,com.jsql.model.injection.vendor.model.yaml,Resource,0,61,0,0,0,21,0,11,0,11
-model,com.jsql.model.injection.vendor.model.yaml,Strategy,0,61,0,0,0,21,0,11,0,11
-model,com.jsql.model.injection.vendor.model.yaml,Union,0,33,0,0,0,13,0,7,0,7
-model,com.jsql.model.injection.vendor.model.yaml,Row,0,25,0,0,0,9,0,5,0,5
-model,com.jsql.model.injection.vendor.model.yaml,Binary,0,75,0,0,0,29,0,15,0,15
-model,com.jsql.model.injection.vendor.model.yaml,Configuration,0,75,0,0,0,29,0,15,0,15
-model,com.jsql.model.injection.vendor.model.yaml,Fingerprint,15,35,0,0,3,13,2,7,2,7
-model,com.jsql.model.injection.vendor.model.yaml,Test,37,98,0,0,9,18,6,9,6,9
-model,com.jsql.model.injection.vendor.model.yaml,Schema,0,45,0,0,0,17,0,9,0,9
-model,com.jsql.model.injection.vendor.model.yaml,Write,6,17,0,0,2,7,2,3,2,3
-model,com.jsql.model.injection.vendor.model.yaml,Error,0,15,0,0,0,5,0,3,0,3
-model,com.jsql.model.injection.vendor.model.yaml,Method,0,34,0,0,0,13,0,7,0,7
-model,com.jsql.model.injection.vendor.model.yaml,Fields,0,23,0,0,0,9,0,5,0,5
-model,com.jsql.util,AnsiColorUtil,3,3,0,0,1,1,1,1,1,1
+model,com.jsql.model.injection.vendor.model,VendorYaml,149,986,11,39,20,230,19,50,8,35
 model,com.jsql.util,CsrfUtil,143,315,11,19,28,74,10,19,1,13
-model,com.jsql.util,StringUtil.CharEncoder,0,26,0,0,0,10,0,2,0,2
-model,com.jsql.util,I18nUtil,73,15,4,0,9,4,6,2,4,2
 model,com.jsql.util,ExceptionUtil,25,14,0,0,8,5,2,2,2,2
 model,com.jsql.util,PreferencesUtil,175,1139,0,0,64,295,42,79,42,79
-model,com.jsql.util,CertificateUtil.new X509TrustManager() {...},1,10,0,0,1,3,1,3,1,3
-model,com.jsql.util,ConnectionUtil,69,500,9,33,17,117,11,38,2,26
 model,com.jsql.util,JsonUtil,48,303,5,27,11,66,4,22,0,10
-model,com.jsql.util,ConnectionUtil.new Authenticator() {...},0,23,0,0,0,4,0,2,0,2
 model,com.jsql.util,CertificateUtil,6,39,0,0,2,10,0,3,0,3
-model,com.jsql.util,AuthenticationUtil.new Authenticator() {...},11,6,0,0,2,1,1,1,1,1
-model,com.jsql.util,GitUtil.ShowOnConsole,0,15,0,0,0,1,0,1,0,1
-model,com.jsql.util,SoapUtil,28,254,3,19,8,59,3,19,0,11
 model,com.jsql.util,TamperingUtil,107,308,2,14,36,80,15,24,13,18
 model,com.jsql.util,GitUtil,414,9,20,0,87,4,19,2,9,2
 model,com.jsql.util,ThreadUtil,26,82,2,4,6,24,3,8,1,7
 model,com.jsql.util,ExceptionUtil.ExceptionHandler,134,0,14,0,30,0,11,0,4,0
 model,com.jsql.util,FormUtil,232,18,17,1,43,7,13,3,4,3
 model,com.jsql.util,LogLevelUtil,0,40,0,0,0,9,0,1,0,1
+model,com.jsql.util,CookiesUtil,29,178,5,9,7,34,5,13,0,11
+model,com.jsql.util,UserAgentUtil,4,13,0,0,2,5,1,3,1,3
+model,com.jsql.util,ParameterUtil,157,690,33,79,37,160,28,62,1,33
+model,com.jsql.util,AnsiColorUtil,3,3,0,0,1,1,1,1,1,1
+model,com.jsql.util,StringUtil.CharEncoder,0,26,0,0,0,10,0,2,0,2
+model,com.jsql.util,I18nUtil,73,15,4,0,9,4,6,2,4,2
+model,com.jsql.util,CertificateUtil.new X509TrustManager() {...},1,10,0,0,1,3,1,3,1,3
+model,com.jsql.util,ConnectionUtil,69,500,9,33,17,117,11,38,2,26
+model,com.jsql.util,ConnectionUtil.new Authenticator() {...},0,23,0,0,0,4,0,2,0,2
+model,com.jsql.util,AuthenticationUtil.new Authenticator() {...},11,6,0,0,2,1,1,1,1,1
+model,com.jsql.util,GitUtil.ShowOnConsole,0,15,0,0,0,1,0,1,0,1
+model,com.jsql.util,SoapUtil,28,254,3,19,8,59,3,19,0,11
 model,com.jsql.util,PropertiesUtil,244,35,27,1,45,11,20,4,6,4
 model,com.jsql.util,AuthenticationUtil,114,150,11,5,21,46,11,13,4,12
-model,com.jsql.util,CookiesUtil,29,178,5,9,7,34,5,13,0,11
 model,com.jsql.util,MultipartUtil,23,128,2,6,6,28,2,10,0,8
-model,com.jsql.util,UserAgentUtil,4,13,0,0,2,5,1,3,1,3
 model,com.jsql.util,DigestUtil,6,243,2,6,2,44,2,10,0,8
 model,com.jsql.util,StringUtil,21,574,4,28,4,112,4,51,0,39
 model,com.jsql.util,ProxyUtil,346,30,23,3,81,12,32,5,19,5
 model,com.jsql.util,HeaderUtil,70,428,18,46,12,87,16,30,0,14
-model,com.jsql.util,ParameterUtil,157,690,33,79,37,160,28,62,1,33
-model,com.jsql.model.suspendable.callable,CallablePageSource,0,51,0,0,0,16,0,7,0,7
 model,com.jsql.model.suspendable.callable,ThreadFactoryCallable,0,13,0,0,0,4,0,2,0,2
-model,com.jsql.model.accessible.vendor,ExploitSqlite,188,168,3,1,26,23,4,4,2,4
-model,com.jsql.model.accessible.vendor,ExploitPostgres,301,430,28,16,64,78,24,9,2,9
-model,com.jsql.model.accessible.vendor,ExploitOracle,311,9,4,0,33,4,4,2,2,2
-model,com.jsql.model.accessible.vendor,ExploitMysql,412,723,46,46,78,141,42,26,5,17
+model,com.jsql.model.suspendable.callable,CallablePageSource,0,51,0,0,0,16,0,7,0,7
+model,com.jsql.model.accessible.vendor,ExploitPostgres,216,668,20,26,49,114,20,16,2,11
+model,com.jsql.model.accessible.vendor,ExploitOracle,226,26,4,0,33,7,4,2,2,2
+model,com.jsql.model.accessible.vendor,ExploitMysql,416,873,46,46,78,155,42,27,5,18
+model,com.jsql.model.accessible.vendor.sqlite,ExploitSqlite,144,143,3,1,27,27,4,4,2,4
+model,com.jsql.model.accessible.vendor.sqlite,ModelYamlSqlite,0,23,0,0,0,9,0,5,0,5

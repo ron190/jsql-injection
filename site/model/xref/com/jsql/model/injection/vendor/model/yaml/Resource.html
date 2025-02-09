@@ -16,10 +16,10 @@
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="Resource" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Resource.html#Resource">Resource</a> <strong class="jxr_keyword">implements</strong> Serializable {
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>      <strong class="jxr_keyword">private</strong> String info = StringUtils.EMPTY;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>      <strong class="jxr_keyword">private</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a> schema = <strong class="jxr_keyword">new</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a>();
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">private</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a> zip = <strong class="jxr_keyword">new</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a>();
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>      <strong class="jxr_keyword">private</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a> dios = <strong class="jxr_keyword">new</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a>();
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>      <strong class="jxr_keyword">private</strong> <a name="File" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/File.html#File">File</a> file = <strong class="jxr_keyword">new</strong> <a name="File" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/File.html#File">File</a>();
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>      <strong class="jxr_keyword">private</strong> String exploit = StringUtils.EMPTY;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">private</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a> schema = <strong class="jxr_keyword">new</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a>();
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>      <strong class="jxr_keyword">private</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a> zip = <strong class="jxr_keyword">new</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a>();
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>      <strong class="jxr_keyword">private</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a> dios = <strong class="jxr_keyword">new</strong> <a name="Schema" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Schema.html#Schema">Schema</a>();
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      <strong class="jxr_keyword">public</strong> String getInfo() {
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.info;
@@ -53,12 +53,12 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>          <strong class="jxr_keyword">this</strong>.dios = dios;
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      }
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">public</strong> <a name="File" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/File.html#File">File</a> getFile() {
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.file;
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">public</strong> String getExploit() {
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.exploit;
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      }
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setFile(<a name="File" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/File.html#File">File</a> file) {
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">this</strong>.file = file;
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setExploit(String exploit) {
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">this</strong>.exploit = exploit;
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      }
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  }
 </pre>
