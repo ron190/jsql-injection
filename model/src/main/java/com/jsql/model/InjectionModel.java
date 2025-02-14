@@ -73,7 +73,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     private final transient ResourceAccess resourceAccess = new ResourceAccess(this);
     
     public static final String STAR = "*";
-    
+    public static final String BR = "<br>&#10;";
+
     /**
      * initialUrl transformed to a correct injection url.
      */
@@ -269,20 +270,20 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
             if (isReport) {
                 Color colorReport = UIManager.getColor("TextArea.inactiveForeground");
-                String report = "<br>&#10;" + StringUtil.formatReport(colorReport, "Method: ") + httpRequest.method();
-                report += "<br>&#10;" + StringUtil.formatReport(colorReport, "Path: ") + httpRequest.uri().getPath();
+                String report = InjectionModel.BR + StringUtil.formatReport(colorReport, "Method: ") + httpRequest.method();
+                report += InjectionModel.BR + StringUtil.formatReport(colorReport, "Path: ") + httpRequest.uri().getPath();
                 if (httpRequest.uri().getQuery() != null) {
-                    report += "<br>&#10;" + StringUtil.formatReport(colorReport, "Query: ") + httpRequest.uri().getQuery();
+                    report += InjectionModel.BR + StringUtil.formatReport(colorReport, "Query: ") + httpRequest.uri().getQuery();
                 }
                 if (
                     !(this.mediatorUtils.getParameterUtil().getListRequest().isEmpty()
                     && this.mediatorUtils.getCsrfUtil().getTokenCsrf() == null)
                 ) {
-                    report += "<br>&#10;" + StringUtil.formatReport(colorReport, "Body: ") + body;
+                    report += InjectionModel.BR + StringUtil.formatReport(colorReport, "Body: ") + body;
                 }
-                report += "<br>&#10;" + StringUtil.formatReport(colorReport, "Header: ") + httpRequest.headers().map().entrySet().stream()
+                report += InjectionModel.BR + StringUtil.formatReport(colorReport, "Header: ") + httpRequest.headers().map().entrySet().stream()
                     .map(entry -> String.format("%s: %s", entry.getKey(), String.join(StringUtils.EMPTY, entry.getValue())))
-                    .collect(Collectors.joining("<br>&#10;"));
+                    .collect(Collectors.joining(InjectionModel.BR));
                 return report;
             }
             

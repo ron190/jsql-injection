@@ -1,7 +1,7 @@
 {
     "version": "0.109",
     "news": [
-        "[v0.107] New SQLite php shell, including MySQL php shell, Oracle RCE and MySQL UDF shell",
+        "[v0.109] Multiple improvements on RCE, strategy and file read for SQLite, MySQL, Oracle and Postgres",
         "[UDF/RCE] How to use shells explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
         "[Pinned] Report any bugs and thoughts and add your star to the project at https://github.com/ron190/jsql-injection",
         "[Community] What should be done by jSQL that you do manually? Improve your CTF and bounty research by contributing",

@@ -12,7 +12,6 @@ package com.jsql.view.swing.panel.util;
 
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
-import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;

@@ -106,11 +106,11 @@ public class CallableFile implements Callable<CallableFile> {
                         this.injectionModel.injectWithoutIndex(String.format(
                             this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getDrop(),
                             nameLibraryRandom
-                        ), "pg#drop-tbl");
+                        ), ResourceAccess.TBL_DROP);
                         this.injectionModel.injectWithoutIndex(String.format(
                             this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getAdd(),
                             nameLibraryRandom
-                        ), "pg#add-tbl");
+                        ), ResourceAccess.TBL_CREATE);
                         this.injectionModel.injectWithoutIndex(String.format(
                             this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getFill(),
                             nameLibraryRandom,
@@ -125,7 +125,7 @@ public class CallableFile implements Callable<CallableFile> {
                             false,
                             1,
                             MockElement.MOCK,
-                            "pg#get-tbl"
+                            ResourceAccess.TBL_READ
                         );
                     }
                 }

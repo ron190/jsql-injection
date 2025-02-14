@@ -11,10 +11,11 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.accessible.vendor.ExploitHsqldb;
 import com.jsql.model.accessible.vendor.ExploitMysql;
 import com.jsql.model.accessible.vendor.ExploitOracle;
 import com.jsql.model.accessible.vendor.ExploitPostgres;
-import com.jsql.model.accessible.vendor.sqlite.ExploitSqlite;
+import com.jsql.model.accessible.vendor.ExploitSqlite;
 import com.jsql.model.bean.database.MockElement;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -85,17 +86,33 @@ public class ResourceAccess {
     private final ExploitMysql exploitMysql;
     private final ExploitOracle exploitOracle;
     private final ExploitPostgres exploitPostgres;
+    private final ExploitHsqldb exploitHsqldb;
+
+    public static final String WEB_CONFIRM_CMD = URLEncoder.encode("echo \"iamin$((133707330+1))\"", StandardCharsets.ISO_8859_1);
+    public static final String SQL_CONFIRM_CMD = "select 1337";
+    public static final String SQL_CONFIRM_RESULT = "| 1337 |";
+
     public static final String SQL_DOT_PHP = "sql.php";
     public static final String EXPLOIT_DOT_UPL = "exploit.upl";
     public static final String EXPLOIT_DOT_WEB = "exploit.web";
     public static final String UPLOAD_SUCCESSFUL = "Upload successful: ack received for {}{}";
     public static final String UPLOAD_FAILURE = "Upload failure: missing ack for {}{}";
+
     public static final String LOID_NOT_FOUND = "Exploit loid not found";
     public static final String ADD_LOID = "pg#add-loid";
     public static final String WRITE_LOID = "sqlt#write-loid";
+
     public static final String ADD_FUNC = "body#add-func";
+    public static final String RUN_FUNC = "body#run-func";
     public static final String BODY_CONFIRM = "body#confirm";
     public static final String RCE_RUN_CMD = "rce#run-cmd";
+
+    public static final String TBL_CREATE = "tbl#create";
+    public static final String TBL_FILL = "tbl#fill";
+    public static final String TBL_DUMP = "tbl#dump";
+    public static final String TBL_DROP = "tbl#drop";
+    public static final String TBL_READ = "tbl#read";
+
     // TODO should redirect error directly to default output
     public static final String TEMPLATE_ERROR = "Command failure: %s\nTry '%s 2>&1' to get a system error message.\n";
 
@@ -105,6 +122,7 @@ public class ResourceAccess {
         this.exploitMysql = new ExploitMysql(injectionModel);
         this.exploitOracle = new ExploitOracle(injectionModel);
         this.exploitPostgres = new ExploitPostgres(injectionModel);
+        this.exploitHsqldb = new ExploitHsqldb(injectionModel);
     }
 
     /**
@@ -669,5 +687,9 @@ public class ResourceAccess {
 
     public boolean isScanStopped() {
         return this.isScanStopped;
+    }
+
+    public ExploitHsqldb getExploitHsqldb() {
+        return this.exploitHsqldb;
     }
 }

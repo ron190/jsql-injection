@@ -71,7 +71,7 @@
         <maven-failsafe-plugin.version>3.5.2</maven-failsafe-plugin.version>
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
-        <monetdb-jdbc.version>2.29</monetdb-jdbc.version>
+        <monetdb-jdbc.version>12.0</monetdb-jdbc.version>
         <mssql-jdbc.version>12.8.1.jre11</mssql-jdbc.version>
         <mysql-connector-j.version>9.2.0</mysql-connector-j.version>
         <nashorn-core.version>15.6</nashorn-core.version>

@@ -5,17 +5,8 @@ import java.io.Serializable;
 
 public class ModelYamlPostgres implements Serializable {
 
-    private Shell shell = new Shell();
     private Rce rce = new Rce();
     private File file = new File();
-
-    public Shell getShell() {
-        return this.shell;
-    }
-
-    public void setShell(Shell shell) {
-        this.shell = shell;
-    }
 
     public Rce getRce() {
         return this.rce;

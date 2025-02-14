@@ -164,7 +164,7 @@ public class DialogAbout extends JDialog {
      * Set back default setting for About frame.
      */
     public final void initDialog() {
-        this.setSize(533, 400);
+        this.setSize(560, 400);
         this.setLocationRelativeTo(MediatorHelper.frame());
         this.buttonClose.requestFocusInWindow();
         this.getRootPane().setDefaultButton(this.buttonClose);
