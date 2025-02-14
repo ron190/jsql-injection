@@ -2,6 +2,7 @@ FROM ubuntu:18.04
 ENV MYSQL_ROOT_PASSWORD password
 ENV POSTGRES_USER postgres
 ENV POSTGRES_PASSWORD postgres
+RUN chmod 777 /etc/resolv.conf
 RUN echo "nameserver 8.8.8.8" | tee /etc/resolv.conf > /dev/null  # for java install
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y dos2unix \
     openjdk-17-jre        \
