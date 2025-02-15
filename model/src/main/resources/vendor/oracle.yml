@@ -169,9 +169,10 @@ resource:
     concat: "|| '%7f' ||"
 
  exploit: |
-  # semicolons are blocked during sqli as multiple queries requires a single semicolon
-  # [contribute] share any other ways to exploit on GitHub
-  rce:
+  # [contribute] share exploits methodology on GitHub to improve the app
+  
+  # not working, multiple semicolon with 'end;' while sqli requires single semicolon
+  udf:
    dropSource: ; drop java source "%s"
    dropFunc: ; drop function %s
   

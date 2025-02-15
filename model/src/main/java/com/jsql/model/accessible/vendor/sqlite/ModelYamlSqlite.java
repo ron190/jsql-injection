@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class ModelYamlSqlite implements Serializable {
 
     private String writeFile = StringUtils.EMPTY;
+    private String udf = StringUtils.EMPTY;
 
     public String getWriteFile() {
         return this.writeFile;
@@ -15,5 +16,13 @@ public class ModelYamlSqlite implements Serializable {
 
     public void setWriteFile(String writeFile) {
         this.writeFile = writeFile;
+    }
+
+    public String getUdf() {
+        return this.udf;
+    }
+
+    public void setUdf(String udf) {
+        this.udf = udf;
     }
 }

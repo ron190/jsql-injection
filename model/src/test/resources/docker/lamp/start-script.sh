@@ -34,7 +34,7 @@ SQL
 sed -i 's/^;extension=sqlite3/extension=sqlite3/' /etc/php/7.2/cli/php.ini /etc/php/7.2/apache2/php.ini
 
 # configure pjbs
-java -cp "/var/www/html/java/lucene-core-1.9.1.jar:/var/www/html/java/hsqldb-2.7.4.jar" /var/www/html/java/Pjbs.java &
+java -cp "/var/www/html/java/lucene-core-1.9.1.jar:/var/www/html/java/hsqldb-2.7.4.jar:/var/www/html/java/h2-2.3.232.jar" /var/www/html/java/Pjbs.java &
 
 # configure apache
 echo "Listen 8079" >> /etc/apache2/ports.conf

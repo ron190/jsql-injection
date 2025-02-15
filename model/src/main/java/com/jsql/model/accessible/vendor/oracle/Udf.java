@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 
-public class Rce implements Serializable {
+public class Udf implements Serializable {
 
     private String dropSource = StringUtils.EMPTY;
     private String dropFunc = StringUtils.EMPTY;

@@ -198,7 +198,11 @@ resource:
     concat: ",0x7f,"
 
  exploit: |
-  # [contribute] share other file exploits on GitHub
+  # [contribute] share following exploit methodologies on GitHub to improve the app :
+  # - read and write files
+  # - UDF creation
+  # - RCE
+  
   file:
     privilege: |
       (
@@ -209,7 +213,6 @@ resource:
       )
     read: load_file(0x${filepath.hex})
   
-  # [contribute] share other RCE and UDF exploits on GitHub
   udf:
     pathPlugin: select@@plugin_dir
     osMachine: select concat(@@version_compile_os,@@version_compile_machine)

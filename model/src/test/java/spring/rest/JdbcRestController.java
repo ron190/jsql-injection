@@ -408,7 +408,7 @@ public class JdbcRestController {
         return greeting.get();
     }
 
-    @RequestMapping("/postgres")
+    @RequestMapping("/postgres")  // local testing, not used
     public Greeting greetingPostgres(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
 
@@ -434,7 +434,7 @@ public class JdbcRestController {
         return greeting.get();
     }
 
-    @RequestMapping("/mysql")
+    @RequestMapping("/mysql")  // local testing, not used
     public Greeting greetingMysql(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
 

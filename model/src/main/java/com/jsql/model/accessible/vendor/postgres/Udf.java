@@ -2,7 +2,7 @@ package com.jsql.model.accessible.vendor.postgres;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Rce {
+public class Udf {
 
     private Extension extension = new Extension();
     private String plpython = StringUtils.EMPTY;

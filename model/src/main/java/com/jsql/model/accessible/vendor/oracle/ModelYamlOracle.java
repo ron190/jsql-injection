@@ -5,13 +5,13 @@ import java.io.Serializable;
 
 public class ModelYamlOracle implements Serializable {
 
-    private Rce rce = new Rce();
+    private Udf udf = new Udf();
 
-    public Rce getRce() {
-        return this.rce;
+    public Udf getUdf() {
+        return this.udf;
     }
 
-    public void setRce(Rce rce) {
-        this.rce = rce;
+    public void setUdf(Udf udf) {
+        this.udf = udf;
     }
 }

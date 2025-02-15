@@ -11,11 +11,7 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.accessible.vendor.ExploitHsqldb;
-import com.jsql.model.accessible.vendor.ExploitMysql;
-import com.jsql.model.accessible.vendor.ExploitOracle;
-import com.jsql.model.accessible.vendor.ExploitPostgres;
-import com.jsql.model.accessible.vendor.ExploitSqlite;
+import com.jsql.model.accessible.vendor.*;
 import com.jsql.model.bean.database.MockElement;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -87,8 +83,11 @@ public class ResourceAccess {
     private final ExploitOracle exploitOracle;
     private final ExploitPostgres exploitPostgres;
     private final ExploitHsqldb exploitHsqldb;
+    private final ExploitH2 exploitH2;
 
-    public static final String WEB_CONFIRM_CMD = URLEncoder.encode("echo \"iamin$((133707330+1))\"", StandardCharsets.ISO_8859_1);
+    // compatible cross-platform win+linux (spaces around plus sign required)
+    public static final String WEB_CONFIRM_CMD = URLEncoder.encode("expr 133707330 + 10001", StandardCharsets.ISO_8859_1);
+    public static final String WEB_CONFIRM_RESULT = "133717331";
     public static final String SQL_CONFIRM_CMD = "select 1337";
     public static final String SQL_CONFIRM_RESULT = "| 1337 |";
 
@@ -123,6 +122,7 @@ public class ResourceAccess {
         this.exploitOracle = new ExploitOracle(injectionModel);
         this.exploitPostgres = new ExploitPostgres(injectionModel);
         this.exploitHsqldb = new ExploitHsqldb(injectionModel);
+        this.exploitH2 = new ExploitH2(injectionModel);
     }
 
     /**
@@ -691,5 +691,9 @@ public class ResourceAccess {
 
     public ExploitHsqldb getExploitHsqldb() {
         return this.exploitHsqldb;
+    }
+
+    public ExploitH2 getExploitH2() {
+        return this.exploitH2;
     }
 }

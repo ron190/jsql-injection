@@ -45,69 +45,56 @@ public class Server2 extends Thread {
     private ServerSocket serverSocket = null;
     private boolean listening = true;
 
+    public static void main(String[] args) throws SQLException, InterruptedException {
+        var serverHsqldb = new org.hsqldb.server.Server();
+        serverHsqldb.setSilent(true);
+        serverHsqldb.setDatabaseName(0, "mainDb");
+        serverHsqldb.setDatabasePath(0, "mem:mainDb");
+        serverHsqldb.setPort(9003);
+        serverHsqldb.start();
+
+        var serverH2 = org.h2.tools.Server.createTcpServer();
+        serverH2.start();
+
+        Server2 server = new Server2();
+        server.start();
+        server.join();
+    }
+
     /**
      * Creates a new instance of Server
      */
     public Server2() {
-
         int port = 4444;
         String[] drivers = {
-//            "org.postgresql.Driver",
-            "org.hsqldb.jdbc.JDBCDriver"
+            "org.hsqldb.jdbc.JDBCDriver",
+            "org.h2.Driver"
         };
 
-//        String[] p = Utils.parseFile("../conf/pjbs.conf");
-        String[] p = Utils.parseFile("E:\\Outils\\EasyPHP-5.3.9\\www\\PJBS\\conf\\pjbs.conf");
-
-        if (p != null && p.length >= 3) {
-
-            port = Integer.parseInt(p[1]);
-            drivers = new String[p.length - 2];
-
-            for (int i = 2; i < p.length; i++)
-                drivers[i - 2] = p[i];
-
-        } else {
-
-            Utils.log("warning", "invalid config file, using defaults");
-        }
-
         try {
-
             serverSocket = new ServerSocket(port);
             Utils.log("notice", "listening on " + port);
-
         } catch (IOException e) {
-
             Utils.log("error", "could not listen on " + port);
             return;
         }
 
         try {
-
             for (int i = 0; i < drivers.length; i++) {
-
                 Class.forName(drivers[i]);
                 Utils.log("notice", "loaded " + drivers[i]);
             }
-
         } catch (ClassNotFoundException ex) {
-
             Utils.log("error", "could not load JDBC drivers: "+ ex);
             return;
         }
     }
 
     public void run() {
-
         while (listening) {
-
             try {
-
                 new ServerThread(serverSocket.accept()).start();
-
             } catch (IOException ex) {
-
                 Utils.log("error", "could not create thread");
                 return;
             }
@@ -115,31 +102,8 @@ public class Server2 extends Thread {
     }
 
     public void shutdown() {
-
         listening = false;
         interrupt();
-    }
-
-    public static void main(String[] args) {
-
-        org.hsqldb.server.Server serverHsqldb = new org.hsqldb.server.Server();
-        serverHsqldb.setSilent(true);
-        serverHsqldb.setDatabaseName(0, "mainDb");
-        serverHsqldb.setDatabasePath(0, "mem:mainDb");
-        serverHsqldb.setPort(9003);
-        serverHsqldb.start();
-
-        Server2 server = new Server2();
-
-        try {
-
-            server.start();
-            server.join();
-
-        } catch (InterruptedException ex) {
-
-            Utils.log("error", "could not join thread");
-        }
     }
 }
 
@@ -154,7 +118,6 @@ class Utils {
      * @param s
      */
     public static synchronized void log(String l, String s) {
-
         System.out.println(l + ": " + s);
     }
 
@@ -164,16 +127,12 @@ class Utils {
      * @return A string on success, null on failure.
      */
     public static String readFile(String fn) {
-
         try {
-
             FileReader fr = new FileReader(fn);
             StringBuffer sb = new StringBuffer();
 
             try {
-
                 while (true) {
-
                     char[] b = new char[BUFFER_SIZE];
                     int l = fr.read(b, 0, BUFFER_SIZE);
 
@@ -184,14 +143,10 @@ class Utils {
                 }
 
                 return sb.toString();
-
             } catch (IOException ex) {
-
                 log("error", "could not read file " + fn);
             }
-
         } catch (FileNotFoundException ex) {
-
             log("error", "file not found " + fn);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -209,18 +164,14 @@ class Utils {
      * @return An array of words.
      */
     public static String[] parseString(String s, boolean base64) {
-
         if (base64) {
-
             String r[] = s.split(" ", -1);
 
             for (int i = 0; i < r.length; i ++)
                 r[i] = Base64.decodeString(r[i]);
 
             return r;
-
         } else {
-
             return s.trim().split("[ \t\r\n]+", -1);
         }
     }
@@ -231,7 +182,6 @@ class Utils {
      * @return An array of words.
      */
     public static String[] parseString(String s) {
-
         return parseString(s, false);
     }
 
@@ -242,9 +192,7 @@ class Utils {
      * @return An array of words on success, null on failure.
      */
     public static String[] parseFile(String fn) {
-
         String s = readFile(fn);
-
         if (s != null)
             return parseString(s);
         else
@@ -258,7 +206,6 @@ class Utils {
      * @return The generated UID.
      */
     public static synchronized String makeUID() {
-
         return new String("PJBS_id_" + Integer.toString(makeUID_i ++));
     }
 
@@ -268,7 +215,6 @@ class Utils {
      * @return Safe file name
      */
     public static String safeFn(String fn) {
-
         return fn.replaceAll("[^a-zA-Z0-9_.\\-]", "");
     }
 }
@@ -281,7 +227,6 @@ class ServerThread extends Thread {
     private ServerCommands serverCommands;
 
     public ServerThread(Socket socket) throws IOException {
-
         this.socket = socket;
         this.socket.setSoLinger(false, 0);
 
@@ -291,61 +236,40 @@ class ServerThread extends Thread {
     }
 
     public void run() {
-
         try {
-
             String line;
 
             while ((line = in.readLine()) != null) {
-
                 String[] cmd = Utils.parseString(line, true);
-
                 if (cmd[0].equals("connect")) {
-
                     serverCommands.connect(cmd);
-
                 } else if (cmd[0].equals("exec")) {
-
                     serverCommands.exec(cmd);
-
                 } else if (cmd[0].equals("fetch_array")) {
-
                     serverCommands.fetch_array(cmd);
-
                 } else if (cmd[0].equals("free_result")) {
-
                     serverCommands.free_result(cmd);
-
                 } else if (cmd[0].equals("index")) {
-
                     serverCommands.index(cmd);
-
                 } else if (cmd[0].equals("search")) {
-
                     serverCommands.search(cmd);
-
                 } else {
-
                     break;
                 }
             }
 
             serverCommands.close();
             socket.close();
-
         } catch (IOException e) {
-
             Utils.log("error", "socket lost");
         }
     }
 
     public void write(String s) {
-
         out.println(Base64.encodeString(s));
     }
 
     public void write(String k, String v) {
-
         if (v == null)
             v = "";
 
@@ -356,7 +280,6 @@ class ServerThread extends Thread {
     }
 
     void write(String k, int v) {
-
         out.println(
                 Base64.encodeString(k) + " " +
                         Base64.encodeString(new Integer(v).toString())
@@ -364,7 +287,6 @@ class ServerThread extends Thread {
     }
 
     void write(String k, int v1, int v2) {
-
         out.println(
                 Base64.encodeString(k) + " " +
                         Base64.encodeString(new Integer(v1).toString()) + " " +
@@ -502,7 +424,6 @@ class ServerCommands {
 
     /** Creates a new instance of ServerCommands */
     public ServerCommands(ServerThread serverThread) {
-
         this.serverThread = serverThread;
     }
 
@@ -511,21 +432,14 @@ class ServerCommands {
      * @param cmd
      */
     public void connect(String[] cmd) {
-
         if (conn == null && cmd.length == 4) {
-
             try {
-
                 conn = DriverManager.getConnection(cmd[1], cmd[2], cmd[3]);
                 serverThread.write("ok");
-
             } catch (SQLException ex) {
-
                 serverThread.write("ex");
             }
-
         } else {
-
             serverThread.write("err");
         }
     }
@@ -535,44 +449,30 @@ class ServerCommands {
      * @param cmd
      */
     public void exec(String[] cmd) {
-
         if (conn != null && cmd.length >= 2) {
-
             try {
-
                 PreparedStatement st = conn.prepareStatement(cmd[1]);
                 st.setFetchSize(1);
 
                 for (int i = 2; i < cmd.length; i ++) {
-
                     try {
-
                         st.setDouble(i - 1, Double.parseDouble(cmd[i]));
-
                     } catch (NumberFormatException e) {
-
                         st.setString(i - 1, cmd[i]);
                     }
                 }
 
                 if (st.execute()) {
-
                     String id = Utils.makeUID();
                     results.put(id, st.getResultSet());
                     serverThread.write("ok", id);
-
                 } else {
-
                     serverThread.write("ok", st.getUpdateCount());
                 }
-
             } catch (SQLException ex) {
-
                 serverThread.write("ex");
             }
-
         } else {
-
             serverThread.write("err");
         }
     }
@@ -582,17 +482,12 @@ class ServerCommands {
      * @param cmd
      */
     public void fetch_array(String[] cmd) {
-
         if (conn != null && cmd.length == 2) {
-
             ResultSet rs = (ResultSet)results.get(cmd[1]);
 
             if (rs != null) {
-
                 try {
-
                     if (rs.next()) {
-
                         ResultSetMetaData rsmd = rs.getMetaData();
                         int cn = rsmd.getColumnCount();
 
@@ -600,24 +495,16 @@ class ServerCommands {
 
                         for (int i = 1; i <= cn; i ++)
                             serverThread.write(rsmd.getColumnName(i), rs.getString(i));
-
                     } else {
-
                         serverThread.write("end");
                     }
-
                 } catch (SQLException ex) {
-
                     serverThread.write("ex");
                 }
-
             } else {
-
                 serverThread.write("err");
             }
-
         } else {
-
             serverThread.write("err");
         }
     }
@@ -627,23 +514,16 @@ class ServerCommands {
      * @param cmd
      */
     public void free_result(String[] cmd) {
-
         if (conn != null && cmd.length == 2) {
-
             ResultSet rs = (ResultSet)results.get(cmd[1]);
 
             if (rs != null) {
-
                 results.remove(cmd[1]);
                 serverThread.write("ok");
-
             } else {
-
                 serverThread.write("err");
             }
-
         } else {
-
             serverThread.write("err");
         }
     }
@@ -655,45 +535,31 @@ class ServerCommands {
      * @param cmd
      */
     public void index(String[] cmd) {
-
         if (conn != null && cmd.length == 3) {
-
             Search search = new Search(cmd[1]);
             search.startIndex();
 
             try {
-
                 PreparedStatement st = conn.prepareStatement(cmd[2]);
                 st.setFetchSize(1);
 
                 if (st.execute()) {
-
                     ResultSet rs = st.getResultSet();
                     ResultSetMetaData rsmd = rs.getMetaData();
                     int cn = rsmd.getColumnCount();
 
                     if (cn > 1) {
-
                         try {
-
                             int rn = 0;
-
                             while (rs.next()) {
-
                                 String key = rs.getString(1);
-
                                 if (key != null) {
-
                                     StringBuffer value = new StringBuffer();
-
                                     for (int i = 2; i <= cn; i ++) {
-
                                         String s = rs.getString(i);
-
                                         if (s != null)
                                             value.append(s + " ");
                                     }
-
                                     search.addDocument(key, value.toString());
                                 }
 
@@ -705,27 +571,18 @@ class ServerCommands {
 
                             Utils.log("indexer", "done, " + rn + " records");
                             serverThread.write("ok");
-
                         } catch (SQLException ex) {
-
                             serverThread.write("ex");
                         }
-
                     } else {
-
                         serverThread.write("err");
                     }
-
                 } else {
-
                     serverThread.write("err");
                 }
-
             } catch (SQLException ex) {
-
                 serverThread.write("ex");
             }
-
             search.endIndex();
         }
     }
@@ -735,22 +592,15 @@ class ServerCommands {
      * @param cmd
      */
     public void search(String[] cmd) {
-
         if (cmd.length == 5) {
-
             Search search = new Search(cmd[1]);
             int off = Integer.parseInt(cmd[3]);
             int len = Integer.parseInt(cmd[4]);
-
             if (search.query(cmd[2], off, len)) {
-
                 serverThread.write("ok", search.getCount(), search.getMatches());
-
                 while (search.next())
                     serverThread.write(search.getKey(), search.getScore());
-
             } else {
-
                 serverThread.write("err");
             }
         }
@@ -760,15 +610,10 @@ class ServerCommands {
      * Release the JDBC connection.
      */
     public void close() {
-
         if (conn != null) {
-
             try {
-
                 conn.close();
-
             } catch (SQLException ex) {
-
                 Utils.log("error", "could not close JDBC connection");
             }
         }
@@ -784,7 +629,6 @@ class Search {
 
     /** Creates a new instance of Search */
     public Search(String pn) {
-
         this.partition = "../var/" + Utils.safeFn(pn);
         this.keys = new Vector();
         this.scores = new Vector();
@@ -793,31 +637,23 @@ class Search {
     }
 
     public boolean startIndex() {
-
         try {
-
             indexwriter = new IndexWriter(partition, new StandardAnalyzer(), true);
             return true;
-
         } catch (IOException ex) {
-
             Utils.log("search", "could not open index on partition " + partition);
             return false;
         }
     }
 
     public boolean addDocument(String key, String value) {
-
         try {
-
             Document doc = new Document();
             doc.add(new Field("key", key, Field.Store.YES, Field.Index.UN_TOKENIZED));
             doc.add(new Field("value", value, Field.Store.NO, Field.Index.TOKENIZED));
             indexwriter.addDocument(doc);
             return true;
-
         } catch (IOException ex) {
-
             Utils.log("search", "could not add document on partition " + partition);
             return false;
         }
@@ -828,29 +664,22 @@ class Search {
      * @return
      */
     public boolean endIndex() {
-
         try {
-
             indexwriter.optimize();
             indexwriter.close();
             return true;
-
         } catch (IOException ex) {
-
             Utils.log("search", "could not close index on partition " + partition);
             return false;
         }
     }
 
     public boolean query(String s, int off, int len) {
-
         try {
-
             IndexSearcher is = new IndexSearcher(partition);
             QueryParser parser = new QueryParser("value", new StandardAnalyzer());
 
             try {
-
                 Query query = parser.parse(s);
                 Hits hits = is.search(query);
 
@@ -860,45 +689,35 @@ class Search {
                 matches = hits.length();
 
                 for(int i = start; i < end; i ++) {
-
                     keys.add(hits.doc(i).get("key"));
                     scores.add(new Integer((int)(hits.score(i) * 100)).toString());
                 }
 
                 return true;
-
             } catch (ParseException ex) {
-
                 Utils.log("search", "could not parse query");
                 return false;
             }
-
         } catch (IOException ex) {
-
             Utils.log("search", "could not read index on partition " + partition);
             return false;
         }
     }
 
     public String getKey() {
-
         return (String)keys.get(cur);
     }
 
     public String getScore() {
-
         return (String)scores.get(cur);
     }
 
     public int getCount() {
-
         return keys.size();
     }
 
     public boolean next() {
-
         cur ++;
-
         if (cur < keys.size())
             return true;
         else
@@ -906,7 +725,6 @@ class Search {
     }
 
     public int getMatches() {
-
         return matches;
     }
 }
