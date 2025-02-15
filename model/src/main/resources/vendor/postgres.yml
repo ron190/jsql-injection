@@ -218,7 +218,7 @@ strategy:
    orderByErrorMessage:
     # Collision with vertica
     - (?<!Vertica.*)ORDER BY position 1337 is not in select list
-   vendorSpecific: case when ${test} then'a'else'b'end='a'::text
+   vendorSpecific: case when ${test} then split_part('a','',1)else'b'end='a'::text
 
  union:
   indices: union select ${indices}

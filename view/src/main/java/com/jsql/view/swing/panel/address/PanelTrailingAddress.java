@@ -258,18 +258,23 @@ public class PanelTrailingAddress extends JPanel {
             .findFirst()
             .orElse(new JMenuItem("Mock"));
     }
-    
+
     public void markErrorVulnerable(int indexMethodError) {
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();
-        Arrays.stream(this.popupMenuStrategies.getComponents())
-            .map(JMenuItem.class::cast)
-            .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
-            .map(JMenu.class::cast)
-            .filter(jMenuItem -> jMenuItem.getItem(indexMethodError) != null)  // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
-            .forEach(jMenuItem -> {
-                jMenuItem.setEnabled(true);
-                jMenuItem.getItem(indexMethodError).setEnabled(true);
-            });
+        // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
+        try {
+            Arrays.stream(this.popupMenuStrategies.getComponents())
+                .map(JMenuItem.class::cast)
+                .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
+                .map(JMenu.class::cast)
+                .filter(jMenuItem -> jMenuItem.getItem(indexMethodError) != null)
+                .forEach(jMenuItem -> {
+                    jMenuItem.setEnabled(true);
+                    jMenuItem.getItem(indexMethodError).setEnabled(true);
+                });
+        } catch (ArrayIndexOutOfBoundsException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+        }
     }
     
     public void markStrategyVulnerable(AbstractStrategy strategy) {

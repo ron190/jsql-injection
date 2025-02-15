@@ -26,7 +26,7 @@ public class PanelTampering extends JPanel {
     private final JCheckBox checkboxIsTamperingFunctionComment = new JCheckBox(TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
     private final JCheckBox checkboxIsTamperingEqualToLike = new JCheckBox(TamperingType.EQUAL_TO_LIKE.instance().getDescription());
     private final JCheckBox checkboxIsTamperingRandomCase = new JCheckBox(TamperingType.RANDOM_CASE.instance().getDescription());
-    private final JCheckBox checkboxIsTamperingEval = new JCheckBox("Enable user tamper script :");
+    private final JCheckBox checkboxIsTamperingEval = new JCheckBox("Enable user tamper script:");
     private final JCheckBox checkboxIsTamperingHexToChar = new JCheckBox(TamperingType.HEX_TO_CHAR.instance().getDescription());
     private final JCheckBox checkboxIsTamperingStringToChar = new JCheckBox(TamperingType.STRING_TO_CHAR.instance().getDescription());
     private final JCheckBox checkboxIsTamperingQuoteToUtf8 = new JCheckBox(TamperingType.QUOTE_TO_UTF8.instance().getDescription());

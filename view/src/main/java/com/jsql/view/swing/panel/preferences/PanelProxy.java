@@ -13,8 +13,8 @@ import java.util.stream.Stream;
 
 public class PanelProxy extends JPanel {
 
-    private final JCheckBox checkboxIsUsingProxy = new JCheckBox("<html>Enable proxy for <b>HTTP</b> :</html>", MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttp());
-    private final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox("<html>Enable proxy for <b>HTTPS</b> :</html>", MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttps());
+    private final JCheckBox checkboxIsUsingProxy = new JCheckBox("<html>Enable proxy for <b>HTTP</b>:</html>", MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttp());
+    private final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox("<html>Enable proxy for <b>HTTPS</b>:</html>", MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttps());
 
     private final JTextField textProxyAddress = new JPopupTextField("e.g. Tor address: 127.0.0.1", MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyAddressHttp()).getProxy();
     private final JTextField textProxyPort = new JPopupTextField("e.g. Tor port: 8118", MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyPortHttp()).getProxy();

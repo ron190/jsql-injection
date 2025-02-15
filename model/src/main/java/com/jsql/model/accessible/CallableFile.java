@@ -73,7 +73,45 @@ public class CallableFile implements Callable<CallableFile> {
                     false,
                     1,
                     MockElement.MOCK,
-                    "mysql#file"
+                    ResourceAccess.FILE_READ
+                );
+            } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getH2()) {
+                var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
+                this.injectionModel.injectWithoutIndex(String.format(
+                    this.injectionModel.getResourceAccess().getExploitH2().getModelYaml().getFile().getCreateTable(),
+                    nameTable,
+                    this.pathFile
+                ), ResourceAccess.TBL_FILL);
+                resultToParse = this.suspendableReadFile.run(
+                    String.format(
+                        this.injectionModel.getResourceAccess().getExploitH2().getModelYaml().getFile().getRead(),
+                        VendorYaml.TRAIL_SQL,
+                        nameTable
+                    ),
+                    sourcePage,
+                    false,
+                    1,
+                    MockElement.MOCK,
+                    ResourceAccess.FILE_READ
+                );
+            } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getHsqldb()) {
+                var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
+                this.injectionModel.injectWithoutIndex(String.format(
+                    this.injectionModel.getResourceAccess().getExploitHsqldb().getModelYaml().getFile().getRead().getCreateTable(),
+                    nameTable,
+                    nameTable, this.pathFile
+                ), ResourceAccess.TBL_FILL);
+                resultToParse = this.suspendableReadFile.run(
+                    String.format(
+                        this.injectionModel.getResourceAccess().getExploitHsqldb().getModelYaml().getFile().getRead().getResult(),
+                        VendorYaml.TRAIL_SQL,
+                        nameTable
+                    ),
+                    sourcePage,
+                    false,
+                    1,
+                    MockElement.MOCK,
+                    ResourceAccess.TBL_READ
                 );
             } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getPostgres()) {
                 try {
@@ -86,19 +124,19 @@ public class CallableFile implements Callable<CallableFile> {
                         false,
                         1,
                         MockElement.MOCK,
-                        "pg#file"
+                        ResourceAccess.FILE_READ
                     );
                 } catch (InjectionFailureException e) {
                     LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Read data folder failure, trying with large object");
                     var loid = this.injectionModel.getResourceAccess().getResultWithCatch(String.format(
                         this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getLargeObject().getFromPath(),
                         this.pathFile
-                    ), "pg#add-loid");
+                    ), ResourceAccess.ADD_LOID);
                     if (StringUtils.isNotEmpty(loid)) {
                         resultToParse = this.injectionModel.getResourceAccess().getResultWithCatch(String.format(
                             this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getLargeObject().getToText(),
                             loid
-                        ), "pg#read-lo");
+                        ), ResourceAccess.READ_LOID);
                     }
                     if (StringUtils.isEmpty(resultToParse)) {
                         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Read large object failure, trying with stack read");
@@ -115,7 +153,7 @@ public class CallableFile implements Callable<CallableFile> {
                             this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getFill(),
                             nameLibraryRandom,
                             this.pathFile
-                        ), "pg#copy");
+                        ), ResourceAccess.TBL_FILL);
                         resultToParse = this.suspendableReadFile.run(
                             String.format(
                                 this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getFromTempTable(),

@@ -26,9 +26,9 @@ public class PanelInjection extends JPanel {
     private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("Inject every cookie parameters", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
     private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox("Inject SOAP parameters in Request body", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam());
 
-    private final JCheckBox checkboxIsLimitingUnionIndex = new JCheckBox("Limit Union strategy :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingUnionIndex());
+    private final JCheckBox checkboxIsLimitingUnionIndex = new JCheckBox("Limit Union strategy:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingUnionIndex());
     private final JSpinner spinnerUnionIndexCount = new JSpinner();
-    private final JCheckBox checkboxIsLimitingSleepTimeStrategy = new JCheckBox("Delay Time strategy :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy());
+    private final JCheckBox checkboxIsLimitingSleepTimeStrategy = new JCheckBox("Delay Time strategy:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy());
     private final JSpinner spinnerSleepTimeStrategyCount = new JSpinner();
 
     private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox("Disable calibration (smaller SQL query during Union index selection only)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());

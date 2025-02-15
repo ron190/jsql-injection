@@ -256,7 +256,8 @@ strategy:
     - "Warning: oci_fetch_array()"
    orderByErrorMessage:
     - ORDER BY item must be the number of a SELECT-list expression
-   vendorSpecific: 0 != bitand(case when ${test} then 1 else 2 end, 1)
+   # listagg to prevent collision with hsqldb
+   vendorSpecific: 0 != bitand(case when ${test} (select listagg(1) from dual) else (select listagg(2) from dual) end, 1)
 
  union:
   indices: union select ${indices} from dual

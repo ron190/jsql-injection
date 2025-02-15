@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 
 public class PanelAuthentication extends JPanel {
 
-    private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("<html>Enable <b>Basic</b> and <b>NTLM</b> (for <b>Digest</b>: do not enable but just set the user and password) :</html>", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());
-    private final JCheckBox checkboxUseKerberos = new JCheckBox("Enable Kerberos :", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isKerberos());
+    private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("<html>Enable <b>Basic</b> and <b>NTLM</b> (for <b>Digest</b>: do not enable but just set the user and password):</html>", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());
+    private final JCheckBox checkboxUseKerberos = new JCheckBox("Enable Kerberos:", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isKerberos());
 
     private final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication()).getProxy();
     private final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication()).getProxy();
@@ -54,7 +54,7 @@ public class PanelAuthentication extends JPanel {
 
         this.textKerberosLoginConf.setToolTipText(
             PanelAuthentication.TAG_HTML_ON
-            + "Define the path to <b>login.conf</b>. Sample :<br>"
+            + "Define the path to <b>login.conf</b>. Sample:<br>"
             + "&emsp;<b>entry-name</b> {<br>"
             + "&emsp;&emsp;com.sun.security.auth.module.Krb5LoginModule<br>"
             + "&emsp;&emsp;required<br>"
@@ -67,7 +67,7 @@ public class PanelAuthentication extends JPanel {
             + PanelAuthentication.TAG_HTML_OFF);
         this.textKerberosKrb5Conf.setToolTipText(
             PanelAuthentication.TAG_HTML_ON
-            + "Define the path to <b>krb5.conf</b>. Sample :<br>"
+            + "Define the path to <b>krb5.conf</b>. Sample:<br>"
             + "&emsp;[libdefaults]<br>"
             + "&emsp;&emsp;default_realm = <b>CORP.TEST</b><br>"
             + "&emsp;&emsp;udp_preference_limit = 1<br>"

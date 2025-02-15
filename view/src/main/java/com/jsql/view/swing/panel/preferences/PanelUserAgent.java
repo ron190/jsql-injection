@@ -25,7 +25,7 @@ public class PanelUserAgent extends JPanel {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private final JCheckBox checkboxIsCustomUserAgent = new JCheckBox("Randomize agent with the following list :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUserAgentRandom());
+    private final JCheckBox checkboxIsCustomUserAgent = new JCheckBox("Randomize agent with the following list:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUserAgentRandom());
 
     public PanelUserAgent(PanelPreferences panelPreferences) {
         var userAgents = new StringBuilder();

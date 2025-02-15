@@ -26,7 +26,6 @@ public class HsqldbUnionGetSuiteIT extends ConcreteHsqldbSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getHsqldb());
         model.beginInjection();
     }
     

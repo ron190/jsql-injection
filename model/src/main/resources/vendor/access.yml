@@ -108,7 +108,8 @@ strategy:
    errorMessage:
     - MS Access
    orderByErrorMessage:
-    - invalid ORDER BY expression
+    # collision with hsqldb
+    - AVOID COLLISION invalid ORDER BY expression
 
  union:
   indices: union select ${result_range} from (${indice_unique})

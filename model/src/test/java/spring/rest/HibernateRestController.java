@@ -132,9 +132,9 @@ public class HibernateRestController {
     public Greeting endpointStack2(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {
         Greeting greeting = new Greeting(null);
         var result = new StringBuilder();
-        Arrays.stream(name.split(";")).map(String::trim).forEach(query -> {
+        Arrays.stream(("select First_Name from Student where '1' = '"+name+"'").split(";")).map(String::trim).forEach(query -> {
             query = query +";";
-            Greeting g = this.getResponse(query, "select First_Name from Student where '1' = '%s'", true, false, true, false, false, false);
+            Greeting g = this.getResponse(query, query, true, false, true, false, false, true);
             if (g != null) result.append(g.getContent());
         });
         greeting.setContent(result.toString());

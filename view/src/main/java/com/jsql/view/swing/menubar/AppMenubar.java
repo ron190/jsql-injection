@@ -202,7 +202,7 @@ public class AppMenubar extends JMenuBar {
                 + "  2. ...\n\n"
                 + "## [Community] Request for new feature\n\n"
             );
-            panel.add(new JLabel("Describe your bug or issue :"), BorderLayout.NORTH);
+            panel.add(new JLabel("Describe your bug or issue:"), BorderLayout.NORTH);
             panel.add(new JScrollPane(textarea));
             panel.setPreferredSize(new Dimension(500, 350));
             panel.setMinimumSize(new Dimension(500, 350));

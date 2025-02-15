@@ -18,15 +18,15 @@ public class PanelConnection extends JPanel {
     private final JCheckBox checkboxIsNotTestingConnection = new JCheckBox("Disable connection test", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection());
     private final JCheckBox checkboxIsNotProcessingCookies = new JCheckBox("Disable session cookies", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies());
     private final JCheckBox checkboxIsProcessingCsrf = new JCheckBox("Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf());
-    private final JCheckBox checkboxIsLimitingThreads = new JCheckBox("Limit processing threads :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
-    private final JCheckBox checkboxIsConnectionTimeout = new JCheckBox("Set timeout :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout());
+    private final JCheckBox checkboxIsLimitingThreads = new JCheckBox("Limit processing threads:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
+    private final JCheckBox checkboxIsConnectionTimeout = new JCheckBox("Set timeout:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout());
     private final JCheckBox checkboxIsUnicodeDecodeDisabled = new JCheckBox("Disable Unicode decoding in response", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled());
     private final JCheckBox checkboxIsUrlDecodeDisabled = new JCheckBox("Disable Url decoding in response", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled());
     
     private final JSpinner spinnerLimitingThreads = new JSpinner();
     private final JSpinner spinnerConnectionTimeout = new JSpinner();
     
-    private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox("Custom CSRF :", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag());
+    private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox("Custom CSRF:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag());
     private final JTextField textfieldCustomCsrfInputToken = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTag());
     private final JTextField textfieldCustomCsrfOutputToken = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTagOutput());
     

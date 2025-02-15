@@ -98,19 +98,22 @@ public class ResourceAccess {
     public static final String UPLOAD_FAILURE = "Upload failure: missing ack for {}{}";
 
     public static final String LOID_NOT_FOUND = "Exploit loid not found";
-    public static final String ADD_LOID = "pg#add-loid";
-    public static final String WRITE_LOID = "sqlt#write-loid";
+    public static final String ADD_LOID = "loid#create";
+    public static final String WRITE_LOID = "loid#write";
+    public static final String READ_LOID = "loid#read";
 
     public static final String ADD_FUNC = "body#add-func";
     public static final String RUN_FUNC = "body#run-func";
     public static final String BODY_CONFIRM = "body#confirm";
-    public static final String RCE_RUN_CMD = "rce#run-cmd";
+    public static final String UDF_RUN_CMD = "udf#run-cmd";
 
     public static final String TBL_CREATE = "tbl#create";
     public static final String TBL_FILL = "tbl#fill";
     public static final String TBL_DUMP = "tbl#dump";
     public static final String TBL_DROP = "tbl#drop";
     public static final String TBL_READ = "tbl#read";
+
+    public static final String FILE_READ = "file#read";
 
     // TODO should redirect error directly to default output
     public static final String TEMPLATE_ERROR = "Command failure: %s\nTry '%s 2>&1' to get a system error message.\n";
@@ -578,7 +581,7 @@ public class ResourceAccess {
                 if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_INFORM,
-                        "Folder candidate to exploit: {}",
+                        "Folder exploit candidate: {}",
                         () -> path.replace(name, StringUtils.EMPTY)
                     );
                 }

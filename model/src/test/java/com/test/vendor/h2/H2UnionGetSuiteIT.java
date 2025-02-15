@@ -26,7 +26,6 @@ public class H2UnionGetSuiteIT extends ConcreteH2SuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getH2());
         model.beginInjection();
     }
     

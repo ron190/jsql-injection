@@ -82,7 +82,9 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_INFORM,
                         "Strategy [Union] triggered by [{}]",
-                        () -> currentCallable.getQuery().trim().replaceAll("1337(\\d*)7330%2b1", "$1")
+                        () -> currentCallable.getQuery().trim()
+                        .replaceAll("1337(\\d*)7330%2b1", "$1")
+                        .replaceAll("\\s+", StringUtils.SPACE)
                     );
                     break;
                 }
