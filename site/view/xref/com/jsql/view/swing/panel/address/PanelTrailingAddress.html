@@ -266,38 +266,43 @@
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>             .findFirst()
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>             .orElse(<strong class="jxr_keyword">new</strong> JMenuItem(<span class="jxr_string">"Mock"</span>));
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>     }
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>     
+<a class="jxr_linenumber" name="L261" href="#L261">261</a> 
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> markErrorVulnerable(<strong class="jxr_keyword">int</strong> indexMethodError) {
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>         Arrays.stream(<strong class="jxr_keyword">this</strong>.popupMenuStrategies.getComponents())
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>             .map(JMenuItem.<strong class="jxr_keyword">class</strong>::<strong class="jxr_keyword">cast</strong>)
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>             .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>             .map(JMenu.<strong class="jxr_keyword">class</strong>::<strong class="jxr_keyword">cast</strong>)
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>             .filter(jMenuItem -&gt; jMenuItem.getItem(indexMethodError) != <strong class="jxr_keyword">null</strong>)  <em class="jxr_comment">// Fix #46578: ArrayIndexOutOfBoundsException on getItem()</em>
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>             .forEach(jMenuItem -&gt; {
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>                 jMenuItem.setEnabled(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>                 jMenuItem.getItem(indexMethodError).setEnabled(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>             });
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>     }
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>     
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> markStrategyVulnerable(AbstractStrategy strategy) {
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>         Arrays.stream(<strong class="jxr_keyword">this</strong>.popupMenuStrategies.getComponents())
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>             .map(JMenuItem.<strong class="jxr_keyword">class</strong>::<strong class="jxr_keyword">cast</strong>)
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>             .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>             .forEach(jMenuItem -&gt; jMenuItem.setEnabled(<strong class="jxr_keyword">true</strong>));
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>     }
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>     
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>     
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>     <em class="jxr_comment">// Getter and setter</em>
-<a class="jxr_linenumber" name="L284" href="#L284">284</a> 
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>     <strong class="jxr_keyword">public</strong> JComponent getLoader() {
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.loader;
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>     }
-<a class="jxr_linenumber" name="L288" href="#L288">288</a> 
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>     <strong class="jxr_keyword">public</strong> <a name="ButtonStart" href="../../../../../../com/jsql/view/swing/panel/address/ButtonStart.html#ButtonStart">ButtonStart</a> getButtonStart() {
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.buttonStart;
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>     }
-<a class="jxr_linenumber" name="L292" href="#L292">292</a> }
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>         <em class="jxr_comment">// Fix #46578: ArrayIndexOutOfBoundsException on getItem()</em>
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>             Arrays.stream(<strong class="jxr_keyword">this</strong>.popupMenuStrategies.getComponents())
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>                 .map(JMenuItem.<strong class="jxr_keyword">class</strong>::<strong class="jxr_keyword">cast</strong>)
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>                 .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>                 .map(JMenu.<strong class="jxr_keyword">class</strong>::<strong class="jxr_keyword">cast</strong>)
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>                 .filter(jMenuItem -&gt; jMenuItem.getItem(indexMethodError) != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>                 .forEach(jMenuItem -&gt; {
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>                     jMenuItem.setEnabled(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>                     jMenuItem.getItem(indexMethodError).setEnabled(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>                 });
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>         } <strong class="jxr_keyword">catch</strong> (ArrayIndexOutOfBoundsException e) {
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>         }
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>     }
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>     
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> markStrategyVulnerable(AbstractStrategy strategy) {
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>         Arrays.stream(<strong class="jxr_keyword">this</strong>.popupMenuStrategies.getComponents())
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>             .map(JMenuItem.<strong class="jxr_keyword">class</strong>::<strong class="jxr_keyword">cast</strong>)
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>             .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>             .forEach(jMenuItem -&gt; jMenuItem.setEnabled(<strong class="jxr_keyword">true</strong>));
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>     }
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>     
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>     
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>     <em class="jxr_comment">// Getter and setter</em>
+<a class="jxr_linenumber" name="L289" href="#L289">289</a> 
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>     <strong class="jxr_keyword">public</strong> JComponent getLoader() {
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.loader;
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>     }
+<a class="jxr_linenumber" name="L293" href="#L293">293</a> 
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>     <strong class="jxr_keyword">public</strong> <a name="ButtonStart" href="../../../../../../com/jsql/view/swing/panel/address/ButtonStart.html#ButtonStart">ButtonStart</a> getButtonStart() {
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.buttonStart;
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>     }
+<a class="jxr_linenumber" name="L297" href="#L297">297</a> }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>

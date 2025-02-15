@@ -13,8 +13,8 @@ import java.util.stream.Stream;
 
 public class PanelProxy extends JPanel {
 
-<span class="fc" id="L16">    private final JCheckBox checkboxIsUsingProxy = new JCheckBox(&quot;&lt;html&gt;Enable proxy for &lt;b&gt;HTTP&lt;/b&gt; :&lt;/html&gt;&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttp());</span>
-<span class="fc" id="L17">    private final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox(&quot;&lt;html&gt;Enable proxy for &lt;b&gt;HTTPS&lt;/b&gt; :&lt;/html&gt;&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttps());</span>
+<span class="fc" id="L16">    private final JCheckBox checkboxIsUsingProxy = new JCheckBox(&quot;&lt;html&gt;Enable proxy for &lt;b&gt;HTTP&lt;/b&gt;:&lt;/html&gt;&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttp());</span>
+<span class="fc" id="L17">    private final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox(&quot;&lt;html&gt;Enable proxy for &lt;b&gt;HTTPS&lt;/b&gt;:&lt;/html&gt;&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttps());</span>
 
 <span class="fc" id="L19">    private final JTextField textProxyAddress = new JPopupTextField(&quot;e.g. Tor address: 127.0.0.1&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyAddressHttp()).getProxy();</span>
 <span class="fc" id="L20">    private final JTextField textProxyPort = new JPopupTextField(&quot;e.g. Tor port: 8118&quot;, MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyPortHttp()).getProxy();</span>

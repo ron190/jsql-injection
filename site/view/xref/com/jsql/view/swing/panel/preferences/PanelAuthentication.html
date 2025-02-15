@@ -20,8 +20,8 @@
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="PanelAuthentication" href="../../../../../../com/jsql/view/swing/panel/preferences/PanelAuthentication.html#PanelAuthentication">PanelAuthentication</a> <strong class="jxr_keyword">extends</strong> JPanel {
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxUseDigestAuthentication = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"&lt;html&gt;Enable &lt;b&gt;Basic&lt;/b&gt; and &lt;b&gt;NTLM&lt;/b&gt; (for &lt;b&gt;Digest&lt;/b&gt;: do not enable but just set the user and password) :&lt;/html&gt;"</span>, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxUseKerberos = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Enable Kerberos :"</span>, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isKerberos());
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxUseDigestAuthentication = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"&lt;html&gt;Enable &lt;b&gt;Basic&lt;/b&gt; and &lt;b&gt;NTLM&lt;/b&gt; (for &lt;b&gt;Digest&lt;/b&gt;: do not enable but just set the user and password):&lt;/html&gt;"</span>, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxUseKerberos = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Enable Kerberos:"</span>, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isKerberos());
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JTextField textDigestAuthenticationUsername = <strong class="jxr_keyword">new</strong> <a name="JPopupTextField" href="../../../../../../com/jsql/view/swing/text/JPopupTextField.html#JPopupTextField">JPopupTextField</a>(<span class="jxr_string">"Host system user"</span>, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication()).getProxy();
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JTextField textDigestAuthenticationPassword = <strong class="jxr_keyword">new</strong> <a name="JPopupTextField" href="../../../../../../com/jsql/view/swing/text/JPopupTextField.html#JPopupTextField">JPopupTextField</a>(<span class="jxr_string">"Host system password"</span>, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication()).getProxy();
@@ -62,7 +62,7 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">this</strong>.textKerberosLoginConf.setToolTipText(
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>              PanelAuthentication.TAG_HTML_ON
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>              + <span class="jxr_string">"Define the path to &lt;b&gt;login.conf&lt;/b&gt;. Sample :&lt;br&gt;"</span>
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>              + <span class="jxr_string">"Define the path to &lt;b&gt;login.conf&lt;/b&gt;. Sample:&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>              + <span class="jxr_string">"&amp;emsp;&lt;b&gt;entry-name&lt;/b&gt; {&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>              + <span class="jxr_string">"&amp;emsp;&amp;emsp;com.sun.security.auth.module.Krb5LoginModule&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>              + <span class="jxr_string">"&amp;emsp;&amp;emsp;required&lt;br&gt;"</span>
@@ -75,7 +75,7 @@
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>              + PanelAuthentication.TAG_HTML_OFF);
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">this</strong>.textKerberosKrb5Conf.setToolTipText(
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>              PanelAuthentication.TAG_HTML_ON
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>              + <span class="jxr_string">"Define the path to &lt;b&gt;krb5.conf&lt;/b&gt;. Sample :&lt;br&gt;"</span>
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>              + <span class="jxr_string">"Define the path to &lt;b&gt;krb5.conf&lt;/b&gt;. Sample:&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>              + <span class="jxr_string">"&amp;emsp;[libdefaults]&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>              + <span class="jxr_string">"&amp;emsp;&amp;emsp;default_realm = &lt;b&gt;CORP.TEST&lt;/b&gt;&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>              + <span class="jxr_string">"&amp;emsp;&amp;emsp;udp_preference_limit = 1&lt;br&gt;"</span>

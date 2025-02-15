@@ -73,99 +73,137 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
 <span class="fc" id="L73">                    false,</span>
 <span class="fc" id="L74">                    1,</span>
                     MockElement.MOCK,
-                    &quot;mysql#file&quot;
+                    ResourceAccess.FILE_READ
                 );
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">            } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getPostgres()) {</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getH2()) {</span>
+<span class="fc" id="L79">                var nameTable = RandomStringUtils.secure().nextAlphabetic(8);</span>
+<span class="fc" id="L80">                this.injectionModel.injectWithoutIndex(String.format(</span>
+<span class="fc" id="L81">                    this.injectionModel.getResourceAccess().getExploitH2().getModelYaml().getFile().getCreateTable(),</span>
+                    nameTable,
+                    this.pathFile
+                ), ResourceAccess.TBL_FILL);
+<span class="fc" id="L85">                resultToParse = this.suspendableReadFile.run(</span>
+<span class="fc" id="L86">                    String.format(</span>
+<span class="fc" id="L87">                        this.injectionModel.getResourceAccess().getExploitH2().getModelYaml().getFile().getRead(),</span>
+                        VendorYaml.TRAIL_SQL,
+                        nameTable
+                    ),
+                    sourcePage,
+<span class="fc" id="L92">                    false,</span>
+<span class="fc" id="L93">                    1,</span>
+                    MockElement.MOCK,
+                    ResourceAccess.FILE_READ
+                );
+<span class="fc bfc" id="L97" title="All 2 branches covered.">            } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getHsqldb()) {</span>
+<span class="fc" id="L98">                var nameTable = RandomStringUtils.secure().nextAlphabetic(8);</span>
+<span class="fc" id="L99">                this.injectionModel.injectWithoutIndex(String.format(</span>
+<span class="fc" id="L100">                    this.injectionModel.getResourceAccess().getExploitHsqldb().getModelYaml().getFile().getRead().getCreateTable(),</span>
+                    nameTable,
+                    nameTable, this.pathFile
+                ), ResourceAccess.TBL_FILL);
+<span class="fc" id="L104">                resultToParse = this.suspendableReadFile.run(</span>
+<span class="fc" id="L105">                    String.format(</span>
+<span class="fc" id="L106">                        this.injectionModel.getResourceAccess().getExploitHsqldb().getModelYaml().getFile().getRead().getResult(),</span>
+                        VendorYaml.TRAIL_SQL,
+                        nameTable
+                    ),
+                    sourcePage,
+<span class="fc" id="L111">                    false,</span>
+<span class="fc" id="L112">                    1,</span>
+                    MockElement.MOCK,
+                    ResourceAccess.TBL_READ
+                );
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">            } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getPostgres()) {</span>
                 try {
-<span class="pc" id="L80">                    resultToParse = this.suspendableReadFile.run(</span>
-<span class="fc" id="L81">                        String.format(</span>
-<span class="fc" id="L82">                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getFromDataFolder(),</span>
+<span class="pc" id="L118">                    resultToParse = this.suspendableReadFile.run(</span>
+<span class="fc" id="L119">                        String.format(</span>
+<span class="fc" id="L120">                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getFromDataFolder(),</span>
                             this.pathFile
                         ),
                         sourcePage,
-<span class="fc" id="L86">                        false,</span>
-<span class="fc" id="L87">                        1,</span>
+<span class="fc" id="L124">                        false,</span>
+<span class="fc" id="L125">                        1,</span>
                         MockElement.MOCK,
-                        &quot;pg#file&quot;
+                        ResourceAccess.FILE_READ
                     );
-<span class="fc" id="L91">                } catch (InjectionFailureException e) {</span>
-<span class="fc" id="L92">                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Read data folder failure, trying with large object&quot;);</span>
-<span class="fc" id="L93">                    var loid = this.injectionModel.getResourceAccess().getResultWithCatch(String.format(</span>
-<span class="fc" id="L94">                        this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getLargeObject().getFromPath(),</span>
+<span class="fc" id="L129">                } catch (InjectionFailureException e) {</span>
+<span class="fc" id="L130">                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Read data folder failure, trying with large object&quot;);</span>
+<span class="fc" id="L131">                    var loid = this.injectionModel.getResourceAccess().getResultWithCatch(String.format(</span>
+<span class="fc" id="L132">                        this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getLargeObject().getFromPath(),</span>
                         this.pathFile
-                    ), &quot;pg#add-loid&quot;);
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">                    if (StringUtils.isNotEmpty(loid)) {</span>
-<span class="fc" id="L98">                        resultToParse = this.injectionModel.getResourceAccess().getResultWithCatch(String.format(</span>
-<span class="fc" id="L99">                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getLargeObject().getToText(),</span>
+                    ), ResourceAccess.ADD_LOID);
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">                    if (StringUtils.isNotEmpty(loid)) {</span>
+<span class="fc" id="L136">                        resultToParse = this.injectionModel.getResourceAccess().getResultWithCatch(String.format(</span>
+<span class="fc" id="L137">                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getLargeObject().getToText(),</span>
                             loid
-                        ), &quot;pg#read-lo&quot;);
+                        ), ResourceAccess.READ_LOID);
                     }
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">                    if (StringUtils.isEmpty(resultToParse)) {</span>
-<span class="nc" id="L104">                        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Read large object failure, trying with stack read&quot;);</span>
-<span class="nc" id="L105">                        var nameLibraryRandom = &quot;tmp_&quot; + RandomStringUtils.secure().nextAlphabetic(8);  // no dash in table name</span>
-<span class="nc" id="L106">                        this.injectionModel.injectWithoutIndex(String.format(</span>
-<span class="nc" id="L107">                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getDrop(),</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">                    if (StringUtils.isEmpty(resultToParse)) {</span>
+<span class="nc" id="L142">                        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Read large object failure, trying with stack read&quot;);</span>
+<span class="nc" id="L143">                        var nameLibraryRandom = &quot;tmp_&quot; + RandomStringUtils.secure().nextAlphabetic(8);  // no dash in table name</span>
+<span class="nc" id="L144">                        this.injectionModel.injectWithoutIndex(String.format(</span>
+<span class="nc" id="L145">                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getDrop(),</span>
                             nameLibraryRandom
                         ), ResourceAccess.TBL_DROP);
-<span class="nc" id="L110">                        this.injectionModel.injectWithoutIndex(String.format(</span>
-<span class="nc" id="L111">                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getAdd(),</span>
+<span class="nc" id="L148">                        this.injectionModel.injectWithoutIndex(String.format(</span>
+<span class="nc" id="L149">                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getAdd(),</span>
                             nameLibraryRandom
                         ), ResourceAccess.TBL_CREATE);
-<span class="nc" id="L114">                        this.injectionModel.injectWithoutIndex(String.format(</span>
-<span class="nc" id="L115">                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getFill(),</span>
+<span class="nc" id="L152">                        this.injectionModel.injectWithoutIndex(String.format(</span>
+<span class="nc" id="L153">                            this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getFill(),</span>
                             nameLibraryRandom,
                             this.pathFile
-                        ), &quot;pg#copy&quot;);
-<span class="nc" id="L119">                        resultToParse = this.suspendableReadFile.run(</span>
-<span class="nc" id="L120">                            String.format(</span>
-<span class="nc" id="L121">                                this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getFromTempTable(),</span>
+                        ), ResourceAccess.TBL_FILL);
+<span class="nc" id="L157">                        resultToParse = this.suspendableReadFile.run(</span>
+<span class="nc" id="L158">                            String.format(</span>
+<span class="nc" id="L159">                                this.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getRead().getFromTempTable(),</span>
                                 nameLibraryRandom
                             ),
                             sourcePage,
-<span class="nc" id="L125">                            false,</span>
-<span class="nc" id="L126">                            1,</span>
+<span class="nc" id="L163">                            false,</span>
+<span class="nc" id="L164">                            1,</span>
                             MockElement.MOCK,
                             ResourceAccess.TBL_READ
                         );
                     }
-<span class="pc" id="L131">                }</span>
+<span class="pc" id="L169">                }</span>
             } else {
-<span class="nc" id="L133">                LOGGER.log(</span>
+<span class="nc" id="L171">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_DEFAULT,
                     &quot;Read file not implemented for [{}], share a working example to GitHub to speed up release&quot;,
-<span class="nc" id="L136">                    this.injectionModel.getMediatorVendor().getVendor()</span>
+<span class="nc" id="L174">                    this.injectionModel.getMediatorVendor().getVendor()</span>
                 );
             }
-<span class="nc" id="L139">        } catch (InjectionFailureException e) {</span>
+<span class="nc" id="L177">        } catch (InjectionFailureException e) {</span>
             // Usually thrown if File does not exist
-<span class="nc" id="L141">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="nc" id="L142">        } catch (StoppedByUserSlidingException e) {</span>
+<span class="nc" id="L179">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L180">        } catch (StoppedByUserSlidingException e) {</span>
             // Get partial source
-<span class="nc bnc" id="L144" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {</span>
-<span class="nc" id="L145">                resultToParse = e.getSlidingWindowAllRows();</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
-<span class="nc" id="L147">                resultToParse = e.getSlidingWindowCurrentRows();</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {</span>
+<span class="nc" id="L183">                resultToParse = e.getSlidingWindowAllRows();</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
+<span class="nc" id="L185">                resultToParse = e.getSlidingWindowCurrentRows();</span>
             }
-<span class="nc" id="L149">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="pc" id="L150">        }</span>
+<span class="nc" id="L187">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="pc" id="L188">        }</span>
         
-<span class="fc" id="L152">        this.sourceFile = resultToParse;</span>
-<span class="fc" id="L153">        return this;</span>
+<span class="fc" id="L190">        this.sourceFile = resultToParse;</span>
+<span class="fc" id="L191">        return this;</span>
     }
 
 
     // Getters
     
     public String getPathFile() {
-<span class="fc" id="L160">        return this.pathFile;</span>
+<span class="fc" id="L198">        return this.pathFile;</span>
     }
 
     public String getSourceFile() {
-<span class="fc" id="L164">        return this.sourceFile;</span>
+<span class="fc" id="L202">        return this.sourceFile;</span>
     }
 
     public SuspendableGetRows getSuspendableReadFile() {
-<span class="fc" id="L168">        return this.suspendableReadFile;</span>
+<span class="fc" id="L206">        return this.suspendableReadFile;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

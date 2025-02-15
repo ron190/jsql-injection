@@ -73,7 +73,7 @@ view,com.jsql.view.swing.manager,ManagerBruteForce,55,644,2,0,13,107,12,10,11,10
 view,com.jsql.view.swing.manager,ManagerCoder,0,420,0,2,0,82,0,9,0,8
 view,com.jsql.view.swing.manager,ManagerDatabase.TreeModelProgressListener,3,31,2,2,2,9,3,4,1,4
 view,com.jsql.view.swing.manager,ManagerAdminPage,139,47,14,0,29,11,14,2,7,2
-view,com.jsql.view.swing.manager,ManagerFile.ActionFile,46,6,4,0,13,1,3,1,1,1
+view,com.jsql.view.swing.manager,ManagerFile.ActionFile,58,6,4,0,15,1,3,1,1,1
 view,com.jsql.view.swing.popupmenu,JPopupMenuComponent,0,111,0,4,0,28,0,4,0,2
 view,com.jsql.view.swing.popupmenu,JPopupMenuTable.ActionCopy,19,6,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.popupmenu,JPopupMenuTable.new PopupMenuListener() {...},10,6,2,0,5,1,4,1,3,1
@@ -103,12 +103,12 @@ view,com.jsql.view.swing.panel.address,PanelTrailingAddress.new JRadioButtonMenu
 view,com.jsql.view.swing.panel.address,PanelTrailingAddress.new MouseAdapter() {...},0,60,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.panel.address,PanelTrailingAddress.new MouseAdapter() {...},0,75,0,2,0,8,0,4,0,3
 view,com.jsql.view.swing.panel.address,ButtonStart,54,91,6,0,12,29,5,5,2,5
-view,com.jsql.view.swing.panel.address,PanelTrailingAddress,223,551,6,14,49,113,23,22,18,17
+view,com.jsql.view.swing.panel.address,PanelTrailingAddress,228,552,6,14,51,114,23,22,18,17
 view,com.jsql.view.swing.terminal,AbstractExploit,53,267,5,9,9,66,5,16,0,14
 view,com.jsql.view.swing.terminal,ExploitRcePostgres,17,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.terminal,EmptyFocusCopy,58,9,2,0,16,5,5,2,4,2
 view,com.jsql.view.swing.terminal,ExploitSql,14,9,0,0,2,3,1,1,1,1
-view,com.jsql.view.swing.terminal,BlockCaret,9,117,2,16,5,34,2,11,0,4
+view,com.jsql.view.swing.terminal,BlockCaret,10,116,4,14,6,33,4,9,0,4
 view,com.jsql.view.swing.terminal,ExploitWeb,0,17,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.terminal,KeyAdapterTerminal.new SwingWorker() {...},0,47,0,2,0,12,0,3,0,2
 view,com.jsql.view.swing.terminal,KeyAdapterTerminal,144,262,21,37,26,63,16,23,1,9
@@ -216,7 +216,7 @@ view,com.jsql.view.swing.panel,PanelPreferences.CategoryPreference,0,59,0,0,0,10
 view,com.jsql.view.swing.panel,PanelPreferences,0,240,0,0,0,53,0,14,0,14
 view,com.jsql.view.swing.panel,PanelAddressBar,80,788,4,4,14,142,10,18,8,16
 view,com.jsql.view.swing.panel,PanelConsoles,75,497,8,8,20,110,11,16,3,16
-view,com.jsql.view.swing.tab.dnd,TabTransferHandler,78,254,24,18,13,59,22,8,1,8
+view,com.jsql.view.swing.tab.dnd,TabTransferHandler,76,256,23,19,12,60,21,9,1,8
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,12,167,9,15,4,39,9,9,0,6
 view,com.jsql.view.swing.tab.dnd,DnDTabData,0,6,0,0,0,3,0,1,0,1
 view,com.jsql.view.swing.tab.dnd,GhostGlassPane,0,45,0,0,0,15,0,4,0,4

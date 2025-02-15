@@ -258,36 +258,41 @@ public class PanelTrailingAddress extends JPanel {
 <span class="fc" id="L258">            .findFirst()</span>
 <span class="fc" id="L259">            .orElse(new JMenuItem(&quot;Mock&quot;));</span>
     }
-    
+
     public void markErrorVulnerable(int indexMethodError) {
 <span class="fc" id="L263">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();</span>
-<span class="fc" id="L264">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
-<span class="fc" id="L265">            .map(JMenuItem.class::cast)</span>
-<span class="fc" id="L266">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
-<span class="fc" id="L267">            .map(JMenu.class::cast)</span>
-<span class="pc bpc" id="L268" title="1 of 2 branches missed.">            .filter(jMenuItem -&gt; jMenuItem.getItem(indexMethodError) != null)  // Fix #46578: ArrayIndexOutOfBoundsException on getItem()</span>
-<span class="fc" id="L269">            .forEach(jMenuItem -&gt; {</span>
-<span class="fc" id="L270">                jMenuItem.setEnabled(true);</span>
-<span class="fc" id="L271">                jMenuItem.getItem(indexMethodError).setEnabled(true);</span>
-<span class="fc" id="L272">            });</span>
-<span class="fc" id="L273">    }</span>
+        // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
+        try {
+<span class="fc" id="L266">            Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="fc" id="L267">                .map(JMenuItem.class::cast)</span>
+<span class="fc" id="L268">                .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="fc" id="L269">                .map(JMenu.class::cast)</span>
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">                .filter(jMenuItem -&gt; jMenuItem.getItem(indexMethodError) != null)</span>
+<span class="fc" id="L271">                .forEach(jMenuItem -&gt; {</span>
+<span class="fc" id="L272">                    jMenuItem.setEnabled(true);</span>
+<span class="fc" id="L273">                    jMenuItem.getItem(indexMethodError).setEnabled(true);</span>
+<span class="fc" id="L274">                });</span>
+<span class="nc" id="L275">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L276">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
+<span class="fc" id="L277">        }</span>
+<span class="fc" id="L278">    }</span>
     
     public void markStrategyVulnerable(AbstractStrategy strategy) {
-<span class="nc" id="L276">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
-<span class="nc" id="L277">            .map(JMenuItem.class::cast)</span>
-<span class="nc" id="L278">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
-<span class="nc" id="L279">            .forEach(jMenuItem -&gt; jMenuItem.setEnabled(true));</span>
-<span class="nc" id="L280">    }</span>
+<span class="nc" id="L281">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="nc" id="L282">            .map(JMenuItem.class::cast)</span>
+<span class="nc" id="L283">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="nc" id="L284">            .forEach(jMenuItem -&gt; jMenuItem.setEnabled(true));</span>
+<span class="nc" id="L285">    }</span>
     
     
     // Getter and setter
 
     public JComponent getLoader() {
-<span class="fc" id="L286">        return this.loader;</span>
+<span class="fc" id="L291">        return this.loader;</span>
     }
 
     public ButtonStart getButtonStart() {
-<span class="fc" id="L290">        return this.buttonStart;</span>
+<span class="fc" id="L295">        return this.buttonStart;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

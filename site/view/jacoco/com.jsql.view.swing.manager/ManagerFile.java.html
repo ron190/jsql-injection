@@ -56,44 +56,46 @@ public class ManagerFile extends AbstractManagerList {
 <span class="nc" id="L56">                return;</span>
             }
 <span class="nc" id="L58">            if (!Arrays.asList(</span>
-<span class="nc" id="L59">                MediatorHelper.model().getMediatorVendor().getMysql(),</span>
-<span class="nc" id="L60">                MediatorHelper.model().getMediatorVendor().getPostgres()</span>
-<span class="nc bnc" id="L61" title="All 2 branches missed.">            ).contains(MediatorHelper.model().getMediatorVendor().getVendor())) {</span>
-<span class="nc" id="L62">                LOGGER.log(</span>
+<span class="nc" id="L59">                MediatorHelper.model().getMediatorVendor().getH2(),</span>
+<span class="nc" id="L60">                MediatorHelper.model().getMediatorVendor().getHsqldb(),</span>
+<span class="nc" id="L61">                MediatorHelper.model().getMediatorVendor().getMysql(),</span>
+<span class="nc" id="L62">                MediatorHelper.model().getMediatorVendor().getPostgres()</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            ).contains(MediatorHelper.model().getMediatorVendor().getVendor())) {</span>
+<span class="nc" id="L64">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
                     &quot;Read file for [{}] not implemented, share a working example to GitHub to speed up release&quot;,
-<span class="nc" id="L65">                    MediatorHelper.model().getMediatorVendor().getVendor()</span>
+<span class="nc" id="L67">                    MediatorHelper.model().getMediatorVendor().getVendor()</span>
                 );
-<span class="nc" id="L67">                return;</span>
+<span class="nc" id="L69">                return;</span>
             }
-<span class="nc" id="L69">            new SwingWorker&lt;&gt;() {</span>
+<span class="nc" id="L71">            new SwingWorker&lt;&gt;() {</span>
                 @Override
                 protected Object doInBackground() {
-<span class="nc" id="L72">                    Thread.currentThread().setName(&quot;SwingWorkerManagerFile&quot;);</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {</span>
-<span class="nc" id="L74">                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey(&quot;FILE_RUN_BUTTON_STOP&quot;));</span>
-<span class="nc" id="L75">                        ManagerFile.this.run.setState(StateButton.STOPPABLE);</span>
-<span class="nc" id="L76">                        ManagerFile.this.horizontalGlue.setVisible(false);</span>
-<span class="nc" id="L77">                        ManagerFile.this.progressBar.setVisible(true);</span>
+<span class="nc" id="L74">                    Thread.currentThread().setName(&quot;SwingWorkerManagerFile&quot;);</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {</span>
+<span class="nc" id="L76">                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey(&quot;FILE_RUN_BUTTON_STOP&quot;));</span>
+<span class="nc" id="L77">                        ManagerFile.this.run.setState(StateButton.STOPPABLE);</span>
+<span class="nc" id="L78">                        ManagerFile.this.horizontalGlue.setVisible(false);</span>
+<span class="nc" id="L79">                        ManagerFile.this.progressBar.setVisible(true);</span>
                         try {
-<span class="nc" id="L79">                            List&lt;String&gt; filePaths = ManagerFile.this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
-<span class="nc" id="L80">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
-<span class="nc" id="L81">                        } catch (InterruptedException e) {</span>
-<span class="nc" id="L82">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L83">                            Thread.currentThread().interrupt();</span>
-<span class="nc" id="L84">                        } catch (Exception e) {</span>
-<span class="nc" id="L85">                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);</span>
-<span class="nc" id="L86">                        }</span>
-<span class="nc" id="L87">                        ManagerFile.this.endProcess();</span>
+<span class="nc" id="L81">                            List&lt;String&gt; filePaths = ManagerFile.this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
+<span class="nc" id="L82">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
+<span class="nc" id="L83">                        } catch (InterruptedException e) {</span>
+<span class="nc" id="L84">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L85">                            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L86">                        } catch (Exception e) {</span>
+<span class="nc" id="L87">                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);</span>
+<span class="nc" id="L88">                        }</span>
+<span class="nc" id="L89">                        ManagerFile.this.endProcess();</span>
                     } else {
-<span class="nc" id="L89">                        MediatorHelper.model().getResourceAccess().stopSearchFile();</span>
-<span class="nc" id="L90">                        ManagerFile.this.run.setEnabled(false);</span>
-<span class="nc" id="L91">                        ManagerFile.this.run.setState(StateButton.STOPPING);</span>
+<span class="nc" id="L91">                        MediatorHelper.model().getResourceAccess().stopSearchFile();</span>
+<span class="nc" id="L92">                        ManagerFile.this.run.setEnabled(false);</span>
+<span class="nc" id="L93">                        ManagerFile.this.run.setState(StateButton.STOPPING);</span>
                     }
-<span class="nc" id="L93">                    return null;</span>
+<span class="nc" id="L95">                    return null;</span>
                 }
-<span class="nc" id="L95">            }.doInBackground();</span>
-<span class="nc" id="L96">        }</span>
+<span class="nc" id="L97">            }.doInBackground();</span>
+<span class="nc" id="L98">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

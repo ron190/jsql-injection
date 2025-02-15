@@ -18,15 +18,15 @@ public class PanelConnection extends JPanel {
 <span class="fc" id="L18">    private final JCheckBox checkboxIsNotTestingConnection = new JCheckBox(&quot;Disable connection test&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection());</span>
 <span class="fc" id="L19">    private final JCheckBox checkboxIsNotProcessingCookies = new JCheckBox(&quot;Disable session cookies&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies());</span>
 <span class="fc" id="L20">    private final JCheckBox checkboxIsProcessingCsrf = new JCheckBox(&quot;Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf());</span>
-<span class="fc" id="L21">    private final JCheckBox checkboxIsLimitingThreads = new JCheckBox(&quot;Limit processing threads :&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());</span>
-<span class="fc" id="L22">    private final JCheckBox checkboxIsConnectionTimeout = new JCheckBox(&quot;Set timeout :&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout());</span>
+<span class="fc" id="L21">    private final JCheckBox checkboxIsLimitingThreads = new JCheckBox(&quot;Limit processing threads:&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());</span>
+<span class="fc" id="L22">    private final JCheckBox checkboxIsConnectionTimeout = new JCheckBox(&quot;Set timeout:&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout());</span>
 <span class="fc" id="L23">    private final JCheckBox checkboxIsUnicodeDecodeDisabled = new JCheckBox(&quot;Disable Unicode decoding in response&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled());</span>
 <span class="fc" id="L24">    private final JCheckBox checkboxIsUrlDecodeDisabled = new JCheckBox(&quot;Disable Url decoding in response&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled());</span>
     
 <span class="fc" id="L26">    private final JSpinner spinnerLimitingThreads = new JSpinner();</span>
 <span class="fc" id="L27">    private final JSpinner spinnerConnectionTimeout = new JSpinner();</span>
     
-<span class="fc" id="L29">    private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox(&quot;Custom CSRF :&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag());</span>
+<span class="fc" id="L29">    private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox(&quot;Custom CSRF:&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag());</span>
 <span class="fc" id="L30">    private final JTextField textfieldCustomCsrfInputToken = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTag());</span>
 <span class="fc" id="L31">    private final JTextField textfieldCustomCsrfOutputToken = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTagOutput());</span>
     

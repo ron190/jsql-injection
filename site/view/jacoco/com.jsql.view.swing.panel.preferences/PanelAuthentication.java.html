@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 
 public class PanelAuthentication extends JPanel {
 
-<span class="fc" id="L15">    private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox(&quot;&lt;html&gt;Enable &lt;b&gt;Basic&lt;/b&gt; and &lt;b&gt;NTLM&lt;/b&gt; (for &lt;b&gt;Digest&lt;/b&gt;: do not enable but just set the user and password) :&lt;/html&gt;&quot;, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());</span>
-<span class="fc" id="L16">    private final JCheckBox checkboxUseKerberos = new JCheckBox(&quot;Enable Kerberos :&quot;, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isKerberos());</span>
+<span class="fc" id="L15">    private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox(&quot;&lt;html&gt;Enable &lt;b&gt;Basic&lt;/b&gt; and &lt;b&gt;NTLM&lt;/b&gt; (for &lt;b&gt;Digest&lt;/b&gt;: do not enable but just set the user and password):&lt;/html&gt;&quot;, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());</span>
+<span class="fc" id="L16">    private final JCheckBox checkboxUseKerberos = new JCheckBox(&quot;Enable Kerberos:&quot;, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isKerberos());</span>
 
 <span class="fc" id="L18">    private final JTextField textDigestAuthenticationUsername = new JPopupTextField(&quot;Host system user&quot;, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication()).getProxy();</span>
 <span class="fc" id="L19">    private final JTextField textDigestAuthenticationPassword = new JPopupTextField(&quot;Host system password&quot;, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication()).getProxy();</span>
@@ -54,7 +54,7 @@ public class PanelAuthentication extends JPanel {
 
 <span class="fc" id="L55">        this.textKerberosLoginConf.setToolTipText(</span>
             PanelAuthentication.TAG_HTML_ON
-            + &quot;Define the path to &lt;b&gt;login.conf&lt;/b&gt;. Sample :&lt;br&gt;&quot;
+            + &quot;Define the path to &lt;b&gt;login.conf&lt;/b&gt;. Sample:&lt;br&gt;&quot;
             + &quot;&amp;emsp;&lt;b&gt;entry-name&lt;/b&gt; {&lt;br&gt;&quot;
             + &quot;&amp;emsp;&amp;emsp;com.sun.security.auth.module.Krb5LoginModule&lt;br&gt;&quot;
             + &quot;&amp;emsp;&amp;emsp;required&lt;br&gt;&quot;
@@ -67,7 +67,7 @@ public class PanelAuthentication extends JPanel {
             + PanelAuthentication.TAG_HTML_OFF);
 <span class="fc" id="L68">        this.textKerberosKrb5Conf.setToolTipText(</span>
             PanelAuthentication.TAG_HTML_ON
-            + &quot;Define the path to &lt;b&gt;krb5.conf&lt;/b&gt;. Sample :&lt;br&gt;&quot;
+            + &quot;Define the path to &lt;b&gt;krb5.conf&lt;/b&gt;. Sample:&lt;br&gt;&quot;
             + &quot;&amp;emsp;[libdefaults]&lt;br&gt;&quot;
             + &quot;&amp;emsp;&amp;emsp;default_realm = &lt;b&gt;CORP.TEST&lt;/b&gt;&lt;br&gt;&quot;
             + &quot;&amp;emsp;&amp;emsp;udp_preference_limit = 1&lt;br&gt;&quot;

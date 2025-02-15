@@ -23,7 +23,8 @@ model,com.jsql.util.tampering,TamperingType,6,106,0,0,2,19,0,3,0,3
 model,com.jsql.util.tampering,ModelYamlTampering,9,22,0,0,3,10,3,6,3,6
 model,com.jsql.view.interaction,SubscriberInteraction,17,78,1,1,7,23,3,5,2,5
 model,com.jsql.model.accessible.vendor.hsqldb,ModelYamlHsqldb,0,15,0,0,0,5,0,3,0,3
-model,com.jsql.model.accessible.vendor.hsqldb,File,0,33,0,0,0,13,0,7,0,7
+model,com.jsql.model.accessible.vendor.hsqldb,File,0,25,0,0,0,9,0,5,0,5
+model,com.jsql.model.accessible.vendor.hsqldb,Read,3,30,0,0,1,12,1,6,1,6
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionMonobit,0,137,0,4,0,16,0,5,0,3
 model,com.jsql.model.injection.strategy.blind,InjectionVendor,43,252,5,19,16,48,5,15,0,8
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionBinary.BinaryMode,0,27,0,0,0,2,0,1,0,1
@@ -89,7 +90,7 @@ model,com.jsql.model.accessible,ResourceAccess,369,1204,33,61,86,247,35,44,7,25
 model,com.jsql.model.accessible,CallableHttpHead,62,141,2,2,12,38,3,6,1,6
 model,com.jsql.model.accessible,ExploitMode,18,46,0,0,5,9,4,2,4,2
 model,com.jsql.model.accessible,DataAccess,126,847,5,23,31,167,8,21,3,12
-model,com.jsql.model.accessible,CallableFile,160,211,7,5,23,36,5,7,0,6
+model,com.jsql.model.accessible,CallableFile,160,391,7,9,23,54,5,9,0,6
 model,com.jsql.model.injection.strategy,StrategyInjectionUnion,7,435,3,21,2,80,3,29,0,20
 model,com.jsql.model.injection.strategy,StrategyInjectionError,31,390,1,21,7,85,4,26,3,16
 model,com.jsql.model.injection.strategy,StrategyInjectionTime,0,276,0,14,0,59,0,23,0,16
@@ -151,12 +152,13 @@ model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,8,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,Bruter,19,386,0,12,8,55,3,23,3,17
 model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
+model,com.jsql.model.accessible.vendor.h2,File,0,23,0,0,0,9,0,5,0,5
 model,com.jsql.model.accessible.vendor.h2,Rce,3,30,0,0,1,12,1,6,1,6
-model,com.jsql.model.accessible.vendor.h2,ModelYamlH2,0,15,0,0,0,5,0,3,0,3
+model,com.jsql.model.accessible.vendor.h2,ModelYamlH2,0,27,0,0,0,9,0,5,0,5
 model,com.jsql.model.suspendable,SuspendableGetCharInsertion,70,513,7,35,14,107,8,33,2,18
 model,com.jsql.model.suspendable,SuspendableGetVendor,10,146,1,7,3,32,1,9,0,6
 model,com.jsql.model.suspendable,SuspendableGetRows,58,698,13,47,15,172,12,36,0,18
-model,com.jsql.model.suspendable,SuspendableGetIndexes,43,141,3,9,10,29,3,7,0,4
+model,com.jsql.model.suspendable,SuspendableGetIndexes,43,144,3,9,10,31,3,7,0,4
 model,com.jsql.model.suspendable,AbstractSuspendable,21,42,3,3,8,16,5,6,2,6
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
@@ -204,8 +206,8 @@ model,com.jsql.model.suspendable.callable,ThreadFactoryCallable,0,13,0,0,0,4,0,2
 model,com.jsql.model.suspendable.callable,CallablePageSource,0,51,0,0,0,16,0,7,0,7
 model,com.jsql.model.accessible.vendor,ExploitSqlite,139,141,3,1,26,26,4,4,2,4
 model,com.jsql.model.accessible.vendor,ExploitPostgres,212,655,19,25,48,112,19,15,2,10
-model,com.jsql.model.accessible.vendor,ExploitHsqldb,156,158,3,1,30,30,4,4,2,4
+model,com.jsql.model.accessible.vendor,ExploitHsqldb,132,137,3,1,26,27,4,5,2,5
 model,com.jsql.model.accessible.vendor,ExploitOracle,226,26,4,0,33,7,4,2,2,2
 model,com.jsql.model.accessible.vendor,ExploitMysql,416,878,46,46,78,157,42,27,5,18
-model,com.jsql.model.accessible.vendor,ExploitH2,144,146,3,1,28,28,4,4,2,4
+model,com.jsql.model.accessible.vendor,ExploitH2,144,149,3,1,28,29,4,5,2,5
 model,com.jsql.model.accessible.vendor.sqlite,ModelYamlSqlite,3,20,0,0,1,8,1,4,1,4
