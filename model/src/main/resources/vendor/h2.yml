@@ -113,7 +113,11 @@ resource:
     callCsvWrite: ; call csvwrite('%s', 'select * from %s')
   
   file:
-    createTable: ; create table %s (c varchar(9999)) as select * from csvread('%s')
+    # white-spaces trimmed from line start
+    createTable: |
+      ; create table %s (c varchar(9999)) as select * from csvread('%s', 'c', 
+        'charset=UTF-8 fieldSeparator='||CHAR(1)||' fieldDelimiter='||CHAR(1)||' preserveWhitespace=true'
+      )
     read: select group_concat(c separator '\n')||'%s' from %s
 
 strategy:
