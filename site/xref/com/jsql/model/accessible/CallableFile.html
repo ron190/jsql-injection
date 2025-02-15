@@ -114,11 +114,11 @@
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>                         <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(String.format(
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>                             <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getDrop(),
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>                             nameLibraryRandom
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>                         ), <span class="jxr_string">"pg#drop-tbl"</span>);
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>                         ), ResourceAccess.TBL_DROP);
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>                         <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(String.format(
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>                             <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getAdd(),
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>                             nameLibraryRandom
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>                         ), <span class="jxr_string">"pg#add-tbl"</span>);
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>                         ), ResourceAccess.TBL_CREATE);
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>                         <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(String.format(
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>                             <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitPostgres().getModelYaml().getFile().getWrite().getTempTable().getFill(),
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>                             nameLibraryRandom,
@@ -133,7 +133,7 @@
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>                             false,
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>                             1,
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>                             MockElement.MOCK,
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>                             <span class="jxr_string">"pg#get-tbl"</span>
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>                             ResourceAccess.TBL_READ
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>                         );
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>                     }
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>                 }
