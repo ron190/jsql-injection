@@ -48,13 +48,13 @@ view,com.jsql.view.swing.manager,ManagerBruteForce.new JTextFieldPlaceholder() {
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JSpinner() {...},5,9,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JTextFieldPlaceholder() {...},5,10,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JCheckBox() {...},5,11,0,0,1,1,1,1,1,1
-view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit,209,9,24,0,46,3,14,1,2,1
+view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit,171,9,24,0,45,3,14,1,2,1
 view,com.jsql.view.swing.manager,ManagerDatabase.new KeyAdapter() {...},28,6,10,0,7,1,6,1,1,1
 view,com.jsql.view.swing.manager,ManagerDatabase.new MouseAdapter() {...},24,32,4,2,6,5,3,2,0,2
 view,com.jsql.view.swing.manager,ManagerFile.ActionFile.new SwingWorker() {...},96,0,2,0,20,0,3,0,2,0
 view,com.jsql.view.swing.manager,ManagerFile,0,29,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.manager,ManagerScan.new DefaultListCellRenderer() {...},4,23,1,1,1,5,1,2,0,2
-view,com.jsql.view.swing.manager,ManagerExploit,487,542,64,2,75,77,38,5,6,4
+view,com.jsql.view.swing.manager,ManagerExploit,537,466,72,2,90,77,42,5,6,4
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit.new SwingWorker() {...},17,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit.new SwingWorker() {...},66,0,0,0,10,0,3,0,3,0
 view,com.jsql.view.swing.manager,ManagerExploit.new JTextFieldPlaceholder() {...},5,10,0,0,1,1,1,1,1,1
@@ -217,7 +217,7 @@ view,com.jsql.view.swing.panel,PanelPreferences,0,240,0,0,0,53,0,14,0,14
 view,com.jsql.view.swing.panel,PanelAddressBar,80,788,4,4,14,142,10,18,8,16
 view,com.jsql.view.swing.panel,PanelConsoles,75,497,8,8,20,110,11,16,3,16
 view,com.jsql.view.swing.tab.dnd,TabTransferHandler,78,254,24,18,13,59,22,8,1,8
-view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,12,167,8,16,4,39,8,10,0,6
+view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,12,167,9,15,4,39,9,9,0,6
 view,com.jsql.view.swing.tab.dnd,DnDTabData,0,6,0,0,0,3,0,1,0,1
 view,com.jsql.view.swing.tab.dnd,GhostGlassPane,0,45,0,0,0,15,0,4,0,4
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.DnDDropLocation,0,20,0,0,0,8,0,4,0,4

@@ -416,7 +416,7 @@
 <a class="jxr_linenumber" name="L408" href="#L408">408</a>         <strong class="jxr_keyword">return</strong> greeting.get();
 <a class="jxr_linenumber" name="L409" href="#L409">409</a>     }
 <a class="jxr_linenumber" name="L410" href="#L410">410</a> 
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>     @RequestMapping(<span class="jxr_string">"/postgres"</span>)
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>     @RequestMapping(<span class="jxr_string">"/postgres"</span>)  <em class="jxr_comment">// local testing, not used</em>
 <a class="jxr_linenumber" name="L412" href="#L412">412</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingPostgres(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>         Class.forName(<span class="jxr_string">"org.postgresql.Driver"</span>);
 <a class="jxr_linenumber" name="L414" href="#L414">414</a> 
@@ -442,7 +442,7 @@
 <a class="jxr_linenumber" name="L434" href="#L434">434</a>         <strong class="jxr_keyword">return</strong> greeting.get();
 <a class="jxr_linenumber" name="L435" href="#L435">435</a>     }
 <a class="jxr_linenumber" name="L436" href="#L436">436</a> 
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>     @RequestMapping(<span class="jxr_string">"/mysql"</span>)
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>     @RequestMapping(<span class="jxr_string">"/mysql"</span>)  <em class="jxr_comment">// local testing, not used</em>
 <a class="jxr_linenumber" name="L438" href="#L438">438</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMysql(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
 <a class="jxr_linenumber" name="L439" href="#L439">439</a>         Class.forName(<span class="jxr_string">"com.mysql.cj.jdbc.Driver"</span>);
 <a class="jxr_linenumber" name="L440" href="#L440">440</a> 

@@ -84,8 +84,8 @@
 <th>Errors</th>
 <th>Missing Classes</th></tr>
 <tr class="b">
-<td>211</td>
-<td>193</td>
+<td>214</td>
+<td>196</td>
 <td>0</td>
 <td>0</td></tr></table></section><section>
 <h1>Files</h1>
@@ -112,20 +112,26 @@
 <td><a href="#com.jsql.model.accessible.ResourceAccess">com.jsql.model.accessible.ResourceAccess</a></td>
 <td>3</td></tr>
 <tr class="b">
+<td><a href="#com.jsql.model.accessible.vendor.ExploitH2">com.jsql.model.accessible.vendor.ExploitH2</a></td>
+<td>1</td></tr>
+<tr class="a">
 <td><a href="#com.jsql.model.accessible.vendor.ExploitHsqldb">com.jsql.model.accessible.vendor.ExploitHsqldb</a></td>
 <td>1</td></tr>
-<tr class="a">
+<tr class="b">
 <td><a href="#com.jsql.model.accessible.vendor.ExploitMysql">com.jsql.model.accessible.vendor.ExploitMysql</a></td>
 <td>5</td></tr>
-<tr class="b">
+<tr class="a">
 <td><a href="#com.jsql.model.accessible.vendor.ExploitOracle">com.jsql.model.accessible.vendor.ExploitOracle</a></td>
 <td>2</td></tr>
-<tr class="a">
+<tr class="b">
 <td><a href="#com.jsql.model.accessible.vendor.ExploitPostgres">com.jsql.model.accessible.vendor.ExploitPostgres</a></td>
 <td>3</td></tr>
-<tr class="b">
+<tr class="a">
 <td><a href="#com.jsql.model.accessible.vendor.ExploitSqlite">com.jsql.model.accessible.vendor.ExploitSqlite</a></td>
 <td>1</td></tr>
+<tr class="b">
+<td><a href="#com.jsql.model.accessible.vendor.h2.ModelYamlH2">com.jsql.model.accessible.vendor.h2.ModelYamlH2</a></td>
+<td>2</td></tr>
 <tr class="a">
 <td><a href="#com.jsql.model.accessible.vendor.hsqldb.ModelYamlHsqldb">com.jsql.model.accessible.vendor.hsqldb.ModelYamlHsqldb</a></td>
 <td>2</td></tr>
@@ -148,14 +154,14 @@
 <td><a href="#com.jsql.model.accessible.vendor.postgres.ModelYamlPostgres">com.jsql.model.accessible.vendor.postgres.ModelYamlPostgres</a></td>
 <td>6</td></tr>
 <tr class="b">
-<td><a href="#com.jsql.model.accessible.vendor.postgres.Rce">com.jsql.model.accessible.vendor.postgres.Rce</a></td>
-<td>4</td></tr>
-<tr class="a">
 <td><a href="#com.jsql.model.accessible.vendor.postgres.Read">com.jsql.model.accessible.vendor.postgres.Read</a></td>
 <td>2</td></tr>
-<tr class="b">
+<tr class="a">
 <td><a href="#com.jsql.model.accessible.vendor.postgres.Sql">com.jsql.model.accessible.vendor.postgres.Sql</a></td>
 <td>2</td></tr>
+<tr class="b">
+<td><a href="#com.jsql.model.accessible.vendor.postgres.Udf">com.jsql.model.accessible.vendor.postgres.Udf</a></td>
+<td>4</td></tr>
 <tr class="a">
 <td><a href="#com.jsql.model.accessible.vendor.postgres.Write">com.jsql.model.accessible.vendor.postgres.Write</a></td>
 <td>4</td></tr>
@@ -544,7 +550,7 @@
 <td>new com.jsql.model.accessible.ResourceAccess(InjectionModel) may expose internal representation by storing an externally mutable object into ResourceAccess.injectionModel</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L120">120</a></td>
+<td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L119">119</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>Format string should use %n rather than \n in com.jsql.model.accessible.ResourceAccess.callCommand(String)</td>
@@ -557,6 +563,20 @@
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#VA_FORMAT_STRING_USES_NEWLINE">VA_FORMAT_STRING_USES_NEWLINE</a></td>
 <td><a href="./xref/com/jsql/model/accessible/ResourceAccess.html#L329">329</a></td>
+<td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.vendor.ExploitH2"></a><section>
+<h2>com.jsql.model.accessible.vendor.ExploitH2</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Bug</th>
+<th>Category</th>
+<th>Details</th>
+<th>Line</th>
+<th>Priority</th></tr>
+<tr class="b">
+<td>new com.jsql.model.accessible.vendor.ExploitH2(InjectionModel) may expose internal representation by storing an externally mutable object into ExploitH2.injectionModel</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L36">36</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.vendor.ExploitHsqldb"></a><section>
 <h2>com.jsql.model.accessible.vendor.ExploitHsqldb</h2>
 <table class="table table-striped">
@@ -584,19 +604,19 @@
 <td>Found reliance on default encoding in com.jsql.model.accessible.vendor.ExploitMysql.copyToShare(String, String): String.getBytes()</td>
 <td>I18N</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#DM_DEFAULT_ENCODING">DM_DEFAULT_ENCODING</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L434">434</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L438">438</a></td>
 <td>High</td></tr>
 <tr class="a">
 <td>Found reliance on default encoding in com.jsql.model.accessible.vendor.ExploitMysql.create(String, String, String, String, BinaryOperator, String, ExploitMode): String.getBytes()</td>
 <td>I18N</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#DM_DEFAULT_ENCODING">DM_DEFAULT_ENCODING</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L177">177</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L179">179</a></td>
 <td>High</td></tr>
 <tr class="b">
 <td>com.jsql.model.accessible.vendor.ExploitMysql.getModelYaml() may expose internal representation by returning ExploitMysql.modelYaml</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L485">485</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L489">489</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>new com.jsql.model.accessible.vendor.ExploitMysql(InjectionModel) may expose internal representation by storing an externally mutable object into ExploitMysql.injectionModel</td>
@@ -608,7 +628,7 @@
 <td>Format string should use %n rather than \n in com.jsql.model.accessible.vendor.ExploitMysql.runUdfCmd(String, UUID)</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#VA_FORMAT_STRING_USES_NEWLINE">VA_FORMAT_STRING_USES_NEWLINE</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L463">463</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L467">467</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.vendor.ExploitOracle"></a><section>
 <h2>com.jsql.model.accessible.vendor.ExploitOracle</h2>
 <table class="table table-striped">
@@ -642,19 +662,19 @@
 <td>com.jsql.model.accessible.vendor.ExploitPostgres.getModelYaml() may expose internal representation by returning ExploitPostgres.modelYaml</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L302">302</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L297">297</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>new com.jsql.model.accessible.vendor.ExploitPostgres(InjectionModel) may expose internal representation by storing an externally mutable object into ExploitPostgres.injectionModel</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L43">43</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L41">41</a></td>
 <td>Medium</td></tr>
 <tr class="b">
 <td>Format string should use %n rather than \n in com.jsql.model.accessible.vendor.ExploitPostgres.runRceCmd(String, UUID)</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#VA_FORMAT_STRING_USES_NEWLINE">VA_FORMAT_STRING_USES_NEWLINE</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L166">166</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L159">159</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.vendor.ExploitSqlite"></a><section>
 <h2>com.jsql.model.accessible.vendor.ExploitSqlite</h2>
 <table class="table table-striped">
@@ -669,6 +689,26 @@
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
 <td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L36">36</a></td>
+<td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.vendor.h2.ModelYamlH2"></a><section>
+<h2>com.jsql.model.accessible.vendor.h2.ModelYamlH2</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Bug</th>
+<th>Category</th>
+<th>Details</th>
+<th>Line</th>
+<th>Priority</th></tr>
+<tr class="b">
+<td>com.jsql.model.accessible.vendor.h2.ModelYamlH2.getRce() may expose internal representation by returning ModelYamlH2.rce</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/h2/ModelYamlH2.html#L8">8</a></td>
+<td>Medium</td></tr>
+<tr class="a">
+<td>com.jsql.model.accessible.vendor.h2.ModelYamlH2.setRce(Rce) may expose internal representation by storing an externally mutable object into ModelYamlH2.rce</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/h2/ModelYamlH2.html#L12">12</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.vendor.hsqldb.ModelYamlHsqldb"></a><section>
 <h2>com.jsql.model.accessible.vendor.hsqldb.ModelYamlHsqldb</h2>
 <table class="table table-striped">
@@ -795,13 +835,13 @@
 <th>Line</th>
 <th>Priority</th></tr>
 <tr class="b">
-<td>com.jsql.model.accessible.vendor.oracle.ModelYamlOracle.getRce() may expose internal representation by returning ModelYamlOracle.rce</td>
+<td>com.jsql.model.accessible.vendor.oracle.ModelYamlOracle.getUdf() may expose internal representation by returning ModelYamlOracle.udf</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
 <td><a href="./xref/com/jsql/model/accessible/vendor/oracle/ModelYamlOracle.html#L11">11</a></td>
 <td>Medium</td></tr>
 <tr class="a">
-<td>com.jsql.model.accessible.vendor.oracle.ModelYamlOracle.setRce(Rce) may expose internal representation by storing an externally mutable object into ModelYamlOracle.rce</td>
+<td>com.jsql.model.accessible.vendor.oracle.ModelYamlOracle.setUdf(Udf) may expose internal representation by storing an externally mutable object into ModelYamlOracle.udf</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
 <td><a href="./xref/com/jsql/model/accessible/vendor/oracle/ModelYamlOracle.html#L15">15</a></td>
@@ -853,7 +893,7 @@
 <td><a href="./xref/com/jsql/model/accessible/vendor/postgres/ModelYamlPostgres.html#L20">20</a></td>
 <td>Medium</td></tr>
 <tr class="a">
-<td>com.jsql.model.accessible.vendor.postgres.ModelYamlPostgres.getRce() may expose internal representation by returning ModelYamlPostgres.rce</td>
+<td>com.jsql.model.accessible.vendor.postgres.ModelYamlPostgres.getUdf() may expose internal representation by returning ModelYamlPostgres.udf</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
 <td><a href="./xref/com/jsql/model/accessible/vendor/postgres/ModelYamlPostgres.html#L12">12</a></td>
@@ -865,7 +905,7 @@
 <td><a href="./xref/com/jsql/model/accessible/vendor/postgres/ModelYamlPostgres.html#L24">24</a></td>
 <td>Medium</td></tr>
 <tr class="a">
-<td>com.jsql.model.accessible.vendor.postgres.ModelYamlPostgres.setRce(Rce) may expose internal representation by storing an externally mutable object into ModelYamlPostgres.rce</td>
+<td>com.jsql.model.accessible.vendor.postgres.ModelYamlPostgres.setUdf(Udf) may expose internal representation by storing an externally mutable object into ModelYamlPostgres.udf</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
 <td><a href="./xref/com/jsql/model/accessible/vendor/postgres/ModelYamlPostgres.html#L16">16</a></td>
@@ -877,43 +917,11 @@
 <td>Not available</td>
 <td>High</td></tr>
 <tr class="a">
-<td>Class com.jsql.model.accessible.vendor.postgres.ModelYamlPostgres defines non-transient non-serializable instance field rce</td>
+<td>Class com.jsql.model.accessible.vendor.postgres.ModelYamlPostgres defines non-transient non-serializable instance field udf</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#SE_BAD_FIELD">SE_BAD_FIELD</a></td>
 <td>Not available</td>
-<td>High</td></tr></table></section><a name="com.jsql.model.accessible.vendor.postgres.Rce"></a><section>
-<h2>com.jsql.model.accessible.vendor.postgres.Rce</h2>
-<table class="table table-striped">
-<tr class="a">
-<th>Bug</th>
-<th>Category</th>
-<th>Details</th>
-<th>Line</th>
-<th>Priority</th></tr>
-<tr class="b">
-<td>com.jsql.model.accessible.vendor.postgres.Rce.getExtension() may expose internal representation by returning Rce.extension</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/postgres/Rce.html#L16">16</a></td>
-<td>Medium</td></tr>
-<tr class="a">
-<td>com.jsql.model.accessible.vendor.postgres.Rce.getSql() may expose internal representation by returning Rce.sql</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/postgres/Rce.html#L56">56</a></td>
-<td>Medium</td></tr>
-<tr class="b">
-<td>com.jsql.model.accessible.vendor.postgres.Rce.setExtension(Extension) may expose internal representation by storing an externally mutable object into Rce.extension</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/postgres/Rce.html#L20">20</a></td>
-<td>Medium</td></tr>
-<tr class="a">
-<td>com.jsql.model.accessible.vendor.postgres.Rce.setSql(Sql) may expose internal representation by storing an externally mutable object into Rce.sql</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/postgres/Rce.html#L60">60</a></td>
-<td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.vendor.postgres.Read"></a><section>
+<td>High</td></tr></table></section><a name="com.jsql.model.accessible.vendor.postgres.Read"></a><section>
 <h2>com.jsql.model.accessible.vendor.postgres.Read</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -953,6 +961,38 @@
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
 <td><a href="./xref/com/jsql/model/accessible/vendor/postgres/Sql.html#L36">36</a></td>
+<td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.vendor.postgres.Udf"></a><section>
+<h2>com.jsql.model.accessible.vendor.postgres.Udf</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Bug</th>
+<th>Category</th>
+<th>Details</th>
+<th>Line</th>
+<th>Priority</th></tr>
+<tr class="b">
+<td>com.jsql.model.accessible.vendor.postgres.Udf.getExtension() may expose internal representation by returning Udf.extension</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/postgres/Udf.html#L16">16</a></td>
+<td>Medium</td></tr>
+<tr class="a">
+<td>com.jsql.model.accessible.vendor.postgres.Udf.getSql() may expose internal representation by returning Udf.sql</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/postgres/Udf.html#L56">56</a></td>
+<td>Medium</td></tr>
+<tr class="b">
+<td>com.jsql.model.accessible.vendor.postgres.Udf.setExtension(Extension) may expose internal representation by storing an externally mutable object into Udf.extension</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/postgres/Udf.html#L20">20</a></td>
+<td>Medium</td></tr>
+<tr class="a">
+<td>com.jsql.model.accessible.vendor.postgres.Udf.setSql(Sql) may expose internal representation by storing an externally mutable object into Udf.sql</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/postgres/Udf.html#L60">60</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.vendor.postgres.Write"></a><section>
 <h2>com.jsql.model.accessible.vendor.postgres.Write</h2>
 <table class="table table-striped">

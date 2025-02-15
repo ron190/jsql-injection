@@ -11,11 +11,7 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.accessible.vendor.ExploitHsqldb;
-import com.jsql.model.accessible.vendor.ExploitMysql;
-import com.jsql.model.accessible.vendor.ExploitOracle;
-import com.jsql.model.accessible.vendor.ExploitPostgres;
-import com.jsql.model.accessible.vendor.ExploitSqlite;
+import com.jsql.model.accessible.vendor.*;
 import com.jsql.model.bean.database.MockElement;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -59,36 +55,39 @@ public class ResourceAccess {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L62">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L58">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * True if admin page should stop, false otherwise.
      */
-<span class="fc" id="L67">    private boolean isSearchAdminStopped = false;</span>
+<span class="fc" id="L63">    private boolean isSearchAdminStopped = false;</span>
     
     /**
      * True if scan list should stop, false otherwise.
      */
-<span class="fc" id="L72">    private boolean isScanStopped = false;</span>
+<span class="fc" id="L68">    private boolean isScanStopped = false;</span>
 
     /**
      * True if ongoing file reading must stop, false otherwise.
      * If true any new file read is cancelled at start.
      */
-<span class="fc" id="L78">    private boolean isSearchFileStopped = false;</span>
+<span class="fc" id="L74">    private boolean isSearchFileStopped = false;</span>
 
     /**
      * List of ongoing jobs.
      */
-<span class="fc" id="L83">    private final List&lt;CallableFile&gt; callablesReadFile = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L79">    private final List&lt;CallableFile&gt; callablesReadFile = new ArrayList&lt;&gt;();</span>
     private final InjectionModel injectionModel;
     private final ExploitSqlite exploitSqlite;
     private final ExploitMysql exploitMysql;
     private final ExploitOracle exploitOracle;
     private final ExploitPostgres exploitPostgres;
     private final ExploitHsqldb exploitHsqldb;
+    private final ExploitH2 exploitH2;
 
-<span class="fc" id="L91">    public static final String WEB_CONFIRM_CMD = URLEncoder.encode(&quot;echo \&quot;iamin$((133707330+1))\&quot;&quot;, StandardCharsets.ISO_8859_1);</span>
+    // compatible cross-platform win+linux (spaces around plus sign required)
+<span class="fc" id="L89">    public static final String WEB_CONFIRM_CMD = URLEncoder.encode(&quot;expr 133707330 + 10001&quot;, StandardCharsets.ISO_8859_1);</span>
+    public static final String WEB_CONFIRM_RESULT = &quot;133717331&quot;;
     public static final String SQL_CONFIRM_CMD = &quot;select 1337&quot;;
     public static final String SQL_CONFIRM_RESULT = &quot;| 1337 |&quot;;
 
@@ -116,13 +115,14 @@ public class ResourceAccess {
     // TODO should redirect error directly to default output
     public static final String TEMPLATE_ERROR = &quot;Command failure: %s\nTry '%s 2&gt;&amp;1' to get a system error message.\n&quot;;
 
-<span class="fc" id="L119">    public ResourceAccess(InjectionModel injectionModel) {</span>
-<span class="fc" id="L120">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L121">        this.exploitSqlite = new ExploitSqlite(injectionModel);</span>
-<span class="fc" id="L122">        this.exploitMysql = new ExploitMysql(injectionModel);</span>
-<span class="fc" id="L123">        this.exploitOracle = new ExploitOracle(injectionModel);</span>
-<span class="fc" id="L124">        this.exploitPostgres = new ExploitPostgres(injectionModel);</span>
-<span class="fc" id="L125">        this.exploitHsqldb = new ExploitHsqldb(injectionModel);</span>
+<span class="fc" id="L118">    public ResourceAccess(InjectionModel injectionModel) {</span>
+<span class="fc" id="L119">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L120">        this.exploitSqlite = new ExploitSqlite(injectionModel);</span>
+<span class="fc" id="L121">        this.exploitMysql = new ExploitMysql(injectionModel);</span>
+<span class="fc" id="L122">        this.exploitOracle = new ExploitOracle(injectionModel);</span>
+<span class="fc" id="L123">        this.exploitPostgres = new ExploitPostgres(injectionModel);</span>
+<span class="fc" id="L124">        this.exploitHsqldb = new ExploitHsqldb(injectionModel);</span>
+<span class="fc" id="L125">        this.exploitH2 = new ExploitH2(injectionModel);</span>
 <span class="fc" id="L126">    }</span>
 
     /**
@@ -691,6 +691,10 @@ public class ResourceAccess {
 
     public ExploitHsqldb getExploitHsqldb() {
 <span class="fc" id="L693">        return this.exploitHsqldb;</span>
+    }
+
+    public ExploitH2 getExploitH2() {
+<span class="fc" id="L697">        return this.exploitH2;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
