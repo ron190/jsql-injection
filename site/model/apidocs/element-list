@@ -1,6 +1,7 @@
 com.jsql.model
 com.jsql.model.accessible
 com.jsql.model.accessible.vendor
+com.jsql.model.accessible.vendor.derby
 com.jsql.model.accessible.vendor.h2
 com.jsql.model.accessible.vendor.hsqldb
 com.jsql.model.accessible.vendor.mysql

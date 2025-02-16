@@ -84,93 +84,93 @@ public class JFrameView extends JFrame {
             }
 <span class="fc" id="L85">            injectionModel.getMediatorUtils().getGitUtil().showNews();</span>
 <span class="fc" id="L86">            this.setVisible(true);</span>
-<span class="fc" id="L87">        });</span>
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L87">            MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();  // required here to get focus</span>
+<span class="fc" id="L88">        });</span>
+<span class="fc" id="L89">    }</span>
 
     private void initPaneComponents() {
         // Define the default panel: each component on a vertical line
-<span class="fc" id="L92">        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));</span>
+<span class="fc" id="L93">        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));</span>
 
-<span class="fc" id="L94">        this.tabManagers = new TabManagers();  // Tab manager linked to cards</span>
-<span class="fc" id="L95">        this.add(this.tabManagers);</span>
+<span class="fc" id="L95">        this.tabManagers = new TabManagers();  // Tab manager linked to cards</span>
+<span class="fc" id="L96">        this.add(this.tabManagers);</span>
 
-<span class="fc" id="L97">        var menubar = new AppMenubar();</span>
-<span class="fc" id="L98">        this.setJMenuBar(menubar);</span>
-<span class="fc" id="L99">        MediatorHelper.register(menubar);</span>
+<span class="fc" id="L98">        var menubar = new AppMenubar();</span>
+<span class="fc" id="L99">        this.setJMenuBar(menubar);</span>
+<span class="fc" id="L100">        MediatorHelper.register(menubar);</span>
 
-<span class="fc" id="L101">        var panelAddressBar = new PanelAddressBar();  // Textfield at the top</span>
-<span class="fc" id="L102">        MediatorHelper.register(panelAddressBar);</span>
-<span class="fc" id="L103">        this.add(panelAddressBar);</span>
+<span class="fc" id="L102">        var panelAddressBar = new PanelAddressBar();  // Textfield at the top</span>
+<span class="fc" id="L103">        MediatorHelper.register(panelAddressBar);</span>
+<span class="fc" id="L104">        this.add(panelAddressBar);</span>
 
-<span class="fc" id="L105">        var mainPanel = new JPanel(new BorderLayout());  // Main panel for tree and tables in the middle</span>
-<span class="fc" id="L106">        this.splitNS = new SplitNS();</span>
-<span class="fc" id="L107">        mainPanel.add(this.splitNS);</span>
-<span class="fc" id="L108">        this.add(mainPanel);</span>
+<span class="fc" id="L106">        var mainPanel = new JPanel(new BorderLayout());  // Main panel for tree and tables in the middle</span>
+<span class="fc" id="L107">        this.splitNS = new SplitNS();</span>
+<span class="fc" id="L108">        mainPanel.add(this.splitNS);</span>
+<span class="fc" id="L109">        this.add(mainPanel);</span>
 
-<span class="fc" id="L110">        menubar.getMenuWindows().switchLocaleFromPreferences();</span>
-<span class="fc" id="L111">    }</span>
+<span class="fc" id="L111">        menubar.getMenuWindows().switchLocaleFromPreferences();</span>
+<span class="fc" id="L112">    }</span>
 
     private void initWindow() {
-<span class="fc" id="L114">        this.setIconImages(UiUtil.getIcons());  // define small and large app icons</span>
-<span class="fc" id="L115">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
-<span class="pc bnc" id="L116" title="All 2 branches missed.">        this.addWindowStateListener(e -&gt; this.isMaximized = (e.getNewState() &amp; Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH);</span>
-<span class="fc" id="L117">        this.addWindowListener(new WindowAdapter() {</span>
+<span class="fc" id="L115">        this.setIconImages(UiUtil.getIcons());  // define small and large app icons</span>
+<span class="fc" id="L116">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="pc bnc" id="L117" title="All 2 branches missed.">        this.addWindowStateListener(e -&gt; this.isMaximized = (e.getNewState() &amp; Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH);</span>
+<span class="fc" id="L118">        this.addWindowListener(new WindowAdapter() {</span>
             @Override
             public void windowOpened(WindowEvent event) {
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">                if (preferences.getBoolean(PreferencesUtil.IS_MAXIMIZED, false)) {</span>
-<span class="nc" id="L121">                    JFrameView.this.setExtendedState(Frame.MAXIMIZED_BOTH);</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">                if (preferences.getBoolean(PreferencesUtil.IS_MAXIMIZED, false)) {</span>
+<span class="nc" id="L122">                    JFrameView.this.setExtendedState(Frame.MAXIMIZED_BOTH);</span>
                 }
-<span class="fc" id="L123">                var horizontalTopBottomSplitter = preferences.getDouble(PreferencesUtil.NS_SPLIT, 0.75);</span>
-<span class="pc bpc" id="L124" title="2 of 4 branches missed.">                if (!(0.0 &lt;= horizontalTopBottomSplitter &amp;&amp; horizontalTopBottomSplitter &lt;= 1.0)) {</span>
-<span class="nc" id="L125">                    horizontalTopBottomSplitter = 0.75;</span>
+<span class="fc" id="L124">                var horizontalTopBottomSplitter = preferences.getDouble(PreferencesUtil.NS_SPLIT, 0.75);</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">                if (!(0.0 &lt;= horizontalTopBottomSplitter &amp;&amp; horizontalTopBottomSplitter &lt;= 1.0)) {</span>
+<span class="nc" id="L126">                    horizontalTopBottomSplitter = 0.75;</span>
                 }
-<span class="fc" id="L127">                JFrameView.this.splitNS.setDividerLocation(horizontalTopBottomSplitter);</span>
-<span class="fc" id="L128">            }</span>
+<span class="fc" id="L128">                JFrameView.this.splitNS.setDividerLocation(horizontalTopBottomSplitter);</span>
+<span class="fc" id="L129">            }</span>
 
             @Override
             public void windowClosing(WindowEvent e) {
-<span class="nc" id="L132">                preferences.putBoolean(PreferencesUtil.IS_MAXIMIZED, JFrameView.this.isMaximized);</span>
-<span class="nc" id="L133">                preferences.putInt(</span>
+<span class="nc" id="L133">                preferences.putBoolean(PreferencesUtil.IS_MAXIMIZED, JFrameView.this.isMaximized);</span>
+<span class="nc" id="L134">                preferences.putInt(</span>
                     PreferencesUtil.EW_SPLIT,
                     // TODO not compatible arabic location
-<span class="nc" id="L136">                    JFrameView.this.splitNS.getSplitEW().getDividerLocation()</span>
+<span class="nc" id="L137">                    JFrameView.this.splitNS.getSplitEW().getDividerLocation()</span>
                 );
                 
-<span class="nc" id="L139">                var percentTopBottom = BigDecimal.valueOf(</span>
-<span class="nc" id="L140">                    JFrameView.this.splitNS.getDividerLocation() * 100.0</span>
-<span class="nc" id="L141">                    / JFrameView.this.splitNS.getHeight()</span>
+<span class="nc" id="L140">                var percentTopBottom = BigDecimal.valueOf(</span>
+<span class="nc" id="L141">                    JFrameView.this.splitNS.getDividerLocation() * 100.0</span>
+<span class="nc" id="L142">                    / JFrameView.this.splitNS.getHeight()</span>
                     / 100
                 );
-<span class="nc" id="L144">                percentTopBottom = percentTopBottom.setScale(2, RoundingMode.HALF_UP);</span>
+<span class="nc" id="L145">                percentTopBottom = percentTopBottom.setScale(2, RoundingMode.HALF_UP);</span>
                 
                 // Divider location change when window is maximized, we can't save getDividerLocation()
-<span class="nc" id="L147">                preferences.putDouble(</span>
+<span class="nc" id="L148">                preferences.putDouble(</span>
                     PreferencesUtil.NS_SPLIT,
-<span class="nc" id="L149">                    percentTopBottom.doubleValue() - 0.01  // Fix scale</span>
+<span class="nc" id="L150">                    percentTopBottom.doubleValue() - 0.01  // Fix scale</span>
                 );
 
-<span class="nc" id="L152">                preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, false);</span>
-<span class="nc" id="L153">                preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, false);</span>
-<span class="nc" id="L154">                preferences.putBoolean(PreferencesUtil.NETWORK_VISIBLE, false);</span>
-<span class="nc" id="L155">                preferences.putBoolean(PreferencesUtil.JAVA_VISIBLE, false);</span>
-<span class="nc bnc" id="L156" title="All 2 branches missed.">                for (var i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">                    if (&quot;CONSOLE_BINARY_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
-<span class="nc" id="L158">                        preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, true);</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_CHUNK_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
-<span class="nc" id="L160">                        preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, true);</span>
-<span class="nc bnc" id="L161" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_NETWORK_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
-<span class="nc" id="L162">                        preferences.putBoolean(PreferencesUtil.NETWORK_VISIBLE, true);</span>
-<span class="nc bnc" id="L163" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_JAVA_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
-<span class="nc" id="L164">                        preferences.putBoolean(PreferencesUtil.JAVA_VISIBLE, true);</span>
+<span class="nc" id="L153">                preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, false);</span>
+<span class="nc" id="L154">                preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, false);</span>
+<span class="nc" id="L155">                preferences.putBoolean(PreferencesUtil.NETWORK_VISIBLE, false);</span>
+<span class="nc" id="L156">                preferences.putBoolean(PreferencesUtil.JAVA_VISIBLE, false);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">                for (var i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                    if (&quot;CONSOLE_BINARY_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
+<span class="nc" id="L159">                        preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, true);</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_CHUNK_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
+<span class="nc" id="L161">                        preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, true);</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_NETWORK_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
+<span class="nc" id="L163">                        preferences.putBoolean(PreferencesUtil.NETWORK_VISIBLE, true);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                    } else if (&quot;CONSOLE_JAVA_LABEL&quot;.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {</span>
+<span class="nc" id="L165">                        preferences.putBoolean(PreferencesUtil.JAVA_VISIBLE, true);</span>
                     }
                 }
-<span class="nc" id="L167">            }</span>
+<span class="nc" id="L168">            }</span>
         });
         
-<span class="fc" id="L170">        this.setSize(1024, 768);</span>
-<span class="fc" id="L171">        this.setLocationRelativeTo(null);  // center the window</span>
-<span class="fc" id="L172">        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</span>
-<span class="fc" id="L173">        MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();</span>
+<span class="fc" id="L171">        this.setSize(1024, 768);</span>
+<span class="fc" id="L172">        this.setLocationRelativeTo(null);  // center the window</span>
+<span class="fc" id="L173">        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</span>
 <span class="fc" id="L174">    }</span>
 
     private void initShortcuts() {
