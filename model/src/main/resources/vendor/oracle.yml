@@ -15,31 +15,13 @@ resource:
   # sliding window issue with sys.stragg() and listagg(): missing values
   database: |
    select
-       utl_raw.cast_to_varchar2(
-           cast(
-               dbms_lob.substr(
-                   replace(
-                       replace(
-                           xmlagg(
-                               xmlelement(
-                                   "a",
-                                   rawtohex(
-                                       '${enclose_value_sql}'
-                                       || s
-                                       || '${separator_qte_sql}0${enclose_value_sql}'
-                                   )
-                               ) order by s nulls last
-                           ).getclobval(),
-                           '<a>',''
-                       ),
-                       '<%2fa>',
-                       rawtohex('${separator_cell_sql}')
-                   ) || rawtohex('${trail_sql}'),
-                   4000,
-                   1
-               ) as varchar(1024)
-           )
-       )
+       listagg(
+           '${enclose_value_sql}'
+           || s
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
+           ON OVERFLOW TRUNCATE
+       ) within group (order by s) || '${trail_sql}'
    from (
        select t.s
        from
@@ -52,32 +34,13 @@ resource:
 
   table: |
    select
-       utl_raw.cast_to_varchar2(
-           cast(
-               dbms_lob.substr(
-                   replace(
-                       replace(
-                           xmlagg(
-                               xmlelement(
-                                   "a",
-                                   rawtohex(
-                                       '${enclose_value_sql}'
-                                       || s
-                                       || '${separator_qte_sql}0${enclose_value_sql}'
-                                   )
-                               ) order by s nulls last
-                           ).getclobval(),
-                           '<a>',
-                           ''
-                       ),
-                       '<%2fa>',
-                       rawtohex('${separator_cell_sql}')
-                   ) || rawtohex('${trail_sql}'),
-                   4000,
-                   1
-               ) as varchar(1024)
-           )
-       )
+       listagg(
+           '${enclose_value_sql}'
+           || s
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
+           ON OVERFLOW TRUNCATE
+       ) within group (order by s) || '${trail_sql}'
    from (
        select t.s
        from
@@ -90,32 +53,13 @@ resource:
 
   column: |
    select
-       utl_raw.cast_to_varchar2(
-           cast(
-               dbms_lob.substr(
-                   replace(
-                       replace(
-                           xmlagg(
-                               xmlelement(
-                                   "a",
-                                   rawtohex(
-                                       '${enclose_value_sql}'
-                                       || s
-                                       || '${separator_qte_sql}0${enclose_value_sql}'
-                                   )
-                               ) order by s nulls last
-                           ).getclobval(),
-                           '<a>',
-                           ''
-                       ),
-                       '<%2fa>',
-                       rawtohex('${separator_cell_sql}')
-                   ) || rawtohex('${trail_sql}'),
-                   4000,
-                   1
-               ) as varchar(1024)
-           )
-       )
+       listagg(
+           '${enclose_value_sql}'
+           || s
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
+           ON OVERFLOW TRUNCATE
+       ) within group (order by s) || '${trail_sql}'
    from (
        select t.s
        from
@@ -129,32 +73,13 @@ resource:
   row:
    query: |
     select
-        utl_raw.cast_to_varchar2(
-            cast(
-                dbms_lob.substr(
-                    replace(
-                        replace(
-                            xmlagg(
-                                xmlelement(
-                                    "a",
-                                    rawtohex(
-                                        '${enclose_value_sql}'
-                                        || s
-                                        || '${separator_qte_sql}0${enclose_value_sql}'
-                                    )
-                                ) order by s nulls last
-                            ).getclobval(),
-                            '<a>',
-                            ''
-                        ),
-                        '<%2fa>',
-                        rawtohex('${separator_cell_sql}')
-                    ) || rawtohex('${trail_sql}'),
-                    4000,
-                    1
-                ) as varchar(1024)
-            )
-        )
+        listagg(
+            '${enclose_value_sql}'
+            || s
+            || '${separator_qte_sql}0${enclose_value_sql}',
+            '${separator_cell_sql}'
+            ON OVERFLOW TRUNCATE
+        ) within group (order by s) || '${trail_sql}'
     from (
         select t.s
         from
@@ -257,7 +182,7 @@ strategy:
    orderByErrorMessage:
     - ORDER BY item must be the number of a SELECT-list expression
    # listagg to prevent collision with hsqldb
-   vendorSpecific: 0 != bitand(case when ${test} (select listagg(1) from dual) else (select listagg(2) from dual) end, 1)
+   vendorSpecific: 0 != bitand(case when ${test} then (select listagg(1) from dual) else (select listagg(2) from dual) end, 1)
 
  union:
   indices: union select ${indices} from dual

@@ -20,6 +20,7 @@
 
 package pjbs.standalone;
 
+import org.apache.derby.drda.NetworkServerControl;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -45,7 +46,7 @@ public class Server2 extends Thread {
     private ServerSocket serverSocket = null;
     private boolean listening = true;
 
-    public static void main(String[] args) throws SQLException, InterruptedException {
+    public static void main(String[] args) throws Exception {
         var serverHsqldb = new org.hsqldb.server.Server();
         serverHsqldb.setSilent(true);
         serverHsqldb.setDatabaseName(0, "mainDb");
@@ -55,6 +56,9 @@ public class Server2 extends Thread {
 
         var serverH2 = org.h2.tools.Server.createTcpServer();
         serverH2.start();
+
+        var serverDerby = new NetworkServerControl();
+        serverDerby.start(null);
 
         Server2 server = new Server2();
         server.start();
@@ -68,7 +72,8 @@ public class Server2 extends Thread {
         int port = 4444;
         String[] drivers = {
             "org.hsqldb.jdbc.JDBCDriver",
-            "org.h2.Driver"
+            "org.h2.Driver",
+            "org.apache.derby.jdbc.ClientDriver"
         };
 
         try {

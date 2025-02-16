@@ -84,6 +84,7 @@ public class JFrameView extends JFrame {
             }
             injectionModel.getMediatorUtils().getGitUtil().showNews();
             this.setVisible(true);
+            MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();  // required here to get focus
         });
     }
 
@@ -170,7 +171,6 @@ public class JFrameView extends JFrame {
         this.setSize(1024, 768);
         this.setLocationRelativeTo(null);  // center the window
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
     }
 
     private void initShortcuts() {

@@ -26,7 +26,6 @@ public class DerbyUnionGetSuiteIT extends ConcreteDerbySuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getDerby());
         model.beginInjection();
     }
     

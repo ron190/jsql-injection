@@ -129,11 +129,13 @@ public class HibernateRestController {
     }
 
     @RequestMapping("/stack2")
-    public Greeting endpointStack2(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {
+    public Greeting endpointStack2(@RequestParam(value="name", defaultValue="World") String name, @RequestParam(value="semicolon", defaultValue="true") String semicolon, @RequestHeader Map<String, String> headers) {
         Greeting greeting = new Greeting(null);
         var result = new StringBuilder();
         Arrays.stream(("select First_Name from Student where '1' = '"+name+"'").split(";")).map(String::trim).forEach(query -> {
-            query = query +";";
+            if ("true".equals(semicolon)) {
+                query = query +";";
+            }
             Greeting g = this.getResponse(query, query, true, false, true, false, false, true);
             if (g != null) result.append(g.getContent());
         });

@@ -3,6 +3,7 @@ package com.jsql.model.accessible;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.MockElement;
 import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.LoopDetectedSlidingException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.SuspendableGetRows;
@@ -94,6 +95,24 @@ public class CallableFile implements Callable<CallableFile> {
                     MockElement.MOCK,
                     ResourceAccess.FILE_READ
                 );
+            } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getDerby()) {
+                var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
+                this.injectionModel.injectWithoutIndex(String.format(
+                    this.injectionModel.getResourceAccess().getExploitDerby().getModelYaml().getFile().getCreateTable(),
+                    nameTable,
+                    nameTable, this.pathFile
+                ), ResourceAccess.TBL_FILL);
+                resultToParse = this.suspendableReadFile.run(
+                    String.format(
+                        this.injectionModel.getResourceAccess().getExploitDerby().getModelYaml().getFile().getRead(),
+                        nameTable
+                    ),
+                    sourcePage,
+                    true,
+                    0,
+                    MockElement.MOCK,
+                    ResourceAccess.FILE_READ
+                );
             } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getHsqldb()) {
                 var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
                 this.injectionModel.injectWithoutIndex(String.format(
@@ -177,14 +196,14 @@ public class CallableFile implements Callable<CallableFile> {
         } catch (InjectionFailureException e) {
             // Usually thrown if File does not exist
             LOGGER.log(LogLevelUtil.IGNORE, e);
-        } catch (StoppedByUserSlidingException e) {
+        } catch (LoopDetectedSlidingException | StoppedByUserSlidingException e) {
             // Get partial source
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
             } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
-            LOGGER.log(LogLevelUtil.IGNORE, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
         }
         
         this.sourceFile = resultToParse;
