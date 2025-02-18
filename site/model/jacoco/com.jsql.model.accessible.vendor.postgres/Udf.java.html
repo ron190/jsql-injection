@@ -2,70 +2,72 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class Udf {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private Extension extension = new Extension();</span>
-<span class="fc" id="L8">    private String plpython = StringUtils.EMPTY;</span>
-<span class="fc" id="L9">    private String plperlu = StringUtils.EMPTY;</span>
-<span class="fc" id="L10">    private String plsh = StringUtils.EMPTY;</span>
-<span class="fc" id="L11">    private String runFunc = StringUtils.EMPTY;</span>
-<span class="fc" id="L12">    private String dropFunc = StringUtils.EMPTY;</span>
-<span class="fc" id="L13">    private Sql sql = new Sql();</span>
+<span class="fc" id="L7">public class Udf implements Serializable {</span>
+
+<span class="fc" id="L9">    private Extension extension = new Extension();</span>
+<span class="fc" id="L10">    private String plpython = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private String plperlu = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private String plsh = StringUtils.EMPTY;</span>
+<span class="fc" id="L13">    private String runFunc = StringUtils.EMPTY;</span>
+<span class="fc" id="L14">    private String dropFunc = StringUtils.EMPTY;</span>
+<span class="fc" id="L15">    private Sql sql = new Sql();</span>
 
     public Extension getExtension() {
-<span class="fc" id="L16">        return this.extension;</span>
+<span class="fc" id="L18">        return this.extension;</span>
     }
 
     public void setExtension(Extension extension) {
-<span class="fc" id="L20">        this.extension = extension;</span>
-<span class="fc" id="L21">    }</span>
+<span class="fc" id="L22">        this.extension = extension;</span>
+<span class="fc" id="L23">    }</span>
 
     public String getPlpython() {
-<span class="fc" id="L24">        return this.plpython;</span>
+<span class="fc" id="L26">        return this.plpython;</span>
     }
 
     public void setPlpython(String plpython) {
-<span class="fc" id="L28">        this.plpython = plpython;</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L30">        this.plpython = plpython;</span>
+<span class="fc" id="L31">    }</span>
 
     public String getPlperlu() {
-<span class="fc" id="L32">        return this.plperlu;</span>
+<span class="fc" id="L34">        return this.plperlu;</span>
     }
 
     public void setPlperlu(String plperlu) {
-<span class="fc" id="L36">        this.plperlu = plperlu;</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L38">        this.plperlu = plperlu;</span>
+<span class="fc" id="L39">    }</span>
 
     public String getPlsh() {
-<span class="fc" id="L40">        return this.plsh;</span>
+<span class="fc" id="L42">        return this.plsh;</span>
     }
 
     public void setPlsh(String plsh) {
-<span class="fc" id="L44">        this.plsh = plsh;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L46">        this.plsh = plsh;</span>
+<span class="fc" id="L47">    }</span>
 
     public String getRunFunc() {
-<span class="fc" id="L48">        return this.runFunc;</span>
+<span class="fc" id="L50">        return this.runFunc;</span>
     }
 
     public void setRunFunc(String runFunc) {
-<span class="fc" id="L52">        this.runFunc = runFunc;</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L54">        this.runFunc = runFunc;</span>
+<span class="fc" id="L55">    }</span>
 
     public Sql getSql() {
-<span class="fc" id="L56">        return this.sql;</span>
+<span class="fc" id="L58">        return this.sql;</span>
     }
 
     public void setSql(Sql sql) {
-<span class="fc" id="L60">        this.sql = sql;</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L62">        this.sql = sql;</span>
+<span class="fc" id="L63">    }</span>
 
     public String getDropFunc() {
-<span class="fc" id="L64">        return this.dropFunc;</span>
+<span class="fc" id="L66">        return this.dropFunc;</span>
     }
 
     public void setDropFunc(String dropFunc) {
-<span class="fc" id="L68">        this.dropFunc = dropFunc;</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L70">        this.dropFunc = dropFunc;</span>
+<span class="fc" id="L71">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

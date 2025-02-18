@@ -2,34 +2,36 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class Read {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private String fromDataFolder = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private LargeObject largeObject = new LargeObject();</span>
-<span class="fc" id="L9">    private String fromTempTable = StringUtils.EMPTY;</span>
+<span class="fc" id="L7">public class Read implements Serializable {</span>
+
+<span class="fc" id="L9">    private String fromDataFolder = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private LargeObject largeObject = new LargeObject();</span>
+<span class="fc" id="L11">    private String fromTempTable = StringUtils.EMPTY;</span>
 
     public String getFromDataFolder() {
-<span class="fc" id="L12">        return this.fromDataFolder;</span>
+<span class="fc" id="L14">        return this.fromDataFolder;</span>
     }
 
     public void setFromDataFolder(String fromDataFolder) {
-<span class="fc" id="L16">        this.fromDataFolder = fromDataFolder;</span>
-<span class="fc" id="L17">    }</span>
+<span class="fc" id="L18">        this.fromDataFolder = fromDataFolder;</span>
+<span class="fc" id="L19">    }</span>
 
     public LargeObject getLargeObject() {
-<span class="fc" id="L20">        return this.largeObject;</span>
+<span class="fc" id="L22">        return this.largeObject;</span>
     }
 
     public void setLargeObject(LargeObject largeObject) {
-<span class="fc" id="L24">        this.largeObject = largeObject;</span>
-<span class="fc" id="L25">    }</span>
+<span class="fc" id="L26">        this.largeObject = largeObject;</span>
+<span class="fc" id="L27">    }</span>
 
     public String getFromTempTable() {
-<span class="nc" id="L28">        return this.fromTempTable;</span>
+<span class="nc" id="L30">        return this.fromTempTable;</span>
     }
 
     public void setFromTempTable(String fromTempTable) {
-<span class="fc" id="L32">        this.fromTempTable = fromTempTable;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L34">        this.fromTempTable = fromTempTable;</span>
+<span class="fc" id="L35">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

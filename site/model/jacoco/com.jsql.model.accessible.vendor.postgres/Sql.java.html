@@ -2,70 +2,72 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class Sql {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private String dropTable = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private String createTable = StringUtils.EMPTY;</span>
-<span class="fc" id="L9">    private Confirm confirm = new Confirm();</span>
-<span class="fc" id="L10">    private String resultCmd = StringUtils.EMPTY;</span>
-<span class="fc" id="L11">    private String runCmd = StringUtils.EMPTY;</span>
-<span class="fc" id="L12">    private String clean = StringUtils.EMPTY;</span>
-<span class="fc" id="L13">    private String runFunc = StringUtils.EMPTY;</span>
+<span class="fc" id="L7">public class Sql implements Serializable {</span>
+
+<span class="fc" id="L9">    private String dropTable = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String createTable = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private Confirm confirm = new Confirm();</span>
+<span class="fc" id="L12">    private String resultCmd = StringUtils.EMPTY;</span>
+<span class="fc" id="L13">    private String runCmd = StringUtils.EMPTY;</span>
+<span class="fc" id="L14">    private String clean = StringUtils.EMPTY;</span>
+<span class="fc" id="L15">    private String runFunc = StringUtils.EMPTY;</span>
 
     public String getDropTable() {
-<span class="fc" id="L16">        return this.dropTable;</span>
+<span class="fc" id="L18">        return this.dropTable;</span>
     }
 
     public void setDropTable(String dropTable) {
-<span class="fc" id="L20">        this.dropTable = dropTable;</span>
-<span class="fc" id="L21">    }</span>
+<span class="fc" id="L22">        this.dropTable = dropTable;</span>
+<span class="fc" id="L23">    }</span>
 
     public String getCreateTable() {
-<span class="fc" id="L24">        return this.createTable;</span>
+<span class="fc" id="L26">        return this.createTable;</span>
     }
 
     public void setCreateTable(String createTable) {
-<span class="fc" id="L28">        this.createTable = createTable;</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L30">        this.createTable = createTable;</span>
+<span class="fc" id="L31">    }</span>
 
     public Confirm getConfirm() {
-<span class="fc" id="L32">        return this.confirm;</span>
+<span class="fc" id="L34">        return this.confirm;</span>
     }
 
     public void setConfirm(Confirm confirm) {
-<span class="fc" id="L36">        this.confirm = confirm;</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L38">        this.confirm = confirm;</span>
+<span class="fc" id="L39">    }</span>
 
     public String getResultCmd() {
-<span class="fc" id="L40">        return this.resultCmd;</span>
+<span class="fc" id="L42">        return this.resultCmd;</span>
     }
 
     public void setResultCmd(String resultCmd) {
-<span class="fc" id="L44">        this.resultCmd = resultCmd;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L46">        this.resultCmd = resultCmd;</span>
+<span class="fc" id="L47">    }</span>
 
     public String getRunCmd() {
-<span class="fc" id="L48">        return this.runCmd;</span>
+<span class="fc" id="L50">        return this.runCmd;</span>
     }
 
     public void setRunCmd(String runCmd) {
-<span class="fc" id="L52">        this.runCmd = runCmd;</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L54">        this.runCmd = runCmd;</span>
+<span class="fc" id="L55">    }</span>
 
     public String getClean() {
-<span class="fc" id="L56">        return this.clean;</span>
+<span class="fc" id="L58">        return this.clean;</span>
     }
 
     public void setClean(String clean) {
-<span class="fc" id="L60">        this.clean = clean;</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L62">        this.clean = clean;</span>
+<span class="fc" id="L63">    }</span>
 
     public String getRunFunc() {
-<span class="fc" id="L64">        return this.runFunc;</span>
+<span class="fc" id="L66">        return this.runFunc;</span>
     }
 
     public void setRunFunc(String runFunc) {
-<span class="fc" id="L68">        this.runFunc = runFunc;</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L70">        this.runFunc = runFunc;</span>
+<span class="fc" id="L71">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
