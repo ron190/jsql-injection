@@ -1,6 +1,8 @@
 package com.jsql.model.accessible.vendor.postgres;
 
-public class Write {
+import java.io.Serializable;
+
+public class Write implements Serializable {
 
     private LargeObject largeObject = new LargeObject();
     private TempTable tempTable = new TempTable();

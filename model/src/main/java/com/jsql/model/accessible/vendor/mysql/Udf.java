@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.mysql;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Udf {
+import java.io.Serializable;
+
+public class Udf implements Serializable {
 
     private String pathPlugin = StringUtils.EMPTY;
     private String osMachine = StringUtils.EMPTY;

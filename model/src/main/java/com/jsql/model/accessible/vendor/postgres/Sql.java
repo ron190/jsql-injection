@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.postgres;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Sql {
+import java.io.Serializable;
+
+public class Sql implements Serializable {
 
     private String dropTable = StringUtils.EMPTY;
     private String createTable = StringUtils.EMPTY;

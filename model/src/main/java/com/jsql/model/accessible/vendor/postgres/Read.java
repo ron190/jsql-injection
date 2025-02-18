@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.postgres;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Read {
+import java.io.Serializable;
+
+public class Read implements Serializable {
 
     private String fromDataFolder = StringUtils.EMPTY;
     private LargeObject largeObject = new LargeObject();

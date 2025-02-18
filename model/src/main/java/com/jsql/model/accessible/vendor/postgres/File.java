@@ -1,6 +1,8 @@
 package com.jsql.model.accessible.vendor.postgres;
 
-public class File {
+import java.io.Serializable;
+
+public class File implements Serializable {
 
     private Read read = new Read();
     private Write write = new Write();

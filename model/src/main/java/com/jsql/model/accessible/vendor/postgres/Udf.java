@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.postgres;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Udf {
+import java.io.Serializable;
+
+public class Udf implements Serializable {
 
     private Extension extension = new Extension();
     private String plpython = StringUtils.EMPTY;
