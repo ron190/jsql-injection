@@ -7,23 +7,32 @@ import java.io.Serializable;
 
 <span class="fc" id="L8">public class ModelYamlSqlite implements Serializable {</span>
 
-<span class="fc" id="L10">    private String writeFile = StringUtils.EMPTY;</span>
-<span class="fc" id="L11">    private String udf = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private Extension extension = new Extension();</span>
+<span class="fc" id="L11">    private String writeFile = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private String udf = StringUtils.EMPTY;</span>
 
     public String getWriteFile() {
-<span class="fc" id="L14">        return this.writeFile;</span>
+<span class="fc" id="L15">        return this.writeFile;</span>
     }
 
     public void setWriteFile(String writeFile) {
-<span class="fc" id="L18">        this.writeFile = writeFile;</span>
-<span class="fc" id="L19">    }</span>
+<span class="fc" id="L19">        this.writeFile = writeFile;</span>
+<span class="fc" id="L20">    }</span>
 
     public String getUdf() {
-<span class="nc" id="L22">        return this.udf;</span>
+<span class="nc" id="L23">        return this.udf;</span>
     }
 
     public void setUdf(String udf) {
-<span class="fc" id="L26">        this.udf = udf;</span>
-<span class="fc" id="L27">    }</span>
+<span class="fc" id="L27">        this.udf = udf;</span>
+<span class="fc" id="L28">    }</span>
+
+    public Extension getExtension() {
+<span class="fc" id="L31">        return this.extension;</span>
+    }
+
+    public void setExtension(Extension extension) {
+<span class="fc" id="L35">        this.extension = extension;</span>
+<span class="fc" id="L36">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

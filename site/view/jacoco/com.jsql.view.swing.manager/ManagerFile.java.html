@@ -56,47 +56,48 @@ public class ManagerFile extends AbstractManagerList {
 <span class="nc" id="L56">                return;</span>
             }
 <span class="nc" id="L58">            if (!Arrays.asList(</span>
-<span class="nc" id="L59">                MediatorHelper.model().getMediatorVendor().getDerby(),</span>
-<span class="nc" id="L60">                MediatorHelper.model().getMediatorVendor().getH2(),</span>
-<span class="nc" id="L61">                MediatorHelper.model().getMediatorVendor().getHsqldb(),</span>
-<span class="nc" id="L62">                MediatorHelper.model().getMediatorVendor().getMysql(),</span>
-<span class="nc" id="L63">                MediatorHelper.model().getMediatorVendor().getPostgres()</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">            ).contains(MediatorHelper.model().getMediatorVendor().getVendor())) {</span>
-<span class="nc" id="L65">                LOGGER.log(</span>
+<span class="nc" id="L59">                MediatorHelper.model().getMediatorVendor().getSqlite(),</span>
+<span class="nc" id="L60">                MediatorHelper.model().getMediatorVendor().getDerby(),</span>
+<span class="nc" id="L61">                MediatorHelper.model().getMediatorVendor().getH2(),</span>
+<span class="nc" id="L62">                MediatorHelper.model().getMediatorVendor().getHsqldb(),</span>
+<span class="nc" id="L63">                MediatorHelper.model().getMediatorVendor().getMysql(),</span>
+<span class="nc" id="L64">                MediatorHelper.model().getMediatorVendor().getPostgres()</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            ).contains(MediatorHelper.model().getMediatorVendor().getVendor())) {</span>
+<span class="nc" id="L66">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
                     &quot;Read file for [{}] not implemented, share a working example to GitHub to speed up release&quot;,
-<span class="nc" id="L68">                    MediatorHelper.model().getMediatorVendor().getVendor()</span>
+<span class="nc" id="L69">                    MediatorHelper.model().getMediatorVendor().getVendor()</span>
                 );
-<span class="nc" id="L70">                return;</span>
+<span class="nc" id="L71">                return;</span>
             }
-<span class="nc" id="L72">            new SwingWorker&lt;&gt;() {</span>
+<span class="nc" id="L73">            new SwingWorker&lt;&gt;() {</span>
                 @Override
                 protected Object doInBackground() {
-<span class="nc" id="L75">                    Thread.currentThread().setName(&quot;SwingWorkerManagerFile&quot;);</span>
-<span class="nc bnc" id="L76" title="All 2 branches missed.">                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {</span>
-<span class="nc" id="L77">                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey(&quot;FILE_RUN_BUTTON_STOP&quot;));</span>
-<span class="nc" id="L78">                        ManagerFile.this.run.setState(StateButton.STOPPABLE);</span>
-<span class="nc" id="L79">                        ManagerFile.this.horizontalGlue.setVisible(false);</span>
-<span class="nc" id="L80">                        ManagerFile.this.progressBar.setVisible(true);</span>
+<span class="nc" id="L76">                    Thread.currentThread().setName(&quot;SwingWorkerManagerFile&quot;);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {</span>
+<span class="nc" id="L78">                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey(&quot;FILE_RUN_BUTTON_STOP&quot;));</span>
+<span class="nc" id="L79">                        ManagerFile.this.run.setState(StateButton.STOPPABLE);</span>
+<span class="nc" id="L80">                        ManagerFile.this.horizontalGlue.setVisible(false);</span>
+<span class="nc" id="L81">                        ManagerFile.this.progressBar.setVisible(true);</span>
                         try {
-<span class="nc" id="L82">                            List&lt;String&gt; filePaths = ManagerFile.this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
-<span class="nc" id="L83">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
-<span class="nc" id="L84">                        } catch (InterruptedException e) {</span>
-<span class="nc" id="L85">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L86">                            Thread.currentThread().interrupt();</span>
-<span class="nc" id="L87">                        } catch (Exception e) {</span>
-<span class="nc" id="L88">                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);</span>
-<span class="nc" id="L89">                        }</span>
-<span class="nc" id="L90">                        ManagerFile.this.endProcess();</span>
+<span class="nc" id="L83">                            List&lt;String&gt; filePaths = ManagerFile.this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
+<span class="nc" id="L84">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
+<span class="nc" id="L85">                        } catch (InterruptedException e) {</span>
+<span class="nc" id="L86">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L87">                            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L88">                        } catch (Exception e) {</span>
+<span class="nc" id="L89">                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);</span>
+<span class="nc" id="L90">                        }</span>
+<span class="nc" id="L91">                        ManagerFile.this.endProcess();</span>
                     } else {
-<span class="nc" id="L92">                        MediatorHelper.model().getResourceAccess().stopSearchFile();</span>
-<span class="nc" id="L93">                        ManagerFile.this.run.setEnabled(false);</span>
-<span class="nc" id="L94">                        ManagerFile.this.run.setState(StateButton.STOPPING);</span>
+<span class="nc" id="L93">                        MediatorHelper.model().getResourceAccess().stopSearchFile();</span>
+<span class="nc" id="L94">                        ManagerFile.this.run.setEnabled(false);</span>
+<span class="nc" id="L95">                        ManagerFile.this.run.setState(StateButton.STOPPING);</span>
                     }
-<span class="nc" id="L96">                    return null;</span>
+<span class="nc" id="L97">                    return null;</span>
                 }
-<span class="nc" id="L98">            }.doInBackground();</span>
-<span class="nc" id="L99">        }</span>
+<span class="nc" id="L99">            }.doInBackground();</span>
+<span class="nc" id="L100">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
