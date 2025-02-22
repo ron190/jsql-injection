@@ -65,6 +65,7 @@ public class CallableFile implements Callable<CallableFile> {
         String resultToParse = StringUtils.EMPTY;
         try {
             if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMysql()) {
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Read file requirement : user FILE privilege");
                 resultToParse = this.suspendableReadFile.run(
                     this.injectionModel.getResourceAccess().getExploitMysql().getModelYaml().getFile().getRead().replace(
                         VendorYaml.FILEPATH_HEX,
@@ -77,6 +78,7 @@ public class CallableFile implements Callable<CallableFile> {
                     ResourceAccess.FILE_READ
                 );
             } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getH2()) {
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Read file requirement : stack query");
                 var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
                 this.injectionModel.injectWithoutIndex(String.format(
                     this.injectionModel.getResourceAccess().getExploitH2().getModelYaml().getFile().getCreateTable(),
@@ -95,7 +97,21 @@ public class CallableFile implements Callable<CallableFile> {
                     MockElement.MOCK,
                     ResourceAccess.FILE_READ
                 );
+            } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getSqlite()) {
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Read file requirement : extension fileio loaded");
+                resultToParse = this.suspendableReadFile.run(
+                    String.format(
+                        this.injectionModel.getResourceAccess().getExploitSqlite().getModelYaml().getExtension().getFileioRead(),
+                        this.pathFile
+                    ),
+                    sourcePage,
+                    false,
+                    1,
+                    MockElement.MOCK,
+                    ResourceAccess.FILE_READ
+                );
             } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getDerby()) {
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Read file requirement : stack query");
                 var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
                 this.injectionModel.injectWithoutIndex(String.format(
                     this.injectionModel.getResourceAccess().getExploitDerby().getModelYaml().getFile().getCreateTable(),
@@ -114,6 +130,7 @@ public class CallableFile implements Callable<CallableFile> {
                     ResourceAccess.FILE_READ
                 );
             } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getHsqldb()) {
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Read file requirement : stack query");
                 var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
                 this.injectionModel.injectWithoutIndex(String.format(
                     this.injectionModel.getResourceAccess().getExploitHsqldb().getModelYaml().getFile().getRead().getCreateTable(),

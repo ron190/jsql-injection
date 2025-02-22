@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 public class Udf implements Serializable {
 
+    private Wal wal = new Wal();
     private Extension extension = new Extension();
     private String plpython = StringUtils.EMPTY;
     private String plperlu = StringUtils.EMPTY;
@@ -68,5 +69,13 @@ public class Udf implements Serializable {
 
     public void setDropFunc(String dropFunc) {
         this.dropFunc = dropFunc;
+    }
+
+    public Wal getWal() {
+        return this.wal;
+    }
+
+    public void setWal(Wal wal) {
+        this.wal = wal;
     }
 }

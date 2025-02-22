@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 public class ModelYamlSqlite implements Serializable {
 
+    private Extension extension = new Extension();
     private String writeFile = StringUtils.EMPTY;
     private String udf = StringUtils.EMPTY;
 
@@ -24,5 +25,13 @@ public class ModelYamlSqlite implements Serializable {
 
     public void setUdf(String udf) {
         this.udf = udf;
+    }
+
+    public Extension getExtension() {
+        return this.extension;
+    }
+
+    public void setExtension(Extension extension) {
+        this.extension = extension;
     }
 }

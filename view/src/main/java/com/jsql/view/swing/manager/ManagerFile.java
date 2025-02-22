@@ -56,6 +56,7 @@ public class ManagerFile extends AbstractManagerList {
                 return;
             }
             if (!Arrays.asList(
+                MediatorHelper.model().getMediatorVendor().getSqlite(),
                 MediatorHelper.model().getMediatorVendor().getDerby(),
                 MediatorHelper.model().getMediatorVendor().getH2(),
                 MediatorHelper.model().getMediatorVendor().getHsqldb(),

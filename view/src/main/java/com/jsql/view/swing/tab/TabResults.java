@@ -202,6 +202,26 @@ public class TabResults extends DnDTabbedPane {
         }
     }
 
+    public void addTabExploitRceWalPostgres() {
+        try {
+            var terminalID = UUID.randomUUID();
+            var terminal = new ExploitRceWalPostgres(terminalID);
+            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+
+            JScrollPane scroller = new JScrollPane(terminal);
+            this.addTab(TabResults.RCE_SHELL, scroller);
+            this.setSelectedComponent(scroller);  // Focus on the new tab
+
+            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
+            this.setTabComponentAt(this.indexOfComponent(scroller), header);
+            terminal.requestFocusInWindow();
+
+            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
+        } catch (MalformedURLException | URISyntaxException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
+        }
+    }
+
     public void addTabExploitSql(String url, String user, String pass) {
         try {
             var terminalID = UUID.randomUUID();

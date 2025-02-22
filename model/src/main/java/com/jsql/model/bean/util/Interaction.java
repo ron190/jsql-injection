@@ -13,6 +13,7 @@ public enum Interaction {
     ADD_TAB_EXPLOIT_UDF("AddTabExploitUdf"),
     ADD_TAB_EXPLOIT_RCE_ORACLE("AddTabExploitRceOracle"),
     ADD_TAB_EXPLOIT_RCE_POSTGRES("AddTabExploitRcePostgres"),
+    ADD_TAB_EXPLOIT_RCE_WAL_POSTGRES("AddTabExploitRceWalPostgres"),
     CREATE_VALUES_TAB("CreateValuesTab"),
     CREATE_ANALYSIS_REPORT("CreateAnalysisReport"),
 
