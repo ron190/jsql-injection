@@ -222,38 +222,78 @@ public class TabResults extends DnDTabbedPane {
 <span class="nc" id="L222">        }</span>
 <span class="nc" id="L223">    }</span>
 
-    public void addTabExploitSql(String url, String user, String pass) {
+    public void addTabExploitRceProgramPostgres() {
         try {
-<span class="fc" id="L227">            var terminalID = UUID.randomUUID();</span>
-<span class="fc" id="L228">            var terminal = new ExploitSql(terminalID, url, user, pass);</span>
-<span class="fc" id="L229">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
+<span class="nc" id="L227">            var terminalID = UUID.randomUUID();</span>
+<span class="nc" id="L228">            var terminal = new ExploitRceProgramPostgres(terminalID);</span>
+<span class="nc" id="L229">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
 
-<span class="fc" id="L231">            JScrollPane scroller = new JScrollPane(terminal);</span>
-<span class="fc" id="L232">            this.addTab(&quot;SQL shell&quot;, scroller);</span>
-<span class="fc" id="L233">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
+<span class="nc" id="L231">            JScrollPane scroller = new JScrollPane(terminal);</span>
+<span class="nc" id="L232">            this.addTab(TabResults.RCE_SHELL, scroller);</span>
+<span class="nc" id="L233">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
 
-<span class="fc" id="L235">            var header = new TabHeader(&quot;SQL shell&quot;, UiUtil.TERMINAL.getIcon());</span>
-<span class="fc" id="L236">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
-<span class="fc" id="L237">            terminal.requestFocusInWindow();</span>
+<span class="nc" id="L235">            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());</span>
+<span class="nc" id="L236">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
+<span class="nc" id="L237">            terminal.requestFocusInWindow();</span>
 
-<span class="fc" id="L239">            this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="nc" id="L239">            this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
 <span class="nc" id="L240">        } catch (MalformedURLException | URISyntaxException e) {</span>
 <span class="nc" id="L241">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
-<span class="fc" id="L242">        }</span>
-<span class="fc" id="L243">    }</span>
+<span class="nc" id="L242">        }</span>
+<span class="nc" id="L243">    }</span>
+
+    public void addTabExploitRceSqlite() {
+        try {
+<span class="nc" id="L247">            var terminalID = UUID.randomUUID();</span>
+<span class="nc" id="L248">            var terminal = new ExploitRceSqlite(terminalID);</span>
+<span class="nc" id="L249">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
+
+<span class="nc" id="L251">            JScrollPane scroller = new JScrollPane(terminal);</span>
+<span class="nc" id="L252">            this.addTab(TabResults.RCE_SHELL, scroller);</span>
+<span class="nc" id="L253">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
+
+<span class="nc" id="L255">            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());</span>
+<span class="nc" id="L256">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
+<span class="nc" id="L257">            terminal.requestFocusInWindow();</span>
+
+<span class="nc" id="L259">            this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="nc" id="L260">        } catch (MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L261">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
+<span class="nc" id="L262">        }</span>
+<span class="nc" id="L263">    }</span>
+
+    public void addTabExploitSql(String url, String user, String pass) {
+        try {
+<span class="fc" id="L267">            var terminalID = UUID.randomUUID();</span>
+<span class="fc" id="L268">            var terminal = new ExploitSql(terminalID, url, user, pass);</span>
+<span class="fc" id="L269">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
+
+<span class="fc" id="L271">            JScrollPane scroller = new JScrollPane(terminal);</span>
+<span class="fc" id="L272">            this.addTab(&quot;SQL shell&quot;, scroller);</span>
+<span class="fc" id="L273">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
+
+<span class="fc" id="L275">            var header = new TabHeader(&quot;SQL shell&quot;, UiUtil.TERMINAL.getIcon());</span>
+<span class="fc" id="L276">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
+<span class="fc" id="L277">            terminal.requestFocusInWindow();</span>
+
+<span class="fc" id="L279">            this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="nc" id="L280">        } catch (MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L281">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
+<span class="fc" id="L282">        }</span>
+<span class="fc" id="L283">    }</span>
     
     public void addTabValues(String[][] data, String[] columnNames, AbstractElementDatabase table) {
-<span class="fc" id="L246">        var panelTable = new PanelTable(data, columnNames);</span>
+<span class="fc" id="L286">        var panelTable = new PanelTable(data, columnNames);</span>
         
-<span class="fc" id="L248">        this.addTab(StringUtil.detectUtf8(table.toString()), panelTable);</span>
-<span class="fc" id="L249">        panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));</span>
+<span class="fc" id="L288">        this.addTab(StringUtil.detectUtf8(table.toString()), panelTable);</span>
+<span class="fc" id="L289">        panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));</span>
         
-<span class="fc" id="L251">        this.setSelectedComponent(panelTable);  // Focus on the new tab</span>
+<span class="fc" id="L291">        this.setSelectedComponent(panelTable);  // Focus on the new tab</span>
 
-<span class="fc" id="L253">        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());</span>
-<span class="fc" id="L254">        this.setTabComponentAt(this.indexOfComponent(panelTable), header);</span>
+<span class="fc" id="L293">        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());</span>
+<span class="fc" id="L294">        this.setTabComponentAt(this.indexOfComponent(panelTable), header);</span>
 
-<span class="fc" id="L256">        this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="fc" id="L257">    }</span>
+<span class="fc" id="L296">        this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="fc" id="L297">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

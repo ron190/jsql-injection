@@ -2,25 +2,27 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class Extension {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private String create = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private String languages = StringUtils.EMPTY;</span>
+<span class="fc" id="L7">public class Extension implements Serializable {</span>
+
+<span class="fc" id="L9">    private String create = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String languages = StringUtils.EMPTY;</span>
 
     public String getCreate() {
-<span class="fc" id="L11">        return this.create;</span>
+<span class="fc" id="L13">        return this.create;</span>
     }
 
     public void setCreate(String create) {
-<span class="fc" id="L15">        this.create = create;</span>
-<span class="fc" id="L16">    }</span>
+<span class="fc" id="L17">        this.create = create;</span>
+<span class="fc" id="L18">    }</span>
 
     public String getLanguages() {
-<span class="fc" id="L19">        return this.languages;</span>
+<span class="fc" id="L21">        return this.languages;</span>
     }
 
     public void setLanguages(String languages) {
-<span class="fc" id="L23">        this.languages = languages;</span>
-<span class="fc" id="L24">    }</span>
+<span class="fc" id="L25">        this.languages = languages;</span>
+<span class="fc" id="L26">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

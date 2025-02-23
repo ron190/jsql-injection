@@ -2,34 +2,36 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class TempTable {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private String drop = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private String add = StringUtils.EMPTY;</span>
-<span class="fc" id="L9">    private String fill = StringUtils.EMPTY;</span>
+<span class="fc" id="L7">public class TempTable implements Serializable {</span>
+
+<span class="fc" id="L9">    private String drop = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String add = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private String fill = StringUtils.EMPTY;</span>
 
     public String getDrop() {
-<span class="nc" id="L12">        return this.drop;</span>
+<span class="nc" id="L14">        return this.drop;</span>
     }
 
     public void setDrop(String drop) {
-<span class="fc" id="L16">        this.drop = drop;</span>
-<span class="fc" id="L17">    }</span>
+<span class="fc" id="L18">        this.drop = drop;</span>
+<span class="fc" id="L19">    }</span>
 
     public String getAdd() {
-<span class="nc" id="L20">        return this.add;</span>
+<span class="fc" id="L22">        return this.add;</span>
     }
 
     public void setAdd(String add) {
-<span class="fc" id="L24">        this.add = add;</span>
-<span class="fc" id="L25">    }</span>
+<span class="fc" id="L26">        this.add = add;</span>
+<span class="fc" id="L27">    }</span>
 
     public String getFill() {
-<span class="nc" id="L28">        return this.fill;</span>
+<span class="nc" id="L30">        return this.fill;</span>
     }
 
     public void setFill(String fill) {
-<span class="fc" id="L32">        this.fill = fill;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L34">        this.fill = fill;</span>
+<span class="fc" id="L35">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -2,43 +2,45 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class Extension {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private String fileioRead = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private String fileioWrite = StringUtils.EMPTY;</span>
-<span class="fc" id="L9">    private String fileioLs = StringUtils.EMPTY;</span>
-<span class="fc" id="L10">    private String exec = StringUtils.EMPTY;</span>
+<span class="fc" id="L7">public class Extension implements Serializable {</span>
+
+<span class="fc" id="L9">    private String fileioRead = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String fileioWrite = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private String fileioLs = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private String exec = StringUtils.EMPTY;</span>
 
     public String getFileioRead() {
-<span class="fc" id="L13">        return this.fileioRead;</span>
+<span class="fc" id="L15">        return this.fileioRead;</span>
     }
 
     public void setFileioRead(String fileioRead) {
-<span class="fc" id="L17">        this.fileioRead = fileioRead;</span>
-<span class="fc" id="L18">    }</span>
+<span class="fc" id="L19">        this.fileioRead = fileioRead;</span>
+<span class="fc" id="L20">    }</span>
 
     public String getFileioWrite() {
-<span class="nc" id="L21">        return this.fileioWrite;</span>
+<span class="nc" id="L23">        return this.fileioWrite;</span>
     }
 
     public void setFileioWrite(String fileioWrite) {
-<span class="fc" id="L25">        this.fileioWrite = fileioWrite;</span>
-<span class="fc" id="L26">    }</span>
+<span class="fc" id="L27">        this.fileioWrite = fileioWrite;</span>
+<span class="fc" id="L28">    }</span>
 
     public String getFileioLs() {
-<span class="nc" id="L29">        return this.fileioLs;</span>
+<span class="nc" id="L31">        return this.fileioLs;</span>
     }
 
     public void setFileioLs(String fileioLs) {
-<span class="fc" id="L33">        this.fileioLs = fileioLs;</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L35">        this.fileioLs = fileioLs;</span>
+<span class="fc" id="L36">    }</span>
 
     public String getExec() {
-<span class="nc" id="L37">        return this.exec;</span>
+<span class="fc" id="L39">        return this.exec;</span>
     }
 
     public void setExec(String exec) {
-<span class="fc" id="L41">        this.exec = exec;</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L43">        this.exec = exec;</span>
+<span class="fc" id="L44">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

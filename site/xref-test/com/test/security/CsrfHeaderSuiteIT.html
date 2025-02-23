@@ -19,7 +19,7 @@
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.junitpioneer.jupiter.RetryingTest;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> spring.security.CsrfWebSecurity;
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="CsrfHeaderSuiteIT" href="../../../com/test/security/CsrfHeaderSuiteIT.html#CsrfHeaderSuiteIT">CsrfHeaderSuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="ConcreteMySqlErrorSuiteIT" href="../../../com/test/vendor/mysql/ConcreteMySqlErrorSuiteIT.html#ConcreteMySqlErrorSuiteIT">ConcreteMySqlErrorSuiteIT</a> {
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">class</strong> <a name="CsrfHeaderSuiteIT" href="../../../com/test/security/CsrfHeaderSuiteIT.html#CsrfHeaderSuiteIT">CsrfHeaderSuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="ConcreteMySqlErrorSuiteIT" href="../../../com/test/vendor/mysql/ConcreteMySqlErrorSuiteIT.html#ConcreteMySqlErrorSuiteIT">ConcreteMySqlErrorSuiteIT</a> {
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>      
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      @Override
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setupInjection() <strong class="jxr_keyword">throws</strong> Exception {
@@ -57,7 +57,7 @@
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      }
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      @AfterEach
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> afterEach() {
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">void</strong> afterEach() {
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          Assertions.assertEquals(
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getUnion(),
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getStrategy()

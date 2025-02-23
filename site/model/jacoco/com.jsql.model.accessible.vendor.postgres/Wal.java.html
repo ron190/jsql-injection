@@ -2,88 +2,90 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class Wal {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private String getStatus = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private String getPathConf = StringUtils.EMPTY;</span>
-<span class="fc" id="L9">    private String getConfLoid = StringUtils.EMPTY;</span>
-<span class="fc" id="L10">    private String getConfLength = StringUtils.EMPTY;</span>
-<span class="fc" id="L11">    private String putCmd = StringUtils.EMPTY;</span>
-<span class="fc" id="L12">    private String reloadConf = StringUtils.EMPTY;</span>
-<span class="fc" id="L13">    private String getCmd = StringUtils.EMPTY;</span>
-<span class="fc" id="L14">    private String runWal = StringUtils.EMPTY;</span>
-<span class="fc" id="L15">    private String getResult = StringUtils.EMPTY;</span>
+<span class="fc" id="L7">public class Wal implements Serializable {</span>
+
+<span class="fc" id="L9">    private String getStatus = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String getPathConf = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private String getConfLoid = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private String getConfLength = StringUtils.EMPTY;</span>
+<span class="fc" id="L13">    private String putCmd = StringUtils.EMPTY;</span>
+<span class="fc" id="L14">    private String reloadConf = StringUtils.EMPTY;</span>
+<span class="fc" id="L15">    private String getCmd = StringUtils.EMPTY;</span>
+<span class="fc" id="L16">    private String runWal = StringUtils.EMPTY;</span>
+<span class="fc" id="L17">    private String getResult = StringUtils.EMPTY;</span>
 
     public String getGetPathConf() {
-<span class="fc" id="L18">        return this.getPathConf;</span>
+<span class="fc" id="L20">        return this.getPathConf;</span>
     }
 
     public void setGetPathConf(String getPathConf) {
-<span class="fc" id="L22">        this.getPathConf = getPathConf;</span>
-<span class="fc" id="L23">    }</span>
+<span class="fc" id="L24">        this.getPathConf = getPathConf;</span>
+<span class="fc" id="L25">    }</span>
 
     public String getGetStatus() {
-<span class="fc" id="L26">        return this.getStatus;</span>
+<span class="fc" id="L28">        return this.getStatus;</span>
     }
 
     public void setGetStatus(String getStatus) {
-<span class="fc" id="L30">        this.getStatus = getStatus;</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L32">        this.getStatus = getStatus;</span>
+<span class="fc" id="L33">    }</span>
 
     public String getGetConfLoid() {
-<span class="fc" id="L34">        return this.getConfLoid;</span>
+<span class="fc" id="L36">        return this.getConfLoid;</span>
     }
 
     public void setGetConfLoid(String getConfLoid) {
-<span class="fc" id="L38">        this.getConfLoid = getConfLoid;</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L40">        this.getConfLoid = getConfLoid;</span>
+<span class="fc" id="L41">    }</span>
 
     public String getGetConfLength() {
-<span class="fc" id="L42">        return this.getConfLength;</span>
+<span class="fc" id="L44">        return this.getConfLength;</span>
     }
 
     public void setGetConfLength(String getConfLength) {
-<span class="fc" id="L46">        this.getConfLength = getConfLength;</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L48">        this.getConfLength = getConfLength;</span>
+<span class="fc" id="L49">    }</span>
 
     public String getPutCmd() {
-<span class="fc" id="L50">        return this.putCmd;</span>
+<span class="fc" id="L52">        return this.putCmd;</span>
     }
 
     public void setPutCmd(String putCmd) {
-<span class="fc" id="L54">        this.putCmd = putCmd;</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L56">        this.putCmd = putCmd;</span>
+<span class="fc" id="L57">    }</span>
 
     public String getReloadConf() {
-<span class="fc" id="L58">        return this.reloadConf;</span>
+<span class="fc" id="L60">        return this.reloadConf;</span>
     }
 
     public void setReloadConf(String reloadConf) {
-<span class="fc" id="L62">        this.reloadConf = reloadConf;</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L64">        this.reloadConf = reloadConf;</span>
+<span class="fc" id="L65">    }</span>
 
     public String getGetCmd() {
-<span class="fc" id="L66">        return this.getCmd;</span>
+<span class="fc" id="L68">        return this.getCmd;</span>
     }
 
     public void setGetCmd(String getCmd) {
-<span class="fc" id="L70">        this.getCmd = getCmd;</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L72">        this.getCmd = getCmd;</span>
+<span class="fc" id="L73">    }</span>
 
     public String getRunWal() {
-<span class="fc" id="L74">        return this.runWal;</span>
+<span class="fc" id="L76">        return this.runWal;</span>
     }
 
     public void setRunWal(String runWal) {
-<span class="fc" id="L78">        this.runWal = runWal;</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L80">        this.runWal = runWal;</span>
+<span class="fc" id="L81">    }</span>
 
     public String getGetResult() {
-<span class="fc" id="L82">        return this.getResult;</span>
+<span class="fc" id="L84">        return this.getResult;</span>
     }
 
     public void setGetResult(String getResult) {
-<span class="fc" id="L86">        this.getResult = getResult;</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L88">        this.getResult = getResult;</span>
+<span class="fc" id="L89">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

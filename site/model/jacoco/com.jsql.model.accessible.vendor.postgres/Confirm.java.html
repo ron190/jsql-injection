@@ -2,25 +2,27 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class Confirm {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private String addFunc = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private String funcExists = StringUtils.EMPTY;</span>
+<span class="fc" id="L7">public class Confirm implements Serializable {</span>
+
+<span class="fc" id="L9">    private String addFunc = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String funcExists = StringUtils.EMPTY;</span>
 
     public String getAddFunc() {
-<span class="fc" id="L11">        return this.addFunc;</span>
+<span class="fc" id="L13">        return this.addFunc;</span>
     }
 
     public void setAddFunc(String addFunc) {
-<span class="fc" id="L15">        this.addFunc = addFunc;</span>
-<span class="fc" id="L16">    }</span>
+<span class="fc" id="L17">        this.addFunc = addFunc;</span>
+<span class="fc" id="L18">    }</span>
 
     public String getFuncExists() {
-<span class="fc" id="L19">        return this.funcExists;</span>
+<span class="fc" id="L21">        return this.funcExists;</span>
     }
 
     public void setFuncExists(String funcExists) {
-<span class="fc" id="L23">        this.funcExists = funcExists;</span>
-<span class="fc" id="L24">    }</span>
+<span class="fc" id="L25">        this.funcExists = funcExists;</span>
+<span class="fc" id="L26">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

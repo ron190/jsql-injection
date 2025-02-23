@@ -54,7 +54,7 @@ view,com.jsql.view.swing.manager,ManagerDatabase.new MouseAdapter() {...},24,32,
 view,com.jsql.view.swing.manager,ManagerFile.ActionFile.new SwingWorker() {...},96,0,2,0,20,0,3,0,2,0
 view,com.jsql.view.swing.manager,ManagerFile,0,29,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.manager,ManagerScan.new DefaultListCellRenderer() {...},4,23,1,1,1,5,1,2,0,2
-view,com.jsql.view.swing.manager,ManagerExploit,573,466,76,2,92,77,44,5,6,4
+view,com.jsql.view.swing.manager,ManagerExploit,591,466,78,2,95,77,45,5,6,4
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit.new SwingWorker() {...},17,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit.new SwingWorker() {...},66,0,0,0,10,0,3,0,3,0
 view,com.jsql.view.swing.manager,ManagerExploit.new JTextFieldPlaceholder() {...},5,10,0,0,1,1,1,1,1,1
@@ -108,10 +108,12 @@ view,com.jsql.view.swing.terminal,AbstractExploit,53,267,5,9,9,66,5,16,0,14
 view,com.jsql.view.swing.terminal,ExploitRcePostgres,17,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.terminal,EmptyFocusCopy,58,9,2,0,16,5,5,2,4,2
 view,com.jsql.view.swing.terminal,ExploitSql,14,9,0,0,2,3,1,1,1,1
-view,com.jsql.view.swing.terminal,BlockCaret,9,117,2,16,5,34,2,11,0,4
+view,com.jsql.view.swing.terminal,BlockCaret,10,116,4,14,6,33,4,9,0,4
 view,com.jsql.view.swing.terminal,ExploitWeb,0,17,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.terminal,KeyAdapterTerminal.new SwingWorker() {...},0,47,0,2,0,12,0,3,0,2
 view,com.jsql.view.swing.terminal,ExploitRceWalPostgres,17,0,0,0,5,0,2,0,2,0
+view,com.jsql.view.swing.terminal,ExploitRceSqlite,17,0,0,0,5,0,2,0,2,0
+view,com.jsql.view.swing.terminal,ExploitRceProgramPostgres,17,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.terminal,KeyAdapterTerminal,144,262,21,37,26,63,16,23,1,9
 view,com.jsql.view.swing.terminal,ExploitUdfMysql,17,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.terminal,ExploitRceOracle,17,0,0,0,5,0,2,0,2,0
@@ -134,7 +136,7 @@ view,com.jsql.view.swing.tab,TabbedPaneMouseWheelListener,52,6,12,0,13,2,7,2,1,2
 view,com.jsql.view.swing.tab,TabHeader,15,35,2,0,9,9,6,2,5,2
 view,com.jsql.view.swing.tab,TabManagers,0,157,0,0,0,27,0,5,0,5
 view,com.jsql.view.swing.tab,TabManagers.new JLabel() {...},14,15,0,0,2,1,1,1,1,1
-view,com.jsql.view.swing.tab,TabResults,292,244,2,0,81,59,7,7,6,7
+view,com.jsql.view.swing.tab,TabResults,394,244,2,0,109,59,9,7,8,7
 view,com.jsql.view.swing.tab,TabManagers.new MouseAdapter() {...},0,28,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.tab,TabManagersCards,45,132,0,0,10,27,7,4,7,4
 view,com.jsql.view.swing.tab,TabResults.new FocusAdapter() {...},25,0,0,0,5,0,2,0,2,0
@@ -217,7 +219,7 @@ view,com.jsql.view.swing.panel,PanelPreferences.CategoryPreference,0,59,0,0,0,10
 view,com.jsql.view.swing.panel,PanelPreferences,0,240,0,0,0,53,0,14,0,14
 view,com.jsql.view.swing.panel,PanelAddressBar,80,788,4,4,14,142,10,18,8,16
 view,com.jsql.view.swing.panel,PanelConsoles,75,497,8,8,20,110,11,16,3,16
-view,com.jsql.view.swing.tab.dnd,TabTransferHandler,78,254,24,18,13,59,22,8,1,8
+view,com.jsql.view.swing.tab.dnd,TabTransferHandler,76,256,23,19,12,60,21,9,1,8
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,12,167,9,15,4,39,9,9,0,6
 view,com.jsql.view.swing.tab.dnd,DnDTabData,0,6,0,0,0,3,0,1,0,1
 view,com.jsql.view.swing.tab.dnd,GhostGlassPane,0,45,0,0,0,15,0,4,0,4
@@ -292,6 +294,7 @@ view,com.jsql.view.swing.interaction,MarkUnionInvulnerable,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,AddTabExploitRceWalPostgres,9,0,0,0,4,0,3,0,3,0
 view,com.jsql.view.swing.interaction,AddTabExploitUdf,9,0,0,0,4,0,3,0,3,0
 view,com.jsql.view.swing.interaction,EndPreparation,2,10,1,1,1,5,1,2,0,2
+view,com.jsql.view.swing.interaction,AddTabExploitRceSqlite,9,0,0,0,4,0,3,0,3,0
 view,com.jsql.view.swing.interaction,AddTabExploitRceOracle,9,0,0,0,4,0,3,0,3,0
 view,com.jsql.view.swing.interaction,MarkErrorStrategy,7,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.interaction,MessageChunk,17,0,0,0,6,0,2,0,2,0
@@ -305,6 +308,7 @@ view,com.jsql.view.swing.interaction,MarkErrorVulnerable,0,21,0,0,0,6,0,2,0,2
 view,com.jsql.view.swing.interaction,MarkTimeInvulnerable,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,AbstractGetShellResult,0,32,0,0,0,9,0,2,0,2
 view,com.jsql.view.swing.interaction,MarkUnionVulnerable,12,0,0,0,5,0,2,0,2,0
+view,com.jsql.view.swing.interaction,AddTabExploitRceProgramPostgres,9,0,0,0,4,0,3,0,3,0
 view,com.jsql.view.swing.interaction,AddTabExploitWeb,0,18,0,0,0,5,0,3,0,3
 view,com.jsql.view.swing.interaction,AddTables,0,14,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.interaction,MarkBlindVulnerable,12,0,0,0,5,0,2,0,2,0

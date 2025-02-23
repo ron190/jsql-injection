@@ -2,43 +2,45 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class LargeObject {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private String fromPath = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private String toText = StringUtils.EMPTY;</span>
-<span class="fc" id="L9">    private String fromText = StringUtils.EMPTY;</span>
-<span class="fc" id="L10">    private String toFile = StringUtils.EMPTY;</span>
+<span class="fc" id="L7">public class LargeObject implements Serializable {</span>
+
+<span class="fc" id="L9">    private String fromPath = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String toText = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private String fromText = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private String toFile = StringUtils.EMPTY;</span>
 
     public String getFromPath() {
-<span class="fc" id="L13">        return this.fromPath;</span>
+<span class="fc" id="L15">        return this.fromPath;</span>
     }
 
     public void setFromPath(String fromPath) {
-<span class="fc" id="L17">        this.fromPath = fromPath;</span>
-<span class="fc" id="L18">    }</span>
+<span class="fc" id="L19">        this.fromPath = fromPath;</span>
+<span class="fc" id="L20">    }</span>
 
     public String getToText() {
-<span class="fc" id="L21">        return this.toText;</span>
+<span class="fc" id="L23">        return this.toText;</span>
     }
 
     public void setToText(String toText) {
-<span class="fc" id="L25">        this.toText = toText;</span>
-<span class="fc" id="L26">    }</span>
+<span class="fc" id="L27">        this.toText = toText;</span>
+<span class="fc" id="L28">    }</span>
 
     public String getFromText() {
-<span class="fc" id="L29">        return this.fromText;</span>
+<span class="fc" id="L31">        return this.fromText;</span>
     }
 
     public void setFromText(String fromText) {
-<span class="fc" id="L33">        this.fromText = fromText;</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L35">        this.fromText = fromText;</span>
+<span class="fc" id="L36">    }</span>
 
     public String getToFile() {
-<span class="fc" id="L37">        return this.toFile;</span>
+<span class="fc" id="L39">        return this.toFile;</span>
     }
 
     public void setToFile(String toFile) {
-<span class="fc" id="L41">        this.toFile = toFile;</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L43">        this.toFile = toFile;</span>
+<span class="fc" id="L44">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

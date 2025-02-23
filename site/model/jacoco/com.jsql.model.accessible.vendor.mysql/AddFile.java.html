@@ -2,34 +2,36 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class AddFile {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private String queryBody = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private String netshare = StringUtils.EMPTY;</span>
-<span class="fc" id="L9">    private TempTable tempTable = new TempTable();</span>
+<span class="fc" id="L7">public class AddFile implements Serializable {</span>
+
+<span class="fc" id="L9">    private String queryBody = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String netshare = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private TempTable tempTable = new TempTable();</span>
 
     public String getQueryBody() {
-<span class="fc" id="L12">        return this.queryBody;</span>
+<span class="fc" id="L14">        return this.queryBody;</span>
     }
 
     public void setQueryBody(String queryBody) {
-<span class="fc" id="L16">        this.queryBody = queryBody;</span>
-<span class="fc" id="L17">    }</span>
+<span class="fc" id="L18">        this.queryBody = queryBody;</span>
+<span class="fc" id="L19">    }</span>
 
     public String getNetshare() {
-<span class="nc" id="L20">        return this.netshare;</span>
+<span class="nc" id="L22">        return this.netshare;</span>
     }
 
     public void setNetshare(String netshare) {
-<span class="fc" id="L24">        this.netshare = netshare;</span>
-<span class="fc" id="L25">    }</span>
+<span class="fc" id="L26">        this.netshare = netshare;</span>
+<span class="fc" id="L27">    }</span>
 
     public TempTable getTempTable() {
-<span class="fc" id="L28">        return this.tempTable;</span>
+<span class="fc" id="L30">        return this.tempTable;</span>
     }
 
     public void setTempTable(TempTable tempTable) {
-<span class="fc" id="L32">        this.tempTable = tempTable;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L34">        this.tempTable = tempTable;</span>
+<span class="fc" id="L35">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

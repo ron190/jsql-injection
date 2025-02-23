@@ -230,17 +230,17 @@
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>         }
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>     }
 <a class="jxr_linenumber" name="L224" href="#L224">224</a> 
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitSql(String url, String user, String pass) {
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitRceProgramPostgres() {
 <a class="jxr_linenumber" name="L226" href="#L226">226</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L227" href="#L227">227</a>             <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>             <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="ExploitSql" href="../../../../../com/jsql/view/swing/terminal/ExploitSql.html#ExploitSql">ExploitSql</a>(terminalID, url, user, pass);
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>             <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="ExploitRceProgramPostgres" href="../../../../../com/jsql/view/swing/terminal/ExploitRceProgramPostgres.html#ExploitRceProgramPostgres">ExploitRceProgramPostgres</a>(terminalID);
 <a class="jxr_linenumber" name="L229" href="#L229">229</a>             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 <a class="jxr_linenumber" name="L230" href="#L230">230</a> 
 <a class="jxr_linenumber" name="L231" href="#L231">231</a>             JScrollPane scroller = <strong class="jxr_keyword">new</strong> JScrollPane(terminal);
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>             <strong class="jxr_keyword">this</strong>.addTab(<span class="jxr_string">"SQL shell"</span>, scroller);
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>             <strong class="jxr_keyword">this</strong>.addTab(TabResults.RCE_SHELL, scroller);
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
 <a class="jxr_linenumber" name="L234" href="#L234">234</a> 
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"SQL shell"</span>, UiUtil.TERMINAL.getIcon());
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>             terminal.requestFocusInWindow();
 <a class="jxr_linenumber" name="L238" href="#L238">238</a> 
@@ -249,21 +249,61 @@
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>         }
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>     }
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>     
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabValues(String[][] data, String[] columnNames, <a name="AbstractElementDatabase" href="../../../../../com/jsql/model/bean/database/AbstractElementDatabase.html#AbstractElementDatabase">AbstractElementDatabase</a> table) {
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>         <strong class="jxr_keyword">var</strong> panelTable = <strong class="jxr_keyword">new</strong> <a name="PanelTable" href="../../../../../com/jsql/view/swing/table/PanelTable.html#PanelTable">PanelTable</a>(data, columnNames);
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>         
-<a class="jxr_linenumber" name="L248" href="#L248">248</a>         <strong class="jxr_keyword">this</strong>.addTab(StringUtil.detectUtf8(table.toString()), panelTable);
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>         panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
-<a class="jxr_linenumber" name="L250" href="#L250">250</a>         
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>         <strong class="jxr_keyword">this</strong>.setSelectedComponent(panelTable);  <em class="jxr_comment">// Focus on the new tab</em>
-<a class="jxr_linenumber" name="L252" href="#L252">252</a> 
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>         <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>         <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(panelTable), header);
-<a class="jxr_linenumber" name="L255" href="#L255">255</a> 
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>         <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>     }
-<a class="jxr_linenumber" name="L258" href="#L258">258</a> }
+<a class="jxr_linenumber" name="L244" href="#L244">244</a> 
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitRceSqlite() {
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>             <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>             <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="ExploitRceSqlite" href="../../../../../com/jsql/view/swing/terminal/ExploitRceSqlite.html#ExploitRceSqlite">ExploitRceSqlite</a>(terminalID);
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+<a class="jxr_linenumber" name="L250" href="#L250">250</a> 
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>             JScrollPane scroller = <strong class="jxr_keyword">new</strong> JScrollPane(terminal);
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>             <strong class="jxr_keyword">this</strong>.addTab(TabResults.RCE_SHELL, scroller);
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
+<a class="jxr_linenumber" name="L254" href="#L254">254</a> 
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>             terminal.requestFocusInWindow();
+<a class="jxr_linenumber" name="L258" href="#L258">258</a> 
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>             <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>         } <strong class="jxr_keyword">catch</strong> (MalformedURLException | URISyntaxException e) {
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>         }
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>     }
+<a class="jxr_linenumber" name="L264" href="#L264">264</a> 
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitSql(String url, String user, String pass) {
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>             <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>             <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="ExploitSql" href="../../../../../com/jsql/view/swing/terminal/ExploitSql.html#ExploitSql">ExploitSql</a>(terminalID, url, user, pass);
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+<a class="jxr_linenumber" name="L270" href="#L270">270</a> 
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>             JScrollPane scroller = <strong class="jxr_keyword">new</strong> JScrollPane(terminal);
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>             <strong class="jxr_keyword">this</strong>.addTab(<span class="jxr_string">"SQL shell"</span>, scroller);
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
+<a class="jxr_linenumber" name="L274" href="#L274">274</a> 
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"SQL shell"</span>, UiUtil.TERMINAL.getIcon());
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>             terminal.requestFocusInWindow();
+<a class="jxr_linenumber" name="L278" href="#L278">278</a> 
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>             <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>         } <strong class="jxr_keyword">catch</strong> (MalformedURLException | URISyntaxException e) {
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>         }
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>     }
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>     
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabValues(String[][] data, String[] columnNames, <a name="AbstractElementDatabase" href="../../../../../com/jsql/model/bean/database/AbstractElementDatabase.html#AbstractElementDatabase">AbstractElementDatabase</a> table) {
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>         <strong class="jxr_keyword">var</strong> panelTable = <strong class="jxr_keyword">new</strong> <a name="PanelTable" href="../../../../../com/jsql/view/swing/table/PanelTable.html#PanelTable">PanelTable</a>(data, columnNames);
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>         
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>         <strong class="jxr_keyword">this</strong>.addTab(StringUtil.detectUtf8(table.toString()), panelTable);
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>         panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>         
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>         <strong class="jxr_keyword">this</strong>.setSelectedComponent(panelTable);  <em class="jxr_comment">// Focus on the new tab</em>
+<a class="jxr_linenumber" name="L292" href="#L292">292</a> 
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>         <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>         <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(panelTable), header);
+<a class="jxr_linenumber" name="L295" href="#L295">295</a> 
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>     }
+<a class="jxr_linenumber" name="L298" href="#L298">298</a> }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>

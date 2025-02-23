@@ -22,62 +22,64 @@
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>      ADD_TAB_EXPLOIT_RCE_ORACLE(<span class="jxr_string">"AddTabExploitRceOracle"</span>),
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>      ADD_TAB_EXPLOIT_RCE_POSTGRES(<span class="jxr_string">"AddTabExploitRcePostgres"</span>),
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      ADD_TAB_EXPLOIT_RCE_WAL_POSTGRES(<span class="jxr_string">"AddTabExploitRceWalPostgres"</span>),
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>      CREATE_VALUES_TAB(<span class="jxr_string">"CreateValuesTab"</span>),
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>      CREATE_ANALYSIS_REPORT(<span class="jxr_string">"CreateAnalysisReport"</span>),
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>      START_PROGRESS(<span class="jxr_string">"StartProgress"</span>),
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>      END_PROGRESS(<span class="jxr_string">"EndProgress"</span>),
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>      START_INDETERMINATE_PROGRESS(<span class="jxr_string">"StartIndeterminateProgress"</span>),
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>      END_INDETERMINATE_PROGRESS(<span class="jxr_string">"EndIndeterminateProgress"</span>),
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>      UPDATE_PROGRESS(<span class="jxr_string">"UpdateProgress"</span>),
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      END_PREPARATION(<span class="jxr_string">"EndPreparation"</span>),
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>      
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>      MARK_FILE_SYSTEM_INVULNERABLE(<span class="jxr_string">"MarkFileSystemInvulnerable"</span>),
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>      MARK_FILE_SYSTEM_VULNERABLE(<span class="jxr_string">"MarkFileSystemVulnerable"</span>),
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      GET_EXPLOIT_WEB_RESULT(<span class="jxr_string">"GetExploitWebResult"</span>),
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      GET_EXPLOIT_SQL_RESULT(<span class="jxr_string">"GetExploitSqlResult"</span>),
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>      GET_EXPLOIT_UDF_RESULT(<span class="jxr_string">"GetExploitUdfResult"</span>),
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      GET_EXPLOIT_RCE_RESULT(<span class="jxr_string">"GetExploitRceResult"</span>),
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      MARK_MULTI_INVULNERABLE(<span class="jxr_string">"MarkMultiInvulnerable"</span>),
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      MARK_MULTI_STRATEGY(<span class="jxr_string">"MarkMultiStrategy"</span>),
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>      MARK_MULTI_VULNERABLE(<span class="jxr_string">"MarkMultiVulnerable"</span>),
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>      MARK_BLIND_INVULNERABLE(<span class="jxr_string">"MarkBlindInvulnerable"</span>),
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>      MARK_BLIND_STRATEGY(<span class="jxr_string">"MarkBlindStrategy"</span>),
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      MARK_BLIND_VULNERABLE(<span class="jxr_string">"MarkBlindVulnerable"</span>),
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      MARK_ERROR_INVULNERABLE(<span class="jxr_string">"MarkErrorInvulnerable"</span>),
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>      MARK_ERROR_STRATEGY(<span class="jxr_string">"MarkErrorStrategy"</span>),
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>      MARK_ERROR_VULNERABLE(<span class="jxr_string">"MarkErrorVulnerable"</span>),
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      MARK_UNION_INVULNERABLE(<span class="jxr_string">"MarkUnionInvulnerable"</span>),
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>      MARK_UNION_STRATEGY(<span class="jxr_string">"MarkUnionStrategy"</span>),
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      MARK_UNION_VULNERABLE(<span class="jxr_string">"MarkUnionVulnerable"</span>),
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>      MARK_TIME_INVULNERABLE(<span class="jxr_string">"MarkTimeInvulnerable"</span>),
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      MARK_TIME_STRATEGY(<span class="jxr_string">"MarkTimeStrategy"</span>),
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      MARK_TIME_VULNERABLE(<span class="jxr_string">"MarkTimeVulnerable"</span>),
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      MARK_STACK_INVULNERABLE(<span class="jxr_string">"MarkStackInvulnerable"</span>),
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      MARK_STACK_STRATEGY(<span class="jxr_string">"MarkStackStrategy"</span>),
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      MARK_STACK_VULNERABLE(<span class="jxr_string">"MarkStackVulnerable"</span>),
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      MESSAGE_BINARY(<span class="jxr_string">"MessageBinary"</span>),
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      MESSAGE_CHUNK(<span class="jxr_string">"MessageChunk"</span>),
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>      MESSAGE_HEADER(<span class="jxr_string">"MessageHeader"</span>),
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>      SET_VENDOR(<span class="jxr_string">"SetVendor"</span>),
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      DATABASE_IDENTIFIED(<span class="jxr_string">"DatabaseIdentified"</span>),
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>      UNSUBSCRIBE(<span class="jxr_string">"Unsubscribe"</span>);  <em class="jxr_comment">// without real class to unsubscribe subscriber implicitly</em>
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>      ADD_TAB_EXPLOIT_RCE_PROGRAM_POSTGRES(<span class="jxr_string">"AddTabExploitRceProgramPostgres"</span>),
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>      ADD_TAB_EXPLOIT_RCE_SQLITE(<span class="jxr_string">"AddTabExploitRceSqlite"</span>),
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      CREATE_VALUES_TAB(<span class="jxr_string">"CreateValuesTab"</span>),
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>      CREATE_ANALYSIS_REPORT(<span class="jxr_string">"CreateAnalysisReport"</span>),
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>      START_PROGRESS(<span class="jxr_string">"StartProgress"</span>),
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>      END_PROGRESS(<span class="jxr_string">"EndProgress"</span>),
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>      START_INDETERMINATE_PROGRESS(<span class="jxr_string">"StartIndeterminateProgress"</span>),
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>      END_INDETERMINATE_PROGRESS(<span class="jxr_string">"EndIndeterminateProgress"</span>),
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>      UPDATE_PROGRESS(<span class="jxr_string">"UpdateProgress"</span>),
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>      END_PREPARATION(<span class="jxr_string">"EndPreparation"</span>),
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>      
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      MARK_FILE_SYSTEM_INVULNERABLE(<span class="jxr_string">"MarkFileSystemInvulnerable"</span>),
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      MARK_FILE_SYSTEM_VULNERABLE(<span class="jxr_string">"MarkFileSystemVulnerable"</span>),
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      GET_EXPLOIT_WEB_RESULT(<span class="jxr_string">"GetExploitWebResult"</span>),
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      GET_EXPLOIT_SQL_RESULT(<span class="jxr_string">"GetExploitSqlResult"</span>),
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      GET_EXPLOIT_UDF_RESULT(<span class="jxr_string">"GetExploitUdfResult"</span>),
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      GET_EXPLOIT_RCE_RESULT(<span class="jxr_string">"GetExploitRceResult"</span>),
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      MARK_MULTI_INVULNERABLE(<span class="jxr_string">"MarkMultiInvulnerable"</span>),
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>      MARK_MULTI_STRATEGY(<span class="jxr_string">"MarkMultiStrategy"</span>),
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      MARK_MULTI_VULNERABLE(<span class="jxr_string">"MarkMultiVulnerable"</span>),
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      MARK_BLIND_INVULNERABLE(<span class="jxr_string">"MarkBlindInvulnerable"</span>),
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>      MARK_BLIND_STRATEGY(<span class="jxr_string">"MarkBlindStrategy"</span>),
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      MARK_BLIND_VULNERABLE(<span class="jxr_string">"MarkBlindVulnerable"</span>),
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      MARK_ERROR_INVULNERABLE(<span class="jxr_string">"MarkErrorInvulnerable"</span>),
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      MARK_ERROR_STRATEGY(<span class="jxr_string">"MarkErrorStrategy"</span>),
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>      MARK_ERROR_VULNERABLE(<span class="jxr_string">"MarkErrorVulnerable"</span>),
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      MARK_UNION_INVULNERABLE(<span class="jxr_string">"MarkUnionInvulnerable"</span>),
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      MARK_UNION_STRATEGY(<span class="jxr_string">"MarkUnionStrategy"</span>),
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      MARK_UNION_VULNERABLE(<span class="jxr_string">"MarkUnionVulnerable"</span>),
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      MARK_TIME_INVULNERABLE(<span class="jxr_string">"MarkTimeInvulnerable"</span>),
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      MARK_TIME_STRATEGY(<span class="jxr_string">"MarkTimeStrategy"</span>),
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      MARK_TIME_VULNERABLE(<span class="jxr_string">"MarkTimeVulnerable"</span>),
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>      MARK_STACK_INVULNERABLE(<span class="jxr_string">"MarkStackInvulnerable"</span>),
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>      MARK_STACK_STRATEGY(<span class="jxr_string">"MarkStackStrategy"</span>),
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>      MARK_STACK_VULNERABLE(<span class="jxr_string">"MarkStackVulnerable"</span>),
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>  
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>      MESSAGE_BINARY(<span class="jxr_string">"MessageBinary"</span>),
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      MESSAGE_CHUNK(<span class="jxr_string">"MessageChunk"</span>),
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      MESSAGE_HEADER(<span class="jxr_string">"MessageHeader"</span>),
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      SET_VENDOR(<span class="jxr_string">"SetVendor"</span>),
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      DATABASE_IDENTIFIED(<span class="jxr_string">"DatabaseIdentified"</span>),
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String name;
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      UNSUBSCRIBE(<span class="jxr_string">"Unsubscribe"</span>);  <em class="jxr_comment">// without real class to unsubscribe subscriber implicitly</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <a name="Interaction" href="../../../../../com/jsql/model/bean/util/Interaction.html#Interaction">Interaction</a>(String name) {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">this</strong>.name = name;
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>      }
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>      
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>      @Override
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">public</strong> String toString() {
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.name;
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>      }
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>  }
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String name;
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <a name="Interaction" href="../../../../../com/jsql/model/bean/util/Interaction.html#Interaction">Interaction</a>(String name) {
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          <strong class="jxr_keyword">this</strong>.name = name;
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      }
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>      
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>      @Override
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>      <strong class="jxr_keyword">public</strong> String toString() {
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.name;
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>      }
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>  }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>
