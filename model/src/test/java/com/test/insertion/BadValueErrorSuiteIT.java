@@ -6,7 +6,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class BadValueErrorSuiteIT extends ConcreteMySqlErrorSuiteIT {
+class BadValueErrorSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {

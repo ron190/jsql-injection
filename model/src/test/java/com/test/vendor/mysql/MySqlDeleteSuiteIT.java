@@ -6,7 +6,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
+class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @Override
     public void initTable() {

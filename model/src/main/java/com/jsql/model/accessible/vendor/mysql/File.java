@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.mysql;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class File {
+import java.io.Serializable;
+
+public class File implements Serializable {
 
     private String privilege = StringUtils.EMPTY;
     private String read = StringUtils.EMPTY;

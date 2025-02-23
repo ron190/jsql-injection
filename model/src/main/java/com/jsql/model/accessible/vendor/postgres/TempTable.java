@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.postgres;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class TempTable {
+import java.io.Serializable;
+
+public class TempTable implements Serializable {
 
     private String drop = StringUtils.EMPTY;
     private String add = StringUtils.EMPTY;

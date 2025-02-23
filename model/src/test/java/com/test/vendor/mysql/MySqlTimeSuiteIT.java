@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
+class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -43,7 +43,7 @@ public class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getTime(),
             this.injectionModel.getMediatorStrategy().getStrategy()

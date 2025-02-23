@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.mysql;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class AddFunction {
+import java.io.Serializable;
+
+public class AddFunction implements Serializable {
 
     private String drop = StringUtils.EMPTY;
     private String create = StringUtils.EMPTY;

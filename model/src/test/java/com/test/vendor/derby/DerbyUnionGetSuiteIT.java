@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class DerbyUnionGetSuiteIT extends ConcreteDerbySuiteIT {
+class DerbyUnionGetSuiteIT extends ConcreteDerbySuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -54,7 +54,7 @@ public class DerbyUnionGetSuiteIT extends ConcreteDerbySuiteIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()

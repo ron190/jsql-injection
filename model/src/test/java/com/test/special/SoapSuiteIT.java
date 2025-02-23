@@ -8,7 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class SoapSuiteIT extends ConcreteMySqlErrorSuiteIT {
+class SoapSuiteIT extends ConcreteMySqlErrorSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -54,7 +54,7 @@ public class SoapSuiteIT extends ConcreteMySqlErrorSuiteIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()

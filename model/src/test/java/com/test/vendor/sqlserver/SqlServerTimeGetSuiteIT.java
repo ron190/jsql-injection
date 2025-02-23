@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class SqlServerTimeGetSuiteIT extends ConcreteSqlServerSuiteIT {
+class SqlServerTimeGetSuiteIT extends ConcreteSqlServerSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -44,7 +44,7 @@ public class SqlServerTimeGetSuiteIT extends ConcreteSqlServerSuiteIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getTime(),
             this.injectionModel.getMediatorStrategy().getStrategy()

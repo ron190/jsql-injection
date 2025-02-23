@@ -27,7 +27,8 @@ public class CallableFile implements Callable<CallableFile> {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
-    
+    private static final String REQUIRE_STACK = "Read file requirement : stack query";
+
     /**
      * Path to the file to read.
      */
@@ -78,7 +79,7 @@ public class CallableFile implements Callable<CallableFile> {
                     ResourceAccess.FILE_READ
                 );
             } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getH2()) {
-                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Read file requirement : stack query");
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CallableFile.REQUIRE_STACK);
                 var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
                 this.injectionModel.injectWithoutIndex(String.format(
                     this.injectionModel.getResourceAccess().getExploitH2().getModelYaml().getFile().getCreateTable(),
@@ -111,7 +112,7 @@ public class CallableFile implements Callable<CallableFile> {
                     ResourceAccess.FILE_READ
                 );
             } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getDerby()) {
-                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Read file requirement : stack query");
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CallableFile.REQUIRE_STACK);
                 var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
                 this.injectionModel.injectWithoutIndex(String.format(
                     this.injectionModel.getResourceAccess().getExploitDerby().getModelYaml().getFile().getCreateTable(),
@@ -130,7 +131,7 @@ public class CallableFile implements Callable<CallableFile> {
                     ResourceAccess.FILE_READ
                 );
             } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getHsqldb()) {
-                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Read file requirement : stack query");
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CallableFile.REQUIRE_STACK);
                 var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
                 this.injectionModel.injectWithoutIndex(String.format(
                     this.injectionModel.getResourceAccess().getExploitHsqldb().getModelYaml().getFile().getRead().getCreateTable(),

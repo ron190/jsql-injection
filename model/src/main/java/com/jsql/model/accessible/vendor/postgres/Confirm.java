@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.postgres;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Confirm {
+import java.io.Serializable;
+
+public class Confirm implements Serializable {
 
     private String addFunc = StringUtils.EMPTY;
     private String funcExists = StringUtils.EMPTY;

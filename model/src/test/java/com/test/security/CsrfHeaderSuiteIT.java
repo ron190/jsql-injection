@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Order;
 import org.junitpioneer.jupiter.RetryingTest;
 import spring.security.CsrfWebSecurity;
 
-public class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
+class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -49,7 +49,7 @@ public class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()

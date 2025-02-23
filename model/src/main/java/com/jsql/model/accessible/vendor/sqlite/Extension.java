@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.sqlite;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Extension {
+import java.io.Serializable;
+
+public class Extension implements Serializable {
 
     private String fileioRead = StringUtils.EMPTY;
     private String fileioWrite = StringUtils.EMPTY;

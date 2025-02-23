@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class MonetDbUnionGetSuiteIgnoreIT extends ConcreteMonetDbSuiteIgnoreIT {
+class MonetDbUnionGetSuiteIgnoreIT extends ConcreteMonetDbSuiteIgnoreIT {
     // Error during jdbc connection on GitHub Actions (works on local)
     // SQLNonTransientConnectionException: Unable to connect (jsql-monetdb:50001): Connection refused
 
@@ -57,7 +57,7 @@ public class MonetDbUnionGetSuiteIgnoreIT extends ConcreteMonetDbSuiteIgnoreIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()

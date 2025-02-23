@@ -13,7 +13,7 @@ import javax.swing.undo.UndoableEdit;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class MergeUndo extends JEditorPane {
+class MergeUndo extends JEditorPane {
     private final JButton btnUndo=new JButton("Undo");
     private final JButton btnRedo=new JButton("Redo");
     private final UndoManager undoManager=new UndoManager();

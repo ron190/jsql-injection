@@ -8,6 +8,7 @@ public class Udf implements Serializable {
 
     private Wal wal = new Wal();
     private Extension extension = new Extension();
+    private Program program = new Program();
     private String plpython = StringUtils.EMPTY;
     private String plperlu = StringUtils.EMPTY;
     private String plsh = StringUtils.EMPTY;
@@ -77,5 +78,13 @@ public class Udf implements Serializable {
 
     public void setWal(Wal wal) {
         this.wal = wal;
+    }
+
+    public Program getProgram() {
+        return this.program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
     }
 }

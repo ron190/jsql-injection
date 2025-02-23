@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 
 @SuppressWarnings("java:S2699")
-public class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
+class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
     //Unstable
 
     @Override
@@ -64,7 +64,7 @@ public class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()

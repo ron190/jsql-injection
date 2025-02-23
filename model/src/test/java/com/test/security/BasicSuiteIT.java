@@ -9,7 +9,7 @@ import org.junitpioneer.jupiter.RetryingTest;
 import spring.security.BasicSecurityConfig;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class BasicSuiteIT extends ConcreteMySqlErrorSuiteIT {
+class BasicSuiteIT extends ConcreteMySqlErrorSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -54,7 +54,7 @@ public class BasicSuiteIT extends ConcreteMySqlErrorSuiteIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()

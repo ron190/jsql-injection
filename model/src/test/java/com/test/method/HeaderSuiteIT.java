@@ -6,7 +6,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class HeaderSuiteIT extends ConcreteMySqlSuiteIT {
+class HeaderSuiteIT extends ConcreteMySqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {

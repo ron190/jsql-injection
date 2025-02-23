@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 
 @SuppressWarnings("java:S2699")
-public class CubridUnionSuiteIT extends ConcreteCubridSuiteIT {
+class CubridUnionSuiteIT extends ConcreteCubridSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -56,7 +56,7 @@ public class CubridUnionSuiteIT extends ConcreteCubridSuiteIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()

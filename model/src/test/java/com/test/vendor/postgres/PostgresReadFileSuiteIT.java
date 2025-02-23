@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class PostgresReadFileSuiteIT extends ConcretePostgresSuiteIT {
+class PostgresReadFileSuiteIT extends ConcretePostgresSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {

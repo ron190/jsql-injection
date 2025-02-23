@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
+class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {

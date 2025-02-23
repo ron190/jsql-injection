@@ -5,7 +5,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class Neo4JUnionGetSuiteIT extends ConcreteNeo4jSuiteIT {
+class Neo4JUnionGetSuiteIT extends ConcreteNeo4jSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {

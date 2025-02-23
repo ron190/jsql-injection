@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Order;
 import org.junitpioneer.jupiter.RetryingTest;
 import spring.security.DigestSecurityConfig;
 
-public class DigestSuiteIT extends ConcreteMySqlErrorSuiteIT {
+class DigestSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     /**
      * https://en.wikipedia.org/wiki/Digest_access_authentication
@@ -74,7 +74,7 @@ public class DigestSuiteIT extends ConcreteMySqlErrorSuiteIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()

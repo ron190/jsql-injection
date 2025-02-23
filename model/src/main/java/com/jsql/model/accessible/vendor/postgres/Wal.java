@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.postgres;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Wal {
+import java.io.Serializable;
+
+public class Wal implements Serializable {
 
     private String getStatus = StringUtils.EMPTY;
     private String getPathConf = StringUtils.EMPTY;

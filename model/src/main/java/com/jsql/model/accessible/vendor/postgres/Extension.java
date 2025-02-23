@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.postgres;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Extension {
+import java.io.Serializable;
+
+public class Extension implements Serializable {
 
     private String create = StringUtils.EMPTY;
     private String languages = StringUtils.EMPTY;

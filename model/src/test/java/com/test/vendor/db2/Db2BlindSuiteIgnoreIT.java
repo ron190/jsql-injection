@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
+class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
     // Unstable
     
     @Override
@@ -47,7 +47,7 @@ public class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getBlind(),
             this.injectionModel.getMediatorStrategy().getStrategy()

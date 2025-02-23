@@ -5,7 +5,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
+class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {

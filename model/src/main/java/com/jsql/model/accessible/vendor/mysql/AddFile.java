@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.mysql;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class AddFile {
+import java.io.Serializable;
+
+public class AddFile implements Serializable {
 
     private String queryBody = StringUtils.EMPTY;
     private String netshare = StringUtils.EMPTY;
