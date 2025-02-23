@@ -6,7 +6,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class CustomMethodSuiteIT extends ConcreteMySqlErrorSuiteIT {
+public class CustomMethodSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     public static final String CUSTOM_METHOD = "CUSTOM-JSQL";
     
