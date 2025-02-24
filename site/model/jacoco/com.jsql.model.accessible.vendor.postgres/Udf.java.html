@@ -10,82 +10,100 @@ import java.io.Serializable;
 <span class="fc" id="L10">    private Extension extension = new Extension();</span>
 <span class="fc" id="L11">    private Program program = new Program();</span>
 <span class="fc" id="L12">    private String plpython = StringUtils.EMPTY;</span>
-<span class="fc" id="L13">    private String plperlu = StringUtils.EMPTY;</span>
+<span class="fc" id="L13">    private String plperl = StringUtils.EMPTY;</span>
 <span class="fc" id="L14">    private String plsh = StringUtils.EMPTY;</span>
-<span class="fc" id="L15">    private String runFunc = StringUtils.EMPTY;</span>
-<span class="fc" id="L16">    private String dropFunc = StringUtils.EMPTY;</span>
-<span class="fc" id="L17">    private Sql sql = new Sql();</span>
+<span class="fc" id="L15">    private String pltcl = StringUtils.EMPTY;</span>
+<span class="fc" id="L16">    private String plr = StringUtils.EMPTY;</span>
+<span class="fc" id="L17">    private String runFunc = StringUtils.EMPTY;</span>
+<span class="fc" id="L18">    private String dropFunc = StringUtils.EMPTY;</span>
+<span class="fc" id="L19">    private Sql sql = new Sql();</span>
 
     public Extension getExtension() {
-<span class="fc" id="L20">        return this.extension;</span>
+<span class="fc" id="L22">        return this.extension;</span>
     }
 
     public void setExtension(Extension extension) {
-<span class="fc" id="L24">        this.extension = extension;</span>
-<span class="fc" id="L25">    }</span>
+<span class="fc" id="L26">        this.extension = extension;</span>
+<span class="fc" id="L27">    }</span>
 
     public String getPlpython() {
-<span class="fc" id="L28">        return this.plpython;</span>
+<span class="fc" id="L30">        return this.plpython;</span>
     }
 
     public void setPlpython(String plpython) {
-<span class="fc" id="L32">        this.plpython = plpython;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L34">        this.plpython = plpython;</span>
+<span class="fc" id="L35">    }</span>
 
-    public String getPlperlu() {
-<span class="fc" id="L36">        return this.plperlu;</span>
+    public String getPlperl() {
+<span class="fc" id="L38">        return this.plperl;</span>
     }
 
-    public void setPlperlu(String plperlu) {
-<span class="fc" id="L40">        this.plperlu = plperlu;</span>
-<span class="fc" id="L41">    }</span>
+    public void setPlperl(String plperl) {
+<span class="fc" id="L42">        this.plperl = plperl;</span>
+<span class="fc" id="L43">    }</span>
 
     public String getPlsh() {
-<span class="fc" id="L44">        return this.plsh;</span>
+<span class="fc" id="L46">        return this.plsh;</span>
     }
 
     public void setPlsh(String plsh) {
-<span class="fc" id="L48">        this.plsh = plsh;</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L50">        this.plsh = plsh;</span>
+<span class="fc" id="L51">    }</span>
 
     public String getRunFunc() {
-<span class="fc" id="L52">        return this.runFunc;</span>
+<span class="fc" id="L54">        return this.runFunc;</span>
     }
 
     public void setRunFunc(String runFunc) {
-<span class="fc" id="L56">        this.runFunc = runFunc;</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L58">        this.runFunc = runFunc;</span>
+<span class="fc" id="L59">    }</span>
 
     public Sql getSql() {
-<span class="fc" id="L60">        return this.sql;</span>
+<span class="fc" id="L62">        return this.sql;</span>
     }
 
     public void setSql(Sql sql) {
-<span class="fc" id="L64">        this.sql = sql;</span>
-<span class="fc" id="L65">    }</span>
+<span class="fc" id="L66">        this.sql = sql;</span>
+<span class="fc" id="L67">    }</span>
 
     public String getDropFunc() {
-<span class="fc" id="L68">        return this.dropFunc;</span>
+<span class="fc" id="L70">        return this.dropFunc;</span>
     }
 
     public void setDropFunc(String dropFunc) {
-<span class="fc" id="L72">        this.dropFunc = dropFunc;</span>
-<span class="fc" id="L73">    }</span>
+<span class="fc" id="L74">        this.dropFunc = dropFunc;</span>
+<span class="fc" id="L75">    }</span>
 
     public Wal getWal() {
-<span class="fc" id="L76">        return this.wal;</span>
+<span class="fc" id="L78">        return this.wal;</span>
     }
 
     public void setWal(Wal wal) {
-<span class="fc" id="L80">        this.wal = wal;</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L82">        this.wal = wal;</span>
+<span class="fc" id="L83">    }</span>
 
     public Program getProgram() {
-<span class="fc" id="L84">        return this.program;</span>
+<span class="fc" id="L86">        return this.program;</span>
     }
 
     public void setProgram(Program program) {
-<span class="fc" id="L88">        this.program = program;</span>
-<span class="fc" id="L89">    }</span>
+<span class="fc" id="L90">        this.program = program;</span>
+<span class="fc" id="L91">    }</span>
+
+    public String getPltcl() {
+<span class="fc" id="L94">        return this.pltcl;</span>
+    }
+
+    public void setPltcl(String pltcl) {
+<span class="fc" id="L98">        this.pltcl = pltcl;</span>
+<span class="fc" id="L99">    }</span>
+
+    public String getPlr() {
+<span class="fc" id="L102">        return this.plr;</span>
+    }
+
+    public void setPlr(String plr) {
+<span class="fc" id="L106">        this.plr = plr;</span>
+<span class="fc" id="L107">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
