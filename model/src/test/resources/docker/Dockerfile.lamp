@@ -13,6 +13,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y dos2unix
     php-sqlite3           \
     postgresql-plperl     \
     postgresql-plpython3  \
+    postgresql-pltcl      \
+    postgresql-10-plr     \
     postgresql-10-plsh
 EXPOSE 8079 3308 6000
 COPY ./lamp/ /var/www/html/

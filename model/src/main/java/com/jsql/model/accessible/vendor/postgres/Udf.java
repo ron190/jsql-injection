@@ -10,8 +10,10 @@ public class Udf implements Serializable {
     private Extension extension = new Extension();
     private Program program = new Program();
     private String plpython = StringUtils.EMPTY;
-    private String plperlu = StringUtils.EMPTY;
+    private String plperl = StringUtils.EMPTY;
     private String plsh = StringUtils.EMPTY;
+    private String pltcl = StringUtils.EMPTY;
+    private String plr = StringUtils.EMPTY;
     private String runFunc = StringUtils.EMPTY;
     private String dropFunc = StringUtils.EMPTY;
     private Sql sql = new Sql();
@@ -32,12 +34,12 @@ public class Udf implements Serializable {
         this.plpython = plpython;
     }
 
-    public String getPlperlu() {
-        return this.plperlu;
+    public String getPlperl() {
+        return this.plperl;
     }
 
-    public void setPlperlu(String plperlu) {
-        this.plperlu = plperlu;
+    public void setPlperl(String plperl) {
+        this.plperl = plperl;
     }
 
     public String getPlsh() {
@@ -86,5 +88,21 @@ public class Udf implements Serializable {
 
     public void setProgram(Program program) {
         this.program = program;
+    }
+
+    public String getPltcl() {
+        return this.pltcl;
+    }
+
+    public void setPltcl(String pltcl) {
+        this.pltcl = pltcl;
+    }
+
+    public String getPlr() {
+        return this.plr;
+    }
+
+    public void setPlr(String plr) {
+        this.plr = plr;
     }
 }

@@ -277,19 +277,24 @@ public class PanelAddressBar extends JPanel {
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
                 }
 
-                popup.show(
-                    e.getComponent(),
-                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
-                    ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()
-                    : e.getComponent().getX(),
-                    e.getComponent().getY() + e.getComponent().getHeight()
-                );
-                popup.setLocation(  // required for proper location
-                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
-                    ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()
-                    : e.getComponent().getLocationOnScreen().x,
-                    e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight()
-                );
+                // Fix #96032: NullPointerException on show()
+                try {
+                    popup.show(
+                        e.getComponent(),
+                        ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
+                            ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()
+                            : e.getComponent().getX(),
+                        e.getComponent().getY() + e.getComponent().getHeight()
+                    );
+                    popup.setLocation(  // required for proper location
+                        ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
+                            ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()
+                            : e.getComponent().getLocationOnScreen().x,
+                        e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight()
+                    );
+                } catch (NullPointerException ex) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, ex);
+                }
             }
         });
 
