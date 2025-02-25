@@ -14,6 +14,7 @@ public class Udf implements Serializable {
     private String plsh = StringUtils.EMPTY;
     private String pltcl = StringUtils.EMPTY;
     private String plr = StringUtils.EMPTY;
+    private String pllua = StringUtils.EMPTY;
     private String runFunc = StringUtils.EMPTY;
     private String dropFunc = StringUtils.EMPTY;
     private Sql sql = new Sql();
@@ -104,5 +105,13 @@ public class Udf implements Serializable {
 
     public void setPlr(String plr) {
         this.plr = plr;
+    }
+
+    public String getPllua() {
+        return this.pllua;
+    }
+
+    public void setPllua(String pllua) {
+        this.pllua = pllua;
     }
 }

