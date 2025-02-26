@@ -91,6 +91,7 @@ jobs:
               surefire-report:failsafe-report-only \
               dependency:analyze-report \
               spotbugs:check \
+              pmd:pmd \
               versions:dependency-updates-report \
               checkstyle:checkstyle \
               site
