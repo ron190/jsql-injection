@@ -2,7 +2,7 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,5,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Patch,208,0,14,0,46,0,20,0,12,0
 model,com.jsql.model.injection.strategy.blind.patch,Diff,29,84,9,9,6,23,9,9,2,7
-model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3155,2128,397,290,647,464,244,149,23,20
+model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3134,2149,393,294,643,468,242,151,23,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
 model,com.jsql.model.accessible.vendor.derby,ModelYamlDerby,0,15,0,0,0,5,0,3,0,3
 model,com.jsql.model.accessible.vendor.derby,File,0,33,0,0,0,13,0,7,0,7
@@ -117,8 +117,8 @@ model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,0,2
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,0,2
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,0,2
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,10,0,0,0,2,0,2,0,2
 model,com.jsql.util.bruter,CodecPolicy,0,15,0,0,0,3,0,1,0,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,10,0,0,0,2,0,2,0,2
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,0,2
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
