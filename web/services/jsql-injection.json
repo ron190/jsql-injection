@@ -1,5 +1,5 @@
 {
-    "version": "0.109",
+    "version": "0.110",
     "news": [
         "[v0.109] Multiple improvements on RCE, strategy and file read for SQLite, MySQL and Postgres",
         "[RCE] How to use shells explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
