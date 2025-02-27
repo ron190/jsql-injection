@@ -2,70 +2,72 @@
 
 import org.apache.commons.lang3.StringUtils;
 
-<span class="fc" id="L5">public class TempTable {</span>
+import java.io.Serializable;
 
-<span class="fc" id="L7">    private String nameDatabase = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private String drop = StringUtils.EMPTY;</span>
-<span class="fc" id="L9">    private String confirm = StringUtils.EMPTY;</span>
-<span class="fc" id="L10">    private String create = StringUtils.EMPTY;</span>
-<span class="fc" id="L11">    private String insertChunks = StringUtils.EMPTY;</span>
-<span class="fc" id="L12">    private String appendChunks = StringUtils.EMPTY;</span>
-<span class="fc" id="L13">    private String dump = StringUtils.EMPTY;</span>
+<span class="fc" id="L7">public class TempTable implements Serializable {</span>
+
+<span class="fc" id="L9">    private String nameDatabase = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String drop = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private String confirm = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private String create = StringUtils.EMPTY;</span>
+<span class="fc" id="L13">    private String insertChunks = StringUtils.EMPTY;</span>
+<span class="fc" id="L14">    private String appendChunks = StringUtils.EMPTY;</span>
+<span class="fc" id="L15">    private String dump = StringUtils.EMPTY;</span>
 
     public String getNameDatabase() {
-<span class="fc" id="L16">        return this.nameDatabase;</span>
+<span class="fc" id="L18">        return this.nameDatabase;</span>
     }
 
     public void setNameDatabase(String nameDatabase) {
-<span class="fc" id="L20">        this.nameDatabase = nameDatabase;</span>
-<span class="fc" id="L21">    }</span>
+<span class="fc" id="L22">        this.nameDatabase = nameDatabase;</span>
+<span class="fc" id="L23">    }</span>
 
     public String getDrop() {
-<span class="fc" id="L24">        return this.drop;</span>
+<span class="fc" id="L26">        return this.drop;</span>
     }
 
     public void setDrop(String drop) {
-<span class="fc" id="L28">        this.drop = drop;</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L30">        this.drop = drop;</span>
+<span class="fc" id="L31">    }</span>
 
     public String getConfirm() {
-<span class="fc" id="L32">        return this.confirm;</span>
+<span class="fc" id="L34">        return this.confirm;</span>
     }
 
     public void setConfirm(String confirm) {
-<span class="fc" id="L36">        this.confirm = confirm;</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L38">        this.confirm = confirm;</span>
+<span class="fc" id="L39">    }</span>
 
     public String getCreate() {
-<span class="fc" id="L40">        return this.create;</span>
+<span class="fc" id="L42">        return this.create;</span>
     }
 
     public void setCreate(String create) {
-<span class="fc" id="L44">        this.create = create;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L46">        this.create = create;</span>
+<span class="fc" id="L47">    }</span>
 
     public String getInsertChunks() {
-<span class="fc" id="L48">        return this.insertChunks;</span>
+<span class="fc" id="L50">        return this.insertChunks;</span>
     }
 
     public void setInsertChunks(String insertChunks) {
-<span class="fc" id="L52">        this.insertChunks = insertChunks;</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L54">        this.insertChunks = insertChunks;</span>
+<span class="fc" id="L55">    }</span>
 
     public String getAppendChunks() {
-<span class="fc" id="L56">        return this.appendChunks;</span>
+<span class="fc" id="L58">        return this.appendChunks;</span>
     }
 
     public void setAppendChunks(String appendChunks) {
-<span class="fc" id="L60">        this.appendChunks = appendChunks;</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L62">        this.appendChunks = appendChunks;</span>
+<span class="fc" id="L63">    }</span>
 
     public String getDump() {
-<span class="fc" id="L64">        return this.dump;</span>
+<span class="fc" id="L66">        return this.dump;</span>
     }
 
     public void setDump(String dump) {
-<span class="fc" id="L68">        this.dump = dump;</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L70">        this.dump = dump;</span>
+<span class="fc" id="L71">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

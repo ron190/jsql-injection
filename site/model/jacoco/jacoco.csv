@@ -2,7 +2,7 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,5,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Patch,208,0,14,0,46,0,20,0,12,0
 model,com.jsql.model.injection.strategy.blind.patch,Diff,29,84,9,9,6,23,9,9,2,7
-model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3134,2149,393,294,643,468,242,151,23,20
+model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3155,2128,397,290,647,464,244,149,23,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
 model,com.jsql.model.accessible.vendor.derby,ModelYamlDerby,0,15,0,0,0,5,0,3,0,3
 model,com.jsql.model.accessible.vendor.derby,File,0,33,0,0,0,13,0,7,0,7
@@ -211,7 +211,7 @@ model,com.jsql.model.suspendable.callable,CallablePageSource,0,51,0,0,0,16,0,7,0
 model,com.jsql.model.accessible.vendor.sqlite,Extension,6,37,0,0,2,15,2,7,2,7
 model,com.jsql.model.accessible.vendor.sqlite,ModelYamlSqlite,3,32,0,0,1,12,1,6,1,6
 model,com.jsql.model.accessible.vendor,ExploitSqlite,208,192,5,1,38,36,6,6,3,6
-model,com.jsql.model.accessible.vendor,ExploitPostgres,410,1038,25,39,79,163,21,26,2,13
+model,com.jsql.model.accessible.vendor,ExploitPostgres,425,1043,30,40,85,164,26,27,4,14
 model,com.jsql.model.accessible.vendor,ExploitHsqldb,132,137,3,1,26,27,4,5,2,5
 model,com.jsql.model.accessible.vendor,ExploitOracle,226,26,4,0,33,7,4,2,2,2
 model,com.jsql.model.accessible.vendor,ExploitMysql,416,878,46,46,78,157,42,27,5,18
