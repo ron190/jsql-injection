@@ -83,7 +83,7 @@ class DigestSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @AfterAll
     @Order(Order.DEFAULT)
-    public synchronized void assertResult() {
+    synchronized void assertResult() {
         Assertions.assertTrue(DigestSecurityConfig.FILTER.count > 0);
         LOGGER.info("DigestSecurityConfig.filter.count: {}", DigestSecurityConfig.FILTER.count);
     }

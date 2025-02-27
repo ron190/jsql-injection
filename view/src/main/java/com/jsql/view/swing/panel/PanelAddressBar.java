@@ -277,6 +277,7 @@ public class PanelAddressBar extends JPanel {
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
                 }
 
+                // TODO Failure on arabic
                 // Fix #96032: NullPointerException on show()
                 try {
                     popup.show(

@@ -63,7 +63,7 @@ class BasicSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @AfterAll
     @Order(Order.DEFAULT)
-    public void assertResult() {
+    void assertResult() {
         Assertions.assertTrue(BasicSecurityConfig.FILTER.count > 0);
         LOGGER.info("BasicSecurityConfig.filter.count: {}", BasicSecurityConfig.FILTER.count);
     }

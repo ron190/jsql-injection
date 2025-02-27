@@ -58,7 +58,7 @@ class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @AfterAll
     @Order(Order.DEFAULT)
-    public synchronized void assertResult() {
+    synchronized void assertResult() {
         Assertions.assertTrue(CsrfWebSecurity.FILTER.count > 0);
         LOGGER.info("CsrfWebSecurity.filter.count: {}", CsrfWebSecurity.FILTER.count);
     }

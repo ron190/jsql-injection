@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.mysql;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class TempTable {
+import java.io.Serializable;
+
+public class TempTable implements Serializable {
 
     private String nameDatabase = StringUtils.EMPTY;
     private String drop = StringUtils.EMPTY;
