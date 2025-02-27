@@ -4,6 +4,6 @@
         "[v0.109] Multiple improvements on RCE, strategy and file read for SQLite, MySQL and Postgres",
         "[RCE] How to use shells explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
         "[Pinned] Report any bugs and thoughts, and add your star to the project at https://github.com/ron190/jsql-injection",
-        "[Community] What should be done by jSQL that you do manually? Improve your CTF skills and bounty hunt by contributing"
+        "[Community] What should be done by jSQL that you do manually ? Contribute to improve your CTF skills and bounty"
     ]
 }
