@@ -47,6 +47,7 @@ services:
       - "8079:80"
       - "3308:3308"
       - "6000:5432"  # 5433 not working
+      - "4444:4444"
     networks:
       - jsql-network
 

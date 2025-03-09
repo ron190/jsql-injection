@@ -114,7 +114,7 @@ public class Bruter {
     }
 
     private long calculateTimeDifference() {
-        return (long) ((this.endtime - this.starttime) * (1 * Math.pow(10, -9)));
+        return (long) ((this.endtime - this.starttime) * Math.pow(10, -9));
     }
     
     

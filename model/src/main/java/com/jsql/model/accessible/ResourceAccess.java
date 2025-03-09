@@ -283,7 +283,7 @@ public class ResourceAccess {
                 CallableHttpHead currentCallable = taskCompletionService.take().get();
                 if (currentCallable.isHttpResponseOk()) {
                     urlSuccess = currentCallable.getUrl();
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Exploit successful: connection done to [{}]", currentCallable.getUrl());
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection successful to [{}]", currentCallable.getUrl());
                     break;
                 }
             } catch (InterruptedException e) {
@@ -299,9 +299,13 @@ public class ResourceAccess {
     }
 
     public String callCommand(String urlCommand) {
+        return this.callCommand(urlCommand, false);
+    }
+
+    public String callCommand(String urlCommand, boolean isConnectIssueIgnored) {
         String pageSource;
         try {
-            pageSource = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(urlCommand);
+            pageSource = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(urlCommand, isConnectIssueIgnored);
         } catch (Exception e) {
             pageSource = StringUtils.EMPTY;
         }
@@ -315,7 +319,9 @@ public class ResourceAccess {
             result = regexSearch.group(1);
         } catch (IllegalStateException e) {
             result = StringUtils.EMPTY;  // fix return null from regex
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format(ResourceAccess.TEMPLATE_ERROR, "empty result", "command"));
+            if (!isConnectIssueIgnored) {
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format(ResourceAccess.TEMPLATE_ERROR, "empty result", "command"));
+            }
         }
         return result;
     }
@@ -327,8 +333,12 @@ public class ResourceAccess {
      * @param urlExploit Web path of the shell
      */
     public String runWebShell(String command, UUID uuidShell, String urlExploit) {
+        return this.runWebShell(command, uuidShell, urlExploit, false);
+    }
+    public String runWebShell(String command, UUID uuidShell, String urlExploit, boolean isConnectIssueIgnored) {
         String result = this.callCommand(
-            urlExploit +"?c="+ URLEncoder.encode(command, StandardCharsets.ISO_8859_1)
+            urlExploit +"?c="+ URLEncoder.encode(command, StandardCharsets.ISO_8859_1),
+            isConnectIssueIgnored
         );
         if (StringUtils.isBlank(result)) {
             result = String.format(ResourceAccess.TEMPLATE_ERROR, "empty result", command);

@@ -1371,7 +1371,7 @@ public class DiffMatchPatch {
             return lastChars2;
         }
         // Add the remaining character length.
-        return lastChars2 + (loc - lastChars1);
+        return lastChars2 + loc - lastChars1;
     }
 
     /**

@@ -204,7 +204,24 @@ public class ConnectionUtil {
         }
     }
 
-    public String getSource(String url, boolean lineFeed) {
+    /**
+     * Call a URL and return the source page.
+     * @param url to call
+     * @return the source page of the URL
+     */
+    public String getSourceLineFeed(String url) {
+        return this.getSource(url, true, false);
+    }
+
+    public String getSource(String url) {
+        return this.getSource(url, false, false);
+    }
+
+    public String getSource(String url, boolean isConnectIssueIgnored) {  // reverse init result can be ignored
+        return this.getSource(url, false, isConnectIssueIgnored);
+    }
+
+    public String getSource(String url, boolean lineFeed, boolean isConnectIssueIgnored) {
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, url);
         
@@ -231,7 +248,9 @@ public class ConnectionUtil {
             msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
             
         } catch (IOException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            if (!isConnectIssueIgnored) {  // ignoring reverse connection timeout
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            }
         } catch (InterruptedException e) {
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
@@ -245,19 +264,6 @@ public class ConnectionUtil {
         }
         
         return pageSource.trim();
-    }
-    
-    /**
-     * Call a URL and return the source page.
-     * @param url to call
-     * @return the source page of the URL
-     */
-    public String getSourceLineFeed(String url) {
-        return this.getSource(url, true);
-    }
-    
-    public String getSource(String url) {
-        return this.getSource(url, false);
     }
 
     public void setCustomUserAgent(Builder httpRequest) {

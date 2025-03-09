@@ -43,8 +43,10 @@ public class AbstractGetShellResult implements InteractionCommand {
     @Override
     public void execute() {
         AbstractExploit terminal = MediatorHelper.frame().getMapUuidShell().get(this.terminalID);
-        terminal.append(this.result);
-        terminal.append("\n");
-        terminal.reset();
+        if (terminal != null) {  // null on reverse shell connection
+            terminal.append(this.result);
+            terminal.append("\n");
+            terminal.reset();
+        }
     }
 }

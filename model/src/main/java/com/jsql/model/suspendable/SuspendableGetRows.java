@@ -173,7 +173,9 @@ public class SuspendableGetRows extends AbstractSuspendable {
             && initialSqlQuery != null && !initialSqlQuery.matches("(?si).*select.*sys_eval\\('.*'\\).*")
         ) {
             return StringEscapeUtils.unescapeJava(  // transform \u0000 entities to text
-                currentChunk.replaceAll("\\\\u.{0,3}$", StringUtils.EMPTY)  // remove incorrect entities
+                currentChunk
+                .replaceAll("\\\\u.{0,3}$", StringUtils.EMPTY)  // remove incorrect entities
+                .replaceAll("\\\\(\\d{4})", "\\\\u$1")  // transform PDO Error 10.11.3-MariaDB-1 \0000 entities
             );
         }
         return currentChunk;

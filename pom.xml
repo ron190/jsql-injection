@@ -34,7 +34,7 @@
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
-        <maven-install-plugin.version>3.1.3</maven-install-plugin.version>
+        <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>3.6.0</maven-jxr-plugin.version>
@@ -45,7 +45,7 @@
         <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
         <maven-surefire-report-plugin.version>3.5.2</maven-surefire-report-plugin.version>
         <pitest-maven.version>1.18.2</pitest-maven.version>
-        <spotbugs-maven-plugin.version>4.9.1.0</spotbugs-maven-plugin.version>
+        <spotbugs-maven-plugin.version>4.9.2.0</spotbugs-maven-plugin.version>
         <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
         <!-- Tests are disabled for scans by default, profile restores the tests -->
@@ -271,7 +271,17 @@
         </pluginManagement>
         <plugins>
             <plugin>
-                <!-- both plugin and report required for custom ruleset -->
+                <!-- plugin required for custom suppressions -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <!-- only works on plugin, not on report -->
+                    <suppressionsLocation>src/site/checkstyle-suppressions.xml</suppressionsLocation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- plugin required for custom ruleset -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>${maven-pmd-plugin.version}</version>

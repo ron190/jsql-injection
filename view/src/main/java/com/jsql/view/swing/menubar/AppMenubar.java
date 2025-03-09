@@ -19,6 +19,7 @@ import com.jsql.view.swing.console.JTextPaneAppender;
 import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.dialog.translate.Language;
+import com.jsql.view.swing.panel.preferences.PanelExploit;
 import com.jsql.view.swing.panel.preferences.PanelTampering;
 import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.table.PanelTable;
@@ -281,6 +282,7 @@ public class AppMenubar extends JMenuBar {
 
         SqlEngine.applyTheme();
         PanelTampering.applyTheme();
+        PanelExploit.applyTheme();
         MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyTheme();
         MediatorHelper.frame().setIconImages(UiUtil.getIcons());
         MediatorHelper.frame().revalidate();

@@ -134,13 +134,14 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
         if (hashBruter.getPerSecond() != 0) {
             float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / hashBruter.getPerSecond();
-            this.append(this.bruteForceManager.getResult(), (
+            this.append(
+                this.bruteForceManager.getResult(),
                 I18nUtil.valueByKey("BRUTEFORCE_TRAVERSING_REMAINING") + ": "
                 + Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f)) + I18nUtil.valueByKey("BRUTEFORCE_DAYS") + StringUtils.SPACE
                 + Math.round(Math.floor(remainingDuration / 60f / 60f % 24))    + I18nUtil.valueByKey("BRUTEFORCE_HOURS") + StringUtils.SPACE
                 + Math.round(Math.floor(remainingDuration / 60f % 60))          + I18nUtil.valueByKey("BRUTEFORCE_MINUTES") + StringUtils.SPACE
                 + Math.round(remainingDuration % 60)                            + I18nUtil.valueByKey("BRUTEFORCE_SECONDS")
-            ));
+            );
         }
 
         this.append(

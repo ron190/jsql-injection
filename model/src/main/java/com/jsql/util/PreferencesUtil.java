@@ -1,10 +1,16 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.util.reverse.ModelReverse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.yaml.snakeyaml.LoaderOptions;
+import org.yaml.snakeyaml.Yaml;
 
+import java.util.List;
+import java.util.Map;
 import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
 
 /**
  * Utility class to manage JVM preferences previously saved into the system.
@@ -95,6 +101,25 @@ public class PreferencesUtil {
     private String languageTag = StringUtils.EMPTY;
     private boolean isUserAgentRandom = false;
     private boolean isUrlDecodeNetworkTab = false;
+
+    private final Yaml yaml;
+    private String commandsReverseYaml;
+    private List<ModelReverse> commandsReverse;
+
+    public PreferencesUtil() {
+        var loaderOptions = new LoaderOptions();
+        loaderOptions.setWarnOnDuplicateKeys(false);  // required to prevent snakeyaml logs
+        this.yaml = new Yaml(loaderOptions);
+        this.parseReverseCommands(StringUtil.getFile("exploit/reverse.yml"));
+    }
+
+    public void parseReverseCommands(String commandsReverseYaml) {
+        List<Map<String, String>> commandsReverseMap = this.yaml.load(commandsReverseYaml);
+        this.commandsReverse = commandsReverseMap.stream()
+            .map(map -> new ModelReverse(map.get("name"), map.get("command")))
+            .collect(Collectors.toList());
+        this.commandsReverseYaml = commandsReverseYaml;
+    }
 
     /**
      * Initialize the utility class with previously saved JVM preferences and apply
@@ -500,7 +525,14 @@ public class PreferencesUtil {
         return this.isUrlDecodeNetworkTab;
     }
 
-    
+    public String getCommandsReverseYaml() {
+        return this.commandsReverseYaml;
+    }
+
+    public List<ModelReverse> getCommandsReverse() {
+        return this.commandsReverse;
+    }
+
     // Builder
 
     public PreferencesUtil withIsCheckingUpdate(boolean isCheckingUpdate) {

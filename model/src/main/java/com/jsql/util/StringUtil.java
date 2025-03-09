@@ -21,15 +21,14 @@ import org.apache.logging.log4j.Logger;
 import org.mozilla.universalchardet.UniversalDetector;
 
 import java.awt.*;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterOutputStream;
 
@@ -300,7 +299,7 @@ public final class StringUtil {
     private static String byteToHex(byte num) {
         char[] hexDigits = new char[2];
         hexDigits[0] = Character.forDigit((num >> 4) & 0xF, 16);
-        hexDigits[1] = Character.forDigit((num & 0xF), 16);
+        hexDigits[1] = Character.forDigit(num & 0xF, 16);
         return new String(hexDigits);
     }
 
@@ -351,6 +350,23 @@ public final class StringUtil {
             chunks.add(hexString.substring(i, endIndex));
         }
         return chunks;
+    }
+
+    public static String getFile(String path) {
+        var content = new StringBuilder();
+        try (
+            var inputStream = PreferencesUtil.class.getClassLoader().getResourceAsStream(path);
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
+            var reader = new BufferedReader(inputStreamReader)
+        ) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");  // required to prevent \n<text>\r on edit
+            }
+        } catch (IOException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+        }
+        return content.toString();
     }
 
     public static byte[] uncloak(byte[] fileData) {

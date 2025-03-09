@@ -17,7 +17,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y dos2unix
     postgresql-10-plr     \
     postgresql-10-pllua   \
     postgresql-10-plsh
-EXPOSE 8079 3308 6000
+EXPOSE 8079 3308 6000 4444
 COPY ./lamp/ /var/www/html/
 RUN chmod 777 /var/www/html/
 RUN chmod 777 /var/www/html/php/  # required by sqlite write shell

@@ -8,9 +8,10 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  *******************************************************************************/
-package com.jsql.view.swing.terminal;
+package com.jsql.view.swing.terminal.util;
 
 import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.terminal.AbstractExploit;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -211,7 +212,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
                         command.get(),
                         terminalCommand.getUuidShell(),
                         terminalCommand.getUrlShell(),
-                        terminalCommand.loginPassword
+                        terminalCommand.getLoginPassword()
                     );
                 } else {
                     terminalCommand.reset();

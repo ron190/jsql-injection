@@ -142,17 +142,37 @@ public class TabResults extends DnDTabbedPane {
         }
     }
 
-    public void addTabExploitUdfMysql() {
+    public void addTabExploitReverseShell(String port) {
         try {
             var terminalID = UUID.randomUUID();
-            var terminal = new ExploitUdfMysql(terminalID);
+            var terminal = new ExploitReverseShell(terminalID, port);
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab("UDF shell", scroller);
+            this.addTab("Reverse shell", scroller);
             this.setSelectedComponent(scroller);  // Focus on the new tab
 
-            var header = new TabHeader("UDF shell", UiUtil.TERMINAL.getIcon());
+            var header = new TabHeader("Reverse shell", UiUtil.TERMINAL.getIcon());
+            this.setTabComponentAt(this.indexOfComponent(scroller), header);
+            terminal.requestFocusInWindow();
+
+            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
+        } catch (URISyntaxException | IOException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
+        }
+    }
+
+    public void addTabExploitRceMysql() {
+        try {
+            var terminalID = UUID.randomUUID();
+            var terminal = new ExploitRceMysql(terminalID);
+            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+
+            JScrollPane scroller = new JScrollPane(terminal);
+            this.addTab(TabResults.RCE_SHELL, scroller);
+            this.setSelectedComponent(scroller);  // Focus on the new tab
+
+            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 
@@ -182,10 +202,10 @@ public class TabResults extends DnDTabbedPane {
         }
     }
 
-    public void addTabExploitRcePostgres() {
+    public void addTabExploitRceExtensionPostgres() {
         try {
             var terminalID = UUID.randomUUID();
-            var terminal = new ExploitRcePostgres(terminalID);
+            var terminal = new ExploitRceExtensionPostgres(terminalID);
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JScrollPane scroller = new JScrollPane(terminal);

@@ -92,7 +92,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
-        Object clone = super.clone();
+        super.clone();
         return new DigestMD4(this);
     }
 

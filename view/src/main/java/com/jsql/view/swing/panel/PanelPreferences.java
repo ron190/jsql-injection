@@ -15,22 +15,23 @@ public class PanelPreferences extends JPanel {
     
     private final transient ActionListener actionListenerSave = new ActionListenerSave(this);
     
-    private final PanelInjection panelInjection = new PanelInjection(this);
-    private final PanelTampering panelTampering = new PanelTampering(this);
     private final PanelConnection panelConnection = new PanelConnection(this);
     private final PanelStrategies panelStrategies = new PanelStrategies(this);
-    private final PanelAuthentication panelAuthentication = new PanelAuthentication(this);
+    private final PanelInjection panelInjection = new PanelInjection(this);
+    private final PanelTampering panelTampering = new PanelTampering(this);
     private final PanelUserAgent panelUserAgent = new PanelUserAgent(this);
+    private final PanelAuthentication panelAuthentication = new PanelAuthentication(this);
     private final PanelProxy panelProxy = new PanelProxy(this);
     private final PanelGeneral panelGeneral = new PanelGeneral(this);
 
     private enum CategoryPreference {
-        INJECTION,
-        TAMPERING,
         CONNECTION,
         STRATEGIES,
-        AUTHENTICATION,
+        INJECTION,
+        TAMPERING,
+        EXPLOIT,
         USER_AGENT,
+        AUTHENTICATION,
         PROXY,
         GENERAL;
 
@@ -50,12 +51,13 @@ public class PanelPreferences extends JPanel {
         JList<CategoryPreference> categories = PanelPreferences.getCategories(cards);
         this.add(categories, BorderLayout.LINE_START);
 
-        this.addToCard(cards, this.panelInjection, CategoryPreference.INJECTION);
-        this.addToCard(cards, this.panelTampering, CategoryPreference.TAMPERING);
         this.addToCard(cards, this.panelConnection, CategoryPreference.CONNECTION);
         this.addToCard(cards, this.panelStrategies, CategoryPreference.STRATEGIES);
-        this.addToCard(cards, this.panelAuthentication, CategoryPreference.AUTHENTICATION);
+        this.addToCard(cards, this.panelInjection, CategoryPreference.INJECTION);
+        this.addToCard(cards, this.panelTampering, CategoryPreference.TAMPERING);
+        this.addToCard(cards, new PanelExploit(), CategoryPreference.EXPLOIT);
         this.addToCard(cards, this.panelUserAgent, CategoryPreference.USER_AGENT);
+        this.addToCard(cards, this.panelAuthentication, CategoryPreference.AUTHENTICATION);
         this.addToCard(cards, this.panelProxy, CategoryPreference.PROXY);
         this.addToCard(cards, this.panelGeneral, CategoryPreference.GENERAL);
         this.add(cards, BorderLayout.CENTER);

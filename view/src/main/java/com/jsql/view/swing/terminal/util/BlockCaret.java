@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.swing.terminal;
+package com.jsql.view.swing.terminal.util;
 
 import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
