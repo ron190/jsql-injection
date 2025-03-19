@@ -16,6 +16,7 @@ public enum Interaction {
     ADD_TAB_EXPLOIT_RCE_WAL_POSTGRES("AddTabExploitRceWalPostgres"),
     ADD_TAB_EXPLOIT_RCE_PROGRAM_POSTGRES("AddTabExploitRceProgramPostgres"),
     ADD_TAB_EXPLOIT_RCE_SQLITE("AddTabExploitRceSqlite"),
+    ADD_TAB_EXPLOIT_RCE_H2("AddTabExploitRceH2"),
     CREATE_VALUES_TAB("CreateValuesTab"),
     CREATE_ANALYSIS_REPORT("CreateAnalysisReport"),
 

@@ -17,22 +17,22 @@ public class ServerInputConnection {
 
     private final BufferedReader bufferedReader;
     private final Socket clientSocket;
-    private final ServerInput server;
+    private final ServerInput serverInput;
     private final ExploitReverseShell exploitReverseShell;
     private boolean running = true;
     private String command;
 
-    public ServerInputConnection(ExploitReverseShell exploitReverseShell, Socket clientSocket, ServerInput server) throws IOException {
+    public ServerInputConnection(ExploitReverseShell exploitReverseShell, Socket clientSocket, ServerInput serverInput) throws IOException {
         this.clientSocket = clientSocket;
         this.exploitReverseShell = exploitReverseShell;
-        this.server = server;
+        this.serverInput = serverInput;
         LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Reverse established by " + clientSocket);
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Type 'exit' in reverse shell to close the connection");
         this.bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 
     public void run() throws IOException, InterruptedException {
-        DataOutputStream osa = new DataOutputStream(this.clientSocket.getOutputStream());
+        DataOutputStream dataOutputStream = new DataOutputStream(this.clientSocket.getOutputStream());
 
         new Thread(() -> {
             while (true) {
@@ -52,7 +52,7 @@ public class ServerInputConnection {
                 } else {
                     this.running = false;
                     try {
-                        this.server.close();
+                        this.serverInput.close();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -64,9 +64,9 @@ public class ServerInputConnection {
 
         while (this.running) {
             if (StringUtils.isNotEmpty(this.command)) {
-                var cmd = this.command.replaceAll("[^$]*\\$\\s*", "");
+                var command = this.command.replaceAll("[^$]*\\$\\s*", "");
                 this.command = null;
-                osa.writeBytes(cmd + "\n");
+                dataOutputStream.writeBytes(command + "\n");
             }
         }
     }

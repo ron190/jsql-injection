@@ -79,18 +79,10 @@ public class CallableFile implements Callable<CallableFile> {
                     ResourceAccess.FILE_READ
                 );
             } else if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getH2()) {
-                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CallableFile.REQUIRE_STACK);
-                var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
-                this.injectionModel.injectWithoutIndex(String.format(
-                    this.injectionModel.getResourceAccess().getExploitH2().getModelYaml().getFile().getCreateTable(),
-                    nameTable,
-                    this.pathFile
-                ), ResourceAccess.TBL_FILL);
                 resultToParse = this.suspendableReadFile.run(
                     String.format(
-                        this.injectionModel.getResourceAccess().getExploitH2().getModelYaml().getFile().getRead(),
-                        VendorYaml.TRAIL_SQL,
-                        nameTable
+                        this.injectionModel.getResourceAccess().getExploitH2().getModelYaml().getFile().getReadFromPath(),
+                        this.pathFile
                     ),
                     sourcePage,
                     false,

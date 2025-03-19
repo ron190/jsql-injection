@@ -25,6 +25,7 @@ import com.jsql.view.swing.text.*;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
+import com.jsql.view.swing.util.RadioItemPreventClose;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -178,8 +179,8 @@ public class PanelAddressBar extends JPanel {
         final var popup = new JPopupMenu();
         final var buttonGroupMethod = new ButtonGroup();
 
-        for (String method: new String[]{"DELETE", StringUtil.GET, "HEAD", "OPTIONS", StringUtil.POST, "PUT", "TRACE"}) {
-            final JMenuItem newMenuItem = new JRadioButtonMenuItem(method, StringUtil.GET.equals(method));
+        for (String method: new String[]{ "DELETE", StringUtil.GET, "HEAD", "OPTIONS", StringUtil.POST, "PUT", "TRACE" }) {
+            final JMenuItem newMenuItem = new RadioItemPreventClose(method, StringUtil.GET.equals(method));
             newMenuItem.addActionListener(actionEvent -> {
                 this.typeRequest = newMenuItem.getText();
                 this.atomicRadioMethod.get().setText(this.typeRequest);

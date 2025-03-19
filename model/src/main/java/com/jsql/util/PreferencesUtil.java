@@ -116,7 +116,10 @@ public class PreferencesUtil {
     public void parseReverseCommands(String commandsReverseYaml) {
         List<Map<String, String>> commandsReverseMap = this.yaml.load(commandsReverseYaml);
         this.commandsReverse = commandsReverseMap.stream()
-            .map(map -> new ModelReverse(map.get("name"), map.get("command")))
+            .map(map -> new ModelReverse(
+                map.get("name"),
+                map.get("command").replaceAll("\\n\\s*", StringUtils.EMPTY)
+            ))
             .collect(Collectors.toList());
         this.commandsReverseYaml = commandsReverseYaml;
     }

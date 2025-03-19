@@ -18,6 +18,7 @@ import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
+import com.jsql.view.swing.util.RadioItemPreventClose;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +28,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Locale;
@@ -48,7 +50,6 @@ public class MenuWindows extends JMenu {
     private final JMenu menuView;
 
     public MenuWindows(AppMenubar appMenubar) {
-
         super(I18nUtil.valueByKey("MENUBAR_WINDOWS"));
         this.appMenubar = appMenubar;
 
@@ -83,7 +84,7 @@ public class MenuWindows extends JMenu {
             new AbstractMap.SimpleEntry<>(FlatGitHubDarkIJTheme.class.getName(), "GitHub Dark"),
             new AbstractMap.SimpleEntry<>(FlatHighContrastIJTheme.class.getName(), "High contrast")
         ).forEach(entry -> {
-            JMenuItem item = new JRadioButtonMenuItem(
+            JMenuItem item = new RadioItemPreventClose(
                 new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -168,7 +169,14 @@ public class MenuWindows extends JMenu {
                 I18nUtil.valueByKey(model.i18n),
                 model.icon,
                 preferences.getBoolean(model.keyPref, true)
-            );
+            ) {
+                @Override
+                protected void processMouseEvent(MouseEvent e) {
+                    if (!RadioItemPreventClose.preventClose(e, this)) {
+                        super.processMouseEvent(e);
+                    }
+                }
+            };
             I18nViewUtil.addComponentForKey(model.i18n, menuItem);
             menuPanel.add(menuItem);
 
@@ -271,7 +279,7 @@ public class MenuWindows extends JMenu {
         var atomicIsAnySelected = new AtomicBoolean(false);
         AppMenubar.MODELS_ITEM.forEach(model -> {
             atomicIsAnySelected.set(atomicIsAnySelected.get() || model.getLanguage().isCurrentLanguage());
-            model.setMenuItem(new JRadioButtonMenuItem(
+            model.setMenuItem(new RadioItemPreventClose(
                 model.getLanguage().getMenuItemLabel(),
                 model.getLanguage().getFlag(),
                 model.getLanguage().isCurrentLanguage()

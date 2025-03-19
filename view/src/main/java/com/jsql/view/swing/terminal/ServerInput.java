@@ -6,9 +6,9 @@ import java.net.Socket;
 
 public class ServerInput {
 
-    private ServerSocket echoServer = null;
+    private ServerSocket serverSocket = null;
     private final int port;
-    private ServerInputConnection oneconnection;
+    private ServerInputConnection serverInputConnection;
     private final ExploitReverseShell exploitReverseShell;
 
     public ServerInput(ExploitReverseShell exploitReverseShell, int port) {
@@ -17,18 +17,18 @@ public class ServerInput {
     }
 
     public void startServer() throws IOException, InterruptedException {
-        this.echoServer = new ServerSocket(this.port);  // port less than 1024 if root
-        this.echoServer.setSoTimeout(10000);
-        Socket clientSocket = this.echoServer.accept();
-        this.oneconnection = new ServerInputConnection(this.exploitReverseShell, clientSocket, this);
-        this.oneconnection.run();
+        this.serverSocket = new ServerSocket(this.port);  // port less than 1024 if root
+        this.serverSocket.setSoTimeout(10000);
+        Socket clientSocket = this.serverSocket.accept();
+        this.serverInputConnection = new ServerInputConnection(this.exploitReverseShell, clientSocket, this);
+        this.serverInputConnection.run();
     }
 
     void close() throws IOException {
-        this.echoServer.close();
+        this.serverSocket.close();
     }
 
-    public ServerInputConnection getOneconnection() {
-        return this.oneconnection;
+    public ServerInputConnection getServerInputConnection() {
+        return this.serverInputConnection;
     }
 }

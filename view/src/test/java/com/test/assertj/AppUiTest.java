@@ -12,6 +12,7 @@ import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.manager.ManagerScan;
 import com.jsql.view.swing.menubar.AppMenubar;
+import com.jsql.view.swing.tab.TabResults;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -277,7 +278,7 @@ class AppUiTest {
         }
 
         AppUiTest.logMethod();
-        AppUiTest.window.textBox("webShell").pressAndReleaseKeys(
+        AppUiTest.window.textBox(TabResults.WEB_SHELL).pressAndReleaseKeys(
             KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
             KeyEvent.VK_DELETE, KeyEvent.VK_BACK_SPACE,
             KeyEvent.VK_UP, KeyEvent.VK_DOWN,
