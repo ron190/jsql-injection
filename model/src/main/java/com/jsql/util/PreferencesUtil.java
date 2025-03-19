@@ -110,7 +110,7 @@ public class PreferencesUtil {
         var loaderOptions = new LoaderOptions();
         loaderOptions.setWarnOnDuplicateKeys(false);  // required to prevent snakeyaml logs
         this.yaml = new Yaml(loaderOptions);
-        this.parseReverseCommands(StringUtil.getFile("exploit/reverse.yml"));
+        this.parseReverseCommands(StringUtil.base64Decode(StringUtil.getFile("exploit/reverse.yml").trim()));
     }
 
     public void parseReverseCommands(String commandsReverseYaml) {
