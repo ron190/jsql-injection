@@ -20,7 +20,7 @@
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
         <mockito-inline.version>5.2.0</mockito-inline.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
-        <rsyntaxtextarea.version>3.6.0</rsyntaxtextarea.version>
+        <rsyntaxtextarea.version>3.5.4</rsyntaxtextarea.version>
     </properties>
 
     <dependencies>

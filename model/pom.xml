@@ -73,7 +73,7 @@
         <mimjdbc.version>3.42.3</mimjdbc.version>
         <!-- v12.0 not working -->
         <monetdb-jdbc.version>2.29</monetdb-jdbc.version>
-        <mssql-jdbc.version>12.10.0.jre11</mssql-jdbc.version>
+        <mssql-jdbc.version>12.8.1.jre11</mssql-jdbc.version>
         <mysql-connector-j.version>9.2.0</mysql-connector-j.version>
         <nashorn-core.version>15.6</nashorn-core.version>
         <!-- failure with 5.28.2 -->
