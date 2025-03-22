@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 
-public class Wal implements Serializable {
+public class Archive implements Serializable {
 
     private String getStatus = StringUtils.EMPTY;
     private String getPathConf = StringUtils.EMPTY;

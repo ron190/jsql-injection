@@ -19,7 +19,7 @@ import java.util.UUID;
 /**
  * Append the result of a command in the terminal.
  */
-public class AbstractGetShellResult implements InteractionCommand {
+public class GetTerminalResult implements InteractionCommand {
     
     /**
      * Unique identifier for the terminal. Used to output results of
@@ -35,7 +35,7 @@ public class AbstractGetShellResult implements InteractionCommand {
     /**
      * @param interactionParams The unique identifier of the terminal and the command's result to display
      */
-    public AbstractGetShellResult(Object[] interactionParams) {
+    public GetTerminalResult(Object[] interactionParams) {
         this.terminalID = (UUID) interactionParams[0];
         this.result = (String) interactionParams[1];
     }

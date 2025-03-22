@@ -103,6 +103,7 @@ public class ResourceAccess {
     public static final String WRITE_LOID = "loid#write";
     public static final String READ_LOID = "loid#read";
 
+    public static final String DROP_FUNC = "func#drop";
     public static final String ADD_FUNC = "body#add-func";
     public static final String RUN_FUNC = "body#run-func";
     public static final String BODY_CONFIRM = "body#confirm";
@@ -344,7 +345,7 @@ public class ResourceAccess {
             result = String.format(ResourceAccess.TEMPLATE_ERROR, "empty result", command);
         }
         var request = new Request();  // Unfreeze GUI terminal
-        request.setMessage(Interaction.GET_EXPLOIT_WEB_RESULT);
+        request.setMessage(Interaction.GET_TERMINAL_RESULT);
         request.setParameters(uuidShell, result);
         this.injectionModel.sendToViews(request);
         return result;
@@ -387,7 +388,7 @@ public class ResourceAccess {
 
         if (isResultSentToView) {
             var request = new Request();  // Unfreeze GUI terminal
-            request.setMessage(Interaction.GET_EXPLOIT_SQL_RESULT);
+            request.setMessage(Interaction.GET_TERMINAL_RESULT);
             request.setParameters(uuidShell, result, command);
             this.injectionModel.sendToViews(request);
         }

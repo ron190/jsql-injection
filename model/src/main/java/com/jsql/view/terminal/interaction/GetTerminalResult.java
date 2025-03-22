@@ -18,11 +18,11 @@ import org.apache.logging.log4j.Logger;
 /**
  * Append the result of a command in the terminal.
  */
-public class AbstractGetShellResult implements InteractionCommand {
+public class GetTerminalResult implements InteractionCommand {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    public AbstractGetShellResult(Object[] interactionParams) {
+    public GetTerminalResult(Object[] interactionParams) {
         // nothing
     }
 

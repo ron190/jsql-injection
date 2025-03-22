@@ -6,7 +6,8 @@ import java.io.Serializable;
 
 public class Udf implements Serializable {
 
-    private Wal wal = new Wal();
+    private Archive archive = new Archive();
+    private Library library = new Library();
     private Extension extension = new Extension();
     private Program program = new Program();
     private String plpython = StringUtils.EMPTY;
@@ -75,12 +76,12 @@ public class Udf implements Serializable {
         this.dropFunc = dropFunc;
     }
 
-    public Wal getWal() {
-        return this.wal;
+    public Archive getArchive() {
+        return this.archive;
     }
 
-    public void setWal(Wal wal) {
-        this.wal = wal;
+    public void setArchive(Archive archive) {
+        this.archive = archive;
     }
 
     public Program getProgram() {
@@ -113,5 +114,13 @@ public class Udf implements Serializable {
 
     public void setPllua(String pllua) {
         this.pllua = pllua;
+    }
+
+    public Library getLibrary() {
+        return this.library;
+    }
+
+    public void setLibrary(Library library) {
+        this.library = library;
     }
 }

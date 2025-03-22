@@ -141,7 +141,7 @@ public class GitUtil {
         String token;
         try {
             token = StringUtil.fromHexZip(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("github.token")
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("jsql.hash")
             );
         } catch (IOException e) {
             throw new JSqlRuntimeException(e);

@@ -140,7 +140,7 @@ resource:
       run: ; copy %s from program '%s'
       getResult: array_to_string(array(select data from %s),'\n')
     
-    wal:
+    archive:
       getStatus: select current_setting('archive_mode')
       getPathConf: select setting from pg_settings where name = 'config_file'
       getConfLoid: select lo_import('%s')::text
@@ -150,7 +150,15 @@ resource:
       getCmd: select current_setting('archive_command')
       runWal: select pg_switch_wal()::text
       getResult: select lo_import('/tmp/cmd.txt')::text
-      
+  
+    library:
+      loFromText: select lo_from_bytea(0, decode('%s','hex'))::text
+      loToFile: select lo_export(%s, '%s')::text
+      # type cstring required
+      dropFunc: ; drop function exec_cmd(cstring)
+      createFunction: ; create or replace function exec_cmd(cstring) returns text as '%s', 'pg_exec' language 'c' strict
+      runFunc: select exec_cmd('%s')
+  
     extension:
       create: ; create extension %s
       languages: select array_to_string(array(select lanname from pg_language),'')

@@ -595,6 +595,7 @@ class AppUiTest {
         AppUiTest.logMethod();
         AppUiTest.window.label("advancedButton").click();
         AppUiTest.window.menuItemWithPath("Windows", "Preferences").click();
+        AppUiTest.window.list("listCategoriesPreference").selectItem(Pattern.compile(".*Injection.*"));
 
         AppUiTest.logMethod();
         Arrays.asList(
@@ -679,11 +680,6 @@ class AppUiTest {
             GuiActionRunner.execute(() -> AppUiTest.window.menuItem("menuTranslation").target())  // faster than click
         );
         AppUiTest.window.menuItem("itemRussian").click();
-
-        AppUiTest.window.menuItem("menuWindows").click();
-        AppUiTest.window.robot().moveMouse(
-            GuiActionRunner.execute(() -> AppUiTest.window.menuItem("menuTranslation").target())  // faster than click
-        );
         AppUiTest.window.menuItem("itemEnglish").click();
 
         AppUiTest.logMethod();

@@ -14,6 +14,7 @@ public enum Interaction {
     ADD_TAB_EXPLOIT_RCE_ORACLE("AddTabExploitRceOracle"),
     ADD_TAB_EXPLOIT_RCE_EXTENSION_POSTGRES("AddTabExploitRceExtensionPostgres"),
     ADD_TAB_EXPLOIT_RCE_WAL_POSTGRES("AddTabExploitRceWalPostgres"),
+    ADD_TAB_EXPLOIT_RCE_LIBRARY_POSTGRES("AddTabExploitRceLibraryPostgres"),
     ADD_TAB_EXPLOIT_RCE_PROGRAM_POSTGRES("AddTabExploitRceProgramPostgres"),
     ADD_TAB_EXPLOIT_RCE_SQLITE("AddTabExploitRceSqlite"),
     ADD_TAB_EXPLOIT_RCE_H2("AddTabExploitRceH2"),
@@ -29,10 +30,7 @@ public enum Interaction {
     
     MARK_FILE_SYSTEM_INVULNERABLE("MarkFileSystemInvulnerable"),
     MARK_FILE_SYSTEM_VULNERABLE("MarkFileSystemVulnerable"),
-    GET_EXPLOIT_WEB_RESULT("GetExploitWebResult"),
-    GET_EXPLOIT_SQL_RESULT("GetExploitSqlResult"),
-    GET_EXPLOIT_UDF_RESULT("GetExploitUdfResult"),
-    GET_EXPLOIT_RCE_RESULT("GetExploitRceResult"),
+    GET_TERMINAL_RESULT("GetTerminalResult"),
 
     MARK_MULTI_INVULNERABLE("MarkMultiInvulnerable"),
     MARK_MULTI_STRATEGY("MarkMultiStrategy"),
