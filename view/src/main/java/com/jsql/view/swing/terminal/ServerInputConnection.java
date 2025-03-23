@@ -1,5 +1,6 @@
 package com.jsql.view.swing.terminal;
 
+import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -26,12 +27,12 @@ public class ServerInputConnection {
         this.clientSocket = clientSocket;
         this.exploitReverseShell = exploitReverseShell;
         this.serverInput = serverInput;
-        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Reverse established by " + clientSocket);
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Reverse established by {}", clientSocket);
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Type 'exit' in reverse shell to close the connection");
         this.bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 
-    public void run() throws IOException, InterruptedException {
+    public void run() throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(this.clientSocket.getOutputStream());
 
         new Thread(() -> {
@@ -42,7 +43,7 @@ public class ServerInputConnection {
                 try {
                     charsRead = this.bufferedReader.read(chars, 0, length);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new JSqlRuntimeException(e);
                 }
                 String result;
                 if (charsRead != -1) {
@@ -54,7 +55,7 @@ public class ServerInputConnection {
                     try {
                         this.serverInput.close();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        throw new JSqlRuntimeException(e);
                     }
                     LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Reverse connection closed");
                     break;
@@ -64,9 +65,9 @@ public class ServerInputConnection {
 
         while (this.running) {
             if (StringUtils.isNotEmpty(this.command)) {
-                var command = this.command.replaceAll("[^$]*\\$\\s*", "");
+                var commandWithoutPrompt = this.command.replaceAll("[^$]*\\$\\s*", "");
                 this.command = null;
-                dataOutputStream.writeBytes(command + "\n");
+                dataOutputStream.writeBytes(commandWithoutPrompt + "\n");
             }
         }
     }

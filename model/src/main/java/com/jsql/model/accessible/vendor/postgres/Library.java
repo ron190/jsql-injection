@@ -2,7 +2,9 @@ package com.jsql.model.accessible.vendor.postgres;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Library {
+import java.io.Serializable;
+
+public class Library implements Serializable {
 
     private String loFromText = StringUtils.EMPTY;
     private String loToFile = StringUtils.EMPTY;

@@ -16,7 +16,7 @@ public class ServerInput {
         this.exploitReverseShell = exploitReverseShell;
     }
 
-    public void startServer() throws IOException, InterruptedException {
+    public void startServer() throws IOException {
         this.serverSocket = new ServerSocket(this.port);  // port less than 1024 if root
         this.serverSocket.setSoTimeout(10000);
         Socket clientSocket = this.serverSocket.accept();

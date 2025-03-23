@@ -62,6 +62,7 @@ public class TabResults extends DnDTabbedPane {
     public static final String SQL_SHELL = "sqlShell";
     public static final String WEB_SHELL = "webShell";
     public static final String REV_SHELL = "revShell";
+    public static final String REVERSE_SHELL = "Reverse shell";
 
     /**
      * Create the panel containing injection results.
@@ -165,10 +166,10 @@ public class TabResults extends DnDTabbedPane {
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JScrollPane scroller = new JScrollPane(terminal);
-            this.addTab("Reverse shell", scroller);
+            this.addTab(TabResults.REVERSE_SHELL, scroller);
             this.setSelectedComponent(scroller);  // Focus on the new tab
 
-            var header = new TabHeader("Reverse shell", UiUtil.TERMINAL.getIcon());
+            var header = new TabHeader(TabResults.REVERSE_SHELL, UiUtil.TERMINAL.getIcon());
             this.setTabComponentAt(this.indexOfComponent(scroller), header);
             terminal.requestFocusInWindow();
 
@@ -259,7 +260,7 @@ public class TabResults extends DnDTabbedPane {
         panelReverseMargin.setOpaque(false);
         panelReverseMargin.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 10));
 
-        var menuReverse = new JLabel("Reverse shell", UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
+        var menuReverse = new JLabel(TabResults.REVERSE_SHELL, UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
         menuReverse.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -320,17 +321,16 @@ public class TabResults extends DnDTabbedPane {
                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getCommandsReverse().stream()
                 .filter(modelReverse -> modelReverse.getName().equals(buttonGroup.getSelection().getActionCommand()))
                 .findFirst()
-                .ifPresent(modelReverse -> {
+                .ifPresent(modelReverse -> MediatorHelper.model().getResourceAccess().runWebShell(
                     // TODO mysql UDF, pg Program/Extension/Archive, sqlite
-                    MediatorHelper.model().getResourceAccess().runWebShell(
-                        String.format(modelReverse.getCommand(), address.getText(), port.getText()),
-                        null,  // ignore connection response
-                        terminal.getUrlShell(),
-                        true
-                    );
-                });
-            } catch (InterruptedException ex) {
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, ex);
+                    String.format(modelReverse.getCommand(), address.getText(), port.getText()),
+                    null,  // ignore connection response
+                    terminal.getUrlShell(),
+                    true
+                ));
+            } catch (InterruptedException e) {
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
+                Thread.currentThread().interrupt();
             }
         };
 

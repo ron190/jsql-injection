@@ -263,7 +263,7 @@ public class JdbcRestController {
     public Greeting greetingFrontbase(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         // FrontBase-8.2.18-WinNT.zip
         // sql92.exe
-        // create database firstdb;
+        // create database firstdb
         // connect to firstdb user _system
         //  Auto committing is on: SET COMMIT TRUE
         //      create user test
