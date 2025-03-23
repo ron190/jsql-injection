@@ -24,7 +24,7 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>          <strong class="jxr_keyword">this</strong>.exploitReverseShell = exploitReverseShell;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>      }
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> startServer() <strong class="jxr_keyword">throws</strong> IOException, InterruptedException {
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> startServer() <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>          <strong class="jxr_keyword">this</strong>.serverSocket = <strong class="jxr_keyword">new</strong> ServerSocket(<strong class="jxr_keyword">this</strong>.port);  <em class="jxr_comment">// port less than 1024 if root</em>
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">this</strong>.serverSocket.setSoTimeout(10000);
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          Socket clientSocket = <strong class="jxr_keyword">this</strong>.serverSocket.accept();

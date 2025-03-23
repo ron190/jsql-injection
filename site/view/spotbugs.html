@@ -1879,25 +1879,25 @@
 <td>Exception thrown in class com.jsql.view.swing.terminal.ServerInputConnection at new com.jsql.view.swing.terminal.ServerInputConnection(ExploitReverseShell, Socket, ServerInput) will leave the constructor. The object under construction remains partially initialized and may be vulnerable to Finalizer attacks.</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#CT_CONSTRUCTOR_THROW">CT_CONSTRUCTOR_THROW</a></td>
-<td><a href="./xref/com/jsql/view/swing/terminal/ServerInputConnection.html#L31">31</a></td>
+<td><a href="./xref/com/jsql/view/swing/terminal/ServerInputConnection.html#L32">32</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>Found reliance on default encoding in new com.jsql.view.swing.terminal.ServerInputConnection(ExploitReverseShell, Socket, ServerInput): new java.io.InputStreamReader(InputStream)</td>
 <td>I18N</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#DM_DEFAULT_ENCODING">DM_DEFAULT_ENCODING</a></td>
-<td><a href="./xref/com/jsql/view/swing/terminal/ServerInputConnection.html#L31">31</a></td>
+<td><a href="./xref/com/jsql/view/swing/terminal/ServerInputConnection.html#L32">32</a></td>
 <td>High</td></tr>
 <tr class="b">
 <td>new com.jsql.view.swing.terminal.ServerInputConnection(ExploitReverseShell, Socket, ServerInput) may expose internal representation by storing an externally mutable object into ServerInputConnection.clientSocket</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/view/swing/terminal/ServerInputConnection.html#L26">26</a></td>
+<td><a href="./xref/com/jsql/view/swing/terminal/ServerInputConnection.html#L27">27</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>new com.jsql.view.swing.terminal.ServerInputConnection(ExploitReverseShell, Socket, ServerInput) may expose internal representation by storing an externally mutable object into ServerInputConnection.exploitReverseShell</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/view/swing/terminal/ServerInputConnection.html#L27">27</a></td>
+<td><a href="./xref/com/jsql/view/swing/terminal/ServerInputConnection.html#L28">28</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.view.swing.terminal.util.KeyAdapterTerminal"></a><section>
 <h2>com.jsql.view.swing.terminal.util.KeyAdapterTerminal</h2>
 <table class="table table-striped">

@@ -16,7 +16,7 @@ public class ServerInput {
 <span class="nc" id="L16">        this.exploitReverseShell = exploitReverseShell;</span>
 <span class="nc" id="L17">    }</span>
 
-    public void startServer() throws IOException, InterruptedException {
+    public void startServer() throws IOException {
 <span class="nc" id="L20">        this.serverSocket = new ServerSocket(this.port);  // port less than 1024 if root</span>
 <span class="nc" id="L21">        this.serverSocket.setSoTimeout(10000);</span>
 <span class="nc" id="L22">        Socket clientSocket = this.serverSocket.accept();</span>
