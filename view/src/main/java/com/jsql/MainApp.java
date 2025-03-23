@@ -22,6 +22,7 @@ public class MainApp {
     
     static {
         System.setProperty("jdk.httpclient.allowRestrictedHeaders", "connection,content-length,expect,host,upgrade");
+        System.setProperty("log4j2.formatMsgNoLookups", "true");
 
         if (GraphicsEnvironment.isHeadless()) {
             LOGGER.log(Level.ERROR, "Headless runtime not supported, use default Java runtime instead");

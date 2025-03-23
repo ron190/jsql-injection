@@ -1,9 +1,8 @@
 {
     "version": "0.110",
     "news": [
-        "[New: Reverse shell] RCE can now open a reverse shell, validation ongoing and released soon, testers required",
+        "[New: Reverse shell] RCE can now open a reverse shell, validation ongoing and release coming",
         "[RCE shell] How to use RCE shell explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
-        "[Pinned] Report any bugs and thoughts, and add your star to the project at https://github.com/ron190/jsql-injection",
-        "[Contribute] Improve your CTF skills and bounty, what should be done by jSQL that you do manually?"
+        "[Pinned] Report any bugs and thoughts, and add your star to the project at https://github.com/ron190/jsql-injection"
     ]
 }

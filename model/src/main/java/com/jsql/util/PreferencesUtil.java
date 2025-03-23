@@ -1,12 +1,14 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.util.reverse.ModelReverse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
@@ -110,7 +112,11 @@ public class PreferencesUtil {
         var loaderOptions = new LoaderOptions();
         loaderOptions.setWarnOnDuplicateKeys(false);  // required to prevent snakeyaml logs
         this.yaml = new Yaml(loaderOptions);
-        this.parseReverseCommands(StringUtil.base64Decode(StringUtil.getFile("exploit/reverse.yml").trim()));
+        try {
+            this.parseReverseCommands(StringUtil.fromBase64Zip(StringUtil.getFile("exploit/reverse.yml").trim()));
+        } catch (IOException e) {
+            throw new JSqlRuntimeException(e);
+        }
     }
 
     public void parseReverseCommands(String commandsReverseYaml) {
