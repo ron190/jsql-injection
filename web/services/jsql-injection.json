@@ -1,5 +1,5 @@
 {
-    "version": "0.110",
+    "version": "0.111",
     "news": [
         "[New: Reverse shell] RCE can now open a reverse shell, validation ongoing and release coming",
         "[RCE shell] How to use RCE shell explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
