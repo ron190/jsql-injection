@@ -228,7 +228,7 @@
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>         <strong class="jxr_keyword">this</strong>.unencodedBlockSize = unencodedBlockSize;
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>         <strong class="jxr_keyword">this</strong>.encodedBlockSize = encodedBlockSize;
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> useChunking = lineLength &gt; 0 &amp;&amp; chunkSeparatorLength &gt; 0;
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>         <strong class="jxr_keyword">this</strong>.lineLength = useChunking ? (lineLength / encodedBlockSize) * encodedBlockSize : 0;
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>         <strong class="jxr_keyword">this</strong>.lineLength = useChunking ? lineLength / encodedBlockSize * encodedBlockSize : 0;
 <a class="jxr_linenumber" name="L224" href="#L224">224</a>         <strong class="jxr_keyword">this</strong>.chunkSeparatorLength = chunkSeparatorLength;
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>         <strong class="jxr_keyword">this</strong>.pad = pad;
 <a class="jxr_linenumber" name="L226" href="#L226">226</a>         <strong class="jxr_keyword">this</strong>.decodingPolicy = Objects.requireNonNull(decodingPolicy, <span class="jxr_string">"codecPolicy"</span>);
@@ -555,10 +555,10 @@
 <a class="jxr_linenumber" name="L547" href="#L547">547</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">long</strong> getEncodedLength(<strong class="jxr_keyword">final</strong> byte[] pArray) {
 <a class="jxr_linenumber" name="L548" href="#L548">548</a>         <em class="jxr_comment">// Calculate non-chunked size - rounded up to allow for padding</em>
 <a class="jxr_linenumber" name="L549" href="#L549">549</a>         <em class="jxr_comment">// cast to long is needed to avoid possibility of overflow</em>
-<a class="jxr_linenumber" name="L550" href="#L550">550</a>         <strong class="jxr_keyword">long</strong> len = ((pArray.length + <strong class="jxr_keyword">this</strong>.unencodedBlockSize-1)  / <strong class="jxr_keyword">this</strong>.unencodedBlockSize) * (<strong class="jxr_keyword">long</strong>) <strong class="jxr_keyword">this</strong>.encodedBlockSize;
+<a class="jxr_linenumber" name="L550" href="#L550">550</a>         <strong class="jxr_keyword">long</strong> len = (pArray.length + <strong class="jxr_keyword">this</strong>.unencodedBlockSize-1)  / <strong class="jxr_keyword">this</strong>.unencodedBlockSize * (<strong class="jxr_keyword">long</strong>) <strong class="jxr_keyword">this</strong>.encodedBlockSize;
 <a class="jxr_linenumber" name="L551" href="#L551">551</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.lineLength &gt; 0) { <em class="jxr_comment">// We're using chunking</em>
 <a class="jxr_linenumber" name="L552" href="#L552">552</a>             <em class="jxr_comment">// Round up to nearest multiple</em>
-<a class="jxr_linenumber" name="L553" href="#L553">553</a>             len += ((len + <strong class="jxr_keyword">this</strong>.lineLength-1) / <strong class="jxr_keyword">this</strong>.lineLength) * <strong class="jxr_keyword">this</strong>.chunkSeparatorLength;
+<a class="jxr_linenumber" name="L553" href="#L553">553</a>             len += (len + <strong class="jxr_keyword">this</strong>.lineLength-1) / <strong class="jxr_keyword">this</strong>.lineLength * <strong class="jxr_keyword">this</strong>.chunkSeparatorLength;
 <a class="jxr_linenumber" name="L554" href="#L554">554</a>         }
 <a class="jxr_linenumber" name="L555" href="#L555">555</a>         <strong class="jxr_keyword">return</strong> len;
 <a class="jxr_linenumber" name="L556" href="#L556">556</a>     }

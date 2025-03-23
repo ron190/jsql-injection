@@ -181,255 +181,257 @@
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>             &amp;&amp; initialSqlQuery != <strong class="jxr_keyword">null</strong> &amp;&amp; !initialSqlQuery.matches(<span class="jxr_string">"(?si).*select.*sys_eval&#92;&#92;('.*'&#92;&#92;).*"</span>)
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>         ) {
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>             <strong class="jxr_keyword">return</strong> StringEscapeUtils.unescapeJava(  <em class="jxr_comment">// transform \u0000 entities to text</em>
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>                 currentChunk.replaceAll(<span class="jxr_string">"&#92;&#92;&#92;&#92;u.{0,3}$"</span>, StringUtils.EMPTY)  <em class="jxr_comment">// remove incorrect entities</em>
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>             );
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>         }
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>         <strong class="jxr_keyword">return</strong> currentChunk;
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>     }
-<a class="jxr_linenumber" name="L181" href="#L181">181</a> 
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>     <strong class="jxr_keyword">private</strong> String getQuery(String initialSqlQuery, <strong class="jxr_keyword">int</strong> countAllRows) {
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>         <strong class="jxr_keyword">return</strong> initialSqlQuery.replace(LIMIT, <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlLimit(countAllRows));
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>     }
-<a class="jxr_linenumber" name="L185" href="#L185">185</a> 
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> appendRowFixed(StringBuilder slidingWindowAllRows, StringBuilder slidingWindowCurrentRow) {
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>         <em class="jxr_comment">// Check either if there is more than 1 row and if there is less than 1 complete row</em>
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>         <strong class="jxr_keyword">var</strong> regexAtLeastOneRow = Pattern.compile(
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>             String.format(
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>                 <span class="jxr_string">"%s[^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]%s%s%s[^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]+?$"</span>,
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>                 MODE,
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>                 ENCLOSE_VALUE_RGX,
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>                 SEPARATOR_CELL_RGX,
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>                 ENCLOSE_VALUE_RGX
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>             )
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>         )
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>         .matcher(slidingWindowCurrentRow);
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>         <strong class="jxr_keyword">var</strong> regexRowIncomplete = Pattern.compile(
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>             MODE
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>             + ENCLOSE_VALUE_RGX
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>             + <span class="jxr_string">"[^&#92;&#92;x01-&#92;&#92;x03&#92;&#92;x05-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]+?$"</span>
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>         )
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>         .matcher(slidingWindowCurrentRow);
-<a class="jxr_linenumber" name="L205" href="#L205">205</a> 
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>         <em class="jxr_comment">// If there is more than 1 row, delete the last incomplete one in order to restart properly from it at the next loop,</em>
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>         <em class="jxr_comment">// else if there is 1 row but incomplete, mark it as cut with the letter c</em>
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <strong class="jxr_keyword">if</strong> (regexAtLeastOneRow.find()) {
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>             <strong class="jxr_keyword">var</strong> allLine = slidingWindowAllRows.toString();
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>             slidingWindowAllRows.setLength(0);
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>             slidingWindowAllRows.append(
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>                 Pattern.compile(
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>                     MODE
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>                     + ENCLOSE_VALUE_RGX
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>                     + <span class="jxr_string">"[^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]+?$"</span>
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>                 )
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>                 .matcher(allLine)
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>                 .replaceAll(StringUtils.EMPTY)
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>             );
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, <span class="jxr_string">"Chunk unreliable, reloading row part..."</span>);
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (regexRowIncomplete.find()) {
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>             slidingWindowAllRows.append(StringUtil.hexstr(<span class="jxr_string">"05"</span>)).append(<span class="jxr_string">"1"</span>).append(StringUtil.hexstr(<span class="jxr_string">"0804"</span>));
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, <span class="jxr_string">"Chunk unreliable, keeping row parts only"</span>);
-<a class="jxr_linenumber" name="L224" href="#L224">224</a>         }
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>     }
-<a class="jxr_linenumber" name="L226" href="#L226">226</a> 
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> scrapeTrailJunk(StringBuilder slidingWindowCurrentRow) {
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>         <em class="jxr_comment">// Remove everything after chunk</em>
-<a class="jxr_linenumber" name="L229" href="#L229">229</a>         <em class="jxr_comment">// =&gt; \4xxxxxxxx\500\4\6\4...\4 =&gt; \1\3\3\7junk</em>
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>         <strong class="jxr_keyword">var</strong> currentRow = slidingWindowCurrentRow.toString();
-<a class="jxr_linenumber" name="L231" href="#L231">231</a>         slidingWindowCurrentRow.setLength(0);
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>         slidingWindowCurrentRow.append(
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>             Pattern.compile(MODE + TRAIL_RGX +<span class="jxr_string">".*"</span>)
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>             .matcher(currentRow)
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>             .replaceAll(StringUtils.EMPTY)
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>         );
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>     }
-<a class="jxr_linenumber" name="L238" href="#L238">238</a> 
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> getCountRows(StringBuilder slidingWindowCurrentRow) {
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>         <strong class="jxr_keyword">var</strong> regexAtLeastOneRow = Pattern.compile(
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>             String.format(
-<a class="jxr_linenumber" name="L242" href="#L242">242</a>                 <span class="jxr_string">"%s(%s[^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]*?%s[^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]*?&#92;&#92;x08?%s)"</span>,
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>                 MODE,
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>                 ENCLOSE_VALUE_RGX,
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>                 SEPARATOR_QTE_RGX,
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>                 ENCLOSE_VALUE_RGX
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>             )
-<a class="jxr_linenumber" name="L248" href="#L248">248</a>         )
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>         .matcher(slidingWindowCurrentRow);
-<a class="jxr_linenumber" name="L250" href="#L250">250</a>         <strong class="jxr_keyword">var</strong> nbCompleteLine = 0;
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>         <strong class="jxr_keyword">while</strong> (regexAtLeastOneRow.find()) {
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>             nbCompleteLine++;
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>         }
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>         <strong class="jxr_keyword">return</strong> nbCompleteLine;
-<a class="jxr_linenumber" name="L255" href="#L255">255</a>     }
-<a class="jxr_linenumber" name="L256" href="#L256">256</a> 
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> endInjection(<a name="AbstractElementDatabase" href="../../../../com/jsql/model/bean/database/AbstractElementDatabase.html#AbstractElementDatabase">AbstractElementDatabase</a> searchName, Throwable e) <strong class="jxr_keyword">throws</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> {
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>         <em class="jxr_comment">// Premature end of results</em>
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>         <em class="jxr_comment">// if it's not the root (empty tree)</em>
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>         <strong class="jxr_keyword">if</strong> (searchName != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>             <strong class="jxr_keyword">var</strong> request = <strong class="jxr_keyword">new</strong> <a name="Request" href="../../../../com/jsql/model/bean/util/Request.html#Request">Request</a>();
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>             request.setMessage(Interaction.END_PROGRESS);
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>             request.setParameters(searchName);
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(request);
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>         }
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>         <strong class="jxr_keyword">var</strong> messageError = <strong class="jxr_keyword">new</strong> StringBuilder(<span class="jxr_string">"Fetching fails: no data to parse"</span>);
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>         <strong class="jxr_keyword">if</strong> (searchName != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>             messageError.append(<span class="jxr_string">" for "</span>).append(StringUtil.detectUtf8(searchName.toString()));
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>         }
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>         <strong class="jxr_keyword">if</strong> (searchName instanceof <a name="Table" href="../../../../com/jsql/model/bean/database/Table.html#Table">Table</a> &amp;&amp; searchName.getChildCount() &gt; 0) {
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>             messageError.append(<span class="jxr_string">", check Network tab for logs"</span>);
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>         }
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>(messageError.toString(), e);
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>     }
-<a class="jxr_linenumber" name="L275" href="#L275">275</a> 
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> sendChunk(String currentChunk) {
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>         <strong class="jxr_keyword">var</strong> request = <strong class="jxr_keyword">new</strong> <a name="Request" href="../../../../com/jsql/model/bean/util/Request.html#Request">Request</a>();
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>         request.setMessage(Interaction.MESSAGE_CHUNK);
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>         request.setParameters(
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>             Pattern.compile(MODE + TRAIL_RGX +<span class="jxr_string">".*"</span>)
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>             .matcher(currentChunk)
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>             .replaceAll(StringUtils.EMPTY)
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>             .replace(<span class="jxr_string">"&#92;&#92;n"</span>, <span class="jxr_string">"&#92;&#92;&#92;&#92;&#92;&#92;n"</span>)
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>             .replace(<span class="jxr_string">"&#92;&#92;r"</span>, <span class="jxr_string">"&#92;&#92;&#92;&#92;&#92;&#92;r"</span>)
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>             .replace(<span class="jxr_string">"&#92;&#92;t"</span>, <span class="jxr_string">"&#92;&#92;&#92;&#92;&#92;&#92;t"</span>)
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>         );
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>         <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(request);
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>     }
-<a class="jxr_linenumber" name="L289" href="#L289">289</a> 
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>     <em class="jxr_comment">// TODO pb for same char string like aaaaaaaaaaaaa...aaaaaaaaaaaaa</em>
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>     <em class="jxr_comment">// detected as infinite</em>
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> checkInfinite(
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>         <strong class="jxr_keyword">int</strong> loop,
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>         String previousChunk,
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>         String currentChunk,
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>         StringBuilder slidingWindowCurrentRow,
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>         StringBuilder slidingWindowAllRows
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>     ) <strong class="jxr_keyword">throws</strong> <a name="LoopDetectedSlidingException" href="../../../../com/jsql/model/exception/LoopDetectedSlidingException.html#LoopDetectedSlidingException">LoopDetectedSlidingException</a> {
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>         <strong class="jxr_keyword">int</strong> infiniteLoop = loop;
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>         <strong class="jxr_keyword">if</strong> (previousChunk.equals(currentChunk)) {
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>             infiniteLoop++;
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>             <strong class="jxr_keyword">if</strong> (infiniteLoop &gt;= 20) {
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>                 <strong class="jxr_keyword">this</strong>.stop();
-<a class="jxr_linenumber" name="L304" href="#L304">304</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="LoopDetectedSlidingException" href="../../../../com/jsql/model/exception/LoopDetectedSlidingException.html#LoopDetectedSlidingException">LoopDetectedSlidingException</a>(
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>                     slidingWindowAllRows.toString(),
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>                     slidingWindowCurrentRow.toString()
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>                 );
-<a class="jxr_linenumber" name="L308" href="#L308">308</a>             }
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>         }
-<a class="jxr_linenumber" name="L310" href="#L310">310</a>         <strong class="jxr_keyword">return</strong> infiniteLoop;
-<a class="jxr_linenumber" name="L311" href="#L311">311</a>     }
-<a class="jxr_linenumber" name="L312" href="#L312">312</a> 
-<a class="jxr_linenumber" name="L313" href="#L313">313</a>     <strong class="jxr_keyword">private</strong> Matcher parseTrailOnlyFound(String sourcePage) {
-<a class="jxr_linenumber" name="L314" href="#L314">314</a>         String sourcePageUnicodeDecoded = <strong class="jxr_keyword">this</strong>.decodeUnicode(sourcePage, <strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>         <em class="jxr_comment">// TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX</em>
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>         <em class="jxr_comment">// It creates extra query which can be endless if not nullified</em>
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>         <strong class="jxr_keyword">return</strong> Pattern.compile(
-<a class="jxr_linenumber" name="L318" href="#L318">318</a>             String.format(<span class="jxr_string">"(?s)%s(?i)%s"</span>, LEAD, TRAIL_RGX)
-<a class="jxr_linenumber" name="L319" href="#L319">319</a>         )
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>         .matcher(sourcePageUnicodeDecoded);
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>     }
-<a class="jxr_linenumber" name="L322" href="#L322">322</a> 
-<a class="jxr_linenumber" name="L323" href="#L323">323</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L324" href="#L324">324</a> <em class="jxr_javadoccomment">     * After ${lead} tag, gets characters between 1 and maxPerf</em>
-<a class="jxr_linenumber" name="L325" href="#L325">325</a> <em class="jxr_javadoccomment">     * performanceQuery() gets 65536 characters or fewer</em>
-<a class="jxr_linenumber" name="L326" href="#L326">326</a> <em class="jxr_javadoccomment">     * ${lead}blahblah1337      ] : end or limit+1</em>
-<a class="jxr_linenumber" name="L327" href="#L327">327</a> <em class="jxr_javadoccomment">     * ${lead}blahblah      blah] : continue substr()</em>
-<a class="jxr_linenumber" name="L328" href="#L328">328</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L329" href="#L329">329</a>     <strong class="jxr_keyword">private</strong> Matcher parseLeadFound(String sourcePage, String performanceLength) <strong class="jxr_keyword">throws</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> {
-<a class="jxr_linenumber" name="L330" href="#L330">330</a>         Matcher regexAtLeastOneRow;
-<a class="jxr_linenumber" name="L331" href="#L331">331</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L332" href="#L332">332</a>             regexAtLeastOneRow = Pattern.compile(
-<a class="jxr_linenumber" name="L333" href="#L333">333</a>                 String.format(<span class="jxr_string">"(?s)%s(?i)(.{1,%s})"</span>, LEAD, performanceLength)
-<a class="jxr_linenumber" name="L334" href="#L334">334</a>             )
-<a class="jxr_linenumber" name="L335" href="#L335">335</a>             .matcher(sourcePage);
-<a class="jxr_linenumber" name="L336" href="#L336">336</a>         } <strong class="jxr_keyword">catch</strong> (PatternSyntaxException e) {
-<a class="jxr_linenumber" name="L337" href="#L337">337</a>             <em class="jxr_comment">// Fix #35382 : PatternSyntaxException null on SQLi(.{1,null})</em>
-<a class="jxr_linenumber" name="L338" href="#L338">338</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>(<span class="jxr_string">"Row parsing failed using capacity"</span>, e);
-<a class="jxr_linenumber" name="L339" href="#L339">339</a>         }
-<a class="jxr_linenumber" name="L340" href="#L340">340</a>         <strong class="jxr_keyword">return</strong> regexAtLeastOneRow;
-<a class="jxr_linenumber" name="L341" href="#L341">341</a>     }
-<a class="jxr_linenumber" name="L342" href="#L342">342</a> 
-<a class="jxr_linenumber" name="L343" href="#L343">343</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> checkSuspend(
-<a class="jxr_linenumber" name="L344" href="#L344">344</a>         <a name="AbstractStrategy" href="../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> strategy,
-<a class="jxr_linenumber" name="L345" href="#L345">345</a>         StringBuilder slidingWindowAllRows,
-<a class="jxr_linenumber" name="L346" href="#L346">346</a>         StringBuilder slidingWindowCurrentRow
-<a class="jxr_linenumber" name="L347" href="#L347">347</a>     ) <strong class="jxr_keyword">throws</strong> StoppedByUserSlidingException, <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> {
-<a class="jxr_linenumber" name="L348" href="#L348">348</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.isSuspended()) {
-<a class="jxr_linenumber" name="L349" href="#L349">349</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="StoppedByUserSlidingException" href="../../../../com/jsql/model/exception/StoppedByUserSlidingException.html#StoppedByUserSlidingException">StoppedByUserSlidingException</a>(
-<a class="jxr_linenumber" name="L350" href="#L350">350</a>                 slidingWindowAllRows.toString(),
-<a class="jxr_linenumber" name="L351" href="#L351">351</a>                 slidingWindowCurrentRow.toString()
-<a class="jxr_linenumber" name="L352" href="#L352">352</a>             );
-<a class="jxr_linenumber" name="L353" href="#L353">353</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (strategy == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L354" href="#L354">354</a>             <em class="jxr_comment">// Fix #1905 : NullPointerException on injectionStrategy.inject()</em>
-<a class="jxr_linenumber" name="L355" href="#L355">355</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>(<span class="jxr_string">"Undefined strategy"</span>);
-<a class="jxr_linenumber" name="L356" href="#L356">356</a>         }
-<a class="jxr_linenumber" name="L357" href="#L357">357</a>     }
-<a class="jxr_linenumber" name="L358" href="#L358">358</a> 
-<a class="jxr_linenumber" name="L359" href="#L359">359</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> scrap(StringBuilder slidingWindowAllRows) {
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>         <em class="jxr_comment">// Remove everything not properly attached to the last row:</em>
-<a class="jxr_linenumber" name="L361" href="#L361">361</a>         <em class="jxr_comment">// 1. very start of a new row: XXXXX\4[\6\4]$</em>
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>         <em class="jxr_comment">// 2. very end of the last row: XXXXX[\500]$</em>
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>         <strong class="jxr_keyword">var</strong> allRowsLimit = slidingWindowAllRows.toString();
-<a class="jxr_linenumber" name="L364" href="#L364">364</a>         slidingWindowAllRows.setLength(0);
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>         slidingWindowAllRows.append(
-<a class="jxr_linenumber" name="L366" href="#L366">366</a>             Pattern.compile(
-<a class="jxr_linenumber" name="L367" href="#L367">367</a>                 String.format(
-<a class="jxr_linenumber" name="L368" href="#L368">368</a>                     <span class="jxr_string">"%s(%s%s|%s&#92;&#92;d*)$"</span>,
-<a class="jxr_linenumber" name="L369" href="#L369">369</a>                     MODE,
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>                     SEPARATOR_CELL_RGX,
-<a class="jxr_linenumber" name="L371" href="#L371">371</a>                     ENCLOSE_VALUE_RGX,
-<a class="jxr_linenumber" name="L372" href="#L372">372</a>                     SEPARATOR_QTE_RGX
-<a class="jxr_linenumber" name="L373" href="#L373">373</a>                 )
-<a class="jxr_linenumber" name="L374" href="#L374">374</a>             )
-<a class="jxr_linenumber" name="L375" href="#L375">375</a>             .matcher(allRowsLimit)
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>             .replaceAll(StringUtils.EMPTY)
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>         );
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>     }
-<a class="jxr_linenumber" name="L379" href="#L379">379</a> 
-<a class="jxr_linenumber" name="L380" href="#L380">380</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> sendProgress(<strong class="jxr_keyword">int</strong> numberToFind, <strong class="jxr_keyword">int</strong> countProgress, <a name="AbstractElementDatabase" href="../../../../com/jsql/model/bean/database/AbstractElementDatabase.html#AbstractElementDatabase">AbstractElementDatabase</a> searchName) {
-<a class="jxr_linenumber" name="L381" href="#L381">381</a>         <strong class="jxr_keyword">if</strong> (numberToFind &gt; 0 &amp;&amp; searchName != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>             <strong class="jxr_keyword">var</strong> request = <strong class="jxr_keyword">new</strong> <a name="Request" href="../../../../com/jsql/model/bean/util/Request.html#Request">Request</a>();
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>             request.setMessage(Interaction.UPDATE_PROGRESS);
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>             request.setParameters(searchName, countProgress);
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(request);
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>         }
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>     }
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>     
-<a class="jxr_linenumber" name="L389" href="#L389">389</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> List&lt;List&lt;String&gt;&gt; parse(String rows) <strong class="jxr_keyword">throws</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> {
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>         <em class="jxr_comment">// Parse all the data we have retrieved</em>
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>         <strong class="jxr_keyword">var</strong> regexSearch = Pattern.compile(
-<a class="jxr_linenumber" name="L392" href="#L392">392</a>                 String.format(
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>                     <span class="jxr_string">"%s%s([^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]*?)%s([^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]*?)(&#92;&#92;x08)?%s"</span>,
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>                     MODE,
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>                     ENCLOSE_VALUE_RGX,
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>                     SEPARATOR_QTE_RGX,
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>                     ENCLOSE_VALUE_RGX
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>                 )
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>             )
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>             .matcher(rows);
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>         <strong class="jxr_keyword">if</strong> (!regexSearch.find()) {
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>();
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>         }
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>         regexSearch.reset();
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>         <strong class="jxr_keyword">var</strong> rowsFound = 0;
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>         List&lt;List&lt;String&gt;&gt; listValues = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
-<a class="jxr_linenumber" name="L407" href="#L407">407</a> 
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>         <em class="jxr_comment">// Build a 2D array of strings from the data we have parsed</em>
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>         <em class="jxr_comment">// =&gt; row number, occurrence, value1, value2...</em>
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>         <strong class="jxr_keyword">while</strong> (regexSearch.find()) {
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>             String values = regexSearch.group(1);
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>             <strong class="jxr_keyword">var</strong> instances = Integer.parseInt(regexSearch.group(2));
-<a class="jxr_linenumber" name="L413" href="#L413">413</a> 
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>             listValues.add(<strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;());
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>             listValues.get(rowsFound).add(Integer.toString(rowsFound + 1));
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>             listValues.get(rowsFound).add(<span class="jxr_string">"x"</span>+ instances);
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>             <strong class="jxr_keyword">for</strong> (String cellValue: values.split(<span class="jxr_string">"&#92;&#92;x7F"</span>, -1)) {
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>                 listValues.get(rowsFound).add(cellValue);
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>             }
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>             rowsFound++;
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>         }
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>         <strong class="jxr_keyword">return</strong> listValues;
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>     }
-<a class="jxr_linenumber" name="L424" href="#L424">424</a> }
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>                 currentChunk
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>                 .replaceAll(<span class="jxr_string">"&#92;&#92;&#92;&#92;u.{0,3}$"</span>, StringUtils.EMPTY)  <em class="jxr_comment">// remove incorrect entities</em>
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>                 .replaceAll(<span class="jxr_string">"&#92;&#92;&#92;&#92;(&#92;&#92;d{4})"</span>, <span class="jxr_string">"&#92;&#92;&#92;&#92;u$1"</span>)  <em class="jxr_comment">// transform PDO Error 10.11.3-MariaDB-1 \0000 entities</em>
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>             );
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>         }
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>         <strong class="jxr_keyword">return</strong> currentChunk;
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>     }
+<a class="jxr_linenumber" name="L183" href="#L183">183</a> 
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>     <strong class="jxr_keyword">private</strong> String getQuery(String initialSqlQuery, <strong class="jxr_keyword">int</strong> countAllRows) {
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>         <strong class="jxr_keyword">return</strong> initialSqlQuery.replace(LIMIT, <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlLimit(countAllRows));
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>     }
+<a class="jxr_linenumber" name="L187" href="#L187">187</a> 
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> appendRowFixed(StringBuilder slidingWindowAllRows, StringBuilder slidingWindowCurrentRow) {
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <em class="jxr_comment">// Check either if there is more than 1 row and if there is less than 1 complete row</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">var</strong> regexAtLeastOneRow = Pattern.compile(
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>             String.format(
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>                 <span class="jxr_string">"%s[^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]%s%s%s[^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]+?$"</span>,
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>                 MODE,
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>                 ENCLOSE_VALUE_RGX,
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>                 SEPARATOR_CELL_RGX,
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>                 ENCLOSE_VALUE_RGX
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>             )
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         )
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>         .matcher(slidingWindowCurrentRow);
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>         
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">var</strong> regexRowIncomplete = Pattern.compile(
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>             MODE
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>             + ENCLOSE_VALUE_RGX
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>             + <span class="jxr_string">"[^&#92;&#92;x01-&#92;&#92;x03&#92;&#92;x05-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]+?$"</span>
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>         )
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>         .matcher(slidingWindowCurrentRow);
+<a class="jxr_linenumber" name="L207" href="#L207">207</a> 
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <em class="jxr_comment">// If there is more than 1 row, delete the last incomplete one in order to restart properly from it at the next loop,</em>
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>         <em class="jxr_comment">// else if there is 1 row but incomplete, mark it as cut with the letter c</em>
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>         <strong class="jxr_keyword">if</strong> (regexAtLeastOneRow.find()) {
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>             <strong class="jxr_keyword">var</strong> allLine = slidingWindowAllRows.toString();
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>             slidingWindowAllRows.setLength(0);
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>             slidingWindowAllRows.append(
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>                 Pattern.compile(
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>                     MODE
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>                     + ENCLOSE_VALUE_RGX
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>                     + <span class="jxr_string">"[^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]+?$"</span>
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>                 )
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>                 .matcher(allLine)
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>                 .replaceAll(StringUtils.EMPTY)
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>             );
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, <span class="jxr_string">"Chunk unreliable, reloading row part..."</span>);
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (regexRowIncomplete.find()) {
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>             slidingWindowAllRows.append(StringUtil.hexstr(<span class="jxr_string">"05"</span>)).append(<span class="jxr_string">"1"</span>).append(StringUtil.hexstr(<span class="jxr_string">"0804"</span>));
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, <span class="jxr_string">"Chunk unreliable, keeping row parts only"</span>);
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>         }
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>     }
+<a class="jxr_linenumber" name="L228" href="#L228">228</a> 
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> scrapeTrailJunk(StringBuilder slidingWindowCurrentRow) {
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>         <em class="jxr_comment">// Remove everything after chunk</em>
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>         <em class="jxr_comment">// =&gt; \4xxxxxxxx\500\4\6\4...\4 =&gt; \1\3\3\7junk</em>
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>         <strong class="jxr_keyword">var</strong> currentRow = slidingWindowCurrentRow.toString();
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>         slidingWindowCurrentRow.setLength(0);
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>         slidingWindowCurrentRow.append(
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>             Pattern.compile(MODE + TRAIL_RGX +<span class="jxr_string">".*"</span>)
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>             .matcher(currentRow)
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>             .replaceAll(StringUtils.EMPTY)
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>         );
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>     }
+<a class="jxr_linenumber" name="L240" href="#L240">240</a> 
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> getCountRows(StringBuilder slidingWindowCurrentRow) {
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>         <strong class="jxr_keyword">var</strong> regexAtLeastOneRow = Pattern.compile(
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>             String.format(
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>                 <span class="jxr_string">"%s(%s[^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]*?%s[^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]*?&#92;&#92;x08?%s)"</span>,
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>                 MODE,
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>                 ENCLOSE_VALUE_RGX,
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>                 SEPARATOR_QTE_RGX,
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>                 ENCLOSE_VALUE_RGX
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>             )
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>         )
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>         .matcher(slidingWindowCurrentRow);
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>         <strong class="jxr_keyword">var</strong> nbCompleteLine = 0;
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>         <strong class="jxr_keyword">while</strong> (regexAtLeastOneRow.find()) {
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>             nbCompleteLine++;
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>         }
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>         <strong class="jxr_keyword">return</strong> nbCompleteLine;
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>     }
+<a class="jxr_linenumber" name="L258" href="#L258">258</a> 
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> endInjection(<a name="AbstractElementDatabase" href="../../../../com/jsql/model/bean/database/AbstractElementDatabase.html#AbstractElementDatabase">AbstractElementDatabase</a> searchName, Throwable e) <strong class="jxr_keyword">throws</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> {
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>         <em class="jxr_comment">// Premature end of results</em>
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>         <em class="jxr_comment">// if it's not the root (empty tree)</em>
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>         <strong class="jxr_keyword">if</strong> (searchName != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>             <strong class="jxr_keyword">var</strong> request = <strong class="jxr_keyword">new</strong> <a name="Request" href="../../../../com/jsql/model/bean/util/Request.html#Request">Request</a>();
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>             request.setMessage(Interaction.END_PROGRESS);
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>             request.setParameters(searchName);
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(request);
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>         }
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>         <strong class="jxr_keyword">var</strong> messageError = <strong class="jxr_keyword">new</strong> StringBuilder(<span class="jxr_string">"Fetching fails: no data to parse"</span>);
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>         <strong class="jxr_keyword">if</strong> (searchName != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>             messageError.append(<span class="jxr_string">" for "</span>).append(StringUtil.detectUtf8(searchName.toString()));
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>         }
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>         <strong class="jxr_keyword">if</strong> (searchName instanceof <a name="Table" href="../../../../com/jsql/model/bean/database/Table.html#Table">Table</a> &amp;&amp; searchName.getChildCount() &gt; 0) {
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>             messageError.append(<span class="jxr_string">", check Network tab for logs"</span>);
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>         }
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>(messageError.toString(), e);
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>     }
+<a class="jxr_linenumber" name="L277" href="#L277">277</a> 
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> sendChunk(String currentChunk) {
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>         <strong class="jxr_keyword">var</strong> request = <strong class="jxr_keyword">new</strong> <a name="Request" href="../../../../com/jsql/model/bean/util/Request.html#Request">Request</a>();
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>         request.setMessage(Interaction.MESSAGE_CHUNK);
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>         request.setParameters(
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>             Pattern.compile(MODE + TRAIL_RGX +<span class="jxr_string">".*"</span>)
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>             .matcher(currentChunk)
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>             .replaceAll(StringUtils.EMPTY)
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>             .replace(<span class="jxr_string">"&#92;&#92;n"</span>, <span class="jxr_string">"&#92;&#92;&#92;&#92;&#92;&#92;n"</span>)
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>             .replace(<span class="jxr_string">"&#92;&#92;r"</span>, <span class="jxr_string">"&#92;&#92;&#92;&#92;&#92;&#92;r"</span>)
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>             .replace(<span class="jxr_string">"&#92;&#92;t"</span>, <span class="jxr_string">"&#92;&#92;&#92;&#92;&#92;&#92;t"</span>)
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>         );
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>         <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(request);
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>     }
+<a class="jxr_linenumber" name="L291" href="#L291">291</a> 
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>     <em class="jxr_comment">// TODO pb for same char string like aaaaaaaaaaaaa...aaaaaaaaaaaaa</em>
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>     <em class="jxr_comment">// detected as infinite</em>
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> checkInfinite(
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>         <strong class="jxr_keyword">int</strong> loop,
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>         String previousChunk,
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>         String currentChunk,
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>         StringBuilder slidingWindowCurrentRow,
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>         StringBuilder slidingWindowAllRows
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>     ) <strong class="jxr_keyword">throws</strong> <a name="LoopDetectedSlidingException" href="../../../../com/jsql/model/exception/LoopDetectedSlidingException.html#LoopDetectedSlidingException">LoopDetectedSlidingException</a> {
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>         <strong class="jxr_keyword">int</strong> infiniteLoop = loop;
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>         <strong class="jxr_keyword">if</strong> (previousChunk.equals(currentChunk)) {
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>             infiniteLoop++;
+<a class="jxr_linenumber" name="L304" href="#L304">304</a>             <strong class="jxr_keyword">if</strong> (infiniteLoop &gt;= 20) {
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>                 <strong class="jxr_keyword">this</strong>.stop();
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="LoopDetectedSlidingException" href="../../../../com/jsql/model/exception/LoopDetectedSlidingException.html#LoopDetectedSlidingException">LoopDetectedSlidingException</a>(
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>                     slidingWindowAllRows.toString(),
+<a class="jxr_linenumber" name="L308" href="#L308">308</a>                     slidingWindowCurrentRow.toString()
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>                 );
+<a class="jxr_linenumber" name="L310" href="#L310">310</a>             }
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>         }
+<a class="jxr_linenumber" name="L312" href="#L312">312</a>         <strong class="jxr_keyword">return</strong> infiniteLoop;
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>     }
+<a class="jxr_linenumber" name="L314" href="#L314">314</a> 
+<a class="jxr_linenumber" name="L315" href="#L315">315</a>     <strong class="jxr_keyword">private</strong> Matcher parseTrailOnlyFound(String sourcePage) {
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>         String sourcePageUnicodeDecoded = <strong class="jxr_keyword">this</strong>.decodeUnicode(sourcePage, <strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>         <em class="jxr_comment">// TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX</em>
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>         <em class="jxr_comment">// It creates extra query which can be endless if not nullified</em>
+<a class="jxr_linenumber" name="L319" href="#L319">319</a>         <strong class="jxr_keyword">return</strong> Pattern.compile(
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>             String.format(<span class="jxr_string">"(?s)%s(?i)%s"</span>, LEAD, TRAIL_RGX)
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>         )
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>         .matcher(sourcePageUnicodeDecoded);
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>     }
+<a class="jxr_linenumber" name="L324" href="#L324">324</a> 
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L326" href="#L326">326</a> <em class="jxr_javadoccomment">     * After ${lead} tag, gets characters between 1 and maxPerf</em>
+<a class="jxr_linenumber" name="L327" href="#L327">327</a> <em class="jxr_javadoccomment">     * performanceQuery() gets 65536 characters or fewer</em>
+<a class="jxr_linenumber" name="L328" href="#L328">328</a> <em class="jxr_javadoccomment">     * ${lead}blahblah1337      ] : end or limit+1</em>
+<a class="jxr_linenumber" name="L329" href="#L329">329</a> <em class="jxr_javadoccomment">     * ${lead}blahblah      blah] : continue substr()</em>
+<a class="jxr_linenumber" name="L330" href="#L330">330</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L331" href="#L331">331</a>     <strong class="jxr_keyword">private</strong> Matcher parseLeadFound(String sourcePage, String performanceLength) <strong class="jxr_keyword">throws</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> {
+<a class="jxr_linenumber" name="L332" href="#L332">332</a>         Matcher regexAtLeastOneRow;
+<a class="jxr_linenumber" name="L333" href="#L333">333</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L334" href="#L334">334</a>             regexAtLeastOneRow = Pattern.compile(
+<a class="jxr_linenumber" name="L335" href="#L335">335</a>                 String.format(<span class="jxr_string">"(?s)%s(?i)(.{1,%s})"</span>, LEAD, performanceLength)
+<a class="jxr_linenumber" name="L336" href="#L336">336</a>             )
+<a class="jxr_linenumber" name="L337" href="#L337">337</a>             .matcher(sourcePage);
+<a class="jxr_linenumber" name="L338" href="#L338">338</a>         } <strong class="jxr_keyword">catch</strong> (PatternSyntaxException e) {
+<a class="jxr_linenumber" name="L339" href="#L339">339</a>             <em class="jxr_comment">// Fix #35382 : PatternSyntaxException null on SQLi(.{1,null})</em>
+<a class="jxr_linenumber" name="L340" href="#L340">340</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>(<span class="jxr_string">"Row parsing failed using capacity"</span>, e);
+<a class="jxr_linenumber" name="L341" href="#L341">341</a>         }
+<a class="jxr_linenumber" name="L342" href="#L342">342</a>         <strong class="jxr_keyword">return</strong> regexAtLeastOneRow;
+<a class="jxr_linenumber" name="L343" href="#L343">343</a>     }
+<a class="jxr_linenumber" name="L344" href="#L344">344</a> 
+<a class="jxr_linenumber" name="L345" href="#L345">345</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> checkSuspend(
+<a class="jxr_linenumber" name="L346" href="#L346">346</a>         <a name="AbstractStrategy" href="../../../../com/jsql/model/injection/strategy/AbstractStrategy.html#AbstractStrategy">AbstractStrategy</a> strategy,
+<a class="jxr_linenumber" name="L347" href="#L347">347</a>         StringBuilder slidingWindowAllRows,
+<a class="jxr_linenumber" name="L348" href="#L348">348</a>         StringBuilder slidingWindowCurrentRow
+<a class="jxr_linenumber" name="L349" href="#L349">349</a>     ) <strong class="jxr_keyword">throws</strong> StoppedByUserSlidingException, <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> {
+<a class="jxr_linenumber" name="L350" href="#L350">350</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.isSuspended()) {
+<a class="jxr_linenumber" name="L351" href="#L351">351</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="StoppedByUserSlidingException" href="../../../../com/jsql/model/exception/StoppedByUserSlidingException.html#StoppedByUserSlidingException">StoppedByUserSlidingException</a>(
+<a class="jxr_linenumber" name="L352" href="#L352">352</a>                 slidingWindowAllRows.toString(),
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>                 slidingWindowCurrentRow.toString()
+<a class="jxr_linenumber" name="L354" href="#L354">354</a>             );
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (strategy == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>             <em class="jxr_comment">// Fix #1905 : NullPointerException on injectionStrategy.inject()</em>
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>(<span class="jxr_string">"Undefined strategy"</span>);
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>         }
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>     }
+<a class="jxr_linenumber" name="L360" href="#L360">360</a> 
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> scrap(StringBuilder slidingWindowAllRows) {
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>         <em class="jxr_comment">// Remove everything not properly attached to the last row:</em>
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>         <em class="jxr_comment">// 1. very start of a new row: XXXXX\4[\6\4]$</em>
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>         <em class="jxr_comment">// 2. very end of the last row: XXXXX[\500]$</em>
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>         <strong class="jxr_keyword">var</strong> allRowsLimit = slidingWindowAllRows.toString();
+<a class="jxr_linenumber" name="L366" href="#L366">366</a>         slidingWindowAllRows.setLength(0);
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>         slidingWindowAllRows.append(
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>             Pattern.compile(
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>                 String.format(
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>                     <span class="jxr_string">"%s(%s%s|%s&#92;&#92;d*)$"</span>,
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>                     MODE,
+<a class="jxr_linenumber" name="L372" href="#L372">372</a>                     SEPARATOR_CELL_RGX,
+<a class="jxr_linenumber" name="L373" href="#L373">373</a>                     ENCLOSE_VALUE_RGX,
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>                     SEPARATOR_QTE_RGX
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>                 )
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>             )
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>             .matcher(allRowsLimit)
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>             .replaceAll(StringUtils.EMPTY)
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>         );
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>     }
+<a class="jxr_linenumber" name="L381" href="#L381">381</a> 
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> sendProgress(<strong class="jxr_keyword">int</strong> numberToFind, <strong class="jxr_keyword">int</strong> countProgress, <a name="AbstractElementDatabase" href="../../../../com/jsql/model/bean/database/AbstractElementDatabase.html#AbstractElementDatabase">AbstractElementDatabase</a> searchName) {
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>         <strong class="jxr_keyword">if</strong> (numberToFind &gt; 0 &amp;&amp; searchName != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>             <strong class="jxr_keyword">var</strong> request = <strong class="jxr_keyword">new</strong> <a name="Request" href="../../../../com/jsql/model/bean/util/Request.html#Request">Request</a>();
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>             request.setMessage(Interaction.UPDATE_PROGRESS);
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>             request.setParameters(searchName, countProgress);
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(request);
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>         }
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>     }
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>     
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> List&lt;List&lt;String&gt;&gt; parse(String rows) <strong class="jxr_keyword">throws</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> {
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>         <em class="jxr_comment">// Parse all the data we have retrieved</em>
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>         <strong class="jxr_keyword">var</strong> regexSearch = Pattern.compile(
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>                 String.format(
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>                     <span class="jxr_string">"%s%s([^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]*?)%s([^&#92;&#92;x01-&#92;&#92;x09&#92;&#92;x0B-&#92;&#92;x0C&#92;&#92;x0E-&#92;&#92;x1F]*?)(&#92;&#92;x08)?%s"</span>,
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>                     MODE,
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>                     ENCLOSE_VALUE_RGX,
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>                     SEPARATOR_QTE_RGX,
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>                     ENCLOSE_VALUE_RGX
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>                 )
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>             )
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>             .matcher(rows);
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>         <strong class="jxr_keyword">if</strong> (!regexSearch.find()) {
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>();
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>         }
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>         regexSearch.reset();
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>         <strong class="jxr_keyword">var</strong> rowsFound = 0;
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>         List&lt;List&lt;String&gt;&gt; listValues = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L409" href="#L409">409</a> 
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>         <em class="jxr_comment">// Build a 2D array of strings from the data we have parsed</em>
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>         <em class="jxr_comment">// =&gt; row number, occurrence, value1, value2...</em>
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>         <strong class="jxr_keyword">while</strong> (regexSearch.find()) {
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>             String values = regexSearch.group(1);
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>             <strong class="jxr_keyword">var</strong> instances = Integer.parseInt(regexSearch.group(2));
+<a class="jxr_linenumber" name="L415" href="#L415">415</a> 
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>             listValues.add(<strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;());
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>             listValues.get(rowsFound).add(Integer.toString(rowsFound + 1));
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>             listValues.get(rowsFound).add(<span class="jxr_string">"x"</span>+ instances);
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>             <strong class="jxr_keyword">for</strong> (String cellValue: values.split(<span class="jxr_string">"&#92;&#92;x7F"</span>, -1)) {
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>                 listValues.get(rowsFound).add(cellValue);
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>             }
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>             rowsFound++;
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>         }
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>         <strong class="jxr_keyword">return</strong> listValues;
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>     }
+<a class="jxr_linenumber" name="L426" href="#L426">426</a> }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>

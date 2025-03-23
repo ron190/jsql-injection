@@ -22,19 +22,20 @@ public class MainApp {
     
     static {
 <span class="nc" id="L24">        System.setProperty(&quot;jdk.httpclient.allowRestrictedHeaders&quot;, &quot;connection,content-length,expect,host,upgrade&quot;);</span>
+<span class="nc" id="L25">        System.setProperty(&quot;log4j2.formatMsgNoLookups&quot;, &quot;true&quot;);</span>
 
-<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (GraphicsEnvironment.isHeadless()) {</span>
-<span class="nc" id="L27">            LOGGER.log(Level.ERROR, &quot;Headless runtime not supported, use default Java runtime instead&quot;);</span>
-<span class="nc" id="L28">            System.exit(1);</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (GraphicsEnvironment.isHeadless()) {</span>
+<span class="nc" id="L28">            LOGGER.log(Level.ERROR, &quot;Headless runtime not supported, use default Java runtime instead&quot;);</span>
+<span class="nc" id="L29">            System.exit(1);</span>
         }
 
-<span class="nc" id="L31">        INJECTION_MODEL = new InjectionModel();</span>
-<span class="nc" id="L32">        MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();</span>
+<span class="nc" id="L32">        INJECTION_MODEL = new InjectionModel();</span>
+<span class="nc" id="L33">        MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();</span>
 
-<span class="nc" id="L34">        var nameTheme = MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName();</span>
-<span class="nc" id="L35">        UiUtil.applyTheme(nameTheme);  // required init but not enough, reapplied next</span>
-<span class="nc" id="L36">        MainApp.apply4K();</span>
-<span class="nc" id="L37">    }</span>
+<span class="nc" id="L35">        var nameTheme = MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName();</span>
+<span class="nc" id="L36">        UiUtil.applyTheme(nameTheme);  // required init but not enough, reapplied next</span>
+<span class="nc" id="L37">        MainApp.apply4K();</span>
+<span class="nc" id="L38">    }</span>
 
     private MainApp() {
         // nothing
@@ -45,31 +46,31 @@ public class MainApp {
      * @param args CLI parameters (not used)
      */
     public static void main(String[] args) {
-<span class="nc" id="L48">        MediatorHelper.register(MainApp.INJECTION_MODEL);</span>
+<span class="nc" id="L49">        MediatorHelper.register(MainApp.INJECTION_MODEL);</span>
 
-<span class="nc" id="L50">        MainApp.INJECTION_MODEL.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();</span>
-<span class="nc" id="L51">        MainApp.INJECTION_MODEL.getMediatorUtils().getProxyUtil().initProxy();</span>
-<span class="nc" id="L52">        MainApp.INJECTION_MODEL.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();</span>
+<span class="nc" id="L51">        MainApp.INJECTION_MODEL.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();</span>
+<span class="nc" id="L52">        MainApp.INJECTION_MODEL.getMediatorUtils().getProxyUtil().initProxy();</span>
+<span class="nc" id="L53">        MainApp.INJECTION_MODEL.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();</span>
 
         try {
-<span class="nc" id="L55">            var view = new JFrameView(MainApp.INJECTION_MODEL);</span>
-<span class="nc" id="L56">            MediatorHelper.register(view);</span>
-<span class="nc" id="L57">            MainApp.INJECTION_MODEL.subscribe(view.getSubscriber());</span>
-<span class="nc" id="L58">        } catch (HeadlessException e) {</span>
-<span class="nc" id="L59">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;HeadlessException, command line execution not supported: %s&quot;, e);</span>
-<span class="nc" id="L60">        } catch (AWTError e) {</span>
+<span class="nc" id="L56">            var view = new JFrameView(MainApp.INJECTION_MODEL);</span>
+<span class="nc" id="L57">            MediatorHelper.register(view);</span>
+<span class="nc" id="L58">            MainApp.INJECTION_MODEL.subscribe(view.getSubscriber());</span>
+<span class="nc" id="L59">        } catch (HeadlessException e) {</span>
+<span class="nc" id="L60">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;HeadlessException, command line execution not supported: %s&quot;, e);</span>
+<span class="nc" id="L61">        } catch (AWTError e) {</span>
             // Fix #22668: Assistive Technology not found
-<span class="nc" id="L62">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, String.format(</span>
+<span class="nc" id="L63">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, String.format(</span>
                 &quot;Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: %s&quot;,
-<span class="nc" id="L64">                e.getMessage()</span>
+<span class="nc" id="L65">                e.getMessage()</span>
             ), e);
-<span class="nc" id="L66">        }</span>
-<span class="nc" id="L67">    }</span>
+<span class="nc" id="L67">        }</span>
+<span class="nc" id="L68">    }</span>
 
     private static void apply4K() {  // required not in UiUtil before frame is set
-<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().is4K()) {</span>
-<span class="nc" id="L71">            System.setProperty(&quot;sun.java2d.uiScale&quot;, &quot;2.5&quot;);  // jdk &gt;= 9</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().is4K()) {</span>
+<span class="nc" id="L72">            System.setProperty(&quot;sun.java2d.uiScale&quot;, &quot;2.5&quot;);  // jdk &gt;= 9</span>
         }
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L74">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -18,6 +18,7 @@ import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
+import com.jsql.view.swing.util.RadioItemPreventClose;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +28,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Locale;
@@ -39,7 +41,7 @@ public class MenuWindows extends JMenu {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L42">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L44">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     private static final String I18N_SQL_ENGINE = &quot;MENUBAR_SQL_ENGINE&quot;;
     private static final String I18N_PREFERENCES = &quot;MENUBAR_PREFERENCES&quot;;
@@ -48,272 +50,278 @@ public class MenuWindows extends JMenu {
     private final JMenu menuView;
 
     public MenuWindows(AppMenubar appMenubar) {
+<span class="fc" id="L53">        super(I18nUtil.valueByKey(&quot;MENUBAR_WINDOWS&quot;));</span>
+<span class="fc" id="L54">        this.appMenubar = appMenubar;</span>
 
-<span class="fc" id="L52">        super(I18nUtil.valueByKey(&quot;MENUBAR_WINDOWS&quot;));</span>
-<span class="fc" id="L53">        this.appMenubar = appMenubar;</span>
+<span class="fc" id="L56">        this.setName(&quot;menuWindows&quot;);</span>
+<span class="fc" id="L57">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_WINDOWS&quot;, this);</span>
+<span class="fc" id="L58">        this.setMnemonic('W');</span>
 
-<span class="fc" id="L55">        this.setName(&quot;menuWindows&quot;);</span>
-<span class="fc" id="L56">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_WINDOWS&quot;, this);</span>
-<span class="fc" id="L57">        this.setMnemonic('W');</span>
+<span class="fc" id="L60">        JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());</span>
+<span class="fc" id="L61">        I18nViewUtil.addComponentForKey(&quot;NEW_WINDOW_MENU&quot;, itemNewWindows);</span>
 
-<span class="fc" id="L59">        JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());</span>
-<span class="fc" id="L60">        I18nViewUtil.addComponentForKey(&quot;NEW_WINDOW_MENU&quot;, itemNewWindows);</span>
+<span class="fc" id="L63">        this.add(itemNewWindows);</span>
+<span class="fc" id="L64">        var menuAppearance = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_APPEARANCE&quot;));</span>
+<span class="fc" id="L65">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_APPEARANCE&quot;, menuAppearance);</span>
+<span class="fc" id="L66">        menuAppearance.setMnemonic('A');</span>
 
-<span class="fc" id="L62">        this.add(itemNewWindows);</span>
-<span class="fc" id="L63">        var menuAppearance = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_APPEARANCE&quot;));</span>
-<span class="fc" id="L64">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_APPEARANCE&quot;, menuAppearance);</span>
-<span class="fc" id="L65">        menuAppearance.setMnemonic('A');</span>
-
-<span class="fc" id="L67">        JMenuItem itemNewWindows4k = new JMenuItem(</span>
+<span class="fc" id="L68">        JMenuItem itemNewWindows4k = new JMenuItem(</span>
             new ActionNewWindow(&quot;New 4K Window&quot;, &quot;-Dsun.java2d.uiScale=2.5&quot;)
         );
-<span class="fc" id="L70">        menuAppearance.add(itemNewWindows4k);</span>
+<span class="fc" id="L71">        menuAppearance.add(itemNewWindows4k);</span>
 
-<span class="fc" id="L72">        var groupRadio = new ButtonGroup();</span>
-<span class="fc" id="L73">        var menuThemes = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_THEMES&quot;));</span>
-<span class="fc" id="L74">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_THEMES&quot;, menuAppearance);</span>
-<span class="fc" id="L75">        menuThemes.setMnemonic('T');</span>
+<span class="fc" id="L73">        var groupRadio = new ButtonGroup();</span>
+<span class="fc" id="L74">        var menuThemes = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_THEMES&quot;));</span>
+<span class="fc" id="L75">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_THEMES&quot;, menuAppearance);</span>
+<span class="fc" id="L76">        menuThemes.setMnemonic('T');</span>
 
-<span class="fc" id="L77">        Arrays.asList(</span>
-<span class="fc" id="L78">            new AbstractMap.SimpleEntry&lt;&gt;(FlatLightFlatIJTheme.class.getName(), &quot;IntelliJ&quot;),</span>
-<span class="fc" id="L79">            new AbstractMap.SimpleEntry&lt;&gt;(FlatDarkFlatIJTheme.class.getName(), &quot;IntelliJ Dark&quot;),</span>
-<span class="fc" id="L80">            new AbstractMap.SimpleEntry&lt;&gt;(FlatMacLightLaf.class.getName(), &quot;macOS&quot;),</span>
-<span class="fc" id="L81">            new AbstractMap.SimpleEntry&lt;&gt;(FlatMacDarkLaf.class.getName(), &quot;macOS Dark&quot;),</span>
-<span class="fc" id="L82">            new AbstractMap.SimpleEntry&lt;&gt;(FlatGitHubIJTheme.class.getName(), &quot;GitHub&quot;),</span>
-<span class="fc" id="L83">            new AbstractMap.SimpleEntry&lt;&gt;(FlatGitHubDarkIJTheme.class.getName(), &quot;GitHub Dark&quot;),</span>
-<span class="fc" id="L84">            new AbstractMap.SimpleEntry&lt;&gt;(FlatHighContrastIJTheme.class.getName(), &quot;High contrast&quot;)</span>
-<span class="fc" id="L85">        ).forEach(entry -&gt; {</span>
-<span class="fc" id="L86">            JMenuItem item = new JRadioButtonMenuItem(</span>
-<span class="fc" id="L87">                new AbstractAction() {</span>
+<span class="fc" id="L78">        Arrays.asList(</span>
+<span class="fc" id="L79">            new AbstractMap.SimpleEntry&lt;&gt;(FlatLightFlatIJTheme.class.getName(), &quot;IntelliJ&quot;),</span>
+<span class="fc" id="L80">            new AbstractMap.SimpleEntry&lt;&gt;(FlatDarkFlatIJTheme.class.getName(), &quot;IntelliJ Dark&quot;),</span>
+<span class="fc" id="L81">            new AbstractMap.SimpleEntry&lt;&gt;(FlatMacLightLaf.class.getName(), &quot;macOS&quot;),</span>
+<span class="fc" id="L82">            new AbstractMap.SimpleEntry&lt;&gt;(FlatMacDarkLaf.class.getName(), &quot;macOS Dark&quot;),</span>
+<span class="fc" id="L83">            new AbstractMap.SimpleEntry&lt;&gt;(FlatGitHubIJTheme.class.getName(), &quot;GitHub&quot;),</span>
+<span class="fc" id="L84">            new AbstractMap.SimpleEntry&lt;&gt;(FlatGitHubDarkIJTheme.class.getName(), &quot;GitHub Dark&quot;),</span>
+<span class="fc" id="L85">            new AbstractMap.SimpleEntry&lt;&gt;(FlatHighContrastIJTheme.class.getName(), &quot;High contrast&quot;)</span>
+<span class="fc" id="L86">        ).forEach(entry -&gt; {</span>
+<span class="fc" id="L87">            JMenuItem item = new RadioItemPreventClose(</span>
+<span class="fc" id="L88">                new AbstractAction() {</span>
                     @Override
                     public void actionPerformed(ActionEvent e) {
-<span class="nc" id="L90">                        AppMenubar.applyTheme(entry.getKey());</span>
-<span class="nc" id="L91">                    }</span>
+<span class="nc" id="L91">                        AppMenubar.applyTheme(entry.getKey());</span>
+<span class="nc" id="L92">                    }</span>
                 }
             );
-<span class="fc" id="L94">            item.setText(entry.getValue());</span>
-<span class="fc" id="L95">            item.setSelected(entry.getKey().equals(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getThemeFlatLafName()));</span>
-<span class="fc" id="L96">            groupRadio.add(item);</span>
-<span class="fc" id="L97">            menuThemes.add(item);</span>
-<span class="fc" id="L98">        });</span>
+<span class="fc" id="L95">            item.setText(entry.getValue());</span>
+<span class="fc" id="L96">            item.setSelected(entry.getKey().equals(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getThemeFlatLafName()));</span>
+<span class="fc" id="L97">            groupRadio.add(item);</span>
+<span class="fc" id="L98">            menuThemes.add(item);</span>
+<span class="fc" id="L99">        });</span>
 
-<span class="fc" id="L100">        this.add(itemNewWindows);</span>
-<span class="fc" id="L101">        this.add(menuAppearance);</span>
-<span class="fc" id="L102">        this.add(menuThemes);</span>
-<span class="fc" id="L103">        this.add(new JSeparator());</span>
-<span class="fc" id="L104">        this.add(this.initMenuTranslation());</span>
-<span class="fc" id="L105">        this.add(new JSeparator());</span>
+<span class="fc" id="L101">        this.add(itemNewWindows);</span>
+<span class="fc" id="L102">        this.add(menuAppearance);</span>
+<span class="fc" id="L103">        this.add(menuThemes);</span>
+<span class="fc" id="L104">        this.add(new JSeparator());</span>
+<span class="fc" id="L105">        this.add(this.initMenuTranslation());</span>
+<span class="fc" id="L106">        this.add(new JSeparator());</span>
 
-<span class="fc" id="L107">        this.menuView = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_VIEW&quot;));</span>
-<span class="fc" id="L108">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_VIEW&quot;, this.menuView);</span>
-<span class="fc" id="L109">        this.menuView.setMnemonic('V');</span>
+<span class="fc" id="L108">        this.menuView = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_VIEW&quot;));</span>
+<span class="fc" id="L109">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_VIEW&quot;, this.menuView);</span>
+<span class="fc" id="L110">        this.menuView.setMnemonic('V');</span>
 
-<span class="fc" id="L111">        AtomicInteger accelerator = new AtomicInteger(0x31);</span>
-<span class="fc" id="L112">        AtomicInteger tabPosition = new AtomicInteger();</span>
-<span class="fc" id="L113">        MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(entry -&gt; {</span>
-<span class="fc" id="L114">            var menuItem = new JMenuItem(I18nUtil.valueByKey(entry.getKeyLabel()), entry.getIcon());</span>
-<span class="fc" id="L115">            I18nViewUtil.addComponentForKey(entry.getKeyLabel(), menuItem);</span>
-<span class="fc" id="L116">            menuItem.setName(entry.getKeyLabel());  // required by card manager switch</span>
-<span class="fc" id="L117">            this.menuView.add(menuItem);</span>
+<span class="fc" id="L112">        AtomicInteger accelerator = new AtomicInteger(0x31);</span>
+<span class="fc" id="L113">        AtomicInteger tabPosition = new AtomicInteger();</span>
+<span class="fc" id="L114">        MediatorHelper.frame().getTabManagers().getIconsTabs().forEach(entry -&gt; {</span>
+<span class="fc" id="L115">            var menuItem = new JMenuItem(I18nUtil.valueByKey(entry.getKeyLabel()), entry.getIcon());</span>
+<span class="fc" id="L116">            I18nViewUtil.addComponentForKey(entry.getKeyLabel(), menuItem);</span>
+<span class="fc" id="L117">            menuItem.setName(entry.getKeyLabel());  // required by card manager switch</span>
+<span class="fc" id="L118">            this.menuView.add(menuItem);</span>
 
-<span class="fc" id="L119">            menuItem.setAccelerator(KeyStroke.getKeyStroke(</span>
-<span class="fc" id="L120">                KeyEvent.getExtendedKeyCodeForChar(accelerator.getAndIncrement()),</span>
+<span class="fc" id="L120">            menuItem.setAccelerator(KeyStroke.getKeyStroke(</span>
+<span class="fc" id="L121">                KeyEvent.getExtendedKeyCodeForChar(accelerator.getAndIncrement()),</span>
                 InputEvent.CTRL_DOWN_MASK
             ));
 
-<span class="fc" id="L124">            final var position = tabPosition.get();  // required by closure</span>
-<span class="fc" id="L125">            menuItem.addActionListener(actionEvent -&gt; {  // setAction() could set action+text+icon but i18n not easy</span>
-<span class="nc" id="L126">                CardLayout cardLayout = (CardLayout) MediatorHelper.tabManagersCards().getLayout();</span>
-<span class="nc" id="L127">                cardLayout.show(MediatorHelper.tabManagersCards(), menuItem.getName());</span>
-<span class="nc" id="L128">                MediatorHelper.frame().getTabManagers().setSelectedIndex(position);</span>
-<span class="nc" id="L129">            });</span>
-<span class="fc" id="L130">            tabPosition.getAndIncrement();</span>
-<span class="fc" id="L131">        });</span>
+<span class="fc" id="L125">            final var position = tabPosition.get();  // required by closure</span>
+<span class="fc" id="L126">            menuItem.addActionListener(actionEvent -&gt; {  // setAction() could set action+text+icon but i18n not easy</span>
+<span class="nc" id="L127">                CardLayout cardLayout = (CardLayout) MediatorHelper.tabManagersCards().getLayout();</span>
+<span class="nc" id="L128">                cardLayout.show(MediatorHelper.tabManagersCards(), menuItem.getName());</span>
+<span class="nc" id="L129">                MediatorHelper.frame().getTabManagers().setSelectedIndex(position);</span>
+<span class="nc" id="L130">            });</span>
+<span class="fc" id="L131">            tabPosition.getAndIncrement();</span>
+<span class="fc" id="L132">        });</span>
 
-<span class="fc" id="L133">        this.add(this.menuView);</span>
+<span class="fc" id="L134">        this.add(this.menuView);</span>
 
-<span class="fc" id="L135">        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="fc" id="L136">        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
 
-<span class="fc" id="L137">        var menuPanel = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_PANEL&quot;));</span>
-<span class="fc" id="L138">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_PANEL&quot;, menuPanel);</span>
-<span class="fc" id="L139">        menuPanel.setMnemonic('C');</span>
+<span class="fc" id="L138">        var menuPanel = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_PANEL&quot;));</span>
+<span class="fc" id="L139">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_PANEL&quot;, menuPanel);</span>
+<span class="fc" id="L140">        menuPanel.setMnemonic('C');</span>
 
-<span class="fc" id="L141">        Arrays.asList(</span>
+<span class="fc" id="L142">        Arrays.asList(</span>
             new ModelCheckboxMenu(
                 &quot;CONSOLE_CHUNK_LABEL&quot;,
                 PreferencesUtil.CHUNK_VISIBLE,
-<span class="nc" id="L145">                () -&gt; MediatorHelper.panelConsoles().insertChunkTab(),</span>
-<span class="fc" id="L146">                UiUtil.CHUNK.getIcon()</span>
+<span class="nc" id="L146">                () -&gt; MediatorHelper.panelConsoles().insertChunkTab(),</span>
+<span class="fc" id="L147">                UiUtil.CHUNK.getIcon()</span>
             ),
             new ModelCheckboxMenu(
                 &quot;CONSOLE_BINARY_LABEL&quot;,
                 PreferencesUtil.BINARY_VISIBLE,
-<span class="nc" id="L151">                () -&gt; MediatorHelper.panelConsoles().insertBooleanTab(),</span>
-<span class="fc" id="L152">                UiUtil.BINARY.getIcon()</span>
+<span class="nc" id="L152">                () -&gt; MediatorHelper.panelConsoles().insertBooleanTab(),</span>
+<span class="fc" id="L153">                UiUtil.BINARY.getIcon()</span>
             ),
             new ModelCheckboxMenu(
                 &quot;CONSOLE_NETWORK_LABEL&quot;,
                 PreferencesUtil.NETWORK_VISIBLE,
-<span class="nc" id="L157">                () -&gt; MediatorHelper.panelConsoles().insertNetworkTab(),</span>
-<span class="fc" id="L158">                UiUtil.NETWORK.getIcon()</span>
+<span class="nc" id="L158">                () -&gt; MediatorHelper.panelConsoles().insertNetworkTab(),</span>
+<span class="fc" id="L159">                UiUtil.NETWORK.getIcon()</span>
             ),
             new ModelCheckboxMenu(
                 &quot;CONSOLE_JAVA_LABEL&quot;,
                 PreferencesUtil.JAVA_VISIBLE,
-<span class="nc" id="L163">                () -&gt; MediatorHelper.panelConsoles().insertJavaTab(),</span>
-<span class="fc" id="L164">                UiUtil.CUP.getIcon()</span>
+<span class="nc" id="L164">                () -&gt; MediatorHelper.panelConsoles().insertJavaTab(),</span>
+<span class="fc" id="L165">                UiUtil.CUP.getIcon()</span>
             )
-<span class="fc" id="L166">        ).forEach(model -&gt; {</span>
-<span class="fc" id="L167">            var menuItem = new JCheckBoxMenuItem(</span>
-<span class="fc" id="L168">                I18nUtil.valueByKey(model.i18n),</span>
+<span class="fc" id="L167">        ).forEach(model -&gt; {</span>
+<span class="fc" id="L168">            var menuItem = new JCheckBoxMenuItem(</span>
+<span class="fc" id="L169">                I18nUtil.valueByKey(model.i18n),</span>
                 model.icon,
-<span class="fc" id="L170">                preferences.getBoolean(model.keyPref, true)</span>
-            );
-<span class="fc" id="L172">            I18nViewUtil.addComponentForKey(model.i18n, menuItem);</span>
-<span class="fc" id="L173">            menuPanel.add(menuItem);</span>
+<span class="fc" id="L171">                preferences.getBoolean(model.keyPref, true)</span>
+<span class="fc" id="L172">            ) {</span>
+                @Override
+                protected void processMouseEvent(MouseEvent e) {
+<span class="nc bnc" id="L175" title="All 2 branches missed.">                    if (!RadioItemPreventClose.preventClose(e, this)) {</span>
+<span class="nc" id="L176">                        super.processMouseEvent(e);</span>
+                    }
+<span class="nc" id="L178">                }</span>
+            };
+<span class="fc" id="L180">            I18nViewUtil.addComponentForKey(model.i18n, menuItem);</span>
+<span class="fc" id="L181">            menuPanel.add(menuItem);</span>
 
-<span class="fc" id="L175">            menuItem.addActionListener(actionEvent -&gt; {</span>
-<span class="nc bnc" id="L176" title="All 2 branches missed.">                if (menuItem.isSelected()) {</span>
-<span class="nc" id="L177">                    model.runnableInsertTab.run();</span>
+<span class="fc" id="L183">            menuItem.addActionListener(actionEvent -&gt; {</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                if (menuItem.isSelected()) {</span>
+<span class="nc" id="L185">                    model.runnableInsertTab.run();</span>
                 } else {
                     try {  // fix #95874: IndexOutOfBoundsException on remove()
-<span class="nc" id="L180">                        MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(model.icon));</span>
-<span class="nc" id="L181">                    } catch (IndexOutOfBoundsException e) {  // should not occur</span>
-<span class="nc" id="L182">                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
-<span class="nc" id="L183">                    }</span>
+<span class="nc" id="L188">                        MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(model.icon));</span>
+<span class="nc" id="L189">                    } catch (IndexOutOfBoundsException e) {  // should not occur</span>
+<span class="nc" id="L190">                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
+<span class="nc" id="L191">                    }</span>
                 }
-<span class="nc" id="L185">            });</span>
-<span class="fc" id="L186">        });</span>
+<span class="nc" id="L193">            });</span>
+<span class="fc" id="L194">        });</span>
 
-<span class="fc" id="L188">        this.add(menuPanel);</span>
-<span class="fc" id="L189">        this.add(new JSeparator());</span>
-<span class="fc" id="L190">        this.add(this.getMenuItemSqlEngine());</span>
-<span class="fc" id="L191">        this.add(this.getMenuItemPreferences());</span>
-<span class="fc" id="L192">    }</span>
+<span class="fc" id="L196">        this.add(menuPanel);</span>
+<span class="fc" id="L197">        this.add(new JSeparator());</span>
+<span class="fc" id="L198">        this.add(this.getMenuItemSqlEngine());</span>
+<span class="fc" id="L199">        this.add(this.getMenuItemPreferences());</span>
+<span class="fc" id="L200">    }</span>
 
     private JMenuItem getMenuItemSqlEngine() {
-<span class="fc" id="L195">        var itemSqlEngine = new JMenuItem(I18nUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE));</span>
-<span class="fc" id="L196">        I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, itemSqlEngine);</span>
-<span class="fc" id="L197">        itemSqlEngine.setName(&quot;itemSqlEngine&quot;);</span>
-<span class="fc" id="L198">        itemSqlEngine.setMnemonic('S');</span>
+<span class="fc" id="L203">        var itemSqlEngine = new JMenuItem(I18nUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE));</span>
+<span class="fc" id="L204">        I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, itemSqlEngine);</span>
+<span class="fc" id="L205">        itemSqlEngine.setName(&quot;itemSqlEngine&quot;);</span>
+<span class="fc" id="L206">        itemSqlEngine.setMnemonic('S');</span>
 
         // Render the SQL Engine dialog behind scene
-<span class="fc" id="L201">        var titleTabSqlEngine = &quot;SQL Engine&quot;;</span>
+<span class="fc" id="L209">        var titleTabSqlEngine = &quot;SQL Engine&quot;;</span>
 
-<span class="fc" id="L203">        itemSqlEngine.addActionListener(actionEvent -&gt; {</span>
-<span class="pc bpc" id="L204" title="1 of 2 branches missed.">            for (var i = 0; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
-<span class="nc bnc" id="L205" title="All 2 branches missed.">                if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {</span>
-<span class="nc" id="L206">                    MediatorHelper.tabResults().setSelectedIndex(i);</span>
-<span class="nc" id="L207">                    return;</span>
+<span class="fc" id="L211">        itemSqlEngine.addActionListener(actionEvent -&gt; {</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">            for (var i = 0; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {</span>
+<span class="nc" id="L214">                    MediatorHelper.tabResults().setSelectedIndex(i);</span>
+<span class="nc" id="L215">                    return;</span>
                 }
             }
 
-<span class="fc" id="L211">            MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
+<span class="fc" id="L219">            MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
 
-<span class="fc" id="L213">            var panelSqlEngine = new SqlEngine();</span>
-<span class="fc" id="L214">            MediatorHelper.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);</span>
-<span class="fc" id="L215">            MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);  // Focus on the new tab</span>
+<span class="fc" id="L221">            var panelSqlEngine = new SqlEngine();</span>
+<span class="fc" id="L222">            MediatorHelper.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);</span>
+<span class="fc" id="L223">            MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);  // Focus on the new tab</span>
 
             // Create a custom tab header
-<span class="fc" id="L218">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.getIcon());</span>
-<span class="fc" id="L219">            I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, header.getTabLabel());</span>
+<span class="fc" id="L226">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.getIcon());</span>
+<span class="fc" id="L227">            I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, header.getTabLabel());</span>
 
             // Apply the custom header to the tab
-<span class="fc" id="L222">            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelSqlEngine), header);</span>
-<span class="fc" id="L223">            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="fc" id="L224">        });</span>
+<span class="fc" id="L230">            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelSqlEngine), header);</span>
+<span class="fc" id="L231">            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="fc" id="L232">        });</span>
 
-<span class="fc" id="L226">        return itemSqlEngine;</span>
+<span class="fc" id="L234">        return itemSqlEngine;</span>
     }
 
     private JMenuItem getMenuItemPreferences() {
-<span class="fc" id="L230">        JMenuItem itemPreferences = new JMenuItem(I18nUtil.valueByKey(MenuWindows.I18N_PREFERENCES), 'P');</span>
-<span class="fc" id="L231">        I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, itemPreferences);</span>
-<span class="fc" id="L232">        itemPreferences.setName(&quot;itemPreferences&quot;);</span>
+<span class="fc" id="L238">        JMenuItem itemPreferences = new JMenuItem(I18nUtil.valueByKey(MenuWindows.I18N_PREFERENCES), 'P');</span>
+<span class="fc" id="L239">        I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, itemPreferences);</span>
+<span class="fc" id="L240">        itemPreferences.setName(&quot;itemPreferences&quot;);</span>
 
         // Render the Preferences dialog behind scene
-<span class="fc" id="L235">        var titleTabPreferences = &quot;Preferences&quot;;</span>
+<span class="fc" id="L243">        var titleTabPreferences = &quot;Preferences&quot;;</span>
 
-<span class="fc" id="L237">        itemPreferences.addActionListener(actionEvent -&gt; {</span>
-<span class="pc bpc" id="L238" title="1 of 2 branches missed.">            for (var i = 0; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
-<span class="nc bnc" id="L239" title="All 2 branches missed.">                if (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {</span>
-<span class="nc" id="L240">                    MediatorHelper.tabResults().setSelectedIndex(i);</span>
-<span class="nc" id="L241">                    return;</span>
+<span class="fc" id="L245">        itemPreferences.addActionListener(actionEvent -&gt; {</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">            for (var i = 0; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">                if (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {</span>
+<span class="nc" id="L248">                    MediatorHelper.tabResults().setSelectedIndex(i);</span>
+<span class="nc" id="L249">                    return;</span>
                 }
             }
 
-<span class="fc" id="L245">            MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
+<span class="fc" id="L253">            MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
 
-<span class="fc" id="L247">            var panelPreferences = new PanelPreferences();</span>
-<span class="fc" id="L248">            MediatorHelper.tabResults().addTab(titleTabPreferences, panelPreferences);</span>
-<span class="fc" id="L249">            MediatorHelper.tabResults().setSelectedComponent(panelPreferences);  // Focus on the new tab</span>
+<span class="fc" id="L255">            var panelPreferences = new PanelPreferences();</span>
+<span class="fc" id="L256">            MediatorHelper.tabResults().addTab(titleTabPreferences, panelPreferences);</span>
+<span class="fc" id="L257">            MediatorHelper.tabResults().setSelectedComponent(panelPreferences);  // Focus on the new tab</span>
 
             // Create a custom tab header
-<span class="fc" id="L252">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.getIcon());</span>
-<span class="fc" id="L253">            I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, header.getTabLabel());</span>
+<span class="fc" id="L260">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.getIcon());</span>
+<span class="fc" id="L261">            I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, header.getTabLabel());</span>
 
             // Apply the custom header to the tab
-<span class="fc" id="L256">            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelPreferences), header);</span>
+<span class="fc" id="L264">            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelPreferences), header);</span>
 
-<span class="fc" id="L258">            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="fc" id="L259">        });</span>
+<span class="fc" id="L266">            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="fc" id="L267">        });</span>
 
-<span class="fc" id="L261">        return itemPreferences;</span>
+<span class="fc" id="L269">        return itemPreferences;</span>
     }
 
     private JMenu initMenuTranslation() {
-<span class="fc" id="L265">        var menuTranslation = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_LANGUAGE&quot;));</span>
-<span class="fc" id="L266">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_LANGUAGE&quot;, menuTranslation);</span>
-<span class="fc" id="L267">        menuTranslation.setName(&quot;menuTranslation&quot;);</span>
-<span class="fc" id="L268">        menuTranslation.setMnemonic('L');</span>
+<span class="fc" id="L273">        var menuTranslation = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_LANGUAGE&quot;));</span>
+<span class="fc" id="L274">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_LANGUAGE&quot;, menuTranslation);</span>
+<span class="fc" id="L275">        menuTranslation.setName(&quot;menuTranslation&quot;);</span>
+<span class="fc" id="L276">        menuTranslation.setMnemonic('L');</span>
 
-<span class="fc" id="L270">        var groupRadioLanguage = new ButtonGroup();</span>
-<span class="fc" id="L271">        var atomicIsAnySelected = new AtomicBoolean(false);</span>
-<span class="fc" id="L272">        AppMenubar.MODELS_ITEM.forEach(model -&gt; {</span>
-<span class="pc bpc" id="L273" title="1 of 4 branches missed.">            atomicIsAnySelected.set(atomicIsAnySelected.get() || model.getLanguage().isCurrentLanguage());</span>
-<span class="fc" id="L274">            model.setMenuItem(new JRadioButtonMenuItem(</span>
-<span class="fc" id="L275">                model.getLanguage().getMenuItemLabel(),</span>
-<span class="fc" id="L276">                model.getLanguage().getFlag(),</span>
-<span class="fc" id="L277">                model.getLanguage().isCurrentLanguage()</span>
+<span class="fc" id="L278">        var groupRadioLanguage = new ButtonGroup();</span>
+<span class="fc" id="L279">        var atomicIsAnySelected = new AtomicBoolean(false);</span>
+<span class="fc" id="L280">        AppMenubar.MODELS_ITEM.forEach(model -&gt; {</span>
+<span class="pc bpc" id="L281" title="1 of 4 branches missed.">            atomicIsAnySelected.set(atomicIsAnySelected.get() || model.getLanguage().isCurrentLanguage());</span>
+<span class="fc" id="L282">            model.setMenuItem(new RadioItemPreventClose(</span>
+<span class="fc" id="L283">                model.getLanguage().getMenuItemLabel(),</span>
+<span class="fc" id="L284">                model.getLanguage().getFlag(),</span>
+<span class="fc" id="L285">                model.getLanguage().isCurrentLanguage()</span>
             ));
-<span class="fc" id="L279">            model.getMenuItem().addActionListener(actionEvent -&gt; {</span>
-<span class="fc" id="L280">                this.appMenubar.switchLocale(</span>
-<span class="fc bfc" id="L281" title="All 2 branches covered.">                    model.getLanguage() == Language.EN</span>
-<span class="fc" id="L282">                    ? Locale.ROOT  // required as no bundle 'en'</span>
-<span class="fc" id="L283">                    : Locale.forLanguageTag(model.getLanguage().getLanguageTag())</span>
+<span class="fc" id="L287">            model.getMenuItem().addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L288">                this.appMenubar.switchLocale(</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">                    model.getLanguage() == Language.EN</span>
+<span class="fc" id="L290">                    ? Locale.ROOT  // required as no bundle 'en'</span>
+<span class="fc" id="L291">                    : Locale.forLanguageTag(model.getLanguage().getLanguageTag())</span>
                 );
-<span class="fc" id="L285">                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withLanguageTag(model.getLanguage().getLanguageTag()).persist();</span>
-<span class="fc" id="L286">            });</span>
-<span class="fc" id="L287">            menuTranslation.add(model.getMenuItem());</span>
-<span class="fc" id="L288">            groupRadioLanguage.add(model.getMenuItem());</span>
-<span class="fc" id="L289">        });</span>
+<span class="fc" id="L293">                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withLanguageTag(model.getLanguage().getLanguageTag()).persist();</span>
+<span class="fc" id="L294">            });</span>
+<span class="fc" id="L295">            menuTranslation.add(model.getMenuItem());</span>
+<span class="fc" id="L296">            groupRadioLanguage.add(model.getMenuItem());</span>
+<span class="fc" id="L297">        });</span>
 
-<span class="fc bfc" id="L291" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM.stream().filter(model -&gt; model.getLanguage() == Language.EN)</span>
-<span class="fc" id="L292">        .forEach(modelItem -&gt; {</span>
-<span class="pc bpc" id="L293" title="1 of 2 branches missed.">            modelItem.getMenuItem().setSelected(!atomicIsAnySelected.get());</span>
-<span class="fc" id="L294">            modelItem.getMenuItem().setName(&quot;itemEnglish&quot;);</span>
-<span class="fc" id="L295">        });</span>
-<span class="fc bfc" id="L296" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM.stream().filter(model -&gt; model.getLanguage() == Language.RU)</span>
-<span class="fc" id="L297">        .forEach(modelItem -&gt; modelItem.getMenuItem().setName(&quot;itemRussian&quot;));</span>
-<span class="fc bfc" id="L298" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM.stream().filter(model -&gt; model.getLanguage() == Language.AR)</span>
-<span class="fc" id="L299">        .forEach(modelItem -&gt; modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM.stream().filter(model -&gt; model.getLanguage() == Language.EN)</span>
+<span class="fc" id="L300">        .forEach(modelItem -&gt; {</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">            modelItem.getMenuItem().setSelected(!atomicIsAnySelected.get());</span>
+<span class="fc" id="L302">            modelItem.getMenuItem().setName(&quot;itemEnglish&quot;);</span>
+<span class="fc" id="L303">        });</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM.stream().filter(model -&gt; model.getLanguage() == Language.RU)</span>
+<span class="fc" id="L305">        .forEach(modelItem -&gt; modelItem.getMenuItem().setName(&quot;itemRussian&quot;));</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM.stream().filter(model -&gt; model.getLanguage() == Language.AR)</span>
+<span class="fc" id="L307">        .forEach(modelItem -&gt; modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));</span>
 
-<span class="fc" id="L301">        return menuTranslation;</span>
+<span class="fc" id="L309">        return menuTranslation;</span>
     }
 
     public void switchLocaleFromPreferences() {
-<span class="fc" id="L305">        AppMenubar.MODELS_ITEM.stream()</span>
-<span class="fc" id="L306">        .filter(model -&gt; model.getLanguage().getLanguageTag().equals(</span>
-<span class="fc" id="L307">            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()</span>
+<span class="fc" id="L313">        AppMenubar.MODELS_ITEM.stream()</span>
+<span class="fc" id="L314">        .filter(model -&gt; model.getLanguage().getLanguageTag().equals(</span>
+<span class="fc" id="L315">            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()</span>
         ))
-<span class="pc" id="L309">        .forEach(modelItem -&gt; modelItem.getMenuItem().doClick());</span>
-<span class="fc" id="L310">    }</span>
+<span class="pc" id="L317">        .forEach(modelItem -&gt; modelItem.getMenuItem().doClick());</span>
+<span class="fc" id="L318">    }</span>
 
 
     // Getter and setter
 
     public JMenu getMenuView() {
-<span class="nc" id="L316">        return this.menuView;</span>
+<span class="nc" id="L324">        return this.menuView;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

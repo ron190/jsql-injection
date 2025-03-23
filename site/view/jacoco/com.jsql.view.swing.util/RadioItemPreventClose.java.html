@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RadioItemPreventClose.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.util</a> &gt; <span class="el_source">RadioItemPreventClose.java</span></div><h1>RadioItemPreventClose.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.util;
+
+import javax.swing.*;
+import java.awt.event.MouseEvent;
+
+public class RadioItemPreventClose extends JRadioButtonMenuItem {
+    public RadioItemPreventClose(String text) {
+<span class="nc" id="L8">        super(text);</span>
+<span class="nc" id="L9">    }</span>
+    public RadioItemPreventClose(String text, boolean selected) {
+<span class="fc" id="L11">        super(text, selected);</span>
+<span class="fc" id="L12">    }</span>
+    public RadioItemPreventClose(String text, ImageIcon icon, boolean selected) {
+<span class="fc" id="L14">        super(text, icon, selected);</span>
+<span class="fc" id="L15">    }</span>
+    public RadioItemPreventClose(AbstractAction a) {
+<span class="fc" id="L17">        super(a);</span>
+<span class="fc" id="L18">    }</span>
+    @Override
+    protected void processMouseEvent(MouseEvent e) {
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (!RadioItemPreventClose.preventClose(e, this)) {</span>
+<span class="fc" id="L22">            super.processMouseEvent(e);</span>
+        }
+<span class="fc" id="L24">    }</span>
+    public static boolean preventClose(MouseEvent e, JMenuItem m) {
+<span class="pc bpc" id="L26" title="1 of 4 branches missed.">        if (e.getID() == MouseEvent.MOUSE_RELEASED &amp;&amp; m.contains(e.getPoint())) {</span>
+<span class="fc" id="L27">            m.doClick();</span>
+<span class="fc" id="L28">            m.setArmed(true);</span>
+<span class="fc" id="L29">            return true;</span>
+        }
+<span class="fc" id="L31">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

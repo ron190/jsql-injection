@@ -220,7 +220,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
 <span class="fc" id="L220">        this.unencodedBlockSize = unencodedBlockSize;</span>
 <span class="fc" id="L221">        this.encodedBlockSize = encodedBlockSize;</span>
 <span class="pc bpc" id="L222" title="3 of 4 branches missed.">        final boolean useChunking = lineLength &gt; 0 &amp;&amp; chunkSeparatorLength &gt; 0;</span>
-<span class="pc bpc" id="L223" title="1 of 2 branches missed.">        this.lineLength = useChunking ? (lineLength / encodedBlockSize) * encodedBlockSize : 0;</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">        this.lineLength = useChunking ? lineLength / encodedBlockSize * encodedBlockSize : 0;</span>
 <span class="fc" id="L224">        this.chunkSeparatorLength = chunkSeparatorLength;</span>
 <span class="fc" id="L225">        this.pad = pad;</span>
 <span class="fc" id="L226">        this.decodingPolicy = Objects.requireNonNull(decodingPolicy, &quot;codecPolicy&quot;);</span>
@@ -547,10 +547,10 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     public long getEncodedLength(final byte[] pArray) {
         // Calculate non-chunked size - rounded up to allow for padding
         // cast to long is needed to avoid possibility of overflow
-<span class="nc" id="L550">        long len = ((pArray.length + this.unencodedBlockSize-1)  / this.unencodedBlockSize) * (long) this.encodedBlockSize;</span>
+<span class="nc" id="L550">        long len = (pArray.length + this.unencodedBlockSize-1)  / this.unencodedBlockSize * (long) this.encodedBlockSize;</span>
 <span class="nc bnc" id="L551" title="All 2 branches missed.">        if (this.lineLength &gt; 0) { // We're using chunking</span>
             // Round up to nearest multiple
-<span class="nc" id="L553">            len += ((len + this.lineLength-1) / this.lineLength) * this.chunkSeparatorLength;</span>
+<span class="nc" id="L553">            len += (len + this.lineLength-1) / this.lineLength * this.chunkSeparatorLength;</span>
         }
 <span class="nc" id="L555">        return len;</span>
     }

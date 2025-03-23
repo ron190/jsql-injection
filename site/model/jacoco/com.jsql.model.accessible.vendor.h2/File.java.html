@@ -5,22 +5,31 @@ import org.apache.commons.lang3.StringUtils;
 <span class="fc" id="L5">public class File {</span>
 
 <span class="fc" id="L7">    private String createTable = StringUtils.EMPTY;</span>
-<span class="fc" id="L8">    private String read = StringUtils.EMPTY;</span>
+<span class="fc" id="L8">    private String readFromPath = StringUtils.EMPTY;</span>
+<span class="fc" id="L9">    private String readFromTempTable = StringUtils.EMPTY;</span>
 
     public String getCreateTable() {
-<span class="fc" id="L11">        return this.createTable;</span>
+<span class="nc" id="L12">        return this.createTable;</span>
     }
 
     public void setCreateTable(String createTable) {
-<span class="fc" id="L15">        this.createTable = createTable;</span>
-<span class="fc" id="L16">    }</span>
+<span class="fc" id="L16">        this.createTable = createTable;</span>
+<span class="fc" id="L17">    }</span>
 
-    public String getRead() {
-<span class="fc" id="L19">        return this.read;</span>
+    public String getReadFromPath() {
+<span class="fc" id="L20">        return this.readFromPath;</span>
     }
 
-    public void setRead(String read) {
-<span class="fc" id="L23">        this.read = read;</span>
-<span class="fc" id="L24">    }</span>
+    public void setReadFromPath(String readFromPath) {
+<span class="fc" id="L24">        this.readFromPath = readFromPath;</span>
+<span class="fc" id="L25">    }</span>
+
+    public String getReadFromTempTable() {
+<span class="nc" id="L28">        return this.readFromTempTable;</span>
+    }
+
+    public void setReadFromTempTable(String readFromTempTable) {
+<span class="fc" id="L32">        this.readFromTempTable = readFromTempTable;</span>
+<span class="fc" id="L33">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

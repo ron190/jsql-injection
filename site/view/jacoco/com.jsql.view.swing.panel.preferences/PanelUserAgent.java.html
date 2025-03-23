@@ -1,104 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PanelUserAgent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.preferences</a> &gt; <span class="el_source">PanelUserAgent.java</span></div><h1>PanelUserAgent.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.panel.preferences;
 
-import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 public class PanelUserAgent extends JPanel {
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L15">    private final JCheckBox checkboxIsCustomUserAgent = new JCheckBox(&quot;Randomize agent with the following list:&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUserAgentRandom());</span>
 
-<span class="fc" id="L28">    private final JCheckBox checkboxIsCustomUserAgent = new JCheckBox(&quot;Randomize agent with the following list:&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUserAgentRandom());</span>
+<span class="fc" id="L17">    public PanelUserAgent(PanelPreferences panelPreferences) {</span>
+<span class="fc" id="L18">        var userAgents = StringUtil.getFile(&quot;swing/list/user-agent.txt&quot;);</span>
+<span class="fc" id="L19">        MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(userAgents);</span>
 
-<span class="fc" id="L30">    public PanelUserAgent(PanelPreferences panelPreferences) {</span>
-<span class="fc" id="L31">        var userAgents = new StringBuilder();</span>
-        try (
-<span class="fc" id="L33">            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(&quot;swing/list/user-agent.txt&quot;);</span>
-<span class="fc" id="L34">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
-<span class="fc" id="L35">            var reader = new BufferedReader(inputStreamReader)</span>
-        ) {
-            String line;
-<span class="fc bfc" id="L38" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
-<span class="fc" id="L39">                userAgents.append(line).append(System.lineSeparator());</span>
-            }
-<span class="nc" id="L41">        } catch (IOException e) {</span>
-<span class="nc" id="L42">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L43">        }</span>
+<span class="fc" id="L21">        this.checkboxIsCustomUserAgent.addActionListener(panelPreferences.getActionListenerSave());</span>
 
-<span class="fc" id="L45">        this.checkboxIsCustomUserAgent.addActionListener(panelPreferences.getActionListenerSave());</span>
-<span class="fc" id="L46">        JTextArea textfieldCustomUserAgent = new JPopupTextArea(new JTextAreaPlaceholder(&quot;User agent list&quot;)).getProxy();</span>
-<span class="fc" id="L47">        textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));</span>
-<span class="fc" id="L48">        textfieldCustomUserAgent.getCaret().setBlinkRate(500);</span>
-<span class="fc" id="L49">        textfieldCustomUserAgent.setText(userAgents.toString());</span>
-<span class="fc" id="L50">        MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(userAgents.toString());</span>
-<span class="fc" id="L51">        textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
+<span class="fc" id="L23">        JTextArea textfieldCustomUserAgent = new JPopupTextArea(new JTextAreaPlaceholder(&quot;User agent list&quot;)).getProxy();</span>
+<span class="fc" id="L24">        textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));</span>
+<span class="fc" id="L25">        textfieldCustomUserAgent.getCaret().setBlinkRate(500);</span>
+<span class="fc" id="L26">        textfieldCustomUserAgent.setText(userAgents);</span>
+<span class="fc" id="L27">        MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(userAgents);</span>
+<span class="fc" id="L28">        textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-<span class="nc" id="L54">                MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(</span>
-<span class="nc" id="L55">                    textfieldCustomUserAgent.getText()</span>
+<span class="nc" id="L31">                MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(</span>
+<span class="nc" id="L32">                    textfieldCustomUserAgent.getText()</span>
                 );
-<span class="nc" id="L57">            }</span>
+<span class="nc" id="L34">            }</span>
         });
-<span class="fc" id="L59">        var scrollPane = new JScrollPane(textfieldCustomUserAgent);</span>
+<span class="fc" id="L36">        var scrollPane = new JScrollPane(textfieldCustomUserAgent);</span>
 
-<span class="fc" id="L61">        var labelOrigin = new JLabel(&quot;&lt;html&gt;&lt;b&gt;Connection user agent&lt;/b&gt;&lt;/html&gt;&quot;);</span>
-<span class="fc" id="L62">        labelOrigin.setBorder(PanelGeneral.MARGIN);</span>
+<span class="fc" id="L38">        var labelOrigin = new JLabel(&quot;&lt;html&gt;&lt;b&gt;Connection user agent&lt;/b&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L39">        labelOrigin.setBorder(PanelGeneral.MARGIN);</span>
 
-<span class="fc" id="L64">        var groupLayout = new GroupLayout(this);</span>
-<span class="fc" id="L65">        this.setLayout(groupLayout);</span>
+<span class="fc" id="L41">        var groupLayout = new GroupLayout(this);</span>
+<span class="fc" id="L42">        this.setLayout(groupLayout);</span>
 
-<span class="fc" id="L67">        groupLayout.setHorizontalGroup(</span>
+<span class="fc" id="L44">        groupLayout.setHorizontalGroup(</span>
             groupLayout
-<span class="fc" id="L69">            .createSequentialGroup()</span>
-<span class="fc" id="L70">            .addGroup(</span>
+<span class="fc" id="L46">            .createSequentialGroup()</span>
+<span class="fc" id="L47">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L72">                .createParallelGroup(GroupLayout.Alignment.LEADING)</span>
-<span class="fc" id="L73">                .addComponent(labelOrigin)</span>
-<span class="fc" id="L74">                .addComponent(this.checkboxIsCustomUserAgent)</span>
-<span class="fc" id="L75">                .addComponent(scrollPane)</span>
+<span class="fc" id="L49">                .createParallelGroup(GroupLayout.Alignment.LEADING)</span>
+<span class="fc" id="L50">                .addComponent(labelOrigin)</span>
+<span class="fc" id="L51">                .addComponent(this.checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L52">                .addComponent(scrollPane)</span>
             )
         );
 
-<span class="fc" id="L79">        groupLayout.setVerticalGroup(</span>
+<span class="fc" id="L56">        groupLayout.setVerticalGroup(</span>
             groupLayout
-<span class="fc" id="L81">            .createSequentialGroup()</span>
-<span class="fc" id="L82">            .addGroup(</span>
+<span class="fc" id="L58">            .createSequentialGroup()</span>
+<span class="fc" id="L59">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L84">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L85">                .addComponent(labelOrigin)</span>
+<span class="fc" id="L61">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L62">                .addComponent(labelOrigin)</span>
             )
-<span class="fc" id="L87">            .addGroup(</span>
+<span class="fc" id="L64">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L89">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L90">                .addComponent(this.checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L66">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L67">                .addComponent(this.checkboxIsCustomUserAgent)</span>
             )
-<span class="fc" id="L92">            .addGroup(</span>
+<span class="fc" id="L69">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L94">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L95">                .addComponent(scrollPane)</span>
+<span class="fc" id="L71">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L72">                .addComponent(scrollPane)</span>
             )
         );
-<span class="fc" id="L98">    }</span>
+<span class="fc" id="L75">    }</span>
 
     public JCheckBox getCheckboxIsCustomUserAgent() {
-<span class="fc" id="L101">        return this.checkboxIsCustomUserAgent;</span>
+<span class="fc" id="L78">        return this.checkboxIsCustomUserAgent;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServerInput.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.terminal</a> &gt; <span class="el_source">ServerInput.java</span></div><h1>ServerInput.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.terminal;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class ServerInput {
+
+<span class="nc" id="L9">    private ServerSocket serverSocket = null;</span>
+    private final int port;
+    private ServerInputConnection serverInputConnection;
+    private final ExploitReverseShell exploitReverseShell;
+
+<span class="nc" id="L14">    public ServerInput(ExploitReverseShell exploitReverseShell, int port) {</span>
+<span class="nc" id="L15">        this.port = port;</span>
+<span class="nc" id="L16">        this.exploitReverseShell = exploitReverseShell;</span>
+<span class="nc" id="L17">    }</span>
+
+    public void startServer() throws IOException, InterruptedException {
+<span class="nc" id="L20">        this.serverSocket = new ServerSocket(this.port);  // port less than 1024 if root</span>
+<span class="nc" id="L21">        this.serverSocket.setSoTimeout(10000);</span>
+<span class="nc" id="L22">        Socket clientSocket = this.serverSocket.accept();</span>
+<span class="nc" id="L23">        this.serverInputConnection = new ServerInputConnection(this.exploitReverseShell, clientSocket, this);</span>
+<span class="nc" id="L24">        this.serverInputConnection.run();</span>
+<span class="nc" id="L25">    }</span>
+
+    void close() throws IOException {
+<span class="nc" id="L28">        this.serverSocket.close();</span>
+<span class="nc" id="L29">    }</span>
+
+    public ServerInputConnection getServerInputConnection() {
+<span class="nc" id="L32">        return this.serverInputConnection;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

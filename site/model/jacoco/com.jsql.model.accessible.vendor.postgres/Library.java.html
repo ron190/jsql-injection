@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Library.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.accessible.vendor.postgres</a> &gt; <span class="el_source">Library.java</span></div><h1>Library.java</h1><pre class="source lang-java linenums">package com.jsql.model.accessible.vendor.postgres;
+
+import org.apache.commons.lang3.StringUtils;
+
+<span class="fc" id="L5">public class Library {</span>
+
+<span class="fc" id="L7">    private String loFromText = StringUtils.EMPTY;</span>
+<span class="fc" id="L8">    private String loToFile = StringUtils.EMPTY;</span>
+<span class="fc" id="L9">    private String dropFunc = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String createFunction = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private String runFunc = StringUtils.EMPTY;</span>
+
+    public String getDropFunc() {
+<span class="fc" id="L14">        return this.dropFunc;</span>
+    }
+
+    public void setDropFunc(String dropFunc) {
+<span class="fc" id="L18">        this.dropFunc = dropFunc;</span>
+<span class="fc" id="L19">    }</span>
+
+    public String getCreateFunction() {
+<span class="fc" id="L22">        return this.createFunction;</span>
+    }
+
+    public void setCreateFunction(String createFunction) {
+<span class="fc" id="L26">        this.createFunction = createFunction;</span>
+<span class="fc" id="L27">    }</span>
+
+    public String getRunFunc() {
+<span class="fc" id="L30">        return this.runFunc;</span>
+    }
+
+    public void setRunFunc(String runFunc) {
+<span class="fc" id="L34">        this.runFunc = runFunc;</span>
+<span class="fc" id="L35">    }</span>
+
+    public String getLoFromText() {
+<span class="fc" id="L38">        return this.loFromText;</span>
+    }
+
+    public void setLoFromText(String loFromText) {
+<span class="fc" id="L42">        this.loFromText = loFromText;</span>
+<span class="fc" id="L43">    }</span>
+
+    public String getLoToFile() {
+<span class="fc" id="L46">        return this.loToFile;</span>
+    }
+
+    public void setLoToFile(String loToFile) {
+<span class="fc" id="L50">        this.loToFile = loToFile;</span>
+<span class="fc" id="L51">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

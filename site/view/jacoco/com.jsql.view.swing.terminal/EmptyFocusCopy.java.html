@@ -14,9 +14,9 @@ import java.util.Arrays;
  * Cancel every mouse click, only gives focus.
  */
 public class EmptyFocusCopy implements MouseListener {
-    
+
     private final AbstractExploit abstractExploit;
-    
+
 <span class="fc" id="L20">    public EmptyFocusCopy(AbstractExploit abstractExploit) {</span>
 <span class="fc" id="L21">        this.abstractExploit = abstractExploit;</span>
 <span class="fc" id="L22">    }</span>
@@ -27,33 +27,37 @@ public class EmptyFocusCopy implements MouseListener {
 <span class="nc" id="L27">        this.abstractExploit.requestFocusInWindow();</span>
 <span class="nc" id="L28">        this.abstractExploit.setCaretPosition(this.abstractExploit.getDocument().getLength());</span>
 <span class="nc bnc" id="L29" title="All 2 branches missed.">        if (Arrays.asList(MouseEvent.BUTTON2, MouseEvent.BUTTON3).contains(e.getButton())) {</span>
-            try {
-<span class="nc" id="L31">                String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);</span>
-<span class="nc" id="L32">                this.abstractExploit.append(data);</span>
-<span class="nc" id="L33">            } catch (UnsupportedFlavorException | IOException ex) {</span>
-<span class="nc" id="L34">                throw new JSqlRuntimeException(ex);</span>
-<span class="nc" id="L35">            }</span>
+<span class="nc" id="L30">            this.pasteClipboard();</span>
         }
-<span class="nc" id="L37">    }</span>
-    
+<span class="nc" id="L32">    }</span>
+
+    private void pasteClipboard() {
+        try {
+<span class="nc" id="L36">            String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);</span>
+<span class="nc" id="L37">            this.abstractExploit.append(data);</span>
+<span class="nc" id="L38">        } catch (UnsupportedFlavorException | IOException ex) {</span>
+<span class="nc" id="L39">            throw new JSqlRuntimeException(ex);</span>
+<span class="nc" id="L40">        }</span>
+<span class="nc" id="L41">    }</span>
+
     @Override
     public void mouseReleased(MouseEvent e) {
-<span class="nc" id="L41">        e.consume();</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L45">        e.consume();</span>
+<span class="nc" id="L46">    }</span>
     
     @Override
     public void mouseExited(MouseEvent e) {
-<span class="nc" id="L46">        e.consume();</span>
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L50">        e.consume();</span>
+<span class="nc" id="L51">    }</span>
     
     @Override
     public void mouseEntered(MouseEvent e) {
-<span class="fc" id="L51">        e.consume();</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L55">        e.consume();</span>
+<span class="fc" id="L56">    }</span>
     
     @Override
     public void mouseClicked(MouseEvent e) {
-<span class="nc" id="L56">        e.consume();</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L60">        e.consume();</span>
+<span class="nc" id="L61">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

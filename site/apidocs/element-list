@@ -23,6 +23,7 @@ com.jsql.model.suspendable
 com.jsql.model.suspendable.callable
 com.jsql.util
 com.jsql.util.bruter
+com.jsql.util.reverse
 com.jsql.util.tampering
 com.jsql.view.interaction
 com.jsql.view.scan
@@ -50,6 +51,7 @@ com.jsql.view.swing.tab
 com.jsql.view.swing.tab.dnd
 com.jsql.view.swing.table
 com.jsql.view.swing.terminal
+com.jsql.view.swing.terminal.util
 com.jsql.view.swing.text
 com.jsql.view.swing.text.action
 com.jsql.view.swing.text.listener

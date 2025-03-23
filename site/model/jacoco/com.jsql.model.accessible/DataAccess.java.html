@@ -313,11 +313,11 @@ public class DataAccess {
                 table,
                 &quot;columns&quot;
             );
-<span class="fc" id="L316">        } catch (AbstractSlidingException e) {</span>
-<span class="fc" id="L317">            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);</span>
+<span class="nc" id="L316">        } catch (AbstractSlidingException e) {</span>
+<span class="nc" id="L317">            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);</span>
 <span class="nc" id="L318">        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug</span>
 <span class="nc" id="L319">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
-<span class="fc" id="L320">        }</span>
+<span class="pc" id="L320">        }</span>
 
         // Build SQLite columns
 <span class="fc bfc" id="L323" title="All 2 branches covered.">        if (this.injectionModel.getMediatorVendor().isSqlite()) {</span>
@@ -442,8 +442,8 @@ public class DataAccess {
         // Get pieces of data already retrieved instead of losing them
 <span class="pc bpc" id="L443" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {</span>
 <span class="nc" id="L444">            resultToParse = e.getSlidingWindowAllRows();</span>
-<span class="fc bfc" id="L445" title="All 2 branches covered.">        } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
-<span class="fc" id="L446">            resultToParse = e.getSlidingWindowCurrentRows();</span>
+<span class="pc bpc" id="L445" title="1 of 2 branches missed.">        } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
+<span class="nc" id="L446">            resultToParse = e.getSlidingWindowCurrentRows();</span>
         }
 <span class="fc" id="L448">        return resultToParse;</span>
     }

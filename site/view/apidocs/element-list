@@ -24,6 +24,7 @@ com.jsql.view.swing.tab
 com.jsql.view.swing.tab.dnd
 com.jsql.view.swing.table
 com.jsql.view.swing.terminal
+com.jsql.view.swing.terminal.util
 com.jsql.view.swing.text
 com.jsql.view.swing.text.action
 com.jsql.view.swing.text.listener

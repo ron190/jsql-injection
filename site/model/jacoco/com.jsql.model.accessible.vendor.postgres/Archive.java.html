@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Archive.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.accessible.vendor.postgres</a> &gt; <span class="el_source">Archive.java</span></div><h1>Archive.java</h1><pre class="source lang-java linenums">package com.jsql.model.accessible.vendor.postgres;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
+
+<span class="fc" id="L7">public class Archive implements Serializable {</span>
+
+<span class="fc" id="L9">    private String getStatus = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String getPathConf = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private String getConfLoid = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private String getConfLength = StringUtils.EMPTY;</span>
+<span class="fc" id="L13">    private String putCmd = StringUtils.EMPTY;</span>
+<span class="fc" id="L14">    private String reloadConf = StringUtils.EMPTY;</span>
+<span class="fc" id="L15">    private String getCmd = StringUtils.EMPTY;</span>
+<span class="fc" id="L16">    private String runWal = StringUtils.EMPTY;</span>
+<span class="fc" id="L17">    private String getResult = StringUtils.EMPTY;</span>
+
+    public String getGetPathConf() {
+<span class="fc" id="L20">        return this.getPathConf;</span>
+    }
+
+    public void setGetPathConf(String getPathConf) {
+<span class="fc" id="L24">        this.getPathConf = getPathConf;</span>
+<span class="fc" id="L25">    }</span>
+
+    public String getGetStatus() {
+<span class="fc" id="L28">        return this.getStatus;</span>
+    }
+
+    public void setGetStatus(String getStatus) {
+<span class="fc" id="L32">        this.getStatus = getStatus;</span>
+<span class="fc" id="L33">    }</span>
+
+    public String getGetConfLoid() {
+<span class="fc" id="L36">        return this.getConfLoid;</span>
+    }
+
+    public void setGetConfLoid(String getConfLoid) {
+<span class="fc" id="L40">        this.getConfLoid = getConfLoid;</span>
+<span class="fc" id="L41">    }</span>
+
+    public String getGetConfLength() {
+<span class="fc" id="L44">        return this.getConfLength;</span>
+    }
+
+    public void setGetConfLength(String getConfLength) {
+<span class="fc" id="L48">        this.getConfLength = getConfLength;</span>
+<span class="fc" id="L49">    }</span>
+
+    public String getPutCmd() {
+<span class="fc" id="L52">        return this.putCmd;</span>
+    }
+
+    public void setPutCmd(String putCmd) {
+<span class="fc" id="L56">        this.putCmd = putCmd;</span>
+<span class="fc" id="L57">    }</span>
+
+    public String getReloadConf() {
+<span class="fc" id="L60">        return this.reloadConf;</span>
+    }
+
+    public void setReloadConf(String reloadConf) {
+<span class="fc" id="L64">        this.reloadConf = reloadConf;</span>
+<span class="fc" id="L65">    }</span>
+
+    public String getGetCmd() {
+<span class="fc" id="L68">        return this.getCmd;</span>
+    }
+
+    public void setGetCmd(String getCmd) {
+<span class="fc" id="L72">        this.getCmd = getCmd;</span>
+<span class="fc" id="L73">    }</span>
+
+    public String getRunWal() {
+<span class="fc" id="L76">        return this.runWal;</span>
+    }
+
+    public void setRunWal(String runWal) {
+<span class="fc" id="L80">        this.runWal = runWal;</span>
+<span class="fc" id="L81">    }</span>
+
+    public String getGetResult() {
+<span class="fc" id="L84">        return this.getResult;</span>
+    }
+
+    public void setGetResult(String getResult) {
+<span class="fc" id="L88">        this.getResult = getResult;</span>
+<span class="fc" id="L89">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
