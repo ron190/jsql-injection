@@ -80,40 +80,45 @@ public abstract class AbstractStrategy {
     public abstract String getName();
 
     public void logChecking() {
-<span class="fc" id="L83">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, AbstractStrategy.FORMAT_CHECKING_STRATEGY, () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY), this::getName);</span>
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L83">        LOGGER.log(</span>
+            LogLevelUtil.CONSOLE_DEFAULT,
+            AbstractStrategy.FORMAT_CHECKING_STRATEGY,
+<span class="fc" id="L86">            () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY),</span>
+            this::getName
+        );
+<span class="fc" id="L89">    }</span>
     
     public void markVulnerability(Interaction message, int... indexErrorStrategy) {
-<span class="fc" id="L87">        var request = new Request();</span>
-<span class="fc" id="L88">        request.setMessage(message);</span>
+<span class="fc" id="L92">        var request = new Request();</span>
+<span class="fc" id="L93">        request.setMessage(message);</span>
         
-<span class="fc" id="L90">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L91">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+<span class="fc" id="L95">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L96">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
         
         // Ellipse default to non null array
-<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (indexErrorStrategy.length &gt; 0) {</span>
-<span class="fc" id="L95">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
-<span class="fc" id="L96">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (indexErrorStrategy.length &gt; 0) {</span>
+<span class="fc" id="L100">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
+<span class="fc" id="L101">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
         }
 
-<span class="fc" id="L99">        request.setParameters(msgHeader);</span>
-<span class="fc" id="L100">        this.injectionModel.sendToViews(request);</span>
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L104">        request.setParameters(msgHeader);</span>
+<span class="fc" id="L105">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L106">    }</span>
     
     @Override
     public String toString() {
-<span class="fc" id="L105">        return this.getName();</span>
+<span class="fc" id="L110">        return this.getName();</span>
     }
 
 
     // Getter and setter
     
     public boolean isApplicable() {
-<span class="fc" id="L112">        return this.isApplicable;</span>
+<span class="fc" id="L117">        return this.isApplicable;</span>
     }
     
     public void setApplicable(boolean isApplicable) {
-<span class="fc" id="L116">        this.isApplicable = isApplicable;</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L121">        this.isApplicable = isApplicable;</span>
+<span class="fc" id="L122">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

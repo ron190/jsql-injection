@@ -132,117 +132,118 @@ public class PanelTable extends JPanel {
                 // Prepare cell value to be utf8 inspected
 <span class="pc bpc" id="L133" title="1 of 2 branches missed.">                String cellValue = value != null ? value.toString() : StringUtils.EMPTY;</span>
                 // Fix #90481: NullPointerException on getTableCellRendererComponent()
+                // Fix #96072: IllegalArgumentException on getTableCellRendererComponent()
                 try {
-<span class="fc" id="L136">                    return cellRendererDefault.getTableCellRendererComponent(</span>
-<span class="fc" id="L137">                        table, UiStringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column</span>
+<span class="fc" id="L137">                    return cellRendererDefault.getTableCellRendererComponent(</span>
+<span class="fc" id="L138">                        table, UiStringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column</span>
                     );
-<span class="nc" id="L139">                } catch (NullPointerException e) {</span>
-<span class="nc" id="L140">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L141">                    return null;</span>
+<span class="nc" id="L140">                } catch (IllegalArgumentException | NullPointerException e) {</span>
+<span class="nc" id="L141">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L142">                    return null;</span>
                 }
             }
         );
-<span class="fc" id="L145">    }</span>
+<span class="fc" id="L146">    }</span>
 
     private void initTableScroller() {
-<span class="fc" id="L148">        var scroller = new JScrollPane(this.tableValues);</span>
-<span class="fc" id="L149">        var tableFixedColumn = new FixedColumnTable();</span>
-<span class="fc" id="L150">        tableFixedColumn.fixColumnSize(2, scroller);</span>
-<span class="fc" id="L151">        this.add(scroller, BorderLayout.CENTER);</span>
-<span class="fc" id="L152">    }</span>
+<span class="fc" id="L149">        var scroller = new JScrollPane(this.tableValues);</span>
+<span class="fc" id="L150">        var tableFixedColumn = new FixedColumnTable();</span>
+<span class="fc" id="L151">        tableFixedColumn.fixColumnSize(2, scroller);</span>
+<span class="fc" id="L152">        this.add(scroller, BorderLayout.CENTER);</span>
+<span class="fc" id="L153">    }</span>
 
     private void initPanelSearch(final TableRowSorter&lt;TableModel&gt; rowSorter) {
-<span class="fc" id="L155">        final var panelSearch = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L156">        final var panelSearch = new JPanel(new BorderLayout());</span>
 
-<span class="fc" id="L157">        final JTextField textFilter = new JTextFieldPlaceholder(&quot;Find in table&quot;);</span>
-<span class="fc" id="L158">        panelSearch.add(textFilter, BorderLayout.CENTER);</span>
+<span class="fc" id="L158">        final JTextField textFilter = new JTextFieldPlaceholder(&quot;Find in table&quot;);</span>
+<span class="fc" id="L159">        panelSearch.add(textFilter, BorderLayout.CENTER);</span>
 
-<span class="fc" id="L160">        Action actionShowSearchTable = new ActionShowSearch(panelSearch, textFilter);</span>
-<span class="fc" id="L161">        String keySearch = &quot;search&quot;;</span>
-<span class="fc" id="L162">        this.tableValues.getActionMap().put(keySearch, actionShowSearchTable);</span>
-<span class="fc" id="L163">        this.tableValues.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK), keySearch);</span>
+<span class="fc" id="L161">        Action actionShowSearchTable = new ActionShowSearch(panelSearch, textFilter);</span>
+<span class="fc" id="L162">        String keySearch = &quot;search&quot;;</span>
+<span class="fc" id="L163">        this.tableValues.getActionMap().put(keySearch, actionShowSearchTable);</span>
+<span class="fc" id="L164">        this.tableValues.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK), keySearch);</span>
 
-<span class="fc" id="L165">        Action actionCloseSearch = new ActionCloseSearch(textFilter, panelSearch, this);</span>
-<span class="fc" id="L166">        String keyClose = &quot;close&quot;;</span>
-<span class="fc" id="L167">        textFilter.getActionMap().put(keyClose, actionCloseSearch);</span>
-<span class="fc" id="L168">        textFilter.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), keyClose);</span>
+<span class="fc" id="L166">        Action actionCloseSearch = new ActionCloseSearch(textFilter, panelSearch, this);</span>
+<span class="fc" id="L167">        String keyClose = &quot;close&quot;;</span>
+<span class="fc" id="L168">        textFilter.getActionMap().put(keyClose, actionCloseSearch);</span>
+<span class="fc" id="L169">        textFilter.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), keyClose);</span>
 
         // Fix #43974: PatternSyntaxException on regexFilter() =&gt; Pattern.quote()
-<span class="fc" id="L171">        textFilter.getDocument().addDocumentListener(new DocumentListener() {</span>
+<span class="fc" id="L172">        textFilter.getDocument().addDocumentListener(new DocumentListener() {</span>
             private void insertUpdateFixed() {
-<span class="nc" id="L173">                String text = textFilter.getText();</span>
-<span class="nc bnc" id="L174" title="All 2 branches missed.">                if (text.trim().isEmpty()) {</span>
-<span class="nc" id="L175">                    rowSorter.setRowFilter(null);</span>
+<span class="nc" id="L174">                String text = textFilter.getText();</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">                if (text.trim().isEmpty()) {</span>
+<span class="nc" id="L176">                    rowSorter.setRowFilter(null);</span>
                 } else {
-<span class="nc" id="L177">                    rowSorter.setRowFilter(RowFilter.regexFilter(&quot;(?i)&quot; + Pattern.quote(text)));</span>
+<span class="nc" id="L178">                    rowSorter.setRowFilter(RowFilter.regexFilter(&quot;(?i)&quot; + Pattern.quote(text)));</span>
                 }
-<span class="nc" id="L179">            }</span>
+<span class="nc" id="L180">            }</span>
             @Override
             public void insertUpdate(DocumentEvent e) {
-<span class="nc" id="L182">                this.insertUpdateFixed();</span>
-<span class="nc" id="L183">            }</span>
+<span class="nc" id="L183">                this.insertUpdateFixed();</span>
+<span class="nc" id="L184">            }</span>
             @Override
             public void removeUpdate(DocumentEvent e) {
-<span class="nc" id="L186">                this.insertUpdateFixed();</span>
-<span class="nc" id="L187">            }</span>
+<span class="nc" id="L187">                this.insertUpdateFixed();</span>
+<span class="nc" id="L188">            }</span>
             @Override
             public void changedUpdate(DocumentEvent e) {
-<span class="nc" id="L190">                throw new UnsupportedOperationException(&quot;Not supported yet.&quot;);</span>
+<span class="nc" id="L191">                throw new UnsupportedOperationException(&quot;Not supported yet.&quot;);</span>
             }
         });
 
-<span class="fc" id="L194">        this.tableValues.setComponentPopupMenu(new JPopupMenuTable(this.tableValues, actionShowSearchTable));</span>
+<span class="fc" id="L195">        this.tableValues.setComponentPopupMenu(new JPopupMenuTable(this.tableValues, actionShowSearchTable));</span>
         
-<span class="fc" id="L196">        JButton buttonCloseSearch = new ButtonClose();</span>
-<span class="fc" id="L197">        buttonCloseSearch.addActionListener(actionCloseSearch);</span>
-<span class="fc" id="L198">        panelSearch.add(buttonCloseSearch, BorderLayout.EAST);</span>
-<span class="fc" id="L199">        panelSearch.setVisible(false);</span>
-<span class="fc" id="L200">        this.add(panelSearch, BorderLayout.SOUTH);</span>
-<span class="fc" id="L201">    }</span>
+<span class="fc" id="L197">        JButton buttonCloseSearch = new ButtonClose();</span>
+<span class="fc" id="L198">        buttonCloseSearch.addActionListener(actionCloseSearch);</span>
+<span class="fc" id="L199">        panelSearch.add(buttonCloseSearch, BorderLayout.EAST);</span>
+<span class="fc" id="L200">        panelSearch.setVisible(false);</span>
+<span class="fc" id="L201">        this.add(panelSearch, BorderLayout.SOUTH);</span>
+<span class="fc" id="L202">    }</span>
 
     private void initTabShortcut() {
-<span class="fc" id="L204">        this.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(</span>
-<span class="fc" id="L205">            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0),</span>
+<span class="fc" id="L205">        this.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(</span>
+<span class="fc" id="L206">            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0),</span>
             null
         );
-<span class="fc" id="L208">        this.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(</span>
-<span class="fc" id="L209">            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK),</span>
+<span class="fc" id="L209">        this.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(</span>
+<span class="fc" id="L210">            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK),</span>
             null
         );
 
-<span class="fc" id="L213">        Set&lt;AWTKeyStroke&gt; forward = new HashSet&lt;&gt;(</span>
-<span class="fc" id="L214">            this.tableValues.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS)</span>
+<span class="fc" id="L214">        Set&lt;AWTKeyStroke&gt; forward = new HashSet&lt;&gt;(</span>
+<span class="fc" id="L215">            this.tableValues.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS)</span>
         );
-<span class="fc" id="L216">        forward.add(KeyStroke.getKeyStroke(&quot;TAB&quot;));</span>
-<span class="fc" id="L217">        this.tableValues.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);</span>
+<span class="fc" id="L217">        forward.add(KeyStroke.getKeyStroke(&quot;TAB&quot;));</span>
+<span class="fc" id="L218">        this.tableValues.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);</span>
         
-<span class="fc" id="L219">        Set&lt;AWTKeyStroke&gt; backward = new HashSet&lt;&gt;(</span>
-<span class="fc" id="L220">            this.tableValues.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS)</span>
+<span class="fc" id="L220">        Set&lt;AWTKeyStroke&gt; backward = new HashSet&lt;&gt;(</span>
+<span class="fc" id="L221">            this.tableValues.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS)</span>
         );
-<span class="fc" id="L222">        backward.add(KeyStroke.getKeyStroke(&quot;shift TAB&quot;));</span>
-<span class="fc" id="L223">        this.tableValues.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);</span>
-<span class="fc" id="L224">    }</span>
+<span class="fc" id="L223">        backward.add(KeyStroke.getKeyStroke(&quot;shift TAB&quot;));</span>
+<span class="fc" id="L224">        this.tableValues.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);</span>
+<span class="fc" id="L225">    }</span>
 
     /**
      * Select every cell.
      */
     public void selectTable() {
-<span class="nc" id="L230">        this.tableValues.selectAll();</span>
-<span class="nc" id="L231">    }</span>
+<span class="nc" id="L231">        this.tableValues.selectAll();</span>
+<span class="nc" id="L232">    }</span>
 
     /**
      * Perform copy event on current table.
      */
     public void copyTable() {
-<span class="nc" id="L237">        var actionEvent = new ActionEvent(this.tableValues, ActionEvent.ACTION_PERFORMED, &quot;copy&quot;);</span>
-<span class="nc" id="L238">        this.tableValues.getActionMap().get(actionEvent.getActionCommand()).actionPerformed(actionEvent);</span>
-<span class="nc" id="L239">    }</span>
+<span class="nc" id="L238">        var actionEvent = new ActionEvent(this.tableValues, ActionEvent.ACTION_PERFORMED, &quot;copy&quot;);</span>
+<span class="nc" id="L239">        this.tableValues.getActionMap().get(actionEvent.getActionCommand()).actionPerformed(actionEvent);</span>
+<span class="nc" id="L240">    }</span>
 
     
     // Getter and setter
     
     public JTable getTableValues() {
-<span class="nc" id="L245">        return this.tableValues;</span>
+<span class="nc" id="L246">        return this.tableValues;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

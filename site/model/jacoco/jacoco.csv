@@ -99,7 +99,7 @@ model,com.jsql.model.accessible,CallableFile,160,519,7,13,23,70,5,11,0,6
 model,com.jsql.model.injection.strategy,StrategyInjectionUnion,7,435,3,21,2,80,3,29,0,20
 model,com.jsql.model.injection.strategy,StrategyInjectionError,31,390,1,21,7,85,4,26,3,16
 model,com.jsql.model.injection.strategy,StrategyInjectionTime,0,276,0,14,0,59,0,23,0,16
-model,com.jsql.model.injection.strategy,AbstractStrategy,0,92,0,2,0,21,0,9,0,8
+model,com.jsql.model.injection.strategy,AbstractStrategy,0,92,0,2,0,22,0,9,0,8
 model,com.jsql.model.injection.strategy,MediatorStrategy,3,467,2,26,1,102,3,27,1,15
 model,com.jsql.model.injection.strategy,StrategyInjectionStack,22,272,1,13,4,63,3,20,2,14
 model,com.jsql.model.injection.strategy,StrategyInjectionMultibit,0,191,0,8,0,41,0,15,0,11
