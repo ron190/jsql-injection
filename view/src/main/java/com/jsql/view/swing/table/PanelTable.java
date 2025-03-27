@@ -132,11 +132,12 @@ public class PanelTable extends JPanel {
                 // Prepare cell value to be utf8 inspected
                 String cellValue = value != null ? value.toString() : StringUtils.EMPTY;
                 // Fix #90481: NullPointerException on getTableCellRendererComponent()
+                // Fix #96072: IllegalArgumentException on getTableCellRendererComponent()
                 try {
                     return cellRendererDefault.getTableCellRendererComponent(
                         table, UiStringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
                     );
-                } catch (NullPointerException e) {
+                } catch (IllegalArgumentException | NullPointerException e) {
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                     return null;
                 }

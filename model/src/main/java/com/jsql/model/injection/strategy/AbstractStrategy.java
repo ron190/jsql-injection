@@ -80,7 +80,12 @@ public abstract class AbstractStrategy {
     public abstract String getName();
 
     public void logChecking() {
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, AbstractStrategy.FORMAT_CHECKING_STRATEGY, () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY), this::getName);
+        LOGGER.log(
+            LogLevelUtil.CONSOLE_DEFAULT,
+            AbstractStrategy.FORMAT_CHECKING_STRATEGY,
+            () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY),
+            this::getName
+        );
     }
     
     public void markVulnerability(Interaction message, int... indexErrorStrategy) {
