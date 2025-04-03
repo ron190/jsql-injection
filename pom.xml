@@ -25,7 +25,7 @@
 
         <commons-text.version>1.13.0</commons-text.version>
         <flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <!-- False positive: GData Java.Exploit.CVE-2021-44228.N Acronis (Static ML) -->
         <!-- Fixed since Apache Log4j Core - 2.15.0 -->
         <log4j-bom.version>2.24.3</log4j-bom.version>
