@@ -85,7 +85,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     requestSetVendor.setParameters(msgHeader);
                     this.injectionModel.sendToViews(requestSetVendor);
                     
-                    // Char insertion
                     charFromOrderBy = currentCallable.getCharacterInsertion();
                     LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Character insertion [{}] matching with Order by and compatible with Error strategy", charFromOrderBy);
                     break;
@@ -232,14 +231,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
-                "Using [{}] and [{}]",
+                "Using [{}] and matching [{}]",
                 () -> this.injectionModel.getMediatorVendor().getVendor(),
                 () -> characterInsertionDetected
             );
             LOGGER.log(
                 LogLevelUtil.CONSOLE_DEFAULT,
-                "Add manually the character * like [{}*] to force the value [{}]",
-                () -> characterInsertionByUserFormat,
+                "Disable search for char insertion in Preferences to force the value [{}]",
                 () -> characterInsertionByUserFormat
             );
         } else {

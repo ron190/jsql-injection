@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class StrategyInjectionUnion extends AbstractStrategy {
+public class StrategyUnion extends AbstractStrategy {
     
     /**
      * Log4j logger sent to view.
@@ -42,7 +42,7 @@ public class StrategyInjectionUnion extends AbstractStrategy {
 
     private String performanceLength = "0";
     
-    public StrategyInjectionUnion(InjectionModel injectionModel) {
+    public StrategyUnion(InjectionModel injectionModel) {
         super(injectionModel);
     }
 
@@ -115,7 +115,7 @@ public class StrategyInjectionUnion extends AbstractStrategy {
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName
             );
-            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getUnion());
+            this.injectionModel.getMediatorStrategy().setStrategy(this);
 
             var request = new Request();
             request.setMessage(Interaction.MARK_UNION_STRATEGY);

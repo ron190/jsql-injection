@@ -88,6 +88,7 @@ public class VendorYaml implements AbstractVendor {
     public static final String DEFAULT_CAPACITY = "65565";
     private static final String SLEEP_TIME = "${sleep_time}";
     private static final String BIT = "${bit}";
+    private static final String MID = "${mid}";
     public static final String INJECTION = "${injection}";
     public static final String TEST = "${test}";
     public static final String FILEPATH_HEX = "${filepath.hex}";
@@ -294,6 +295,22 @@ public class VendorYaml implements AbstractVendor {
                 .replace(VendorYaml.INJECTION, inj)
                 .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexCharacter))
                 .replace(VendorYaml.BIT, Integer.toString(bit))
+            )
+            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
+    }
+
+    @Override
+    public String sqlTestBlindBinary(String inj, int indexCharacter, int mid, BinaryMode blindMode) {
+        String replacement = this.getMode(blindMode);
+        return this.modelYaml.getStrategy().getBinary()
+            .getBlind()
+            .replace(VendorYaml.BINARY_MODE, replacement)
+            .replace(
+                VendorYaml.TEST,
+                this.modelYaml.getStrategy().getBinary().getTest().getBinary()
+                .replace(VendorYaml.INJECTION, inj)
+                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexCharacter))
+                .replace(VendorYaml.MID, StringUtil.toUrl(Character.toString((char) mid)))
             )
             .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }
@@ -554,6 +571,16 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public List<String> getTruthy() {
         return this.modelYaml.getStrategy().getBinary().getTest().getTruthy();
+    }
+
+    @Override
+    public List<String> getFalsyBinary() {
+        return this.modelYaml.getStrategy().getBinary().getTest().getFalsyBinary();
+    }
+
+    @Override
+    public List<String> getTruthyBinary() {
+        return this.modelYaml.getStrategy().getBinary().getTest().getTruthyBinary();
     }
 
     @Override

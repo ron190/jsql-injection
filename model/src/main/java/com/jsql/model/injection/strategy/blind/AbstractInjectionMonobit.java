@@ -19,7 +19,8 @@ public abstract class AbstractInjectionMonobit<T extends AbstractCallableBinary<
         List<char[]> bytes,
         AtomicInteger indexCharacter,
         CompletionService<T> taskCompletionService,
-        AtomicInteger countTasksSubmitted
+        AtomicInteger countTasksSubmitted,
+        T currentCallable
     ) {
         indexCharacter.incrementAndGet();
         
@@ -27,7 +28,7 @@ public abstract class AbstractInjectionMonobit<T extends AbstractCallableBinary<
         // Chars all have the last bit set to 0 in Ascii table
         bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
         
-        // Test the 8 bits for the next character, save its position and current bit for later
+        // Test the 7 bits for the next character, save its position and current bit for later
         // Ignore last bit 128 and only check for first seven bits
         for (int bit: new int[]{ 1, 2, 4, 8, 16, 32, 64 }) {
             taskCompletionService.submit(
@@ -42,16 +43,11 @@ public abstract class AbstractInjectionMonobit<T extends AbstractCallableBinary<
     }
 
     public char[] initBinaryMask(List<char[]> bytes, T currentCallable) {
-        // Bits for current url
-        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
-
+        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url
         int positionInMask = (int) (
-            8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit()))
-            / Math.log(2)
+            8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2)  // some math (2^x => x)
         );
-
-        // Set current bit
-        asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';
+        asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';  // set current bit
         return asciiCodeMask;
     }
 }

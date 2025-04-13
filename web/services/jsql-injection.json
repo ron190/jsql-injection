@@ -1,8 +1,10 @@
 {
     "version": "0.111",
     "news": [
-        "[New: Reverse shell] RCE can now open a reverse shell, validation ongoing and release coming",
-        "[RCE shell] How to use RCE shell explained on GitHub at https://github.com/ron190/jsql-injection/wiki/Exploit",
-        "[Pinned] Report any bugs and thoughts, and add your star to the project at https://github.com/ron190/jsql-injection"
+        "[Next release] trategy Blind binary search has been added for databases not providing bitwise operators",
+        "[v0.111: Reverse shell] Now open rev shell from RCE in plain Java without any netcat nor any external tool",
+        "[RCE shell] How to open RCE shell and rev shell? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
+        "[Pinned] Report any bugs and thoughts, add your star at https://github.com/ron190/jsql-injection",
+        "[Contribution] Recent contrib to Chinese translation is appreciated, thanks"
     ]
 }

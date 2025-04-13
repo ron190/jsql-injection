@@ -1,7 +1,7 @@
 package com.jsql.view.swing.panel.address;
 
 import com.jsql.model.injection.strategy.AbstractStrategy;
-import com.jsql.model.injection.strategy.StrategyInjectionError;
+import com.jsql.model.injection.strategy.StrategyError;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.util.I18nUtil;
@@ -236,7 +236,7 @@ public class PanelTrailingAddress extends JPanel {
     }
     
     public void markError() {
-        StrategyInjectionError strategy = MediatorHelper.model().getMediatorStrategy().getError();
+        StrategyError strategy = MediatorHelper.model().getMediatorStrategy().getError();
         this.labelStrategy.setText(strategy.toString());
         int indexError = strategy.getIndexErrorStrategy();
         String nameError = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();

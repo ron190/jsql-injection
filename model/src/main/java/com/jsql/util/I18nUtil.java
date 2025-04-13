@@ -40,7 +40,7 @@ public class I18nUtil {
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-        return I18nUtil.currentBundle.getString(key);
+        return I18nUtil.currentBundle.getString(key.replace(" ", "_"));  // e.g BLIND BINARY
     }
     
     /**

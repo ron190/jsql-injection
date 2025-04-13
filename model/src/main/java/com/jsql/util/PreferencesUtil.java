@@ -89,6 +89,7 @@ public class PreferencesUtil {
 
     private boolean isStrategyTimeDisabled = false;
     private boolean isStrategyBlindDisabled = false;
+    private boolean isStrategyBlindBinaryDisabled = false;
     private boolean isStrategyMultibitDisabled = false;
     private boolean isStrategyStackDisabled = false;
     private boolean isStrategyErrorDisabled = false;
@@ -198,6 +199,7 @@ public class PreferencesUtil {
 
         this.isStrategyTimeDisabled = preferences.getBoolean("isStrategyTimeDisabled", false);
         this.isStrategyBlindDisabled = preferences.getBoolean("isStrategyBlindDisabled", false);
+        this.isStrategyBlindBinaryDisabled = preferences.getBoolean("isStrategyBlindBinaryDisabled", false);
         this.isStrategyMultibitDisabled = preferences.getBoolean("isStrategyMultibitDisabled", false);
         this.isStrategyStackDisabled = preferences.getBoolean("isStrategyStackDisabled", false);
         this.isStrategyErrorDisabled = preferences.getBoolean("isStrategyErrorDisabled", false);
@@ -273,6 +275,7 @@ public class PreferencesUtil {
         
         preferences.putBoolean("isStrategyTimeDisabled", this.isStrategyTimeDisabled);
         preferences.putBoolean("isStrategyBlindDisabled", this.isStrategyBlindDisabled);
+        preferences.putBoolean("isStrategyBlindBinaryDisabled", this.isStrategyBlindBinaryDisabled);
         preferences.putBoolean("isStrategyMultibitDisabled", this.isStrategyMultibitDisabled);
         preferences.putBoolean("isStrategyStackDisabled", this.isStrategyStackDisabled);
         preferences.putBoolean("isStrategyErrorDisabled", this.isStrategyErrorDisabled);
@@ -500,6 +503,10 @@ public class PreferencesUtil {
 
     public boolean isStrategyBlindDisabled() {
         return this.isStrategyBlindDisabled;
+    }
+
+    public boolean isStrategyBlindBinaryDisabled() {
+        return this.isStrategyBlindBinaryDisabled;
     }
 
     public boolean isStrategyMultibitDisabled() {
@@ -791,6 +798,11 @@ public class PreferencesUtil {
 
     public PreferencesUtil withIsStrategyBlindDisabled(boolean isStrategyBlindDisabled) {
         this.isStrategyBlindDisabled = isStrategyBlindDisabled;
+        return this;
+    }
+
+    public PreferencesUtil withIsStrategyBlindBinaryDisabled(boolean isStrategyBlindBinaryDisabled) {
+        this.isStrategyBlindBinaryDisabled = isStrategyBlindBinaryDisabled;
         return this;
     }
 

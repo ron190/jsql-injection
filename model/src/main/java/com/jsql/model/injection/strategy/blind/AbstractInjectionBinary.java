@@ -25,15 +25,17 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
-    
+
     // Every FALSE SQL statements will be checked,
     // more statements means a more robust application
-    protected final List<String> falsy;
-    
+    protected List<String> falsy;
+    protected List<String> falsyBinary;
+
     // Every TRUE SQL statements will be checked,
     // more statements means a more robust application
-    protected final List<String> truthy;
-    
+    protected List<String> truthy;
+    protected List<String> truthyBinary;
+
     public enum BinaryMode {
         AND, OR, STACK, NO_MODE
     }
@@ -47,6 +49,8 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
         this.binaryMode = binaryMode;
         this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsy();
         this.truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthy();
+        this.falsyBinary = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBinary();
+        this.truthyBinary = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBinary();
     }
 
     /**
@@ -60,7 +64,8 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
         List<char[]> bytes,
         AtomicInteger indexCharacter,
         CompletionService<T> taskCompletionService,
-        AtomicInteger countTasksSubmitted
+        AtomicInteger countTasksSubmitted,
+        T currentCallable  // required by sequential calls like binary search
     );
 
     public abstract char[] initBinaryMask(List<char[]> bytes, T currentCallable);
@@ -80,19 +85,16 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
         // List of the characters, each one represented by an array of 8 bits
         // e.g. SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
         List<char[]> bytes = new ArrayList<>();
-        
-        // Cursor for current character position
-        var indexCharacter = new AtomicInteger(0);
+        var indexCharacter = new AtomicInteger(0);  // current char position
 
         // Concurrent URL requests
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableAbstractBoolean");
-        
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         var countTasksSubmitted = new AtomicInteger(0);
         var countBadAsciiCode = new AtomicInteger(0);
 
-        this.initNextChars(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
+        this.initNextChars(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted, null);
 
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
@@ -103,17 +105,15 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
             }
             
             try {
-                // The URL call is done, bring back the finished task
-                var currentCallable = taskCompletionService.take().get();
+                var currentCallable = taskCompletionService.take().get();  // URL call done
+                countTasksSubmitted.decrementAndGet();  // one task just ended
                 
-                // One task has just ended, decrease active tasks by 1
-                countTasksSubmitted.decrementAndGet();
-                
-                // If SQL result is not empty, then add a new unknown character,
-                // and define a new array of 8 undefined bit.
-                // Then add 8 bits requests for that new character.
-                this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
-                this.initNextChars(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
+                // If SQL result is not empty, then add a new unknown character and define a new array of 7 undefined bit.
+                // Then add 7 bits requests for that new character.
+                var isComplete = this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
+                if (isComplete || currentCallable.isBinary()) {  // prevents bitwise overload new char init on each bit
+                    this.initNextChars(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted, currentCallable);
+                }
 
                 String result = AbstractInjectionBinary.convert(bytes);
                 if (result.matches("(?s).*"+ DataAccess.TRAIL_RGX +".*")) {
@@ -135,13 +135,11 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
 
     private static String convert(List<char[]> bytes) {
         var result = new StringBuilder();
-
         for (char[] c: bytes) {
             try {
                 var charCode = Integer.parseInt(new String(c), 2);
                 var str = Character.toString((char) charCode);
                 result.append(str);
-
             } catch (NumberFormatException err) {
                 // Byte string not fully constructed : 0x1x010x
                 // Ignore
@@ -150,12 +148,12 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
         return result.toString();
     }
 
-    private void injectCharacter(List<char[]> bytes, AtomicInteger countTasksSubmitted, AtomicInteger countBadAsciiCode, T currentCallable) throws InjectionFailureException {
+    protected boolean injectCharacter(List<char[]> bytes, AtomicInteger countTasksSubmitted, AtomicInteger countBadAsciiCode, T currentCallable) throws InjectionFailureException {
         // Process url that has just checked one bit, convert bits to chars,
         // and change current bit from undefined to 0 or 1
-        
         char[] asciiCodeMask = this.initBinaryMask(bytes, currentCallable);
         var asciiCodeBinary = new String(asciiCodeMask);
+        var isComplete = false;
 
         // Inform the View if bits array is complete, else nothing #Need fix
         if (asciiCodeBinary.matches("^[01]{8}$")) {
@@ -180,7 +178,9 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
                 .replace("\\t", "\\\\\\t")
             );
             this.injectionModel.sendToViews(interaction);
+            isComplete = true;
         }
+        return isComplete;
     }
 
     private String stop(List<char[]> bytes, ExecutorService taskExecutor) {

@@ -22,6 +22,10 @@
             <id>sybase-repository</id>
             <url>https://maven.jumpmind.com/repo/</url>
         </repository>
+        <repository>
+            <id>diff_match_patch-repository</id>
+            <url>https://maven.repository.redhat.com/ga/</url>
+        </repository>
         <!--         <repository> -->
         <!--             <id>default</id> -->
         <!--             <url>https://repo.maven.apache.org/maven2/</url> -->
@@ -44,7 +48,7 @@
     </repositories>
 
     <properties>
-        <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
+        <sonar.exclusions>**/DigestMD4.java</sonar.exclusions>
 
         <awaitility.version>4.3.0</awaitility.version>
         <bootstrap.version>5.3.3</bootstrap.version>
@@ -58,9 +62,9 @@
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <h2.version>2.3.232</h2.version>
         <hsqldb.version>2.7.4</hsqldb.version>
-        <informix.jdbc.version>15.0.0.1</informix.jdbc.version>
+        <informix.jdbc.version>15.0.0.1.1</informix.jdbc.version>
         <jaxb-api.version>2.1</jaxb-api.version>
-        <jaybird.version>5.0.6.java11</jaybird.version>
+        <jaybird.version>6.0.0</jaybird.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
         <jna.version>5.17.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
@@ -73,7 +77,7 @@
         <mimjdbc.version>3.42.3</mimjdbc.version>
         <!-- v12.0 not working -->
         <monetdb-jdbc.version>2.29</monetdb-jdbc.version>
-        <mssql-jdbc.version>12.8.1.jre11</mssql-jdbc.version>
+        <mssql-jdbc.version>12.10.0.jre11</mssql-jdbc.version>
         <mysql-connector-j.version>9.2.0</mysql-connector-j.version>
         <nashorn-core.version>15.6</nashorn-core.version>
         <!-- failure with 5.28.2 -->
@@ -329,6 +333,11 @@
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>${snakeyaml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>diff_match_patch</groupId>
+            <artifactId>diff_match_patch</artifactId>
+            <version>current</version>
         </dependency>
 
         <!-- Logger -->

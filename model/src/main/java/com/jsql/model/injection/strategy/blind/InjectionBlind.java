@@ -2,7 +2,6 @@ package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +13,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
 /**
  * A blind attack class using concurrent threads.
@@ -50,7 +51,7 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, "blind#ref");
+        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, "bit#ref");
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
@@ -63,7 +64,7 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
                 injectionModel,
                 this,
                 blindMode,
-                "blind#falsy"
+                "bit#falsy"
             ));
         }
         
@@ -103,14 +104,13 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
 
         Collection<CallableBlind> callablesTrueTest = new ArrayList<>();
-        
         for (String trueTest: this.truthy) {
             callablesTrueTest.add(new CallableBlind(
                 trueTest,
                 injectionModel,
                 this,
                 blindMode,
-                "blind#truthy"
+                "bit#truthy"
             ));
         }
         
@@ -120,9 +120,7 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         try {
             List<Future<CallableBlind>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-        
             for (Future<CallableBlind> futureTrueTest: futuresTrueTest) {
-                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
@@ -154,13 +152,12 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
-        
         var blindTest = new CallableBlind(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),
             this.injectionModel,
             this,
             this.binaryMode,
-            "blind#confirm"
+            "bit#confirm"
         );
         try {
             blindTest.call();
@@ -172,7 +169,7 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
 
     @Override
     public String getInfoMessage() {
-        return "- Strategy Blind: query True when Diffs are matching " + this.falseDiffs + "\n\n";
+        return "- Strategy Blind bitwise: query True when Diffs are matching " + this.falseDiffs + "\n\n";
     }
     
     

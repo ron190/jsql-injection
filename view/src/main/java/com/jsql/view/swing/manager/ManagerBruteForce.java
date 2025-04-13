@@ -66,6 +66,7 @@ public class ManagerBruteForce extends JPanel {
         this.result = new JPopupTextPane(placeholder).getProxy();
         I18nViewUtil.addComponentForKey("BRUTEFORCE_RESULT", placeholder);
         this.result.setName("managerBruterResult");
+        this.result.setEditable(false);
         this.add(new JScrollPane(this.result), BorderLayout.CENTER);
 
         JPanel panelButton = this.initPanelButton();

@@ -12,7 +12,7 @@ import java.awt.*;
 /**
  * Textfield with information text displayed when empty.
  */
-public class JTextAreaPlaceholder extends JTextArea {
+public class JTextAreaPlaceholder extends JTextArea implements JPlaceholder {
     
     /**
      * Log4j logger sent to view.
@@ -49,6 +49,7 @@ public class JTextAreaPlaceholder extends JTextArea {
         }
     }
 
+    @Override
     public void setPlaceholderText(String placeholderText) {
         this.placeholderText = placeholderText;
     }

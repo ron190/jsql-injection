@@ -28,6 +28,7 @@ public abstract class AbstractCallableBinary<T extends AbstractCallableBinary<T>
      * Default call used for bit test.
      */
     protected boolean isMultibit = false;
+    protected boolean isBinary = false;
 
     /**
      * Character representation of Boolean bits
@@ -54,5 +55,9 @@ public abstract class AbstractCallableBinary<T extends AbstractCallableBinary<T>
 
     public boolean isMultibit() {
         return this.isMultibit;
+    }
+
+    public boolean isBinary() {
+        return this.isBinary;
     }
 }

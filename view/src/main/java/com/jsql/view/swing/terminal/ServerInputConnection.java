@@ -1,12 +1,14 @@
 package com.jsql.view.swing.terminal;
 
-import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class ServerInputConnection {
@@ -33,42 +35,62 @@ public class ServerInputConnection {
     }
 
     public void run() throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(this.clientSocket.getOutputStream());
-
-        new Thread(() -> {
-            while (true) {
-                int length = 1024;
-                char[] chars = new char[length];
-                int charsRead;
+        try (DataOutputStream dataOutputStream = new DataOutputStream(this.clientSocket.getOutputStream())) {
+            Thread readerThread = new Thread(() -> {
                 try {
-                    charsRead = this.bufferedReader.read(chars, 0, length);
+                    this.handleSocketReading();
                 } catch (IOException e) {
-                    throw new JSqlRuntimeException(e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Error reading from socket: {}", e.getMessage());
+                } finally {
+                    this.closeResources();
                 }
-                String result;
-                if (charsRead != -1) {
-                    result = new String(chars, 0, charsRead);  // discard unused chars from buffer
-                    this.exploitReverseShell.append(result.matches("\\$$") ? result +" " : result);  // space after internal prompt
-                    this.exploitReverseShell.reset(false);
-                } else {
-                    this.running = false;
-                    try {
-                        this.serverInput.close();
-                    } catch (IOException e) {
-                        throw new JSqlRuntimeException(e);
-                    }
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Reverse connection closed");
-                    break;
-                }
-            }
-        }).start();
+            });
+            readerThread.start();
 
-        while (this.running) {
-            if (StringUtils.isNotEmpty(this.command)) {
-                var commandWithoutPrompt = this.command.replaceAll("[^$]*\\$\\s*", "");
-                this.command = null;
-                dataOutputStream.writeBytes(commandWithoutPrompt + "\n");
+            while (this.running) {
+                this.processAndSendCommand(dataOutputStream);
             }
+
+            try {
+                readerThread.join(2000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Reader thread interrupted");
+            }
+        }
+    }
+
+    private void processAndSendCommand(DataOutputStream dataOutputStream) throws IOException {
+        if (StringUtils.isNotEmpty(this.command)) {
+            var commandWithoutPrompt = this.command.replaceAll("[^$]*\\$\\s*", "");
+            this.command = null;
+            dataOutputStream.writeBytes(commandWithoutPrompt + "\n");
+        }
+    }
+
+    private void handleSocketReading() throws IOException {
+        int length = 1024;
+        char[] buffer = new char[length];
+        int charsRead;
+        while (this.running) {
+            charsRead = this.bufferedReader.read(buffer, 0, length);
+            if (charsRead != -1) {
+                String result = new String(buffer, 0, charsRead);  // discard unused chars from buffer
+                this.exploitReverseShell.append(result.matches("\\$$") ? result +" " : result);  // space after internal prompt
+                this.exploitReverseShell.reset(false);
+            } else {
+                break;
+            }
+        }
+    }
+
+    private void closeResources() {
+        try {
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Reverse connection closed");
+            this.running = false;
+            this.serverInput.close();
+        } catch (IOException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Error closing resources: " + e.getMessage());
         }
     }
 

@@ -24,7 +24,7 @@ import com.jsql.util.StringUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class StrategyInjectionMultibit extends AbstractStrategy {
+public class StrategyMultibit extends AbstractStrategy {
 
     /**
      * Log4j logger sent to view.
@@ -33,7 +33,7 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
 
     private InjectionMultibit injectionMultibit;
 
-    public StrategyInjectionMultibit(InjectionModel injectionModel) {
+    public StrategyMultibit(InjectionModel injectionModel) {
         super(injectionModel);
     }
 
@@ -104,7 +104,7 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName
             );
-            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getMultibit());
+            this.injectionModel.getMediatorStrategy().setStrategy(this);
 
             var requestMarkBlindStrategy = new Request();
             requestMarkBlindStrategy.setMessage(Interaction.MARK_MULTI_STRATEGY);

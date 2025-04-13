@@ -30,7 +30,7 @@ public class SuspendableGetVendor extends AbstractSuspendable {
 
     @Override
     public String run(Object... args) {
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting vendor with Boolean match...");
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database with Boolean match...");
 
         AtomicBoolean isVendorFound = new AtomicBoolean(false);
         this.injectionModel.getMediatorVendor().getVendors()
@@ -51,12 +51,11 @@ public class SuspendableGetVendor extends AbstractSuspendable {
             try {
                 var injectionCharInsertion = new InjectionVendor(this.injectionModel, vendorSpecificWithMode, vendor);
                 if (injectionCharInsertion.isInjectable(vendorSpecificWithMode)) {
-
                     if (this.isSuspended()) {
                         throw new StoppedByUserSlidingException();
                     }
 
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Found vendor [{}] using Boolean match", vendor);
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Found [{}] using Boolean match", vendor);
                     this.injectionModel.getMediatorVendor().setVendor(vendor);
                     isVendorFound.set(true);
 
@@ -72,6 +71,6 @@ public class SuspendableGetVendor extends AbstractSuspendable {
                 throw new JSqlRuntimeException(e);
             }
         });
-        return null;
+        return null;  // unused
     }
 }

@@ -20,19 +20,19 @@ import java.util.Map;
 /**
  * Mark the injection as vulnerable to a blind injection.
  */
-public class MarkBlindVulnerable implements InteractionCommand {
+public class MarkBlindBinaryVulnerable implements InteractionCommand {
 
     private final String url;
-    
+
     @SuppressWarnings("unchecked")
-    public MarkBlindVulnerable(Object[] interactionParams) {
+    public MarkBlindBinaryVulnerable(Object[] interactionParams) {
         Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
         this.url = (String) params.get(Header.URL);
     }
 
     @Override
     public void execute() {
-        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlind();
+        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlindBinary();
         MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

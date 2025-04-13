@@ -79,7 +79,6 @@ public class ManagerCoder extends JPanel {
         this.textInput = new JPopupTextArea(placeholderInput).getProxy();
         I18nViewUtil.addComponentForKey("CODER_INPUT", placeholderInput);
         this.textInput.getCaret().setBlinkRate(500);
-        this.textInput.setEditable(true);
         this.textInput.setLineWrap(true);
         this.textInput.setName("textInputManagerCoder");
         this.textInput.getDocument().addDocumentListener(new DocumentListenerEditing() {
@@ -96,6 +95,7 @@ public class ManagerCoder extends JPanel {
         I18nViewUtil.addComponentForKey("CODER_RESULT", placeholderResult);
         this.result.setName("resultManagerCoder");
         this.result.setLineWrap(true);
+        this.result.setEditable(false);
 
         var bottom = new JPanel(new BorderLayout());
         bottom.add(new JScrollPane(this.result), BorderLayout.CENTER);

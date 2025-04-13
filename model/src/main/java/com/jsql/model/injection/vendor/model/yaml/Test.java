@@ -4,12 +4,14 @@ package com.jsql.model.injection.vendor.model.yaml;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Test implements Serializable {
 
+    private List<String> falsyBinary = new ArrayList<>();  // vendor specific
     private List<String> falsy = Arrays.asList(
         "'a' = 'b'",
         "'a' %21= 'a'",
@@ -19,6 +21,7 @@ public class Test implements Serializable {
         "2 %21= 2"
     );
             
+    private List<String> truthyBinary = new ArrayList<>();  // vendor specific
     private List<String> truthy = Arrays.asList(
         "'a' = 'a'",
         "'b' = 'b'",
@@ -30,7 +33,24 @@ public class Test implements Serializable {
 
     private String init = "0%2b1 = 1";
     private String bit = StringUtils.EMPTY;
+    private String binary = StringUtils.EMPTY;
     private String length = StringUtils.EMPTY;
+
+    public List<String> getTruthyBinary() {
+        return this.truthyBinary;
+    }
+
+    public void setTruthyBinary(List<String> truthyBinary) {
+        this.truthyBinary = truthyBinary;
+    }
+
+    public List<String> getFalsyBinary() {
+        return this.falsyBinary;
+    }
+
+    public void setFalsyBinary(List<String> falsyBinary) {
+        this.falsyBinary = falsyBinary;
+    }
 
     public List<String> getTruthy() {
         return this.truthy;
@@ -86,5 +106,13 @@ public class Test implements Serializable {
     
     public void setFalsy(String falsy) {
         this.falsy = Arrays.asList(falsy.split("[\r\n]+"));
+    }
+
+    public String getBinary() {
+        return this.binary;
+    }
+
+    public void setBinary(String binary) {
+        this.binary = binary;
     }
 }

@@ -25,8 +25,9 @@ public class MediatorStrategy {
     
     private final AbstractStrategy time;
     private final AbstractStrategy blind;
+    private final AbstractStrategy blindBinary;
     private final AbstractStrategy multibit;
-    private final StrategyInjectionError error;
+    private final StrategyError error;
     private final AbstractStrategy union;
     private final AbstractStrategy stack;
 
@@ -42,26 +43,26 @@ public class MediatorStrategy {
     public MediatorStrategy(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
-        this.time = new StrategyInjectionTime(this.injectionModel);
-        this.blind = new StrategyInjectionBlind(this.injectionModel);
-        this.multibit = new StrategyInjectionMultibit(this.injectionModel);
-        this.error = new StrategyInjectionError(this.injectionModel);
-        this.union = new StrategyInjectionUnion(this.injectionModel);
-        this.stack = new StrategyInjectionStack(this.injectionModel);
+        this.time = new StrategyTime(this.injectionModel);
+        this.blind = new StrategyBlind(this.injectionModel);
+        this.blindBinary = new StrategyBlindBinary(this.injectionModel);
+        this.multibit = new StrategyMultibit(this.injectionModel);
+        this.error = new StrategyError(this.injectionModel);
+        this.union = new StrategyUnion(this.injectionModel);
+        this.stack = new StrategyStack(this.injectionModel);
 
-        this.strategies = Arrays.asList(this.time, this.blind, this.multibit, this.error, this.stack, this.union);
+        this.strategies = Arrays.asList(this.time, this.blindBinary, this.blind, this.multibit, this.error, this.stack, this.union);
     }
     
     public String getMeta() {
         String strategyName = this.strategy == null ? StringUtils.EMPTY : this.strategy.toString().toLowerCase();
-        
         var strategyMode = "default";
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             strategyMode = "dios";
         } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
             strategyMode = "zip";
         }
-        return String.format("%s#%s", strategyName, strategyMode);
+        return String.format("%s#%s", strategyName.replace(" ", "-"), strategyMode);
     }
     
     /**
@@ -169,9 +170,9 @@ public class MediatorStrategy {
             new SuspendableGetVendor(this.injectionModel).run();
         }
 
-        // Test each injection strategies: time < blind < error < union
-        // Choose the most efficient strategy: union > error > blind > time
+        // Test each injection strategies: time < blind binary < blind bitwise < multibit < error < stack < union
         this.time.checkApplicability();
+        this.blindBinary.checkApplicability();
         this.blind.checkApplicability();
 
         if (parameterToInject != null) {
@@ -189,12 +190,13 @@ public class MediatorStrategy {
         this.stack.checkApplicability();
         this.union.checkApplicability();
 
-        // Set most efficient strategy
+        // Set most efficient strategy first: union > stack > error > multibit > blind bitwise > blind binary > time
         this.union.activateWhenApplicable();
         this.stack.activateWhenApplicable();
         this.error.activateWhenApplicable();
         this.multibit.activateWhenApplicable();
         this.blind.activateWhenApplicable();
+        this.blindBinary.activateWhenApplicable();
         this.time.activateWhenApplicable();
 
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null) {  // no strategy found
@@ -218,11 +220,11 @@ public class MediatorStrategy {
         return this.union;
     }
 
-    public StrategyInjectionUnion getSpecificUnion() {
-        return (StrategyInjectionUnion) this.union;
+    public StrategyUnion getSpecificUnion() {
+        return (StrategyUnion) this.union;
     }
 
-    public StrategyInjectionError getError() {
+    public StrategyError getError() {
         return this.error;
     }
 
@@ -252,5 +254,9 @@ public class MediatorStrategy {
 
     public void setStrategy(AbstractStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    public AbstractStrategy getBlindBinary() {
+        return this.blindBinary;
     }
 }

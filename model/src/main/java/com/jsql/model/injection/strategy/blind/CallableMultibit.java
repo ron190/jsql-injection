@@ -1,8 +1,8 @@
 package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.injection.strategy.blind.patch.Diff;
-import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
+import name.fraser.neil.plaintext.diff_match_patch;
+import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -12,7 +12,7 @@ public class CallableMultibit extends AbstractCallableBinary<CallableMultibit> {
 
     private LinkedList<Diff> diffsWithReference = new LinkedList<>();
 
-    private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
+    private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();
 
     private final InjectionMultibit injectionMultibit;
 
@@ -49,8 +49,8 @@ public class CallableMultibit extends AbstractCallableBinary<CallableMultibit> {
     @Override
     public CallableMultibit call() {
         String result = this.injectionMultibit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        this.diffsWithReference = CallableMultibit.DIFF_MATCH_PATCH.diffMain(this.injectionMultibit.getSourceReference(), result, true);
-        CallableMultibit.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
+        this.diffsWithReference = CallableMultibit.DIFF_MATCH_PATCH.diff_main(this.injectionMultibit.getSourceReference(), result, true);
+        CallableMultibit.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.diffsWithReference);
 
         this.diffsWithReference.removeAll(this.injectionMultibit.getDiffsCommonWithAllIds());
 

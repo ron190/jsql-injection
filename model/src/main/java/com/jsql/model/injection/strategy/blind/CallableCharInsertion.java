@@ -1,7 +1,7 @@
 package com.jsql.model.injection.strategy.blind;
 
-import com.jsql.model.injection.strategy.blind.patch.Diff;
-import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
+import name.fraser.neil.plaintext.diff_match_patch;
+import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +16,8 @@ public class CallableCharInsertion extends AbstractCallableBinary<CallableCharIn
     
     // List of differences found between the reference page, and the present page
     private LinkedList<Diff> opcodes = new LinkedList<>();
-    
-    private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
+
+    private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();
 
     private final InjectionCharInsertion injectionCharInsertion;
     
@@ -59,13 +59,13 @@ public class CallableCharInsertion extends AbstractCallableBinary<CallableCharIn
     public CallableCharInsertion call() {
         String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         
-        this.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diffMain(
+        this.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diff_main(
             this.injectionCharInsertion.getBlankFalseMark(),
             source,
             false
         );
 
-        CallableCharInsertion.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);
+        CallableCharInsertion.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.opcodes);
         return this;
     }
     

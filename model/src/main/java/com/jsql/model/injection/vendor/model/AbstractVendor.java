@@ -35,10 +35,14 @@ public interface AbstractVendor {
 
     List<String> getFalsy();
     List<String> getTruthy();
+    List<String> getFalsyBinary();
+    List<String> getTruthyBinary();
 
     String sqlTestBinaryInit();
     String sqlTestBlind(String check, BinaryMode blindMode);
     String sqlBitTestBlind(String inj, int indexCharacter, int bit, BinaryMode blindMode);
+    String sqlTestBlindBinary(String inj, int indexCharacter, int mid, BinaryMode blindMode);
+
     String sqlTimeTest(String check, BinaryMode blindMode);
     String sqlBitTestTime(String inj, int indexCharacter, int bit, BinaryMode blindMode);
     String sqlMultibit(String inj, int indexCharacter, int block);

@@ -2,7 +2,6 @@ package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.LogLevelUtil;
@@ -16,6 +15,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
 public class InjectionVendor {
 

@@ -29,6 +29,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
@@ -116,24 +117,10 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     }
     
     public void changeTextNetwork(HttpHeader networkData) {
-        this.textAreaRequest.setText(this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getPost()) : networkData.getPost());
-        this.textAreaUrl.setText(this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getUrl()) : networkData.getUrl());
-
-        this.textAreaHeader.setText(StringUtils.EMPTY);
-        if (networkData.getHeader() != null) {
-            for (String key: networkData.getHeader().keySet()) {
-                this.textAreaHeader.append(key + ": " + (this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getHeader().get(key)) : networkData.getHeader().get(key)));
-                this.textAreaHeader.append("\n");
-            }
-        }
-
-        this.textAreaResponse.setText(StringUtils.EMPTY);
-        if (networkData.getResponse() != null) {
-            for (String key: networkData.getResponse().keySet()) {
-                this.textAreaResponse.append(key + ": " + (this.checkBoxDecode.isSelected() ? StringUtil.fromUrl(networkData.getResponse().get(key)) : networkData.getResponse().get(key)));
-                this.textAreaResponse.append("\n");
-            }
-        }
+        this.textAreaRequest.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.getPost()));
+        this.textAreaUrl.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.getUrl()));
+        this.updateTextArea(this.textAreaHeader, networkData.getHeader());
+        this.updateTextArea(this.textAreaResponse, networkData.getResponse());
 
         // Fix #53736: ArrayIndexOutOfBoundsException on setText()
         // Fix #54573: NullPointerException on setText()
@@ -177,7 +164,21 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
-    
+
+    private void updateTextArea(JTextArea textArea, Map<String, String> httpData) {
+        textArea.setText(StringUtils.EMPTY);
+        if (httpData != null) {
+            httpData.forEach((key, value) -> {
+                String decodedValue = this.getDecodedValue(this.checkBoxDecode.isSelected(), value);
+                textArea.append(key + ": " + decodedValue + "\n");
+            });
+        }
+    }
+
+    private String getDecodedValue(boolean isSelected, String value) {
+        return isSelected ? StringUtil.fromUrl(value) : value;
+    }
+
     public void reset() {
         this.textAreaUrl.setText(StringUtils.EMPTY);
         this.textAreaHeader.setText(StringUtils.EMPTY);

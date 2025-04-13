@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StrategyInjectionStack extends AbstractStrategy {
+public class StrategyStack extends AbstractStrategy {
 
     /**
      * Log4j logger sent to view.
@@ -25,7 +25,7 @@ public class StrategyInjectionStack extends AbstractStrategy {
 
     private String performanceLength = "0";
 
-    public StrategyInjectionStack(InjectionModel injectionModel) {
+    public StrategyStack(InjectionModel injectionModel) {
         super(injectionModel);
     }
 
@@ -141,7 +141,7 @@ public class StrategyInjectionStack extends AbstractStrategy {
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName
             );
-            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getStack());
+            this.injectionModel.getMediatorStrategy().setStrategy(this);
 
             var request = new Request();
             request.setMessage(Interaction.MARK_STACK_STRATEGY);

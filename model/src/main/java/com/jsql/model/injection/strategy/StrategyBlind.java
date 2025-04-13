@@ -15,7 +15,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
-import com.jsql.model.injection.strategy.blind.InjectionTime;
+import com.jsql.model.injection.strategy.blind.InjectionBlind;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
@@ -25,25 +25,25 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class StrategyInjectionTime extends AbstractStrategy {
+public class StrategyBlind extends AbstractStrategy {
     
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private InjectionTime injectionTime;
+    private InjectionBlind injectionBlind;
     
-    public StrategyInjectionTime(InjectionModel injectionModel) {
+    public StrategyBlind(InjectionModel injectionModel) {
         super(injectionModel);
     }
 
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
-        } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBinaryTime())) {
+        } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBinaryBlind())) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
@@ -62,7 +62,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
             this.allow();
             var requestMessageBinary = new Request();
             requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-            requestMessageBinary.setParameters(this.injectionTime.getInfoMessage());
+            requestMessageBinary.setParameters(this.injectionBlind.getInfoMessage());
             this.injectionModel.sendToViews(requestMessageBinary);
         } else {
             this.unallow();
@@ -81,8 +81,8 @@ public class StrategyInjectionTime extends AbstractStrategy {
             this::getName,
             () -> binaryMode
         );
-        this.injectionTime = new InjectionTime(this.injectionModel, binaryMode);
-        this.isApplicable = this.injectionTime.isInjectable();
+        this.injectionBlind = new InjectionBlind(this.injectionModel, binaryMode);
+        this.isApplicable = this.injectionBlind.isInjectable();
 
         if (this.isApplicable) {
             LOGGER.log(
@@ -94,32 +94,32 @@ public class StrategyInjectionTime extends AbstractStrategy {
             );
         }
     }
-    
+
     @Override
     public void allow(int... i) {
         this.injectionModel.appendAnalysisReport(
             StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithoutIndex(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(
-                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
-                    this.injectionTime.getBooleanMode()
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
+                    this.injectionBlind.getBooleanMode()
                 ),
                 "metadataInjectionProcess",
                 null
             )
         );
-        this.markVulnerability(Interaction.MARK_TIME_VULNERABLE);
+        this.markVulnerability(Interaction.MARK_BLIND_VULNERABLE);
     }
 
     @Override
     public void unallow(int... i) {
-        this.markVulnerability(Interaction.MARK_TIME_INVULNERABLE);
+        this.markVulnerability(Interaction.MARK_BLIND_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
-        return this.injectionTime.inject(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(sqlQuery, startPosition, false),
+        return this.injectionBlind.inject(
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),
             stoppable
         );
     }
@@ -132,13 +132,13 @@ public class StrategyInjectionTime extends AbstractStrategy {
                 "{} [{}] with [{}]",
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName,
-                () -> this.injectionTime.getBooleanMode().name()
+                () -> this.injectionBlind.getBooleanMode().name()
             );
-            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());
+            this.injectionModel.getMediatorStrategy().setStrategy(this);
 
-            var requestMarkTimeStrategy = new Request();
-            requestMarkTimeStrategy.setMessage(Interaction.MARK_TIME_STRATEGY);
-            this.injectionModel.sendToViews(requestMarkTimeStrategy);
+            var requestMarkBlindStrategy = new Request();
+            requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_STRATEGY);
+            this.injectionModel.sendToViews(requestMarkBlindStrategy);
         }
     }
     
@@ -149,6 +149,6 @@ public class StrategyInjectionTime extends AbstractStrategy {
     
     @Override
     public String getName() {
-        return "Time";
+        return "Blind bitwise";
     }
 }

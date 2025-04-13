@@ -25,7 +25,7 @@
 
         <commons-text.version>1.13.0</commons-text.version>
         <flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <!-- False positive: GData Java.Exploit.CVE-2021-44228.N Acronis (Static ML) -->
         <!-- Fixed since Apache Log4j Core - 2.15.0 -->
         <log4j-bom.version>2.24.3</log4j-bom.version>
@@ -44,9 +44,9 @@
         <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
-        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <maven-surefire-report-plugin.version>3.5.2</maven-surefire-report-plugin.version>
-        <pitest-maven.version>1.18.2</pitest-maven.version>
+        <pitest-maven.version>1.19.0</pitest-maven.version>
         <spotbugs-maven-plugin.version>4.9.3.0</spotbugs-maven-plugin.version>
         <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 

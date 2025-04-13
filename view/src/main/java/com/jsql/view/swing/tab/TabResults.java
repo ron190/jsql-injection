@@ -258,7 +258,7 @@ public class TabResults extends DnDTabbedPane {
         var panelReverseMargin = new JPanel();
         panelReverseMargin.setLayout(new BoxLayout(panelReverseMargin, BoxLayout.LINE_AXIS));
         panelReverseMargin.setOpaque(false);
-        panelReverseMargin.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 10));
+        panelReverseMargin.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 15));
 
         var menuReverse = new JLabel(TabResults.REVERSE_SHELL, UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
         menuReverse.addMouseListener(new MouseAdapter() {

@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StrategyInjectionError extends AbstractStrategy {
+public class StrategyError extends AbstractStrategy {
     
     /**
      * Log4j logger sent to view.
@@ -27,7 +27,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     
     private int indexErrorStrategy = 0;
 
-    public StrategyInjectionError(InjectionModel injectionModel) {
+    public StrategyError(InjectionModel injectionModel) {
         super(injectionModel);
     }
 
@@ -182,7 +182,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                 () -> this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy()
                 .getError().getMethod().get(this.indexErrorStrategy).getName()
             );
-            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());
+            this.injectionModel.getMediatorStrategy().setStrategy(this);
 
             var request = new Request();
             request.setMessage(Interaction.MARK_ERROR_STRATEGY);

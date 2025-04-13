@@ -15,7 +15,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
-import com.jsql.model.injection.strategy.blind.InjectionBlind;
+import com.jsql.model.injection.strategy.blind.InjectionBlindBinary;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
@@ -25,22 +25,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class StrategyInjectionBlind extends AbstractStrategy {
-    
+public class StrategyBlindBinary extends AbstractStrategy {
+
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private InjectionBlind injectionBlind;
-    
-    public StrategyInjectionBlind(InjectionModel injectionModel) {
+    private InjectionBlindBinary injectionBlind;
+
+    public StrategyBlindBinary(InjectionModel injectionModel) {
         super(injectionModel);
     }
 
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyBlindBinaryDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBinaryBlind())) {
@@ -60,7 +60,6 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
         if (this.isApplicable) {
             this.allow();
-
             var requestMessageBinary = new Request();
             requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
             requestMessageBinary.setParameters(this.injectionBlind.getInfoMessage());
@@ -74,7 +73,6 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         if (this.isApplicable) {
             return;
         }
-
         LOGGER.log(
             LogLevelUtil.CONSOLE_DEFAULT,
             "{} [{}] with [{}]...",
@@ -82,9 +80,8 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             this::getName,
             () -> binaryMode
         );
-        this.injectionBlind = new InjectionBlind(this.injectionModel, binaryMode);
+        this.injectionBlind = new InjectionBlindBinary(this.injectionModel, binaryMode);
         this.isApplicable = this.injectionBlind.isInjectable();
-
         if (this.isApplicable) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
@@ -102,23 +99,19 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithoutIndex(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(
-                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(
-                        StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"),
-                        "0",
-                        true
-                    ),
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
                     this.injectionBlind.getBooleanMode()
                 ),
                 "metadataInjectionProcess",
                 null
             )
         );
-        this.markVulnerability(Interaction.MARK_BLIND_VULNERABLE);
+        this.markVulnerability(Interaction.MARK_BLIND_BINARY_VULNERABLE);
     }
 
     @Override
     public void unallow(int... i) {
-        this.markVulnerability(Interaction.MARK_BLIND_INVULNERABLE);
+        this.markVulnerability(Interaction.MARK_BLIND_BINARY_INVULNERABLE);
     }
 
     @Override
@@ -139,10 +132,10 @@ public class StrategyInjectionBlind extends AbstractStrategy {
                 this::getName,
                 () -> this.injectionBlind.getBooleanMode().name()
             );
-            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlind());
+            this.injectionModel.getMediatorStrategy().setStrategy(this);
 
             var requestMarkBlindStrategy = new Request();
-            requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_STRATEGY);
+            requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_BINARY_STRATEGY);
             this.injectionModel.sendToViews(requestMarkBlindStrategy);
         }
     }
@@ -154,6 +147,6 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     
     @Override
     public String getName() {
-        return "Blind";
+        return "Blind binary";
     }
 }
