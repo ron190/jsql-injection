@@ -85,7 +85,7 @@
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
         <ojdbc8.version>23.7.0.25.01</ojdbc8.version>
         <pitest-junit5-plugin.version>1.2.2</pitest-junit5-plugin.version>
-        <postgresql.version>42.7.5</postgresql.version>
+        <postgresql.version>42.7.5.redhat-00001</postgresql.version>
         <snakeyaml.version>2.4</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
         <spock-core.version>2.4-M5-groovy-4.0</spock-core.version>
