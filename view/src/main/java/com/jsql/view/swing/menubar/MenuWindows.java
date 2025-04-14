@@ -3,8 +3,8 @@ package com.jsql.view.swing.menubar;
 import com.formdev.flatlaf.intellijthemes.FlatDarkFlatIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatHighContrastIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatLightFlatIJTheme;
-import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubDarkIJTheme;
-import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTGitHubDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTGitHubIJTheme;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.jsql.model.InjectionModel;
@@ -80,8 +80,8 @@ public class MenuWindows extends JMenu {
             new AbstractMap.SimpleEntry<>(FlatDarkFlatIJTheme.class.getName(), "IntelliJ Dark"),
             new AbstractMap.SimpleEntry<>(FlatMacLightLaf.class.getName(), "macOS"),
             new AbstractMap.SimpleEntry<>(FlatMacDarkLaf.class.getName(), "macOS Dark"),
-            new AbstractMap.SimpleEntry<>(FlatGitHubIJTheme.class.getName(), "GitHub"),
-            new AbstractMap.SimpleEntry<>(FlatGitHubDarkIJTheme.class.getName(), "GitHub Dark"),
+            new AbstractMap.SimpleEntry<>(FlatMTGitHubIJTheme.class.getName(), "GitHub"),
+            new AbstractMap.SimpleEntry<>(FlatMTGitHubDarkIJTheme.class.getName(), "GitHub Dark"),
             new AbstractMap.SimpleEntry<>(FlatHighContrastIJTheme.class.getName(), "High contrast")
         ).forEach(entry -> {
             JMenuItem item = new RadioItemPreventClose(
