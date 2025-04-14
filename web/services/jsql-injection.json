@@ -1,7 +1,7 @@
 {
     "version": "0.111",
     "news": [
-        "[Next release] trategy Blind binary search has been added for databases not providing bitwise operators",
+        "[Next release] Added Blind binary search, less efficient than Blind bitwise but required by some database",
         "[v0.111: Reverse shell] Now open rev shell from RCE in plain Java without any netcat nor any external tool",
         "[RCE shell] How to open RCE shell and rev shell? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
         "[Pinned] Report any bugs and thoughts, add your star at https://github.com/ron190/jsql-injection",

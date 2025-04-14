@@ -19,7 +19,7 @@ import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 /**
  * A blind attack class using concurrent threads.
  */
-public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
+public class InjectionBlindBit extends AbstractInjectionMonobit<CallableBlindBit> {
     
     /**
      * Log4j logger sent to view.
@@ -42,11 +42,11 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
      * If every false diffs are not in true diffs and every true diffs are in
      * true diffs, then Blind attack is confirmed.
      */
-    public InjectionBlind(InjectionModel injectionModel, BinaryMode blindMode) {
+    public InjectionBlindBit(InjectionModel injectionModel, BlindOperator blindMode) {
         super(injectionModel, blindMode);
         
         // No blind
-        if (this.falsy.isEmpty() || this.injectionModel.isStoppedByUser()) {
+        if (this.falsyBit.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
         
@@ -56,10 +56,10 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagFalse");
-        Collection<CallableBlind> callablesFalseTest = new ArrayList<>();
+        Collection<CallableBlindBit> callablesFalseTest = new ArrayList<>();
         
-        for (String falseTest: this.falsy) {
-            callablesFalseTest.add(new CallableBlind(
+        for (String falseTest: this.falsyBit) {
+            callablesFalseTest.add(new CallableBlindBit(
                 falseTest,
                 injectionModel,
                 this,
@@ -72,9 +72,9 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         // keep only diffs found in each and every FALSE pages.
         // Allow the user to stop the loop
         try {
-            List<Future<CallableBlind>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
+            List<Future<CallableBlindBit>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-            for (Future<CallableBlind> futureFalseTest: futuresFalseTest) {
+            for (Future<CallableBlindBit> futureFalseTest: futuresFalseTest) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
@@ -98,14 +98,14 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         this.cleanTrueDiffs(injectionModel, blindMode);
     }
 
-    private void cleanTrueDiffs(InjectionModel injectionModel, BinaryMode blindMode) {
+    private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindMode) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
 
-        Collection<CallableBlind> callablesTrueTest = new ArrayList<>();
-        for (String trueTest: this.truthy) {
-            callablesTrueTest.add(new CallableBlind(
+        Collection<CallableBlindBit> callablesTrueTest = new ArrayList<>();
+        for (String trueTest: this.truthyBit) {
+            callablesTrueTest.add(new CallableBlindBit(
                 trueTest,
                 injectionModel,
                 this,
@@ -118,9 +118,9 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         // a significant FALSE statement shouldn't contain any TRUE diff.
         // Allow the user to stop the loop.
         try {
-            List<Future<CallableBlind>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
+            List<Future<CallableBlindBit>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-            for (Future<CallableBlind> futureTrueTest: futuresTrueTest) {
+            for (Future<CallableBlindBit> futureTrueTest: futuresTrueTest) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
@@ -135,15 +135,15 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
     }
 
     @Override
-    public CallableBlind getCallableBitTest(String sqlQuery, int indexCharacter, int bit) {
-        return new CallableBlind(
+    public CallableBlindBit getCallableBitTest(String sqlQuery, int indexChar, int bit) {
+        return new CallableBlindBit(
             sqlQuery,
-            indexCharacter,
+            indexChar,
             bit,
             this.injectionModel,
             this,
-            this.binaryMode,
-            "bit#" + indexCharacter + "~" + bit
+            this.blindOperator,
+            "bit#" + indexChar + "~" + bit
         );
     }
 
@@ -152,11 +152,11 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
-        var blindTest = new CallableBlind(
+        var blindTest = new CallableBlindBit(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),
             this.injectionModel,
             this,
-            this.binaryMode,
+            this.blindOperator,
             "bit#confirm"
         );
         try {
@@ -169,7 +169,7 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
 
     @Override
     public String getInfoMessage() {
-        return "- Strategy Blind bitwise: query True when Diffs are matching " + this.falseDiffs + "\n\n";
+        return "- Strategy Blind bit: query True when Diffs are matching " + this.falseDiffs + "\n\n";
     }
     
     

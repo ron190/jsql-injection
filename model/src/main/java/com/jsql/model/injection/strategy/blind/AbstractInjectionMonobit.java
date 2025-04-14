@@ -6,23 +6,23 @@ import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class AbstractInjectionMonobit<T extends AbstractCallableBinary<T>> extends AbstractInjectionBinary<T> {
+public abstract class AbstractInjectionMonobit<T extends AbstractCallableBit<T>> extends AbstractInjectionBit<T> {
 
-    protected AbstractInjectionMonobit(InjectionModel injectionModel, BinaryMode binaryMode) {
-        super(injectionModel, binaryMode);
+    protected AbstractInjectionMonobit(InjectionModel injectionModel, BlindOperator blindOperator) {
+        super(injectionModel, blindOperator);
     }
     
-    abstract T getCallableBitTest(String sqlQuery, int indexCharacter, int bit);
+    abstract T getCallableBitTest(String sqlQuery, int indexChar, int bit);
 
-    public void initNextChars(
+    public void initNextChar(
         String sqlQuery,
         List<char[]> bytes,
-        AtomicInteger indexCharacter,
+        AtomicInteger indexChar,
         CompletionService<T> taskCompletionService,
         AtomicInteger countTasksSubmitted,
         T currentCallable
     ) {
-        indexCharacter.incrementAndGet();
+        indexChar.incrementAndGet();
         
         // New undefined bits of the next character
         // Chars all have the last bit set to 0 in Ascii table
@@ -34,7 +34,7 @@ public abstract class AbstractInjectionMonobit<T extends AbstractCallableBinary<
             taskCompletionService.submit(
                 this.getCallableBitTest(
                     sqlQuery,
-                    indexCharacter.get(),
+                    indexChar.get(),
                     bit
                 )
             );
@@ -42,7 +42,7 @@ public abstract class AbstractInjectionMonobit<T extends AbstractCallableBinary<
         }
     }
 
-    public char[] initBinaryMask(List<char[]> bytes, T currentCallable) {
+    public char[] initMaskAsciiChar(List<char[]> bytes, T currentCallable) {
         char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url
         int positionInMask = (int) (
             8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2)  // some math (2^x => x)

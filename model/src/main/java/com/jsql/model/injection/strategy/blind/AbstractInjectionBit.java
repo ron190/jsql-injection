@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T>> {
+public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
     
     /**
      * Log4j logger sent to view.
@@ -28,29 +28,29 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
 
     // Every FALSE SQL statements will be checked,
     // more statements means a more robust application
-    protected List<String> falsy;
-    protected List<String> falsyBinary;
+    protected List<String> falsyBit;
+    protected List<String> falsyBin;
 
     // Every TRUE SQL statements will be checked,
     // more statements means a more robust application
-    protected List<String> truthy;
-    protected List<String> truthyBinary;
+    protected List<String> truthyBit;
+    protected List<String> truthyBin;
 
-    public enum BinaryMode {
+    public enum BlindOperator {
         AND, OR, STACK, NO_MODE
     }
     
     protected final InjectionModel injectionModel;
     
-    protected final BinaryMode binaryMode;
+    protected final BlindOperator blindOperator;
     
-    protected AbstractInjectionBinary(InjectionModel injectionModel, BinaryMode binaryMode) {
+    protected AbstractInjectionBit(InjectionModel injectionModel, BlindOperator blindOperator) {
         this.injectionModel = injectionModel;
-        this.binaryMode = binaryMode;
-        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsy();
-        this.truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthy();
-        this.falsyBinary = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBinary();
-        this.truthyBinary = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBinary();
+        this.blindOperator = blindOperator;
+        this.falsyBit = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();
+        this.truthyBit = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();
+        this.falsyBin = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBin();
+        this.truthyBin = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBin();
     }
 
     /**
@@ -59,16 +59,16 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
      */
     public abstract boolean isInjectable() throws StoppedByUserSlidingException;
 
-    public abstract void initNextChars(
+    public abstract void initNextChar(
         String sqlQuery,
         List<char[]> bytes,
-        AtomicInteger indexCharacter,
+        AtomicInteger indexChar,
         CompletionService<T> taskCompletionService,
         AtomicInteger countTasksSubmitted,
         T currentCallable  // required by sequential calls like binary search
     );
 
-    public abstract char[] initBinaryMask(List<char[]> bytes, T currentCallable);
+    public abstract char[] initMaskAsciiChar(List<char[]> bytes, T currentCallable);
 
     /**
      * Display a message to explain how is blind/time working.
@@ -85,7 +85,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
         // List of the characters, each one represented by an array of 8 bits
         // e.g. SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
         List<char[]> bytes = new ArrayList<>();
-        var indexCharacter = new AtomicInteger(0);  // current char position
+        var indexChar = new AtomicInteger(0);  // current char position
 
         // Concurrent URL requests
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableAbstractBoolean");
@@ -94,7 +94,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
         var countTasksSubmitted = new AtomicInteger(0);
         var countBadAsciiCode = new AtomicInteger(0);
 
-        this.initNextChars(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted, null);
+        this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, null);
 
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
@@ -112,10 +112,10 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
                 // Then add 7 bits requests for that new character.
                 var isComplete = this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
                 if (isComplete || currentCallable.isBinary()) {  // prevents bitwise overload new char init on each bit
-                    this.initNextChars(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted, currentCallable);
+                    this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, currentCallable);
                 }
 
-                String result = AbstractInjectionBinary.convert(bytes);
+                String result = AbstractInjectionBit.convert(bytes);
                 if (result.matches("(?s).*"+ DataAccess.TRAIL_RGX +".*")) {
                     countTasksSubmitted.set(0);
                     break;
@@ -141,8 +141,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
                 var str = Character.toString((char) charCode);
                 result.append(str);
             } catch (NumberFormatException err) {
-                // Byte string not fully constructed : 0x1x010x
-                // Ignore
+                // Ignore, byte string not fully constructed (0x1x010x)
             }
         }
         return result.toString();
@@ -151,13 +150,13 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
     protected boolean injectCharacter(List<char[]> bytes, AtomicInteger countTasksSubmitted, AtomicInteger countBadAsciiCode, T currentCallable) throws InjectionFailureException {
         // Process url that has just checked one bit, convert bits to chars,
         // and change current bit from undefined to 0 or 1
-        char[] asciiCodeMask = this.initBinaryMask(bytes, currentCallable);
-        var asciiCodeBinary = new String(asciiCodeMask);
+        char[] maskAsciiChar = this.initMaskAsciiChar(bytes, currentCallable);
+        var asciiCodeBit = new String(maskAsciiChar);
         var isComplete = false;
 
         // Inform the View if bits array is complete, else nothing #Need fix
-        if (asciiCodeBinary.matches("^[01]{8}$")) {
-            var asciiCode = Integer.parseInt(asciiCodeBinary, 2);
+        if (asciiCodeBit.matches("^[01]{8}$")) {
+            var asciiCode = Integer.parseInt(asciiCodeBit, 2);
             if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000
                 if (countTasksSubmitted.get() != 0 && countBadAsciiCode.get() > 15) {
                     throw new InjectionFailureException("Boolean false positive, stopping...");
@@ -170,7 +169,7 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
             var interaction = new Request();
             interaction.setMessage(Interaction.MESSAGE_BINARY);
             interaction.setParameters(
-                asciiCodeBinary
+                asciiCodeBit
                 + "="
                 + currentCallable.charText
                 .replace("\\n", "\\\\\\n")
@@ -194,7 +193,6 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
                 var charCode = Integer.parseInt(new String(c), 2);
                 var str = Character.toString((char) charCode);
                 result.append(str);
-                
             } catch (NumberFormatException err) {
                 // Byte string not fully constructed : 0x1x010x
                 // Ignore
@@ -212,11 +210,11 @@ public abstract class AbstractInjectionBinary<T extends AbstractCallableBinary<T
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);
     }
 
-    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBinary<?> callableBoolean) {
+    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBit<?> callableBoolean) {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);
     }
 
-    public BinaryMode getBooleanMode() {
-        return this.binaryMode;
+    public BlindOperator getBooleanMode() {
+        return this.blindOperator;
     }
 }

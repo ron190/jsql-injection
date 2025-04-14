@@ -14,7 +14,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.strategy.blind.InjectionTime;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -53,10 +53,10 @@ public class StrategyTime extends AbstractStrategy {
             return;
         }
 
-        this.checkInjection(BinaryMode.OR);
-        this.checkInjection(BinaryMode.AND);
-        this.checkInjection(BinaryMode.STACK);
-        this.checkInjection(BinaryMode.NO_MODE);
+        this.checkInjection(BlindOperator.OR);
+        this.checkInjection(BlindOperator.AND);
+        this.checkInjection(BlindOperator.STACK);
+        this.checkInjection(BlindOperator.NO_MODE);
 
         if (this.isApplicable) {
             this.allow();
@@ -69,7 +69,7 @@ public class StrategyTime extends AbstractStrategy {
         }
     }
 
-    private void checkInjection(BinaryMode binaryMode) throws StoppedByUserSlidingException {
+    private void checkInjection(BlindOperator blindOperator) throws StoppedByUserSlidingException {
         if (this.isApplicable) {
             return;
         }
@@ -79,9 +79,9 @@ public class StrategyTime extends AbstractStrategy {
             "{} [{}] with [{}]...",
             () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY),
             this::getName,
-            () -> binaryMode
+            () -> blindOperator
         );
-        this.injectionTime = new InjectionTime(this.injectionModel, binaryMode);
+        this.injectionTime = new InjectionTime(this.injectionModel, blindOperator);
         this.isApplicable = this.injectionTime.isInjectable();
 
         if (this.isApplicable) {
@@ -90,7 +90,7 @@ public class StrategyTime extends AbstractStrategy {
                 "{} [{}] injection with [{}]",
                 () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
                 this::getName,
-                () -> binaryMode
+                () -> blindOperator
             );
         }
     }

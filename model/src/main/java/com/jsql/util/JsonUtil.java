@@ -55,7 +55,7 @@ public class JsonUtil {
 
     private static void scanJsonArray(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath, List<SimpleEntry<String, String>> attributesXPath) {
         var jsonArrayEntity = (JSONArray) jsonEntity;
-        for (var i = 0; i < jsonArrayEntity.length(); i++) {
+        for (var i = 0 ; i < jsonArrayEntity.length() ; i++) {
             Object value = jsonArrayEntity.get(i);
             String xpath = parentName +"["+ i +"]";
             

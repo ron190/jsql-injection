@@ -46,7 +46,7 @@ class OracleBlindGetSuiteIgnoreIT extends ConcreteOracleSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlind(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

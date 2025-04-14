@@ -6,7 +6,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBit;
 import com.jsql.model.injection.strategy.blind.InjectionVendor;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -43,14 +43,14 @@ public class SuspendableGetVendor extends AbstractSuspendable {
             if (isVendorFound.get()) {
                 return;
             }
-            String vendorSpecificWithMode = String.format(
+            String vendorSpecificWithOperator = String.format(
                 "%s %s",
-                AbstractInjectionBinary.BinaryMode.OR.name(),
+                AbstractInjectionBit.BlindOperator.OR.name(),
                 vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
             );
             try {
-                var injectionCharInsertion = new InjectionVendor(this.injectionModel, vendorSpecificWithMode, vendor);
-                if (injectionCharInsertion.isInjectable(vendorSpecificWithMode)) {
+                var injectionCharInsertion = new InjectionVendor(this.injectionModel, vendorSpecificWithOperator, vendor);
+                if (injectionCharInsertion.isInjectable(vendorSpecificWithOperator)) {
                     if (this.isSuspended()) {
                         throw new StoppedByUserSlidingException();
                     }

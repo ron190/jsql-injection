@@ -3,9 +3,7 @@ package com.jsql.model.injection.strategy.blind;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.StrategyBlindBinary;
 import com.jsql.util.LogLevelUtil;
-import name.fraser.neil.plaintext.diff_match_patch;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,10 +17,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static name.fraser.neil.plaintext.diff_match_patch.Diff;
+
 /**
  * A blind attack class using concurrent threads.
  */
-public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlindBinary> {
+public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin> {
 
     /**
      * Log4j logger sent to view.
@@ -40,18 +40,18 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
      * at least one same string, which shouldn't be present in all
      * the TRUE queries.
      */
-    private List<diff_match_patch.Diff> falseDiffs = new ArrayList<>();
+    private List<Diff> falseDiffs = new ArrayList<>();
 
     /**
      * Create blind attack initialization.
      * If every false diffs are not in true diffs and every true diffs are in
      * true diffs, then Blind attack is confirmed.
      */
-    public InjectionBlindBinary(InjectionModel injectionModel, BinaryMode blindMode) {
+    public InjectionBlindBin(InjectionModel injectionModel, BlindOperator blindMode) {
         super(injectionModel, blindMode);
         
         // No blind
-        if (this.falsyBinary.isEmpty() || this.injectionModel.isStoppedByUser()) {
+        if (this.falsyBin.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
         
@@ -61,9 +61,9 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagFalse");
-        Collection<CallableBlindBinary> callablesFalseTest = new ArrayList<>();
-        for (String falseTest: this.falsyBinary) {
-            callablesFalseTest.add(new CallableBlindBinary(
+        Collection<CallableBlindBin> callablesFalseTest = new ArrayList<>();
+        for (String falseTest: this.falsyBin) {
+            callablesFalseTest.add(new CallableBlindBin(
                 falseTest,
                 injectionModel,
                 this,
@@ -77,9 +77,9 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
         // keep only diffs found in each and every FALSE pages.
         // Allow the user to stop the loop
         try {
-            List<Future<CallableBlindBinary>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
+            List<Future<CallableBlindBin>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-            for (Future<CallableBlindBinary> futureFalseTest: futuresFalseTest) {
+            for (Future<CallableBlindBin> futureFalseTest: futuresFalseTest) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
@@ -103,13 +103,13 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
         this.cleanTrueDiffs(injectionModel, blindMode);
     }
 
-    private void cleanTrueDiffs(InjectionModel injectionModel, BinaryMode blindMode) {
+    private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindMode) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
-        Collection<CallableBlindBinary> callablesTrueTest = new ArrayList<>();
-        for (String trueTest: this.truthyBinary) {
-            callablesTrueTest.add(new CallableBlindBinary(
+        Collection<CallableBlindBin> callablesTrueTest = new ArrayList<>();
+        for (String trueTest: this.truthyBin) {
+            callablesTrueTest.add(new CallableBlindBin(
                 trueTest,
                 injectionModel,
                 this,
@@ -123,9 +123,9 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
         // a significant FALSE statement shouldn't contain any TRUE diff.
         // Allow the user to stop the loop.
         try {
-            List<Future<CallableBlindBinary>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
+            List<Future<CallableBlindBin>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-            for (Future<CallableBlindBinary> futureTrueTest: futuresTrueTest) {
+            for (Future<CallableBlindBin> futureTrueTest: futuresTrueTest) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
@@ -140,7 +140,7 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
     }
 
     @Override
-    public CallableBlindBinary getCallableBitTest(String sqlQuery, int indexCharacter, int bit) {
+    public CallableBlindBin getCallableBitTest(String sqlQuery, int indexChar, int bit) {
         return null;  // unused
     }
 
@@ -149,11 +149,11 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
-        var blindTest = new CallableBlindBinary(
+        var blindTest = new CallableBlindBin(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),
             this.injectionModel,
             this,
-            this.binaryMode,
+            this.blindOperator,
             -1, -1, -1,
             "bin#confirm"
         );
@@ -166,17 +166,17 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
     }
 
     @Override
-    public void initNextChars(
+    public void initNextChar(
         String sqlQuery,
         List<char[]> bytes,
-        AtomicInteger indexCharacter,
-        CompletionService<CallableBlindBinary> taskCompletionService,
+        AtomicInteger indexChar,
+        CompletionService<CallableBlindBin> taskCompletionService,
         AtomicInteger countTasksSubmitted,
-        CallableBlindBinary currentCallable
+        CallableBlindBin currentCallable
     ) {
-        var low = InjectionBlindBinary.LOW;
-        var mid = InjectionBlindBinary.LOW + (InjectionBlindBinary.HIGH - InjectionBlindBinary.LOW) / 2;
-        var high = InjectionBlindBinary.HIGH;
+        var low = InjectionBlindBin.LOW;
+        var mid = InjectionBlindBin.LOW + (InjectionBlindBin.HIGH - InjectionBlindBin.LOW) / 2;
+        var high = InjectionBlindBin.HIGH;
         AtomicInteger countBadAsciiCode = new AtomicInteger();
 
         if (currentCallable != null) {
@@ -202,9 +202,9 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
                 }
 
                 bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
-                indexCharacter.incrementAndGet();
-                low = InjectionBlindBinary.LOW;
-                high = InjectionBlindBinary.HIGH;
+                indexChar.incrementAndGet();
+                low = InjectionBlindBin.LOW;
+                high = InjectionBlindBin.HIGH;
             } else if (high < low) {
                 low = currentCallable.isTrue() ? low : high;
                 asciiCodeMask[0] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(0);
@@ -222,9 +222,9 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
                 }
 
                 bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
-                indexCharacter.incrementAndGet();
-                low = InjectionBlindBinary.LOW;
-                high = InjectionBlindBinary.HIGH;
+                indexChar.incrementAndGet();
+                low = InjectionBlindBin.LOW;
+                high = InjectionBlindBin.HIGH;
             } else if (currentCallable.isTrue()) {  // key < mid
                 low = mid + 1;
             } else {  // key > mid
@@ -233,33 +233,31 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
             mid = low + (high - low) / 2;
         } else {
             bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
-            indexCharacter.incrementAndGet();
+            indexChar.incrementAndGet();
         }
 
         taskCompletionService.submit(
-            new CallableBlindBinary(
+            new CallableBlindBin(
                 sqlQuery,
-                indexCharacter.get(),
+                indexChar.get(),
                 this.injectionModel,
                 this,
-                this.binaryMode,
-                low,
-                mid,
-                high,
-                "bit#" + indexCharacter + "~" //+ bit
+                this.blindOperator,
+                low, mid, high,
+                "bit#" + indexChar + "~" //+ bit
             )
         );
         countTasksSubmitted.addAndGet(1);
     }
 
     @Override
-    public char[] initBinaryMask(List<char[]> bytes, CallableBlindBinary currentCallable) {
+    public char[] initMaskAsciiChar(List<char[]> bytes, CallableBlindBin currentCallable) {
         return bytes.get(currentCallable.getCurrentIndex() - 1);
     }
 
     @Override
     public String getInfoMessage() {
-        return "- Strategy Blind binary: query True when Diffs are matching " + this.falseDiffs + "\n\n";
+        return "- Strategy Blind bin: query True when Diffs are matching " + this.falseDiffs + "\n\n";
     }
     
     
@@ -269,7 +267,7 @@ public class InjectionBlindBinary extends AbstractInjectionMonobit<CallableBlind
         return this.sourceReferencePage;
     }
     
-    public List<diff_match_patch.Diff> getFalseDiffs() {
+    public List<Diff> getFalseDiffs() {
         return this.falseDiffs;
     }
 }

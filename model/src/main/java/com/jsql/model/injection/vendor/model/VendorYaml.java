@@ -3,7 +3,7 @@ package com.jsql.model.injection.vendor.model;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 import com.jsql.util.LogLevelUtil;
@@ -274,7 +274,7 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestBlind(String check, BinaryMode blindMode) {
+    public String sqlTestBlind(String check, BlindOperator blindMode) {
         String replacement = this.getMode(blindMode);
         return this.modelYaml.getStrategy().getBinary()
             .getBlind()
@@ -284,7 +284,7 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlBitTestBlind(String inj, int indexCharacter, int bit, BinaryMode blindMode) {
+    public String sqlBitTestBlind(String inj, int indexChar, int bit, BlindOperator blindMode) {
         String replacement = this.getMode(blindMode);
         return this.modelYaml.getStrategy().getBinary()
             .getBlind()
@@ -293,30 +293,30 @@ public class VendorYaml implements AbstractVendor {
                 VendorYaml.TEST,
                 this.modelYaml.getStrategy().getBinary().getTest().getBit()
                 .replace(VendorYaml.INJECTION, inj)
-                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexCharacter))
+                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))
                 .replace(VendorYaml.BIT, Integer.toString(bit))
             )
             .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
     @Override
-    public String sqlTestBlindBinary(String inj, int indexCharacter, int mid, BinaryMode blindMode) {
+    public String sqlTestBlindBinary(String inj, int indexChar, int mid, BlindOperator blindMode) {
         String replacement = this.getMode(blindMode);
         return this.modelYaml.getStrategy().getBinary()
             .getBlind()
             .replace(VendorYaml.BINARY_MODE, replacement)
             .replace(
                 VendorYaml.TEST,
-                this.modelYaml.getStrategy().getBinary().getTest().getBinary()
+                this.modelYaml.getStrategy().getBinary().getTest().getBin()
                 .replace(VendorYaml.INJECTION, inj)
-                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexCharacter))
+                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))
                 .replace(VendorYaml.MID, StringUtil.toUrl(Character.toString((char) mid)))
             )
             .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
     @Override
-    public String sqlTimeTest(String check, BinaryMode blindMode) {
+    public String sqlTimeTest(String check, BlindOperator blindMode) {
         String replacement = this.getMode(blindMode);
         int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
@@ -330,7 +330,7 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlBitTestTime(String inj, int indexCharacter, int bit, BinaryMode blindMode) {
+    public String sqlBitTestTime(String inj, int indexChar, int bit, BlindOperator blindMode) {
         String replacement = this.getMode(blindMode);
         int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
@@ -343,14 +343,14 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getBinary().getTest()
                 .getBit()
                 .replace(VendorYaml.INJECTION, inj)
-                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexCharacter))
+                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))
                 .replace(VendorYaml.BIT, Integer.toString(bit))
             )
             .replace(VendorYaml.SLEEP_TIME, Long.toString(countSleepTimeStrategy))
             .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
-    private String getMode(BinaryMode blindMode) {
+    private String getMode(BlindOperator blindMode) {
         String replacement;
         switch (blindMode) {
             case AND: replacement = this.modelYaml.getStrategy().getBinary().getModeAnd(); break;
@@ -383,10 +383,10 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlMultibit(String inj, int indexCharacter, int block){
+    public String sqlMultibit(String inj, int indexChar, int block){
         return this.modelYaml.getStrategy().getBinary().getMultibit()
             .replace(VendorYaml.INJECTION, inj)
-            .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexCharacter))
+            .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))
             .replace(VendorYaml.BLOCK_MULTIBIT, Integer.toString(block));
     }
 
@@ -564,23 +564,23 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public List<String> getFalsy() {
-        return this.modelYaml.getStrategy().getBinary().getTest().getFalsy();
+    public List<String> getFalsyBit() {
+        return this.modelYaml.getStrategy().getBinary().getTest().getFalsyBit();
     }
 
     @Override
-    public List<String> getTruthy() {
-        return this.modelYaml.getStrategy().getBinary().getTest().getTruthy();
+    public List<String> getTruthyBit() {
+        return this.modelYaml.getStrategy().getBinary().getTest().getTruthyBit();
     }
 
     @Override
-    public List<String> getFalsyBinary() {
-        return this.modelYaml.getStrategy().getBinary().getTest().getFalsyBinary();
+    public List<String> getFalsyBin() {
+        return this.modelYaml.getStrategy().getBinary().getTest().getFalsyBin();
     }
 
     @Override
-    public List<String> getTruthyBinary() {
-        return this.modelYaml.getStrategy().getBinary().getTest().getTruthyBinary();
+    public List<String> getTruthyBin() {
+        return this.modelYaml.getStrategy().getBinary().getTest().getTruthyBin();
     }
 
     @Override

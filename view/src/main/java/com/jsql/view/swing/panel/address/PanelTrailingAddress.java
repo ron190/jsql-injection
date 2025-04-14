@@ -135,7 +135,7 @@ public class PanelTrailingAddress extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 Arrays.stream(PanelTrailingAddress.this.popupMenuStrategies.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
-                for (var i = 0; i < PanelTrailingAddress.this.getMenuError().getItemCount() ; i++) {
+                for (var i = 0 ; i < PanelTrailingAddress.this.getMenuError().getItemCount() ; i++) {
                     PanelTrailingAddress.this.getMenuError().getItem(i).updateUI();  // required: incorrect when dark/light mode switch
                 }
                 PanelTrailingAddress.this.popupMenuStrategies.updateUI();  // required: incorrect when dark/light mode switch

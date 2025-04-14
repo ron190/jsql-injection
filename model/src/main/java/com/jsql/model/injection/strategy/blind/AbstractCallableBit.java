@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 /**
  * Callable used to read blind/time database information.
  */
-public abstract class AbstractCallableBinary<T extends AbstractCallableBinary<T>> implements Callable<T> {
+public abstract class AbstractCallableBit<T extends AbstractCallableBit<T>> implements Callable<T> {
     
     /**
      * The URL called.

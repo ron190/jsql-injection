@@ -305,7 +305,7 @@ strategy:
         )
     )
     %26${bit}
-   binary: |
+   bin: |
     ascii(
         substring(
             ${injection},
@@ -314,20 +314,18 @@ strategy:
         )
     )
     %3E%3Dascii('${mid}')
-   truthyBinary:
+   truthyBin:
     - ascii('a')%3E%3Dascii('a')
     - ascii('a')%3E%3Dascii('A')
     - ascii('a')%3E%3Dascii('0')
     - ascii('b')%3E%3Dascii('a')
     - ascii('b')%3E%3Dascii('B')
-    - ascii('b')%3E%3Dascii('0')
     - ascii('1')%3E%3Dascii('0')
-   falsyBinary:
+   falsyBin:
     - ascii('a')%3E%3Dascii('b')
     - ascii('A')%3E%3Dascii('a')
     - ascii('B')%3E%3Dascii('b')
     - ascii('B')%3E%3Dascii('a')
-    - ascii('0')%3E%3Dascii('b')
     - ascii('0')%3E%3Dascii('A')
     - ascii('0')%3E%3Dascii('1')
   modeAnd: and

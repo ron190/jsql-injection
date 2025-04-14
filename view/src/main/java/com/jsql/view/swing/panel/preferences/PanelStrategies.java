@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 public class PanelStrategies extends JPanel {
 
     private final JCheckBox checkboxIsStrategyTimeDisabled = new JCheckBox("Disable Time", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled());
-    private final JCheckBox checkboxIsStrategyBlindDisabled = new JCheckBox("Disable Blind", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled());
+    private final JCheckBox checkboxIsStrategyBlindDisabled = new JCheckBox("Disable Blind bitwise", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled());
     private final JCheckBox checkboxIsStrategyBlindBinaryDisabled = new JCheckBox("Disable Blind binary", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindBinaryDisabled());
     private final JCheckBox checkboxIsStrategyMultibitDisabled = new JCheckBox("Disable Multibit", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled());
     private final JCheckBox checkboxIsStrategyErrorDisabled = new JCheckBox("Disable Error", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());
@@ -18,7 +18,7 @@ public class PanelStrategies extends JPanel {
 
     public PanelStrategies(PanelPreferences panelPreferences) {
         this.checkboxIsStrategyTimeDisabled.setToolTipText("Skip Time strategy processing");
-        this.checkboxIsStrategyBlindDisabled.setToolTipText("Skip Blind strategy processing");
+        this.checkboxIsStrategyBlindDisabled.setToolTipText("Skip Blind bitwise strategy processing");
         this.checkboxIsStrategyBlindBinaryDisabled.setToolTipText("Skip Blind binary strategy processing");
         this.checkboxIsStrategyMultibitDisabled.setToolTipText("Skip Multibit strategy processing");
         this.checkboxIsStrategyErrorDisabled.setToolTipText("Skip Error strategy processing");

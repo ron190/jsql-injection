@@ -25,8 +25,7 @@ public class InjectionVendor {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    // Source code of the FALSE web page (e.g. ?id=-123456789)
-    private String blankFalseMark;
+    private String blankFalseMark;  // Source code of the FALSE web page (e.g. ?id=-123456789)
 
     private List<Diff> constantTrueMark = new ArrayList<>();
 
@@ -34,11 +33,11 @@ public class InjectionVendor {
 
     private final List<String> falsy;
 
-    public InjectionVendor(InjectionModel injectionModel, String vendorSpecificWithMode, Vendor vendor) {
+    public InjectionVendor(InjectionModel injectionModel, String vendorSpecificWithOperator, Vendor vendor) {
         this.injectionModel = injectionModel;
 
-        List<String> truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthy();
-        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsy();
+        List<String> truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();
+        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();
         
         // No blind
         if (truthy.isEmpty() || this.injectionModel.isStoppedByUser()) {
@@ -58,7 +57,7 @@ public class InjectionVendor {
         for (String urlTest: truthy) {
             listCallableTagTrue.add(
                 new CallableVendor(
-                    vendorSpecificWithMode.replace(VendorYaml.TEST, urlTest),
+                    vendorSpecificWithOperator.replace(VendorYaml.TEST, urlTest),
                     this,
                     "vendor#true"
                 )
@@ -89,7 +88,7 @@ public class InjectionVendor {
             Thread.currentThread().interrupt();
         }
         
-        this.initFalseMarks(vendorSpecificWithMode);
+        this.initFalseMarks(vendorSpecificWithOperator);
     }
     
     private void initFalseMarks(String vendorSpecificWithMode) {
@@ -97,7 +96,6 @@ public class InjectionVendor {
         // it will use inject() from the model.
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableVendorTagFalse");
         Collection<CallableVendor> listCallableTagFalse = new ArrayList<>();
-        
         for (String urlTest: this.falsy) {
             listCallableTagFalse.add(
                 new CallableVendor(
@@ -114,13 +112,10 @@ public class InjectionVendor {
         try {
             List<Future<CallableVendor>> listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-        
             for (Future<CallableVendor> falseTag: listTagFalse) {
-                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-
                 this.constantTrueMark.removeAll(falseTag.get().getOpcodes());
             }
         } catch (ExecutionException e) {
@@ -154,7 +149,7 @@ public class InjectionVendor {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);
     }
 
-    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBinary<?> callableBoolean) {
+    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBit<?> callableBoolean) {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);
     }
 

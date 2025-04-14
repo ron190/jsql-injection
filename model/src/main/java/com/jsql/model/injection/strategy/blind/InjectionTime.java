@@ -36,11 +36,11 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
      * If every false requests are under 5 seconds and every true are below 5 seconds,
      * then time attack is confirmed.
      */
-    public InjectionTime(InjectionModel injectionModel, BinaryMode binaryMode) {
-        super(injectionModel, binaryMode);
+    public InjectionTime(InjectionModel injectionModel, BlindOperator blindOperator) {
+        super(injectionModel, blindOperator);
         
         // No blind
-        if (this.falsy.isEmpty() || this.injectionModel.isStoppedByUser()) {
+        if (this.falsyBit.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
 
@@ -48,12 +48,12 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagFalse");
         Collection<CallableTime> callablesFalseTest = new ArrayList<>();
-        for (String falseTest: this.falsy) {
+        for (String falseTest: this.falsyBit) {
             callablesFalseTest.add(new CallableTime(
                 falseTest,
                 injectionModel,
                 this,
-                    binaryMode,
+                    blindOperator,
                 "time#falsy"
             ));
         }
@@ -80,20 +80,20 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
             Thread.currentThread().interrupt();
         }
         
-        this.checkTrueTests(binaryMode);
+        this.checkTrueTests(blindOperator);
     }
 
-    private void checkTrueTests(BinaryMode binaryMode) {
+    private void checkTrueTests(BlindOperator blindOperator) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagTrue");
         Collection<CallableTime> callablesTrueTest = new ArrayList<>();
-        for (String trueTest: this.truthy) {
+        for (String trueTest: this.truthyBit) {
             callablesTrueTest.add(new CallableTime(
                 trueTest,
                 this.injectionModel,
                 this,
-                    binaryMode,
+                    blindOperator,
                 "time#truthy"
             ));
         }
@@ -122,15 +122,15 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
     }
 
     @Override
-    public CallableTime getCallableBitTest(String sqlQuery, int indexCharacter, int bit) {
+    public CallableTime getCallableBitTest(String sqlQuery, int indexChar, int bit) {
         return new CallableTime(
             sqlQuery,
-            indexCharacter,
+            indexChar,
             bit,
             this.injectionModel,
             this,
-            this.binaryMode,
-            "bit#" + indexCharacter + "~" + bit
+            this.blindOperator,
+            "bit#" + indexChar + "~" + bit
         );
     }
 
@@ -143,7 +143,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),
             this.injectionModel,
             this,
-            this.binaryMode,
+            this.blindOperator,
             "time#confirm"
         );
         try {

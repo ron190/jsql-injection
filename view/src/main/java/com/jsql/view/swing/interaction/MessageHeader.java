@@ -12,7 +12,7 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBit;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.panel.consoles.NetworkTable;
@@ -39,7 +39,7 @@ public class MessageHeader implements InteractionCommand {
     private final String size;
     private final String metadataProcess;
     private final String metadataStrategy;
-    private final AbstractCallableBinary<?> metadataBoolean;
+    private final AbstractCallableBit<?> metadataBoolean;
 
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
@@ -52,7 +52,7 @@ public class MessageHeader implements InteractionCommand {
         this.size = (String) params.getOrDefault(Header.PAGE_SIZE, StringUtils.EMPTY);
         this.metadataProcess = (String) params.getOrDefault(Header.METADATA_PROCESS, StringUtils.EMPTY);
         this.metadataStrategy = (String) params.getOrDefault(Header.METADATA_STRATEGY, StringUtils.EMPTY);
-        this.metadataBoolean = (AbstractCallableBinary<?>) params.getOrDefault(Header.METADATA_BOOLEAN, null);
+        this.metadataBoolean = (AbstractCallableBit<?>) params.getOrDefault(Header.METADATA_BOOLEAN, null);
     }
 
     @Override

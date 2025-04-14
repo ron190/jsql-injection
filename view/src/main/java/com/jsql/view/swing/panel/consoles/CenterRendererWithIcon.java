@@ -1,6 +1,6 @@
 package com.jsql.view.swing.panel.consoles;
 
-import com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBit;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
@@ -15,7 +15,7 @@ public class CenterRendererWithIcon extends CenterRenderer {
         Object objectCallableBoolean = ((List<?>) value).get(1);
         
         if (objectCallableBoolean != null) {
-            AbstractCallableBinary<?> callableBoolean = (AbstractCallableBinary<?>) objectCallableBoolean;
+            AbstractCallableBit<?> callableBoolean = (AbstractCallableBit<?>) objectCallableBoolean;
             String charText = callableBoolean.getCharText();
             if (charText != null && charText.charAt(0) >= 32) {
                 text += ":" + callableBoolean.getCharText();
@@ -26,7 +26,7 @@ public class CenterRendererWithIcon extends CenterRenderer {
         label.setIcon(null);  // required to remove icon as same renderer applies to subsequent labels
 
         if (column == 3 && objectCallableBoolean != null) {
-            AbstractCallableBinary<?> callableBoolean = (AbstractCallableBinary<?>) objectCallableBoolean;
+            AbstractCallableBit<?> callableBoolean = (AbstractCallableBit<?>) objectCallableBoolean;
             if (!callableBoolean.isMultibit()) {
                 label.setIcon(callableBoolean.isTrue() ? UiUtil.TICK_GREEN.getIcon() : UiUtil.CROSS_RED.getIcon());
             }

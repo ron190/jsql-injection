@@ -175,7 +175,7 @@ public class StrategyUnion extends AbstractStrategy {
         //     column 2: index
         var lengthFields = new Integer[performanceResults.size()][2];
         
-        for (var i = 0; i < performanceResults.size(); i++) {
+        for (var i = 0 ; i < performanceResults.size() ; i++) {
             lengthFields[i] = new Integer[] {
                 performanceResults.get(i)[1].length() + performanceResults.get(i)[0].length(),
                 Integer.parseInt(performanceResults.get(i)[0])

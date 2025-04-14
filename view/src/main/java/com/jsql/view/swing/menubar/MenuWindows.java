@@ -209,7 +209,7 @@ public class MenuWindows extends JMenu {
         var titleTabSqlEngine = "SQL Engine";
 
         itemSqlEngine.addActionListener(actionEvent -> {
-            for (var i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
+            for (var i = 0 ; i < MediatorHelper.tabResults().getTabCount() ; i++) {
                 if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     MediatorHelper.tabResults().setSelectedIndex(i);
                     return;
@@ -243,7 +243,7 @@ public class MenuWindows extends JMenu {
         var titleTabPreferences = "Preferences";
 
         itemPreferences.addActionListener(actionEvent -> {
-            for (var i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
+            for (var i = 0 ; i < MediatorHelper.tabResults().getTabCount() ; i++) {
                 if (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     MediatorHelper.tabResults().setSelectedIndex(i);
                     return;

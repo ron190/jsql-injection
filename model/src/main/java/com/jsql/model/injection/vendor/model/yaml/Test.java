@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class Test implements Serializable {
 
-    private List<String> falsyBinary = new ArrayList<>();  // vendor specific
-    private List<String> falsy = Arrays.asList(
+    private List<String> falsyBin = new ArrayList<>();  // vendor specific
+    private List<String> falsyBit = Arrays.asList(
         "'a' = 'b'",
         "'a' %21= 'a'",
         "'b' %21= 'b'",
@@ -21,8 +21,8 @@ public class Test implements Serializable {
         "2 %21= 2"
     );
             
-    private List<String> truthyBinary = new ArrayList<>();  // vendor specific
-    private List<String> truthy = Arrays.asList(
+    private List<String> truthyBin = new ArrayList<>();  // vendor specific
+    private List<String> truthyBit = Arrays.asList(
         "'a' = 'a'",
         "'b' = 'b'",
         "'a' %21= 'b'",
@@ -33,39 +33,39 @@ public class Test implements Serializable {
 
     private String init = "0%2b1 = 1";
     private String bit = StringUtils.EMPTY;
-    private String binary = StringUtils.EMPTY;
+    private String bin = StringUtils.EMPTY;
     private String length = StringUtils.EMPTY;
 
-    public List<String> getTruthyBinary() {
-        return this.truthyBinary;
+    public List<String> getTruthyBin() {
+        return this.truthyBin;
     }
 
-    public void setTruthyBinary(List<String> truthyBinary) {
-        this.truthyBinary = truthyBinary;
+    public void setTruthyBin(List<String> truthyBin) {
+        this.truthyBin = truthyBin;
     }
 
-    public List<String> getFalsyBinary() {
-        return this.falsyBinary;
+    public List<String> getFalsyBin() {
+        return this.falsyBin;
     }
 
-    public void setFalsyBinary(List<String> falsyBinary) {
-        this.falsyBinary = falsyBinary;
+    public void setFalsyBin(List<String> falsyBin) {
+        this.falsyBin = falsyBin;
     }
 
-    public List<String> getTruthy() {
-        return this.truthy;
+    public List<String> getTruthyBit() {
+        return this.truthyBit;
     }
 
-    public void setTruthy(List<String> truthy) {
-        this.truthy = truthy;
+    public void setTruthyBit(List<String> truthyBit) {
+        this.truthyBit = truthyBit;
     }
 
-    public List<String> getFalsy() {
-        return this.falsy;
+    public List<String> getFalsyBit() {
+        return this.falsyBit;
     }
 
-    public void setFalsy(List<String> falsy) {
-        this.falsy = falsy;
+    public void setFalsyBit(List<String> falsyBit) {
+        this.falsyBit = falsyBit;
     }
 
     public String getInit() {
@@ -92,27 +92,43 @@ public class Test implements Serializable {
         this.length = length;
     }
 
-    public String getTruthyAsString() {
-        return this.truthy.stream().collect(Collectors.joining(System.lineSeparator()));
+    public String getTruthyBitAsString() {
+        return this.truthyBit.stream().collect(Collectors.joining(System.lineSeparator()));
     }
     
-    public void setTruthy(String truthy) {
-        this.truthy = Arrays.asList(truthy.split("[\r\n]+"));
+    public void setTruthyBit(String truthyBit) {
+        this.truthyBit = Arrays.asList(truthyBit.split("[\r\n]+"));
     }
     
-    public String getFalsyAsString() {
-        return this.falsy.stream().collect(Collectors.joining(System.lineSeparator()));
+    public String getFalsyBitAsString() {
+        return this.falsyBit.stream().collect(Collectors.joining(System.lineSeparator()));
     }
     
-    public void setFalsy(String falsy) {
-        this.falsy = Arrays.asList(falsy.split("[\r\n]+"));
+    public void setFalsyBit(String falsyBit) {
+        this.falsyBit = Arrays.asList(falsyBit.split("[\r\n]+"));
     }
 
-    public String getBinary() {
-        return this.binary;
+    public String getTruthyBinAsString() {
+        return this.truthyBin.stream().collect(Collectors.joining(System.lineSeparator()));
     }
 
-    public void setBinary(String binary) {
-        this.binary = binary;
+    public void setTruthyBin(String truthyBin) {
+        this.truthyBin = Arrays.asList(truthyBin.split("[\r\n]+"));
+    }
+
+    public String getFalsyBinAsString() {
+        return this.falsyBin.stream().collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    public void setFalsyBin(String falsyBin) {
+        this.falsyBin = Arrays.asList(falsyBin.split("[\r\n]+"));
+    }
+
+    public String getBin() {
+        return this.bin;
+    }
+
+    public void setBin(String bin) {
+        this.bin = bin;
     }
 }

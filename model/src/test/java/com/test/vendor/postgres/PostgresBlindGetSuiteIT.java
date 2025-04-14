@@ -45,7 +45,7 @@ class PostgresBlindGetSuiteIT extends ConcretePostgresSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlind(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

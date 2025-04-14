@@ -1,7 +1,7 @@
 package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import name.fraser.neil.plaintext.diff_match_patch;
 import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
@@ -14,61 +14,43 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * position and bit. Diffs represent the differences between
  * the reference page, and the current page.
  */
-public class CallableBlindBinary extends AbstractCallableBinary<CallableBlindBinary> {
-
-    // List of differences found between the reference page, and the current page
-    private LinkedList<Diff> diffsWithReference = new LinkedList<>();
-
+public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
+    
+    private LinkedList<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
+    
     private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();
 
-    private final InjectionBlindBinary injectionBlind;
-
+    private final InjectionBlindBit injectionBlindBit;
+    
     private final InjectionModel injectionModel;
     private final String metadataInjectionProcess;
-    final int low;
-    final int mid;
-    final int high;
-
+    
     /**
      * Constructor for preparation and blind confirmation.
      */
-    public CallableBlindBinary(
-        String sqlQuery,
-        InjectionModel injectionModel,
-        InjectionBlindBinary injectionBlind,
-        BinaryMode blindMode,
-        int low,
-        int mid,
-        int high,
-        String metadataInjectionProcess
-    ) {
-        this.isBinary = true;
-        this.low = low;
-        this.mid = mid;
-        this.high = high;
+    public CallableBlindBit(String sqlQuery, InjectionModel injectionModel, InjectionBlindBit injectionBlindBit, BlindOperator blindMode, String metadataInjectionProcess) {
         this.injectionModel = injectionModel;
-        this.injectionBlind = injectionBlind;
+        this.injectionBlindBit = injectionBlindBit;
         this.metadataInjectionProcess = metadataInjectionProcess;
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(sqlQuery, blindMode);
     }
-
+    
     /**
      * Constructor for bits test.
      */
-    public CallableBlindBinary(
+    public CallableBlindBit(
         String sqlQuery,
-        int indexCharacter,
+        int indexChar,
+        int bit,
         InjectionModel injectionModel,
-        InjectionBlindBinary injectionBlind,
-        BinaryMode blindMode,
-        int low,
-        int mid,
-        int high,
+        InjectionBlindBit injectionBlindBit,
+        BlindOperator blindMode,
         String metadataInjectionProcess
     ) {
-        this(sqlQuery, injectionModel, injectionBlind, blindMode, low, mid, high, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindBinary(sqlQuery, indexCharacter, mid, blindMode);
-        this.currentIndex = indexCharacter;
+        this(sqlQuery, injectionModel, injectionBlindBit, blindMode, metadataInjectionProcess);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(sqlQuery, indexChar, bit, blindMode);
+        this.currentIndex = indexChar;
+        this.currentBit = bit;
     }
 
     /**
@@ -80,7 +62,7 @@ public class CallableBlindBinary extends AbstractCallableBinary<CallableBlindBin
     @Override
     public boolean isTrue() {
         // Fix #95426: ConcurrentModificationException on iterator.next()
-        List<Diff> falseDiffs = new CopyOnWriteArrayList<>(this.injectionBlind.getFalseDiffs());
+        List<Diff> falseDiffs = new CopyOnWriteArrayList<>(this.injectionBlindBit.getFalseDiffs());
         for (Diff falseDiff: falseDiffs) {
             // Fix #4386: NullPointerException on contains()
             // diffsWithReference is initialized to an empty new LinkedList<>()
@@ -97,10 +79,10 @@ public class CallableBlindBinary extends AbstractCallableBinary<CallableBlindBin
      * @return Functional Blind Callable
      */
     @Override
-    public CallableBlindBinary call() {
-        String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        this.diffsWithReference = CallableBlindBinary.DIFF_MATCH_PATCH.diff_main(this.injectionBlind.getSourceReferencePage(), result, true);
-        CallableBlindBinary.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.diffsWithReference);
+    public CallableBlindBit call() {
+        String result = this.injectionBlindBit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
+        this.diffsWithReference = CallableBlindBit.DIFF_MATCH_PATCH.diff_main(this.injectionBlindBit.getSourceReferencePage(), result, true);
+        CallableBlindBit.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.diffsWithReference);
         return this;
     }
     

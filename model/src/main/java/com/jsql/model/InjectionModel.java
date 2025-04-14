@@ -20,7 +20,7 @@ import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.strategy.MediatorStrategy;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBit;
 import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.*;
@@ -121,8 +121,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         this.mediatorStrategy.getUnion().setApplicable(false);
         this.mediatorStrategy.getError().setApplicable(false);
-        this.mediatorStrategy.getBlind().setApplicable(false);
-        this.mediatorStrategy.getBlindBinary().setApplicable(false);
+        this.mediatorStrategy.getBlindBit().setApplicable(false);
+        this.mediatorStrategy.getBlindBin().setApplicable(false);
         this.mediatorStrategy.getMultibit().setApplicable(false);
         this.mediatorStrategy.getTime().setApplicable(false);
         this.mediatorStrategy.getStack().setApplicable(false);
@@ -226,7 +226,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String dataInjection,
         boolean isUsingIndex,
         String metadataInjectionProcess,
-        AbstractCallableBinary<?> callableBoolean,
+        AbstractCallableBit<?> callableBoolean,
         boolean isReport
     ) {
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url

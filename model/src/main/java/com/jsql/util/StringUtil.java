@@ -316,7 +316,7 @@ public final class StringUtil {
             throw new IllegalArgumentException("Invalid hexadecimal String supplied.");
         }
         byte[] bytes = new byte[hexString.length() / 2];
-        for (int i = 0; i < hexString.length(); i += 2) {
+        for (int i = 0 ; i < hexString.length() ; i += 2) {
             bytes[i / 2] = StringUtil.hexToByte(hexString.substring(i, i + 2));
         }
         return bytes;
@@ -332,7 +332,7 @@ public final class StringUtil {
 
     public static byte[] xor(byte[] plaintext, int key) {
         var ciphertext = new byte[plaintext.length];
-        for (var i = 0; i < plaintext.length; i++) {
+        for (var i = 0 ; i < plaintext.length ; i++) {
             ciphertext[i] = (byte) (plaintext[i] ^ (key >>> (8 * (i % 4))));
         }
         return ciphertext;
@@ -345,7 +345,7 @@ public final class StringUtil {
         }
         int chunkSize = 900; // 450 bytes = 900 hex characters
         List<String> chunks = new ArrayList<>();
-        for (int i = 0; i < hexString.length(); i += chunkSize) {
+        for (int i = 0 ; i < hexString.length() ; i += chunkSize) {
             int endIndex = Math.min(i + chunkSize, hexString.length());
             chunks.add(hexString.substring(i, endIndex));
         }

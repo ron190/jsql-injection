@@ -69,7 +69,7 @@ public class SoapUtil {
 
     public boolean isTextNodeInjectable(Document doc, Node node) {
         var nodeList = node.getChildNodes();
-        for (var i = 0; i < nodeList.getLength(); i++) {
+        for (var i = 0 ; i < nodeList.getLength() ; i++) {
             var currentNode = nodeList.item(i);
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                 if (this.isTextNodeInjectable(doc, currentNode)) {  // calls this method for all the children which is Element
@@ -110,7 +110,7 @@ public class SoapUtil {
 
     public static void removeInjectionPoint(Document doc, Node node) {
         var nodeList = node.getChildNodes();
-        for (var i = 0; i < nodeList.getLength(); i++) {
+        for (var i = 0 ; i < nodeList.getLength() ; i++) {
             var currentNode = nodeList.item(i);
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                 SoapUtil.removeInjectionPoint(doc, currentNode);  // calls this method for all the children which is Element

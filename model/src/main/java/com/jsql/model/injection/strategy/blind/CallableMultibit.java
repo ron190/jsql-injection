@@ -4,11 +4,10 @@ import com.jsql.model.InjectionModel;
 import name.fraser.neil.plaintext.diff_match_patch;
 import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CallableMultibit extends AbstractCallableBinary<CallableMultibit> {
+public class CallableMultibit extends AbstractCallableBit<CallableMultibit> {
 
     private LinkedList<Diff> diffsWithReference = new LinkedList<>();
 
@@ -27,7 +26,7 @@ public class CallableMultibit extends AbstractCallableBinary<CallableMultibit> {
 
     public CallableMultibit(
         String sqlQuery,
-        int indexCharacter,
+        int indexChar,
         int block,
         InjectionModel injectionModel,
         InjectionMultibit injectionMultibit,
@@ -36,14 +35,14 @@ public class CallableMultibit extends AbstractCallableBinary<CallableMultibit> {
         this(
             injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
                 sqlQuery,
-                indexCharacter,
+                indexChar,
                 3 * block - 2
             ),
             injectionMultibit,
             metadataInjectionProcess
         );
         this.block = block;
-        this.currentIndex = indexCharacter;
+        this.currentIndex = indexChar;
     }
 
     @Override
@@ -54,8 +53,8 @@ public class CallableMultibit extends AbstractCallableBinary<CallableMultibit> {
 
         this.diffsWithReference.removeAll(this.injectionMultibit.getDiffsCommonWithAllIds());
 
-        for (int i = 0; i < this.injectionMultibit.getDiffsById().size() ; i++) {
-            if (new HashSet<>(this.injectionMultibit.getDiffsById().get(i)).containsAll(this.diffsWithReference)) {
+        for (int i = 0 ; i < this.injectionMultibit.getDiffsById().size() ; i++) {
+            if (this.injectionMultibit.getDiffsById().get(i).containsAll(this.diffsWithReference)) {  // quick-fix HashSet wrapping not working
                 this.idPage = i;
             }
         }
@@ -70,6 +69,7 @@ public class CallableMultibit extends AbstractCallableBinary<CallableMultibit> {
     public List<Diff> getDiffsWithReference() {
         return this.diffsWithReference;
     }
+
     public int getIdPage() {
         return this.idPage;
     }

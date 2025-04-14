@@ -7,10 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class CallableVendor extends AbstractCallableBinary<CallableVendor> {
+public class CallableVendor extends AbstractCallableBit<CallableVendor> {
 
-    // List of differences found between the reference page, and the present page
-    private LinkedList<Diff> opcodes = new LinkedList<>();
+    private LinkedList<Diff> opcodes = new LinkedList<>();  // List of differences found between the reference page, and the present page
 
     private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();
 

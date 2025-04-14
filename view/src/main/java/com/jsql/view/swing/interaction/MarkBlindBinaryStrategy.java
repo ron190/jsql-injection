@@ -25,7 +25,7 @@ public class MarkBlindBinaryStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlindBinary();
+        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlindBin();
         MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(strategy);
     }
 }

@@ -24,8 +24,8 @@ public class MediatorStrategy {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private final AbstractStrategy time;
-    private final AbstractStrategy blind;
-    private final AbstractStrategy blindBinary;
+    private final AbstractStrategy blindBit;
+    private final AbstractStrategy blindBin;
     private final AbstractStrategy multibit;
     private final StrategyError error;
     private final AbstractStrategy union;
@@ -44,14 +44,14 @@ public class MediatorStrategy {
         this.injectionModel = injectionModel;
         
         this.time = new StrategyTime(this.injectionModel);
-        this.blind = new StrategyBlind(this.injectionModel);
-        this.blindBinary = new StrategyBlindBinary(this.injectionModel);
+        this.blindBit = new StrategyBlindBit(this.injectionModel);
+        this.blindBin = new StrategyBlindBin(this.injectionModel);
         this.multibit = new StrategyMultibit(this.injectionModel);
         this.error = new StrategyError(this.injectionModel);
         this.union = new StrategyUnion(this.injectionModel);
         this.stack = new StrategyStack(this.injectionModel);
 
-        this.strategies = Arrays.asList(this.time, this.blindBinary, this.blind, this.multibit, this.error, this.stack, this.union);
+        this.strategies = Arrays.asList(this.time, this.blindBin, this.blindBit, this.multibit, this.error, this.stack, this.union);
     }
     
     public String getMeta() {
@@ -172,8 +172,8 @@ public class MediatorStrategy {
 
         // Test each injection strategies: time < blind binary < blind bitwise < multibit < error < stack < union
         this.time.checkApplicability();
-        this.blindBinary.checkApplicability();
-        this.blind.checkApplicability();
+        this.blindBin.checkApplicability();
+        this.blindBit.checkApplicability();
 
         if (parameterToInject != null) {
             // Multibit requires '0'
@@ -195,8 +195,8 @@ public class MediatorStrategy {
         this.stack.activateWhenApplicable();
         this.error.activateWhenApplicable();
         this.multibit.activateWhenApplicable();
-        this.blind.activateWhenApplicable();
-        this.blindBinary.activateWhenApplicable();
+        this.blindBit.activateWhenApplicable();
+        this.blindBin.activateWhenApplicable();
         this.time.activateWhenApplicable();
 
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null) {  // no strategy found
@@ -228,8 +228,8 @@ public class MediatorStrategy {
         return this.error;
     }
 
-    public AbstractStrategy getBlind() {
-        return this.blind;
+    public AbstractStrategy getBlindBit() {
+        return this.blindBit;
     }
 
     public AbstractStrategy getMultibit() {
@@ -256,7 +256,7 @@ public class MediatorStrategy {
         this.strategy = strategy;
     }
 
-    public AbstractStrategy getBlindBinary() {
-        return this.blindBinary;
+    public AbstractStrategy getBlindBin() {
+        return this.blindBin;
     }
 }

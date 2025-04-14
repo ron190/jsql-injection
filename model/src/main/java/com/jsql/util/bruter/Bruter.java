@@ -40,26 +40,26 @@ public class Bruter {
 
     public long getNumberOfPossibilities() {
         long possibilities = 0;
-        for (int i = this.minLength; i <= this.maxLength; i++) {
+        for (int i = this.minLength ; i <= this.maxLength ; i++) {
             possibilities += (long) Math.pow(this.characters.size(), i);
         }
         return possibilities;
     }
 
     public void addLowerCaseLetters() {
-        for (var c = 'a'; c <= 'z'; c++) {
+        for (var c = 'a' ; c <= 'z' ; c++) {
             this.characters.add(String.valueOf(c));
         }
     }
 
     public void addDigits() {
-        for (var c = 0; c <= 9; c++) {
+        for (var c = 0 ; c <= 9 ; c++) {
             this.characters.add(String.valueOf(c));
         }
     }
 
     public void addUpperCaseLetters() {
-        for (var c = 'A'; c <= 'Z'; c++) {
+        for (var c = 'A' ; c <= 'Z' ; c++) {
             this.characters.add(String.valueOf(c));
         }
     }

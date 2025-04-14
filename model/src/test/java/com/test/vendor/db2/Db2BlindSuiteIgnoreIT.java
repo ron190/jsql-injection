@@ -49,7 +49,7 @@ class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlind(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

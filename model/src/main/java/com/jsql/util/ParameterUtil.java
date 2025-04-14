@@ -150,7 +150,7 @@ public class ParameterUtil {
      * Validates a RFC 7230 field-name.
      */
     public static boolean isInvalidName(String token) {
-        for (int i = 0; i < token.length(); i++) {
+        for (int i = 0 ; i < token.length() ; i++) {
             char c = token.charAt(i);
             if (c > 255 || !ParameterUtil.tchar[c]) {
                 return true;

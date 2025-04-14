@@ -14,7 +14,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.strategy.blind.InjectionMultibit;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -45,7 +45,7 @@ public class StrategyMultibit extends AbstractStrategy {
         }
         this.logChecking();
 
-        this.injectionMultibit = new InjectionMultibit(this.injectionModel, BinaryMode.STACK);
+        this.injectionMultibit = new InjectionMultibit(this.injectionModel, BlindOperator.STACK);
         this.isApplicable = this.injectionMultibit.isInjectable();
 
         if (this.isApplicable) {

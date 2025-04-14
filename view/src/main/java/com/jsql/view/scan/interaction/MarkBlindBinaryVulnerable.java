@@ -32,7 +32,7 @@ public class MarkBlindBinaryVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlindBinary();
+        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlindBin();
         MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

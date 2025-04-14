@@ -2,7 +2,7 @@ package com.jsql.model.injection.vendor.model;
 
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary.BinaryMode;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 
@@ -33,19 +33,19 @@ public interface AbstractVendor {
     String endingComment();
     String fingerprintErrorsAsRegex();
 
-    List<String> getFalsy();
-    List<String> getTruthy();
-    List<String> getFalsyBinary();
-    List<String> getTruthyBinary();
+    List<String> getFalsyBit();
+    List<String> getTruthyBit();
+    List<String> getFalsyBin();
+    List<String> getTruthyBin();
 
     String sqlTestBinaryInit();
-    String sqlTestBlind(String check, BinaryMode blindMode);
-    String sqlBitTestBlind(String inj, int indexCharacter, int bit, BinaryMode blindMode);
-    String sqlTestBlindBinary(String inj, int indexCharacter, int mid, BinaryMode blindMode);
+    String sqlTestBlind(String check, BlindOperator blindMode);
+    String sqlBitTestBlind(String inj, int indexChar, int bit, BlindOperator blindMode);
+    String sqlTestBlindBinary(String inj, int indexChar, int mid, BlindOperator blindMode);
 
-    String sqlTimeTest(String check, BinaryMode blindMode);
-    String sqlBitTestTime(String inj, int indexCharacter, int bit, BinaryMode blindMode);
-    String sqlMultibit(String inj, int indexCharacter, int block);
+    String sqlTimeTest(String check, BlindOperator blindMode);
+    String sqlBitTestTime(String inj, int indexChar, int bit, BlindOperator blindMode);
+    String sqlMultibit(String inj, int indexChar, int block);
 
     String sqlBinaryBlind();
 

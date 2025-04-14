@@ -11,7 +11,7 @@
 package com.jsql.model;
 
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBit;
 
 import java.util.concurrent.SubmissionPublisher;
 
@@ -41,7 +41,7 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
         String dataInjection,
         boolean isUsingIndex,
         String metadataInjectionProcess,
-        AbstractCallableBinary<?> callableBoolean,
+        AbstractCallableBit<?> callableBoolean,
         boolean isReport
     );
     
@@ -54,7 +54,7 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
         return this.inject(dataInjection, false, metadataInjectionProcess, null, false);
     }
 
-    public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBinary<?> callableBoolean) {
+    public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBit<?> callableBoolean) {
         return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, false);
     }
 
@@ -66,7 +66,7 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
         return this.inject(dataInjection, false, metadataInjectionProcess, null, true);
     }
 
-    public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBinary<?> callableBoolean) {
+    public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBit<?> callableBoolean) {
         return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, true);
     }
 

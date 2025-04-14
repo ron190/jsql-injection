@@ -55,8 +55,8 @@ public class InjectionCharInsertion {
         this.injectionModel = injectionModel;
         this.prefixSuffix = prefixSuffix;
         
-        List<String> truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthy();
-        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsy();
+        List<String> truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();
+        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();
         
         // No blind
         if (truthy.isEmpty() || this.injectionModel.isStoppedByUser()) {
@@ -184,7 +184,7 @@ public class InjectionCharInsertion {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);
     }
 
-    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBinary<?> callableBoolean) {
+    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBit<?> callableBoolean) {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);
     }
 

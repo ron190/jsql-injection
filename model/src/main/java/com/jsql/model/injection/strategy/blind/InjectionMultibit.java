@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
-public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit> {
+public class InjectionMultibit extends AbstractInjectionBit<CallableMultibit> {
 
     /**
      * Log4j logger sent to view.
@@ -30,7 +30,7 @@ public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit>
     private List<Diff> diffsCommonWithAllIds = new ArrayList<>();
     private final List<List<Diff>> diffsById = new ArrayList<>();
 
-    public InjectionMultibit(InjectionModel injectionModel, BinaryMode blindMode) {
+    public InjectionMultibit(InjectionModel injectionModel, BlindOperator blindMode) {
         super(injectionModel, blindMode);
         
         if (this.injectionModel.isStoppedByUser()) {
@@ -41,7 +41,7 @@ public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit>
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetMultibitIds");
         Collection<CallableMultibit> callablesId = new ArrayList<>();
 
-        for (int i = 0; i < 8 ; i++) {
+        for (int i = 0 ; i < 8 ; i++) {
             callablesId.add(
                 new CallableMultibit(
                     String.valueOf(i),
@@ -76,14 +76,14 @@ public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit>
         }
     }
 
-    public CallableMultibit getCallableTest(String sqlQuery, int indexCharacter, int block) {
+    public CallableMultibit getCallableTest(String sqlQuery, int indexChar, int block) {
         return new CallableMultibit(
             sqlQuery,
-            indexCharacter,
+            indexChar,
             block,
             this.injectionModel,
             this,
-            "multi#" + indexCharacter + "." + block
+            "multi#" + indexChar + "." + block
         );
     }
 
@@ -107,21 +107,21 @@ public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit>
     }
 
     @Override
-    public void initNextChars(
+    public void initNextChar(
         String sqlQuery,
         List<char[]> bytes,
-        AtomicInteger indexCharacter,
+        AtomicInteger indexChar,
         CompletionService<CallableMultibit> taskCompletionService,
         AtomicInteger countTasksSubmitted,
         CallableMultibit currentCallable
     ) {
-        indexCharacter.incrementAndGet();
+        indexChar.incrementAndGet();
         bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
         for (int block: new int[]{ 1, 2, 3 }) {
             taskCompletionService.submit(
                 this.getCallableTest(
                     sqlQuery,
-                    indexCharacter.get(),
+                    indexChar.get(),
                     block
                 )
             );
@@ -130,7 +130,7 @@ public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit>
     }
 
     @Override
-    public char[] initBinaryMask(List<char[]> bytes, CallableMultibit currentCallable) {
+    public char[] initMaskAsciiChar(List<char[]> bytes, CallableMultibit currentCallable) {
         // Bits for current url
         char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
         this.extractBitsFromBlock(currentCallable, asciiCodeMask);
@@ -156,7 +156,6 @@ public class InjectionMultibit extends AbstractInjectionBinary<CallableMultibit>
     private void convertIdPageToBits(int idPage, char[] bits, int i1, int i2, int i3) {
         String idPageBinary = Integer.toBinaryString(idPage);
         String idPageBinaryPadded = StringUtils.leftPad(idPageBinary, 3, "0");
-
         if (i1 > -1) {
             bits[i1] = idPageBinaryPadded.charAt(0);
         }

@@ -12,10 +12,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * position and bit. Opcodes represent the differences between
  * the reference page, and the resulting page.
  */
-public class CallableCharInsertion extends AbstractCallableBinary<CallableCharInsertion> {
+public class CallableCharInsertion extends AbstractCallableBit<CallableCharInsertion> {
     
-    // List of differences found between the reference page, and the present page
-    private LinkedList<Diff> opcodes = new LinkedList<>();
+    private LinkedList<Diff> opcodes = new LinkedList<>();  // List of differences found between the reference page, and the present page
 
     private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();
 

@@ -23,7 +23,7 @@
         <sonar.java.binaries>target/classes</sonar.java.binaries>
         <sonar.java.source>11</sonar.java.source>
 
-        <commons-text.version>1.13.0</commons-text.version>
+        <commons-text.version>1.13.1</commons-text.version>
         <flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <!-- False positive: GData Java.Exploit.CVE-2021-44228.N Acronis (Static ML) -->
@@ -45,8 +45,7 @@
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
         <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
-        <maven-surefire-report-plugin.version>3.5.2</maven-surefire-report-plugin.version>
-        <pitest-maven.version>1.19.0</pitest-maven.version>
+        <pitest-maven.version>1.19.1</pitest-maven.version>
         <spotbugs-maven-plugin.version>4.9.3.0</spotbugs-maven-plugin.version>
         <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
@@ -116,7 +115,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <!-- plugin not required but 3.5.0 generate error: Cannot invoke "Object.toString()" because "value" is null  -->
-                <version>${maven-surefire-report-plugin.version}</version>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -191,7 +190,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>${maven-surefire-report-plugin.version}</version>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -216,7 +215,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-report-plugin</artifactId>
                     <!-- plugin not required but 3.5.0 generate error: Cannot invoke "Object.toString()" because "value" is null  -->
-                    <version>${maven-surefire-report-plugin.version}</version>
+                    <version>${maven-surefire-plugin.version}</version>
                 </plugin>
                 <!-- Upgrade version for Plugin Updates Report -->
                 <plugin>

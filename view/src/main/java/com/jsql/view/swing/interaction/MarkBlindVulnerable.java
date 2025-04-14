@@ -25,7 +25,7 @@ public class MarkBlindVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlind();
+        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlindBit();
         MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(strategy);
     }
 }

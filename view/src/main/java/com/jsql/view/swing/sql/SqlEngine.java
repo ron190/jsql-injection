@@ -183,10 +183,23 @@ public class SqlEngine extends JPanel {
             v -> SqlEngine.modelYaml.getStrategy().getBinary().setMultibit(v),
             () -> SqlEngine.modelYaml.getStrategy().getBinary().getMultibit()
         )),
-        BIT_TEST(new JSyntaxTextArea(
+        TEST_BIT(new JSyntaxTextArea(
             v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setBit(v),
             () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getBit()
         )),
+        TEST_BIN(new JSyntaxTextArea(
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setBin(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getBin()
+        )),
+        TRUTHY_BIN(new JSyntaxTextArea(
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setTruthyBin(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getTruthyBinAsString()
+        )),
+        FALSY_BIN(new JSyntaxTextArea(
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setFalsyBin(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getFalsyBinAsString()
+        )),
+
 
         // Exploit
         EXPLOIT(new JSyntaxTextArea(
@@ -196,12 +209,12 @@ public class SqlEngine extends JPanel {
 
         // Fingerprint
         TRUTHY(new JSyntaxTextArea(
-            v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setTruthy(v),
-            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getTruthyAsString()
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setTruthyBit(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getTruthyBitAsString()
         )),
         FALSY(new JSyntaxTextArea(
-            v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setFalsy(v),
-            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getFalsyAsString()
+            v -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().setFalsyBit(v),
+            () -> SqlEngine.modelYaml.getStrategy().getBinary().getTest().getFalsyBitAsString()
         )),
         INCORRECT_STRING_ERROR_MESSAGE(new JSyntaxTextArea(
             v -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),
@@ -361,7 +374,10 @@ public class SqlEngine extends JPanel {
             new SimpleEntry<>("Blind", TextareaWithColor.BLIND.getTextArea()),
             new SimpleEntry<>("Time", TextareaWithColor.TIME.getTextArea()),
             new SimpleEntry<>("Multibit", TextareaWithColor.MULTIBIT.getTextArea()),
-            new SimpleEntry<>("Bit test", TextareaWithColor.BIT_TEST.getTextArea())
+            new SimpleEntry<>("Bit test", TextareaWithColor.TEST_BIT.getTextArea()),
+            new SimpleEntry<>("Bin test", TextareaWithColor.TEST_BIN.getTextArea()),
+            new SimpleEntry<>("Bin truthy", TextareaWithColor.TRUTHY_BIN.getTextArea()),
+            new SimpleEntry<>("Bin falsy", TextareaWithColor.FALSY_BIN.getTextArea())
         )
         .forEach(entry -> {
             tabsBoolean.addTab(entry.getKey(), new RTextScrollPane(entry.getValue(), false));
