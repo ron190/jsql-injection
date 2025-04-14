@@ -23,7 +23,7 @@
         <sonar.java.binaries>target/classes</sonar.java.binaries>
         <sonar.java.source>11</sonar.java.source>
 
-        <commons-text.version>1.13.0</commons-text.version>
+        <commons-text.version>1.13.1</commons-text.version>
         <flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <!-- False positive: GData Java.Exploit.CVE-2021-44228.N Acronis (Static ML) -->
