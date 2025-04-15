@@ -23,7 +23,8 @@ class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindDisabled(true);
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true);
 
         model
         .getMediatorUtils()

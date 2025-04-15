@@ -23,8 +23,9 @@ class SqliteUnionSuiteIT extends ConcreteSqliteSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindDisabled(true);
-        
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

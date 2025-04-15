@@ -2,6 +2,7 @@ package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.CallableMultibit;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -116,7 +117,7 @@ public class InjectionMultibit extends AbstractInjectionBit<CallableMultibit> {
         CallableMultibit currentCallable
     ) {
         indexChar.incrementAndGet();
-        bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
+        bytes.add(AbstractInjectionBit.getBitsUnset());
         for (int block: new int[]{ 1, 2, 3 }) {
             taskCompletionService.submit(
                 this.getCallableTest(
@@ -141,12 +142,12 @@ public class InjectionMultibit extends AbstractInjectionBit<CallableMultibit> {
      * Extract 3 bits from callable for specific block
      */
     private void extractBitsFromBlock(CallableMultibit currentCallable, char[] bits) {
-        if (currentCallable.block == 1) {
-            this.convertIdPageToBits(currentCallable.idPage, bits, 0, 1, 2);
-        } else if (currentCallable.block == 2) {
-            this.convertIdPageToBits(currentCallable.idPage, bits, 3, 4, 5);
-        } else if (currentCallable.block == 3) {
-            this.convertIdPageToBits(currentCallable.idPage, bits, -1, 6,7);
+        if (currentCallable.getBlock() == 1) {
+            this.convertIdPageToBits(currentCallable.getIdPage(), bits, 0, 1, 2);
+        } else if (currentCallable.getBlock() == 2) {
+            this.convertIdPageToBits(currentCallable.getIdPage(), bits, 3, 4, 5);
+        } else if (currentCallable.getBlock() == 3) {
+            this.convertIdPageToBits(currentCallable.getIdPage(), bits, -1, 6,7);
         }
     }
 

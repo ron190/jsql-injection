@@ -73,8 +73,8 @@ public class ActionListenerSave implements ActionListener {
         .withIsTamperingSpaceToSharpComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected())
         
         .withIsStrategyTimeDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyTimeDisabled().isSelected())
-        .withIsStrategyBlindDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyBlindDisabled().isSelected())
-        .withIsStrategyBlindBinaryDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyBlindBinaryDisabled().isSelected())
+        .withIsStrategyBlindBitDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyBlindBitDisabled().isSelected())
+        .withIsStrategyBlindBinDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyBlindBinDisabled().isSelected())
         .withIsStrategyMultibitDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyMultibitDisabled().isSelected())
         .withIsStrategyStackDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyStackDisabled().isSelected())
         .withIsStrategyErrorDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyErrorDisabled().isSelected())

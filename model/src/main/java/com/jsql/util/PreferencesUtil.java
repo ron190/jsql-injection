@@ -88,8 +88,8 @@ public class PreferencesUtil {
     private boolean isUrlDecodeDisabled = false;
 
     private boolean isStrategyTimeDisabled = false;
-    private boolean isStrategyBlindDisabled = false;
-    private boolean isStrategyBlindBinaryDisabled = false;
+    private boolean isStrategyBlindBitDisabled = false;
+    private boolean isStrategyBlindBinDisabled = false;
     private boolean isStrategyMultibitDisabled = false;
     private boolean isStrategyStackDisabled = false;
     private boolean isStrategyErrorDisabled = false;
@@ -198,8 +198,8 @@ public class PreferencesUtil {
         this.isLimitingSleepTimeStrategy = preferences.getBoolean("isLimitingSleepTimeStrategy", false);
 
         this.isStrategyTimeDisabled = preferences.getBoolean("isStrategyTimeDisabled", false);
-        this.isStrategyBlindDisabled = preferences.getBoolean("isStrategyBlindDisabled", false);
-        this.isStrategyBlindBinaryDisabled = preferences.getBoolean("isStrategyBlindBinaryDisabled", false);
+        this.isStrategyBlindBitDisabled = preferences.getBoolean("isStrategyBlindBitDisabled", false);
+        this.isStrategyBlindBinDisabled = preferences.getBoolean("isStrategyBlindBinDisabled", false);
         this.isStrategyMultibitDisabled = preferences.getBoolean("isStrategyMultibitDisabled", false);
         this.isStrategyStackDisabled = preferences.getBoolean("isStrategyStackDisabled", false);
         this.isStrategyErrorDisabled = preferences.getBoolean("isStrategyErrorDisabled", false);
@@ -274,8 +274,8 @@ public class PreferencesUtil {
         preferences.putBoolean("isTamperingSpaceToSharpComment", this.isTamperingSpaceToSharpComment);
         
         preferences.putBoolean("isStrategyTimeDisabled", this.isStrategyTimeDisabled);
-        preferences.putBoolean("isStrategyBlindDisabled", this.isStrategyBlindDisabled);
-        preferences.putBoolean("isStrategyBlindBinaryDisabled", this.isStrategyBlindBinaryDisabled);
+        preferences.putBoolean("isStrategyBlindBitDisabled", this.isStrategyBlindBitDisabled);
+        preferences.putBoolean("isStrategyBlindBinDisabled", this.isStrategyBlindBinDisabled);
         preferences.putBoolean("isStrategyMultibitDisabled", this.isStrategyMultibitDisabled);
         preferences.putBoolean("isStrategyStackDisabled", this.isStrategyStackDisabled);
         preferences.putBoolean("isStrategyErrorDisabled", this.isStrategyErrorDisabled);
@@ -501,12 +501,12 @@ public class PreferencesUtil {
         return this.isStrategyTimeDisabled;
     }
 
-    public boolean isStrategyBlindDisabled() {
-        return this.isStrategyBlindDisabled;
+    public boolean isStrategyBlindBitDisabled() {
+        return this.isStrategyBlindBitDisabled;
     }
 
-    public boolean isStrategyBlindBinaryDisabled() {
-        return this.isStrategyBlindBinaryDisabled;
+    public boolean isStrategyBlindBinDisabled() {
+        return this.isStrategyBlindBinDisabled;
     }
 
     public boolean isStrategyMultibitDisabled() {
@@ -796,13 +796,13 @@ public class PreferencesUtil {
         return this;
     }
 
-    public PreferencesUtil withIsStrategyBlindDisabled(boolean isStrategyBlindDisabled) {
-        this.isStrategyBlindDisabled = isStrategyBlindDisabled;
+    public PreferencesUtil withIsStrategyBlindBitDisabled(boolean isStrategyBlindBitDisabled) {
+        this.isStrategyBlindBitDisabled = isStrategyBlindBitDisabled;
         return this;
     }
 
-    public PreferencesUtil withIsStrategyBlindBinaryDisabled(boolean isStrategyBlindBinaryDisabled) {
-        this.isStrategyBlindBinaryDisabled = isStrategyBlindBinaryDisabled;
+    public PreferencesUtil withIsStrategyBlindBinDisabled(boolean isStrategyBlindBinDisabled) {
+        this.isStrategyBlindBinDisabled = isStrategyBlindBinDisabled;
         return this;
     }
 

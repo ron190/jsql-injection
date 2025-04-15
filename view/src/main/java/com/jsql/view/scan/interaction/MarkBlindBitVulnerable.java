@@ -8,24 +8,31 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.swing.interaction;
+package com.jsql.view.scan.interaction;
 
+import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
 
+import java.util.Map;
+
 /**
  * Mark the injection as vulnerable to a blind injection.
  */
-public class MarkBlindBinaryVulnerable implements InteractionCommand {
+public class MarkBlindBitVulnerable implements InteractionCommand {
 
-    public MarkBlindBinaryVulnerable(Object[] interactionParams) {
-        // Do nothing
+    private final String url;
+    
+    @SuppressWarnings("unchecked")
+    public MarkBlindBitVulnerable(Object[] interactionParams) {
+        Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
+        this.url = (String) params.get(Header.URL);
     }
 
     @Override
     public void execute() {
-        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlindBin();
-        MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(strategy);
+        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlindBit();
+        MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

@@ -64,7 +64,7 @@
         <hsqldb.version>2.7.4</hsqldb.version>
         <informix.jdbc.version>15.0.0.1.1</informix.jdbc.version>
         <jaxb-api.version>2.1</jaxb-api.version>
-        <jaybird.version>6.0.0</jaybird.version>
+        <jaybird.version>6.0.1</jaybird.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
         <jna.version>5.17.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
@@ -113,6 +113,15 @@
 
     <build>
         <plugins>
+            <plugin>
+                <!-- todo useless? -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <suppressionsLocation>src/site/checkstyle-suppressions.xml</suppressionsLocation>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>

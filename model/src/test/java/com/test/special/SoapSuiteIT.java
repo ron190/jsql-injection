@@ -32,7 +32,8 @@ class SoapSuiteIT extends ConcreteMySqlErrorSuiteIT {
         .withIsNotTestingConnection(true)  // Expected error 500 on connection test (SQL failure)
         .withIsCheckingAllSoapParam(true)
         .withIsNotSearchingCharInsertion(true)
-        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyMultibitDisabled(true);
 

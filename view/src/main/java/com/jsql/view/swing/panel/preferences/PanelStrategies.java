@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 public class PanelStrategies extends JPanel {
 
     private final JCheckBox checkboxIsStrategyTimeDisabled = new JCheckBox("Disable Time", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled());
-    private final JCheckBox checkboxIsStrategyBlindDisabled = new JCheckBox("Disable Blind bitwise", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled());
-    private final JCheckBox checkboxIsStrategyBlindBinaryDisabled = new JCheckBox("Disable Blind binary", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindBinaryDisabled());
+    private final JCheckBox checkboxIsStrategyBlindBitDisabled = new JCheckBox("Disable Blind bit", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindBitDisabled());
+    private final JCheckBox checkboxIsStrategyBlindBinDisabled = new JCheckBox("Disable Blind bin", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindBinDisabled());
     private final JCheckBox checkboxIsStrategyMultibitDisabled = new JCheckBox("Disable Multibit", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled());
     private final JCheckBox checkboxIsStrategyErrorDisabled = new JCheckBox("Disable Error", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());
     private final JCheckBox checkboxIsStrategyStackDisabled = new JCheckBox("Disable Stack", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackDisabled());
@@ -18,8 +18,8 @@ public class PanelStrategies extends JPanel {
 
     public PanelStrategies(PanelPreferences panelPreferences) {
         this.checkboxIsStrategyTimeDisabled.setToolTipText("Skip Time strategy processing");
-        this.checkboxIsStrategyBlindDisabled.setToolTipText("Skip Blind bitwise strategy processing");
-        this.checkboxIsStrategyBlindBinaryDisabled.setToolTipText("Skip Blind binary strategy processing");
+        this.checkboxIsStrategyBlindBitDisabled.setToolTipText("Skip Blind bit strategy processing");
+        this.checkboxIsStrategyBlindBinDisabled.setToolTipText("Skip Blind bin strategy processing");
         this.checkboxIsStrategyMultibitDisabled.setToolTipText("Skip Multibit strategy processing");
         this.checkboxIsStrategyErrorDisabled.setToolTipText("Skip Error strategy processing");
         this.checkboxIsStrategyStackDisabled.setToolTipText("Skip Stack strategy processing");
@@ -27,8 +27,8 @@ public class PanelStrategies extends JPanel {
 
         Stream.of(
             this.checkboxIsStrategyTimeDisabled,
-            this.checkboxIsStrategyBlindDisabled,
-            this.checkboxIsStrategyBlindBinaryDisabled,
+            this.checkboxIsStrategyBlindBitDisabled,
+            this.checkboxIsStrategyBlindBinDisabled,
             this.checkboxIsStrategyMultibitDisabled,
             this.checkboxIsStrategyErrorDisabled,
             this.checkboxIsStrategyStackDisabled,
@@ -50,8 +50,8 @@ public class PanelStrategies extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.LEADING, false)
                 .addComponent(labelOrigin)
                 .addComponent(this.checkboxIsStrategyTimeDisabled)
-                .addComponent(this.checkboxIsStrategyBlindDisabled)
-                .addComponent(this.checkboxIsStrategyBlindBinaryDisabled)
+                .addComponent(this.checkboxIsStrategyBlindBitDisabled)
+                .addComponent(this.checkboxIsStrategyBlindBinDisabled)
                 .addComponent(this.checkboxIsStrategyMultibitDisabled)
                 .addComponent(this.checkboxIsStrategyErrorDisabled)
                 .addComponent(this.checkboxIsStrategyStackDisabled)
@@ -75,12 +75,12 @@ public class PanelStrategies extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsStrategyBlindDisabled)
+                .addComponent(this.checkboxIsStrategyBlindBitDisabled)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsStrategyBlindBinaryDisabled)
+                .addComponent(this.checkboxIsStrategyBlindBinDisabled)
             )
             .addGroup(
                 groupLayout
@@ -112,12 +112,12 @@ public class PanelStrategies extends JPanel {
         return this.checkboxIsStrategyTimeDisabled;
     }
 
-    public JCheckBox getCheckboxIsStrategyBlindDisabled() {
-        return this.checkboxIsStrategyBlindDisabled;
+    public JCheckBox getCheckboxIsStrategyBlindBitDisabled() {
+        return this.checkboxIsStrategyBlindBitDisabled;
     }
 
-    public JCheckBox getCheckboxIsStrategyBlindBinaryDisabled() {
-        return this.checkboxIsStrategyBlindBinaryDisabled;
+    public JCheckBox getCheckboxIsStrategyBlindBinDisabled() {
+        return this.checkboxIsStrategyBlindBinDisabled;
     }
 
     public JCheckBox getCheckboxIsStrategyStackDisabled() {

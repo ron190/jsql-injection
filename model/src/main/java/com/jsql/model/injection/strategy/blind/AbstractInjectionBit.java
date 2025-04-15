@@ -6,6 +6,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
@@ -39,9 +40,8 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
     public enum BlindOperator {
         AND, OR, STACK, NO_MODE
     }
-    
+
     protected final InjectionModel injectionModel;
-    
     protected final BlindOperator blindOperator;
     
     protected AbstractInjectionBit(InjectionModel injectionModel, BlindOperator blindOperator) {
@@ -164,14 +164,14 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
                 countBadAsciiCode.incrementAndGet();
             }
 
-            currentCallable.charText = Character.toString((char) asciiCode);
+            currentCallable.setCharText(Character.toString((char) asciiCode));
             
             var interaction = new Request();
             interaction.setMessage(Interaction.MESSAGE_BINARY);
             interaction.setParameters(
                 asciiCodeBit
                 + "="
-                + currentCallable.charText
+                + currentCallable.getCharText()
                 .replace("\\n", "\\\\\\n")
                 .replace("\\r", "\\\\\\r")
                 .replace("\\t", "\\\\\\t")
@@ -216,5 +216,9 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
 
     public BlindOperator getBooleanMode() {
         return this.blindOperator;
+    }
+
+    protected static char[] getBitsUnset() {
+        return new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' };
     }
 }

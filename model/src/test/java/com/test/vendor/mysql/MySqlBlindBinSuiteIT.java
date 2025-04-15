@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MySqlBlindSuiteIT extends ConcreteMySqlSuiteIT {
+class MySqlBlindBinSuiteIT extends ConcreteMySqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -25,6 +25,7 @@ class MySqlBlindSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyTimeDisabled(true);
 
         model
@@ -39,6 +40,7 @@ class MySqlBlindSuiteIT extends ConcreteMySqlSuiteIT {
         .withTypeRequest("GET");
         
         model.beginInjection();
+        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlindBin());
     }
     
     @Override
@@ -50,7 +52,7 @@ class MySqlBlindSuiteIT extends ConcreteMySqlSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBit(),
+            this.injectionModel.getMediatorStrategy().getBlindBin(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

@@ -17,15 +17,15 @@ import com.jsql.view.swing.util.MediatorHelper;
 /**
  * Mark the injection as invulnerable to a blind injection.
  */
-public class MarkBlindInvulnerable implements InteractionCommand {
-    
-    public MarkBlindInvulnerable(Object[] interactionParams) {
+public class MarkMultibitInvulnerable implements InteractionCommand {
+
+    public MarkMultibitInvulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlindBit();
+        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getMultibit();
         MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(strategy);
     }
 }

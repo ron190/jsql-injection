@@ -12,7 +12,7 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBit;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.panel.consoles.NetworkTable;

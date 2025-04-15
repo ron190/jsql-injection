@@ -23,7 +23,8 @@ class PostgresUnionGetSuiteIT extends ConcretePostgresSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true);
         
         model

@@ -24,7 +24,8 @@ class StarOnlySuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true);
         
         model.setIsScanning(true);

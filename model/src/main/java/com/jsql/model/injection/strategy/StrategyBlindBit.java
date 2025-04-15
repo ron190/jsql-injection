@@ -40,10 +40,12 @@ public class StrategyBlindBit extends AbstractStrategy {
 
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyBlindBitDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
-        } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBinaryBlind())) {
+        } else if (StringUtils.isEmpty(
+            this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getTest().getBit()
+        )) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
@@ -100,7 +102,7 @@ public class StrategyBlindBit extends AbstractStrategy {
         this.injectionModel.appendAnalysisReport(
             StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithoutIndex(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
                     this.injectionBlindBit.getBooleanMode()
                 ),
@@ -108,12 +110,12 @@ public class StrategyBlindBit extends AbstractStrategy {
                 null
             )
         );
-        this.markVulnerability(Interaction.MARK_BLIND_VULNERABLE);
+        this.markVulnerability(Interaction.MARK_BLIND_BIT_VULNERABLE);
     }
 
     @Override
     public void unallow(int... i) {
-        this.markVulnerability(Interaction.MARK_BLIND_INVULNERABLE);
+        this.markVulnerability(Interaction.MARK_BLIND_BIT_INVULNERABLE);
     }
 
     @Override
@@ -136,9 +138,9 @@ public class StrategyBlindBit extends AbstractStrategy {
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
 
-            var requestMarkBlindStrategy = new Request();
-            requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_STRATEGY);
-            this.injectionModel.sendToViews(requestMarkBlindStrategy);
+            var requestMarkBlindBitStrategy = new Request();
+            requestMarkBlindBitStrategy.setMessage(Interaction.MARK_BLIND_BIT_STRATEGY);
+            this.injectionModel.sendToViews(requestMarkBlindBitStrategy);
         }
     }
     

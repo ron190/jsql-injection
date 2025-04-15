@@ -2,6 +2,8 @@ package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
+import com.jsql.model.injection.strategy.blind.callable.CallableCharInsertion;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -119,7 +121,7 @@ public class InjectionCharInsertion {
     private void initFalseMarks() {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetCharInsertionTagFalse");
         Collection<CallableCharInsertion> listCallableTagFalse = new ArrayList<>();
         
         for (String urlTest: this.falsy) {
@@ -167,7 +169,7 @@ public class InjectionCharInsertion {
                 StringUtils.SPACE,
                 this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, "678")),
                 this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit()
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm()
             ),
             this,
             "prefix#confirm"

@@ -2,6 +2,7 @@ package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.CallableTime;
 import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -140,7 +141,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
             throw new StoppedByUserSlidingException();
         }
         var timeTest = new CallableTime(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),
             this.injectionModel,
             this,
             this.blindOperator,

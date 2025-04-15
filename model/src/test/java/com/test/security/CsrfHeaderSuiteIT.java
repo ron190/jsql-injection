@@ -30,7 +30,8 @@ class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsProcessingCsrf(true)
-        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true);
 
         model

@@ -90,7 +90,7 @@ public class ServerInputConnection {
             this.running = false;
             this.serverInput.close();
         } catch (IOException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Error closing resources: " + e.getMessage());
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Error closing resources: {}", e.getMessage());
         }
     }
 

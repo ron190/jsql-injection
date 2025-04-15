@@ -274,20 +274,18 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestBlind(String check, BlindOperator blindMode) {
+    public String sqlTestBlindWithOperator(String check, BlindOperator blindMode) {
         String replacement = this.getMode(blindMode);
-        return this.modelYaml.getStrategy().getBinary()
-            .getBlind()
+        return this.modelYaml.getStrategy().getBinary().getBlind()
             .replace(VendorYaml.BINARY_MODE, replacement)
             .replace(VendorYaml.TEST, check)
             .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
     @Override
-    public String sqlBitTestBlind(String inj, int indexChar, int bit, BlindOperator blindMode) {
+    public String sqlBlindBit(String inj, int indexChar, int bit, BlindOperator blindMode) {
         String replacement = this.getMode(blindMode);
-        return this.modelYaml.getStrategy().getBinary()
-            .getBlind()
+        return this.modelYaml.getStrategy().getBinary().getBlind()
             .replace(VendorYaml.BINARY_MODE, replacement)
             .replace(
                 VendorYaml.TEST,
@@ -300,10 +298,9 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestBlindBinary(String inj, int indexChar, int mid, BlindOperator blindMode) {
+    public String sqlBlindBin(String inj, int indexChar, int mid, BlindOperator blindMode) {
         String replacement = this.getMode(blindMode);
-        return this.modelYaml.getStrategy().getBinary()
-            .getBlind()
+        return this.modelYaml.getStrategy().getBinary().getBlind()
             .replace(VendorYaml.BINARY_MODE, replacement)
             .replace(
                 VendorYaml.TEST,
@@ -316,13 +313,12 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTimeTest(String check, BlindOperator blindMode) {
+    public String sqlTestTimeWithOperator(String check, BlindOperator blindMode) {
         String replacement = this.getMode(blindMode);
         int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
             : 5;
-        return this.modelYaml.getStrategy().getBinary()
-            .getTime()
+        return this.modelYaml.getStrategy().getBinary().getTime()
             .replace(VendorYaml.BINARY_MODE, replacement)
             .replace(VendorYaml.TEST, check)
             .replace(VendorYaml.SLEEP_TIME, Long.toString(countSleepTimeStrategy))
@@ -330,13 +326,12 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlBitTestTime(String inj, int indexChar, int bit, BlindOperator blindMode) {
+    public String sqlTimeBit(String inj, int indexChar, int bit, BlindOperator blindMode) {
         String replacement = this.getMode(blindMode);
         int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
             : 5;
-        return this.modelYaml.getStrategy().getBinary()
-            .getTime()
+        return this.modelYaml.getStrategy().getBinary().getTime()
             .replace(VendorYaml.BINARY_MODE, replacement)
             .replace(
                 VendorYaml.TEST,
@@ -549,16 +544,6 @@ public class VendorYaml implements AbstractVendor {
     // Getter and setter
 
     @Override
-    public String sqlBinaryBlind() {
-        return this.modelYaml.getStrategy().getBinary().getBlind();
-    }
-
-    @Override
-    public String sqlBinaryTime() {
-        return this.modelYaml.getStrategy().getBinary().getTime();
-    }
-
-    @Override
     public String sqlInfos() {
         return this.modelYaml.getResource().getInfo();
     }
@@ -584,7 +569,7 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestBinaryInit() {
+    public String sqlBlindConfirm() {
         return this.modelYaml.getStrategy().getBinary().getTest().getInit();
     }
 

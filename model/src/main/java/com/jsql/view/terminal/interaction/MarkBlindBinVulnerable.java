@@ -16,13 +16,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Mark the injection as vulnerable to a time based injection.
+ * Mark the injection as vulnerable to a blind injection.
  */
-public class MarkMultiVulnerable implements InteractionCommand {
+public class MarkBlindBinVulnerable implements InteractionCommand {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    public MarkMultiVulnerable(Object[] interactionParams) {
+    public MarkBlindBinVulnerable(Object[] interactionParams) {
         // Do nothing
     }
 

@@ -1,7 +1,8 @@
-package com.jsql.model.injection.strategy.blind;
+package com.jsql.model.injection.strategy.blind.callable;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
+import com.jsql.model.injection.strategy.blind.InjectionTime;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class CallableTime extends AbstractCallableBit<CallableTime> {
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
         this.metadataInjectionProcess = metadataInjectionProcess;
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(sqlQuery, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestTimeWithOperator(sqlQuery, blindMode);
     }
     
     /**
@@ -61,7 +62,7 @@ public class CallableTime extends AbstractCallableBit<CallableTime> {
         String metadataInjectionProcess
     ) {
         this(sqlQuery, injectionModel, injectionTime, blindMode, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(sqlQuery, indexChar, bit, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeBit(sqlQuery, indexChar, bit, blindMode);
         this.currentIndex = indexChar;
         this.currentBit = bit;
     }

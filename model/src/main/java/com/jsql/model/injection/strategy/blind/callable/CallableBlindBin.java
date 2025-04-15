@@ -1,7 +1,8 @@
-package com.jsql.model.injection.strategy.blind;
+package com.jsql.model.injection.strategy.blind.callable;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
+import com.jsql.model.injection.strategy.blind.InjectionBlindBin;
 import name.fraser.neil.plaintext.diff_match_patch;
 import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
@@ -14,43 +15,55 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * position and bit. Diffs represent the differences between
  * the reference page, and the current page.
  */
-public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
-    
-    private LinkedList<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
-    
-    private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();
+public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
 
-    private final InjectionBlindBit injectionBlindBit;
-    
+    private final int low;
+    private final int mid;
+    private final int high;
+
+    private LinkedList<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
+    private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();
+    private final InjectionBlindBin injectionBlind;
+
     private final InjectionModel injectionModel;
     private final String metadataInjectionProcess;
-    
+
     /**
      * Constructor for preparation and blind confirmation.
      */
-    public CallableBlindBit(String sqlQuery, InjectionModel injectionModel, InjectionBlindBit injectionBlindBit, BlindOperator blindMode, String metadataInjectionProcess) {
+    public CallableBlindBin(
+        String sqlQuery,
+        InjectionModel injectionModel,
+        InjectionBlindBin injectionBlind,
+        BlindOperator blindMode,
+        int low, int mid, int high,
+        String metadataInjectionProcess
+    ) {
+        this.isBinary = true;
+        this.low = low;
+        this.mid = mid;
+        this.high = high;
         this.injectionModel = injectionModel;
-        this.injectionBlindBit = injectionBlindBit;
+        this.injectionBlind = injectionBlind;
         this.metadataInjectionProcess = metadataInjectionProcess;
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(sqlQuery, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindMode);
     }
-    
+
     /**
      * Constructor for bits test.
      */
-    public CallableBlindBit(
+    public CallableBlindBin(
         String sqlQuery,
         int indexChar,
-        int bit,
         InjectionModel injectionModel,
-        InjectionBlindBit injectionBlindBit,
+        InjectionBlindBin injectionBlind,
         BlindOperator blindMode,
+        int low, int mid, int high,
         String metadataInjectionProcess
     ) {
-        this(sqlQuery, injectionModel, injectionBlindBit, blindMode, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(sqlQuery, indexChar, bit, blindMode);
+        this(sqlQuery, injectionModel, injectionBlind, blindMode, low, mid, high, metadataInjectionProcess);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBin(sqlQuery, indexChar, mid, blindMode);
         this.currentIndex = indexChar;
-        this.currentBit = bit;
     }
 
     /**
@@ -62,7 +75,7 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
     @Override
     public boolean isTrue() {
         // Fix #95426: ConcurrentModificationException on iterator.next()
-        List<Diff> falseDiffs = new CopyOnWriteArrayList<>(this.injectionBlindBit.getFalseDiffs());
+        List<Diff> falseDiffs = new CopyOnWriteArrayList<>(this.injectionBlind.getFalseDiffs());
         for (Diff falseDiff: falseDiffs) {
             // Fix #4386: NullPointerException on contains()
             // diffsWithReference is initialized to an empty new LinkedList<>()
@@ -79,14 +92,26 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
      * @return Functional Blind Callable
      */
     @Override
-    public CallableBlindBit call() {
-        String result = this.injectionBlindBit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        this.diffsWithReference = CallableBlindBit.DIFF_MATCH_PATCH.diff_main(this.injectionBlindBit.getSourceReferencePage(), result, true);
-        CallableBlindBit.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.diffsWithReference);
+    public CallableBlindBin call() {
+        String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
+        this.diffsWithReference = CallableBlindBin.DIFF_MATCH_PATCH.diff_main(this.injectionBlind.getSourceReferencePage(), result, true);
+        CallableBlindBin.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.diffsWithReference);
         return this;
     }
     
     public List<Diff> getDiffsWithReference() {
         return this.diffsWithReference;
+    }
+
+    public int getLow() {
+        return this.low;
+    }
+
+    public int getMid() {
+        return this.mid;
+    }
+
+    public int getHigh() {
+        return this.high;
     }
 }

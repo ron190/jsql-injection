@@ -8,26 +8,24 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.terminal.interaction;
+package com.jsql.view.swing.interaction;
 
-import com.jsql.util.AnsiColorUtil;
+import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.view.interaction.InteractionCommand;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Mark the injection as vulnerable to a blind injection.
  */
-public class MarkBlindVulnerable implements InteractionCommand {
-    
-    private static final Logger LOGGER = LogManager.getRootLogger();
+public class MarkMultibitVulnerable implements InteractionCommand {
 
-    public MarkBlindVulnerable(Object[] interactionParams) {
+    public MarkMultibitVulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
+        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getMultibit();
+        MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(strategy);
     }
 }

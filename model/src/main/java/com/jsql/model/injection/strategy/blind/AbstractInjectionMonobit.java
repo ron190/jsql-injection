@@ -1,6 +1,7 @@
 package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 
 import java.util.List;
 import java.util.concurrent.CompletionService;
@@ -26,7 +27,7 @@ public abstract class AbstractInjectionMonobit<T extends AbstractCallableBit<T>>
         
         // New undefined bits of the next character
         // Chars all have the last bit set to 0 in Ascii table
-        bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
+        bytes.add(AbstractInjectionBit.getBitsUnset());
         
         // Test the 7 bits for the next character, save its position and current bit for later
         // Ignore last bit 128 and only check for first seven bits

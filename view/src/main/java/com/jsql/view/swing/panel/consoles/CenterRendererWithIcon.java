@@ -1,6 +1,6 @@
 package com.jsql.view.swing.panel.consoles;
 
-import com.jsql.model.injection.strategy.blind.AbstractCallableBit;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;

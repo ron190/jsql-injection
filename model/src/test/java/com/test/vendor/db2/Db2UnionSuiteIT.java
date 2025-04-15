@@ -26,7 +26,8 @@ class Db2UnionSuiteIT extends ConcreteDb2SuiteIT {
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsNotSearchingCharInsertion(true)
-        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyStackDisabled(true);
 
         model

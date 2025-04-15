@@ -38,16 +38,12 @@ public interface AbstractVendor {
     List<String> getFalsyBin();
     List<String> getTruthyBin();
 
-    String sqlTestBinaryInit();
-    String sqlTestBlind(String check, BlindOperator blindMode);
-    String sqlBitTestBlind(String inj, int indexChar, int bit, BlindOperator blindMode);
-    String sqlTestBlindBinary(String inj, int indexChar, int mid, BlindOperator blindMode);
+    String sqlBlindConfirm();
+    String sqlTestBlindWithOperator(String check, BlindOperator blindMode);
+    String sqlBlindBit(String inj, int indexChar, int bit, BlindOperator blindMode);
+    String sqlBlindBin(String inj, int indexChar, int mid, BlindOperator blindMode);
 
-    String sqlTimeTest(String check, BlindOperator blindMode);
-    String sqlBitTestTime(String inj, int indexChar, int bit, BlindOperator blindMode);
+    String sqlTestTimeWithOperator(String check, BlindOperator blindMode);
+    String sqlTimeBit(String inj, int indexChar, int bit, BlindOperator blindMode);
     String sqlMultibit(String inj, int indexChar, int block);
-
-    String sqlBinaryBlind();
-
-    String sqlBinaryTime();
 }

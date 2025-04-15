@@ -34,7 +34,8 @@ class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyStackDisabled(true)
         .withIsStrategyMultibitDisabled(true)

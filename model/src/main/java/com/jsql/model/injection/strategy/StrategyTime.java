@@ -43,7 +43,9 @@ public class StrategyTime extends AbstractStrategy {
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
-        } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBinaryTime())) {
+        } else if (StringUtils.isEmpty(
+            this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getTime()
+        )) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
@@ -100,7 +102,7 @@ public class StrategyTime extends AbstractStrategy {
         this.injectionModel.appendAnalysisReport(
             StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithoutIndex(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestTimeWithOperator(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
                     this.injectionTime.getBooleanMode()
                 ),

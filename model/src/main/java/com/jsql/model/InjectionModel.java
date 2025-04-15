@@ -20,7 +20,7 @@ import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.strategy.MediatorStrategy;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBit;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.*;

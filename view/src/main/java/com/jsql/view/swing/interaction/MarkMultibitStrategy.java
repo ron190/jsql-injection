@@ -17,9 +17,9 @@ import com.jsql.view.swing.util.MediatorHelper;
 /**
  * Mark the injection as vulnerable to a multibit injection.
  */
-public class MarkMultiStrategy implements InteractionCommand {
+public class MarkMultibitStrategy implements InteractionCommand {
 
-    public MarkMultiStrategy(Object[] interactionParams) {
+    public MarkMultibitStrategy(Object[] interactionParams) {
         // Do nothing
     }
 

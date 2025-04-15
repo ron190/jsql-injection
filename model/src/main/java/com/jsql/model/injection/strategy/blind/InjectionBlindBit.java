@@ -2,6 +2,7 @@ package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.CallableBlindBit;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -55,9 +56,8 @@ public class InjectionBlindBit extends AbstractInjectionMonobit<CallableBlindBit
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagFalse");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindBitTagFalse");
         Collection<CallableBlindBit> callablesFalseTest = new ArrayList<>();
-        
         for (String falseTest: this.falsyBit) {
             callablesFalseTest.add(new CallableBlindBit(
                 falseTest,
@@ -101,8 +101,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit<CallableBlindBit
     private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindMode) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
-
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindBitTagTrue");
         Collection<CallableBlindBit> callablesTrueTest = new ArrayList<>();
         for (String trueTest: this.truthyBit) {
             callablesTrueTest.add(new CallableBlindBit(
@@ -134,6 +133,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit<CallableBlindBit
         }
     }
 
+    // todo should not be shared
     @Override
     public CallableBlindBit getCallableBitTest(String sqlQuery, int indexChar, int bit) {
         return new CallableBlindBit(
@@ -153,7 +153,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit<CallableBlindBit
             throw new StoppedByUserSlidingException();
         }
         var blindTest = new CallableBlindBit(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),
             this.injectionModel,
             this,
             this.blindOperator,

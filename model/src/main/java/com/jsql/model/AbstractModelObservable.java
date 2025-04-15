@@ -11,7 +11,7 @@
 package com.jsql.model;
 
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBit;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 
 import java.util.concurrent.SubmissionPublisher;
 

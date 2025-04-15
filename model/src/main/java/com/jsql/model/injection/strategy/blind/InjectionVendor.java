@@ -2,6 +2,8 @@ package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
+import com.jsql.model.injection.strategy.blind.callable.CallableVendor;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.LogLevelUtil;
@@ -132,7 +134,7 @@ public class InjectionVendor {
         }
 
         var blindTest = new CallableVendor(
-            vendorSpecificWithMode.replace(VendorYaml.TEST, this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit()),
+            vendorSpecificWithMode.replace(VendorYaml.TEST, this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm()),
             this,
             "vendor#confirm"
         );

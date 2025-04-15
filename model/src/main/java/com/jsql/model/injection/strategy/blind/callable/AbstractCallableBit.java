@@ -1,4 +1,4 @@
-package com.jsql.model.injection.strategy.blind;
+package com.jsql.model.injection.strategy.blind.callable;
 
 import java.util.concurrent.Callable;
 
@@ -21,8 +21,8 @@ public abstract class AbstractCallableBit<T extends AbstractCallableBit<T>> impl
      * Bit searched.
      */
     protected int currentBit;
-    int idPage = -1;
-    int block = -1;
+    protected int idPage = -1;
+    protected int block = -1;
 
     /**
      * Default call used for bit test.
@@ -33,7 +33,7 @@ public abstract class AbstractCallableBit<T extends AbstractCallableBit<T>> impl
     /**
      * Character representation of Boolean bits
      */
-    protected String charText;
+    private String charText;
     
     /**
      * Check if a response time means the SQL query is true.
@@ -53,11 +53,23 @@ public abstract class AbstractCallableBit<T extends AbstractCallableBit<T>> impl
         return this.charText;
     }
 
+    public void setCharText(String charText) {
+        this.charText = charText;
+    }
+
     public boolean isMultibit() {
         return this.isMultibit;
     }
 
     public boolean isBinary() {
         return this.isBinary;
+    }
+
+    public int getBlock() {
+        return this.block;
+    }
+
+    public int getIdPage() {
+        return this.idPage;
     }
 }

@@ -34,7 +34,8 @@ class PostgresReadFileSuiteIT extends ConcretePostgresSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyStackDisabled(true)
         .withIsStrategyErrorDisabled(true);

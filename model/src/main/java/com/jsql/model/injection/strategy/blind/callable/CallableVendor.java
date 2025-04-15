@@ -1,5 +1,6 @@
-package com.jsql.model.injection.strategy.blind;
+package com.jsql.model.injection.strategy.blind.callable;
 
+import com.jsql.model.injection.strategy.blind.InjectionVendor;
 import name.fraser.neil.plaintext.diff_match_patch;
 import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 

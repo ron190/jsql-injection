@@ -3,6 +3,7 @@ package com.jsql.model.injection.strategy.blind;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.CallableBlindBin;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -60,7 +61,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagFalse");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindBinTagFalse");
         Collection<CallableBlindBin> callablesFalseTest = new ArrayList<>();
         for (String falseTest: this.falsyBin) {
             callablesFalseTest.add(new CallableBlindBin(
@@ -106,7 +107,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
     private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindMode) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindBinTagTrue");
         Collection<CallableBlindBin> callablesTrueTest = new ArrayList<>();
         for (String trueTest: this.truthyBin) {
             callablesTrueTest.add(new CallableBlindBin(
@@ -150,7 +151,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
             throw new StoppedByUserSlidingException();
         }
         var blindTest = new CallableBlindBin(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),
             this.injectionModel,
             this,
             this.blindOperator,
@@ -174,54 +175,32 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
         AtomicInteger countTasksSubmitted,
         CallableBlindBin currentCallable
     ) {
-        var low = InjectionBlindBin.LOW;
-        var mid = InjectionBlindBin.LOW + (InjectionBlindBin.HIGH - InjectionBlindBin.LOW) / 2;
-        var high = InjectionBlindBin.HIGH;
-        AtomicInteger countBadAsciiCode = new AtomicInteger();
+        int low;
+        int mid;
+        int high;
 
         if (currentCallable != null) {
-            char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url
-            low = currentCallable.low;
-            mid = currentCallable.mid;
-            high = currentCallable.high;
+            low = currentCallable.getLow();
+            mid = currentCallable.getMid();
+            high = currentCallable.getHigh();
 
-            if (low == high) {
-                low = currentCallable.isTrue() ? low : low - 1;
-                asciiCodeMask[0] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(0);
-                asciiCodeMask[1] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(1);
-                asciiCodeMask[2] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(2);
-                asciiCodeMask[3] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(3);
-                asciiCodeMask[4] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(4);
-                asciiCodeMask[5] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(5);
-                asciiCodeMask[6] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(6);
-                asciiCodeMask[7] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(7);
+            if (low >= high) {
+                if (low == high) {  // n-1 >= n
+                    low = currentCallable.isTrue() ? low : low - 1;
+                } else {
+                    low = currentCallable.isTrue() ? low : high;
+                }
+                char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url
+                this.setAsciiCodeMask(asciiCodeMask, low);
+
                 try {
+                    AtomicInteger countBadAsciiCode = new AtomicInteger();  // todo unused
                     this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
                 } catch (InjectionFailureException e) {
                     return;
                 }
 
-                bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
-                indexChar.incrementAndGet();
-                low = InjectionBlindBin.LOW;
-                high = InjectionBlindBin.HIGH;
-            } else if (high < low) {
-                low = currentCallable.isTrue() ? low : high;
-                asciiCodeMask[0] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(0);
-                asciiCodeMask[1] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(1);
-                asciiCodeMask[2] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(2);
-                asciiCodeMask[3] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(3);
-                asciiCodeMask[4] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(4);
-                asciiCodeMask[5] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(5);
-                asciiCodeMask[6] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(6);
-                asciiCodeMask[7] = StringUtils.leftPad(Integer.toBinaryString((char) low), 8, "0").charAt(7);
-                try {
-                    this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
-                } catch (InjectionFailureException e) {
-                    return;
-                }
-
-                bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
+                bytes.add(AbstractInjectionBit.getBitsUnset());
                 indexChar.incrementAndGet();
                 low = InjectionBlindBin.LOW;
                 high = InjectionBlindBin.HIGH;
@@ -232,7 +211,10 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
             }
             mid = low + (high - low) / 2;
         } else {
-            bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
+            low = InjectionBlindBin.LOW;
+            mid = InjectionBlindBin.LOW + (InjectionBlindBin.HIGH - InjectionBlindBin.LOW) / 2;
+            high = InjectionBlindBin.HIGH;
+            bytes.add(AbstractInjectionBit.getBitsUnset());
             indexChar.incrementAndGet();
         }
 
@@ -244,10 +226,17 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
                 this,
                 this.blindOperator,
                 low, mid, high,
-                "bit#" + indexChar + "~" //+ bit
+                "bin#" + indexChar + "~" + mid
             )
         );
         countTasksSubmitted.addAndGet(1);
+    }
+
+    private void setAsciiCodeMask(char[] asciiCodeMask, int value) {
+        String binary = StringUtils.leftPad(Integer.toBinaryString((char) value), 8, "0");
+        for (int i = 0; i <= 7; i++) {
+            asciiCodeMask[i] = binary.charAt(i);
+        }
     }
 
     @Override

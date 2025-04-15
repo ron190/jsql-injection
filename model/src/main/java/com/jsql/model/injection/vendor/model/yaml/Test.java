@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 public class Test implements Serializable {
 
+    private static final String REGEX_ARRAY = "[\r\n]+";
+
     private List<String> falsyBin = new ArrayList<>();  // vendor specific
     private List<String> falsyBit = Arrays.asList(
         "'a' = 'b'",
@@ -97,7 +99,7 @@ public class Test implements Serializable {
     }
     
     public void setTruthyBit(String truthyBit) {
-        this.truthyBit = Arrays.asList(truthyBit.split("[\r\n]+"));
+        this.truthyBit = Arrays.asList(truthyBit.split(Test.REGEX_ARRAY));
     }
     
     public String getFalsyBitAsString() {
@@ -105,7 +107,7 @@ public class Test implements Serializable {
     }
     
     public void setFalsyBit(String falsyBit) {
-        this.falsyBit = Arrays.asList(falsyBit.split("[\r\n]+"));
+        this.falsyBit = Arrays.asList(falsyBit.split(Test.REGEX_ARRAY));
     }
 
     public String getTruthyBinAsString() {
@@ -113,7 +115,7 @@ public class Test implements Serializable {
     }
 
     public void setTruthyBin(String truthyBin) {
-        this.truthyBin = Arrays.asList(truthyBin.split("[\r\n]+"));
+        this.truthyBin = Arrays.asList(truthyBin.split(Test.REGEX_ARRAY));
     }
 
     public String getFalsyBinAsString() {
@@ -121,7 +123,7 @@ public class Test implements Serializable {
     }
 
     public void setFalsyBin(String falsyBin) {
-        this.falsyBin = Arrays.asList(falsyBin.split("[\r\n]+"));
+        this.falsyBin = Arrays.asList(falsyBin.split(Test.REGEX_ARRAY));
     }
 
     public String getBin() {
