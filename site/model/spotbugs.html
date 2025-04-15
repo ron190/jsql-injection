@@ -86,8 +86,8 @@
 <th>Errors</th>
 <th>Missing Classes</th></tr>
 <tr class="b">
-<td>220</td>
-<td>231</td>
+<td>222</td>
+<td>232</td>
 <td>0</td>
 <td>0</td></tr></table></section><section>
 <h1>Files</h1>
@@ -198,24 +198,6 @@
 <td><a href="#com.jsql.model.injection.strategy.MediatorStrategy">com.jsql.model.injection.strategy.MediatorStrategy</a></td>
 <td>12</td></tr>
 <tr class="b">
-<td><a href="#com.jsql.model.injection.strategy.blind.CallableBlindBin">com.jsql.model.injection.strategy.blind.CallableBlindBin</a></td>
-<td>2</td></tr>
-<tr class="a">
-<td><a href="#com.jsql.model.injection.strategy.blind.CallableBlindBit">com.jsql.model.injection.strategy.blind.CallableBlindBit</a></td>
-<td>2</td></tr>
-<tr class="b">
-<td><a href="#com.jsql.model.injection.strategy.blind.CallableCharInsertion">com.jsql.model.injection.strategy.blind.CallableCharInsertion</a></td>
-<td>1</td></tr>
-<tr class="a">
-<td><a href="#com.jsql.model.injection.strategy.blind.CallableMultibit">com.jsql.model.injection.strategy.blind.CallableMultibit</a></td>
-<td>1</td></tr>
-<tr class="b">
-<td><a href="#com.jsql.model.injection.strategy.blind.CallableTime">com.jsql.model.injection.strategy.blind.CallableTime</a></td>
-<td>1</td></tr>
-<tr class="a">
-<td><a href="#com.jsql.model.injection.strategy.blind.CallableVendor">com.jsql.model.injection.strategy.blind.CallableVendor</a></td>
-<td>1</td></tr>
-<tr class="b">
 <td><a href="#com.jsql.model.injection.strategy.blind.InjectionBlindBin">com.jsql.model.injection.strategy.blind.InjectionBlindBin</a></td>
 <td>2</td></tr>
 <tr class="a">
@@ -233,6 +215,24 @@
 <tr class="a">
 <td><a href="#com.jsql.model.injection.strategy.blind.InjectionVendor">com.jsql.model.injection.strategy.blind.InjectionVendor</a></td>
 <td>3</td></tr>
+<tr class="b">
+<td><a href="#com.jsql.model.injection.strategy.blind.callable.CallableBlindBin">com.jsql.model.injection.strategy.blind.callable.CallableBlindBin</a></td>
+<td>3</td></tr>
+<tr class="a">
+<td><a href="#com.jsql.model.injection.strategy.blind.callable.CallableBlindBit">com.jsql.model.injection.strategy.blind.callable.CallableBlindBit</a></td>
+<td>2</td></tr>
+<tr class="b">
+<td><a href="#com.jsql.model.injection.strategy.blind.callable.CallableCharInsertion">com.jsql.model.injection.strategy.blind.callable.CallableCharInsertion</a></td>
+<td>1</td></tr>
+<tr class="a">
+<td><a href="#com.jsql.model.injection.strategy.blind.callable.CallableMultibit">com.jsql.model.injection.strategy.blind.callable.CallableMultibit</a></td>
+<td>1</td></tr>
+<tr class="b">
+<td><a href="#com.jsql.model.injection.strategy.blind.callable.CallableTime">com.jsql.model.injection.strategy.blind.callable.CallableTime</a></td>
+<td>1</td></tr>
+<tr class="a">
+<td><a href="#com.jsql.model.injection.strategy.blind.callable.CallableVendor">com.jsql.model.injection.strategy.blind.callable.CallableVendor</a></td>
+<td>1</td></tr>
 <tr class="b">
 <td><a href="#com.jsql.model.injection.vendor.MediatorVendor">com.jsql.model.injection.vendor.MediatorVendor</a></td>
 <td>2</td></tr>
@@ -628,7 +628,7 @@
 <td>Format string should use %n rather than \n in com.jsql.model.accessible.vendor.ExploitH2.runRce(String, UUID)</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#VA_FORMAT_STRING_USES_NEWLINE">VA_FORMAT_STRING_USES_NEWLINE</a></td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L151">151</a></td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L71">71</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.accessible.vendor.ExploitHsqldb"></a><section>
 <h2>com.jsql.model.accessible.vendor.ExploitHsqldb</h2>
 <table class="table table-striped">
@@ -1377,102 +1377,6 @@
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
 <td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L256">256</a></td>
-<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.CallableBlindBin"></a><section>
-<h2>com.jsql.model.injection.strategy.blind.CallableBlindBin</h2>
-<table class="table table-striped">
-<tr class="a">
-<th>Bug</th>
-<th>Category</th>
-<th>Details</th>
-<th>Line</th>
-<th>Priority</th></tr>
-<tr class="b">
-<td>com.jsql.model.injection.strategy.blind.CallableBlindBin.getDiffsWithReference() may expose internal representation by returning CallableBlindBin.diffsWithReference</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/CallableBlindBin.html#L103">103</a></td>
-<td>Medium</td></tr>
-<tr class="a">
-<td>new com.jsql.model.injection.strategy.blind.CallableBlindBin(String, InjectionModel, InjectionBlindBin, AbstractInjectionBit$BlindOperator, int, int, int, String) may expose internal representation by storing an externally mutable object into CallableBlindBin.injectionModel</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/CallableBlindBin.html#L46">46</a></td>
-<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.CallableBlindBit"></a><section>
-<h2>com.jsql.model.injection.strategy.blind.CallableBlindBit</h2>
-<table class="table table-striped">
-<tr class="a">
-<th>Bug</th>
-<th>Category</th>
-<th>Details</th>
-<th>Line</th>
-<th>Priority</th></tr>
-<tr class="b">
-<td>com.jsql.model.injection.strategy.blind.CallableBlindBit.getDiffsWithReference() may expose internal representation by returning CallableBlindBit.diffsWithReference</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/CallableBlindBit.html#L90">90</a></td>
-<td>Medium</td></tr>
-<tr class="a">
-<td>new com.jsql.model.injection.strategy.blind.CallableBlindBit(String, InjectionModel, InjectionBlindBit, AbstractInjectionBit$BlindOperator, String) may expose internal representation by storing an externally mutable object into CallableBlindBit.injectionModel</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/CallableBlindBit.html#L32">32</a></td>
-<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.CallableCharInsertion"></a><section>
-<h2>com.jsql.model.injection.strategy.blind.CallableCharInsertion</h2>
-<table class="table table-striped">
-<tr class="a">
-<th>Bug</th>
-<th>Category</th>
-<th>Details</th>
-<th>Line</th>
-<th>Priority</th></tr>
-<tr class="b">
-<td>com.jsql.model.injection.strategy.blind.CallableCharInsertion.getOpcodes() may expose internal representation by returning CallableCharInsertion.opcodes</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/CallableCharInsertion.html#L72">72</a></td>
-<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.CallableMultibit"></a><section>
-<h2>com.jsql.model.injection.strategy.blind.CallableMultibit</h2>
-<table class="table table-striped">
-<tr class="a">
-<th>Bug</th>
-<th>Category</th>
-<th>Details</th>
-<th>Line</th>
-<th>Priority</th></tr>
-<tr class="b">
-<td>com.jsql.model.injection.strategy.blind.CallableMultibit.getDiffsWithReference() may expose internal representation by returning CallableMultibit.diffsWithReference</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/CallableMultibit.html#L70">70</a></td>
-<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.CallableTime"></a><section>
-<h2>com.jsql.model.injection.strategy.blind.CallableTime</h2>
-<table class="table table-striped">
-<tr class="a">
-<th>Bug</th>
-<th>Category</th>
-<th>Details</th>
-<th>Line</th>
-<th>Priority</th></tr>
-<tr class="b">
-<td>new com.jsql.model.injection.strategy.blind.CallableTime(String, InjectionModel, InjectionTime, AbstractInjectionBit$BlindOperator, String) may expose internal representation by storing an externally mutable object into CallableTime.injectionModel</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/CallableTime.html#L45">45</a></td>
-<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.CallableVendor"></a><section>
-<h2>com.jsql.model.injection.strategy.blind.CallableVendor</h2>
-<table class="table table-striped">
-<tr class="a">
-<th>Bug</th>
-<th>Category</th>
-<th>Details</th>
-<th>Line</th>
-<th>Priority</th></tr>
-<tr class="b">
-<td>com.jsql.model.injection.strategy.blind.CallableVendor.getOpcodes() may expose internal representation by returning CallableVendor.opcodes</td>
-<td>MALICIOUS_CODE</td>
-<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/CallableVendor.html#L50">50</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.InjectionBlindBin"></a><section>
 <h2>com.jsql.model.injection.strategy.blind.InjectionBlindBin</h2>
 <table class="table table-striped">
@@ -1486,13 +1390,13 @@
 <td>Exception thrown in class com.jsql.model.injection.strategy.blind.InjectionBlindBin at new com.jsql.model.injection.strategy.blind.InjectionBlindBin(InjectionModel, AbstractInjectionBit$BlindOperator) will leave the constructor. The object under construction remains partially initialized and may be vulnerable to Finalizer attacks.</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#CT_CONSTRUCTOR_THROW">CT_CONSTRUCTOR_THROW</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBin.html#L103">103</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBin.html#L104">104</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>com.jsql.model.injection.strategy.blind.InjectionBlindBin.getFalseDiffs() may expose internal representation by returning InjectionBlindBin.falseDiffs</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBin.html#L271">271</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBin.html#L260">260</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.InjectionBlindBit"></a><section>
 <h2>com.jsql.model.injection.strategy.blind.InjectionBlindBit</h2>
 <table class="table table-striped">
@@ -1526,19 +1430,19 @@
 <td>Exception thrown in class com.jsql.model.injection.strategy.blind.InjectionCharInsertion at new com.jsql.model.injection.strategy.blind.InjectionCharInsertion(InjectionModel, String, String) will leave the constructor. The object under construction remains partially initialized and may be vulnerable to Finalizer attacks.</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#CT_CONSTRUCTOR_THROW">CT_CONSTRUCTOR_THROW</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionCharInsertion.html#L116">116</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionCharInsertion.html#L118">118</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>com.jsql.model.injection.strategy.blind.InjectionCharInsertion.getConstantTrueMark() may expose internal representation by returning InjectionCharInsertion.constantTrueMark</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionCharInsertion.html#L199">199</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionCharInsertion.html#L201">201</a></td>
 <td>Medium</td></tr>
 <tr class="b">
 <td>new com.jsql.model.injection.strategy.blind.InjectionCharInsertion(InjectionModel, String, String) may expose internal representation by storing an externally mutable object into InjectionCharInsertion.injectionModel</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionCharInsertion.html#L55">55</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionCharInsertion.html#L57">57</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.InjectionMultibit"></a><section>
 <h2>com.jsql.model.injection.strategy.blind.InjectionMultibit</h2>
 <table class="table table-striped">
@@ -1552,13 +1456,13 @@
 <td>com.jsql.model.injection.strategy.blind.InjectionMultibit.getDiffsById() may expose internal representation by returning InjectionMultibit.diffsById</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionMultibit.html#L178">178</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionMultibit.html#L179">179</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>com.jsql.model.injection.strategy.blind.InjectionMultibit.getDiffsCommonWithAllIds() may expose internal representation by returning InjectionMultibit.diffsCommonWithAllIds</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionMultibit.html#L174">174</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionMultibit.html#L175">175</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.InjectionTime"></a><section>
 <h2>com.jsql.model.injection.strategy.blind.InjectionTime</h2>
 <table class="table table-striped">
@@ -1572,7 +1476,7 @@
 <td>Exception thrown in class com.jsql.model.injection.strategy.blind.InjectionTime at new com.jsql.model.injection.strategy.blind.InjectionTime(InjectionModel, AbstractInjectionBit$BlindOperator) will leave the constructor. The object under construction remains partially initialized and may be vulnerable to Finalizer attacks.</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#CT_CONSTRUCTOR_THROW">CT_CONSTRUCTOR_THROW</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionTime.html#L83">83</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionTime.html#L84">84</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.InjectionVendor"></a><section>
 <h2>com.jsql.model.injection.strategy.blind.InjectionVendor</h2>
 <table class="table table-striped">
@@ -1586,19 +1490,121 @@
 <td>Exception thrown in class com.jsql.model.injection.strategy.blind.InjectionVendor at new com.jsql.model.injection.strategy.blind.InjectionVendor(InjectionModel, String, Vendor) will leave the constructor. The object under construction remains partially initialized and may be vulnerable to Finalizer attacks.</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#CT_CONSTRUCTOR_THROW">CT_CONSTRUCTOR_THROW</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionVendor.html#L91">91</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionVendor.html#L93">93</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>com.jsql.model.injection.strategy.blind.InjectionVendor.getConstantTrueMark() may expose internal representation by returning InjectionVendor.constantTrueMark</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionVendor.html#L164">164</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionVendor.html#L166">166</a></td>
 <td>Medium</td></tr>
 <tr class="b">
 <td>new com.jsql.model.injection.strategy.blind.InjectionVendor(InjectionModel, String, Vendor) may expose internal representation by storing an externally mutable object into InjectionVendor.injectionModel</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionVendor.html#L37">37</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionVendor.html#L39">39</a></td>
+<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.callable.CallableBlindBin"></a><section>
+<h2>com.jsql.model.injection.strategy.blind.callable.CallableBlindBin</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Bug</th>
+<th>Category</th>
+<th>Details</th>
+<th>Line</th>
+<th>Priority</th></tr>
+<tr class="b">
+<td>com.jsql.model.injection.strategy.blind.callable.CallableBlindBin.getDiffsWithReference() may expose internal representation by returning CallableBlindBin.diffsWithReference</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/callable/CallableBlindBin.html#L103">103</a></td>
+<td>Medium</td></tr>
+<tr class="a">
+<td>new com.jsql.model.injection.strategy.blind.callable.CallableBlindBin(String, InjectionModel, InjectionBlindBin, AbstractInjectionBit$BlindOperator, int, int, int, String) may expose internal representation by storing an externally mutable object into CallableBlindBin.injectionBlind</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/callable/CallableBlindBin.html#L47">47</a></td>
+<td>Medium</td></tr>
+<tr class="b">
+<td>new com.jsql.model.injection.strategy.blind.callable.CallableBlindBin(String, InjectionModel, InjectionBlindBin, AbstractInjectionBit$BlindOperator, int, int, int, String) may expose internal representation by storing an externally mutable object into CallableBlindBin.injectionModel</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/callable/CallableBlindBin.html#L46">46</a></td>
+<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.callable.CallableBlindBit"></a><section>
+<h2>com.jsql.model.injection.strategy.blind.callable.CallableBlindBit</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Bug</th>
+<th>Category</th>
+<th>Details</th>
+<th>Line</th>
+<th>Priority</th></tr>
+<tr class="b">
+<td>com.jsql.model.injection.strategy.blind.callable.CallableBlindBit.getDiffsWithReference() may expose internal representation by returning CallableBlindBit.diffsWithReference</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/callable/CallableBlindBit.html#L91">91</a></td>
+<td>Medium</td></tr>
+<tr class="a">
+<td>new com.jsql.model.injection.strategy.blind.callable.CallableBlindBit(String, InjectionModel, InjectionBlindBit, AbstractInjectionBit$BlindOperator, String) may expose internal representation by storing an externally mutable object into CallableBlindBit.injectionModel</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/callable/CallableBlindBit.html#L33">33</a></td>
+<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.callable.CallableCharInsertion"></a><section>
+<h2>com.jsql.model.injection.strategy.blind.callable.CallableCharInsertion</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Bug</th>
+<th>Category</th>
+<th>Details</th>
+<th>Line</th>
+<th>Priority</th></tr>
+<tr class="b">
+<td>com.jsql.model.injection.strategy.blind.callable.CallableCharInsertion.getOpcodes() may expose internal representation by returning CallableCharInsertion.opcodes</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/callable/CallableCharInsertion.html#L73">73</a></td>
+<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.callable.CallableMultibit"></a><section>
+<h2>com.jsql.model.injection.strategy.blind.callable.CallableMultibit</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Bug</th>
+<th>Category</th>
+<th>Details</th>
+<th>Line</th>
+<th>Priority</th></tr>
+<tr class="b">
+<td>com.jsql.model.injection.strategy.blind.callable.CallableMultibit.getDiffsWithReference() may expose internal representation by returning CallableMultibit.diffsWithReference</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/callable/CallableMultibit.html#L71">71</a></td>
+<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.callable.CallableTime"></a><section>
+<h2>com.jsql.model.injection.strategy.blind.callable.CallableTime</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Bug</th>
+<th>Category</th>
+<th>Details</th>
+<th>Line</th>
+<th>Priority</th></tr>
+<tr class="b">
+<td>new com.jsql.model.injection.strategy.blind.callable.CallableTime(String, InjectionModel, InjectionTime, AbstractInjectionBit$BlindOperator, String) may expose internal representation by storing an externally mutable object into CallableTime.injectionModel</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/callable/CallableTime.html#L46">46</a></td>
+<td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.callable.CallableVendor"></a><section>
+<h2>com.jsql.model.injection.strategy.blind.callable.CallableVendor</h2>
+<table class="table table-striped">
+<tr class="a">
+<th>Bug</th>
+<th>Category</th>
+<th>Details</th>
+<th>Line</th>
+<th>Priority</th></tr>
+<tr class="b">
+<td>com.jsql.model.injection.strategy.blind.callable.CallableVendor.getOpcodes() may expose internal representation by returning CallableVendor.opcodes</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/callable/CallableVendor.html#L51">51</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.injection.vendor.MediatorVendor"></a><section>
 <h2>com.jsql.model.injection.vendor.MediatorVendor</h2>
 <table class="table table-striped">
@@ -1632,7 +1638,7 @@
 <td>com.jsql.model.injection.vendor.model.VendorYaml.getModelYaml() may expose internal representation by returning VendorYaml.modelYaml</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/model/VendorYaml.html#L608">608</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/model/VendorYaml.html#L593">593</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>new com.jsql.model.injection.vendor.model.VendorYaml(String, InjectionModel) may expose internal representation by storing an externally mutable object into VendorYaml.injectionModel</td>
@@ -1904,49 +1910,49 @@
 <td>com.jsql.model.injection.vendor.model.yaml.Test.getFalsyBin() may expose internal representation by returning Test.falsyBin</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L48">48</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L50">50</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>com.jsql.model.injection.vendor.model.yaml.Test.getFalsyBit() may expose internal representation by returning Test.falsyBit</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L64">64</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L66">66</a></td>
 <td>Medium</td></tr>
 <tr class="b">
 <td>com.jsql.model.injection.vendor.model.yaml.Test.getTruthyBin() may expose internal representation by returning Test.truthyBin</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L40">40</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L42">42</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>com.jsql.model.injection.vendor.model.yaml.Test.getTruthyBit() may expose internal representation by returning Test.truthyBit</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L56">56</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L58">58</a></td>
 <td>Medium</td></tr>
 <tr class="b">
 <td>com.jsql.model.injection.vendor.model.yaml.Test.setFalsyBin(List) may expose internal representation by storing an externally mutable object into Test.falsyBin</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L52">52</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L54">54</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>com.jsql.model.injection.vendor.model.yaml.Test.setFalsyBit(List) may expose internal representation by storing an externally mutable object into Test.falsyBit</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L68">68</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L70">70</a></td>
 <td>Medium</td></tr>
 <tr class="b">
 <td>com.jsql.model.injection.vendor.model.yaml.Test.setTruthyBin(List) may expose internal representation by storing an externally mutable object into Test.truthyBin</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L44">44</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L46">46</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>com.jsql.model.injection.vendor.model.yaml.Test.setTruthyBit(List) may expose internal representation by storing an externally mutable object into Test.truthyBit</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L60">60</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/model/yaml/Test.html#L62">62</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.suspendable.AbstractSuspendable"></a><section>
 <h2>com.jsql.model.suspendable.AbstractSuspendable</h2>
 <table class="table table-striped">

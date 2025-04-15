@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractInjectionMonobit.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.strategy.blind</a> &gt; <span class="el_source">AbstractInjectionMonobit.java</span></div><h1>AbstractInjectionMonobit.java</h1><pre class="source lang-java linenums">package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 
 import java.util.List;
 import java.util.concurrent.CompletionService;
@@ -9,8 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class AbstractInjectionMonobit&lt;T extends AbstractCallableBit&lt;T&gt;&gt; extends AbstractInjectionBit&lt;T&gt; {
 
     protected AbstractInjectionMonobit(InjectionModel injectionModel, BlindOperator blindOperator) {
-<span class="fc" id="L12">        super(injectionModel, blindOperator);</span>
-<span class="fc" id="L13">    }</span>
+<span class="fc" id="L13">        super(injectionModel, blindOperator);</span>
+<span class="fc" id="L14">    }</span>
     
     abstract T getCallableBitTest(String sqlQuery, int indexChar, int bit);
 
@@ -22,33 +23,33 @@ public abstract class AbstractInjectionMonobit&lt;T extends AbstractCallableBit&
         AtomicInteger countTasksSubmitted,
         T currentCallable
     ) {
-<span class="fc" id="L25">        indexChar.incrementAndGet();</span>
+<span class="fc" id="L26">        indexChar.incrementAndGet();</span>
         
         // New undefined bits of the next character
         // Chars all have the last bit set to 0 in Ascii table
-<span class="fc" id="L29">        bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });</span>
+<span class="fc" id="L30">        bytes.add(AbstractInjectionBit.getBitsUnset());</span>
         
         // Test the 7 bits for the next character, save its position and current bit for later
         // Ignore last bit 128 and only check for first seven bits
-<span class="fc bfc" id="L33" title="All 2 branches covered.">        for (int bit: new int[]{ 1, 2, 4, 8, 16, 32, 64 }) {</span>
-<span class="fc" id="L34">            taskCompletionService.submit(</span>
-<span class="fc" id="L35">                this.getCallableBitTest(</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (int bit: new int[]{ 1, 2, 4, 8, 16, 32, 64 }) {</span>
+<span class="fc" id="L35">            taskCompletionService.submit(</span>
+<span class="fc" id="L36">                this.getCallableBitTest(</span>
                     sqlQuery,
-<span class="fc" id="L37">                    indexChar.get(),</span>
+<span class="fc" id="L38">                    indexChar.get(),</span>
                     bit
                 )
             );
-<span class="fc" id="L41">            countTasksSubmitted.addAndGet(1);</span>
+<span class="fc" id="L42">            countTasksSubmitted.addAndGet(1);</span>
         }
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L44">    }</span>
 
     public char[] initMaskAsciiChar(List&lt;char[]&gt; bytes, T currentCallable) {
-<span class="fc" id="L46">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url</span>
-<span class="fc" id="L47">        int positionInMask = (int) (</span>
-<span class="fc" id="L48">            8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2)  // some math (2^x =&gt; x)</span>
+<span class="fc" id="L47">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url</span>
+<span class="fc" id="L48">        int positionInMask = (int) (</span>
+<span class="fc" id="L49">            8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2)  // some math (2^x =&gt; x)</span>
         );
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';  // set current bit</span>
-<span class="fc" id="L51">        return asciiCodeMask;</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';  // set current bit</span>
+<span class="fc" id="L52">        return asciiCodeMask;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

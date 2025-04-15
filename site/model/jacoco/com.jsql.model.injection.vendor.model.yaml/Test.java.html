@@ -11,8 +11,10 @@ import java.util.stream.Collectors;
 
 <span class="fc" id="L12">public class Test implements Serializable {</span>
 
-<span class="fc" id="L14">    private List&lt;String&gt; falsyBin = new ArrayList&lt;&gt;();  // vendor specific</span>
-<span class="fc" id="L15">    private List&lt;String&gt; falsyBit = Arrays.asList(</span>
+    private static final String REGEX_ARRAY = &quot;[\r\n]+&quot;;
+
+<span class="fc" id="L16">    private List&lt;String&gt; falsyBin = new ArrayList&lt;&gt;();  // vendor specific</span>
+<span class="fc" id="L17">    private List&lt;String&gt; falsyBit = Arrays.asList(</span>
         &quot;'a' = 'b'&quot;,
         &quot;'a' %21= 'a'&quot;,
         &quot;'b' %21= 'b'&quot;,
@@ -21,8 +23,8 @@ import java.util.stream.Collectors;
         &quot;2 %21= 2&quot;
     );
             
-<span class="fc" id="L24">    private List&lt;String&gt; truthyBin = new ArrayList&lt;&gt;();  // vendor specific</span>
-<span class="fc" id="L25">    private List&lt;String&gt; truthyBit = Arrays.asList(</span>
+<span class="fc" id="L26">    private List&lt;String&gt; truthyBin = new ArrayList&lt;&gt;();  // vendor specific</span>
+<span class="fc" id="L27">    private List&lt;String&gt; truthyBit = Arrays.asList(</span>
         &quot;'a' = 'a'&quot;,
         &quot;'b' = 'b'&quot;,
         &quot;'a' %21= 'b'&quot;,
@@ -31,105 +33,105 @@ import java.util.stream.Collectors;
         &quot;1 %21= 2&quot;
     );
 
-<span class="fc" id="L34">    private String init = &quot;0%2b1 = 1&quot;;</span>
-<span class="fc" id="L35">    private String bit = StringUtils.EMPTY;</span>
-<span class="fc" id="L36">    private String bin = StringUtils.EMPTY;</span>
-<span class="fc" id="L37">    private String length = StringUtils.EMPTY;</span>
+<span class="fc" id="L36">    private String init = &quot;0%2b1 = 1&quot;;</span>
+<span class="fc" id="L37">    private String bit = StringUtils.EMPTY;</span>
+<span class="fc" id="L38">    private String bin = StringUtils.EMPTY;</span>
+<span class="fc" id="L39">    private String length = StringUtils.EMPTY;</span>
 
     public List&lt;String&gt; getTruthyBin() {
-<span class="fc" id="L40">        return this.truthyBin;</span>
+<span class="fc" id="L42">        return this.truthyBin;</span>
     }
 
     public void setTruthyBin(List&lt;String&gt; truthyBin) {
-<span class="fc" id="L44">        this.truthyBin = truthyBin;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L46">        this.truthyBin = truthyBin;</span>
+<span class="fc" id="L47">    }</span>
 
     public List&lt;String&gt; getFalsyBin() {
-<span class="fc" id="L48">        return this.falsyBin;</span>
+<span class="fc" id="L50">        return this.falsyBin;</span>
     }
 
     public void setFalsyBin(List&lt;String&gt; falsyBin) {
-<span class="fc" id="L52">        this.falsyBin = falsyBin;</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L54">        this.falsyBin = falsyBin;</span>
+<span class="fc" id="L55">    }</span>
 
     public List&lt;String&gt; getTruthyBit() {
-<span class="fc" id="L56">        return this.truthyBit;</span>
+<span class="fc" id="L58">        return this.truthyBit;</span>
     }
 
     public void setTruthyBit(List&lt;String&gt; truthyBit) {
-<span class="fc" id="L60">        this.truthyBit = truthyBit;</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L62">        this.truthyBit = truthyBit;</span>
+<span class="fc" id="L63">    }</span>
 
     public List&lt;String&gt; getFalsyBit() {
-<span class="fc" id="L64">        return this.falsyBit;</span>
+<span class="fc" id="L66">        return this.falsyBit;</span>
     }
 
     public void setFalsyBit(List&lt;String&gt; falsyBit) {
-<span class="fc" id="L68">        this.falsyBit = falsyBit;</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L70">        this.falsyBit = falsyBit;</span>
+<span class="fc" id="L71">    }</span>
 
     public String getInit() {
-<span class="fc" id="L72">        return this.init;</span>
+<span class="fc" id="L74">        return this.init;</span>
     }
 
     public void setInit(String init) {
-<span class="fc" id="L76">        this.init = init;</span>
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L78">        this.init = init;</span>
+<span class="fc" id="L79">    }</span>
 
     public String getBit() {
-<span class="fc" id="L80">        return this.bit;</span>
+<span class="fc" id="L82">        return this.bit;</span>
     }
 
     public void setBit(String bit) {
-<span class="fc" id="L84">        this.bit = bit;</span>
-<span class="fc" id="L85">    }</span>
+<span class="fc" id="L86">        this.bit = bit;</span>
+<span class="fc" id="L87">    }</span>
 
     public String getLength() {
-<span class="nc" id="L88">        return this.length;</span>
+<span class="nc" id="L90">        return this.length;</span>
     }
 
     public void setLength(String length) {
-<span class="nc" id="L92">        this.length = length;</span>
-<span class="nc" id="L93">    }</span>
+<span class="nc" id="L94">        this.length = length;</span>
+<span class="nc" id="L95">    }</span>
 
     public String getTruthyBitAsString() {
-<span class="nc" id="L96">        return this.truthyBit.stream().collect(Collectors.joining(System.lineSeparator()));</span>
+<span class="nc" id="L98">        return this.truthyBit.stream().collect(Collectors.joining(System.lineSeparator()));</span>
     }
     
     public void setTruthyBit(String truthyBit) {
-<span class="nc" id="L100">        this.truthyBit = Arrays.asList(truthyBit.split(&quot;[\r\n]+&quot;));</span>
-<span class="nc" id="L101">    }</span>
+<span class="nc" id="L102">        this.truthyBit = Arrays.asList(truthyBit.split(Test.REGEX_ARRAY));</span>
+<span class="nc" id="L103">    }</span>
     
     public String getFalsyBitAsString() {
-<span class="nc" id="L104">        return this.falsyBit.stream().collect(Collectors.joining(System.lineSeparator()));</span>
+<span class="nc" id="L106">        return this.falsyBit.stream().collect(Collectors.joining(System.lineSeparator()));</span>
     }
     
     public void setFalsyBit(String falsyBit) {
-<span class="nc" id="L108">        this.falsyBit = Arrays.asList(falsyBit.split(&quot;[\r\n]+&quot;));</span>
-<span class="nc" id="L109">    }</span>
+<span class="nc" id="L110">        this.falsyBit = Arrays.asList(falsyBit.split(Test.REGEX_ARRAY));</span>
+<span class="nc" id="L111">    }</span>
 
     public String getTruthyBinAsString() {
-<span class="nc" id="L112">        return this.truthyBin.stream().collect(Collectors.joining(System.lineSeparator()));</span>
+<span class="nc" id="L114">        return this.truthyBin.stream().collect(Collectors.joining(System.lineSeparator()));</span>
     }
 
     public void setTruthyBin(String truthyBin) {
-<span class="nc" id="L116">        this.truthyBin = Arrays.asList(truthyBin.split(&quot;[\r\n]+&quot;));</span>
-<span class="nc" id="L117">    }</span>
+<span class="nc" id="L118">        this.truthyBin = Arrays.asList(truthyBin.split(Test.REGEX_ARRAY));</span>
+<span class="nc" id="L119">    }</span>
 
     public String getFalsyBinAsString() {
-<span class="nc" id="L120">        return this.falsyBin.stream().collect(Collectors.joining(System.lineSeparator()));</span>
+<span class="nc" id="L122">        return this.falsyBin.stream().collect(Collectors.joining(System.lineSeparator()));</span>
     }
 
     public void setFalsyBin(String falsyBin) {
-<span class="nc" id="L124">        this.falsyBin = Arrays.asList(falsyBin.split(&quot;[\r\n]+&quot;));</span>
-<span class="nc" id="L125">    }</span>
+<span class="nc" id="L126">        this.falsyBin = Arrays.asList(falsyBin.split(Test.REGEX_ARRAY));</span>
+<span class="nc" id="L127">    }</span>
 
     public String getBin() {
-<span class="nc" id="L128">        return this.bin;</span>
+<span class="fc" id="L130">        return this.bin;</span>
     }
 
     public void setBin(String bin) {
-<span class="fc" id="L132">        this.bin = bin;</span>
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L134">        this.bin = bin;</span>
+<span class="fc" id="L135">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -15,6 +15,7 @@ com.jsql.model.exception
 com.jsql.model.injection.method
 com.jsql.model.injection.strategy
 com.jsql.model.injection.strategy.blind
+com.jsql.model.injection.strategy.blind.callable
 com.jsql.model.injection.vendor
 com.jsql.model.injection.vendor.model
 com.jsql.model.injection.vendor.model.yaml

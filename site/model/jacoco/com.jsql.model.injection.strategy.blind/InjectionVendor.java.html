@@ -2,6 +2,8 @@
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
+import com.jsql.model.injection.strategy.blind.callable.CallableVendor;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.LogLevelUtil;
@@ -23,145 +25,145 @@ public class InjectionVendor {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L28">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     private String blankFalseMark;  // Source code of the FALSE web page (e.g. ?id=-123456789)
 
-<span class="fc" id="L30">    private List&lt;Diff&gt; constantTrueMark = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L32">    private List&lt;Diff&gt; constantTrueMark = new ArrayList&lt;&gt;();</span>
 
     protected final InjectionModel injectionModel;
 
     private final List&lt;String&gt; falsy;
 
-<span class="fc" id="L36">    public InjectionVendor(InjectionModel injectionModel, String vendorSpecificWithOperator, Vendor vendor) {</span>
-<span class="fc" id="L37">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L38">    public InjectionVendor(InjectionModel injectionModel, String vendorSpecificWithOperator, Vendor vendor) {</span>
+<span class="fc" id="L39">        this.injectionModel = injectionModel;</span>
 
-<span class="fc" id="L39">        List&lt;String&gt; truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();</span>
-<span class="fc" id="L40">        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();</span>
+<span class="fc" id="L41">        List&lt;String&gt; truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();</span>
+<span class="fc" id="L42">        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();</span>
         
         // No blind
-<span class="pc bpc" id="L43" title="2 of 4 branches missed.">        if (truthy.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L44">            return;</span>
+<span class="pc bpc" id="L45" title="2 of 4 branches missed.">        if (truthy.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L46">            return;</span>
         }
         
         // Call the SQL request which must be FALSE (usually ?id=-123456879)
-<span class="fc" id="L48">        this.blankFalseMark = this.callUrl(</span>
+<span class="fc" id="L50">        this.blankFalseMark = this.callUrl(</span>
             StringUtils.EMPTY,
             &quot;vendor:&quot; + vendor
         );
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-<span class="fc" id="L55">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableVendorTagTrue&quot;);</span>
-<span class="fc" id="L56">        Collection&lt;CallableVendor&gt; listCallableTagTrue = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (String urlTest: truthy) {</span>
-<span class="fc" id="L58">            listCallableTagTrue.add(</span>
+<span class="fc" id="L57">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableVendorTagTrue&quot;);</span>
+<span class="fc" id="L58">        Collection&lt;CallableVendor&gt; listCallableTagTrue = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (String urlTest: truthy) {</span>
+<span class="fc" id="L60">            listCallableTagTrue.add(</span>
                 new CallableVendor(
-<span class="fc" id="L60">                    vendorSpecificWithOperator.replace(VendorYaml.TEST, urlTest),</span>
+<span class="fc" id="L62">                    vendorSpecificWithOperator.replace(VendorYaml.TEST, urlTest),</span>
                     this,
                     &quot;vendor#true&quot;
                 )
             );
-<span class="fc" id="L65">        }</span>
+<span class="fc" id="L67">        }</span>
         
         // Delete junk from the results of FALSE statements,
         // keep only opcodes found in each and every FALSE pages.
         // Allow the user to stop the loop
         try {
-<span class="fc" id="L71">            List&lt;Future&lt;CallableVendor&gt;&gt; listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);</span>
-<span class="fc" id="L72">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L73">            List&lt;Future&lt;CallableVendor&gt;&gt; listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);</span>
+<span class="fc" id="L74">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
             
-<span class="fc bfc" id="L74" title="All 2 branches covered.">            for (var i = 1 ; i &lt; listTagTrue.size() ; i++) {</span>
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L76">                    return;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            for (var i = 1 ; i &lt; listTagTrue.size() ; i++) {</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L78">                    return;</span>
                 }
-<span class="fc bfc" id="L78" title="All 2 branches covered.">                if (this.constantTrueMark.isEmpty()) {</span>
-<span class="fc" id="L79">                    this.constantTrueMark = listTagTrue.get(i).get().getOpcodes();</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">                if (this.constantTrueMark.isEmpty()) {</span>
+<span class="fc" id="L81">                    this.constantTrueMark = listTagTrue.get(i).get().getOpcodes();</span>
                 } else {
-<span class="fc" id="L81">                    this.constantTrueMark.retainAll(listTagTrue.get(i).get().getOpcodes());</span>
+<span class="fc" id="L83">                    this.constantTrueMark.retainAll(listTagTrue.get(i).get().getOpcodes());</span>
                 }
             }
-<span class="nc" id="L84">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L85">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L86">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L87">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L88">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L89">        }</span>
+<span class="nc" id="L86">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L87">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L88">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L89">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L90">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L91">        }</span>
         
-<span class="fc" id="L91">        this.initFalseMarks(vendorSpecificWithOperator);</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L93">        this.initFalseMarks(vendorSpecificWithOperator);</span>
+<span class="fc" id="L94">    }</span>
     
     private void initFalseMarks(String vendorSpecificWithMode) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-<span class="fc" id="L97">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableVendorTagFalse&quot;);</span>
-<span class="fc" id="L98">        Collection&lt;CallableVendor&gt; listCallableTagFalse = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L99" title="All 2 branches covered.">        for (String urlTest: this.falsy) {</span>
-<span class="fc" id="L100">            listCallableTagFalse.add(</span>
+<span class="fc" id="L99">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableVendorTagFalse&quot;);</span>
+<span class="fc" id="L100">        Collection&lt;CallableVendor&gt; listCallableTagFalse = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        for (String urlTest: this.falsy) {</span>
+<span class="fc" id="L102">            listCallableTagFalse.add(</span>
                 new CallableVendor(
-<span class="fc" id="L102">                    vendorSpecificWithMode.replace(VendorYaml.TEST, urlTest),</span>
+<span class="fc" id="L104">                    vendorSpecificWithMode.replace(VendorYaml.TEST, urlTest),</span>
                     this,
                     &quot;vendor#false&quot;
                 )
             );
-<span class="fc" id="L107">        }</span>
+<span class="fc" id="L109">        }</span>
         
         // Remove TRUE opcodes in the FALSE opcodes, because
         // a significant FALSE statement shouldn't contain any TRUE opcode.
         // Allow the user to stop the loop.
         try {
-<span class="fc" id="L113">            List&lt;Future&lt;CallableVendor&gt;&gt; listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);</span>
-<span class="fc" id="L114">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-<span class="fc bfc" id="L115" title="All 2 branches covered.">            for (Future&lt;CallableVendor&gt; falseTag: listTagFalse) {</span>
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L117">                    return;</span>
+<span class="fc" id="L115">            List&lt;Future&lt;CallableVendor&gt;&gt; listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);</span>
+<span class="fc" id="L116">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            for (Future&lt;CallableVendor&gt; falseTag: listTagFalse) {</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L119">                    return;</span>
                 }
-<span class="fc" id="L119">                this.constantTrueMark.removeAll(falseTag.get().getOpcodes());</span>
-<span class="fc" id="L120">            }</span>
-<span class="nc" id="L121">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L122">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L123">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L124">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L125">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L126">        }</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L121">                this.constantTrueMark.removeAll(falseTag.get().getOpcodes());</span>
+<span class="fc" id="L122">            }</span>
+<span class="nc" id="L123">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L124">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L125">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L126">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L127">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L128">        }</span>
+<span class="fc" id="L129">    }</span>
 
     public boolean isInjectable(String vendorSpecificWithMode) throws StoppedByUserSlidingException {
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L131">            throw new StoppedByUserSlidingException();</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L133">            throw new StoppedByUserSlidingException();</span>
         }
 
-<span class="fc" id="L134">        var blindTest = new CallableVendor(</span>
-<span class="fc" id="L135">            vendorSpecificWithMode.replace(VendorYaml.TEST, this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit()),</span>
+<span class="fc" id="L136">        var blindTest = new CallableVendor(</span>
+<span class="fc" id="L137">            vendorSpecificWithMode.replace(VendorYaml.TEST, this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm()),</span>
             this,
             &quot;vendor#confirm&quot;
         );
         try {
-<span class="fc" id="L140">            blindTest.call();</span>
-<span class="nc" id="L141">        } catch (Exception e) {</span>
-<span class="nc" id="L142">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L143">        }</span>
+<span class="fc" id="L142">            blindTest.call();</span>
+<span class="nc" id="L143">        } catch (Exception e) {</span>
+<span class="nc" id="L144">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L145">        }</span>
 
-<span class="fc bfc" id="L145" title="All 4 branches covered.">        return blindTest.isTrue() &amp;&amp; !this.constantTrueMark.isEmpty();</span>
+<span class="fc bfc" id="L147" title="All 4 branches covered.">        return blindTest.isTrue() &amp;&amp; !this.constantTrueMark.isEmpty();</span>
     }
     
     public String callUrl(String urlString, String metadataInjectionProcess) {
-<span class="fc" id="L149">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);</span>
+<span class="fc" id="L151">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);</span>
     }
 
     public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBit&lt;?&gt; callableBoolean) {
-<span class="fc" id="L153">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);</span>
+<span class="fc" id="L155">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);</span>
     }
 
 
     // Getter
 
     public String getBlankFalseMark() {
-<span class="fc" id="L160">        return this.blankFalseMark;</span>
+<span class="fc" id="L162">        return this.blankFalseMark;</span>
     }
     
     public List&lt;Diff&gt; getConstantTrueMark() {
-<span class="fc" id="L164">        return this.constantTrueMark;</span>
+<span class="fc" id="L166">        return this.constantTrueMark;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

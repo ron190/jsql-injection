@@ -274,159 +274,154 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestBlind(String check, BlindOperator blindMode) {
+    public String sqlTestBlindWithOperator(String check, BlindOperator blindMode) {
 <span class="fc" id="L278">        String replacement = this.getMode(blindMode);</span>
-<span class="fc" id="L279">        return this.modelYaml.getStrategy().getBinary()</span>
-<span class="fc" id="L280">            .getBlind()</span>
-<span class="fc" id="L281">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
-<span class="fc" id="L282">            .replace(VendorYaml.TEST, check)</span>
-<span class="fc" id="L283">            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</span>
+<span class="fc" id="L279">        return this.modelYaml.getStrategy().getBinary().getBlind()</span>
+<span class="fc" id="L280">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
+<span class="fc" id="L281">            .replace(VendorYaml.TEST, check)</span>
+<span class="fc" id="L282">            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</span>
     }
 
     @Override
-    public String sqlBitTestBlind(String inj, int indexChar, int bit, BlindOperator blindMode) {
-<span class="fc" id="L288">        String replacement = this.getMode(blindMode);</span>
-<span class="fc" id="L289">        return this.modelYaml.getStrategy().getBinary()</span>
-<span class="fc" id="L290">            .getBlind()</span>
-<span class="fc" id="L291">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
-<span class="fc" id="L292">            .replace(</span>
+    public String sqlBlindBit(String inj, int indexChar, int bit, BlindOperator blindMode) {
+<span class="fc" id="L287">        String replacement = this.getMode(blindMode);</span>
+<span class="fc" id="L288">        return this.modelYaml.getStrategy().getBinary().getBlind()</span>
+<span class="fc" id="L289">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
+<span class="fc" id="L290">            .replace(</span>
                 VendorYaml.TEST,
-<span class="fc" id="L294">                this.modelYaml.getStrategy().getBinary().getTest().getBit()</span>
-<span class="fc" id="L295">                .replace(VendorYaml.INJECTION, inj)</span>
-<span class="fc" id="L296">                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))</span>
-<span class="fc" id="L297">                .replace(VendorYaml.BIT, Integer.toString(bit))</span>
+<span class="fc" id="L292">                this.modelYaml.getStrategy().getBinary().getTest().getBit()</span>
+<span class="fc" id="L293">                .replace(VendorYaml.INJECTION, inj)</span>
+<span class="fc" id="L294">                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))</span>
+<span class="fc" id="L295">                .replace(VendorYaml.BIT, Integer.toString(bit))</span>
             )
-<span class="fc" id="L299">            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</span>
+<span class="fc" id="L297">            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</span>
     }
 
     @Override
-    public String sqlTestBlindBinary(String inj, int indexChar, int mid, BlindOperator blindMode) {
-<span class="nc" id="L304">        String replacement = this.getMode(blindMode);</span>
-<span class="nc" id="L305">        return this.modelYaml.getStrategy().getBinary()</span>
-<span class="nc" id="L306">            .getBlind()</span>
-<span class="nc" id="L307">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
-<span class="nc" id="L308">            .replace(</span>
+    public String sqlBlindBin(String inj, int indexChar, int mid, BlindOperator blindMode) {
+<span class="fc" id="L302">        String replacement = this.getMode(blindMode);</span>
+<span class="fc" id="L303">        return this.modelYaml.getStrategy().getBinary().getBlind()</span>
+<span class="fc" id="L304">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
+<span class="fc" id="L305">            .replace(</span>
                 VendorYaml.TEST,
-<span class="nc" id="L310">                this.modelYaml.getStrategy().getBinary().getTest().getBin()</span>
-<span class="nc" id="L311">                .replace(VendorYaml.INJECTION, inj)</span>
-<span class="nc" id="L312">                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))</span>
-<span class="nc" id="L313">                .replace(VendorYaml.MID, StringUtil.toUrl(Character.toString((char) mid)))</span>
+<span class="fc" id="L307">                this.modelYaml.getStrategy().getBinary().getTest().getBin()</span>
+<span class="fc" id="L308">                .replace(VendorYaml.INJECTION, inj)</span>
+<span class="fc" id="L309">                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))</span>
+<span class="fc" id="L310">                .replace(VendorYaml.MID, StringUtil.toUrl(Character.toString((char) mid)))</span>
             )
-<span class="nc" id="L315">            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</span>
+<span class="fc" id="L312">            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</span>
     }
 
     @Override
-    public String sqlTimeTest(String check, BlindOperator blindMode) {
-<span class="fc" id="L320">        String replacement = this.getMode(blindMode);</span>
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">        int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()</span>
-<span class="nc" id="L322">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()</span>
-<span class="fc" id="L323">            : 5;</span>
-<span class="fc" id="L324">        return this.modelYaml.getStrategy().getBinary()</span>
-<span class="fc" id="L325">            .getTime()</span>
-<span class="fc" id="L326">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
-<span class="fc" id="L327">            .replace(VendorYaml.TEST, check)</span>
-<span class="fc" id="L328">            .replace(VendorYaml.SLEEP_TIME, Long.toString(countSleepTimeStrategy))</span>
-<span class="fc" id="L329">            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</span>
+    public String sqlTestTimeWithOperator(String check, BlindOperator blindMode) {
+<span class="fc" id="L317">        String replacement = this.getMode(blindMode);</span>
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">        int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()</span>
+<span class="nc" id="L319">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()</span>
+<span class="fc" id="L320">            : 5;</span>
+<span class="fc" id="L321">        return this.modelYaml.getStrategy().getBinary().getTime()</span>
+<span class="fc" id="L322">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
+<span class="fc" id="L323">            .replace(VendorYaml.TEST, check)</span>
+<span class="fc" id="L324">            .replace(VendorYaml.SLEEP_TIME, Long.toString(countSleepTimeStrategy))</span>
+<span class="fc" id="L325">            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</span>
     }
 
     @Override
-    public String sqlBitTestTime(String inj, int indexChar, int bit, BlindOperator blindMode) {
-<span class="fc" id="L334">        String replacement = this.getMode(blindMode);</span>
-<span class="pc bpc" id="L335" title="1 of 2 branches missed.">        int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()</span>
-<span class="nc" id="L336">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()</span>
-<span class="fc" id="L337">            : 5;</span>
-<span class="fc" id="L338">        return this.modelYaml.getStrategy().getBinary()</span>
-<span class="fc" id="L339">            .getTime()</span>
-<span class="fc" id="L340">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
-<span class="fc" id="L341">            .replace(</span>
+    public String sqlTimeBit(String inj, int indexChar, int bit, BlindOperator blindMode) {
+<span class="fc" id="L330">        String replacement = this.getMode(blindMode);</span>
+<span class="pc bpc" id="L331" title="1 of 2 branches missed.">        int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()</span>
+<span class="nc" id="L332">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()</span>
+<span class="fc" id="L333">            : 5;</span>
+<span class="fc" id="L334">        return this.modelYaml.getStrategy().getBinary().getTime()</span>
+<span class="fc" id="L335">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
+<span class="fc" id="L336">            .replace(</span>
                 VendorYaml.TEST,
-<span class="fc" id="L343">                this.modelYaml.getStrategy().getBinary().getTest()</span>
-<span class="fc" id="L344">                .getBit()</span>
-<span class="fc" id="L345">                .replace(VendorYaml.INJECTION, inj)</span>
-<span class="fc" id="L346">                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))</span>
-<span class="fc" id="L347">                .replace(VendorYaml.BIT, Integer.toString(bit))</span>
+<span class="fc" id="L338">                this.modelYaml.getStrategy().getBinary().getTest()</span>
+<span class="fc" id="L339">                .getBit()</span>
+<span class="fc" id="L340">                .replace(VendorYaml.INJECTION, inj)</span>
+<span class="fc" id="L341">                .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))</span>
+<span class="fc" id="L342">                .replace(VendorYaml.BIT, Integer.toString(bit))</span>
             )
-<span class="fc" id="L349">            .replace(VendorYaml.SLEEP_TIME, Long.toString(countSleepTimeStrategy))</span>
-<span class="fc" id="L350">            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</span>
+<span class="fc" id="L344">            .replace(VendorYaml.SLEEP_TIME, Long.toString(countSleepTimeStrategy))</span>
+<span class="fc" id="L345">            .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</span>
     }
 
     private String getMode(BlindOperator blindMode) {
         String replacement;
-<span class="fc bfc" id="L355" title="All 4 branches covered.">        switch (blindMode) {</span>
-<span class="fc" id="L356">            case AND: replacement = this.modelYaml.getStrategy().getBinary().getModeAnd(); break;</span>
-<span class="fc" id="L357">            case OR: replacement = this.modelYaml.getStrategy().getBinary().getModeOr(); break;</span>
-<span class="fc" id="L358">            case STACK: replacement = this.modelYaml.getStrategy().getBinary().getModeStack(); break;</span>
+<span class="fc bfc" id="L350" title="All 4 branches covered.">        switch (blindMode) {</span>
+<span class="fc" id="L351">            case AND: replacement = this.modelYaml.getStrategy().getBinary().getModeAnd(); break;</span>
+<span class="fc" id="L352">            case OR: replacement = this.modelYaml.getStrategy().getBinary().getModeOr(); break;</span>
+<span class="fc" id="L353">            case STACK: replacement = this.modelYaml.getStrategy().getBinary().getModeStack(); break;</span>
             case NO_MODE:
-<span class="fc" id="L360">            default: replacement = StringUtils.EMPTY; break;</span>
+<span class="fc" id="L355">            default: replacement = StringUtils.EMPTY; break;</span>
         }
-<span class="fc" id="L362">        return replacement;</span>
+<span class="fc" id="L357">        return replacement;</span>
     }
 
     @Override
     public String sqlBlind(String sqlQuery, String startPosition, boolean isReport) {
-<span class="fc" id="L367">        return VendorYaml.replaceTags(</span>
-<span class="fc" id="L368">            this.getSlidingWindow(isReport)</span>
-<span class="fc" id="L369">            .replace(VendorYaml.INJECTION, sqlQuery)</span>
-<span class="fc" id="L370">            .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
-<span class="fc" id="L371">            .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
+<span class="fc" id="L362">        return VendorYaml.replaceTags(</span>
+<span class="fc" id="L363">            this.getSlidingWindow(isReport)</span>
+<span class="fc" id="L364">            .replace(VendorYaml.INJECTION, sqlQuery)</span>
+<span class="fc" id="L365">            .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
+<span class="fc" id="L366">            .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
         );
     }
 
     @Override
     public String sqlTime(String sqlQuery, String startPosition, boolean isReport) {
-<span class="fc" id="L377">        return VendorYaml.replaceTags(</span>
-<span class="fc" id="L378">            this.getSlidingWindow(isReport)</span>
-<span class="fc" id="L379">            .replace(VendorYaml.INJECTION, sqlQuery)</span>
-<span class="fc" id="L380">            .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
-<span class="fc" id="L381">            .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
+<span class="fc" id="L372">        return VendorYaml.replaceTags(</span>
+<span class="fc" id="L373">            this.getSlidingWindow(isReport)</span>
+<span class="fc" id="L374">            .replace(VendorYaml.INJECTION, sqlQuery)</span>
+<span class="fc" id="L375">            .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
+<span class="fc" id="L376">            .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
         );
     }
 
     @Override
     public String sqlMultibit(String inj, int indexChar, int block){
-<span class="fc" id="L387">        return this.modelYaml.getStrategy().getBinary().getMultibit()</span>
-<span class="fc" id="L388">            .replace(VendorYaml.INJECTION, inj)</span>
-<span class="fc" id="L389">            .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))</span>
-<span class="fc" id="L390">            .replace(VendorYaml.BLOCK_MULTIBIT, Integer.toString(block));</span>
+<span class="fc" id="L382">        return this.modelYaml.getStrategy().getBinary().getMultibit()</span>
+<span class="fc" id="L383">            .replace(VendorYaml.INJECTION, inj)</span>
+<span class="fc" id="L384">            .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))</span>
+<span class="fc" id="L385">            .replace(VendorYaml.BLOCK_MULTIBIT, Integer.toString(block));</span>
     }
 
     @Override
     public String sqlErrorCalibrator(Method errorMethod) {
-<span class="fc" id="L395">        return VendorYaml.replaceTags(</span>
-<span class="fc" id="L396">            errorMethod.getQuery()</span>
-<span class="fc" id="L397">            .replace(VendorYaml.WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())</span>
-<span class="fc" id="L398">            .replace(VendorYaml.INJECTION, this.modelYaml.getStrategy().getConfiguration().getCalibrator())</span>
-<span class="fc" id="L399">            .replace(VendorYaml.WINDOW_CHAR, &quot;1&quot;)</span>
-<span class="fc" id="L400">            .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))</span>
+<span class="fc" id="L390">        return VendorYaml.replaceTags(</span>
+<span class="fc" id="L391">            errorMethod.getQuery()</span>
+<span class="fc" id="L392">            .replace(VendorYaml.WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())</span>
+<span class="fc" id="L393">            .replace(VendorYaml.INJECTION, this.modelYaml.getStrategy().getConfiguration().getCalibrator())</span>
+<span class="fc" id="L394">            .replace(VendorYaml.WINDOW_CHAR, &quot;1&quot;)</span>
+<span class="fc" id="L395">            .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))</span>
         );
     }
 
     @Override
     public String sqlErrorIndice(Method errorMethod) {
-<span class="fc" id="L406">        var indexZeroToFind = &quot;0&quot;;</span>
-<span class="fc" id="L407">        return VendorYaml.replaceTags(</span>
-<span class="fc" id="L408">            errorMethod.getQuery()</span>
-<span class="fc" id="L409">            .replace(VendorYaml.WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())</span>
-<span class="fc" id="L410">            .replace(VendorYaml.INJECTION, this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, indexZeroToFind))</span>
-<span class="fc" id="L411">            .replace(VendorYaml.WINDOW_CHAR, &quot;1&quot;)</span>
-<span class="fc" id="L412">            .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))</span>
+<span class="fc" id="L401">        var indexZeroToFind = &quot;0&quot;;</span>
+<span class="fc" id="L402">        return VendorYaml.replaceTags(</span>
+<span class="fc" id="L403">            errorMethod.getQuery()</span>
+<span class="fc" id="L404">            .replace(VendorYaml.WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())</span>
+<span class="fc" id="L405">            .replace(VendorYaml.INJECTION, this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, indexZeroToFind))</span>
+<span class="fc" id="L406">            .replace(VendorYaml.WINDOW_CHAR, &quot;1&quot;)</span>
+<span class="fc" id="L407">            .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))</span>
         );
     }
 
     @Override
     public String sqlError(String sqlQuery, String startPosition, int indexMethodError, boolean isReport) {
-<span class="fc" id="L418">        return VendorYaml.replaceTags(</span>
-<span class="fc" id="L419">            this.modelYaml.getStrategy().getError().getMethod().get(indexMethodError).getQuery()</span>
-<span class="fc" id="L420">            .replace(VendorYaml.WINDOW, this.getSlidingWindow(isReport))</span>
-<span class="fc" id="L421">            .replace(VendorYaml.INJECTION, sqlQuery)</span>
-<span class="fc" id="L422">            .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
-<span class="fc" id="L423">            .replace(</span>
+<span class="fc" id="L413">        return VendorYaml.replaceTags(</span>
+<span class="fc" id="L414">            this.modelYaml.getStrategy().getError().getMethod().get(indexMethodError).getQuery()</span>
+<span class="fc" id="L415">            .replace(VendorYaml.WINDOW, this.getSlidingWindow(isReport))</span>
+<span class="fc" id="L416">            .replace(VendorYaml.INJECTION, sqlQuery)</span>
+<span class="fc" id="L417">            .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
+<span class="fc" id="L418">            .replace(</span>
                 VendorYaml.CAPACITY,
-<span class="fc" id="L425">                Integer.toString(</span>
-<span class="fc" id="L426">                    this.modelYaml.getStrategy().getError()</span>
-<span class="fc" id="L427">                    .getMethod()</span>
-<span class="fc" id="L428">                    .get(indexMethodError)</span>
-<span class="fc" id="L429">                    .getCapacity()</span>
+<span class="fc" id="L420">                Integer.toString(</span>
+<span class="fc" id="L421">                    this.modelYaml.getStrategy().getError()</span>
+<span class="fc" id="L422">                    .getMethod()</span>
+<span class="fc" id="L423">                    .get(indexMethodError)</span>
+<span class="fc" id="L424">                    .getCapacity()</span>
                 )
             )
         );
@@ -434,178 +429,168 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlUnion(String sqlQuery, String startPosition, boolean isReport) {
-<span class="fc" id="L437">        return VendorYaml.replaceTags(</span>
-<span class="fc" id="L438">            this.getSlidingWindow(isReport)</span>
-<span class="fc" id="L439">            .replace(VendorYaml.INJECTION, sqlQuery)</span>
-<span class="fc" id="L440">            .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
-<span class="fc" id="L441">            .replace(VendorYaml.CAPACITY, this.injectionModel.getMediatorStrategy().getUnion().getPerformanceLength())</span>
+<span class="fc" id="L432">        return VendorYaml.replaceTags(</span>
+<span class="fc" id="L433">            this.getSlidingWindow(isReport)</span>
+<span class="fc" id="L434">            .replace(VendorYaml.INJECTION, sqlQuery)</span>
+<span class="fc" id="L435">            .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
+<span class="fc" id="L436">            .replace(VendorYaml.CAPACITY, this.injectionModel.getMediatorStrategy().getUnion().getPerformanceLength())</span>
         );
     }
 
     @Override
     public String sqlStack(String sqlQuery, String startPosition, boolean isReport) {
-<span class="fc" id="L447">        return this.modelYaml.getStrategy().getStack().replace(</span>
+<span class="fc" id="L442">        return this.modelYaml.getStrategy().getStack().replace(</span>
             VendorYaml.WINDOW,
-<span class="fc" id="L449">            VendorYaml.replaceTags(</span>
-<span class="fc" id="L450">                this.getSlidingWindow(isReport)</span>
-<span class="fc" id="L451">                .replace(VendorYaml.INJECTION, sqlQuery)</span>
-<span class="fc" id="L452">                .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
-<span class="fc" id="L453">                .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
+<span class="fc" id="L444">            VendorYaml.replaceTags(</span>
+<span class="fc" id="L445">                this.getSlidingWindow(isReport)</span>
+<span class="fc" id="L446">                .replace(VendorYaml.INJECTION, sqlQuery)</span>
+<span class="fc" id="L447">                .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
+<span class="fc" id="L448">                .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
             )
         );
     }
 
     @Override
     public String sqlCapacity(String[] indexes) {
-<span class="fc" id="L460">        String regexIndexes = String.join(&quot;|&quot;, indexes);</span>
-<span class="fc" id="L461">        String regexVisibleIndexesToFind = String.format(VendorYaml.FORMAT_INDEX, &quot;(%s)&quot;);</span>
-<span class="fc" id="L462">        return this.injectionModel.getIndexesInUrl().replaceAll(</span>
-<span class="fc" id="L463">            String.format(regexVisibleIndexesToFind, regexIndexes),</span>
-<span class="fc" id="L464">            VendorYaml.replaceTags(</span>
-<span class="fc" id="L465">                this.modelYaml.getStrategy().getUnion().getCapacity()</span>
-<span class="fc" id="L466">                .replace(VendorYaml.CALIBRATOR, this.modelYaml.getStrategy().getConfiguration().getCalibrator())</span>
-<span class="fc" id="L467">                .replace(VendorYaml.INDICE, &quot;$1&quot;)</span>
+<span class="fc" id="L455">        String regexIndexes = String.join(&quot;|&quot;, indexes);</span>
+<span class="fc" id="L456">        String regexVisibleIndexesToFind = String.format(VendorYaml.FORMAT_INDEX, &quot;(%s)&quot;);</span>
+<span class="fc" id="L457">        return this.injectionModel.getIndexesInUrl().replaceAll(</span>
+<span class="fc" id="L458">            String.format(regexVisibleIndexesToFind, regexIndexes),</span>
+<span class="fc" id="L459">            VendorYaml.replaceTags(</span>
+<span class="fc" id="L460">                this.modelYaml.getStrategy().getUnion().getCapacity()</span>
+<span class="fc" id="L461">                .replace(VendorYaml.CALIBRATOR, this.modelYaml.getStrategy().getConfiguration().getCalibrator())</span>
+<span class="fc" id="L462">                .replace(VendorYaml.INDICE, &quot;$1&quot;)</span>
             )
         );
     }
 
     @Override
     public String sqlIndices(Integer nbFields) {
-<span class="fc" id="L474">        String replaceTag = StringUtils.EMPTY;</span>
-<span class="fc" id="L475">        List&lt;String&gt; fields = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L476">        var indice = 1;</span>
-<span class="fc bfc" id="L477" title="All 2 branches covered.">        for ( ; indice &lt;= nbFields ; indice++) {</span>
-<span class="fc" id="L478">            String field = this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, Integer.toString(indice));</span>
-<span class="fc" id="L479">            fields.add(field);</span>
-<span class="fc" id="L480">            replaceTag = field;</span>
+<span class="fc" id="L469">        String replaceTag = StringUtils.EMPTY;</span>
+<span class="fc" id="L470">        List&lt;String&gt; fields = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L471">        var indice = 1;</span>
+<span class="fc bfc" id="L472" title="All 2 branches covered.">        for ( ; indice &lt;= nbFields ; indice++) {</span>
+<span class="fc" id="L473">            String field = this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, Integer.toString(indice));</span>
+<span class="fc" id="L474">            fields.add(field);</span>
+<span class="fc" id="L475">            replaceTag = field;</span>
         }
-<span class="fc" id="L482">        indice--;</span>
-<span class="fc" id="L483">        return this.modelYaml.getStrategy().getUnion()</span>
-<span class="fc" id="L484">            .getIndices()</span>
-<span class="fc" id="L485">            .replace(</span>
+<span class="fc" id="L477">        indice--;</span>
+<span class="fc" id="L478">        return this.modelYaml.getStrategy().getUnion()</span>
+<span class="fc" id="L479">            .getIndices()</span>
+<span class="fc" id="L480">            .replace(</span>
                 VendorYaml.INDICES,
-<span class="fc" id="L487">                String.join(&quot;,&quot;, fields.toArray(new String[0]))</span>
+<span class="fc" id="L482">                String.join(&quot;,&quot;, fields.toArray(new String[0]))</span>
             )
-<span class="fc" id="L489">            .replace(VendorYaml.INDICE_UNIQUE, replaceTag)</span>
-<span class="fc" id="L490">            .replace(</span>
+<span class="fc" id="L484">            .replace(VendorYaml.INDICE_UNIQUE, replaceTag)</span>
+<span class="fc" id="L485">            .replace(</span>
                 VendorYaml.RESULT_RANGE,
-<span class="fc" id="L492">                String.join(&quot;,&quot;, Collections.nCopies(indice, &quot;r&quot;))</span>
+<span class="fc" id="L487">                String.join(&quot;,&quot;, Collections.nCopies(indice, &quot;r&quot;))</span>
             );
     }
 
     @Override
     public String sqlLimit(Integer limitSqlResult) {
-<span class="fc" id="L498">        var limitBoundary = 0;</span>
+<span class="fc" id="L493">        var limitBoundary = 0;</span>
         try {
-<span class="fc" id="L500">            limitBoundary = Integer.parseInt(this.modelYaml.getStrategy().getConfiguration().getLimitBoundary());</span>
-<span class="nc" id="L501">        } catch (NumberFormatException e) {</span>
-<span class="nc" id="L502">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect Limit start index, force to 0&quot;);</span>
-<span class="fc" id="L503">        }</span>
-<span class="fc" id="L504">        return this.modelYaml.getStrategy().getConfiguration()</span>
-<span class="fc" id="L505">            .getLimit()</span>
-<span class="fc" id="L506">            .replace(VendorYaml.LIMIT_VALUE, Integer.toString(limitSqlResult + limitBoundary));</span>
+<span class="fc" id="L495">            limitBoundary = Integer.parseInt(this.modelYaml.getStrategy().getConfiguration().getLimitBoundary());</span>
+<span class="nc" id="L496">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L497">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect Limit start index, force to 0&quot;);</span>
+<span class="fc" id="L498">        }</span>
+<span class="fc" id="L499">        return this.modelYaml.getStrategy().getConfiguration()</span>
+<span class="fc" id="L500">            .getLimit()</span>
+<span class="fc" id="L501">            .replace(VendorYaml.LIMIT_VALUE, Integer.toString(limitSqlResult + limitBoundary));</span>
     }
     
     @Override
     public String fingerprintErrorsAsRegex() {
-<span class="fc" id="L511">        return &quot;(?si)&quot;+ StringUtils.join(</span>
-<span class="fc" id="L512">            this.modelYaml.getStrategy().getConfiguration().getFingerprint()</span>
-<span class="fc" id="L513">            .getErrorMessage()</span>
-<span class="fc" id="L514">            .stream()</span>
-<span class="fc" id="L515">            .map(m -&gt; &quot;.*&quot;+ m +&quot;.*&quot;)</span>
-<span class="fc" id="L516">            .toArray(),</span>
+<span class="fc" id="L506">        return &quot;(?si)&quot;+ StringUtils.join(</span>
+<span class="fc" id="L507">            this.modelYaml.getStrategy().getConfiguration().getFingerprint()</span>
+<span class="fc" id="L508">            .getErrorMessage()</span>
+<span class="fc" id="L509">            .stream()</span>
+<span class="fc" id="L510">            .map(m -&gt; &quot;.*&quot;+ m +&quot;.*&quot;)</span>
+<span class="fc" id="L511">            .toArray(),</span>
             &quot;|&quot;
         );
     }
     
     public static String replaceTags(String sqlRequest) {
-<span class="fc" id="L522">        return sqlRequest</span>
-<span class="fc" id="L523">            .replace(&quot;${enclose_value_sql}&quot;, VendorYaml.ENCLOSE_VALUE_SQL)</span>
-<span class="fc" id="L524">            .replace(&quot;${enclose_value_hex}&quot;, VendorYaml.ENCLOSE_VALUE_HEX)</span>
-<span class="fc" id="L525">            .replace(&quot;${separator_qte_sql}&quot;, VendorYaml.SEPARATOR_QTE_SQL)</span>
-<span class="fc" id="L526">            .replace(&quot;${separator_qte_hex}&quot;, VendorYaml.SEPARATOR_QTE_HEX)</span>
-<span class="fc" id="L527">            .replace(&quot;${separator_cell_sql}&quot;, VendorYaml.SEPARATOR_CELL_SQL)</span>
-<span class="fc" id="L528">            .replace(&quot;${separator_cell_hex}&quot;, VendorYaml.SEPARATOR_CELL_HEX)</span>
-<span class="fc" id="L529">            .replace(&quot;${calibrator_sql}&quot;, VendorYaml.CALIBRATOR_SQL)</span>
-<span class="fc" id="L530">            .replace(&quot;${calibrator_raw}&quot;, VendorYaml.CALIBRATOR_SQL.repeat(100))</span>
-<span class="fc" id="L531">            .replace(&quot;${calibrator_hex}&quot;, VendorYaml.CALIBRATOR_HEX)</span>
-<span class="fc" id="L532">            .replace(&quot;${trail_sql}&quot;, VendorYaml.TRAIL_SQL)</span>
-<span class="fc" id="L533">            .replace(&quot;${trail_hex}&quot;, VendorYaml.TRAIL_HEX)</span>
-<span class="fc" id="L534">            .replace(&quot;${lead}&quot;, LEAD)</span>
-<span class="fc" id="L535">            .replace(&quot;${lead_hex}&quot;, VendorYaml.LEAD_HEX)</span>
-<span class="fc" id="L536">            .replace(&quot;${lead_pipe}&quot;, VendorYaml.LEAD_PIPE);</span>
+<span class="fc" id="L517">        return sqlRequest</span>
+<span class="fc" id="L518">            .replace(&quot;${enclose_value_sql}&quot;, VendorYaml.ENCLOSE_VALUE_SQL)</span>
+<span class="fc" id="L519">            .replace(&quot;${enclose_value_hex}&quot;, VendorYaml.ENCLOSE_VALUE_HEX)</span>
+<span class="fc" id="L520">            .replace(&quot;${separator_qte_sql}&quot;, VendorYaml.SEPARATOR_QTE_SQL)</span>
+<span class="fc" id="L521">            .replace(&quot;${separator_qte_hex}&quot;, VendorYaml.SEPARATOR_QTE_HEX)</span>
+<span class="fc" id="L522">            .replace(&quot;${separator_cell_sql}&quot;, VendorYaml.SEPARATOR_CELL_SQL)</span>
+<span class="fc" id="L523">            .replace(&quot;${separator_cell_hex}&quot;, VendorYaml.SEPARATOR_CELL_HEX)</span>
+<span class="fc" id="L524">            .replace(&quot;${calibrator_sql}&quot;, VendorYaml.CALIBRATOR_SQL)</span>
+<span class="fc" id="L525">            .replace(&quot;${calibrator_raw}&quot;, VendorYaml.CALIBRATOR_SQL.repeat(100))</span>
+<span class="fc" id="L526">            .replace(&quot;${calibrator_hex}&quot;, VendorYaml.CALIBRATOR_HEX)</span>
+<span class="fc" id="L527">            .replace(&quot;${trail_sql}&quot;, VendorYaml.TRAIL_SQL)</span>
+<span class="fc" id="L528">            .replace(&quot;${trail_hex}&quot;, VendorYaml.TRAIL_HEX)</span>
+<span class="fc" id="L529">            .replace(&quot;${lead}&quot;, LEAD)</span>
+<span class="fc" id="L530">            .replace(&quot;${lead_hex}&quot;, VendorYaml.LEAD_HEX)</span>
+<span class="fc" id="L531">            .replace(&quot;${lead_pipe}&quot;, VendorYaml.LEAD_PIPE);</span>
     }
 
     /**
      * Get payload with sliding window except for vulnerability report
      */
     private String getSlidingWindow(boolean isReport) {
-<span class="fc bfc" id="L543" title="All 2 branches covered.">        return isReport</span>
-<span class="fc" id="L544">            ? &quot;(&quot; + VendorYaml.INJECTION + &quot;)&quot;</span>
-<span class="fc" id="L545">            : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow();</span>
+<span class="fc bfc" id="L538" title="All 2 branches covered.">        return isReport</span>
+<span class="fc" id="L539">            ? &quot;(&quot; + VendorYaml.INJECTION + &quot;)&quot;</span>
+<span class="fc" id="L540">            : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow();</span>
     }
     
     
     // Getter and setter
 
     @Override
-    public String sqlBinaryBlind() {
-<span class="fc" id="L553">        return this.modelYaml.getStrategy().getBinary().getBlind();</span>
-    }
-
-    @Override
-    public String sqlBinaryTime() {
-<span class="fc" id="L558">        return this.modelYaml.getStrategy().getBinary().getTime();</span>
-    }
-
-    @Override
     public String sqlInfos() {
-<span class="fc" id="L563">        return this.modelYaml.getResource().getInfo();</span>
+<span class="fc" id="L548">        return this.modelYaml.getResource().getInfo();</span>
     }
 
     @Override
     public List&lt;String&gt; getFalsyBit() {
-<span class="fc" id="L568">        return this.modelYaml.getStrategy().getBinary().getTest().getFalsyBit();</span>
+<span class="fc" id="L553">        return this.modelYaml.getStrategy().getBinary().getTest().getFalsyBit();</span>
     }
 
     @Override
     public List&lt;String&gt; getTruthyBit() {
-<span class="fc" id="L573">        return this.modelYaml.getStrategy().getBinary().getTest().getTruthyBit();</span>
+<span class="fc" id="L558">        return this.modelYaml.getStrategy().getBinary().getTest().getTruthyBit();</span>
     }
 
     @Override
     public List&lt;String&gt; getFalsyBin() {
-<span class="fc" id="L578">        return this.modelYaml.getStrategy().getBinary().getTest().getFalsyBin();</span>
+<span class="fc" id="L563">        return this.modelYaml.getStrategy().getBinary().getTest().getFalsyBin();</span>
     }
 
     @Override
     public List&lt;String&gt; getTruthyBin() {
-<span class="fc" id="L583">        return this.modelYaml.getStrategy().getBinary().getTest().getTruthyBin();</span>
+<span class="fc" id="L568">        return this.modelYaml.getStrategy().getBinary().getTest().getTruthyBin();</span>
     }
 
     @Override
-    public String sqlTestBinaryInit() {
-<span class="fc" id="L588">        return this.modelYaml.getStrategy().getBinary().getTest().getInit();</span>
+    public String sqlBlindConfirm() {
+<span class="fc" id="L573">        return this.modelYaml.getStrategy().getBinary().getTest().getInit();</span>
     }
 
     @Override
     public String sqlOrderBy() {
-<span class="fc" id="L593">        return this.modelYaml.getStrategy().getUnion().getOrderBy();</span>
+<span class="fc" id="L578">        return this.modelYaml.getStrategy().getUnion().getOrderBy();</span>
     }
     
     @Override
     public String endingComment() {
-<span class="fc bfc" id="L598" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlRandomSuffixDisabled()) {</span>
-<span class="fc" id="L599">            return this.modelYaml.getStrategy().getConfiguration().getEndingComment();</span>
+<span class="fc bfc" id="L583" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlRandomSuffixDisabled()) {</span>
+<span class="fc" id="L584">            return this.modelYaml.getStrategy().getConfiguration().getEndingComment();</span>
         } else {
-<span class="fc" id="L601">            return this.modelYaml.getStrategy().getConfiguration().getEndingComment()</span>
-<span class="fc" id="L602">                + RandomStringUtils.secure().nextAlphanumeric(4);  // Allows binary match fingerprinting on host errors</span>
+<span class="fc" id="L586">            return this.modelYaml.getStrategy().getConfiguration().getEndingComment()</span>
+<span class="fc" id="L587">                + RandomStringUtils.secure().nextAlphanumeric(4);  // Allows binary match fingerprinting on host errors</span>
         }
     }
 
     @Override
     public ModelYaml getModelYaml() {
-<span class="fc" id="L608">        return this.modelYaml;</span>
+<span class="fc" id="L593">        return this.modelYaml;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

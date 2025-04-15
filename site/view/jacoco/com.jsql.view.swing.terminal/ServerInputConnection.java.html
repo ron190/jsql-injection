@@ -90,7 +90,7 @@ public class ServerInputConnection {
 <span class="nc" id="L90">            this.running = false;</span>
 <span class="nc" id="L91">            this.serverInput.close();</span>
 <span class="nc" id="L92">        } catch (IOException e) {</span>
-<span class="nc" id="L93">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Error closing resources: &quot; + e.getMessage());</span>
+<span class="nc" id="L93">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Error closing resources: {}&quot;, e.getMessage());</span>
 <span class="nc" id="L94">        }</span>
 <span class="nc" id="L95">    }</span>
 

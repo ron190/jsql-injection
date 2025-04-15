@@ -2,6 +2,7 @@
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.CallableBlindBit;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +25,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L27">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L28">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     // Source code of the TRUE web page (usually ?id=1)
     private String sourceReferencePage;
@@ -35,7 +36,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
      * at least one same string, which shouldn't be present in all
      * the TRUE queries.
      */
-<span class="fc" id="L38">    private List&lt;Diff&gt; falseDiffs = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L39">    private List&lt;Diff&gt; falseDiffs = new ArrayList&lt;&gt;();</span>
 
     /**
      * Create blind attack initialization.
@@ -43,21 +44,20 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
      * true diffs, then Blind attack is confirmed.
      */
     public InjectionBlindBit(InjectionModel injectionModel, BlindOperator blindMode) {
-<span class="fc" id="L46">        super(injectionModel, blindMode);</span>
+<span class="fc" id="L47">        super(injectionModel, blindMode);</span>
         
         // No blind
-<span class="pc bpc" id="L49" title="2 of 4 branches missed.">        if (this.falsyBit.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L50">            return;</span>
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        if (this.falsyBit.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L51">            return;</span>
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-<span class="fc" id="L54">        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, &quot;bit#ref&quot;);</span>
+<span class="fc" id="L55">        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, &quot;bit#ref&quot;);</span>
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-<span class="fc" id="L58">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindTagFalse&quot;);</span>
-<span class="fc" id="L59">        Collection&lt;CallableBlindBit&gt; callablesFalseTest = new ArrayList&lt;&gt;();</span>
-        
+<span class="fc" id="L59">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBitTagFalse&quot;);</span>
+<span class="fc" id="L60">        Collection&lt;CallableBlindBit&gt; callablesFalseTest = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L61" title="All 2 branches covered.">        for (String falseTest: this.falsyBit) {</span>
 <span class="fc" id="L62">            callablesFalseTest.add(new CallableBlindBit(</span>
                 falseTest,
@@ -101,39 +101,39 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
     private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindMode) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-<span class="fc" id="L104">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindTagTrue&quot;);</span>
-
-<span class="fc" id="L106">        Collection&lt;CallableBlindBit&gt; callablesTrueTest = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">        for (String trueTest: this.truthyBit) {</span>
-<span class="fc" id="L108">            callablesTrueTest.add(new CallableBlindBit(</span>
+<span class="fc" id="L104">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBitTagTrue&quot;);</span>
+<span class="fc" id="L105">        Collection&lt;CallableBlindBit&gt; callablesTrueTest = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        for (String trueTest: this.truthyBit) {</span>
+<span class="fc" id="L107">            callablesTrueTest.add(new CallableBlindBit(</span>
                 trueTest,
                 injectionModel,
                 this,
                 blindMode,
                 &quot;bit#truthy&quot;
             ));
-<span class="fc" id="L115">        }</span>
+<span class="fc" id="L114">        }</span>
         
         // Remove TRUE diffs in the FALSE diffs, because
         // a significant FALSE statement shouldn't contain any TRUE diff.
         // Allow the user to stop the loop.
         try {
-<span class="fc" id="L121">            List&lt;Future&lt;CallableBlindBit&gt;&gt; futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);</span>
-<span class="fc" id="L122">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-<span class="fc bfc" id="L123" title="All 2 branches covered.">            for (Future&lt;CallableBlindBit&gt; futureTrueTest: futuresTrueTest) {</span>
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L125">                    return;</span>
+<span class="fc" id="L120">            List&lt;Future&lt;CallableBlindBit&gt;&gt; futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);</span>
+<span class="fc" id="L121">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">            for (Future&lt;CallableBlindBit&gt; futureTrueTest: futuresTrueTest) {</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L124">                    return;</span>
                 }
-<span class="fc" id="L127">                this.falseDiffs.removeAll(futureTrueTest.get().getDiffsWithReference());</span>
-<span class="fc" id="L128">            }</span>
-<span class="nc" id="L129">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L130">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L131">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L132">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L133">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L134">        }</span>
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L126">                this.falseDiffs.removeAll(futureTrueTest.get().getDiffsWithReference());</span>
+<span class="fc" id="L127">            }</span>
+<span class="nc" id="L128">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L129">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L130">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L131">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L132">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L133">        }</span>
+<span class="fc" id="L134">    }</span>
 
+    // todo should not be shared
     @Override
     public CallableBlindBit getCallableBitTest(String sqlQuery, int indexChar, int bit) {
 <span class="fc" id="L139">        return new CallableBlindBit(</span>
@@ -153,7 +153,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
 <span class="nc" id="L153">            throw new StoppedByUserSlidingException();</span>
         }
 <span class="fc" id="L155">        var blindTest = new CallableBlindBit(</span>
-<span class="fc" id="L156">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),</span>
+<span class="fc" id="L156">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),</span>
             this.injectionModel,
             this,
             this.blindOperator,

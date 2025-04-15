@@ -6,6 +6,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +25,7 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L27">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L28">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     // Every FALSE SQL statements will be checked,
     // more statements means a more robust application
@@ -36,12 +37,11 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
     protected List&lt;String&gt; truthyBit;
     protected List&lt;String&gt; truthyBin;
 
-<span class="fc" id="L39">    public enum BlindOperator {</span>
-<span class="fc" id="L40">        AND, OR, STACK, NO_MODE</span>
+<span class="fc" id="L40">    public enum BlindOperator {</span>
+<span class="fc" id="L41">        AND, OR, STACK, NO_MODE</span>
     }
-    
+
     protected final InjectionModel injectionModel;
-    
     protected final BlindOperator blindOperator;
     
 <span class="fc" id="L47">    protected AbstractInjectionBit(InjectionModel injectionModel, BlindOperator blindOperator) {</span>
@@ -111,7 +111,7 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
                 // If SQL result is not empty, then add a new unknown character and define a new array of 7 undefined bit.
                 // Then add 7 bits requests for that new character.
 <span class="fc" id="L113">                var isComplete = this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);</span>
-<span class="pc bpc" id="L114" title="1 of 4 branches missed.">                if (isComplete || currentCallable.isBinary()) {  // prevents bitwise overload new char init on each bit</span>
+<span class="fc bfc" id="L114" title="All 4 branches covered.">                if (isComplete || currentCallable.isBinary()) {  // prevents bitwise overload new char init on each bit</span>
 <span class="fc" id="L115">                    this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, currentCallable);</span>
                 }
 
@@ -164,14 +164,14 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
 <span class="nc" id="L164">                countBadAsciiCode.incrementAndGet();</span>
             }
 
-<span class="fc" id="L167">            currentCallable.charText = Character.toString((char) asciiCode);</span>
+<span class="fc" id="L167">            currentCallable.setCharText(Character.toString((char) asciiCode));</span>
             
 <span class="fc" id="L169">            var interaction = new Request();</span>
 <span class="fc" id="L170">            interaction.setMessage(Interaction.MESSAGE_BINARY);</span>
 <span class="fc" id="L171">            interaction.setParameters(</span>
                 asciiCodeBit
                 + &quot;=&quot;
-                + currentCallable.charText
+<span class="fc" id="L174">                + currentCallable.getCharText()</span>
 <span class="fc" id="L175">                .replace(&quot;\\n&quot;, &quot;\\\\\\n&quot;)</span>
 <span class="fc" id="L176">                .replace(&quot;\\r&quot;, &quot;\\\\\\r&quot;)</span>
 <span class="fc" id="L177">                .replace(&quot;\\t&quot;, &quot;\\\\\\t&quot;)</span>
@@ -216,6 +216,10 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
 
     public BlindOperator getBooleanMode() {
 <span class="fc" id="L218">        return this.blindOperator;</span>
+    }
+
+    protected static char[] getBitsUnset() {
+<span class="fc" id="L222">        return new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' };</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

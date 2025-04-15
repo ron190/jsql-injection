@@ -79,12 +79,12 @@ public class StrategyMultibit extends AbstractStrategy {
                 null
             )
         );
-<span class="fc" id="L82">        this.markVulnerability(Interaction.MARK_MULTI_VULNERABLE);</span>
+<span class="fc" id="L82">        this.markVulnerability(Interaction.MARK_MULTIBIT_VULNERABLE);</span>
 <span class="fc" id="L83">    }</span>
 
     @Override
     public void unallow(int... i) {
-<span class="fc" id="L87">        this.markVulnerability(Interaction.MARK_MULTI_INVULNERABLE);</span>
+<span class="fc" id="L87">        this.markVulnerability(Interaction.MARK_MULTIBIT_INVULNERABLE);</span>
 <span class="fc" id="L88">    }</span>
 
     @Override
@@ -106,9 +106,9 @@ public class StrategyMultibit extends AbstractStrategy {
             );
 <span class="fc" id="L107">            this.injectionModel.getMediatorStrategy().setStrategy(this);</span>
 
-<span class="fc" id="L109">            var requestMarkBlindStrategy = new Request();</span>
-<span class="fc" id="L110">            requestMarkBlindStrategy.setMessage(Interaction.MARK_MULTI_STRATEGY);</span>
-<span class="fc" id="L111">            this.injectionModel.sendToViews(requestMarkBlindStrategy);</span>
+<span class="fc" id="L109">            var requestMarkMultibitStrategy = new Request();</span>
+<span class="fc" id="L110">            requestMarkMultibitStrategy.setMessage(Interaction.MARK_MULTIBIT_STRATEGY);</span>
+<span class="fc" id="L111">            this.injectionModel.sendToViews(requestMarkMultibitStrategy);</span>
         }
 <span class="fc" id="L113">    }</span>
     

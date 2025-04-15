@@ -88,8 +88,8 @@ public class PreferencesUtil {
 <span class="fc" id="L88">    private boolean isUrlDecodeDisabled = false;</span>
 
 <span class="fc" id="L90">    private boolean isStrategyTimeDisabled = false;</span>
-<span class="fc" id="L91">    private boolean isStrategyBlindDisabled = false;</span>
-<span class="fc" id="L92">    private boolean isStrategyBlindBinaryDisabled = false;</span>
+<span class="fc" id="L91">    private boolean isStrategyBlindBitDisabled = false;</span>
+<span class="fc" id="L92">    private boolean isStrategyBlindBinDisabled = false;</span>
 <span class="fc" id="L93">    private boolean isStrategyMultibitDisabled = false;</span>
 <span class="fc" id="L94">    private boolean isStrategyStackDisabled = false;</span>
 <span class="fc" id="L95">    private boolean isStrategyErrorDisabled = false;</span>
@@ -198,8 +198,8 @@ public class PreferencesUtil {
 <span class="fc" id="L198">        this.isLimitingSleepTimeStrategy = preferences.getBoolean(&quot;isLimitingSleepTimeStrategy&quot;, false);</span>
 
 <span class="fc" id="L200">        this.isStrategyTimeDisabled = preferences.getBoolean(&quot;isStrategyTimeDisabled&quot;, false);</span>
-<span class="fc" id="L201">        this.isStrategyBlindDisabled = preferences.getBoolean(&quot;isStrategyBlindDisabled&quot;, false);</span>
-<span class="fc" id="L202">        this.isStrategyBlindBinaryDisabled = preferences.getBoolean(&quot;isStrategyBlindBinaryDisabled&quot;, false);</span>
+<span class="fc" id="L201">        this.isStrategyBlindBitDisabled = preferences.getBoolean(&quot;isStrategyBlindBitDisabled&quot;, false);</span>
+<span class="fc" id="L202">        this.isStrategyBlindBinDisabled = preferences.getBoolean(&quot;isStrategyBlindBinDisabled&quot;, false);</span>
 <span class="fc" id="L203">        this.isStrategyMultibitDisabled = preferences.getBoolean(&quot;isStrategyMultibitDisabled&quot;, false);</span>
 <span class="fc" id="L204">        this.isStrategyStackDisabled = preferences.getBoolean(&quot;isStrategyStackDisabled&quot;, false);</span>
 <span class="fc" id="L205">        this.isStrategyErrorDisabled = preferences.getBoolean(&quot;isStrategyErrorDisabled&quot;, false);</span>
@@ -274,8 +274,8 @@ public class PreferencesUtil {
 <span class="fc" id="L274">        preferences.putBoolean(&quot;isTamperingSpaceToSharpComment&quot;, this.isTamperingSpaceToSharpComment);</span>
         
 <span class="fc" id="L276">        preferences.putBoolean(&quot;isStrategyTimeDisabled&quot;, this.isStrategyTimeDisabled);</span>
-<span class="fc" id="L277">        preferences.putBoolean(&quot;isStrategyBlindDisabled&quot;, this.isStrategyBlindDisabled);</span>
-<span class="fc" id="L278">        preferences.putBoolean(&quot;isStrategyBlindBinaryDisabled&quot;, this.isStrategyBlindBinaryDisabled);</span>
+<span class="fc" id="L277">        preferences.putBoolean(&quot;isStrategyBlindBitDisabled&quot;, this.isStrategyBlindBitDisabled);</span>
+<span class="fc" id="L278">        preferences.putBoolean(&quot;isStrategyBlindBinDisabled&quot;, this.isStrategyBlindBinDisabled);</span>
 <span class="fc" id="L279">        preferences.putBoolean(&quot;isStrategyMultibitDisabled&quot;, this.isStrategyMultibitDisabled);</span>
 <span class="fc" id="L280">        preferences.putBoolean(&quot;isStrategyStackDisabled&quot;, this.isStrategyStackDisabled);</span>
 <span class="fc" id="L281">        preferences.putBoolean(&quot;isStrategyErrorDisabled&quot;, this.isStrategyErrorDisabled);</span>
@@ -501,12 +501,12 @@ public class PreferencesUtil {
 <span class="fc" id="L501">        return this.isStrategyTimeDisabled;</span>
     }
 
-    public boolean isStrategyBlindDisabled() {
-<span class="fc" id="L505">        return this.isStrategyBlindDisabled;</span>
+    public boolean isStrategyBlindBitDisabled() {
+<span class="fc" id="L505">        return this.isStrategyBlindBitDisabled;</span>
     }
 
-    public boolean isStrategyBlindBinaryDisabled() {
-<span class="fc" id="L509">        return this.isStrategyBlindBinaryDisabled;</span>
+    public boolean isStrategyBlindBinDisabled() {
+<span class="fc" id="L509">        return this.isStrategyBlindBinDisabled;</span>
     }
 
     public boolean isStrategyMultibitDisabled() {
@@ -796,14 +796,14 @@ public class PreferencesUtil {
 <span class="fc" id="L796">        return this;</span>
     }
 
-    public PreferencesUtil withIsStrategyBlindDisabled(boolean isStrategyBlindDisabled) {
-<span class="fc" id="L800">        this.isStrategyBlindDisabled = isStrategyBlindDisabled;</span>
+    public PreferencesUtil withIsStrategyBlindBitDisabled(boolean isStrategyBlindBitDisabled) {
+<span class="fc" id="L800">        this.isStrategyBlindBitDisabled = isStrategyBlindBitDisabled;</span>
 <span class="fc" id="L801">        return this;</span>
     }
 
-    public PreferencesUtil withIsStrategyBlindBinaryDisabled(boolean isStrategyBlindBinaryDisabled) {
-<span class="nc" id="L805">        this.isStrategyBlindBinaryDisabled = isStrategyBlindBinaryDisabled;</span>
-<span class="nc" id="L806">        return this;</span>
+    public PreferencesUtil withIsStrategyBlindBinDisabled(boolean isStrategyBlindBinDisabled) {
+<span class="fc" id="L805">        this.isStrategyBlindBinDisabled = isStrategyBlindBinDisabled;</span>
+<span class="fc" id="L806">        return this;</span>
     }
 
     public PreferencesUtil withIsStrategyMultibitDisabled(boolean isStrategyMultibitDisabled) {
