@@ -150,7 +150,7 @@ public class ParameterUtil {
      * Validates a RFC 7230 field-name.
      */
     public static boolean isInvalidName(String token) {
-<span class="fc bfc" id="L153" title="All 2 branches covered.">        for (int i = 0; i &lt; token.length(); i++) {</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        for (int i = 0 ; i &lt; token.length() ; i++) {</span>
 <span class="fc" id="L154">            char c = token.charAt(i);</span>
 <span class="pc bpc" id="L155" title="2 of 4 branches missed.">            if (c &gt; 255 || !ParameterUtil.tchar[c]) {</span>
 <span class="nc" id="L156">                return true;</span>
@@ -412,4 +412,4 @@ public class ParameterUtil {
 <span class="fc" id="L412">        return this.isMultipartRequest;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

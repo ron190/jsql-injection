@@ -19,7 +19,7 @@
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * Textfield with information text displayed when empty.</em>
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a> <strong class="jxr_keyword">extends</strong> JTextField {
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a> <strong class="jxr_keyword">extends</strong> JTextField <strong class="jxr_keyword">implements</strong> <a name="JPlaceholder" href="../../../../../com/jsql/view/swing/text/JPlaceholder.html#JPlaceholder">JPlaceholder</a> {
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>      
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment">     * Log4j logger sent to view.</em>
@@ -69,10 +69,11 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          }
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      }
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setPlaceholderText(String placeholderText) {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">this</strong>.placeholderText = placeholderText;
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>      }
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>  }
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>      @Override
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setPlaceholderText(String placeholderText) {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">this</strong>.placeholderText = placeholderText;
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>      }
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>  }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>

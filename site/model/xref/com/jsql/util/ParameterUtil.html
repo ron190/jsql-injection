@@ -158,7 +158,7 @@
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> <em class="jxr_comment">     * Validates a RFC 7230 field-name.</em>
 <a class="jxr_linenumber" name="L151" href="#L151">151</a> <em class="jxr_comment">     */</em>
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> isInvalidName(String token) {
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; token.length(); i++) {
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0 ; i &lt; token.length() ; i++) {
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>             <strong class="jxr_keyword">char</strong> c = token.charAt(i);
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>             <strong class="jxr_keyword">if</strong> (c &gt; 255 || !ParameterUtil.tchar[c]) {
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;

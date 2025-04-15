@@ -36,11 +36,11 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
      * If every false requests are under 5 seconds and every true are below 5 seconds,
      * then time attack is confirmed.
      */
-    public InjectionTime(InjectionModel injectionModel, BinaryMode binaryMode) {
-<span class="fc" id="L40">        super(injectionModel, binaryMode);</span>
+    public InjectionTime(InjectionModel injectionModel, BlindOperator blindOperator) {
+<span class="fc" id="L40">        super(injectionModel, blindOperator);</span>
         
         // No blind
-<span class="pc bpc" id="L43" title="2 of 4 branches missed.">        if (this.falsy.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
+<span class="pc bpc" id="L43" title="2 of 4 branches missed.">        if (this.falsyBit.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L44">            return;</span>
         }
 
@@ -48,12 +48,12 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
         // it will use inject() from the model
 <span class="fc" id="L49">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagFalse&quot;);</span>
 <span class="fc" id="L50">        Collection&lt;CallableTime&gt; callablesFalseTest = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L51" title="All 2 branches covered.">        for (String falseTest: this.falsy) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        for (String falseTest: this.falsyBit) {</span>
 <span class="fc" id="L52">            callablesFalseTest.add(new CallableTime(</span>
                 falseTest,
                 injectionModel,
                 this,
-                    binaryMode,
+                    blindOperator,
                 &quot;time#falsy&quot;
             ));
 <span class="fc" id="L59">        }</span>
@@ -80,20 +80,20 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 <span class="nc" id="L80">            Thread.currentThread().interrupt();</span>
 <span class="pc" id="L81">        }</span>
         
-<span class="fc" id="L83">        this.checkTrueTests(binaryMode);</span>
+<span class="fc" id="L83">        this.checkTrueTests(blindOperator);</span>
 <span class="fc" id="L84">    }</span>
 
-    private void checkTrueTests(BinaryMode binaryMode) {
+    private void checkTrueTests(BlindOperator blindOperator) {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model
 <span class="fc" id="L89">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagTrue&quot;);</span>
 <span class="fc" id="L90">        Collection&lt;CallableTime&gt; callablesTrueTest = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (String trueTest: this.truthy) {</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (String trueTest: this.truthyBit) {</span>
 <span class="fc" id="L92">            callablesTrueTest.add(new CallableTime(</span>
                 trueTest,
                 this.injectionModel,
                 this,
-                    binaryMode,
+                    blindOperator,
                 &quot;time#truthy&quot;
             ));
 <span class="fc" id="L99">        }</span>
@@ -122,15 +122,15 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 <span class="fc" id="L122">    }</span>
 
     @Override
-    public CallableTime getCallableBitTest(String sqlQuery, int indexCharacter, int bit) {
+    public CallableTime getCallableBitTest(String sqlQuery, int indexChar, int bit) {
 <span class="fc" id="L126">        return new CallableTime(</span>
             sqlQuery,
-            indexCharacter,
+            indexChar,
             bit,
             this.injectionModel,
             this,
-            this.binaryMode,
-            &quot;bit#&quot; + indexCharacter + &quot;~&quot; + bit
+            this.blindOperator,
+            &quot;bit#&quot; + indexChar + &quot;~&quot; + bit
         );
     }
 
@@ -143,7 +143,7 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 <span class="fc" id="L143">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBinaryInit(),</span>
             this.injectionModel,
             this,
-            this.binaryMode,
+            this.blindOperator,
             &quot;time#confirm&quot;
         );
         try {
@@ -165,4 +165,4 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 <span class="fc" id="L165">        return &quot;- Strategy Time: query True when delays for &quot;+ this.getSleepTime() +&quot;s\n\n&quot;;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

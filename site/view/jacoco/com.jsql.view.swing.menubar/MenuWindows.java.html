@@ -3,8 +3,8 @@
 import com.formdev.flatlaf.intellijthemes.FlatDarkFlatIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatHighContrastIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatLightFlatIJTheme;
-import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubDarkIJTheme;
-import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTGitHubDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTGitHubIJTheme;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.jsql.model.InjectionModel;
@@ -80,8 +80,8 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L80">            new AbstractMap.SimpleEntry&lt;&gt;(FlatDarkFlatIJTheme.class.getName(), &quot;IntelliJ Dark&quot;),</span>
 <span class="fc" id="L81">            new AbstractMap.SimpleEntry&lt;&gt;(FlatMacLightLaf.class.getName(), &quot;macOS&quot;),</span>
 <span class="fc" id="L82">            new AbstractMap.SimpleEntry&lt;&gt;(FlatMacDarkLaf.class.getName(), &quot;macOS Dark&quot;),</span>
-<span class="fc" id="L83">            new AbstractMap.SimpleEntry&lt;&gt;(FlatGitHubIJTheme.class.getName(), &quot;GitHub&quot;),</span>
-<span class="fc" id="L84">            new AbstractMap.SimpleEntry&lt;&gt;(FlatGitHubDarkIJTheme.class.getName(), &quot;GitHub Dark&quot;),</span>
+<span class="fc" id="L83">            new AbstractMap.SimpleEntry&lt;&gt;(FlatMTGitHubIJTheme.class.getName(), &quot;GitHub&quot;),</span>
+<span class="fc" id="L84">            new AbstractMap.SimpleEntry&lt;&gt;(FlatMTGitHubDarkIJTheme.class.getName(), &quot;GitHub Dark&quot;),</span>
 <span class="fc" id="L85">            new AbstractMap.SimpleEntry&lt;&gt;(FlatHighContrastIJTheme.class.getName(), &quot;High contrast&quot;)</span>
 <span class="fc" id="L86">        ).forEach(entry -&gt; {</span>
 <span class="fc" id="L87">            JMenuItem item = new RadioItemPreventClose(</span>
@@ -209,7 +209,7 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L209">        var titleTabSqlEngine = &quot;SQL Engine&quot;;</span>
 
 <span class="fc" id="L211">        itemSqlEngine.addActionListener(actionEvent -&gt; {</span>
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">            for (var i = 0; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">            for (var i = 0 ; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
 <span class="nc bnc" id="L213" title="All 2 branches missed.">                if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {</span>
 <span class="nc" id="L214">                    MediatorHelper.tabResults().setSelectedIndex(i);</span>
 <span class="nc" id="L215">                    return;</span>
@@ -243,7 +243,7 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L243">        var titleTabPreferences = &quot;Preferences&quot;;</span>
 
 <span class="fc" id="L245">        itemPreferences.addActionListener(actionEvent -&gt; {</span>
-<span class="pc bpc" id="L246" title="1 of 2 branches missed.">            for (var i = 0; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">            for (var i = 0 ; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
 <span class="nc bnc" id="L247" title="All 2 branches missed.">                if (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {</span>
 <span class="nc" id="L248">                    MediatorHelper.tabResults().setSelectedIndex(i);</span>
 <span class="nc" id="L249">                    return;</span>
@@ -324,4 +324,4 @@ public class MenuWindows extends JMenu {
 <span class="nc" id="L324">        return this.menuView;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

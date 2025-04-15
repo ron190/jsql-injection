@@ -109,8 +109,8 @@ public final class ThreadUtil {
 
         try {
 <span class="fc" id="L111">            taskExecutor.shutdown();</span>
-<span class="fc bfc" id="L112" title="All 2 branches covered.">            if (!taskExecutor.awaitTermination(timeout, TimeUnit.SECONDS)) {</span>
-<span class="fc" id="L113">                taskExecutor.shutdownNow();</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">            if (!taskExecutor.awaitTermination(timeout, TimeUnit.SECONDS)) {</span>
+<span class="nc" id="L113">                taskExecutor.shutdownNow();</span>
             }
 <span class="nc" id="L115">        } catch (InterruptedException e) {</span>
 <span class="nc" id="L116">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
@@ -118,4 +118,4 @@ public final class ThreadUtil {
 <span class="fc" id="L118">        }</span>
 <span class="fc" id="L119">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

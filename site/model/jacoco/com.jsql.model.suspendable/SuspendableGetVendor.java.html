@@ -6,7 +6,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBinary;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBit;
 import com.jsql.model.injection.strategy.blind.InjectionVendor;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +30,7 @@ public class SuspendableGetVendor extends AbstractSuspendable {
 
     @Override
     public String run(Object... args) {
-<span class="fc" id="L33">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting vendor with Boolean match...&quot;);</span>
+<span class="fc" id="L33">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database with Boolean match...&quot;);</span>
 
 <span class="fc" id="L35">        AtomicBoolean isVendorFound = new AtomicBoolean(false);</span>
 <span class="fc" id="L36">        this.injectionModel.getMediatorVendor().getVendors()</span>
@@ -43,36 +43,35 @@ public class SuspendableGetVendor extends AbstractSuspendable {
 <span class="fc bfc" id="L43" title="All 2 branches covered.">            if (isVendorFound.get()) {</span>
 <span class="fc" id="L44">                return;</span>
             }
-<span class="fc" id="L46">            String vendorSpecificWithMode = String.format(</span>
+<span class="fc" id="L46">            String vendorSpecificWithOperator = String.format(</span>
                 &quot;%s %s&quot;,
-<span class="fc" id="L48">                AbstractInjectionBinary.BinaryMode.OR.name(),</span>
+<span class="fc" id="L48">                AbstractInjectionBit.BlindOperator.OR.name(),</span>
 <span class="fc" id="L49">                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getVendorSpecific()</span>
             );
             try {
-<span class="fc" id="L52">                var injectionCharInsertion = new InjectionVendor(this.injectionModel, vendorSpecificWithMode, vendor);</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">                if (injectionCharInsertion.isInjectable(vendorSpecificWithMode)) {</span>
-
-<span class="pc bpc" id="L55" title="1 of 2 branches missed.">                    if (this.isSuspended()) {</span>
-<span class="nc" id="L56">                        throw new StoppedByUserSlidingException();</span>
+<span class="fc" id="L52">                var injectionCharInsertion = new InjectionVendor(this.injectionModel, vendorSpecificWithOperator, vendor);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">                if (injectionCharInsertion.isInjectable(vendorSpecificWithOperator)) {</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">                    if (this.isSuspended()) {</span>
+<span class="nc" id="L55">                        throw new StoppedByUserSlidingException();</span>
                     }
 
-<span class="fc" id="L59">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Found vendor [{}] using Boolean match&quot;, vendor);</span>
-<span class="fc" id="L60">                    this.injectionModel.getMediatorVendor().setVendor(vendor);</span>
-<span class="fc" id="L61">                    isVendorFound.set(true);</span>
+<span class="fc" id="L58">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Found [{}] using Boolean match&quot;, vendor);</span>
+<span class="fc" id="L59">                    this.injectionModel.getMediatorVendor().setVendor(vendor);</span>
+<span class="fc" id="L60">                    isVendorFound.set(true);</span>
 
-<span class="fc" id="L63">                    var requestSetVendor = new Request();</span>
-<span class="fc" id="L64">                    requestSetVendor.setMessage(Interaction.SET_VENDOR);</span>
-<span class="fc" id="L65">                    Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L66">                    msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
-<span class="fc" id="L67">                    msgHeader.put(Header.VENDOR, this.injectionModel.getMediatorVendor().getVendor());</span>
-<span class="fc" id="L68">                    requestSetVendor.setParameters(msgHeader);</span>
-<span class="fc" id="L69">                    this.injectionModel.sendToViews(requestSetVendor);</span>
+<span class="fc" id="L62">                    var requestSetVendor = new Request();</span>
+<span class="fc" id="L63">                    requestSetVendor.setMessage(Interaction.SET_VENDOR);</span>
+<span class="fc" id="L64">                    Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L65">                    msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+<span class="fc" id="L66">                    msgHeader.put(Header.VENDOR, this.injectionModel.getMediatorVendor().getVendor());</span>
+<span class="fc" id="L67">                    requestSetVendor.setParameters(msgHeader);</span>
+<span class="fc" id="L68">                    this.injectionModel.sendToViews(requestSetVendor);</span>
                 }
-<span class="nc" id="L71">            } catch (StoppedByUserSlidingException e) {</span>
-<span class="nc" id="L72">                throw new JSqlRuntimeException(e);</span>
-<span class="fc" id="L73">            }</span>
-<span class="fc" id="L74">        });</span>
-<span class="fc" id="L75">        return null;</span>
+<span class="nc" id="L70">            } catch (StoppedByUserSlidingException e) {</span>
+<span class="nc" id="L71">                throw new JSqlRuntimeException(e);</span>
+<span class="fc" id="L72">            }</span>
+<span class="fc" id="L73">        });</span>
+<span class="fc" id="L74">        return null;  // unused</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

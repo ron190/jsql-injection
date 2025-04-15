@@ -40,26 +40,26 @@ import java.util.List;
 
     public long getNumberOfPossibilities() {
 <span class="fc" id="L42">        long possibilities = 0;</span>
-<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (int i = this.minLength; i &lt;= this.maxLength; i++) {</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (int i = this.minLength ; i &lt;= this.maxLength ; i++) {</span>
 <span class="fc" id="L44">            possibilities += (long) Math.pow(this.characters.size(), i);</span>
         }
 <span class="fc" id="L46">        return possibilities;</span>
     }
 
     public void addLowerCaseLetters() {
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (var c = 'a'; c &lt;= 'z'; c++) {</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (var c = 'a' ; c &lt;= 'z' ; c++) {</span>
 <span class="fc" id="L51">            this.characters.add(String.valueOf(c));</span>
         }
 <span class="fc" id="L53">    }</span>
 
     public void addDigits() {
-<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (var c = 0; c &lt;= 9; c++) {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (var c = 0 ; c &lt;= 9 ; c++) {</span>
 <span class="fc" id="L57">            this.characters.add(String.valueOf(c));</span>
         }
 <span class="fc" id="L59">    }</span>
 
     public void addUpperCaseLetters() {
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (var c = 'A'; c &lt;= 'Z'; c++) {</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (var c = 'A' ; c &lt;= 'Z' ; c++) {</span>
 <span class="fc" id="L63">            this.characters.add(String.valueOf(c));</span>
         }
 <span class="fc" id="L65">    }</span>
@@ -152,4 +152,4 @@ import java.util.List;
 <span class="fc" id="L152">        return this.done;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

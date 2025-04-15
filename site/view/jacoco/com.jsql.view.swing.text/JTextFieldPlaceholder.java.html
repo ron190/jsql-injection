@@ -11,7 +11,7 @@ import java.awt.*;
 /**
  * Textfield with information text displayed when empty.
  */
-public class JTextFieldPlaceholder extends JTextField {
+public class JTextFieldPlaceholder extends JTextField implements JPlaceholder {
     
     /**
      * Log4j logger sent to view.
@@ -61,8 +61,9 @@ public class JTextFieldPlaceholder extends JTextField {
         }
 <span class="fc" id="L62">    }</span>
 
+    @Override
     public void setPlaceholderText(String placeholderText) {
-<span class="fc" id="L65">        this.placeholderText = placeholderText;</span>
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L66">        this.placeholderText = placeholderText;</span>
+<span class="fc" id="L67">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

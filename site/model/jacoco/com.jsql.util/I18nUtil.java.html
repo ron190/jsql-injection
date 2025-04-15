@@ -40,7 +40,7 @@ public class I18nUtil {
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-<span class="fc" id="L43">        return I18nUtil.currentBundle.getString(key);</span>
+<span class="fc" id="L43">        return I18nUtil.currentBundle.getString(key.replace(&quot; &quot;, &quot;_&quot;));  // e.g BLIND BINARY</span>
     }
     
     /**
@@ -74,4 +74,4 @@ public class I18nUtil {
 <span class="nc" id="L74">        return I18nUtil.currentBundle.getLocale();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

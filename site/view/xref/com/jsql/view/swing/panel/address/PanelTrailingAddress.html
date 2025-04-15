@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.view.swing.panel.address;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.strategy.AbstractStrategy;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.strategy.StrategyInjectionError;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.strategy.StrategyError;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.Vendor;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.yaml.Method;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.jsql.util.I18nUtil;
@@ -143,7 +143,7 @@
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>             @Override
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent e) {
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>                 Arrays.stream(PanelTrailingAddress.<strong class="jxr_keyword">this</strong>.popupMenuStrategies.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>                 <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0; i &lt; PanelTrailingAddress.<strong class="jxr_keyword">this</strong>.getMenuError().getItemCount() ; i++) {
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>                 <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; PanelTrailingAddress.<strong class="jxr_keyword">this</strong>.getMenuError().getItemCount() ; i++) {
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>                     PanelTrailingAddress.<strong class="jxr_keyword">this</strong>.getMenuError().getItem(i).updateUI();  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>                 }
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>                 PanelTrailingAddress.<strong class="jxr_keyword">this</strong>.popupMenuStrategies.updateUI();  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
@@ -244,7 +244,7 @@
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>     }
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>     
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> markError() {
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>         StrategyInjectionError strategy = MediatorHelper.model().getMediatorStrategy().getError();
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>         StrategyError strategy = MediatorHelper.model().getMediatorStrategy().getError();
 <a class="jxr_linenumber" name="L240" href="#L240">240</a>         <strong class="jxr_keyword">this</strong>.labelStrategy.setText(strategy.toString());
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>         <strong class="jxr_keyword">int</strong> indexError = strategy.getIndexErrorStrategy();
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>         String nameError = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();

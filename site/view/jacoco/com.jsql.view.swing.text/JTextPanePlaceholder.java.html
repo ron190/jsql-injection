@@ -14,7 +14,7 @@ import java.util.ConcurrentModificationException;
 /**
  * Textfield with information text displayed when empty.
  */
-public class JTextPanePlaceholder extends JTextPane {
+public class JTextPanePlaceholder extends JTextPane implements JPlaceholder {
     
     /**
      * Log4j logger sent to view.
@@ -52,8 +52,9 @@ public class JTextPanePlaceholder extends JTextPane {
 <span class="fc" id="L52">        }</span>
 <span class="fc" id="L53">    }</span>
 
+    @Override
     public void setPlaceholderText(String placeholderText) {
-<span class="fc" id="L56">        this.placeholderText = placeholderText;</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L57">        this.placeholderText = placeholderText;</span>
+<span class="fc" id="L58">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

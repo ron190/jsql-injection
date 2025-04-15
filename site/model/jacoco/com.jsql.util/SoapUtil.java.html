@@ -69,7 +69,7 @@ public class SoapUtil {
 
     public boolean isTextNodeInjectable(Document doc, Node node) {
 <span class="fc" id="L71">        var nodeList = node.getChildNodes();</span>
-<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (var i = 0; i &lt; nodeList.getLength(); i++) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (var i = 0 ; i &lt; nodeList.getLength() ; i++) {</span>
 <span class="fc" id="L73">            var currentNode = nodeList.item(i);</span>
 <span class="fc bfc" id="L74" title="All 2 branches covered.">            if (currentNode.getNodeType() == Node.ELEMENT_NODE) {</span>
 <span class="fc bfc" id="L75" title="All 2 branches covered.">                if (this.isTextNodeInjectable(doc, currentNode)) {  // calls this method for all the children which is Element</span>
@@ -110,7 +110,7 @@ public class SoapUtil {
 
     public static void removeInjectionPoint(Document doc, Node node) {
 <span class="fc" id="L112">        var nodeList = node.getChildNodes();</span>
-<span class="fc bfc" id="L113" title="All 2 branches covered.">        for (var i = 0; i &lt; nodeList.getLength(); i++) {</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        for (var i = 0 ; i &lt; nodeList.getLength() ; i++) {</span>
 <span class="fc" id="L114">            var currentNode = nodeList.item(i);</span>
 <span class="fc bfc" id="L115" title="All 2 branches covered.">            if (currentNode.getNodeType() == Node.ELEMENT_NODE) {</span>
 <span class="fc" id="L116">                SoapUtil.removeInjectionPoint(doc, currentNode);  // calls this method for all the children which is Element</span>
@@ -141,4 +141,4 @@ public class SoapUtil {
 <span class="fc" id="L141">        return output;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

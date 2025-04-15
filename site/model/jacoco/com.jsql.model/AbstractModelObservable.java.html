@@ -11,7 +11,7 @@
 package com.jsql.model;
 
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBit;
 
 import java.util.concurrent.SubmissionPublisher;
 
@@ -41,7 +41,7 @@ import java.util.concurrent.SubmissionPublisher;
         String dataInjection,
         boolean isUsingIndex,
         String metadataInjectionProcess,
-        AbstractCallableBinary&lt;?&gt; callableBoolean,
+        AbstractCallableBit&lt;?&gt; callableBoolean,
         boolean isReport
     );
     
@@ -54,7 +54,7 @@ import java.util.concurrent.SubmissionPublisher;
 <span class="fc" id="L54">        return this.inject(dataInjection, false, metadataInjectionProcess, null, false);</span>
     }
 
-    public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBinary&lt;?&gt; callableBoolean) {
+    public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBit&lt;?&gt; callableBoolean) {
 <span class="fc" id="L58">        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, false);</span>
     }
 
@@ -66,7 +66,7 @@ import java.util.concurrent.SubmissionPublisher;
 <span class="fc" id="L66">        return this.inject(dataInjection, false, metadataInjectionProcess, null, true);</span>
     }
 
-    public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBinary&lt;?&gt; callableBoolean) {
+    public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBit&lt;?&gt; callableBoolean) {
 <span class="fc" id="L70">        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, true);</span>
     }
 
@@ -93,4 +93,4 @@ import java.util.concurrent.SubmissionPublisher;
 <span class="fc" id="L93">        this.isStoppedByUser = processStopped;</span>
 <span class="fc" id="L94">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

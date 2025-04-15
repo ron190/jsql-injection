@@ -11,8 +11,8 @@
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.formdev.flatlaf.intellijthemes.FlatDarkFlatIJTheme;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.formdev.flatlaf.intellijthemes.FlatHighContrastIJTheme;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.formdev.flatlaf.intellijthemes.FlatLightFlatIJTheme;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubDarkIJTheme;
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubIJTheme;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTGitHubDarkIJTheme;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTGitHubIJTheme;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.formdev.flatlaf.themes.FlatMacDarkLaf;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> com.formdev.flatlaf.themes.FlatMacLightLaf;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
@@ -88,8 +88,8 @@
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>              <strong class="jxr_keyword">new</strong> AbstractMap.SimpleEntry&lt;&gt;(FlatDarkFlatIJTheme.<strong class="jxr_keyword">class</strong>.getName(), <span class="jxr_string">"IntelliJ Dark"</span>),
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>              <strong class="jxr_keyword">new</strong> AbstractMap.SimpleEntry&lt;&gt;(FlatMacLightLaf.<strong class="jxr_keyword">class</strong>.getName(), <span class="jxr_string">"macOS"</span>),
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>              <strong class="jxr_keyword">new</strong> AbstractMap.SimpleEntry&lt;&gt;(FlatMacDarkLaf.<strong class="jxr_keyword">class</strong>.getName(), <span class="jxr_string">"macOS Dark"</span>),
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>              <strong class="jxr_keyword">new</strong> AbstractMap.SimpleEntry&lt;&gt;(FlatGitHubIJTheme.<strong class="jxr_keyword">class</strong>.getName(), <span class="jxr_string">"GitHub"</span>),
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>              <strong class="jxr_keyword">new</strong> AbstractMap.SimpleEntry&lt;&gt;(FlatGitHubDarkIJTheme.<strong class="jxr_keyword">class</strong>.getName(), <span class="jxr_string">"GitHub Dark"</span>),
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>              <strong class="jxr_keyword">new</strong> AbstractMap.SimpleEntry&lt;&gt;(FlatMTGitHubIJTheme.<strong class="jxr_keyword">class</strong>.getName(), <span class="jxr_string">"GitHub"</span>),
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>              <strong class="jxr_keyword">new</strong> AbstractMap.SimpleEntry&lt;&gt;(FlatMTGitHubDarkIJTheme.<strong class="jxr_keyword">class</strong>.getName(), <span class="jxr_string">"GitHub Dark"</span>),
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>              <strong class="jxr_keyword">new</strong> AbstractMap.SimpleEntry&lt;&gt;(FlatHighContrastIJTheme.<strong class="jxr_keyword">class</strong>.getName(), <span class="jxr_string">"High contrast"</span>)
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          ).forEach(entry -&gt; {
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>              JMenuItem item = <strong class="jxr_keyword">new</strong> <a name="RadioItemPreventClose" href="../../../../../com/jsql/view/swing/util/RadioItemPreventClose.html#RadioItemPreventClose">RadioItemPreventClose</a>(
@@ -217,7 +217,7 @@
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>         <strong class="jxr_keyword">var</strong> titleTabSqlEngine = <span class="jxr_string">"SQL Engine"</span>;
 <a class="jxr_linenumber" name="L210" href="#L210">210</a> 
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>         itemSqlEngine.addActionListener(actionEvent -&gt; {
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>                 <strong class="jxr_keyword">if</strong> (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>                     MediatorHelper.tabResults().setSelectedIndex(i);
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>                     <strong class="jxr_keyword">return</strong>;
@@ -251,7 +251,7 @@
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>         <strong class="jxr_keyword">var</strong> titleTabPreferences = <span class="jxr_string">"Preferences"</span>;
 <a class="jxr_linenumber" name="L244" href="#L244">244</a> 
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>         itemPreferences.addActionListener(actionEvent -&gt; {
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>                 <strong class="jxr_keyword">if</strong> (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>                     MediatorHelper.tabResults().setSelectedIndex(i);
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>                     <strong class="jxr_keyword">return</strong>;

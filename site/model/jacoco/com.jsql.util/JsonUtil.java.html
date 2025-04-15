@@ -55,7 +55,7 @@ public class JsonUtil {
 
     private static void scanJsonArray(Object jsonEntity, String parentName, SimpleEntry&lt;String, String&gt; parentXPath, List&lt;SimpleEntry&lt;String, String&gt;&gt; attributesXPath) {
 <span class="fc" id="L57">        var jsonArrayEntity = (JSONArray) jsonEntity;</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (var i = 0; i &lt; jsonArrayEntity.length(); i++) {</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (var i = 0 ; i &lt; jsonArrayEntity.length() ; i++) {</span>
 <span class="fc" id="L59">            Object value = jsonArrayEntity.get(i);</span>
 <span class="fc" id="L60">            String xpath = parentName +&quot;[&quot;+ i +&quot;]&quot;;</span>
             
@@ -165,4 +165,4 @@ public class JsonUtil {
 <span class="fc" id="L165">        return hasFoundInjection;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -14,7 +14,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class SyntaxTextArea extends RSyntaxTextArea {
+public class SyntaxTextArea extends RSyntaxTextArea implements JPlaceholder {
 
     /**
      * Log4j logger sent to view.
@@ -73,9 +73,9 @@ public class SyntaxTextArea extends RSyntaxTextArea {
     public Font getFontForTokenType(int type) {
 <span class="nc" id="L74">        return UiUtil.FONT_MONO_NON_ASIAN;</span>
     }
-
+    @Override
     public void setPlaceholderText(String placeholderText) {
 <span class="fc" id="L78">        this.placeholderText = placeholderText;</span>
 <span class="fc" id="L79">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

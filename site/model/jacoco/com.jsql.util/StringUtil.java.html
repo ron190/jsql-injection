@@ -316,7 +316,7 @@ public final class StringUtil {
 <span class="nc" id="L316">            throw new IllegalArgumentException(&quot;Invalid hexadecimal String supplied.&quot;);</span>
         }
 <span class="fc" id="L318">        byte[] bytes = new byte[hexString.length() / 2];</span>
-<span class="fc bfc" id="L319" title="All 2 branches covered.">        for (int i = 0; i &lt; hexString.length(); i += 2) {</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">        for (int i = 0 ; i &lt; hexString.length() ; i += 2) {</span>
 <span class="fc" id="L320">            bytes[i / 2] = StringUtil.hexToByte(hexString.substring(i, i + 2));</span>
         }
 <span class="fc" id="L322">        return bytes;</span>
@@ -332,7 +332,7 @@ public final class StringUtil {
 
     public static byte[] xor(byte[] plaintext, int key) {
 <span class="fc" id="L334">        var ciphertext = new byte[plaintext.length];</span>
-<span class="fc bfc" id="L335" title="All 2 branches covered.">        for (var i = 0; i &lt; plaintext.length; i++) {</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">        for (var i = 0 ; i &lt; plaintext.length ; i++) {</span>
 <span class="fc" id="L336">            ciphertext[i] = (byte) (plaintext[i] ^ (key &gt;&gt;&gt; (8 * (i % 4))));</span>
         }
 <span class="fc" id="L338">        return ciphertext;</span>
@@ -345,7 +345,7 @@ public final class StringUtil {
         }
 <span class="fc" id="L346">        int chunkSize = 900; // 450 bytes = 900 hex characters</span>
 <span class="fc" id="L347">        List&lt;String&gt; chunks = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L348" title="All 2 branches covered.">        for (int i = 0; i &lt; hexString.length(); i += chunkSize) {</span>
+<span class="fc bfc" id="L348" title="All 2 branches covered.">        for (int i = 0 ; i &lt; hexString.length() ; i += chunkSize) {</span>
 <span class="fc" id="L349">            int endIndex = Math.min(i + chunkSize, hexString.length());</span>
 <span class="fc" id="L350">            chunks.add(hexString.substring(i, endIndex));</span>
         }
@@ -375,4 +375,4 @@ public final class StringUtil {
 <span class="fc" id="L375">        return fileData;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

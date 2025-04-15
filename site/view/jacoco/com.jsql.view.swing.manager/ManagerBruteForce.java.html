@@ -66,211 +66,212 @@ public class ManagerBruteForce extends JPanel {
 <span class="fc" id="L66">        this.result = new JPopupTextPane(placeholder).getProxy();</span>
 <span class="fc" id="L67">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_RESULT&quot;, placeholder);</span>
 <span class="fc" id="L68">        this.result.setName(&quot;managerBruterResult&quot;);</span>
-<span class="fc" id="L69">        this.add(new JScrollPane(this.result), BorderLayout.CENTER);</span>
+<span class="fc" id="L69">        this.result.setEditable(false);</span>
+<span class="fc" id="L70">        this.add(new JScrollPane(this.result), BorderLayout.CENTER);</span>
 
-<span class="fc" id="L71">        JPanel panelButton = this.initPanelButton();</span>
-<span class="fc" id="L72">        this.add(panelButton, BorderLayout.SOUTH);</span>
-<span class="fc" id="L73">    }</span>
+<span class="fc" id="L72">        JPanel panelButton = this.initPanelButton();</span>
+<span class="fc" id="L73">        this.add(panelButton, BorderLayout.SOUTH);</span>
+<span class="fc" id="L74">    }</span>
 
     private JPanel initPanelButton() {
-<span class="fc" id="L76">        var lastLine = new JPanel();</span>
-<span class="fc" id="L77">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L77">        var lastLine = new JPanel();</span>
+<span class="fc" id="L78">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));</span>
 
-<span class="fc" id="L79">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_RUN_BUTTON_TOOLTIP)));</span>
-<span class="fc" id="L80">        this.run = new JButtonStateful(&quot;BRUTEFORCE_RUN_BUTTON_LABEL&quot;) {</span>
+<span class="fc" id="L80">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_RUN_BUTTON_TOOLTIP)));</span>
+<span class="fc" id="L81">        this.run = new JButtonStateful(&quot;BRUTEFORCE_RUN_BUTTON_LABEL&quot;) {</span>
             @Override
             public JToolTip createToolTip() {
-<span class="nc" id="L83">                return tooltip.get();</span>
+<span class="nc" id="L84">                return tooltip.get();</span>
             }
         };
-<span class="fc" id="L86">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_RUN_BUTTON_LABEL&quot;, this.run);</span>
-<span class="fc" id="L87">        I18nViewUtil.addComponentForKey(ManagerBruteForce.BRUTEFORCE_RUN_BUTTON_TOOLTIP, tooltip.get());</span>
-<span class="fc" id="L88">        this.run.setToolTipText(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_RUN_BUTTON_TOOLTIP));</span>
+<span class="fc" id="L87">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_RUN_BUTTON_LABEL&quot;, this.run);</span>
+<span class="fc" id="L88">        I18nViewUtil.addComponentForKey(ManagerBruteForce.BRUTEFORCE_RUN_BUTTON_TOOLTIP, tooltip.get());</span>
+<span class="fc" id="L89">        this.run.setToolTipText(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_RUN_BUTTON_TOOLTIP));</span>
 
-<span class="fc" id="L90">        this.run.setName(&quot;managerBruterRun&quot;);</span>
-<span class="fc" id="L91">        this.run.addActionListener(new ActionBruteForce(this));</span>
+<span class="fc" id="L91">        this.run.setName(&quot;managerBruterRun&quot;);</span>
+<span class="fc" id="L92">        this.run.addActionListener(new ActionBruteForce(this));</span>
 
-<span class="fc" id="L93">        this.progressBar = new JProgressBar();</span>
-<span class="fc" id="L94">        this.progressBar.setIndeterminate(true);</span>
-<span class="fc" id="L95">        this.progressBar.setVisible(false);</span>
-<span class="fc" id="L96">        this.progressBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));</span>
+<span class="fc" id="L94">        this.progressBar = new JProgressBar();</span>
+<span class="fc" id="L95">        this.progressBar.setIndeterminate(true);</span>
+<span class="fc" id="L96">        this.progressBar.setVisible(false);</span>
+<span class="fc" id="L97">        this.progressBar.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));</span>
 
-<span class="fc" id="L98">        lastLine.add(this.horizontalGlue);</span>
-<span class="fc" id="L99">        lastLine.add(this.progressBar);</span>
-<span class="fc" id="L100">        lastLine.add(this.run);</span>
-<span class="fc" id="L101">        return lastLine;</span>
+<span class="fc" id="L99">        lastLine.add(this.horizontalGlue);</span>
+<span class="fc" id="L100">        lastLine.add(this.progressBar);</span>
+<span class="fc" id="L101">        lastLine.add(this.run);</span>
+<span class="fc" id="L102">        return lastLine;</span>
     }
 
     public void showLoader(boolean isVisible) {
-<span class="nc" id="L105">        this.progressBar.setVisible(isVisible);</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">        this.horizontalGlue.setVisible(!isVisible);</span>
-<span class="nc" id="L107">    }</span>
+<span class="nc" id="L106">        this.progressBar.setVisible(isVisible);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        this.horizontalGlue.setVisible(!isVisible);</span>
+<span class="nc" id="L108">    }</span>
 
     private JPanel initOptionsPanel() {
-<span class="fc" id="L110">        var options = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L111">        JPanel firstLine = this.initFirstLine();</span>
-<span class="fc" id="L112">        final JPanel secondLine = this.initSecondLine();</span>
-<span class="fc" id="L113">        JPanel thirdLine = this.initThirdLine();</span>
+<span class="fc" id="L111">        var options = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L112">        JPanel firstLine = this.initFirstLine();</span>
+<span class="fc" id="L113">        final JPanel secondLine = this.initSecondLine();</span>
+<span class="fc" id="L114">        JPanel thirdLine = this.initThirdLine();</span>
         
-<span class="fc" id="L115">        final var secondAndThirdLine = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L116">        secondAndThirdLine.add(secondLine, BorderLayout.NORTH);</span>
-<span class="fc" id="L117">        secondAndThirdLine.add(thirdLine, BorderLayout.SOUTH);</span>
+<span class="fc" id="L116">        final var secondAndThirdLine = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L117">        secondAndThirdLine.add(secondLine, BorderLayout.NORTH);</span>
+<span class="fc" id="L118">        secondAndThirdLine.add(thirdLine, BorderLayout.SOUTH);</span>
 
-<span class="fc" id="L119">        options.add(firstLine, BorderLayout.NORTH);</span>
-<span class="fc" id="L120">        options.add(secondAndThirdLine, BorderLayout.SOUTH);</span>
-<span class="fc" id="L121">        return options;</span>
+<span class="fc" id="L120">        options.add(firstLine, BorderLayout.NORTH);</span>
+<span class="fc" id="L121">        options.add(secondAndThirdLine, BorderLayout.SOUTH);</span>
+<span class="fc" id="L122">        return options;</span>
     }
 
     private JPanel initFirstLine() {
-<span class="fc" id="L125">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP)));</span>
-<span class="fc" id="L126">        var placeholder = new JTextFieldPlaceholder(I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_LABEL&quot;)) {</span>
+<span class="fc" id="L126">        var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP)));</span>
+<span class="fc" id="L127">        var placeholder = new JTextFieldPlaceholder(I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_LABEL&quot;)) {</span>
             @Override
             public JToolTip createToolTip() {
-<span class="nc" id="L129">                return tooltip.get();</span>
+<span class="nc" id="L130">                return tooltip.get();</span>
             }
         };
-<span class="fc" id="L132">        this.hash = new JPopupTextField(placeholder).getProxy();</span>
-<span class="fc" id="L133">        I18nViewUtil.addComponentForKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP, tooltip.get());</span>
-<span class="fc" id="L134">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_HASH_LABEL&quot;, this.hash);</span>
-<span class="fc" id="L135">        this.hash.setName(&quot;managerBruterHash&quot;);</span>
-<span class="fc" id="L136">        this.hash.setToolTipText(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP));</span>
+<span class="fc" id="L133">        this.hash = new JPopupTextField(placeholder).getProxy();</span>
+<span class="fc" id="L134">        I18nViewUtil.addComponentForKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP, tooltip.get());</span>
+<span class="fc" id="L135">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_HASH_LABEL&quot;, this.hash);</span>
+<span class="fc" id="L136">        this.hash.setName(&quot;managerBruterHash&quot;);</span>
+<span class="fc" id="L137">        this.hash.setToolTipText(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_HASH_TOOLTIP));</span>
 
-<span class="fc" id="L138">        var firstLine = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L139">        firstLine.add(this.hash, BorderLayout.CENTER);</span>
-<span class="fc" id="L140">        return firstLine;</span>
+<span class="fc" id="L139">        var firstLine = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L140">        firstLine.add(this.hash, BorderLayout.CENTER);</span>
+<span class="fc" id="L141">        return firstLine;</span>
     }
 
     private JPanel initSecondLine() {
-<span class="fc" id="L144">        final var secondLine = new JPanel();</span>
-<span class="fc" id="L145">        secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L145">        final var secondLine = new JPanel();</span>
+<span class="fc" id="L146">        secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));</span>
 
-<span class="fc" id="L147">        this.hashTypes = new JComboBox&lt;&gt;(ActionCoder.getHashes().toArray(String[]::new));</span>
-<span class="fc" id="L148">        this.hashTypes.setSelectedIndex(6);</span>
-<span class="fc" id="L149">        this.hashTypes.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_TYPE_TOOLTIP&quot;));</span>
-<span class="fc" id="L150">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_HASH_TYPE_TOOLTIP&quot;, this.hashTypes);</span>
-<span class="fc" id="L151">        secondLine.add(this.hashTypes);</span>
+<span class="fc" id="L148">        this.hashTypes = new JComboBox&lt;&gt;(ActionCoder.getHashes().toArray(String[]::new));</span>
+<span class="fc" id="L149">        this.hashTypes.setSelectedIndex(6);</span>
+<span class="fc" id="L150">        this.hashTypes.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_TYPE_TOOLTIP&quot;));</span>
+<span class="fc" id="L151">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_HASH_TYPE_TOOLTIP&quot;, this.hashTypes);</span>
+<span class="fc" id="L152">        secondLine.add(this.hashTypes);</span>
 
-<span class="fc" id="L153">        Arrays.asList(</span>
+<span class="fc" id="L154">        Arrays.asList(</span>
             new ModelBrute(this.lowerCaseCharacters, &quot;a-z&quot;, &quot;BRUTEFORCE_LCASE_TOOLTIP&quot;),
             new ModelBrute(this.upperCaseCharacters, &quot;A-Z&quot;, &quot;BRUTEFORCE_UCASE_TOOLTIP&quot;),
             new ModelBrute(this.numericCharacters, &quot;0-9&quot;, &quot;BRUTEFORCE_NUM_TOOLTIP&quot;),
             new ModelBrute(this.specialCharacters, &quot;Special&quot;, &quot;BRUTEFORCE_SPEC_TOOLTIP&quot;)
-<span class="fc" id="L158">        ).forEach(modelBrute -&gt; {</span>
-<span class="fc" id="L159">            var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(modelBrute.i18nTooltip)));</span>
-<span class="fc" id="L160">            modelBrute.checkbox.set(new JCheckBox(modelBrute.text, true) {</span>
+<span class="fc" id="L159">        ).forEach(modelBrute -&gt; {</span>
+<span class="fc" id="L160">            var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(modelBrute.i18nTooltip)));</span>
+<span class="fc" id="L161">            modelBrute.checkbox.set(new JCheckBox(modelBrute.text, true) {</span>
                 @Override
                 public JToolTip createToolTip() {
-<span class="nc" id="L163">                    return tooltip.get();</span>
+<span class="nc" id="L164">                    return tooltip.get();</span>
                 }
             });
-<span class="fc" id="L166">            modelBrute.checkbox.get().setToolTipText(I18nUtil.valueByKey(modelBrute.i18nTooltip));</span>
-<span class="fc" id="L167">            I18nViewUtil.addComponentForKey(modelBrute.i18nTooltip, tooltip.get());</span>
-<span class="fc" id="L168">            secondLine.add(Box.createHorizontalStrut(5));</span>
-<span class="fc" id="L169">            secondLine.add(modelBrute.checkbox.get());</span>
-<span class="fc" id="L170">        });</span>
+<span class="fc" id="L167">            modelBrute.checkbox.get().setToolTipText(I18nUtil.valueByKey(modelBrute.i18nTooltip));</span>
+<span class="fc" id="L168">            I18nViewUtil.addComponentForKey(modelBrute.i18nTooltip, tooltip.get());</span>
+<span class="fc" id="L169">            secondLine.add(Box.createHorizontalStrut(5));</span>
+<span class="fc" id="L170">            secondLine.add(modelBrute.checkbox.get());</span>
+<span class="fc" id="L171">        });</span>
 
-<span class="fc" id="L172">        return secondLine;</span>
+<span class="fc" id="L173">        return secondLine;</span>
     }
 
     private JPanel initThirdLine() {
-<span class="fc" id="L176">        var thirdLine = new JPanel();</span>
-<span class="fc" id="L177">        thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L177">        var thirdLine = new JPanel();</span>
+<span class="fc" id="L178">        thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));</span>
 
-<span class="fc" id="L179">        final var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_EXCLUDE_TOOLTIP)));</span>
-<span class="fc" id="L180">        var placeholderTooltip = new JTextFieldPlaceholder(I18nUtil.valueByKey(&quot;BRUTEFORCE_EXCLUDE_LABEL&quot;)) {</span>
+<span class="fc" id="L180">        final var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_EXCLUDE_TOOLTIP)));</span>
+<span class="fc" id="L181">        var placeholderTooltip = new JTextFieldPlaceholder(I18nUtil.valueByKey(&quot;BRUTEFORCE_EXCLUDE_LABEL&quot;)) {</span>
             @Override
             public JToolTip createToolTip() {
-<span class="nc" id="L183">                return tooltip.get();</span>
+<span class="nc" id="L184">                return tooltip.get();</span>
             }
         };
-<span class="fc" id="L186">        this.exclude = new JPopupTextField(placeholderTooltip).getProxy();</span>
-<span class="fc" id="L187">        this.exclude.setToolTipText(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_EXCLUDE_TOOLTIP));</span>
-<span class="fc" id="L188">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_EXCLUDE_LABEL&quot;, this.exclude);</span>
-<span class="fc" id="L189">        I18nViewUtil.addComponentForKey(ManagerBruteForce.BRUTEFORCE_EXCLUDE_TOOLTIP, tooltip.get());</span>
-<span class="fc" id="L190">        thirdLine.add(this.exclude);</span>
+<span class="fc" id="L187">        this.exclude = new JPopupTextField(placeholderTooltip).getProxy();</span>
+<span class="fc" id="L188">        this.exclude.setToolTipText(I18nUtil.valueByKey(ManagerBruteForce.BRUTEFORCE_EXCLUDE_TOOLTIP));</span>
+<span class="fc" id="L189">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_EXCLUDE_LABEL&quot;, this.exclude);</span>
+<span class="fc" id="L190">        I18nViewUtil.addComponentForKey(ManagerBruteForce.BRUTEFORCE_EXCLUDE_TOOLTIP, tooltip.get());</span>
+<span class="fc" id="L191">        thirdLine.add(this.exclude);</span>
 
-<span class="fc" id="L192">        Arrays.asList(</span>
+<span class="fc" id="L193">        Arrays.asList(</span>
             new ModelSpinner(1, this.minimumLength, &quot;BRUTEFORCE_MIN_TOOLTIP&quot;),
             new ModelSpinner(5, this.maximumLength, &quot;BRUTEFORCE_MAX_TOOLTIP&quot;)
-<span class="fc" id="L195">        ).forEach(model -&gt; {</span>
-<span class="fc" id="L196">            final var tooltipMax = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(model.i18n)));</span>
-<span class="fc" id="L197">            model.spinner.set(new JSpinner() {</span>
+<span class="fc" id="L196">        ).forEach(model -&gt; {</span>
+<span class="fc" id="L197">            final var tooltipMax = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(model.i18n)));</span>
+<span class="fc" id="L198">            model.spinner.set(new JSpinner() {</span>
                 @Override
                 public JToolTip createToolTip() {
-<span class="nc" id="L200">                    return tooltipMax.get();</span>
+<span class="nc" id="L201">                    return tooltipMax.get();</span>
                 }
             });
-<span class="fc" id="L203">            model.spinner.get().setModel(new SpinnerNumberModel(model.value, 1, 10000, 1));</span>
-<span class="fc" id="L204">            model.spinner.get().addMouseWheelListener(new SpinnerMouseWheelListener());</span>
-<span class="fc" id="L205">            model.spinner.get().setToolTipText(I18nUtil.valueByKey(model.i18n));</span>
-<span class="fc" id="L206">            I18nViewUtil.addComponentForKey(model.i18n, tooltipMax.get());</span>
-<span class="fc" id="L207">            model.spinner.get().setPreferredSize(new Dimension(</span>
-<span class="fc" id="L208">                (int) (model.spinner.get().getPreferredSize().width/1.8),</span>
-<span class="fc" id="L209">                model.spinner.get().getPreferredSize().height</span>
+<span class="fc" id="L204">            model.spinner.get().setModel(new SpinnerNumberModel(model.value, 1, 10000, 1));</span>
+<span class="fc" id="L205">            model.spinner.get().addMouseWheelListener(new SpinnerMouseWheelListener());</span>
+<span class="fc" id="L206">            model.spinner.get().setToolTipText(I18nUtil.valueByKey(model.i18n));</span>
+<span class="fc" id="L207">            I18nViewUtil.addComponentForKey(model.i18n, tooltipMax.get());</span>
+<span class="fc" id="L208">            model.spinner.get().setPreferredSize(new Dimension(</span>
+<span class="fc" id="L209">                (int) (model.spinner.get().getPreferredSize().width/1.8),</span>
+<span class="fc" id="L210">                model.spinner.get().getPreferredSize().height</span>
             ));
-<span class="fc" id="L211">        });</span>
+<span class="fc" id="L212">        });</span>
 
-<span class="fc" id="L213">        var labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MIN_LABEL&quot;), SwingConstants.RIGHT);</span>
-<span class="fc" id="L214">        labelMin.setMaximumSize(new Dimension(labelMin.getPreferredSize().width, labelMin.getPreferredSize().height));</span>
-<span class="fc" id="L215">        thirdLine.add(Box.createHorizontalStrut(5));</span>
-<span class="fc" id="L216">        thirdLine.add(labelMin);</span>
-<span class="fc" id="L217">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MIN_LABEL&quot;, labelMin);</span>
-<span class="fc" id="L218">        thirdLine.add(this.minimumLength.get());</span>
+<span class="fc" id="L214">        var labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MIN_LABEL&quot;), SwingConstants.RIGHT);</span>
+<span class="fc" id="L215">        labelMin.setMaximumSize(new Dimension(labelMin.getPreferredSize().width, labelMin.getPreferredSize().height));</span>
+<span class="fc" id="L216">        thirdLine.add(Box.createHorizontalStrut(5));</span>
+<span class="fc" id="L217">        thirdLine.add(labelMin);</span>
+<span class="fc" id="L218">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MIN_LABEL&quot;, labelMin);</span>
+<span class="fc" id="L219">        thirdLine.add(this.minimumLength.get());</span>
 
-<span class="fc" id="L220">        var labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MAX_LABEL&quot;), SwingConstants.RIGHT);</span>
-<span class="fc" id="L221">        labelMax.setMaximumSize(new Dimension(labelMax.getPreferredSize().width, labelMax.getPreferredSize().height));</span>
-<span class="fc" id="L222">        thirdLine.add(Box.createHorizontalStrut(5));</span>
-<span class="fc" id="L223">        thirdLine.add(labelMax);</span>
-<span class="fc" id="L224">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MAX_LABEL&quot;, labelMax);</span>
-<span class="fc" id="L225">        thirdLine.add(this.maximumLength.get());</span>
-<span class="fc" id="L226">        return thirdLine;</span>
+<span class="fc" id="L221">        var labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MAX_LABEL&quot;), SwingConstants.RIGHT);</span>
+<span class="fc" id="L222">        labelMax.setMaximumSize(new Dimension(labelMax.getPreferredSize().width, labelMax.getPreferredSize().height));</span>
+<span class="fc" id="L223">        thirdLine.add(Box.createHorizontalStrut(5));</span>
+<span class="fc" id="L224">        thirdLine.add(labelMax);</span>
+<span class="fc" id="L225">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MAX_LABEL&quot;, labelMax);</span>
+<span class="fc" id="L226">        thirdLine.add(this.maximumLength.get());</span>
+<span class="fc" id="L227">        return thirdLine;</span>
     }
 
     
     // Getter and setter
 
     public JButtonStateful getRun() {
-<span class="nc" id="L233">        return this.run;</span>
+<span class="nc" id="L234">        return this.run;</span>
     }
 
     public JTextField getHash() {
-<span class="nc" id="L237">        return this.hash;</span>
+<span class="nc" id="L238">        return this.hash;</span>
     }
 
     public JComboBox&lt;String&gt; getHashTypes() {
-<span class="nc" id="L241">        return this.hashTypes;</span>
+<span class="nc" id="L242">        return this.hashTypes;</span>
     }
 
     public JCheckBox getLowerCaseCharacters() {
-<span class="nc" id="L245">        return this.lowerCaseCharacters.get();</span>
+<span class="nc" id="L246">        return this.lowerCaseCharacters.get();</span>
     }
 
     public JCheckBox getUpperCaseCharacters() {
-<span class="nc" id="L249">        return this.upperCaseCharacters.get();</span>
+<span class="nc" id="L250">        return this.upperCaseCharacters.get();</span>
     }
 
     public JCheckBox getNumericCharacters() {
-<span class="nc" id="L253">        return this.numericCharacters.get();</span>
+<span class="nc" id="L254">        return this.numericCharacters.get();</span>
     }
 
     public JCheckBox getSpecialCharacters() {
-<span class="nc" id="L257">        return this.specialCharacters.get();</span>
+<span class="nc" id="L258">        return this.specialCharacters.get();</span>
     }
 
     public JTextField getExclude() {
-<span class="nc" id="L261">        return this.exclude;</span>
+<span class="nc" id="L262">        return this.exclude;</span>
     }
 
     public JSpinner getMinimumLength() {
-<span class="nc" id="L265">        return this.minimumLength.get();</span>
+<span class="nc" id="L266">        return this.minimumLength.get();</span>
     }
 
     public JSpinner getMaximumLength() {
-<span class="nc" id="L269">        return this.maximumLength.get();</span>
+<span class="nc" id="L270">        return this.maximumLength.get();</span>
     }
 
     public JTextPane getResult() {
-<span class="fc" id="L273">        return this.result;</span>
+<span class="fc" id="L274">        return this.result;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

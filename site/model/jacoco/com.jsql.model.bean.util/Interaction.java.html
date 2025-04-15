@@ -38,37 +38,40 @@
 <span class="fc" id="L38">    MARK_BLIND_INVULNERABLE(&quot;MarkBlindInvulnerable&quot;),</span>
 <span class="fc" id="L39">    MARK_BLIND_STRATEGY(&quot;MarkBlindStrategy&quot;),</span>
 <span class="fc" id="L40">    MARK_BLIND_VULNERABLE(&quot;MarkBlindVulnerable&quot;),</span>
-<span class="fc" id="L41">    MARK_ERROR_INVULNERABLE(&quot;MarkErrorInvulnerable&quot;),</span>
-<span class="fc" id="L42">    MARK_ERROR_STRATEGY(&quot;MarkErrorStrategy&quot;),</span>
-<span class="fc" id="L43">    MARK_ERROR_VULNERABLE(&quot;MarkErrorVulnerable&quot;),</span>
-<span class="fc" id="L44">    MARK_UNION_INVULNERABLE(&quot;MarkUnionInvulnerable&quot;),</span>
-<span class="fc" id="L45">    MARK_UNION_STRATEGY(&quot;MarkUnionStrategy&quot;),</span>
-<span class="fc" id="L46">    MARK_UNION_VULNERABLE(&quot;MarkUnionVulnerable&quot;),</span>
-<span class="fc" id="L47">    MARK_TIME_INVULNERABLE(&quot;MarkTimeInvulnerable&quot;),</span>
-<span class="fc" id="L48">    MARK_TIME_STRATEGY(&quot;MarkTimeStrategy&quot;),</span>
-<span class="fc" id="L49">    MARK_TIME_VULNERABLE(&quot;MarkTimeVulnerable&quot;),</span>
-<span class="fc" id="L50">    MARK_STACK_INVULNERABLE(&quot;MarkStackInvulnerable&quot;),</span>
-<span class="fc" id="L51">    MARK_STACK_STRATEGY(&quot;MarkStackStrategy&quot;),</span>
-<span class="fc" id="L52">    MARK_STACK_VULNERABLE(&quot;MarkStackVulnerable&quot;),</span>
+<span class="fc" id="L41">    MARK_BLIND_BINARY_INVULNERABLE(&quot;MarkBlindBinaryInvulnerable&quot;),</span>
+<span class="fc" id="L42">    MARK_BLIND_BINARY_STRATEGY(&quot;MarkBlindBinaryStrategy&quot;),</span>
+<span class="fc" id="L43">    MARK_BLIND_BINARY_VULNERABLE(&quot;MarkBlindBinaryVulnerable&quot;),</span>
+<span class="fc" id="L44">    MARK_ERROR_INVULNERABLE(&quot;MarkErrorInvulnerable&quot;),</span>
+<span class="fc" id="L45">    MARK_ERROR_STRATEGY(&quot;MarkErrorStrategy&quot;),</span>
+<span class="fc" id="L46">    MARK_ERROR_VULNERABLE(&quot;MarkErrorVulnerable&quot;),</span>
+<span class="fc" id="L47">    MARK_UNION_INVULNERABLE(&quot;MarkUnionInvulnerable&quot;),</span>
+<span class="fc" id="L48">    MARK_UNION_STRATEGY(&quot;MarkUnionStrategy&quot;),</span>
+<span class="fc" id="L49">    MARK_UNION_VULNERABLE(&quot;MarkUnionVulnerable&quot;),</span>
+<span class="fc" id="L50">    MARK_TIME_INVULNERABLE(&quot;MarkTimeInvulnerable&quot;),</span>
+<span class="fc" id="L51">    MARK_TIME_STRATEGY(&quot;MarkTimeStrategy&quot;),</span>
+<span class="fc" id="L52">    MARK_TIME_VULNERABLE(&quot;MarkTimeVulnerable&quot;),</span>
+<span class="fc" id="L53">    MARK_STACK_INVULNERABLE(&quot;MarkStackInvulnerable&quot;),</span>
+<span class="fc" id="L54">    MARK_STACK_STRATEGY(&quot;MarkStackStrategy&quot;),</span>
+<span class="fc" id="L55">    MARK_STACK_VULNERABLE(&quot;MarkStackVulnerable&quot;),</span>
 
-<span class="fc" id="L54">    MESSAGE_BINARY(&quot;MessageBinary&quot;),</span>
-<span class="fc" id="L55">    MESSAGE_CHUNK(&quot;MessageChunk&quot;),</span>
-<span class="fc" id="L56">    MESSAGE_HEADER(&quot;MessageHeader&quot;),</span>
+<span class="fc" id="L57">    MESSAGE_BINARY(&quot;MessageBinary&quot;),</span>
+<span class="fc" id="L58">    MESSAGE_CHUNK(&quot;MessageChunk&quot;),</span>
+<span class="fc" id="L59">    MESSAGE_HEADER(&quot;MessageHeader&quot;),</span>
     
-<span class="fc" id="L58">    SET_VENDOR(&quot;SetVendor&quot;),</span>
-<span class="fc" id="L59">    DATABASE_IDENTIFIED(&quot;DatabaseIdentified&quot;),</span>
+<span class="fc" id="L61">    SET_VENDOR(&quot;SetVendor&quot;),</span>
+<span class="fc" id="L62">    DATABASE_IDENTIFIED(&quot;DatabaseIdentified&quot;),</span>
     
-<span class="fc" id="L61">    UNSUBSCRIBE(&quot;Unsubscribe&quot;);  // without real class to unsubscribe subscriber implicitly</span>
+<span class="fc" id="L64">    UNSUBSCRIBE(&quot;Unsubscribe&quot;);  // without real class to unsubscribe subscriber implicitly</span>
     
     private final String name;
     
-<span class="fc" id="L65">    Interaction(String name) {</span>
-<span class="fc" id="L66">        this.name = name;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L68">    Interaction(String name) {</span>
+<span class="fc" id="L69">        this.name = name;</span>
+<span class="fc" id="L70">    }</span>
     
     @Override
     public String toString() {
-<span class="fc" id="L71">        return this.name;</span>
+<span class="fc" id="L74">        return this.name;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

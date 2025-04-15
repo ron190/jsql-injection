@@ -12,7 +12,7 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBit;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.panel.consoles.NetworkTable;
@@ -39,7 +39,7 @@ public class MessageHeader implements InteractionCommand {
     private final String size;
     private final String metadataProcess;
     private final String metadataStrategy;
-    private final AbstractCallableBinary&lt;?&gt; metadataBoolean;
+    private final AbstractCallableBit&lt;?&gt; metadataBoolean;
 
     @SuppressWarnings(&quot;unchecked&quot;)
 <span class="fc" id="L45">    public MessageHeader(Object[] interactionParams) {</span>
@@ -52,7 +52,7 @@ public class MessageHeader implements InteractionCommand {
 <span class="fc" id="L52">        this.size = (String) params.getOrDefault(Header.PAGE_SIZE, StringUtils.EMPTY);</span>
 <span class="fc" id="L53">        this.metadataProcess = (String) params.getOrDefault(Header.METADATA_PROCESS, StringUtils.EMPTY);</span>
 <span class="fc" id="L54">        this.metadataStrategy = (String) params.getOrDefault(Header.METADATA_STRATEGY, StringUtils.EMPTY);</span>
-<span class="fc" id="L55">        this.metadataBoolean = (AbstractCallableBinary&lt;?&gt;) params.getOrDefault(Header.METADATA_BOOLEAN, null);</span>
+<span class="fc" id="L55">        this.metadataBoolean = (AbstractCallableBit&lt;?&gt;) params.getOrDefault(Header.METADATA_BOOLEAN, null);</span>
 <span class="fc" id="L56">    }</span>
 
     @Override
@@ -79,4 +79,4 @@ public class MessageHeader implements InteractionCommand {
 <span class="fc" id="L79">        }</span>
 <span class="fc" id="L80">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

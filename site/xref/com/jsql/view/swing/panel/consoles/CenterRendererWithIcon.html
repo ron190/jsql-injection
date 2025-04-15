@@ -8,7 +8,7 @@
 <div id="overview"><a href="../../../../../../../apidocs/com/jsql/view/swing/panel/consoles/CenterRendererWithIcon.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.view.swing.panel.consoles;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.strategy.blind.AbstractCallableBinary;
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.strategy.blind.AbstractCallableBit;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.UiUtil;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> javax.swing.*;
@@ -23,7 +23,7 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>          Object objectCallableBoolean = ((List&lt;?&gt;) value).get(1);
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>          
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>          <strong class="jxr_keyword">if</strong> (objectCallableBoolean != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>              AbstractCallableBinary&lt;?&gt; callableBoolean = (AbstractCallableBinary&lt;?&gt;) objectCallableBoolean;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>              AbstractCallableBit&lt;?&gt; callableBoolean = (AbstractCallableBit&lt;?&gt;) objectCallableBoolean;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>              String charText = callableBoolean.getCharText();
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>              <strong class="jxr_keyword">if</strong> (charText != <strong class="jxr_keyword">null</strong> &amp;&amp; charText.charAt(0) &gt;= 32) {
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>                  text += <span class="jxr_string">":"</span> + callableBoolean.getCharText();
@@ -34,7 +34,7 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          label.setIcon(<strong class="jxr_keyword">null</strong>);  <em class="jxr_comment">// required to remove icon as same renderer applies to subsequent labels</em>
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>          <strong class="jxr_keyword">if</strong> (column == 3 &amp;&amp; objectCallableBoolean != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>              AbstractCallableBinary&lt;?&gt; callableBoolean = (AbstractCallableBinary&lt;?&gt;) objectCallableBoolean;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>              AbstractCallableBit&lt;?&gt; callableBoolean = (AbstractCallableBit&lt;?&gt;) objectCallableBoolean;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>              <strong class="jxr_keyword">if</strong> (!callableBoolean.isMultibit()) {
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>                  label.setIcon(callableBoolean.isTrue() ? UiUtil.TICK_GREEN.getIcon() : UiUtil.CROSS_RED.getIcon());
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>              }
