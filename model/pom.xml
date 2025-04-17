@@ -51,7 +51,7 @@
         <sonar.exclusions>**/DigestMD4.java</sonar.exclusions>
 
         <awaitility.version>4.3.0</awaitility.version>
-        <bootstrap.version>5.3.3</bootstrap.version>
+        <bootstrap.version>5.3.5</bootstrap.version>
         <!-- required since commons-text:1.11.0 not working -->
         <commons-lang3.version>3.17.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.0.0047</cubrid-jdbc.version>
