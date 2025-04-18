@@ -51,7 +51,7 @@
         <sonar.exclusions>**/DigestMD4.java</sonar.exclusions>
 
         <awaitility.version>4.3.0</awaitility.version>
-        <bootstrap.version>5.3.3</bootstrap.version>
+        <bootstrap.version>5.3.5</bootstrap.version>
         <!-- required since commons-text:1.11.0 not working -->
         <commons-lang3.version>3.17.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.0.0047</cubrid-jdbc.version>
@@ -88,7 +88,7 @@
         <postgresql.version>42.7.5</postgresql.version>
         <snakeyaml.version>2.4</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
-        <spock-core.version>2.4-M5-groovy-4.0</spock-core.version>
+        <spock-core.version>2.4-M6-groovy-4.0</spock-core.version>
         <spring-boot-dependencies.version>3.4.4</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
         <sqlite-jdbc.version>3.49.1.0</sqlite-jdbc.version>

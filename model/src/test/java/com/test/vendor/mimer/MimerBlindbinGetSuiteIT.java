@@ -1,4 +1,4 @@
-package com.test.vendor.mckoi;
+package com.test.vendor.mimer;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
+class MimerBlindbinGetSuiteIT extends ConcreteMimerSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -17,41 +17,24 @@ class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/mckoi?name="
+            "http://localhost:8080/mimer?name="
         );
-
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsUrlRandomSuffixDisabled(true);  // todo fall working if disabled as merged to table alias, should be auto disabled
-
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyUnionDisabled(true);
+
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMimer());
         model.beginInjection();
     }
-    
-    @Override
-    @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
-    }
-    
+
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
@@ -61,7 +44,7 @@ class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getBlindBin(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

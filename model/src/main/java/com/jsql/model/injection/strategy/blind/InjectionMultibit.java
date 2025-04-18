@@ -114,6 +114,7 @@ public class InjectionMultibit extends AbstractInjectionBit<CallableMultibit> {
         AtomicInteger indexChar,
         CompletionService<CallableMultibit> taskCompletionService,
         AtomicInteger countTasksSubmitted,
+        AtomicInteger countBadAsciiCode,
         CallableMultibit currentCallable
     ) {
         indexChar.incrementAndGet();

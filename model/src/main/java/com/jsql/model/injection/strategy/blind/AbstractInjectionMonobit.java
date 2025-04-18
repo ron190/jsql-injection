@@ -16,12 +16,13 @@ public abstract class AbstractInjectionMonobit<T extends AbstractCallableBit<T>>
     abstract T getCallableBitTest(String sqlQuery, int indexChar, int bit);
 
     public void initNextChar(
-        String sqlQuery,
-        List<char[]> bytes,
-        AtomicInteger indexChar,
-        CompletionService<T> taskCompletionService,
-        AtomicInteger countTasksSubmitted,
-        T currentCallable
+            String sqlQuery,
+            List<char[]> bytes,
+            AtomicInteger indexChar,
+            CompletionService<T> taskCompletionService,
+            AtomicInteger countTasksSubmitted,
+            AtomicInteger countBadAsciiCode,
+            T currentCallable
     ) {
         indexChar.incrementAndGet();
         

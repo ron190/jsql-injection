@@ -1,4 +1,4 @@
-package com.test.vendor.sqlite;
+package com.test.vendor.postgres;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,8 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SqliteBlindSuiteIT extends ConcreteSqliteSuiteIT {
-    
+class PostgresBlindBitGetSuiteIT extends ConcretePostgresSuiteIT {
+
     @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
@@ -17,11 +17,16 @@ class SqliteBlindSuiteIT extends ConcreteSqliteSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=sqlite&name=1'*"
+            "http://localhost:8080/blind?tenant=postgres&name="
         );
-        
+
         model.setIsScanning(true);
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyTimeDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
@@ -29,24 +34,6 @@ class SqliteBlindSuiteIT extends ConcreteSqliteSuiteIT {
         .withTypeRequest("GET");
         
         model.beginInjection();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
     }
     
     @Override

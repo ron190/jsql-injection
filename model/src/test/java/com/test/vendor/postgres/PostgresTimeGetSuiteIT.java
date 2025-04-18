@@ -15,7 +15,7 @@ class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/time?tenant=postgres&name=1'"
+            "http://localhost:8080/time?tenant=postgres&name="
         );
         
         model.setIsScanning(true);
@@ -32,7 +32,6 @@ class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgres());
         model.beginInjection();
     }
     

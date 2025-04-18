@@ -176,7 +176,13 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     }
 
     private String getDecodedValue(boolean isSelected, String value) {
-        return isSelected ? StringUtil.fromUrl(value) : value;
+        // Fix #96095: IllegalArgumentException on URLDecoder.decode()
+        try {
+            return isSelected ? StringUtil.fromUrl(value) : value;
+        } catch (IllegalArgumentException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Decoding failure: {}", e.getMessage());
+            return value;
+        }
     }
 
     public void reset() {

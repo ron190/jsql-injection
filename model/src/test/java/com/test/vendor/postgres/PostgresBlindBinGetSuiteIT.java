@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class PostgresBlindGetSuiteIT extends ConcretePostgresSuiteIT {
+class PostgresBlindBinGetSuiteIT extends ConcretePostgresSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -17,7 +17,7 @@ class PostgresBlindGetSuiteIT extends ConcretePostgresSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=postgres&name=1'*"
+            "http://localhost:8080/blind?tenant=postgres&name="
         );
 
         model.setIsScanning(true);
@@ -34,6 +34,7 @@ class PostgresBlindGetSuiteIT extends ConcretePostgresSuiteIT {
         .withTypeRequest("GET");
         
         model.beginInjection();
+        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlindBin());
     }
     
     @Override
@@ -45,7 +46,7 @@ class PostgresBlindGetSuiteIT extends ConcretePostgresSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBit(),
+            this.injectionModel.getMediatorStrategy().getBlindBin(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

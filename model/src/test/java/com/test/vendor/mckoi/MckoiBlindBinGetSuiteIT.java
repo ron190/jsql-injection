@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
+class MckoiBlindBinGetSuiteIT extends ConcreteMckoiSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -23,7 +23,7 @@ class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsUrlRandomSuffixDisabled(true);  // todo fall working if disabled as merged to table alias, should be auto disabled
+        .withIsUrlRandomSuffixDisabled(true);
 
         model
         .getMediatorUtils()
@@ -31,25 +31,12 @@ class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyUnionDisabled(true);
+
         model.beginInjection();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
     }
     
     @Override
@@ -61,7 +48,7 @@ class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getBlindBin(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

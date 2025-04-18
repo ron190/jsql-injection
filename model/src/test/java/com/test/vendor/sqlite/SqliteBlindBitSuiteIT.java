@@ -1,4 +1,4 @@
-package com.test.vendor.mckoi;
+package com.test.vendor.sqlite;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
+class SqliteBlindBitSuiteIT extends ConcreteSqliteSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -17,20 +17,17 @@ class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/mckoi?name="
+            "http://localhost:8080/blind?tenant=sqlite&name="
         );
-
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsUrlRandomSuffixDisabled(true);  // todo fall working if disabled as merged to table alias, should be auto disabled
-
+        
+        model.setIsScanning(true);
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-
+        
         model.beginInjection();
     }
     
@@ -61,7 +58,7 @@ class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

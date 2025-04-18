@@ -27,7 +27,6 @@ class CubridUnionSuiteIT extends ConcreteCubridSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getCubrid());
         model.beginInjection();
     }
     

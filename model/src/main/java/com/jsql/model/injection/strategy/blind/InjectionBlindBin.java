@@ -173,6 +173,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
         AtomicInteger indexChar,
         CompletionService<CallableBlindBin> taskCompletionService,
         AtomicInteger countTasksSubmitted,
+        AtomicInteger countBadAsciiCode,
         CallableBlindBin currentCallable
     ) {
         int low;
@@ -184,29 +185,28 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
             mid = currentCallable.getMid();
             high = currentCallable.getHigh();
 
-            if (low >= high) {
-                if (low == high) {  // n-1 >= n
-                    low = currentCallable.isTrue() ? low : low - 1;
+            if (low >= high) {  // char found
+                if (low == 0 || low == 127) {
+                    countBadAsciiCode.incrementAndGet();
                 } else {
-                    low = currentCallable.isTrue() ? low : high;
+                    low = currentCallable.isTrue() ? low : low - 1;
                 }
                 char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url
                 this.setAsciiCodeMask(asciiCodeMask, low);
 
                 try {
-                    AtomicInteger countBadAsciiCode = new AtomicInteger();  // todo unused
-                    this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
+                    this.injectCharacter(bytes, countBadAsciiCode, currentCallable);
                 } catch (InjectionFailureException e) {
-                    return;
+                    return;  // too many errors
                 }
 
                 bytes.add(AbstractInjectionBit.getBitsUnset());
                 indexChar.incrementAndGet();
                 low = InjectionBlindBin.LOW;
                 high = InjectionBlindBin.HIGH;
-            } else if (currentCallable.isTrue()) {  // key < mid
+            } else if (currentCallable.isTrue()) {  // current >= mid
                 low = mid + 1;
-            } else {  // key > mid
+            } else {  // current < mid
                 high = mid - 1;
             }
             mid = low + (high - low) / 2;
@@ -226,7 +226,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
                 this,
                 this.blindOperator,
                 low, mid, high,
-                "bin#" + indexChar + "~" + mid
+                String.format("bin#%s~%s<%s<%s", indexChar, low, mid, high)
             )
         );
         countTasksSubmitted.addAndGet(1);

