@@ -16,9 +16,9 @@ jSQL Injection is also part of the official penetration testing distribution [Ka
 [![Sonar](https://img.shields.io/sonar/violations/ron190:jsql-injection?format=long&label=issues&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io "Sonar code issues")](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection)
 
 ## Wiki
-Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki/Features) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
+Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki/General) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
 
-For programmers, access the generated [Maven reports](https://ron190.github.io/jsql-injection/site/) and [Sonar analysis](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection) to analyze internal metrics, and open the [programming section](https://github.com/ron190/jsql-injection/wiki/Programming-jSQL) in the wiki for more details.
+For programmers, access the generated [Maven reports](https://ron190.github.io/jsql-injection/site/) and [Sonar analysis](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection) to analyze internal metrics, and open the [programming section](https://github.com/ron190/jsql-injection/wiki/Programming) in the wiki for more details.
 
 ## Install
 First, install :coffee: [Java](http://java.com) 11 or up to version 23, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.111.jar` to run the software.
