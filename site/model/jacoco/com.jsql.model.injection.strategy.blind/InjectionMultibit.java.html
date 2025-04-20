@@ -114,69 +114,70 @@ public class InjectionMultibit extends AbstractInjectionBit&lt;CallableMultibit&
         AtomicInteger indexChar,
         CompletionService&lt;CallableMultibit&gt; taskCompletionService,
         AtomicInteger countTasksSubmitted,
+        AtomicInteger countBadAsciiCode,
         CallableMultibit currentCallable
     ) {
-<span class="fc" id="L119">        indexChar.incrementAndGet();</span>
-<span class="fc" id="L120">        bytes.add(AbstractInjectionBit.getBitsUnset());</span>
-<span class="fc bfc" id="L121" title="All 2 branches covered.">        for (int block: new int[]{ 1, 2, 3 }) {</span>
-<span class="fc" id="L122">            taskCompletionService.submit(</span>
-<span class="fc" id="L123">                this.getCallableTest(</span>
+<span class="fc" id="L120">        indexChar.incrementAndGet();</span>
+<span class="fc" id="L121">        bytes.add(AbstractInjectionBit.getBitsUnset());</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        for (int block: new int[]{ 1, 2, 3 }) {</span>
+<span class="fc" id="L123">            taskCompletionService.submit(</span>
+<span class="fc" id="L124">                this.getCallableTest(</span>
                     sqlQuery,
-<span class="fc" id="L125">                    indexChar.get(),</span>
+<span class="fc" id="L126">                    indexChar.get(),</span>
                     block
                 )
             );
-<span class="fc" id="L129">            countTasksSubmitted.addAndGet(1);</span>
+<span class="fc" id="L130">            countTasksSubmitted.addAndGet(1);</span>
         }
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L132">    }</span>
 
     @Override
     public char[] initMaskAsciiChar(List&lt;char[]&gt; bytes, CallableMultibit currentCallable) {
         // Bits for current url
-<span class="fc" id="L136">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);</span>
-<span class="fc" id="L137">        this.extractBitsFromBlock(currentCallable, asciiCodeMask);</span>
-<span class="fc" id="L138">        return asciiCodeMask;</span>
+<span class="fc" id="L137">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);</span>
+<span class="fc" id="L138">        this.extractBitsFromBlock(currentCallable, asciiCodeMask);</span>
+<span class="fc" id="L139">        return asciiCodeMask;</span>
     }
 
     /**
      * Extract 3 bits from callable for specific block
      */
     private void extractBitsFromBlock(CallableMultibit currentCallable, char[] bits) {
-<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (currentCallable.getBlock() == 1) {</span>
-<span class="fc" id="L146">            this.convertIdPageToBits(currentCallable.getIdPage(), bits, 0, 1, 2);</span>
-<span class="fc bfc" id="L147" title="All 2 branches covered.">        } else if (currentCallable.getBlock() == 2) {</span>
-<span class="fc" id="L148">            this.convertIdPageToBits(currentCallable.getIdPage(), bits, 3, 4, 5);</span>
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        } else if (currentCallable.getBlock() == 3) {</span>
-<span class="fc" id="L150">            this.convertIdPageToBits(currentCallable.getIdPage(), bits, -1, 6,7);</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (currentCallable.getBlock() == 1) {</span>
+<span class="fc" id="L147">            this.convertIdPageToBits(currentCallable.getIdPage(), bits, 0, 1, 2);</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        } else if (currentCallable.getBlock() == 2) {</span>
+<span class="fc" id="L149">            this.convertIdPageToBits(currentCallable.getIdPage(), bits, 3, 4, 5);</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        } else if (currentCallable.getBlock() == 3) {</span>
+<span class="fc" id="L151">            this.convertIdPageToBits(currentCallable.getIdPage(), bits, -1, 6,7);</span>
         }
-<span class="fc" id="L152">    }</span>
+<span class="fc" id="L153">    }</span>
 
     /**
      * Set bits by page id
      */
     private void convertIdPageToBits(int idPage, char[] bits, int i1, int i2, int i3) {
-<span class="fc" id="L158">        String idPageBinary = Integer.toBinaryString(idPage);</span>
-<span class="fc" id="L159">        String idPageBinaryPadded = StringUtils.leftPad(idPageBinary, 3, &quot;0&quot;);</span>
-<span class="fc bfc" id="L160" title="All 2 branches covered.">        if (i1 &gt; -1) {</span>
-<span class="fc" id="L161">            bits[i1] = idPageBinaryPadded.charAt(0);</span>
+<span class="fc" id="L159">        String idPageBinary = Integer.toBinaryString(idPage);</span>
+<span class="fc" id="L160">        String idPageBinaryPadded = StringUtils.leftPad(idPageBinary, 3, &quot;0&quot;);</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (i1 &gt; -1) {</span>
+<span class="fc" id="L162">            bits[i1] = idPageBinaryPadded.charAt(0);</span>
         }
-<span class="fc" id="L163">        bits[i2] = idPageBinaryPadded.charAt(1);</span>
-<span class="fc" id="L164">        bits[i3] = idPageBinaryPadded.charAt(2);</span>
-<span class="fc" id="L165">    }</span>
+<span class="fc" id="L164">        bits[i2] = idPageBinaryPadded.charAt(1);</span>
+<span class="fc" id="L165">        bits[i3] = idPageBinaryPadded.charAt(2);</span>
+<span class="fc" id="L166">    }</span>
 
 
     // Getter
 
     public String getSourceReference() {
-<span class="fc" id="L171">        return this.sourceReference;</span>
+<span class="fc" id="L172">        return this.sourceReference;</span>
     }
 
     public List&lt;Diff&gt; getDiffsCommonWithAllIds() {
-<span class="fc" id="L175">        return this.diffsCommonWithAllIds;</span>
+<span class="fc" id="L176">        return this.diffsCommonWithAllIds;</span>
     }
 
     public List&lt;List&lt;Diff&gt;&gt; getDiffsById() {
-<span class="fc" id="L179">        return this.diffsById;</span>
+<span class="fc" id="L180">        return this.diffsById;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

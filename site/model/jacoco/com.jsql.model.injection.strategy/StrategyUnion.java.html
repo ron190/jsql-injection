@@ -48,9 +48,9 @@ public class StrategyUnion extends AbstractStrategy {
 
     @Override
     public void checkApplicability() throws JSqlException {
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyUnionDisabled()) {</span>
-<span class="nc" id="L52">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());</span>
-<span class="nc" id="L53">            return;</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyUnionDisabled()) {</span>
+<span class="fc" id="L52">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());</span>
+<span class="fc" id="L53">            return;</span>
         }
 
 <span class="fc" id="L56">        this.logChecking();</span>

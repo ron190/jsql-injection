@@ -176,38 +176,44 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
 <span class="fc" id="L176">    }</span>
 
     private String getDecodedValue(boolean isSelected, String value) {
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        return isSelected ? StringUtil.fromUrl(value) : value;</span>
+        // Fix #96095: IllegalArgumentException on URLDecoder.decode()
+        try {
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">            return isSelected ? StringUtil.fromUrl(value) : value;</span>
+<span class="nc" id="L182">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L183">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Decoding failure: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L184">            return value;</span>
+        }
     }
 
     public void reset() {
-<span class="fc" id="L183">        this.textAreaUrl.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L184">        this.textAreaHeader.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L185">        this.textAreaRequest.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L186">        this.textAreaResponse.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L189">        this.textAreaUrl.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L190">        this.textAreaHeader.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L191">        this.textAreaRequest.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L192">        this.textAreaResponse.setText(StringUtils.EMPTY);</span>
         
         // Fix #54572: NullPointerException on setText()
         try {
-<span class="fc" id="L190">            this.textAreaSource.setText(StringUtils.EMPTY);</span>
-<span class="nc" id="L191">        } catch (NullPointerException e) {</span>
-<span class="nc" id="L192">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L193">        }</span>
+<span class="fc" id="L196">            this.textAreaSource.setText(StringUtils.EMPTY);</span>
+<span class="nc" id="L197">        } catch (NullPointerException e) {</span>
+<span class="nc" id="L198">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L199">        }</span>
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
         try {
-<span class="fc" id="L197">            this.textPanePreview.setText(StringUtils.EMPTY);</span>
-<span class="nc" id="L198">        } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L199">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L200">        }</span>
-<span class="fc" id="L201">    }</span>
-
-    public void applyTheme() {
-<span class="fc" id="L204">        Arrays.asList(</span>
-            this.textAreaUrl, this.textAreaHeader, this.textAreaRequest, this.textAreaResponse, this.textAreaSource
-<span class="fc" id="L206">        ).forEach(UiUtil::applySyntaxTheme);</span>
+<span class="fc" id="L203">            this.textPanePreview.setText(StringUtils.EMPTY);</span>
+<span class="nc" id="L204">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L205">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L206">        }</span>
 <span class="fc" id="L207">    }</span>
 
+    public void applyTheme() {
+<span class="fc" id="L210">        Arrays.asList(</span>
+            this.textAreaUrl, this.textAreaHeader, this.textAreaRequest, this.textAreaResponse, this.textAreaSource
+<span class="fc" id="L212">        ).forEach(UiUtil::applySyntaxTheme);</span>
+<span class="fc" id="L213">    }</span>
+
     public JCheckBox getCheckBoxDecode() {
-<span class="fc" id="L210">        return this.checkBoxDecode;</span>
+<span class="fc" id="L216">        return this.checkBoxDecode;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -181,40 +181,40 @@
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>         AtomicInteger indexChar,
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>         CompletionService&lt;CallableBlindBin&gt; taskCompletionService,
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>         AtomicInteger countTasksSubmitted,
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>         <a name="CallableBlindBin" href="../../../../../../com/jsql/model/injection/strategy/blind/callable/CallableBlindBin.html#CallableBlindBin">CallableBlindBin</a> currentCallable
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>     ) {
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>         <strong class="jxr_keyword">int</strong> low;
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>         <strong class="jxr_keyword">int</strong> mid;
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">int</strong> high;
-<a class="jxr_linenumber" name="L181" href="#L181">181</a> 
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>         <strong class="jxr_keyword">if</strong> (currentCallable != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>             low = currentCallable.getLow();
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>             mid = currentCallable.getMid();
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>             high = currentCallable.getHigh();
-<a class="jxr_linenumber" name="L186" href="#L186">186</a> 
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>             <strong class="jxr_keyword">if</strong> (low &gt;= high) {
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>                 <strong class="jxr_keyword">if</strong> (low == high) {  <em class="jxr_comment">// n-1 &gt;= n</em>
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>                     low = currentCallable.isTrue() ? low : low - 1;
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>                 } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>                     low = currentCallable.isTrue() ? low : high;
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>                 }
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>                 <strong class="jxr_keyword">char</strong>[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  <em class="jxr_comment">// bits for current url</em>
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>                 <strong class="jxr_keyword">this</strong>.setAsciiCodeMask(asciiCodeMask, low);
-<a class="jxr_linenumber" name="L195" href="#L195">195</a> 
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>                 <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>                     AtomicInteger countBadAsciiCode = <strong class="jxr_keyword">new</strong> AtomicInteger();  <em class="jxr_comment">// todo unused</em>
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>                     <strong class="jxr_keyword">this</strong>.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>         AtomicInteger countBadAsciiCode,
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>         <a name="CallableBlindBin" href="../../../../../../com/jsql/model/injection/strategy/blind/callable/CallableBlindBin.html#CallableBlindBin">CallableBlindBin</a> currentCallable
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>     ) {
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>         <strong class="jxr_keyword">int</strong> low;
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">int</strong> mid;
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>         <strong class="jxr_keyword">int</strong> high;
+<a class="jxr_linenumber" name="L182" href="#L182">182</a> 
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>         <strong class="jxr_keyword">if</strong> (currentCallable != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>             low = currentCallable.getLow();
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>             mid = currentCallable.getMid();
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>             high = currentCallable.getHigh();
+<a class="jxr_linenumber" name="L187" href="#L187">187</a> 
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>             <strong class="jxr_keyword">if</strong> (low &gt;= high) {  <em class="jxr_comment">// char found</em>
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>                 <strong class="jxr_keyword">if</strong> (low == 0 || low == 127) {
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>                     countBadAsciiCode.incrementAndGet();
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>                 } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>                     low = currentCallable.isTrue() ? low : low - 1;
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>                 }
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>                 <strong class="jxr_keyword">char</strong>[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  <em class="jxr_comment">// bits for current url</em>
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>                 <strong class="jxr_keyword">this</strong>.setAsciiCodeMask(asciiCodeMask, low);
+<a class="jxr_linenumber" name="L196" href="#L196">196</a> 
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>                 <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>                     <strong class="jxr_keyword">this</strong>.injectCharacter(bytes, countBadAsciiCode, currentCallable);
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>                 } <strong class="jxr_keyword">catch</strong> (<a name="InjectionFailureException" href="../../../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> e) {
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>                     <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>                     <strong class="jxr_keyword">return</strong>;  <em class="jxr_comment">// too many errors</em>
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>                 }
 <a class="jxr_linenumber" name="L202" href="#L202">202</a> 
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>                 bytes.add(AbstractInjectionBit.getBitsUnset());
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>                 indexChar.incrementAndGet();
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>                 low = InjectionBlindBin.LOW;
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>                 high = InjectionBlindBin.HIGH;
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (currentCallable.isTrue()) {  <em class="jxr_comment">// key &lt; mid</em>
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (currentCallable.isTrue()) {  <em class="jxr_comment">// current &gt;= mid</em>
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>                 low = mid + 1;
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>             } <strong class="jxr_keyword">else</strong> {  <em class="jxr_comment">// key &gt; mid</em>
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>             } <strong class="jxr_keyword">else</strong> {  <em class="jxr_comment">// current &lt; mid</em>
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>                 high = mid - 1;
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>             }
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>             mid = low + (high - low) / 2;
@@ -234,7 +234,7 @@
 <a class="jxr_linenumber" name="L226" href="#L226">226</a>                 <strong class="jxr_keyword">this</strong>,
 <a class="jxr_linenumber" name="L227" href="#L227">227</a>                 <strong class="jxr_keyword">this</strong>.blindOperator,
 <a class="jxr_linenumber" name="L228" href="#L228">228</a>                 low, mid, high,
-<a class="jxr_linenumber" name="L229" href="#L229">229</a>                 <span class="jxr_string">"bin#"</span> + indexChar + <span class="jxr_string">"~"</span> + mid
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>                 String.format(<span class="jxr_string">"bin#%s~%s&lt;%s&lt;%s"</span>, indexChar, low, mid, high)
 <a class="jxr_linenumber" name="L230" href="#L230">230</a>             )
 <a class="jxr_linenumber" name="L231" href="#L231">231</a>         );
 <a class="jxr_linenumber" name="L232" href="#L232">232</a>         countTasksSubmitted.addAndGet(1);

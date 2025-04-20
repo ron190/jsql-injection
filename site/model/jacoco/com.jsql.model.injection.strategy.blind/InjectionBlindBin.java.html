@@ -173,40 +173,40 @@ public class InjectionBlindBin extends AbstractInjectionMonobit&lt;CallableBlind
         AtomicInteger indexChar,
         CompletionService&lt;CallableBlindBin&gt; taskCompletionService,
         AtomicInteger countTasksSubmitted,
+        AtomicInteger countBadAsciiCode,
         CallableBlindBin currentCallable
     ) {
         int low;
         int mid;
         int high;
 
-<span class="fc bfc" id="L182" title="All 2 branches covered.">        if (currentCallable != null) {</span>
-<span class="fc" id="L183">            low = currentCallable.getLow();</span>
-<span class="fc" id="L184">            mid = currentCallable.getMid();</span>
-<span class="fc" id="L185">            high = currentCallable.getHigh();</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        if (currentCallable != null) {</span>
+<span class="fc" id="L184">            low = currentCallable.getLow();</span>
+<span class="fc" id="L185">            mid = currentCallable.getMid();</span>
+<span class="fc" id="L186">            high = currentCallable.getHigh();</span>
 
-<span class="fc bfc" id="L187" title="All 2 branches covered.">            if (low &gt;= high) {</span>
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">                if (low == high) {  // n-1 &gt;= n</span>
-<span class="fc bfc" id="L189" title="All 2 branches covered.">                    low = currentCallable.isTrue() ? low : low - 1;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">            if (low &gt;= high) {  // char found</span>
+<span class="pc bpc" id="L189" title="1 of 4 branches missed.">                if (low == 0 || low == 127) {</span>
+<span class="fc" id="L190">                    countBadAsciiCode.incrementAndGet();</span>
                 } else {
-<span class="nc bnc" id="L191" title="All 2 branches missed.">                    low = currentCallable.isTrue() ? low : high;</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">                    low = currentCallable.isTrue() ? low : low - 1;</span>
                 }
-<span class="fc" id="L193">                char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url</span>
-<span class="fc" id="L194">                this.setAsciiCodeMask(asciiCodeMask, low);</span>
+<span class="fc" id="L194">                char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url</span>
+<span class="fc" id="L195">                this.setAsciiCodeMask(asciiCodeMask, low);</span>
 
                 try {
-<span class="fc" id="L197">                    AtomicInteger countBadAsciiCode = new AtomicInteger();  // todo unused</span>
-<span class="fc" id="L198">                    this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);</span>
-<span class="nc" id="L199">                } catch (InjectionFailureException e) {</span>
-<span class="nc" id="L200">                    return;</span>
+<span class="fc" id="L198">                    this.injectCharacter(bytes, countBadAsciiCode, currentCallable);</span>
+<span class="fc" id="L199">                } catch (InjectionFailureException e) {</span>
+<span class="fc" id="L200">                    return;  // too many errors</span>
 <span class="fc" id="L201">                }</span>
 
 <span class="fc" id="L203">                bytes.add(AbstractInjectionBit.getBitsUnset());</span>
 <span class="fc" id="L204">                indexChar.incrementAndGet();</span>
 <span class="fc" id="L205">                low = InjectionBlindBin.LOW;</span>
 <span class="fc" id="L206">                high = InjectionBlindBin.HIGH;</span>
-<span class="fc bfc" id="L207" title="All 2 branches covered.">            } else if (currentCallable.isTrue()) {  // key &lt; mid</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">            } else if (currentCallable.isTrue()) {  // current &gt;= mid</span>
 <span class="fc" id="L208">                low = mid + 1;</span>
-            } else {  // key &gt; mid
+            } else {  // current &lt; mid
 <span class="fc" id="L210">                high = mid - 1;</span>
             }
 <span class="fc" id="L212">            mid = low + (high - low) / 2;</span>
@@ -226,7 +226,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit&lt;CallableBlind
                 this,
                 this.blindOperator,
                 low, mid, high,
-                &quot;bin#&quot; + indexChar + &quot;~&quot; + mid
+<span class="fc" id="L229">                String.format(&quot;bin#%s~%s&lt;%s&lt;%s&quot;, indexChar, low, mid, high)</span>
             )
         );
 <span class="fc" id="L232">        countTasksSubmitted.addAndGet(1);</span>
