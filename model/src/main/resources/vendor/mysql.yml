@@ -305,6 +305,7 @@ strategy:
         )
     )
     %26${bit}
+   # ascii() required as char comparison not based on ascii range
    bin: |
     ascii(
         substring(
@@ -313,21 +314,21 @@ strategy:
             1
         )
     )
-    %3E%3Dascii('${mid}')
+    %3E%3Dascii(char(${mid.int}))
    truthyBin:
-    - ascii('a')%3E%3Dascii('a')
-    - ascii('a')%3E%3Dascii('A')
-    - ascii('a')%3E%3Dascii('0')
-    - ascii('b')%3E%3Dascii('a')
-    - ascii('b')%3E%3Dascii('B')
-    - ascii('1')%3E%3Dascii('0')
+    - ascii(char(97))%3E%3Dascii(char(97))
+    - ascii(char(97))%3E%3Dascii(char(65))
+    - ascii(char(97))%3E%3Dascii(char(48))
+    - ascii(char(98))%3E%3Dascii(char(97))
+    - ascii(char(98))%3E%3Dascii(char(66))
+    - ascii(char(49))%3E%3Dascii(char(48))
    falsyBin:
-    - ascii('a')%3E%3Dascii('b')
-    - ascii('A')%3E%3Dascii('a')
-    - ascii('B')%3E%3Dascii('b')
-    - ascii('B')%3E%3Dascii('a')
-    - ascii('0')%3E%3Dascii('A')
-    - ascii('0')%3E%3Dascii('1')
+    - ascii(char(97))%3E%3Dascii(char(98))
+    - ascii(char(65))%3E%3Dascii(char(97))
+    - ascii(char(66))%3E%3Dascii(char(98))
+    - ascii(char(66))%3E%3Dascii(char(97))
+    - ascii(char(48))%3E%3Dascii(char(65))
+    - ascii(char(48))%3E%3Dascii(char(49))
   modeAnd: and
   modeOr: or
   modeStack: ; select 1 where

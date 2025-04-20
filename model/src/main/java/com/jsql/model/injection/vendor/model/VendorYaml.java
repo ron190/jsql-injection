@@ -88,7 +88,8 @@ public class VendorYaml implements AbstractVendor {
     public static final String DEFAULT_CAPACITY = "65565";
     private static final String SLEEP_TIME = "${sleep_time}";
     private static final String BIT = "${bit}";
-    private static final String MID = "${mid}";
+    private static final String MID_CHR = "${mid}";
+    private static final String MID_INT = "${mid.int}";
     public static final String INJECTION = "${injection}";
     public static final String TEST = "${test}";
     public static final String FILEPATH_HEX = "${filepath.hex}";
@@ -308,9 +309,10 @@ public class VendorYaml implements AbstractVendor {
                 .replace(VendorYaml.INJECTION, inj)
                 .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))
                 .replace(
-                    VendorYaml.MID,
+                    VendorYaml.MID_CHR,
                     StringUtil.toUrl(Character.toString((char) mid).replace("'", "''"))  // escape quote
                 )
+                .replace(VendorYaml.MID_INT, String.valueOf(mid))
             )
             .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }

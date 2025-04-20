@@ -50,8 +50,8 @@ public class PanelStrategies extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.LEADING, false)
                 .addComponent(labelOrigin)
                 .addComponent(this.checkboxIsStrategyTimeDisabled)
-                .addComponent(this.checkboxIsStrategyBlindBitDisabled)
                 .addComponent(this.checkboxIsStrategyBlindBinDisabled)
+                .addComponent(this.checkboxIsStrategyBlindBitDisabled)
                 .addComponent(this.checkboxIsStrategyMultibitDisabled)
                 .addComponent(this.checkboxIsStrategyErrorDisabled)
                 .addComponent(this.checkboxIsStrategyStackDisabled)
@@ -75,12 +75,12 @@ public class PanelStrategies extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsStrategyBlindBitDisabled)
+                .addComponent(this.checkboxIsStrategyBlindBinDisabled)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsStrategyBlindBinDisabled)
+                .addComponent(this.checkboxIsStrategyBlindBitDisabled)
             )
             .addGroup(
                 groupLayout

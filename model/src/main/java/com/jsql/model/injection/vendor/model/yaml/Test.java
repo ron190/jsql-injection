@@ -4,7 +4,6 @@ package com.jsql.model.injection.vendor.model.yaml;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,17 +12,14 @@ public class Test implements Serializable {
 
     private static final String REGEX_ARRAY = "[\r\n]+";
 
-    private List<String> falsyBin = new ArrayList<>();  // vendor specific
-    private List<String> falsyBit = Arrays.asList(
-        "'a' = 'b'",
-        "'a' %21= 'a'",
-        "'b' %21= 'b'",
-        "1 = 2",
-        "1 %21= 1",
-        "2 %21= 2"
+    private List<String> truthyBin = Arrays.asList(
+        "char(97)%3E%3Dchar(97)",
+        "char(97)%3E%3Dchar(65)",
+        "char(97)%3E%3Dchar(48)",
+        "char(98)%3E%3Dchar(97)",
+        "char(98)%3E%3Dchar(66)",
+        "char(49)%3E%3Dchar(48)"
     );
-            
-    private List<String> truthyBin = new ArrayList<>();  // vendor specific
     private List<String> truthyBit = Arrays.asList(
         "'a' = 'a'",
         "'b' = 'b'",
@@ -31,6 +27,23 @@ public class Test implements Serializable {
         "1 = 1",
         "2 = 2",
         "1 %21= 2"
+    );
+
+    private List<String> falsyBin = Arrays.asList(
+        "char(97)%3E%3Dchar(98)",
+        "char(65)%3E%3Dchar(97)",
+        "char(66)%3E%3Dchar(98)",
+        "char(66)%3E%3Dchar(97)",
+        "char(48)%3E%3Dchar(65)",
+        "char(48)%3E%3Dchar(49)"
+    );
+    private List<String> falsyBit = Arrays.asList(
+        "'a' = 'b'",
+        "'a' %21= 'a'",
+        "'b' %21= 'b'",
+        "1 = 2",
+        "1 %21= 1",
+        "2 %21= 2"
     );
 
     private String init = "0%2b1 = 1";

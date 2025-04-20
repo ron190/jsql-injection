@@ -15,7 +15,7 @@ class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/time?tenant=postgres&name="
+            "http://localhost:8080/time?tenant=postgres&name=1'"  // todo should be auto detected
         );
         
         model.setIsScanning(true);
@@ -31,7 +31,8 @@ class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
+
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgres());  // todo should be auto detected
         model.beginInjection();
     }
     

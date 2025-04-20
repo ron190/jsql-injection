@@ -191,13 +191,6 @@ strategy:
 
  binary:
   test:
-   falsyBit:
-    - 0 = 1
-    - 0 %21= 0
-    - 0.1 %21= 0.1
-    - 1 = 2
-    - 1 %21= 1
-    - 2 %21= 2
    truthyBit:
     - 1.2 = 1.2
     - 0.1 = 0.1
@@ -205,6 +198,13 @@ strategy:
     - 1 = 1
     - 2 = 2
     - 1 %21= 2
+   falsyBit:
+    - 0 = 1
+    - 0 %21= 0
+    - 0.1 %21= 0.1
+    - 1 = 2
+    - 1 %21= 1
+    - 2 %21= 2
    init: 0%2b1 = 1
    bit: |
     unicode(
@@ -221,22 +221,7 @@ strategy:
         ${window.char},
         1
     )
-    %3E%3D'${mid}'
-   # reversed comparison
-   truthyBin:
-    - 1.2 = 1.2
-    - 0.1 = 0.1
-    - 0 %21= 1
-    - 1 = 1
-    - 2 = 2
-    - 1 %21= 2
-   falsyBin:
-    - 0 = 1
-    - 0 %21= 0
-    - 0.1 %21= 0.1
-    - 1 = 2
-    - 1 %21= 1
-    - 2 %21= 2
+    %3E%3Dchar(${mid.int})
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}

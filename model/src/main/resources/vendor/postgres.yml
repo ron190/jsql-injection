@@ -282,21 +282,21 @@ strategy:
             1
         )
     )
-    %3E%3Dascii('${mid}')
+    %3E%3Dascii(chr(${mid.int}))
    truthyBin:
-    - ascii('a')%3E%3Dascii('a')
-    - ascii('a')%3E%3Dascii('A')
-    - ascii('a')%3E%3Dascii('0')
-    - ascii('b')%3E%3Dascii('a')
-    - ascii('b')%3E%3Dascii('B')
-    - ascii('1')%3E%3Dascii('0')
+    - ascii(chr(97))%3E%3Dascii(chr(97))
+    - ascii(chr(97))%3E%3Dascii(chr(65))
+    - ascii(chr(97))%3E%3Dascii(chr(48))
+    - ascii(chr(98))%3E%3Dascii(chr(97))
+    - ascii(chr(98))%3E%3Dascii(chr(66))
+    - ascii(chr(49))%3E%3Dascii(chr(48))
    falsyBin:
-    - ascii('a')%3E%3Dascii('b')
-    - ascii('A')%3E%3Dascii('a')
-    - ascii('B')%3E%3Dascii('b')
-    - ascii('B')%3E%3Dascii('a')
-    - ascii('0')%3E%3Dascii('A')
-    - ascii('0')%3E%3Dascii('1')
+    - ascii(chr(97))%3E%3Dascii(chr(98))
+    - ascii(chr(65))%3E%3Dascii(chr(97))
+    - ascii(chr(66))%3E%3Dascii(chr(98))
+    - ascii(chr(66))%3E%3Dascii(chr(97))
+    - ascii(chr(48))%3E%3Dascii(chr(65))
+    - ascii(chr(48))%3E%3Dascii(chr(49))
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}
