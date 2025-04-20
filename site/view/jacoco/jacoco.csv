@@ -338,5 +338,5 @@ view,com.jsql.view.swing.manager.util,SeparatorListener,17,13,2,0,4,5,2,1,1,1
 view,com.jsql.view.swing.manager.util,CoderListener,31,47,3,1,8,16,3,5,1,5
 view,com.jsql.view.swing.manager.util,ModelExploit,0,22,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.terminal.util,KeyAdapterTerminal.new SwingWorker() {...},0,47,0,2,0,13,0,3,0,2
-view,com.jsql.view.swing.terminal.util,BlockCaret,10,116,4,14,6,33,4,9,0,4
+view,com.jsql.view.swing.terminal.util,BlockCaret,9,117,2,16,5,34,2,11,0,4
 view,com.jsql.view.swing.terminal.util,KeyAdapterTerminal,144,262,21,37,26,63,16,23,1,9
