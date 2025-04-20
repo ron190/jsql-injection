@@ -17,7 +17,7 @@ class InformixUnionGetSuiteIT extends ConcreteInformixSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/union?tenant=informix&name='*"
+            "http://localhost:8080/union?tenant=informix&name="
         );
         
         model
@@ -26,7 +26,6 @@ class InformixUnionGetSuiteIT extends ConcreteInformixSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getInformix());
         model.beginInjection();
     }
     

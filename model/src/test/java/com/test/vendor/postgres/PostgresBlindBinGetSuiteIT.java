@@ -25,7 +25,8 @@ class PostgresBlindBinGetSuiteIT extends ConcretePostgresSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyTimeDisabled(true);
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyBlindBitDisabled(true);
 
         model
         .getMediatorUtils()
@@ -34,7 +35,6 @@ class PostgresBlindBinGetSuiteIT extends ConcretePostgresSuiteIT {
         .withTypeRequest("GET");
         
         model.beginInjection();
-        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlindBin());
     }
     
     @Override

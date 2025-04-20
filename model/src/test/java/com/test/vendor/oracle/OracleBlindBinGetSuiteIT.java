@@ -1,4 +1,4 @@
-package com.test.vendor.derby;
+package com.test.vendor.oracle;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,21 +7,27 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class DerbyBlindBinSuiteIT extends ConcreteDerbySuiteIT {
-
+class OracleBlindBinGetSuiteIT extends ConcreteOracleSuiteIT {
+    
     @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
-        
-        model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=derby&name="
-        );
 
-        model.setIsScanning(true);
+        model.getMediatorUtils().getParameterUtil().initQueryString(
+            "http://localhost:8080/blind?tenant=oracle&name="
+        );
         
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyTimeDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

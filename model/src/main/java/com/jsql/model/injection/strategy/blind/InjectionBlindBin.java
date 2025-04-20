@@ -186,22 +186,9 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
             high = currentCallable.getHigh();
 
             if (low >= high) {  // char found
-                if (low == 0 || low == 127) {
-                    countBadAsciiCode.incrementAndGet();
-                } else {
-                    low = currentCallable.isTrue() ? low : low - 1;
-                }
-                char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url
-                this.setAsciiCodeMask(asciiCodeMask, low);
-
-                try {
-                    this.injectCharacter(bytes, countBadAsciiCode, currentCallable);
-                } catch (InjectionFailureException e) {
+                if (this.IsCorruptOrElseNextChar(bytes, indexChar, countBadAsciiCode, currentCallable, low)) {
                     return;  // too many errors
                 }
-
-                bytes.add(AbstractInjectionBit.getBitsUnset());
-                indexChar.incrementAndGet();
                 low = InjectionBlindBin.LOW;
                 high = InjectionBlindBin.HIGH;
             } else if (currentCallable.isTrue()) {  // current >= mid
@@ -209,15 +196,14 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
             } else {  // current < mid
                 high = mid - 1;
             }
-            mid = low + (high - low) / 2;
         } else {
             low = InjectionBlindBin.LOW;
-            mid = InjectionBlindBin.LOW + (InjectionBlindBin.HIGH - InjectionBlindBin.LOW) / 2;
             high = InjectionBlindBin.HIGH;
             bytes.add(AbstractInjectionBit.getBitsUnset());
             indexChar.incrementAndGet();
         }
 
+        mid = low + (high - low) / 2;
         taskCompletionService.submit(
             new CallableBlindBin(
                 sqlQuery,
@@ -230,6 +216,26 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
             )
         );
         countTasksSubmitted.addAndGet(1);
+    }
+
+    private boolean IsCorruptOrElseNextChar(List<char[]> bytes, AtomicInteger indexChar, AtomicInteger countBadAsciiCode, CallableBlindBin currentCallable, int low) {
+        if (low == 0 || low == 127) {
+            countBadAsciiCode.incrementAndGet();
+        } else {
+            low = currentCallable.isTrue() ? low : low - 1;
+        }
+        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url
+        this.setAsciiCodeMask(asciiCodeMask, low);
+
+        try {
+            this.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);
+        } catch (InjectionFailureException e) {
+            return true;
+        }
+
+        bytes.add(AbstractInjectionBit.getBitsUnset());
+        indexChar.incrementAndGet();
+        return false;
     }
 
     private void setAsciiCodeMask(char[] asciiCodeMask, int value) {

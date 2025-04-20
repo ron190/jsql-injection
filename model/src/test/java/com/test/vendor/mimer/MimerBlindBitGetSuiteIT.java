@@ -1,4 +1,4 @@
-package com.test.vendor.derby;
+package com.test.vendor.mimer;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,30 +7,35 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class DerbyBlindBinSuiteIT extends ConcreteDerbySuiteIT {
-
+class MimerBlindBitGetSuiteIT extends ConcreteMimerSuiteIT {
+    
     @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
-        
+
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=derby&name="
+            "http://localhost:8080/mimer?name="
         );
 
         model.setIsScanning(true);
-        
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyUnionDisabled(true);
+
         model.beginInjection();
     }
-    
+
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
@@ -40,7 +45,7 @@ class DerbyBlindBinSuiteIT extends ConcreteDerbySuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBin(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

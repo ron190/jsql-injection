@@ -1,4 +1,4 @@
-package com.test.vendor.derby;
+package com.test.vendor.informix;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,21 +7,26 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class DerbyBlindBinSuiteIT extends ConcreteDerbySuiteIT {
-
+class InformixBlindBinGetSuiteIT extends ConcreteInformixSuiteIT {
+    
     @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
-        
+
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=derby&name="
+            "http://localhost:8080/blind?tenant=informix&name="
         );
 
         model.setIsScanning(true);
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindBitDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

@@ -26,7 +26,6 @@ class SybaseUnionGetSuiteIT extends ConcreteSybaseSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSybase());
         model.beginInjection();
     }
     

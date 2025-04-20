@@ -17,7 +17,7 @@ class FirebirdUnionGetSuiteIT extends ConcreteFirebirdSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/union?tenant=firebird&name='"
+            "http://localhost:8080/union?tenant=firebird&name="
         );
         
         model
@@ -26,7 +26,6 @@ class FirebirdUnionGetSuiteIT extends ConcreteFirebirdSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getFirebird());
         model.beginInjection();
     }
     

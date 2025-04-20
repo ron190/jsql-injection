@@ -1,4 +1,4 @@
-package com.test.vendor.mimer;
+package com.test.vendor.firebird;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MimerBlindbinGetSuiteIT extends ConcreteMimerSuiteIT {
+class FirebirdBlindBitGetSuiteIT extends ConcreteFirebirdSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -17,7 +17,7 @@ class MimerBlindbinGetSuiteIT extends ConcreteMimerSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/mimer?name="
+            "http://localhost:8080/blind?tenant=firebird&name="
         );
 
         model.setIsScanning(true);
@@ -27,13 +27,7 @@ class MimerBlindbinGetSuiteIT extends ConcreteMimerSuiteIT {
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsStrategyUnionDisabled(true);
-
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMimer());
+        
         model.beginInjection();
     }
 
@@ -46,7 +40,7 @@ class MimerBlindbinGetSuiteIT extends ConcreteMimerSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBin(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

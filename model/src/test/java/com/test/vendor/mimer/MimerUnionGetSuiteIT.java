@@ -26,7 +26,6 @@ class MimerUnionGetSuiteIT extends ConcreteMimerSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMimer());
         model.beginInjection();
     }
     

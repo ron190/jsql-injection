@@ -111,7 +111,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
                 
                 // If SQL result is not empty, then add a new unknown character and define a new array of 7 undefined bit.
                 // Then add 7 bits requests for that new character.
-                var isComplete = this.injectCharacter(bytes, countBadAsciiCode, currentCallable);
+                var isComplete = this.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);
                 if (isComplete || currentCallable.isBinary()) {  // prevents bitwise overload new char init on each bit
                     this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, countBadAsciiCode, currentCallable);
                 }
@@ -148,7 +148,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
         return result.toString();
     }
 
-    protected boolean injectCharacter(
+    protected boolean isCharCompleteWithCorruptCheck(
         List<char[]> bytes,
         AtomicInteger countBadAsciiCode,
         T currentCallable

@@ -27,11 +27,6 @@ class MySqlBlindBinSuiteIT extends ConcreteMySqlSuiteIT {
         .getPreferencesUtil()
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyTimeDisabled(true);
-
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsNotInjectingMetadata(true);
         
         model
         .getMediatorUtils()
@@ -40,7 +35,6 @@ class MySqlBlindBinSuiteIT extends ConcreteMySqlSuiteIT {
         .withTypeRequest("GET");
         
         model.beginInjection();
-        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlindBin());
     }
     
     @Override

