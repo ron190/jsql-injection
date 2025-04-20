@@ -19,7 +19,9 @@ class MimerBlindbinGetSuiteIT extends ConcreteMimerSuiteIT {
         model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://localhost:8080/mimer?name="
         );
-        
+
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

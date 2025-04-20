@@ -19,6 +19,8 @@ class H2BlindBinGetSuiteIT extends ConcreteH2SuiteIT {
         model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://localhost:8080/blind?tenant=h2&name="
         );
+
+        model.setIsScanning(true);
         
         model
         .getMediatorUtils()

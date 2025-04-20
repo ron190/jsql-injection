@@ -307,7 +307,10 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getBinary().getTest().getBin()
                 .replace(VendorYaml.INJECTION, inj)
                 .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))
-                .replace(VendorYaml.MID, StringUtil.toUrl(Character.toString((char) mid)))
+                .replace(
+                    VendorYaml.MID,
+                    StringUtil.toUrl(Character.toString((char) mid).replace("'", "''"))  // escape quote
+                )
             )
             .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }

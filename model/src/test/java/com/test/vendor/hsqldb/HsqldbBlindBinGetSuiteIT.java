@@ -19,6 +19,8 @@ class HsqldbBlindBinGetSuiteIT extends ConcreteHsqldbSuiteIT {
         model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://localhost:8080/blind?tenant=hsqldb&name="
         );
+
+        model.setIsScanning(true);
         
         model
         .getMediatorUtils()

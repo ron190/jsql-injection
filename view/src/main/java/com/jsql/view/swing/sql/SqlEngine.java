@@ -371,13 +371,13 @@ public class SqlEngine extends JPanel {
             new SimpleEntry<>("AND mode", TextareaWithColor.MODE_AND.getTextArea()),
             new SimpleEntry<>("OR mode", TextareaWithColor.MODE_OR.getTextArea()),
             new SimpleEntry<>("Stack mode", TextareaWithColor.MODE_STACK.getTextArea()),
-            new SimpleEntry<>("Blind", TextareaWithColor.BLIND.getTextArea()),
             new SimpleEntry<>("Time", TextareaWithColor.TIME.getTextArea()),
-            new SimpleEntry<>("Multibit", TextareaWithColor.MULTIBIT.getTextArea()),
-            new SimpleEntry<>("Bit test", TextareaWithColor.TEST_BIT.getTextArea()),
+            new SimpleEntry<>("Blind", TextareaWithColor.BLIND.getTextArea()),
             new SimpleEntry<>("Bin test", TextareaWithColor.TEST_BIN.getTextArea()),
             new SimpleEntry<>("Bin truthy", TextareaWithColor.TRUTHY_BIN.getTextArea()),
-            new SimpleEntry<>("Bin falsy", TextareaWithColor.FALSY_BIN.getTextArea())
+            new SimpleEntry<>("Bin falsy", TextareaWithColor.FALSY_BIN.getTextArea()),
+            new SimpleEntry<>("Bit test", TextareaWithColor.TEST_BIT.getTextArea()),
+            new SimpleEntry<>("Multibit", TextareaWithColor.MULTIBIT.getTextArea())
         )
         .forEach(entry -> {
             tabsBoolean.addTab(entry.getKey(), new RTextScrollPane(entry.getValue(), false));

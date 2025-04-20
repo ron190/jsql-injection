@@ -70,8 +70,4 @@ public class CallableMultibit extends AbstractCallableBit<CallableMultibit> {
     public List<Diff> getDiffsWithReference() {
         return this.diffsWithReference;
     }
-
-    public int getIdPage() {
-        return this.idPage;
-    }
 }

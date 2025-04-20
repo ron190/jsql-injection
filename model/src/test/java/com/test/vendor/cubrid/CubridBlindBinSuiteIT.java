@@ -22,6 +22,8 @@ class CubridBlindBinSuiteIT extends ConcreteCubridSuiteIT {
             "http://localhost:8080/blind?tenant=cubrid&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

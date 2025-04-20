@@ -20,6 +20,8 @@ class MckoiBlindBinGetSuiteIT extends ConcreteMckoiSuiteIT {
             "http://localhost:8080/mckoi?name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .getPreferencesUtil()
