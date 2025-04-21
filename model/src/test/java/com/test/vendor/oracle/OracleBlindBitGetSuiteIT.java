@@ -17,7 +17,7 @@ class OracleBlindBitGetSuiteIT extends ConcreteOracleSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=oracle&name="
+            "http://localhost:8080/oracle?name="
         );
         
         model.setIsScanning(true);
@@ -25,6 +25,8 @@ class OracleBlindBitGetSuiteIT extends ConcreteOracleSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsStrategyUnionDisabled(true)
+        .withIsStrategyErrorDisabled(true)
         .withIsStrategyTimeDisabled(true);
 
         model

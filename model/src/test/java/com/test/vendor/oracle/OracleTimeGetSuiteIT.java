@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class OracleBlindBinGetSuiteIT extends ConcreteOracleSuiteIT {
+class OracleTimeGetSuiteIT extends ConcreteOracleSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -28,7 +28,7 @@ class OracleBlindBinGetSuiteIT extends ConcreteOracleSuiteIT {
         .withIsStrategyUnionDisabled(true)
         .withIsStrategyErrorDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
-        .withIsStrategyTimeDisabled(true);
+        .withIsStrategyBlindBinDisabled(true);
 
         model
         .getMediatorUtils()
@@ -48,7 +48,7 @@ class OracleBlindBinGetSuiteIT extends ConcreteOracleSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBin(),
+            this.injectionModel.getMediatorStrategy().getTime(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

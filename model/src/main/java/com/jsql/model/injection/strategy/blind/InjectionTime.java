@@ -163,6 +163,6 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
 
     @Override
     public String getInfoMessage() {
-        return "- Strategy Time: query True when delays for "+ this.getSleepTime() +"s\n\n";
+        return "- Strategy Time: query True when "+ this.getSleepTime() +"s delay\n\n";
     }
 }
