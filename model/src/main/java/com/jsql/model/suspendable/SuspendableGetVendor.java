@@ -33,7 +33,7 @@ public class SuspendableGetVendor extends AbstractSuspendable {
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database with Boolean match...");
 
         AtomicBoolean isVendorFound = new AtomicBoolean(false);
-        this.injectionModel.getMediatorVendor().getVendors()
+        this.injectionModel.getMediatorVendor().getVendorsForFingerprint()
         .stream()
         .filter(vendor -> vendor != this.injectionModel.getMediatorVendor().getAuto())
         .filter(vendor -> StringUtils.isNotEmpty(

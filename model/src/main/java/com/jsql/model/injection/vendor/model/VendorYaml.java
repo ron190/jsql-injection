@@ -356,8 +356,7 @@ public class VendorYaml implements AbstractVendor {
             case AND: replacement = this.modelYaml.getStrategy().getBinary().getModeAnd(); break;
             case OR: replacement = this.modelYaml.getStrategy().getBinary().getModeOr(); break;
             case STACK: replacement = this.modelYaml.getStrategy().getBinary().getModeStack(); break;
-            case NO_MODE:
-            default: replacement = StringUtils.EMPTY; break;
+            case NO_MODE: default: replacement = StringUtils.EMPTY; break;
         }
         return replacement;
     }

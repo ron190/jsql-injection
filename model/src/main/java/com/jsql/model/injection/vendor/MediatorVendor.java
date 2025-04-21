@@ -66,7 +66,8 @@ public class MediatorVendor {
     private final Vendor vertica;
 
     private final List<Vendor> vendors;
-    
+    private final List<Vendor> vendorsForFingerprint;
+
     private final InjectionModel injectionModel;
     
     public MediatorVendor(InjectionModel injectionModel) {
@@ -140,7 +141,12 @@ public class MediatorVendor {
             hana, this.hsqldb, this.informix, ingres, iris, maxdb, this.mckoi, this.mimer, this.monetdb, this.mysql, this.neo4j,
             netezza, nuodb, this.oracle, this.postgres, presto, this.sqlite, this.sqlserver, this.sybase, teradata, this.vertica
         );
-        
+        this.vendorsForFingerprint = Arrays.asList(
+            this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, access, altibase, ctreeace,
+            this.cubrid, this.db2, this.derby, exasol, this.firebird, frontbase, hana, this.informix, ingres, iris, maxdb, this.mckoi,
+            this.mimer, this.monetdb, this.neo4j, netezza, nuodb, presto, this.sybase, teradata, this.vertica
+        );
+
         this.setVendor(this.mysql);
         this.vendorByUser = this.auto;
     }
@@ -296,6 +302,10 @@ public class MediatorVendor {
 
     public List<Vendor> getVendors() {
         return this.vendors;
+    }
+
+    public List<Vendor> getVendorsForFingerprint() {
+        return this.vendorsForFingerprint;
     }
 
     public Vendor getDb2() {

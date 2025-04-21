@@ -28,16 +28,8 @@ public class StrategyUnion extends AbstractStrategy {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    /**
-     * i.e, 2 in "..union select 1,2,..", if 2 is found in HTML body.
-     */
-    protected String visibleIndex;
-
-    /**
-     * HTML body of page successfully responding to
-     * multiple fields selection (select 1,2,3,..).
-     */
-    protected String sourceIndexesFound = StringUtils.EMPTY;
+    protected String visibleIndex;  // matching index
+    protected String sourceIndexesFound = StringUtils.EMPTY;  // matching page source
     private int nbIndexesFound = 0;
 
     private String performanceLength = "0";

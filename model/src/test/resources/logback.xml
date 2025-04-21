@@ -2,7 +2,7 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
-                [jsql-logback] %date{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %logger{36} - %msg%n
+                [jsql-logback] %date{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %class{36}.%M %logger{36} - %msg%n
             </Pattern>
         </encoder>
     </appender>

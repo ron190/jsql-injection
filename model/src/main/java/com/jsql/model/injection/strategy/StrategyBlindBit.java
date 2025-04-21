@@ -47,7 +47,7 @@ public class StrategyBlindBit extends AbstractStrategy {
             this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getTest().getBit()
         )) {
             LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_INFORM,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
                 this.getName(),
                 this.injectionModel.getMediatorVendor().getVendor()
@@ -75,7 +75,6 @@ public class StrategyBlindBit extends AbstractStrategy {
         if (this.isApplicable) {
             return;
         }
-
         LOGGER.log(
             LogLevelUtil.CONSOLE_DEFAULT,
             "{} [{}] with [{}]...",
@@ -85,7 +84,6 @@ public class StrategyBlindBit extends AbstractStrategy {
         );
         this.injectionBlindBit = new InjectionBlindBit(this.injectionModel, blindOperator);
         this.isApplicable = this.injectionBlindBit.isInjectable();
-
         if (this.isApplicable) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
@@ -138,9 +136,9 @@ public class StrategyBlindBit extends AbstractStrategy {
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
 
-            var requestMarkBlindBitStrategy = new Request();
-            requestMarkBlindBitStrategy.setMessage(Interaction.MARK_BLIND_BIT_STRATEGY);
-            this.injectionModel.sendToViews(requestMarkBlindBitStrategy);
+            var request = new Request();
+            request.setMessage(Interaction.MARK_BLIND_BIT_STRATEGY);
+            this.injectionModel.sendToViews(request);
         }
     }
     

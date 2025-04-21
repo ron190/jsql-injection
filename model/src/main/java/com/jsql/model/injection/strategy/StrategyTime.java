@@ -26,14 +26,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class StrategyTime extends AbstractStrategy {
-    
+
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private InjectionTime injectionTime;
-    
+
     public StrategyTime(InjectionModel injectionModel) {
         super(injectionModel);
     }
@@ -47,7 +47,7 @@ public class StrategyTime extends AbstractStrategy {
             this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getTime()
         )) {
             LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_INFORM,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
                 this.getName(),
                 this.injectionModel.getMediatorVendor().getVendor()
@@ -75,7 +75,6 @@ public class StrategyTime extends AbstractStrategy {
         if (this.isApplicable) {
             return;
         }
-
         LOGGER.log(
             LogLevelUtil.CONSOLE_DEFAULT,
             "{} [{}] with [{}]...",
@@ -85,7 +84,6 @@ public class StrategyTime extends AbstractStrategy {
         );
         this.injectionTime = new InjectionTime(this.injectionModel, blindOperator);
         this.isApplicable = this.injectionTime.isInjectable();
-
         if (this.isApplicable) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
@@ -96,7 +94,7 @@ public class StrategyTime extends AbstractStrategy {
             );
         }
     }
-    
+
     @Override
     public void allow(int... i) {
         this.injectionModel.appendAnalysisReport(
@@ -138,9 +136,9 @@ public class StrategyTime extends AbstractStrategy {
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
 
-            var requestMarkTimeStrategy = new Request();
-            requestMarkTimeStrategy.setMessage(Interaction.MARK_TIME_STRATEGY);
-            this.injectionModel.sendToViews(requestMarkTimeStrategy);
+            var request = new Request();
+            request.setMessage(Interaction.MARK_TIME_STRATEGY);
+            this.injectionModel.sendToViews(request);
         }
     }
     

@@ -21,6 +21,7 @@ import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,22 +43,40 @@ public class StrategyMultibit extends AbstractStrategy {
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
+        } else if (StringUtils.isEmpty(
+            this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getMultibit()
+        )) {
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_INFORM,
+                AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
+                this.getName(),
+                this.injectionModel.getMediatorVendor().getVendor()
+            );
+            return;
         }
-        this.logChecking();
 
-        this.injectionMultibit = new InjectionMultibit(this.injectionModel, BlindOperator.STACK);
-        this.isApplicable = this.injectionMultibit.isInjectable();
+        this.checkInjection(BlindOperator.NO_MODE);
 
         if (this.isApplicable) {
-            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Multibit injection", () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE));
             this.allow();
-
             var requestMessageBinary = new Request();
             requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
             requestMessageBinary.setParameters(this.injectionMultibit.getInfoMessage());
             this.injectionModel.sendToViews(requestMessageBinary);
         } else {
             this.unallow();
+        }
+    }
+
+    private void checkInjection(BlindOperator blindOperator) throws StoppedByUserSlidingException {
+        if (this.isApplicable) {
+            return;
+        }
+        this.logChecking();
+        this.injectionMultibit = new InjectionMultibit(this.injectionModel, blindOperator);
+        this.isApplicable = this.injectionMultibit.isInjectable();
+        if (this.isApplicable) {
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Multibit injection", () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE));
         }
     }
 
@@ -106,9 +125,9 @@ public class StrategyMultibit extends AbstractStrategy {
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
 
-            var requestMarkMultibitStrategy = new Request();
-            requestMarkMultibitStrategy.setMessage(Interaction.MARK_MULTIBIT_STRATEGY);
-            this.injectionModel.sendToViews(requestMarkMultibitStrategy);
+            var request = new Request();
+            request.setMessage(Interaction.MARK_MULTIBIT_STRATEGY);
+            this.injectionModel.sendToViews(request);
         }
     }
     

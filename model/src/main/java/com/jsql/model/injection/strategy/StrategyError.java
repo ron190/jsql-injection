@@ -43,7 +43,7 @@ public class StrategyError extends AbstractStrategy {
             return;
         } else if (strategyYaml.getError().getMethod().isEmpty()) {
             LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_INFORM,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
                 this.getName(),
                 this.injectionModel.getMediatorVendor().getVendor()

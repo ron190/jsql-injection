@@ -121,7 +121,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
     }
 
     private List<Vendor> getVendorsOrderByMatch(MediatorVendor mediatorVendor, String pageSource) {
-        return mediatorVendor.getVendors()
+        return mediatorVendor.getVendorsForFingerprint()
             .stream()
             .filter(vendor -> vendor != mediatorVendor.getAuto())
             .filter(vendor -> StringUtils.isNotEmpty(
