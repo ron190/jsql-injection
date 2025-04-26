@@ -96,7 +96,7 @@ public class ManagerFile extends AbstractManagerList {
                     }
                     return null;
                 }
-            }.doInBackground();
+            }.execute();
         }
     }
 }

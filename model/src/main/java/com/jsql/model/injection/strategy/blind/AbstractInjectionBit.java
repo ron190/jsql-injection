@@ -177,9 +177,9 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
                 asciiCodeBit
                 + "="
                 + currentCallable.getCharText()
-                .replace("\\n", "\\\\\\n")
-                .replace("\\r", "\\\\\\r")
-                .replace("\\t", "\\\\\\t")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t")
             );
             this.injectionModel.sendToViews(interaction);
             isComplete = true;

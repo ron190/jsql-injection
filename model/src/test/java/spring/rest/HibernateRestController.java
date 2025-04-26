@@ -255,6 +255,10 @@ public class HibernateRestController {
         consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
     )
     public Greeting endpointPost(HttpServletRequest request) {
+        if (request.getParameterMap().get("name") == null) {
+            LOGGER.error("Parameter name not found with /post during IT");
+            return null;
+        }
         String inject = request.getParameterMap().get("name")[0];
         return this.getResponse(inject, "select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '%s'", true, false, true);
     }
@@ -272,7 +276,6 @@ public class HibernateRestController {
 
     @GetMapping("/cookie")
     public Greeting endpointCookie(HttpServletRequest request, @CookieValue(name = "name", required = false, defaultValue = StringUtils.EMPTY) String name) {
-
         String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
         return this.getResponse(nameUrlDecoded, "select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'", true, false, true);
     }

@@ -18,10 +18,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
     
     private LinkedList<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
-    
     private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();
-
-    private final InjectionBlindBit injectionBlindBit;
+    private final InjectionBlindBit injectionBlind;
     
     private final InjectionModel injectionModel;
     private final String metadataInjectionProcess;
@@ -29,9 +27,9 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
     /**
      * Constructor for preparation and blind confirmation.
      */
-    public CallableBlindBit(String sqlQuery, InjectionModel injectionModel, InjectionBlindBit injectionBlindBit, BlindOperator blindMode, String metadataInjectionProcess) {
+    public CallableBlindBit(String sqlQuery, InjectionModel injectionModel, InjectionBlindBit injectionBlind, BlindOperator blindMode, String metadataInjectionProcess) {
         this.injectionModel = injectionModel;
-        this.injectionBlindBit = injectionBlindBit;
+        this.injectionBlind = injectionBlind;
         this.metadataInjectionProcess = metadataInjectionProcess;
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindMode);
     }
@@ -44,11 +42,11 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
         int indexChar,
         int bit,
         InjectionModel injectionModel,
-        InjectionBlindBit injectionBlindBit,
+        InjectionBlindBit injectionBlind,
         BlindOperator blindMode,
         String metadataInjectionProcess
     ) {
-        this(sqlQuery, injectionModel, injectionBlindBit, blindMode, metadataInjectionProcess);
+        this(sqlQuery, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBit(sqlQuery, indexChar, bit, blindMode);
         this.currentIndex = indexChar;
         this.currentBit = bit;
@@ -63,15 +61,20 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
     @Override
     public boolean isTrue() {
         // Fix #95426: ConcurrentModificationException on iterator.next()
-        List<Diff> falseDiffs = new CopyOnWriteArrayList<>(this.injectionBlindBit.getFalseDiffs());
-        for (Diff falseDiff: falseDiffs) {
-            // Fix #4386: NullPointerException on contains()
-            // diffsWithReference is initialized to an empty new LinkedList<>()
+        List<Diff> falseDiffs = new CopyOnWriteArrayList<>(this.injectionBlind.getFalseDiffs());
+        for (Diff falseDiff: falseDiffs) {  // ignored when false OR false => falsy empty
+            // Fix #4386: NullPointerException on contains(), diffsWithReference initialized to new LinkedList<>()
             if (this.diffsWithReference.contains(falseDiff)) {
                 return false;
             }
         }
-        return true;
+        List<Diff> trueDiffs = new CopyOnWriteArrayList<>(this.injectionBlind.getTrueDiffs());
+        for (Diff trueDiff: trueDiffs) {
+            if (!this.diffsWithReference.contains(trueDiff)) {  // required, set to false when empty falseDiffs
+                return false;
+            }
+        }
+        return true;  // not in falseDiffs and in trueDiffs
     }
 
     /**
@@ -81,8 +84,8 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
      */
     @Override
     public CallableBlindBit call() {
-        String result = this.injectionBlindBit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        this.diffsWithReference = CallableBlindBit.DIFF_MATCH_PATCH.diff_main(this.injectionBlindBit.getSourceReferencePage(), result, true);
+        String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
+        this.diffsWithReference = CallableBlindBit.DIFF_MATCH_PATCH.diff_main(this.injectionBlind.getSourceReferencePage(), result, true);
         CallableBlindBit.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.diffsWithReference);
         return this;
     }

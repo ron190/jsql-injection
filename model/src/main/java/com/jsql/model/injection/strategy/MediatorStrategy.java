@@ -232,6 +232,10 @@ public class MediatorStrategy {
         return this.blindBit;
     }
 
+    public AbstractStrategy getBlindBin() {
+        return this.blindBin;
+    }
+
     public AbstractStrategy getMultibit() {
         return this.multibit;
     }
@@ -254,9 +258,5 @@ public class MediatorStrategy {
 
     public void setStrategy(AbstractStrategy strategy) {
         this.strategy = strategy;
-    }
-
-    public AbstractStrategy getBlindBin() {
-        return this.blindBin;
     }
 }

@@ -58,7 +58,7 @@ public class TabResults extends DnDTabbedPane {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final String TAB_EXPLOIT_FAILURE_INCORRECT_URL = "Tab exploit failure: incorrect URL";
-    public static final String RCE_SHELL = "RCE shell";
+    public static final String UDF_SHELL = "UDF shell";
     public static final String SQL_SHELL = "sqlShell";
     public static final String WEB_SHELL = "webShell";
     public static final String REV_SHELL = "revShell";
@@ -179,10 +179,10 @@ public class TabResults extends DnDTabbedPane {
         }
     }
 
-    public void addTabExploitRce(BiConsumer<String, UUID> biConsumerRunCmd) {
+    public void addTabExploitUdf(BiConsumer<String, UUID> biConsumerRunCmd) {
         try {
             var terminalID = UUID.randomUUID();
-            var terminal = new AbstractExploit(terminalID, null, "rce") {
+            var terminal = new AbstractExploit(terminalID, null, "udf") {
                 @Override
                 public void action(String command, UUID terminalID, String urlShell, String... arg) {
                     biConsumerRunCmd.accept(command, terminalID);
@@ -191,10 +191,10 @@ public class TabResults extends DnDTabbedPane {
             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
             JPanel panelTerminalWithReverse = this.getTerminalWithMenu(terminal);
-            this.addTab(TabResults.RCE_SHELL, panelTerminalWithReverse);
+            this.addTab(TabResults.UDF_SHELL, panelTerminalWithReverse);
             this.setSelectedComponent(panelTerminalWithReverse);  // Focus on the new tab
 
-            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
+            var header = new TabHeader(TabResults.UDF_SHELL, UiUtil.TERMINAL.getIcon());
             this.setTabComponentAt(this.indexOfComponent(panelTerminalWithReverse), header);
             terminal.requestFocusInWindow();
 

@@ -19,6 +19,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static name.fraser.neil.plaintext.diff_match_patch.Diff;
+import static name.fraser.neil.plaintext.diff_match_patch.Operation;
 
 /**
  * A blind attack class using concurrent threads.
@@ -42,6 +43,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
      * the TRUE queries.
      */
     private List<Diff> falseDiffs = new ArrayList<>();
+    private List<Diff> trueDiffs = new ArrayList<>();
 
     /**
      * Create blind attack initialization.
@@ -57,7 +59,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, "bin#ref");
+        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, "bin#ref:"+ blindMode.toString().toLowerCase());
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
@@ -130,6 +132,11 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
+                if (this.trueDiffs.isEmpty()) {
+                    this.trueDiffs = futureTrueTest.get().getDiffsWithReference();  // Init diffs
+                } else {
+                    this.trueDiffs.retainAll(futureTrueTest.get().getDiffsWithReference());  // Clean un-matching diffs
+                }
                 this.falseDiffs.removeAll(futureTrueTest.get().getDiffsWithReference());
             }
         } catch (ExecutionException e) {
@@ -163,7 +170,10 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
         } catch (Exception e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-        return blindTest.isTrue() && !this.falseDiffs.isEmpty();
+        return blindTest.isTrue()
+            // when insertionChar = true then pages ref == truthy == falsy == confirm => falsy cleaned empty, truthy with opcode EQUAL not reliable
+            && this.trueDiffs.stream().anyMatch(diff -> !Operation.EQUAL.equals(diff.operation))
+            || this.falseDiffs.stream().anyMatch(diff -> !Operation.EQUAL.equals(diff.operation));
     }
 
     @Override
@@ -264,5 +274,9 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
     
     public List<Diff> getFalseDiffs() {
         return this.falseDiffs;
+    }
+
+    public List<Diff> getTrueDiffs() {
+        return trueDiffs;
     }
 }

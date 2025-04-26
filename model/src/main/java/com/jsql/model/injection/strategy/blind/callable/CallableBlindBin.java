@@ -76,14 +76,19 @@ public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
     public boolean isTrue() {
         // Fix #95426: ConcurrentModificationException on iterator.next()
         List<Diff> falseDiffs = new CopyOnWriteArrayList<>(this.injectionBlind.getFalseDiffs());
-        for (Diff falseDiff: falseDiffs) {
-            // Fix #4386: NullPointerException on contains()
-            // diffsWithReference is initialized to an empty new LinkedList<>()
+        for (Diff falseDiff: falseDiffs) {  // ignored when false OR false => falsy empty
+            // Fix #4386: NullPointerException on contains(), diffsWithReference initialized to new LinkedList<>()
             if (this.diffsWithReference.contains(falseDiff)) {
                 return false;
             }
         }
-        return true;
+        List<Diff> trueDiffs = new CopyOnWriteArrayList<>(this.injectionBlind.getTrueDiffs());
+        for (Diff trueDiff: trueDiffs) {
+            if (!this.diffsWithReference.contains(trueDiff)) {  // required, set to false when empty falseDiffs
+                return false;
+            }
+        }
+        return true;  // not in falseDiffs and in trueDiffs
     }
 
     /**
