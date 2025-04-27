@@ -364,248 +364,247 @@
 <a class="jxr_linenumber" name="L356" href="#L356">356</a>             <strong class="jxr_keyword">case</strong> AND: replacement = <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getModeAnd(); <strong class="jxr_keyword">break</strong>;
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>             <strong class="jxr_keyword">case</strong> OR: replacement = <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getModeOr(); <strong class="jxr_keyword">break</strong>;
 <a class="jxr_linenumber" name="L358" href="#L358">358</a>             <strong class="jxr_keyword">case</strong> STACK: replacement = <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getModeStack(); <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L359" href="#L359">359</a>             <strong class="jxr_keyword">case</strong> NO_MODE:
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>             <strong class="jxr_keyword">default</strong>: replacement = StringUtils.EMPTY; <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L361" href="#L361">361</a>         }
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>         <strong class="jxr_keyword">return</strong> replacement;
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>     }
-<a class="jxr_linenumber" name="L364" href="#L364">364</a> 
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>     @Override
-<a class="jxr_linenumber" name="L366" href="#L366">366</a>     <strong class="jxr_keyword">public</strong> String sqlBlind(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport) {
-<a class="jxr_linenumber" name="L367" href="#L367">367</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
-<a class="jxr_linenumber" name="L368" href="#L368">368</a>             <strong class="jxr_keyword">this</strong>.getSlidingWindow(isReport)
-<a class="jxr_linenumber" name="L369" href="#L369">369</a>             .replace(VendorYaml.INJECTION, sqlQuery)
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>             .replace(VendorYaml.WINDOW_CHAR, startPosition)
-<a class="jxr_linenumber" name="L371" href="#L371">371</a>             .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
-<a class="jxr_linenumber" name="L372" href="#L372">372</a>         );
-<a class="jxr_linenumber" name="L373" href="#L373">373</a>     }
-<a class="jxr_linenumber" name="L374" href="#L374">374</a> 
-<a class="jxr_linenumber" name="L375" href="#L375">375</a>     @Override
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>     <strong class="jxr_keyword">public</strong> String sqlTime(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport) {
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>             <strong class="jxr_keyword">this</strong>.getSlidingWindow(isReport)
-<a class="jxr_linenumber" name="L379" href="#L379">379</a>             .replace(VendorYaml.INJECTION, sqlQuery)
-<a class="jxr_linenumber" name="L380" href="#L380">380</a>             .replace(VendorYaml.WINDOW_CHAR, startPosition)
-<a class="jxr_linenumber" name="L381" href="#L381">381</a>             .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>         );
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>     }
-<a class="jxr_linenumber" name="L384" href="#L384">384</a> 
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>     @Override
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>     <strong class="jxr_keyword">public</strong> String sqlMultibit(String inj, <strong class="jxr_keyword">int</strong> indexChar, <strong class="jxr_keyword">int</strong> block){
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getMultibit()
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>             .replace(VendorYaml.INJECTION, inj)
-<a class="jxr_linenumber" name="L389" href="#L389">389</a>             .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>             .replace(VendorYaml.BLOCK_MULTIBIT, Integer.toString(block));
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>     }
-<a class="jxr_linenumber" name="L392" href="#L392">392</a> 
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>     @Override
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>     <strong class="jxr_keyword">public</strong> String sqlErrorCalibrator(<a name="Method" href="../../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod) {
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>             errorMethod.getQuery()
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>             .replace(VendorYaml.WINDOW, <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>             .replace(VendorYaml.INJECTION, <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getCalibrator())
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>             .replace(VendorYaml.WINDOW_CHAR, <span class="jxr_string">"1"</span>)
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>             .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>         );
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>     }
-<a class="jxr_linenumber" name="L403" href="#L403">403</a> 
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>     @Override
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>     <strong class="jxr_keyword">public</strong> String sqlErrorIndice(<a name="Method" href="../../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod) {
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>         <strong class="jxr_keyword">var</strong> indexZeroToFind = <span class="jxr_string">"0"</span>;
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>             errorMethod.getQuery()
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>             .replace(VendorYaml.WINDOW, <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>             .replace(VendorYaml.INJECTION, <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, indexZeroToFind))
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>             .replace(VendorYaml.WINDOW_CHAR, <span class="jxr_string">"1"</span>)
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>             .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>         );
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>     }
-<a class="jxr_linenumber" name="L415" href="#L415">415</a> 
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>     @Override
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>     <strong class="jxr_keyword">public</strong> String sqlError(String sqlQuery, String startPosition, <strong class="jxr_keyword">int</strong> indexMethodError, <strong class="jxr_keyword">boolean</strong> isReport) {
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>             <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getError().getMethod().get(indexMethodError).getQuery()
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>             .replace(VendorYaml.WINDOW, <strong class="jxr_keyword">this</strong>.getSlidingWindow(isReport))
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>             .replace(VendorYaml.INJECTION, sqlQuery)
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>             .replace(VendorYaml.WINDOW_CHAR, startPosition)
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>             .replace(
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>                 VendorYaml.CAPACITY,
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>                 Integer.toString(
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>                     <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getError()
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>                     .getMethod()
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>                     .get(indexMethodError)
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>                     .getCapacity()
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>                 )
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>             )
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>         );
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>     }
-<a class="jxr_linenumber" name="L434" href="#L434">434</a> 
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>     @Override
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>     <strong class="jxr_keyword">public</strong> String sqlUnion(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport) {
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>             <strong class="jxr_keyword">this</strong>.getSlidingWindow(isReport)
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>             .replace(VendorYaml.INJECTION, sqlQuery)
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>             .replace(VendorYaml.WINDOW_CHAR, startPosition)
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>             .replace(VendorYaml.CAPACITY, <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getUnion().getPerformanceLength())
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>         );
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>     }
-<a class="jxr_linenumber" name="L444" href="#L444">444</a> 
-<a class="jxr_linenumber" name="L445" href="#L445">445</a>     @Override
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>     <strong class="jxr_keyword">public</strong> String sqlStack(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport) {
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getStack().replace(
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>             VendorYaml.WINDOW,
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>             VendorYaml.replaceTags(
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>                 <strong class="jxr_keyword">this</strong>.getSlidingWindow(isReport)
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>                 .replace(VendorYaml.INJECTION, sqlQuery)
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>                 .replace(VendorYaml.WINDOW_CHAR, startPosition)
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>                 .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>             )
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>         );
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>     }
-<a class="jxr_linenumber" name="L457" href="#L457">457</a> 
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>     @Override
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>     <strong class="jxr_keyword">public</strong> String sqlCapacity(String[] indexes) {
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>         String regexIndexes = String.join(<span class="jxr_string">"|"</span>, indexes);
-<a class="jxr_linenumber" name="L461" href="#L461">461</a>         String regexVisibleIndexesToFind = String.format(VendorYaml.FORMAT_INDEX, <span class="jxr_string">"(%s)"</span>);
-<a class="jxr_linenumber" name="L462" href="#L462">462</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.injectionModel.getIndexesInUrl().replaceAll(
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>             String.format(regexVisibleIndexesToFind, regexIndexes),
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>             VendorYaml.replaceTags(
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>                 <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getUnion().getCapacity()
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>                 .replace(VendorYaml.CALIBRATOR, <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getCalibrator())
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>                 .replace(VendorYaml.INDICE, <span class="jxr_string">"$1"</span>)
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>             )
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>         );
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>     }
-<a class="jxr_linenumber" name="L471" href="#L471">471</a> 
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>     @Override
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>     <strong class="jxr_keyword">public</strong> String sqlIndices(Integer nbFields) {
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>         String replaceTag = StringUtils.EMPTY;
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>         List&lt;String&gt; fields = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>         <strong class="jxr_keyword">var</strong> indice = 1;
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>         <strong class="jxr_keyword">for</strong> ( ; indice &lt;= nbFields ; indice++) {
-<a class="jxr_linenumber" name="L478" href="#L478">478</a>             String field = <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, Integer.toString(indice));
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>             fields.add(field);
-<a class="jxr_linenumber" name="L480" href="#L480">480</a>             replaceTag = field;
-<a class="jxr_linenumber" name="L481" href="#L481">481</a>         }
-<a class="jxr_linenumber" name="L482" href="#L482">482</a>         indice--;
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getUnion()
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>             .getIndices()
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>             .replace(
-<a class="jxr_linenumber" name="L486" href="#L486">486</a>                 VendorYaml.INDICES,
-<a class="jxr_linenumber" name="L487" href="#L487">487</a>                 String.join(<span class="jxr_string">","</span>, fields.toArray(<strong class="jxr_keyword">new</strong> String[0]))
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>             )
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>             .replace(VendorYaml.INDICE_UNIQUE, replaceTag)
-<a class="jxr_linenumber" name="L490" href="#L490">490</a>             .replace(
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>                 VendorYaml.RESULT_RANGE,
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>                 String.join(<span class="jxr_string">","</span>, Collections.nCopies(indice, <span class="jxr_string">"r"</span>))
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>             );
-<a class="jxr_linenumber" name="L494" href="#L494">494</a>     }
-<a class="jxr_linenumber" name="L495" href="#L495">495</a> 
-<a class="jxr_linenumber" name="L496" href="#L496">496</a>     @Override
-<a class="jxr_linenumber" name="L497" href="#L497">497</a>     <strong class="jxr_keyword">public</strong> String sqlLimit(Integer limitSqlResult) {
-<a class="jxr_linenumber" name="L498" href="#L498">498</a>         <strong class="jxr_keyword">var</strong> limitBoundary = 0;
-<a class="jxr_linenumber" name="L499" href="#L499">499</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L500" href="#L500">500</a>             limitBoundary = Integer.parseInt(<strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getLimitBoundary());
-<a class="jxr_linenumber" name="L501" href="#L501">501</a>         } <strong class="jxr_keyword">catch</strong> (NumberFormatException e) {
-<a class="jxr_linenumber" name="L502" href="#L502">502</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Incorrect Limit start index, force to 0"</span>);
-<a class="jxr_linenumber" name="L503" href="#L503">503</a>         }
-<a class="jxr_linenumber" name="L504" href="#L504">504</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration()
-<a class="jxr_linenumber" name="L505" href="#L505">505</a>             .getLimit()
-<a class="jxr_linenumber" name="L506" href="#L506">506</a>             .replace(VendorYaml.LIMIT_VALUE, Integer.toString(limitSqlResult + limitBoundary));
-<a class="jxr_linenumber" name="L507" href="#L507">507</a>     }
-<a class="jxr_linenumber" name="L508" href="#L508">508</a>     
-<a class="jxr_linenumber" name="L509" href="#L509">509</a>     @Override
-<a class="jxr_linenumber" name="L510" href="#L510">510</a>     <strong class="jxr_keyword">public</strong> String fingerprintErrorsAsRegex() {
-<a class="jxr_linenumber" name="L511" href="#L511">511</a>         <strong class="jxr_keyword">return</strong> <span class="jxr_string">"(?si)"</span>+ StringUtils.join(
-<a class="jxr_linenumber" name="L512" href="#L512">512</a>             <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getFingerprint()
-<a class="jxr_linenumber" name="L513" href="#L513">513</a>             .getErrorMessage()
-<a class="jxr_linenumber" name="L514" href="#L514">514</a>             .stream()
-<a class="jxr_linenumber" name="L515" href="#L515">515</a>             .map(m -&gt; <span class="jxr_string">".*"</span>+ m +<span class="jxr_string">".*"</span>)
-<a class="jxr_linenumber" name="L516" href="#L516">516</a>             .toArray(),
-<a class="jxr_linenumber" name="L517" href="#L517">517</a>             <span class="jxr_string">"|"</span>
-<a class="jxr_linenumber" name="L518" href="#L518">518</a>         );
-<a class="jxr_linenumber" name="L519" href="#L519">519</a>     }
-<a class="jxr_linenumber" name="L520" href="#L520">520</a>     
-<a class="jxr_linenumber" name="L521" href="#L521">521</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> String replaceTags(String sqlRequest) {
-<a class="jxr_linenumber" name="L522" href="#L522">522</a>         <strong class="jxr_keyword">return</strong> sqlRequest
-<a class="jxr_linenumber" name="L523" href="#L523">523</a>             .replace(<span class="jxr_string">"${enclose_value_sql}"</span>, VendorYaml.ENCLOSE_VALUE_SQL)
-<a class="jxr_linenumber" name="L524" href="#L524">524</a>             .replace(<span class="jxr_string">"${enclose_value_hex}"</span>, VendorYaml.ENCLOSE_VALUE_HEX)
-<a class="jxr_linenumber" name="L525" href="#L525">525</a>             .replace(<span class="jxr_string">"${separator_qte_sql}"</span>, VendorYaml.SEPARATOR_QTE_SQL)
-<a class="jxr_linenumber" name="L526" href="#L526">526</a>             .replace(<span class="jxr_string">"${separator_qte_hex}"</span>, VendorYaml.SEPARATOR_QTE_HEX)
-<a class="jxr_linenumber" name="L527" href="#L527">527</a>             .replace(<span class="jxr_string">"${separator_cell_sql}"</span>, VendorYaml.SEPARATOR_CELL_SQL)
-<a class="jxr_linenumber" name="L528" href="#L528">528</a>             .replace(<span class="jxr_string">"${separator_cell_hex}"</span>, VendorYaml.SEPARATOR_CELL_HEX)
-<a class="jxr_linenumber" name="L529" href="#L529">529</a>             .replace(<span class="jxr_string">"${calibrator_sql}"</span>, VendorYaml.CALIBRATOR_SQL)
-<a class="jxr_linenumber" name="L530" href="#L530">530</a>             .replace(<span class="jxr_string">"${calibrator_raw}"</span>, VendorYaml.CALIBRATOR_SQL.repeat(100))
-<a class="jxr_linenumber" name="L531" href="#L531">531</a>             .replace(<span class="jxr_string">"${calibrator_hex}"</span>, VendorYaml.CALIBRATOR_HEX)
-<a class="jxr_linenumber" name="L532" href="#L532">532</a>             .replace(<span class="jxr_string">"${trail_sql}"</span>, VendorYaml.TRAIL_SQL)
-<a class="jxr_linenumber" name="L533" href="#L533">533</a>             .replace(<span class="jxr_string">"${trail_hex}"</span>, VendorYaml.TRAIL_HEX)
-<a class="jxr_linenumber" name="L534" href="#L534">534</a>             .replace(<span class="jxr_string">"${lead}"</span>, LEAD)
-<a class="jxr_linenumber" name="L535" href="#L535">535</a>             .replace(<span class="jxr_string">"${lead_hex}"</span>, VendorYaml.LEAD_HEX)
-<a class="jxr_linenumber" name="L536" href="#L536">536</a>             .replace(<span class="jxr_string">"${lead_pipe}"</span>, VendorYaml.LEAD_PIPE);
-<a class="jxr_linenumber" name="L537" href="#L537">537</a>     }
-<a class="jxr_linenumber" name="L538" href="#L538">538</a> 
-<a class="jxr_linenumber" name="L539" href="#L539">539</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L540" href="#L540">540</a> <em class="jxr_javadoccomment">     * Get payload with sliding window except for vulnerability report</em>
-<a class="jxr_linenumber" name="L541" href="#L541">541</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L542" href="#L542">542</a>     <strong class="jxr_keyword">private</strong> String getSlidingWindow(<strong class="jxr_keyword">boolean</strong> isReport) {
-<a class="jxr_linenumber" name="L543" href="#L543">543</a>         <strong class="jxr_keyword">return</strong> isReport
-<a class="jxr_linenumber" name="L544" href="#L544">544</a>             ? <span class="jxr_string">"("</span> + VendorYaml.INJECTION + <span class="jxr_string">")"</span>
-<a class="jxr_linenumber" name="L545" href="#L545">545</a>             : <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getSlidingWindow();
-<a class="jxr_linenumber" name="L546" href="#L546">546</a>     }
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>             <strong class="jxr_keyword">case</strong> NO_MODE: <strong class="jxr_keyword">default</strong>: replacement = StringUtils.EMPTY; <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>         }
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>         <strong class="jxr_keyword">return</strong> replacement;
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>     }
+<a class="jxr_linenumber" name="L363" href="#L363">363</a> 
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>     @Override
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>     <strong class="jxr_keyword">public</strong> String sqlBlind(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport) {
+<a class="jxr_linenumber" name="L366" href="#L366">366</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>             <strong class="jxr_keyword">this</strong>.getSlidingWindow(isReport)
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>             .replace(VendorYaml.INJECTION, sqlQuery)
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>             .replace(VendorYaml.WINDOW_CHAR, startPosition)
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>             .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>         );
+<a class="jxr_linenumber" name="L372" href="#L372">372</a>     }
+<a class="jxr_linenumber" name="L373" href="#L373">373</a> 
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>     @Override
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>     <strong class="jxr_keyword">public</strong> String sqlTime(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport) {
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>             <strong class="jxr_keyword">this</strong>.getSlidingWindow(isReport)
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>             .replace(VendorYaml.INJECTION, sqlQuery)
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>             .replace(VendorYaml.WINDOW_CHAR, startPosition)
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>             .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>         );
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>     }
+<a class="jxr_linenumber" name="L383" href="#L383">383</a> 
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>     @Override
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>     <strong class="jxr_keyword">public</strong> String sqlMultibit(String inj, <strong class="jxr_keyword">int</strong> indexChar, <strong class="jxr_keyword">int</strong> block){
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getMultibit()
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>             .replace(VendorYaml.INJECTION, inj)
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>             .replace(VendorYaml.WINDOW_CHAR, Integer.toString(indexChar))
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>             .replace(VendorYaml.BLOCK_MULTIBIT, Integer.toString(block));
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>     }
+<a class="jxr_linenumber" name="L391" href="#L391">391</a> 
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>     @Override
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>     <strong class="jxr_keyword">public</strong> String sqlErrorCalibrator(<a name="Method" href="../../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod) {
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>             errorMethod.getQuery()
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>             .replace(VendorYaml.WINDOW, <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>             .replace(VendorYaml.INJECTION, <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getCalibrator())
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>             .replace(VendorYaml.WINDOW_CHAR, <span class="jxr_string">"1"</span>)
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>             .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>         );
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>     }
+<a class="jxr_linenumber" name="L402" href="#L402">402</a> 
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>     @Override
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>     <strong class="jxr_keyword">public</strong> String sqlErrorIndice(<a name="Method" href="../../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod) {
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>         <strong class="jxr_keyword">var</strong> indexZeroToFind = <span class="jxr_string">"0"</span>;
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>             errorMethod.getQuery()
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>             .replace(VendorYaml.WINDOW, <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>             .replace(VendorYaml.INJECTION, <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, indexZeroToFind))
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>             .replace(VendorYaml.WINDOW_CHAR, <span class="jxr_string">"1"</span>)
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>             .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>         );
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>     }
+<a class="jxr_linenumber" name="L414" href="#L414">414</a> 
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>     @Override
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>     <strong class="jxr_keyword">public</strong> String sqlError(String sqlQuery, String startPosition, <strong class="jxr_keyword">int</strong> indexMethodError, <strong class="jxr_keyword">boolean</strong> isReport) {
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>             <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getError().getMethod().get(indexMethodError).getQuery()
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>             .replace(VendorYaml.WINDOW, <strong class="jxr_keyword">this</strong>.getSlidingWindow(isReport))
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>             .replace(VendorYaml.INJECTION, sqlQuery)
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>             .replace(VendorYaml.WINDOW_CHAR, startPosition)
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>             .replace(
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>                 VendorYaml.CAPACITY,
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>                 Integer.toString(
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>                     <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getError()
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>                     .getMethod()
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>                     .get(indexMethodError)
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>                     .getCapacity()
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>                 )
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>             )
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>         );
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>     }
+<a class="jxr_linenumber" name="L433" href="#L433">433</a> 
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>     @Override
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>     <strong class="jxr_keyword">public</strong> String sqlUnion(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport) {
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>         <strong class="jxr_keyword">return</strong> VendorYaml.replaceTags(
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>             <strong class="jxr_keyword">this</strong>.getSlidingWindow(isReport)
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>             .replace(VendorYaml.INJECTION, sqlQuery)
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>             .replace(VendorYaml.WINDOW_CHAR, startPosition)
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>             .replace(VendorYaml.CAPACITY, <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getUnion().getPerformanceLength())
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>         );
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>     }
+<a class="jxr_linenumber" name="L443" href="#L443">443</a> 
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>     @Override
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>     <strong class="jxr_keyword">public</strong> String sqlStack(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport) {
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getStack().replace(
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>             VendorYaml.WINDOW,
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>             VendorYaml.replaceTags(
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>                 <strong class="jxr_keyword">this</strong>.getSlidingWindow(isReport)
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>                 .replace(VendorYaml.INJECTION, sqlQuery)
+<a class="jxr_linenumber" name="L451" href="#L451">451</a>                 .replace(VendorYaml.WINDOW_CHAR, startPosition)
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>                 .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>             )
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>         );
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>     }
+<a class="jxr_linenumber" name="L456" href="#L456">456</a> 
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>     @Override
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>     <strong class="jxr_keyword">public</strong> String sqlCapacity(String[] indexes) {
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>         String regexIndexes = String.join(<span class="jxr_string">"|"</span>, indexes);
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>         String regexVisibleIndexesToFind = String.format(VendorYaml.FORMAT_INDEX, <span class="jxr_string">"(%s)"</span>);
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.injectionModel.getIndexesInUrl().replaceAll(
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>             String.format(regexVisibleIndexesToFind, regexIndexes),
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>             VendorYaml.replaceTags(
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>                 <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getUnion().getCapacity()
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>                 .replace(VendorYaml.CALIBRATOR, <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getCalibrator())
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>                 .replace(VendorYaml.INDICE, <span class="jxr_string">"$1"</span>)
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>             )
+<a class="jxr_linenumber" name="L468" href="#L468">468</a>         );
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>     }
+<a class="jxr_linenumber" name="L470" href="#L470">470</a> 
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>     @Override
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>     <strong class="jxr_keyword">public</strong> String sqlIndices(Integer nbFields) {
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>         String replaceTag = StringUtils.EMPTY;
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>         List&lt;String&gt; fields = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>         <strong class="jxr_keyword">var</strong> indice = 1;
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>         <strong class="jxr_keyword">for</strong> ( ; indice &lt;= nbFields ; indice++) {
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>             String field = <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, Integer.toString(indice));
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>             fields.add(field);
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>             replaceTag = field;
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>         }
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>         indice--;
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getUnion()
+<a class="jxr_linenumber" name="L483" href="#L483">483</a>             .getIndices()
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>             .replace(
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>                 VendorYaml.INDICES,
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>                 String.join(<span class="jxr_string">","</span>, fields.toArray(<strong class="jxr_keyword">new</strong> String[0]))
+<a class="jxr_linenumber" name="L487" href="#L487">487</a>             )
+<a class="jxr_linenumber" name="L488" href="#L488">488</a>             .replace(VendorYaml.INDICE_UNIQUE, replaceTag)
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>             .replace(
+<a class="jxr_linenumber" name="L490" href="#L490">490</a>                 VendorYaml.RESULT_RANGE,
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>                 String.join(<span class="jxr_string">","</span>, Collections.nCopies(indice, <span class="jxr_string">"r"</span>))
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>             );
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>     }
+<a class="jxr_linenumber" name="L494" href="#L494">494</a> 
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>     @Override
+<a class="jxr_linenumber" name="L496" href="#L496">496</a>     <strong class="jxr_keyword">public</strong> String sqlLimit(Integer limitSqlResult) {
+<a class="jxr_linenumber" name="L497" href="#L497">497</a>         <strong class="jxr_keyword">var</strong> limitBoundary = 0;
+<a class="jxr_linenumber" name="L498" href="#L498">498</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L499" href="#L499">499</a>             limitBoundary = Integer.parseInt(<strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getLimitBoundary());
+<a class="jxr_linenumber" name="L500" href="#L500">500</a>         } <strong class="jxr_keyword">catch</strong> (NumberFormatException e) {
+<a class="jxr_linenumber" name="L501" href="#L501">501</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Incorrect Limit start index, force to 0"</span>);
+<a class="jxr_linenumber" name="L502" href="#L502">502</a>         }
+<a class="jxr_linenumber" name="L503" href="#L503">503</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration()
+<a class="jxr_linenumber" name="L504" href="#L504">504</a>             .getLimit()
+<a class="jxr_linenumber" name="L505" href="#L505">505</a>             .replace(VendorYaml.LIMIT_VALUE, Integer.toString(limitSqlResult + limitBoundary));
+<a class="jxr_linenumber" name="L506" href="#L506">506</a>     }
+<a class="jxr_linenumber" name="L507" href="#L507">507</a>     
+<a class="jxr_linenumber" name="L508" href="#L508">508</a>     @Override
+<a class="jxr_linenumber" name="L509" href="#L509">509</a>     <strong class="jxr_keyword">public</strong> String fingerprintErrorsAsRegex() {
+<a class="jxr_linenumber" name="L510" href="#L510">510</a>         <strong class="jxr_keyword">return</strong> <span class="jxr_string">"(?si)"</span>+ StringUtils.join(
+<a class="jxr_linenumber" name="L511" href="#L511">511</a>             <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getFingerprint()
+<a class="jxr_linenumber" name="L512" href="#L512">512</a>             .getErrorMessage()
+<a class="jxr_linenumber" name="L513" href="#L513">513</a>             .stream()
+<a class="jxr_linenumber" name="L514" href="#L514">514</a>             .map(m -&gt; <span class="jxr_string">".*"</span>+ m +<span class="jxr_string">".*"</span>)
+<a class="jxr_linenumber" name="L515" href="#L515">515</a>             .toArray(),
+<a class="jxr_linenumber" name="L516" href="#L516">516</a>             <span class="jxr_string">"|"</span>
+<a class="jxr_linenumber" name="L517" href="#L517">517</a>         );
+<a class="jxr_linenumber" name="L518" href="#L518">518</a>     }
+<a class="jxr_linenumber" name="L519" href="#L519">519</a>     
+<a class="jxr_linenumber" name="L520" href="#L520">520</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> String replaceTags(String sqlRequest) {
+<a class="jxr_linenumber" name="L521" href="#L521">521</a>         <strong class="jxr_keyword">return</strong> sqlRequest
+<a class="jxr_linenumber" name="L522" href="#L522">522</a>             .replace(<span class="jxr_string">"${enclose_value_sql}"</span>, VendorYaml.ENCLOSE_VALUE_SQL)
+<a class="jxr_linenumber" name="L523" href="#L523">523</a>             .replace(<span class="jxr_string">"${enclose_value_hex}"</span>, VendorYaml.ENCLOSE_VALUE_HEX)
+<a class="jxr_linenumber" name="L524" href="#L524">524</a>             .replace(<span class="jxr_string">"${separator_qte_sql}"</span>, VendorYaml.SEPARATOR_QTE_SQL)
+<a class="jxr_linenumber" name="L525" href="#L525">525</a>             .replace(<span class="jxr_string">"${separator_qte_hex}"</span>, VendorYaml.SEPARATOR_QTE_HEX)
+<a class="jxr_linenumber" name="L526" href="#L526">526</a>             .replace(<span class="jxr_string">"${separator_cell_sql}"</span>, VendorYaml.SEPARATOR_CELL_SQL)
+<a class="jxr_linenumber" name="L527" href="#L527">527</a>             .replace(<span class="jxr_string">"${separator_cell_hex}"</span>, VendorYaml.SEPARATOR_CELL_HEX)
+<a class="jxr_linenumber" name="L528" href="#L528">528</a>             .replace(<span class="jxr_string">"${calibrator_sql}"</span>, VendorYaml.CALIBRATOR_SQL)
+<a class="jxr_linenumber" name="L529" href="#L529">529</a>             .replace(<span class="jxr_string">"${calibrator_raw}"</span>, VendorYaml.CALIBRATOR_SQL.repeat(100))
+<a class="jxr_linenumber" name="L530" href="#L530">530</a>             .replace(<span class="jxr_string">"${calibrator_hex}"</span>, VendorYaml.CALIBRATOR_HEX)
+<a class="jxr_linenumber" name="L531" href="#L531">531</a>             .replace(<span class="jxr_string">"${trail_sql}"</span>, VendorYaml.TRAIL_SQL)
+<a class="jxr_linenumber" name="L532" href="#L532">532</a>             .replace(<span class="jxr_string">"${trail_hex}"</span>, VendorYaml.TRAIL_HEX)
+<a class="jxr_linenumber" name="L533" href="#L533">533</a>             .replace(<span class="jxr_string">"${lead}"</span>, LEAD)
+<a class="jxr_linenumber" name="L534" href="#L534">534</a>             .replace(<span class="jxr_string">"${lead_hex}"</span>, VendorYaml.LEAD_HEX)
+<a class="jxr_linenumber" name="L535" href="#L535">535</a>             .replace(<span class="jxr_string">"${lead_pipe}"</span>, VendorYaml.LEAD_PIPE);
+<a class="jxr_linenumber" name="L536" href="#L536">536</a>     }
+<a class="jxr_linenumber" name="L537" href="#L537">537</a> 
+<a class="jxr_linenumber" name="L538" href="#L538">538</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L539" href="#L539">539</a> <em class="jxr_javadoccomment">     * Get payload with sliding window except for vulnerability report</em>
+<a class="jxr_linenumber" name="L540" href="#L540">540</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L541" href="#L541">541</a>     <strong class="jxr_keyword">private</strong> String getSlidingWindow(<strong class="jxr_keyword">boolean</strong> isReport) {
+<a class="jxr_linenumber" name="L542" href="#L542">542</a>         <strong class="jxr_keyword">return</strong> isReport
+<a class="jxr_linenumber" name="L543" href="#L543">543</a>             ? <span class="jxr_string">"("</span> + VendorYaml.INJECTION + <span class="jxr_string">")"</span>
+<a class="jxr_linenumber" name="L544" href="#L544">544</a>             : <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getSlidingWindow();
+<a class="jxr_linenumber" name="L545" href="#L545">545</a>     }
+<a class="jxr_linenumber" name="L546" href="#L546">546</a>     
 <a class="jxr_linenumber" name="L547" href="#L547">547</a>     
-<a class="jxr_linenumber" name="L548" href="#L548">548</a>     
-<a class="jxr_linenumber" name="L549" href="#L549">549</a>     <em class="jxr_comment">// Getter and setter</em>
-<a class="jxr_linenumber" name="L550" href="#L550">550</a> 
-<a class="jxr_linenumber" name="L551" href="#L551">551</a>     @Override
-<a class="jxr_linenumber" name="L552" href="#L552">552</a>     <strong class="jxr_keyword">public</strong> String sqlInfos() {
-<a class="jxr_linenumber" name="L553" href="#L553">553</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getResource().getInfo();
-<a class="jxr_linenumber" name="L554" href="#L554">554</a>     }
-<a class="jxr_linenumber" name="L555" href="#L555">555</a> 
-<a class="jxr_linenumber" name="L556" href="#L556">556</a>     @Override
-<a class="jxr_linenumber" name="L557" href="#L557">557</a>     <strong class="jxr_keyword">public</strong> List&lt;String&gt; getFalsyBit() {
-<a class="jxr_linenumber" name="L558" href="#L558">558</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getTest().getFalsyBit();
-<a class="jxr_linenumber" name="L559" href="#L559">559</a>     }
-<a class="jxr_linenumber" name="L560" href="#L560">560</a> 
-<a class="jxr_linenumber" name="L561" href="#L561">561</a>     @Override
-<a class="jxr_linenumber" name="L562" href="#L562">562</a>     <strong class="jxr_keyword">public</strong> List&lt;String&gt; getTruthyBit() {
-<a class="jxr_linenumber" name="L563" href="#L563">563</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getTest().getTruthyBit();
-<a class="jxr_linenumber" name="L564" href="#L564">564</a>     }
-<a class="jxr_linenumber" name="L565" href="#L565">565</a> 
-<a class="jxr_linenumber" name="L566" href="#L566">566</a>     @Override
-<a class="jxr_linenumber" name="L567" href="#L567">567</a>     <strong class="jxr_keyword">public</strong> List&lt;String&gt; getFalsyBin() {
-<a class="jxr_linenumber" name="L568" href="#L568">568</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getTest().getFalsyBin();
-<a class="jxr_linenumber" name="L569" href="#L569">569</a>     }
-<a class="jxr_linenumber" name="L570" href="#L570">570</a> 
-<a class="jxr_linenumber" name="L571" href="#L571">571</a>     @Override
-<a class="jxr_linenumber" name="L572" href="#L572">572</a>     <strong class="jxr_keyword">public</strong> List&lt;String&gt; getTruthyBin() {
-<a class="jxr_linenumber" name="L573" href="#L573">573</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getTest().getTruthyBin();
-<a class="jxr_linenumber" name="L574" href="#L574">574</a>     }
-<a class="jxr_linenumber" name="L575" href="#L575">575</a> 
-<a class="jxr_linenumber" name="L576" href="#L576">576</a>     @Override
-<a class="jxr_linenumber" name="L577" href="#L577">577</a>     <strong class="jxr_keyword">public</strong> String sqlBlindConfirm() {
-<a class="jxr_linenumber" name="L578" href="#L578">578</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getTest().getInit();
-<a class="jxr_linenumber" name="L579" href="#L579">579</a>     }
-<a class="jxr_linenumber" name="L580" href="#L580">580</a> 
-<a class="jxr_linenumber" name="L581" href="#L581">581</a>     @Override
-<a class="jxr_linenumber" name="L582" href="#L582">582</a>     <strong class="jxr_keyword">public</strong> String sqlOrderBy() {
-<a class="jxr_linenumber" name="L583" href="#L583">583</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getUnion().getOrderBy();
-<a class="jxr_linenumber" name="L584" href="#L584">584</a>     }
-<a class="jxr_linenumber" name="L585" href="#L585">585</a>     
-<a class="jxr_linenumber" name="L586" href="#L586">586</a>     @Override
-<a class="jxr_linenumber" name="L587" href="#L587">587</a>     <strong class="jxr_keyword">public</strong> String endingComment() {
-<a class="jxr_linenumber" name="L588" href="#L588">588</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlRandomSuffixDisabled()) {
-<a class="jxr_linenumber" name="L589" href="#L589">589</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getEndingComment();
-<a class="jxr_linenumber" name="L590" href="#L590">590</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L591" href="#L591">591</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getEndingComment()
-<a class="jxr_linenumber" name="L592" href="#L592">592</a>                 + RandomStringUtils.secure().nextAlphanumeric(4);  <em class="jxr_comment">// Allows binary match fingerprinting on host errors</em>
-<a class="jxr_linenumber" name="L593" href="#L593">593</a>         }
-<a class="jxr_linenumber" name="L594" href="#L594">594</a>     }
-<a class="jxr_linenumber" name="L595" href="#L595">595</a> 
-<a class="jxr_linenumber" name="L596" href="#L596">596</a>     @Override
-<a class="jxr_linenumber" name="L597" href="#L597">597</a>     <strong class="jxr_keyword">public</strong> <a name="ModelYaml" href="../../../../../../com/jsql/model/injection/vendor/model/yaml/ModelYaml.html#ModelYaml">ModelYaml</a> getModelYaml() {
-<a class="jxr_linenumber" name="L598" href="#L598">598</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml;
-<a class="jxr_linenumber" name="L599" href="#L599">599</a>     }
-<a class="jxr_linenumber" name="L600" href="#L600">600</a> }
+<a class="jxr_linenumber" name="L548" href="#L548">548</a>     <em class="jxr_comment">// Getter and setter</em>
+<a class="jxr_linenumber" name="L549" href="#L549">549</a> 
+<a class="jxr_linenumber" name="L550" href="#L550">550</a>     @Override
+<a class="jxr_linenumber" name="L551" href="#L551">551</a>     <strong class="jxr_keyword">public</strong> String sqlInfos() {
+<a class="jxr_linenumber" name="L552" href="#L552">552</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getResource().getInfo();
+<a class="jxr_linenumber" name="L553" href="#L553">553</a>     }
+<a class="jxr_linenumber" name="L554" href="#L554">554</a> 
+<a class="jxr_linenumber" name="L555" href="#L555">555</a>     @Override
+<a class="jxr_linenumber" name="L556" href="#L556">556</a>     <strong class="jxr_keyword">public</strong> List&lt;String&gt; getFalsyBit() {
+<a class="jxr_linenumber" name="L557" href="#L557">557</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getTest().getFalsyBit();
+<a class="jxr_linenumber" name="L558" href="#L558">558</a>     }
+<a class="jxr_linenumber" name="L559" href="#L559">559</a> 
+<a class="jxr_linenumber" name="L560" href="#L560">560</a>     @Override
+<a class="jxr_linenumber" name="L561" href="#L561">561</a>     <strong class="jxr_keyword">public</strong> List&lt;String&gt; getTruthyBit() {
+<a class="jxr_linenumber" name="L562" href="#L562">562</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getTest().getTruthyBit();
+<a class="jxr_linenumber" name="L563" href="#L563">563</a>     }
+<a class="jxr_linenumber" name="L564" href="#L564">564</a> 
+<a class="jxr_linenumber" name="L565" href="#L565">565</a>     @Override
+<a class="jxr_linenumber" name="L566" href="#L566">566</a>     <strong class="jxr_keyword">public</strong> List&lt;String&gt; getFalsyBin() {
+<a class="jxr_linenumber" name="L567" href="#L567">567</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getTest().getFalsyBin();
+<a class="jxr_linenumber" name="L568" href="#L568">568</a>     }
+<a class="jxr_linenumber" name="L569" href="#L569">569</a> 
+<a class="jxr_linenumber" name="L570" href="#L570">570</a>     @Override
+<a class="jxr_linenumber" name="L571" href="#L571">571</a>     <strong class="jxr_keyword">public</strong> List&lt;String&gt; getTruthyBin() {
+<a class="jxr_linenumber" name="L572" href="#L572">572</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getTest().getTruthyBin();
+<a class="jxr_linenumber" name="L573" href="#L573">573</a>     }
+<a class="jxr_linenumber" name="L574" href="#L574">574</a> 
+<a class="jxr_linenumber" name="L575" href="#L575">575</a>     @Override
+<a class="jxr_linenumber" name="L576" href="#L576">576</a>     <strong class="jxr_keyword">public</strong> String sqlBlindConfirm() {
+<a class="jxr_linenumber" name="L577" href="#L577">577</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getTest().getInit();
+<a class="jxr_linenumber" name="L578" href="#L578">578</a>     }
+<a class="jxr_linenumber" name="L579" href="#L579">579</a> 
+<a class="jxr_linenumber" name="L580" href="#L580">580</a>     @Override
+<a class="jxr_linenumber" name="L581" href="#L581">581</a>     <strong class="jxr_keyword">public</strong> String sqlOrderBy() {
+<a class="jxr_linenumber" name="L582" href="#L582">582</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getUnion().getOrderBy();
+<a class="jxr_linenumber" name="L583" href="#L583">583</a>     }
+<a class="jxr_linenumber" name="L584" href="#L584">584</a>     
+<a class="jxr_linenumber" name="L585" href="#L585">585</a>     @Override
+<a class="jxr_linenumber" name="L586" href="#L586">586</a>     <strong class="jxr_keyword">public</strong> String endingComment() {
+<a class="jxr_linenumber" name="L587" href="#L587">587</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlRandomSuffixDisabled()) {
+<a class="jxr_linenumber" name="L588" href="#L588">588</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getEndingComment();
+<a class="jxr_linenumber" name="L589" href="#L589">589</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L590" href="#L590">590</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getEndingComment()
+<a class="jxr_linenumber" name="L591" href="#L591">591</a>                 + RandomStringUtils.secure().nextAlphanumeric(4);  <em class="jxr_comment">// Allows binary match fingerprinting on host errors</em>
+<a class="jxr_linenumber" name="L592" href="#L592">592</a>         }
+<a class="jxr_linenumber" name="L593" href="#L593">593</a>     }
+<a class="jxr_linenumber" name="L594" href="#L594">594</a> 
+<a class="jxr_linenumber" name="L595" href="#L595">595</a>     @Override
+<a class="jxr_linenumber" name="L596" href="#L596">596</a>     <strong class="jxr_keyword">public</strong> <a name="ModelYaml" href="../../../../../../com/jsql/model/injection/vendor/model/yaml/ModelYaml.html#ModelYaml">ModelYaml</a> getModelYaml() {
+<a class="jxr_linenumber" name="L597" href="#L597">597</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml;
+<a class="jxr_linenumber" name="L598" href="#L598">598</a>     }
+<a class="jxr_linenumber" name="L599" href="#L599">599</a> }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>

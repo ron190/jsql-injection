@@ -58,7 +58,7 @@ public class TabResults extends DnDTabbedPane {
 <span class="fc" id="L58">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     public static final String TAB_EXPLOIT_FAILURE_INCORRECT_URL = &quot;Tab exploit failure: incorrect URL&quot;;
-    public static final String RCE_SHELL = &quot;RCE shell&quot;;
+    public static final String UDF_SHELL = &quot;UDF shell&quot;;
     public static final String SQL_SHELL = &quot;sqlShell&quot;;
     public static final String WEB_SHELL = &quot;webShell&quot;;
     public static final String REV_SHELL = &quot;revShell&quot;;
@@ -179,10 +179,10 @@ public class TabResults extends DnDTabbedPane {
 <span class="nc" id="L179">        }</span>
 <span class="nc" id="L180">    }</span>
 
-    public void addTabExploitRce(BiConsumer&lt;String, UUID&gt; biConsumerRunCmd) {
+    public void addTabExploitUdf(BiConsumer&lt;String, UUID&gt; biConsumerRunCmd) {
         try {
 <span class="nc" id="L184">            var terminalID = UUID.randomUUID();</span>
-<span class="nc" id="L185">            var terminal = new AbstractExploit(terminalID, null, &quot;rce&quot;) {</span>
+<span class="nc" id="L185">            var terminal = new AbstractExploit(terminalID, null, &quot;udf&quot;) {</span>
                 @Override
                 public void action(String command, UUID terminalID, String urlShell, String... arg) {
 <span class="nc" id="L188">                    biConsumerRunCmd.accept(command, terminalID);</span>
@@ -191,10 +191,10 @@ public class TabResults extends DnDTabbedPane {
 <span class="nc" id="L191">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
 
 <span class="nc" id="L193">            JPanel panelTerminalWithReverse = this.getTerminalWithMenu(terminal);</span>
-<span class="nc" id="L194">            this.addTab(TabResults.RCE_SHELL, panelTerminalWithReverse);</span>
+<span class="nc" id="L194">            this.addTab(TabResults.UDF_SHELL, panelTerminalWithReverse);</span>
 <span class="nc" id="L195">            this.setSelectedComponent(panelTerminalWithReverse);  // Focus on the new tab</span>
 
-<span class="nc" id="L197">            var header = new TabHeader(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());</span>
+<span class="nc" id="L197">            var header = new TabHeader(TabResults.UDF_SHELL, UiUtil.TERMINAL.getIcon());</span>
 <span class="nc" id="L198">            this.setTabComponentAt(this.indexOfComponent(panelTerminalWithReverse), header);</span>
 <span class="nc" id="L199">            terminal.requestFocusInWindow();</span>
 

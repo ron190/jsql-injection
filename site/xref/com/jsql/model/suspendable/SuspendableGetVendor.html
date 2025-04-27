@@ -41,7 +41,7 @@
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, <span class="jxr_string">"Fingerprinting database with Boolean match..."</span>);
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          AtomicBoolean isVendorFound = <strong class="jxr_keyword">new</strong> AtomicBoolean(false);
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendors()
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendorsForFingerprint()
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          .stream()
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>          .filter(vendor -&gt; vendor != <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getAuto())
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>          .filter(vendor -&gt; StringUtils.isNotEmpty(

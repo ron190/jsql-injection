@@ -121,9 +121,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 <span class="fc" id="L121">    }</span>
 
     private List&lt;Vendor&gt; getVendorsOrderByMatch(MediatorVendor mediatorVendor, String pageSource) {
-<span class="fc" id="L124">        return mediatorVendor.getVendors()</span>
+<span class="fc" id="L124">        return mediatorVendor.getVendorsForFingerprint()</span>
 <span class="fc" id="L125">            .stream()</span>
-<span class="fc bfc" id="L126" title="All 2 branches covered.">            .filter(vendor -&gt; vendor != mediatorVendor.getAuto())</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">            .filter(vendor -&gt; vendor != mediatorVendor.getAuto())</span>
 <span class="fc" id="L127">            .filter(vendor -&gt; StringUtils.isNotEmpty(</span>
 <span class="fc" id="L128">                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()</span>
             ))

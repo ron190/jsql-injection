@@ -119,7 +119,7 @@
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>                 
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>                 <em class="jxr_comment">// If SQL result is not empty, then add a new unknown character and define a new array of 7 undefined bit.</em>
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>                 <em class="jxr_comment">// Then add 7 bits requests for that new character.</em>
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>                 <strong class="jxr_keyword">var</strong> isComplete = <strong class="jxr_keyword">this</strong>.injectCharacter(bytes, countBadAsciiCode, currentCallable);
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>                 <strong class="jxr_keyword">var</strong> isComplete = <strong class="jxr_keyword">this</strong>.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>                 <strong class="jxr_keyword">if</strong> (isComplete || currentCallable.isBinary()) {  <em class="jxr_comment">// prevents bitwise overload new char init on each bit</em>
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>                     <strong class="jxr_keyword">this</strong>.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, countBadAsciiCode, currentCallable);
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>                 }
@@ -156,7 +156,7 @@
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>         <strong class="jxr_keyword">return</strong> result.toString();
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>     }
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> injectCharacter(
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> isCharCompleteWithCorruptCheck(
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>         List&lt;<strong class="jxr_keyword">char</strong>[]&gt; bytes,
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>         AtomicInteger countBadAsciiCode,
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>         T currentCallable
@@ -185,9 +185,9 @@
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>                 asciiCodeBit
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>                 + <span class="jxr_string">"="</span>
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>                 + currentCallable.getCharText()
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>                 .replace(<span class="jxr_string">"&#92;&#92;n"</span>, <span class="jxr_string">"&#92;&#92;&#92;&#92;&#92;&#92;n"</span>)
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>                 .replace(<span class="jxr_string">"&#92;&#92;r"</span>, <span class="jxr_string">"&#92;&#92;&#92;&#92;&#92;&#92;r"</span>)
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>                 .replace(<span class="jxr_string">"&#92;&#92;t"</span>, <span class="jxr_string">"&#92;&#92;&#92;&#92;&#92;&#92;t"</span>)
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>                 .replace(<span class="jxr_string">"\n"</span>, <span class="jxr_string">"&#92;&#92;n"</span>)
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>                 .replace(<span class="jxr_string">"\r"</span>, <span class="jxr_string">"&#92;&#92;r"</span>)
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>                 .replace(<span class="jxr_string">"\t"</span>, <span class="jxr_string">"&#92;&#92;t"</span>)
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>             );
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(interaction);
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>             isComplete = <strong class="jxr_keyword">true</strong>;

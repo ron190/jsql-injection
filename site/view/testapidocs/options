@@ -3,8 +3,8 @@
 -encoding
 'ISO-8859-1'
 -protected
--source
-'11'
+--release
+11
 -sourcepath
 '/view/src/test/java:/view/target/generated-test-sources/test-annotations'
 -author

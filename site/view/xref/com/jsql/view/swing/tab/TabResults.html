@@ -66,7 +66,7 @@
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Logger LOGGER = LogManager.getRootLogger();
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String TAB_EXPLOIT_FAILURE_INCORRECT_URL = <span class="jxr_string">"Tab exploit failure: incorrect URL"</span>;
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String RCE_SHELL = <span class="jxr_string">"RCE shell"</span>;
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String UDF_SHELL = <span class="jxr_string">"UDF shell"</span>;
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String SQL_SHELL = <span class="jxr_string">"sqlShell"</span>;
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String WEB_SHELL = <span class="jxr_string">"webShell"</span>;
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String REV_SHELL = <span class="jxr_string">"revShell"</span>;
@@ -187,10 +187,10 @@
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>         }
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>     }
 <a class="jxr_linenumber" name="L181" href="#L181">181</a> 
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitRce(BiConsumer&lt;String, UUID&gt; biConsumerRunCmd) {
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitUdf(BiConsumer&lt;String, UUID&gt; biConsumerRunCmd) {
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>             <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>             <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a>(terminalID, <strong class="jxr_keyword">null</strong>, <span class="jxr_string">"rce"</span>) {
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>             <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a>(terminalID, <strong class="jxr_keyword">null</strong>, <span class="jxr_string">"udf"</span>) {
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>                 @Override
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> action(String command, UUID terminalID, String urlShell, String... arg) {
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>                     biConsumerRunCmd.accept(command, terminalID);
@@ -199,10 +199,10 @@
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 <a class="jxr_linenumber" name="L192" href="#L192">192</a> 
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>             JPanel panelTerminalWithReverse = <strong class="jxr_keyword">this</strong>.getTerminalWithMenu(terminal);
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>             <strong class="jxr_keyword">this</strong>.addTab(TabResults.RCE_SHELL, panelTerminalWithReverse);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>             <strong class="jxr_keyword">this</strong>.addTab(TabResults.UDF_SHELL, panelTerminalWithReverse);
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(panelTerminalWithReverse);  <em class="jxr_comment">// Focus on the new tab</em>
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> 
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(TabResults.RCE_SHELL, UiUtil.TERMINAL.getIcon());
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(TabResults.UDF_SHELL, UiUtil.TERMINAL.getIcon());
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(panelTerminalWithReverse), header);
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>             terminal.requestFocusInWindow();
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> 

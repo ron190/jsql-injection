@@ -47,7 +47,7 @@ public class StrategyBlindBin extends AbstractStrategy {
 <span class="fc" id="L47">            this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getTest().getBin()</span>
         )) {
 <span class="fc" id="L49">            LOGGER.log(</span>
-                LogLevelUtil.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_INFORM,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
 <span class="fc" id="L52">                this.getName(),</span>
 <span class="fc" id="L53">                this.injectionModel.getMediatorVendor().getVendor()</span>
@@ -136,9 +136,9 @@ public class StrategyBlindBin extends AbstractStrategy {
             );
 <span class="fc" id="L137">            this.injectionModel.getMediatorStrategy().setStrategy(this);</span>
 
-<span class="fc" id="L139">            var requestMarkBlindBinStrategy = new Request();</span>
-<span class="fc" id="L140">            requestMarkBlindBinStrategy.setMessage(Interaction.MARK_BLIND_BIN_STRATEGY);</span>
-<span class="fc" id="L141">            this.injectionModel.sendToViews(requestMarkBlindBinStrategy);</span>
+<span class="fc" id="L139">            var request = new Request();</span>
+<span class="fc" id="L140">            request.setMessage(Interaction.MARK_BLIND_BIN_STRATEGY);</span>
+<span class="fc" id="L141">            this.injectionModel.sendToViews(request);</span>
         }
 <span class="fc" id="L143">    }</span>
     

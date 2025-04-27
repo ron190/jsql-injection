@@ -129,7 +129,7 @@
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>     }
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> 
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>     <strong class="jxr_keyword">private</strong> List&lt;Vendor&gt; getVendorsOrderByMatch(<a name="MediatorVendor" href="../../../../com/jsql/model/injection/vendor/MediatorVendor.html#MediatorVendor">MediatorVendor</a> mediatorVendor, String pageSource) {
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>         <strong class="jxr_keyword">return</strong> mediatorVendor.getVendors()
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         <strong class="jxr_keyword">return</strong> mediatorVendor.getVendorsForFingerprint()
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>             .stream()
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>             .filter(vendor -&gt; vendor != mediatorVendor.getAuto())
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>             .filter(vendor -&gt; StringUtils.isNotEmpty(

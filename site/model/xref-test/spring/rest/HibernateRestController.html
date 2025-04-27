@@ -263,77 +263,80 @@
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>         consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>     )
 <a class="jxr_linenumber" name="L257" href="#L257">257</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointPost(HttpServletRequest request) {
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>         String inject = request.getParameterMap().get(<span class="jxr_string">"name"</span>)[0];
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(inject, <span class="jxr_string">"select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>     }
-<a class="jxr_linenumber" name="L261" href="#L261">261</a> 
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>     @RequestMapping(
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>         method = { RequestMethod.GET, RequestMethod.POST },
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>         path = <span class="jxr_string">"/multipart"</span>,
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>         consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>     )
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointPostMultipart(HttpServletRequest request) {
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>         String name = String.join(StringUtils.EMPTY, multipartRequest.getParameterValues(<span class="jxr_string">"name"</span>));
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>     }
-<a class="jxr_linenumber" name="L272" href="#L272">272</a> 
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>     @GetMapping(<span class="jxr_string">"/cookie"</span>)
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointCookie(HttpServletRequest request, @CookieValue(name = <span class="jxr_string">"name"</span>, required = false, defaultValue = StringUtils.EMPTY) String name) {
-<a class="jxr_linenumber" name="L275" href="#L275">275</a> 
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>         String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(nameUrlDecoded, <span class="jxr_string">"select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>     }
-<a class="jxr_linenumber" name="L279" href="#L279">279</a> 
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>     @RequestMapping(<span class="jxr_string">"/header"</span>)
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointHeader(@RequestHeader Map&lt;String, String&gt; name) {
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name.getOrDefault(<span class="jxr_string">"name"</span>, <span class="jxr_string">"World"</span>), <span class="jxr_string">"select 1,2,First_Name from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>     }
-<a class="jxr_linenumber" name="L284" href="#L284">284</a> 
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>     @RequestMapping(<span class="jxr_string">"/basic"</span>)
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointBasicAuth(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select 1,2,3,4,5,6,7,8,9,First_Name,10,11 from Student where 999 = %s"</span>, <strong class="jxr_keyword">true</strong>, false, false);
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>     }
-<a class="jxr_linenumber" name="L289" href="#L289">289</a> 
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>     @RequestMapping(<span class="jxr_string">"/digest"</span>)
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointDigestAuth(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select 1,2,3,4,5,6,7,8,9,First_Name,10,11 from Student where 999 = %s"</span>, <strong class="jxr_keyword">true</strong>, false, false);
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>     }
-<a class="jxr_linenumber" name="L294" href="#L294">294</a> 
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>     @RequestMapping(<span class="jxr_string">"/custom"</span>)
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointCustom(HttpServletRequest request, @RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>         <strong class="jxr_keyword">if</strong> (!CustomMethodSuiteIT.CUSTOM_METHOD.equals(request.getMethod())) {
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>         }
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select First_Name from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>     }
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>     
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>     @RequestMapping(<span class="jxr_string">"/user-agent"</span>)
-<a class="jxr_linenumber" name="L304" href="#L304">304</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointUserAgent(HttpServletRequest request, @RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>         <strong class="jxr_keyword">if</strong> (
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>             !Arrays.asList(<span class="jxr_string">"CUSTOM-USER-AGENT1"</span>, <span class="jxr_string">"CUSTOM-USER-AGENT2"</span>)
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>             .contains(request.getHeader(<span class="jxr_string">"User-Agent"</span>))
-<a class="jxr_linenumber" name="L308" href="#L308">308</a>         ) {
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L310" href="#L310">310</a>         }
-<a class="jxr_linenumber" name="L311" href="#L311">311</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select First_Name from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>     }
-<a class="jxr_linenumber" name="L313" href="#L313">313</a> 
-<a class="jxr_linenumber" name="L314" href="#L314">314</a>     @GetMapping(<span class="jxr_string">"/path-quote/{name}/suffix"</span>)
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointPathParamQuote(@PathVariable(<span class="jxr_string">"name"</span>) String name) {
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select First_Name from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>     }
-<a class="jxr_linenumber" name="L318" href="#L318">318</a> 
-<a class="jxr_linenumber" name="L319" href="#L319">319</a>     @GetMapping(<span class="jxr_string">"/path-integer/{name}/suffix"</span>)
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointPathParamInteger(@PathVariable(<span class="jxr_string">"name"</span>) String name) {
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select First_Name from Student where '1' = %s"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>     }
-<a class="jxr_linenumber" name="L323" href="#L323">323</a> 
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>     @GetMapping(<span class="jxr_string">"/path-select/{name}/suffix"</span>)  <em class="jxr_comment">// for manual tests</em>
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointPathParamSelect(@PathVariable(<span class="jxr_string">"name"</span>) String name) {
-<a class="jxr_linenumber" name="L326" href="#L326">326</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select %s"</span>, false, false, false);
-<a class="jxr_linenumber" name="L327" href="#L327">327</a>     }
-<a class="jxr_linenumber" name="L328" href="#L328">328</a> }
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>         <strong class="jxr_keyword">if</strong> (request.getParameterMap().get(<span class="jxr_string">"name"</span>) == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>             LOGGER.error(<span class="jxr_string">"Parameter name not found with /post during IT"</span>);
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>         }
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>         String inject = request.getParameterMap().get(<span class="jxr_string">"name"</span>)[0];
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(inject, <span class="jxr_string">"select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>     }
+<a class="jxr_linenumber" name="L265" href="#L265">265</a> 
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>     @RequestMapping(
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>         method = { RequestMethod.GET, RequestMethod.POST },
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>         path = <span class="jxr_string">"/multipart"</span>,
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>         consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>     )
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointPostMultipart(HttpServletRequest request) {
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>         String name = String.join(StringUtils.EMPTY, multipartRequest.getParameterValues(<span class="jxr_string">"name"</span>));
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>     }
+<a class="jxr_linenumber" name="L276" href="#L276">276</a> 
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>     @GetMapping(<span class="jxr_string">"/cookie"</span>)
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointCookie(HttpServletRequest request, @CookieValue(name = <span class="jxr_string">"name"</span>, required = false, defaultValue = StringUtils.EMPTY) String name) {
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>         String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(nameUrlDecoded, <span class="jxr_string">"select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>     }
+<a class="jxr_linenumber" name="L282" href="#L282">282</a> 
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>     @RequestMapping(<span class="jxr_string">"/header"</span>)
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointHeader(@RequestHeader Map&lt;String, String&gt; name) {
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name.getOrDefault(<span class="jxr_string">"name"</span>, <span class="jxr_string">"World"</span>), <span class="jxr_string">"select 1,2,First_Name from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>     }
+<a class="jxr_linenumber" name="L287" href="#L287">287</a> 
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>     @RequestMapping(<span class="jxr_string">"/basic"</span>)
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointBasicAuth(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select 1,2,3,4,5,6,7,8,9,First_Name,10,11 from Student where 999 = %s"</span>, <strong class="jxr_keyword">true</strong>, false, false);
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>     }
+<a class="jxr_linenumber" name="L292" href="#L292">292</a> 
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>     @RequestMapping(<span class="jxr_string">"/digest"</span>)
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointDigestAuth(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select 1,2,3,4,5,6,7,8,9,First_Name,10,11 from Student where 999 = %s"</span>, <strong class="jxr_keyword">true</strong>, false, false);
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>     }
+<a class="jxr_linenumber" name="L297" href="#L297">297</a> 
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>     @RequestMapping(<span class="jxr_string">"/custom"</span>)
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointCustom(HttpServletRequest request, @RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>         <strong class="jxr_keyword">if</strong> (!CustomMethodSuiteIT.CUSTOM_METHOD.equals(request.getMethod())) {
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>         }
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select First_Name from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L304" href="#L304">304</a>     }
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>     
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>     @RequestMapping(<span class="jxr_string">"/user-agent"</span>)
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointUserAgent(HttpServletRequest request, @RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L308" href="#L308">308</a>         <strong class="jxr_keyword">if</strong> (
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>             !Arrays.asList(<span class="jxr_string">"CUSTOM-USER-AGENT1"</span>, <span class="jxr_string">"CUSTOM-USER-AGENT2"</span>)
+<a class="jxr_linenumber" name="L310" href="#L310">310</a>             .contains(request.getHeader(<span class="jxr_string">"User-Agent"</span>))
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>         ) {
+<a class="jxr_linenumber" name="L312" href="#L312">312</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>         }
+<a class="jxr_linenumber" name="L314" href="#L314">314</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select First_Name from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L315" href="#L315">315</a>     }
+<a class="jxr_linenumber" name="L316" href="#L316">316</a> 
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>     @GetMapping(<span class="jxr_string">"/path-quote/{name}/suffix"</span>)
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointPathParamQuote(@PathVariable(<span class="jxr_string">"name"</span>) String name) {
+<a class="jxr_linenumber" name="L319" href="#L319">319</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select First_Name from Student where '1' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>     }
+<a class="jxr_linenumber" name="L321" href="#L321">321</a> 
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>     @GetMapping(<span class="jxr_string">"/path-integer/{name}/suffix"</span>)
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointPathParamInteger(@PathVariable(<span class="jxr_string">"name"</span>) String name) {
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select First_Name from Student where '1' = %s"</span>, <strong class="jxr_keyword">true</strong>, false, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>     }
+<a class="jxr_linenumber" name="L326" href="#L326">326</a> 
+<a class="jxr_linenumber" name="L327" href="#L327">327</a>     @GetMapping(<span class="jxr_string">"/path-select/{name}/suffix"</span>)  <em class="jxr_comment">// for manual tests</em>
+<a class="jxr_linenumber" name="L328" href="#L328">328</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointPathParamSelect(@PathVariable(<span class="jxr_string">"name"</span>) String name) {
+<a class="jxr_linenumber" name="L329" href="#L329">329</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"select %s"</span>, false, false, false);
+<a class="jxr_linenumber" name="L330" href="#L330">330</a>     }
+<a class="jxr_linenumber" name="L331" href="#L331">331</a> }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>

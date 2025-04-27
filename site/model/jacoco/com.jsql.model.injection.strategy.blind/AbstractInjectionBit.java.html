@@ -111,7 +111,7 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
                 
                 // If SQL result is not empty, then add a new unknown character and define a new array of 7 undefined bit.
                 // Then add 7 bits requests for that new character.
-<span class="fc" id="L114">                var isComplete = this.injectCharacter(bytes, countBadAsciiCode, currentCallable);</span>
+<span class="fc" id="L114">                var isComplete = this.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);</span>
 <span class="fc bfc" id="L115" title="All 4 branches covered.">                if (isComplete || currentCallable.isBinary()) {  // prevents bitwise overload new char init on each bit</span>
 <span class="fc" id="L116">                    this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, countBadAsciiCode, currentCallable);</span>
                 }
@@ -126,9 +126,9 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
 <span class="nc" id="L126">                Thread.currentThread().interrupt();</span>
 <span class="nc" id="L127">            } catch (ExecutionException e) {</span>
 <span class="nc" id="L128">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L129">            } catch (InjectionFailureException e) {</span>
-<span class="nc" id="L130">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());</span>
-<span class="nc" id="L131">                break;</span>
+<span class="fc" id="L129">            } catch (InjectionFailureException e) {</span>
+<span class="fc" id="L130">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());</span>
+<span class="fc" id="L131">                break;</span>
 <span class="pc" id="L132">            }</span>
         }
 <span class="fc" id="L134">        return this.stop(bytes, taskExecutor);</span>
@@ -148,7 +148,7 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
 <span class="fc" id="L148">        return result.toString();</span>
     }
 
-    protected boolean injectCharacter(
+    protected boolean isCharCompleteWithCorruptCheck(
         List&lt;char[]&gt; bytes,
         AtomicInteger countBadAsciiCode,
         T currentCallable
@@ -177,9 +177,9 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
                 asciiCodeBit
                 + &quot;=&quot;
 <span class="fc" id="L179">                + currentCallable.getCharText()</span>
-<span class="fc" id="L180">                .replace(&quot;\\n&quot;, &quot;\\\\\\n&quot;)</span>
-<span class="fc" id="L181">                .replace(&quot;\\r&quot;, &quot;\\\\\\r&quot;)</span>
-<span class="fc" id="L182">                .replace(&quot;\\t&quot;, &quot;\\\\\\t&quot;)</span>
+<span class="fc" id="L180">                .replace(&quot;\n&quot;, &quot;\\n&quot;)</span>
+<span class="fc" id="L181">                .replace(&quot;\r&quot;, &quot;\\r&quot;)</span>
+<span class="fc" id="L182">                .replace(&quot;\t&quot;, &quot;\\t&quot;)</span>
             );
 <span class="fc" id="L184">            this.injectionModel.sendToViews(interaction);</span>
 <span class="fc" id="L185">            isComplete = true;</span>
