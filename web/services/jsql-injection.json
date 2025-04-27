@@ -1,5 +1,5 @@
 {
-    "version": "0.111",
+    "version": "0.112",
     "news": [
         "[Next release] Added Blind binary search, less efficient than Blind bitwise but required by some database",
         "[v0.111: Reverse shell] Now open rev shell from RCE in plain Java without any netcat nor any external tool",
