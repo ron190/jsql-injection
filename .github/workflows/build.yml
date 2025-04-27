@@ -83,7 +83,7 @@ jobs:
               --no-transfer-progress \
               -Dorg.slf4j.simpleLogger.log.org.sonarsource.scanner.maven.SonarQubeMojo=error \
               -P tests \
-              sonar:sonar \
+              org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
               org.pitest:pitest-maven:mutationCoverage \
               jxr:jxr \
               javadoc:javadoc \

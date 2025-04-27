@@ -163,8 +163,8 @@ resource:
       create: ; create extension %s
       languages: select array_to_string(array(select lanname from pg_language),'')
     
-    # drop both functions from sql and other extensions
-    dropFunc: ; drop function exec_cmd(text);drop function exec_cmd()
+    # drop functions from library, sql and other extensions
+    dropFunc: ; drop function exec_cmd(text);drop function exec_cmd();drop function exec_cmd(cstring)
     runFunc: select exec_cmd('%s')||'%s'
     
     plpython: |
