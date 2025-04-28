@@ -40,13 +40,13 @@ public class CallableTime extends AbstractCallableBit&lt;CallableTime&gt; {
         String sqlQuery,
         InjectionModel injectionModel,
         InjectionTime injectionTime,
-        BlindOperator blindMode,
+        BlindOperator blindOperator,
         String metadataInjectionProcess
 <span class="fc" id="L45">    ) {</span>
 <span class="fc" id="L46">        this.injectionModel = injectionModel;</span>
 <span class="fc" id="L47">        this.injectionTime = injectionTime;</span>
 <span class="fc" id="L48">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
-<span class="fc" id="L49">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestTimeWithOperator(sqlQuery, blindMode);</span>
+<span class="fc" id="L49">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestTimeWithOperator(sqlQuery, blindOperator);</span>
 <span class="fc" id="L50">    }</span>
     
     /**
@@ -58,11 +58,11 @@ public class CallableTime extends AbstractCallableBit&lt;CallableTime&gt; {
         int bit,
         InjectionModel injectionModel,
         InjectionTime injectionTime,
-        BlindOperator blindMode,
+        BlindOperator blindOperator,
         String metadataInjectionProcess
     ) {
-<span class="fc" id="L64">        this(sqlQuery, injectionModel, injectionTime, blindMode, metadataInjectionProcess);</span>
-<span class="fc" id="L65">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeBit(sqlQuery, indexChar, bit, blindMode);</span>
+<span class="fc" id="L64">        this(sqlQuery, injectionModel, injectionTime, blindOperator, metadataInjectionProcess);</span>
+<span class="fc" id="L65">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeBit(sqlQuery, indexChar, bit, blindOperator);</span>
 <span class="fc" id="L66">        this.currentIndex = indexChar;</span>
 <span class="fc" id="L67">        this.currentBit = bit;</span>
 <span class="fc" id="L68">    }</span>

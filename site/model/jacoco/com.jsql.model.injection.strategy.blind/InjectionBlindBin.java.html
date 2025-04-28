@@ -33,8 +33,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit&lt;CallableBlind
     private static final int LOW = 0;
     private static final int HIGH = 127;
 
-    // Source code of the TRUE web page (usually ?id=1)
-    private String sourceReferencePage;
+    private String sourceReferencePage;  // Source code of the TRUE web page (usually ?id=1)
 
     /**
      * List of string differences found in all the FALSE queries, compared
@@ -42,123 +41,120 @@ public class InjectionBlindBin extends AbstractInjectionMonobit&lt;CallableBlind
      * at least one same string, which shouldn't be present in all
      * the TRUE queries.
      */
-<span class="fc" id="L45">    private List&lt;Diff&gt; falseDiffs = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L46">    private List&lt;Diff&gt; trueDiffs = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L44">    private List&lt;Diff&gt; falseDiffs = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L45">    private List&lt;Diff&gt; trueDiffs = new ArrayList&lt;&gt;();</span>
 
     /**
      * Create blind attack initialization.
      * If every false diffs are not in true diffs and every true diffs are in
      * true diffs, then Blind attack is confirmed.
      */
-    public InjectionBlindBin(InjectionModel injectionModel, BlindOperator blindMode) {
-<span class="fc" id="L54">        super(injectionModel, blindMode);</span>
-        
-        // No blind
-<span class="pc bpc" id="L57" title="2 of 4 branches missed.">        if (this.falsyBin.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L58">            return;</span>
+    public InjectionBlindBin(InjectionModel injectionModel, BlindOperator blindOperator) {
+<span class="fc" id="L53">        super(injectionModel, blindOperator);</span>
+
+<span class="fc" id="L55">        List&lt;String&gt; falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBin();</span>
+<span class="pc bpc" id="L56" title="2 of 4 branches missed.">        if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L57">            return;</span>
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-<span class="fc" id="L62">        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, &quot;bin#ref:&quot;+ blindMode.toString().toLowerCase());</span>
+<span class="fc" id="L61">        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, &quot;bin#ref:&quot;+ blindOperator.toString().toLowerCase());</span>
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-<span class="fc" id="L66">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBinTagFalse&quot;);</span>
-<span class="fc" id="L67">        Collection&lt;CallableBlindBin&gt; callablesFalseTest = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (String falseTest: this.falsyBin) {</span>
-<span class="fc" id="L69">            callablesFalseTest.add(new CallableBlindBin(</span>
-                falseTest,
+<span class="fc" id="L65">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBinTagFalse&quot;);</span>
+<span class="fc" id="L66">        Collection&lt;CallableBlindBin&gt; callablesFalsys = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (String falsy: falsys) {</span>
+<span class="fc" id="L68">            callablesFalsys.add(new CallableBlindBin(</span>
+                falsy,
                 injectionModel,
                 this,
-                blindMode,
+                blindOperator,
                 -1, -1, -1,
                 &quot;bin#falsy&quot;
             ));
-<span class="fc" id="L77">        }</span>
+<span class="fc" id="L76">        }</span>
         
         // Delete junk from the results of FALSE statements,
         // keep only diffs found in each and every FALSE pages.
         // Allow the user to stop the loop
         try {
-<span class="fc" id="L83">            List&lt;Future&lt;CallableBlindBin&gt;&gt; futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);</span>
-<span class="fc" id="L84">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-<span class="fc bfc" id="L85" title="All 2 branches covered.">            for (Future&lt;CallableBlindBin&gt; futureFalseTest: futuresFalseTest) {</span>
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L87">                    return;</span>
+<span class="fc" id="L82">            List&lt;Future&lt;CallableBlindBin&gt;&gt; futuresFalsys = taskExecutor.invokeAll(callablesFalsys);</span>
+<span class="fc" id="L83">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">            for (Future&lt;CallableBlindBin&gt; futureFalsy: futuresFalsys) {</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L86">                    return;</span>
                 }
-<span class="fc bfc" id="L89" title="All 2 branches covered.">                if (this.falseDiffs.isEmpty()) {</span>
-<span class="fc" id="L90">                    this.falseDiffs = futureFalseTest.get().getDiffsWithReference();  // Init diffs</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">                if (this.falseDiffs.isEmpty()) {</span>
+<span class="fc" id="L89">                    this.falseDiffs = futureFalsy.get().getDiffsWithReference();  // Init diffs</span>
                 } else {
-<span class="fc" id="L92">                    this.falseDiffs.retainAll(futureFalseTest.get().getDiffsWithReference());  // Clean un-matching diffs</span>
+<span class="fc" id="L91">                    this.falseDiffs.retainAll(futureFalsy.get().getDiffsWithReference());  // Clean un-matching diffs</span>
                 }
-<span class="fc" id="L94">            }</span>
-<span class="nc" id="L95">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L96">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L97">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L98">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L99">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L100">        }</span>
+<span class="fc" id="L93">            }</span>
+<span class="nc" id="L94">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L95">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L96">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L97">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L98">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L99">        }</span>
 
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L103">            return;</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L102">            return;</span>
         }
         
-<span class="fc" id="L106">        this.cleanTrueDiffs(injectionModel, blindMode);</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L105">        this.cleanTrueDiffs(injectionModel, blindOperator);</span>
+<span class="fc" id="L106">    }</span>
 
-    private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindMode) {
-        // Concurrent calls to the TRUE statements,
-        // it will use inject() from the model.
-<span class="fc" id="L112">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBinTagTrue&quot;);</span>
-<span class="fc" id="L113">        Collection&lt;CallableBlindBin&gt; callablesTrueTest = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L114" title="All 2 branches covered.">        for (String trueTest: this.truthyBin) {</span>
-<span class="fc" id="L115">            callablesTrueTest.add(new CallableBlindBin(</span>
-                trueTest,
+    private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindOperator) {
+<span class="fc" id="L109">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBinTagTrue&quot;);</span>
+<span class="fc" id="L110">        Collection&lt;CallableBlindBin&gt; callablesTruthys = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L111">        List&lt;String&gt; truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBin();</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        for (String truthy: truthys) {</span>
+<span class="fc" id="L113">            callablesTruthys.add(new CallableBlindBin(</span>
+                truthy,
                 injectionModel,
                 this,
-                blindMode,
+                blindOperator,
                 -1, -1, -1,
                 &quot;bin#truthy&quot;
             ));
-<span class="fc" id="L123">        }</span>
+<span class="fc" id="L121">        }</span>
         
-        // Remove TRUE diffs in the FALSE diffs, because
-        // a significant FALSE statement shouldn't contain any TRUE diff.
-        // Allow the user to stop the loop.
+        // Remove TRUE diffs in the FALSE diffs as FALSE statement shouldn't contain any TRUE diff.
         try {
-<span class="fc" id="L129">            List&lt;Future&lt;CallableBlindBin&gt;&gt; futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);</span>
-<span class="fc" id="L130">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-<span class="fc bfc" id="L131" title="All 2 branches covered.">            for (Future&lt;CallableBlindBin&gt; futureTrueTest: futuresTrueTest) {</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L133">                    return;</span>
+<span class="fc" id="L125">            List&lt;Future&lt;CallableBlindBin&gt;&gt; futuresTruthys = taskExecutor.invokeAll(callablesTruthys);</span>
+<span class="fc" id="L126">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">            for (Future&lt;CallableBlindBin&gt; futureTruthy: futuresTruthys) {</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L129">                    return;</span>
                 }
-<span class="fc bfc" id="L135" title="All 2 branches covered.">                if (this.trueDiffs.isEmpty()) {</span>
-<span class="fc" id="L136">                    this.trueDiffs = futureTrueTest.get().getDiffsWithReference();  // Init diffs</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">                if (this.trueDiffs.isEmpty()) {</span>
+<span class="fc" id="L132">                    this.trueDiffs = futureTruthy.get().getDiffsWithReference();  // Init diffs</span>
                 } else {
-<span class="fc" id="L138">                    this.trueDiffs.retainAll(futureTrueTest.get().getDiffsWithReference());  // Clean un-matching diffs</span>
+<span class="fc" id="L134">                    this.trueDiffs.retainAll(futureTruthy.get().getDiffsWithReference());  // Clean un-matching diffs</span>
                 }
-<span class="fc" id="L140">                this.falseDiffs.removeAll(futureTrueTest.get().getDiffsWithReference());</span>
-<span class="fc" id="L141">            }</span>
-<span class="nc" id="L142">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L143">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L144">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L145">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L146">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L147">        }</span>
-<span class="fc" id="L148">    }</span>
+<span class="fc" id="L136">                this.falseDiffs.removeAll(futureTruthy.get().getDiffsWithReference());</span>
+<span class="fc" id="L137">            }</span>
+<span class="nc" id="L138">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L139">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L140">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L141">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L142">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L143">        }</span>
+<span class="fc" id="L144">    }</span>
 
     @Override
     public CallableBlindBin getCallableBitTest(String sqlQuery, int indexChar, int bit) {
-<span class="nc" id="L152">        return null;  // unused</span>
+<span class="nc" id="L148">        return null;  // unused</span>
     }
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L158">            throw new StoppedByUserSlidingException();</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L154">            throw new StoppedByUserSlidingException();</span>
         }
-<span class="fc" id="L160">        var blindTest = new CallableBlindBin(</span>
-<span class="fc" id="L161">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),</span>
+<span class="fc" id="L156">        var blindTest = new CallableBlindBin(</span>
+<span class="fc" id="L157">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),</span>
             this.injectionModel,
             this,
             this.blindOperator,
@@ -166,14 +162,14 @@ public class InjectionBlindBin extends AbstractInjectionMonobit&lt;CallableBlind
             &quot;bin#confirm&quot;
         );
         try {
-<span class="fc" id="L169">            blindTest.call();</span>
-<span class="nc" id="L170">        } catch (Exception e) {</span>
-<span class="nc" id="L171">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L172">        }</span>
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        return blindTest.isTrue()</span>
+<span class="fc" id="L165">            blindTest.call();</span>
+<span class="nc" id="L166">        } catch (Exception e) {</span>
+<span class="nc" id="L167">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L168">        }</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        return blindTest.isTrue()</span>
             // when insertionChar = true then pages ref == truthy == falsy == confirm =&gt; falsy cleaned empty, truthy with opcode EQUAL not reliable
-<span class="fc bfc" id="L175" title="All 4 branches covered.">            &amp;&amp; this.trueDiffs.stream().anyMatch(diff -&gt; !Operation.EQUAL.equals(diff.operation))</span>
-<span class="pc bpc" id="L176" title="3 of 4 branches missed.">            || this.falseDiffs.stream().anyMatch(diff -&gt; !Operation.EQUAL.equals(diff.operation));</span>
+<span class="fc bfc" id="L171" title="All 4 branches covered.">            &amp;&amp; this.trueDiffs.stream().anyMatch(diff -&gt; !Operation.EQUAL.equals(diff.operation))</span>
+<span class="pc bpc" id="L172" title="2 of 4 branches missed.">            || this.falseDiffs.stream().anyMatch(diff -&gt; !Operation.EQUAL.equals(diff.operation));</span>
     }
 
     @Override
@@ -190,94 +186,94 @@ public class InjectionBlindBin extends AbstractInjectionMonobit&lt;CallableBlind
         int mid;
         int high;
 
-<span class="fc bfc" id="L193" title="All 2 branches covered.">        if (currentCallable != null) {</span>
-<span class="fc" id="L194">            low = currentCallable.getLow();</span>
-<span class="fc" id="L195">            mid = currentCallable.getMid();</span>
-<span class="fc" id="L196">            high = currentCallable.getHigh();</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (currentCallable != null) {</span>
+<span class="fc" id="L190">            low = currentCallable.getLow();</span>
+<span class="fc" id="L191">            mid = currentCallable.getMid();</span>
+<span class="fc" id="L192">            high = currentCallable.getHigh();</span>
 
-<span class="fc bfc" id="L198" title="All 2 branches covered.">            if (low &gt;= high) {  // char found</span>
-<span class="fc bfc" id="L199" title="All 2 branches covered.">                if (this.IsCorruptOrElseNextChar(bytes, indexChar, countBadAsciiCode, currentCallable, low)) {</span>
-<span class="fc" id="L200">                    return;  // too many errors</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">            if (low &gt;= high) {  // char found</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">                if (this.isCorruptOrElseNextChar(bytes, indexChar, countBadAsciiCode, currentCallable, low)) {</span>
+<span class="fc" id="L196">                    return;  // too many errors</span>
                 }
-<span class="fc" id="L202">                low = InjectionBlindBin.LOW;</span>
-<span class="fc" id="L203">                high = InjectionBlindBin.HIGH;</span>
-<span class="fc bfc" id="L204" title="All 2 branches covered.">            } else if (currentCallable.isTrue()) {  // current &gt;= mid</span>
-<span class="fc" id="L205">                low = mid + 1;</span>
+<span class="fc" id="L198">                low = InjectionBlindBin.LOW;</span>
+<span class="fc" id="L199">                high = InjectionBlindBin.HIGH;</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">            } else if (currentCallable.isTrue()) {  // current &gt;= mid</span>
+<span class="fc" id="L201">                low = mid + 1;</span>
             } else {  // current &lt; mid
-<span class="fc" id="L207">                high = mid - 1;</span>
+<span class="fc" id="L203">                high = mid - 1;</span>
             }
         } else {
-<span class="fc" id="L210">            low = InjectionBlindBin.LOW;</span>
-<span class="fc" id="L211">            high = InjectionBlindBin.HIGH;</span>
-<span class="fc" id="L212">            bytes.add(AbstractInjectionBit.getBitsUnset());</span>
-<span class="fc" id="L213">            indexChar.incrementAndGet();</span>
+<span class="fc" id="L206">            low = InjectionBlindBin.LOW;</span>
+<span class="fc" id="L207">            high = InjectionBlindBin.HIGH;</span>
+<span class="fc" id="L208">            bytes.add(AbstractInjectionBit.getBitsUnset());</span>
+<span class="fc" id="L209">            indexChar.incrementAndGet();</span>
         }
 
-<span class="fc" id="L216">        mid = low + (high - low) / 2;</span>
-<span class="fc" id="L217">        taskCompletionService.submit(</span>
+<span class="fc" id="L212">        mid = low + (high - low) / 2;</span>
+<span class="fc" id="L213">        taskCompletionService.submit(</span>
             new CallableBlindBin(
                 sqlQuery,
-<span class="fc" id="L220">                indexChar.get(),</span>
+<span class="fc" id="L216">                indexChar.get(),</span>
                 this.injectionModel,
                 this,
                 this.blindOperator,
                 low, mid, high,
-<span class="fc" id="L225">                String.format(&quot;bin#%s~%s&lt;%s&lt;%s&quot;, indexChar, low, mid, high)</span>
+<span class="fc" id="L221">                String.format(&quot;bin#%s~%s&lt;%s&lt;%s&quot;, indexChar, low, mid, high)</span>
             )
         );
-<span class="fc" id="L228">        countTasksSubmitted.addAndGet(1);</span>
-<span class="fc" id="L229">    }</span>
+<span class="fc" id="L224">        countTasksSubmitted.addAndGet(1);</span>
+<span class="fc" id="L225">    }</span>
 
-    private boolean IsCorruptOrElseNextChar(List&lt;char[]&gt; bytes, AtomicInteger indexChar, AtomicInteger countBadAsciiCode, CallableBlindBin currentCallable, int low) {
-<span class="pc bpc" id="L232" title="1 of 4 branches missed.">        if (low == 0 || low == 127) {</span>
-<span class="fc" id="L233">            countBadAsciiCode.incrementAndGet();</span>
+    private boolean isCorruptOrElseNextChar(List&lt;char[]&gt; bytes, AtomicInteger indexChar, AtomicInteger countBadAsciiCode, CallableBlindBin currentCallable, int low) {
+<span class="pc bpc" id="L228" title="1 of 4 branches missed.">        if (low == 0 || low == 127) {</span>
+<span class="fc" id="L229">            countBadAsciiCode.incrementAndGet();</span>
         } else {
-<span class="fc bfc" id="L235" title="All 2 branches covered.">            low = currentCallable.isTrue() ? low : low - 1;</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">            low = currentCallable.isTrue() ? low : low - 1;</span>
         }
-<span class="fc" id="L237">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url</span>
-<span class="fc" id="L238">        this.setAsciiCodeMask(asciiCodeMask, low);</span>
+<span class="fc" id="L233">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url</span>
+<span class="fc" id="L234">        this.setAsciiCodeMask(asciiCodeMask, low);</span>
 
         try {
-<span class="fc" id="L241">            this.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);</span>
-<span class="fc" id="L242">        } catch (InjectionFailureException e) {</span>
-<span class="fc" id="L243">            return true;</span>
-<span class="fc" id="L244">        }</span>
+<span class="fc" id="L237">            this.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);</span>
+<span class="fc" id="L238">        } catch (InjectionFailureException e) {</span>
+<span class="fc" id="L239">            return true;</span>
+<span class="fc" id="L240">        }</span>
 
-<span class="fc" id="L246">        bytes.add(AbstractInjectionBit.getBitsUnset());</span>
-<span class="fc" id="L247">        indexChar.incrementAndGet();</span>
-<span class="fc" id="L248">        return false;</span>
+<span class="fc" id="L242">        bytes.add(AbstractInjectionBit.getBitsUnset());</span>
+<span class="fc" id="L243">        indexChar.incrementAndGet();</span>
+<span class="fc" id="L244">        return false;</span>
     }
 
     private void setAsciiCodeMask(char[] asciiCodeMask, int value) {
-<span class="fc" id="L252">        String binary = StringUtils.leftPad(Integer.toBinaryString((char) value), 8, &quot;0&quot;);</span>
-<span class="fc bfc" id="L253" title="All 2 branches covered.">        for (int i = 0; i &lt;= 7; i++) {</span>
-<span class="fc" id="L254">            asciiCodeMask[i] = binary.charAt(i);</span>
+<span class="fc" id="L248">        String binary = StringUtils.leftPad(Integer.toBinaryString((char) value), 8, &quot;0&quot;);</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        for (int i = 0; i &lt;= 7; i++) {</span>
+<span class="fc" id="L250">            asciiCodeMask[i] = binary.charAt(i);</span>
         }
-<span class="fc" id="L256">    }</span>
+<span class="fc" id="L252">    }</span>
 
     @Override
     public char[] initMaskAsciiChar(List&lt;char[]&gt; bytes, CallableBlindBin currentCallable) {
-<span class="fc" id="L260">        return bytes.get(currentCallable.getCurrentIndex() - 1);</span>
+<span class="fc" id="L256">        return bytes.get(currentCallable.getCurrentIndex() - 1);</span>
     }
 
     @Override
     public String getInfoMessage() {
-<span class="fc" id="L265">        return &quot;- Strategy Blind bin: query True when Diffs are matching &quot; + this.falseDiffs + &quot;\n\n&quot;;</span>
+<span class="fc" id="L261">        return &quot;- Strategy Blind bin: query True when Diffs are matching &quot; + this.falseDiffs + &quot;\n\n&quot;;</span>
     }
     
     
     // Getter and setter
 
     public String getSourceReferencePage() {
-<span class="fc" id="L272">        return this.sourceReferencePage;</span>
+<span class="fc" id="L268">        return this.sourceReferencePage;</span>
     }
     
     public List&lt;Diff&gt; getFalseDiffs() {
-<span class="fc" id="L276">        return this.falseDiffs;</span>
+<span class="fc" id="L272">        return this.falseDiffs;</span>
     }
 
     public List&lt;Diff&gt; getTrueDiffs() {
-<span class="fc" id="L280">        return trueDiffs;</span>
+<span class="fc" id="L276">        return this.trueDiffs;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

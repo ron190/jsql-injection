@@ -243,7 +243,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L243">        }</span>
 
 <span class="fc" id="L245">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L246">        urlObject = this.initQueryString(  // TODO identique urlInjection == urlObject</span>
+<span class="fc" id="L246">        urlObject = this.initQueryString(  // TODO useless as urlInjection == urlObject</span>
             isUsingIndex,
             urlInjection,
             dataInjection,

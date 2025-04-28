@@ -82,10 +82,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L58">58</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L62">62</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitHsqldb.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L58">58</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L63">63</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>nameTable, bodyExploit.replace(&quot;'&quot;, &quot;''&quot;),
@@ -130,53 +130,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L61">61</a></td></tr>
-<tr class="a">
-<td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L100">100</a></td></tr>
-<tr class="b">
-<td>com/jsql/model/accessible/vendor/ExploitHsqldb.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L60">60</a></td></tr>
-<tr class="a">
-<td colspan="2">
-<pre>), ResourceAccess.TBL_CREATE);
-
-        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
-            String result = this.injectionModel.getResourceAccess().callCommand(
-                urlSuccess +&quot;?c=&quot;+ ResourceAccess.WEB_CONFIRM_CMD
-            );
-            if (!result.contains(ResourceAccess.WEB_CONFIRM_RESULT)) {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit body not found&quot;);
-                return StringUtils.EMPTY;
-            }
-            var request = new Request();
-            request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
-            request.setParameters(urlSuccess);
-            this.injectionModel.sendToViews(request);
-            return urlSuccess;
-        };
-
-        return this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
-    }
-
-    public void createUpload(String pathExploit, String urlExploit, File fileToUpload) {
-        String bodyExploit = StringUtil.base64Decode(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_UPL)
-            )
-            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
-            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
-
-        var nameTable = RandomStringUtils.secure().nextAlphabetic(8);</pre></td></tr></table>
-<table class="table table-striped">
-<tr class="a">
-<th>File</th>
-<th>Line</th></tr>
-<tr class="b">
-<td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L93">93</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L97">97</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitHsqldb.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L92">92</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L97">97</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>nameTable, bodyExploit.replace(&quot;'&quot;, &quot;''&quot;),
@@ -204,7 +161,125 @@
         this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
     }
 
-    public ModelYamlDerby getModelYaml() {</pre></td></tr></table>
+    public String getRead(String pathFile) throws AbstractSlidingException {
+        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CallableFile.REQUIRE_STACK);
+        var nameTable = RandomStringUtils.secure().nextAlphabetic(8);
+        this.injectionModel.injectWithoutIndex(String.format(
+            this.injectionModel.getResourceAccess().getExploitDerby().getModelYaml().getFile().getCreateTable(),</pre></td></tr></table>
+<table class="table table-striped">
+<tr class="a">
+<th>File</th>
+<th>Line</th></tr>
+<tr class="b">
+<td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L100">100</a></td></tr>
+<tr class="a">
+<td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L131">131</a></td></tr>
+<tr class="b">
+<td colspan="2">
+<pre>), ResourceAccess.TBL_CREATE);
+
+        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
+            try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
+                HttpResponse&lt;String&gt; result = this.injectionModel.getResourceAccess().upload(fileToUpload, urlSuccess, streamToUpload);
+                if (result.body().contains(DataAccess.LEAD +&quot;y&quot;)) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, ResourceAccess.UPLOAD_SUCCESSFUL, pathExploit, fileToUpload.getName());
+                } else {
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, ResourceAccess.UPLOAD_FAILURE, pathExploit, fileToUpload.getName());
+                }
+            } catch (InterruptedException e) {
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
+                Thread.currentThread().interrupt();
+            } catch (IOException | JSqlException e) {
+                throw new JSqlRuntimeException(e);
+            }
+            return urlSuccess;
+        };
+
+        this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
+    }
+
+    public String getRead(String pathFile) throws AbstractSlidingException {
+        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, CallableFile.REQUIRE_STACK);</pre></td></tr></table>
+<table class="table table-striped">
+<tr class="a">
+<th>File</th>
+<th>Line</th></tr>
+<tr class="b">
+<td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L141">141</a></td></tr>
+<tr class="a">
+<td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L131">131</a></td></tr>
+<tr class="b">
+<td colspan="2">
+<pre>), ResourceAccess.TBL_DUMP);
+
+        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
+            try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
+                HttpResponse&lt;String&gt; result = this.injectionModel.getResourceAccess().upload(fileToUpload, urlSuccess, streamToUpload);
+                if (result.body().contains(DataAccess.LEAD +&quot;y&quot;)) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, ResourceAccess.UPLOAD_SUCCESSFUL, pathExploit, fileToUpload.getName());
+                } else {
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, ResourceAccess.UPLOAD_FAILURE, pathExploit, fileToUpload.getName());
+                }
+            } catch (InterruptedException e) {
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
+                Thread.currentThread().interrupt();
+            } catch (IOException | JSqlException e) {
+                throw new JSqlRuntimeException(e);
+            }
+            return urlSuccess;
+        };
+
+        this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
+    }
+
+    public String getRead(String pathFile) throws AbstractSlidingException {</pre></td></tr></table>
+<table class="table table-striped">
+<tr class="a">
+<th>File</th>
+<th>Line</th></tr>
+<tr class="b">
+<td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L65">65</a></td></tr>
+<tr class="a">
+<td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L103">103</a></td></tr>
+<tr class="b">
+<td>com/jsql/model/accessible/vendor/ExploitHsqldb.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L65">65</a></td></tr>
+<tr class="a">
+<td colspan="2">
+<pre>), ResourceAccess.TBL_CREATE);
+
+        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
+            String result = this.injectionModel.getResourceAccess().callCommand(
+                urlSuccess +&quot;?c=&quot;+ ResourceAccess.WEB_CONFIRM_CMD
+            );
+            if (!result.contains(ResourceAccess.WEB_CONFIRM_RESULT)) {
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit body not found&quot;);
+                return StringUtils.EMPTY;
+            }
+            var request = new Request();
+            request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
+            request.setParameters(urlSuccess);
+            this.injectionModel.sendToViews(request);
+            return urlSuccess;
+        };
+
+        return this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
+    }
+
+    public void createUpload(String pathExploit, String urlExploit, File fileToUpload) {
+        String bodyExploit = StringUtil.base64Decode(
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_UPL)
+            )
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+
+        var nameTable = RandomStringUtils.secure().nextAlphabetic(8);</pre></td></tr></table>
 <table class="table table-striped">
 <tr class="a">
 <th>File</th>
@@ -229,135 +304,20 @@
 <th>File</th>
 <th>Line</th></tr>
 <tr class="b">
-<td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L100">100</a></td></tr>
-<tr class="a">
-<td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L93">93</a></td></tr>
-<tr class="b">
-<td colspan="2">
-<pre>), ResourceAccess.TBL_DUMP);
-
-        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
-            String result = this.injectionModel.getResourceAccess().callCommand(
-                urlSuccess +&quot;?c=&quot;+ ResourceAccess.WEB_CONFIRM_CMD
-            );
-            if (!result.contains(ResourceAccess.WEB_CONFIRM_RESULT)) {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit body not found&quot;);
-                return StringUtils.EMPTY;
-            }
-            var request = new Request();
-            request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
-            request.setParameters(urlSuccess);
-            this.injectionModel.sendToViews(request);
-            return urlSuccess;
-        };
-
-        return this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
-    }
-
-    public void createUpload(String pathExploit, String urlExploit, File fileToUpload) {
-        String bodyExploit = StringUtil.base64Decode(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_UPL)
-            )
-            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
-            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
-
-        var nameTable = RandomStringUtils.secure().nextAlphabetic(8);</pre></td></tr></table>
-<table class="table table-striped">
-<tr class="a">
-<th>File</th>
-<th>Line</th></tr>
-<tr class="b">
-<td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L138">138</a></td></tr>
-<tr class="a">
-<td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L128">128</a></td></tr>
-<tr class="b">
-<td colspan="2">
-<pre>), ResourceAccess.TBL_DUMP);
-
-        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
-            try (InputStream streamToUpload = new FileInputStream(fileToUpload)) {
-                HttpResponse&lt;String&gt; result = this.injectionModel.getResourceAccess().upload(fileToUpload, urlSuccess, streamToUpload);
-                if (result.body().contains(DataAccess.LEAD +&quot;y&quot;)) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, ResourceAccess.UPLOAD_SUCCESSFUL, pathExploit, fileToUpload.getName());
-                } else {
-                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, ResourceAccess.UPLOAD_FAILURE, pathExploit, fileToUpload.getName());
-                }
-            } catch (InterruptedException e) {
-                LOGGER.log(LogLevelUtil.IGNORE, e, e);
-                Thread.currentThread().interrupt();
-            } catch (IOException | JSqlException e) {
-                throw new JSqlRuntimeException(e);
-            }
-            return urlSuccess;
-        };
-
-        this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
-    }
-
-    public ModelYamlH2 getModelYaml() {</pre></td></tr></table>
-<table class="table table-striped">
-<tr class="a">
-<th>File</th>
-<th>Line</th></tr>
-<tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L61">61</a></td></tr>
-<tr class="a">
-<td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L93">93</a></td></tr>
-<tr class="b">
-<td colspan="2">
-<pre>), ResourceAccess.TBL_CREATE);
-
-        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
-            String result = this.injectionModel.getResourceAccess().callCommand(
-                urlSuccess +&quot;?c=&quot;+ ResourceAccess.WEB_CONFIRM_CMD
-            );
-            if (!result.contains(ResourceAccess.WEB_CONFIRM_RESULT)) {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit body not found&quot;);
-                return StringUtils.EMPTY;
-            }
-            var request = new Request();
-            request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
-            request.setParameters(urlSuccess);
-            this.injectionModel.sendToViews(request);
-            return urlSuccess;
-        };
-
-        return this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
-    }
-
-    public void createUpload(String pathExploit, String urlExploit, File fileToUpload) {
-        String bodyExploit = StringUtil.base64Decode(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_UPL)
-            )
-            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
-            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
-
-        var nameTable = RandomStringUtils.secure().nextAlphabetic(8);</pre></td></tr></table>
-<table class="table table-striped">
-<tr class="a">
-<th>File</th>
-<th>Line</th></tr>
-<tr class="b">
-<td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L96">96</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L100">100</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L138">138</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L141">141</a></td></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitHsqldb.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L94">94</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L99">99</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitPostgres.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L505">505</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L509">509</a></td></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L128">128</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L131">131</a></td></tr>
 <tr class="a">
 <td colspan="2">
 <pre>), ResourceAccess.TBL_CREATE);
@@ -382,7 +342,87 @@
         this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
     }
 
-    public ModelYamlDerby getModelYaml() {</pre></td></tr></table>
+    public String getRead(String pathFile) throws AbstractSlidingException {</pre></td></tr></table>
+<table class="table table-striped">
+<tr class="a">
+<th>File</th>
+<th>Line</th></tr>
+<tr class="b">
+<td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L103">103</a></td></tr>
+<tr class="a">
+<td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L96">96</a></td></tr>
+<tr class="b">
+<td colspan="2">
+<pre>), ResourceAccess.TBL_DUMP);
+
+        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
+            String result = this.injectionModel.getResourceAccess().callCommand(
+                urlSuccess +&quot;?c=&quot;+ ResourceAccess.WEB_CONFIRM_CMD
+            );
+            if (!result.contains(ResourceAccess.WEB_CONFIRM_RESULT)) {
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit body not found&quot;);
+                return StringUtils.EMPTY;
+            }
+            var request = new Request();
+            request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
+            request.setParameters(urlSuccess);
+            this.injectionModel.sendToViews(request);
+            return urlSuccess;
+        };
+
+        return this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
+    }
+
+    public void createUpload(String pathExploit, String urlExploit, File fileToUpload) {
+        String bodyExploit = StringUtil.base64Decode(
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_UPL)
+            )
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+
+        var nameTable = RandomStringUtils.secure().nextAlphabetic(8);</pre></td></tr></table>
+<table class="table table-striped">
+<tr class="a">
+<th>File</th>
+<th>Line</th></tr>
+<tr class="b">
+<td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L65">65</a></td></tr>
+<tr class="a">
+<td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L96">96</a></td></tr>
+<tr class="b">
+<td colspan="2">
+<pre>), ResourceAccess.TBL_CREATE);
+
+        BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
+            String result = this.injectionModel.getResourceAccess().callCommand(
+                urlSuccess +&quot;?c=&quot;+ ResourceAccess.WEB_CONFIRM_CMD
+            );
+            if (!result.contains(ResourceAccess.WEB_CONFIRM_RESULT)) {
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit body not found&quot;);
+                return StringUtils.EMPTY;
+            }
+            var request = new Request();
+            request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
+            request.setParameters(urlSuccess);
+            this.injectionModel.sendToViews(request);
+            return urlSuccess;
+        };
+
+        return this.injectionModel.getResourceAccess().checkUrls(urlExploit, nameExploit, biFuncGetRequest);
+    }
+
+    public void createUpload(String pathExploit, String urlExploit, File fileToUpload) {
+        String bodyExploit = StringUtil.base64Decode(
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_UPL)
+            )
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+
+        var nameTable = RandomStringUtils.secure().nextAlphabetic(8);</pre></td></tr></table>
 <table class="table table-striped">
 <tr class="a">
 <th>File</th>
@@ -422,10 +462,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitPostgres.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L403">403</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L407">407</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitPostgres.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L462">462</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L466">466</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_WEB)
@@ -453,20 +493,20 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/injection/strategy/blind/InjectionBlindBin.java</td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBin.html#L85">85</a></td></tr>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBin.html#L84">84</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/injection/strategy/blind/InjectionBlindBit.java</td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBit.html#L79">79</a></td></tr>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBit.html#L78">78</a></td></tr>
 <tr class="b">
 <td colspan="2">
-<pre>for (Future&lt;CallableBlindBin&gt; futureFalseTest: futuresFalseTest) {
+<pre>for (Future&lt;CallableBlindBin&gt; futureFalsy: futuresFalsys) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 if (this.falseDiffs.isEmpty()) {
-                    this.falseDiffs = futureFalseTest.get().getDiffsWithReference();  // Init diffs
+                    this.falseDiffs = futureFalsy.get().getDiffsWithReference();  // Init diffs
                 } else {
-                    this.falseDiffs.retainAll(futureFalseTest.get().getDiffsWithReference());  // Clean un-matching diffs
+                    this.falseDiffs.retainAll(futureFalsy.get().getDiffsWithReference());  // Clean un-matching diffs
                 }
             }
         } catch (ExecutionException e) {
@@ -480,12 +520,10 @@
             return;
         }
         
-        this.cleanTrueDiffs(injectionModel, blindMode);
+        this.cleanTrueDiffs(injectionModel, blindOperator);
     }
 
-    private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindMode) {
-        // Concurrent calls to the TRUE statements,
-        // it will use inject() from the model.
+    private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindOperator) {
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBinTagTrue&quot;);</pre></td></tr></table>
 <table class="table table-striped">
 <tr class="a">
@@ -493,16 +531,16 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L98">98</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L102">102</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitMysql.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L110">110</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L111">111</a></td></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitPostgres.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L507">507</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L511">511</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L130">130</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L133">133</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
@@ -529,10 +567,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L140">140</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L143">143</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitMysql.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L110">110</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L111">111</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
@@ -559,10 +597,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitHsqldb.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L96">96</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L101">101</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitMysql.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L110">110</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitMysql.html#L111">111</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>BinaryOperator&lt;String&gt; biFuncGetRequest = (String pathExploitFixed, String urlSuccess) -&gt; {
@@ -604,10 +642,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L84">84</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L87">87</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L122">122</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L125">125</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_WEB)
@@ -667,10 +705,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L40">40</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L44">44</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitHsqldb.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L40">40</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L45">45</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>ModelYamlDerby.class
@@ -698,22 +736,22 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/injection/strategy/blind/InjectionBlindBin.java</td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBin.html#L131">131</a></td></tr>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBin.html#L127">127</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/injection/strategy/blind/InjectionBlindBit.java</td>
-<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBit.html#L124">124</a></td></tr>
+<td><a href="./xref/com/jsql/model/injection/strategy/blind/InjectionBlindBit.html#L120">120</a></td></tr>
 <tr class="b">
 <td colspan="2">
-<pre>for (Future&lt;CallableBlindBin&gt; futureTrueTest: futuresTrueTest) {
+<pre>for (Future&lt;CallableBlindBin&gt; futureTruthy: futuresTruthys) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 if (this.trueDiffs.isEmpty()) {
-                    this.trueDiffs = futureTrueTest.get().getDiffsWithReference();  // Init diffs
+                    this.trueDiffs = futureTruthy.get().getDiffsWithReference();  // Init diffs
                 } else {
-                    this.trueDiffs.retainAll(futureTrueTest.get().getDiffsWithReference());  // Clean un-matching diffs
+                    this.trueDiffs.retainAll(futureTruthy.get().getDiffsWithReference());  // Clean un-matching diffs
                 }
-                this.falseDiffs.removeAll(futureTrueTest.get().getDiffsWithReference());
+                this.falseDiffs.removeAll(futureTruthy.get().getDiffsWithReference());
             }
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
@@ -831,13 +869,13 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L61">61</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L65">65</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitPostgres.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L421">421</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitPostgres.html#L425">425</a></td></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L93">93</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L96">96</a></td></tr>
 <tr class="a">
 <td colspan="2">
 <pre>), ResourceAccess.TBL_CREATE);
@@ -867,10 +905,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L48">48</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L52">52</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitDerby.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L83">83</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitDerby.html#L87">87</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_WEB)
@@ -895,10 +933,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitHsqldb.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L48">48</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L53">53</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitHsqldb.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L82">82</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitHsqldb.html#L87">87</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(ResourceAccess.EXPLOIT_DOT_WEB)
@@ -922,10 +960,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L81">81</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L84">84</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L116">116</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L119">119</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(&quot;exploit.web&quot;)
@@ -949,10 +987,10 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>com/jsql/model/accessible/vendor/ExploitH2.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L67">67</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitH2.html#L70">70</a></td></tr>
 <tr class="a">
 <td>com/jsql/model/accessible/vendor/ExploitSqlite.java</td>
-<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L64">64</a></td></tr>
+<td><a href="./xref/com/jsql/model/accessible/vendor/ExploitSqlite.html#L67">67</a></td></tr>
 <tr class="b">
 <td colspan="2">
 <pre>this.modelYaml.getRce().getRunCmd(),

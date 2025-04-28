@@ -322,85 +322,84 @@ public class TabResults extends DnDTabbedPane {
 <span class="nc" id="L322">                .filter(modelReverse -&gt; modelReverse.getName().equals(buttonGroup.getSelection().getActionCommand()))</span>
 <span class="nc" id="L323">                .findFirst()</span>
 <span class="nc" id="L324">                .ifPresent(modelReverse -&gt; MediatorHelper.model().getResourceAccess().runWebShell(</span>
-                    // TODO mysql UDF, pg Program/Extension/Archive, sqlite
-<span class="nc" id="L326">                    String.format(modelReverse.getCommand(), address.getText(), port.getText()),</span>
+<span class="nc" id="L325">                    String.format(modelReverse.getCommand(), address.getText(), port.getText()),</span>
                     null,  // ignore connection response
-<span class="nc" id="L328">                    terminal.getUrlShell(),</span>
+<span class="nc" id="L327">                    terminal.getUrlShell(),</span>
                     true
                 ));
-<span class="nc" id="L331">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L332">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L333">                Thread.currentThread().interrupt();</span>
-<span class="nc" id="L334">            }</span>
-<span class="nc" id="L335">        };</span>
+<span class="nc" id="L330">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L331">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L332">                Thread.currentThread().interrupt();</span>
+<span class="nc" id="L333">            }</span>
+<span class="nc" id="L334">        };</span>
 
-<span class="nc" id="L337">        var panelOpenIn = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L338">        panelOpenIn.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Open In :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
-<span class="nc" id="L339">        menuListen.add(panelOpenIn);</span>
-<span class="nc" id="L340">        menuListen.add(new JSeparator());</span>
+<span class="nc" id="L336">        var panelOpenIn = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L337">        panelOpenIn.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Open In :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
+<span class="nc" id="L338">        menuListen.add(panelOpenIn);</span>
+<span class="nc" id="L339">        menuListen.add(new JSeparator());</span>
 
-<span class="nc" id="L342">        var menuBuiltInShell = new RadioItemPreventClose(&quot;Built-in shell&quot;, true);</span>
-<span class="nc" id="L343">        var menuExternalShell = new RadioItemPreventClose(&quot;External listening shell&quot;);</span>
-<span class="nc" id="L344">        var buttonTypeShell = new ButtonGroup();</span>
-<span class="nc" id="L345">        buttonTypeShell.add(menuBuiltInShell);</span>
-<span class="nc" id="L346">        buttonTypeShell.add(menuExternalShell);</span>
-<span class="nc" id="L347">        menuListen.add(menuBuiltInShell);</span>
-<span class="nc" id="L348">        menuListen.add(menuExternalShell);</span>
-<span class="nc" id="L349">        menuListen.add(new JSeparator());</span>
-<span class="nc" id="L350">        var panelCreate = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L351">        panelCreate.add(new JButton(new AbstractAction(&quot;Create reverse shell&quot;) {</span>
+<span class="nc" id="L341">        var menuBuiltInShell = new RadioItemPreventClose(&quot;Built-in shell&quot;, true);</span>
+<span class="nc" id="L342">        var menuExternalShell = new RadioItemPreventClose(&quot;External listening shell&quot;);</span>
+<span class="nc" id="L343">        var buttonTypeShell = new ButtonGroup();</span>
+<span class="nc" id="L344">        buttonTypeShell.add(menuBuiltInShell);</span>
+<span class="nc" id="L345">        buttonTypeShell.add(menuExternalShell);</span>
+<span class="nc" id="L346">        menuListen.add(menuBuiltInShell);</span>
+<span class="nc" id="L347">        menuListen.add(menuExternalShell);</span>
+<span class="nc" id="L348">        menuListen.add(new JSeparator());</span>
+<span class="nc" id="L349">        var panelCreate = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L350">        panelCreate.add(new JButton(new AbstractAction(&quot;Create reverse shell&quot;) {</span>
             @Override
             public void actionPerformed(ActionEvent e) {
-<span class="nc bnc" id="L354" title="All 2 branches missed.">                if (menuBuiltInShell.isSelected()) {</span>
-<span class="nc" id="L355">                    SwingUtilities.invokeLater(() -&gt; MediatorHelper.tabResults().addTabExploitReverseShell(port.getText()));</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">                if (menuBuiltInShell.isSelected()) {</span>
+<span class="nc" id="L354">                    SwingUtilities.invokeLater(() -&gt; MediatorHelper.tabResults().addTabExploitReverseShell(port.getText()));</span>
                 }
-<span class="nc" id="L357">                new Thread(runnableReverse).start();</span>
-<span class="nc" id="L358">                menuReverse.setVisible(false);</span>
-<span class="nc" id="L359">            }</span>
+<span class="nc" id="L356">                new Thread(runnableReverse).start();</span>
+<span class="nc" id="L357">                menuReverse.setVisible(false);</span>
+<span class="nc" id="L358">            }</span>
         }));
-<span class="nc" id="L361">        menuListen.add(panelCreate);</span>
+<span class="nc" id="L360">        menuListen.add(panelCreate);</span>
 
-<span class="nc" id="L363">        var menuConnect = new JMenu(&quot;Connect&quot;);</span>
-<span class="nc" id="L364">        menuConnect.setComponentOrientation(</span>
-<span class="nc bnc" id="L365" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
-<span class="nc" id="L366">            ? ComponentOrientation.LEFT_TO_RIGHT</span>
-<span class="nc" id="L367">            : ComponentOrientation.RIGHT_TO_LEFT</span>
+<span class="nc" id="L362">        var menuConnect = new JMenu(&quot;Connect&quot;);</span>
+<span class="nc" id="L363">        menuConnect.setComponentOrientation(</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
+<span class="nc" id="L365">            ? ComponentOrientation.LEFT_TO_RIGHT</span>
+<span class="nc" id="L366">            : ComponentOrientation.RIGHT_TO_LEFT</span>
         );
-<span class="nc" id="L369">        var panelServerPublicAddress = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L370">        panelServerPublicAddress.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Server public address (listener) :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
-<span class="nc" id="L371">        menuConnect.add(panelServerPublicAddress);</span>
-<span class="nc" id="L372">        menuConnect.add(new JSeparator());</span>
-<span class="nc" id="L373">        menuConnect.add(new JTextFieldPlaceholder(&quot;Target IP/domain&quot;));</span>
-<span class="nc" id="L374">        menuConnect.add(new JTextFieldPlaceholder(&quot;Target port&quot;));</span>
-<span class="nc" id="L375">        menuConnect.add(new JSeparator());</span>
+<span class="nc" id="L368">        var panelServerPublicAddress = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L369">        panelServerPublicAddress.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Server public address (listener) :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
+<span class="nc" id="L370">        menuConnect.add(panelServerPublicAddress);</span>
+<span class="nc" id="L371">        menuConnect.add(new JSeparator());</span>
+<span class="nc" id="L372">        menuConnect.add(new JTextFieldPlaceholder(&quot;Target IP/domain&quot;));</span>
+<span class="nc" id="L373">        menuConnect.add(new JTextFieldPlaceholder(&quot;Target port&quot;));</span>
+<span class="nc" id="L374">        menuConnect.add(new JSeparator());</span>
 
-<span class="nc" id="L377">        var panelServerListeningConnection = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L378">        panelServerListeningConnection.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Server listening method :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
-<span class="nc" id="L379">        menuConnect.add(panelServerListeningConnection);</span>
-<span class="nc" id="L380">        var buttonGroupListening = new ButtonGroup();</span>
-<span class="nc" id="L381">        Arrays.asList(&quot;netcat&quot;).forEach(method -&gt; {</span>
-<span class="nc" id="L382">            var radio = new JRadioButtonMenuItem(method) {</span>
+<span class="nc" id="L376">        var panelServerListeningConnection = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L377">        panelServerListeningConnection.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Server listening method :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
+<span class="nc" id="L378">        menuConnect.add(panelServerListeningConnection);</span>
+<span class="nc" id="L379">        var buttonGroupListening = new ButtonGroup();</span>
+<span class="nc" id="L380">        Arrays.asList(&quot;netcat&quot;).forEach(method -&gt; {</span>
+<span class="nc" id="L381">            var radio = new JRadioButtonMenuItem(method) {</span>
                 @Override
                 protected void processMouseEvent(MouseEvent evt) {
-<span class="nc bnc" id="L385" title="All 4 branches missed.">                    if (evt.getID() == MouseEvent.MOUSE_RELEASED &amp;&amp; this.contains(evt.getPoint())) {</span>
-<span class="nc" id="L386">                        this.doClick();</span>
-<span class="nc" id="L387">                        this.setArmed(true);</span>
+<span class="nc bnc" id="L384" title="All 4 branches missed.">                    if (evt.getID() == MouseEvent.MOUSE_RELEASED &amp;&amp; this.contains(evt.getPoint())) {</span>
+<span class="nc" id="L385">                        this.doClick();</span>
+<span class="nc" id="L386">                        this.setArmed(true);</span>
                     } else {
-<span class="nc" id="L389">                        super.processMouseEvent(evt);</span>
+<span class="nc" id="L388">                        super.processMouseEvent(evt);</span>
                     }
-<span class="nc" id="L391">                }</span>
+<span class="nc" id="L390">                }</span>
             };
-<span class="nc" id="L393">            radio.setSelected(&quot;netcat&quot;.equals(method));</span>
-<span class="nc" id="L394">            buttonGroupListening.add(radio);</span>
-<span class="nc" id="L395">            menuConnect.add(radio);</span>
-<span class="nc" id="L396">        });</span>
-<span class="nc" id="L397">        menuConnect.add(new JSeparator());</span>
-<span class="nc" id="L398">        menuConnect.add(new JMenuItem(&quot;Create&quot;));</span>
+<span class="nc" id="L392">            radio.setSelected(&quot;netcat&quot;.equals(method));</span>
+<span class="nc" id="L393">            buttonGroupListening.add(radio);</span>
+<span class="nc" id="L394">            menuConnect.add(radio);</span>
+<span class="nc" id="L395">        });</span>
+<span class="nc" id="L396">        menuConnect.add(new JSeparator());</span>
+<span class="nc" id="L397">        menuConnect.add(new JMenuItem(&quot;Create&quot;));</span>
 
-<span class="nc" id="L400">        menuReverse.add(menuListen);</span>
-<span class="nc" id="L401">        menuReverse.add(menuConnect);</span>
+<span class="nc" id="L399">        menuReverse.add(menuListen);</span>
+<span class="nc" id="L400">        menuReverse.add(menuConnect);</span>
 
-<span class="nc" id="L403">        return menuReverse;</span>
+<span class="nc" id="L402">        return menuReverse;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

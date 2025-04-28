@@ -27,11 +27,11 @@ public class CallableBlindBit extends AbstractCallableBit&lt;CallableBlindBit&gt
     /**
      * Constructor for preparation and blind confirmation.
      */
-<span class="fc" id="L30">    public CallableBlindBit(String sqlQuery, InjectionModel injectionModel, InjectionBlindBit injectionBlind, BlindOperator blindMode, String metadataInjectionProcess) {</span>
+<span class="fc" id="L30">    public CallableBlindBit(String sqlQuery, InjectionModel injectionModel, InjectionBlindBit injectionBlind, BlindOperator blindOperator, String metadataInjectionProcess) {</span>
 <span class="fc" id="L31">        this.injectionModel = injectionModel;</span>
 <span class="fc" id="L32">        this.injectionBlind = injectionBlind;</span>
 <span class="fc" id="L33">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
-<span class="fc" id="L34">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindMode);</span>
+<span class="fc" id="L34">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);</span>
 <span class="fc" id="L35">    }</span>
     
     /**
@@ -43,11 +43,11 @@ public class CallableBlindBit extends AbstractCallableBit&lt;CallableBlindBit&gt
         int bit,
         InjectionModel injectionModel,
         InjectionBlindBit injectionBlind,
-        BlindOperator blindMode,
+        BlindOperator blindOperator,
         String metadataInjectionProcess
     ) {
-<span class="fc" id="L49">        this(sqlQuery, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);</span>
-<span class="fc" id="L50">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBit(sqlQuery, indexChar, bit, blindMode);</span>
+<span class="fc" id="L49">        this(sqlQuery, injectionModel, injectionBlind, blindOperator, metadataInjectionProcess);</span>
+<span class="fc" id="L50">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBit(sqlQuery, indexChar, bit, blindOperator);</span>
 <span class="fc" id="L51">        this.currentIndex = indexChar;</span>
 <span class="fc" id="L52">        this.currentBit = bit;</span>
 <span class="fc" id="L53">    }</span>

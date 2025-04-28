@@ -283,8 +283,8 @@
 <a class="jxr_linenumber" name="L275" href="#L275">275</a>     }
 <a class="jxr_linenumber" name="L276" href="#L276">276</a> 
 <a class="jxr_linenumber" name="L277" href="#L277">277</a>     @Override
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>     <strong class="jxr_keyword">public</strong> String sqlTestBlindWithOperator(String check, BlindOperator blindMode) {
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>         String replacement = <strong class="jxr_keyword">this</strong>.getMode(blindMode);
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>     <strong class="jxr_keyword">public</strong> String sqlTestBlindWithOperator(String check, BlindOperator blindOperator) {
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>         String replacement = <strong class="jxr_keyword">this</strong>.getMode(blindOperator);
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getBlind()
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>             .replace(VendorYaml.BINARY_MODE, replacement)
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>             .replace(VendorYaml.TEST, check)
@@ -292,8 +292,8 @@
 <a class="jxr_linenumber" name="L284" href="#L284">284</a>     }
 <a class="jxr_linenumber" name="L285" href="#L285">285</a> 
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>     @Override
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>     <strong class="jxr_keyword">public</strong> String sqlBlindBit(String inj, <strong class="jxr_keyword">int</strong> indexChar, <strong class="jxr_keyword">int</strong> bit, BlindOperator blindMode) {
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>         String replacement = <strong class="jxr_keyword">this</strong>.getMode(blindMode);
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>     <strong class="jxr_keyword">public</strong> String sqlBlindBit(String inj, <strong class="jxr_keyword">int</strong> indexChar, <strong class="jxr_keyword">int</strong> bit, BlindOperator blindOperator) {
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>         String replacement = <strong class="jxr_keyword">this</strong>.getMode(blindOperator);
 <a class="jxr_linenumber" name="L289" href="#L289">289</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getBlind()
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>             .replace(VendorYaml.BINARY_MODE, replacement)
 <a class="jxr_linenumber" name="L291" href="#L291">291</a>             .replace(
@@ -307,8 +307,8 @@
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>     }
 <a class="jxr_linenumber" name="L300" href="#L300">300</a> 
 <a class="jxr_linenumber" name="L301" href="#L301">301</a>     @Override
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>     <strong class="jxr_keyword">public</strong> String sqlBlindBin(String inj, <strong class="jxr_keyword">int</strong> indexChar, <strong class="jxr_keyword">int</strong> mid, BlindOperator blindMode) {
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>         String replacement = <strong class="jxr_keyword">this</strong>.getMode(blindMode);
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>     <strong class="jxr_keyword">public</strong> String sqlBlindBin(String inj, <strong class="jxr_keyword">int</strong> indexChar, <strong class="jxr_keyword">int</strong> mid, BlindOperator blindOperator) {
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>         String replacement = <strong class="jxr_keyword">this</strong>.getMode(blindOperator);
 <a class="jxr_linenumber" name="L304" href="#L304">304</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getBlind()
 <a class="jxr_linenumber" name="L305" href="#L305">305</a>             .replace(VendorYaml.BINARY_MODE, replacement)
 <a class="jxr_linenumber" name="L306" href="#L306">306</a>             .replace(
@@ -326,8 +326,8 @@
 <a class="jxr_linenumber" name="L318" href="#L318">318</a>     }
 <a class="jxr_linenumber" name="L319" href="#L319">319</a> 
 <a class="jxr_linenumber" name="L320" href="#L320">320</a>     @Override
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>     <strong class="jxr_keyword">public</strong> String sqlTestTimeWithOperator(String check, BlindOperator blindMode) {
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>         String replacement = <strong class="jxr_keyword">this</strong>.getMode(blindMode);
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>     <strong class="jxr_keyword">public</strong> String sqlTestTimeWithOperator(String check, BlindOperator blindOperator) {
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>         String replacement = <strong class="jxr_keyword">this</strong>.getMode(blindOperator);
 <a class="jxr_linenumber" name="L323" href="#L323">323</a>         <strong class="jxr_keyword">int</strong> countSleepTimeStrategy = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>             ? <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
 <a class="jxr_linenumber" name="L325" href="#L325">325</a>             : 5;
@@ -339,8 +339,8 @@
 <a class="jxr_linenumber" name="L331" href="#L331">331</a>     }
 <a class="jxr_linenumber" name="L332" href="#L332">332</a> 
 <a class="jxr_linenumber" name="L333" href="#L333">333</a>     @Override
-<a class="jxr_linenumber" name="L334" href="#L334">334</a>     <strong class="jxr_keyword">public</strong> String sqlTimeBit(String inj, <strong class="jxr_keyword">int</strong> indexChar, <strong class="jxr_keyword">int</strong> bit, BlindOperator blindMode) {
-<a class="jxr_linenumber" name="L335" href="#L335">335</a>         String replacement = <strong class="jxr_keyword">this</strong>.getMode(blindMode);
+<a class="jxr_linenumber" name="L334" href="#L334">334</a>     <strong class="jxr_keyword">public</strong> String sqlTimeBit(String inj, <strong class="jxr_keyword">int</strong> indexChar, <strong class="jxr_keyword">int</strong> bit, BlindOperator blindOperator) {
+<a class="jxr_linenumber" name="L335" href="#L335">335</a>         String replacement = <strong class="jxr_keyword">this</strong>.getMode(blindOperator);
 <a class="jxr_linenumber" name="L336" href="#L336">336</a>         <strong class="jxr_keyword">int</strong> countSleepTimeStrategy = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
 <a class="jxr_linenumber" name="L337" href="#L337">337</a>             ? <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
 <a class="jxr_linenumber" name="L338" href="#L338">338</a>             : 5;
@@ -358,9 +358,9 @@
 <a class="jxr_linenumber" name="L350" href="#L350">350</a>             .trim();  <em class="jxr_comment">// trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()</em>
 <a class="jxr_linenumber" name="L351" href="#L351">351</a>     }
 <a class="jxr_linenumber" name="L352" href="#L352">352</a> 
-<a class="jxr_linenumber" name="L353" href="#L353">353</a>     <strong class="jxr_keyword">private</strong> String getMode(BlindOperator blindMode) {
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>     <strong class="jxr_keyword">private</strong> String getMode(BlindOperator blindOperator) {
 <a class="jxr_linenumber" name="L354" href="#L354">354</a>         String replacement;
-<a class="jxr_linenumber" name="L355" href="#L355">355</a>         <strong class="jxr_keyword">switch</strong> (blindMode) {
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>         <strong class="jxr_keyword">switch</strong> (blindOperator) {
 <a class="jxr_linenumber" name="L356" href="#L356">356</a>             <strong class="jxr_keyword">case</strong> AND: replacement = <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getModeAnd(); <strong class="jxr_keyword">break</strong>;
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>             <strong class="jxr_keyword">case</strong> OR: replacement = <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getModeOr(); <strong class="jxr_keyword">break</strong>;
 <a class="jxr_linenumber" name="L358" href="#L358">358</a>             <strong class="jxr_keyword">case</strong> STACK: replacement = <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getBinary().getModeStack(); <strong class="jxr_keyword">break</strong>;

@@ -31,8 +31,8 @@ public class InjectionMultibit extends AbstractInjectionBit&lt;CallableMultibit&
 <span class="fc" id="L31">    private List&lt;Diff&gt; diffsCommonWithAllIds = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L32">    private final List&lt;List&lt;Diff&gt;&gt; diffsById = new ArrayList&lt;&gt;();</span>
 
-    public InjectionMultibit(InjectionModel injectionModel, BlindOperator blindMode) {
-<span class="fc" id="L35">        super(injectionModel, blindMode);</span>
+    public InjectionMultibit(InjectionModel injectionModel, BlindOperator blindOperator) {
+<span class="fc" id="L35">        super(injectionModel, blindOperator);</span>
         
 <span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L38">            return;</span>

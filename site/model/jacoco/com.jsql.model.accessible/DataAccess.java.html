@@ -428,11 +428,11 @@ public class DataAccess {
                 table,
                 &quot;rows&quot;
             );
-<span class="fc" id="L431">        } catch (AbstractSlidingException e) {  // Catch all exceptions but prevent detecting bug</span>
-<span class="fc" id="L432">            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);</span>
+<span class="nc" id="L431">        } catch (AbstractSlidingException e) {  // Catch all exceptions but prevent detecting bug</span>
+<span class="nc" id="L432">            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);</span>
 <span class="nc" id="L433">        } catch (Exception e) {</span>
 <span class="nc" id="L434">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
-<span class="fc" id="L435">        }</span>
+<span class="pc" id="L435">        }</span>
 <span class="fc" id="L436">        return SuspendableGetRows.parse(resultToParse);</span>
     }
 
