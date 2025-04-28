@@ -33,8 +33,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
     private static final int LOW = 0;
     private static final int HIGH = 127;
 
-    // Source code of the TRUE web page (usually ?id=1)
-    private String sourceReferencePage;
+    private String sourceReferencePage;  // Source code of the TRUE web page (usually ?id=1)
 
     /**
      * List of string differences found in all the FALSE queries, compared
@@ -50,27 +49,27 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
      * If every false diffs are not in true diffs and every true diffs are in
      * true diffs, then Blind attack is confirmed.
      */
-    public InjectionBlindBin(InjectionModel injectionModel, BlindOperator blindMode) {
-        super(injectionModel, blindMode);
-        
-        // No blind
-        if (this.falsyBin.isEmpty() || this.injectionModel.isStoppedByUser()) {
+    public InjectionBlindBin(InjectionModel injectionModel, BlindOperator blindOperator) {
+        super(injectionModel, blindOperator);
+
+        List<String> falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBin();
+        if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, "bin#ref:"+ blindMode.toString().toLowerCase());
+        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, "bin#ref:"+ blindOperator.toString().toLowerCase());
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindBinTagFalse");
-        Collection<CallableBlindBin> callablesFalseTest = new ArrayList<>();
-        for (String falseTest: this.falsyBin) {
-            callablesFalseTest.add(new CallableBlindBin(
-                falseTest,
+        Collection<CallableBlindBin> callablesFalsys = new ArrayList<>();
+        for (String falsy: falsys) {
+            callablesFalsys.add(new CallableBlindBin(
+                falsy,
                 injectionModel,
                 this,
-                blindMode,
+                blindOperator,
                 -1, -1, -1,
                 "bin#falsy"
             ));
@@ -80,16 +79,16 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
         // keep only diffs found in each and every FALSE pages.
         // Allow the user to stop the loop
         try {
-            List<Future<CallableBlindBin>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
+            List<Future<CallableBlindBin>> futuresFalsys = taskExecutor.invokeAll(callablesFalsys);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-            for (Future<CallableBlindBin> futureFalseTest: futuresFalseTest) {
+            for (Future<CallableBlindBin> futureFalsy: futuresFalsys) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 if (this.falseDiffs.isEmpty()) {
-                    this.falseDiffs = futureFalseTest.get().getDiffsWithReference();  // Init diffs
+                    this.falseDiffs = futureFalsy.get().getDiffsWithReference();  // Init diffs
                 } else {
-                    this.falseDiffs.retainAll(futureFalseTest.get().getDiffsWithReference());  // Clean un-matching diffs
+                    this.falseDiffs.retainAll(futureFalsy.get().getDiffsWithReference());  // Clean un-matching diffs
                 }
             }
         } catch (ExecutionException e) {
@@ -103,41 +102,38 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
             return;
         }
         
-        this.cleanTrueDiffs(injectionModel, blindMode);
+        this.cleanTrueDiffs(injectionModel, blindOperator);
     }
 
-    private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindMode) {
-        // Concurrent calls to the TRUE statements,
-        // it will use inject() from the model.
+    private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindOperator) {
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindBinTagTrue");
-        Collection<CallableBlindBin> callablesTrueTest = new ArrayList<>();
-        for (String trueTest: this.truthyBin) {
-            callablesTrueTest.add(new CallableBlindBin(
-                trueTest,
+        Collection<CallableBlindBin> callablesTruthys = new ArrayList<>();
+        List<String> truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBin();
+        for (String truthy: truthys) {
+            callablesTruthys.add(new CallableBlindBin(
+                truthy,
                 injectionModel,
                 this,
-                blindMode,
+                blindOperator,
                 -1, -1, -1,
                 "bin#truthy"
             ));
         }
         
-        // Remove TRUE diffs in the FALSE diffs, because
-        // a significant FALSE statement shouldn't contain any TRUE diff.
-        // Allow the user to stop the loop.
+        // Remove TRUE diffs in the FALSE diffs as FALSE statement shouldn't contain any TRUE diff.
         try {
-            List<Future<CallableBlindBin>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
+            List<Future<CallableBlindBin>> futuresTruthys = taskExecutor.invokeAll(callablesTruthys);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-            for (Future<CallableBlindBin> futureTrueTest: futuresTrueTest) {
+            for (Future<CallableBlindBin> futureTruthy: futuresTruthys) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 if (this.trueDiffs.isEmpty()) {
-                    this.trueDiffs = futureTrueTest.get().getDiffsWithReference();  // Init diffs
+                    this.trueDiffs = futureTruthy.get().getDiffsWithReference();  // Init diffs
                 } else {
-                    this.trueDiffs.retainAll(futureTrueTest.get().getDiffsWithReference());  // Clean un-matching diffs
+                    this.trueDiffs.retainAll(futureTruthy.get().getDiffsWithReference());  // Clean un-matching diffs
                 }
-                this.falseDiffs.removeAll(futureTrueTest.get().getDiffsWithReference());
+                this.falseDiffs.removeAll(futureTruthy.get().getDiffsWithReference());
             }
         } catch (ExecutionException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
@@ -196,7 +192,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
             high = currentCallable.getHigh();
 
             if (low >= high) {  // char found
-                if (this.IsCorruptOrElseNextChar(bytes, indexChar, countBadAsciiCode, currentCallable, low)) {
+                if (this.isCorruptOrElseNextChar(bytes, indexChar, countBadAsciiCode, currentCallable, low)) {
                     return;  // too many errors
                 }
                 low = InjectionBlindBin.LOW;
@@ -228,7 +224,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
         countTasksSubmitted.addAndGet(1);
     }
 
-    private boolean IsCorruptOrElseNextChar(List<char[]> bytes, AtomicInteger indexChar, AtomicInteger countBadAsciiCode, CallableBlindBin currentCallable, int low) {
+    private boolean isCorruptOrElseNextChar(List<char[]> bytes, AtomicInteger indexChar, AtomicInteger countBadAsciiCode, CallableBlindBin currentCallable, int low) {
         if (low == 0 || low == 127) {
             countBadAsciiCode.incrementAndGet();
         } else {
@@ -277,6 +273,6 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
     }
 
     public List<Diff> getTrueDiffs() {
-        return trueDiffs;
+        return this.trueDiffs;
     }
 }

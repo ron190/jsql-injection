@@ -87,7 +87,19 @@
         "requestType": "POST",
         "method": "REQUEST"
     },
-    {"url": "http://academy.hackthebox.com.1.2.3.4:12345/search.php?port_code="},
+    {
+        "url": "http://academy.hackthebox.com.1.2.3.4:12345/",
+        "request": "password=&username=",
+        "requestType": "POST",
+        "method": "REQUEST"
+    },
+    {
+        "url": "http://academy.hackthebox.com.1.2.3.4:12345/dashboard/dashboard.php",
+        "request": "search=",
+        "requestType": "POST",
+        "method": "REQUEST",
+        "header": "Cookie: PHPSESSID=GET_SESSION_ID_WHEN_BYPASS_LOGIN"
+    },
     {
         "url": "http://2018shell2.picoctf.com:28120/answer2.php",
         "request": "debug=0&answer=",

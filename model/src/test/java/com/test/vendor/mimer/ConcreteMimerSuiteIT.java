@@ -11,8 +11,8 @@ public abstract class ConcreteMimerSuiteIT extends AbstractTestSuite {
         this.jdbcPass = "SYSADM";
 
         this.jsqlDatabaseName = "MIMER";
-        this.jsqlTableName = "JDBC2_UDTS";
-        this.jsqlColumnName = "TYPE_NAME";
+        this.jsqlTableName = "ODBC_TABLE_TYPES";
+        this.jsqlColumnName = "TABLE_TYPE";
         
         this.jdbcColumnForDatabaseName = "schema_name";
         this.jdbcColumnForTableName = "table_name";

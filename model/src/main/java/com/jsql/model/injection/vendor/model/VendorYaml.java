@@ -275,8 +275,8 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestBlindWithOperator(String check, BlindOperator blindMode) {
-        String replacement = this.getMode(blindMode);
+    public String sqlTestBlindWithOperator(String check, BlindOperator blindOperator) {
+        String replacement = this.getMode(blindOperator);
         return this.modelYaml.getStrategy().getBinary().getBlind()
             .replace(VendorYaml.BINARY_MODE, replacement)
             .replace(VendorYaml.TEST, check)
@@ -284,8 +284,8 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlBlindBit(String inj, int indexChar, int bit, BlindOperator blindMode) {
-        String replacement = this.getMode(blindMode);
+    public String sqlBlindBit(String inj, int indexChar, int bit, BlindOperator blindOperator) {
+        String replacement = this.getMode(blindOperator);
         return this.modelYaml.getStrategy().getBinary().getBlind()
             .replace(VendorYaml.BINARY_MODE, replacement)
             .replace(
@@ -299,8 +299,8 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlBlindBin(String inj, int indexChar, int mid, BlindOperator blindMode) {
-        String replacement = this.getMode(blindMode);
+    public String sqlBlindBin(String inj, int indexChar, int mid, BlindOperator blindOperator) {
+        String replacement = this.getMode(blindOperator);
         return this.modelYaml.getStrategy().getBinary().getBlind()
             .replace(VendorYaml.BINARY_MODE, replacement)
             .replace(
@@ -318,8 +318,8 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestTimeWithOperator(String check, BlindOperator blindMode) {
-        String replacement = this.getMode(blindMode);
+    public String sqlTestTimeWithOperator(String check, BlindOperator blindOperator) {
+        String replacement = this.getMode(blindOperator);
         int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
             : 5;
@@ -331,8 +331,8 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTimeBit(String inj, int indexChar, int bit, BlindOperator blindMode) {
-        String replacement = this.getMode(blindMode);
+    public String sqlTimeBit(String inj, int indexChar, int bit, BlindOperator blindOperator) {
+        String replacement = this.getMode(blindOperator);
         int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
             : 5;
@@ -350,9 +350,9 @@ public class VendorYaml implements AbstractVendor {
             .trim();  // trim spaces in '${binary.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
-    private String getMode(BlindOperator blindMode) {
+    private String getMode(BlindOperator blindOperator) {
         String replacement;
-        switch (blindMode) {
+        switch (blindOperator) {
             case AND: replacement = this.modelYaml.getStrategy().getBinary().getModeAnd(); break;
             case OR: replacement = this.modelYaml.getStrategy().getBinary().getModeOr(); break;
             case STACK: replacement = this.modelYaml.getStrategy().getBinary().getModeStack(); break;

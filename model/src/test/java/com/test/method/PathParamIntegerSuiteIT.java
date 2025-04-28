@@ -17,7 +17,6 @@ class PathParamIntegerSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        // TODO Test all PathParam URL segments
         model.getMediatorUtils().getParameterUtil().initQueryString(
             // Can work on Error:crud 'or <Error> or'
             // Must also work on union

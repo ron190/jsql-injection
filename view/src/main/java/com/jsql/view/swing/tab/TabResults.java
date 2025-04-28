@@ -322,7 +322,6 @@ public class TabResults extends DnDTabbedPane {
                 .filter(modelReverse -> modelReverse.getName().equals(buttonGroup.getSelection().getActionCommand()))
                 .findFirst()
                 .ifPresent(modelReverse -> MediatorHelper.model().getResourceAccess().runWebShell(
-                    // TODO mysql UDF, pg Program/Extension/Archive, sqlite
                     String.format(modelReverse.getCommand(), address.getText(), port.getText()),
                     null,  // ignore connection response
                     terminal.getUrlShell(),

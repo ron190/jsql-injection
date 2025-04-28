@@ -11,6 +11,7 @@
 package com.jsql.view.swing.manager;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.manager.util.ActionBruteForce;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -20,6 +21,8 @@ import com.jsql.view.swing.panel.preferences.listener.SpinnerMouseWheelListener;
 import com.jsql.view.swing.text.*;
 import com.jsql.view.swing.util.I18nViewUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +33,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * Manager to brute force a hash of various types.
  */
 public class ManagerBruteForce extends JPanel {
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final String BRUTEFORCE_RUN_BUTTON_TOOLTIP = "BRUTEFORCE_RUN_BUTTON_TOOLTIP";
     public static final String BRUTEFORCE_HASH_TOOLTIP = "BRUTEFORCE_HASH_TOOLTIP";
@@ -195,12 +203,16 @@ public class ManagerBruteForce extends JPanel {
             new ModelSpinner(5, this.maximumLength, "BRUTEFORCE_MAX_TOOLTIP")
         ).forEach(model -> {
             final var tooltipMax = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(model.i18n)));
-            model.spinner.set(new JSpinner() {
-                @Override
-                public JToolTip createToolTip() {
-                    return tooltipMax.get();
-                }
-            });
+            try {  // Fixes #96099: NullPointerException on new JSpinner
+                model.spinner.set(new JSpinner() {
+                    @Override
+                    public JToolTip createToolTip() {
+                        return tooltipMax.get();
+                    }
+                });
+            } catch (NullPointerException e) {
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Spinner creation failed, restart or check your jre", e);
+            }
             model.spinner.get().setModel(new SpinnerNumberModel(model.value, 1, 10000, 1));
             model.spinner.get().addMouseWheelListener(new SpinnerMouseWheelListener());
             model.spinner.get().setToolTipText(I18nUtil.valueByKey(model.i18n));

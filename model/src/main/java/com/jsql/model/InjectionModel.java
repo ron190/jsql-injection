@@ -243,7 +243,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        urlObject = this.initQueryString(  // TODO identique urlInjection == urlObject
+        urlObject = this.initQueryString(  // TODO useless as urlInjection == urlObject
             isUsingIndex,
             urlInjection,
             dataInjection,

@@ -56,7 +56,7 @@
         <commons-lang3.version>3.17.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.0.0047</cubrid-jdbc.version>
         <dnsjava.version>3.6.3</dnsjava.version>
-        <gmavenplus-plugin.version>4.1.1</gmavenplus-plugin.version>
+        <gmavenplus-plugin.version>4.2.0</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
@@ -72,7 +72,7 @@
         <jsoup.version>1.19.1</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
-        <maven-failsafe-plugin.version>3.5.2</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
         <!-- v12.0 not working -->
@@ -89,7 +89,7 @@
         <snakeyaml.version>2.4</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
         <spock-core.version>2.4-M6-groovy-4.0</spock-core.version>
-        <spring-boot-dependencies.version>3.4.4</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>3.4.5</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
         <sqlite-jdbc.version>3.49.1.0</sqlite-jdbc.version>
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>

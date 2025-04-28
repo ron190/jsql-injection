@@ -2,7 +2,6 @@
 /var/www/public/
 /var/www/public_html/
 /var/www/html/default/
-/var/www/html/defaut/
 /var/www/html/
 /var/www/src/
 /var/www/build/

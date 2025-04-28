@@ -27,16 +27,6 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    // Every FALSE SQL statements will be checked,
-    // more statements means a more robust application
-    protected List<String> falsyBit;
-    protected List<String> falsyBin;
-
-    // Every TRUE SQL statements will be checked,
-    // more statements means a more robust application
-    protected List<String> truthyBit;
-    protected List<String> truthyBin;
-
     public enum BlindOperator {
         AND, OR, STACK, NO_MODE
     }
@@ -47,10 +37,6 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
     protected AbstractInjectionBit(InjectionModel injectionModel, BlindOperator blindOperator) {
         this.injectionModel = injectionModel;
         this.blindOperator = blindOperator;
-        this.falsyBit = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();
-        this.truthyBit = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();
-        this.falsyBin = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBin();
-        this.truthyBin = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBin();
     }
 
     /**

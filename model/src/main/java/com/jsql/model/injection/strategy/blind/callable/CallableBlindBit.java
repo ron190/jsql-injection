@@ -27,11 +27,11 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
     /**
      * Constructor for preparation and blind confirmation.
      */
-    public CallableBlindBit(String sqlQuery, InjectionModel injectionModel, InjectionBlindBit injectionBlind, BlindOperator blindMode, String metadataInjectionProcess) {
+    public CallableBlindBit(String sqlQuery, InjectionModel injectionModel, InjectionBlindBit injectionBlind, BlindOperator blindOperator, String metadataInjectionProcess) {
         this.injectionModel = injectionModel;
         this.injectionBlind = injectionBlind;
         this.metadataInjectionProcess = metadataInjectionProcess;
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);
     }
     
     /**
@@ -43,11 +43,11 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
         int bit,
         InjectionModel injectionModel,
         InjectionBlindBit injectionBlind,
-        BlindOperator blindMode,
+        BlindOperator blindOperator,
         String metadataInjectionProcess
     ) {
-        this(sqlQuery, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBit(sqlQuery, indexChar, bit, blindMode);
+        this(sqlQuery, injectionModel, injectionBlind, blindOperator, metadataInjectionProcess);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBit(sqlQuery, indexChar, bit, blindOperator);
         this.currentIndex = indexChar;
         this.currentBit = bit;
     }

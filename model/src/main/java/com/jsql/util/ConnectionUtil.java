@@ -24,6 +24,7 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
@@ -42,30 +43,12 @@ public class ConnectionUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    /**
-     * URL entered by user
-     */
-    private String urlByUser;
-
-    /**
-     * URL entered by user without the query string
-     */
-    private String urlBase;
-
-    /**
-     * Method of injection: by query string, request or header.
-     */
-    private AbstractMethodInjection methodInjection;
-
-    /**
-     * Default HTTP method. It can be changed to a custom method.
-     */
-    private String typeRequest = StringUtil.GET;
-
-    private final Random randomForUserAgent = new Random();
-    
+    private String urlByUser;  // URL entered by user
+    private String urlBase;  // URL entered by user without the query string
+    private AbstractMethodInjection methodInjection;  // Method of injection: by query string, request or header
+    private String typeRequest = StringUtil.GET;  // Default HTTP method. It can be changed to a custom method
+    private final Random randomForUserAgent = new SecureRandom();
     private final InjectionModel injectionModel;
-    
     private final CookieManager cookieManager = new CookieManager();
     
     public ConnectionUtil(InjectionModel injectionModel) {

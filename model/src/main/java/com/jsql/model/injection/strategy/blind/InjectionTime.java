@@ -39,22 +39,22 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
      */
     public InjectionTime(InjectionModel injectionModel, BlindOperator blindOperator) {
         super(injectionModel, blindOperator);
-        
-        // No blind
-        if (this.falsyBit.isEmpty() || this.injectionModel.isStoppedByUser()) {
+
+        List<String> falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();
+        if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagFalse");
-        Collection<CallableTime> callablesFalseTest = new ArrayList<>();
-        for (String falseTest: this.falsyBit) {
-            callablesFalseTest.add(new CallableTime(
-                falseTest,
+        Collection<CallableTime> callablesFalsys = new ArrayList<>();
+        for (String falsy: falsys) {
+            callablesFalsys.add(new CallableTime(
+                falsy,
                 injectionModel,
                 this,
-                    blindOperator,
+                blindOperator,
                 "time#falsy"
             ));
         }
@@ -63,13 +63,13 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         // then the test is a failure => exit
         // Allow the user to stop the loop
         try {
-            List<Future<CallableTime>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
+            List<Future<CallableTime>> futuresFalsys = taskExecutor.invokeAll(callablesFalsys);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-            for (Future<CallableTime> futureFalseTest: futuresFalseTest) {
+            for (Future<CallableTime> futureFalsy: futuresFalsys) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-                if (futureFalseTest.get().isTrue()) {
+                if (futureFalsy.get().isTrue()) {
                     this.isTimeInjectable = false;
                     return;
                 }
@@ -81,35 +81,32 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
             Thread.currentThread().interrupt();
         }
         
-        this.checkTrueTests(blindOperator);
+        this.checkTruthys(blindOperator);
     }
 
-    private void checkTrueTests(BlindOperator blindOperator) {
-        // Concurrent calls to the TRUE statements,
-        // it will use inject() from the model
+    private void checkTruthys(BlindOperator blindOperator) {
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagTrue");
-        Collection<CallableTime> callablesTrueTest = new ArrayList<>();
-        for (String trueTest: this.truthyBit) {
-            callablesTrueTest.add(new CallableTime(
-                trueTest,
+        Collection<CallableTime> callablesTruthys = new ArrayList<>();
+        List<String> truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();
+        for (String truthy: truthys) {
+            callablesTruthys.add(new CallableTime(
+                truthy,
                 this.injectionModel,
                 this,
-                    blindOperator,
+                blindOperator,
                 "time#truthy"
             ));
         }
 
-        // If one TRUE query makes more than X seconds,
-        // then the test is a failure => exit.
-        // Allow the user to stop the loop
+        // If one TRUE query makes more than X seconds then the test is a failure => exit
         try {
-            List<Future<CallableTime>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
+            List<Future<CallableTime>> futuresTruthys = taskExecutor.invokeAll(callablesTruthys);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-            for (Future<CallableTime> futureTrueTest: futuresTrueTest) {
+            for (Future<CallableTime> futureTruthy: futuresTruthys) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-                if (!futureTrueTest.get().isTrue()) {
+                if (!futureTruthy.get().isTrue()) {
                     this.isTimeInjectable = false;
                     return;
                 }
@@ -140,7 +137,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
-        var timeTest = new CallableTime(
+        var callable = new CallableTime(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),
             this.injectionModel,
             this,
@@ -148,11 +145,11 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
             "time#confirm"
         );
         try {
-            timeTest.call();
+            callable.call();
         } catch (Exception e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-        return this.isTimeInjectable && timeTest.isTrue();
+        return this.isTimeInjectable && callable.isTrue();
     }
 
     public int getSleepTime() {

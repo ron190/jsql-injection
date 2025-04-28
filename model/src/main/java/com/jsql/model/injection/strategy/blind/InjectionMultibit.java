@@ -31,8 +31,8 @@ public class InjectionMultibit extends AbstractInjectionBit<CallableMultibit> {
     private List<Diff> diffsCommonWithAllIds = new ArrayList<>();
     private final List<List<Diff>> diffsById = new ArrayList<>();
 
-    public InjectionMultibit(InjectionModel injectionModel, BlindOperator blindMode) {
-        super(injectionModel, blindMode);
+    public InjectionMultibit(InjectionModel injectionModel, BlindOperator blindOperator) {
+        super(injectionModel, blindOperator);
         
         if (this.injectionModel.isStoppedByUser()) {
             return;
