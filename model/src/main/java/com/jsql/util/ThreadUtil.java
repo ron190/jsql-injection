@@ -32,9 +32,6 @@ import java.util.concurrent.TimeUnit;
  */
 public final class ThreadUtil {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**

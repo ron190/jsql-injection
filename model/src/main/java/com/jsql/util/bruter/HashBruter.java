@@ -10,9 +10,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashBruter extends Bruter {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private String hash;

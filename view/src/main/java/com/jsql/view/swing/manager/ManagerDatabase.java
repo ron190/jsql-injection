@@ -38,9 +38,6 @@ import java.awt.event.MouseEvent;
  */
 public class ManagerDatabase extends JPanel {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private TreeDatabase tree;

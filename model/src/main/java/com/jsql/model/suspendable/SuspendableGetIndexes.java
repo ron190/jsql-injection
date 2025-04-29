@@ -22,9 +22,6 @@ import java.util.regex.Pattern;
  */
 public class SuspendableGetIndexes extends AbstractSuspendable {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     public SuspendableGetIndexes(InjectionModel injectionModel) {

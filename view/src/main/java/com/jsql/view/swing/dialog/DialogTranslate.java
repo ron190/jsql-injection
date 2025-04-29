@@ -36,9 +36,6 @@ import java.util.ResourceBundle;
  */
 public class DialogTranslate extends JDialog {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

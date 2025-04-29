@@ -32,9 +32,6 @@ import java.util.List;
  */
 public class MenuActionNewValue implements ActionListener {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**

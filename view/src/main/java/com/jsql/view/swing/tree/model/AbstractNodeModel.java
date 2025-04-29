@@ -39,9 +39,6 @@ import java.awt.event.MouseEvent;
  */
 public abstract class AbstractNodeModel {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     private static final String TREE_BACKGROUND = "Tree.background";
 

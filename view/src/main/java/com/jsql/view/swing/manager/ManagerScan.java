@@ -44,9 +44,6 @@ import java.util.Optional;
  */
 public class ManagerScan extends AbstractManagerList {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final String NAME = "listManagerScan";

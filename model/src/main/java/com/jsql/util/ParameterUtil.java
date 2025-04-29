@@ -25,9 +25,6 @@ import java.util.stream.Collectors;
 
 public class ParameterUtil {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

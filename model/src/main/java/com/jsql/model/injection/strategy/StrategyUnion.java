@@ -23,9 +23,6 @@ import java.util.regex.Pattern;
 
 public class StrategyUnion extends AbstractStrategy {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     protected String visibleIndex;  // matching index

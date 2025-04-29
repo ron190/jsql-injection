@@ -22,9 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public enum BlindOperator {
@@ -205,7 +202,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);
     }
 
-    public BlindOperator getBooleanMode() {
+    public BlindOperator getBlindOperator() {
         return this.blindOperator;
     }
 

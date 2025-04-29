@@ -16,9 +16,6 @@ import java.awt.event.FocusEvent;
 
 public class SyntaxTextArea extends RSyntaxTextArea implements JPlaceholder {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private String placeholderText;

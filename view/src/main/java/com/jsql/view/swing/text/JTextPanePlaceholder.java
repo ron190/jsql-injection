@@ -16,9 +16,6 @@ import java.util.ConcurrentModificationException;
  */
 public class JTextPanePlaceholder extends JTextPane implements JPlaceholder {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**

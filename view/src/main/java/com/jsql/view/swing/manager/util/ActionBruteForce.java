@@ -30,9 +30,6 @@ import java.util.Locale;
  */
 public class ActionBruteForce implements ActionListener, Runnable {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final ManagerBruteForce bruteForceManager;

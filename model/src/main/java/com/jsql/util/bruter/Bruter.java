@@ -9,9 +9,6 @@ import java.util.List;
 
 public class Bruter {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     protected final List<String> characters = new ArrayList<>();

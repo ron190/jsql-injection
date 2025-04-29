@@ -46,9 +46,6 @@ import java.util.stream.Stream;
  */
 public class PanelAddressBar extends JPanel {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final AtomicReference<JTextField> atomicTextFieldAddress = new AtomicReference<>();  // atomic to build dynamically

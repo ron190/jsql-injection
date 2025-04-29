@@ -52,9 +52,6 @@ import java.util.function.IntConsumer;
  */
 public class TabResults extends DnDTabbedPane {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final String TAB_EXPLOIT_FAILURE_INCORRECT_URL = "Tab exploit failure: incorrect URL";

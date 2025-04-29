@@ -18,9 +18,6 @@ import java.util.stream.Collectors;
 
 public class DigestUtil {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private String tokenDigest = null;

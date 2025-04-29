@@ -21,9 +21,6 @@ import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
 public class InjectionMultibit extends AbstractInjectionBit<CallableMultibit> {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private String sourceReference;

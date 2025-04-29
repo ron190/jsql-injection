@@ -13,9 +13,6 @@ import java.util.stream.Stream;
 
 public class CookiesUtil {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final InjectionModel injectionModel;

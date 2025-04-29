@@ -26,9 +26,6 @@ import static name.fraser.neil.plaintext.diff_match_patch.Operation;
  */
 public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin> {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     private static final int LOW = 0;
     private static final int HIGH = 127;

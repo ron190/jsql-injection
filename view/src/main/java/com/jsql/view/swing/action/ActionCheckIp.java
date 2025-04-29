@@ -15,9 +15,6 @@ import java.awt.event.ActionListener;
  */
 public class ActionCheckIp implements ActionListener, Runnable {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     @Override

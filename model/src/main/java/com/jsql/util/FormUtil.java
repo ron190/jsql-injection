@@ -13,9 +13,6 @@ import java.util.Map.Entry;
 
 public class FormUtil {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private static final String INPUT_ATTR_VALUE = "value";

@@ -32,9 +32,6 @@ import java.nio.charset.StandardCharsets;
  */
 public class ActionSaveTab extends AbstractAction {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private ReplaceFileChooser replaceFileChooser;

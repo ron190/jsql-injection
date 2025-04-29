@@ -24,9 +24,6 @@ import java.util.regex.Pattern;
 
 public class SoapUtil {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final InjectionModel injectionModel;

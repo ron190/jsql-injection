@@ -16,9 +16,6 @@ import java.awt.event.ActionEvent;
  */
 public abstract class AbstractCharAction extends TextAction {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

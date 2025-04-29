@@ -36,9 +36,6 @@ import java.util.stream.Stream;
  */
 public class SuspendableGetCharInsertion extends AbstractSuspendable {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private static final String LABEL_PREFIX = "prefix";

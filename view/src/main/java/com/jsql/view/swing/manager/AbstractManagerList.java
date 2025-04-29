@@ -41,9 +41,6 @@ import java.util.stream.StreamSupport;
  */
 public abstract class AbstractManagerList extends JPanel {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final String PRIVILEGE_TOOLTIP = "PRIVILEGE_TOOLTIP";

@@ -21,9 +21,6 @@ import java.util.regex.Pattern;
 
 public class PropertiesUtil {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final Properties properties = new Properties();

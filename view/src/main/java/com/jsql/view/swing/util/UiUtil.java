@@ -44,9 +44,6 @@ import java.util.Objects;
  */
 public class UiUtil {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final Border BORDER_5PX = BorderFactory.createEmptyBorder(5, 5, 5, 5);

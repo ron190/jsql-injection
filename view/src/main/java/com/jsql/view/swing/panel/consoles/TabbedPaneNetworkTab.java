@@ -34,9 +34,6 @@ import java.util.stream.Stream;
 
 public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final RSyntaxTextArea textAreaUrl = new SyntaxTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_URL"));

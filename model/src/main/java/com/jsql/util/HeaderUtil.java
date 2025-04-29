@@ -27,9 +27,6 @@ import java.util.stream.Stream;
 
 public class HeaderUtil {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     public static final String CONTENT_TYPE_REQUEST = "Content-Type";

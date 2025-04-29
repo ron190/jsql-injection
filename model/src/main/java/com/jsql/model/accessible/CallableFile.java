@@ -23,9 +23,6 @@ import java.util.concurrent.Callable;
  */
 public class CallableFile implements Callable<CallableFile> {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     public static final String REQUIRE_STACK = "Read file requirement: stack query";
 

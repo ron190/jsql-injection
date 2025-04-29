@@ -25,9 +25,6 @@ import java.util.stream.StreamSupport;
 
 public class PanelTrailingAddress extends JPanel {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private JMenu itemRadioStrategyError;

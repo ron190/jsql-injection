@@ -18,9 +18,6 @@ import java.awt.event.FocusEvent;
  */
 public abstract class AbstractColoredConsole extends JPopupTextPane {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

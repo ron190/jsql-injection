@@ -30,9 +30,6 @@ import java.util.stream.Stream;
  */
 public class CallableHttpHead implements Callable<CallableHttpHead> {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**

@@ -24,9 +24,6 @@ import java.util.regex.Pattern;
 
 public class WorkerTranslateInto extends SwingWorker<Object, Object> {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private final Properties propertiesLanguageToTranslate = new Properties();

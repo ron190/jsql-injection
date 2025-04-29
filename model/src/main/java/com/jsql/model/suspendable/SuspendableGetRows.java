@@ -42,9 +42,6 @@ import static com.jsql.model.injection.vendor.model.VendorYaml.LIMIT;
  */
 public class SuspendableGetRows extends AbstractSuspendable {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public SuspendableGetRows(InjectionModel injectionModel) {

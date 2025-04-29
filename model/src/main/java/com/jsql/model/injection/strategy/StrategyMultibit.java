@@ -27,9 +27,6 @@ import org.apache.logging.log4j.Logger;
 
 public class StrategyMultibit extends AbstractStrategy {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private InjectionMultibit injectionMultibit;

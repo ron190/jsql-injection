@@ -43,9 +43,6 @@ import java.util.prefs.Preferences;
  */
 public class PanelConsoles extends JPanel {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final String CONSOLE_JAVA_TOOLTIP = "CONSOLE_JAVA_TOOLTIP";

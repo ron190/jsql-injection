@@ -14,9 +14,6 @@ import java.awt.*;
  */
 public class JTextAreaPlaceholder extends JTextArea implements JPlaceholder {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**

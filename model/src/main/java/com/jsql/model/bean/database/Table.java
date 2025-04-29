@@ -22,9 +22,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class Table extends AbstractElementDatabase {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     // The database that contains the current column.

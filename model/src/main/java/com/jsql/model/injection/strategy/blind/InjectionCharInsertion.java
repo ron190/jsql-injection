@@ -24,9 +24,6 @@ import static name.fraser.neil.plaintext.diff_match_patch.Diff;
  */
 public class InjectionCharInsertion {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     // Source code of the FALSE web page (e.g. ?id=-123456789)

@@ -14,9 +14,6 @@ import java.util.concurrent.Flow.Subscription;
 
 public class SubscriberInteraction implements Subscriber<Request> {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private final String packageInteraction;

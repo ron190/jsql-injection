@@ -27,9 +27,6 @@ import org.apache.logging.log4j.Logger;
 
 public class StrategyTime extends AbstractStrategy {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private InjectionTime injectionTime;
@@ -102,7 +99,7 @@ public class StrategyTime extends AbstractStrategy {
             + this.injectionModel.getReportWithoutIndex(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestTimeWithOperator(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
-                    this.injectionTime.getBooleanMode()
+                    this.injectionTime.getBlindOperator()
                 ),
                 "metadataInjectionProcess",
                 null
@@ -132,7 +129,7 @@ public class StrategyTime extends AbstractStrategy {
                 "{} [{}] with [{}]",
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName,
-                () -> this.injectionTime.getBooleanMode().name()
+                () -> this.injectionTime.getBlindOperator().name()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
 

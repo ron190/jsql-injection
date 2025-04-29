@@ -22,9 +22,6 @@ import java.util.concurrent.Future;
  */
 public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

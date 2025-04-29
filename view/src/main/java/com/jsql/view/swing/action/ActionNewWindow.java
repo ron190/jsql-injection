@@ -32,9 +32,6 @@ import java.util.List;
  */
 public class ActionNewWindow extends AbstractAction {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private static final String PATH = SystemUtils.JAVA_HOME + File.separator +"bin"+ File.separator +"java";

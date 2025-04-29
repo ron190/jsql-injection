@@ -20,9 +20,6 @@ import java.util.Map;
  */
 public abstract class AbstractStrategy {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     protected static final String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";

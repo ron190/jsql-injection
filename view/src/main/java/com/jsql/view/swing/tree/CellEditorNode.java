@@ -32,9 +32,6 @@ import java.awt.event.MouseListener;
  */
 public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor, TreeSelectionListener, MouseListener {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

@@ -27,9 +27,6 @@ import java.security.NoSuchAlgorithmException;
  */
 public class CoderListener implements ActionListener {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private final ManagerCoder coderManager;

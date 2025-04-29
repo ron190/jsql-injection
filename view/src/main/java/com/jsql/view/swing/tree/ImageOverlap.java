@@ -26,9 +26,6 @@ import java.util.Objects;
  */
 public class ImageOverlap extends ImageIcon {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

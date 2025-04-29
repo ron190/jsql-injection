@@ -29,9 +29,6 @@ import java.util.List;
  */
 public abstract class AbstractListTransfertHandler extends TransferHandler {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

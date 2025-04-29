@@ -19,9 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SuspendableGetVendor extends AbstractSuspendable {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public SuspendableGetVendor(InjectionModel injectionModel) {

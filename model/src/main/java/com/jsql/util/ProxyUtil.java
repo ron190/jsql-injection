@@ -16,9 +16,6 @@ import java.util.prefs.Preferences;
  */
 public class ProxyUtil {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**

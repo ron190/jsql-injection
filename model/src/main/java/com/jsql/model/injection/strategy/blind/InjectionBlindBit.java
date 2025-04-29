@@ -23,9 +23,6 @@ import static name.fraser.neil.plaintext.diff_match_patch.Operation;
  */
 public class InjectionBlindBit extends AbstractInjectionMonobit<CallableBlindBit> {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private String sourceReferencePage;  // Source code of the TRUE web page (usually ?id=1)

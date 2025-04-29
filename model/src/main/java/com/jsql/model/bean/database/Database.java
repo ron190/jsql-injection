@@ -20,9 +20,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class Database extends AbstractElementDatabase {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     // The number of tables in the database.

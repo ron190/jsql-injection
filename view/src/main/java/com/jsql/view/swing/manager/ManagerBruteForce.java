@@ -34,9 +34,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class ManagerBruteForce extends JPanel {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final String BRUTEFORCE_RUN_BUTTON_TOOLTIP = "BRUTEFORCE_RUN_BUTTON_TOOLTIP";

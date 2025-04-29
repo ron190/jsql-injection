@@ -18,9 +18,6 @@ import java.security.cert.X509Certificate;
  */
 public class CertificateUtil {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private SSLContext sslContext = null;

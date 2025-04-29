@@ -52,9 +52,6 @@ import java.util.regex.Pattern;
  */
 public class ResourceAccess {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

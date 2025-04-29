@@ -38,9 +38,6 @@ import java.util.prefs.Preferences;
 
 public class MenuWindows extends JMenu {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private static final String I18N_SQL_ENGINE = "MENUBAR_SQL_ENGINE";

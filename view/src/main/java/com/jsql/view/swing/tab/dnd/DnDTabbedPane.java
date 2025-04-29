@@ -17,9 +17,6 @@ import java.util.Optional;
 
 public class DnDTabbedPane extends JTabbedPane {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private static final int SCROLL_SIZE = 20;  // Test

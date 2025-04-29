@@ -13,9 +13,6 @@ import java.util.regex.Pattern;
 
 public class TamperingUtil {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final String TAG_OPENED = "<tampering>";

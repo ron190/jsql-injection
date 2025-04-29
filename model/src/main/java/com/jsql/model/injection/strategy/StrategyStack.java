@@ -18,9 +18,6 @@ import java.util.regex.Pattern;
 
 public class StrategyStack extends AbstractStrategy {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private String performanceLength = "0";

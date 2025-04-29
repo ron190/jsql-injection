@@ -33,9 +33,6 @@ import java.awt.event.KeyEvent;
  */
 public class JPopupMenuComponent extends JPopupMenu {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private final JTextComponent component;

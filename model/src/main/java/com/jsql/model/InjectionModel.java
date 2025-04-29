@@ -59,9 +59,6 @@ import java.util.stream.Stream;
  */
 public class InjectionModel extends AbstractModelObservable implements Serializable {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private final transient MediatorVendor mediatorVendor = new MediatorVendor(this);

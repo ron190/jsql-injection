@@ -47,9 +47,6 @@ import java.util.stream.Stream;
  */
 public class JFrameView extends JFrame {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

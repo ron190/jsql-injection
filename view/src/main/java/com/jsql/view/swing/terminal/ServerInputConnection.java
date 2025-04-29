@@ -13,9 +13,6 @@ import java.net.Socket;
 
 public class ServerInputConnection {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final BufferedReader bufferedReader;

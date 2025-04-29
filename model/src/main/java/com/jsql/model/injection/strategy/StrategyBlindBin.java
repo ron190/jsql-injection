@@ -27,12 +27,9 @@ import org.apache.logging.log4j.Logger;
 
 public class StrategyBlindBin extends AbstractStrategy {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private InjectionBlindBin injectionBlindBin;
+    private InjectionBlindBin injectionBlind;
 
     public StrategyBlindBin(InjectionModel injectionModel) {
         super(injectionModel);
@@ -64,7 +61,7 @@ public class StrategyBlindBin extends AbstractStrategy {
             this.allow();
             var requestMessageBinary = new Request();
             requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-            requestMessageBinary.setParameters(this.injectionBlindBin.getInfoMessage());
+            requestMessageBinary.setParameters(this.injectionBlind.getInfoMessage());
             this.injectionModel.sendToViews(requestMessageBinary);
         } else {
             this.unallow();
@@ -82,8 +79,8 @@ public class StrategyBlindBin extends AbstractStrategy {
             this::getName,
             () -> blindOperator
         );
-        this.injectionBlindBin = new InjectionBlindBin(this.injectionModel, blindOperator);
-        this.isApplicable = this.injectionBlindBin.isInjectable();
+        this.injectionBlind = new InjectionBlindBin(this.injectionModel, blindOperator);
+        this.isApplicable = this.injectionBlind.isInjectable();
         if (this.isApplicable) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
@@ -102,7 +99,7 @@ public class StrategyBlindBin extends AbstractStrategy {
             + this.injectionModel.getReportWithoutIndex(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
-                    this.injectionBlindBin.getBooleanMode()
+                    this.injectionBlind.getBlindOperator()
                 ),
                 "metadataInjectionProcess",
                 null
@@ -118,7 +115,7 @@ public class StrategyBlindBin extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
-        return this.injectionBlindBin.inject(
+        return this.injectionBlind.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),
             stoppable
         );
@@ -132,7 +129,7 @@ public class StrategyBlindBin extends AbstractStrategy {
                 "{} [{}] with [{}]",
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName,
-                () -> this.injectionBlindBin.getBooleanMode().name()
+                () -> this.injectionBlind.getBlindOperator().name()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
 

@@ -38,9 +38,6 @@ import java.util.stream.Stream;
  */
 public class ConnectionUtil {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private String urlByUser;  // URL entered by user

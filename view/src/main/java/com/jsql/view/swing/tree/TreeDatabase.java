@@ -23,9 +23,6 @@ import java.util.Map;
 
 public class TreeDatabase extends JTree {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

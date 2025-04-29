@@ -25,9 +25,6 @@ import java.awt.event.FocusEvent;
  */
 public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements DecoratorJComponent<JTextArea> {
 
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

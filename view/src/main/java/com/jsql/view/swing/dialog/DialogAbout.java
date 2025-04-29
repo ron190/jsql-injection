@@ -38,9 +38,6 @@ import java.util.Objects;
  */
 public class DialogAbout extends JDialog {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
