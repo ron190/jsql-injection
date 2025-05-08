@@ -8,13 +8,11 @@ public class Archive implements Serializable {
 
     private String getStatus = StringUtils.EMPTY;
     private String getPathConf = StringUtils.EMPTY;
-    private String getConfLoid = StringUtils.EMPTY;
     private String getConfLength = StringUtils.EMPTY;
     private String putCmd = StringUtils.EMPTY;
     private String reloadConf = StringUtils.EMPTY;
     private String getCmd = StringUtils.EMPTY;
     private String runWal = StringUtils.EMPTY;
-    private String getResult = StringUtils.EMPTY;
 
     public String getGetPathConf() {
         return this.getPathConf;
@@ -30,14 +28,6 @@ public class Archive implements Serializable {
 
     public void setGetStatus(String getStatus) {
         this.getStatus = getStatus;
-    }
-
-    public String getGetConfLoid() {
-        return this.getConfLoid;
-    }
-
-    public void setGetConfLoid(String getConfLoid) {
-        this.getConfLoid = getConfLoid;
     }
 
     public String getGetConfLength() {
@@ -78,13 +68,5 @@ public class Archive implements Serializable {
 
     public void setRunWal(String runWal) {
         this.runWal = runWal;
-    }
-
-    public String getGetResult() {
-        return this.getResult;
-    }
-
-    public void setGetResult(String getResult) {
-        this.getResult = getResult;
     }
 }

@@ -1,5 +1,6 @@
 package com.jsql.util.bruter;
 
+import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -87,26 +88,22 @@ public class Bruter {
 
     public String calculateTimeElapsed() {
         long timeTaken = this.calculateTimeDifference();
-        
         int seconds = (int) timeTaken;
         
-        var minutes = 0;
-        var hours = 0;
-        var days = 0;
-        
-        minutes = seconds / 60;
+        var minutes = seconds / 60;
         seconds = seconds % 60;
-        hours = minutes / 60;
+        var hours = minutes / 60;
         minutes = minutes % 60;
-        days = hours / 24;
+        var days = hours / 24;
         hours = hours % 24;
-        
+
         return String.format(
-            "Time elapsed: %sdays %sh %smin %ss",
-            days,
-            hours,
-            minutes,
-            seconds
+            "%s: %s %s %s %s %s %s %s %s",
+            "Time elapsed",
+            days, I18nUtil.valueByKey("BRUTEFORCE_DAYS"),
+            hours, I18nUtil.valueByKey("BRUTEFORCE_HOURS"),
+            minutes, I18nUtil.valueByKey("BRUTEFORCE_MINUTES"),
+            seconds, I18nUtil.valueByKey("BRUTEFORCE_SECONDS")
         );
     }
 

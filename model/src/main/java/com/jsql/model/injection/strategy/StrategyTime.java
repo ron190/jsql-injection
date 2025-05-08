@@ -29,7 +29,7 @@ public class StrategyTime extends AbstractStrategy {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private InjectionTime injectionTime;
+    private InjectionTime injection;
 
     public StrategyTime(InjectionModel injectionModel) {
         super(injectionModel);
@@ -61,7 +61,7 @@ public class StrategyTime extends AbstractStrategy {
             this.allow();
             var requestMessageBinary = new Request();
             requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-            requestMessageBinary.setParameters(this.injectionTime.getInfoMessage());
+            requestMessageBinary.setParameters(this.injection.getInfoMessage());
             this.injectionModel.sendToViews(requestMessageBinary);
         } else {
             this.unallow();
@@ -79,8 +79,8 @@ public class StrategyTime extends AbstractStrategy {
             this::getName,
             () -> blindOperator
         );
-        this.injectionTime = new InjectionTime(this.injectionModel, blindOperator);
-        this.isApplicable = this.injectionTime.isInjectable();
+        this.injection = new InjectionTime(this.injectionModel, blindOperator);
+        this.isApplicable = this.injection.isInjectable();
         if (this.isApplicable) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
@@ -99,7 +99,7 @@ public class StrategyTime extends AbstractStrategy {
             + this.injectionModel.getReportWithoutIndex(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestTimeWithOperator(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
-                    this.injectionTime.getBlindOperator()
+                    this.injection.getBlindOperator()
                 ),
                 "metadataInjectionProcess",
                 null
@@ -115,7 +115,7 @@ public class StrategyTime extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
-        return this.injectionTime.inject(
+        return this.injection.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(sqlQuery, startPosition, false),
             stoppable
         );
@@ -129,7 +129,7 @@ public class StrategyTime extends AbstractStrategy {
                 "{} [{}] with [{}]",
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName,
-                () -> this.injectionTime.getBlindOperator().name()
+                () -> this.injection.getBlindOperator().name()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
 

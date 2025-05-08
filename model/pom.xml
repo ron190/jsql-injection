@@ -54,7 +54,7 @@
         <bootstrap.version>5.3.5</bootstrap.version>
         <!-- required since commons-text:1.11.0 not working -->
         <commons-lang3.version>3.17.0</commons-lang3.version>
-        <cubrid-jdbc.version>11.3.0.0047</cubrid-jdbc.version>
+        <cubrid-jdbc.version>11.3.1.0050</cubrid-jdbc.version>
         <dnsjava.version>3.6.3</dnsjava.version>
         <gmavenplus-plugin.version>4.2.0</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
@@ -83,7 +83,7 @@
         <!-- failure with 5.28.2 -->
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
-        <ojdbc8.version>23.7.0.25.01</ojdbc8.version>
+        <ojdbc8.version>23.8.0.25.04</ojdbc8.version>
         <pitest-junit5-plugin.version>1.2.2</pitest-junit5-plugin.version>
         <postgresql.version>42.7.5</postgresql.version>
         <snakeyaml.version>2.4</snakeyaml.version>

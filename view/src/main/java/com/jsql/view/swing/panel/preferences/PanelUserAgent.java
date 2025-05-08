@@ -33,6 +33,7 @@ public class PanelUserAgent extends JPanel {
                 );
             }
         });
+        textfieldCustomUserAgent.setCaretPosition(0);
         var scrollPane = new JScrollPane(textfieldCustomUserAgent);
 
         var labelOrigin = new JLabel("<html><b>Connection user agent</b></html>");

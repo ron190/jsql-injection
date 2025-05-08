@@ -122,33 +122,30 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
     private void updateResult(final HashBruter hashBruter) {
         this.bruteForceManager.getResult().setText(I18nUtil.valueByKey("BRUTEFORCE_CURRENT_STRING") + ": " + hashBruter.getPassword());
-        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey("BRUTEFORCE_CURRENT_HASH") + ": " + hashBruter.getGeneratedHash() + "\n");
-        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey("BRUTEFORCE_POSSIBILITIES") + ": " + hashBruter.getNumberOfPossibilities());
-        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey("BRUTEFORCE_CHECKED_HASHES") + ": " + hashBruter.getCounter());
-        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey("BRUTEFORCE_ESTIMATED") + ": " + hashBruter.getRemainder());
-        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey("BRUTEFORCE_PERSECOND") + ": " + hashBruter.getPerSecond() + "\n");
-        this.append(this.bruteForceManager.getResult(), hashBruter.calculateTimeElapsed());
+        this.append(I18nUtil.valueByKey("BRUTEFORCE_CURRENT_HASH") + ": " + hashBruter.getGeneratedHash() + "\n");
+        this.append(I18nUtil.valueByKey("BRUTEFORCE_POSSIBILITIES") + ": " + hashBruter.getNumberOfPossibilities());
+        this.append(I18nUtil.valueByKey("BRUTEFORCE_CHECKED_HASHES") + ": " + hashBruter.getCounter());
+        this.append(I18nUtil.valueByKey("BRUTEFORCE_ESTIMATED") + ": " + hashBruter.getRemainder());
+        this.append(I18nUtil.valueByKey("BRUTEFORCE_PERSECOND") + ": " + hashBruter.getPerSecond() + "\n");
+        this.append(hashBruter.calculateTimeElapsed());
 
         if (hashBruter.getPerSecond() != 0) {
             float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / hashBruter.getPerSecond();
-            this.append(
-                this.bruteForceManager.getResult(),
-                I18nUtil.valueByKey("BRUTEFORCE_TRAVERSING_REMAINING") + ": "
-                + Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f)) + I18nUtil.valueByKey("BRUTEFORCE_DAYS") + StringUtils.SPACE
-                + Math.round(Math.floor(remainingDuration / 60f / 60f % 24))    + I18nUtil.valueByKey("BRUTEFORCE_HOURS") + StringUtils.SPACE
-                + Math.round(Math.floor(remainingDuration / 60f % 60))          + I18nUtil.valueByKey("BRUTEFORCE_MINUTES") + StringUtils.SPACE
-                + Math.round(remainingDuration % 60)                            + I18nUtil.valueByKey("BRUTEFORCE_SECONDS")
-            );
+            this.append(String.format(
+                "%s: %s %s %s %s %s %s %s %s",
+                I18nUtil.valueByKey("BRUTEFORCE_TRAVERSING_REMAINING"),
+                Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f)), I18nUtil.valueByKey("BRUTEFORCE_DAYS"),
+                Math.round(Math.floor(remainingDuration / 60f / 60f % 24)), I18nUtil.valueByKey("BRUTEFORCE_HOURS"),
+                Math.round(Math.floor(remainingDuration / 60f % 60)), I18nUtil.valueByKey("BRUTEFORCE_MINUTES"),
+                Math.round(remainingDuration % 60), I18nUtil.valueByKey("BRUTEFORCE_SECONDS")
+            ));
         }
 
-        this.append(
-            this.bruteForceManager.getResult(),
-            String.format(
-                "%s: %s%%",
-                I18nUtil.valueByKey("BRUTEFORCE_PERCENT_DONE"),
-                100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities()
-            )
-        );
+        this.append(String.format(
+            "%s: %s%%",
+            I18nUtil.valueByKey("BRUTEFORCE_PERCENT_DONE"),
+            100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities()
+        ));
     }
 
     private void initBruter(final HashBruter hashBruter) {
@@ -185,15 +182,12 @@ public class ActionBruteForce implements ActionListener, Runnable {
         if (this.isStopped) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_ABORTED"));
         } else if (hashBruter.isFound()) {
-            this.append(
-                this.bruteForceManager.getResult(),
-                String.format(
-                    "%n%s:%n%s => %s",
-                    I18nUtil.valueByKey("BRUTEFORCE_FOUND_HASH"),
-                    hashBruter.getGeneratedHash(),
-                    hashBruter.getPassword()
-                )
-            );
+            this.append(String.format(
+                "%n%s:%n%s => %s",
+                I18nUtil.valueByKey("BRUTEFORCE_FOUND_HASH"),
+                hashBruter.getGeneratedHash(),
+                hashBruter.getPassword()
+            ));
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
                 "{}: {} => {}",
@@ -202,13 +196,14 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 hashBruter::getPassword
             );
         } else if (hashBruter.isDone()) {
-            this.append(this.bruteForceManager.getResult(), "\n"+ I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
+            this.append("\n"+ I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
         }
     }
-    
-    public void append(JTextPane textPane, String text) {
+
+    private void append(String text) {
         try {
+            JTextPane textPane = this.bruteForceManager.getResult();
             textPane.getDocument().insertString(
                 textPane.getDocument().getLength(),
                 (textPane.getDocument().getLength() == 0 ? StringUtils.EMPTY : "\n") + text,

@@ -143,13 +143,11 @@ resource:
     archive:
       getStatus: select current_setting('archive_mode')
       getPathConf: select setting from pg_settings where name = 'config_file'
-      getConfLoid: select lo_import('%s')::text
       getConfLength: select length(convert_from(lo_get(%s),'utf8'))::text
-      putCmd: select lo_put(%s, %s, E'\narchive_command = \'%s > /tmp/cmd.txt\'')::text
+      putCmd: select lo_put(%s, %s, E'\narchive_command = \'%s > %s\'')::text
       reloadConf: select pg_reload_conf()::text
       getCmd: select current_setting('archive_command')
       runWal: select pg_switch_wal()::text
-      getResult: select lo_import('/tmp/cmd.txt')::text
   
     library:
       loFromText: select lo_from_bytea(0, decode('%s','hex'))::text

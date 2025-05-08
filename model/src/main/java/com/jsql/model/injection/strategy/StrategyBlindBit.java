@@ -29,7 +29,7 @@ public class StrategyBlindBit extends AbstractStrategy {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private InjectionBlindBit injectionBlind;
+    private InjectionBlindBit injection;
     
     public StrategyBlindBit(InjectionModel injectionModel) {
         super(injectionModel);
@@ -61,7 +61,7 @@ public class StrategyBlindBit extends AbstractStrategy {
             this.allow();
             var requestMessageBinary = new Request();
             requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-            requestMessageBinary.setParameters(this.injectionBlind.getInfoMessage());
+            requestMessageBinary.setParameters(this.injection.getInfoMessage());
             this.injectionModel.sendToViews(requestMessageBinary);
         } else {
             this.unallow();
@@ -79,8 +79,8 @@ public class StrategyBlindBit extends AbstractStrategy {
             this::getName,
             () -> blindOperator
         );
-        this.injectionBlind = new InjectionBlindBit(this.injectionModel, blindOperator);
-        this.isApplicable = this.injectionBlind.isInjectable();
+        this.injection = new InjectionBlindBit(this.injectionModel, blindOperator);
+        this.isApplicable = this.injection.isInjectable();
         if (this.isApplicable) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
@@ -99,7 +99,7 @@ public class StrategyBlindBit extends AbstractStrategy {
             + this.injectionModel.getReportWithoutIndex(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
-                    this.injectionBlind.getBlindOperator()
+                    this.injection.getBlindOperator()
                 ),
                 "metadataInjectionProcess",
                 null
@@ -115,7 +115,7 @@ public class StrategyBlindBit extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
-        return this.injectionBlind.inject(
+        return this.injection.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),
             stoppable
         );
@@ -129,7 +129,7 @@ public class StrategyBlindBit extends AbstractStrategy {
                 "{} [{}] with [{}]",
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName,
-                () -> this.injectionBlind.getBlindOperator().name()
+                () -> this.injection.getBlindOperator().name()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
 

@@ -25,7 +25,6 @@ public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
     private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();
     private final InjectionBlindBin injectionBlind;
 
-    private final InjectionModel injectionModel;
     private final String metadataInjectionProcess;
 
     /**
@@ -43,10 +42,9 @@ public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
         this.low = low;
         this.mid = mid;
         this.high = high;
-        this.injectionModel = injectionModel;
         this.injectionBlind = injectionBlind;
         this.metadataInjectionProcess = metadataInjectionProcess;
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);
+        this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);
     }
 
     /**
@@ -62,7 +60,7 @@ public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
         String metadataInjectionProcess
     ) {
         this(sqlQuery, injectionModel, injectionBlind, blindOperator, low, mid, high, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBin(sqlQuery, indexChar, mid, blindOperator);
+        this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBin(sqlQuery, indexChar, mid, blindOperator);
         this.currentIndex = indexChar;
     }
 

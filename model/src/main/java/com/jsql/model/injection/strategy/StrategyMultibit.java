@@ -29,7 +29,7 @@ public class StrategyMultibit extends AbstractStrategy {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private InjectionMultibit injectionMultibit;
+    private InjectionMultibit injection;
 
     public StrategyMultibit(InjectionModel injectionModel) {
         super(injectionModel);
@@ -58,7 +58,7 @@ public class StrategyMultibit extends AbstractStrategy {
             this.allow();
             var requestMessageBinary = new Request();
             requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-            requestMessageBinary.setParameters(this.injectionMultibit.getInfoMessage());
+            requestMessageBinary.setParameters(this.injection.getInfoMessage());
             this.injectionModel.sendToViews(requestMessageBinary);
         } else {
             this.unallow();
@@ -70,10 +70,14 @@ public class StrategyMultibit extends AbstractStrategy {
             return;
         }
         this.logChecking();
-        this.injectionMultibit = new InjectionMultibit(this.injectionModel, blindOperator);
-        this.isApplicable = this.injectionMultibit.isInjectable();
+        this.injection = new InjectionMultibit(this.injectionModel, blindOperator);
+        this.isApplicable = this.injection.isInjectable();
         if (this.isApplicable) {
-            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Multibit injection", () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE));
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_SUCCESS,
+                "{} Multibit injection",
+                () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE)
+            );
         }
     }
 
@@ -105,7 +109,7 @@ public class StrategyMultibit extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
-        return this.injectionMultibit.inject(
+        return this.injection.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),
             stoppable
         );

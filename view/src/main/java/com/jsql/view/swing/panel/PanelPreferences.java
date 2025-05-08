@@ -10,6 +10,7 @@ import org.apache.commons.text.WordUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class PanelPreferences extends JPanel {
     
@@ -80,11 +81,15 @@ public class PanelPreferences extends JPanel {
 
     private void addToCard(JPanel cards, JPanel panel, CategoryPreference category) {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-        var scrollPane = new JScrollPane(panel);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());  // required to hide border
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
-        cards.add(scrollPane, category.name());
+        if (Arrays.asList(CategoryPreference.USER_AGENT, CategoryPreference.EXPLOIT).contains(category)) {
+            cards.add(panel, category.name());
+        } else {
+            var scrollPane = new JScrollPane(panel);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder());  // required to hide border
+            scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+            scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+            cards.add(scrollPane, category.name());
+        }
     }
 
     
