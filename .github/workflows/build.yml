@@ -30,6 +30,8 @@ jobs:
       # experimental enabled on jdk21 to prevent 'Mockito cannot mock this class: class org.jsoup.nodes.Document'
       MAVEN_BYTEBUDDY: ${{ matrix.bytebuddy }}
       DOCKER_RESOURCES: ${{ inputs.DOCKER_RESOURCES }}
+      # fix mysql:5.5.40 error: Pulling Schema 1 images have been deprecated and disabled by default since containerd v2.0
+      CONTAINERD_ENABLE_DEPRECATED_PULL_SCHEMA_1_IMAGE: 1
     steps:
 
       - name: Checkout code
