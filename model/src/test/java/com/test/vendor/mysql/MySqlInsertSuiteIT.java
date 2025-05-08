@@ -10,6 +10,11 @@ import org.junitpioneer.jupiter.RetryingTest;
 class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @Override
+    public void initTable() {
+        this.jsqlTableName = "StudentForDelete";
+    }
+
+    @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
@@ -38,10 +43,9 @@ class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model.beginInjection();
     }
     
-    // Insert API add row to the table: listValues() not usable
     @Override
     @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
+    public void listDatabases() throws JSqlException {  // API changes rows: listValues() not usable
         super.listDatabases();
     }
 

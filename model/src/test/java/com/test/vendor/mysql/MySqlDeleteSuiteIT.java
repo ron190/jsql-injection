@@ -3,6 +3,7 @@ package com.test.vendor.mysql;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
@@ -25,7 +26,14 @@ class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
         );
 
         model.setIsScanning(true);
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyTimeDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
@@ -37,8 +45,12 @@ class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @Override
     @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
+    public void listDatabases() throws JSqlException {  // API changes rows: listValues() not usable
         super.listDatabases();
+    }
+
+    @AfterEach
+    void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()

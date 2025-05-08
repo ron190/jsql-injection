@@ -10,6 +10,11 @@ import org.junitpioneer.jupiter.RetryingTest;
 class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @Override
+    public void initTable() {
+        this.jsqlTableName = "StudentForDelete";
+    }
+
+    @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
@@ -37,11 +42,11 @@ class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {
         
         model.beginInjection();
     }
-    
+
     @Override
     @RetryingTest(3)
-    public void listValues() throws JSqlException {
-        super.listValues();
+    public void listDatabases() throws JSqlException {  // API changes rows: listValues() not usable
+        super.listDatabases();
     }
 
     @AfterEach

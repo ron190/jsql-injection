@@ -181,12 +181,12 @@ public class HibernateRestController {
     
     @RequestMapping("/insert")
     public Greeting endpointInsert(@RequestParam(value="name", defaultValue="World") String name) {
-        return this.getResponse(name, "insert into Student select * from Student where 'not_found' = '%s'", true, true, false);
+        return this.getResponse(name, "insert into StudentForDelete select * from StudentForDelete where 'not_found' = '%s'", true, true, false);
     }
     
     @RequestMapping("/update")
     public Greeting endpointUpdate(@RequestParam(value="name", defaultValue="World") String name) {
-        return this.getResponse(name, "update Student set roll_no = '' where 'not_found' = '%s'", true, true, false);
+        return this.getResponse(name, "update StudentForDelete set Class_Name = '' where 'not_found' = '%s'", true, true, false);
     }
 
     @RequestMapping("/order-by")
