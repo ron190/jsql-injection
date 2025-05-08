@@ -21,7 +21,7 @@ public abstract class ConcreteMySqlSuiteIT extends AbstractTestSuite {
 
         this.jsqlDatabaseName = "musicstore";
         this.initTable();
-        this.jsqlColumnName = "Student_Id";
+        this.jsqlColumnName = "Roll_No";
         
         this.jdbcColumnForDatabaseName = "TABLE_SCHEMA";
         this.jdbcColumnForTableName = "TABLE_NAME";

@@ -81,7 +81,7 @@ public class SpringApp {
     public static final List<SimpleEntry<Properties, String>> propertiesByEngine = Arrays.asList(
         new SimpleEntry<>(SpringApp.propsH2, "hibernate/hibernate.h2.properties"),
         new SimpleEntry<>(SpringApp.propsMysql, "hibernate/hibernate.mysql.properties"),
-        new SimpleEntry<>(SpringApp.propsMysqlError, "hibernate/hibernate.mysql-5-5-40.properties"),
+        new SimpleEntry<>(SpringApp.propsMysqlError, "hibernate/hibernate.mysql-5-5-53.properties"),
         new SimpleEntry<>(SpringApp.propsPostgres, "hibernate/hibernate.postgres.properties"),
         new SimpleEntry<>(SpringApp.propsSqlServer, "hibernate/hibernate.sqlserver.properties"),
         new SimpleEntry<>(SpringApp.propsCubrid, "hibernate/hibernate.cubrid.properties"),

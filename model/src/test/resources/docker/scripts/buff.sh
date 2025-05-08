@@ -7,7 +7,7 @@ cat <<EOF | sudo docker exec -i jsql-mysql /bin/bash
   '
 EOF
 
-cat <<EOF | sudo docker exec -i jsql-mysql-5-5-40 /bin/bash
+cat <<EOF | sudo docker exec -i jsql-mysql-5-5-53 /bin/bash
   mysql -uroot -pmy-secret-pw -e '
     SET GLOBAL max_connections = 100000;
     SET GLOBAL thread_cache_size = 16384;
