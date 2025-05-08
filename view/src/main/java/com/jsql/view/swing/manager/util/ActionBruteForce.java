@@ -12,6 +12,7 @@ package com.jsql.view.swing.manager.util;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.bruter.Bruter;
 import com.jsql.util.bruter.HashBruter;
 import com.jsql.view.swing.manager.ManagerBruteForce;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -132,7 +133,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         if (hashBruter.getPerSecond() != 0) {
             float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / hashBruter.getPerSecond();
             this.append(String.format(
-                "%s: %s %s %s %s %s %s %s %s",
+                Bruter.PATTERN_PERIOD,
                 I18nUtil.valueByKey("BRUTEFORCE_TRAVERSING_REMAINING"),
                 Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f)), I18nUtil.valueByKey("BRUTEFORCE_DAYS"),
                 Math.round(Math.floor(remainingDuration / 60f / 60f % 24)), I18nUtil.valueByKey("BRUTEFORCE_HOURS"),

@@ -11,6 +11,7 @@ import java.util.List;
 public class Bruter {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
+    public static final String PATTERN_PERIOD = "%s: %s %s %s %s %s %s %s %s";
 
     protected final List<String> characters = new ArrayList<>();
      
@@ -98,7 +99,7 @@ public class Bruter {
         hours = hours % 24;
 
         return String.format(
-            "%s: %s %s %s %s %s %s %s %s",
+            Bruter.PATTERN_PERIOD,
             "Time elapsed",
             days, I18nUtil.valueByKey("BRUTEFORCE_DAYS"),
             hours, I18nUtil.valueByKey("BRUTEFORCE_HOURS"),

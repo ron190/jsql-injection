@@ -95,7 +95,7 @@ class BruterSpock extends Specification {
         then:
             conditionsHashNotFound.eventually {}
             bruter.done == false
-            bruter.calculateTimeElapsed() =~ /Time elapsed: \ddays \dh \dmin \ds/
+            bruter.calculateTimeElapsed() =~ /Time elapsed: \d days \d h \d min \d s/
             bruter.getPerSecond() > 0
     }
     
@@ -105,25 +105,25 @@ class BruterSpock extends Specification {
             bruter.starttime = 0000000000000000d
             bruter.endtime =   0003600000000000d
         then:
-            bruter.calculateTimeElapsed() =~ /Time elapsed: 0days 1h 0min 0s/
+            bruter.calculateTimeElapsed() =~ /Time elapsed: 0 days 1 h 0 min 0 s/
         
         when:
             bruter.starttime = 0000000000000000d
             bruter.endtime =   0000060000000000d
         then:
-            bruter.calculateTimeElapsed() =~ /Time elapsed: 0days 0h 1min 0s/
+            bruter.calculateTimeElapsed() =~ /Time elapsed: 0 days 0 h 1 min 0 s/
         
         when:
             bruter.starttime = 0000000000000000d
             bruter.endtime =   0093784000000000d
         then:
-            bruter.calculateTimeElapsed() =~ /Time elapsed: 1days 2h 3min 4s/
+            bruter.calculateTimeElapsed() =~ /Time elapsed: 1 days 2 h 3 min 4 s/
         
         when:
             bruter.starttime = 0000000000000000d
             bruter.endtime =   0090061000000000d
         then:
-            bruter.calculateTimeElapsed() =~ /Time elapsed: 1days 1h 1min 1s/
+            bruter.calculateTimeElapsed() =~ /Time elapsed: 1 days 1 h 1 min 1 s/
     }
     
     def setup() {
