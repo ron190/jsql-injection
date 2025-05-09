@@ -32,10 +32,7 @@ import java.util.List;
  */
 public class MenuActionNewValue implements ActionListener {
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L38">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L35">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     /**
      * List to add new items.
@@ -46,98 +43,98 @@ public class MenuActionNewValue implements ActionListener {
      * Create action to add new item list.
      * @param myList List to add new items.
      */
-<span class="fc" id="L49">    public MenuActionNewValue(DnDList myList) {</span>
-<span class="fc" id="L50">        this.myList = myList;</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L46">    public MenuActionNewValue(DnDList myList) {</span>
+<span class="fc" id="L47">        this.myList = myList;</span>
+<span class="fc" id="L48">    }</span>
     
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-<span class="nc" id="L55">        var panel = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L56">        final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();</span>
-<span class="nc" id="L57">        var labelAddValue = new JLabel(I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_LABEL&quot;) + &quot;:&quot;);</span>
-<span class="nc" id="L58">        panel.add(labelAddValue, BorderLayout.NORTH);</span>
-<span class="nc" id="L59">        I18nViewUtil.addComponentForKey(&quot;LIST_ADD_VALUE_LABEL&quot;, labelAddValue);</span>
-<span class="nc" id="L60">        panel.add(new JScrollPane(textarea));</span>
+<span class="nc" id="L52">        var panel = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L53">        final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();</span>
+<span class="nc" id="L54">        var labelAddValue = new JLabel(I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_LABEL&quot;) + &quot;:&quot;);</span>
+<span class="nc" id="L55">        panel.add(labelAddValue, BorderLayout.NORTH);</span>
+<span class="nc" id="L56">        I18nViewUtil.addComponentForKey(&quot;LIST_ADD_VALUE_LABEL&quot;, labelAddValue);</span>
+<span class="nc" id="L57">        panel.add(new JScrollPane(textarea));</span>
 
-<span class="nc" id="L62">        panel.setPreferredSize(new Dimension(600, 400));</span>
-<span class="nc" id="L63">        panel.setMinimumSize(new Dimension(600, 400));</span>
+<span class="nc" id="L59">        panel.setPreferredSize(new Dimension(600, 400));</span>
+<span class="nc" id="L60">        panel.setMinimumSize(new Dimension(600, 400));</span>
         
-<span class="nc" id="L65">        textarea.addMouseListener(new MouseAdapter() {</span>
+<span class="nc" id="L62">        textarea.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="nc" id="L68">                super.mousePressed(e);</span>
-<span class="nc" id="L69">                textarea.requestFocusInWindow();</span>
-<span class="nc" id="L70">            }</span>
+<span class="nc" id="L65">                super.mousePressed(e);</span>
+<span class="nc" id="L66">                textarea.requestFocusInWindow();</span>
+<span class="nc" id="L67">            }</span>
         });
 
-<span class="nc" id="L73">        int result = -1;</span>
+<span class="nc" id="L70">        int result = -1;</span>
                
         // Unhandled NullPointerException #92858 on showOptionDialog()
         // Unhandled IllegalArgumentException #92859 on showOptionDialog()
         // Fix #70832: ClassCastException on showOptionDialog()
         try {
-<span class="nc" id="L79">            result = JOptionPane.showOptionDialog(</span>
-<span class="nc" id="L80">                this.myList.getTopLevelAncestor(),</span>
+<span class="nc" id="L76">            result = JOptionPane.showOptionDialog(</span>
+<span class="nc" id="L77">                this.myList.getTopLevelAncestor(),</span>
                 panel,
-<span class="nc" id="L82">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_TITLE&quot;),</span>
+<span class="nc" id="L79">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_TITLE&quot;),</span>
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 new String[] {
-<span class="nc" id="L87">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_OK&quot;),</span>
-<span class="nc" id="L88">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
+<span class="nc" id="L84">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_OK&quot;),</span>
+<span class="nc" id="L85">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
                 },
-<span class="nc" id="L90">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
+<span class="nc" id="L87">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
             );
-<span class="nc" id="L92">        } catch (NullPointerException | IllegalArgumentException | ClassCastException e) {</span>
-<span class="nc" id="L93">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L94">        }</span>
+<span class="nc" id="L89">        } catch (NullPointerException | IllegalArgumentException | ClassCastException e) {</span>
+<span class="nc" id="L90">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L91">        }</span>
 
-<span class="nc bnc" id="L96" title="All 4 branches missed.">        if (StringUtils.isEmpty(textarea.getText()) || result != JOptionPane.YES_OPTION) {</span>
-<span class="nc" id="L97">            return;</span>
+<span class="nc bnc" id="L93" title="All 4 branches missed.">        if (StringUtils.isEmpty(textarea.getText()) || result != JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L94">            return;</span>
         }
 
-<span class="nc" id="L100">        var lastIndex = Math.max(this.myList.getSelectedIndex(), 0);</span>
-<span class="nc" id="L101">        int firstIndex = lastIndex;</span>
+<span class="nc" id="L97">        var lastIndex = Math.max(this.myList.getSelectedIndex(), 0);</span>
+<span class="nc" id="L98">        int firstIndex = lastIndex;</span>
         
-<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (ManagerScan.NAME.equals(this.myList.getName())) {</span>
-<span class="nc" id="L104">            lastIndex = this.addToScanList(textarea, lastIndex);</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (ManagerScan.NAME.equals(this.myList.getName())) {</span>
+<span class="nc" id="L101">            lastIndex = this.addToScanList(textarea, lastIndex);</span>
         } else {
-<span class="nc" id="L106">            lastIndex = this.addToList(textarea, lastIndex);</span>
+<span class="nc" id="L103">            lastIndex = this.addToList(textarea, lastIndex);</span>
         }
 
-<span class="nc" id="L109">        this.myList.setSelectionInterval(firstIndex, lastIndex - 1);</span>
-<span class="nc" id="L110">        this.myList.scrollRectToVisible(</span>
-<span class="nc" id="L111">            this.myList.getCellBounds(</span>
-<span class="nc" id="L112">                this.myList.getMinSelectionIndex(),</span>
-<span class="nc" id="L113">                this.myList.getMaxSelectionIndex()</span>
+<span class="nc" id="L106">        this.myList.setSelectionInterval(firstIndex, lastIndex - 1);</span>
+<span class="nc" id="L107">        this.myList.scrollRectToVisible(</span>
+<span class="nc" id="L108">            this.myList.getCellBounds(</span>
+<span class="nc" id="L109">                this.myList.getMinSelectionIndex(),</span>
+<span class="nc" id="L110">                this.myList.getMaxSelectionIndex()</span>
             )
         );
-<span class="nc" id="L116">        textarea.setText(null);</span>
-<span class="nc" id="L117">    }</span>
+<span class="nc" id="L113">        textarea.setText(null);</span>
+<span class="nc" id="L114">    }</span>
 
     private int addToList(final JTextArea textarea, int index) {
-<span class="nc" id="L120">        int lastIndex = index;</span>
+<span class="nc" id="L117">        int lastIndex = index;</span>
         
-<span class="nc bnc" id="L122" title="All 2 branches missed.">        for (String newItem: textarea.getText().split(&quot;\\n&quot;)) {</span>
-<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(newItem)) {</span>
-<span class="nc" id="L124">                ((DefaultListModel&lt;ItemList&gt;) this.myList.getModel()).add(</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        for (String newItem: textarea.getText().split(&quot;\\n&quot;)) {</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(newItem)) {</span>
+<span class="nc" id="L121">                ((DefaultListModel&lt;ItemList&gt;) this.myList.getModel()).add(</span>
                     lastIndex++,
-<span class="nc" id="L126">                    new ItemList(newItem.replace(&quot;\\&quot;, &quot;/&quot;))</span>
+<span class="nc" id="L123">                    new ItemList(newItem.replace(&quot;\\&quot;, &quot;/&quot;))</span>
                 );
             }
         }
-<span class="nc" id="L130">        return lastIndex;</span>
+<span class="nc" id="L127">        return lastIndex;</span>
     }
 
     private int addToScanList(final JTextArea textarea, int index) {
-<span class="nc" id="L134">        int lastIndex = index;</span>
-<span class="nc" id="L135">        List&lt;ItemListScan&gt; listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace(&quot;\\&quot;, &quot;/&quot;));</span>
+<span class="nc" id="L131">        int lastIndex = index;</span>
+<span class="nc" id="L132">        List&lt;ItemListScan&gt; listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace(&quot;\\&quot;, &quot;/&quot;));</span>
         
-<span class="nc bnc" id="L137" title="All 2 branches missed.">        for (ItemListScan item: listParsedItems) {</span>
-<span class="nc" id="L138">            ((DefaultListModel&lt;ItemList&gt;) this.myList.getModel()).add(lastIndex++, item);</span>
-<span class="nc" id="L139">        }</span>
-<span class="nc" id="L140">        return lastIndex;</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        for (ItemListScan item: listParsedItems) {</span>
+<span class="nc" id="L135">            ((DefaultListModel&lt;ItemList&gt;) this.myList.getModel()).add(lastIndex++, item);</span>
+<span class="nc" id="L136">        }</span>
+<span class="nc" id="L137">        return lastIndex;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

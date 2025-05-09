@@ -13,89 +13,86 @@ import java.net.Socket;
 
 public class ServerInputConnection {
 
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="nc" id="L19">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="nc" id="L16">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     private final BufferedReader bufferedReader;
     private final Socket clientSocket;
     private final ServerInput serverInput;
     private final ExploitReverseShell exploitReverseShell;
-<span class="nc" id="L25">    private boolean running = true;</span>
+<span class="nc" id="L22">    private boolean running = true;</span>
     private String command;
 
-<span class="nc" id="L28">    public ServerInputConnection(ExploitReverseShell exploitReverseShell, Socket clientSocket, ServerInput serverInput) throws IOException {</span>
-<span class="nc" id="L29">        this.clientSocket = clientSocket;</span>
-<span class="nc" id="L30">        this.exploitReverseShell = exploitReverseShell;</span>
-<span class="nc" id="L31">        this.serverInput = serverInput;</span>
-<span class="nc" id="L32">        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Reverse established by {}&quot;, clientSocket);</span>
-<span class="nc" id="L33">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Type 'exit' in reverse shell to close the connection&quot;);</span>
-<span class="nc" id="L34">        this.bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L25">    public ServerInputConnection(ExploitReverseShell exploitReverseShell, Socket clientSocket, ServerInput serverInput) throws IOException {</span>
+<span class="nc" id="L26">        this.clientSocket = clientSocket;</span>
+<span class="nc" id="L27">        this.exploitReverseShell = exploitReverseShell;</span>
+<span class="nc" id="L28">        this.serverInput = serverInput;</span>
+<span class="nc" id="L29">        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Reverse established by {}&quot;, clientSocket);</span>
+<span class="nc" id="L30">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Type 'exit' in reverse shell to close the connection&quot;);</span>
+<span class="nc" id="L31">        this.bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));</span>
+<span class="nc" id="L32">    }</span>
 
     public void run() throws IOException {
-<span class="nc" id="L38">        try (DataOutputStream dataOutputStream = new DataOutputStream(this.clientSocket.getOutputStream())) {</span>
-<span class="nc" id="L39">            Thread readerThread = new Thread(() -&gt; {</span>
+<span class="nc" id="L35">        try (DataOutputStream dataOutputStream = new DataOutputStream(this.clientSocket.getOutputStream())) {</span>
+<span class="nc" id="L36">            Thread readerThread = new Thread(() -&gt; {</span>
                 try {
-<span class="nc" id="L41">                    this.handleSocketReading();</span>
-<span class="nc" id="L42">                } catch (IOException e) {</span>
-<span class="nc" id="L43">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Error reading from socket: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L38">                    this.handleSocketReading();</span>
+<span class="nc" id="L39">                } catch (IOException e) {</span>
+<span class="nc" id="L40">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Error reading from socket: {}&quot;, e.getMessage());</span>
                 } finally {
-<span class="nc" id="L45">                    this.closeResources();</span>
+<span class="nc" id="L42">                    this.closeResources();</span>
                 }
-<span class="nc" id="L47">            });</span>
-<span class="nc" id="L48">            readerThread.start();</span>
+<span class="nc" id="L44">            });</span>
+<span class="nc" id="L45">            readerThread.start();</span>
 
-<span class="nc bnc" id="L50" title="All 2 branches missed.">            while (this.running) {</span>
-<span class="nc" id="L51">                this.processAndSendCommand(dataOutputStream);</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            while (this.running) {</span>
+<span class="nc" id="L48">                this.processAndSendCommand(dataOutputStream);</span>
             }
 
             try {
-<span class="nc" id="L55">                readerThread.join(2000);</span>
-<span class="nc" id="L56">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L57">                Thread.currentThread().interrupt();</span>
-<span class="nc" id="L58">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Reader thread interrupted&quot;);</span>
-<span class="nc" id="L59">            }</span>
+<span class="nc" id="L52">                readerThread.join(2000);</span>
+<span class="nc" id="L53">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L54">                Thread.currentThread().interrupt();</span>
+<span class="nc" id="L55">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Reader thread interrupted&quot;);</span>
+<span class="nc" id="L56">            }</span>
         }
-<span class="nc" id="L61">    }</span>
+<span class="nc" id="L58">    }</span>
 
     private void processAndSendCommand(DataOutputStream dataOutputStream) throws IOException {
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(this.command)) {</span>
-<span class="nc" id="L65">            var commandWithoutPrompt = this.command.replaceAll(&quot;[^$]*\\$\\s*&quot;, &quot;&quot;);</span>
-<span class="nc" id="L66">            this.command = null;</span>
-<span class="nc" id="L67">            dataOutputStream.writeBytes(commandWithoutPrompt + &quot;\n&quot;);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(this.command)) {</span>
+<span class="nc" id="L62">            var commandWithoutPrompt = this.command.replaceAll(&quot;[^$]*\\$\\s*&quot;, &quot;&quot;);</span>
+<span class="nc" id="L63">            this.command = null;</span>
+<span class="nc" id="L64">            dataOutputStream.writeBytes(commandWithoutPrompt + &quot;\n&quot;);</span>
         }
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L66">    }</span>
 
     private void handleSocketReading() throws IOException {
-<span class="nc" id="L72">        int length = 1024;</span>
-<span class="nc" id="L73">        char[] buffer = new char[length];</span>
+<span class="nc" id="L69">        int length = 1024;</span>
+<span class="nc" id="L70">        char[] buffer = new char[length];</span>
         int charsRead;
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        while (this.running) {</span>
-<span class="nc" id="L76">            charsRead = this.bufferedReader.read(buffer, 0, length);</span>
-<span class="nc bnc" id="L77" title="All 2 branches missed.">            if (charsRead != -1) {</span>
-<span class="nc" id="L78">                String result = new String(buffer, 0, charsRead);  // discard unused chars from buffer</span>
-<span class="nc bnc" id="L79" title="All 2 branches missed.">                this.exploitReverseShell.append(result.matches(&quot;\\$$&quot;) ? result +&quot; &quot; : result);  // space after internal prompt</span>
-<span class="nc" id="L80">                this.exploitReverseShell.reset(false);</span>
-<span class="nc" id="L81">            } else {</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        while (this.running) {</span>
+<span class="nc" id="L73">            charsRead = this.bufferedReader.read(buffer, 0, length);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (charsRead != -1) {</span>
+<span class="nc" id="L75">                String result = new String(buffer, 0, charsRead);  // discard unused chars from buffer</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                this.exploitReverseShell.append(result.matches(&quot;\\$$&quot;) ? result +&quot; &quot; : result);  // space after internal prompt</span>
+<span class="nc" id="L77">                this.exploitReverseShell.reset(false);</span>
+<span class="nc" id="L78">            } else {</span>
                 break;
             }
         }
-<span class="nc" id="L85">    }</span>
+<span class="nc" id="L82">    }</span>
 
     private void closeResources() {
         try {
-<span class="nc" id="L89">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Reverse connection closed&quot;);</span>
-<span class="nc" id="L90">            this.running = false;</span>
-<span class="nc" id="L91">            this.serverInput.close();</span>
-<span class="nc" id="L92">        } catch (IOException e) {</span>
-<span class="nc" id="L93">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Error closing resources: {}&quot;, e.getMessage());</span>
-<span class="nc" id="L94">        }</span>
-<span class="nc" id="L95">    }</span>
+<span class="nc" id="L86">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Reverse connection closed&quot;);</span>
+<span class="nc" id="L87">            this.running = false;</span>
+<span class="nc" id="L88">            this.serverInput.close();</span>
+<span class="nc" id="L89">        } catch (IOException e) {</span>
+<span class="nc" id="L90">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Error closing resources: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L91">        }</span>
+<span class="nc" id="L92">    }</span>
 
     public void setCommand(String command) {
-<span class="nc" id="L98">        this.command = command;</span>
-<span class="nc" id="L99">    }</span>
+<span class="nc" id="L95">        this.command = command;</span>
+<span class="nc" id="L96">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

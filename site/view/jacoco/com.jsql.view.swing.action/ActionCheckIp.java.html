@@ -15,29 +15,26 @@ import java.awt.event.ActionListener;
  */
 <span class="fc" id="L16">public class ActionCheckIp implements ActionListener, Runnable {</span>
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L21">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L18">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     @Override
     public void actionPerformed(ActionEvent e) {
-<span class="nc" id="L25">        new Thread(this, &quot;ThreadCheckIP&quot;).start();</span>
-<span class="nc" id="L26">    }</span>
+<span class="nc" id="L22">        new Thread(this, &quot;ThreadCheckIP&quot;).start();</span>
+<span class="nc" id="L23">    }</span>
 
     @Override
     public void run() {
-<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (MediatorHelper.model().getMediatorUtils().getProxyUtil().isNotLive(ShowOnConsole.YES)) {</span>
-<span class="nc" id="L31">            return;</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (MediatorHelper.model().getMediatorUtils().getProxyUtil().isNotLive(ShowOnConsole.YES)) {</span>
+<span class="nc" id="L28">            return;</span>
         }
-<span class="nc" id="L33">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_IP_ADDRESS_CHECK&quot;));</span>
-<span class="nc" id="L34">        String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource(&quot;http://checkip.amazonaws.com&quot;);</span>
-<span class="nc" id="L35">        LOGGER.log(</span>
+<span class="nc" id="L30">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_IP_ADDRESS_CHECK&quot;));</span>
+<span class="nc" id="L31">        String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource(&quot;http://checkip.amazonaws.com&quot;);</span>
+<span class="nc" id="L32">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_INFORM,
             &quot;{} {}&quot;,
-<span class="nc" id="L38">            () -&gt; I18nUtil.valueByKey(&quot;LOG_IP_ADDRESS_IS&quot;),</span>
-<span class="nc" id="L39">            () -&gt; addressIp</span>
+<span class="nc" id="L35">            () -&gt; I18nUtil.valueByKey(&quot;LOG_IP_ADDRESS_IS&quot;),</span>
+<span class="nc" id="L36">            () -&gt; addressIp</span>
         );
-<span class="nc" id="L41">    }</span>
+<span class="nc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

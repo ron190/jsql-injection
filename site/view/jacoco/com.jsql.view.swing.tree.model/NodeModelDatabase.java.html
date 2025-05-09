@@ -27,63 +27,60 @@ import javax.swing.tree.TreePath;
  */
 public class NodeModelDatabase extends AbstractNodeModel {
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L33">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     /**
      * Node as a database model.
      * @param database Element database coming from model
      */
     public NodeModelDatabase(Database database) {
-<span class="fc" id="L40">        super(database);</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L37">        super(database);</span>
+<span class="fc" id="L38">    }</span>
 
     @Override
     protected Icon getLeafIcon(boolean leaf) {
-<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (leaf) {</span>
-<span class="fc" id="L46">            return UiUtil.DATABASE_LINEAR.getIcon();</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (leaf) {</span>
+<span class="fc" id="L43">            return UiUtil.DATABASE_LINEAR.getIcon();</span>
         } else {
-<span class="fc" id="L48">            return UiUtil.DATABASE_BOLD.getIcon();</span>
+<span class="fc" id="L45">            return UiUtil.DATABASE_BOLD.getIcon();</span>
         }
     }
 
     @Override
     public void runAction() {
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (this.isRunning()) {</span>
-<span class="nc" id="L55">            return;</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (this.isRunning()) {</span>
+<span class="nc" id="L52">            return;</span>
         }
     
-<span class="nc" id="L58">        MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();</span>
-<span class="nc" id="L59">        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();</span>
+<span class="nc" id="L55">        MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();</span>
+<span class="nc" id="L56">        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();</span>
         // Fix #90522: ArrayIndexOutOfBoundsException on reload()
         try {
-<span class="nc" id="L62">            treeModel.reload(MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));</span>
-<span class="nc" id="L63">        } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L64">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L65">        }</span>
+<span class="nc" id="L59">            treeModel.reload(MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));</span>
+<span class="nc" id="L60">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L61">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L62">        }</span>
         
-<span class="nc" id="L67">        new SwingWorker&lt;&gt;() {</span>
+<span class="nc" id="L64">        new SwingWorker&lt;&gt;() {</span>
             @Override
             protected Object doInBackground() throws Exception {
-<span class="nc" id="L70">                Thread.currentThread().setName(&quot;SwingWorkerNodeModelDatabase&quot;);</span>
-<span class="nc" id="L71">                var selectedDatabase = (Database) NodeModelDatabase.this.getElementDatabase();</span>
-<span class="nc" id="L72">                return MediatorHelper.model().getDataAccess().listTables(selectedDatabase);</span>
+<span class="nc" id="L67">                Thread.currentThread().setName(&quot;SwingWorkerNodeModelDatabase&quot;);</span>
+<span class="nc" id="L68">                var selectedDatabase = (Database) NodeModelDatabase.this.getElementDatabase();</span>
+<span class="nc" id="L69">                return MediatorHelper.model().getDataAccess().listTables(selectedDatabase);</span>
             }
-<span class="nc" id="L74">        }.execute();</span>
+<span class="nc" id="L71">        }.execute();</span>
         
-<span class="nc" id="L76">        this.setRunning(true);</span>
-<span class="nc" id="L77">    }</span>
+<span class="nc" id="L73">        this.setRunning(true);</span>
+<span class="nc" id="L74">    }</span>
 
     @Override
     public boolean isPopupDisplayable() {
-<span class="pc bpc" id="L81" title="5 of 6 branches missed.">        return this.isLoaded() || !this.isLoaded() &amp;&amp; this.isRunning();</span>
+<span class="pc bpc" id="L78" title="5 of 6 branches missed.">        return this.isLoaded() || !this.isLoaded() &amp;&amp; this.isRunning();</span>
     }
 
     @Override
     protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, TreePath path) {
         // Do nothing
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L84">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

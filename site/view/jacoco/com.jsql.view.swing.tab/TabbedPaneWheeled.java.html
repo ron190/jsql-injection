@@ -23,42 +23,39 @@ import java.awt.*;
  */
 public class TabbedPaneWheeled extends JTabbedPane {
 
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L29">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Create tabs with ctrl-TAB, mouse-wheel.
      */
     public TabbedPaneWheeled() {
-<span class="fc" id="L35">        this(SwingConstants.TOP);</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L32">        this(SwingConstants.TOP);</span>
+<span class="fc" id="L33">    }</span>
 
     public TabbedPaneWheeled(int tabPlacement) {
-<span class="fc" id="L39">        super(tabPlacement, JTabbedPane.SCROLL_TAB_LAYOUT);</span>
-<span class="fc" id="L40">        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());</span>
-<span class="fc" id="L41">        HotkeyUtil.addShortcut(this);  // Hotkeys ctrl-TAB, ctrl-shift-TAB</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L36">        super(tabPlacement, JTabbedPane.SCROLL_TAB_LAYOUT);</span>
+<span class="fc" id="L37">        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());</span>
+<span class="fc" id="L38">        HotkeyUtil.addShortcut(this);  // Hotkeys ctrl-TAB, ctrl-shift-TAB</span>
+<span class="fc" id="L39">    }</span>
 
     /**
      * Highlight tab to mark when new content added
      */
     public void setBold(String label) {
-<span class="fc" id="L48">        int tabIndex = this.indexOfTab(label);</span>
+<span class="fc" id="L45">        int tabIndex = this.indexOfTab(label);</span>
         // Highlight only if tab not selected and tab exists
-<span class="fc" id="L50">        if (</span>
-<span class="pc bpc" id="L51" title="1 of 4 branches missed.">            this.getSelectedIndex() != tabIndex</span>
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">            &amp;&amp; 0 &lt;= tabIndex &amp;&amp; tabIndex &lt; this.getTabCount()</span>
+<span class="fc" id="L47">        if (</span>
+<span class="pc bpc" id="L48" title="1 of 4 branches missed.">            this.getSelectedIndex() != tabIndex</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            &amp;&amp; 0 &lt;= tabIndex &amp;&amp; tabIndex &lt; this.getTabCount()</span>
         ) {
-<span class="fc" id="L54">            var tabHeader = this.getTabComponentAt(tabIndex);</span>
+<span class="fc" id="L51">            var tabHeader = this.getTabComponentAt(tabIndex);</span>
             // Unhandled ClassCastException #91158 on setFont()
             try {
-<span class="fc" id="L57">                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));</span>
-<span class="nc" id="L58">            } catch (ClassCastException e) {</span>
-<span class="nc" id="L59">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L60">            }</span>
+<span class="fc" id="L54">                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));</span>
+<span class="nc" id="L55">            } catch (ClassCastException e) {</span>
+<span class="nc" id="L56">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L57">            }</span>
         }
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L59">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

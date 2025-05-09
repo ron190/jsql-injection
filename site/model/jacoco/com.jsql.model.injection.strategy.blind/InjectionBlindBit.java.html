@@ -23,10 +23,7 @@ import static name.fraser.neil.plaintext.diff_match_patch.Operation;
  */
 public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlindBit&gt; {
 
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L29">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     private String sourceReferencePage;  // Source code of the TRUE web page (usually ?id=1)
 
@@ -36,8 +33,8 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
      * at least one same string, which shouldn't be present in all
      * the TRUE queries.
      */
-<span class="fc" id="L39">    private List&lt;Diff&gt; falseDiffs = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L40">    private List&lt;Diff&gt; trueDiffs = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L36">    private List&lt;Diff&gt; falseDiffs = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L37">    private List&lt;Diff&gt; trueDiffs = new ArrayList&lt;&gt;();</span>
 
     /**
      * Create blind attack initialization.
@@ -45,100 +42,100 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
      * true diffs, then Blind attack is confirmed.
      */
     public InjectionBlindBit(InjectionModel injectionModel, BlindOperator blindOperator) {
-<span class="fc" id="L48">        super(injectionModel, blindOperator);</span>
+<span class="fc" id="L45">        super(injectionModel, blindOperator);</span>
 
-<span class="fc" id="L50">        List&lt;String&gt; falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();</span>
-<span class="pc bpc" id="L51" title="2 of 4 branches missed.">        if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L52">            return;</span>
+<span class="fc" id="L47">        List&lt;String&gt; falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();</span>
+<span class="pc bpc" id="L48" title="2 of 4 branches missed.">        if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L49">            return;</span>
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-<span class="fc" id="L56">        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, &quot;bit#ref:&quot;+ blindOperator.toString().toLowerCase());</span>
+<span class="fc" id="L53">        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, &quot;bit#ref:&quot;+ blindOperator.toString().toLowerCase());</span>
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-<span class="fc" id="L60">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBitTagFalse&quot;);</span>
-<span class="fc" id="L61">        Collection&lt;CallableBlindBit&gt; callablesFalsys = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (String falsy: falsys) {</span>
-<span class="fc" id="L63">            callablesFalsys.add(new CallableBlindBit(</span>
+<span class="fc" id="L57">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBitTagFalse&quot;);</span>
+<span class="fc" id="L58">        Collection&lt;CallableBlindBit&gt; callablesFalsys = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (String falsy: falsys) {</span>
+<span class="fc" id="L60">            callablesFalsys.add(new CallableBlindBit(</span>
                 falsy,
                 injectionModel,
                 this,
                 blindOperator,
                 &quot;bit#falsy&quot;
             ));
-<span class="fc" id="L70">        }</span>
+<span class="fc" id="L67">        }</span>
         
         // Delete junk from the results of FALSE statements,
         // keep only diffs found in each and every FALSE pages.
         // Allow the user to stop the loop
         try {
-<span class="fc" id="L76">            List&lt;Future&lt;CallableBlindBit&gt;&gt; futuresFalsys = taskExecutor.invokeAll(callablesFalsys);</span>
-<span class="fc" id="L77">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-<span class="fc bfc" id="L78" title="All 2 branches covered.">            for (Future&lt;CallableBlindBit&gt; futureFalsy: futuresFalsys) {</span>
-<span class="pc bpc" id="L79" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L80">                    return;</span>
+<span class="fc" id="L73">            List&lt;Future&lt;CallableBlindBit&gt;&gt; futuresFalsys = taskExecutor.invokeAll(callablesFalsys);</span>
+<span class="fc" id="L74">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">            for (Future&lt;CallableBlindBit&gt; futureFalsy: futuresFalsys) {</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L77">                    return;</span>
                 }
-<span class="fc bfc" id="L82" title="All 2 branches covered.">                if (this.falseDiffs.isEmpty()) {</span>
-<span class="fc" id="L83">                    this.falseDiffs = futureFalsy.get().getDiffsWithReference();  // Init diffs</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">                if (this.falseDiffs.isEmpty()) {</span>
+<span class="fc" id="L80">                    this.falseDiffs = futureFalsy.get().getDiffsWithReference();  // Init diffs</span>
                 } else {
-<span class="fc" id="L85">                    this.falseDiffs.retainAll(futureFalsy.get().getDiffsWithReference());  // Clean un-matching diffs</span>
+<span class="fc" id="L82">                    this.falseDiffs.retainAll(futureFalsy.get().getDiffsWithReference());  // Clean un-matching diffs</span>
                 }
-<span class="fc" id="L87">            }</span>
-<span class="nc" id="L88">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L89">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L90">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L91">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L92">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L93">        }</span>
+<span class="fc" id="L84">            }</span>
+<span class="nc" id="L85">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L86">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L87">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L88">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L89">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L90">        }</span>
 
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L96">            return;</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L93">            return;</span>
         }
         
-<span class="fc" id="L99">        this.cleanTrueDiffs(injectionModel, blindOperator);</span>
-<span class="fc" id="L100">    }</span>
+<span class="fc" id="L96">        this.cleanTrueDiffs(injectionModel, blindOperator);</span>
+<span class="fc" id="L97">    }</span>
 
     private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindOperator) {
-<span class="fc" id="L103">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBitTagTrue&quot;);</span>
-<span class="fc" id="L104">        Collection&lt;CallableBlindBit&gt; callablesTruthys = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L105">        List&lt;String&gt; truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();</span>
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        for (String truthy: truthys) {</span>
-<span class="fc" id="L107">            callablesTruthys.add(new CallableBlindBit(</span>
+<span class="fc" id="L100">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBitTagTrue&quot;);</span>
+<span class="fc" id="L101">        Collection&lt;CallableBlindBit&gt; callablesTruthys = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L102">        List&lt;String&gt; truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        for (String truthy: truthys) {</span>
+<span class="fc" id="L104">            callablesTruthys.add(new CallableBlindBit(</span>
                 truthy,
                 injectionModel,
                 this,
                 blindOperator,
                 &quot;bit#truthy&quot;
             ));
-<span class="fc" id="L114">        }</span>
+<span class="fc" id="L111">        }</span>
 
         // Remove TRUE diffs in the FALSE diffs as FALSE statement shouldn't contain any TRUE diff.
         try {
-<span class="fc" id="L118">            List&lt;Future&lt;CallableBlindBit&gt;&gt; futuresTruthys = taskExecutor.invokeAll(callablesTruthys);</span>
-<span class="fc" id="L119">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-<span class="fc bfc" id="L120" title="All 2 branches covered.">            for (Future&lt;CallableBlindBit&gt; futureTruthy: futuresTruthys) {</span>
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L122">                    return;</span>
+<span class="fc" id="L115">            List&lt;Future&lt;CallableBlindBit&gt;&gt; futuresTruthys = taskExecutor.invokeAll(callablesTruthys);</span>
+<span class="fc" id="L116">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            for (Future&lt;CallableBlindBit&gt; futureTruthy: futuresTruthys) {</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L119">                    return;</span>
                 }
-<span class="fc bfc" id="L124" title="All 2 branches covered.">                if (this.trueDiffs.isEmpty()) {</span>
-<span class="fc" id="L125">                    this.trueDiffs = futureTruthy.get().getDiffsWithReference();  // Init diffs</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">                if (this.trueDiffs.isEmpty()) {</span>
+<span class="fc" id="L122">                    this.trueDiffs = futureTruthy.get().getDiffsWithReference();  // Init diffs</span>
                 } else {
-<span class="fc" id="L127">                    this.trueDiffs.retainAll(futureTruthy.get().getDiffsWithReference());  // Clean un-matching diffs</span>
+<span class="fc" id="L124">                    this.trueDiffs.retainAll(futureTruthy.get().getDiffsWithReference());  // Clean un-matching diffs</span>
                 }
-<span class="fc" id="L129">                this.falseDiffs.removeAll(futureTruthy.get().getDiffsWithReference());</span>
-<span class="fc" id="L130">            }</span>
-<span class="nc" id="L131">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L132">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L133">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L134">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L135">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L136">        }</span>
-<span class="fc" id="L137">    }</span>
+<span class="fc" id="L126">                this.falseDiffs.removeAll(futureTruthy.get().getDiffsWithReference());</span>
+<span class="fc" id="L127">            }</span>
+<span class="nc" id="L128">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L129">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L130">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L131">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L132">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L133">        }</span>
+<span class="fc" id="L134">    }</span>
 
     @Override
     public CallableBlindBit getCallableBitTest(String sqlQuery, int indexChar, int bit) {
-<span class="fc" id="L141">        return new CallableBlindBit(</span>
+<span class="fc" id="L138">        return new CallableBlindBit(</span>
             sqlQuery,
             indexChar,
             bit,
@@ -151,45 +148,45 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L155">            throw new StoppedByUserSlidingException();</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L152">            throw new StoppedByUserSlidingException();</span>
         }
-<span class="fc" id="L157">        var callable = new CallableBlindBit(</span>
-<span class="fc" id="L158">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),</span>
+<span class="fc" id="L154">        var callable = new CallableBlindBit(</span>
+<span class="fc" id="L155">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),</span>
             this.injectionModel,
             this,
             this.blindOperator,
             &quot;bit#confirm&quot;
         );
         try {
-<span class="fc" id="L165">            callable.call();</span>
-<span class="nc" id="L166">        } catch (Exception e) {</span>
-<span class="nc" id="L167">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L168">        }</span>
-<span class="fc bfc" id="L169" title="All 2 branches covered.">        return callable.isTrue()</span>
+<span class="fc" id="L162">            callable.call();</span>
+<span class="nc" id="L163">        } catch (Exception e) {</span>
+<span class="nc" id="L164">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L165">        }</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">        return callable.isTrue()</span>
             // when insertionChar = true then pages ref == truthy == falsy == confirm =&gt; falsy cleaned empty, truthy with opcode EQUAL not reliable
-<span class="fc bfc" id="L171" title="All 4 branches covered.">            &amp;&amp; this.trueDiffs.stream().anyMatch(diff -&gt; !Operation.EQUAL.equals(diff.operation))</span>
-<span class="pc bpc" id="L172" title="1 of 4 branches missed.">            || this.falseDiffs.stream().anyMatch(diff -&gt; !Operation.EQUAL.equals(diff.operation));</span>
+<span class="fc bfc" id="L168" title="All 4 branches covered.">            &amp;&amp; this.trueDiffs.stream().anyMatch(diff -&gt; !Operation.EQUAL.equals(diff.operation))</span>
+<span class="pc bpc" id="L169" title="1 of 4 branches missed.">            || this.falseDiffs.stream().anyMatch(diff -&gt; !Operation.EQUAL.equals(diff.operation));</span>
     }
 
     @Override
     public String getInfoMessage() {
-<span class="fc" id="L177">        return &quot;- Strategy Blind bit: query True when Diffs are matching &quot; + this.falseDiffs + &quot;\n\n&quot;;</span>
+<span class="fc" id="L174">        return &quot;- Strategy Blind bit: query True when Diffs are matching &quot; + this.falseDiffs + &quot;\n\n&quot;;</span>
     }
     
     
     // Getter and setter
 
     public String getSourceReferencePage() {
-<span class="fc" id="L184">        return this.sourceReferencePage;</span>
+<span class="fc" id="L181">        return this.sourceReferencePage;</span>
     }
     
     public List&lt;Diff&gt; getFalseDiffs() {
-<span class="fc" id="L188">        return this.falseDiffs;</span>
+<span class="fc" id="L185">        return this.falseDiffs;</span>
     }
 
     public List&lt;Diff&gt; getTrueDiffs() {
-<span class="fc" id="L192">        return this.trueDiffs;</span>
+<span class="fc" id="L189">        return this.trueDiffs;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -32,23 +32,20 @@ import java.util.concurrent.TimeUnit;
  */
 public final class ThreadUtil {
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L38">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L35">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     /**
      * List of running jobs associated to a database injection task.
      * We can interact with those tasks in order to pause/resume and stop the process.
      */
     // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
-<span class="fc" id="L45">    private final Map&lt;AbstractElementDatabase, AbstractSuspendable&gt; suspendables = new ConcurrentHashMap&lt;&gt;(new HashMap&lt;&gt;());</span>
+<span class="fc" id="L42">    private final Map&lt;AbstractElementDatabase, AbstractSuspendable&gt; suspendables = new ConcurrentHashMap&lt;&gt;(new HashMap&lt;&gt;());</span>
 
     private final InjectionModel injectionModel;
     
-<span class="fc" id="L49">    public ThreadUtil(InjectionModel injectionModel) {</span>
-<span class="fc" id="L50">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L46">    public ThreadUtil(InjectionModel injectionModel) {</span>
+<span class="fc" id="L47">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L48">    }</span>
 
     /**
      * Add a job to the list of ongoing tasks. It is used to allow the user to act
@@ -57,8 +54,8 @@ public final class ThreadUtil {
      * @param suspendable active job to act on
      */
     public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable suspendable) {
-<span class="fc" id="L60">        this.suspendables.put(elementDatabase, suspendable);</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L57">        this.suspendables.put(elementDatabase, suspendable);</span>
+<span class="fc" id="L58">    }</span>
     
     /**
      * Get the task associated to the database component.
@@ -68,7 +65,7 @@ public final class ThreadUtil {
      * @return job currently running
      */
     public AbstractSuspendable get(AbstractElementDatabase elementDatabase) {
-<span class="nc" id="L71">        return this.suspendables.get(elementDatabase);</span>
+<span class="nc" id="L68">        return this.suspendables.get(elementDatabase);</span>
     }
     
     /**
@@ -77,45 +74,45 @@ public final class ThreadUtil {
      * @param elementDatabase component associated to thread
      */
     public void remove(AbstractElementDatabase elementDatabase) {
-<span class="fc" id="L80">        this.suspendables.remove(elementDatabase);</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L77">        this.suspendables.remove(elementDatabase);</span>
+<span class="fc" id="L78">    }</span>
     
     /**
      * Force to stop every threads still running and empty the list where
      * they were instantiated in order to be garbage collected.
      */
     public void reset() {
-<span class="fc" id="L88">        this.suspendables.values().forEach(AbstractSuspendable::stop);</span>
-<span class="fc" id="L89">        this.suspendables.clear();</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L85">        this.suspendables.values().forEach(AbstractSuspendable::stop);</span>
+<span class="fc" id="L86">        this.suspendables.clear();</span>
+<span class="fc" id="L87">    }</span>
     
     public ExecutorService getExecutor(String nameThread) {
         ExecutorService taskExecutor;
         
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {</span>
-<span class="fc" id="L96">            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();</span>
-<span class="fc" id="L97">            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(nameThread));</span>
-<span class="fc" id="L98">        } else {</span>
-<span class="nc" id="L99">            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable(nameThread));</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {</span>
+<span class="fc" id="L93">            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();</span>
+<span class="fc" id="L94">            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(nameThread));</span>
+<span class="fc" id="L95">        } else {</span>
+<span class="nc" id="L96">            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable(nameThread));</span>
         }
-<span class="fc" id="L101">        return taskExecutor;</span>
+<span class="fc" id="L98">        return taskExecutor;</span>
     }
 
     public void shutdown(ExecutorService taskExecutor) {
-<span class="fc" id="L105">        int timeout = 15;</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isConnectionTimeout()) {</span>
-<span class="nc" id="L107">            timeout = this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();</span>
+<span class="fc" id="L102">        int timeout = 15;</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isConnectionTimeout()) {</span>
+<span class="nc" id="L104">            timeout = this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();</span>
         }
 
         try {
-<span class="fc" id="L111">            taskExecutor.shutdown();</span>
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">            if (!taskExecutor.awaitTermination(timeout, TimeUnit.SECONDS)) {</span>
-<span class="nc" id="L113">                taskExecutor.shutdownNow();</span>
+<span class="fc" id="L108">            taskExecutor.shutdown();</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">            if (!taskExecutor.awaitTermination(timeout, TimeUnit.SECONDS)) {</span>
+<span class="nc" id="L110">                taskExecutor.shutdownNow();</span>
             }
-<span class="nc" id="L115">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L116">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L117">            Thread.currentThread().interrupt();</span>
-<span class="fc" id="L118">        }</span>
-<span class="fc" id="L119">    }</span>
+<span class="nc" id="L112">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L113">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L114">            Thread.currentThread().interrupt();</span>
+<span class="fc" id="L115">        }</span>
+<span class="fc" id="L116">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

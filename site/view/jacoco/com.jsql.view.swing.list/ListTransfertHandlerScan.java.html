@@ -30,104 +30,101 @@ import java.util.List;
  */
 <span class="fc" id="L31">public class ListTransfertHandlerScan extends AbstractListTransfertHandler {</span>
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L36">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L33">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     @Override
     protected List&lt;Integer&gt; initStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
-<span class="fc" id="L40">        int selectedIndexTo = selectedIndexFrom;</span>
-<span class="fc" id="L41">        List&lt;Integer&gt; selectedIndexes = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L42" title="All 2 branches covered.">        for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {</span>
-<span class="fc" id="L43">            selectedIndexes.add(selectedIndexTo);</span>
-<span class="fc" id="L44">            listModel.add(selectedIndexTo++, itemListScan);</span>
-<span class="fc" id="L45">        }</span>
-<span class="fc" id="L46">        return selectedIndexes;</span>
+<span class="fc" id="L37">        int selectedIndexTo = selectedIndexFrom;</span>
+<span class="fc" id="L38">        List&lt;Integer&gt; selectedIndexes = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {</span>
+<span class="fc" id="L40">            selectedIndexes.add(selectedIndexTo);</span>
+<span class="fc" id="L41">            listModel.add(selectedIndexTo++, itemListScan);</span>
+<span class="fc" id="L42">        }</span>
+<span class="fc" id="L43">        return selectedIndexes;</span>
     }
 
     @Override
     protected String initTransferable() {
-<span class="fc" id="L51">        List&lt;JSONObject&gt; jsons = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L52">        var stringTransferable = new StringBuilder();</span>
+<span class="fc" id="L48">        List&lt;JSONObject&gt; jsons = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L49">        var stringTransferable = new StringBuilder();</span>
         try {
-<span class="fc bfc" id="L54" title="All 2 branches covered.">            for (ItemList itemPath: this.dragPaths) {</span>
-<span class="fc" id="L55">                ItemListScan itemScanPath = (ItemListScan) itemPath;</span>
-<span class="fc" id="L56">                jsons.add(new JSONObject(itemScanPath.getBeanInjectionToJSON()));</span>
-<span class="fc" id="L57">            }</span>
-<span class="fc" id="L58">            stringTransferable.append(new JSONArray(jsons).toString(4));</span>
-<span class="nc" id="L59">        } catch (JSONException e) {</span>
-<span class="nc" id="L60">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="fc" id="L61">        }</span>
-<span class="fc" id="L62">        return stringTransferable.toString();</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            for (ItemList itemPath: this.dragPaths) {</span>
+<span class="fc" id="L52">                ItemListScan itemScanPath = (ItemListScan) itemPath;</span>
+<span class="fc" id="L53">                jsons.add(new JSONObject(itemScanPath.getBeanInjectionToJSON()));</span>
+<span class="fc" id="L54">            }</span>
+<span class="fc" id="L55">            stringTransferable.append(new JSONArray(jsons).toString(4));</span>
+<span class="nc" id="L56">        } catch (JSONException e) {</span>
+<span class="nc" id="L57">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="fc" id="L58">        }</span>
+<span class="fc" id="L59">        return stringTransferable.toString();</span>
     }
 
     @Override
     protected void parseStringDrop(TransferSupport support, DnDList list, DefaultListModel&lt;ItemList&gt; listModel) {
-<span class="fc" id="L67">        var dropLocation = (JList.DropLocation) support.getDropLocation();</span>
-<span class="fc" id="L68">        int indexDropLocation = dropLocation.getIndex();</span>
+<span class="fc" id="L64">        var dropLocation = (JList.DropLocation) support.getDropLocation();</span>
+<span class="fc" id="L65">        int indexDropLocation = dropLocation.getIndex();</span>
 
-<span class="fc" id="L70">        List&lt;Integer&gt; listSelectedIndices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L67">        List&lt;Integer&gt; listSelectedIndices = new ArrayList&lt;&gt;();</span>
 
-<span class="pc bpc" id="L72" title="2 of 4 branches missed.">        if (this.dragPaths != null &amp;&amp; !this.dragPaths.isEmpty()) {  // DnD from list</span>
-<span class="fc bfc" id="L73" title="All 2 branches covered.">            for (ItemList itemPath: this.dragPaths) {</span>
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">                if (StringUtils.isNotEmpty(itemPath.toString())) {</span>
-<span class="fc" id="L75">                    ItemListScan itemDrag = (ItemListScan) itemPath;  //! FUUuu</span>
-<span class="fc" id="L76">                    var itemDrop = new ItemListScan(itemDrag.getBeanInjection());</span>
-<span class="fc" id="L77">                    listSelectedIndices.add(indexDropLocation);</span>
-<span class="fc" id="L78">                    listModel.add(indexDropLocation++, itemDrop);</span>
+<span class="pc bpc" id="L69" title="2 of 4 branches missed.">        if (this.dragPaths != null &amp;&amp; !this.dragPaths.isEmpty()) {  // DnD from list</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            for (ItemList itemPath: this.dragPaths) {</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">                if (StringUtils.isNotEmpty(itemPath.toString())) {</span>
+<span class="fc" id="L72">                    ItemListScan itemDrag = (ItemListScan) itemPath;  //! FUUuu</span>
+<span class="fc" id="L73">                    var itemDrop = new ItemListScan(itemDrag.getBeanInjection());</span>
+<span class="fc" id="L74">                    listSelectedIndices.add(indexDropLocation);</span>
+<span class="fc" id="L75">                    listModel.add(indexDropLocation++, itemDrop);</span>
                 }
-<span class="fc" id="L80">            }</span>
+<span class="fc" id="L77">            }</span>
         } else {  // DnD from outside
             try {
-<span class="nc" id="L83">                var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">                for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(importString)) {</span>
-<span class="nc" id="L85">                    listSelectedIndices.add(indexDropLocation);</span>
-<span class="nc" id="L86">                    listModel.add(indexDropLocation++, itemListScan);</span>
-<span class="nc" id="L87">                }</span>
-<span class="nc" id="L88">            } catch (UnsupportedFlavorException | IOException e) {</span>
-<span class="nc" id="L89">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L90">            }</span>
+<span class="nc" id="L80">                var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">                for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(importString)) {</span>
+<span class="nc" id="L82">                    listSelectedIndices.add(indexDropLocation);</span>
+<span class="nc" id="L83">                    listModel.add(indexDropLocation++, itemListScan);</span>
+<span class="nc" id="L84">                }</span>
+<span class="nc" id="L85">            } catch (UnsupportedFlavorException | IOException e) {</span>
+<span class="nc" id="L86">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L87">            }</span>
         }
 
-<span class="fc" id="L93">        var selectedIndices = new int[listSelectedIndices.size()];</span>
-<span class="fc" id="L94">        var i = 0;</span>
-<span class="fc bfc" id="L95" title="All 2 branches covered.">        for (Integer integer: listSelectedIndices) {</span>
-<span class="fc" id="L96">            selectedIndices[i] = integer;</span>
-<span class="fc" id="L97">            i++;</span>
-<span class="fc" id="L98">        }</span>
-<span class="fc" id="L99">        list.setSelectedIndices(selectedIndices);</span>
-<span class="fc" id="L100">    }</span>
+<span class="fc" id="L90">        var selectedIndices = new int[listSelectedIndices.size()];</span>
+<span class="fc" id="L91">        var i = 0;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        for (Integer integer: listSelectedIndices) {</span>
+<span class="fc" id="L93">            selectedIndices[i] = integer;</span>
+<span class="fc" id="L94">            i++;</span>
+<span class="fc" id="L95">        }</span>
+<span class="fc" id="L96">        list.setSelectedIndices(selectedIndices);</span>
+<span class="fc" id="L97">    }</span>
     
     public static List&lt;ItemListScan&gt; parse(String clipboardText) {
-<span class="fc" id="L103">        List&lt;ItemListScan&gt; itemsParsed = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L100">        List&lt;ItemListScan&gt; itemsParsed = new ArrayList&lt;&gt;();</span>
         try {
-<span class="fc" id="L105">            ListTransfertHandlerScan.parseJsonArray(clipboardText, itemsParsed);</span>
-<span class="fc" id="L106">        } catch (JSONException eJsonArray) {</span>
-<span class="fc" id="L107">            ListTransfertHandlerScan.parseJsonObject(clipboardText, itemsParsed);</span>
-<span class="fc" id="L108">        }</span>
-<span class="fc" id="L109">        return itemsParsed;</span>
+<span class="fc" id="L102">            ListTransfertHandlerScan.parseJsonArray(clipboardText, itemsParsed);</span>
+<span class="fc" id="L103">        } catch (JSONException eJsonArray) {</span>
+<span class="fc" id="L104">            ListTransfertHandlerScan.parseJsonObject(clipboardText, itemsParsed);</span>
+<span class="fc" id="L105">        }</span>
+<span class="fc" id="L106">        return itemsParsed;</span>
     }
 
     private static void parseJsonArray(String clipboardText, List&lt;ItemListScan&gt; itemsParsed) {
-<span class="fc" id="L113">        var itemsJsonArray = new JSONArray(clipboardText);</span>
-<span class="fc bfc" id="L114" title="All 2 branches covered.">        for (var i = 0; i &lt; itemsJsonArray.length(); i++) {</span>
-<span class="fc" id="L115">            var newItem = new ItemListScan(itemsJsonArray.getJSONObject(i));</span>
-<span class="fc" id="L116">            itemsParsed.add(newItem);</span>
+<span class="fc" id="L110">        var itemsJsonArray = new JSONArray(clipboardText);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        for (var i = 0; i &lt; itemsJsonArray.length(); i++) {</span>
+<span class="fc" id="L112">            var newItem = new ItemListScan(itemsJsonArray.getJSONObject(i));</span>
+<span class="fc" id="L113">            itemsParsed.add(newItem);</span>
         }
-<span class="fc" id="L118">    }</span>
+<span class="fc" id="L115">    }</span>
 
     private static void parseJsonObject(String clipboardText, List&lt;ItemListScan&gt; itemsParsed) {
         try {
-<span class="nc" id="L122">            var newItem = new ItemListScan(new JSONObject(clipboardText));</span>
-<span class="nc" id="L123">            itemsParsed.add(newItem);</span>
-<span class="fc" id="L124">        } catch (JSONException e) {</span>
-<span class="fc bfc" id="L125" title="All 2 branches covered.">            for (String url: clipboardText.split(&quot;\\n&quot;)) {</span>
-<span class="fc" id="L126">                var beanInjection = new BeanInjection(url);</span>
-<span class="fc" id="L127">                var newItem = new ItemListScan(beanInjection);</span>
-<span class="fc" id="L128">                itemsParsed.add(newItem);</span>
+<span class="nc" id="L119">            var newItem = new ItemListScan(new JSONObject(clipboardText));</span>
+<span class="nc" id="L120">            itemsParsed.add(newItem);</span>
+<span class="fc" id="L121">        } catch (JSONException e) {</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">            for (String url: clipboardText.split(&quot;\\n&quot;)) {</span>
+<span class="fc" id="L123">                var beanInjection = new BeanInjection(url);</span>
+<span class="fc" id="L124">                var newItem = new ItemListScan(beanInjection);</span>
+<span class="fc" id="L125">                itemsParsed.add(newItem);</span>
             }
-<span class="nc" id="L130">        }</span>
-<span class="fc" id="L131">    }</span>
+<span class="nc" id="L127">        }</span>
+<span class="fc" id="L128">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

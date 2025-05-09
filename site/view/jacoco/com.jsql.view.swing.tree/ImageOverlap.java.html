@@ -26,10 +26,7 @@ import java.util.Objects;
  */
 public class ImageOverlap extends ImageIcon {
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="nc" id="L32">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="nc" id="L29">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * The path of icon displayed in the bottom right corner.
@@ -42,27 +39,27 @@ public class ImageOverlap extends ImageIcon {
      * @param iconPathOverlap Secondary icon to display on top of main icon
      */
     public ImageOverlap(ImageIcon main, String iconPathOverlap) {
-<span class="nc" id="L45">        super(main.getImage());</span>
-<span class="nc" id="L46">        this.iconPathOverlap = iconPathOverlap;</span>
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L42">        super(main.getImage());</span>
+<span class="nc" id="L43">        this.iconPathOverlap = iconPathOverlap;</span>
+<span class="nc" id="L44">    }</span>
 
     @Override
     public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
-<span class="nc" id="L51">        super.paintIcon(c, g, x, y);</span>
+<span class="nc" id="L48">        super.paintIcon(c, g, x, y);</span>
         try {
-<span class="nc" id="L53">            BufferedImage bufferedImage = ImageIO.read(</span>
-<span class="nc" id="L54">                Objects.requireNonNull(ImageOverlap.class.getClassLoader().getResource(this.iconPathOverlap))</span>
+<span class="nc" id="L50">            BufferedImage bufferedImage = ImageIO.read(</span>
+<span class="nc" id="L51">                Objects.requireNonNull(ImageOverlap.class.getClassLoader().getResource(this.iconPathOverlap))</span>
             );
             
-<span class="nc" id="L57">            g.drawImage(</span>
+<span class="nc" id="L54">            g.drawImage(</span>
                 bufferedImage,
-<span class="nc" id="L59">                (this.getIconWidth() - bufferedImage.getWidth()) / 2,</span>
-<span class="nc" id="L60">                (this.getIconHeight() - bufferedImage.getHeight()) / 2,</span>
+<span class="nc" id="L56">                (this.getIconWidth() - bufferedImage.getWidth()) / 2,</span>
+<span class="nc" id="L57">                (this.getIconHeight() - bufferedImage.getHeight()) / 2,</span>
                 null
             );
-<span class="nc" id="L63">        } catch (IOException e) {</span>
-<span class="nc" id="L64">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L65">        }</span>
-<span class="nc" id="L66">    }</span>
+<span class="nc" id="L60">        } catch (IOException e) {</span>
+<span class="nc" id="L61">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L62">        }</span>
+<span class="nc" id="L63">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

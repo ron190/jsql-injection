@@ -27,48 +27,45 @@ import java.util.Objects;
  */
 <span class="fc" id="L28">public class ProgressBarPausable extends JProgressBar {</span>
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L33">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * True if icon should be displayed, false otherwise.
      */
-<span class="fc" id="L38">    private boolean isIconDisplayed = false;</span>
+<span class="fc" id="L35">    private boolean isIconDisplayed = false;</span>
 
     @Override
     public void paint(Graphics graphics) {
         
         // Fix #42285: InternalError on paint()
         try {
-<span class="nc" id="L45">            super.paint(graphics);</span>
-<span class="nc" id="L46">        } catch (InternalError e) {</span>
-<span class="nc" id="L47">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L48">        }</span>
+<span class="nc" id="L42">            super.paint(graphics);</span>
+<span class="nc" id="L43">        } catch (InternalError e) {</span>
+<span class="nc" id="L44">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L45">        }</span>
 
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (this.isIconDisplayed) {</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (this.isIconDisplayed) {</span>
             try {
-<span class="nc" id="L52">                BufferedImage bufferedImage = ImageIO.read(</span>
-<span class="nc" id="L53">                    Objects.requireNonNull(ProgressBarPausable.class.getClassLoader().getResource(UiUtil.PATH_PAUSE))</span>
+<span class="nc" id="L49">                BufferedImage bufferedImage = ImageIO.read(</span>
+<span class="nc" id="L50">                    Objects.requireNonNull(ProgressBarPausable.class.getClassLoader().getResource(UiUtil.PATH_PAUSE))</span>
                 );
-<span class="nc" id="L55">                graphics.drawImage(</span>
+<span class="nc" id="L52">                graphics.drawImage(</span>
                     bufferedImage,
-<span class="nc" id="L57">                    (this.getWidth() - bufferedImage.getWidth()) / 2,</span>
-<span class="nc" id="L58">                    (this.getHeight() - bufferedImage.getHeight()) / 2,</span>
+<span class="nc" id="L54">                    (this.getWidth() - bufferedImage.getWidth()) / 2,</span>
+<span class="nc" id="L55">                    (this.getHeight() - bufferedImage.getHeight()) / 2,</span>
                     null
                 );
-<span class="nc" id="L61">            } catch (IOException e) {</span>
-<span class="nc" id="L62">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L63">            }</span>
+<span class="nc" id="L58">            } catch (IOException e) {</span>
+<span class="nc" id="L59">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L60">            }</span>
         }
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L62">    }</span>
 
     /**
      * Activate pause state, hence display pause icon.
      */
     public void pause() {
-<span class="nc" id="L71">        this.isIconDisplayed = true;</span>
-<span class="nc" id="L72">    }</span>
+<span class="nc" id="L68">        this.isIconDisplayed = true;</span>
+<span class="nc" id="L69">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

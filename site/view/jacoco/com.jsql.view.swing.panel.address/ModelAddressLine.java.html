@@ -11,35 +11,26 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ModelAddressLine {
 
     public final String request;
-    public final Boolean isSelected;
     public final AbstractMethodInjection method;
-    public final String i18nRadio;
+    public final String i18n;
     public final AtomicReference&lt;JRadioButton&gt; radio;
-    public final String keyTooltipQuery;
     public final String placeholder;
     public final AtomicReference&lt;JTextField&gt; textfield;
-    public final int offset;
 
     public ModelAddressLine(
         String request,
-        Boolean isSelected,
         AbstractMethodInjection method,
-        String i18nRadio,
+        String i18n,
         AtomicReference&lt;JRadioButton&gt; radio,
-        String keyTooltipQuery,
         String placeholder,
-        AtomicReference&lt;JTextField&gt; textfield,
-        int offset
-<span class="fc" id="L33">    ) {</span>
-<span class="fc" id="L34">        this.request = request;</span>
-<span class="fc" id="L35">        this.isSelected = isSelected;</span>
-<span class="fc" id="L36">        this.method = method;</span>
-<span class="fc" id="L37">        this.i18nRadio = i18nRadio;</span>
-<span class="fc" id="L38">        this.radio = radio;</span>
-<span class="fc" id="L39">        this.keyTooltipQuery = keyTooltipQuery;</span>
-<span class="fc" id="L40">        this.placeholder = placeholder;</span>
-<span class="fc" id="L41">        this.textfield = textfield;</span>
-<span class="fc" id="L42">        this.offset = offset;</span>
-<span class="fc" id="L43">    }</span>
+        AtomicReference&lt;JTextField&gt; textfield
+<span class="fc" id="L27">    ) {</span>
+<span class="fc" id="L28">        this.request = request;</span>
+<span class="fc" id="L29">        this.method = method;</span>
+<span class="fc" id="L30">        this.i18n = i18n;</span>
+<span class="fc" id="L31">        this.radio = radio;</span>
+<span class="fc" id="L32">        this.placeholder = placeholder;</span>
+<span class="fc" id="L33">        this.textfield = textfield;</span>
+<span class="fc" id="L34">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

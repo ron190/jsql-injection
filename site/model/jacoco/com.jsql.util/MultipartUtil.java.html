@@ -11,77 +11,74 @@ import java.util.regex.Pattern;
 
 public class MultipartUtil {
 
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L17">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L14">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     private final InjectionModel injectionModel;
 
-<span class="fc" id="L21">    public MultipartUtil(InjectionModel injectionModel) {</span>
-<span class="fc" id="L22">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L23">    }</span>
+<span class="fc" id="L18">    public MultipartUtil(InjectionModel injectionModel) {</span>
+<span class="fc" id="L19">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L20">    }</span>
 
     public boolean testParameters(boolean hasFoundInjection) {
-<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (!hasFoundInjection) {</span>
-<span class="fc" id="L27">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} multipart...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (!hasFoundInjection) {</span>
+<span class="fc" id="L24">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} multipart...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
         } else {
-<span class="fc" id="L29">            return true;</span>
+<span class="fc" id="L26">            return true;</span>
         }
         
-<span class="fc" id="L32">        String rawHeader = this.injectionModel.getMediatorUtils().getParameterUtil().getRawHeader();</span>
-<span class="fc" id="L33">        String rawRequest = this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest();</span>
+<span class="fc" id="L29">        String rawHeader = this.injectionModel.getMediatorUtils().getParameterUtil().getRawHeader();</span>
+<span class="fc" id="L30">        String rawRequest = this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest();</span>
 
-<span class="fc" id="L35">        Matcher matcherBoundary = Pattern.compile(&quot;boundary=([^;]*)&quot;).matcher(rawHeader);</span>
-<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (!matcherBoundary.find()) {</span>
-<span class="fc" id="L37">            return false;</span>
+<span class="fc" id="L32">        Matcher matcherBoundary = Pattern.compile(&quot;boundary=([^;]*)&quot;).matcher(rawHeader);</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        if (!matcherBoundary.find()) {</span>
+<span class="fc" id="L34">            return false;</span>
         }
         
-<span class="fc" id="L40">        String boundary = matcherBoundary.group(1);</span>
+<span class="fc" id="L37">        String boundary = matcherBoundary.group(1);</span>
 
-<span class="fc" id="L42">        Matcher matcherFormDataParameters = Pattern</span>
-<span class="fc" id="L43">            .compile(&quot;Content-Disposition\\s*:\\s*form-data\\s*;\\s*name\\s*=\&quot;(.*?)\&quot;(.*?)--&quot; + boundary, Pattern.DOTALL)</span>
-<span class="fc" id="L44">            .matcher(rawRequest);</span>
+<span class="fc" id="L39">        Matcher matcherFormDataParameters = Pattern</span>
+<span class="fc" id="L40">            .compile(&quot;Content-Disposition\\s*:\\s*form-data\\s*;\\s*name\\s*=\&quot;(.*?)\&quot;(.*?)--&quot; + boundary, Pattern.DOTALL)</span>
+<span class="fc" id="L41">            .matcher(rawRequest);</span>
 
-<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        while (matcherFormDataParameters.find()) {</span>
-<span class="pc bpc" id="L47" title="1 of 2 branches missed.">            if (this.isBoundaryInjectable(rawRequest, boundary, matcherFormDataParameters)) {</span>
-<span class="fc" id="L48">                return true;</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        while (matcherFormDataParameters.find()) {</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">            if (this.isBoundaryInjectable(rawRequest, boundary, matcherFormDataParameters)) {</span>
+<span class="fc" id="L45">                return true;</span>
             }
         }
-<span class="nc" id="L51">        return false;</span>
+<span class="nc" id="L48">        return false;</span>
     }
 
     private boolean isBoundaryInjectable(String rawRequest, String boundary, Matcher matcherFormDataParameters) {
-<span class="fc" id="L55">        String nameParameter = matcherFormDataParameters.group(1);</span>
-<span class="fc" id="L56">        String valueParameter = matcherFormDataParameters.group(2);</span>
+<span class="fc" id="L52">        String nameParameter = matcherFormDataParameters.group(1);</span>
+<span class="fc" id="L53">        String valueParameter = matcherFormDataParameters.group(2);</span>
 
-<span class="fc" id="L58">        String rawRequestWithStar = rawRequest.replaceAll(</span>
+<span class="fc" id="L55">        String rawRequestWithStar = rawRequest.replaceAll(</span>
             &quot;(?i)(Content-Disposition\\s*:\\s*form-data\\s*;\\s*name\\s*=\\s*\&quot;&quot; + nameParameter + &quot;\&quot;.*?)([\\\\r\\\\n]*--&quot; + boundary + &quot;)&quot;,
             &quot;$1&quot; + InjectionModel.STAR + &quot;$2&quot;
         );
 
-<span class="fc" id="L63">        this.injectionModel.getMediatorUtils().getParameterUtil().initRequest(rawRequestWithStar);</span>
+<span class="fc" id="L60">        this.injectionModel.getMediatorUtils().getParameterUtil().initRequest(rawRequestWithStar);</span>
 
         try {
-<span class="fc" id="L66">            LOGGER.log(</span>
+<span class="fc" id="L63">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;{} multipart boundary {}={}&quot;,
-<span class="fc" id="L69">                () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;),</span>
-<span class="fc" id="L70">                () -&gt; nameParameter,</span>
-<span class="fc" id="L71">                () -&gt; valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="fc" id="L66">                () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;),</span>
+<span class="fc" id="L67">                () -&gt; nameParameter,</span>
+<span class="fc" id="L68">                () -&gt; valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
             );
-<span class="fc" id="L73">            return this.injectionModel.getMediatorMethod().getRequest().testParameters();</span>
-<span class="nc" id="L74">        } catch (JSqlException e) {</span>
-<span class="nc" id="L75">            LOGGER.log(</span>
+<span class="fc" id="L70">            return this.injectionModel.getMediatorMethod().getRequest().testParameters();</span>
+<span class="nc" id="L71">        } catch (JSqlException e) {</span>
+<span class="nc" id="L72">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L77">                String.format(</span>
+<span class="nc" id="L74">                String.format(</span>
                     &quot;No Multipart boundary injection for %s=%s&quot;,
                     nameParameter,
-<span class="nc" id="L80">                    valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="nc" id="L77">                    valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                 )
             );
         }
-<span class="nc" id="L84">        return false;</span>
+<span class="nc" id="L81">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

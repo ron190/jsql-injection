@@ -33,49 +33,50 @@ public class PanelUserAgent extends JPanel {
                 );
 <span class="nc" id="L34">            }</span>
         });
-<span class="fc" id="L36">        var scrollPane = new JScrollPane(textfieldCustomUserAgent);</span>
+<span class="fc" id="L36">        textfieldCustomUserAgent.setCaretPosition(0);</span>
+<span class="fc" id="L37">        var scrollPane = new JScrollPane(textfieldCustomUserAgent);</span>
 
-<span class="fc" id="L38">        var labelOrigin = new JLabel(&quot;&lt;html&gt;&lt;b&gt;Connection user agent&lt;/b&gt;&lt;/html&gt;&quot;);</span>
-<span class="fc" id="L39">        labelOrigin.setBorder(PanelGeneral.MARGIN);</span>
+<span class="fc" id="L39">        var labelOrigin = new JLabel(&quot;&lt;html&gt;&lt;b&gt;Connection user agent&lt;/b&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L40">        labelOrigin.setBorder(PanelGeneral.MARGIN);</span>
 
-<span class="fc" id="L41">        var groupLayout = new GroupLayout(this);</span>
-<span class="fc" id="L42">        this.setLayout(groupLayout);</span>
+<span class="fc" id="L42">        var groupLayout = new GroupLayout(this);</span>
+<span class="fc" id="L43">        this.setLayout(groupLayout);</span>
 
-<span class="fc" id="L44">        groupLayout.setHorizontalGroup(</span>
+<span class="fc" id="L45">        groupLayout.setHorizontalGroup(</span>
             groupLayout
-<span class="fc" id="L46">            .createSequentialGroup()</span>
-<span class="fc" id="L47">            .addGroup(</span>
+<span class="fc" id="L47">            .createSequentialGroup()</span>
+<span class="fc" id="L48">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L49">                .createParallelGroup(GroupLayout.Alignment.LEADING)</span>
-<span class="fc" id="L50">                .addComponent(labelOrigin)</span>
-<span class="fc" id="L51">                .addComponent(this.checkboxIsCustomUserAgent)</span>
-<span class="fc" id="L52">                .addComponent(scrollPane)</span>
+<span class="fc" id="L50">                .createParallelGroup(GroupLayout.Alignment.LEADING)</span>
+<span class="fc" id="L51">                .addComponent(labelOrigin)</span>
+<span class="fc" id="L52">                .addComponent(this.checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L53">                .addComponent(scrollPane)</span>
             )
         );
 
-<span class="fc" id="L56">        groupLayout.setVerticalGroup(</span>
+<span class="fc" id="L57">        groupLayout.setVerticalGroup(</span>
             groupLayout
-<span class="fc" id="L58">            .createSequentialGroup()</span>
-<span class="fc" id="L59">            .addGroup(</span>
+<span class="fc" id="L59">            .createSequentialGroup()</span>
+<span class="fc" id="L60">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L61">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L62">                .addComponent(labelOrigin)</span>
+<span class="fc" id="L62">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L63">                .addComponent(labelOrigin)</span>
             )
-<span class="fc" id="L64">            .addGroup(</span>
+<span class="fc" id="L65">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L66">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L67">                .addComponent(this.checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L67">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L68">                .addComponent(this.checkboxIsCustomUserAgent)</span>
             )
-<span class="fc" id="L69">            .addGroup(</span>
+<span class="fc" id="L70">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L71">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L72">                .addComponent(scrollPane)</span>
+<span class="fc" id="L72">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L73">                .addComponent(scrollPane)</span>
             )
         );
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L76">    }</span>
 
     public JCheckBox getCheckboxIsCustomUserAgent() {
-<span class="fc" id="L78">        return this.checkboxIsCustomUserAgent;</span>
+<span class="fc" id="L79">        return this.checkboxIsCustomUserAgent;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

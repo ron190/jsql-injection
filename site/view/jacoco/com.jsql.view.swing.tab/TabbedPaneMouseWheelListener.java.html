@@ -13,35 +13,32 @@ import java.awt.event.MouseWheelListener;
  */
 <span class="fc" id="L14">public class TabbedPaneMouseWheelListener implements MouseWheelListener {</span>
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L19">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L16">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     @Override
     public void mouseWheelMoved(MouseWheelEvent event) {
         
-<span class="nc" id="L24">        JTabbedPane tabPane = (JTabbedPane) event.getSource();</span>
+<span class="nc" id="L21">        JTabbedPane tabPane = (JTabbedPane) event.getSource();</span>
 
-<span class="nc" id="L26">        int dir = -event.getWheelRotation();</span>
-<span class="nc" id="L27">        int selIndex = tabPane.getSelectedIndex();</span>
-<span class="nc" id="L28">        int maxIndex = tabPane.getTabCount() - 1;</span>
+<span class="nc" id="L23">        int dir = -event.getWheelRotation();</span>
+<span class="nc" id="L24">        int selIndex = tabPane.getSelectedIndex();</span>
+<span class="nc" id="L25">        int maxIndex = tabPane.getTabCount() - 1;</span>
         
-<span class="nc bnc" id="L30" title="All 8 branches missed.">        if ((selIndex == 0 &amp;&amp; dir &lt; 0) || (selIndex == maxIndex &amp;&amp; dir &gt; 0)) {</span>
-<span class="nc" id="L31">            selIndex = maxIndex - selIndex;</span>
+<span class="nc bnc" id="L27" title="All 8 branches missed.">        if ((selIndex == 0 &amp;&amp; dir &lt; 0) || (selIndex == maxIndex &amp;&amp; dir &gt; 0)) {</span>
+<span class="nc" id="L28">            selIndex = maxIndex - selIndex;</span>
         } else {
-<span class="nc" id="L33">            selIndex += dir;</span>
+<span class="nc" id="L30">            selIndex += dir;</span>
         }
         
-<span class="nc bnc" id="L36" title="All 4 branches missed.">        if (0 &lt;= selIndex &amp;&amp; selIndex &lt; tabPane.getTabCount()) {</span>
+<span class="nc bnc" id="L33" title="All 4 branches missed.">        if (0 &lt;= selIndex &amp;&amp; selIndex &lt; tabPane.getTabCount()) {</span>
             // Fix #54575: NullPointerException on setSelectedIndex()
             // Fix #90835: IllegalArgumentException on setSelectedIndex()
             try {
-<span class="nc" id="L40">                tabPane.setSelectedIndex(selIndex);</span>
-<span class="nc" id="L41">            } catch (IllegalArgumentException | NullPointerException e) {</span>
-<span class="nc" id="L42">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L43">            }</span>
+<span class="nc" id="L37">                tabPane.setSelectedIndex(selIndex);</span>
+<span class="nc" id="L38">            } catch (IllegalArgumentException | NullPointerException e) {</span>
+<span class="nc" id="L39">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L40">            }</span>
         }
-<span class="nc" id="L45">    }</span>
+<span class="nc" id="L42">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

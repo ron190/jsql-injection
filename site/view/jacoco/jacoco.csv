@@ -99,7 +99,7 @@ view,com.jsql.view.swing.panel.split,SplitNS.new MouseAdapter() {...},8,6,2,0,3,
 view,com.jsql.view.swing.panel.split,ActionHideShowConsole,0,70,2,8,0,20,2,5,0,2
 view,com.jsql.view.swing.panel.split,ActionHideShowResult,24,31,6,2,5,8,4,2,0,2
 view,com.jsql.view.swing.panel.address,ActionStart,39,74,5,3,13,21,5,4,1,4
-view,com.jsql.view.swing.panel.address,ModelAddressLine,0,30,0,0,0,11,0,1,0,1
+view,com.jsql.view.swing.panel.address,ModelAddressLine,0,21,0,0,0,8,0,1,0,1
 view,com.jsql.view.swing.panel.address,ActionEnterAddressBar,10,4,2,0,3,2,2,1,1,1
 view,com.jsql.view.swing.panel.address,PanelTrailingAddress.new JRadioButtonMenuItem() {...},21,13,0,0,4,1,1,1,1,1
 view,com.jsql.view.swing.panel.address,PanelTrailingAddress.new MouseAdapter() {...},0,60,0,0,0,8,0,2,0,2
@@ -163,22 +163,22 @@ view,com.jsql.view.swing.panel.preferences,PanelTampering.new ButtonGroup() {...
 view,com.jsql.view.swing.panel.preferences,PanelStrategies,0,275,0,0,0,67,0,9,0,9
 view,com.jsql.view.swing.panel.preferences,PanelAuthentication.new DocumentListenerEditing() {...},6,9,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.panel.preferences,PanelAuthentication,0,393,0,0,0,83,0,9,0,9
-view,com.jsql.view.swing.panel.preferences,PanelExploit,0,92,0,0,0,30,0,3,0,3
+view,com.jsql.view.swing.panel.preferences,PanelExploit,0,95,0,0,0,31,0,3,0,3
 view,com.jsql.view.swing.panel.preferences,PanelProxy,0,411,0,0,0,88,0,9,0,9
 view,com.jsql.view.swing.panel.preferences,PanelProxy.new DocumentListenerEditing() {...},6,9,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.panel.preferences,PanelConnection,63,778,14,6,6,170,13,17,3,17
 view,com.jsql.view.swing.panel.preferences,PanelTampering,0,540,0,0,0,124,0,17,0,17
 view,com.jsql.view.swing.panel.preferences,PanelExploit.new DocumentListenerEditing() {...},0,49,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.panel.preferences,PanelUserAgent.new DocumentListenerEditing() {...},8,9,0,0,3,1,1,1,1,1
+view,com.jsql.view.swing.panel.preferences,PanelUserAgent,0,128,0,0,0,37,0,2,0,2
 view,com.jsql.view.swing.panel.preferences,PanelGeneral,0,150,0,0,0,39,0,6,0,6
-view,com.jsql.view.swing.panel.preferences,PanelUserAgent,0,125,0,0,0,36,0,2,0,2
 view,com.jsql.view.swing.list,ListTransfertHandlerScan,55,234,5,15,13,54,4,14,0,8
 view,com.jsql.view.swing.list,DnDList.new FocusListener() {...},0,14,0,0,0,5,0,3,0,3
 view,com.jsql.view.swing.list,DnDList.new KeyAdapter() {...},0,14,0,2,0,4,0,3,0,2
 view,com.jsql.view.swing.list,DnDList.new AbstractAction() {...},14,76,4,6,3,14,3,4,0,2
 view,com.jsql.view.swing.list,ListTransfertHandler,59,169,8,12,11,37,7,10,1,6
-view,com.jsql.view.swing.list,MenuActionNewValue.new MouseAdapter() {...},17,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.list,MouseAdapterMenuAction,143,378,16,10,33,79,18,9,7,7
+view,com.jsql.view.swing.list,MenuActionNewValue.new MouseAdapter() {...},17,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.list,DnDListScan,15,4,0,0,2,2,1,1,1,1
 view,com.jsql.view.swing.list,MenuActionExport,64,9,4,0,14,4,3,2,1,2
 view,com.jsql.view.swing.list,AbstractListTransfertHandler,82,165,11,13,25,47,10,12,2,8
@@ -219,14 +219,14 @@ view,com.jsql.view.swing.panel,PanelConsoles.new JLabel() {...},14,15,0,0,2,1,1,
 view,com.jsql.view.swing.panel,PanelConsoles.new MouseAdapter() {...},0,10,0,0,0,3,0,2,0,2
 view,com.jsql.view.swing.panel,PanelConsoles.new MouseAdapter() {...},6,17,0,0,2,4,0,2,0,2
 view,com.jsql.view.swing.panel,PanelPreferences.CategoryPreference,0,65,0,0,0,11,0,2,0,2
-view,com.jsql.view.swing.panel,PanelAddressBar,80,788,4,4,14,142,10,18,8,16
-view,com.jsql.view.swing.panel,PanelPreferences,0,247,0,0,0,54,0,14,0,14
+view,com.jsql.view.swing.panel,PanelPreferences,0,267,0,2,0,56,0,15,0,14
+view,com.jsql.view.swing.panel,PanelAddressBar,80,788,4,10,14,141,10,21,8,16
 view,com.jsql.view.swing.panel,PanelConsoles,75,497,8,8,20,110,11,16,3,16
 view,com.jsql.view.swing.tab.dnd,TabTransferHandler,78,254,24,18,13,59,22,8,1,8
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,12,167,8,16,4,39,8,10,0,6
 view,com.jsql.view.swing.tab.dnd,DnDTabData,0,6,0,0,0,3,0,1,0,1
-view,com.jsql.view.swing.tab.dnd,GhostGlassPane,0,45,0,0,0,15,0,4,0,4
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.DnDDropLocation,0,20,0,0,0,8,0,4,0,4
+view,com.jsql.view.swing.tab.dnd,GhostGlassPane,0,45,0,0,0,15,0,4,0,4
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane,207,294,30,18,39,68,23,13,2,10
 view,com.jsql.view.swing.tab.dnd,TabTransferHandler.new Transferable() {...},5,32,1,1,1,5,1,4,0,4
 view,com.jsql.view.scan,ScanListTerminal,4,0,0,0,2,0,1,0,1,0
@@ -287,8 +287,8 @@ view,com.jsql.view.swing.interaction,CreateValuesTab,0,34,0,0,0,7,0,3,0,3
 view,com.jsql.view.swing.interaction,UpdateProgress,23,0,0,0,6,0,2,0,2,0
 view,com.jsql.view.swing.interaction,CreateAdminPageTab,37,241,0,0,10,62,2,3,2,3
 view,com.jsql.view.swing.interaction,AddTabExploitUdfSqlite,18,0,0,0,5,0,4,0,4,0
-view,com.jsql.view.swing.interaction,AddDatabases,0,14,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.interaction,MarkStackStrategy,12,0,0,0,5,0,2,0,2,0
+view,com.jsql.view.swing.interaction,AddDatabases,0,14,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.interaction,SetVendor,0,20,0,0,0,6,0,2,0,2
 view,com.jsql.view.swing.interaction,CreateAdminPageTab.new FocusAdapter() {...},11,9,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.interaction,CreateAdminPageTab.new MouseAdapter() {...},56,12,6,0,15,1,5,1,2,1
@@ -301,8 +301,8 @@ view,com.jsql.view.swing.interaction,MessageChunk,17,0,0,0,6,0,2,0,2,0
 view,com.jsql.view.swing.interaction,AddTabExploitUdfExtensionPostgres,18,0,0,0,5,0,4,0,4,0
 view,com.jsql.view.swing.interaction,MessageHeader,6,148,0,0,2,23,0,3,0,3
 view,com.jsql.view.swing.interaction,MarkStackVulnerable,12,0,0,0,5,0,2,0,2,0
-view,com.jsql.view.swing.interaction,EndIndeterminateProgress,14,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,CreateAnalysisReport,19,0,0,0,5,0,3,0,3,0
+view,com.jsql.view.swing.interaction,EndIndeterminateProgress,14,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,StartIndeterminateProgress,14,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,MarkBlindBitInvulnerable,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,MarkErrorVulnerable,0,21,0,0,0,6,0,2,0,2
@@ -326,7 +326,7 @@ view,com.jsql.view.swing.interaction,GetTerminalResult,0,34,1,1,0,10,1,2,0,2
 view,com.jsql.view.swing.interaction,AddTabExploitUdfOracle,18,0,0,0,5,0,4,0,4,0
 view,com.jsql.view.swing.interaction,MarkStackInvulnerable,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,MarkFileSystemVulnerable,6,0,0,0,4,0,2,0,2,0
-view,com.jsql.view.swing.manager.util,ActionBruteForce,562,12,46,0,116,5,37,2,14,2
+view,com.jsql.view.swing.manager.util,ActionBruteForce,570,12,46,0,112,5,37,2,14,2
 view,com.jsql.view.swing.manager.util,ModelBrute,0,12,0,0,0,5,0,1,0,1
 view,com.jsql.view.swing.manager.util,JButtonStateful,7,8,0,0,3,3,2,1,2,1
 view,com.jsql.view.swing.manager.util,ModelSpinner,0,12,0,0,0,5,0,1,0,1
@@ -338,5 +338,5 @@ view,com.jsql.view.swing.manager.util,SeparatorListener,17,13,2,0,4,5,2,1,1,1
 view,com.jsql.view.swing.manager.util,CoderListener,31,47,3,1,8,16,3,5,1,5
 view,com.jsql.view.swing.manager.util,ModelExploit,0,22,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.terminal.util,KeyAdapterTerminal.new SwingWorker() {...},0,47,0,2,0,13,0,3,0,2
-view,com.jsql.view.swing.terminal.util,BlockCaret,10,116,4,14,6,33,4,9,0,4
+view,com.jsql.view.swing.terminal.util,BlockCaret,9,117,2,16,5,34,2,11,0,4
 view,com.jsql.view.swing.terminal.util,KeyAdapterTerminal,144,262,21,37,26,63,16,23,1,9

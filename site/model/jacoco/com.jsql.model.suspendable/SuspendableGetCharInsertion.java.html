@@ -36,155 +36,152 @@ import java.util.stream.Stream;
  */
 public class SuspendableGetCharInsertion extends AbstractSuspendable {
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L42">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L39">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     private static final String LABEL_PREFIX = &quot;prefix&quot;;
 
     public SuspendableGetCharInsertion(InjectionModel injectionModel) {
-<span class="fc" id="L47">        super(injectionModel);</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L44">        super(injectionModel);</span>
+<span class="fc" id="L45">    }</span>
 
     @Override
     public String run(Object... args) throws JSqlException {
-<span class="fc" id="L52">        String characterInsertionByUser = (String) args[0];</span>
+<span class="fc" id="L49">        String characterInsertionByUser = (String) args[0];</span>
         
-<span class="fc" id="L54">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetInsertionCharacter&quot;);</span>
-<span class="fc" id="L55">        CompletionService&lt;CallablePageSource&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
+<span class="fc" id="L51">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetInsertionCharacter&quot;);</span>
+<span class="fc" id="L52">        CompletionService&lt;CallablePageSource&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
-<span class="fc" id="L57">        var charFromBooleanMatch = new String[1];</span>
-<span class="fc" id="L58">        List&lt;String&gt; charactersInsertion = this.initCallables(taskCompletionService, charFromBooleanMatch);</span>
+<span class="fc" id="L54">        var charFromBooleanMatch = new String[1];</span>
+<span class="fc" id="L55">        List&lt;String&gt; charactersInsertion = this.initCallables(taskCompletionService, charFromBooleanMatch);</span>
         
-<span class="fc" id="L60">        var mediatorVendor = this.injectionModel.getMediatorVendor();</span>
-<span class="fc" id="L61">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database and character insertion with Order by match...&quot;);</span>
+<span class="fc" id="L57">        var mediatorVendor = this.injectionModel.getMediatorVendor();</span>
+<span class="fc" id="L58">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database and character insertion with Order by match...&quot;);</span>
 
-<span class="fc" id="L63">        String charFromOrderBy = null;</span>
+<span class="fc" id="L60">        String charFromOrderBy = null;</span>
         
-<span class="fc" id="L65">        int total = charactersInsertion.size();</span>
-<span class="fc bfc" id="L66" title="All 2 branches covered.">        while (0 &lt; total) {</span>
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">            if (this.isSuspended()) {</span>
-<span class="nc" id="L68">                throw new StoppedByUserSlidingException();</span>
+<span class="fc" id="L62">        int total = charactersInsertion.size();</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        while (0 &lt; total) {</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            if (this.isSuspended()) {</span>
+<span class="nc" id="L65">                throw new StoppedByUserSlidingException();</span>
             }
             try {
-<span class="fc" id="L71">                CallablePageSource currentCallable = taskCompletionService.take().get();</span>
-<span class="fc" id="L72">                total--;</span>
-<span class="fc" id="L73">                String pageSource = currentCallable.getContent();</span>
+<span class="fc" id="L68">                CallablePageSource currentCallable = taskCompletionService.take().get();</span>
+<span class="fc" id="L69">                total--;</span>
+<span class="fc" id="L70">                String pageSource = currentCallable.getContent();</span>
                 
-<span class="fc" id="L75">                List&lt;Vendor&gt; vendorsOrderByMatch = this.getVendorsOrderByMatch(mediatorVendor, pageSource);</span>
-<span class="fc bfc" id="L76" title="All 2 branches covered.">                if (!vendorsOrderByMatch.isEmpty()) {</span>
-<span class="fc" id="L77">                    this.setVendor(mediatorVendor, vendorsOrderByMatch);</span>
+<span class="fc" id="L72">                List&lt;Vendor&gt; vendorsOrderByMatch = this.getVendorsOrderByMatch(mediatorVendor, pageSource);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">                if (!vendorsOrderByMatch.isEmpty()) {</span>
+<span class="fc" id="L74">                    this.setVendor(mediatorVendor, vendorsOrderByMatch);</span>
                     
-<span class="fc" id="L79">                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Using [{}]&quot;, mediatorVendor.getVendor());</span>
-<span class="fc" id="L80">                    var requestSetVendor = new Request();</span>
-<span class="fc" id="L81">                    requestSetVendor.setMessage(Interaction.SET_VENDOR);</span>
-<span class="fc" id="L82">                    Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L83">                    msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
-<span class="fc" id="L84">                    msgHeader.put(Header.VENDOR, mediatorVendor.getVendor());</span>
-<span class="fc" id="L85">                    requestSetVendor.setParameters(msgHeader);</span>
-<span class="fc" id="L86">                    this.injectionModel.sendToViews(requestSetVendor);</span>
+<span class="fc" id="L76">                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Using [{}]&quot;, mediatorVendor.getVendor());</span>
+<span class="fc" id="L77">                    var requestSetVendor = new Request();</span>
+<span class="fc" id="L78">                    requestSetVendor.setMessage(Interaction.SET_VENDOR);</span>
+<span class="fc" id="L79">                    Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L80">                    msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+<span class="fc" id="L81">                    msgHeader.put(Header.VENDOR, mediatorVendor.getVendor());</span>
+<span class="fc" id="L82">                    requestSetVendor.setParameters(msgHeader);</span>
+<span class="fc" id="L83">                    this.injectionModel.sendToViews(requestSetVendor);</span>
                     
-<span class="fc" id="L88">                    charFromOrderBy = currentCallable.getCharacterInsertion();</span>
-<span class="fc" id="L89">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Character insertion [{}] matching with Order by and compatible with Error strategy&quot;, charFromOrderBy);</span>
-<span class="fc" id="L90">                    break;</span>
+<span class="fc" id="L85">                    charFromOrderBy = currentCallable.getCharacterInsertion();</span>
+<span class="fc" id="L86">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Character insertion [{}] matching with Order by and compatible with Error strategy&quot;, charFromOrderBy);</span>
+<span class="fc" id="L87">                    break;</span>
                 }
-<span class="nc" id="L92">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L93">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L94">                Thread.currentThread().interrupt();</span>
-<span class="nc" id="L95">            } catch (ExecutionException e) {</span>
-<span class="nc" id="L96">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="pc" id="L97">            }</span>
+<span class="nc" id="L89">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L90">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L91">                Thread.currentThread().interrupt();</span>
+<span class="nc" id="L92">            } catch (ExecutionException e) {</span>
+<span class="nc" id="L93">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="pc" id="L94">            }</span>
         }
-<span class="fc" id="L99">        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-<span class="fc bfc" id="L100" title="All 4 branches covered.">        if (charFromOrderBy == null &amp;&amp; charFromBooleanMatch[0] != null) {</span>
-<span class="fc" id="L101">            charFromOrderBy = charFromBooleanMatch[0];</span>
+<span class="fc" id="L96">        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc bfc" id="L97" title="All 4 branches covered.">        if (charFromOrderBy == null &amp;&amp; charFromBooleanMatch[0] != null) {</span>
+<span class="fc" id="L98">            charFromOrderBy = charFromBooleanMatch[0];</span>
         }
-<span class="fc" id="L103">        return this.getCharacterInsertion(characterInsertionByUser, charFromOrderBy);</span>
+<span class="fc" id="L100">        return this.getCharacterInsertion(characterInsertionByUser, charFromOrderBy);</span>
     }
 
     private void setVendor(MediatorVendor mediatorVendor, List&lt;Vendor&gt; vendorsOrderByMatch) {
-<span class="fc" id="L107">        if (</span>
-<span class="fc bfc" id="L108" title="All 2 branches covered.">            vendorsOrderByMatch.size() == 1</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">            &amp;&amp; vendorsOrderByMatch.get(0) != mediatorVendor.getVendor()</span>
+<span class="fc" id="L104">        if (</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">            vendorsOrderByMatch.size() == 1</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">            &amp;&amp; vendorsOrderByMatch.get(0) != mediatorVendor.getVendor()</span>
         ) {
-<span class="nc" id="L111">            mediatorVendor.setVendor(vendorsOrderByMatch.get(0));</span>
-<span class="fc bfc" id="L112" title="All 2 branches covered.">        } else if (vendorsOrderByMatch.size() &gt; 1) {</span>
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgres())) {</span>
-<span class="fc" id="L114">                mediatorVendor.setVendor(mediatorVendor.getPostgres());</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">            } else if (vendorsOrderByMatch.contains(mediatorVendor.getMysql())) {</span>
-<span class="nc" id="L116">                mediatorVendor.setVendor(mediatorVendor.getMysql());</span>
+<span class="nc" id="L108">            mediatorVendor.setVendor(vendorsOrderByMatch.get(0));</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        } else if (vendorsOrderByMatch.size() &gt; 1) {</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgres())) {</span>
+<span class="fc" id="L111">                mediatorVendor.setVendor(mediatorVendor.getPostgres());</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            } else if (vendorsOrderByMatch.contains(mediatorVendor.getMysql())) {</span>
+<span class="nc" id="L113">                mediatorVendor.setVendor(mediatorVendor.getMysql());</span>
             } else {
-<span class="nc" id="L118">                mediatorVendor.setVendor(vendorsOrderByMatch.get(0));</span>
+<span class="nc" id="L115">                mediatorVendor.setVendor(vendorsOrderByMatch.get(0));</span>
             }
         }
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L118">    }</span>
 
     private List&lt;Vendor&gt; getVendorsOrderByMatch(MediatorVendor mediatorVendor, String pageSource) {
-<span class="fc" id="L124">        return mediatorVendor.getVendorsForFingerprint()</span>
-<span class="fc" id="L125">            .stream()</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">            .filter(vendor -&gt; vendor != mediatorVendor.getAuto())</span>
-<span class="fc" id="L127">            .filter(vendor -&gt; StringUtils.isNotEmpty(</span>
-<span class="fc" id="L128">                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()</span>
+<span class="fc" id="L121">        return mediatorVendor.getVendorsForFingerprint()</span>
+<span class="fc" id="L122">            .stream()</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">            .filter(vendor -&gt; vendor != mediatorVendor.getAuto())</span>
+<span class="fc" id="L124">            .filter(vendor -&gt; StringUtils.isNotEmpty(</span>
+<span class="fc" id="L125">                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()</span>
             ))
-<span class="fc" id="L130">            .filter(vendor -&gt; {</span>
-<span class="fc" id="L131">                Optional&lt;String&gt; optionalOrderByErrorMatch = Stream.of(</span>
-<span class="fc" id="L132">                    vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()</span>
-<span class="fc" id="L133">                    .split(&quot;[\\r\\n]+&quot;)</span>
+<span class="fc" id="L127">            .filter(vendor -&gt; {</span>
+<span class="fc" id="L128">                Optional&lt;String&gt; optionalOrderByErrorMatch = Stream.of(</span>
+<span class="fc" id="L129">                    vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()</span>
+<span class="fc" id="L130">                    .split(&quot;[\\r\\n]+&quot;)</span>
                 )
-<span class="fc" id="L135">                .filter(errorMessage -&gt;</span>
-<span class="fc" id="L136">                    Pattern</span>
-<span class="fc" id="L137">                    .compile(&quot;.*&quot; + errorMessage + &quot;.*&quot;, Pattern.DOTALL)</span>
-<span class="fc" id="L138">                    .matcher(pageSource)</span>
-<span class="fc" id="L139">                    .matches()</span>
+<span class="fc" id="L132">                .filter(errorMessage -&gt;</span>
+<span class="fc" id="L133">                    Pattern</span>
+<span class="fc" id="L134">                    .compile(&quot;.*&quot; + errorMessage + &quot;.*&quot;, Pattern.DOTALL)</span>
+<span class="fc" id="L135">                    .matcher(pageSource)</span>
+<span class="fc" id="L136">                    .matches()</span>
                 )
-<span class="fc" id="L141">                .findAny();</span>
-<span class="fc bfc" id="L142" title="All 2 branches covered.">                if (optionalOrderByErrorMatch.isPresent()) {</span>
-<span class="fc" id="L143">                    LOGGER.log(</span>
+<span class="fc" id="L138">                .findAny();</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">                if (optionalOrderByErrorMatch.isPresent()) {</span>
+<span class="fc" id="L140">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_SUCCESS,
-<span class="fc" id="L145">                        String.format(&quot;Order by fingerprint matching vendor [%s]&quot;, vendor)</span>
+<span class="fc" id="L142">                        String.format(&quot;Order by fingerprint matching vendor [%s]&quot;, vendor)</span>
                     );
                 }
-<span class="fc" id="L148">                return optionalOrderByErrorMatch.isPresent();</span>
+<span class="fc" id="L145">                return optionalOrderByErrorMatch.isPresent();</span>
             })
-<span class="fc" id="L150">            .collect(Collectors.toList());</span>
+<span class="fc" id="L147">            .collect(Collectors.toList());</span>
     }
 
     private List&lt;String&gt; initCallables(CompletionService&lt;CallablePageSource&gt; taskCompletionService, String[] charFromBooleanMatch) throws JSqlException {
-<span class="fc" id="L154">        List&lt;String&gt; prefixValues = Arrays.asList(</span>
-<span class="fc" id="L155">            RandomStringUtils.secure().next(10, &quot;012&quot;),  // to trigger probable failure</span>
+<span class="fc" id="L151">        List&lt;String&gt; prefixValues = Arrays.asList(</span>
+<span class="fc" id="L152">            RandomStringUtils.secure().next(10, &quot;012&quot;),  // to trigger probable failure</span>
             &quot;1&quot;  // to trigger eventual success
         );
-<span class="fc" id="L158">        List&lt;String&gt; prefixQuotes = Arrays.asList(</span>
+<span class="fc" id="L155">        List&lt;String&gt; prefixQuotes = Arrays.asList(</span>
             SuspendableGetCharInsertion.LABEL_PREFIX +&quot;'&quot;,
             SuspendableGetCharInsertion.LABEL_PREFIX,
             SuspendableGetCharInsertion.LABEL_PREFIX +&quot;`&quot;,  // TODO add ITs
             SuspendableGetCharInsertion.LABEL_PREFIX +&quot;\&quot;&quot;,
             SuspendableGetCharInsertion.LABEL_PREFIX +&quot;%bf'&quot;  // GBK slash encoding use case
         );
-<span class="fc" id="L165">        List&lt;String&gt; prefixParentheses = Arrays.asList(StringUtils.EMPTY, &quot;)&quot;, &quot;))&quot;);</span>
-<span class="fc" id="L166">        List&lt;String&gt; charactersInsertion = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L167">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting character insertion with Boolean match...&quot;);</span>
-<span class="fc bfc" id="L168" title="All 2 branches covered.">        for (String prefixValue: prefixValues) {</span>
-<span class="fc bfc" id="L169" title="All 2 branches covered.">            for (String prefixQuote: prefixQuotes) {</span>
-<span class="fc bfc" id="L170" title="All 2 branches covered.">                for (String prefixParenthesis: prefixParentheses) {</span>
-<span class="fc" id="L171">                    this.checkInsertionChar(charFromBooleanMatch, charactersInsertion, prefixValue, prefixQuote, prefixParenthesis);</span>
-<span class="fc" id="L172">                }</span>
-<span class="fc" id="L173">            }</span>
-<span class="fc" id="L174">        }</span>
-<span class="fc bfc" id="L175" title="All 2 branches covered.">        for (String characterInsertion: charactersInsertion) {</span>
-<span class="fc" id="L176">            taskCompletionService.submit(</span>
+<span class="fc" id="L162">        List&lt;String&gt; prefixParentheses = Arrays.asList(StringUtils.EMPTY, &quot;)&quot;, &quot;))&quot;);</span>
+<span class="fc" id="L163">        List&lt;String&gt; charactersInsertion = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L164">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting character insertion with Boolean match...&quot;);</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        for (String prefixValue: prefixValues) {</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">            for (String prefixQuote: prefixQuotes) {</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">                for (String prefixParenthesis: prefixParentheses) {</span>
+<span class="fc" id="L168">                    this.checkInsertionChar(charFromBooleanMatch, charactersInsertion, prefixValue, prefixQuote, prefixParenthesis);</span>
+<span class="fc" id="L169">                }</span>
+<span class="fc" id="L170">            }</span>
+<span class="fc" id="L171">        }</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        for (String characterInsertion: charactersInsertion) {</span>
+<span class="fc" id="L173">            taskCompletionService.submit(</span>
                 new CallablePageSource(
                     characterInsertion
                     + StringUtils.SPACE  // covered by cleaning
-<span class="fc" id="L180">                    + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),</span>
+<span class="fc" id="L177">                    + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),</span>
                     characterInsertion,
                     this.injectionModel,
                     &quot;prefix#orderby&quot;
                 )
             );
-<span class="fc" id="L186">        }</span>
-<span class="fc" id="L187">        return charactersInsertion;</span>
+<span class="fc" id="L183">        }</span>
+<span class="fc" id="L184">        return charactersInsertion;</span>
     }
 
     private void checkInsertionChar(
@@ -194,61 +191,61 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         String prefixQuote,
         String prefixParenthesis
     ) throws StoppedByUserSlidingException {
-<span class="fc" id="L197">        String characterInsertion = prefixQuote.replace(SuspendableGetCharInsertion.LABEL_PREFIX, prefixValue) + prefixParenthesis;</span>
-<span class="fc" id="L198">        charactersInsertion.add(characterInsertion);</span>
+<span class="fc" id="L194">        String characterInsertion = prefixQuote.replace(SuspendableGetCharInsertion.LABEL_PREFIX, prefixValue) + prefixParenthesis;</span>
+<span class="fc" id="L195">        charactersInsertion.add(characterInsertion);</span>
         // Skipping Boolean match when already found
-<span class="fc bfc" id="L200" title="All 2 branches covered.">        if (charFromBooleanMatch[0] == null) {</span>
-<span class="fc" id="L201">            var injectionCharInsertion = new InjectionCharInsertion(</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (charFromBooleanMatch[0] == null) {</span>
+<span class="fc" id="L198">            var injectionCharInsertion = new InjectionCharInsertion(</span>
                 this.injectionModel,
                 characterInsertion,
                 prefixQuote + prefixParenthesis
             );
-<span class="fc bfc" id="L206" title="All 2 branches covered.">            if (injectionCharInsertion.isInjectable()) {</span>
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">                if (this.isSuspended()) {</span>
-<span class="nc" id="L208">                    throw new StoppedByUserSlidingException();</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">            if (injectionCharInsertion.isInjectable()) {</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">                if (this.isSuspended()) {</span>
+<span class="nc" id="L205">                    throw new StoppedByUserSlidingException();</span>
                 }
-<span class="fc" id="L210">                charFromBooleanMatch[0] = characterInsertion;</span>
-<span class="fc" id="L211">                LOGGER.log(</span>
+<span class="fc" id="L207">                charFromBooleanMatch[0] = characterInsertion;</span>
+<span class="fc" id="L208">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_SUCCESS,
                     &quot;Found character insertion [{}] using Boolean match&quot;,
-<span class="fc" id="L214">                    () -&gt; charFromBooleanMatch[0]</span>
+<span class="fc" id="L211">                    () -&gt; charFromBooleanMatch[0]</span>
                 );
             }
         }
-<span class="fc" id="L218">    }</span>
+<span class="fc" id="L215">    }</span>
     
     private String getCharacterInsertion(String characterInsertionByUser, String characterInsertionDetected) {
-<span class="fc" id="L221">        String characterInsertionDetectedFixed = characterInsertionDetected;</span>
-<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (characterInsertionDetectedFixed == null) {</span>
-<span class="fc" id="L223">            characterInsertionDetectedFixed = characterInsertionByUser;</span>
-<span class="fc" id="L224">            String logCharacterInsertion = characterInsertionDetectedFixed;</span>
-<span class="fc" id="L225">            LOGGER.log(</span>
+<span class="fc" id="L218">        String characterInsertionDetectedFixed = characterInsertionDetected;</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        if (characterInsertionDetectedFixed == null) {</span>
+<span class="fc" id="L220">            characterInsertionDetectedFixed = characterInsertionByUser;</span>
+<span class="fc" id="L221">            String logCharacterInsertion = characterInsertionDetectedFixed;</span>
+<span class="fc" id="L222">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
                 &quot;No character insertion found, forcing to [{}]&quot;,
-<span class="fc" id="L228">                () -&gt; logCharacterInsertion.replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="fc" id="L225">                () -&gt; logCharacterInsertion.replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
             );
-<span class="pc bpc" id="L230" title="1 of 2 branches missed.">        } else if (!characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY).equals(characterInsertionDetectedFixed)) {</span>
-<span class="fc" id="L231">            String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);</span>
-<span class="fc" id="L232">            LOGGER.log(</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">        } else if (!characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY).equals(characterInsertionDetectedFixed)) {</span>
+<span class="fc" id="L228">            String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);</span>
+<span class="fc" id="L229">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;Using [{}] and matching [{}]&quot;,
-<span class="fc" id="L235">                () -&gt; this.injectionModel.getMediatorVendor().getVendor(),</span>
-<span class="fc" id="L236">                () -&gt; characterInsertionDetected</span>
+<span class="fc" id="L232">                () -&gt; this.injectionModel.getMediatorVendor().getVendor(),</span>
+<span class="fc" id="L233">                () -&gt; characterInsertionDetected</span>
             );
-<span class="fc" id="L238">            LOGGER.log(</span>
+<span class="fc" id="L235">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_DEFAULT,
                 &quot;Disable search for char insertion in Preferences to force the value [{}]&quot;,
-<span class="fc" id="L241">                () -&gt; characterInsertionByUserFormat</span>
+<span class="fc" id="L238">                () -&gt; characterInsertionByUserFormat</span>
             );
-<span class="fc" id="L243">        } else {</span>
-<span class="nc" id="L244">            LOGGER.log(</span>
+<span class="fc" id="L240">        } else {</span>
+<span class="nc" id="L241">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;{} [{}]&quot;,
-<span class="nc" id="L247">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_INSERTION_CHARACTER&quot;),</span>
-<span class="nc" id="L248">                () -&gt; characterInsertionDetected.replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="nc" id="L244">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_INSERTION_CHARACTER&quot;),</span>
+<span class="nc" id="L245">                () -&gt; characterInsertionDetected.replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
             );
         }
-<span class="fc" id="L251">        return characterInsertionDetectedFixed;</span>
+<span class="fc" id="L248">        return characterInsertionDetectedFixed;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

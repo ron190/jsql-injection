@@ -11,26 +11,23 @@ import org.apache.logging.log4j.Logger;
  */
 public abstract class AbstractSuspendable {
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L17">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L14">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Make the action to stop if true.
      */
-<span class="fc" id="L22">    private boolean isStopped = false;</span>
+<span class="fc" id="L19">    private boolean isStopped = false;</span>
     
     /**
      * Make the action to pause if true, else make it unpause.
      */
-<span class="fc" id="L27">    private boolean isPaused = false;</span>
+<span class="fc" id="L24">    private boolean isPaused = false;</span>
 
     protected final InjectionModel injectionModel;
     
-<span class="fc" id="L31">    protected AbstractSuspendable(InjectionModel injectionModel) {</span>
-<span class="fc" id="L32">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L28">    protected AbstractSuspendable(InjectionModel injectionModel) {</span>
+<span class="fc" id="L29">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L30">    }</span>
     
     /**
      * The pausable/stoppable action.
@@ -45,53 +42,53 @@ public abstract class AbstractSuspendable {
      */
     public synchronized boolean isSuspended() {
         // Make application loop until shouldPauseThread is set to false by another user action
-<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        while (this.isPaused) {</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        while (this.isPaused) {</span>
             try {
-<span class="nc" id="L50">                this.wait();</span>
-<span class="nc" id="L51">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L52">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L53">                Thread.currentThread().interrupt();</span>
-<span class="nc" id="L54">            }</span>
+<span class="nc" id="L47">                this.wait();</span>
+<span class="nc" id="L48">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L49">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L50">                Thread.currentThread().interrupt();</span>
+<span class="nc" id="L51">            }</span>
         }
-<span class="pc bpc" id="L56" title="2 of 4 branches missed.">        return this.isStopped || this.injectionModel.isStoppedByUser();  // Return true if stop requested, else return false</span>
+<span class="pc bpc" id="L53" title="2 of 4 branches missed.">        return this.isStopped || this.injectionModel.isStoppedByUser();  // Return true if stop requested, else return false</span>
     }
     
     /**
      * Mark as stopped.
      */
     public void stop() {
-<span class="fc" id="L63">        this.unpause();</span>
-<span class="fc" id="L64">        this.isStopped = true;</span>
-<span class="fc" id="L65">    }</span>
+<span class="fc" id="L60">        this.unpause();</span>
+<span class="fc" id="L61">        this.isStopped = true;</span>
+<span class="fc" id="L62">    }</span>
     
     /**
      * Mark as paused.
      */
     public void pause() {
-<span class="nc" id="L71">        this.isPaused = true;</span>
-<span class="nc" id="L72">    }</span>
+<span class="nc" id="L68">        this.isPaused = true;</span>
+<span class="nc" id="L69">    }</span>
     
     /**
      * Mark as unpaused.
      */
     public void unpause() {
-<span class="fc" id="L78">        this.isPaused = false;</span>
-<span class="fc" id="L79">        this.resume();  // Restart the action after unpause</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L75">        this.isPaused = false;</span>
+<span class="fc" id="L76">        this.resume();  // Restart the action after unpause</span>
+<span class="fc" id="L77">    }</span>
     
     /**
      * Return true if thread is paused, false otherwise.
      * @return Pause state
      */
     public boolean isPaused() {
-<span class="nc" id="L87">        return this.isPaused;</span>
+<span class="nc" id="L84">        return this.isPaused;</span>
     }
     
     /**
      * Wake threads.
      */
     public synchronized void resume() {
-<span class="fc" id="L94">        this.notifyAll();</span>
-<span class="fc" id="L95">    }</span>
+<span class="fc" id="L91">        this.notifyAll();</span>
+<span class="fc" id="L92">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

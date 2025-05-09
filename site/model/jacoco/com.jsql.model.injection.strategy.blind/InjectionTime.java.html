@@ -22,15 +22,12 @@ import java.util.concurrent.Future;
  */
 public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; {
 
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L28">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L25">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      *  Time based works by default, many tests will change it to false if it isn't confirmed.
      */
-<span class="fc" id="L33">    private boolean isTimeInjectable = true;</span>
+<span class="fc" id="L30">    private boolean isTimeInjectable = true;</span>
 
     /**
      * Create time attack initialization.
@@ -38,90 +35,90 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
      * then time attack is confirmed.
      */
     public InjectionTime(InjectionModel injectionModel, BlindOperator blindOperator) {
-<span class="fc" id="L41">        super(injectionModel, blindOperator);</span>
+<span class="fc" id="L38">        super(injectionModel, blindOperator);</span>
 
-<span class="fc" id="L43">        List&lt;String&gt; falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();</span>
-<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L45">            return;</span>
+<span class="fc" id="L40">        List&lt;String&gt; falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();</span>
+<span class="pc bpc" id="L41" title="2 of 4 branches missed.">        if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L42">            return;</span>
         }
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-<span class="fc" id="L50">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagFalse&quot;);</span>
-<span class="fc" id="L51">        Collection&lt;CallableTime&gt; callablesFalsys = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (String falsy: falsys) {</span>
-<span class="fc" id="L53">            callablesFalsys.add(new CallableTime(</span>
+<span class="fc" id="L47">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagFalse&quot;);</span>
+<span class="fc" id="L48">        Collection&lt;CallableTime&gt; callablesFalsys = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (String falsy: falsys) {</span>
+<span class="fc" id="L50">            callablesFalsys.add(new CallableTime(</span>
                 falsy,
                 injectionModel,
                 this,
                 blindOperator,
                 &quot;time#falsy&quot;
             ));
-<span class="fc" id="L60">        }</span>
+<span class="fc" id="L57">        }</span>
         
         // If one FALSE query makes less than X seconds,
         // then the test is a failure =&gt; exit
         // Allow the user to stop the loop
         try {
-<span class="fc" id="L66">            List&lt;Future&lt;CallableTime&gt;&gt; futuresFalsys = taskExecutor.invokeAll(callablesFalsys);</span>
-<span class="fc" id="L67">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-<span class="fc bfc" id="L68" title="All 2 branches covered.">            for (Future&lt;CallableTime&gt; futureFalsy: futuresFalsys) {</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L70">                    return;</span>
+<span class="fc" id="L63">            List&lt;Future&lt;CallableTime&gt;&gt; futuresFalsys = taskExecutor.invokeAll(callablesFalsys);</span>
+<span class="fc" id="L64">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">            for (Future&lt;CallableTime&gt; futureFalsy: futuresFalsys) {</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L67">                    return;</span>
                 }
-<span class="fc bfc" id="L72" title="All 2 branches covered.">                if (futureFalsy.get().isTrue()) {</span>
-<span class="fc" id="L73">                    this.isTimeInjectable = false;</span>
-<span class="fc" id="L74">                    return;</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">                if (futureFalsy.get().isTrue()) {</span>
+<span class="fc" id="L70">                    this.isTimeInjectable = false;</span>
+<span class="fc" id="L71">                    return;</span>
                 }
-<span class="fc" id="L76">            }</span>
-<span class="nc" id="L77">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L78">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L79">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L80">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L81">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L82">        }</span>
+<span class="fc" id="L73">            }</span>
+<span class="nc" id="L74">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L75">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L76">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L77">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L78">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L79">        }</span>
         
-<span class="fc" id="L84">        this.checkTruthys(blindOperator);</span>
-<span class="fc" id="L85">    }</span>
+<span class="fc" id="L81">        this.checkTruthys(blindOperator);</span>
+<span class="fc" id="L82">    }</span>
 
     private void checkTruthys(BlindOperator blindOperator) {
-<span class="fc" id="L88">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagTrue&quot;);</span>
-<span class="fc" id="L89">        Collection&lt;CallableTime&gt; callablesTruthys = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L90">        List&lt;String&gt; truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (String truthy: truthys) {</span>
-<span class="fc" id="L92">            callablesTruthys.add(new CallableTime(</span>
+<span class="fc" id="L85">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagTrue&quot;);</span>
+<span class="fc" id="L86">        Collection&lt;CallableTime&gt; callablesTruthys = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L87">        List&lt;String&gt; truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (String truthy: truthys) {</span>
+<span class="fc" id="L89">            callablesTruthys.add(new CallableTime(</span>
                 truthy,
                 this.injectionModel,
                 this,
                 blindOperator,
                 &quot;time#truthy&quot;
             ));
-<span class="fc" id="L99">        }</span>
+<span class="fc" id="L96">        }</span>
 
         // If one TRUE query makes more than X seconds then the test is a failure =&gt; exit
         try {
-<span class="fc" id="L103">            List&lt;Future&lt;CallableTime&gt;&gt; futuresTruthys = taskExecutor.invokeAll(callablesTruthys);</span>
-<span class="fc" id="L104">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-<span class="fc bfc" id="L105" title="All 2 branches covered.">            for (Future&lt;CallableTime&gt; futureTruthy: futuresTruthys) {</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L107">                    return;</span>
+<span class="fc" id="L100">            List&lt;Future&lt;CallableTime&gt;&gt; futuresTruthys = taskExecutor.invokeAll(callablesTruthys);</span>
+<span class="fc" id="L101">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            for (Future&lt;CallableTime&gt; futureTruthy: futuresTruthys) {</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L104">                    return;</span>
                 }
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">                if (!futureTruthy.get().isTrue()) {</span>
-<span class="nc" id="L110">                    this.isTimeInjectable = false;</span>
-<span class="nc" id="L111">                    return;</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">                if (!futureTruthy.get().isTrue()) {</span>
+<span class="nc" id="L107">                    this.isTimeInjectable = false;</span>
+<span class="nc" id="L108">                    return;</span>
                 }
-<span class="fc" id="L113">            }</span>
-<span class="nc" id="L114">        } catch (ExecutionException e) {</span>
-<span class="nc" id="L115">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L116">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L117">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L118">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L119">        }</span>
-<span class="fc" id="L120">    }</span>
+<span class="fc" id="L110">            }</span>
+<span class="nc" id="L111">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L112">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L113">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L114">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L115">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L116">        }</span>
+<span class="fc" id="L117">    }</span>
 
     @Override
     public CallableTime getCallableBitTest(String sqlQuery, int indexChar, int bit) {
-<span class="fc" id="L124">        return new CallableTime(</span>
+<span class="fc" id="L121">        return new CallableTime(</span>
             sqlQuery,
             indexChar,
             bit,
@@ -134,33 +131,33 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
-<span class="nc" id="L138">            throw new StoppedByUserSlidingException();</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L135">            throw new StoppedByUserSlidingException();</span>
         }
-<span class="fc" id="L140">        var callable = new CallableTime(</span>
-<span class="fc" id="L141">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),</span>
+<span class="fc" id="L137">        var callable = new CallableTime(</span>
+<span class="fc" id="L138">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),</span>
             this.injectionModel,
             this,
             this.blindOperator,
             &quot;time#confirm&quot;
         );
         try {
-<span class="fc" id="L148">            callable.call();</span>
-<span class="nc" id="L149">        } catch (Exception e) {</span>
-<span class="nc" id="L150">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L151">        }</span>
-<span class="pc bpc" id="L152" title="1 of 4 branches missed.">        return this.isTimeInjectable &amp;&amp; callable.isTrue();</span>
+<span class="fc" id="L145">            callable.call();</span>
+<span class="nc" id="L146">        } catch (Exception e) {</span>
+<span class="nc" id="L147">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L148">        }</span>
+<span class="pc bpc" id="L149" title="1 of 4 branches missed.">        return this.isTimeInjectable &amp;&amp; callable.isTrue();</span>
     }
 
     public int getSleepTime() {
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        return this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()</span>
-<span class="nc" id="L157">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()</span>
-<span class="fc" id="L158">            : 5;</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        return this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()</span>
+<span class="nc" id="L154">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()</span>
+<span class="fc" id="L155">            : 5;</span>
     }
 
     @Override
     public String getInfoMessage() {
-<span class="fc" id="L163">        return &quot;- Strategy Time: query True when &quot;+ this.getSleepTime() +&quot;s delay\n\n&quot;;</span>
+<span class="fc" id="L160">        return &quot;- Strategy Time: query True when &quot;+ this.getSleepTime() +&quot;s delay\n\n&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

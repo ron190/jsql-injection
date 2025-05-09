@@ -14,10 +14,7 @@ import java.util.concurrent.Flow.Subscription;
 
 public class SubscriberInteraction implements Subscriber&lt;Request&gt; {
 
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L20">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L17">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private final String packageInteraction;
 
@@ -29,41 +26,41 @@ public class SubscriberInteraction implements Subscriber&lt;Request&gt; {
      */
     private Subscription subscription;
     
-<span class="fc" id="L32">    public SubscriberInteraction(String packageInteraction) {</span>
-<span class="fc" id="L33">        this.packageInteraction = packageInteraction;</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L29">    public SubscriberInteraction(String packageInteraction) {</span>
+<span class="fc" id="L30">        this.packageInteraction = packageInteraction;</span>
+<span class="fc" id="L31">    }</span>
     
     @Override
     public void onSubscribe(Subscription subscription) {
-<span class="fc" id="L38">        this.subscription = subscription;</span>
-<span class="fc" id="L39">        subscription.request(1);</span>
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L35">        this.subscription = subscription;</span>
+<span class="fc" id="L36">        subscription.request(1);</span>
+<span class="fc" id="L37">    }</span>
 
     @Override
     public void onNext(Request request) {
-<span class="fc" id="L44">        this.subscription.request(1);</span>
-<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (Interaction.UNSUBSCRIBE.equals(request.getMessage())) {</span>
-<span class="nc" id="L46">            this.subscription.cancel();</span>
-<span class="nc" id="L47">            return;</span>
+<span class="fc" id="L41">        this.subscription.request(1);</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (Interaction.UNSUBSCRIBE.equals(request.getMessage())) {</span>
+<span class="nc" id="L43">            this.subscription.cancel();</span>
+<span class="nc" id="L44">            return;</span>
         }
         
         // Display model thread name in logs instead of the observer name
-<span class="fc" id="L51">        String nameThread = Thread.currentThread().getName();</span>
+<span class="fc" id="L48">        String nameThread = Thread.currentThread().getName();</span>
         
-<span class="fc" id="L53">        SwingUtilities.invokeLater(() -&gt; {</span>
-<span class="fc" id="L54">            Thread.currentThread().setName(&quot;from &quot; + nameThread);</span>
+<span class="fc" id="L50">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="fc" id="L51">            Thread.currentThread().setName(&quot;from &quot; + nameThread);</span>
             try {
-<span class="fc" id="L56">                Class&lt;?&gt; cl = Class.forName(this.packageInteraction +&quot;.&quot;+ request.getMessage());</span>
-<span class="fc" id="L57">                var types = new Class[]{ Object[].class };</span>
-<span class="fc" id="L58">                Constructor&lt;?&gt; constructor = cl.getConstructor(types);</span>
+<span class="fc" id="L53">                Class&lt;?&gt; cl = Class.forName(this.packageInteraction +&quot;.&quot;+ request.getMessage());</span>
+<span class="fc" id="L54">                var types = new Class[]{ Object[].class };</span>
+<span class="fc" id="L55">                Constructor&lt;?&gt; constructor = cl.getConstructor(types);</span>
                 @SuppressWarnings({&quot;java:S1905&quot;, &quot;java:S3878&quot;})  // rules opposite by intellij and sonar
-<span class="fc" id="L60">                InteractionCommand interactionCommand = (InteractionCommand) constructor.newInstance(</span>
-<span class="fc" id="L61">                    new Object[] {  request.getParameters() }</span>
+<span class="fc" id="L57">                InteractionCommand interactionCommand = (InteractionCommand) constructor.newInstance(</span>
+<span class="fc" id="L58">                    new Object[] {  request.getParameters() }</span>
                 );
-<span class="fc" id="L63">                interactionCommand.execute();</span>
-<span class="fc" id="L64">            } catch (ClassNotFoundException e) {</span>
-<span class="fc" id="L65">                LOGGER.log(LogLevelUtil.IGNORE, e);  // Ignore unused interaction message</span>
-<span class="nc" id="L66">            } catch (</span>
+<span class="fc" id="L60">                interactionCommand.execute();</span>
+<span class="fc" id="L61">            } catch (ClassNotFoundException e) {</span>
+<span class="fc" id="L62">                LOGGER.log(LogLevelUtil.IGNORE, e);  // Ignore unused interaction message</span>
+<span class="nc" id="L63">            } catch (</span>
                 InstantiationException
                 | IllegalAccessException
                 | NoSuchMethodException
@@ -72,19 +69,19 @@ public class SubscriberInteraction implements Subscriber&lt;Request&gt; {
                 | InvocationTargetException
                 e
             ) {
-<span class="nc" id="L75">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L76">            }</span>
-<span class="fc" id="L77">        });</span>
-<span class="fc" id="L78">    }</span>
+<span class="nc" id="L72">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L73">            }</span>
+<span class="fc" id="L74">        });</span>
+<span class="fc" id="L75">    }</span>
 
     @Override
     public void onError(Throwable e) {
-<span class="nc" id="L82">        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L83">    }</span>
+<span class="nc" id="L79">        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L80">    }</span>
 
     @Override
     public void onComplete() {
         // Nothing
-<span class="nc" id="L88">    }</span>
+<span class="nc" id="L85">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -25,7 +25,6 @@ public class CallableBlindBin extends AbstractCallableBit&lt;CallableBlindBin&gt
 <span class="fc" id="L25">    private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();</span>
     private final InjectionBlindBin injectionBlind;
 
-    private final InjectionModel injectionModel;
     private final String metadataInjectionProcess;
 
     /**
@@ -38,16 +37,15 @@ public class CallableBlindBin extends AbstractCallableBit&lt;CallableBlindBin&gt
         BlindOperator blindOperator,
         int low, int mid, int high,
         String metadataInjectionProcess
-<span class="fc" id="L41">    ) {</span>
-<span class="fc" id="L42">        this.isBinary = true;</span>
-<span class="fc" id="L43">        this.low = low;</span>
-<span class="fc" id="L44">        this.mid = mid;</span>
-<span class="fc" id="L45">        this.high = high;</span>
-<span class="fc" id="L46">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L47">        this.injectionBlind = injectionBlind;</span>
-<span class="fc" id="L48">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
-<span class="fc" id="L49">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);</span>
-<span class="fc" id="L50">    }</span>
+<span class="fc" id="L40">    ) {</span>
+<span class="fc" id="L41">        this.isBinary = true;</span>
+<span class="fc" id="L42">        this.low = low;</span>
+<span class="fc" id="L43">        this.mid = mid;</span>
+<span class="fc" id="L44">        this.high = high;</span>
+<span class="fc" id="L45">        this.injectionBlind = injectionBlind;</span>
+<span class="fc" id="L46">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L47">        this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);</span>
+<span class="fc" id="L48">    }</span>
 
     /**
      * Constructor for bits test.
@@ -61,10 +59,10 @@ public class CallableBlindBin extends AbstractCallableBit&lt;CallableBlindBin&gt
         int low, int mid, int high,
         String metadataInjectionProcess
     ) {
-<span class="fc" id="L64">        this(sqlQuery, injectionModel, injectionBlind, blindOperator, low, mid, high, metadataInjectionProcess);</span>
-<span class="fc" id="L65">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBin(sqlQuery, indexChar, mid, blindOperator);</span>
-<span class="fc" id="L66">        this.currentIndex = indexChar;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L62">        this(sqlQuery, injectionModel, injectionBlind, blindOperator, low, mid, high, metadataInjectionProcess);</span>
+<span class="fc" id="L63">        this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBin(sqlQuery, indexChar, mid, blindOperator);</span>
+<span class="fc" id="L64">        this.currentIndex = indexChar;</span>
+<span class="fc" id="L65">    }</span>
 
     /**
      * Check if a result page means the SQL query is true,
@@ -75,20 +73,20 @@ public class CallableBlindBin extends AbstractCallableBit&lt;CallableBlindBin&gt
     @Override
     public boolean isTrue() {
         // Fix #95426: ConcurrentModificationException on iterator.next()
-<span class="fc" id="L78">        List&lt;Diff&gt; falseDiffs = new CopyOnWriteArrayList&lt;&gt;(this.injectionBlind.getFalseDiffs());</span>
-<span class="fc bfc" id="L79" title="All 2 branches covered.">        for (Diff falseDiff: falseDiffs) {  // ignored when false OR false =&gt; falsy empty</span>
+<span class="fc" id="L76">        List&lt;Diff&gt; falseDiffs = new CopyOnWriteArrayList&lt;&gt;(this.injectionBlind.getFalseDiffs());</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (Diff falseDiff: falseDiffs) {  // ignored when false OR false =&gt; falsy empty</span>
             // Fix #4386: NullPointerException on contains(), diffsWithReference initialized to new LinkedList&lt;&gt;()
-<span class="fc bfc" id="L81" title="All 2 branches covered.">            if (this.diffsWithReference.contains(falseDiff)) {</span>
-<span class="fc" id="L82">                return false;</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">            if (this.diffsWithReference.contains(falseDiff)) {</span>
+<span class="fc" id="L80">                return false;</span>
             }
-<span class="fc" id="L84">        }</span>
-<span class="fc" id="L85">        List&lt;Diff&gt; trueDiffs = new CopyOnWriteArrayList&lt;&gt;(this.injectionBlind.getTrueDiffs());</span>
-<span class="fc bfc" id="L86" title="All 2 branches covered.">        for (Diff trueDiff: trueDiffs) {</span>
-<span class="pc bpc" id="L87" title="1 of 2 branches missed.">            if (!this.diffsWithReference.contains(trueDiff)) {  // required, set to false when empty falseDiffs</span>
-<span class="nc" id="L88">                return false;</span>
+<span class="fc" id="L82">        }</span>
+<span class="fc" id="L83">        List&lt;Diff&gt; trueDiffs = new CopyOnWriteArrayList&lt;&gt;(this.injectionBlind.getTrueDiffs());</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for (Diff trueDiff: trueDiffs) {</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">            if (!this.diffsWithReference.contains(trueDiff)) {  // required, set to false when empty falseDiffs</span>
+<span class="nc" id="L86">                return false;</span>
             }
-<span class="fc" id="L90">        }</span>
-<span class="fc" id="L91">        return true;  // not in falseDiffs and in trueDiffs</span>
+<span class="fc" id="L88">        }</span>
+<span class="fc" id="L89">        return true;  // not in falseDiffs and in trueDiffs</span>
     }
 
     /**
@@ -98,26 +96,26 @@ public class CallableBlindBin extends AbstractCallableBit&lt;CallableBlindBin&gt
      */
     @Override
     public CallableBlindBin call() {
-<span class="fc" id="L101">        String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
-<span class="fc" id="L102">        this.diffsWithReference = CallableBlindBin.DIFF_MATCH_PATCH.diff_main(this.injectionBlind.getSourceReferencePage(), result, true);</span>
-<span class="fc" id="L103">        CallableBlindBin.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.diffsWithReference);</span>
-<span class="fc" id="L104">        return this;</span>
+<span class="fc" id="L99">        String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
+<span class="fc" id="L100">        this.diffsWithReference = CallableBlindBin.DIFF_MATCH_PATCH.diff_main(this.injectionBlind.getSourceReferencePage(), result, true);</span>
+<span class="fc" id="L101">        CallableBlindBin.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.diffsWithReference);</span>
+<span class="fc" id="L102">        return this;</span>
     }
     
     public List&lt;Diff&gt; getDiffsWithReference() {
-<span class="fc" id="L108">        return this.diffsWithReference;</span>
+<span class="fc" id="L106">        return this.diffsWithReference;</span>
     }
 
     public int getLow() {
-<span class="fc" id="L112">        return this.low;</span>
+<span class="fc" id="L110">        return this.low;</span>
     }
 
     public int getMid() {
-<span class="fc" id="L116">        return this.mid;</span>
+<span class="fc" id="L114">        return this.mid;</span>
     }
 
     public int getHigh() {
-<span class="fc" id="L120">        return this.high;</span>
+<span class="fc" id="L118">        return this.high;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

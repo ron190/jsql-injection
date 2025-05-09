@@ -17,297 +17,294 @@ import java.util.Optional;
 
 public class DnDTabbedPane extends JTabbedPane {
 
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L23">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L20">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     private static final int SCROLL_SIZE = 20;  // Test
     private static final int BUTTON_SIZE = 30;  // 30 is magic number of scroll button size
     private static final int LINE_WIDTH = 3;
-<span class="fc" id="L28">    private static final Rectangle RECT_BACKWARD = new Rectangle();</span>
-<span class="fc" id="L29">    private static final Rectangle RECT_FORWARD = new Rectangle();</span>
-<span class="fc" id="L30">    protected static final Rectangle RECT_LINE = new Rectangle();</span>
-<span class="fc" id="L31">    protected int dragTabIndex = -1;</span>
+<span class="fc" id="L25">    private static final Rectangle RECT_BACKWARD = new Rectangle();</span>
+<span class="fc" id="L26">    private static final Rectangle RECT_FORWARD = new Rectangle();</span>
+<span class="fc" id="L27">    protected static final Rectangle RECT_LINE = new Rectangle();</span>
+<span class="fc" id="L28">    protected int dragTabIndex = -1;</span>
     private transient DnDDropLocation dropLocation;
 
     public static final class DnDDropLocation extends TransferHandler.DropLocation {
         
         private final int index;
-<span class="fc" id="L37">        private boolean dropable = true;</span>
+<span class="fc" id="L34">        private boolean dropable = true;</span>
         
         private DnDDropLocation(Point p, int index) {
-<span class="fc" id="L40">            super(p);</span>
-<span class="fc" id="L41">            this.index = index;</span>
-<span class="fc" id="L42">        }</span>
+<span class="fc" id="L37">            super(p);</span>
+<span class="fc" id="L38">            this.index = index;</span>
+<span class="fc" id="L39">        }</span>
         
         public int getIndex() {
-<span class="fc" id="L45">            return this.index;</span>
+<span class="fc" id="L42">            return this.index;</span>
         }
         
         public void setDroppable(boolean flag) {
-<span class="fc" id="L49">            this.dropable = flag;</span>
-<span class="fc" id="L50">        }</span>
+<span class="fc" id="L46">            this.dropable = flag;</span>
+<span class="fc" id="L47">        }</span>
         
         public boolean isDroppable() {
-<span class="fc" id="L53">            return this.dropable;</span>
+<span class="fc" id="L50">            return this.dropable;</span>
         }
     }
     
     private void clickArrowButton(String actionKey) {
-<span class="nc" id="L58">        JButton scrollForwardButton = null;</span>
-<span class="nc" id="L59">        JButton scrollBackwardButton = null;</span>
+<span class="nc" id="L55">        JButton scrollForwardButton = null;</span>
+<span class="nc" id="L56">        JButton scrollBackwardButton = null;</span>
         
-<span class="nc bnc" id="L61" title="All 2 branches missed.">        for (Component c: this.getComponents()) {</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">            if (c instanceof JButton) {</span>
-<span class="nc bnc" id="L63" title="All 2 branches missed.">                if (scrollForwardButton == null) {</span>
-<span class="nc" id="L64">                    scrollForwardButton = (JButton) c;</span>
-<span class="nc bnc" id="L65" title="All 2 branches missed.">                } else if (scrollBackwardButton == null) {</span>
-<span class="nc" id="L66">                    scrollBackwardButton = (JButton) c;</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        for (Component c: this.getComponents()) {</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if (c instanceof JButton) {</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">                if (scrollForwardButton == null) {</span>
+<span class="nc" id="L61">                    scrollForwardButton = (JButton) c;</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">                } else if (scrollBackwardButton == null) {</span>
+<span class="nc" id="L63">                    scrollBackwardButton = (JButton) c;</span>
                 }
             }
         }
         
-<span class="nc bnc" id="L71" title="All 2 branches missed.">        JButton button = &quot;scrollTabsForwardAction&quot;.equals(actionKey) ? scrollForwardButton : scrollBackwardButton;</span>
-<span class="nc" id="L72">        Optional.ofNullable(button)</span>
-<span class="nc" id="L73">            .filter(JButton::isEnabled)</span>
-<span class="nc" id="L74">            .ifPresent(JButton::doClick);</span>
-<span class="nc" id="L75">    }</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        JButton button = &quot;scrollTabsForwardAction&quot;.equals(actionKey) ? scrollForwardButton : scrollBackwardButton;</span>
+<span class="nc" id="L69">        Optional.ofNullable(button)</span>
+<span class="nc" id="L70">            .filter(JButton::isEnabled)</span>
+<span class="nc" id="L71">            .ifPresent(JButton::doClick);</span>
+<span class="nc" id="L72">    }</span>
     
     public void autoScrollTest(Point pt) {
-<span class="fc" id="L78">        Rectangle r = this.getTabAreaBounds();</span>
+<span class="fc" id="L75">        Rectangle r = this.getTabAreaBounds();</span>
         
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (DnDTabbedPane.isTopBottomTabPlacement(this.getTabPlacement())) {</span>
-<span class="fc" id="L81">            DnDTabbedPane.RECT_BACKWARD.setBounds(r.x, r.y, DnDTabbedPane.SCROLL_SIZE, r.height);</span>
-<span class="fc" id="L82">            DnDTabbedPane.RECT_FORWARD.setBounds(r.x + r.width - DnDTabbedPane.SCROLL_SIZE - DnDTabbedPane.BUTTON_SIZE, r.y, DnDTabbedPane.SCROLL_SIZE + DnDTabbedPane.BUTTON_SIZE, r.height);</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (DnDTabbedPane.isTopBottomTabPlacement(this.getTabPlacement())) {</span>
+<span class="fc" id="L78">            DnDTabbedPane.RECT_BACKWARD.setBounds(r.x, r.y, DnDTabbedPane.SCROLL_SIZE, r.height);</span>
+<span class="fc" id="L79">            DnDTabbedPane.RECT_FORWARD.setBounds(r.x + r.width - DnDTabbedPane.SCROLL_SIZE - DnDTabbedPane.BUTTON_SIZE, r.y, DnDTabbedPane.SCROLL_SIZE + DnDTabbedPane.BUTTON_SIZE, r.height);</span>
         } else {
-<span class="nc" id="L84">            DnDTabbedPane.RECT_BACKWARD.setBounds(r.x, r.y, r.width, DnDTabbedPane.SCROLL_SIZE);</span>
-<span class="nc" id="L85">            DnDTabbedPane.RECT_FORWARD.setBounds(r.x, r.y + r.height - DnDTabbedPane.SCROLL_SIZE - DnDTabbedPane.BUTTON_SIZE, r.width, DnDTabbedPane.SCROLL_SIZE + DnDTabbedPane.BUTTON_SIZE);</span>
+<span class="nc" id="L81">            DnDTabbedPane.RECT_BACKWARD.setBounds(r.x, r.y, r.width, DnDTabbedPane.SCROLL_SIZE);</span>
+<span class="nc" id="L82">            DnDTabbedPane.RECT_FORWARD.setBounds(r.x, r.y + r.height - DnDTabbedPane.SCROLL_SIZE - DnDTabbedPane.BUTTON_SIZE, r.width, DnDTabbedPane.SCROLL_SIZE + DnDTabbedPane.BUTTON_SIZE);</span>
         }
         
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (DnDTabbedPane.RECT_BACKWARD.contains(pt)) {</span>
-<span class="nc" id="L89">            this.clickArrowButton(&quot;scrollTabsBackwardAction&quot;);</span>
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        } else if (DnDTabbedPane.RECT_FORWARD.contains(pt)) {</span>
-<span class="nc" id="L91">            this.clickArrowButton(&quot;scrollTabsForwardAction&quot;);</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (DnDTabbedPane.RECT_BACKWARD.contains(pt)) {</span>
+<span class="nc" id="L86">            this.clickArrowButton(&quot;scrollTabsBackwardAction&quot;);</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        } else if (DnDTabbedPane.RECT_FORWARD.contains(pt)) {</span>
+<span class="nc" id="L88">            this.clickArrowButton(&quot;scrollTabsForwardAction&quot;);</span>
         }
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L90">    }</span>
     
     protected DnDTabbedPane() {
-<span class="fc" id="L96">        super();</span>
+<span class="fc" id="L93">        super();</span>
         
-<span class="fc" id="L98">        var h = new Handler();</span>
-<span class="fc" id="L99">        this.addMouseListener(h);</span>
-<span class="fc" id="L100">        this.addMouseMotionListener(h);</span>
-<span class="fc" id="L101">        this.addPropertyChangeListener(h);</span>
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L95">        var h = new Handler();</span>
+<span class="fc" id="L96">        this.addMouseListener(h);</span>
+<span class="fc" id="L97">        this.addMouseMotionListener(h);</span>
+<span class="fc" id="L98">        this.addPropertyChangeListener(h);</span>
+<span class="fc" id="L99">    }</span>
     
     public DnDDropLocation dropLocationForPointDnD(Point p) {
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        for (var i = 0; i &lt; this.getTabCount(); i++) {</span>
-<span class="fc bfc" id="L106" title="All 2 branches covered.">            if (this.getBoundsAt(i).contains(p)) {</span>
-<span class="fc" id="L107">                return new DnDDropLocation(p, i);</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        for (var i = 0; i &lt; this.getTabCount(); i++) {</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            if (this.getBoundsAt(i).contains(p)) {</span>
+<span class="fc" id="L104">                return new DnDDropLocation(p, i);</span>
             }
         }
         
-<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (this.getTabAreaBounds().contains(p)) {</span>
-<span class="nc" id="L112">            return new DnDDropLocation(p, this.getTabCount());</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (this.getTabAreaBounds().contains(p)) {</span>
+<span class="nc" id="L109">            return new DnDDropLocation(p, this.getTabCount());</span>
         }
         
-<span class="nc" id="L115">        return new DnDDropLocation(p, -1);</span>
+<span class="nc" id="L112">        return new DnDDropLocation(p, -1);</span>
     }
     
     public void setDropLocation(TransferHandler.DropLocation location, boolean forDrop) {
-<span class="fc" id="L119">        DnDDropLocation old = this.dropLocation;</span>
+<span class="fc" id="L116">        DnDDropLocation old = this.dropLocation;</span>
         
-<span class="pc bpc" id="L121" title="1 of 4 branches missed.">        if (Objects.isNull(location) || !forDrop) {</span>
-<span class="fc" id="L122">            this.dropLocation = new DnDDropLocation(new Point(), -1);</span>
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        } else if (location instanceof DnDDropLocation) {</span>
-<span class="fc" id="L124">            this.dropLocation = (DnDDropLocation) location;</span>
+<span class="pc bpc" id="L118" title="1 of 4 branches missed.">        if (Objects.isNull(location) || !forDrop) {</span>
+<span class="fc" id="L119">            this.dropLocation = new DnDDropLocation(new Point(), -1);</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        } else if (location instanceof DnDDropLocation) {</span>
+<span class="fc" id="L121">            this.dropLocation = (DnDDropLocation) location;</span>
         }
         
-<span class="fc" id="L127">        this.firePropertyChange(&quot;dropLocation&quot;, old, this.dropLocation);</span>
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L124">        this.firePropertyChange(&quot;dropLocation&quot;, old, this.dropLocation);</span>
+<span class="fc" id="L125">    }</span>
     
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
-<span class="nc" id="L131">        var cmp = this.getComponentAt(dragIndex);</span>
-<span class="nc" id="L132">        var tab = this.getTabComponentAt(dragIndex);</span>
-<span class="nc" id="L133">        String title = this.getTitleAt(dragIndex);</span>
-<span class="nc" id="L134">        var icon = this.getIconAt(dragIndex);</span>
-<span class="nc" id="L135">        String tip = this.getToolTipTextAt(dragIndex);</span>
-<span class="nc" id="L136">        boolean isEnabled = this.isEnabledAt(dragIndex);</span>
+<span class="nc" id="L128">        var cmp = this.getComponentAt(dragIndex);</span>
+<span class="nc" id="L129">        var tab = this.getTabComponentAt(dragIndex);</span>
+<span class="nc" id="L130">        String title = this.getTitleAt(dragIndex);</span>
+<span class="nc" id="L131">        var icon = this.getIconAt(dragIndex);</span>
+<span class="nc" id="L132">        String tip = this.getToolTipTextAt(dragIndex);</span>
+<span class="nc" id="L133">        boolean isEnabled = this.isEnabledAt(dragIndex);</span>
         
-<span class="nc" id="L138">        this.remove(dragIndex);</span>
-<span class="nc" id="L139">        target.insertTab(title, icon, cmp, tip, targetIndex);</span>
-<span class="nc" id="L140">        target.setEnabledAt(targetIndex, isEnabled);</span>
+<span class="nc" id="L135">        this.remove(dragIndex);</span>
+<span class="nc" id="L136">        target.insertTab(title, icon, cmp, tip, targetIndex);</span>
+<span class="nc" id="L137">        target.setEnabledAt(targetIndex, isEnabled);</span>
 
-<span class="nc" id="L142">        target.setTabComponentAt(targetIndex, tab);</span>
-<span class="nc" id="L143">        target.setSelectedIndex(targetIndex);</span>
+<span class="nc" id="L139">        target.setTabComponentAt(targetIndex, tab);</span>
+<span class="nc" id="L140">        target.setSelectedIndex(targetIndex);</span>
         
-<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (tab instanceof JComponent) {</span>
-<span class="nc" id="L146">            ((JComponent) tab).scrollRectToVisible(tab.getBounds());</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (tab instanceof JComponent) {</span>
+<span class="nc" id="L143">            ((JComponent) tab).scrollRectToVisible(tab.getBounds());</span>
         }
-<span class="nc" id="L148">    }</span>
+<span class="nc" id="L145">    }</span>
     
     public void convertTab(int prev, int next) {
-<span class="fc" id="L151">        var cmp = this.getComponentAt(prev);</span>
-<span class="fc" id="L152">        var tab = this.getTabComponentAt(prev);</span>
-<span class="fc" id="L153">        String title = this.getTitleAt(prev);</span>
-<span class="fc" id="L154">        var icon = this.getIconAt(prev);</span>
-<span class="fc" id="L155">        String tip = this.getToolTipTextAt(prev);</span>
-<span class="fc" id="L156">        boolean isEnabled = this.isEnabledAt(prev);</span>
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        int tgtindex = prev &gt; next ? next : next - 1;</span>
+<span class="fc" id="L148">        var cmp = this.getComponentAt(prev);</span>
+<span class="fc" id="L149">        var tab = this.getTabComponentAt(prev);</span>
+<span class="fc" id="L150">        String title = this.getTitleAt(prev);</span>
+<span class="fc" id="L151">        var icon = this.getIconAt(prev);</span>
+<span class="fc" id="L152">        String tip = this.getToolTipTextAt(prev);</span>
+<span class="fc" id="L153">        boolean isEnabled = this.isEnabledAt(prev);</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        int tgtindex = prev &gt; next ? next : next - 1;</span>
         
-<span class="fc" id="L159">        this.remove(prev);</span>
-<span class="fc" id="L160">        this.insertTab(title, icon, cmp, tip, tgtindex);</span>
-<span class="fc" id="L161">        this.setEnabledAt(tgtindex, isEnabled);</span>
+<span class="fc" id="L156">        this.remove(prev);</span>
+<span class="fc" id="L157">        this.insertTab(title, icon, cmp, tip, tgtindex);</span>
+<span class="fc" id="L158">        this.setEnabledAt(tgtindex, isEnabled);</span>
         
         // When you drag'n'drop a disabled tab, it finishes enabled and selected.
         // pointed out by dlorde
-<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        if (isEnabled) {</span>
-<span class="fc" id="L166">            this.setSelectedIndex(tgtindex);</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">        if (isEnabled) {</span>
+<span class="fc" id="L163">            this.setSelectedIndex(tgtindex);</span>
         }
         
         // I have a component in all tabs (jlabel with an X to close the tab) and when I move a tab the component disappear.
         // pointed out by Daniel Dario Morales Salas
-<span class="fc" id="L171">        this.setTabComponentAt(tgtindex, tab);</span>
-<span class="fc" id="L172">    }</span>
+<span class="fc" id="L168">        this.setTabComponentAt(tgtindex, tab);</span>
+<span class="fc" id="L169">    }</span>
     
     public Optional&lt;Rectangle&gt; getDropLineRect() {
-<span class="fc" id="L175">        int index = Optional.ofNullable(this.getDropLocation())</span>
-<span class="fc" id="L176">            .filter(DnDDropLocation::isDroppable)</span>
-<span class="fc" id="L177">            .map(DnDDropLocation::getIndex)</span>
-<span class="fc" id="L178">            .orElse(-1);</span>
+<span class="fc" id="L172">        int index = Optional.ofNullable(this.getDropLocation())</span>
+<span class="fc" id="L173">            .filter(DnDDropLocation::isDroppable)</span>
+<span class="fc" id="L174">            .map(DnDDropLocation::getIndex)</span>
+<span class="fc" id="L175">            .orElse(-1);</span>
         
-<span class="fc bfc" id="L180" title="All 2 branches covered.">        if (index &lt; 0) {</span>
-<span class="fc" id="L181">            DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);</span>
-<span class="fc" id="L182">            return Optional.empty();</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (index &lt; 0) {</span>
+<span class="fc" id="L178">            DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);</span>
+<span class="fc" id="L179">            return Optional.empty();</span>
         }
         
-<span class="fc" id="L185">        int a = Math.min(index, 1);</span>
-<span class="fc" id="L186">        Rectangle r = this.getBoundsAt(a * (index - 1));</span>
+<span class="fc" id="L182">        int a = Math.min(index, 1);</span>
+<span class="fc" id="L183">        Rectangle r = this.getBoundsAt(a * (index - 1));</span>
         
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (DnDTabbedPane.isTopBottomTabPlacement(this.getTabPlacement())) {</span>
-<span class="fc" id="L189">            DnDTabbedPane.RECT_LINE.setBounds(r.x - DnDTabbedPane.LINE_WIDTH / 2 + r.width * a, r.y, DnDTabbedPane.LINE_WIDTH, r.height);</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">        if (DnDTabbedPane.isTopBottomTabPlacement(this.getTabPlacement())) {</span>
+<span class="fc" id="L186">            DnDTabbedPane.RECT_LINE.setBounds(r.x - DnDTabbedPane.LINE_WIDTH / 2 + r.width * a, r.y, DnDTabbedPane.LINE_WIDTH, r.height);</span>
         } else {
-<span class="nc" id="L191">            DnDTabbedPane.RECT_LINE.setBounds(r.x, r.y - DnDTabbedPane.LINE_WIDTH / 2 + r.height * a, r.width, DnDTabbedPane.LINE_WIDTH);</span>
+<span class="nc" id="L188">            DnDTabbedPane.RECT_LINE.setBounds(r.x, r.y - DnDTabbedPane.LINE_WIDTH / 2 + r.height * a, r.width, DnDTabbedPane.LINE_WIDTH);</span>
         }
         
-<span class="fc" id="L194">        return Optional.of(DnDTabbedPane.RECT_LINE);</span>
+<span class="fc" id="L191">        return Optional.of(DnDTabbedPane.RECT_LINE);</span>
     }
     
     public Rectangle getTabAreaBounds() {
-<span class="fc" id="L198">        Rectangle tabbedRect = this.getBounds();</span>
-<span class="fc" id="L199">        int xx = tabbedRect.x;</span>
-<span class="fc" id="L200">        int yy = tabbedRect.y;</span>
+<span class="fc" id="L195">        Rectangle tabbedRect = this.getBounds();</span>
+<span class="fc" id="L196">        int xx = tabbedRect.x;</span>
+<span class="fc" id="L197">        int yy = tabbedRect.y;</span>
         
-<span class="fc" id="L202">        Rectangle compRect = Optional.ofNullable(this.getSelectedComponent())</span>
-<span class="fc" id="L203">            .map(Component::getBounds)</span>
-<span class="fc" id="L204">            .orElseGet(Rectangle::new);</span>
+<span class="fc" id="L199">        Rectangle compRect = Optional.ofNullable(this.getSelectedComponent())</span>
+<span class="fc" id="L200">            .map(Component::getBounds)</span>
+<span class="fc" id="L201">            .orElseGet(Rectangle::new);</span>
 
-<span class="fc" id="L206">        int tabPlacement = this.getTabPlacement();</span>
+<span class="fc" id="L203">        int tabPlacement = this.getTabPlacement();</span>
         
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">        if (DnDTabbedPane.isTopBottomTabPlacement(tabPlacement)) {</span>
-<span class="fc" id="L209">            tabbedRect.height = tabbedRect.height - compRect.height;</span>
-<span class="pc bpc" id="L210" title="1 of 2 branches missed.">            if (tabPlacement == SwingConstants.BOTTOM) {</span>
-<span class="nc" id="L211">                tabbedRect.y += compRect.y + compRect.height;</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">        if (DnDTabbedPane.isTopBottomTabPlacement(tabPlacement)) {</span>
+<span class="fc" id="L206">            tabbedRect.height = tabbedRect.height - compRect.height;</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">            if (tabPlacement == SwingConstants.BOTTOM) {</span>
+<span class="nc" id="L208">                tabbedRect.y += compRect.y + compRect.height;</span>
             }
         } else {
-<span class="nc" id="L214">            tabbedRect.width = tabbedRect.width - compRect.width;</span>
-<span class="nc bnc" id="L215" title="All 2 branches missed.">            if (tabPlacement == SwingConstants.RIGHT) {</span>
-<span class="nc" id="L216">                tabbedRect.x += compRect.x + compRect.width;</span>
+<span class="nc" id="L211">            tabbedRect.width = tabbedRect.width - compRect.width;</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">            if (tabPlacement == SwingConstants.RIGHT) {</span>
+<span class="nc" id="L213">                tabbedRect.x += compRect.x + compRect.width;</span>
             }
         }
         
-<span class="fc" id="L220">        tabbedRect.translate(-xx, -yy);</span>
-<span class="fc" id="L221">        return tabbedRect;</span>
+<span class="fc" id="L217">        tabbedRect.translate(-xx, -yy);</span>
+<span class="fc" id="L218">        return tabbedRect;</span>
     }
 
     public static boolean isTopBottomTabPlacement(int tabPlacement) {
-<span class="pc bpc" id="L225" title="3 of 4 branches missed.">        return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;</span>
+<span class="pc bpc" id="L222" title="3 of 4 branches missed.">        return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;</span>
     }
 
-<span class="fc" id="L228">    private class Handler extends MouseAdapter implements PropertyChangeListener { // , BeforeDrag</span>
+<span class="fc" id="L225">    private class Handler extends MouseAdapter implements PropertyChangeListener { // , BeforeDrag</span>
         
         private Point startPt;
-<span class="fc" id="L231">        private final int gestureMotionThreshold = DragSource.getDragThreshold();</span>
+<span class="fc" id="L228">        private final int gestureMotionThreshold = DragSource.getDragThreshold();</span>
 
         private void repaintDropLocation() {
-<span class="fc" id="L234">            Component c = DnDTabbedPane.this.getRootPane().getGlassPane();</span>
-<span class="pc bpc" id="L235" title="1 of 2 branches missed.">            if (c instanceof GhostGlassPane) {</span>
-<span class="fc" id="L236">                GhostGlassPane glassPane = (GhostGlassPane) c;</span>
-<span class="fc" id="L237">                glassPane.setTargetTabbedPane(DnDTabbedPane.this);</span>
-<span class="fc" id="L238">                glassPane.repaint();</span>
+<span class="fc" id="L231">            Component c = DnDTabbedPane.this.getRootPane().getGlassPane();</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">            if (c instanceof GhostGlassPane) {</span>
+<span class="fc" id="L233">                GhostGlassPane glassPane = (GhostGlassPane) c;</span>
+<span class="fc" id="L234">                glassPane.setTargetTabbedPane(DnDTabbedPane.this);</span>
+<span class="fc" id="L235">                glassPane.repaint();</span>
             }
-<span class="fc" id="L240">        }</span>
+<span class="fc" id="L237">        }</span>
         
         // PropertyChangeListener
         @Override
         public void propertyChange(PropertyChangeEvent e) {
-<span class="fc" id="L245">            String propertyName = e.getPropertyName();</span>
-<span class="fc bfc" id="L246" title="All 2 branches covered.">            if (&quot;dropLocation&quot;.equals(propertyName)) {</span>
-<span class="fc" id="L247">                this.repaintDropLocation();</span>
+<span class="fc" id="L242">            String propertyName = e.getPropertyName();</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">            if (&quot;dropLocation&quot;.equals(propertyName)) {</span>
+<span class="fc" id="L244">                this.repaintDropLocation();</span>
             }
-<span class="fc" id="L249">        }</span>
+<span class="fc" id="L246">        }</span>
         
         // MouseListener
         @Override
         public void mousePressed(MouseEvent e) {
-<span class="fc" id="L254">            DnDTabbedPane src = (DnDTabbedPane) e.getComponent();</span>
-<span class="fc bfc" id="L255" title="All 2 branches covered.">            boolean isOnlyOneTab = src.getTabCount() &lt;= 1;</span>
-<span class="fc bfc" id="L256" title="All 2 branches covered.">            if (isOnlyOneTab) {</span>
-<span class="fc" id="L257">                this.startPt = null;</span>
-<span class="fc" id="L258">                return;</span>
+<span class="fc" id="L251">            DnDTabbedPane src = (DnDTabbedPane) e.getComponent();</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">            boolean isOnlyOneTab = src.getTabCount() &lt;= 1;</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">            if (isOnlyOneTab) {</span>
+<span class="fc" id="L254">                this.startPt = null;</span>
+<span class="fc" id="L255">                return;</span>
             }
             
-<span class="fc" id="L261">            var tabPt = e.getPoint();</span>
+<span class="fc" id="L258">            var tabPt = e.getPoint();</span>
             int idx;
             // Fix #95782: IllegalArgumentException on indexAtLocation()
             try {
-<span class="fc" id="L265">                idx = src.indexAtLocation(tabPt.x, tabPt.y);</span>
-<span class="nc" id="L266">            } catch (IllegalArgumentException err) {</span>
-<span class="nc" id="L267">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, err);</span>
-<span class="nc" id="L268">                return;</span>
-<span class="fc" id="L269">            }</span>
+<span class="fc" id="L262">                idx = src.indexAtLocation(tabPt.x, tabPt.y);</span>
+<span class="nc" id="L263">            } catch (IllegalArgumentException err) {</span>
+<span class="nc" id="L264">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, err);</span>
+<span class="nc" id="L265">                return;</span>
+<span class="fc" id="L266">            }</span>
             
             // disabled tab, null component problem.
             // pointed out by daryl. NullPointerException: i.e. addTab(&quot;Tab&quot;, null)
-<span class="pc bpc" id="L273" title="3 of 6 branches missed.">            boolean flag = idx &lt; 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));</span>
+<span class="pc bpc" id="L270" title="3 of 6 branches missed.">            boolean flag = idx &lt; 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));</span>
             
-<span class="pc bpc" id="L275" title="1 of 2 branches missed.">            this.startPt = flag ? null : tabPt;</span>
-<span class="fc" id="L276">        }</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">            this.startPt = flag ? null : tabPt;</span>
+<span class="fc" id="L273">        }</span>
         
         @Override
         public void mouseDragged(MouseEvent e) {
-<span class="fc" id="L280">            var tabPt = e.getPoint();</span>
-<span class="pc bpc" id="L281" title="2 of 4 branches missed.">            if (Objects.nonNull(this.startPt) &amp;&amp; this.startPt.distance(tabPt) &gt; this.gestureMotionThreshold) {</span>
-<span class="fc" id="L282">                DnDTabbedPane src = (DnDTabbedPane) e.getComponent();</span>
-<span class="fc" id="L283">                var th = src.getTransferHandler();</span>
-<span class="fc" id="L284">                DnDTabbedPane.this.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);</span>
+<span class="fc" id="L277">            var tabPt = e.getPoint();</span>
+<span class="pc bpc" id="L278" title="2 of 4 branches missed.">            if (Objects.nonNull(this.startPt) &amp;&amp; this.startPt.distance(tabPt) &gt; this.gestureMotionThreshold) {</span>
+<span class="fc" id="L279">                DnDTabbedPane src = (DnDTabbedPane) e.getComponent();</span>
+<span class="fc" id="L280">                var th = src.getTransferHandler();</span>
+<span class="fc" id="L281">                DnDTabbedPane.this.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);</span>
                 
                 // Unhandled NoClassDefFoundError #56620: Could not initialize class java.awt.dnd.DragSource
-<span class="fc" id="L287">                th.exportAsDrag(src, e, TransferHandler.MOVE);</span>
+<span class="fc" id="L284">                th.exportAsDrag(src, e, TransferHandler.MOVE);</span>
 
-<span class="fc" id="L289">                DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);</span>
-<span class="fc" id="L290">                src.getRootPane().getGlassPane().setVisible(true);</span>
-<span class="fc" id="L291">                src.setDropLocation(new DnDDropLocation(tabPt, -1), true);</span>
+<span class="fc" id="L286">                DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);</span>
+<span class="fc" id="L287">                src.getRootPane().getGlassPane().setVisible(true);</span>
+<span class="fc" id="L288">                src.setDropLocation(new DnDDropLocation(tabPt, -1), true);</span>
                 
-<span class="fc" id="L293">                this.startPt = null;</span>
+<span class="fc" id="L290">                this.startPt = null;</span>
             }
-<span class="fc" id="L295">        }</span>
+<span class="fc" id="L292">        }</span>
 
         @Override
         public void mouseClicked(MouseEvent e) {
-<span class="fc" id="L299">            var tabPt = e.getPoint();</span>
-<span class="fc" id="L300">            JTabbedPane src = (JTabbedPane) e.getSource();</span>
+<span class="fc" id="L296">            var tabPt = e.getPoint();</span>
+<span class="fc" id="L297">            JTabbedPane src = (JTabbedPane) e.getSource();</span>
             
-<span class="fc" id="L302">            int i = src.indexAtLocation(tabPt.x, tabPt.y);</span>
-<span class="pc bpc" id="L303" title="1 of 4 branches missed.">            if (-1 &lt; i &amp;&amp; e.getButton() == MouseEvent.BUTTON2) {</span>
-<span class="nc" id="L304">                ActionCloseTabResult.perform(i);</span>
+<span class="fc" id="L299">            int i = src.indexAtLocation(tabPt.x, tabPt.y);</span>
+<span class="pc bpc" id="L300" title="1 of 4 branches missed.">            if (-1 &lt; i &amp;&amp; e.getButton() == MouseEvent.BUTTON2) {</span>
+<span class="nc" id="L301">                ActionCloseTabResult.perform(i);</span>
             }
-<span class="fc" id="L306">        }</span>
+<span class="fc" id="L303">        }</span>
     }
     
     public final DnDDropLocation getDropLocation() {
-<span class="fc" id="L310">        return this.dropLocation;</span>
+<span class="fc" id="L307">        return this.dropLocation;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

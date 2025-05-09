@@ -23,10 +23,7 @@ import java.util.concurrent.Callable;
  */
 public class CallableFile implements Callable&lt;CallableFile&gt; {
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L29">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     public static final String REQUIRE_STACK = &quot;Read file requirement: stack query&quot;;
 
     /**
@@ -37,7 +34,7 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
     /**
      * Source of file.
      */
-<span class="fc" id="L40">    private String sourceFile = StringUtils.EMPTY;</span>
+<span class="fc" id="L37">    private String sourceFile = StringUtils.EMPTY;</span>
     
     /**
      * Suspendable task that reads lines of the file by injection.
@@ -49,11 +46,11 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
     /**
      * Create Callable to read a file.
      */
-<span class="fc" id="L52">    public CallableFile(String pathFile, InjectionModel injectionModel) {</span>
-<span class="fc" id="L53">        this.pathFile = pathFile;</span>
-<span class="fc" id="L54">        this.injectionModel= injectionModel;</span>
-<span class="fc" id="L55">        this.suspendableReadFile = new SuspendableGetRows(injectionModel);</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L49">    public CallableFile(String pathFile, InjectionModel injectionModel) {</span>
+<span class="fc" id="L50">        this.pathFile = pathFile;</span>
+<span class="fc" id="L51">        this.injectionModel= injectionModel;</span>
+<span class="fc" id="L52">        this.suspendableReadFile = new SuspendableGetRows(injectionModel);</span>
+<span class="fc" id="L53">    }</span>
 
     @FunctionalInterface
     private interface Readable {
@@ -66,59 +63,59 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
      */
     @Override
     public CallableFile call() throws Exception {
-<span class="fc" id="L69">        Map&lt;Vendor, Readable&gt; mapVendorReadable = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L70">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getMysql(), () -&gt; this.injectionModel.getResourceAccess().getExploitMysql().getRead(this.pathFile));</span>
-<span class="fc" id="L71">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getH2(), () -&gt; this.injectionModel.getResourceAccess().getExploitH2().getRead(this.pathFile));</span>
-<span class="fc" id="L72">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getSqlite(), () -&gt; this.injectionModel.getResourceAccess().getExploitSqlite().getRead(this.pathFile));</span>
-<span class="fc" id="L73">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getDerby(), () -&gt; this.injectionModel.getResourceAccess().getExploitDerby().getRead(this.pathFile));</span>
-<span class="fc" id="L74">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getHsqldb(), () -&gt; this.injectionModel.getResourceAccess().getExploitHsqldb().getRead(this.pathFile));</span>
-<span class="fc" id="L75">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getPostgres(), () -&gt; this.injectionModel.getResourceAccess().getExploitPostgres().getRead(this.pathFile));</span>
+<span class="fc" id="L66">        Map&lt;Vendor, Readable&gt; mapVendorReadable = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L67">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getMysql(), () -&gt; this.injectionModel.getResourceAccess().getExploitMysql().getRead(this.pathFile));</span>
+<span class="fc" id="L68">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getH2(), () -&gt; this.injectionModel.getResourceAccess().getExploitH2().getRead(this.pathFile));</span>
+<span class="fc" id="L69">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getSqlite(), () -&gt; this.injectionModel.getResourceAccess().getExploitSqlite().getRead(this.pathFile));</span>
+<span class="fc" id="L70">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getDerby(), () -&gt; this.injectionModel.getResourceAccess().getExploitDerby().getRead(this.pathFile));</span>
+<span class="fc" id="L71">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getHsqldb(), () -&gt; this.injectionModel.getResourceAccess().getExploitHsqldb().getRead(this.pathFile));</span>
+<span class="fc" id="L72">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getPostgres(), () -&gt; this.injectionModel.getResourceAccess().getExploitPostgres().getRead(this.pathFile));</span>
 
-<span class="fc" id="L77">        Readable readable = mapVendorReadable.entrySet().stream()</span>
-<span class="fc bfc" id="L78" title="All 2 branches covered.">            .filter(entry -&gt; this.injectionModel.getMediatorVendor().getVendor() == entry.getKey())</span>
-<span class="fc" id="L79">            .findFirst()</span>
-<span class="fc" id="L80">            .orElse(new AbstractMap.SimpleEntry&lt;&gt;(null, () -&gt; {</span>
-<span class="nc" id="L81">                LOGGER.log(</span>
+<span class="fc" id="L74">        Readable readable = mapVendorReadable.entrySet().stream()</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">            .filter(entry -&gt; this.injectionModel.getMediatorVendor().getVendor() == entry.getKey())</span>
+<span class="fc" id="L76">            .findFirst()</span>
+<span class="fc" id="L77">            .orElse(new AbstractMap.SimpleEntry&lt;&gt;(null, () -&gt; {</span>
+<span class="nc" id="L78">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_DEFAULT,
                     &quot;Read file not implemented for [{}], share a working example to GitHub to speed up release&quot;,
-<span class="nc" id="L84">                    this.injectionModel.getMediatorVendor().getVendor()</span>
+<span class="nc" id="L81">                    this.injectionModel.getMediatorVendor().getVendor()</span>
                 );
-<span class="nc" id="L86">                return StringUtils.EMPTY;</span>
+<span class="nc" id="L83">                return StringUtils.EMPTY;</span>
             }))
-<span class="fc" id="L88">            .getValue();</span>
+<span class="fc" id="L85">            .getValue();</span>
 
-<span class="fc" id="L90">        String resultToParse = StringUtils.EMPTY;</span>
+<span class="fc" id="L87">        String resultToParse = StringUtils.EMPTY;</span>
         try {
-<span class="fc" id="L92">            resultToParse = readable.call();</span>
-<span class="nc" id="L93">        } catch (InjectionFailureException e) {</span>
+<span class="fc" id="L89">            resultToParse = readable.call();</span>
+<span class="nc" id="L90">        } catch (InjectionFailureException e) {</span>
             // Usually thrown if File does not exist
-<span class="nc" id="L95">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="nc" id="L96">        } catch (LoopDetectedSlidingException | StoppedByUserSlidingException e) {</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {  // Get partial source</span>
-<span class="nc" id="L98">                resultToParse = e.getSlidingWindowAllRows();</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
-<span class="nc" id="L100">                resultToParse = e.getSlidingWindowCurrentRows();</span>
+<span class="nc" id="L92">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L93">        } catch (LoopDetectedSlidingException | StoppedByUserSlidingException e) {</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {  // Get partial source</span>
+<span class="nc" id="L95">                resultToParse = e.getSlidingWindowAllRows();</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
+<span class="nc" id="L97">                resultToParse = e.getSlidingWindowCurrentRows();</span>
             }
-<span class="nc" id="L102">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
-<span class="pc" id="L103">        }</span>
+<span class="nc" id="L99">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
+<span class="pc" id="L100">        }</span>
 
-<span class="fc" id="L105">        this.sourceFile = resultToParse;</span>
-<span class="fc" id="L106">        return this;</span>
+<span class="fc" id="L102">        this.sourceFile = resultToParse;</span>
+<span class="fc" id="L103">        return this;</span>
     }
 
 
     // Getters
     
     public String getPathFile() {
-<span class="fc" id="L113">        return this.pathFile;</span>
+<span class="fc" id="L110">        return this.pathFile;</span>
     }
 
     public String getSourceFile() {
-<span class="fc" id="L117">        return this.sourceFile;</span>
+<span class="fc" id="L114">        return this.sourceFile;</span>
     }
 
     public SuspendableGetRows getSuspendableReadFile() {
-<span class="fc" id="L121">        return this.suspendableReadFile;</span>
+<span class="fc" id="L118">        return this.suspendableReadFile;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
