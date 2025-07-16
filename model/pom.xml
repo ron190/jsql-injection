@@ -95,7 +95,7 @@
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
         <stomp-websocket.version>2.3.4</stomp-websocket.version>
         <sybase-jconn4.version>16.0</sybase-jconn4.version>
-        <vertica-jdbc.version>24.4.0-0</vertica-jdbc.version>
+        <vertica-jdbc.version>25.3.0-0</vertica-jdbc.version>
     </properties>
 
     <dependencyManagement>
