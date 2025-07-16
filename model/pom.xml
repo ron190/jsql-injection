@@ -56,7 +56,7 @@
         <commons-lang3.version>3.17.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.1.0050</cubrid-jdbc.version>
         <dnsjava.version>3.6.3</dnsjava.version>
-        <gmavenplus-plugin.version>4.2.0</gmavenplus-plugin.version>
+        <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
