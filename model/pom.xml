@@ -86,7 +86,7 @@
         <ojdbc8.version>23.8.0.25.04</ojdbc8.version>
         <pitest-junit5-plugin.version>1.2.2</pitest-junit5-plugin.version>
         <postgresql.version>42.7.5</postgresql.version>
-        <snakeyaml.version>2.4</snakeyaml.version>
+        <snakeyaml.version>2.4.0.redhat-00001</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
         <spock-core.version>2.4-M6-groovy-4.0</spock-core.version>
         <spring-boot-dependencies.version>3.4.5</spring-boot-dependencies.version>
