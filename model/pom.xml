@@ -53,7 +53,7 @@
         <awaitility.version>4.3.0</awaitility.version>
         <bootstrap.version>5.3.5</bootstrap.version>
         <!-- required since commons-text:1.11.0 not working -->
-        <commons-lang3.version>3.17.0</commons-lang3.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.1.0050</cubrid-jdbc.version>
         <dnsjava.version>3.6.3</dnsjava.version>
         <gmavenplus-plugin.version>4.2.0</gmavenplus-plugin.version>
