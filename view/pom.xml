@@ -12,7 +12,7 @@
     <properties>
         <assertj-swing-junit.version>3.17.1</assertj-swing-junit.version>
         <commons-io.version>2.19.0</commons-io.version>
-        <flatlaf.version>3.6</flatlaf.version>
+        <flatlaf.version>3.6.1</flatlaf.version>
         <junit-jupiter-engine.version>5.12.2</junit-jupiter-engine.version>
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
