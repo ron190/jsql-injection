@@ -64,7 +64,7 @@
         <hsqldb.version>2.7.4</hsqldb.version>
         <informix.jdbc.version>15.0.0.1.1</informix.jdbc.version>
         <jaxb-api.version>2.1</jaxb-api.version>
-        <jaybird.version>6.0.1</jaybird.version>
+        <jaybird.version>6.0.3</jaybird.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
         <jna.version>5.17.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
