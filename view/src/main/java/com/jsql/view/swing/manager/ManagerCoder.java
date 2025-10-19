@@ -18,6 +18,7 @@ import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
@@ -100,7 +101,7 @@ public class ManagerCoder extends JPanel {
         var bottom = new JPanel(new BorderLayout());
         bottom.add(new JScrollPane(this.result), BorderLayout.CENTER);
 
-        var divider = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        var divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);
         divider.setResizeWeight(0.5);
         divider.setTopComponent(topMixed);
         divider.setBottomComponent(bottom);

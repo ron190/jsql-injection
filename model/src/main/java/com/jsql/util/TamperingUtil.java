@@ -97,8 +97,8 @@ public class TamperingUtil {
 
         sqlQuery = lead + sqlQuery + trail;
 
-        String regexToremoveTamperTags = String.format("(?i)%s|%s", TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);
-        sqlQuery = sqlQuery.replaceAll(regexToremoveTamperTags, StringUtils.EMPTY);
+        String regexToRemoveTamperTags = String.format("(?i)%s|%s", TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);
+        sqlQuery = sqlQuery.replaceAll(regexToRemoveTamperTags, StringUtils.EMPTY);
 
         // Empty when checking character insertion
         if (StringUtils.isEmpty(sqlQuery)) {

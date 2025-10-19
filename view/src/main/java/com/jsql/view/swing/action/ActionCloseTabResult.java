@@ -21,7 +21,7 @@ public class ActionCloseTabResult extends AbstractAction {
 
             if (MediatorHelper.tabResults().getTabCount() == 0) {
                 var splitPaneTopBottom = MediatorHelper.frame().getSplitNS();
-                JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitEW();
+                var splitPaneLeftRight = splitPaneTopBottom.getSplitEW();
                 int dividerLocation = splitPaneLeftRight.getDividerLocation();
 
                 var label = new JLabel(UiUtil.APP_BIG.getIcon());

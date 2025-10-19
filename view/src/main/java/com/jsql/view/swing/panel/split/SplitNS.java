@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.panel.split;
 
+import com.jsql.view.swing.util.JSplitPaneWithZeroSizeDivider;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.PreferencesUtil;
@@ -28,12 +29,12 @@ import java.util.prefs.Preferences;
 /**
  * SplitPane composed of tree and tabs on top, and info tabs on bottom.
  */
-public class SplitNS extends JSplitPane {
+public class SplitNS extends JSplitPaneWithZeroSizeDivider {
 
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.
      */
-    private final JSplitPane splitEW = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+    private final JSplitPane splitEW = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
 
     private static final JPanel PANEL_HIDDEN_CONSOLES = new JPanel();
     

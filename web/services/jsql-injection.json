@@ -1,10 +1,8 @@
 {
     "version": "0.112",
     "news": [
-        "[Next release] Added Blind binary search, less efficient than Blind bitwise but required by some database",
-        "[v0.111: Reverse shell] Now open rev shell from RCE in plain Java without any netcat nor any external tool",
-        "[RCE shell] How to open RCE shell and rev shell? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
-        "[Pinned] Report any bugs and thoughts, add your star at https://github.com/ron190/jsql-injection",
-        "[Contribution] Recent contrib to Chinese translation is appreciated, thanks"
+        "[DNS exfiltration] Implementation ongoing as injection via DNS works on my setup finally, just hope running tests will be a blast on docker",
+        "[RCE shell] How to open RCE shell and reverse shell? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
+        "[Pinned] Report any bugs and thoughts, add your star at https://github.com/ron190/jsql-injection"
     ]
 }

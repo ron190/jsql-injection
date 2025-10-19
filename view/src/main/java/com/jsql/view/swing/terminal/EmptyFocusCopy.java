@@ -1,6 +1,8 @@
 package com.jsql.view.swing.terminal;
 
-import com.jsql.model.exception.JSqlRuntimeException;
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -14,6 +16,8 @@ import java.util.Arrays;
  * Cancel every mouse click, only gives focus.
  */
 public class EmptyFocusCopy implements MouseListener {
+
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final AbstractExploit abstractExploit;
 
@@ -35,8 +39,8 @@ public class EmptyFocusCopy implements MouseListener {
         try {
             String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
             this.abstractExploit.append(data);
-        } catch (UnsupportedFlavorException | IOException ex) {
-            throw new JSqlRuntimeException(ex);
+        } catch (UnsupportedFlavorException | IOException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 

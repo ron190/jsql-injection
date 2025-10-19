@@ -53,10 +53,10 @@
         <awaitility.version>4.3.0</awaitility.version>
         <bootstrap.version>5.3.5</bootstrap.version>
         <!-- required since commons-text:1.11.0 not working -->
-        <commons-lang3.version>3.17.0</commons-lang3.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.1.0050</cubrid-jdbc.version>
         <dnsjava.version>3.6.3</dnsjava.version>
-        <gmavenplus-plugin.version>4.2.0</gmavenplus-plugin.version>
+        <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
@@ -64,12 +64,12 @@
         <hsqldb.version>2.7.4</hsqldb.version>
         <informix.jdbc.version>15.0.0.1.1</informix.jdbc.version>
         <jaxb-api.version>2.1</jaxb-api.version>
-        <jaybird.version>6.0.1</jaybird.version>
+        <jaybird.version>6.0.3</jaybird.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
         <jna.version>5.17.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20250107</json.version>
-        <jsoup.version>1.19.1</jsoup.version>
+        <jsoup.version>1.20.1</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
@@ -81,7 +81,7 @@
         <mysql-connector-j.version>9.2.0</mysql-connector-j.version>
         <nashorn-core.version>15.6</nashorn-core.version>
         <!-- failure with 5.28.2 -->
-        <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
+        <neo4j-java-driver.version>6.0.1</neo4j-java-driver.version>
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
         <ojdbc8.version>23.8.0.25.04</ojdbc8.version>
         <pitest-junit5-plugin.version>1.2.2</pitest-junit5-plugin.version>
@@ -95,7 +95,7 @@
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
         <stomp-websocket.version>2.3.4</stomp-websocket.version>
         <sybase-jconn4.version>16.0</sybase-jconn4.version>
-        <vertica-jdbc.version>24.4.0-0</vertica-jdbc.version>
+        <vertica-jdbc.version>25.3.0-0</vertica-jdbc.version>
     </properties>
 
     <dependencyManagement>

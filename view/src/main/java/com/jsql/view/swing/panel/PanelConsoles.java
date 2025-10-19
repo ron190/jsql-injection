@@ -24,6 +24,7 @@ import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -99,7 +100,7 @@ public class PanelConsoles extends JPanel {
     }
 
     private void initSplit() {
-        this.networkSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        this.networkSplitPane = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
         this.networkSplitPane.setDividerLocation(600);
         this.networkSplitPane.setPreferredSize(new Dimension(0,0));  // required for correct scroll placement
 
