@@ -76,7 +76,7 @@
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
         <!-- v12.0 not working -->
-        <monetdb-jdbc.version>2.29</monetdb-jdbc.version>
+        <monetdb-jdbc.version>12.1</monetdb-jdbc.version>
         <mssql-jdbc.version>12.10.0.jre11</mssql-jdbc.version>
         <mysql-connector-j.version>9.2.0</mysql-connector-j.version>
         <nashorn-core.version>15.7</nashorn-core.version>
