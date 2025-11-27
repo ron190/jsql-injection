@@ -62,7 +62,7 @@
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <h2.version>2.3.232</h2.version>
         <hsqldb.version>2.7.4</hsqldb.version>
-        <informix.jdbc.version>15.0.0.1.1</informix.jdbc.version>
+        <informix.jdbc.version>15.0.0.2</informix.jdbc.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <jaybird.version>6.0.3</jaybird.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
