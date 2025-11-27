@@ -62,7 +62,7 @@
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <h2.version>2.3.232</h2.version>
         <hsqldb.version>2.7.4</hsqldb.version>
-        <informix.jdbc.version>15.0.0.1.1</informix.jdbc.version>
+        <informix.jdbc.version>15.0.0.2</informix.jdbc.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <jaybird.version>6.0.3</jaybird.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
@@ -81,7 +81,7 @@
         <mysql-connector-j.version>9.2.0</mysql-connector-j.version>
         <nashorn-core.version>15.7</nashorn-core.version>
         <!-- failure with 5.28.2 -->
-        <neo4j-java-driver.version>6.0.1</neo4j-java-driver.version>
+        <neo4j-java-driver.version>6.0.2</neo4j-java-driver.version>
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
         <ojdbc8.version>23.26.0.0.0</ojdbc8.version>
         <pitest-junit5-plugin.version>1.2.2</pitest-junit5-plugin.version>
