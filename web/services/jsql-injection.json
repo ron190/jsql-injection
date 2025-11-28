@@ -1,7 +1,10 @@
 {
     "version": "0.112",
     "news": [
-        "[DNS exfiltration] Implementation ongoing as injection via DNS works on my setup finally, just hope running tests will be a blast on docker",
+        "[Shoutout] Thanks for the latest right-to-left Arabic translation contribution, I'll review and integrate it to the next release",
+        "[Community] I'm interested in your translation feedbacks, use menu Community to share your fixes and improve the language displayed",
+        "[Note] I only produce the English and French translation, any other language is shared by you the community, thanks again",
+        "[DNS exfiltration] Implementation is ongoing as injection via DNS works on my setup, also expecting to add integration tests on docker",
         "[RCE shell] How to open RCE shell and reverse shell? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
         "[Pinned] Report any bugs and thoughts, add your star at https://github.com/ron190/jsql-injection"
     ]

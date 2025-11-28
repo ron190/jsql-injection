@@ -25,7 +25,7 @@
         <commons-text.version>1.14.0</commons-text.version>
         <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-        <log4j-bom.version>2.24.3</log4j-bom.version>
+        <log4j-bom.version>2.25.2</log4j-bom.version>
         <maven-antrun-plugin.version>3.2.0</maven-antrun-plugin.version>
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
@@ -42,7 +42,8 @@
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
         <maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
-        <pitest-maven.version>1.21.0</pitest-maven.version>
+        <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
+        <pitest-maven.version>1.22.0</pitest-maven.version>
         <spotbugs-maven-plugin.version>4.9.8.2</spotbugs-maven-plugin.version>
         <versions-maven-plugin.version>2.20.1</versions-maven-plugin.version>
 
