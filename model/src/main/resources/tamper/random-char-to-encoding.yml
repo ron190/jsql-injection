@@ -1,0 +1,22 @@
+tooltip: Obfuscate all SQL keywords to bypass WAF
+description: Replace any char with encoding, e.g select => sel%65ct
+group: 
+javascript: |
+ function replaceCharWithURLEncoding(str) {
+   return str.split(/\b/).map(function(word) {
+     // Consider only words with length > 2 (since we exclude first and last character)
+     if (/^\w+$/.test(word)) {
+       // Random index (not first/last)
+       var idx = Math.floor(Math.random() * word.length);
+       var char = word[idx];
+       var encoded = '%' + char.charCodeAt(0).toString(16).toUpperCase();
+       // Replace the character at idx
+       return word.slice(0, idx) + encoded + word.slice(idx + 1);
+     }
+     return word;
+   }).join('');
+ }
+ 
+ var tampering = function(sql) {
+  return replaceCharWithURLEncoding(sql);
+ }

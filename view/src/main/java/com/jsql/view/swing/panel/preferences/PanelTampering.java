@@ -21,18 +21,19 @@ import java.util.stream.Stream;
 public class PanelTampering extends JPanel {
 
     // no preferences init
-    private final JCheckBox checkboxIsTamperingBase64 = new JCheckBox(TamperingType.BASE64.instance().getDescription());
-    private final JCheckBox checkboxIsTamperingVersionComment = new JCheckBox(TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
-    private final JCheckBox checkboxIsTamperingFunctionComment = new JCheckBox(TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
-    private final JCheckBox checkboxIsTamperingEqualToLike = new JCheckBox(TamperingType.EQUAL_TO_LIKE.instance().getDescription());
-    private final JCheckBox checkboxIsTamperingRandomCase = new JCheckBox(TamperingType.RANDOM_CASE.instance().getDescription());
-    private final JCheckBox checkboxIsTamperingEval = new JCheckBox("Enable user tamper script:");
-    private final JCheckBox checkboxIsTamperingHexToChar = new JCheckBox(TamperingType.HEX_TO_CHAR.instance().getDescription());
-    private final JCheckBox checkboxIsTamperingStringToChar = new JCheckBox(TamperingType.STRING_TO_CHAR.instance().getDescription());
-    private final JCheckBox checkboxIsTamperingQuoteToUtf8 = new JCheckBox(TamperingType.QUOTE_TO_UTF8.instance().getDescription());
-    private final JRadioButton radioIsTamperingSpaceToMultilineComment = new JRadioButton(TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getDescription());
-    private final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton(TamperingType.SPACE_TO_DASH_COMMENT.instance().getDescription());
-    private final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton(TamperingType.SPACE_TO_SHARP_COMMENT.instance().getDescription());
+    private final JCheckBox checkboxIsTamperingBase64 = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingVersionComment = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingFunctionComment = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingEqualToLike = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingRandomCase = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingEval = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingHexToChar = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingStringToChar = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingQuoteToUtf8 = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingCharToEncoding = new JCheckBox();
+    private final JRadioButton radioIsTamperingSpaceToMultilineComment = new JRadioButton();
+    private final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();
+    private final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton();
 
     private static final RSyntaxTextArea textPaneEval = new SyntaxTextArea("Click on a tamper to paste source and edit custom script");
 
@@ -54,6 +55,7 @@ public class PanelTampering extends JPanel {
         });
         PanelTampering.textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
         this.checkboxIsTamperingEval.addActionListener(panelPreferences.getActionListenerSave());
+        this.checkboxIsTamperingEval.setText("Enable user tamper script:");
 
         Stream.of(
             new SimpleEntry<>(this.checkboxIsTamperingBase64, TamperingType.BASE64),
@@ -64,11 +66,13 @@ public class PanelTampering extends JPanel {
             new SimpleEntry<>(this.checkboxIsTamperingHexToChar, TamperingType.HEX_TO_CHAR),
             new SimpleEntry<>(this.checkboxIsTamperingStringToChar, TamperingType.STRING_TO_CHAR),
             new SimpleEntry<>(this.checkboxIsTamperingQuoteToUtf8, TamperingType.QUOTE_TO_UTF8),
+            new SimpleEntry<>(this.checkboxIsTamperingCharToEncoding, TamperingType.CHAR_TO_ENCODING),
             new SimpleEntry<>(this.radioIsTamperingSpaceToMultilineComment, TamperingType.SPACE_TO_MULTILINE_COMMENT),
             new SimpleEntry<>(this.radioIsTamperingSpaceToDashComment, TamperingType.SPACE_TO_DASH_COMMENT),
             new SimpleEntry<>(this.radioIsTamperingSpaceToSharpComment, TamperingType.SPACE_TO_SHARP_COMMENT)
         )
         .forEach(entry -> {
+            entry.getKey().setText(entry.getValue().instance().getDescription());
             entry.getKey().setToolTipText(entry.getValue().instance().getTooltip());
             entry.getKey().addMouseListener(new TamperingMouseAdapter(entry.getValue(), PanelTampering.textPaneEval));
             entry.getKey().addActionListener(panelPreferences.getActionListenerSave());
@@ -112,6 +116,7 @@ public class PanelTampering extends JPanel {
                 .addComponent(this.checkboxIsTamperingStringToChar)
                 .addComponent(this.checkboxIsTamperingHexToChar)
                 .addComponent(this.checkboxIsTamperingQuoteToUtf8)
+                .addComponent(this.checkboxIsTamperingCharToEncoding)
                 .addComponent(labelSpaceTamper)
                 .addComponent(this.radioIsTamperingSpaceToMultilineComment)
                 .addComponent(this.radioIsTamperingSpaceToDashComment)
@@ -169,6 +174,11 @@ public class PanelTampering extends JPanel {
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingQuoteToUtf8)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsTamperingCharToEncoding)
             )
             .addGroup(
                 groupLayout
@@ -257,6 +267,10 @@ public class PanelTampering extends JPanel {
     
     public JCheckBox getCheckboxIsTamperingQuoteToUtf8() {
         return this.checkboxIsTamperingQuoteToUtf8;
+    }
+
+    public JCheckBox getCheckboxIsTamperingCharToEncoding() {
+        return this.checkboxIsTamperingCharToEncoding;
     }
 
     public JCheckBox getCheckboxIsTamperingStringToChar() {

@@ -18,7 +18,8 @@ public enum TamperingType {
     VERSIONED_COMMENT_TO_METHOD_SIGNATURE("version-comment-to-method-signature.yml"),
     HEX_TO_CHAR("hex-to-char.yml"),
     STRING_TO_CHAR("string-to-char.yml"),
-    QUOTE_TO_UTF8("quote-to-utf8.yml");
+    QUOTE_TO_UTF8("quote-to-utf8.yml"),
+    CHAR_TO_ENCODING("random-char-to-encoding.yml");
 
     private ModelYamlTampering instanceModelYaml;
     

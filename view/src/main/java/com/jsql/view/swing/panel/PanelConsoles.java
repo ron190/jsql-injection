@@ -286,11 +286,11 @@ public class PanelConsoles extends JPanel {
         labelTab.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent event) {
-                // Fix #90428: IllegalArgumentException in setSelectedComponent()
-                // ArrayIndexOutOfBoundsException #92973 on setSelectedComponent()
+                // Fix #90428: IllegalArgumentException
+                // Fix #92973: ArrayIndexOutOfBoundsException
                 try {
                     PanelConsoles.this.tabConsoles.setSelectedComponent(manager);
-                } catch (IllegalArgumentException e) {
+                } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
             }

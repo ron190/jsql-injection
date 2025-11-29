@@ -1,5 +1,9 @@
 package com.jsql.view.swing.table;
 
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -29,7 +33,9 @@ import java.util.Map;
  * of RESIZE_ALL_COLUMNS will work the best.
  */
 public class AdjusterTableColumn implements PropertyChangeListener, TableModelListener {
-    
+
+    private static final Logger LOGGER = LogManager.getRootLogger();
+
     private final JTable tableAdjust;
     private final int spacing;
     private boolean isColumnHeaderIncluded;
@@ -131,7 +137,12 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         // Invoke the renderer for the cell to calculate the preferred width
         TableCellRenderer cellRenderer = this.tableAdjust.getCellRenderer(row, column);
         Component c = this.tableAdjust.prepareRenderer(cellRenderer, row, column);
-        return c.getPreferredSize().width + this.tableAdjust.getIntercellSpacing().width;
+        if (c != null) {  // Fix #96130: NullPointerException on c
+            return c.getPreferredSize().width + this.tableAdjust.getIntercellSpacing().width;
+        } else {
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Unexpected missing cell, data width set to 0");
+            return 100;
+        }
     }
 
     /**

@@ -46,9 +46,11 @@ public class JTextFieldPlaceholder extends JTextField implements JPlaceholder {
 
     @Override
     public void paint(Graphics g) {
+        // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
+        // #96211: StateInvariantError possible when PlainView.drawLineImpl in paint()
         try {
             super.paint(g);
-        } catch (ClassCastException e) {  // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
+        } catch (ClassCastException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         if (this.getText().isEmpty()) {

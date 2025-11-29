@@ -26,6 +26,7 @@ public class TamperingUtil {
     private boolean isHexToChar = false;
     private boolean isStringToChar = false;
     private boolean isQuoteToUtf8 = false;
+    private boolean isCharToEncoding = false;
     private boolean isEval = false;
     private boolean isSpaceToMultilineComment = false;
     private boolean isSpaceToDashComment = false;
@@ -117,6 +118,7 @@ public class TamperingUtil {
         }
 
         sqlQuery = this.transform(sqlQuery, this.isBase64, TamperingType.BASE64);
+        sqlQuery = this.transform(sqlQuery, this.isCharToEncoding, TamperingType.CHAR_TO_ENCODING);
         sqlQuery = this.transform(sqlQuery, this.isQuoteToUtf8, TamperingType.QUOTE_TO_UTF8);  // char insertion included
         return sqlQuery;
     }
@@ -168,6 +170,11 @@ public class TamperingUtil {
 
     public TamperingUtil withQuoteToUtf8() {
         this.isQuoteToUtf8 = true;
+        return this;
+    }
+
+    public TamperingUtil withCharToEncoding() {
+        this.isCharToEncoding = true;
         return this;
     }
 
@@ -229,6 +236,11 @@ public class TamperingUtil {
 
     public TamperingUtil withQuoteToUtf8(boolean selected) {
         this.isQuoteToUtf8 = selected;
+        return this;
+    }
+
+    public TamperingUtil withCharToEncoding(boolean selected) {
+        this.isCharToEncoding = selected;
         return this;
     }
 

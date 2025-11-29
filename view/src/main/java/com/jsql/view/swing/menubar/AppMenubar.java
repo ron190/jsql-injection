@@ -319,10 +319,12 @@ public class AppMenubar extends JMenuBar {
         
         MediatorHelper.treeDatabase().reloadNodes();
 
-        // IllegalArgumentException #92981 on revalidate()
+        // Fix #92981: IllegalArgumentException on revalidate()
+        // Fix #96185: NullPointerException on revalidate()
+        // Fix #96226: ArrayIndexOutOfBoundsException on revalidate()
         try {
             MediatorHelper.frame().revalidate();  // Fix glitches on Linux
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException | IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

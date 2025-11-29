@@ -26,6 +26,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.InvalidPathException;
 
 /**
  * Save the content of tab in a file.
@@ -74,17 +75,21 @@ public class ActionSaveTab extends AbstractAction {
         if (textarea == null) {
             return;
         }
-        
+
         this.replaceFileChooser.updateUI();  // required when changing dark/light mode
-        int stateSave = this.replaceFileChooser.showSaveDialog(MediatorHelper.frame());
-        if (stateSave == JFileChooser.APPROVE_OPTION) {
-            var folderSelectedFile = this.replaceFileChooser.getCurrentDirectory().toString();
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
-            if (textarea instanceof JTextComponent) {
-                this.saveTextToFile((JTextComponent) textarea);
-            } else if (textarea instanceof JTable) {
-                this.saveTableToFile((JTable) textarea);
+        try {  // Fix #96109: InvalidPathException on showSaveDialog()
+            int stateSave = this.replaceFileChooser.showSaveDialog(MediatorHelper.frame());
+            if (stateSave == JFileChooser.APPROVE_OPTION) {
+                var folderSelectedFile = this.replaceFileChooser.getCurrentDirectory().toString();
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
+                if (textarea instanceof JTextComponent) {
+                    this.saveTextToFile((JTextComponent) textarea);
+                } else if (textarea instanceof JTable) {
+                    this.saveTableToFile((JTable) textarea);
+                }
             }
+        } catch (InvalidPathException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 

@@ -165,7 +165,11 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
 
         final var scroller = new JScrollPane(browser);
         MediatorHelper.tabResults().addTab(this.url.replaceAll(".*/", StringUtils.EMPTY) + StringUtils.SPACE, scroller);
-        MediatorHelper.tabResults().setSelectedComponent(scroller);  // Focus on the new tab
+        try {  // Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()
+            MediatorHelper.tabResults().setSelectedComponent(scroller);  // Focus on the new tab
+        } catch (ArrayIndexOutOfBoundsException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+        }
         MediatorHelper.tabResults().setToolTipTextAt(
             MediatorHelper.tabResults().indexOfComponent(scroller),
             String.format("<html>%s</html>", this.url)
