@@ -15,7 +15,7 @@
         <flatlaf.version>3.6.2</flatlaf.version>
         <junit-jupiter-engine.version>5.12.2</junit-jupiter-engine.version>
         <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
-        <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+        <maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version>
         <mockito-inline.version>5.2.0</mockito-inline.version>
         <rsyntaxtextarea.version>3.6.0</rsyntaxtextarea.version>
     </properties>
