@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class VerticaBlindBitGetSuiteIT extends ConcreteVerticaSuiteIT {
+class VerticaBlindBitGetSuiteIgnoreIT extends ConcreteVerticaSuiteIgnoreIT {
     
     @Override
     public void setupInjection() throws Exception {

@@ -49,7 +49,7 @@ public class SpringApp {
     static {
         try {  // ensure driver is loaded
             Class.forName("com.mimer.jdbc.Driver");
-            Class.forName("nl.cwi.monetdb.jdbc.MonetDriver");
+            Class.forName("org.monetdb.jdbc.MonetDriver");
             Class.forName("com.mckoi.JDBCDriver");
             Class.forName("oracle.jdbc.OracleDriver");
         } catch (ClassNotFoundException e) {

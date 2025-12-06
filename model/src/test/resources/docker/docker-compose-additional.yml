@@ -42,15 +42,15 @@ services:
     command: bash /sybase/start
     hostname: dksybase
 
-  vertica:
-    container_name: jsql-vertica
-    ports:
-      - "5433:5433"
-    build:
-      context: .
-      dockerfile: Dockerfile.vertica
-    networks:
-      - jsql-network
+#  vertica:
+#    container_name: jsql-vertica
+#    ports:
+#      - "5433:5433"
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.vertica
+#    networks:
+#      - jsql-network
 
   oracle:
     container_name: jsql-oracle

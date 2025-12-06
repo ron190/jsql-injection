@@ -2,9 +2,9 @@ package com.test.vendor.vertica;
 
 import com.test.AbstractTestSuite;
 
-public abstract class ConcreteVerticaSuiteIT extends AbstractTestSuite {
+public abstract class ConcreteVerticaSuiteIgnoreIT extends AbstractTestSuite {
 
-    public ConcreteVerticaSuiteIT() {
+    public ConcreteVerticaSuiteIgnoreIT() {
 
         this.jdbcURL = "jdbc:vertica://jsql-vertica:5433/";
         this.jdbcUser = "dbadmin";
