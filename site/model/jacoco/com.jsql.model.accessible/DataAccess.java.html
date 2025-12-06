@@ -425,11 +425,11 @@ public class DataAccess {
                 table,
                 &quot;rows&quot;
             );
-<span class="fc" id="L428">        } catch (AbstractSlidingException e) {  // Catch all exceptions but prevent detecting bug</span>
-<span class="fc" id="L429">            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);</span>
+<span class="nc" id="L428">        } catch (AbstractSlidingException e) {  // Catch all exceptions but prevent detecting bug</span>
+<span class="nc" id="L429">            resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);</span>
 <span class="nc" id="L430">        } catch (Exception e) {</span>
 <span class="nc" id="L431">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
-<span class="fc" id="L432">        }</span>
+<span class="pc" id="L432">        }</span>
 <span class="fc" id="L433">        return SuspendableGetRows.parse(resultToParse);</span>
     }
 
@@ -483,4 +483,4 @@ public class DataAccess {
 <span class="fc" id="L483">        return table;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

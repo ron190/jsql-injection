@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmptyFocusCopy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.terminal</a> &gt; <span class="el_source">EmptyFocusCopy.java</span></div><h1>EmptyFocusCopy.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.terminal;
 
-import com.jsql.model.exception.JSqlRuntimeException;
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -15,49 +17,51 @@ import java.util.Arrays;
  */
 public class EmptyFocusCopy implements MouseListener {
 
+<span class="fc" id="L20">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
     private final AbstractExploit abstractExploit;
 
-<span class="fc" id="L20">    public EmptyFocusCopy(AbstractExploit abstractExploit) {</span>
-<span class="fc" id="L21">        this.abstractExploit = abstractExploit;</span>
-<span class="fc" id="L22">    }</span>
+<span class="fc" id="L24">    public EmptyFocusCopy(AbstractExploit abstractExploit) {</span>
+<span class="fc" id="L25">        this.abstractExploit = abstractExploit;</span>
+<span class="fc" id="L26">    }</span>
 
     @Override
     public void mousePressed(MouseEvent e) {
-<span class="nc" id="L26">        e.consume();</span>
-<span class="nc" id="L27">        this.abstractExploit.requestFocusInWindow();</span>
-<span class="nc" id="L28">        this.abstractExploit.setCaretPosition(this.abstractExploit.getDocument().getLength());</span>
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (Arrays.asList(MouseEvent.BUTTON2, MouseEvent.BUTTON3).contains(e.getButton())) {</span>
-<span class="nc" id="L30">            this.pasteClipboard();</span>
+<span class="nc" id="L30">        e.consume();</span>
+<span class="nc" id="L31">        this.abstractExploit.requestFocusInWindow();</span>
+<span class="nc" id="L32">        this.abstractExploit.setCaretPosition(this.abstractExploit.getDocument().getLength());</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (Arrays.asList(MouseEvent.BUTTON2, MouseEvent.BUTTON3).contains(e.getButton())) {</span>
+<span class="nc" id="L34">            this.pasteClipboard();</span>
         }
-<span class="nc" id="L32">    }</span>
+<span class="nc" id="L36">    }</span>
 
     private void pasteClipboard() {
         try {
-<span class="nc" id="L36">            String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);</span>
-<span class="nc" id="L37">            this.abstractExploit.append(data);</span>
-<span class="nc" id="L38">        } catch (UnsupportedFlavorException | IOException ex) {</span>
-<span class="nc" id="L39">            throw new JSqlRuntimeException(ex);</span>
-<span class="nc" id="L40">        }</span>
-<span class="nc" id="L41">    }</span>
+<span class="nc" id="L40">            String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);</span>
+<span class="nc" id="L41">            this.abstractExploit.append(data);</span>
+<span class="nc" id="L42">        } catch (UnsupportedFlavorException | IOException e) {</span>
+<span class="nc" id="L43">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L44">        }</span>
+<span class="nc" id="L45">    }</span>
 
     @Override
     public void mouseReleased(MouseEvent e) {
-<span class="nc" id="L45">        e.consume();</span>
-<span class="nc" id="L46">    }</span>
+<span class="nc" id="L49">        e.consume();</span>
+<span class="nc" id="L50">    }</span>
     
     @Override
     public void mouseExited(MouseEvent e) {
-<span class="nc" id="L50">        e.consume();</span>
-<span class="nc" id="L51">    }</span>
+<span class="nc" id="L54">        e.consume();</span>
+<span class="nc" id="L55">    }</span>
     
     @Override
     public void mouseEntered(MouseEvent e) {
-<span class="fc" id="L55">        e.consume();</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L59">        e.consume();</span>
+<span class="fc" id="L60">    }</span>
     
     @Override
     public void mouseClicked(MouseEvent e) {
-<span class="nc" id="L60">        e.consume();</span>
-<span class="nc" id="L61">    }</span>
+<span class="nc" id="L64">        e.consume();</span>
+<span class="nc" id="L65">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

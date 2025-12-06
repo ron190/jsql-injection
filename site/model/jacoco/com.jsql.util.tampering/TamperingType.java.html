@@ -18,21 +18,22 @@ import java.io.IOException;
 <span class="fc" id="L18">    VERSIONED_COMMENT_TO_METHOD_SIGNATURE(&quot;version-comment-to-method-signature.yml&quot;),</span>
 <span class="fc" id="L19">    HEX_TO_CHAR(&quot;hex-to-char.yml&quot;),</span>
 <span class="fc" id="L20">    STRING_TO_CHAR(&quot;string-to-char.yml&quot;),</span>
-<span class="fc" id="L21">    QUOTE_TO_UTF8(&quot;quote-to-utf8.yml&quot;);</span>
+<span class="fc" id="L21">    QUOTE_TO_UTF8(&quot;quote-to-utf8.yml&quot;),</span>
+<span class="fc" id="L22">    CHAR_TO_ENCODING(&quot;random-char-to-encoding.yml&quot;);</span>
 
     private ModelYamlTampering instanceModelYaml;
     
-<span class="fc" id="L25">    TamperingType(String fileYaml) {</span>
-<span class="fc" id="L26">        var yaml = new Yaml();</span>
-<span class="fc" id="L27">        try (var inputStream = TamperingType.class.getClassLoader().getResourceAsStream(&quot;tamper/&quot;+ fileYaml)) {</span>
-<span class="fc" id="L28">            this.instanceModelYaml = yaml.loadAs(inputStream, ModelYamlTampering.class);</span>
-<span class="nc" id="L29">        } catch (IOException e) {</span>
-<span class="nc" id="L30">            LogManager.getRootLogger().log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L31">        }</span>
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L26">    TamperingType(String fileYaml) {</span>
+<span class="fc" id="L27">        var yaml = new Yaml();</span>
+<span class="fc" id="L28">        try (var inputStream = TamperingType.class.getClassLoader().getResourceAsStream(&quot;tamper/&quot;+ fileYaml)) {</span>
+<span class="fc" id="L29">            this.instanceModelYaml = yaml.loadAs(inputStream, ModelYamlTampering.class);</span>
+<span class="nc" id="L30">        } catch (IOException e) {</span>
+<span class="nc" id="L31">            LogManager.getRootLogger().log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L32">        }</span>
+<span class="fc" id="L33">    }</span>
     
     public ModelYamlTampering instance() {
-<span class="fc" id="L35">        return this.instanceModelYaml;</span>
+<span class="fc" id="L36">        return this.instanceModelYaml;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -165,21 +165,25 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
 
 <span class="fc" id="L166">        final var scroller = new JScrollPane(browser);</span>
 <span class="fc" id="L167">        MediatorHelper.tabResults().addTab(this.url.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY) + StringUtils.SPACE, scroller);</span>
-<span class="fc" id="L168">        MediatorHelper.tabResults().setSelectedComponent(scroller);  // Focus on the new tab</span>
-<span class="fc" id="L169">        MediatorHelper.tabResults().setToolTipTextAt(</span>
-<span class="fc" id="L170">            MediatorHelper.tabResults().indexOfComponent(scroller),</span>
-<span class="fc" id="L171">            String.format(&quot;&lt;html&gt;%s&lt;/html&gt;&quot;, this.url)</span>
+        try {  // Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()
+<span class="fc" id="L169">            MediatorHelper.tabResults().setSelectedComponent(scroller);  // Focus on the new tab</span>
+<span class="nc" id="L170">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L171">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L172">        }</span>
+<span class="fc" id="L173">        MediatorHelper.tabResults().setToolTipTextAt(</span>
+<span class="fc" id="L174">            MediatorHelper.tabResults().indexOfComponent(scroller),</span>
+<span class="fc" id="L175">            String.format(&quot;&lt;html&gt;%s&lt;/html&gt;&quot;, this.url)</span>
         );
 
         // Create a custom tab header
-<span class="fc" id="L175">        var header = new TabHeader(</span>
-<span class="fc" id="L176">            this.url.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY),</span>
-<span class="fc" id="L177">            UiUtil.ADMIN.getIcon()</span>
+<span class="fc" id="L179">        var header = new TabHeader(</span>
+<span class="fc" id="L180">            this.url.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY),</span>
+<span class="fc" id="L181">            UiUtil.ADMIN.getIcon()</span>
         );
-<span class="fc" id="L179">        MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  // Apply the custom header to the tab</span>
-<span class="fc" id="L180">        browser.setCaretPosition(0);</span>
+<span class="fc" id="L183">        MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  // Apply the custom header to the tab</span>
+<span class="fc" id="L184">        browser.setCaretPosition(0);</span>
 
-<span class="fc" id="L182">        MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="fc" id="L183">    }</span>
+<span class="fc" id="L186">        MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="fc" id="L187">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

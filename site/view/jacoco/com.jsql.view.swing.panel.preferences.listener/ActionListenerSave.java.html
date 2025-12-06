@@ -100,33 +100,34 @@ public class ActionListenerSave implements ActionListener {
 <span class="fc" id="L100">        .withFunctionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingFunctionComment().isSelected())</span>
 <span class="fc" id="L101">        .withHexToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingHexToChar().isSelected())</span>
 <span class="fc" id="L102">        .withQuoteToUtf8(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingQuoteToUtf8().isSelected())</span>
-<span class="fc" id="L103">        .withRandomCase(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingRandomCase().isSelected())</span>
-<span class="fc" id="L104">        .withSpaceToDashComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToDashComment().isSelected())</span>
-<span class="fc" id="L105">        .withSpaceToMultilineComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToMultilineComment().isSelected())</span>
-<span class="fc" id="L106">        .withSpaceToSharpComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected())</span>
-<span class="fc" id="L107">        .withStringToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingStringToChar().isSelected())</span>
-<span class="fc" id="L108">        .withVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected());</span>
+<span class="fc" id="L103">        .withCharToEncoding(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingCharToEncoding().isSelected())</span>
+<span class="fc" id="L104">        .withRandomCase(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingRandomCase().isSelected())</span>
+<span class="fc" id="L105">        .withSpaceToDashComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToDashComment().isSelected())</span>
+<span class="fc" id="L106">        .withSpaceToMultilineComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToMultilineComment().isSelected())</span>
+<span class="fc" id="L107">        .withSpaceToSharpComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected())</span>
+<span class="fc" id="L108">        .withStringToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingStringToChar().isSelected())</span>
+<span class="fc" id="L109">        .withVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected());</span>
         
-<span class="fc" id="L110">        boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().set(</span>
-<span class="fc" id="L111">            this.panelPreferences.getPanelAuthentication().getCheckboxUseDigestAuthentication().isSelected(),</span>
-<span class="fc" id="L112">            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationUsername().getText(),</span>
-<span class="fc" id="L113">            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationPassword().getText(),</span>
-<span class="fc" id="L114">            this.panelPreferences.getPanelAuthentication().getCheckboxUseKerberos().isSelected(),</span>
-<span class="fc" id="L115">            this.panelPreferences.getPanelAuthentication().getTextKerberosKrb5Conf().getText(),</span>
-<span class="fc" id="L116">            this.panelPreferences.getPanelAuthentication().getTextKerberosLoginConf().getText()</span>
+<span class="fc" id="L111">        boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().set(</span>
+<span class="fc" id="L112">            this.panelPreferences.getPanelAuthentication().getCheckboxUseDigestAuthentication().isSelected(),</span>
+<span class="fc" id="L113">            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationUsername().getText(),</span>
+<span class="fc" id="L114">            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationPassword().getText(),</span>
+<span class="fc" id="L115">            this.panelPreferences.getPanelAuthentication().getCheckboxUseKerberos().isSelected(),</span>
+<span class="fc" id="L116">            this.panelPreferences.getPanelAuthentication().getTextKerberosKrb5Conf().getText(),</span>
+<span class="fc" id="L117">            this.panelPreferences.getPanelAuthentication().getTextKerberosLoginConf().getText()</span>
         );
         
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        if (</span>
             isRestartRequired
-<span class="nc bnc" id="L121" title="All 2 branches missed.">            &amp;&amp; JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(</span>
-<span class="nc" id="L122">                MediatorHelper.frame(),</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">            &amp;&amp; JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(</span>
+<span class="nc" id="L123">                MediatorHelper.frame(),</span>
                 &quot;File krb5.conf has changed, please restart.&quot;,
                 &quot;Restart&quot;,
                 JOptionPane.YES_NO_OPTION
             )
         ) {
-<span class="nc" id="L128">            new ActionNewWindow().actionPerformed(null);</span>
+<span class="nc" id="L129">            new ActionNewWindow().actionPerformed(null);</span>
         }
-<span class="fc" id="L130">    }</span>
+<span class="fc" id="L131">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

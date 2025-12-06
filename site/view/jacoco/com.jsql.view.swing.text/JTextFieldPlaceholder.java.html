@@ -46,21 +46,23 @@ public class JTextFieldPlaceholder extends JTextField implements JPlaceholder {
 
     @Override
     public void paint(Graphics g) {
+        // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
+        // #96211: StateInvariantError possible when PlainView.drawLineImpl in paint()
         try {
-<span class="fc" id="L50">            super.paint(g);</span>
-<span class="nc" id="L51">        } catch (ClassCastException e) {  // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData</span>
-<span class="nc" id="L52">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L53">        }</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (this.getText().isEmpty()) {</span>
-<span class="fc" id="L55">            int h = this.getHeight();</span>
-<span class="fc" id="L56">            var fm = g.getFontMetrics();</span>
-<span class="fc" id="L57">            UiUtil.drawPlaceholder(this, g, this.placeholderText, this.xOffset, h / 2 + fm.getAscent() / 2 - 1);</span>
+<span class="fc" id="L52">            super.paint(g);</span>
+<span class="nc" id="L53">        } catch (ClassCastException e) {</span>
+<span class="nc" id="L54">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L55">        }</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (this.getText().isEmpty()) {</span>
+<span class="fc" id="L57">            int h = this.getHeight();</span>
+<span class="fc" id="L58">            var fm = g.getFontMetrics();</span>
+<span class="fc" id="L59">            UiUtil.drawPlaceholder(this, g, this.placeholderText, this.xOffset, h / 2 + fm.getAscent() / 2 - 1);</span>
         }
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L61">    }</span>
 
     @Override
     public void setPlaceholderText(String placeholderText) {
-<span class="fc" id="L63">        this.placeholderText = placeholderText;</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L65">        this.placeholderText = placeholderText;</span>
+<span class="fc" id="L66">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

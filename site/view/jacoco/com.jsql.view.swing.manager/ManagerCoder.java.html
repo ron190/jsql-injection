@@ -18,6 +18,7 @@ import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
@@ -51,158 +52,158 @@ public class ManagerCoder extends JPanel {
     private JLabel menuMethod;
 
     private static final String ENCODE_TO = &quot;Encode to &quot;;
-<span class="fc" id="L54">    private final transient CoderListener actionCoder = new CoderListener(this);</span>
+<span class="fc" id="L55">    private final transient CoderListener actionCoder = new CoderListener(this);</span>
 
     private class ChangeMenuListener implements ChangeListener {
         private final String nameMethod;
-<span class="fc" id="L58">        ChangeMenuListener(String nameMethod) {</span>
-<span class="fc" id="L59">            this.nameMethod = nameMethod;</span>
-<span class="fc" id="L60">        }</span>
+<span class="fc" id="L59">        ChangeMenuListener(String nameMethod) {</span>
+<span class="fc" id="L60">            this.nameMethod = nameMethod;</span>
+<span class="fc" id="L61">        }</span>
         @Override
         public void stateChanged(ChangeEvent e) {
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">            if (e.getSource() instanceof JMenuItem) {</span>
-<span class="fc" id="L64">                JMenuItem item = (JMenuItem) e.getSource();</span>
-<span class="pc bpc" id="L65" title="1 of 4 branches missed.">                if (item.isSelected() || item.isArmed()) {</span>
-<span class="fc" id="L66">                    ManagerCoder.this.actionCoder.actionPerformed(this.nameMethod);</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            if (e.getSource() instanceof JMenuItem) {</span>
+<span class="fc" id="L65">                JMenuItem item = (JMenuItem) e.getSource();</span>
+<span class="pc bpc" id="L66" title="1 of 4 branches missed.">                if (item.isSelected() || item.isArmed()) {</span>
+<span class="fc" id="L67">                    ManagerCoder.this.actionCoder.actionPerformed(this.nameMethod);</span>
                 }
             }
-<span class="fc" id="L69">        }</span>
+<span class="fc" id="L70">        }</span>
     }
 
     /**
      * Create a panel to encode a string.
      */
     public ManagerCoder() {
-<span class="fc" id="L76">        super(new BorderLayout());</span>
+<span class="fc" id="L77">        super(new BorderLayout());</span>
 
-<span class="fc" id="L78">        var placeholderInput = new JTextAreaPlaceholder(I18nUtil.valueByKey(&quot;CODER_INPUT&quot;));</span>
-<span class="fc" id="L79">        this.textInput = new JPopupTextArea(placeholderInput).getProxy();</span>
-<span class="fc" id="L80">        I18nViewUtil.addComponentForKey(&quot;CODER_INPUT&quot;, placeholderInput);</span>
-<span class="fc" id="L81">        this.textInput.getCaret().setBlinkRate(500);</span>
-<span class="fc" id="L82">        this.textInput.setLineWrap(true);</span>
-<span class="fc" id="L83">        this.textInput.setName(&quot;textInputManagerCoder&quot;);</span>
-<span class="fc" id="L84">        this.textInput.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
+<span class="fc" id="L79">        var placeholderInput = new JTextAreaPlaceholder(I18nUtil.valueByKey(&quot;CODER_INPUT&quot;));</span>
+<span class="fc" id="L80">        this.textInput = new JPopupTextArea(placeholderInput).getProxy();</span>
+<span class="fc" id="L81">        I18nViewUtil.addComponentForKey(&quot;CODER_INPUT&quot;, placeholderInput);</span>
+<span class="fc" id="L82">        this.textInput.getCaret().setBlinkRate(500);</span>
+<span class="fc" id="L83">        this.textInput.setLineWrap(true);</span>
+<span class="fc" id="L84">        this.textInput.setName(&quot;textInputManagerCoder&quot;);</span>
+<span class="fc" id="L85">        this.textInput.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-<span class="fc" id="L87">                ManagerCoder.this.actionCoder.actionPerformed();</span>
-<span class="fc" id="L88">            }</span>
+<span class="fc" id="L88">                ManagerCoder.this.actionCoder.actionPerformed();</span>
+<span class="fc" id="L89">            }</span>
         });
 
-<span class="fc" id="L91">        JPanel topMixed = this.getTopPanel();</span>
+<span class="fc" id="L92">        JPanel topMixed = this.getTopPanel();</span>
 
-<span class="fc" id="L93">        var placeholderResult = new JTextAreaPlaceholder(I18nUtil.valueByKey(&quot;CODER_RESULT&quot;));</span>
-<span class="fc" id="L94">        this.result = new JPopupTextArea(placeholderResult).getProxy();</span>
-<span class="fc" id="L95">        I18nViewUtil.addComponentForKey(&quot;CODER_RESULT&quot;, placeholderResult);</span>
-<span class="fc" id="L96">        this.result.setName(&quot;resultManagerCoder&quot;);</span>
-<span class="fc" id="L97">        this.result.setLineWrap(true);</span>
-<span class="fc" id="L98">        this.result.setEditable(false);</span>
+<span class="fc" id="L94">        var placeholderResult = new JTextAreaPlaceholder(I18nUtil.valueByKey(&quot;CODER_RESULT&quot;));</span>
+<span class="fc" id="L95">        this.result = new JPopupTextArea(placeholderResult).getProxy();</span>
+<span class="fc" id="L96">        I18nViewUtil.addComponentForKey(&quot;CODER_RESULT&quot;, placeholderResult);</span>
+<span class="fc" id="L97">        this.result.setName(&quot;resultManagerCoder&quot;);</span>
+<span class="fc" id="L98">        this.result.setLineWrap(true);</span>
+<span class="fc" id="L99">        this.result.setEditable(false);</span>
 
-<span class="fc" id="L100">        var bottom = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L101">        bottom.add(new JScrollPane(this.result), BorderLayout.CENTER);</span>
+<span class="fc" id="L101">        var bottom = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L102">        bottom.add(new JScrollPane(this.result), BorderLayout.CENTER);</span>
 
-<span class="fc" id="L103">        var divider = new JSplitPane(JSplitPane.VERTICAL_SPLIT);</span>
-<span class="fc" id="L104">        divider.setResizeWeight(0.5);</span>
-<span class="fc" id="L105">        divider.setTopComponent(topMixed);</span>
-<span class="fc" id="L106">        divider.setBottomComponent(bottom);</span>
-<span class="fc" id="L107">        this.add(divider, BorderLayout.CENTER);</span>
-<span class="fc" id="L108">    }</span>
+<span class="fc" id="L104">        var divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);</span>
+<span class="fc" id="L105">        divider.setResizeWeight(0.5);</span>
+<span class="fc" id="L106">        divider.setTopComponent(topMixed);</span>
+<span class="fc" id="L107">        divider.setBottomComponent(bottom);</span>
+<span class="fc" id="L108">        this.add(divider, BorderLayout.CENTER);</span>
+<span class="fc" id="L109">    }</span>
 
     private JPanel getTopPanel() {
-<span class="fc" id="L111">        var comboMenubar = this.getLabelMenu();</span>
-<span class="fc" id="L112">        var topMixed = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L113">        topMixed.add(new JScrollPane(this.textInput), BorderLayout.CENTER);</span>
-<span class="fc" id="L114">        topMixed.add(comboMenubar, BorderLayout.SOUTH);</span>
-<span class="fc" id="L115">        return topMixed;</span>
+<span class="fc" id="L112">        var comboMenubar = this.getLabelMenu();</span>
+<span class="fc" id="L113">        var topMixed = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L114">        topMixed.add(new JScrollPane(this.textInput), BorderLayout.CENTER);</span>
+<span class="fc" id="L115">        topMixed.add(comboMenubar, BorderLayout.SOUTH);</span>
+<span class="fc" id="L116">        return topMixed;</span>
     }
 
     private JLabel getLabelMenu() {
-<span class="fc" id="L119">        Map&lt;String, JMenu&gt; mapMenus = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L120">        Map&lt;String, JMenu&gt; mapMenus = new LinkedHashMap&lt;&gt;();</span>
         
-<span class="fc" id="L121">        mapMenus.put(Coder.BASE16.label, new JMenu());</span>
-<span class="fc" id="L122">        mapMenus.put(Coder.BASE32.label, new JMenu());</span>
-<span class="fc" id="L123">        mapMenus.put(Coder.BASE58.label, new JMenu());</span>
-<span class="fc" id="L124">        mapMenus.put(Coder.BASE64.label, new JMenu());</span>
-<span class="fc" id="L125">        mapMenus.put(Coder.HEX.label, new JMenu());</span>
-<span class="fc" id="L126">        mapMenus.put(Coder.URL.label, new JMenu());</span>
-<span class="fc" id="L127">        mapMenus.put(Coder.UNICODE.label, new JMenu());</span>
-<span class="fc" id="L128">        var menuHtml = new JMenu();</span>
-<span class="fc" id="L129">        mapMenus.put(Coder.HTML.label, menuHtml);</span>
-<span class="fc" id="L130">        mapMenus.put(Coder.BASE64_ZIP.label, new JMenu());</span>
-<span class="fc" id="L131">        mapMenus.put(Coder.HEX_ZIP.label, new JMenu());</span>
+<span class="fc" id="L122">        mapMenus.put(Coder.BASE16.label, new JMenu());</span>
+<span class="fc" id="L123">        mapMenus.put(Coder.BASE32.label, new JMenu());</span>
+<span class="fc" id="L124">        mapMenus.put(Coder.BASE58.label, new JMenu());</span>
+<span class="fc" id="L125">        mapMenus.put(Coder.BASE64.label, new JMenu());</span>
+<span class="fc" id="L126">        mapMenus.put(Coder.HEX.label, new JMenu());</span>
+<span class="fc" id="L127">        mapMenus.put(Coder.URL.label, new JMenu());</span>
+<span class="fc" id="L128">        mapMenus.put(Coder.UNICODE.label, new JMenu());</span>
+<span class="fc" id="L129">        var menuHtml = new JMenu();</span>
+<span class="fc" id="L130">        mapMenus.put(Coder.HTML.label, menuHtml);</span>
+<span class="fc" id="L131">        mapMenus.put(Coder.BASE64_ZIP.label, new JMenu());</span>
+<span class="fc" id="L132">        mapMenus.put(Coder.HEX_ZIP.label, new JMenu());</span>
 
-<span class="fc" id="L133">        var menuEncodeHtmlDecimal = new JMenuItem(ManagerCoder.ENCODE_TO + Coder.HTML_DECIMAL.label);</span>
-<span class="fc" id="L134">        menuHtml.add(menuEncodeHtmlDecimal);</span>
-<span class="fc" id="L135">        menuEncodeHtmlDecimal.addActionListener(this.actionCoder);</span>
-<span class="fc" id="L136">        menuEncodeHtmlDecimal.addChangeListener(new ChangeMenuListener(ManagerCoder.ENCODE_TO + Coder.HTML_DECIMAL.label));</span>
+<span class="fc" id="L134">        var menuEncodeHtmlDecimal = new JMenuItem(ManagerCoder.ENCODE_TO + Coder.HTML_DECIMAL.label);</span>
+<span class="fc" id="L135">        menuHtml.add(menuEncodeHtmlDecimal);</span>
+<span class="fc" id="L136">        menuEncodeHtmlDecimal.addActionListener(this.actionCoder);</span>
+<span class="fc" id="L137">        menuEncodeHtmlDecimal.addChangeListener(new ChangeMenuListener(ManagerCoder.ENCODE_TO + Coder.HTML_DECIMAL.label));</span>
         
-<span class="fc" id="L138">        mapMenus.forEach((label, menu) -&gt; {</span>
-<span class="fc" id="L139">            var menuEncode = new JMenuItem(ManagerCoder.ENCODE_TO + label);</span>
-<span class="fc" id="L140">            menuEncode.addActionListener(this.actionCoder);</span>
-<span class="fc" id="L141">            menuEncode.addChangeListener(new ChangeMenuListener(ManagerCoder.ENCODE_TO + label));</span>
-<span class="fc" id="L142">            menuEncode.setName(&quot;encodeTo&quot;+ label);</span>
+<span class="fc" id="L139">        mapMenus.forEach((label, menu) -&gt; {</span>
+<span class="fc" id="L140">            var menuEncode = new JMenuItem(ManagerCoder.ENCODE_TO + label);</span>
+<span class="fc" id="L141">            menuEncode.addActionListener(this.actionCoder);</span>
+<span class="fc" id="L142">            menuEncode.addChangeListener(new ChangeMenuListener(ManagerCoder.ENCODE_TO + label));</span>
+<span class="fc" id="L143">            menuEncode.setName(&quot;encodeTo&quot;+ label);</span>
 
-<span class="fc" id="L144">            var menuDecode = new JMenuItem(&quot;Decode from &quot;+ label);</span>
-<span class="fc" id="L145">            menuDecode.addActionListener(this.actionCoder);</span>
-<span class="fc" id="L146">            menuDecode.addChangeListener(new ChangeMenuListener(&quot;Decode from &quot;+ label));</span>
-<span class="fc" id="L147">            menuDecode.setName(&quot;decodeFrom&quot;+ label);</span>
+<span class="fc" id="L145">            var menuDecode = new JMenuItem(&quot;Decode from &quot;+ label);</span>
+<span class="fc" id="L146">            menuDecode.addActionListener(this.actionCoder);</span>
+<span class="fc" id="L147">            menuDecode.addChangeListener(new ChangeMenuListener(&quot;Decode from &quot;+ label));</span>
+<span class="fc" id="L148">            menuDecode.setName(&quot;decodeFrom&quot;+ label);</span>
 
-<span class="fc" id="L149">            menu.setText(label);</span>
-<span class="fc" id="L150">            menu.add(menuEncode);</span>
-<span class="fc" id="L151">            menu.add(menuDecode);</span>
-<span class="fc" id="L152">            menu.setName(label);</span>
-<span class="fc" id="L153">        });</span>
+<span class="fc" id="L150">            menu.setText(label);</span>
+<span class="fc" id="L151">            menu.add(menuEncode);</span>
+<span class="fc" id="L152">            menu.add(menuDecode);</span>
+<span class="fc" id="L153">            menu.setName(label);</span>
+<span class="fc" id="L154">        });</span>
 
-<span class="fc" id="L155">        mapMenus.put(&quot;Hash&quot;, new JMenu(&quot;Hash&quot;));</span>
-<span class="fc" id="L156">        mapMenus.get(&quot;Hash&quot;).setName(&quot;Hash&quot;);</span>
+<span class="fc" id="L156">        mapMenus.put(&quot;Hash&quot;, new JMenu(&quot;Hash&quot;));</span>
+<span class="fc" id="L157">        mapMenus.get(&quot;Hash&quot;).setName(&quot;Hash&quot;);</span>
 
-<span class="fc" id="L158">        ActionCoder.getHashes().forEach(hash -&gt; {</span>
-<span class="fc" id="L159">            var menuEncode = new JMenuItem(&quot;Hash to &quot;+ hash);</span>
-<span class="fc" id="L160">            menuEncode.addActionListener(this.actionCoder);</span>
-<span class="fc" id="L161">            menuEncode.addChangeListener(new ChangeMenuListener(&quot;Hash to &quot;+ hash));</span>
-<span class="fc" id="L162">            menuEncode.setName(&quot;hashTo&quot;+ hash);</span>
-<span class="fc" id="L163">            mapMenus.get(&quot;Hash&quot;).add(menuEncode);</span>
-<span class="fc" id="L164">        });</span>
+<span class="fc" id="L159">        ActionCoder.getHashes().forEach(hash -&gt; {</span>
+<span class="fc" id="L160">            var menuEncode = new JMenuItem(&quot;Hash to &quot;+ hash);</span>
+<span class="fc" id="L161">            menuEncode.addActionListener(this.actionCoder);</span>
+<span class="fc" id="L162">            menuEncode.addChangeListener(new ChangeMenuListener(&quot;Hash to &quot;+ hash));</span>
+<span class="fc" id="L163">            menuEncode.setName(&quot;hashTo&quot;+ hash);</span>
+<span class="fc" id="L164">            mapMenus.get(&quot;Hash&quot;).add(menuEncode);</span>
+<span class="fc" id="L165">        });</span>
 
-<span class="fc" id="L166">        JPopupMenu popupMenu = new JPopupMenu();</span>
-<span class="fc bfc" id="L167" title="All 2 branches covered.">        for (JMenu menu: mapMenus.values()) {</span>
-<span class="fc" id="L168">            popupMenu.add(menu);</span>
-<span class="fc" id="L169">        }</span>
+<span class="fc" id="L167">        JPopupMenu popupMenu = new JPopupMenu();</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        for (JMenu menu: mapMenus.values()) {</span>
+<span class="fc" id="L169">            popupMenu.add(menu);</span>
+<span class="fc" id="L170">        }</span>
 
-<span class="fc" id="L171">        JLabel labelMenu = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
-<span class="fc" id="L172">        this.menuMethod = labelMenu;</span>
-<span class="fc" id="L173">        labelMenu.setText(ManagerCoder.ENCODE_TO + Coder.BASE64.label);</span>
-<span class="fc" id="L174">        labelMenu.setName(&quot;menuMethodManagerCoder&quot;);</span>
-<span class="fc" id="L175">        labelMenu.setBorder(UiUtil.BORDER_5PX);</span>
-<span class="fc" id="L176">        labelMenu.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L172">        JLabel labelMenu = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
+<span class="fc" id="L173">        this.menuMethod = labelMenu;</span>
+<span class="fc" id="L174">        labelMenu.setText(ManagerCoder.ENCODE_TO + Coder.BASE64.label);</span>
+<span class="fc" id="L175">        labelMenu.setName(&quot;menuMethodManagerCoder&quot;);</span>
+<span class="fc" id="L176">        labelMenu.setBorder(UiUtil.BORDER_5PX);</span>
+<span class="fc" id="L177">        labelMenu.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="fc" id="L179">                Arrays.stream(popupMenu.getComponents()).map(JMenu.class::cast).forEach(menu -&gt; {</span>
-<span class="fc" id="L180">                    menu.updateUI();</span>
-<span class="fc bfc" id="L181" title="All 2 branches covered.">                    for (var i = 0 ; i &lt; menu.getItemCount() ; i++) {</span>
-<span class="fc" id="L182">                        menu.getItem(i).updateUI();</span>
+<span class="fc" id="L180">                Arrays.stream(popupMenu.getComponents()).map(JMenu.class::cast).forEach(menu -&gt; {</span>
+<span class="fc" id="L181">                    menu.updateUI();</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">                    for (var i = 0 ; i &lt; menu.getItemCount() ; i++) {</span>
+<span class="fc" id="L183">                        menu.getItem(i).updateUI();</span>
                     }
-<span class="fc" id="L184">                });  // required: incorrect when dark/light mode switch</span>
-<span class="fc" id="L185">                popupMenu.updateUI();  // required: incorrect when dark/light mode switch</span>
-<span class="fc" id="L186">                popupMenu.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());</span>
-<span class="fc" id="L187">                popupMenu.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
-<span class="fc" id="L188">            }</span>
+<span class="fc" id="L185">                });  // required: incorrect when dark/light mode switch</span>
+<span class="fc" id="L186">                popupMenu.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="fc" id="L187">                popupMenu.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());</span>
+<span class="fc" id="L188">                popupMenu.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
+<span class="fc" id="L189">            }</span>
         });
-<span class="fc" id="L190">        return labelMenu;</span>
+<span class="fc" id="L191">        return labelMenu;</span>
     }
     
     
     // Getter and setter
 
     public JTextArea getTextInput() {
-<span class="fc" id="L197">        return this.textInput;</span>
+<span class="fc" id="L198">        return this.textInput;</span>
     }
 
     public JLabel getMenuMethod() {
-<span class="fc" id="L201">        return this.menuMethod;</span>
+<span class="fc" id="L202">        return this.menuMethod;</span>
     }
 
     public JTextArea getResult() {
-<span class="fc" id="L205">        return this.result;</span>
+<span class="fc" id="L206">        return this.result;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

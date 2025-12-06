@@ -43,8 +43,8 @@ public class CallableCharInsertion extends AbstractCallableBit&lt;CallableCharIn
         // Fix #95422: ConcurrentModificationException on iterator.next()
 <span class="fc" id="L44">        List&lt;Diff&gt; copyTrueMarks = new CopyOnWriteArrayList&lt;&gt;(this.injectionCharInsertion.getConstantTrueMark());</span>
 <span class="fc bfc" id="L45" title="All 2 branches covered.">        for (Diff trueDiff: copyTrueMarks) {</span>
-<span class="pc bpc" id="L46" title="1 of 2 branches missed.">            if (!this.opcodes.contains(trueDiff)) {</span>
-<span class="nc" id="L47">                return false;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            if (!this.opcodes.contains(trueDiff)) {</span>
+<span class="fc" id="L47">                return false;</span>
             }
 <span class="fc" id="L49">        }</span>
 <span class="fc" id="L50">        return true;</span>
@@ -73,4 +73,4 @@ public class CallableCharInsertion extends AbstractCallableBit&lt;CallableCharIn
 <span class="fc" id="L73">        return this.opcodes;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

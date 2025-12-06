@@ -70,8 +70,8 @@ public class CallableBlindBit extends AbstractCallableBit&lt;CallableBlindBit&gt
 <span class="fc" id="L70">        }</span>
 <span class="fc" id="L71">        List&lt;Diff&gt; trueDiffs = new CopyOnWriteArrayList&lt;&gt;(this.injectionBlind.getTrueDiffs());</span>
 <span class="fc bfc" id="L72" title="All 2 branches covered.">        for (Diff trueDiff: trueDiffs) {</span>
-<span class="fc bfc" id="L73" title="All 2 branches covered.">            if (!this.diffsWithReference.contains(trueDiff)) {  // required, set to false when empty falseDiffs</span>
-<span class="fc" id="L74">                return false;</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">            if (!this.diffsWithReference.contains(trueDiff)) {  // required, set to false when empty falseDiffs</span>
+<span class="nc" id="L74">                return false;</span>
             }
 <span class="fc" id="L76">        }</span>
 <span class="fc" id="L77">        return true;  // not in falseDiffs and in trueDiffs</span>
@@ -94,4 +94,4 @@ public class CallableBlindBit extends AbstractCallableBit&lt;CallableBlindBit&gt
 <span class="fc" id="L94">        return this.diffsWithReference;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

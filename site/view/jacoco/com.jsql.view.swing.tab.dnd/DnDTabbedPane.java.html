@@ -297,7 +297,7 @@ public class DnDTabbedPane extends JTabbedPane {
 <span class="fc" id="L297">            JTabbedPane src = (JTabbedPane) e.getSource();</span>
             
 <span class="fc" id="L299">            int i = src.indexAtLocation(tabPt.x, tabPt.y);</span>
-<span class="pc bpc" id="L300" title="1 of 4 branches missed.">            if (-1 &lt; i &amp;&amp; e.getButton() == MouseEvent.BUTTON2) {</span>
+<span class="pc bpc" id="L300" title="2 of 4 branches missed.">            if (-1 &lt; i &amp;&amp; e.getButton() == MouseEvent.BUTTON2) {</span>
 <span class="nc" id="L301">                ActionCloseTabResult.perform(i);</span>
             }
 <span class="fc" id="L303">        }</span>
@@ -307,4 +307,4 @@ public class DnDTabbedPane extends JTabbedPane {
 <span class="fc" id="L307">        return this.dropLocation;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

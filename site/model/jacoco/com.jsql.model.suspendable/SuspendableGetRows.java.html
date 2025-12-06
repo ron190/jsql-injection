@@ -89,7 +89,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L89">            if (</span>
 <span class="fc bfc" id="L90" title="All 6 branches covered.">                (!regexLeadFound.find() || regexTrailOnlyFound.find())</span>
                 &amp;&amp; isMultipleRows
-<span class="fc bfc" id="L92" title="All 2 branches covered.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
             ) {
 <span class="fc" id="L94">                this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);</span>
 <span class="fc" id="L95">                break;</span>
@@ -266,7 +266,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="pc bpc" id="L266" title="1 of 2 branches missed.">        if (searchName != null) {</span>
 <span class="fc" id="L267">            messageError.append(&quot; for &quot;).append(StringUtil.detectUtf8(searchName.toString()));</span>
         }
-<span class="pc bpc" id="L269" title="1 of 4 branches missed.">        if (searchName instanceof Table &amp;&amp; searchName.getChildCount() &gt; 0) {</span>
+<span class="pc bpc" id="L269" title="3 of 4 branches missed.">        if (searchName instanceof Table &amp;&amp; searchName.getChildCount() &gt; 0) {</span>
 <span class="nc" id="L270">            messageError.append(&quot;, check Network tab for logs&quot;);</span>
         }
 <span class="fc" id="L272">        throw new InjectionFailureException(messageError.toString(), e);</span>
@@ -397,8 +397,8 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 )
             )
 <span class="fc" id="L399">            .matcher(rows);</span>
-<span class="fc bfc" id="L400" title="All 2 branches covered.">        if (!regexSearch.find()) {</span>
-<span class="fc" id="L401">            throw new InjectionFailureException();</span>
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
+<span class="nc" id="L401">            throw new InjectionFailureException();</span>
         }
 <span class="fc" id="L403">        regexSearch.reset();</span>
 <span class="fc" id="L404">        var rowsFound = 0;</span>
@@ -421,4 +421,4 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L421">        return listValues;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
