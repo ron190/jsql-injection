@@ -59,6 +59,7 @@
         <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
+        <groovy.version>5.0.3</groovy.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <h2.version>2.3.232</h2.version>
         <hsqldb.version>2.7.4</hsqldb.version>
@@ -482,6 +483,13 @@
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
             <version>${spock-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- Override required as spock-core:2.4-M7-groovy-5.0 native groovy:4.0.26 is not compatible -->
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>${groovy.version}</version>
             <scope>test</scope>
         </dependency>
 
