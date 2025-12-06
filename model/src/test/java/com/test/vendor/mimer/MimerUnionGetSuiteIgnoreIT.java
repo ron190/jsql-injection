@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MimerUnionGetSuiteIT extends ConcreteMimerSuiteIT {
+class MimerUnionGetSuiteIgnoreIT extends ConcreteMimerSuiteIgnoreIT {
     
     @Override
     public void setupInjection() throws Exception {

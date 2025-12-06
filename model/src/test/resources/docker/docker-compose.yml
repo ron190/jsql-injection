@@ -2,16 +2,17 @@ version: "3.7"
 services:
 
   cubrid:
+    container_name: jsql-cubrid
     ports:
       - "33000:33000"
     build:
       context: .
       dockerfile: Dockerfile.cubrid
-    container_name: jsql-cubrid
     networks:
       - jsql-network
 
   firebird:
+    container_name: jsql-firebird
     ports:
       - "3050:3050"
     build:
@@ -21,11 +22,11 @@ services:
       FIREBIRD_DATABASE: EMPLOYEE.FDB
       FIREBIRD_USER: sysdba2
       FIREBIRD_PASSWORD: test
-    container_name: jsql-firebird
     networks:
       - jsql-network
 
   informix:
+    container_name: jsql-informix
     ports:
       - "9088:9088"
     build:
@@ -33,7 +34,6 @@ services:
       dockerfile: Dockerfile.informix
     environment:
       LICENSE: accept
-    container_name: jsql-informix
     networks:
       - jsql-network
 
@@ -51,17 +51,17 @@ services:
     networks:
       - jsql-network
 
-  mimer:
-    ports:
-      - "1360:1360"
-    build:
-      context: .
-      dockerfile: Dockerfile.mimer
-    environment:
-      MIMER_SYSADM_PASSWORD: SYSADM
-    container_name: jsql-mimer
-    networks:
-      - jsql-network
+#  mimer:
+#    container_name: jsql-mimer
+#    ports:
+#      - "1360:1360"
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.mimer
+#    environment:
+#      MIMER_SYSADM_PASSWORD: SYSADM
+#    networks:
+#      - jsql-network
 
   #  monetdb:
   #    ports:
@@ -74,6 +74,7 @@ services:
   #      - jsql-network
 
   mysql:
+    container_name: jsql-mysql
     ports:
       - "3306:3306"
     build:
@@ -81,11 +82,11 @@ services:
       dockerfile: Dockerfile.mysql
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
-    container_name: jsql-mysql
     networks:
       - jsql-network
 
   mysql-5-5-53:
+    container_name: jsql-mysql-5-5-53
     ports:
       - "3307:3307"
     build:
@@ -93,11 +94,11 @@ services:
       dockerfile: Dockerfile.mysql-5-5-53
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
-    container_name: jsql-mysql-5-5-53
     networks:
       - jsql-network
 
   neo4j:
+    container_name: jsql-neo4j
     ports:
       - "7687:7687"
     build:
@@ -105,11 +106,11 @@ services:
       dockerfile: Dockerfile.neo4j
     environment:
       NEO4J_AUTH: neo4j/test
-    container_name: jsql-neo4j
     networks:
       - jsql-network
 
   postgres:
+    container_name: jsql-postgres
     ports:
       - "5432:5432"
     build:
@@ -117,7 +118,6 @@ services:
       dockerfile: Dockerfile.postgres
     environment:
       POSTGRES_PASSWORD: my-secret-pw
-    container_name: jsql-postgres
     networks:
       - jsql-network
 

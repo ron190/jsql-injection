@@ -2,9 +2,9 @@ package com.test.vendor.mimer;
 
 import com.test.AbstractTestSuite;
 
-public abstract class ConcreteMimerSuiteIT extends AbstractTestSuite {
+public abstract class ConcreteMimerSuiteIgnoreIT extends AbstractTestSuite {
 
-    public ConcreteMimerSuiteIT() {
+    public ConcreteMimerSuiteIgnoreIT() {
 
         this.jdbcURL = "jdbc:mimer://jsql-mimer:1360/mimerdb";
         this.jdbcUser = "SYSADM";

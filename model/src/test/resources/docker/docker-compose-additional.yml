@@ -31,28 +31,29 @@ services:
 #      - jsql-network
 
   sybase:
+    container_name: jsql-sybase
     ports:
       - "5000:5000"
     build:
       context: .
       dockerfile: Dockerfile.sybase
-    container_name: jsql-sybase
     networks:
       - jsql-network
     command: bash /sybase/start
     hostname: dksybase
 
   vertica:
+    container_name: jsql-vertica
     ports:
       - "5433:5433"
     build:
       context: .
       dockerfile: Dockerfile.vertica
-    container_name: jsql-vertica
     networks:
       - jsql-network
 
   oracle:
+    container_name: jsql-oracle
     ports:
       - "1521:1521"
     build:
@@ -61,7 +62,6 @@ services:
     environment:
       ORACLE_PWD: Password1_One
       ORACLE_CHARACTERSET: AL32UTF8
-    container_name: jsql-oracle
     networks:
       - jsql-network
 

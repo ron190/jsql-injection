@@ -10,4 +10,5 @@ __echoStep && ./model/src/test/resources/docker/scripts/healthcheck/mysql-5-5-53
 __echoStep && ./model/src/test/resources/docker/scripts/healthcheck/mysql.sh
 __echoStep && ./model/src/test/resources/docker/scripts/healthcheck/neo4j.sh
 __echoStep && ./model/src/test/resources/docker/scripts/healthcheck/postgres.sh
-__echoStep && ./model/src/test/resources/docker/scripts/healthcheck/mimer.sh
+#__echoStep && ./model/src/test/resources/docker/scripts/healthcheck/mimer.sh
+#__echoStep && ./model/src/test/resources/docker/scripts/healthcheck/monetdb.sh

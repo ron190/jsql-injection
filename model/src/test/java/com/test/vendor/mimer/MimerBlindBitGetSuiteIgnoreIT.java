@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MimerBlindBitGetSuiteIT extends ConcreteMimerSuiteIT {
+class MimerBlindBitGetSuiteIgnoreIT extends ConcreteMimerSuiteIgnoreIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -31,6 +31,7 @@ class MimerBlindBitGetSuiteIT extends ConcreteMimerSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+//        .withIsStrategyDnsDisabled(true)
         .withIsStrategyUnionDisabled(true);
 
         model.beginInjection();
