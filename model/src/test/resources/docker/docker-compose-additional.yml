@@ -30,17 +30,21 @@ services:
 #    networks:
 #      - jsql-network
 
-  sybase:
-    container_name: jsql-sybase
-    ports:
-      - "5000:5000"
-    build:
-      context: .
-      dockerfile: Dockerfile.sybase
-    networks:
-      - jsql-network
-    command: bash /sybase/start
-    hostname: dksybase
+#  Disabled as GitHub Actions size only 14Go => TODO split container
+#  oracle/database   18.4.0-xe   6d1f79b233cf   48 seconds ago   5.9GB
+#  docker-oracle     latest      ec35af59dd53   48 seconds ago   5.9GB
+#  docker-sybase     latest      1b6898bba3e5   9 years ago      3.67GB
+#  sybase:
+#    container_name: jsql-sybase
+#    ports:
+#      - "5000:5000"
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.sybase
+#    networks:
+#      - jsql-network
+#    command: bash /sybase/start
+#    hostname: dksybase
 
 #  vertica:
 #    container_name: jsql-vertica

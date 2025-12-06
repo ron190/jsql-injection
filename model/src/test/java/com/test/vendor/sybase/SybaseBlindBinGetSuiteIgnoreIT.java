@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SybaseBlindBitGetSuiteIT extends ConcreteSybaseSuiteIT {
+class SybaseBlindBinGetSuiteIgnoreIT extends ConcreteSybaseSuiteIgnoreIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -21,6 +21,12 @@ class SybaseBlindBitGetSuiteIT extends ConcreteSybaseSuiteIT {
         );
 
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+//        .withIsStrategyDnsDisabled(true)
+        .withIsStrategyBlindBitDisabled(true);
 
         model
         .getMediatorUtils()
@@ -40,7 +46,7 @@ class SybaseBlindBitGetSuiteIT extends ConcreteSybaseSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBit(),
+            this.injectionModel.getMediatorStrategy().getBlindBin(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

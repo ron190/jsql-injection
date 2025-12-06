@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SybaseUnionGetSuiteIT extends ConcreteSybaseSuiteIT {
+class SybaseBlindBitGetSuiteIgnoreIT extends ConcreteSybaseSuiteIgnoreIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -17,9 +17,11 @@ class SybaseUnionGetSuiteIT extends ConcreteSybaseSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/union?tenant=sybase&name="
+            "http://localhost:8080/blind?tenant=sybase&name="
         );
-        
+
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
@@ -31,24 +33,6 @@ class SybaseUnionGetSuiteIT extends ConcreteSybaseSuiteIT {
     
     @Override
     @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
-    }
-    
-    @Override
-    @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
@@ -56,7 +40,7 @@ class SybaseUnionGetSuiteIT extends ConcreteSybaseSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }
