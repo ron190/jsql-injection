@@ -12,7 +12,7 @@ import java.awt.*;
     public Component getListCellRendererComponent(
         JList&lt;?&gt; list, Object value, int index, boolean isSelected, boolean cellHasFocus
     ) {
-<span class="fc bfc" id="L15" title="All 2 branches covered.">        if (value == ComboBoxMethodRenderer.SEPARATOR) {</span>
+<span class="fc bfc" id="L15" title="All 2 branches covered.">        if (ComboBoxMethodRenderer.SEPARATOR.equals(value)) {</span>
 <span class="fc" id="L16">            return ComboBoxMethodRenderer.SEPARATOR;</span>
         }
 <span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if (value instanceof ExploitMode) {</span>

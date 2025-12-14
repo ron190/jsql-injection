@@ -445,52 +445,53 @@
 <a class="jxr_linenumber" name="L437" href="#L437">437</a>         LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
 <a class="jxr_linenumber" name="L438" href="#L438">438</a> 
 <a class="jxr_linenumber" name="L439" href="#L439">439</a>         <em class="jxr_comment">// Get pieces of data already retrieved instead of losing them</em>
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>         <strong class="jxr_keyword">if</strong> (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>             resultToParse = e.getSlidingWindowAllRows();
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>             resultToParse = e.getSlidingWindowCurrentRows();
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>         }
-<a class="jxr_linenumber" name="L445" href="#L445">445</a>         <strong class="jxr_keyword">return</strong> resultToParse;
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>     }
-<a class="jxr_linenumber" name="L447" href="#L447">447</a> 
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>     <strong class="jxr_keyword">private</strong> String[][] getTable(List&lt;String&gt; columnsName, List&lt;List&lt;String&gt;&gt; values) {
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>         <em class="jxr_comment">// Build a proper 2D array from the data</em>
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>         <strong class="jxr_keyword">var</strong> table = <strong class="jxr_keyword">new</strong> String[values.size()][columnsName.size()];
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>         
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> indexRow = 0 ; indexRow &lt; values.size() ; indexRow++) {
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>             <strong class="jxr_keyword">var</strong> isIncomplete = false;
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>             
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> indexColumn = 0 ; indexColumn &lt; columnsName.size() ; indexColumn++) {
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>                 <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L457" href="#L457">457</a>                     table[indexRow][indexColumn] = values.get(indexRow).get(indexColumn);
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>                 } <strong class="jxr_keyword">catch</strong> (IndexOutOfBoundsException e) {
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>                     isIncomplete = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>                     LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey(<span class="jxr_string">"LOG_LIST_VALUES_INCOMPLETE"</span>));
-<a class="jxr_linenumber" name="L461" href="#L461">461</a>                     LOGGER.log(LogLevelUtil.IGNORE, e);
-<a class="jxr_linenumber" name="L462" href="#L462">462</a>                 }
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>             }
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>             
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>             <strong class="jxr_keyword">if</strong> (isIncomplete) {
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>                 <strong class="jxr_keyword">int</strong> logIndexRow = indexRow;
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>                 LOGGER.log(
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>                     LogLevelUtil.CONSOLE_ERROR,
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>                     <span class="jxr_string">"{}{}: "</span>,
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>                     () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_LIST_VALUES_TOO_LONG"</span>),
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>                     () -&gt; logIndexRow + 1
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>                 );
-<a class="jxr_linenumber" name="L473" href="#L473">473</a> 
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>                 LOGGER.log(
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>                     LogLevelUtil.CONSOLE_ERROR,
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>                     () -&gt; String.join(
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>                         <span class="jxr_string">", "</span>,
-<a class="jxr_linenumber" name="L478" href="#L478">478</a>                         values.get(logIndexRow).toArray(<strong class="jxr_keyword">new</strong> String[0])
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>                     )
-<a class="jxr_linenumber" name="L480" href="#L480">480</a>                 );
-<a class="jxr_linenumber" name="L481" href="#L481">481</a>             }
-<a class="jxr_linenumber" name="L482" href="#L482">482</a>         }
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>         <strong class="jxr_keyword">return</strong> table;
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>     }
-<a class="jxr_linenumber" name="L485" href="#L485">485</a> }
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>         String resultFromWindow = resultToParse;
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>         <strong class="jxr_keyword">if</strong> (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>             resultFromWindow = e.getSlidingWindowAllRows();
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>             resultFromWindow = e.getSlidingWindowCurrentRows();
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>         }
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>         <strong class="jxr_keyword">return</strong> resultFromWindow;
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>     }
+<a class="jxr_linenumber" name="L448" href="#L448">448</a> 
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>     <strong class="jxr_keyword">private</strong> String[][] getTable(List&lt;String&gt; columnsName, List&lt;List&lt;String&gt;&gt; values) {
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>         <em class="jxr_comment">// Build a proper 2D array from the data</em>
+<a class="jxr_linenumber" name="L451" href="#L451">451</a>         <strong class="jxr_keyword">var</strong> table = <strong class="jxr_keyword">new</strong> String[values.size()][columnsName.size()];
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>         
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> indexRow = 0 ; indexRow &lt; values.size() ; indexRow++) {
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>             <strong class="jxr_keyword">var</strong> isIncomplete = false;
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>             
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> indexColumn = 0 ; indexColumn &lt; columnsName.size() ; indexColumn++) {
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>                 <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>                     table[indexRow][indexColumn] = values.get(indexRow).get(indexColumn);
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>                 } <strong class="jxr_keyword">catch</strong> (IndexOutOfBoundsException e) {
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>                     isIncomplete = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>                     LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey(<span class="jxr_string">"LOG_LIST_VALUES_INCOMPLETE"</span>));
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>                     LOGGER.log(LogLevelUtil.IGNORE, e);
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>                 }
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>             }
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>             
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>             <strong class="jxr_keyword">if</strong> (isIncomplete) {
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>                 <strong class="jxr_keyword">int</strong> logIndexRow = indexRow;
+<a class="jxr_linenumber" name="L468" href="#L468">468</a>                 LOGGER.log(
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>                     LogLevelUtil.CONSOLE_ERROR,
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>                     <span class="jxr_string">"{}{}: "</span>,
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>                     () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_LIST_VALUES_TOO_LONG"</span>),
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>                     () -&gt; logIndexRow + 1
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>                 );
+<a class="jxr_linenumber" name="L474" href="#L474">474</a> 
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>                 LOGGER.log(
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>                     LogLevelUtil.CONSOLE_ERROR,
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>                     () -&gt; String.join(
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>                         <span class="jxr_string">", "</span>,
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>                         values.get(logIndexRow).toArray(<strong class="jxr_keyword">new</strong> String[0])
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>                     )
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>                 );
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>             }
+<a class="jxr_linenumber" name="L483" href="#L483">483</a>         }
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>         <strong class="jxr_keyword">return</strong> table;
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>     }
+<a class="jxr_linenumber" name="L486" href="#L486">486</a> }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>

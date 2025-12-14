@@ -10,47 +10,56 @@ import java.io.Serializable;
 <span class="fc" id="L10">    private Configuration configuration = new Configuration();</span>
 <span class="fc" id="L11">    private Union union = new Union();</span>
 <span class="fc" id="L12">    private String stack = StringUtils.EMPTY;</span>
-<span class="fc" id="L13">    private Binary binary = new Binary();</span>
-<span class="fc" id="L14">    private Error error = new Error();</span>
+<span class="fc" id="L13">    private String dns = StringUtils.EMPTY;</span>
+<span class="fc" id="L14">    private Binary binary = new Binary();</span>
+<span class="fc" id="L15">    private Error error = new Error();</span>
 
     public Configuration getConfiguration() {
-<span class="fc" id="L17">        return this.configuration;</span>
+<span class="fc" id="L18">        return this.configuration;</span>
     }
 
     public void setConfiguration(Configuration configuration) {
-<span class="fc" id="L21">        this.configuration = configuration;</span>
-<span class="fc" id="L22">    }</span>
+<span class="fc" id="L22">        this.configuration = configuration;</span>
+<span class="fc" id="L23">    }</span>
 
     public Union getUnion() {
-<span class="fc" id="L25">        return this.union;</span>
+<span class="fc" id="L26">        return this.union;</span>
     }
 
     public void setUnion(Union union) {
-<span class="fc" id="L29">        this.union = union;</span>
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L30">        this.union = union;</span>
+<span class="fc" id="L31">    }</span>
 
     public Binary getBinary() {
-<span class="fc" id="L33">        return this.binary;</span>
+<span class="fc" id="L34">        return this.binary;</span>
     }
 
     public void setBinary(Binary binary) {
-<span class="fc" id="L37">        this.binary = binary;</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L38">        this.binary = binary;</span>
+<span class="fc" id="L39">    }</span>
 
     public Error getError() {
-<span class="fc" id="L41">        return this.error;</span>
+<span class="fc" id="L42">        return this.error;</span>
     }
 
     public void setError(Error error) {
-<span class="fc" id="L45">        this.error = error;</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L46">        this.error = error;</span>
+<span class="fc" id="L47">    }</span>
 
     public String getStack() {
-<span class="fc" id="L49">        return this.stack;</span>
+<span class="fc" id="L50">        return this.stack;</span>
     }
 
     public void setStack(String stack) {
-<span class="fc" id="L53">        this.stack = stack;</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L54">        this.stack = stack;</span>
+<span class="fc" id="L55">    }</span>
+
+    public String getDns() {
+<span class="fc" id="L58">        return this.dns;</span>
+    }
+
+    public void setDns(String dns) {
+<span class="fc" id="L62">        this.dns = dns;</span>
+<span class="fc" id="L63">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

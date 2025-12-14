@@ -367,9 +367,9 @@ public final class StringUtil {
     }
 
     public static byte[] uncloak(byte[] fileData) {
-<span class="fc" id="L370">        fileData = StringUtil.xor(fileData, 353837730);</span>
-<span class="fc" id="L371">        ArrayUtils.reverse(fileData);</span>
-<span class="fc" id="L372">        return fileData;</span>
+<span class="fc" id="L370">        byte[] fileDataUncloaked = StringUtil.xor(fileData, 353837730);</span>
+<span class="fc" id="L371">        ArrayUtils.reverse(fileDataUncloaked);</span>
+<span class="fc" id="L372">        return fileDataUncloaked;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -12,128 +12,141 @@ public class PanelStrategies extends JPanel {
 <span class="fc" id="L12">    private final JCheckBox checkboxIsStrategyBlindBitDisabled = new JCheckBox(&quot;Disable Blind bit&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindBitDisabled());</span>
 <span class="fc" id="L13">    private final JCheckBox checkboxIsStrategyBlindBinDisabled = new JCheckBox(&quot;Disable Blind bin&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindBinDisabled());</span>
 <span class="fc" id="L14">    private final JCheckBox checkboxIsStrategyMultibitDisabled = new JCheckBox(&quot;Disable Multibit&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled());</span>
-<span class="fc" id="L15">    private final JCheckBox checkboxIsStrategyErrorDisabled = new JCheckBox(&quot;Disable Error&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());</span>
-<span class="fc" id="L16">    private final JCheckBox checkboxIsStrategyStackDisabled = new JCheckBox(&quot;Disable Stack&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackDisabled());</span>
-<span class="fc" id="L17">    private final JCheckBox checkboxIsStrategyUnionDisabled = new JCheckBox(&quot;Disable Union&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyUnionDisabled());</span>
+<span class="fc" id="L15">    private final JCheckBox checkboxIsStrategyDnsDisabled = new JCheckBox(&quot;Disable Dns&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyDnsDisabled());</span>
+<span class="fc" id="L16">    private final JCheckBox checkboxIsStrategyErrorDisabled = new JCheckBox(&quot;Disable Error&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());</span>
+<span class="fc" id="L17">    private final JCheckBox checkboxIsStrategyStackDisabled = new JCheckBox(&quot;Disable Stack&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackDisabled());</span>
+<span class="fc" id="L18">    private final JCheckBox checkboxIsStrategyUnionDisabled = new JCheckBox(&quot;Disable Union&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyUnionDisabled());</span>
 
-<span class="fc" id="L19">    public PanelStrategies(PanelPreferences panelPreferences) {</span>
-<span class="fc" id="L20">        this.checkboxIsStrategyTimeDisabled.setToolTipText(&quot;Skip Time strategy processing&quot;);</span>
-<span class="fc" id="L21">        this.checkboxIsStrategyBlindBitDisabled.setToolTipText(&quot;Skip Blind bit strategy processing&quot;);</span>
-<span class="fc" id="L22">        this.checkboxIsStrategyBlindBinDisabled.setToolTipText(&quot;Skip Blind bin strategy processing&quot;);</span>
-<span class="fc" id="L23">        this.checkboxIsStrategyMultibitDisabled.setToolTipText(&quot;Skip Multibit strategy processing&quot;);</span>
-<span class="fc" id="L24">        this.checkboxIsStrategyErrorDisabled.setToolTipText(&quot;Skip Error strategy processing&quot;);</span>
-<span class="fc" id="L25">        this.checkboxIsStrategyStackDisabled.setToolTipText(&quot;Skip Stack strategy processing&quot;);</span>
-<span class="fc" id="L26">        this.checkboxIsStrategyUnionDisabled.setToolTipText(&quot;Skip Union strategy processing&quot;);</span>
+<span class="fc" id="L20">    public PanelStrategies(PanelPreferences panelPreferences) {</span>
+<span class="fc" id="L21">        this.checkboxIsStrategyTimeDisabled.setToolTipText(&quot;Skip Time strategy processing&quot;);</span>
+<span class="fc" id="L22">        this.checkboxIsStrategyBlindBitDisabled.setToolTipText(&quot;Skip Blind bit strategy processing&quot;);</span>
+<span class="fc" id="L23">        this.checkboxIsStrategyBlindBinDisabled.setToolTipText(&quot;Skip Blind bin strategy processing&quot;);</span>
+<span class="fc" id="L24">        this.checkboxIsStrategyMultibitDisabled.setToolTipText(&quot;Skip Multibit strategy processing&quot;);</span>
+<span class="fc" id="L25">        this.checkboxIsStrategyDnsDisabled.setToolTipText(&quot;Skip Dns strategy processing&quot;);</span>
+<span class="fc" id="L26">        this.checkboxIsStrategyErrorDisabled.setToolTipText(&quot;Skip Error strategy processing&quot;);</span>
+<span class="fc" id="L27">        this.checkboxIsStrategyStackDisabled.setToolTipText(&quot;Skip Stack strategy processing&quot;);</span>
+<span class="fc" id="L28">        this.checkboxIsStrategyUnionDisabled.setToolTipText(&quot;Skip Union strategy processing&quot;);</span>
 
-<span class="fc" id="L28">        Stream.of(</span>
+<span class="fc" id="L30">        Stream.of(</span>
             this.checkboxIsStrategyTimeDisabled,
             this.checkboxIsStrategyBlindBitDisabled,
             this.checkboxIsStrategyBlindBinDisabled,
             this.checkboxIsStrategyMultibitDisabled,
+            this.checkboxIsStrategyDnsDisabled,
             this.checkboxIsStrategyErrorDisabled,
             this.checkboxIsStrategyStackDisabled,
             this.checkboxIsStrategyUnionDisabled
         )
-<span class="fc" id="L37">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
+<span class="fc" id="L40">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
 
-<span class="fc" id="L39">        var labelOrigin = new JLabel(&quot;&lt;html&gt;&lt;b&gt;Choose injection strategies to skip&lt;/b&gt;&lt;/html&gt;&quot;);</span>
-<span class="fc" id="L40">        labelOrigin.setBorder(PanelGeneral.MARGIN);</span>
+<span class="fc" id="L42">        var labelOrigin = new JLabel(&quot;&lt;html&gt;&lt;b&gt;Choose injection strategies to skip&lt;/b&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L43">        labelOrigin.setBorder(PanelGeneral.MARGIN);</span>
 
-<span class="fc" id="L42">        var groupLayout = new GroupLayout(this);</span>
-<span class="fc" id="L43">        this.setLayout(groupLayout);</span>
+<span class="fc" id="L45">        var groupLayout = new GroupLayout(this);</span>
+<span class="fc" id="L46">        this.setLayout(groupLayout);</span>
 
-<span class="fc" id="L45">        groupLayout.setHorizontalGroup(</span>
+<span class="fc" id="L48">        groupLayout.setHorizontalGroup(</span>
             groupLayout
-<span class="fc" id="L47">            .createSequentialGroup()</span>
-<span class="fc" id="L48">            .addGroup(</span>
+<span class="fc" id="L50">            .createSequentialGroup()</span>
+<span class="fc" id="L51">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L50">                .createParallelGroup(GroupLayout.Alignment.LEADING, false)</span>
-<span class="fc" id="L51">                .addComponent(labelOrigin)</span>
-<span class="fc" id="L52">                .addComponent(this.checkboxIsStrategyTimeDisabled)</span>
-<span class="fc" id="L53">                .addComponent(this.checkboxIsStrategyBlindBinDisabled)</span>
-<span class="fc" id="L54">                .addComponent(this.checkboxIsStrategyBlindBitDisabled)</span>
-<span class="fc" id="L55">                .addComponent(this.checkboxIsStrategyMultibitDisabled)</span>
-<span class="fc" id="L56">                .addComponent(this.checkboxIsStrategyErrorDisabled)</span>
-<span class="fc" id="L57">                .addComponent(this.checkboxIsStrategyStackDisabled)</span>
-<span class="fc" id="L58">                .addComponent(this.checkboxIsStrategyUnionDisabled)</span>
+<span class="fc" id="L53">                .createParallelGroup(GroupLayout.Alignment.LEADING, false)</span>
+<span class="fc" id="L54">                .addComponent(labelOrigin)</span>
+<span class="fc" id="L55">                .addComponent(this.checkboxIsStrategyTimeDisabled)</span>
+<span class="fc" id="L56">                .addComponent(this.checkboxIsStrategyBlindBinDisabled)</span>
+<span class="fc" id="L57">                .addComponent(this.checkboxIsStrategyBlindBitDisabled)</span>
+<span class="fc" id="L58">                .addComponent(this.checkboxIsStrategyMultibitDisabled)</span>
+<span class="fc" id="L59">                .addComponent(this.checkboxIsStrategyDnsDisabled)</span>
+<span class="fc" id="L60">                .addComponent(this.checkboxIsStrategyErrorDisabled)</span>
+<span class="fc" id="L61">                .addComponent(this.checkboxIsStrategyStackDisabled)</span>
+<span class="fc" id="L62">                .addComponent(this.checkboxIsStrategyUnionDisabled)</span>
             )
         );
         
-<span class="fc" id="L62">        groupLayout.setVerticalGroup(</span>
+<span class="fc" id="L66">        groupLayout.setVerticalGroup(</span>
             groupLayout
-<span class="fc" id="L64">            .createSequentialGroup()</span>
-<span class="fc" id="L65">            .addGroup(</span>
+<span class="fc" id="L68">            .createSequentialGroup()</span>
+<span class="fc" id="L69">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L67">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L68">                .addComponent(labelOrigin)</span>
+<span class="fc" id="L71">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L72">                .addComponent(labelOrigin)</span>
             )
-<span class="fc" id="L70">            .addGroup(</span>
+<span class="fc" id="L74">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L72">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L73">                .addComponent(this.checkboxIsStrategyTimeDisabled)</span>
+<span class="fc" id="L76">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L77">                .addComponent(this.checkboxIsStrategyTimeDisabled)</span>
             )
-<span class="fc" id="L75">            .addGroup(</span>
+<span class="fc" id="L79">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L77">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L78">                .addComponent(this.checkboxIsStrategyBlindBinDisabled)</span>
+<span class="fc" id="L81">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L82">                .addComponent(this.checkboxIsStrategyBlindBinDisabled)</span>
             )
-<span class="fc" id="L80">            .addGroup(</span>
+<span class="fc" id="L84">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L82">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L83">                .addComponent(this.checkboxIsStrategyBlindBitDisabled)</span>
+<span class="fc" id="L86">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L87">                .addComponent(this.checkboxIsStrategyBlindBitDisabled)</span>
             )
-<span class="fc" id="L85">            .addGroup(</span>
+<span class="fc" id="L89">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L87">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L88">                .addComponent(this.checkboxIsStrategyMultibitDisabled)</span>
+<span class="fc" id="L91">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L92">                .addComponent(this.checkboxIsStrategyMultibitDisabled)</span>
             )
-<span class="fc" id="L90">            .addGroup(</span>
+<span class="fc" id="L94">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L92">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L93">                .addComponent(this.checkboxIsStrategyErrorDisabled)</span>
+<span class="fc" id="L96">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L97">                .addComponent(this.checkboxIsStrategyDnsDisabled)</span>
             )
-<span class="fc" id="L95">            .addGroup(</span>
+<span class="fc" id="L99">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L97">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L98">                .addComponent(this.checkboxIsStrategyStackDisabled)</span>
+<span class="fc" id="L101">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L102">                .addComponent(this.checkboxIsStrategyErrorDisabled)</span>
             )
-<span class="fc" id="L100">            .addGroup(</span>
+<span class="fc" id="L104">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L102">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L103">                .addComponent(this.checkboxIsStrategyUnionDisabled)</span>
+<span class="fc" id="L106">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L107">                .addComponent(this.checkboxIsStrategyStackDisabled)</span>
+            )
+<span class="fc" id="L109">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L111">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L112">                .addComponent(this.checkboxIsStrategyUnionDisabled)</span>
             )
         );
-<span class="fc" id="L106">    }</span>
+<span class="fc" id="L115">    }</span>
     
     
     // Getter and setter
 
     public JCheckBox getCheckboxIsStrategyTimeDisabled() {
-<span class="fc" id="L112">        return this.checkboxIsStrategyTimeDisabled;</span>
-    }
-
-    public JCheckBox getCheckboxIsStrategyBlindBitDisabled() {
-<span class="fc" id="L116">        return this.checkboxIsStrategyBlindBitDisabled;</span>
+<span class="fc" id="L121">        return this.checkboxIsStrategyTimeDisabled;</span>
     }
 
     public JCheckBox getCheckboxIsStrategyBlindBinDisabled() {
-<span class="fc" id="L120">        return this.checkboxIsStrategyBlindBinDisabled;</span>
+<span class="fc" id="L125">        return this.checkboxIsStrategyBlindBinDisabled;</span>
     }
 
-    public JCheckBox getCheckboxIsStrategyStackDisabled() {
-<span class="fc" id="L124">        return this.checkboxIsStrategyStackDisabled;</span>
+    public JCheckBox getCheckboxIsStrategyBlindBitDisabled() {
+<span class="fc" id="L129">        return this.checkboxIsStrategyBlindBitDisabled;</span>
     }
 
     public JCheckBox getCheckboxIsStrategyMultibitDisabled() {
-<span class="fc" id="L128">        return this.checkboxIsStrategyMultibitDisabled;</span>
+<span class="fc" id="L133">        return this.checkboxIsStrategyMultibitDisabled;</span>
+    }
+
+    public JCheckBox getCheckboxIsStrategyStackDisabled() {
+<span class="fc" id="L137">        return this.checkboxIsStrategyStackDisabled;</span>
+    }
+
+    public JCheckBox getCheckboxIsStrategyDnsDisabled() {
+<span class="fc" id="L141">        return this.checkboxIsStrategyDnsDisabled;</span>
     }
 
     public JCheckBox getCheckboxIsStrategyErrorDisabled() {
-<span class="fc" id="L132">        return this.checkboxIsStrategyErrorDisabled;</span>
+<span class="fc" id="L145">        return this.checkboxIsStrategyErrorDisabled;</span>
     }
 
     public JCheckBox getCheckboxIsStrategyUnionDisabled() {
-<span class="fc" id="L136">        return this.checkboxIsStrategyUnionDisabled;</span>
+<span class="fc" id="L149">        return this.checkboxIsStrategyUnionDisabled;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

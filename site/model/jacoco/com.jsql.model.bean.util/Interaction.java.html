@@ -53,25 +53,28 @@
 <span class="fc" id="L53">    MARK_STACK_INVULNERABLE(&quot;MarkStackInvulnerable&quot;),</span>
 <span class="fc" id="L54">    MARK_STACK_STRATEGY(&quot;MarkStackStrategy&quot;),</span>
 <span class="fc" id="L55">    MARK_STACK_VULNERABLE(&quot;MarkStackVulnerable&quot;),</span>
+<span class="fc" id="L56">    MARK_DNS_INVULNERABLE(&quot;MarkDnsInvulnerable&quot;),</span>
+<span class="fc" id="L57">    MARK_DNS_STRATEGY(&quot;MarkDnsStrategy&quot;),</span>
+<span class="fc" id="L58">    MARK_DNS_VULNERABLE(&quot;MarkDnsVulnerable&quot;),</span>
 
-<span class="fc" id="L57">    MESSAGE_BINARY(&quot;MessageBinary&quot;),</span>
-<span class="fc" id="L58">    MESSAGE_CHUNK(&quot;MessageChunk&quot;),</span>
-<span class="fc" id="L59">    MESSAGE_HEADER(&quot;MessageHeader&quot;),</span>
+<span class="fc" id="L60">    MESSAGE_BINARY(&quot;MessageBinary&quot;),</span>
+<span class="fc" id="L61">    MESSAGE_CHUNK(&quot;MessageChunk&quot;),</span>
+<span class="fc" id="L62">    MESSAGE_HEADER(&quot;MessageHeader&quot;),</span>
     
-<span class="fc" id="L61">    SET_VENDOR(&quot;SetVendor&quot;),</span>
-<span class="fc" id="L62">    DATABASE_IDENTIFIED(&quot;DatabaseIdentified&quot;),</span>
+<span class="fc" id="L64">    SET_VENDOR(&quot;SetVendor&quot;),</span>
+<span class="fc" id="L65">    DATABASE_IDENTIFIED(&quot;DatabaseIdentified&quot;),</span>
     
-<span class="fc" id="L64">    UNSUBSCRIBE(&quot;Unsubscribe&quot;);  // without real class to unsubscribe subscriber implicitly</span>
+<span class="fc" id="L67">    UNSUBSCRIBE(&quot;Unsubscribe&quot;);  // without real class to unsubscribe subscriber implicitly</span>
     
     private final String name;
     
-<span class="fc" id="L68">    Interaction(String name) {</span>
-<span class="fc" id="L69">        this.name = name;</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L71">    Interaction(String name) {</span>
+<span class="fc" id="L72">        this.name = name;</span>
+<span class="fc" id="L73">    }</span>
     
     @Override
     public String toString() {
-<span class="fc" id="L74">        return this.name;</span>
+<span class="fc" id="L77">        return this.name;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

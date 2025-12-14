@@ -222,7 +222,7 @@ public class UiUtil {
         
 <span class="fc" id="L223">        g.setColor(new Color(c2, true));</span>
 
-<span class="fc bfc" id="L225" title="All 2 branches covered.">        var fontNonUbuntu = textComponent.getFont() == UiUtil.FONT_NON_MONO_BIG  // when address bar</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        var fontNonUbuntu = UiUtil.FONT_NON_MONO_BIG.equals(textComponent.getFont())  // when address bar</span>
 <span class="fc" id="L226">            ? UiUtil.FONT_MONO_ASIAN_BIG.deriveFont(Font.ITALIC)  // bigger font</span>
 <span class="fc" id="L227">            : UiUtil.FONT_MONO_ASIAN.deriveFont(Font.ITALIC);  // fine for address bar, console, textfield</span>
 <span class="fc" id="L228">        g.setFont(</span>

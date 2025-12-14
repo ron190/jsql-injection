@@ -437,50 +437,51 @@ public class DataAccess {
 <span class="fc" id="L437">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());</span>
 
         // Get pieces of data already retrieved instead of losing them
-<span class="pc bpc" id="L440" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {</span>
-<span class="nc" id="L441">            resultToParse = e.getSlidingWindowAllRows();</span>
-<span class="pc bpc" id="L442" title="1 of 2 branches missed.">        } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
-<span class="nc" id="L443">            resultToParse = e.getSlidingWindowCurrentRows();</span>
+<span class="fc" id="L440">        String resultFromWindow = resultToParse;</span>
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {</span>
+<span class="nc" id="L442">            resultFromWindow = e.getSlidingWindowAllRows();</span>
+<span class="pc bpc" id="L443" title="1 of 2 branches missed.">        } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
+<span class="nc" id="L444">            resultFromWindow = e.getSlidingWindowCurrentRows();</span>
         }
-<span class="fc" id="L445">        return resultToParse;</span>
+<span class="fc" id="L446">        return resultFromWindow;</span>
     }
 
     private String[][] getTable(List&lt;String&gt; columnsName, List&lt;List&lt;String&gt;&gt; values) {
         // Build a proper 2D array from the data
-<span class="fc" id="L450">        var table = new String[values.size()][columnsName.size()];</span>
+<span class="fc" id="L451">        var table = new String[values.size()][columnsName.size()];</span>
         
-<span class="fc bfc" id="L452" title="All 2 branches covered.">        for (var indexRow = 0 ; indexRow &lt; values.size() ; indexRow++) {</span>
-<span class="fc" id="L453">            var isIncomplete = false;</span>
+<span class="fc bfc" id="L453" title="All 2 branches covered.">        for (var indexRow = 0 ; indexRow &lt; values.size() ; indexRow++) {</span>
+<span class="fc" id="L454">            var isIncomplete = false;</span>
             
-<span class="fc bfc" id="L455" title="All 2 branches covered.">            for (var indexColumn = 0 ; indexColumn &lt; columnsName.size() ; indexColumn++) {</span>
+<span class="fc bfc" id="L456" title="All 2 branches covered.">            for (var indexColumn = 0 ; indexColumn &lt; columnsName.size() ; indexColumn++) {</span>
                 try {
-<span class="fc" id="L457">                    table[indexRow][indexColumn] = values.get(indexRow).get(indexColumn);</span>
-<span class="nc" id="L458">                } catch (IndexOutOfBoundsException e) {</span>
-<span class="nc" id="L459">                    isIncomplete = true;</span>
-<span class="nc" id="L460">                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey(&quot;LOG_LIST_VALUES_INCOMPLETE&quot;));</span>
-<span class="nc" id="L461">                    LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="fc" id="L462">                }</span>
+<span class="fc" id="L458">                    table[indexRow][indexColumn] = values.get(indexRow).get(indexColumn);</span>
+<span class="nc" id="L459">                } catch (IndexOutOfBoundsException e) {</span>
+<span class="nc" id="L460">                    isIncomplete = true;</span>
+<span class="nc" id="L461">                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey(&quot;LOG_LIST_VALUES_INCOMPLETE&quot;));</span>
+<span class="nc" id="L462">                    LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="fc" id="L463">                }</span>
             }
             
-<span class="pc bpc" id="L465" title="1 of 2 branches missed.">            if (isIncomplete) {</span>
-<span class="nc" id="L466">                int logIndexRow = indexRow;</span>
-<span class="nc" id="L467">                LOGGER.log(</span>
+<span class="pc bpc" id="L466" title="1 of 2 branches missed.">            if (isIncomplete) {</span>
+<span class="nc" id="L467">                int logIndexRow = indexRow;</span>
+<span class="nc" id="L468">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
                     &quot;{}{}: &quot;,
-<span class="nc" id="L470">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_LIST_VALUES_TOO_LONG&quot;),</span>
-<span class="nc" id="L471">                    () -&gt; logIndexRow + 1</span>
+<span class="nc" id="L471">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_LIST_VALUES_TOO_LONG&quot;),</span>
+<span class="nc" id="L472">                    () -&gt; logIndexRow + 1</span>
                 );
 
-<span class="nc" id="L474">                LOGGER.log(</span>
+<span class="nc" id="L475">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L476">                    () -&gt; String.join(</span>
+<span class="nc" id="L477">                    () -&gt; String.join(</span>
                         &quot;, &quot;,
-<span class="nc" id="L478">                        values.get(logIndexRow).toArray(new String[0])</span>
+<span class="nc" id="L479">                        values.get(logIndexRow).toArray(new String[0])</span>
                     )
                 );
             }
         }
-<span class="fc" id="L483">        return table;</span>
+<span class="fc" id="L484">        return table;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

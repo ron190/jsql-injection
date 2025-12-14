@@ -5,11 +5,11 @@ view,com.jsql.view.swing.util,RadioItemPreventClose,4,41,1,5,2,14,2,7,1,5
 view,com.jsql.view.swing.util,UiUtil.new DefaultCaret() {...},0,7,0,0,0,3,0,2,0,2
 view,com.jsql.view.swing.util,MediatorHelper,4,66,0,0,2,40,2,26,2,26
 view,com.jsql.view.swing.util,JSplitPaneWithZeroSizeDivider.SplitPaneWithZeroSizeDividerUI,0,35,0,2,0,7,0,4,0,3
-view,com.jsql.view.swing.util,JSplitPaneWithZeroSizeDivider.ZeroSizeDivider,20,59,0,2,4,11,2,4,2,3
+view,com.jsql.view.swing.util,JSplitPaneWithZeroSizeDivider.ZeroSizeDivider,12,43,0,2,4,11,2,4,2,3
 view,com.jsql.view.swing.util,UiStringUtil,10,36,4,2,2,12,3,3,0,3
-view,com.jsql.view.swing.util,JSplitPaneWithZeroSizeDivider,0,67,0,2,0,19,0,4,0,3
+view,com.jsql.view.swing.util,JSplitPaneWithZeroSizeDivider,0,58,0,2,0,18,0,4,0,3
 view,com.jsql.view.swing.util,I18nViewUtil,12,238,4,10,1,35,5,22,1,19
-view,com.jsql.view.swing.util,UiUtil,37,772,2,8,10,133,2,13,0,10
+view,com.jsql.view.swing.util,UiUtil,37,773,2,8,10,133,2,13,0,10
 view,com.jsql.view.swing.dialog.translate,Language,3,282,0,2,1,40,1,10,1,9
 view,com.jsql.view.swing.dialog.translate,SortedProperties,30,32,2,2,8,7,3,3,2,2
 view,com.jsql.view.swing.dialog.translate,WorkerTranslateInto,216,175,10,6,46,37,9,10,2,9
@@ -59,7 +59,7 @@ view,com.jsql.view.swing.manager,ManagerDatabase.new MouseAdapter() {...},24,32,
 view,com.jsql.view.swing.manager,ManagerFile.ActionFile.new SwingWorker() {...},96,0,2,0,20,0,3,0,2,0
 view,com.jsql.view.swing.manager,ManagerFile,0,29,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.manager,ManagerScan.new DefaultListCellRenderer() {...},4,23,1,1,1,5,1,2,0,2
-view,com.jsql.view.swing.manager,ManagerExploit,600,472,80,2,108,79,50,7,10,6
+view,com.jsql.view.swing.manager,ManagerExploit,602,472,80,2,109,79,50,7,10,6
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit.new SwingWorker() {...},17,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit.new SwingWorker() {...},66,0,0,0,10,0,3,0,3,0
 view,com.jsql.view.swing.manager,ManagerExploit.new JTextFieldPlaceholder() {...},5,10,0,0,1,1,1,1,1,1
@@ -126,9 +126,9 @@ view,com.jsql.view.swing.panel.util,HTMLEditorKitTextPaneWrap.1.new InlineView()
 view,com.jsql.view.swing.text.listener,DocumentListenerEditing,0,12,0,0,0,7,0,4,0,4
 view,com.jsql.view.swing.panel.preferences.listener,TamperingMouseAdapter,45,12,0,0,11,5,3,1,3,1
 view,com.jsql.view.swing.panel.preferences.listener,SpinnerMouseWheelListener,43,3,4,0,9,1,3,1,1,1
-view,com.jsql.view.swing.panel.preferences.listener,ActionListenerSave,12,508,3,1,3,91,2,2,0,2
+view,com.jsql.view.swing.panel.preferences.listener,ActionListenerSave,12,526,3,1,3,94,2,2,0,2
 view,com.jsql.view.swing,JFrameView,23,290,8,6,2,78,7,20,1,19
-view,com.jsql.view.swing,JFrameView.new WindowAdapter() {...},132,35,13,3,25,6,9,2,1,2
+view,com.jsql.view.swing,JFrameView.new WindowAdapter() {...},131,36,11,1,23,6,7,3,1,3
 view,com.jsql.view.swing.tab,TabbedPaneMouseWheelListener,52,6,12,0,13,2,7,2,1,2
 view,com.jsql.view.swing.tab,TabHeader,15,35,2,0,9,9,6,2,5,2
 view,com.jsql.view.swing.tab,TabManagers,0,157,0,0,0,27,0,5,0,5
@@ -155,20 +155,21 @@ view,com.jsql.view.swing.tree,PanelNode,60,171,0,0,18,33,5,7,5,7
 view,com.jsql.view.swing.tree,CellEditorNode,73,60,12,4,24,20,13,6,5,6
 view,com.jsql.view.swing.sql,SqlEngine.new MouseAdapter() {...},45,6,0,0,5,1,2,1,2,1
 view,com.jsql.view.swing.sql,SqlEngine.new DocumentListenerEditing() {...},0,10,0,0,0,3,0,2,0,2
-view,com.jsql.view.swing.sql,SqlEngine,11,1248,1,9,5,209,2,30,1,26
+view,com.jsql.view.swing.sql,SqlEngine,11,1258,1,9,5,210,2,30,1,26
 view,com.jsql.view.swing.sql,JSyntaxTextArea,0,18,0,0,0,7,0,3,0,3
-view,com.jsql.view.swing.sql,SqlEngine.TextareaWithColor,0,1046,0,0,0,140,0,93,0,93
-view,com.jsql.view.swing.panel.preferences,PanelInjection,85,985,15,5,10,221,13,25,3,25
+view,com.jsql.view.swing.sql,SqlEngine.TextareaWithColor,0,1066,0,0,0,143,0,95,0,95
+view,com.jsql.view.swing.panel.preferences,PanelInjection,85,1163,15,5,10,256,13,28,3,28
 view,com.jsql.view.swing.panel.preferences,PanelConnection.new DocumentListenerEditing() {...},6,9,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.panel.preferences,PanelConnection.new DocumentListenerEditing() {...},6,9,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.panel.preferences,PanelTampering.new DocumentListenerEditing() {...},7,6,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.panel.preferences,PanelTampering.new ButtonGroup() {...},10,6,2,0,4,1,2,1,1,1
-view,com.jsql.view.swing.panel.preferences,PanelStrategies,0,275,0,0,0,67,0,9,0,9
+view,com.jsql.view.swing.panel.preferences,PanelStrategies,0,307,0,0,0,74,0,10,0,10
 view,com.jsql.view.swing.panel.preferences,PanelAuthentication.new DocumentListenerEditing() {...},6,9,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.panel.preferences,PanelAuthentication,0,393,0,0,0,83,0,9,0,9
 view,com.jsql.view.swing.panel.preferences,PanelExploit,0,95,0,0,0,31,0,3,0,3
 view,com.jsql.view.swing.panel.preferences,PanelProxy,0,411,0,0,0,88,0,9,0,9
 view,com.jsql.view.swing.panel.preferences,PanelProxy.new DocumentListenerEditing() {...},6,9,0,0,2,1,1,1,1,1
+view,com.jsql.view.swing.panel.preferences,PanelInjection.new DocumentListenerEditing() {...},6,9,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.panel.preferences,PanelConnection,63,778,14,6,6,170,13,17,3,17
 view,com.jsql.view.swing.panel.preferences,PanelTampering,0,546,0,0,0,132,0,18,0,18
 view,com.jsql.view.swing.panel.preferences,PanelExploit.new DocumentListenerEditing() {...},0,49,0,0,0,8,0,2,0,2
@@ -259,6 +260,7 @@ view,com.jsql.view.swing.text,JPopupComponent.new MouseAdapter() {...},12,6,2,0,
 view,com.jsql.view.swing.text,JTextAreaPlaceholder,6,29,0,2,2,12,0,5,0,4
 view,com.jsql.view.swing.text,JToolTipI18n,0,13,0,0,0,6,0,3,0,3
 view,com.jsql.view.swing.text,JPopupTextComponent,0,116,0,0,0,25,0,6,0,6
+view,com.jsql.view.scan.interaction,MarkDnsVulnerable,25,0,0,0,7,0,2,0,2,0
 view,com.jsql.view.scan.interaction,MarkErrorVulnerable,25,0,0,0,7,0,2,0,2,0
 view,com.jsql.view.scan.interaction,MarkUnionVulnerable,25,0,0,0,7,0,2,0,2,0
 view,com.jsql.view.scan.interaction,MarkBlindBinVulnerable,25,0,0,0,7,0,2,0,2,0
@@ -268,7 +270,7 @@ view,com.jsql.view.scan.interaction,MarkBlindBitVulnerable,25,0,0,0,7,0,2,0,2,0
 view,com.jsql.view.scan.interaction,SetVendor,28,0,0,0,7,0,2,0,2,0
 view,com.jsql.view.scan.interaction,MarkStackVulnerable,25,0,0,0,7,0,2,0,2,0
 view,com.jsql.view.swing.console,AbstractColoredConsole.new FocusAdapter() {...},15,6,0,0,3,1,1,1,1,1
-view,com.jsql.view.swing.console,AbstractColoredConsole,5,163,8,14,1,36,7,7,0,3
+view,com.jsql.view.swing.console,AbstractColoredConsole,5,164,8,14,1,36,7,7,0,3
 view,com.jsql.view.swing.console,JTextPaneAppender,13,125,7,13,5,31,7,10,0,7
 view,com.jsql.view.swing.console,SimpleConsoleAdapter,0,20,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.text.action,DeletePrevCharAction,43,4,12,0,10,2,7,1,1,1
@@ -303,6 +305,7 @@ view,com.jsql.view.swing.interaction,MarkErrorStrategy,7,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.interaction,AddTabExploitUdfExtensionPostgres,18,0,0,0,5,0,4,0,4,0
 view,com.jsql.view.swing.interaction,MessageChunk,17,0,0,0,6,0,2,0,2,0
 view,com.jsql.view.swing.interaction,MessageHeader,6,148,0,0,2,23,0,3,0,3
+view,com.jsql.view.swing.interaction,MarkDnsInvulnerable,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,MarkStackVulnerable,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,CreateAnalysisReport,19,0,0,0,5,0,3,0,3,0
 view,com.jsql.view.swing.interaction,EndIndeterminateProgress,14,0,0,0,5,0,2,0,2,0
@@ -312,9 +315,11 @@ view,com.jsql.view.swing.interaction,MarkErrorVulnerable,0,21,0,0,0,6,0,2,0,2
 view,com.jsql.view.swing.interaction,MarkTimeInvulnerable,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,AddTabExploitUdfH2,18,0,0,0,5,0,4,0,4,0
 view,com.jsql.view.swing.interaction,MarkUnionVulnerable,12,0,0,0,5,0,2,0,2,0
+view,com.jsql.view.swing.interaction,MarkDnsVulnerable,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,MarkBlindBitVulnerable,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,AddTabExploitWeb,0,18,0,0,0,5,0,3,0,3
 view,com.jsql.view.swing.interaction,MarkBlindBinInvulnerable,12,0,0,0,5,0,2,0,2,0
+view,com.jsql.view.swing.interaction,MarkDnsStrategy,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,AddTables,0,14,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.interaction,MarkBlindBitStrategy,12,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,AddTabExploitUdfMysql,18,0,0,0,5,0,4,0,4,0
@@ -336,10 +341,10 @@ view,com.jsql.view.swing.manager.util,ModelSpinner,0,12,0,0,0,5,0,1,0,1
 view,com.jsql.view.swing.manager.util,ComboBoxTypeRenderer,8,36,2,4,2,11,2,3,0,2
 view,com.jsql.view.swing.manager.util,StateButton,0,21,0,0,0,4,0,1,0,1
 view,com.jsql.view.swing.manager.util,ModelItemType,0,15,0,0,0,6,0,3,0,3
-view,com.jsql.view.swing.manager.util,ComboBoxMethodRenderer,8,45,2,4,2,13,2,4,0,3
+view,com.jsql.view.swing.manager.util,ComboBoxMethodRenderer,8,46,2,4,2,13,2,4,0,3
 view,com.jsql.view.swing.manager.util,SeparatorListener,17,13,2,0,4,5,2,1,1,1
 view,com.jsql.view.swing.manager.util,CoderListener,31,47,3,1,8,16,3,5,1,5
 view,com.jsql.view.swing.manager.util,ModelExploit,0,22,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.terminal.util,KeyAdapterTerminal.new SwingWorker() {...},0,47,0,2,0,13,0,3,0,2
-view,com.jsql.view.swing.terminal.util,BlockCaret,9,117,2,16,5,34,2,11,0,4
+view,com.jsql.view.swing.terminal.util,BlockCaret,10,116,4,14,6,33,4,9,0,4
 view,com.jsql.view.swing.terminal.util,KeyAdapterTerminal,144,262,21,37,26,63,16,23,1,9

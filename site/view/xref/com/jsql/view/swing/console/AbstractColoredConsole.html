@@ -97,7 +97,7 @@
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>                  <strong class="jxr_keyword">var</strong> tabHeader = MediatorHelper.tabConsoles().getTabComponentAt(tabIndex);
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>                  <strong class="jxr_keyword">if</strong> (MediatorHelper.tabConsoles().getSelectedIndex() != tabIndex) {
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>                      tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>                      <strong class="jxr_keyword">if</strong> (foregroundColor != UIManager.getColor(<span class="jxr_string">"TextArea.foreground"</span>)) {  <em class="jxr_comment">// keep tab colored until user clicks</em>
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>                      <strong class="jxr_keyword">if</strong> (!UIManager.getColor(<span class="jxr_string">"TextArea.foreground"</span>).equals(foregroundColor)) {  <em class="jxr_comment">// keep tab colored until user clicks</em>
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>                          tabHeader.setForeground(foregroundColor);
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>                      }
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>                  }

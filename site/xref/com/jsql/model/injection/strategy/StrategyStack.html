@@ -55,7 +55,7 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>                  LOGGER.log(
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>                      LogLevelUtil.CONSOLE_ERROR,
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>                      <span class="jxr_string">"{} {} but injectable size is incorrect"</span>,
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>                      () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_VULNERABLE"</span>),
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>                      () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>                      () -&gt; <span class="jxr_string">"Stack"</span>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>                  );
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>                  methodIsApplicable = false;
@@ -68,7 +68,7 @@
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>              LOGGER.log(
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>                  LogLevelUtil.CONSOLE_SUCCESS,
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>                  <span class="jxr_string">"{} Stack injection showing [{}] characters"</span>,
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>                  () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_VULNERABLE"</span>),
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>                  () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>                  () -&gt; <strong class="jxr_keyword">this</strong>.performanceLength
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>              );
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>              <strong class="jxr_keyword">this</strong>.allow();

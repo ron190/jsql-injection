@@ -47,11 +47,25 @@ public class ParameterUtil {
 <span class="fc" id="L47">    private boolean isMultipartRequest = false;</span>
     private static final String FORMAT_KEY_VALUE = &quot;%s=%s&quot;;
 
+    // ABNF primitives defined in RFC 7230
+<span class="fc" id="L51">    private static final boolean[] tchar = new boolean[256];</span>
+
+    static {
+<span class="fc" id="L54">        char[] allowedTokenChars = (</span>
+            &quot;!#$%&amp;'*+-.^_`|~0123456789&quot; +
+            &quot;abcdefghijklmnopqrstuvwxyz&quot; +
+            &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;
+<span class="fc" id="L58">        ).toCharArray();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (char c : allowedTokenChars) {</span>
+<span class="fc" id="L60">            ParameterUtil.tchar[c] = true;</span>
+        }
+<span class="fc" id="L62">    }</span>
+
     private final InjectionModel injectionModel;
     
-<span class="fc" id="L52">    public ParameterUtil(InjectionModel injectionModel) {</span>
-<span class="fc" id="L53">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L66">    public ParameterUtil(InjectionModel injectionModel) {</span>
+<span class="fc" id="L67">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L68">    }</span>
     
     /**
      * Send each parameter from the GUI to the model in order to
@@ -67,79 +81,65 @@ public class ParameterUtil {
         boolean isScanning
     ) {
         try {
-<span class="nc" id="L70">            String urlQueryFixed = urlQuery;</span>
+<span class="nc" id="L84">            String urlQueryFixed = urlQuery;</span>
             // Keep single check
-<span class="nc bnc" id="L72" title="All 2 branches missed.">            if (urlQueryFixed.isEmpty()) {</span>
-<span class="nc" id="L73">                throw new MalformedURLException(&quot;empty URL&quot;);</span>
-<span class="nc bnc" id="L74" title="All 2 branches missed.">            } else if (!urlQueryFixed.matches(&quot;(?i)^https?://.*&quot;)) {</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">                if (!urlQueryFixed.matches(&quot;(?i)^\\w+://.*&quot;)) {</span>
-<span class="nc" id="L76">                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Undefined URL protocol, forcing to [http://]&quot;);</span>
-<span class="nc" id="L77">                    urlQueryFixed = &quot;http://&quot;+ urlQueryFixed;</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">            if (urlQueryFixed.isEmpty()) {</span>
+<span class="nc" id="L87">                throw new MalformedURLException(&quot;empty URL&quot;);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">            } else if (!urlQueryFixed.matches(&quot;(?i)^https?://.*&quot;)) {</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">                if (!urlQueryFixed.matches(&quot;(?i)^\\w+://.*&quot;)) {</span>
+<span class="nc" id="L90">                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Undefined URL protocol, forcing to [http://]&quot;);</span>
+<span class="nc" id="L91">                    urlQueryFixed = &quot;http://&quot;+ urlQueryFixed;</span>
                 } else {
-<span class="nc" id="L79">                    throw new MalformedURLException(&quot;unknown URL protocol&quot;);</span>
+<span class="nc" id="L93">                    throw new MalformedURLException(&quot;unknown URL protocol&quot;);</span>
                 }
             }
 
-<span class="nc" id="L83">            String authority = URI.create(urlQueryFixed).getAuthority();</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (authority == null) {</span>
-<span class="nc" id="L85">                throw new MalformedURLException(&quot;incorrect domain authority&quot;);</span>
+<span class="nc" id="L97">            String authority = URI.create(urlQueryFixed).getAuthority();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (authority == null) {</span>
+<span class="nc" id="L99">                throw new MalformedURLException(&quot;incorrect domain authority&quot;);</span>
             }
-<span class="nc" id="L87">            String authorityPunycode = IDN.toASCII(authority);</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">            if (!authority.equals(authorityPunycode)) {</span>
-<span class="nc" id="L89">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Punycode domain detected, using [{}] instead of [{}]&quot;, authorityPunycode, authority);</span>
-<span class="nc" id="L90">                urlQueryFixed = urlQueryFixed.replace(authority, authorityPunycode);</span>
+<span class="nc" id="L101">            String authorityPunycode = IDN.toASCII(authority);</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            if (!authority.equals(authorityPunycode)) {</span>
+<span class="nc" id="L103">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Punycode domain detected, using [{}] instead of [{}]&quot;, authorityPunycode, authority);</span>
+<span class="nc" id="L104">                urlQueryFixed = urlQueryFixed.replace(authority, authorityPunycode);</span>
             }
 
-<span class="nc" id="L93">            this.initQueryString(urlQueryFixed);</span>
-<span class="nc" id="L94">            this.initHeader(rawHeader);</span>
-<span class="nc" id="L95">            this.initRequest(rawRequest);</span>
+<span class="nc" id="L107">            this.initQueryString(urlQueryFixed);</span>
+<span class="nc" id="L108">            this.initHeader(rawHeader);</span>
+<span class="nc" id="L109">            this.initRequest(rawRequest);</span>
 
-<span class="nc" id="L97">            this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);</span>
-<span class="nc" id="L98">            this.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);</span>
+<span class="nc" id="L111">            this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);</span>
+<span class="nc" id="L112">            this.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);</span>
             
-<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (isScanning) {</span>
-<span class="nc" id="L101">                this.injectionModel.beginInjection();</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            if (isScanning) {</span>
+<span class="nc" id="L115">                this.injectionModel.beginInjection();</span>
             } else {
-<span class="nc" id="L103">                new Thread(this.injectionModel::beginInjection, &quot;ThreadBeginInjection&quot;).start();  // in thread</span>
+<span class="nc" id="L117">                new Thread(this.injectionModel::beginInjection, &quot;ThreadBeginInjection&quot;).start();  // in thread</span>
             }
-<span class="nc" id="L105">        } catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {</span>
-<span class="nc" id="L106">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect Url: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L119">        } catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L120">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect Url: {}&quot;, e.getMessage());</span>
             
             // Incorrect URL, reset the start button
-<span class="nc" id="L109">            var request = new Request();</span>
-<span class="nc" id="L110">            request.setMessage(Interaction.END_PREPARATION);</span>
-<span class="nc" id="L111">            this.injectionModel.sendToViews(request);</span>
-<span class="nc" id="L112">        }</span>
-<span class="nc" id="L113">    }</span>
+<span class="nc" id="L123">            var request = new Request();</span>
+<span class="nc" id="L124">            request.setMessage(Interaction.END_PREPARATION);</span>
+<span class="nc" id="L125">            this.injectionModel.sendToViews(request);</span>
+<span class="nc" id="L126">        }</span>
+<span class="nc" id="L127">    }</span>
 
     /**
      * Check integrity of parameters defined by user.
      * @throws InjectionFailureException when params integrity is failure
      */
     public void checkParametersFormat() throws InjectionFailureException {
-<span class="fc" id="L120">        this.checkOneOrLessStar();</span>
-<span class="fc" id="L121">        this.checkStarMatchMethod();</span>
-<span class="fc" id="L122">        this.checkMethodNotEmpty();</span>
-<span class="fc" id="L123">        this.checkMultipart();</span>
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        if (ParameterUtil.isInvalidName(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {</span>
-<span class="nc" id="L125">            throw new InjectionFailureException(String.format(</span>
+<span class="fc" id="L134">        this.checkOneOrLessStar();</span>
+<span class="fc" id="L135">        this.checkStarMatchMethod();</span>
+<span class="fc" id="L136">        this.checkMethodNotEmpty();</span>
+<span class="fc" id="L137">        this.checkMultipart();</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (ParameterUtil.isInvalidName(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {</span>
+<span class="nc" id="L139">            throw new InjectionFailureException(String.format(</span>
                 &quot;Illegal method: \&quot;%s\&quot;&quot;,
-<span class="nc" id="L127">                this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest()</span>
+<span class="nc" id="L141">                this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest()</span>
             ));
-        }
-<span class="fc" id="L130">    }</span>
-
-    // ABNF primitives defined in RFC 7230
-<span class="fc" id="L133">    private static final boolean[] tchar = new boolean[256];</span>
-
-    static {
-<span class="fc" id="L136">        char[] allowedTokenChars = (</span>
-            &quot;!#$%&amp;'*+-.^_`|~0123456789&quot; +
-            &quot;abcdefghijklmnopqrstuvwxyz&quot; +
-            &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;
-<span class="fc" id="L140">        ).toCharArray();</span>
-<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (char c : allowedTokenChars) {</span>
-<span class="fc" id="L142">            ParameterUtil.tchar[c] = true;</span>
         }
 <span class="fc" id="L144">    }</span>
 

@@ -222,55 +222,56 @@ public class InjectionBlindBin extends AbstractInjectionMonobit&lt;CallableBlind
 <span class="fc" id="L222">    }</span>
 
     private boolean isCorruptOrElseNextChar(List&lt;char[]&gt; bytes, AtomicInteger indexChar, AtomicInteger countBadAsciiCode, CallableBlindBin currentCallable, int low) {
-<span class="pc bpc" id="L225" title="1 of 4 branches missed.">        if (low == 0 || low == 127) {</span>
-<span class="fc" id="L226">            countBadAsciiCode.incrementAndGet();</span>
+<span class="fc" id="L225">        int currentLow = low;</span>
+<span class="pc bpc" id="L226" title="1 of 4 branches missed.">        if (currentLow == 0 || currentLow == 127) {</span>
+<span class="fc" id="L227">            countBadAsciiCode.incrementAndGet();</span>
         } else {
-<span class="fc bfc" id="L228" title="All 2 branches covered.">            low = currentCallable.isTrue() ? low : low - 1;</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">            currentLow = currentCallable.isTrue() ? currentLow : currentLow - 1;</span>
         }
-<span class="fc" id="L230">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url</span>
-<span class="fc" id="L231">        this.setAsciiCodeMask(asciiCodeMask, low);</span>
+<span class="fc" id="L231">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url</span>
+<span class="fc" id="L232">        this.setAsciiCodeMask(asciiCodeMask, currentLow);</span>
 
         try {
-<span class="fc" id="L234">            this.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);</span>
-<span class="fc" id="L235">        } catch (InjectionFailureException e) {</span>
-<span class="fc" id="L236">            return true;</span>
-<span class="fc" id="L237">        }</span>
+<span class="fc" id="L235">            this.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);</span>
+<span class="fc" id="L236">        } catch (InjectionFailureException e) {</span>
+<span class="fc" id="L237">            return true;</span>
+<span class="fc" id="L238">        }</span>
 
-<span class="fc" id="L239">        bytes.add(AbstractInjectionBit.getBitsUnset());</span>
-<span class="fc" id="L240">        indexChar.incrementAndGet();</span>
-<span class="fc" id="L241">        return false;</span>
+<span class="fc" id="L240">        bytes.add(AbstractInjectionBit.getBitsUnset());</span>
+<span class="fc" id="L241">        indexChar.incrementAndGet();</span>
+<span class="fc" id="L242">        return false;</span>
     }
 
     private void setAsciiCodeMask(char[] asciiCodeMask, int value) {
-<span class="fc" id="L245">        String binary = StringUtils.leftPad(Integer.toBinaryString((char) value), 8, &quot;0&quot;);</span>
-<span class="fc bfc" id="L246" title="All 2 branches covered.">        for (int i = 0; i &lt;= 7; i++) {</span>
-<span class="fc" id="L247">            asciiCodeMask[i] = binary.charAt(i);</span>
+<span class="fc" id="L246">        String binary = StringUtils.leftPad(Integer.toBinaryString((char) value), 8, &quot;0&quot;);</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        for (int i = 0; i &lt;= 7; i++) {</span>
+<span class="fc" id="L248">            asciiCodeMask[i] = binary.charAt(i);</span>
         }
-<span class="fc" id="L249">    }</span>
+<span class="fc" id="L250">    }</span>
 
     @Override
     public char[] initMaskAsciiChar(List&lt;char[]&gt; bytes, CallableBlindBin currentCallable) {
-<span class="fc" id="L253">        return bytes.get(currentCallable.getCurrentIndex() - 1);</span>
+<span class="fc" id="L254">        return bytes.get(currentCallable.getCurrentIndex() - 1);</span>
     }
 
     @Override
     public String getInfoMessage() {
-<span class="fc" id="L258">        return &quot;- Strategy Blind bin: query True when Diffs are matching &quot; + this.falseDiffs + &quot;\n\n&quot;;</span>
+<span class="fc" id="L259">        return &quot;- Strategy Blind bin: query True when Diffs are matching &quot; + this.falseDiffs + &quot;\n\n&quot;;</span>
     }
     
     
     // Getter and setter
 
     public String getSourceReferencePage() {
-<span class="fc" id="L265">        return this.sourceReferencePage;</span>
+<span class="fc" id="L266">        return this.sourceReferencePage;</span>
     }
     
     public List&lt;Diff&gt; getFalseDiffs() {
-<span class="fc" id="L269">        return this.falseDiffs;</span>
+<span class="fc" id="L270">        return this.falseDiffs;</span>
     }
 
     public List&lt;Diff&gt; getTrueDiffs() {
-<span class="fc" id="L273">        return this.trueDiffs;</span>
+<span class="fc" id="L274">        return this.trueDiffs;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

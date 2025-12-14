@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 
-<span class="fc" id="L11">    private final int dividerDragOffset = 4;</span>
+    private static final int DIVIDER_DRAG_OFFSET = 4;
 
     public JSplitPaneWithZeroSizeDivider(int i) {
 <span class="fc" id="L14">        super(i);</span>
@@ -25,10 +25,10 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 <span class="fc" id="L25">        Rectangle bounds = divider.getBounds();</span>
 <span class="fc" id="L26">        int dividerDragSize = 9;</span>
 <span class="fc bfc" id="L27" title="All 2 branches covered.">        if (this.orientation == JSplitPane.HORIZONTAL_SPLIT) {</span>
-<span class="fc" id="L28">            bounds.x -= this.dividerDragOffset;</span>
+<span class="fc" id="L28">            bounds.x -= JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET;</span>
 <span class="fc" id="L29">            bounds.width = dividerDragSize;</span>
         } else {
-<span class="fc" id="L31">            bounds.y -= this.dividerDragOffset;</span>
+<span class="fc" id="L31">            bounds.y -= JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET;</span>
 <span class="fc" id="L32">            bounds.height = dividerDragSize;</span>
         }
 <span class="fc" id="L34">        divider.setBounds(bounds);</span>
@@ -76,20 +76,20 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         public void paint(Graphics g) {
 <span class="fc" id="L77">            g.setColor(this.getBackground());</span>
 <span class="fc bfc" id="L78" title="All 2 branches covered.">            if (this.orientation == JSplitPane.HORIZONTAL_SPLIT) {</span>
-<span class="fc" id="L79">                g.drawLine(JSplitPaneWithZeroSizeDivider.this.dividerDragOffset, 0, JSplitPaneWithZeroSizeDivider.this.dividerDragOffset, this.getHeight() - 1);</span>
+<span class="fc" id="L79">                g.drawLine(JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET, 0, JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET, this.getHeight() - 1);</span>
             } else {
-<span class="fc" id="L81">                g.drawLine(0, JSplitPaneWithZeroSizeDivider.this.dividerDragOffset, this.getWidth() - 1, JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);</span>
+<span class="fc" id="L81">                g.drawLine(0, JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET, this.getWidth() - 1, JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET);</span>
             }
 <span class="fc" id="L83">        }</span>
 
         @Override
         protected void dragDividerTo(int location) {
-<span class="nc" id="L87">            super.dragDividerTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);</span>
+<span class="nc" id="L87">            super.dragDividerTo(location + JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET);</span>
 <span class="nc" id="L88">        }</span>
 
         @Override
         protected void finishDraggingTo(int location) {
-<span class="nc" id="L92">            super.finishDraggingTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);</span>
+<span class="nc" id="L92">            super.finishDraggingTo(location + JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET);</span>
 <span class="nc" id="L93">        }</span>
     }
 }

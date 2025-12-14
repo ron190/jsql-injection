@@ -72,7 +72,7 @@
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>                      LOGGER.log(
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>                          LogLevelUtil.CONSOLE_ERROR,
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>                          <span class="jxr_string">"{} {} but injectable size is incorrect"</span>,
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>                          () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_VULNERABLE"</span>),
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>                          () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>                          errorMethod::getName
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>                      );
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>                      methodIsApplicable = false;
@@ -129,7 +129,7 @@
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>         LOGGER.log(
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>             LogLevelUtil.CONSOLE_SUCCESS,
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>             <span class="jxr_string">"{} [Error {}] showing [{}] characters"</span>,
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>             () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_VULNERABLE"</span>),
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>             () -&gt; I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>             errorMethod::getName,
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>             () -&gt; Integer.toString(logErrorCapacityImproved)
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>         );

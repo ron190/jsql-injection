@@ -40,35 +40,34 @@ public class SuspendableGetVendor extends AbstractSuspendable {
 <span class="fc bfc" id="L40" title="All 2 branches covered.">            if (isVendorFound.get()) {</span>
 <span class="fc" id="L41">                return;</span>
             }
-<span class="fc" id="L43">            String vendorSpecificWithOperator = String.format(</span>
-                &quot;%s %s&quot;,
-<span class="fc" id="L45">                AbstractInjectionBit.BlindOperator.OR.name(),</span>
-<span class="fc" id="L46">                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getVendorSpecific()</span>
+<span class="fc" id="L43">            String vendorSpecificWithOperator = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(</span>
+<span class="fc" id="L44">                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getVendorSpecific(),</span>
+                AbstractInjectionBit.BlindOperator.OR  // TODO should also test AND and no mode
             );
             try {
-<span class="fc" id="L49">                var injectionCharInsertion = new InjectionVendor(this.injectionModel, vendorSpecificWithOperator, vendor);</span>
-<span class="fc bfc" id="L50" title="All 2 branches covered.">                if (injectionCharInsertion.isInjectable(vendorSpecificWithOperator)) {</span>
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">                    if (this.isSuspended()) {</span>
-<span class="nc" id="L52">                        throw new StoppedByUserSlidingException();</span>
+<span class="fc" id="L48">                var injectionCharInsertion = new InjectionVendor(this.injectionModel, vendorSpecificWithOperator, vendor);</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">                if (injectionCharInsertion.isInjectable(vendorSpecificWithOperator)) {</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">                    if (this.isSuspended()) {</span>
+<span class="nc" id="L51">                        throw new StoppedByUserSlidingException();</span>
                     }
 
-<span class="fc" id="L55">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Found [{}] using Boolean match&quot;, vendor);</span>
-<span class="fc" id="L56">                    this.injectionModel.getMediatorVendor().setVendor(vendor);</span>
-<span class="fc" id="L57">                    isVendorFound.set(true);</span>
+<span class="fc" id="L54">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Found [{}] using Boolean match&quot;, vendor);</span>
+<span class="fc" id="L55">                    this.injectionModel.getMediatorVendor().setVendor(vendor);</span>
+<span class="fc" id="L56">                    isVendorFound.set(true);</span>
 
-<span class="fc" id="L59">                    var requestSetVendor = new Request();</span>
-<span class="fc" id="L60">                    requestSetVendor.setMessage(Interaction.SET_VENDOR);</span>
-<span class="fc" id="L61">                    Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L62">                    msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
-<span class="fc" id="L63">                    msgHeader.put(Header.VENDOR, this.injectionModel.getMediatorVendor().getVendor());</span>
-<span class="fc" id="L64">                    requestSetVendor.setParameters(msgHeader);</span>
-<span class="fc" id="L65">                    this.injectionModel.sendToViews(requestSetVendor);</span>
+<span class="fc" id="L58">                    var requestSetVendor = new Request();</span>
+<span class="fc" id="L59">                    requestSetVendor.setMessage(Interaction.SET_VENDOR);</span>
+<span class="fc" id="L60">                    Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L61">                    msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+<span class="fc" id="L62">                    msgHeader.put(Header.VENDOR, this.injectionModel.getMediatorVendor().getVendor());</span>
+<span class="fc" id="L63">                    requestSetVendor.setParameters(msgHeader);</span>
+<span class="fc" id="L64">                    this.injectionModel.sendToViews(requestSetVendor);</span>
                 }
-<span class="nc" id="L67">            } catch (StoppedByUserSlidingException e) {</span>
-<span class="nc" id="L68">                throw new JSqlRuntimeException(e);</span>
-<span class="fc" id="L69">            }</span>
-<span class="fc" id="L70">        });</span>
-<span class="fc" id="L71">        return null;  // unused</span>
+<span class="nc" id="L66">            } catch (StoppedByUserSlidingException e) {</span>
+<span class="nc" id="L67">                throw new JSqlRuntimeException(e);</span>
+<span class="fc" id="L68">            }</span>
+<span class="fc" id="L69">        });</span>
+<span class="fc" id="L70">        return null;  // unused</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

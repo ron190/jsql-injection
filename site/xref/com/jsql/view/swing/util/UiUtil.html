@@ -230,7 +230,7 @@
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>         
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>         g.setColor(<strong class="jxr_keyword">new</strong> Color(c2, <strong class="jxr_keyword">true</strong>));
 <a class="jxr_linenumber" name="L224" href="#L224">224</a> 
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>         <strong class="jxr_keyword">var</strong> fontNonUbuntu = textComponent.getFont() == UiUtil.FONT_NON_MONO_BIG  <em class="jxr_comment">// when address bar</em>
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>         <strong class="jxr_keyword">var</strong> fontNonUbuntu = UiUtil.FONT_NON_MONO_BIG.equals(textComponent.getFont())  <em class="jxr_comment">// when address bar</em>
 <a class="jxr_linenumber" name="L226" href="#L226">226</a>             ? UiUtil.FONT_MONO_ASIAN_BIG.deriveFont(Font.ITALIC)  <em class="jxr_comment">// bigger font</em>
 <a class="jxr_linenumber" name="L227" href="#L227">227</a>             : UiUtil.FONT_MONO_ASIAN.deriveFont(Font.ITALIC);  <em class="jxr_comment">// fine for address bar, console, textfield</em>
 <a class="jxr_linenumber" name="L228" href="#L228">228</a>         g.setFont(
