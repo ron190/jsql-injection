@@ -72,7 +72,7 @@
         <json.version>20250517</json.version>
         <jsoup.version>1.21.2</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
-        <junit-platform-runner.version>1.14.1</junit-platform-runner.version>
+        <junit-platform.version>1.14.1</junit-platform.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
@@ -596,13 +596,41 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit-jupiter-engine.version}</version>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- compatibility with junit-jupiter-engine -->
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-runner</artifactId>
-            <version>${junit-platform-runner.version}</version>
+            <version>${junit-platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- compatibility with junit-platform-runner -->
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-commons</artifactId>
+            <version>${junit-platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- compatibility with junit-platform-runner -->
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-engine</artifactId>
+            <version>${junit-platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- compatibility with junit-platform-runner -->
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>${junit-platform.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
