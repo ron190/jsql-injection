@@ -12,6 +12,7 @@ public class PanelStrategies extends JPanel {
     private final JCheckBox checkboxIsStrategyBlindBitDisabled = new JCheckBox("Disable Blind bit", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindBitDisabled());
     private final JCheckBox checkboxIsStrategyBlindBinDisabled = new JCheckBox("Disable Blind bin", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindBinDisabled());
     private final JCheckBox checkboxIsStrategyMultibitDisabled = new JCheckBox("Disable Multibit", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled());
+    private final JCheckBox checkboxIsStrategyDnsDisabled = new JCheckBox("Disable Dns", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyDnsDisabled());
     private final JCheckBox checkboxIsStrategyErrorDisabled = new JCheckBox("Disable Error", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());
     private final JCheckBox checkboxIsStrategyStackDisabled = new JCheckBox("Disable Stack", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackDisabled());
     private final JCheckBox checkboxIsStrategyUnionDisabled = new JCheckBox("Disable Union", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyUnionDisabled());
@@ -21,6 +22,7 @@ public class PanelStrategies extends JPanel {
         this.checkboxIsStrategyBlindBitDisabled.setToolTipText("Skip Blind bit strategy processing");
         this.checkboxIsStrategyBlindBinDisabled.setToolTipText("Skip Blind bin strategy processing");
         this.checkboxIsStrategyMultibitDisabled.setToolTipText("Skip Multibit strategy processing");
+        this.checkboxIsStrategyDnsDisabled.setToolTipText("Skip Dns strategy processing");
         this.checkboxIsStrategyErrorDisabled.setToolTipText("Skip Error strategy processing");
         this.checkboxIsStrategyStackDisabled.setToolTipText("Skip Stack strategy processing");
         this.checkboxIsStrategyUnionDisabled.setToolTipText("Skip Union strategy processing");
@@ -30,6 +32,7 @@ public class PanelStrategies extends JPanel {
             this.checkboxIsStrategyBlindBitDisabled,
             this.checkboxIsStrategyBlindBinDisabled,
             this.checkboxIsStrategyMultibitDisabled,
+            this.checkboxIsStrategyDnsDisabled,
             this.checkboxIsStrategyErrorDisabled,
             this.checkboxIsStrategyStackDisabled,
             this.checkboxIsStrategyUnionDisabled
@@ -53,6 +56,7 @@ public class PanelStrategies extends JPanel {
                 .addComponent(this.checkboxIsStrategyBlindBinDisabled)
                 .addComponent(this.checkboxIsStrategyBlindBitDisabled)
                 .addComponent(this.checkboxIsStrategyMultibitDisabled)
+                .addComponent(this.checkboxIsStrategyDnsDisabled)
                 .addComponent(this.checkboxIsStrategyErrorDisabled)
                 .addComponent(this.checkboxIsStrategyStackDisabled)
                 .addComponent(this.checkboxIsStrategyUnionDisabled)
@@ -90,6 +94,11 @@ public class PanelStrategies extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsStrategyDnsDisabled)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsStrategyErrorDisabled)
             )
             .addGroup(
@@ -112,20 +121,24 @@ public class PanelStrategies extends JPanel {
         return this.checkboxIsStrategyTimeDisabled;
     }
 
+    public JCheckBox getCheckboxIsStrategyBlindBinDisabled() {
+        return this.checkboxIsStrategyBlindBinDisabled;
+    }
+
     public JCheckBox getCheckboxIsStrategyBlindBitDisabled() {
         return this.checkboxIsStrategyBlindBitDisabled;
     }
 
-    public JCheckBox getCheckboxIsStrategyBlindBinDisabled() {
-        return this.checkboxIsStrategyBlindBinDisabled;
+    public JCheckBox getCheckboxIsStrategyMultibitDisabled() {
+        return this.checkboxIsStrategyMultibitDisabled;
     }
 
     public JCheckBox getCheckboxIsStrategyStackDisabled() {
         return this.checkboxIsStrategyStackDisabled;
     }
 
-    public JCheckBox getCheckboxIsStrategyMultibitDisabled() {
-        return this.checkboxIsStrategyMultibitDisabled;
+    public JCheckBox getCheckboxIsStrategyDnsDisabled() {
+        return this.checkboxIsStrategyDnsDisabled;
     }
 
     public JCheckBox getCheckboxIsStrategyErrorDisabled() {

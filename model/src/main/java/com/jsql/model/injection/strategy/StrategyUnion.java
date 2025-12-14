@@ -59,7 +59,7 @@ public class StrategyUnion extends AbstractStrategy {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
                 "{} [{}] at index [{}] showing [{}] characters",
-                () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
+                () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
                 this::getName,
                 () -> this.visibleIndex,
                 () -> this.performanceLength

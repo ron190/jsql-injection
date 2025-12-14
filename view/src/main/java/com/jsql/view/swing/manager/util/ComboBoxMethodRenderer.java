@@ -12,7 +12,7 @@ public class ComboBoxMethodRenderer extends JLabel implements ListCellRenderer<O
     public Component getListCellRendererComponent(
         JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus
     ) {
-        if (value == ComboBoxMethodRenderer.SEPARATOR) {
+        if (ComboBoxMethodRenderer.SEPARATOR.equals(value)) {
             return ComboBoxMethodRenderer.SEPARATOR;
         }
         if (value instanceof ExploitMode) {

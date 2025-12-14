@@ -37,6 +37,7 @@ class PostgresReadFileSuiteIT extends ConcretePostgresSuiteIT {
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true)
+        .withIsStrategyDnsDisabled(true)
         .withIsStrategyStackDisabled(true)
         .withIsStrategyErrorDisabled(true);
 

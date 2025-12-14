@@ -39,6 +39,7 @@ class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyStackDisabled(true)
         .withIsStrategyMultibitDisabled(true)
+        .withIsStrategyDnsDisabled(true)
         .withIsStrategyErrorDisabled(true);
         
         model.beginInjection();

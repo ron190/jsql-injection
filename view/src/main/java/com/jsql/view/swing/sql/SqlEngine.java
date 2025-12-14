@@ -157,6 +157,10 @@ public class SqlEngine extends JPanel {
             v -> SqlEngine.modelYaml.getStrategy().setStack(v),
             () -> SqlEngine.modelYaml.getStrategy().getStack()
         )),
+        DNS(new JSyntaxTextArea(
+            v -> SqlEngine.modelYaml.getStrategy().setDns(v),
+            () -> SqlEngine.modelYaml.getStrategy().getDns()
+        )),
 
         // Boolean
         MODE_AND(new JSyntaxTextArea(
@@ -365,6 +369,7 @@ public class SqlEngine extends JPanel {
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_UNION"), new RTextScrollPane(TextareaWithColor.INDICES.getTextArea(), false));
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_STACK"), new RTextScrollPane(TextareaWithColor.STACK.getTextArea(), false));
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), SqlEngine.tabsError);
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_DNS"), new RTextScrollPane(TextareaWithColor.DNS.getTextArea(), false));
 
         JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT);
         Stream.of(

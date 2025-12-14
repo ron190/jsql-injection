@@ -40,10 +40,9 @@ public class SuspendableGetVendor extends AbstractSuspendable {
             if (isVendorFound.get()) {
                 return;
             }
-            String vendorSpecificWithOperator = String.format(
-                "%s %s",
-                AbstractInjectionBit.BlindOperator.OR.name(),
-                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
+            String vendorSpecificWithOperator = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(
+                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getVendorSpecific(),
+                AbstractInjectionBit.BlindOperator.OR  // TODO should also test AND and no mode
             );
             try {
                 var injectionCharInsertion = new InjectionVendor(this.injectionModel, vendorSpecificWithOperator, vendor);

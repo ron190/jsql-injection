@@ -47,6 +47,20 @@ public class ParameterUtil {
     private boolean isMultipartRequest = false;
     private static final String FORMAT_KEY_VALUE = "%s=%s";
 
+    // ABNF primitives defined in RFC 7230
+    private static final boolean[] tchar = new boolean[256];
+
+    static {
+        char[] allowedTokenChars = (
+            "!#$%&'*+-.^_`|~0123456789" +
+            "abcdefghijklmnopqrstuvwxyz" +
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        ).toCharArray();
+        for (char c : allowedTokenChars) {
+            ParameterUtil.tchar[c] = true;
+        }
+    }
+
     private final InjectionModel injectionModel;
     
     public ParameterUtil(InjectionModel injectionModel) {
@@ -126,20 +140,6 @@ public class ParameterUtil {
                 "Illegal method: \"%s\"",
                 this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest()
             ));
-        }
-    }
-
-    // ABNF primitives defined in RFC 7230
-    private static final boolean[] tchar = new boolean[256];
-
-    static {
-        char[] allowedTokenChars = (
-            "!#$%&'*+-.^_`|~0123456789" +
-            "abcdefghijklmnopqrstuvwxyz" +
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        ).toCharArray();
-        for (char c : allowedTokenChars) {
-            ParameterUtil.tchar[c] = true;
         }
     }
 

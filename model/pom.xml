@@ -61,7 +61,7 @@
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy.version>5.0.3</groovy.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
-        <h2.version>2.3.232</h2.version>
+        <h2.version>2.4.240</h2.version>
         <hsqldb.version>2.7.4</hsqldb.version>
         <informix.jdbc.version>15.0.0.2</informix.jdbc.version>
         <jaxb-api.version>2.1</jaxb-api.version>
@@ -72,6 +72,7 @@
         <json.version>20250517</json.version>
         <jsoup.version>1.21.2</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
+        <junit-platform-runner.version>1.14.1</junit-platform-runner.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
@@ -79,7 +80,7 @@
         <!-- v12.0 not working -->
         <monetdb-jdbc.version>12.1</monetdb-jdbc.version>
         <mssql-jdbc.version>12.10.2.jre11</mssql-jdbc.version>
-        <mysql-connector-j.version>9.2.0</mysql-connector-j.version>
+        <mysql-connector-j.version>9.5.0</mysql-connector-j.version>
         <nashorn-core.version>15.7</nashorn-core.version>
         <!-- failure with 5.28.2 => TODO upgrade neo4j docker version -->
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
@@ -87,13 +88,13 @@
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
         <ojdbc8.version>23.26.0.0.0</ojdbc8.version>
         <postgresql.version>42.7.8</postgresql.version>
+        <slf4j-nop.version>1.7.36</slf4j-nop.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
-        <spock-core.version>2.4-M7-groovy-5.0</spock-core.version>
-        <spring-boot-dependencies.version>3.4.5</spring-boot-dependencies.version>
+        <spock-core.version>2.4-groovy-5.0</spock-core.version>
+        <spring-boot-dependencies.version>3.5.8</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
         <sqlite-jdbc.version>3.51.1.0</sqlite-jdbc.version>
-        <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
         <stomp-websocket.version>2.3.4</stomp-websocket.version>
         <sybase-jconn4.version>16.0</sybase-jconn4.version>
         <vertica-jdbc.version>25.3.0-0</vertica-jdbc.version>
@@ -444,7 +445,13 @@
             <groupId>dnsjava</groupId>
             <artifactId>dnsjava</artifactId>
             <version>${dnsjava.version}</version>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- discard dnsjava logs -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <!-- must match slf4j version from dnsjava -->
+            <version>${slf4j-nop.version}</version>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -589,11 +596,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-runner</artifactId>
+            <version>${junit-platform-runner.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

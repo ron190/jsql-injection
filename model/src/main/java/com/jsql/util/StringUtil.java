@@ -367,8 +367,8 @@ public final class StringUtil {
     }
 
     public static byte[] uncloak(byte[] fileData) {
-        fileData = StringUtil.xor(fileData, 353837730);
-        ArrayUtils.reverse(fileData);
-        return fileData;
+        byte[] fileDataUncloaked = StringUtil.xor(fileData, 353837730);
+        ArrayUtils.reverse(fileDataUncloaked);
+        return fileDataUncloaked;
     }
 }

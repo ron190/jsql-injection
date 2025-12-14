@@ -39,7 +39,8 @@ class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyStackDisabled(true)
         .withIsStrategyMultibitDisabled(true)
-        .withIsStrategyErrorDisabled(true);
+        .withIsStrategyErrorDisabled(true)
+        .withIsStrategyDnsDisabled(true);
 
         model.beginInjection();
     }

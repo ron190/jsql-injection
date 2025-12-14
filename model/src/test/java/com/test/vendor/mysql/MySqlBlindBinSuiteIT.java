@@ -25,6 +25,7 @@ class MySqlBlindBinSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsStrategyDnsDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyTimeDisabled(true);
         

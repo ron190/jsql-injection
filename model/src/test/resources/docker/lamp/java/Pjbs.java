@@ -629,8 +629,10 @@ class Search {
 
     private String partition;
     private IndexWriter indexwriter = null;
-    private Vector keys, scores;
-    private int matches, cur;
+    private Vector keys;
+    private Vector scores;
+    private int matches;
+    private int cur;
 
     /** Creates a new instance of Search */
     public Search(String pn) {
@@ -723,10 +725,7 @@ class Search {
 
     public boolean next() {
         cur ++;
-        if (cur < keys.size())
-            return true;
-        else
-            return false;
+        return cur < keys.size();
     }
 
     public int getMatches() {

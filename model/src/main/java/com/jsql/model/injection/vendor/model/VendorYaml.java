@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 import static com.jsql.model.accessible.DataAccess.*;
@@ -96,7 +97,9 @@ public class VendorYaml implements AbstractVendor {
     private static final String DATABASE = "${database}";
     private static final String TABLE_HEX = "${table.hex}";
     private static final String DATABASE_HEX = "${database.hex}";
-    
+    private static final String DNS_DOMAIN = "${dns.domain}";
+    private static final String DNS_RANDOM = "${dns.random}";
+
     private final ModelYaml modelYaml;
     private final InjectionModel injectionModel;
     
@@ -436,6 +439,23 @@ public class VendorYaml implements AbstractVendor {
             .replace(VendorYaml.WINDOW_CHAR, startPosition)
             .replace(VendorYaml.CAPACITY, this.injectionModel.getMediatorStrategy().getUnion().getPerformanceLength())
         );
+    }
+
+    @Override
+    public String sqlDns(String sqlQuery, String startPosition, BlindOperator blindOperator, boolean isReport) {
+        String replacement = this.getMode(blindOperator);
+        String result = VendorYaml.replaceTags(
+            this.modelYaml.getStrategy().getDns()
+            .replace(VendorYaml.WINDOW, this.getSlidingWindow(isReport))
+            .replace(VendorYaml.BINARY_MODE, replacement)
+            .replace(VendorYaml.INJECTION, sqlQuery)
+            .replace(VendorYaml.DNS_DOMAIN, this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain())
+            .replace(VendorYaml.WINDOW_CHAR, startPosition)
+            .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
+        );
+        return Pattern.compile(Pattern.quote(VendorYaml.DNS_RANDOM))
+            .matcher(result)
+            .replaceAll(m -> String.format("%03d", ThreadLocalRandom.current().nextInt(999)));
     }
 
     @Override

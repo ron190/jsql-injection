@@ -31,6 +31,7 @@ class SqliteBlindBinSuiteIT extends ConcreteSqliteSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsStrategyDnsDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 
         model.beginInjection();

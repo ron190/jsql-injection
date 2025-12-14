@@ -88,8 +88,7 @@ public class SpringApp {
         new SimpleEntry<>(SpringApp.propsHsqldb, "hibernate/hibernate.hsqldb.properties"),
         new SimpleEntry<>(SpringApp.propsDerby, "hibernate/hibernate.derby.properties"),
         new SimpleEntry<>(SpringApp.propsFirebird, "hibernate/hibernate.firebird.properties"),
-        new SimpleEntry<>(SpringApp.propsInformix, "hibernate/hibernate.informix.properties"),
-        new SimpleEntry<>(SpringApp.propsSybase, "hibernate/hibernate.sybase.properties")
+        new SimpleEntry<>(SpringApp.propsInformix, "hibernate/hibernate.informix.properties")
     );
 
     static {

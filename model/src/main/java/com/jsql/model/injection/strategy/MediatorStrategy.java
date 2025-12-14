@@ -24,6 +24,7 @@ public class MediatorStrategy {
     private final AbstractStrategy blindBit;
     private final AbstractStrategy blindBin;
     private final AbstractStrategy multibit;
+    private final AbstractStrategy dns;
     private final StrategyError error;
     private final AbstractStrategy union;
     private final AbstractStrategy stack;
@@ -44,11 +45,12 @@ public class MediatorStrategy {
         this.blindBit = new StrategyBlindBit(this.injectionModel);
         this.blindBin = new StrategyBlindBin(this.injectionModel);
         this.multibit = new StrategyMultibit(this.injectionModel);
+        this.dns = new StrategyDns(this.injectionModel);
         this.error = new StrategyError(this.injectionModel);
         this.union = new StrategyUnion(this.injectionModel);
         this.stack = new StrategyStack(this.injectionModel);
 
-        this.strategies = Arrays.asList(this.time, this.blindBin, this.blindBit, this.multibit, this.error, this.stack, this.union);
+        this.strategies = Arrays.asList(this.time, this.blindBin, this.blindBit, this.multibit, this.error, this.dns, this.stack, this.union);
     }
     
     public String getMeta() {
@@ -183,14 +185,16 @@ public class MediatorStrategy {
             this.multibit.checkApplicability();
         }
 
+        this.dns.checkApplicability();
         this.error.checkApplicability();
         this.stack.checkApplicability();
         this.union.checkApplicability();
 
-        // Set most efficient strategy first: union > stack > error > multibit > blind bitwise > blind binary > time
+        // Set most efficient strategy first
         this.union.activateWhenApplicable();
         this.stack.activateWhenApplicable();
         this.error.activateWhenApplicable();
+        this.dns.activateWhenApplicable();
         this.multibit.activateWhenApplicable();
         this.blindBit.activateWhenApplicable();
         this.blindBin.activateWhenApplicable();
@@ -243,6 +247,10 @@ public class MediatorStrategy {
 
     public AbstractStrategy getStack() {
         return this.stack;
+    }
+
+    public AbstractStrategy getDns() {
+        return this.dns;
     }
 
     public List<AbstractStrategy> getStrategies() {

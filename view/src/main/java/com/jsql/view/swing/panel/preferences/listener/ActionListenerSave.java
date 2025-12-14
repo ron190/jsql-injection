@@ -61,7 +61,9 @@ public class ActionListenerSave implements ActionListener {
         .withIsPerfIndexDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsPerfIndexDisabled().isSelected())
         .withIsLimitingSleepTimeStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsLimitingSleepTimeStrategy().isSelected())
         .withCountSleepTimeStrategy((Integer) this.panelPreferences.getPanelInjection().getSpinnerSleepTimeStrategy().getValue())
-                
+        .withDnsDomain(this.panelPreferences.getPanelInjection().getTextfieldDnsDomain().getText())
+        .withDnsPort(this.panelPreferences.getPanelInjection().getTextfieldDnsPort().getText())
+
         .withIsTamperingBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())
         .withIsTamperingEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())
         .withIsTamperingFunctionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingFunctionComment().isSelected())
@@ -77,6 +79,7 @@ public class ActionListenerSave implements ActionListener {
         .withIsStrategyBlindBinDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyBlindBinDisabled().isSelected())
         .withIsStrategyMultibitDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyMultibitDisabled().isSelected())
         .withIsStrategyStackDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyStackDisabled().isSelected())
+        .withIsStrategyDnsDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyDnsDisabled().isSelected())
         .withIsStrategyErrorDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyErrorDisabled().isSelected())
         .withIsStrategyUnionDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyUnionDisabled().isSelected())
 

@@ -10,6 +10,7 @@ public class Strategy implements Serializable {
     private Configuration configuration = new Configuration();
     private Union union = new Union();
     private String stack = StringUtils.EMPTY;
+    private String dns = StringUtils.EMPTY;
     private Binary binary = new Binary();
     private Error error = new Error();
 
@@ -51,5 +52,13 @@ public class Strategy implements Serializable {
 
     public void setStack(String stack) {
         this.stack = stack;
+    }
+
+    public String getDns() {
+        return this.dns;
+    }
+
+    public void setDns(String dns) {
+        this.dns = dns;
     }
 }

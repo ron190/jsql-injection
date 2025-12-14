@@ -437,12 +437,13 @@ public class DataAccess {
         LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
 
         // Get pieces of data already retrieved instead of losing them
+        String resultFromWindow = resultToParse;
         if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
-            resultToParse = e.getSlidingWindowAllRows();
+            resultFromWindow = e.getSlidingWindowAllRows();
         } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
-            resultToParse = e.getSlidingWindowCurrentRows();
+            resultFromWindow = e.getSlidingWindowCurrentRows();
         }
-        return resultToParse;
+        return resultFromWindow;
     }
 
     private String[][] getTable(List<String> columnsName, List<List<String>> values) {

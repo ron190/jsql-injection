@@ -222,13 +222,14 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
     }
 
     private boolean isCorruptOrElseNextChar(List<char[]> bytes, AtomicInteger indexChar, AtomicInteger countBadAsciiCode, CallableBlindBin currentCallable, int low) {
-        if (low == 0 || low == 127) {
+        int currentLow = low;
+        if (currentLow == 0 || currentLow == 127) {
             countBadAsciiCode.incrementAndGet();
         } else {
-            low = currentCallable.isTrue() ? low : low - 1;
+            currentLow = currentCallable.isTrue() ? currentLow : currentLow - 1;
         }
         char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);  // bits for current url
-        this.setAsciiCodeMask(asciiCodeMask, low);
+        this.setAsciiCodeMask(asciiCodeMask, currentLow);
 
         try {
             this.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);

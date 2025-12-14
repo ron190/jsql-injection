@@ -25,6 +25,7 @@ public interface AbstractVendor {
     String sqlBlind(String sqlQuery, String startPosition, boolean isReport);
     String sqlTime(String sqlQuery, String startPosition, boolean isReport);
     String sqlStack(String sqlQuery, String startPosition, boolean isReport);
+    String sqlDns(String sqlQuery, String startPosition, BlindOperator blindOperator, boolean isReport);
 
     String sqlCapacity(String[] indexes);
     String sqlIndices(Integer nbFields);

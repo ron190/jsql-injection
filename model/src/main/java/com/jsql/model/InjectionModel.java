@@ -116,13 +116,14 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     public void resetModel() {
         this.mediatorStrategy.getSpecificUnion().setVisibleIndex(null);
         
-        this.mediatorStrategy.getUnion().setApplicable(false);
-        this.mediatorStrategy.getError().setApplicable(false);
-        this.mediatorStrategy.getBlindBit().setApplicable(false);
-        this.mediatorStrategy.getBlindBin().setApplicable(false);
-        this.mediatorStrategy.getMultibit().setApplicable(false);
         this.mediatorStrategy.getTime().setApplicable(false);
+        this.mediatorStrategy.getBlindBin().setApplicable(false);
+        this.mediatorStrategy.getBlindBit().setApplicable(false);
+        this.mediatorStrategy.getMultibit().setApplicable(false);
+        this.mediatorStrategy.getDns().setApplicable(false);
+        this.mediatorStrategy.getError().setApplicable(false);
         this.mediatorStrategy.getStack().setApplicable(false);
+        this.mediatorStrategy.getUnion().setApplicable(false);
         this.mediatorStrategy.setStrategy(null);
 
         this.indexesInUrl = StringUtils.EMPTY;

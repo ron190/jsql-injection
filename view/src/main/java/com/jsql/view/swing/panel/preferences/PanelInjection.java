@@ -2,9 +2,12 @@ package com.jsql.view.swing.panel.preferences;
 
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.panel.preferences.listener.SpinnerMouseWheelListener;
+import com.jsql.view.swing.text.JPopupTextField;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 
 import javax.swing.*;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -37,6 +40,9 @@ public class PanelInjection extends JPanel {
     private final JRadioButton radioIsDiosStrategy = new JRadioButton("Use Dios mode (less queries ; do not use with Error strategies)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
     private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox("Disable URL encoding (smaller URL)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
     private final JCheckBox checkboxIsUrlRandomSuffixDisabled = new JCheckBox("Disable URL random suffix (strategy Time special use case)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlRandomSuffixDisabled());
+
+    private final JTextField textfieldDnsDomain = new JPopupTextField("e.g custom-domain.com", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getDnsDomain()).getProxy();
+    private final JTextField textfieldDnsPort = new JPopupTextField("e.g 53", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getDnsPort()).getProxy();
 
     public PanelInjection(PanelPreferences panelPreferences) {
         this.checkboxIsNotInjectingMetadata.setName("checkboxIsNotInjectingMetadata");
@@ -123,10 +129,17 @@ public class PanelInjection extends JPanel {
         );
 
         var labelGeneralInjection = new JLabel("<html><b>Processing</b></html>");
-        var labelParamsInjection = new JLabel("<html><br /><b>URL parameters</b></html>");
-        var labelSpecial = new JLabel("<html><br /><b>Special parameters</b></html>");
-        var labelQuerySize = new JLabel("<html><br /><b>Reduce URL size (advanced)</b></html>");
-        Arrays.asList(labelGeneralInjection, labelParamsInjection, labelSpecial, labelQuerySize).forEach(label -> label.setBorder(PanelGeneral.MARGIN));
+        var labelParamsInjection = new JLabel("<html><br><b>URL parameters</b></html>");
+        var labelSpecial = new JLabel("<html><br><b>Special parameters</b></html>");
+        var labelQuerySize = new JLabel("<html><br><b>Reduce URL size (advanced)</b></html>");
+        var labelDns = new JLabel("<html><br><b>DNS exfiltration (advanced, working also on local database without registrar)</b></html>");
+        Arrays.asList(
+            labelGeneralInjection,
+            labelParamsInjection,
+            labelSpecial,
+            labelQuerySize,
+            labelDns
+        ).forEach(label -> label.setBorder(PanelGeneral.MARGIN));
 
         ActionListener actionListenerCheckingAllParam = actionEvent -> {
             if (actionEvent.getSource() != this.checkboxIsCheckingAllParam) {
@@ -172,7 +185,40 @@ public class PanelInjection extends JPanel {
             this.checkboxIsLimitingSleepTimeStrategy
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
-        
+
+        var panelDnsDomain = new JPanel();
+        panelDnsDomain.setLayout(new BoxLayout(panelDnsDomain, BoxLayout.X_AXIS));
+        panelDnsDomain.add(new JLabel("Domain name "));
+        panelDnsDomain.add(this.textfieldDnsDomain);
+        panelDnsDomain.add(new JLabel(" ; default custom-domain.com"));
+        panelDnsDomain.setMaximumSize(new Dimension(400, this.textfieldDnsDomain.getPreferredSize().height));
+        var panelDnsPort = new JPanel();
+        panelDnsPort.setLayout(new BoxLayout(panelDnsPort, BoxLayout.X_AXIS));
+        panelDnsPort.add(new JLabel("DNS port "));
+        panelDnsPort.add(this.textfieldDnsPort);
+        panelDnsPort.add(new JLabel(" ; default 53"));
+        panelDnsPort.setMaximumSize(new Dimension(125, this.textfieldDnsPort.getPreferredSize().height));
+
+        DocumentListener documentListenerSave = new DocumentListenerEditing() {
+            @Override
+            public void process() {
+                panelPreferences.getActionListenerSave().actionPerformed(null);
+            }
+        };
+
+        Stream.of(this.textfieldDnsDomain, this.textfieldDnsPort).forEach(
+            textField -> textField.getDocument().addDocumentListener(documentListenerSave)
+        );
+
+        this.textfieldDnsDomain.setToolTipText(
+            "<html>"
+            + "<b>This domain must redirect to your IP address that runs jSQL</b><br>"
+            + "You can run DNS exfiltration on a local database, replace your ISP box address<br>"
+            + "by your system address in your OS preferred DNS.<br>"
+            + "</html>"
+        );
+        this.textfieldDnsPort.setToolTipText("The DNS server port started by jSQL");
+
         var groupSpaceToComment = new ButtonGroup();
         groupSpaceToComment.add(this.radioIsZipStrategy);
         groupSpaceToComment.add(this.radioIsDiosStrategy);
@@ -216,6 +262,10 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsPerfIndexDisabled)
                 .addComponent(this.checkboxIsUrlEncodingDisabled)
                 .addComponent(this.checkboxIsUrlRandomSuffixDisabled)
+
+                .addComponent(labelDns)
+                .addComponent(panelDnsDomain)
+                .addComponent(panelDnsPort)
             )
         );
 
@@ -355,6 +405,21 @@ public class PanelInjection extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsUrlRandomSuffixDisabled)
             )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(labelDns)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(panelDnsDomain)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(panelDnsPort)
+            )
         );
     }
 
@@ -447,5 +512,13 @@ public class PanelInjection extends JPanel {
     
     public JSpinner getSpinnerSleepTimeStrategy() {
         return this.spinnerSleepTimeStrategyCount;
+    }
+
+    public JTextField getTextfieldDnsDomain() {
+        return this.textfieldDnsDomain;
+    }
+
+    public JTextField getTextfieldDnsPort() {
+        return this.textfieldDnsPort;
     }
 }

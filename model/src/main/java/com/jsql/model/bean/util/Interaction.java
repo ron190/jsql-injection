@@ -53,6 +53,9 @@ public enum Interaction {
     MARK_STACK_INVULNERABLE("MarkStackInvulnerable"),
     MARK_STACK_STRATEGY("MarkStackStrategy"),
     MARK_STACK_VULNERABLE("MarkStackVulnerable"),
+    MARK_DNS_INVULNERABLE("MarkDnsInvulnerable"),
+    MARK_DNS_STRATEGY("MarkDnsStrategy"),
+    MARK_DNS_VULNERABLE("MarkDnsVulnerable"),
 
     MESSAGE_BINARY("MessageBinary"),
     MESSAGE_CHUNK("MessageChunk"),

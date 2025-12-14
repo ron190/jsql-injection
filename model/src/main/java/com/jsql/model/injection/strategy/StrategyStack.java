@@ -47,7 +47,7 @@ public class StrategyStack extends AbstractStrategy {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
                     "{} {} but injectable size is incorrect",
-                    () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
+                    () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
                     () -> "Stack"
                 );
                 methodIsApplicable = false;
@@ -60,7 +60,7 @@ public class StrategyStack extends AbstractStrategy {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
                 "{} Stack injection showing [{}] characters",
-                () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
+                () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
                 () -> this.performanceLength
             );
             this.allow();

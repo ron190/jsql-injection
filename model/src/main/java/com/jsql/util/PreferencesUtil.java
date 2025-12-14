@@ -88,9 +88,10 @@ public class PreferencesUtil {
     private boolean isUrlDecodeDisabled = false;
 
     private boolean isStrategyTimeDisabled = false;
-    private boolean isStrategyBlindBitDisabled = false;
     private boolean isStrategyBlindBinDisabled = false;
+    private boolean isStrategyBlindBitDisabled = false;
     private boolean isStrategyMultibitDisabled = false;
+    private boolean isStrategyDnsDisabled = false;
     private boolean isStrategyStackDisabled = false;
     private boolean isStrategyErrorDisabled = false;
     private boolean isStrategyUnionDisabled = false;
@@ -104,6 +105,9 @@ public class PreferencesUtil {
     private String languageTag = StringUtils.EMPTY;
     private boolean isUserAgentRandom = false;
     private boolean isUrlDecodeNetworkTab = false;
+
+    private String dnsDomain = StringUtils.EMPTY;
+    private String dnsPort = StringUtils.EMPTY;
 
     private final Yaml yaml;
     private String commandsReverseYaml;
@@ -198,9 +202,10 @@ public class PreferencesUtil {
         this.isLimitingSleepTimeStrategy = preferences.getBoolean("isLimitingSleepTimeStrategy", false);
 
         this.isStrategyTimeDisabled = preferences.getBoolean("isStrategyTimeDisabled", false);
-        this.isStrategyBlindBitDisabled = preferences.getBoolean("isStrategyBlindBitDisabled", false);
         this.isStrategyBlindBinDisabled = preferences.getBoolean("isStrategyBlindBinDisabled", false);
+        this.isStrategyBlindBitDisabled = preferences.getBoolean("isStrategyBlindBitDisabled", false);
         this.isStrategyMultibitDisabled = preferences.getBoolean("isStrategyMultibitDisabled", false);
+        this.isStrategyDnsDisabled = preferences.getBoolean("isStrategyDnsDisabled", true);
         this.isStrategyStackDisabled = preferences.getBoolean("isStrategyStackDisabled", false);
         this.isStrategyErrorDisabled = preferences.getBoolean("isStrategyErrorDisabled", false);
         this.isStrategyUnionDisabled = preferences.getBoolean("isStrategyUnionDisabled", false);
@@ -210,6 +215,9 @@ public class PreferencesUtil {
         this.themeFlatLafName = preferences.get("themeFlatLafName", StringUtils.EMPTY);
         this.languageTag = preferences.get("languageTag", StringUtils.EMPTY);
         this.isUrlDecodeNetworkTab = preferences.getBoolean("isUrlDecodeNetworkTab", false);
+
+        this.dnsDomain = preferences.get("dnsDomain", "custom-domain.com");
+        this.dnsPort = preferences.get("dnsPort", "53");
     }
     
     /**
@@ -274,9 +282,10 @@ public class PreferencesUtil {
         preferences.putBoolean("isTamperingSpaceToSharpComment", this.isTamperingSpaceToSharpComment);
         
         preferences.putBoolean("isStrategyTimeDisabled", this.isStrategyTimeDisabled);
-        preferences.putBoolean("isStrategyBlindBitDisabled", this.isStrategyBlindBitDisabled);
         preferences.putBoolean("isStrategyBlindBinDisabled", this.isStrategyBlindBinDisabled);
+        preferences.putBoolean("isStrategyBlindBitDisabled", this.isStrategyBlindBitDisabled);
         preferences.putBoolean("isStrategyMultibitDisabled", this.isStrategyMultibitDisabled);
+        preferences.putBoolean("isStrategyDnsDisabled", this.isStrategyDnsDisabled);
         preferences.putBoolean("isStrategyStackDisabled", this.isStrategyStackDisabled);
         preferences.putBoolean("isStrategyErrorDisabled", this.isStrategyErrorDisabled);
         preferences.putBoolean("isStrategyUnionDisabled", this.isStrategyUnionDisabled);
@@ -286,6 +295,9 @@ public class PreferencesUtil {
 
         preferences.put("themeFlatLafName", this.themeFlatLafName);
         preferences.put("languageTag", this.languageTag);
+
+        preferences.put("dnsDomain", this.dnsDomain);
+        preferences.put("dnsPort", this.dnsPort);
     }
     
     /**
@@ -517,6 +529,10 @@ public class PreferencesUtil {
         return this.isStrategyStackDisabled;
     }
 
+    public boolean isStrategyDnsDisabled() {
+        return this.isStrategyDnsDisabled;
+    }
+
     public boolean isStrategyErrorDisabled() {
         return this.isStrategyErrorDisabled;
     }
@@ -548,6 +564,15 @@ public class PreferencesUtil {
     public List<ModelReverse> getCommandsReverse() {
         return this.commandsReverse;
     }
+
+    public String getDnsDomain() {
+        return this.dnsDomain;
+    }
+
+    public String getDnsPort() {
+        return this.dnsPort;
+    }
+
 
     // Builder
 
@@ -791,6 +816,16 @@ public class PreferencesUtil {
         return this;
     }
 
+    public PreferencesUtil withDnsDomain(String dnsDomain) {
+        this.dnsDomain = dnsDomain;
+        return this;
+    }
+
+    public PreferencesUtil withDnsPort(String dnsPort) {
+        this.dnsPort = dnsPort;
+        return this;
+    }
+
     public PreferencesUtil withIsStrategyTimeDisabled(boolean isStrategyTimeDisabled) {
         this.isStrategyTimeDisabled = isStrategyTimeDisabled;
         return this;
@@ -813,6 +848,11 @@ public class PreferencesUtil {
 
     public PreferencesUtil withIsStrategyStackDisabled(boolean isStrategyStackDisabled) {
         this.isStrategyStackDisabled = isStrategyStackDisabled;
+        return this;
+    }
+
+    public PreferencesUtil withIsStrategyDnsDisabled(boolean isStrategyDnsDisabled) {
+        this.isStrategyDnsDisabled = isStrategyDnsDisabled;
         return this;
     }
 

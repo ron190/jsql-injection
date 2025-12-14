@@ -25,6 +25,7 @@ class InformixBlindBinGetSuiteIT extends ConcreteInformixSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsStrategyDnsDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 
         model

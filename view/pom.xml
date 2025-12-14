@@ -13,19 +13,13 @@
         <assertj-swing-junit.version>3.17.1</assertj-swing-junit.version>
         <commons-io.version>2.21.0</commons-io.version>
         <flatlaf.version>3.7</flatlaf.version>
-        <junit-jupiter-engine.version>5.12.2</junit-jupiter-engine.version>
-        <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+        <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
         <mockito-inline.version>5.2.0</mockito-inline.version>
         <rsyntaxtextarea.version>3.6.0</rsyntaxtextarea.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>dnsjava</groupId>
-            <artifactId>dnsjava</artifactId>
-            <version>3.6.3</version>
-        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>model</artifactId>
@@ -37,6 +31,8 @@
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
         </dependency>
+
+        <!-- Unit test -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-swing-junit</artifactId>
@@ -56,6 +52,8 @@
             <version>${mockito-inline.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- UI -->
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>

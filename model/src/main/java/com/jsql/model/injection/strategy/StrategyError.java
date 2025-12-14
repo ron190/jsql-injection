@@ -64,7 +64,7 @@ public class StrategyError extends AbstractStrategy {
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_ERROR,
                         "{} {} but injectable size is incorrect",
-                        () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
+                        () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
                         errorMethod::getName
                     );
                     methodIsApplicable = false;
@@ -121,7 +121,7 @@ public class StrategyError extends AbstractStrategy {
         LOGGER.log(
             LogLevelUtil.CONSOLE_SUCCESS,
             "{} [Error {}] showing [{}] characters",
-            () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
+            () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_VULNERABLE),
             errorMethod::getName,
             () -> Integer.toString(logErrorCapacityImproved)
         );

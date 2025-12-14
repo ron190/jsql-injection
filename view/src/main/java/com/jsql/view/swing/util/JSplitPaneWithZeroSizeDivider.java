@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 
-    private final int dividerDragOffset = 4;
+    private static final int DIVIDER_DRAG_OFFSET = 4;
 
     public JSplitPaneWithZeroSizeDivider(int i) {
         super(i);
@@ -25,10 +25,10 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         Rectangle bounds = divider.getBounds();
         int dividerDragSize = 9;
         if (this.orientation == JSplitPane.HORIZONTAL_SPLIT) {
-            bounds.x -= this.dividerDragOffset;
+            bounds.x -= JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET;
             bounds.width = dividerDragSize;
         } else {
-            bounds.y -= this.dividerDragOffset;
+            bounds.y -= JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET;
             bounds.height = dividerDragSize;
         }
         divider.setBounds(bounds);
@@ -76,20 +76,20 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         public void paint(Graphics g) {
             g.setColor(this.getBackground());
             if (this.orientation == JSplitPane.HORIZONTAL_SPLIT) {
-                g.drawLine(JSplitPaneWithZeroSizeDivider.this.dividerDragOffset, 0, JSplitPaneWithZeroSizeDivider.this.dividerDragOffset, this.getHeight() - 1);
+                g.drawLine(JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET, 0, JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET, this.getHeight() - 1);
             } else {
-                g.drawLine(0, JSplitPaneWithZeroSizeDivider.this.dividerDragOffset, this.getWidth() - 1, JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);
+                g.drawLine(0, JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET, this.getWidth() - 1, JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET);
             }
         }
 
         @Override
         protected void dragDividerTo(int location) {
-            super.dragDividerTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);
+            super.dragDividerTo(location + JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET);
         }
 
         @Override
         protected void finishDraggingTo(int location) {
-            super.finishDraggingTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);
+            super.finishDraggingTo(location + JSplitPaneWithZeroSizeDivider.DIVIDER_DRAG_OFFSET);
         }
     }
 }

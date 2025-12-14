@@ -29,8 +29,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -115,14 +113,15 @@ public class JFrameView extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent event) {
+                double nsProportion = preferences.getDouble(PreferencesUtil.NS_SPLIT, 0.75);
                 if (preferences.getBoolean(PreferencesUtil.IS_MAXIMIZED, false)) {
                     JFrameView.this.setExtendedState(Frame.MAXIMIZED_BOTH);
                 }
-                var horizontalTopBottomSplitter = preferences.getDouble(PreferencesUtil.NS_SPLIT, 0.75);
-                if (!(0.0 <= horizontalTopBottomSplitter && horizontalTopBottomSplitter <= 1.0)) {
-                    horizontalTopBottomSplitter = 0.75;
-                }
-                JFrameView.this.splitNS.setDividerLocation(horizontalTopBottomSplitter);
+                // Proportion means different location relative to whether frame is maximized or not
+                // Maximizing must wait AWT events to reflect the new divider location proportion
+                SwingUtilities.invokeLater(() -> JFrameView.this.splitNS.setDividerLocation(
+                    Math.max(0.0, Math.min(1.0, nsProportion))
+                ));
             }
 
             @Override
@@ -130,22 +129,18 @@ public class JFrameView extends JFrame {
                 preferences.putBoolean(PreferencesUtil.IS_MAXIMIZED, JFrameView.this.isMaximized);
                 preferences.putInt(
                     PreferencesUtil.EW_SPLIT,
-                    // TODO not compatible arabic location
-                    JFrameView.this.splitNS.getSplitEW().getDividerLocation()
+                    JFrameView.this.splitNS.getSplitEW().getDividerLocation()  // TODO not compatible arabic location
                 );
-                
-                var percentTopBottom = BigDecimal.valueOf(
-                    JFrameView.this.splitNS.getDividerLocation() * 100.0
-                    / JFrameView.this.splitNS.getHeight()
-                    / 100
-                );
-                percentTopBottom = percentTopBottom.setScale(2, RoundingMode.HALF_UP);
-                
-                // Divider location change when window is maximized, we can't save getDividerLocation()
-                preferences.putDouble(
-                    PreferencesUtil.NS_SPLIT,
-                    percentTopBottom.doubleValue() - 0.01  // Fix scale
-                );
+
+                int nsDividerLocation = JFrameView.this.splitNS.getDividerLocation();
+                int nsHeight = JFrameView.this.splitNS.getHeight();
+                double nsProportion = (100.0 * (double) nsDividerLocation) / (double) nsHeight;
+                double nsLocationProportionCapped = Math.max(0.0, Math.min(1.0,
+                    nsProportion / 100.0
+                ));
+
+                // Divider location changes when window is maximized, instead stores location percentage between 0.0 and 1.0
+                preferences.putDouble(PreferencesUtil.NS_SPLIT, nsLocationProportionCapped);
 
                 preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, false);
                 preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, false);
