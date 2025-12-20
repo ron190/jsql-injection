@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class VerticaUnionGetSuiteIgnoreIT extends ConcreteVerticaSuiteIgnoreIT {
+class VerticaBlindBinGetSuiteIT extends ConcreteVerticaSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -19,7 +19,16 @@ class VerticaUnionGetSuiteIgnoreIT extends ConcreteVerticaSuiteIgnoreIT {
         model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://localhost:8080/vertica?name="
         );
-        
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindBitDisabled(true)
+//        .withIsStrategyDnsDisabled(true)
+        .withIsStrategyUnionDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
@@ -28,25 +37,7 @@ class VerticaUnionGetSuiteIgnoreIT extends ConcreteVerticaSuiteIgnoreIT {
         
         model.beginInjection();
     }
-    
-    @Override
-    @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
-    }
-    
+
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
@@ -56,7 +47,7 @@ class VerticaUnionGetSuiteIgnoreIT extends ConcreteVerticaSuiteIgnoreIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getBlindBin(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

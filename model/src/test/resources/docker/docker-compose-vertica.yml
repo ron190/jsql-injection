@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+
+  vertica:
+    container_name: jsql-vertica
+    ports:
+      - "5433:5433"
+    build:
+      context: .
+      dockerfile: Dockerfile.vertica
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

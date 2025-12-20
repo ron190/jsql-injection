@@ -61,7 +61,7 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
                 try {
                     JPopupTextArea.this.getProxy().getCaret().setVisible(true);
                 } catch (IllegalArgumentException e) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
                 JPopupTextArea.this.getProxy().getCaret().setSelectionVisible(true);
             }

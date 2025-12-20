@@ -29,11 +29,15 @@ public class ActionCheckIp implements ActionListener, Runnable {
         }
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
         String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_INFORM,
-            "{} {}",
-            () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_IS"),
-            () -> addressIp
-        );
+        if (addressIp.matches("\\d+\\.\\d+\\.\\d+\\.\\d+")) {
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_INFORM,
+                "{} {}",
+                () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_IS"),
+                () -> addressIp
+            );
+        } else {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect IP address, check your connection");
+        }
     }
 }

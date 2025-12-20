@@ -26,9 +26,33 @@ jobs:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
     secrets: inherit
 
-  build-additional:
+  build-db2:
     needs: set-global-env-var
-    uses: ./.github/workflows/build-additional.yml
+    uses: ./.github/workflows/build-db2.yml
+    with:
+      DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+
+  build-oracle:
+    needs: set-global-env-var
+    uses: ./.github/workflows/build-oracle.yml
+    with:
+      DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+
+  build-sqlserver:
+    needs: set-global-env-var
+    uses: ./.github/workflows/build-sqlserver.yml
+    with:
+      DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+
+  build-sybase:
+    needs: set-global-env-var
+    uses: ./.github/workflows/build-sybase.yml
+    with:
+      DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+
+  build-vertica:
+    needs: set-global-env-var
+    uses: ./.github/workflows/build-vertica.yml
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
 
@@ -43,6 +67,6 @@ jobs:
     uses: ./.github/workflows/codeql.yml
 
   release:
-    needs: [build-jdk11, build, build-additional, codeql]
+    needs: [build-jdk11, build, build-db2, build-oracle, build-sqlserver, build-sybase, build-vertica, codeql]
     uses: ./.github/workflows/release.yml
     secrets: inherit

@@ -18,6 +18,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
 import java.util.Locale;
 
@@ -48,7 +49,7 @@ public class GitUtil {
     }
 
     /**
-     * Verify if application is up-to-date against the version on GitHub.
+     * Verify if application is up to date against the version on GitHub.
      * @param displayUpdateMessage YES for manual update verification, hidden otherwise
      */
     public void checkUpdate(ShowOnConsole displayUpdateMessage) {
@@ -203,21 +204,22 @@ public class GitUtil {
      */
     public JSONObject callService() {
         if (this.jsonObject == null) {
-            String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("github.webservice.url")
-            );
-            // Fix #45349: JSONException on new JSONObject(json)
             try {
+                String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(
+                    this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("github.webservice.url")
+                );
                 this.jsonObject = new JSONObject(json);
-            } catch (JSONException e) {
+            } catch (UnresolvedAddressException | JSONException e) {
+                // UnresolvedAddressException when using local Dns server, HttpClientImpl always print stacktrace
+                // Fix #45349: JSONException on new JSONObject(json)
                 try {
                     this.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
                 } catch (JSONException eInner) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Fetching default JSON failed", eInner);
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, eInner, eInner);
                 }
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
-                    "Fetching configuration from GitHub failed. Wait for service to be available, check your connection or update jSQL"
+                    "Failure getting config from GitHub, wait for the service to be available, check your connection or update jSQL"
                 );
             }
         }

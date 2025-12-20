@@ -92,7 +92,12 @@ public class PanelAddressBar extends JPanel {
                 MediatorHelper.model().getMediatorMethod().getHeader(),
                 "HEADER",
                 this.atomicRadioHeader,
-                "e.g. key: value\\r\\nCookie: cKey1=cValue1; cKey2=cValue2\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:",
+                String.format(
+                    "e.g. key: value\\r\\nCookie: cKey1=cValue1; cKey2=cValue2\\r\\n%s: %s %s\\r\\ninjectMe:",
+                    "Authorization",
+                    "Basic",
+                    "dXNlcjpwYXNz"
+                ),
                 this.atomicTextFieldHeader
             )
         )

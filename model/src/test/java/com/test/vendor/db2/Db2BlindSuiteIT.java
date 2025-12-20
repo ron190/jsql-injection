@@ -1,4 +1,4 @@
-package com.test.vendor.vertica;
+package com.test.vendor.db2;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class VerticaBlindBitGetSuiteIgnoreIT extends ConcreteVerticaSuiteIgnoreIT {
+class Db2BlindSuiteIT extends ConcreteDb2SuiteIT {
+    // Unstable
     
     @Override
     public void setupInjection() throws Exception {
@@ -17,29 +18,31 @@ class VerticaBlindBitGetSuiteIgnoreIT extends ConcreteVerticaSuiteIgnoreIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/vertica?name="
+            "http://localhost:8080/blind?tenant=db2&name=1'*"
         );
-
+        
         model.setIsScanning(true);
-
+        
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyUnionDisabled(true);
-
+        .withCountLimitingThreads(3);
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
+        model.setIsScanning(true);
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getDb2());
         model.beginInjection();
     }
-
+    
     @Override
     @RetryingTest(3)
-    public void listValues() throws JSqlException {
-        super.listValues();
+    public void listTables() throws JSqlException {
+        super.listTables();
     }
 
     @AfterEach

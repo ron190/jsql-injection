@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+
+  sqlserver:
+    ports:
+      - "1434:1434"
+      - "1433:1433"
+    build:
+      context: .
+      dockerfile: Dockerfile.sqlserver
+    environment:
+      SA_PASSWORD: yourStrong(!)Password
+      ACCEPT_EULA: Y
+    container_name: jsql-sqlserver
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

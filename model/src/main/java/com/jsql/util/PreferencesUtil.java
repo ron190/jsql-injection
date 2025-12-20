@@ -91,7 +91,7 @@ public class PreferencesUtil {
     private boolean isStrategyBlindBinDisabled = false;
     private boolean isStrategyBlindBitDisabled = false;
     private boolean isStrategyMultibitDisabled = false;
-    private boolean isStrategyDnsDisabled = false;
+    private boolean isStrategyDnsDisabled = true;
     private boolean isStrategyStackDisabled = false;
     private boolean isStrategyErrorDisabled = false;
     private boolean isStrategyUnionDisabled = false;
@@ -106,8 +106,8 @@ public class PreferencesUtil {
     private boolean isUserAgentRandom = false;
     private boolean isUrlDecodeNetworkTab = false;
 
-    private String dnsDomain = StringUtils.EMPTY;
-    private String dnsPort = StringUtils.EMPTY;
+    private String dnsDomain = "custom-domain.com";
+    private String dnsPort = "53";
 
     private final Yaml yaml;
     private String commandsReverseYaml;

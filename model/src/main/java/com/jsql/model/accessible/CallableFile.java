@@ -96,7 +96,7 @@ public class CallableFile implements Callable<CallableFile> {
             } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
         this.sourceFile = resultToParse;

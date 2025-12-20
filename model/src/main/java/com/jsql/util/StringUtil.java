@@ -330,7 +330,7 @@ public final class StringUtil {
     public static byte[] xor(byte[] plaintext, int key) {
         var ciphertext = new byte[plaintext.length];
         for (var i = 0 ; i < plaintext.length ; i++) {
-            ciphertext[i] = (byte) (plaintext[i] ^ (key >>> (8 * (i % 4))));
+            ciphertext[i] = (byte) (Byte.toUnsignedInt(plaintext[i]) ^ (key >>> (8 * (i % 4))));
         }
         return ciphertext;
     }

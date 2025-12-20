@@ -1,4 +1,4 @@
-package com.test.vendor.sybase;
+package com.test.vendor.vertica;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SybaseUnionGetSuiteIgnoreIT extends ConcreteSybaseSuiteIgnoreIT {
+class VerticaUnionGetSuiteIT extends ConcreteVerticaSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -17,7 +17,7 @@ class SybaseUnionGetSuiteIgnoreIT extends ConcreteSybaseSuiteIgnoreIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/union?tenant=sybase&name="
+            "http://localhost:8080/vertica?name="
         );
         
         model

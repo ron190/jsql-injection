@@ -44,6 +44,17 @@ public class StrategyDns extends AbstractStrategy {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         } else if (
+            StringUtils.isBlank(this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain())
+            || !StringUtils.isNumeric(this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsPort())
+        ) {
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_INFORM,
+                "Incorrect domain '{}' or port '{}', skipping Dns strategy",
+                this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain(),
+                this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsPort()
+            );
+            return;
+        } else if (
             StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getDns())
         ) {
             LOGGER.log(

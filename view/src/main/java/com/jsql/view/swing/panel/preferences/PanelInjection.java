@@ -131,8 +131,8 @@ public class PanelInjection extends JPanel {
         var labelGeneralInjection = new JLabel("<html><b>Processing</b></html>");
         var labelParamsInjection = new JLabel("<html><br><b>URL parameters</b></html>");
         var labelSpecial = new JLabel("<html><br><b>Special parameters</b></html>");
-        var labelQuerySize = new JLabel("<html><br><b>Reduce URL size (advanced)</b></html>");
-        var labelDns = new JLabel("<html><br><b>DNS exfiltration (advanced, working also on local database without registrar)</b></html>");
+        var labelQuerySize = new JLabel("<html><br><b>[Advanced] Reduce URL size</b></html>");
+        var labelDns = new JLabel("<html><br><b>[Advanced] DNS exfiltration (also working on local database without registrar)</b></html>");
         Arrays.asList(
             labelGeneralInjection,
             labelParamsInjection,

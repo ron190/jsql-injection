@@ -1,4 +1,4 @@
-package com.test.vendor.db2;
+package com.test.vendor.sybase;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,8 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
-    // Unstable
+class SybaseUnionGetSuiteIT extends ConcreteSybaseSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -18,15 +17,8 @@ class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=db2&name=1'*"
+            "http://localhost:8080/union?tenant=sybase&name="
         );
-        
-        model.setIsScanning(true);
-        
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withCountLimitingThreads(3);
         
         model
         .getMediatorUtils()
@@ -34,9 +26,13 @@ class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getDb2());
         model.beginInjection();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
     }
     
     @Override
@@ -44,11 +40,23 @@ class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
     public void listTables() throws JSqlException {
         super.listTables();
     }
+    
+    @Override
+    @RetryingTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listValues() throws JSqlException {
+        super.listValues();
+    }
 
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBit(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

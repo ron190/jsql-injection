@@ -224,7 +224,7 @@ public class PanelTrailingAddress extends JPanel {
                 try {
                     isNotNull = jMenuItem.getItem(indexMethodError) != null;
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                     return false;
                 }
                 return isNotNull;
@@ -270,7 +270,7 @@ public class PanelTrailingAddress extends JPanel {
                     jMenuItem.getItem(indexMethodError).setEnabled(true);
                 });
         } catch (ArrayIndexOutOfBoundsException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
     

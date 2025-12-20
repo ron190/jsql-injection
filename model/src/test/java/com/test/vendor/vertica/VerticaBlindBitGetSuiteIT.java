@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class VerticaBlindBinGetSuiteIgnoreIT extends ConcreteVerticaSuiteIgnoreIT {
+class VerticaBlindBitGetSuiteIT extends ConcreteVerticaSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -25,8 +25,6 @@ class VerticaBlindBinGetSuiteIgnoreIT extends ConcreteVerticaSuiteIgnoreIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindBitDisabled(true)
-//        .withIsStrategyDnsDisabled(true)
         .withIsStrategyUnionDisabled(true);
 
         model
@@ -47,7 +45,7 @@ class VerticaBlindBinGetSuiteIgnoreIT extends ConcreteVerticaSuiteIgnoreIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBin(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

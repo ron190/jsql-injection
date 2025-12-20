@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SybaseBlindBinGetSuiteIgnoreIT extends ConcreteSybaseSuiteIgnoreIT {
+class SybaseBlindBinGetSuiteIT extends ConcreteSybaseSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {

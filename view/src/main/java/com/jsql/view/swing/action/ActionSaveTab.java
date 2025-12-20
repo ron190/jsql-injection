@@ -48,7 +48,7 @@ public class ActionSaveTab extends AbstractAction {
             );
         } catch (IllegalArgumentException | NoSuchMethodError | InternalError | NullPointerException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Internal error in JFileChooser, verify your system and see stacktrace in tab Java: {}", e.getMessage());
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);

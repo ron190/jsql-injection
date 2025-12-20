@@ -12,7 +12,7 @@ public class PanelStrategies extends JPanel {
     private final JCheckBox checkboxIsStrategyBlindBitDisabled = new JCheckBox("Disable Blind bit", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindBitDisabled());
     private final JCheckBox checkboxIsStrategyBlindBinDisabled = new JCheckBox("Disable Blind bin", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindBinDisabled());
     private final JCheckBox checkboxIsStrategyMultibitDisabled = new JCheckBox("Disable Multibit", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled());
-    private final JCheckBox checkboxIsStrategyDnsDisabled = new JCheckBox("Disable Dns", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyDnsDisabled());
+    private final JCheckBox checkboxIsStrategyDnsDisabled = new JCheckBox("[Advanced] Disable Dns (requires local setup or registrar to activate)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyDnsDisabled());
     private final JCheckBox checkboxIsStrategyErrorDisabled = new JCheckBox("Disable Error", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());
     private final JCheckBox checkboxIsStrategyStackDisabled = new JCheckBox("Disable Stack", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackDisabled());
     private final JCheckBox checkboxIsStrategyUnionDisabled = new JCheckBox("Disable Union", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyUnionDisabled());

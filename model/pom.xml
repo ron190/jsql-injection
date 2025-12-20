@@ -26,25 +26,6 @@
             <id>diff_match_patch-repository</id>
             <url>https://maven.repository.redhat.com/ga/</url>
         </repository>
-        <!--         <repository> -->
-        <!--             <id>default</id> -->
-        <!--             <url>https://repo.maven.apache.org/maven2/</url> -->
-        <!--         </repository> -->
-        <!--         <repository> -->
-        <!--             <id>jspresso-repository</id> -->
-        <!--             <url>http://repository.jspresso.org/maven2</url> -->
-        <!--         </repository> -->
-        <!--         <repository> -->
-        <!--             <id>exasol-repository</id> -->
-        <!--             <url>https://maven.exasol.com/artifactory/exasol-releases</url> -->
-        <!--             <snapshots> -->
-        <!--                 <enabled>false</enabled> -->
-        <!--             </snapshots> -->
-        <!--         </repository> -->
-        <!--         <repository> -->
-        <!--             <id>oracle-repository</id> -->
-        <!--             <url>http://maven.geomajas.org/</url> -->
-        <!--         </repository> -->
     </repositories>
 
     <properties>
@@ -74,7 +55,7 @@
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <junit-platform.version>1.14.1</junit-platform.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
-        <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
         <!-- v12.0 not working -->
@@ -256,7 +237,7 @@
             </build>
         </profile>
         <profile>
-            <id>tests-additional</id>
+            <id>tests-db2</id>
             <build>
                 <plugins>
                     <plugin>
@@ -264,11 +245,99 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <configuration>
                             <includes>
-<!--                                <include>**/*SqlServer*SuiteIT.java</include>-->
-<!--                                <include>**/*Db2*SuiteIT.java</include>-->
-                                <include>**/*Vertica*SuiteIT.java</include>
-                                <include>**/*Sybase*SuiteIT.java</include>
+                                <include>**/*Db2*SuiteIT.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>tests-oracle</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <includes>
                                 <include>**/*Oracle*SuiteIT.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>tests-sqlserver</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*SqlServer*SuiteIT.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>tests-sybase</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*Sybase*SuiteIT.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>tests-vertica</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*Vertica*SuiteIT.java</include>
                             </includes>
                         </configuration>
                     </plugin>

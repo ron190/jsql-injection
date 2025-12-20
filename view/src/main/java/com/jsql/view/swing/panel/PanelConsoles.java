@@ -134,7 +134,7 @@ public class PanelConsoles extends JPanel {
         this.buildI18nTab(
             "CONSOLE_MAIN_LABEL",
             PanelConsoles.CONSOLE_MAIN_TOOLTIP,
-                UiUtil.CONSOLE.getIcon(),
+            UiUtil.CONSOLE.getIcon(),
             new JScrollPane(consoleTextPane.getProxy()),
             0
         );

@@ -4,9 +4,9 @@ import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
 import spring.SpringApp;
 
-public abstract class ConcreteSybaseSuiteIgnoreIT extends AbstractTestSuite {
+public abstract class ConcreteSybaseSuiteIT extends AbstractTestSuite {
 
-    public ConcreteSybaseSuiteIgnoreIT() {
+    public ConcreteSybaseSuiteIT() {
 
         this.jdbcURL = SpringApp.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
         this.jdbcUser = SpringApp.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_USER);

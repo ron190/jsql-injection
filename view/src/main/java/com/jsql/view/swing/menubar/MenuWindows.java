@@ -159,13 +159,14 @@ public class MenuWindows extends JMenu {
                 "CONSOLE_JAVA_LABEL",
                 PreferencesUtil.JAVA_VISIBLE,
                 () -> MediatorHelper.panelConsoles().insertJavaTab(),
-                UiUtil.CUP.getIcon()
+                UiUtil.CUP.getIcon(),
+                false
             )
         ).forEach(model -> {
             var menuItem = new JCheckBoxMenuItem(
                 I18nUtil.valueByKey(model.i18n),
                 model.icon,
-                preferences.getBoolean(model.keyPref, true)
+                model.isChecked
             ) {
                 @Override
                 protected void processMouseEvent(MouseEvent e) {
@@ -181,11 +182,7 @@ public class MenuWindows extends JMenu {
                 if (menuItem.isSelected()) {
                     model.runnableInsertTab.run();
                 } else {
-                    try {  // fix #95874: IndexOutOfBoundsException on remove()
-                        MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(model.icon));
-                    } catch (IndexOutOfBoundsException e) {  // should not occur
-                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
-                    }
+                    MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(model.icon));
                 }
             });
         });

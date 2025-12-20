@@ -39,23 +39,17 @@ jobs:
       - name: Install Maven dependencies
         run: mvn clean install -DskipTests dependency:tree
 
-      - name: Build oracle container
-        run: |
-          git clone https://github.com/oracle/docker-images.git
-          cd docker-images/OracleDatabase/SingleInstance/dockerfiles/
-          ./buildContainerImage.sh -v 18.4.0 -x
-
       - name: Run databases and LAMP
         run: |
-          docker compose -f $DOCKER_RESOURCES/docker-compose-additional.yml build --parallel
-          docker compose -f $DOCKER_RESOURCES/docker-compose-additional.yml up -d
+          docker compose -f $DOCKER_RESOURCES/docker-compose-sybase.yml build --parallel
+          docker compose -f $DOCKER_RESOURCES/docker-compose-sybase.yml up -d
 
       - name: List images and containers
         run: docker images && docker container ls
 
       - name: Database health checks and configuration
         run: |
-          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck-additional.sh
+          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck-sybase.sh
 
       - name: Build project container
         run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
@@ -65,5 +59,5 @@ jobs:
           $DOCKER_RESOURCES/scripts/run-on-docker.sh '
             mvn clean install \
               --no-transfer-progress \
-              -P tests-additional
+              -P tests-sybase
           '

@@ -17,16 +17,17 @@ public class DnsServer {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    public InjectionModel injectionModel;
-    public DatagramSocket socket;
-    public List<String> results = new ArrayList<>();
+    private final InjectionModel injectionModel;
+    private final List<String> results = new ArrayList<>();
+    private DatagramSocket socket;
+    private boolean isStopped = false;
 
     public DnsServer(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         try {
             this.socket = new DatagramSocket(null);
         } catch (SocketException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 
@@ -40,14 +41,9 @@ public class DnsServer {
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "DNS listening on port [{}] for [{}]...", port, domainName);
 
             byte[] buffer = new byte[512];
-            while (true) {
+            while (!this.isStopped) {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-                try {
-                    this.socket.receive(packet);
-                } catch (SocketException e) {  // expected when socket is closed
-                    LOGGER.log(LogLevelUtil.IGNORE, e, e);
-                    break;
-                }
+                this.socket.receive(packet);
 
                 Message query = new Message(packet.getData());
                 Record question = query.getQuestion();
@@ -83,13 +79,18 @@ public class DnsServer {
                 );
                 this.socket.send(responsePacket);
             }
+        } catch (SocketException e) {  // expected on receive() when socket is closed
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
         } catch (IOException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+        } finally {
+            this.isStopped = false;
         }
     }
 
     public void close() {
         this.socket.close();
+        this.isStopped = false;
     }
 
     public List<String> getResults() {
