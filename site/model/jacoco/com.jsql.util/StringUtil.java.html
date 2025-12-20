@@ -330,7 +330,7 @@ public final class StringUtil {
     public static byte[] xor(byte[] plaintext, int key) {
 <span class="fc" id="L331">        var ciphertext = new byte[plaintext.length];</span>
 <span class="fc bfc" id="L332" title="All 2 branches covered.">        for (var i = 0 ; i &lt; plaintext.length ; i++) {</span>
-<span class="fc" id="L333">            ciphertext[i] = (byte) (plaintext[i] ^ (key &gt;&gt;&gt; (8 * (i % 4))));</span>
+<span class="fc" id="L333">            ciphertext[i] = (byte) (Byte.toUnsignedInt(plaintext[i]) ^ (key &gt;&gt;&gt; (8 * (i % 4))));</span>
         }
 <span class="fc" id="L335">        return ciphertext;</span>
     }

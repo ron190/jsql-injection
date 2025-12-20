@@ -30,8 +30,8 @@ view,com.jsql.view.swing.table,PanelTable.new JTable() {...},2,8,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.table,PanelTable.new MouseAdapter() {...},43,6,2,0,10,1,2,1,1,1
 view,com.jsql.view.swing.action,HotkeyUtil,0,219,1,7,0,54,1,11,0,8
 view,com.jsql.view.swing.action,ActionNewWindow,28,68,0,0,7,14,2,3,2,3
-view,com.jsql.view.swing.action,ActionSaveTab,223,31,22,0,60,9,15,2,4,2
-view,com.jsql.view.swing.action,ActionCheckIp,48,6,2,0,10,2,6,2,5,2
+view,com.jsql.view.swing.action,ActionSaveTab,224,31,22,0,60,9,15,2,4,2
+view,com.jsql.view.swing.action,ActionCheckIp,57,6,4,0,12,2,7,2,5,2
 view,com.jsql.view.swing.action,AltKeyEventDispatcher,97,58,28,12,27,18,21,4,3,2
 view,com.jsql.view.swing.action,ActionCloseTabResult,51,3,6,0,15,1,5,1,2,1
 view,com.jsql.view.swing.action,HotkeyUtil.new AbstractAction() {...},8,6,0,0,2,1,1,1,1,1
@@ -44,8 +44,8 @@ view,com.jsql.view.swing.menubar,AppMenubar.new MouseAdapter() {...},17,0,0,0,4,
 view,com.jsql.view.swing.menubar,AppMenubar,215,870,19,11,47,145,18,26,6,23
 view,com.jsql.view.swing.menubar,ModelItemTranslate,0,16,0,0,0,7,0,4,0,4
 view,com.jsql.view.swing.menubar,ActionCheckUpdate,13,3,0,0,4,1,2,1,2,1
-view,com.jsql.view.swing.menubar,ModelCheckboxMenu,0,15,0,0,0,6,0,1,0,1
-view,com.jsql.view.swing.menubar,MenuWindows,80,711,10,14,22,148,15,25,8,20
+view,com.jsql.view.swing.menubar,ModelCheckboxMenu,0,34,0,0,0,10,0,2,0,2
+view,com.jsql.view.swing.menubar,MenuWindows,74,708,10,14,19,147,15,25,8,20
 view,com.jsql.view.swing.tree.custom,CheckBoxMenuItemIconCustom,194,0,16,0,44,0,13,0,5,0
 view,com.jsql.view.swing.tree.custom,JPopupMenuCustomExtract,42,3,0,0,18,1,12,1,12,1
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JButtonStateful() {...},5,10,0,0,1,1,1,1,1,1
@@ -108,7 +108,7 @@ view,com.jsql.view.swing.panel.address,PanelTrailingAddress.new JRadioButtonMenu
 view,com.jsql.view.swing.panel.address,PanelTrailingAddress.new MouseAdapter() {...},0,60,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.panel.address,PanelTrailingAddress.new MouseAdapter() {...},0,75,0,2,0,8,0,4,0,3
 view,com.jsql.view.swing.panel.address,ButtonStart,54,91,6,0,12,29,5,5,2,5
-view,com.jsql.view.swing.panel.address,PanelTrailingAddress,228,552,6,14,51,114,23,22,18,17
+view,com.jsql.view.swing.panel.address,PanelTrailingAddress,230,552,6,14,51,114,23,22,18,17
 view,com.jsql.view.swing.terminal,AbstractExploit,56,290,7,11,10,75,7,20,0,18
 view,com.jsql.view.swing.terminal,ExploitReverseShell,53,0,0,0,16,0,4,0,4,0
 view,com.jsql.view.swing.terminal,EmptyFocusCopy,61,12,2,0,18,6,6,3,5,3
@@ -223,7 +223,7 @@ view,com.jsql.view.swing.panel,PanelConsoles.new JLabel() {...},14,15,0,0,2,1,1,
 view,com.jsql.view.swing.panel,PanelConsoles.new MouseAdapter() {...},0,10,0,0,0,3,0,2,0,2
 view,com.jsql.view.swing.panel,PanelConsoles.new MouseAdapter() {...},6,17,0,0,2,4,0,2,0,2
 view,com.jsql.view.swing.panel,PanelPreferences.CategoryPreference,0,65,0,0,0,11,0,2,0,2
-view,com.jsql.view.swing.panel,PanelAddressBar,80,788,4,10,14,141,10,21,8,16
+view,com.jsql.view.swing.panel,PanelAddressBar,80,803,4,10,14,142,10,21,8,16
 view,com.jsql.view.swing.panel,PanelPreferences,0,267,0,2,0,56,0,15,0,14
 view,com.jsql.view.swing.panel,PanelConsoles,75,497,8,8,20,110,11,16,3,16
 view,com.jsql.view.swing.tab.dnd,TabTransferHandler,78,254,24,18,13,59,22,8,1,8
@@ -240,7 +240,7 @@ view,com.jsql.view.swing.tree.action,ActionCheckAll,50,9,4,0,12,4,3,1,1,1
 view,com.jsql.view.swing.tree.action,ActionLoadStop,118,9,16,0,30,4,12,1,4,1
 view,com.jsql.view.swing.tree.action,ActionPauseUnpause,20,6,4,0,7,3,3,1,1,1
 view,com.jsql.view.swing.text,JPopupTextArea.new JTextAreaPlaceholder() {...},0,6,0,0,0,2,0,2,0,2
-view,com.jsql.view.swing.text,JPopupTextArea.new FocusAdapter() {...},5,22,0,0,2,5,0,2,0,2
+view,com.jsql.view.swing.text,JPopupTextArea.new FocusAdapter() {...},6,22,0,0,2,5,0,2,0,2
 view,com.jsql.view.swing.text,SyntaxTextArea,8,68,1,3,3,22,2,8,1,7
 view,com.jsql.view.swing.text,JPopupTextField,0,19,0,0,0,6,0,3,0,3
 view,com.jsql.view.swing.text,JTextAreaPlaceholderConsole,0,4,0,0,0,2,0,1,0,1

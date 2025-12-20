@@ -96,7 +96,7 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
 <span class="nc bnc" id="L96" title="All 2 branches missed.">            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
 <span class="nc" id="L97">                resultToParse = e.getSlidingWindowCurrentRows();</span>
             }
-<span class="nc" id="L99">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
+<span class="nc" id="L99">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="pc" id="L100">        }</span>
 
 <span class="fc" id="L102">        this.sourceFile = resultToParse;</span>

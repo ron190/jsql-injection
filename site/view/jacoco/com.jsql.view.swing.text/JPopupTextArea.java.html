@@ -61,7 +61,7 @@ public class JPopupTextArea extends JPopupTextComponent&lt;JTextArea&gt; impleme
                 try {
 <span class="fc" id="L62">                    JPopupTextArea.this.getProxy().getCaret().setVisible(true);</span>
 <span class="nc" id="L63">                } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L64">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
+<span class="nc" id="L64">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="fc" id="L65">                }</span>
 <span class="fc" id="L66">                JPopupTextArea.this.getProxy().getCaret().setSelectionVisible(true);</span>
 <span class="fc" id="L67">            }</span>

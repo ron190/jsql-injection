@@ -91,7 +91,7 @@ public class PreferencesUtil {
 <span class="fc" id="L91">    private boolean isStrategyBlindBinDisabled = false;</span>
 <span class="fc" id="L92">    private boolean isStrategyBlindBitDisabled = false;</span>
 <span class="fc" id="L93">    private boolean isStrategyMultibitDisabled = false;</span>
-<span class="fc" id="L94">    private boolean isStrategyDnsDisabled = false;</span>
+<span class="fc" id="L94">    private boolean isStrategyDnsDisabled = true;</span>
 <span class="fc" id="L95">    private boolean isStrategyStackDisabled = false;</span>
 <span class="fc" id="L96">    private boolean isStrategyErrorDisabled = false;</span>
 <span class="fc" id="L97">    private boolean isStrategyUnionDisabled = false;</span>
@@ -106,8 +106,8 @@ public class PreferencesUtil {
 <span class="fc" id="L106">    private boolean isUserAgentRandom = false;</span>
 <span class="fc" id="L107">    private boolean isUrlDecodeNetworkTab = false;</span>
 
-<span class="fc" id="L109">    private String dnsDomain = StringUtils.EMPTY;</span>
-<span class="fc" id="L110">    private String dnsPort = StringUtils.EMPTY;</span>
+<span class="fc" id="L109">    private String dnsDomain = &quot;custom-domain.com&quot;;</span>
+<span class="fc" id="L110">    private String dnsPort = &quot;53&quot;;</span>
 
     private final Yaml yaml;
     private String commandsReverseYaml;
@@ -566,11 +566,11 @@ public class PreferencesUtil {
     }
 
     public String getDnsDomain() {
-<span class="fc" id="L569">        return this.dnsDomain;</span>
+<span class="nc" id="L569">        return this.dnsDomain;</span>
     }
 
     public String getDnsPort() {
-<span class="fc" id="L573">        return this.dnsPort;</span>
+<span class="nc" id="L573">        return this.dnsPort;</span>
     }
 
 

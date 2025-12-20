@@ -224,7 +224,7 @@ public class PanelTrailingAddress extends JPanel {
                 try {
 <span class="nc bnc" id="L225" title="All 2 branches missed.">                    isNotNull = jMenuItem.getItem(indexMethodError) != null;</span>
 <span class="nc" id="L226">                } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L227">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
+<span class="nc" id="L227">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="nc" id="L228">                    return false;</span>
 <span class="nc" id="L229">                }</span>
 <span class="nc" id="L230">                return isNotNull;</span>
@@ -270,7 +270,7 @@ public class PanelTrailingAddress extends JPanel {
 <span class="fc" id="L270">                    jMenuItem.getItem(indexMethodError).setEnabled(true);</span>
 <span class="fc" id="L271">                });</span>
 <span class="nc" id="L272">        } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L273">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
+<span class="nc" id="L273">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="fc" id="L274">        }</span>
 <span class="fc" id="L275">    }</span>
     

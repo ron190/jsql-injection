@@ -443,19 +443,19 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlDns(String sqlQuery, String startPosition, BlindOperator blindOperator, boolean isReport) {
-<span class="fc" id="L446">        String replacement = this.getMode(blindOperator);</span>
-<span class="fc" id="L447">        String result = VendorYaml.replaceTags(</span>
-<span class="fc" id="L448">            this.modelYaml.getStrategy().getDns()</span>
-<span class="fc" id="L449">            .replace(VendorYaml.WINDOW, this.getSlidingWindow(isReport))</span>
-<span class="fc" id="L450">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
-<span class="fc" id="L451">            .replace(VendorYaml.INJECTION, sqlQuery)</span>
-<span class="fc" id="L452">            .replace(VendorYaml.DNS_DOMAIN, this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain())</span>
-<span class="fc" id="L453">            .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
-<span class="fc" id="L454">            .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
+<span class="nc" id="L446">        String replacement = this.getMode(blindOperator);</span>
+<span class="nc" id="L447">        String result = VendorYaml.replaceTags(</span>
+<span class="nc" id="L448">            this.modelYaml.getStrategy().getDns()</span>
+<span class="nc" id="L449">            .replace(VendorYaml.WINDOW, this.getSlidingWindow(isReport))</span>
+<span class="nc" id="L450">            .replace(VendorYaml.BINARY_MODE, replacement)</span>
+<span class="nc" id="L451">            .replace(VendorYaml.INJECTION, sqlQuery)</span>
+<span class="nc" id="L452">            .replace(VendorYaml.DNS_DOMAIN, this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain())</span>
+<span class="nc" id="L453">            .replace(VendorYaml.WINDOW_CHAR, startPosition)</span>
+<span class="nc" id="L454">            .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
         );
-<span class="fc" id="L456">        return Pattern.compile(Pattern.quote(VendorYaml.DNS_RANDOM))</span>
-<span class="fc" id="L457">            .matcher(result)</span>
-<span class="fc" id="L458">            .replaceAll(m -&gt; String.format(&quot;%03d&quot;, ThreadLocalRandom.current().nextInt(999)));</span>
+<span class="nc" id="L456">        return Pattern.compile(Pattern.quote(VendorYaml.DNS_RANDOM))</span>
+<span class="nc" id="L457">            .matcher(result)</span>
+<span class="nc" id="L458">            .replaceAll(m -&gt; String.format(&quot;%03d&quot;, ThreadLocalRandom.current().nextInt(999)));</span>
     }
 
     @Override

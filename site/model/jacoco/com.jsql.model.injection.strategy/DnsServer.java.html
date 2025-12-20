@@ -17,83 +17,84 @@ public class DnsServer {
 
 <span class="fc" id="L18">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
-    public InjectionModel injectionModel;
-    public DatagramSocket socket;
-<span class="fc" id="L22">    public List&lt;String&gt; results = new ArrayList&lt;&gt;();</span>
+    private final InjectionModel injectionModel;
+<span class="fc" id="L21">    private final List&lt;String&gt; results = new ArrayList&lt;&gt;();</span>
+    private DatagramSocket socket;
+<span class="fc" id="L23">    private boolean isStopped = false;</span>
 
-<span class="fc" id="L24">    public DnsServer(InjectionModel injectionModel) {</span>
-<span class="fc" id="L25">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L25">    public DnsServer(InjectionModel injectionModel) {</span>
+<span class="fc" id="L26">        this.injectionModel = injectionModel;</span>
         try {
-<span class="fc" id="L27">            this.socket = new DatagramSocket(null);</span>
-<span class="nc" id="L28">        } catch (SocketException e) {</span>
-<span class="nc" id="L29">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
-<span class="fc" id="L30">        }</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L28">            this.socket = new DatagramSocket(null);</span>
+<span class="nc" id="L29">        } catch (SocketException e) {</span>
+<span class="nc" id="L30">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L31">        }</span>
+<span class="fc" id="L32">    }</span>
 
     public void listen() {
-<span class="fc" id="L34">        this.socket.close();  // unbind if already connected</span>
-<span class="nc" id="L35">        int port = Integer.parseInt(this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsPort());</span>
-<span class="nc" id="L36">        var domainName = this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain();</span>
-<span class="nc" id="L37">        this.results.clear();</span>
-<span class="nc" id="L38">        try (var newSocket = new DatagramSocket(port)) {</span>
-<span class="nc" id="L39">            this.socket = newSocket;</span>
-<span class="nc" id="L40">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;DNS listening on port [{}] for [{}]...&quot;, port, domainName);</span>
+<span class="nc" id="L35">        this.socket.close();  // unbind if already connected</span>
+<span class="nc" id="L36">        int port = Integer.parseInt(this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsPort());</span>
+<span class="nc" id="L37">        var domainName = this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain();</span>
+<span class="nc" id="L38">        this.results.clear();</span>
+<span class="nc" id="L39">        try (var newSocket = new DatagramSocket(port)) {</span>
+<span class="nc" id="L40">            this.socket = newSocket;</span>
+<span class="nc" id="L41">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;DNS listening on port [{}] for [{}]...&quot;, port, domainName);</span>
 
-<span class="nc" id="L42">            byte[] buffer = new byte[512];</span>
-            while (true) {
-<span class="nc" id="L44">                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);</span>
-                try {
-<span class="nc" id="L46">                    this.socket.receive(packet);</span>
-<span class="nc" id="L47">                } catch (SocketException e) {  // expected when socket is closed</span>
-<span class="nc" id="L48">                    LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L49">                    break;</span>
-<span class="nc" id="L50">                }</span>
+<span class="nc" id="L43">            byte[] buffer = new byte[512];</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            while (!this.isStopped) {</span>
+<span class="nc" id="L45">                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);</span>
+<span class="nc" id="L46">                this.socket.receive(packet);</span>
 
-<span class="nc" id="L52">                Message query = new Message(packet.getData());</span>
-<span class="nc" id="L53">                Record question = query.getQuestion();</span>
-<span class="nc" id="L54">                Name name = question.getName();</span>
+<span class="nc" id="L48">                Message query = new Message(packet.getData());</span>
+<span class="nc" id="L49">                Record question = query.getQuestion();</span>
+<span class="nc" id="L50">                Name name = question.getName();</span>
 
-<span class="nc bnc" id="L56" title="All 2 branches missed.">                if (name.toString().contains(domainName)) {</span>
-<span class="nc" id="L57">                    this.results.add(name.toString());</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                if (name.toString().contains(domainName)) {</span>
+<span class="nc" id="L53">                    this.results.add(name.toString());</span>
                 }
 
                 // Build response
-<span class="nc" id="L61">                Message response = new Message(query.getHeader().getID());</span>
-<span class="nc" id="L62">                response.getHeader().setFlag(Flags.QR); // Response</span>
-<span class="nc" id="L63">                response.addRecord(question, Section.QUESTION);</span>
+<span class="nc" id="L57">                Message response = new Message(query.getHeader().getID());</span>
+<span class="nc" id="L58">                response.getHeader().setFlag(Flags.QR); // Response</span>
+<span class="nc" id="L59">                response.addRecord(question, Section.QUESTION);</span>
 
-<span class="nc" id="L65">                response.addRecord(</span>
-<span class="nc" id="L66">                    Record.fromString(</span>
-<span class="nc" id="L67">                        Name.fromString(domainName +&quot;.&quot;),</span>
+<span class="nc" id="L61">                response.addRecord(</span>
+<span class="nc" id="L62">                    Record.fromString(</span>
+<span class="nc" id="L63">                        Name.fromString(domainName +&quot;.&quot;),</span>
                         Type.A,
                         DClass.IN,
                         86400,
                         &quot;127.0.0.1&quot;,
-<span class="nc" id="L72">                        Name.fromString(domainName +&quot;.&quot;)</span>
+<span class="nc" id="L68">                        Name.fromString(domainName +&quot;.&quot;)</span>
                     ),
                     Section.ANSWER
                 );
 
-<span class="nc" id="L77">                byte[] responseData = response.toWire();</span>
-<span class="nc" id="L78">                DatagramPacket responsePacket = new DatagramPacket(</span>
+<span class="nc" id="L73">                byte[] responseData = response.toWire();</span>
+<span class="nc" id="L74">                DatagramPacket responsePacket = new DatagramPacket(</span>
                     responseData,
                     responseData.length,
-<span class="nc" id="L81">                    packet.getAddress(),</span>
-<span class="nc" id="L82">                    packet.getPort()</span>
+<span class="nc" id="L77">                    packet.getAddress(),</span>
+<span class="nc" id="L78">                    packet.getPort()</span>
                 );
-<span class="nc" id="L84">                this.socket.send(responsePacket);</span>
-<span class="nc" id="L85">            }</span>
-<span class="nc" id="L86">        } catch (IOException e) {</span>
-<span class="nc" id="L87">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e);</span>
-<span class="nc" id="L88">        }</span>
+<span class="nc" id="L80">                this.socket.send(responsePacket);</span>
+<span class="nc" id="L81">            }</span>
+<span class="nc" id="L82">        } catch (SocketException e) {  // expected on receive() when socket is closed</span>
+<span class="nc" id="L83">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L84">        } catch (IOException e) {</span>
+<span class="nc" id="L85">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+        } finally {
+<span class="nc" id="L87">            this.isStopped = false;</span>
+        }
 <span class="nc" id="L89">    }</span>
 
     public void close() {
-<span class="fc" id="L92">        this.socket.close();</span>
-<span class="fc" id="L93">    }</span>
+<span class="nc" id="L92">        this.socket.close();</span>
+<span class="nc" id="L93">        this.isStopped = false;</span>
+<span class="nc" id="L94">    }</span>
 
     public List&lt;String&gt; getResults() {
-<span class="fc" id="L96">        return this.results;</span>
+<span class="nc" id="L97">        return this.results;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

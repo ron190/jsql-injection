@@ -14,7 +14,7 @@
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.springframework.context.annotation.Configuration;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.springframework.core.io.ClassPathResource;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> org.springframework.ws.config.annotation.EnableWs;
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.springframework.ws.config.annotation.WsConfigurerAdapter;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.springframework.ws.config.annotation.WsConfigurer;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.springframework.ws.transport.http.MessageDispatcherServlet;
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> org.springframework.xml.xsd.SimpleXsdSchema;
@@ -22,7 +22,7 @@
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  @EnableWs
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  @Configuration
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="WebServiceConfig" href="../../spring/soap/WebServiceConfig.html#WebServiceConfig">WebServiceConfig</a> <strong class="jxr_keyword">extends</strong> WsConfigurerAdapter {
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="WebServiceConfig" href="../../spring/soap/WebServiceConfig.html#WebServiceConfig">WebServiceConfig</a> <strong class="jxr_keyword">implements</strong> WsConfigurer {
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>      @Bean
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">public</strong> ServletRegistrationBean&lt;MessageDispatcherServlet&gt; messageDispatcherServlet(ApplicationContext applicationContext) {
