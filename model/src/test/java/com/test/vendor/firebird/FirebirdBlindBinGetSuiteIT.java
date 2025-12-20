@@ -25,7 +25,6 @@ class FirebirdBlindBinGetSuiteIT extends ConcreteFirebirdSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyDnsDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 
         model

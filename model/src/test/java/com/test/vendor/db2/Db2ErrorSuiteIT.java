@@ -29,8 +29,7 @@ class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
         .withIsNotSearchingCharInsertion(true)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyStackDisabled(true)
-        .withIsStrategyDnsDisabled(true);
+        .withIsStrategyStackDisabled(true);
 
         model
         .getMediatorUtils()

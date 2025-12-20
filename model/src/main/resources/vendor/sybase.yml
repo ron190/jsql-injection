@@ -3,7 +3,7 @@ vendor: Sybase
 resource:
  info: |
   select
-      @@version
+      %2B@@version
       %2B'${enclose_value_sql}'
       %2Bdb_name()
       %2B'${enclose_value_sql}'

@@ -25,7 +25,6 @@ class SybaseBlindBinGetSuiteIT extends ConcreteSybaseSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-//        .withIsStrategyDnsDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 
         model

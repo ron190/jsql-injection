@@ -36,7 +36,6 @@ class MckoiBlindBinGetSuiteIT extends ConcreteMckoiSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyDnsDisabled(true)
         .withIsStrategyUnionDisabled(true);
 
         model.beginInjection();

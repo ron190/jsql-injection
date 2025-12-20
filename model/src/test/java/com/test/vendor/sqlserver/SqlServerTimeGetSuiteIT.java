@@ -25,7 +25,6 @@ class SqlServerTimeGetSuiteIT extends ConcreteSqlServerSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyDnsDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true);
 

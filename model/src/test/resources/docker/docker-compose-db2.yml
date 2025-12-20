@@ -1,71 +1,18 @@
 version: "3.7"
 services:
 
-#  db2:
-#    ports:
-#      - "50000:50000"
-#    privileged: true
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.db2
-#    environment:
-#      LICENSE: accept
-#      DB2INST1_PASSWORD: test
-#      DBNAME: testdb
-#    container_name: jsql-db2
-#    networks:
-#      - jsql-network
-#
-#  sqlserver:
-#    ports:
-#      - "1434:1434"
-#      - "1433:1433"
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.sqlserver
-#    environment:
-#      SA_PASSWORD: yourStrong(!)Password
-#      ACCEPT_EULA: Y
-#    container_name: jsql-sqlserver
-#    networks:
-#      - jsql-network
-
-#  Disabled as GitHub Actions size only 14Go => TODO split container
-#  oracle/database   18.4.0-xe   6d1f79b233cf   48 seconds ago   5.9GB
-#  docker-oracle     latest      ec35af59dd53   48 seconds ago   5.9GB
-#  docker-sybase     latest      1b6898bba3e5   9 years ago      3.67GB
-#  sybase:
-#    container_name: jsql-sybase
-#    ports:
-#      - "5000:5000"
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.sybase
-#    networks:
-#      - jsql-network
-#    command: bash /sybase/start
-#    hostname: dksybase
-
-#  vertica:
-#    container_name: jsql-vertica
-#    ports:
-#      - "5433:5433"
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.vertica
-#    networks:
-#      - jsql-network
-
-  oracle:
-    container_name: jsql-oracle
+  db2:
     ports:
-      - "1521:1521"
+      - "50000:50000"
+    privileged: true
     build:
       context: .
-      dockerfile: Dockerfile.oracle
+      dockerfile: Dockerfile.db2
     environment:
-      ORACLE_PWD: Password1_One
-      ORACLE_CHARACTERSET: AL32UTF8
+      LICENSE: accept
+      DB2INST1_PASSWORD: test
+      DBNAME: testdb
+    container_name: jsql-db2
     networks:
       - jsql-network
 

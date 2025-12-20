@@ -27,7 +27,6 @@ class OracleTimeGetSuiteIT extends ConcreteOracleSuiteIT {
         .getPreferencesUtil()
         .withIsStrategyUnionDisabled(true)
         .withIsStrategyErrorDisabled(true)
-        .withIsStrategyDnsDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true);
 

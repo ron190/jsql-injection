@@ -28,9 +28,7 @@ import org.springframework.core.io.ClassPathResource;
 import spring.rest.Student;
 import spring.rest.StudentForDelete;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -48,7 +46,7 @@ public class SpringApp {
 
     static {
         try {  // ensure driver is loaded
-            Class.forName("com.mckoi.JDBCDriver");
+            Class.forName("com.mckoi.JDBCDriver");  // required
             Class.forName("oracle.jdbc.OracleDriver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -88,7 +86,8 @@ public class SpringApp {
         new SimpleEntry<>(SpringApp.propsHsqldb, "hibernate/hibernate.hsqldb.properties"),
         new SimpleEntry<>(SpringApp.propsDerby, "hibernate/hibernate.derby.properties"),
         new SimpleEntry<>(SpringApp.propsFirebird, "hibernate/hibernate.firebird.properties"),
-        new SimpleEntry<>(SpringApp.propsInformix, "hibernate/hibernate.informix.properties")
+        new SimpleEntry<>(SpringApp.propsInformix, "hibernate/hibernate.informix.properties"),
+        new SimpleEntry<>(SpringApp.propsSybase, "hibernate/hibernate.sybase.properties")
     );
 
     static {

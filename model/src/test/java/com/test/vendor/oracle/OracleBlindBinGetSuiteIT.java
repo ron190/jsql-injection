@@ -27,7 +27,6 @@ class OracleBlindBinGetSuiteIT extends ConcreteOracleSuiteIT {
         .getPreferencesUtil()
         .withIsStrategyUnionDisabled(true)
         .withIsStrategyErrorDisabled(true)
-        .withIsStrategyDnsDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyTimeDisabled(true);
 

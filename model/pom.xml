@@ -19,10 +19,6 @@
             <url>https://clojars.org/repo/</url>
         </repository>
         <repository>
-            <id>sybase-repository</id>
-            <url>https://maven.jumpmind.com/repo/</url>
-        </repository>
-        <repository>
             <id>diff_match_patch-repository</id>
             <url>https://maven.repository.redhat.com/ga/</url>
         </repository>
@@ -804,7 +800,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>jdbc.sybase</groupId>
+            <groupId>org.jumpmind.symmetric.module</groupId>
             <artifactId>jconn4</artifactId>
             <version>${sybase-jconn4.version}</version>
             <scope>test</scope>

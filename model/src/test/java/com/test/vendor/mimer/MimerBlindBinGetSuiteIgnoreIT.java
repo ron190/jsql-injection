@@ -32,7 +32,6 @@ class MimerBlindBinGetSuiteIgnoreIT extends ConcreteMimerSuiteIgnoreIT {
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsStrategyBlindBitDisabled(true)
-//        .withIsStrategyDnsDisabled(true)
         .withIsStrategyUnionDisabled(true);
 
         model.beginInjection();
