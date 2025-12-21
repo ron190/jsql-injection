@@ -16,7 +16,7 @@ resource:
    select varchar(
        listagg(
            '${enclose_value_sql}'
-           || trim(schemaname)
+           || trim(name)
            || '${separator_qte_sql}0${enclose_value_sql}',
            '${separator_cell_sql}'
        )
@@ -24,8 +24,8 @@ resource:
    )
    from (
        /* Subquery required */
-       select schemaname
-       from syscat.schemata
+       select name
+       from sysibm.sysschemata
        ${limit}
    )
 

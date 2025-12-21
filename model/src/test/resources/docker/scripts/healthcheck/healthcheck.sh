@@ -2,7 +2,7 @@
 
 steps=0
 function __echoStep {
-  steps=$((steps+1)) && echo "## Step $steps/6"
+  steps=$((steps+1)) && echo "## Step $steps/5"
 }
 
 __echoStep && ./model/src/test/resources/docker/scripts/healthcheck/cubrid.sh

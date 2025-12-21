@@ -118,8 +118,8 @@ public abstract class AbstractTestSuite {
 
     @Ignore("Enabled on inherit")
     public void listDatabases() throws JSqlException {
-        Set<String> setValuesFromInjection = new HashSet<>();
-        Set<String> setValuesFromJdbc = new HashSet<>();
+        Set<String> setValuesFromInjection = new TreeSet<>();
+        Set<String> setValuesFromJdbc = new TreeSet<>();
         
         try {
             List<String> databases = this.injectionModel.getDataAccess()
@@ -145,7 +145,7 @@ public abstract class AbstractTestSuite {
             )
             .collect(Collectors.toCollection(TreeSet::new));
             
-            throw new AssertionError(String.format("Unknown databases: %s%n%s", tablesUnkown, e));
+            throw new AssertionError(String.format("Missing databases: %s%n%s", tablesUnkown, e));
         }
     }
 

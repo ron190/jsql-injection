@@ -20,11 +20,11 @@ public abstract class ConcreteDb2SuiteIT extends AbstractTestSuite {
         this.jsqlTableName = "STUDENT";
         this.jsqlColumnName = "STUDENT_ID";
         
-        this.jdbcColumnForDatabaseName = "schemaname";
+        this.jdbcColumnForDatabaseName = "name";
         this.jdbcColumnForTableName = "name";
         this.jdbcColumnForColumnName = "name";
         
-        this.jdbcQueryForDatabaseNames = "select trim("+ this.jdbcColumnForDatabaseName +") "+ this.jdbcColumnForDatabaseName +" from syscat.schemata";
+        this.jdbcQueryForDatabaseNames = "select trim("+ this.jdbcColumnForDatabaseName +") "+ this.jdbcColumnForDatabaseName +" from sysibm.sysschemata";
         this.jdbcQueryForTableNames = "select "+ this.jdbcColumnForTableName +" from sysibm.systables where creator = '"+ this.jsqlDatabaseName +"'";
         this.jdbcQueryForColumnNames = "select "+ this.jdbcColumnForColumnName + " from sysibm.syscolumns where coltype != 'BLOB' and tbcreator = '"+ this.jsqlDatabaseName +"' and tbname = '"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues = "SELECT "+ this.jsqlColumnName +" FROM "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;

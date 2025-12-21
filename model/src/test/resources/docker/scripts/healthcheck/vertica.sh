@@ -4,7 +4,7 @@ set -e
 
 retry=0
 
-until cat <<EOF | docker exec -i jsql-vertica /opt/vertica/bin/vsql
+until cat <<EOF | docker exec -i jsql-vertica /opt/vertica/bin/vsql -U dbadmin -w password
 select 'jsqlValue' as jsqlColumn
 EOF
 do

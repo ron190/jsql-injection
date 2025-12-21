@@ -20,7 +20,7 @@ public abstract class ConcreteVerticaSuiteIT extends AbstractTestSuite {
         
         this.jdbcQueryForDatabaseNames = "select schema_name from v_catalog.all_tables";
         this.jdbcQueryForTableNames = "select table_name from v_catalog.all_tables where schema_name = '"+ this.jsqlDatabaseName +"'";
-        this.jdbcQueryForColumnNames = "select column_name from v_catalog.jdbc_columns where jdbc_columns.schema_name = '"+ this.jsqlDatabaseName +"' and jdbc_columns.table_name = '"+ this.jsqlTableName +"'";
+        this.jdbcQueryForColumnNames = "select column_name from v_catalog.odbc_columns where odbc_columns.schema_name = '"+ this.jsqlDatabaseName +"' and odbc_columns.table_name = '"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlTableName;
     }
 }

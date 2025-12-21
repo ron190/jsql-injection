@@ -1,2 +1,2 @@
-FROM vertica/vertica-ce
+FROM jbfavre/vertica:9.2.0-7_debian-8
 EXPOSE 5433

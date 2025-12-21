@@ -62,9 +62,9 @@ resource:
            || '0'
            || '${enclose_value_sql}'
            rr
-       from v_catalog.jdbc_columns
-       where jdbc_columns.schema_name = '${database}'
-       and jdbc_columns.table_name = '${table}'
+       from v_catalog.odbc_columns
+       where odbc_columns.schema_name = '${database}'
+       and odbc_columns.table_name = '${table}'
        order by rr
        ${limit}
    )x

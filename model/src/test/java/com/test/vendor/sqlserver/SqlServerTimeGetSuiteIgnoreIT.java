@@ -7,7 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SqlServerTimeGetSuiteIT extends ConcreteSqlServerSuiteIT {
+// Stack does not seem possible with jdbc
+class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
