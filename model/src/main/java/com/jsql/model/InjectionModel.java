@@ -191,11 +191,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         } catch (JSqlRuntimeException | JSqlException | IOException e) {  // Catch expected exceptions only
-            if (e.getMessage() == null) {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Interruption: {}", InjectionModel.getImplicitReason(e));
-            } else {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Interruption: {}", e.getMessage());
-            }
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_ERROR,
+                "Interruption: {}",
+                e.getMessage() == null ? InjectionModel.getImplicitReason(e) : e.getMessage()
+            );
         } finally {
             var request = new Request();
             request.setMessage(Interaction.END_PREPARATION);

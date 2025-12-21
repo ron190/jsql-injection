@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class ComboBoxTypeRenderer extends JLabel implements ListCellRenderer<Object> {
     public Component getListCellRendererComponent(
-        JList<? extends Object> list, Object value, int index, boolean isSelected, boolean cellHasFocus
+        JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus
     ) {
         if (value == ComboBoxMethodRenderer.SEPARATOR) {
             return ComboBoxMethodRenderer.SEPARATOR;

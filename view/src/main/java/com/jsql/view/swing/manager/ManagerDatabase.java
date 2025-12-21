@@ -40,7 +40,7 @@ public class ManagerDatabase extends JPanel {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private TreeDatabase tree;
+    private final TreeDatabase tree;
 
     /**
      * Create a panel to encode a string.

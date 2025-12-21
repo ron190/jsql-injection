@@ -66,14 +66,14 @@ public class ModelSvgIcon {
     }
 
     public FlatSVGIcon getIcon() {
-        return icon;
+        return this.icon;
     }
 
     public String getKeyLabel() {
-        return keyLabel;
+        return this.keyLabel;
     }
 
     public String getKeyTooltip() {
-        return keyTooltip;
+        return this.keyTooltip;
     }
 }

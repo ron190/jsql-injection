@@ -144,7 +144,7 @@ public class ParameterUtil {
     }
 
     /*
-     * Validates a RFC 7230 field-name.
+     * Validates an RFC 7230 field-name.
      */
     public static boolean isInvalidName(String token) {
         for (int i = 0 ; i < token.length() ; i++) {

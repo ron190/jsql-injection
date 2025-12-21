@@ -1,20 +1,26 @@
 package spring.tenant;
 
 import com.test.method.CustomMethodSuiteIT;
-import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Environment;
+import jakarta.persistence.EntityManagerFactory;
+import org.hibernate.cfg.JdbcSettings;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RequestMethod;
+import spring.SpringApp;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import javax.sql.DataSource;
+import java.sql.DriverManager;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,23 +29,43 @@ import java.util.stream.Stream;
 public class HibernateConf {
 
     @Bean
-    public PlatformTransactionManager hibernateTransactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(this.sessionFactory().getObject());
-        return transactionManager;
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
-        hibernateProperties.setProperty(AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER, "spring.tenant.MultiTenantConnectionProviderImpl");
-        hibernateProperties.setProperty(AvailableSettings.MULTI_TENANT_IDENTIFIER_RESOLVER, "spring.tenant.CurrentTenantIdentifierResolverImpl");
-        hibernateProperties.setProperty("hibernate.multiTenancy", "DATABASE");
+    public EntityManagerFactoryBuilder entityManagerFactoryBuilder(
+        JpaVendorAdapter jpaVendorAdapter,
+        ObjectProvider<PersistenceUnitManager> persistenceUnitManager
+    ) {
+        return new EntityManagerFactoryBuilder(
+            jpaVendorAdapter,
+            f -> Collections.emptyMap(),
+            persistenceUnitManager.getIfAvailable()
+        );
+    }
 
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setHibernateProperties(hibernateProperties);
-        return sessionFactory;
+    @Bean
+    public DataSource dataSource() {
+        Map<Object, Object> resolvedDataSources = new HashMap<>();
+
+        DriverManager.setLogWriter(null);  // remove annoying logs from jdbc driver
+        SpringApp.getPropertiesFilterByProfile().map(AbstractMap.SimpleEntry::getKey).forEach(props -> {
+            DataSource dataSource = DataSourceBuilder.create()
+                .url(props.getProperty(JdbcSettings.JAKARTA_JDBC_URL))
+                .username(props.getProperty(JdbcSettings.JAKARTA_JDBC_USER))
+                .password(props.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD))
+                .driverClassName(props.getProperty(JdbcSettings.JAKARTA_JDBC_DRIVER))
+            .build();
+            resolvedDataSources.put(props.getProperty("jsql.tenant"), dataSource);
+        });
+
+        AbstractRoutingDataSource dataSource = new MultitenantDataSource();
+        dataSource.setDefaultTargetDataSource(resolvedDataSources.get("h2"));
+        dataSource.setTargetDataSources(resolvedDataSources);
+
+        dataSource.afterPropertiesSet();
+        return dataSource;
     }
 
     @Bean
@@ -47,10 +73,9 @@ public class HibernateConf {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
 
         List<String> httpMethods = Stream.concat(
-                Stream.of(CustomMethodSuiteIT.CUSTOM_METHOD),
-                Arrays.stream(RequestMethod.values()).map(Enum::name)
-            )
-            .collect(Collectors.toList());
+            Stream.of(CustomMethodSuiteIT.CUSTOM_METHOD),
+            Arrays.stream(RequestMethod.values()).map(Enum::name)
+        ).collect(Collectors.toList());
 
         firewall.setAllowedHttpMethods(httpMethods);
         firewall.setUnsafeAllowAnyHttpMethod(true);

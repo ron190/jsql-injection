@@ -62,12 +62,12 @@ public class JTextPaneAppender extends AbstractAppender {
         var messageLogEvent = new String[] {
             new String(this.getLayout().toByteArray(event), StandardCharsets.UTF_8)
         };
-        if (messageLogEvent.length == 0) {  // fixes #95664
-            return;
-        }
-        
+
         var level = event.getLevel().intLevel();
         SwingUtilities.invokeLater(() -> {
+            if (messageLogEvent.length == 0) {  // fixes #95664
+                return;
+            }
             String message = messageLogEvent[0];
             if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {
                 JTextPaneAppender.javaTextPane.append(message, JTextPaneAppender.ATTRIBUTE_WARN);

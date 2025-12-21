@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 /**
  * Runnable class, define insertionCharacter to be used during injection,
- * i.e -1 in "...php?id=-1 union select..", sometimes it's -1, 0', 0, etc.
+ * i.e -1 in "...php?id=-1 union select...", sometimes it's -1, 0', 0, etc.
  * Find working insertion char when error message occurs in source.
  * Force to 1 if no insertion char works and empty value from user,
  * Force to user's value if no insertion char works,

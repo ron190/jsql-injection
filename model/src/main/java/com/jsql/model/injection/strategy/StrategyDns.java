@@ -39,7 +39,7 @@ public class StrategyDns extends AbstractStrategy {
     }
 
     @Override
-    public void checkApplicability() throws StoppedByUserSlidingException {
+    public void checkApplicability() {
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyDnsDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
@@ -146,7 +146,7 @@ public class StrategyDns extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
         new Thread(() -> this.injectionModel.injectWithoutIndex(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlDns(
                 sqlQuery,

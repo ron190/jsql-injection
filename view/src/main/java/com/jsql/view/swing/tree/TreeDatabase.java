@@ -187,7 +187,7 @@ public class TreeDatabase extends JTree {
     
     public void updateProgress(AbstractElementDatabase dataElementDatabase, int dataCount) {
         DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);
-        // Fix Report #1368: ignore if no element database, usually for mock (eg. metadata, file, shell, list databases)
+        // Fix Report #1368: ignore if no element database, usually for mock (e.g. metadata, file, shell, list databases)
         if (node != null) {
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             progressingTreeNodeModel.setIndexProgress(dataCount);  // Update the progress value of the model

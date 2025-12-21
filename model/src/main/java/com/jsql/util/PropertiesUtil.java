@@ -52,7 +52,7 @@ public class PropertiesUtil {
             .forEach(key -> countGui.getAndIncrement());
             statusGui = String.format("gui %s %s%% %s",
                 newLocale.getDisplayLanguage(newLocale),
-                countGui.get() * 100 / propertiesRoot.entrySet().size(),
+                countGui.get() * 100 / propertiesRoot.size(),
                 countGui.get() <= 0 ? StringUtils.EMPTY : "("+ countGui.get() +" items)"
             );
         }
@@ -64,7 +64,7 @@ public class PropertiesUtil {
             .forEach(key -> countJvm.getAndIncrement());
             statusJvm = String.format("jvm %s %s%% %s",
                 Locale.getDefault().getDisplayLanguage(newLocale),
-                countJvm.get() * 100 / propertiesRoot.entrySet().size(),
+                countJvm.get() * 100 / propertiesRoot.size(),
                 countJvm.get() <= 0 ? StringUtils.EMPTY : " ("+ countJvm.get() +" items)"
             );
         }

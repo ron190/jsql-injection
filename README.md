@@ -1,7 +1,7 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a server.
 
-It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac and it works with Java from version 11 to 23.
+It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac, and it works with Java from version 11 to 23.
 
 jSQL Injection is also part of the official penetration testing distribution [Kali Linux](https://www.kali.org) and is included in various other distributions like [Pentest Box](https://pentestbox.com), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org) and [BlackArch Linux](http://www.blackarch.org).
 

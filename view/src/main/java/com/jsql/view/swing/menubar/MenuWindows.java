@@ -16,7 +16,7 @@ import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.RadioItemPreventClose;
+import com.jsql.view.swing.util.RadioItemNonClosing;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
@@ -74,7 +74,7 @@ public class MenuWindows extends JMenu {
             new AbstractMap.SimpleEntry<>(FlatMTGitHubDarkIJTheme.class.getName(), "GitHub Dark"),
             new AbstractMap.SimpleEntry<>(FlatHighContrastIJTheme.class.getName(), "High contrast")
         ).forEach(entry -> {
-            JMenuItem item = new RadioItemPreventClose(
+            JMenuItem item = new RadioItemNonClosing(
                 new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -161,7 +161,7 @@ public class MenuWindows extends JMenu {
             ) {
                 @Override
                 protected void processMouseEvent(MouseEvent e) {
-                    if (!RadioItemPreventClose.preventClose(e, this)) {
+                    if (RadioItemNonClosing.shouldClose(e, this)) {
                         super.processMouseEvent(e);
                     }
                 }
@@ -264,7 +264,7 @@ public class MenuWindows extends JMenu {
         var atomicIsAnySelected = new AtomicBoolean(false);
         AppMenubar.MODELS_ITEM.forEach(model -> {
             atomicIsAnySelected.set(atomicIsAnySelected.get() || model.getLanguage().isCurrentLanguage());
-            model.setMenuItem(new RadioItemPreventClose(
+            model.setMenuItem(new RadioItemNonClosing(
                 model.getLanguage().getMenuItemLabel(),
                 model.getLanguage().getFlag(),
                 model.getLanguage().isCurrentLanguage()

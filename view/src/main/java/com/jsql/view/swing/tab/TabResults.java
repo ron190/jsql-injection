@@ -27,7 +27,7 @@ import com.jsql.view.swing.terminal.ExploitReverseShell;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextFieldPlaceholder;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.RadioItemPreventClose;
+import com.jsql.view.swing.util.RadioItemNonClosing;
 import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +41,6 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -305,7 +304,7 @@ public class TabResults extends DnDTabbedPane {
         var buttonGroup = new ButtonGroup();
         List<ModelReverse> commandsReverse = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getCommandsReverse();
         commandsReverse.forEach(modelReverse -> {
-            var radio = new RadioItemPreventClose(modelReverse.getName());
+            var radio = new RadioItemNonClosing(modelReverse.getName());
             radio.setActionCommand(modelReverse.getName());
             radio.setSelected("bash".equals(modelReverse.getName()));
             buttonGroup.add(radio);
@@ -335,8 +334,8 @@ public class TabResults extends DnDTabbedPane {
         menuListen.add(panelOpenIn);
         menuListen.add(new JSeparator());
 
-        var menuBuiltInShell = new RadioItemPreventClose("Built-in shell", true);
-        var menuExternalShell = new RadioItemPreventClose("External listening shell");
+        var menuBuiltInShell = new RadioItemNonClosing("Built-in shell", true);
+        var menuExternalShell = new RadioItemNonClosing("External listening shell");
         var buttonTypeShell = new ButtonGroup();
         buttonTypeShell.add(menuBuiltInShell);
         buttonTypeShell.add(menuExternalShell);
@@ -374,7 +373,7 @@ public class TabResults extends DnDTabbedPane {
         panelServerListeningConnection.add(new JLabel("<html><b>Server listening method :</b></html>"));
         menuConnect.add(panelServerListeningConnection);
         var buttonGroupListening = new ButtonGroup();
-        Arrays.asList("netcat").forEach(method -> {
+        List.of("netcat").forEach(method -> {
             var radio = new JRadioButtonMenuItem(method) {
                 @Override
                 protected void processMouseEvent(MouseEvent evt) {

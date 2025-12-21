@@ -31,7 +31,7 @@ import java.util.Base64;
  * This implementation strictly follows RFC 4648, and as such unlike
  * the {@link Base32} and {@link Base64} implementations,
  * it does not ignore invalid alphabet characters or whitespace,
- * neither does it offer chunking or padding characters.
+ * neither does it offer chunking nor padding characters.
  * </p>
  * <p>
  * The only additional feature above those specified in RFC 4648

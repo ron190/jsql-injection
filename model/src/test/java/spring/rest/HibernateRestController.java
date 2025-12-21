@@ -2,18 +2,17 @@ package spring.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.method.CustomMethodSuiteIT;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.internal.SessionImpl;
-import org.hibernate.query.Query;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-@Transactional
 @RestController
 public class HibernateRestController {
 
@@ -37,13 +35,14 @@ public class HibernateRestController {
     private static final Logger LOGGER = LogManager.getRootLogger();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private Greeting getResponse(String name, String sqlQuery, boolean isError, boolean isUpdate, boolean isVisible) {
         return this.getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false, false);
     }
-    
+
+    @Transactional
     private Greeting getResponse(
         String name,
         String sqlQuery,
@@ -61,8 +60,8 @@ public class HibernateRestController {
         String inject = isOracle ? name : name.replace(":", "\\:");
 
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            Query<Object> query = session.createNativeQuery(String.format(sqlQuery, inject), Object.class);
+            EntityManager session = this.entityManager;
+            Query query = session.createNativeQuery(String.format(sqlQuery, inject), Object.class);
             if (isUpdate) {
                 query.executeUpdate();
             } else {

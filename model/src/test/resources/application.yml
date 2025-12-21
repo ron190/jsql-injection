@@ -1,6 +1,3 @@
-# TODO remove useless embedded database: url='jdbc:h2:mem:to_be_removed;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false'
-spring.datasource.name: to_be_removed
-
 # Display green on Spring logo
 spring.output.ansi.enabled: always
 
@@ -13,6 +10,5 @@ server:
         key-store-password: testtest
         key-alias: jsql-injection
 
-# Prevent BasicWebSecurity error: Requested bean is currently in creation: Is there an unresolvable circular reference?
+# Prevent Factory method 'httpSecurity' threw exception with message: Cannot pass null or empty values to constructor
 spring.main.allow-circular-references: true
-# logging.level.org.springframework.security.web.FilterChainProxy: DEBUG
