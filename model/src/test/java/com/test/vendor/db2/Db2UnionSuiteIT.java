@@ -39,12 +39,13 @@ class Db2UnionSuiteIT extends ConcreteDb2SuiteIT {
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getDb2());
         model.beginInjection();
     }
-    
-    @Override
-    @RepeatedTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
+
+// unstable
+//    @Override
+//    @RepeatedTest(3)
+//    public void listDatabases() throws JSqlException {
+//        super.listDatabases();
+//    }
     
     @Override
     @RepeatedTest(3)

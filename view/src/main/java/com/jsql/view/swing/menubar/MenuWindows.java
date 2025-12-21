@@ -7,9 +7,7 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTGitHubDarkIJ
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTGitHubIJTheme;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import com.jsql.model.InjectionModel;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevelUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.dialog.translate.Language;
@@ -20,8 +18,6 @@ import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.RadioItemPreventClose;
 import com.jsql.view.swing.util.UiUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,11 +30,8 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.prefs.Preferences;
 
 public class MenuWindows extends JMenu {
-
-    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private static final String I18N_SQL_ENGINE = "MENUBAR_SQL_ENGINE";
     private static final String I18N_PREFERENCES = "MENUBAR_PREFERENCES";
@@ -129,8 +122,6 @@ public class MenuWindows extends JMenu {
         });
 
         this.add(this.menuView);
-
-        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
         var menuPanel = new JMenu(I18nUtil.valueByKey("MENUBAR_PANEL"));
         I18nViewUtil.addComponentForKey("MENUBAR_PANEL", menuPanel);

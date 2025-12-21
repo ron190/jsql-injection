@@ -128,7 +128,8 @@ public class JdbcRestController {
 
         try (
             Connection con = DriverManager.getConnection("jdbc:vertica://jsql-vertica:5433/", "dbadmin", "password");
-            PreparedStatement pstmt = con.prepareStatement("select table_schema from v_catalog.tables where 1 = "+ inject)
+            // avoid v_catalog.tables that can be empty and prevent Blind strategy
+            PreparedStatement pstmt = con.prepareStatement("select table_schema from v_catalog.system_tables where 1 = "+ inject)
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {

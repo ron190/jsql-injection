@@ -11,7 +11,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 @Configuration
 @Order(1)
@@ -41,7 +41,7 @@ public class BasicSecurityConfig {
         return http.securityMatcher("/basic/**")
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/basic/**")).hasAuthority(BasicSecurityConfig.BASIC_ROLE)
+                .requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/basic/**")).hasAuthority(BasicSecurityConfig.BASIC_ROLE)
             )
             .addFilterAfter(BasicSecurityConfig.FILTER, AuthorizationFilter.class)
             .httpBasic(Customizer.withDefaults())

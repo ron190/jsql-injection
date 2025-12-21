@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 @Configuration
 @Order(3)
@@ -30,14 +30,17 @@ public class DigestSecurityConfig {
         return http.securityMatcher("/digest/**")
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/digest/**")).hasAuthority(DigestSecurityConfig.DIGEST_AUTHORITY)
+                .requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/digest/**"))
+                .hasAuthority(DigestSecurityConfig.DIGEST_AUTHORITY)
             )
             .addFilterAfter(DigestSecurityConfig.FILTER, AuthorizationFilter.class)
             .addFilter(this.digestAuthenticationFilter())
-            .exceptionHandling()
-            // Deprecated but no compatible entry point setting available
-            .defaultAuthenticationEntryPointFor(this.digestEntryPoint(), new AntPathRequestMatcher("/digest/**"))
-            .and()
+            .exceptionHandling(exception -> exception
+                .defaultAuthenticationEntryPointFor(
+                    this.digestEntryPoint(),
+                    PathPatternRequestMatcher.withDefaults().matcher("/digest/**")
+                )
+            )
             .build();
     }
 

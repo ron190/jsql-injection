@@ -10,8 +10,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -30,7 +30,7 @@ public class CsrfWebSecurity {
 
         return http.securityMatcher("/csrf/**")
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/csrf/**")).permitAll()
+                .requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/csrf/**")).permitAll()
             )
             .csrf(csrf -> csrf
                 .csrfTokenRepository(tokenRepository)
