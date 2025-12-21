@@ -45,7 +45,7 @@ view,com.jsql.view.swing.menubar,AppMenubar,215,870,19,11,47,145,18,26,6,23
 view,com.jsql.view.swing.menubar,ModelItemTranslate,0,16,0,0,0,7,0,4,0,4
 view,com.jsql.view.swing.menubar,ActionCheckUpdate,13,3,0,0,4,1,2,1,2,1
 view,com.jsql.view.swing.menubar,ModelCheckboxMenu,0,34,0,0,0,10,0,2,0,2
-view,com.jsql.view.swing.menubar,MenuWindows,74,708,10,14,19,147,15,25,8,20
+view,com.jsql.view.swing.menubar,MenuWindows,74,700,10,14,19,145,15,24,8,19
 view,com.jsql.view.swing.tree.custom,CheckBoxMenuItemIconCustom,194,0,16,0,44,0,13,0,5,0
 view,com.jsql.view.swing.tree.custom,JPopupMenuCustomExtract,42,3,0,0,18,1,12,1,12,1
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JButtonStateful() {...},5,10,0,0,1,1,1,1,1,1
