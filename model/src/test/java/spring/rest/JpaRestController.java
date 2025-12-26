@@ -11,6 +11,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.internal.SessionImpl;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -63,13 +64,15 @@ public class JpaRestController {
         String inject = isOracle ? name : name.replace(":", "\\:");
 
         try {
-            EntityManager session = this.entityManager;
-            Query query = session.createNativeQuery(String.format(sqlQuery, inject), Object.class);
+            Query query = this.entityManager.createNativeQuery(String.format(sqlQuery, inject), Object.class);
             if (isUpdate) {
+                Session session = this.entityManager.unwrap(Session.class);
+                var transaction = session.beginTransaction();
                 query.executeUpdate();
+                transaction.commit();
             } else {
                 if (isStack) {
-                    try (Connection connection = ((SessionImpl) session).getJdbcConnectionAccess().obtainConnection()) {
+                    try (Connection connection = ((SessionImpl) this.entityManager).getJdbcConnectionAccess().obtainConnection()) {
                         Statement stmt = connection.createStatement();
                         boolean hasMoreResultSets = stmt.execute(String.format(sqlQuery, inject));
                         StringBuilder results = new StringBuilder();
