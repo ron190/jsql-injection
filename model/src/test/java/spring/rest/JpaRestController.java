@@ -39,14 +39,13 @@ public class JpaRestController {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @PersistenceContext
-    @Qualifier("qualifiedEntityManagerFactory")
     private EntityManager entityManager;
 
     private Greeting getResponse(String name, String sqlQuery, boolean isError, boolean isUpdate, boolean isVisible) {
         return this.getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false, false);
     }
 
-    @Transactional
+    @Transactional("jpaTransactionManager")
     private Greeting getResponse(
         String name,
         String sqlQuery,

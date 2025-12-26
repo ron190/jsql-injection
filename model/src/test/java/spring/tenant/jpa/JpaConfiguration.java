@@ -1,6 +1,5 @@
 package spring.tenant.jpa;
 
-import com.test.method.CustomMethodSuiteIT;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.cfg.JdbcSettings;
 import org.springframework.beans.factory.ObjectProvider;
@@ -12,23 +11,19 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.bind.annotation.RequestMethod;
 import spring.SpringApp;
 
 import javax.sql.DataSource;
 import java.sql.DriverManager;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Configuration
 @EnableTransactionManagement
 public class JpaConfiguration {
 
-    @Bean("qualifiedEntityManagerFactory")
+    @Bean("jpaTransactionManager")
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
@@ -66,19 +61,5 @@ public class JpaConfiguration {
 
         dataSource.afterPropertiesSet();
         return dataSource;
-    }
-
-    @Bean
-    public StrictHttpFirewall httpFirewallJpa() {
-        StrictHttpFirewall firewall = new StrictHttpFirewall();
-
-        List<String> httpMethods = Stream.concat(
-            Stream.of(CustomMethodSuiteIT.CUSTOM_METHOD),
-            Arrays.stream(RequestMethod.values()).map(Enum::name)
-        ).collect(Collectors.toList());
-
-        firewall.setAllowedHttpMethods(httpMethods);
-        firewall.setUnsafeAllowAnyHttpMethod(true);
-        return firewall;
     }
 }

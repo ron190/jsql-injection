@@ -30,7 +30,7 @@ public class CountryRepository {
     private static final String TEMPLATE = "Hello, s!";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Transactional
+    @Transactional("hibernateTransactionManager")
 	public Country findCountry(String name) throws JsonProcessingException {
         Country country = new Country();
         Session session = this.sessionFactory.getCurrentSession();

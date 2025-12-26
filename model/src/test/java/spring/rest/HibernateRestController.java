@@ -38,14 +38,13 @@ public class HibernateRestController {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    @Qualifier("qualifiedSessionFactory")
     private SessionFactory sessionFactory;
 
     private Greeting getResponse(String name, String sqlQuery, boolean isError, boolean isUpdate, boolean isVisible) {
         return this.getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false, false);
     }
 
-    @Transactional
+    @Transactional("hibernateTransactionManager")
     private Greeting getResponse(
         String name,
         String sqlQuery,
