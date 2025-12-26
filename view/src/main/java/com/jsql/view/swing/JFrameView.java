@@ -77,7 +77,9 @@ public class JFrameView extends JFrame {
             if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingUpdate()) {
                 injectionModel.getMediatorUtils().getGitUtil().checkUpdate(GitUtil.ShowOnConsole.NO);
             }
-            injectionModel.getMediatorUtils().getGitUtil().showNews();
+            if (injectionModel.getMediatorUtils().getPreferencesUtil().isShowNews()) {  // disabled when UT only
+                injectionModel.getMediatorUtils().getGitUtil().showNews();
+            }
             this.setVisible(true);
             MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();  // required here to get focus
         });

@@ -33,6 +33,7 @@ public class PreferencesUtil {
     private String pathFile;
 
     private boolean isCheckingUpdate = true;
+    private boolean isShowNews = true;
 
     // True if bugs are sent to GitHub.
     private boolean isReportingBugs = true;
@@ -320,6 +321,10 @@ public class PreferencesUtil {
     public boolean isCheckingUpdate() {
         return this.isCheckingUpdate;
     }
+
+    public boolean isShowNews() {
+        return this.isShowNews;
+    }
     
     public boolean isFollowingRedirection() {
         return this.isFollowingRedirection;
@@ -579,6 +584,10 @@ public class PreferencesUtil {
     public PreferencesUtil withIsCheckingUpdate(boolean isCheckingUpdate) {
         this.isCheckingUpdate = isCheckingUpdate;
         return this;
+    }
+
+    public void withIsShowNews(boolean isShowNews) {
+        this.isShowNews = isShowNews;
     }
 
     public PreferencesUtil withIsReportingBugs(boolean isReportingBugs) {

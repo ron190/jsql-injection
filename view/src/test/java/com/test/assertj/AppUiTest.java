@@ -68,6 +68,10 @@ class AppUiTest {
 
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);
+        // Prevent URL calls and random failure on shouldFindNetworkHeader
+        MediatorHelper.model().getMediatorUtils().getPreferencesUtil()
+            .withIsCheckingUpdate(false)
+            .withIsShowNews(false);
 
         JFrameView frame = GuiActionRunner.execute(() -> {  // Static mock on current ThreadLocal
             AppUiTest.logMethod();

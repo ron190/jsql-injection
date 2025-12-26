@@ -26,41 +26,46 @@ jobs:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
     secrets: inherit
 
-  build-db2:
-    needs: set-global-env-var
-    uses: ./.github/workflows/build-db2.yml
-    with:
-      DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
-
   build-oracle:
     needs: set-global-env-var
     uses: ./.github/workflows/build-oracle.yml
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
 
-  build-sqlserver:
+  build-db2:
     needs: set-global-env-var
-    uses: ./.github/workflows/build-sqlserver.yml
+    uses: ./.github/workflows/build-vendor.yml
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+      NAME_VENDOR: db2
+
+  build-sqlserver:
+    needs: set-global-env-var
+    uses: ./.github/workflows/build-vendor.yml
+    with:
+      DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+      NAME_VENDOR: sqlserver
 
   build-sybase:
     needs: set-global-env-var
-    uses: ./.github/workflows/build-sybase.yml
+    uses: ./.github/workflows/build-vendor.yml
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+      NAME_VENDOR: sybase
 
   build-vertica:
     needs: set-global-env-var
-    uses: ./.github/workflows/build-vertica.yml
+    uses: ./.github/workflows/build-vendor.yml
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+      NAME_VENDOR: vertica
 
   build-monetdb:
     needs: set-global-env-var
-    uses: ./.github/workflows/build-monetdb.yml
+    uses: ./.github/workflows/build-vendor.yml
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+      NAME_VENDOR: monetdb
 
   build:
     needs: set-global-env-var
