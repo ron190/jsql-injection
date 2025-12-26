@@ -2,18 +2,17 @@ package spring.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.method.CustomMethodSuiteIT;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.internal.SessionImpl;
-import org.hibernate.query.Query;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,15 +30,16 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class HibernateRestController {
+@RequestMapping("/jpa")
+public class JpaRestController {
 
     private static final String TEMPLATE = "Hello, s!";
     private static final Logger LOGGER = LogManager.getRootLogger();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Autowired
-    @Qualifier("qualifiedSessionFactory")
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    @Qualifier("qualifiedEntityManagerFactory")
+    private EntityManager entityManager;
 
     private Greeting getResponse(String name, String sqlQuery, boolean isError, boolean isUpdate, boolean isVisible) {
         return this.getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false, false);
@@ -63,8 +63,8 @@ public class HibernateRestController {
         String inject = isOracle ? name : name.replace(":", "\\:");
 
         try {
-            Session session = this.sessionFactory.getCurrentSession();
-            Query<Object> query = session.createNativeQuery(String.format(sqlQuery, inject), Object.class);
+            EntityManager session = this.entityManager;
+            Query query = session.createNativeQuery(String.format(sqlQuery, inject), Object.class);
             if (isUpdate) {
                 query.executeUpdate();
             } else {
@@ -85,7 +85,7 @@ public class HibernateRestController {
                             hasMoreResultSets = stmt.getMoreResults();
                         }
                         return new Greeting(
-                            HibernateRestController.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                            JpaRestController.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
                         );
                     }
                 } else {
@@ -94,7 +94,7 @@ public class HibernateRestController {
                         return new Greeting(
                             isBoolean
                             ? results.isEmpty() ? "true" : "false"
-                            : HibernateRestController.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                            : JpaRestController.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
                         );
                     }
                 }
@@ -111,7 +111,7 @@ public class HibernateRestController {
     private Greeting initErrorMessage(Exception e) {
         String stacktrace = ExceptionUtils.getStackTrace(e);
         LOGGER.debug(stacktrace);
-        return new Greeting(HibernateRestController.TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
+        return new Greeting(JpaRestController.TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
     }
 
 

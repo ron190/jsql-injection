@@ -1,4 +1,4 @@
-package spring.tenant;
+package spring.tenant.jpa;
 
 import com.test.method.CustomMethodSuiteIT;
 import jakarta.persistence.EntityManagerFactory;
@@ -26,9 +26,9 @@ import java.util.stream.Stream;
 
 @Configuration
 @EnableTransactionManagement
-public class HibernateConf {
+public class JpaConfiguration {
 
-    @Bean
+    @Bean("qualifiedEntityManagerFactory")
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
@@ -40,13 +40,13 @@ public class HibernateConf {
     ) {
         return new EntityManagerFactoryBuilder(
             jpaVendorAdapter,
-            f -> Collections.emptyMap(),
+            f -> Map.of(),
             persistenceUnitManager.getIfAvailable()
         );
     }
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource dataSource() {  // unused when hibernate tenant active
         Map<Object, Object> resolvedDataSources = new HashMap<>();
 
         DriverManager.setLogWriter(null);  // remove annoying logs from jdbc driver
@@ -69,7 +69,7 @@ public class HibernateConf {
     }
 
     @Bean
-    public StrictHttpFirewall httpFirewall() {
+    public StrictHttpFirewall httpFirewallJpa() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
 
         List<String> httpMethods = Stream.concat(

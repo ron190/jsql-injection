@@ -1,4 +1,4 @@
-package spring.tenant;
+package spring.tenant.jpa;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

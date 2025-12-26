@@ -14,16 +14,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-#          - jdk: 3.8.6-eclipse-temurin-18
-#            nashorn: ''
-#            bytebuddy: ''
-          - jdk: 3.9.7-eclipse-temurin-21
+          - jdk: 3.9.12-eclipse-temurin-21
             nashorn: ''
             bytebuddy: '-Dnet.bytebuddy.experimental=true'
-    # Groovy not compatible jdk22: gmavenplus-plugin JsonUtilSpock.groovy Unsupported class file major version 66
-    #        - jdk: 3.9.7-eclipse-temurin-22
-    #          nashorn: ""
-    #          bytebuddy: "-Dbytebuddy.experimental=true"
+          # Groovy not compatible jdk22: gmavenplus-plugin JsonUtilSpock.groovy Unsupported class file major version 66
+          - jdk: 3.9.9-eclipse-temurin-22
+            nashorn: ""
+            bytebuddy: "-Dnet.bytebuddy.experimental=true"
+          - jdk: 3.9.9-eclipse-temurin-23
+            nashorn: ""
+            bytebuddy: "-Dnet.bytebuddy.experimental=true"
+          - jdk: 3.9.11-eclipse-temurin-24
+            nashorn: ""
+            bytebuddy: "-Dnet.bytebuddy.experimental=true"
+          - jdk: 3.9.12-eclipse-temurin-25
+            nashorn: ""
+            bytebuddy: "-Dnet.bytebuddy.experimental=true"
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}

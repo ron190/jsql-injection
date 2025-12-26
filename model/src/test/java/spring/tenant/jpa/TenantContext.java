@@ -1,4 +1,4 @@
-package spring.tenant;
+package spring.tenant.jpa;
 
 public class TenantContext {
 

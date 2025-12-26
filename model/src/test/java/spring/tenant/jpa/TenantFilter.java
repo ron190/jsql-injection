@@ -1,11 +1,10 @@
-package spring.tenant;
+package spring.tenant.jpa;
 
 import jakarta.servlet.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-
 
 @Component
 @Order(1)
@@ -17,10 +16,7 @@ class TenantFilter implements Filter {
         if (tenant == null) {
             tenant = "h2";
         }
-        try {
-            chain.doFilter(request, response);
-        } finally {
-            TenantContext.setCurrentTenant(tenant);
-        }
+        TenantContext.setCurrentTenant(tenant);
+        chain.doFilter(request, response);
     }
 }
