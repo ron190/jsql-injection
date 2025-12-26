@@ -183,7 +183,7 @@ model,com.jsql.model.injection.vendor.model,Vendor,2,23,0,0,1,9,1,4,1,4
 model,com.jsql.model.injection.vendor.model,VendorYaml,203,1030,11,39,32,237,21,51,10,36
 model,com.jsql.util,CsrfUtil,143,315,11,19,28,74,10,19,1,13
 model,com.jsql.util,ExceptionUtil,25,14,0,0,8,5,2,2,2,2
-model,com.jsql.util,PreferencesUtil,198,1270,0,0,72,329,47,86,47,86
+model,com.jsql.util,PreferencesUtil,205,1273,0,0,75,330,49,86,49,86
 model,com.jsql.util,JsonUtil,48,303,5,27,11,66,4,22,0,10
 model,com.jsql.util,CertificateUtil,6,39,0,0,2,10,0,3,0,3
 model,com.jsql.util,TamperingUtil,112,323,2,14,38,84,16,25,14,19
