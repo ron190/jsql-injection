@@ -25,7 +25,7 @@ import com.jsql.view.swing.text.*;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.RadioItemPreventClose;
+import com.jsql.view.swing.util.RadioItemNonClosing;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -177,7 +177,7 @@ public class PanelAddressBar extends JPanel {
 <span class="fc" id="L177">        final var buttonGroupMethod = new ButtonGroup();</span>
 
 <span class="fc bfc" id="L179" title="All 2 branches covered.">        for (String method: new String[]{ &quot;DELETE&quot;, StringUtil.GET, &quot;HEAD&quot;, &quot;OPTIONS&quot;, StringUtil.POST, &quot;PUT&quot;, &quot;TRACE&quot; }) {</span>
-<span class="fc" id="L180">            final JMenuItem newMenuItem = new RadioItemPreventClose(method, StringUtil.GET.equals(method));</span>
+<span class="fc" id="L180">            final JMenuItem newMenuItem = new RadioItemNonClosing(method, StringUtil.GET.equals(method));</span>
 <span class="fc" id="L181">            newMenuItem.addActionListener(actionEvent -&gt; {</span>
 <span class="nc" id="L182">                this.typeRequest = newMenuItem.getText();</span>
 <span class="nc" id="L183">                this.atomicRadioMethod.get().setText(this.typeRequest);</span>

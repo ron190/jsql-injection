@@ -322,8 +322,8 @@ public class SuspendableGetRows extends AbstractSuspendable {
     /**
      * After ${lead} tag, gets characters between 1 and maxPerf
      * performanceQuery() gets 65536 characters or fewer
-     * ${lead}blahblah1337      ] : end or limit+1
-     * ${lead}blahblah      blah] : continue substr()
+     * [${lead}blahblah1337      ] : end or limit+1
+     * [${lead}blahblah      blah] : continue substr()
      */
     private Matcher parseLeadFound(String sourcePage, String performanceLength) throws InjectionFailureException {
         Matcher regexAtLeastOneRow;

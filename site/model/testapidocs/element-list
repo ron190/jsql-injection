@@ -28,4 +28,5 @@ spring.rest
 spring.security
 spring.soap
 spring.ssl
-spring.tenant
+spring.tenant.hibernate
+spring.tenant.jpa

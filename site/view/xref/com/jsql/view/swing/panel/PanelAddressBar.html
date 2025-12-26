@@ -33,7 +33,7 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> com.jsql.view.swing.text.listener.DocumentListenerEditing;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.I18nViewUtil;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.MediatorHelper;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.RadioItemPreventClose;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.RadioItemNonClosing;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.UiUtil;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.lang3.StringUtils;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.apache.logging.log4j.LogManager;
@@ -185,7 +185,7 @@
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> buttonGroupMethod = <strong class="jxr_keyword">new</strong> ButtonGroup();
 <a class="jxr_linenumber" name="L178" href="#L178">178</a> 
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>         <strong class="jxr_keyword">for</strong> (String method: <strong class="jxr_keyword">new</strong> String[]{ <span class="jxr_string">"DELETE"</span>, StringUtil.GET, <span class="jxr_string">"HEAD"</span>, <span class="jxr_string">"OPTIONS"</span>, StringUtil.POST, <span class="jxr_string">"PUT"</span>, <span class="jxr_string">"TRACE"</span> }) {
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <strong class="jxr_keyword">final</strong> JMenuItem newMenuItem = <strong class="jxr_keyword">new</strong> <a name="RadioItemPreventClose" href="../../../../../com/jsql/view/swing/util/RadioItemPreventClose.html#RadioItemPreventClose">RadioItemPreventClose</a>(method, StringUtil.GET.equals(method));
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <strong class="jxr_keyword">final</strong> JMenuItem newMenuItem = <strong class="jxr_keyword">new</strong> <a name="RadioItemNonClosing" href="../../../../../com/jsql/view/swing/util/RadioItemNonClosing.html#RadioItemNonClosing">RadioItemNonClosing</a>(method, StringUtil.GET.equals(method));
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>             newMenuItem.addActionListener(actionEvent -&gt; {
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>                 <strong class="jxr_keyword">this</strong>.typeRequest = newMenuItem.getText();
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>                 <strong class="jxr_keyword">this</strong>.atomicRadioMethod.get().setText(<strong class="jxr_keyword">this</strong>.typeRequest);

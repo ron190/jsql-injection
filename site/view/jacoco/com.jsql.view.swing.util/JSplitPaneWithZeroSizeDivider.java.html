@@ -40,7 +40,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 <span class="fc" id="L40">        this.revalidate();</span>
 <span class="fc" id="L41">    }</span>
 
-<span class="fc" id="L43">    private class SplitPaneWithZeroSizeDividerUI extends BasicSplitPaneUI {</span>
+    private static class SplitPaneWithZeroSizeDividerUI extends BasicSplitPaneUI {
 
         @Override
         public BasicSplitPaneDivider createDefaultDivider() {
@@ -59,9 +59,9 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 <span class="fc" id="L59">        }</span>
     }
 
-    private class ZeroSizeDivider extends BasicSplitPaneDivider {
+    private static class ZeroSizeDivider extends BasicSplitPaneDivider {
 
-<span class="fc" id="L64">        public ZeroSizeDivider(BasicSplitPaneUI ui) {</span>
+        public ZeroSizeDivider(BasicSplitPaneUI ui) {
 <span class="fc" id="L65">            super(ui);</span>
 <span class="fc" id="L66">            super.setBorder(null);</span>
 <span class="fc" id="L67">            this.setBackground(UIManager.getColor(&quot;controlShadow&quot;));</span>

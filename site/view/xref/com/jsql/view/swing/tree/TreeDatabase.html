@@ -195,7 +195,7 @@
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>     
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> updateProgress(AbstractElementDatabase dataElementDatabase, <strong class="jxr_keyword">int</strong> dataCount) {
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <em class="jxr_comment">// Fix Report #1368: ignore if no element database, usually for mock (eg. metadata, file, shell, list databases)</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <em class="jxr_comment">// Fix Report #1368: ignore if no element database, usually for mock (e.g. metadata, file, shell, list databases)</em>
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>             progressingTreeNodeModel.setIndexProgress(dataCount);  <em class="jxr_comment">// Update the progress value of the model</em>

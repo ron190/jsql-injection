@@ -199,11 +199,11 @@
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>             LOGGER.log(LogLevelUtil.IGNORE, e, e);
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>             Thread.currentThread().interrupt();
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         } <strong class="jxr_keyword">catch</strong> (<a name="JSqlRuntimeException" href="../../../com/jsql/model/exception/JSqlRuntimeException.html#JSqlRuntimeException">JSqlRuntimeException</a> | <a name="JSqlException" href="../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> | IOException e) {  <em class="jxr_comment">// Catch expected exceptions only</em>
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>             <strong class="jxr_keyword">if</strong> (e.getMessage() == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Interruption: {}"</span>, InjectionModel.getImplicitReason(e));
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>             } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Interruption: {}"</span>, e.getMessage());
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>             }
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>             LOGGER.log(
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>                 LogLevelUtil.CONSOLE_ERROR,
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>                 <span class="jxr_string">"Interruption: {}"</span>,
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>                 e.getMessage() == <strong class="jxr_keyword">null</strong> ? InjectionModel.getImplicitReason(e) : e.getMessage()
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>             );
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         } <strong class="jxr_keyword">finally</strong> {
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>             <strong class="jxr_keyword">var</strong> request = <strong class="jxr_keyword">new</strong> <a name="Request" href="../../../com/jsql/model/bean/util/Request.html#Request">Request</a>();
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>             request.setMessage(Interaction.END_PREPARATION);

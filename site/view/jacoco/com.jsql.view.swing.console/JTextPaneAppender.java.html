@@ -62,12 +62,12 @@ public class JTextPaneAppender extends AbstractAppender {
 <span class="fc" id="L62">        var messageLogEvent = new String[] {</span>
 <span class="fc" id="L63">            new String(this.getLayout().toByteArray(event), StandardCharsets.UTF_8)</span>
         };
-<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (messageLogEvent.length == 0) {  // fixes #95664</span>
-<span class="nc" id="L66">            return;</span>
-        }
-        
-<span class="fc" id="L69">        var level = event.getLevel().intLevel();</span>
-<span class="fc" id="L70">        SwingUtilities.invokeLater(() -&gt; {</span>
+
+<span class="fc" id="L66">        var level = event.getLevel().intLevel();</span>
+<span class="fc" id="L67">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">            if (messageLogEvent.length == 0) {  // fixes #95664</span>
+<span class="nc" id="L69">                return;</span>
+            }
 <span class="fc" id="L71">            String message = messageLogEvent[0];</span>
 <span class="fc bfc" id="L72" title="All 2 branches covered.">            if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {</span>
 <span class="fc" id="L73">                JTextPaneAppender.javaTextPane.append(message, JTextPaneAppender.ATTRIBUTE_WARN);</span>

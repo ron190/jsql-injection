@@ -52,7 +52,7 @@ public class PropertiesUtil {
 <span class="nc" id="L52">            .forEach(key -&gt; countGui.getAndIncrement());</span>
 <span class="nc" id="L53">            statusGui = String.format(&quot;gui %s %s%% %s&quot;,</span>
 <span class="nc" id="L54">                newLocale.getDisplayLanguage(newLocale),</span>
-<span class="nc" id="L55">                countGui.get() * 100 / propertiesRoot.entrySet().size(),</span>
+<span class="nc" id="L55">                countGui.get() * 100 / propertiesRoot.size(),</span>
 <span class="nc bnc" id="L56" title="All 2 branches missed.">                countGui.get() &lt;= 0 ? StringUtils.EMPTY : &quot;(&quot;+ countGui.get() +&quot; items)&quot;</span>
             );
         }
@@ -64,7 +64,7 @@ public class PropertiesUtil {
 <span class="nc" id="L64">            .forEach(key -&gt; countJvm.getAndIncrement());</span>
 <span class="nc" id="L65">            statusJvm = String.format(&quot;jvm %s %s%% %s&quot;,</span>
 <span class="nc" id="L66">                Locale.getDefault().getDisplayLanguage(newLocale),</span>
-<span class="nc" id="L67">                countJvm.get() * 100 / propertiesRoot.entrySet().size(),</span>
+<span class="nc" id="L67">                countJvm.get() * 100 / propertiesRoot.size(),</span>
 <span class="nc bnc" id="L68" title="All 2 branches missed.">                countJvm.get() &lt;= 0 ? StringUtils.EMPTY : &quot; (&quot;+ countJvm.get() +&quot; items)&quot;</span>
             );
         }

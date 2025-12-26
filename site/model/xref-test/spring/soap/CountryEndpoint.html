@@ -29,13 +29,11 @@
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  	@PayloadRoot(namespace = CountryEndpoint.NAMESPACE_URI, localPart = <span class="jxr_string">"getCountryRequest"</span>)
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  	@ResponsePayload
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  	<strong class="jxr_keyword">public</strong> GetCountryResponse getCountry(@RequestPayload GetCountryRequest request) <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  	    
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  		GetCountryResponse response = <strong class="jxr_keyword">new</strong> GetCountryResponse();
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  		response.setCountry(<strong class="jxr_keyword">this</strong>.countryRepository.findCountry(request.getName()));
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  		<strong class="jxr_keyword">return</strong> response;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  	}
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  }
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  		GetCountryResponse response = <strong class="jxr_keyword">new</strong> GetCountryResponse();
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  		response.setCountry(<strong class="jxr_keyword">this</strong>.countryRepository.findCountry(request.getName()));
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  		<strong class="jxr_keyword">return</strong> response;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  	}
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>

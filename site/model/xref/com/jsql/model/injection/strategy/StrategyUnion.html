@@ -54,7 +54,7 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">this</strong>.injectionModel.setIndexesInUrl(<strong class="jxr_keyword">new</strong> <a name="SuspendableGetIndexes" href="../../../../../com/jsql/model/suspendable/SuspendableGetIndexes.html#SuspendableGetIndexes">SuspendableGetIndexes</a>(<strong class="jxr_keyword">this</strong>.injectionModel).run());
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <em class="jxr_comment">// Define visibleIndex, i.e, 2 in "..union select 1,2,..", if 2 is found in HTML body</em>
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <em class="jxr_comment">// Define visibleIndex, i.e, 2 in "...union select 1,2,...", if 2 is found in HTML body</em>
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">if</strong> (StringUtils.isNotEmpty(<strong class="jxr_keyword">this</strong>.injectionModel.getIndexesInUrl())) {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              <strong class="jxr_keyword">this</strong>.visibleIndex = <strong class="jxr_keyword">this</strong>.getVisibleIndex(<strong class="jxr_keyword">this</strong>.sourceIndexesFound);
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          }

@@ -22,7 +22,7 @@ model,com.jsql.model.accessible.vendor.postgres,ModelYamlPostgres,0,27,0,0,0,9,0
 model,com.jsql.model.accessible.vendor.postgres,Extension,0,23,0,0,0,9,0,5,0,5
 model,com.jsql.model.accessible.vendor.postgres,Udf,0,143,0,0,0,53,0,27,0,27
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
-model,com.jsql.model,InjectionModel,147,1304,16,68,36,291,14,62,2,32
+model,com.jsql.model,InjectionModel,143,1304,16,68,35,291,14,62,2,32
 model,com.jsql.model,MediatorUtils,6,137,0,0,2,59,2,39,2,39
 model,com.jsql.model.injection.vendor,MediatorVendor,30,1032,0,12,10,112,10,36,10,30
 model,com.jsql.model.injection.vendor,MediatorVendor.new Vendor() {...},0,85,2,6,0,17,2,4,0,2
@@ -204,7 +204,7 @@ model,com.jsql.util,ConnectionUtil.new Authenticator() {...},0,23,0,0,0,4,0,2,0,
 model,com.jsql.util,AuthenticationUtil.new Authenticator() {...},11,6,0,0,2,1,1,1,1,1
 model,com.jsql.util,GitUtil.ShowOnConsole,0,15,0,0,0,1,0,1,0,1
 model,com.jsql.util,SoapUtil,28,254,3,19,8,59,3,19,0,11
-model,com.jsql.util,PropertiesUtil,244,35,27,1,45,11,20,4,6,4
+model,com.jsql.util,PropertiesUtil,242,35,27,1,45,11,20,4,6,4
 model,com.jsql.util,AuthenticationUtil,114,150,11,5,21,46,11,13,4,12
 model,com.jsql.util,MultipartUtil,23,128,2,6,6,28,2,10,0,8
 model,com.jsql.util,DigestUtil,6,243,2,6,2,44,2,10,0,8
@@ -218,7 +218,7 @@ model,com.jsql.model.accessible.vendor.sqlite,ModelYamlSqlite,3,32,0,0,1,12,1,6,
 model,com.jsql.model.accessible.vendor,ExploitSqlite,208,249,5,1,38,42,6,7,3,7
 model,com.jsql.model.accessible.vendor,ExploitPostgres,545,1445,39,43,95,237,32,32,2,21
 model,com.jsql.model.accessible.vendor,ExploitHsqldb,132,231,3,1,26,36,4,6,2,6
-model,com.jsql.model.accessible.vendor,ExploitOracle,226,26,4,0,33,7,4,2,2,2
+model,com.jsql.model.accessible.vendor,ExploitOracle,225,26,4,0,33,7,4,2,2,2
 model,com.jsql.model.accessible.vendor,ExploitMysql,407,983,48,50,79,176,44,32,5,22
 model,com.jsql.model.accessible.vendor,ExploitH2,159,322,4,2,30,55,5,8,2,8
 model,com.jsql.model.accessible.vendor,ExploitDerby,132,225,3,1,26,36,4,6,2,6

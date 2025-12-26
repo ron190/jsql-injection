@@ -38,7 +38,7 @@
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String TEMPLATE = <span class="jxr_string">"Hello, s!"</span>;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> ObjectMapper objectMapper = <strong class="jxr_keyword">new</strong> ObjectMapper();
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>      @Transactional
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      @Transactional(<span class="jxr_string">"hibernateTransactionManager"</span>)
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  	<strong class="jxr_keyword">public</strong> Country findCountry(String name) <strong class="jxr_keyword">throws</strong> JsonProcessingException {
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          Country country = <strong class="jxr_keyword">new</strong> Country();
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>          Session session = <strong class="jxr_keyword">this</strong>.sessionFactory.getCurrentSession();

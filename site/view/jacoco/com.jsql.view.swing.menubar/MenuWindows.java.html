@@ -16,7 +16,7 @@ import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.RadioItemPreventClose;
+import com.jsql.view.swing.util.RadioItemNonClosing;
 import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.*;
@@ -74,7 +74,7 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L74">            new AbstractMap.SimpleEntry&lt;&gt;(FlatMTGitHubDarkIJTheme.class.getName(), &quot;GitHub Dark&quot;),</span>
 <span class="fc" id="L75">            new AbstractMap.SimpleEntry&lt;&gt;(FlatHighContrastIJTheme.class.getName(), &quot;High contrast&quot;)</span>
 <span class="fc" id="L76">        ).forEach(entry -&gt; {</span>
-<span class="fc" id="L77">            JMenuItem item = new RadioItemPreventClose(</span>
+<span class="fc" id="L77">            JMenuItem item = new RadioItemNonClosing(</span>
 <span class="fc" id="L78">                new AbstractAction() {</span>
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -161,7 +161,7 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L161">            ) {</span>
                 @Override
                 protected void processMouseEvent(MouseEvent e) {
-<span class="nc bnc" id="L164" title="All 2 branches missed.">                    if (!RadioItemPreventClose.preventClose(e, this)) {</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                    if (RadioItemNonClosing.shouldClose(e, this)) {</span>
 <span class="nc" id="L165">                        super.processMouseEvent(e);</span>
                     }
 <span class="nc" id="L167">                }</span>
@@ -264,7 +264,7 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L264">        var atomicIsAnySelected = new AtomicBoolean(false);</span>
 <span class="fc" id="L265">        AppMenubar.MODELS_ITEM.forEach(model -&gt; {</span>
 <span class="pc bpc" id="L266" title="1 of 4 branches missed.">            atomicIsAnySelected.set(atomicIsAnySelected.get() || model.getLanguage().isCurrentLanguage());</span>
-<span class="fc" id="L267">            model.setMenuItem(new RadioItemPreventClose(</span>
+<span class="fc" id="L267">            model.setMenuItem(new RadioItemNonClosing(</span>
 <span class="fc" id="L268">                model.getLanguage().getMenuItemLabel(),</span>
 <span class="fc" id="L269">                model.getLanguage().getFlag(),</span>
 <span class="fc" id="L270">                model.getLanguage().isCurrentLanguage()</span>

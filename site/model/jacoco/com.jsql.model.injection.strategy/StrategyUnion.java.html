@@ -46,7 +46,7 @@ public class StrategyUnion extends AbstractStrategy {
 
 <span class="fc" id="L47">        this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());</span>
 
-        // Define visibleIndex, i.e, 2 in &quot;..union select 1,2,..&quot;, if 2 is found in HTML body
+        // Define visibleIndex, i.e, 2 in &quot;...union select 1,2,...&quot;, if 2 is found in HTML body
 <span class="fc bfc" id="L50" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())) {</span>
 <span class="fc" id="L51">            this.visibleIndex = this.getVisibleIndex(this.sourceIndexesFound);</span>
         }

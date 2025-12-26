@@ -70,12 +70,12 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">var</strong> messageLogEvent = <strong class="jxr_keyword">new</strong> String[] {
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>              <strong class="jxr_keyword">new</strong> String(<strong class="jxr_keyword">this</strong>.getLayout().toByteArray(event), StandardCharsets.UTF_8)
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          };
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">if</strong> (messageLogEvent.length == 0) {  <em class="jxr_comment">// fixes #95664</em>
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>              <strong class="jxr_keyword">return</strong>;
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          }
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>          
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>          <strong class="jxr_keyword">var</strong> level = event.getLevel().intLevel();
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          SwingUtilities.invokeLater(() -&gt; {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>  
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">var</strong> level = event.getLevel().intLevel();
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          SwingUtilities.invokeLater(() -&gt; {
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>              <strong class="jxr_keyword">if</strong> (messageLogEvent.length == 0) {  <em class="jxr_comment">// fixes #95664</em>
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>                  <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>              }
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>              String message = messageLogEvent[0];
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>              <strong class="jxr_keyword">if</strong> (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>                  JTextPaneAppender.javaTextPane.append(message, JTextPaneAppender.ATTRIBUTE_WARN);
