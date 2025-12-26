@@ -56,6 +56,12 @@ jobs:
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
 
+  build-monetdb:
+    needs: set-global-env-var
+    uses: ./.github/workflows/build-monetdb.yml
+    with:
+      DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+
   build:
     needs: set-global-env-var
     uses: ./.github/workflows/build.yml
@@ -67,6 +73,6 @@ jobs:
     uses: ./.github/workflows/codeql.yml
 
   release:
-    needs: [build-jdk11, build, build-db2, build-oracle, build-sqlserver, build-sybase, build-vertica, codeql]
+    needs: [build-jdk11, build, build-db2, build-oracle, build-sqlserver, build-sybase, build-vertica, build-monetdb, codeql]
     uses: ./.github/workflows/release.yml
     secrets: inherit

@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+
+  monetdb:
+    ports:
+      - "50001:50000"
+    build:
+      context: .
+      dockerfile: Dockerfile.monetdb
+    container_name: jsql-monetdb
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

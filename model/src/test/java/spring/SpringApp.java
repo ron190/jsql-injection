@@ -48,6 +48,7 @@ public class SpringApp {
 
     static {
         try {  // ensure driver is loaded
+            Class.forName("com.mimer.jdbc.Driver");  // required
             Class.forName("com.mckoi.JDBCDriver");  // required
             Class.forName("oracle.jdbc.OracleDriver");
         } catch (ClassNotFoundException e) {

@@ -1,0 +1,63 @@
+on:
+  workflow_call:
+    inputs:
+      DOCKER_RESOURCES:
+        type: string
+        required: true
+
+jobs:
+
+  build-additional:
+    name: Tests on Docker
+    runs-on: ubuntu-latest
+    env:
+      JSQL_DOCKERFILE: 3.8.6-eclipse-temurin-18
+      MAVEN_NASHORN: ""
+      MAVEN_BYTEBUDDY: ""
+      DOCKER_RESOURCES: ${{ inputs.DOCKER_RESOURCES }}
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Disable shallow clone to prevent Sonar warning
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set Maven dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      - name: Install Maven dependencies
+        run: mvn clean install -DskipTests dependency:tree
+
+      - name: Run databases and LAMP
+        run: |
+          docker compose -f $DOCKER_RESOURCES/docker-compose-monetdb.yml build --parallel
+          docker compose -f $DOCKER_RESOURCES/docker-compose-monetdb.yml up -d
+
+      - name: List images and containers
+        run: docker images && docker container ls
+
+      - name: Database health checks and configuration
+        run: |
+          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck-monetdb.sh
+
+      - name: Build project container
+        run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
+
+      - name: Integration tests
+        run: |
+          $DOCKER_RESOURCES/scripts/run-on-docker.sh '
+            mvn clean install \
+              --no-transfer-progress \
+              -P tests-monetdb
+          '
