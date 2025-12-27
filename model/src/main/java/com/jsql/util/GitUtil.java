@@ -160,13 +160,13 @@ public class GitUtil {
         try {
             HttpResponse<String> response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());
             this.readGithubResponse(response, showOnConsole);
-        } catch (InterruptedException | IOException e) {
+        } catch (IOException e) {
             if (showOnConsole == ShowOnConsole.YES) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format("Error during GitHub report connection: %s", e.getMessage()));
             }
-            if (e instanceof InterruptedException) {
-                Thread.currentThread().interrupt();
-            }
+        } catch (InterruptedException e) {
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
+            Thread.currentThread().interrupt();
         }
     }
     

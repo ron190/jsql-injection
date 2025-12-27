@@ -30,6 +30,7 @@ public class ParameterUtil {
     /**
      * Query string built from the URL submitted by user.
      */
+    // Fix #95787: ConcurrentModificationException
     private List<SimpleEntry<String, String>> listQueryString = new CopyOnWriteArrayList<>();
 
     /**
@@ -94,9 +95,13 @@ public class ParameterUtil {
                 }
             }
 
+            int port = URI.create(urlQueryFixed).getPort();
+            if (port > 65535) {  // Fix #96227: IllegalArgumentException on checkConnectionResponse()
+                throw new MalformedURLException("port must be 65535 or lower");
+            }
             String authority = URI.create(urlQueryFixed).getAuthority();
             if (authority == null) {
-                throw new MalformedURLException("incorrect domain authority");
+                throw new MalformedURLException("undefined domain authority");
             }
             String authorityPunycode = IDN.toASCII(authority);
             if (!authority.equals(authorityPunycode)) {
@@ -298,8 +303,7 @@ public class ParameterUtil {
                 .map(keyValue -> new SimpleEntry<>(
                     keyValue[0],
                     keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
-                ))
-                .collect(Collectors.toList());
+                )).collect(Collectors.toCollection(CopyOnWriteArrayList::new));  // Fix #96224: ConcurrentModificationException
         }
     }
 
@@ -309,7 +313,7 @@ public class ParameterUtil {
         if (StringUtils.isNotEmpty(rawRequest)) {
             if (this.isMultipartRequest) {
                 // Pass request containing star * param without any parsing
-                this.listRequest = new ArrayList<>(List.of(new SimpleEntry<>(
+                this.listRequest = new CopyOnWriteArrayList<>(List.of(new SimpleEntry<>(
                     rawRequest,
                     StringUtils.EMPTY
                 )));
@@ -320,8 +324,7 @@ public class ParameterUtil {
                     .map(keyValue -> new SimpleEntry<>(
                         keyValue[0],
                         keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
-                    ))
-                    .collect(Collectors.toList());
+                    )).collect(Collectors.toCollection(CopyOnWriteArrayList::new));
             }
         }
     }
@@ -336,8 +339,7 @@ public class ParameterUtil {
                 .map(keyValue -> new SimpleEntry<>(
                     keyValue[0],
                     keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
-                ))
-                .collect(Collectors.toList());
+                )).collect(Collectors.toCollection(CopyOnWriteArrayList::new));
         }
     }
     

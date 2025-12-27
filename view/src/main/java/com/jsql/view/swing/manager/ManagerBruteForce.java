@@ -208,7 +208,8 @@ public class ManagerBruteForce extends JPanel {
                     }
                 });
             } catch (NullPointerException e) {
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Spinner creation failed, restart or check your jre", e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Spinner creation failed, restart app or check your jre", e);
+                return;
             }
             model.spinner.get().setModel(new SpinnerNumberModel(model.value, 1, 10000, 1));
             model.spinner.get().addMouseWheelListener(new SpinnerMouseWheelListener());

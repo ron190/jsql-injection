@@ -43,7 +43,11 @@ public class CallableCharInsertion extends AbstractCallableBit<CallableCharInser
         // Fix #95422: ConcurrentModificationException on iterator.next()
         List<Diff> copyTrueMarks = new CopyOnWriteArrayList<>(this.injectionCharInsertion.getConstantTrueMark());
         for (Diff trueDiff: copyTrueMarks) {
-            if (!this.opcodes.contains(trueDiff)) {
+            try {  // Fix #96229: NullPointerException on contains()
+                if (!this.opcodes.contains(trueDiff)) {
+                    return false;
+                }
+            } catch (NullPointerException e) {
                 return false;
             }
         }

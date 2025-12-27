@@ -12,7 +12,6 @@ class AdminPageSuiteIT extends ConcreteMySqlSuiteIT {
 
     @Override
     public void setupInjection() {
-
         this.injectionModel = new InjectionModel();
         this.injectionModel.subscribe(new SystemOutTerminal());
     }

@@ -254,7 +254,7 @@ public class UiUtil {
 
     public static void applySyntaxTheme(RSyntaxTextArea textArea) {
         try {
-            boolean isDark = UIManager.getLookAndFeel().getName().matches(".*(Dark|High contrast).*");
+            boolean isDark = UIManager.getLookAndFeel().getName().matches(".*(Dark|High Contrast).*");
             var xmlTheme = String.format("/org/fife/ui/rsyntaxtextarea/themes/%s.xml", isDark ? "dark" : "default");
             Theme theme = Theme.load(SqlEngine.class.getResourceAsStream(xmlTheme));
             theme.apply(textArea);

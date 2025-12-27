@@ -52,7 +52,7 @@ public class SpringApp {
             Class.forName("com.mckoi.JDBCDriver");  // required
             Class.forName("oracle.jdbc.OracleDriver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 

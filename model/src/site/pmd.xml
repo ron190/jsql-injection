@@ -32,52 +32,18 @@ under the License.
         [0] https://pmd.github.io/latest/pmd_userdocs_making_rulesets.html
     </description>
 
-    <rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP" />
-    <rule ref="category/java/bestpractices.xml/CheckResultSet" />
-    <rule ref="category/java/bestpractices.xml/PrimitiveWrapperInstantiation" />
-    <rule ref="category/java/bestpractices.xml/UnusedFormalParameter" />
-    <rule ref="category/java/bestpractices.xml/UnusedLocalVariable" />
-    <rule ref="category/java/bestpractices.xml/UnusedPrivateField" />
-    <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod" />
+    <rule ref="category/java/bestpractices.xml"/>
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="UnnecessaryFullyQualifiedName"/>
+    </rule>
+    <rule ref="category/java/design.xml"/>
+    <rule ref="category/java/documentation.xml"/>
+    <rule ref="category/java/errorprone.xml"/>
+    <rule ref="category/java/multithreading.xml"/>
+    <rule ref="category/java/performance.xml"/>
+    <rule ref="category/java/security.xml"/>
 
-    <rule ref="category/java/codestyle.xml/EmptyControlStatement" />
-    <rule ref="category/java/codestyle.xml/ExtendsObject" />
-    <rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop" />
-    <rule ref="category/java/codestyle.xml/TooManyStaticImports" />
-<!--    <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName" />-->
-    <rule ref="category/java/codestyle.xml/UnnecessaryImport" />
-    <rule ref="category/java/codestyle.xml/UnnecessaryModifier" />
-    <rule ref="category/java/codestyle.xml/UnnecessaryReturn" />
-    <rule ref="category/java/codestyle.xml/UnnecessarySemicolon" />
-    <rule ref="category/java/codestyle.xml/UselessParentheses" />
-    <rule ref="category/java/codestyle.xml/UselessQualifiedThis" />
+    <rule ref="category/pom/errorprone.xml"/>
 
-    <rule ref="category/java/design.xml/CollapsibleIfStatements" />
-    <rule ref="category/java/design.xml/SimplifiedTernary" />
-    <rule ref="category/java/design.xml/UselessOverridingMethod" />
-
-    <rule ref="category/java/errorprone.xml/AvoidBranchingStatementAsLastInLoop" />
-    <rule ref="category/java/errorprone.xml/AvoidDecimalLiteralsInBigDecimalConstructor" />
-    <rule ref="category/java/errorprone.xml/AvoidMultipleUnaryOperators" />
-    <rule ref="category/java/errorprone.xml/AvoidUsingOctalValues" />
-    <rule ref="category/java/errorprone.xml/BrokenNullCheck" />
-    <rule ref="category/java/errorprone.xml/CheckSkipResult" />
-    <rule ref="category/java/errorprone.xml/ClassCastExceptionWithToArray" />
-    <rule ref="category/java/errorprone.xml/DontUseFloatTypeForLoopIndices" />
-    <rule ref="category/java/errorprone.xml/EmptyCatchBlock" />
-    <rule ref="category/java/errorprone.xml/JumbledIncrementer" />
-    <rule ref="category/java/errorprone.xml/MisplacedNullCheck" />
-    <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode" />
-    <rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock" />
-    <rule ref="category/java/errorprone.xml/UnconditionalIfStatement" />
-    <rule ref="category/java/errorprone.xml/UnnecessaryConversionTemporary" />
-    <rule ref="category/java/errorprone.xml/UnusedNullCheckInEquals" />
-    <rule ref="category/java/errorprone.xml/UselessOperationOnImmutable" />
-
-    <rule ref="category/java/multithreading.xml/AvoidThreadGroup" />
-    <rule ref="category/java/multithreading.xml/DontCallThreadRun" />
-    <rule ref="category/java/multithreading.xml/DoubleCheckedLocking" />
-
-    <rule ref="category/java/performance.xml/BigIntegerInstantiation" />
-
+    <rule ref="category/xml/bestpractices.xml"/>
 </ruleset>
