@@ -208,79 +208,80 @@ public class ManagerBruteForce extends JPanel {
                     }
                 });
 <span class="nc" id="L210">            } catch (NullPointerException e) {</span>
-<span class="nc" id="L211">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Spinner creation failed, restart or check your jre&quot;, e);</span>
-<span class="fc" id="L212">            }</span>
-<span class="fc" id="L213">            model.spinner.get().setModel(new SpinnerNumberModel(model.value, 1, 10000, 1));</span>
-<span class="fc" id="L214">            model.spinner.get().addMouseWheelListener(new SpinnerMouseWheelListener());</span>
-<span class="fc" id="L215">            model.spinner.get().setToolTipText(I18nUtil.valueByKey(model.i18n));</span>
-<span class="fc" id="L216">            I18nViewUtil.addComponentForKey(model.i18n, tooltipMax.get());</span>
-<span class="fc" id="L217">            model.spinner.get().setPreferredSize(new Dimension(</span>
-<span class="fc" id="L218">                (int) (model.spinner.get().getPreferredSize().width/1.8),</span>
-<span class="fc" id="L219">                model.spinner.get().getPreferredSize().height</span>
+<span class="nc" id="L211">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Spinner creation failed, restart app or check your jre&quot;, e);</span>
+<span class="nc" id="L212">                return;</span>
+<span class="fc" id="L213">            }</span>
+<span class="fc" id="L214">            model.spinner.get().setModel(new SpinnerNumberModel(model.value, 1, 10000, 1));</span>
+<span class="fc" id="L215">            model.spinner.get().addMouseWheelListener(new SpinnerMouseWheelListener());</span>
+<span class="fc" id="L216">            model.spinner.get().setToolTipText(I18nUtil.valueByKey(model.i18n));</span>
+<span class="fc" id="L217">            I18nViewUtil.addComponentForKey(model.i18n, tooltipMax.get());</span>
+<span class="fc" id="L218">            model.spinner.get().setPreferredSize(new Dimension(</span>
+<span class="fc" id="L219">                (int) (model.spinner.get().getPreferredSize().width/1.8),</span>
+<span class="fc" id="L220">                model.spinner.get().getPreferredSize().height</span>
             ));
-<span class="fc" id="L221">        });</span>
+<span class="fc" id="L222">        });</span>
 
-<span class="fc" id="L223">        var labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MIN_LABEL&quot;), SwingConstants.RIGHT);</span>
-<span class="fc" id="L224">        labelMin.setMaximumSize(new Dimension(labelMin.getPreferredSize().width, labelMin.getPreferredSize().height));</span>
-<span class="fc" id="L225">        thirdLine.add(Box.createHorizontalStrut(5));</span>
-<span class="fc" id="L226">        thirdLine.add(labelMin);</span>
-<span class="fc" id="L227">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MIN_LABEL&quot;, labelMin);</span>
-<span class="fc" id="L228">        thirdLine.add(this.minimumLength.get());</span>
+<span class="fc" id="L224">        var labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MIN_LABEL&quot;), SwingConstants.RIGHT);</span>
+<span class="fc" id="L225">        labelMin.setMaximumSize(new Dimension(labelMin.getPreferredSize().width, labelMin.getPreferredSize().height));</span>
+<span class="fc" id="L226">        thirdLine.add(Box.createHorizontalStrut(5));</span>
+<span class="fc" id="L227">        thirdLine.add(labelMin);</span>
+<span class="fc" id="L228">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MIN_LABEL&quot;, labelMin);</span>
+<span class="fc" id="L229">        thirdLine.add(this.minimumLength.get());</span>
 
-<span class="fc" id="L230">        var labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MAX_LABEL&quot;), SwingConstants.RIGHT);</span>
-<span class="fc" id="L231">        labelMax.setMaximumSize(new Dimension(labelMax.getPreferredSize().width, labelMax.getPreferredSize().height));</span>
-<span class="fc" id="L232">        thirdLine.add(Box.createHorizontalStrut(5));</span>
-<span class="fc" id="L233">        thirdLine.add(labelMax);</span>
-<span class="fc" id="L234">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MAX_LABEL&quot;, labelMax);</span>
-<span class="fc" id="L235">        thirdLine.add(this.maximumLength.get());</span>
-<span class="fc" id="L236">        return thirdLine;</span>
+<span class="fc" id="L231">        var labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MAX_LABEL&quot;), SwingConstants.RIGHT);</span>
+<span class="fc" id="L232">        labelMax.setMaximumSize(new Dimension(labelMax.getPreferredSize().width, labelMax.getPreferredSize().height));</span>
+<span class="fc" id="L233">        thirdLine.add(Box.createHorizontalStrut(5));</span>
+<span class="fc" id="L234">        thirdLine.add(labelMax);</span>
+<span class="fc" id="L235">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MAX_LABEL&quot;, labelMax);</span>
+<span class="fc" id="L236">        thirdLine.add(this.maximumLength.get());</span>
+<span class="fc" id="L237">        return thirdLine;</span>
     }
 
     
     // Getter and setter
 
     public JButtonStateful getRun() {
-<span class="nc" id="L243">        return this.run;</span>
+<span class="nc" id="L244">        return this.run;</span>
     }
 
     public JTextField getHash() {
-<span class="nc" id="L247">        return this.hash;</span>
+<span class="nc" id="L248">        return this.hash;</span>
     }
 
     public JComboBox&lt;String&gt; getHashTypes() {
-<span class="nc" id="L251">        return this.hashTypes;</span>
+<span class="nc" id="L252">        return this.hashTypes;</span>
     }
 
     public JCheckBox getLowerCaseCharacters() {
-<span class="nc" id="L255">        return this.lowerCaseCharacters.get();</span>
+<span class="nc" id="L256">        return this.lowerCaseCharacters.get();</span>
     }
 
     public JCheckBox getUpperCaseCharacters() {
-<span class="nc" id="L259">        return this.upperCaseCharacters.get();</span>
+<span class="nc" id="L260">        return this.upperCaseCharacters.get();</span>
     }
 
     public JCheckBox getNumericCharacters() {
-<span class="nc" id="L263">        return this.numericCharacters.get();</span>
+<span class="nc" id="L264">        return this.numericCharacters.get();</span>
     }
 
     public JCheckBox getSpecialCharacters() {
-<span class="nc" id="L267">        return this.specialCharacters.get();</span>
+<span class="nc" id="L268">        return this.specialCharacters.get();</span>
     }
 
     public JTextField getExclude() {
-<span class="nc" id="L271">        return this.exclude;</span>
+<span class="nc" id="L272">        return this.exclude;</span>
     }
 
     public JSpinner getMinimumLength() {
-<span class="nc" id="L275">        return this.minimumLength.get();</span>
+<span class="nc" id="L276">        return this.minimumLength.get();</span>
     }
 
     public JSpinner getMaximumLength() {
-<span class="nc" id="L279">        return this.maximumLength.get();</span>
+<span class="nc" id="L280">        return this.maximumLength.get();</span>
     }
 
     public JTextPane getResult() {
-<span class="fc" id="L283">        return this.result;</span>
+<span class="fc" id="L284">        return this.result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

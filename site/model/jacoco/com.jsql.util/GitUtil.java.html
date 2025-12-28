@@ -160,13 +160,13 @@ public class GitUtil {
         try {
 <span class="nc" id="L161">            HttpResponse&lt;String&gt; response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());</span>
 <span class="nc" id="L162">            this.readGithubResponse(response, showOnConsole);</span>
-<span class="nc" id="L163">        } catch (InterruptedException | IOException e) {</span>
+<span class="nc" id="L163">        } catch (IOException e) {</span>
 <span class="nc bnc" id="L164" title="All 2 branches missed.">            if (showOnConsole == ShowOnConsole.YES) {</span>
 <span class="nc" id="L165">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format(&quot;Error during GitHub report connection: %s&quot;, e.getMessage()));</span>
             }
-<span class="nc bnc" id="L167" title="All 2 branches missed.">            if (e instanceof InterruptedException) {</span>
-<span class="nc" id="L168">                Thread.currentThread().interrupt();</span>
-            }
+<span class="nc" id="L167">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L168">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L169">            Thread.currentThread().interrupt();</span>
 <span class="nc" id="L170">        }</span>
 <span class="nc" id="L171">    }</span>
     

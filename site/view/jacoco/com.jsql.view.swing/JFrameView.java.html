@@ -136,7 +136,7 @@ public class JFrameView extends JFrame {
 
 <span class="nc" id="L137">                int nsDividerLocation = JFrameView.this.splitNS.getDividerLocation();</span>
 <span class="nc" id="L138">                int nsHeight = JFrameView.this.splitNS.getHeight();</span>
-<span class="nc" id="L139">                double nsProportion = (100.0 * nsDividerLocation) / nsHeight;</span>
+<span class="nc" id="L139">                double nsProportion = 100.0 * nsDividerLocation / nsHeight;</span>
 <span class="nc" id="L140">                double nsLocationProportionCapped = Math.max(0.0, Math.min(1.0,</span>
                     nsProportion / 100.0
                 ));

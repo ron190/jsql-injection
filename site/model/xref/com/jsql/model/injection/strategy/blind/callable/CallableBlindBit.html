@@ -71,37 +71,45 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          <em class="jxr_comment">// Fix #95426: ConcurrentModificationException on iterator.next()</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          List&lt;Diff&gt; falseDiffs = <strong class="jxr_keyword">new</strong> CopyOnWriteArrayList&lt;&gt;(<strong class="jxr_keyword">this</strong>.injectionBlind.getFalseDiffs());
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">for</strong> (Diff falseDiff: falseDiffs) {  <em class="jxr_comment">// ignored when false OR false =&gt; falsy empty</em>
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>              <em class="jxr_comment">// Fix #4386: NullPointerException on contains(), diffsWithReference initialized to new LinkedList&lt;&gt;()</em>
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>              <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.diffsWithReference.contains(falseDiff)) {
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>                  <strong class="jxr_keyword">return</strong> false;
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>              }
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          }
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          List&lt;Diff&gt; trueDiffs = <strong class="jxr_keyword">new</strong> CopyOnWriteArrayList&lt;&gt;(<strong class="jxr_keyword">this</strong>.injectionBlind.getTrueDiffs());
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">for</strong> (Diff trueDiff: trueDiffs) {
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>              <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.diffsWithReference.contains(trueDiff)) {  <em class="jxr_comment">// required, set to false when empty falseDiffs</em>
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>                  <strong class="jxr_keyword">return</strong> false;
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>              }
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          }
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;  <em class="jxr_comment">// not in falseDiffs and in trueDiffs</em>
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>      }
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>  
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>  <em class="jxr_javadoccomment">     * Process the URL HTTP call, use function inject() from the model.</em>
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment">     * Build the list of differences found between TRUE and the current page.</em>
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment">     * @return Functional Blind Callable</em>
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>      @Override
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">public</strong> <a name="CallableBlindBit" href="../../../../../../../com/jsql/model/injection/strategy/blind/callable/CallableBlindBit.html#CallableBlindBit">CallableBlindBit</a> call() {
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>          String result = <strong class="jxr_keyword">this</strong>.injectionBlind.callUrl(<strong class="jxr_keyword">this</strong>.booleanUrl, <strong class="jxr_keyword">this</strong>.metadataInjectionProcess, <strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>          <strong class="jxr_keyword">this</strong>.diffsWithReference = CallableBlindBit.DIFF_MATCH_PATCH.diff_main(<strong class="jxr_keyword">this</strong>.injectionBlind.getSourceReferencePage(), result, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>          CallableBlindBit.DIFF_MATCH_PATCH.diff_cleanupEfficiency(<strong class="jxr_keyword">this</strong>.diffsWithReference);
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>      }
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>      
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">public</strong> List&lt;Diff&gt; getDiffsWithReference() {
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.diffsWithReference;
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>      }
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>  }
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>              <strong class="jxr_keyword">try</strong> {  <em class="jxr_comment">// Fix #96195: NullPointerException on contains()</em>
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>                  <em class="jxr_comment">// Fix #4386: NullPointerException on contains(), diffsWithReference initialized to new LinkedList&lt;&gt;()</em>
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>                  <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.diffsWithReference.contains(falseDiff)) {
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>                      <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>                  }
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>              } <strong class="jxr_keyword">catch</strong> (NullPointerException e) {
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>                  <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>              }
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          }
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>          List&lt;Diff&gt; trueDiffs = <strong class="jxr_keyword">new</strong> CopyOnWriteArrayList&lt;&gt;(<strong class="jxr_keyword">this</strong>.injectionBlind.getTrueDiffs());
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">for</strong> (Diff trueDiff: trueDiffs) {
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>              <strong class="jxr_keyword">try</strong> {  <em class="jxr_comment">// Fix #96134: NullPointerException on contains()</em>
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>                  <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.diffsWithReference.contains(trueDiff)) {  <em class="jxr_comment">// required, set to false when empty falseDiffs</em>
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>                      <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>                  }
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>              } <strong class="jxr_keyword">catch</strong> (NullPointerException e) {
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>                  <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>              }
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          }
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;  <em class="jxr_comment">// not in falseDiffs and in trueDiffs</em>
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>      }
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>  
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>  <em class="jxr_javadoccomment">     * Process the URL HTTP call, use function inject() from the model.</em>
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>  <em class="jxr_javadoccomment">     * Build the list of differences found between TRUE and the current page.</em>
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>  <em class="jxr_javadoccomment">     * @return Functional Blind Callable</em>
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>      @Override
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">public</strong> <a name="CallableBlindBit" href="../../../../../../../com/jsql/model/injection/strategy/blind/callable/CallableBlindBit.html#CallableBlindBit">CallableBlindBit</a> call() {
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>          String result = <strong class="jxr_keyword">this</strong>.injectionBlind.callUrl(<strong class="jxr_keyword">this</strong>.booleanUrl, <strong class="jxr_keyword">this</strong>.metadataInjectionProcess, <strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>          <strong class="jxr_keyword">this</strong>.diffsWithReference = CallableBlindBit.DIFF_MATCH_PATCH.diff_main(<strong class="jxr_keyword">this</strong>.injectionBlind.getSourceReferencePage(), result, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>          CallableBlindBit.DIFF_MATCH_PATCH.diff_cleanupEfficiency(<strong class="jxr_keyword">this</strong>.diffsWithReference);
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>      }
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>     
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>     <strong class="jxr_keyword">public</strong> List&lt;Diff&gt; getDiffsWithReference() {
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.diffsWithReference;
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>     }
+<a class="jxr_linenumber" name="L104" href="#L104">104</a> }
 </pre>
 <hr/>
 <div id="footer">© 2025</div>

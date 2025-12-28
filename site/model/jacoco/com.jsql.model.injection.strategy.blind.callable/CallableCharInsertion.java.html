@@ -43,11 +43,15 @@ public class CallableCharInsertion extends AbstractCallableBit&lt;CallableCharIn
         // Fix #95422: ConcurrentModificationException on iterator.next()
 <span class="fc" id="L44">        List&lt;Diff&gt; copyTrueMarks = new CopyOnWriteArrayList&lt;&gt;(this.injectionCharInsertion.getConstantTrueMark());</span>
 <span class="fc bfc" id="L45" title="All 2 branches covered.">        for (Diff trueDiff: copyTrueMarks) {</span>
-<span class="fc bfc" id="L46" title="All 2 branches covered.">            if (!this.opcodes.contains(trueDiff)) {</span>
-<span class="fc" id="L47">                return false;</span>
-            }
-<span class="fc" id="L49">        }</span>
-<span class="fc" id="L50">        return true;</span>
+            try {  // Fix #96229: NullPointerException on contains()
+<span class="fc bfc" id="L47" title="All 2 branches covered.">                if (!this.opcodes.contains(trueDiff)) {</span>
+<span class="fc" id="L48">                    return false;</span>
+                }
+<span class="nc" id="L50">            } catch (NullPointerException e) {</span>
+<span class="nc" id="L51">                return false;</span>
+<span class="fc" id="L52">            }</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">        return true;</span>
     }
 
     /**
@@ -57,20 +61,20 @@ public class CallableCharInsertion extends AbstractCallableBit&lt;CallableCharIn
      */
     @Override
     public CallableCharInsertion call() {
-<span class="fc" id="L60">        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
+<span class="fc" id="L64">        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
         
-<span class="fc" id="L62">        this.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diff_main(</span>
-<span class="fc" id="L63">            this.injectionCharInsertion.getBlankFalseMark(),</span>
+<span class="fc" id="L66">        this.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diff_main(</span>
+<span class="fc" id="L67">            this.injectionCharInsertion.getBlankFalseMark(),</span>
             source,
             false
         );
 
-<span class="fc" id="L68">        CallableCharInsertion.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.opcodes);</span>
-<span class="fc" id="L69">        return this;</span>
+<span class="fc" id="L72">        CallableCharInsertion.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.opcodes);</span>
+<span class="fc" id="L73">        return this;</span>
     }
     
     public List&lt;Diff&gt; getOpcodes() {
-<span class="fc" id="L73">        return this.opcodes;</span>
+<span class="fc" id="L77">        return this.opcodes;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

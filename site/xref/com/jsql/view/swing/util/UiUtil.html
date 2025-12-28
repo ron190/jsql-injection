@@ -262,7 +262,7 @@
 <a class="jxr_linenumber" name="L254" href="#L254">254</a> 
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> applySyntaxTheme(RSyntaxTextArea textArea) {
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>             <strong class="jxr_keyword">boolean</strong> isDark = UIManager.getLookAndFeel().getName().matches(<span class="jxr_string">".*(Dark|High contrast).*"</span>);
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>             <strong class="jxr_keyword">boolean</strong> isDark = UIManager.getLookAndFeel().getName().matches(<span class="jxr_string">".*(Dark|High Contrast).*"</span>);
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>             <strong class="jxr_keyword">var</strong> xmlTheme = String.format(<span class="jxr_string">"/org/fife/ui/rsyntaxtextarea/themes/%s.xml"</span>, isDark ? <span class="jxr_string">"dark"</span> : <span class="jxr_string">"default"</span>);
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>             Theme theme = Theme.load(SqlEngine.<strong class="jxr_keyword">class</strong>.getResourceAsStream(xmlTheme));
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>             theme.apply(textArea);
