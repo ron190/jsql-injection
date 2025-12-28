@@ -297,8 +297,9 @@
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <configuration>
+                    <!-- disabled on parent as no report, enabled on modules -->
                     <!-- dryRun not working, must skip or comment plugin on local when reporting -->
-                    <skip>false</skip>
+                    <skip>true</skip>
                 </configuration>
                 <reportSets>
                     <reportSet>
