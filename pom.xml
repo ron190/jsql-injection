@@ -9,6 +9,7 @@
     <modules>
         <module>model</module>
         <module>view</module>
+        <module>build-tools</module>
     </modules>
 
     <properties>
@@ -387,10 +388,17 @@
                     <version>${maven-pmd-plugin.version}</version>
                     <configuration>
                         <rulesets>
-                            <!-- var required to find root config -->
-                            <ruleset>${maven.multiModuleProjectDirectory}/src/site/pmd.xml</ruleset>
+                            <!-- use module build-tools instead of not working vars to find config -->
+                            <ruleset>pmd.xml</ruleset>
                         </rulesets>
                     </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>ron190</groupId>
+                            <artifactId>build-tools</artifactId>
+                            <version>${revision}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
