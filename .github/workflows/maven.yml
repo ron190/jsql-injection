@@ -43,6 +43,6 @@ jobs:
     uses: ./.github/workflows/codeql.yml
 
   release:
-    needs: [build-jdk11, build, build-db2, build-oracle, build-sqlserver, build-sybase, build-vertica, build-monetdb, codeql]
+    needs: [build-jdk11, build, build-vendor, codeql]
     uses: ./.github/workflows/release.yml
     secrets: inherit

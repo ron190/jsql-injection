@@ -32,6 +32,8 @@
         <!-- required as commons-text:1.11.0 not working -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.2.0053</cubrid-jdbc.version>
+        <!-- require refactoring on 10.17.1.0 -->
+        <derby.version>10.16.1.1</derby.version>
         <dnsjava.version>3.6.3</dnsjava.version>
         <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
@@ -93,18 +95,8 @@
     <build>
         <plugins>
             <plugin>
-                <!-- todo useless? -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
-                <configuration>
-                    <suppressionsLocation>src/site/checkstyle-suppressions.xml</suppressionsLocation>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>${pitest-maven.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.pitest</groupId>
@@ -116,7 +108,6 @@
                     <targetTests>
                         <param>*Spock</param>
                     </targetTests>
-                    <failWhenNoMutations>false</failWhenNoMutations>
                 </configuration>
             </plugin>
             <plugin>
@@ -248,7 +239,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <skipTests>true</skipTests>
                         </configuration>
@@ -272,7 +262,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <skipTests>true</skipTests>
                         </configuration>
@@ -296,7 +285,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <skipTests>true</skipTests>
                         </configuration>
@@ -320,7 +308,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <skipTests>true</skipTests>
                         </configuration>
@@ -344,7 +331,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <skipTests>true</skipTests>
                         </configuration>
@@ -368,7 +354,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <skipTests>true</skipTests>
                         </configuration>
@@ -377,29 +362,6 @@
             </build>
         </profile>
     </profiles>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <!-- plugin not required but 3.5.0 generate error: Cannot invoke "Object.toString()" because "value" is null  -->
-                <version>${maven-surefire-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <version>${pitest-maven.version}</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>report</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
 
     <dependencies>
         <!-- jSQL purpose -->
@@ -785,11 +747,13 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbyclient</artifactId>
+            <version>${derby.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbynet</artifactId>
+            <version>${derby.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

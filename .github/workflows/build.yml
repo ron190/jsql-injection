@@ -68,8 +68,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         # profile to skipITs/skipTests (env var MAVEN_OPS not working)
-        # mvn goal site last to apply skin to generated reports
-        # remove goal pmd:pmd: random StackOverflowError
+        # goal site: last to apply skin to generated reports
+        # goal site:stage: merge modules in single site
         run: |
           $DOCKER_RESOURCES/scripts/run-on-docker.sh '
             mvn clean install \
@@ -77,17 +77,8 @@ jobs:
               -Dorg.slf4j.simpleLogger.log.org.sonarsource.scanner.maven.SonarQubeMojo=error \
               -P tests \
               org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-              org.pitest:pitest-maven:mutationCoverage \
-              jxr:jxr \
-              javadoc:javadoc \
-              surefire-report:report \
-              surefire-report:failsafe-report-only \
-              dependency:analyze-report \
-              spotbugs:check \
-              pmd:pmd \
-              versions:dependency-updates-report \
-              checkstyle:checkstyle \
-              site
+              site \
+              site:stage
           '
 
       - name: Databases statistics
