@@ -48,6 +48,7 @@
         <maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
+        <!-- enabled on module only as parent not reporting -->
         <pitest-maven.version>1.22.0</pitest-maven.version>
         <spotbugs-maven-plugin.version>4.9.8.2</spotbugs-maven-plugin.version>
         <versions-maven-plugin.version>2.20.1</versions-maven-plugin.version>
@@ -293,22 +294,6 @@
                     </reportSet>
                 </reportSets>
             </plugin>
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <configuration>
-                    <!-- disabled on parent as no report, enabled on modules -->
-                    <!-- dryRun not working, must skip or comment plugin on local when reporting -->
-                    <skip>true</skip>
-                </configuration>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>report</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
         </plugins>
     </reporting>
 
@@ -440,17 +425,6 @@
         </pluginManagement>
 
         <plugins>
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>mutationCoverage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>

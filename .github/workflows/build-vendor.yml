@@ -68,8 +68,8 @@ jobs:
 
       - name: Integration tests
         run: |
-          $DOCKER_RESOURCES/scripts/run-on-docker.sh '
+          $DOCKER_RESOURCES/scripts/run-on-docker.sh "
             mvn clean install \
               --no-transfer-progress \
               -P tests-$NAME_VENDOR
-          '
+          "

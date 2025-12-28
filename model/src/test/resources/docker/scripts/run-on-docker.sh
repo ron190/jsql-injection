@@ -10,7 +10,6 @@ docker run                                          \
   -e CODECOV_TOKEN                                  \
   -e MAVEN_NASHORN                                  \
   -e MAVEN_BYTEBUDDY                                \
-  -e NAME_VENDOR                                    \
   jsql:latest                                       \
   ./model/src/test/resources/vnc/execute-on-vnc.sh  \
   bash -c "$1"
