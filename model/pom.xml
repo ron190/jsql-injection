@@ -21,6 +21,7 @@
     </repositories>
 
     <properties>
+        <!-- LinkedList to List not compatible for jdk11 on DiffMatchPatch -->
         <sonar.exclusions>**/DigestMD4.java, **/blind/patch/*</sonar.exclusions>
 
         <awaitility.version>4.3.0</awaitility.version>

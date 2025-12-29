@@ -16,14 +16,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * the reference page, and the current page.
  */
 public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
-    
-    private List<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
+
+    private LinkedList<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
     private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
     private final InjectionBlindBit injectionBlind;
-    
+
     private final InjectionModel injectionModel;
     private final String metadataInjectionProcess;
-    
+
     /**
      * Constructor for preparation and blind confirmation.
      */
@@ -33,7 +33,7 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
         this.metadataInjectionProcess = metadataInjectionProcess;
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);
     }
-    
+
     /**
      * Constructor for bits test.
      */
@@ -97,7 +97,7 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
         CallableBlindBit.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
         return this;
     }
-    
+
     public List<Diff> getDiffsWithReference() {
         return this.diffsWithReference;
     }

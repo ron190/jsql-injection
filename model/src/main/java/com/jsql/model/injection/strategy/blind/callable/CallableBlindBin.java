@@ -21,7 +21,7 @@ public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
     private final int mid;
     private final int high;
 
-    private List<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
+    private LinkedList<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
     private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
     private final InjectionBlindBin injectionBlind;
 
@@ -101,7 +101,7 @@ public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
         CallableBlindBin.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
         return this;
     }
-    
+
     public List<Diff> getDiffsWithReference() {
         return this.diffsWithReference;
     }

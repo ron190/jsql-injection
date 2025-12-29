@@ -73,7 +73,7 @@
     <distributionManagement>
         <site>
             <id>github</id>
-            <url>https://github.com/ron190/jsql-injection/tree/test-deploy</url>
+            <url>scm:git:https://github.com/ron190/jsql-injection.git</url>
         </site>
     </distributionManagement>
 
@@ -83,7 +83,7 @@
             <properties>
 <!--                <skipTests>false</skipTests>-->
 <!--                <skipITs>false</skipITs>-->
-                <maven-surefire-plugin.skipTests>false</maven-surefire-plugin.skipTests>
+<!--                <maven-surefire-plugin.skipTests>false</maven-surefire-plugin.skipTests>-->
                 <maven-failsafe-plugin.include>**/*SuiteIT.java</maven-failsafe-plugin.include>
                 <maven-failsafe-plugin.exclude>
                     **/*Db2*SuiteIT.java,
@@ -538,6 +538,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-publish-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <dryRun>true</dryRun>
+                    <scmBranch>test-deploy</scmBranch>
+                </configuration>
             </plugin>
         </plugins>
     </build>

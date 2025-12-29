@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CallableMultibit extends AbstractCallableBit<CallableMultibit> {
 
-    private List<Diff> diffsWithReference = new LinkedList<>();
+    private LinkedList<Diff> diffsWithReference = new LinkedList<>();
 
     private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
 

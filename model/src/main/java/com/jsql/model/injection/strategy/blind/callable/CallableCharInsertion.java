@@ -14,15 +14,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * the reference page, and the resulting page.
  */
 public class CallableCharInsertion extends AbstractCallableBit<CallableCharInsertion> {
-    
-    private List<Diff> opcodes = new LinkedList<>();  // List of differences found between the reference page, and the present page
+
+    private LinkedList<Diff> opcodes = new LinkedList<>();  // List of differences found between the reference page, and the present page
 
     private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
 
     private final InjectionCharInsertion injectionCharInsertion;
-    
+
     private final String metadataInjectionProcess;
-    
+
     /**
      * Constructor for preparation and blind confirmation.
      */
@@ -62,7 +62,7 @@ public class CallableCharInsertion extends AbstractCallableBit<CallableCharInser
     @Override
     public CallableCharInsertion call() {
         String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        
+
         this.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diffMain(
             this.injectionCharInsertion.getBlankFalseMark(),
             source,
@@ -72,7 +72,7 @@ public class CallableCharInsertion extends AbstractCallableBit<CallableCharInser
         CallableCharInsertion.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);
         return this;
     }
-    
+
     public List<Diff> getOpcodes() {
         return this.opcodes;
     }
