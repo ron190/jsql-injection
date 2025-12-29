@@ -3,8 +3,8 @@ package com.jsql.model.injection.strategy.blind.callable;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.strategy.blind.InjectionBlindBit;
-import name.fraser.neil.plaintext.diff_match_patch;
-import static name.fraser.neil.plaintext.diff_match_patch.Diff;
+import com.jsql.model.injection.strategy.blind.patch.Diff;
+import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
     
     private LinkedList<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
-    private static final diff_match_patch DIFF_MATCH_PATCH = new diff_match_patch();
+    private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
     private final InjectionBlindBit injectionBlind;
     
     private final InjectionModel injectionModel;
@@ -93,8 +93,8 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
     @Override
     public CallableBlindBit call() {
         String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        this.diffsWithReference = CallableBlindBit.DIFF_MATCH_PATCH.diff_main(this.injectionBlind.getSourceReferencePage(), result, true);
-        CallableBlindBit.DIFF_MATCH_PATCH.diff_cleanupEfficiency(this.diffsWithReference);
+        this.diffsWithReference = CallableBlindBit.DIFF_MATCH_PATCH.diffMain(this.injectionBlind.getSourceReferencePage(), result, true);
+        CallableBlindBit.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
         return this;
     }
     

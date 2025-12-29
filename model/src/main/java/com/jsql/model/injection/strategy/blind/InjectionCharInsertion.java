@@ -4,6 +4,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 import com.jsql.model.injection.strategy.blind.callable.CallableCharInsertion;
+import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,8 +17,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-
-import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
 /**
  * A blind attack class using concurrent threads.

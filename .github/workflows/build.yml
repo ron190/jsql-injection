@@ -80,15 +80,15 @@ jobs:
               org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
               org.pitest:pitest-maven:mutationCoverage \
               site \
-              site:stage
+              site:stage \
+              site:stage-deploy
           '
 
       - name: Databases statistics
         run: $DOCKER_RESOURCES/scripts/verify.sh
 
-      - name: Coverage and site
-        uses: ./.github/workflows/publish-scan/
-#        if: matrix.jdk == '3.8.6-eclipse-temurin-18'
+      - name: Coverage
+        uses: ./.github/workflows/scan/
         with:  # composite cannot use secrets directly
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}

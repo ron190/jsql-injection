@@ -14,14 +14,15 @@
         <reflowSkin>
             <theme>bootswatch-slate</theme>
             <header type="banner" enabled="false" />
-
+            <titleTemplate>%2$s - jSQL Injection Maven Site</titleTemplate>
             <brand>
-                <name><![CDATA[jSQL Injection]]></name>
+                <name><![CDATA[
+                <span class="color-highlight">jSQL Injection</span> Maven Site
+                ]]></name>
+                <href>${url}</href>
             </brand>
-            <navbar theme="dark" background="dark" />
-
+            <navbar theme="dark" background="dark" center="false" />
             <breadcrumbs>false</breadcrumbs>
-
             <footer theme="dark" background="dark" />
             <bottomNav>
                 <!-- hide footer -->

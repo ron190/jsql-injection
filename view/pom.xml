@@ -13,10 +13,9 @@
         <assertj-swing-junit.version>3.17.1</assertj-swing-junit.version>
         <commons-io.version>2.21.0</commons-io.version>
         <flatlaf.version>3.7</flatlaf.version>
-        <maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version>
         <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
         <mockito-inline.version>5.2.0</mockito-inline.version>
-        <rsyntaxtextarea.version>3.6.0</rsyntaxtextarea.version>
+        <rsyntaxtextarea.version>3.6.1</rsyntaxtextarea.version>
     </properties>
 
     <dependencies>
@@ -106,8 +105,8 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>${maven-assembly-plugin.version}</version>
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>

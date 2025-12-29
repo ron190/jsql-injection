@@ -5,6 +5,7 @@ import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xbill.DNS.*;
+import org.xbill.DNS.Record;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

@@ -3,6 +3,8 @@ package com.jsql.model.injection.strategy.blind;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.callable.CallableBlindBit;
+import com.jsql.model.injection.strategy.blind.patch.Diff;
+import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -14,9 +16,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-
-import static name.fraser.neil.plaintext.diff_match_patch.Diff;
-import static name.fraser.neil.plaintext.diff_match_patch.Operation;
 
 /**
  * A blind attack class using concurrent threads.
@@ -165,8 +164,8 @@ public class InjectionBlindBit extends AbstractInjectionMonobit<CallableBlindBit
         }
         return callable.isTrue()
             // when insertionChar = true then pages ref == truthy == falsy == confirm => falsy cleaned empty, truthy with opcode EQUAL not reliable
-            && this.trueDiffs.stream().anyMatch(diff -> !Operation.EQUAL.equals(diff.operation))
-            || this.falseDiffs.stream().anyMatch(diff -> !Operation.EQUAL.equals(diff.operation));
+            && this.trueDiffs.stream().anyMatch(diff -> !DiffMatchPatch.Operation.EQUAL.equals(diff.getOperation()))
+            || this.falseDiffs.stream().anyMatch(diff -> !DiffMatchPatch.Operation.EQUAL.equals(diff.getOperation()));
     }
 
     @Override

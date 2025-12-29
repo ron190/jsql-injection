@@ -48,7 +48,7 @@
         <maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
-        <!-- enabled on module only as parent not reporting -->
+        <!-- enabled on module builds only, as parent build not reporting -->
         <pitest-maven.version>1.22.0</pitest-maven.version>
         <spotbugs-maven-plugin.version>4.9.8.2</spotbugs-maven-plugin.version>
         <versions-maven-plugin.version>2.20.1</versions-maven-plugin.version>
@@ -56,19 +56,24 @@
         <!-- Tests are disabled for scans by default, profile restores the tests -->
         <skipTests>true</skipTests>
         <skipITs>true</skipITs>
+        <maven-surefire-plugin.skipTests>true</maven-surefire-plugin.skipTests>
+        <maven-failsafe-plugin.include/>
+        <maven-failsafe-plugin.exclude/>
 
-        <!-- no menu with 2.3.5 -->
+        <!-- menu not working with 2.3.5 -->
         <site.skin.version>2.3.4</site.skin.version>
-        <!-- no menu with 2.3.4 -->
+        <!-- menu not working with 2.3.4 -->
         <reflow-velocity-tools.version>2.3.5</reflow-velocity-tools.version>
     </properties>
 
     <!-- required to avoid error: Exception calling reference $config at META-INF/maven/site.vm -->
-    <url></url>
+    <url>https://ron190.github.io/jsql-injection/site/</url>
+    <!-- publish site:stage from /staging to GitHub -->
+    <!-- settings.xml with user/pass and server id:github added by actions/setup-java -->
     <distributionManagement>
         <site>
-            <id>ron190.github.io</id>
-            <url>https://ron190.github.io/jsql-injection/</url>
+            <id>github</id>
+            <url>https://github.com/ron190/jsql-injection/tree/test-deploy</url>
         </site>
     </distributionManagement>
 
@@ -76,99 +81,67 @@
         <profile>
             <id>tests</id>
             <properties>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
+<!--                <skipTests>false</skipTests>-->
+<!--                <skipITs>false</skipITs>-->
+                <maven-surefire-plugin.skipTests>false</maven-surefire-plugin.skipTests>
+                <maven-failsafe-plugin.include>**/*SuiteIT.java</maven-failsafe-plugin.include>
+                <maven-failsafe-plugin.exclude>
+                    **/*Db2*SuiteIT.java,
+                    **/*MonetDb*SuiteIT.java,
+                    **/*Oracle*SuiteIT.java,
+                    **/*SqlServer*SuiteIT.java,
+                    **/*Sybase*SuiteIT.java,
+                    **/*Vertica*SuiteIT.java
+                </maven-failsafe-plugin.exclude>
             </properties>
         </profile>
         <profile>
             <id>tests-db2</id>
             <properties>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
+<!--                <skipTests>false</skipTests>-->
+<!--                <skipITs>false</skipITs>-->
+                <maven-failsafe-plugin.include>**/*Db2*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+        </profile>
+        <profile>
+            <id>tests-monetdb</id>
+            <properties>
+<!--                <skipTests>false</skipTests>-->
+<!--                <skipITs>false</skipITs>-->
+                <maven-failsafe-plugin.include>**/*MonetDb*SuiteIT.java</maven-failsafe-plugin.include>
+            </properties>
         </profile>
         <profile>
             <id>tests-oracle</id>
             <properties>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
+<!--                <skipTests>false</skipTests>-->
+<!--                <skipITs>false</skipITs>-->
+                <maven-failsafe-plugin.include>**/*Oracle*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
         <profile>
             <id>tests-sqlserver</id>
             <properties>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
+<!--                <skipTests>false</skipTests>-->
+<!--                <skipITs>false</skipITs>-->
+                <maven-failsafe-plugin.include>**/*SqlServer*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
         <profile>
             <id>tests-sybase</id>
             <properties>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
+<!--                <skipTests>false</skipTests>-->
+<!--                <skipITs>false</skipITs>-->
+                <maven-failsafe-plugin.include>**/*Sybase*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
         <profile>
             <id>tests-vertica</id>
             <properties>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
+<!--                <skipTests>false</skipTests>-->
+<!--                <skipITs>false</skipITs>-->
+                <maven-failsafe-plugin.include>**/*Vertica*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 
@@ -180,6 +153,11 @@
                 <version>${log4j-bom.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.surefire</groupId>
+                <artifactId>surefire-junit-platform</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -198,13 +176,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven-project-info-reports-plugin.version}</version>
                 <reportSets>
                     <reportSet>
                         <reports>
                             <report>dependencies</report>
                             <report>dependency-convergence</report>
                             <report>dependency-info</report>
-                                <!-- dependency-management: disabled as slow performance-->
+                            <!-- dependency-management: disabled as slow performance-->
                             <report>index</report>
                             <report>modules</report>
                             <report>plugin-management</report>
@@ -284,7 +263,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -304,6 +282,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <skipTests>${maven-surefire-plugin.skipTests}</skipTests>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -374,12 +355,13 @@
                     <version>${maven-pmd-plugin.version}</version>
                     <configuration>
                         <rulesets>
-                            <!-- use module build-tools instead of not working vars to find config -->
+                            <!-- path vars not working, use module build-tools instead -->
                             <ruleset>pmd.xml</ruleset>
                         </rulesets>
                     </configuration>
                     <dependencies>
                         <dependency>
+                            <!-- provides pmd.xml -->
                             <groupId>ron190</groupId>
                             <artifactId>build-tools</artifactId>
                             <version>${revision}</version>
@@ -392,8 +374,16 @@
                     <version>${maven-checkstyle-plugin.version}</version>
                     <configuration>
                         <!-- required to find root config -->
-                        <suppressionsLocation>src/site/checkstyle-suppressions.xml</suppressionsLocation>
+                        <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
                     </configuration>
+                    <dependencies>
+                        <dependency>
+                            <!-- provides checkstyle-suppressions.xml -->
+                            <groupId>ron190</groupId>
+                            <artifactId>build-tools</artifactId>
+                            <version>${revision}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -409,17 +399,17 @@
                     <version>${spotbugs-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>${maven-project-info-reports-plugin.version}</version>
-                </plugin>
-                <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
                     <version>${versions-maven-plugin.version}</version>
                     <configuration>
                         <onlyProjectDependencies>true</onlyProjectDependencies>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -450,11 +440,20 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>${maven-site-plugin.version}</version>
+                <configuration>
+                    <siteDirectory>custom-site/</siteDirectory>
+                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>io.github.devacfr.maven.skins</groupId>
                         <artifactId>reflow-velocity-tools</artifactId>
                         <version>${reflow-velocity-tools.version}</version>
+                    </dependency>
+                    <dependency>
+                        <!-- provides site.xml -->
+                        <groupId>ron190</groupId>
+                        <artifactId>build-tools</artifactId>
+                        <version>${revision}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -470,7 +469,6 @@
                 <!-- Generate reports for Sonar and Codecov -->
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>

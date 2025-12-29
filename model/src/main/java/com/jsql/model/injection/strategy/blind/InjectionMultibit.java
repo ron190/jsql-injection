@@ -3,6 +3,7 @@ package com.jsql.model.injection.strategy.blind;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.callable.CallableMultibit;
+import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -16,8 +17,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static name.fraser.neil.plaintext.diff_match_patch.Diff;
 
 public class InjectionMultibit extends AbstractInjectionBit<CallableMultibit> {
 

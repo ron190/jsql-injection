@@ -1,5 +1,5 @@
-name: publish-scan
-description: Static code analysis and website publishing
+name: scan
+description: Static code analysis
 
 inputs:
   CODECOV_TOKEN:
@@ -16,8 +16,7 @@ runs:
       shell: bash
       # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
       run: |
-        mkdir -p shared-resources/site shared-resources/model shared-resources/view
-        docker cp docker_jsql-container:target/staging/. shared-resources/site
+        mkdir -p shared-resources/model shared-resources/view
         docker cp docker_jsql-container:view/. shared-resources/view
         docker cp docker_jsql-container:model/. shared-resources/model
         docker cp docker_jsql-container:pom.xml shared-resources
@@ -33,19 +32,3 @@ runs:
       env:
         CODACY_PROJECT_TOKEN: ${{ inputs.CODACY_PROJECT_TOKEN }}
       run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
-
-    - name: Publish Maven site
-      shell: bash
-      run: |
-        git checkout docs
-        git config user.name "Github Actions"
-        git config user.email no-response@github.com    
-        git pull -s ours  # ignore remote changes when updated by parallel jobs
-        
-        rm -r site/ || echo 'Folder(s) not found'
-        cp -r "shared-resources/site/." "site/"
-        
-        git add -f site/
-        
-        git commit -m "Publish Maven site"
-        git push --force  # failed to push some refs

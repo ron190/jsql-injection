@@ -18,10 +18,6 @@
             <id>monetdb-repository</id>
             <url>https://clojars.org/repo/</url>
         </repository>
-        <repository>
-            <id>diff_match_patch-repository</id>
-            <url>https://maven.repository.redhat.com/ga/</url>
-        </repository>
     </repositories>
 
     <properties>
@@ -32,8 +28,8 @@
         <!-- required as commons-text:1.11.0 not working -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.2.0053</cubrid-jdbc.version>
-        <!-- require refactoring on 10.17.1.0 -->
-        <derby.version>10.16.1.1</derby.version>
+        <derby.version>10.17.1.0</derby.version>
+        <!-- must align slf4j-nop when bumped -->
         <dnsjava.version>3.6.3</dnsjava.version>
         <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
@@ -53,17 +49,15 @@
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <junit-platform.version>1.14.1</junit-platform.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
-        <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
-        <!-- v12.0 not working -->
         <monetdb-jdbc.version>12.1</monetdb-jdbc.version>
         <mssql-jdbc.version>12.10.2.jre11</mssql-jdbc.version>
         <mysql-connector-j.version>9.5.0</mysql-connector-j.version>
         <nashorn-core.version>15.7</nashorn-core.version>
-        <!-- failure with 5.28.2 => TODO upgrade neo4j docker version -->
+        <!-- failure with 5.28.2 -->
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
-        <!-- both java-driver and jdbc-driver required TODO switch to neo4j-jdbc -->
+        <!-- both java-driver and jdbc-driver required, should use neo4j-jdbc instead -->
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
         <ojdbc8.version>23.26.0.0.0</ojdbc8.version>
         <postgresql.version>42.7.8</postgresql.version>
@@ -153,6 +147,7 @@
                         <goals>
                             <goal>addSources</goal>
                             <goal>addTestSources</goal>
+                            <!-- stub when mixing java/groovy -->
                             <goal>addStubSources</goal>
                             <goal>addTestStubSources</goal>
                             <goal>compile</goal>
@@ -165,7 +160,6 @@
                 <!-- Runs UTs -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <failIfNoTests>true</failIfNoTests>
                     <!-- Compatible only jdk > 9 -->
@@ -181,7 +175,6 @@
                         <!-- Required to detect tests on version > 3.0.0-M4 without running JUnit4Provider -->
                         <groupId>org.apache.maven.surefire</groupId>
                         <artifactId>surefire-junit-platform</artifactId>
-                        <version>${maven-surefire-plugin.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -189,7 +182,7 @@
                 <!-- Runs ITs -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven-failsafe-plugin.version}</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -199,7 +192,13 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <failIfNoTests>true</failIfNoTests>
+<!--                    <failIfNoTests>true</failIfNoTests>-->
+                    <includes>
+                        <include>${maven-failsafe-plugin.include}</include>
+                    </includes>
+                    <excludes>
+                        <exclude>${maven-failsafe-plugin.exclude}</exclude>
+                    </excludes>
                     <!-- Don't override, it breaks generating report -->
                     <argLine>@{argLine} ${MAVEN_NASHORN} ${MAVEN_BYTEBUDDY}</argLine>
                     <!-- Set number of retry, allows 1st test to run Spring then run other tests -->
@@ -215,176 +214,11 @@
                         <!-- Required to detect tests on version > 3.0.0-M4 without running JUnit4Provider -->
                         <groupId>org.apache.maven.surefire</groupId>
                         <artifactId>surefire-junit-platform</artifactId>
-                        <version>${maven-failsafe-plugin.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>tests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <include>**/*SuiteIT.java</include>
-                            </includes>
-                            <excludes>
-                                <exclude>**/*SqlServer*SuiteIT.java</exclude>
-                                <exclude>**/*Db2*SuiteIT.java</exclude>
-                                <exclude>**/*Vertica*SuiteIT.java</exclude>
-                                <exclude>**/*Sybase*SuiteIT.java</exclude>
-                                <exclude>**/*Oracle*SuiteIT.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>tests-db2</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <include>**/*Db2*SuiteIT.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>tests-oracle</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <include>**/*Oracle*SuiteIT.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>tests-sqlserver</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <include>**/*SqlServer*SuiteIT.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>tests-sybase</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <include>**/*Sybase*SuiteIT.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>tests-vertica</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <include>**/*Vertica*SuiteIT.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>tests-monetdb</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <include>**/*Monet*SuiteIT.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
     <dependencies>
         <!-- jSQL purpose -->
@@ -424,11 +258,6 @@
             <artifactId>snakeyaml</artifactId>
             <version>${snakeyaml.version}</version>
         </dependency>
-        <dependency>
-            <groupId>diff_match_patch</groupId>
-            <artifactId>diff_match_patch</artifactId>
-            <version>current</version>
-        </dependency>
 
         <!-- Logger -->
         <dependency>
@@ -441,12 +270,27 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Websocket -->
+        <!-- GraphQL -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-spring-boot-starter</artifactId>
+            <version>${graphql-spring-boot-starter.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-tools</artifactId>
+            <version>${graphql-java-tools.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphiql-spring-boot-starter</artifactId>
+            <version>${graphql-spring-boot-starter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Websocket -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-websocket</artifactId>
@@ -465,6 +309,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -542,26 +391,6 @@
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna-platform</artifactId>
             <version>${jna.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- GraphQL -->
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-spring-boot-starter</artifactId>
-            <version>${graphql-spring-boot-starter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-java-tools</artifactId>
-            <version>${graphql-java-tools.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphiql-spring-boot-starter</artifactId>
-            <version>${graphql-spring-boot-starter.version}</version>
             <scope>test</scope>
         </dependency>
 

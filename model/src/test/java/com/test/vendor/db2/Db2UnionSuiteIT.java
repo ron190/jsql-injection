@@ -40,13 +40,8 @@ class Db2UnionSuiteIT extends ConcreteDb2SuiteIT {
         model.beginInjection();
     }
 
-// unstable
-//    @Override
-//    @RepeatedTest(3)
-//    public void listDatabases() throws JSqlException {
-//        super.listDatabases();
-//    }
-    
+    // listDatabases unstable
+
     @Override
     @RepeatedTest(3)
     public void listTables() throws JSqlException {
