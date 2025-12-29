@@ -30,6 +30,7 @@
                     <dryRun>true</dryRun>
                     <skipDeployment>true</skipDeployment>
                     <scmBranch>mock</scmBranch>
+                    <username>maven-scm-publish-plugin</username>
                 </configuration>
             </plugin>
         </plugins>
