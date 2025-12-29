@@ -89,17 +89,17 @@
 
     <reporting>
         <plugins>
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>report</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.pitest</groupId>-->
+<!--                <artifactId>pitest-maven</artifactId>-->
+<!--                <reportSets>-->
+<!--                    <reportSet>-->
+<!--                        <reports>-->
+<!--                            <report>report</report>-->
+<!--                        </reports>-->
+<!--                    </reportSet>-->
+<!--                </reportSets>-->
+<!--            </plugin>-->
         </plugins>
     </reporting>
 
