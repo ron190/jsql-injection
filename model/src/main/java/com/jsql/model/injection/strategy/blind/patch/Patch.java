@@ -3,6 +3,7 @@ package com.jsql.model.injection.strategy.blind.patch;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Class representing one patch operation.
@@ -97,7 +98,7 @@ public class Patch {
 
     // Getter and setter
 
-    public LinkedList<Diff> getDiffs() {
+    public List<Diff> getDiffs() {
         return this.diffs;
     }
 

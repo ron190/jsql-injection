@@ -81,7 +81,7 @@ jobs:
               org.pitest:pitest-maven:mutationCoverage \
               site \
               site:stage \
-              site:stage-deploy
+              scm-publish:publish-scm
           '
 
       - name: Databases statistics

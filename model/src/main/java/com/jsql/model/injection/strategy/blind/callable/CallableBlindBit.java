@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
     
-    private LinkedList<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
+    private List<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
     private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
     private final InjectionBlindBit injectionBlind;
     
