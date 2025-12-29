@@ -175,6 +175,8 @@
                         <!-- Required to detect tests on version > 3.0.0-M4 without running JUnit4Provider -->
                         <groupId>org.apache.maven.surefire</groupId>
                         <artifactId>surefire-junit-platform</artifactId>
+                        <!-- version required to prevent missing version error -->
+                        <version>${maven-surefire-plugin.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -214,6 +216,8 @@
                         <!-- Required to detect tests on version > 3.0.0-M4 without running JUnit4Provider -->
                         <groupId>org.apache.maven.surefire</groupId>
                         <artifactId>surefire-junit-platform</artifactId>
+                        <!-- version required to prevent missing version error -->
+                        <version>${maven-surefire-plugin.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>

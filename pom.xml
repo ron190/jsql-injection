@@ -154,11 +154,6 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-            <dependency>
-                <groupId>org.apache.maven.surefire</groupId>
-                <artifactId>surefire-junit-platform</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
