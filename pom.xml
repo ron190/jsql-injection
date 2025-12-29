@@ -359,7 +359,7 @@
                             <!-- provides pmd.xml -->
                             <groupId>ron190</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>${revision}</version>
+                            <version>1.0</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -376,7 +376,7 @@
                             <!-- provides checkstyle-suppressions.xml -->
                             <groupId>ron190</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>${revision}</version>
+                            <version>1.0</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -448,7 +448,7 @@
                         <!-- provides site.xml -->
                         <groupId>ron190</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>${revision}</version>
+                        <version>1.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
