@@ -68,14 +68,15 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         # profile to skipITs/skipTests (env var MAVEN_OPS not working)
-        # goal site: last to apply skin to generated reports
-        # goal site:stage: merge modules into single site
-        # goal pitest: force triggering
+        # goal site:stage to merge modules into single site
+        # goal pitest to force triggering
+        # reduce logs verbosity: sonar, scm for site publish
         run: |
           $DOCKER_RESOURCES/scripts/run-on-docker.sh '
             mvn clean install \
               --no-transfer-progress \
               -Dorg.slf4j.simpleLogger.log.org.sonarsource.scanner.maven.SonarQubeMojo=error \
+              -Dorg.slf4j.simpleLogger.log.org.apache.maven.scm=warn \
               -P tests \
               org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
               org.pitest:pitest-maven:mutationCoverage \

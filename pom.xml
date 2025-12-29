@@ -544,7 +544,6 @@
                 <artifactId>maven-scm-publish-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <dryRun>true</dryRun>
                     <scmBranch>test-deploy</scmBranch>
                 </configuration>
             </plugin>
