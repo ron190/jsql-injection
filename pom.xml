@@ -28,7 +28,7 @@
         <commons-text.version>1.15.0</commons-text.version>
         <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-        <junit-jupiter-engine.version>5.12.2</junit-jupiter-engine.version>
+        <junit-jupiter-engine.version>6.0.1</junit-jupiter-engine.version>
         <log4j-bom.version>2.25.3</log4j-bom.version>
         <maven-antrun-plugin.version>3.2.0</maven-antrun-plugin.version>
         <maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version>
