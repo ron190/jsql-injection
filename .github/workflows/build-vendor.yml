@@ -15,7 +15,7 @@ jobs:
       matrix:
         vendor: [oracle, db2, sqlserver, sybase, vertica, monetdb]
     env:
-      JSQL_DOCKERFILE: 3.8.6-eclipse-temurin-18
+      JSQL_DOCKERFILE: 3.9.12-eclipse-temurin-21
       MAVEN_NASHORN: ""
       MAVEN_BYTEBUDDY: ""
       DOCKER_RESOURCES: ${{ inputs.DOCKER_RESOURCES }}

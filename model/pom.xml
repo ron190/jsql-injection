@@ -29,7 +29,7 @@
         <!-- required as commons-text:1.11.0 not working -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.2.0053</cubrid-jdbc.version>
-        <derby.version>10.17.1.0</derby.version>
+        <derby.version>10.16.1.1</derby.version>
         <!-- must align slf4j-nop when bumped -->
         <dnsjava.version>3.6.3</dnsjava.version>
         <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
