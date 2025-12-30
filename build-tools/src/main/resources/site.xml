@@ -19,7 +19,7 @@
                 <name><![CDATA[
                 <span class="color-highlight">jSQL Injection</span> Maven Site
                 ]]></name>
-                <href>${url}</href>
+                <href>${project.url}</href>
             </brand>
             <navbar theme="dark" background="dark" center="false" />
             <breadcrumbs>false</breadcrumbs>
