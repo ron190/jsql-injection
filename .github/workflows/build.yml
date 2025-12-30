@@ -70,9 +70,12 @@ jobs:
         # profile to skipITs/skipTests (env var MAVEN_OPS not working)
         # goal site:stage to merge modules into single site
         # goal pitest to force triggering
-        # reduce logs verbosity: sonar, scm for site publish
+        # reduce logs verbosity on sonar and scm for site publish
+        # git config to allow maven publish-scm
         run: |
           $DOCKER_RESOURCES/scripts/run-on-docker.sh '
+            git config user.name "Github Actions"
+            git config user.email no-response@github.com
             mvn clean install \
               --no-transfer-progress \
               -Dorg.slf4j.simpleLogger.log.org.sonarsource.scanner.maven.SonarQubeMojo=error \

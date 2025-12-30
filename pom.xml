@@ -545,7 +545,6 @@
                 <version>3.3.0</version>
                 <configuration>
                     <scmBranch>test-deploy</scmBranch>
-                    <username>maven-scm-publish-plugin</username>
                 </configuration>
             </plugin>
         </plugins>
