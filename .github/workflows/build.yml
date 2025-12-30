@@ -67,6 +67,8 @@ jobs:
       - name: Unit and integration tests with Sonar scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # for maven publish-scm
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # profile to skipITs/skipTests (env var MAVEN_OPS not working)
         # goal site:stage to merge modules into single site
         # goal pitest to force triggering
