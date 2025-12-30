@@ -53,7 +53,7 @@
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
         <monetdb-jdbc.version>12.1</monetdb-jdbc.version>
-        <mssql-jdbc.version>12.10.2.jre11</mssql-jdbc.version>
+        <mssql-jdbc.version>13.3.0.jre11-preview</mssql-jdbc.version>
         <mysql-connector-j.version>9.5.0</mysql-connector-j.version>
         <nashorn-core.version>15.7</nashorn-core.version>
         <!-- failure with 5.28.2 -->
