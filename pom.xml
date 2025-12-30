@@ -322,22 +322,6 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <!-- only on model and view, build-tools not enabled -->
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>${maven-site-plugin.version}</version>
-                    <configuration>
-                        <siteDirectory>${basedir}/build-tools/src/main/resources/</siteDirectory>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>io.github.devacfr.maven.skins</groupId>
-                            <artifactId>reflow-velocity-tools</artifactId>
-                            <version>${reflow-velocity-tools.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-                <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco-maven-plugin.version}</version>
@@ -464,6 +448,22 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <!-- on build plugins instead of only pluginManagement not working -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${maven-site-plugin.version}</version>
+                <configuration>
+                    <siteDirectory>${basedir}/build-tools/src/main/resources/</siteDirectory>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>io.github.devacfr.maven.skins</groupId>
+                        <artifactId>reflow-velocity-tools</artifactId>
+                        <version>${reflow-velocity-tools.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
