@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@Transactional("hibernateTransactionManager")
 @RestController
 public class HibernateRestController {
 
@@ -43,7 +44,6 @@ public class HibernateRestController {
         return this.getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false, false);
     }
 
-    @Transactional("hibernateTransactionManager")
     private Greeting getResponse(
         String name,
         String sqlQuery,

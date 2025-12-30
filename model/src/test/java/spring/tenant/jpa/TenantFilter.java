@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
-@Order(1)
+//@Component
+//@Order(1)
 class TenantFilter implements Filter {
 
     @Override

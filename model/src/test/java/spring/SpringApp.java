@@ -23,6 +23,7 @@ import org.neo4j.driver.Result;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.core.io.ClassPathResource;
 import spring.rest.Student;
@@ -41,6 +42,7 @@ import java.util.Properties;
 import java.util.stream.Stream;
 
 @SpringBootApplication(exclude = {
+    HibernateJpaAutoConfiguration.class,
     UserDetailsServiceAutoConfiguration.class  // remove password warning at startup
 })
 @EntityScan({"spring.rest"})
