@@ -71,7 +71,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # profile to skipITs/skipTests (env var MAVEN_OPS not working)
         # goal site:stage to merge modules into single site
-        # goal pitest to force triggering
+        # goal pitest to force triggering, not working in pom
         # reduce logs verbosity on sonar and scm for site publish
         # git config to allow maven publish-scm
         run: |

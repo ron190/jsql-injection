@@ -80,13 +80,6 @@
 <!--            <plugin>-->
 <!--                <groupId>org.pitest</groupId>-->
 <!--                <artifactId>pitest-maven</artifactId>-->
-<!--                <reportSets>-->
-<!--                    <reportSet>-->
-<!--                        <reports>-->
-<!--                            <report>report</report>-->
-<!--                        </reports>-->
-<!--                    </reportSet>-->
-<!--                </reportSets>-->
 <!--            </plugin>-->
         </plugins>
     </reporting>
@@ -96,13 +89,6 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>mutationCoverage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -176,14 +162,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-<!--                    <failIfNoTests>true</failIfNoTests>-->
                     <!-- ignore warn during UTs: 'module java.base does not "opens java.util" to unnamed module' -->
                     <argLine>@{argLine} ${MAVEN_NASHORN} ${MAVEN_BYTEBUDDY} --add-opens=java.base/java.util=ALL-UNNAMED</argLine>
                     <rerunFailingTestsCount>2</rerunFailingTestsCount>
                     <includes>
                         <include>**/*UiTest</include>
                     </includes>
-                    <reportFormat>plain</reportFormat>
                 </configuration>
             </plugin>
         </plugins>

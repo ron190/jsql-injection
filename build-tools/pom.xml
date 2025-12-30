@@ -4,35 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- no parent to avoid cyclic reference -->
-    <groupId>ron190</groupId>
+    <parent>
+        <groupId>ron190</groupId>
+        <artifactId>jsql-injection</artifactId>
+        <version>${revision}</version>
+    </parent>
+
     <artifactId>build-tools</artifactId>
     <version>1.0</version>
-
-    <!-- required to avoid error: Exception calling reference $config at META-INF/maven/site.vm -->
-    <url>https://ron190.github.io/jsql-injection/site/</url>
-    <!-- publish site:stage from /staging to GitHub -->
-    <!-- settings.xml with user/pass and server id:github added by actions/setup-java -->
-    <distributionManagement>
-        <site>
-            <id>github</id>
-            <url>scm:git:https://github.com/ron190/jsql-injection.git</url>
-        </site>
-    </distributionManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-scm-publish-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <dryRun>true</dryRun>
-                    <skipDeployment>true</skipDeployment>
-                    <scmBranch>mock</scmBranch>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

@@ -92,13 +92,6 @@
 <!--            <plugin>-->
 <!--                <groupId>org.pitest</groupId>-->
 <!--                <artifactId>pitest-maven</artifactId>-->
-<!--                <reportSets>-->
-<!--                    <reportSet>-->
-<!--                        <reports>-->
-<!--                            <report>report</report>-->
-<!--                        </reports>-->
-<!--                    </reportSet>-->
-<!--                </reportSets>-->
 <!--            </plugin>-->
         </plugins>
     </reporting>
@@ -120,13 +113,6 @@
                         <param>*Spock</param>
                     </targetTests>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>mutationCoverage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <!-- Build Spock UTs -->
@@ -162,14 +148,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <failIfNoTests>true</failIfNoTests>
                     <!-- Compatible only jdk > 9 -->
                     <argLine>@{argLine} ${MAVEN_NASHORN} ${MAVEN_BYTEBUDDY}</argLine>
                     <includes>
                         <include>**/*Spock</include>
                     </includes>
-                    <!-- Display each method time metrics on a test class -->
-                    <reportFormat>plain</reportFormat>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -195,7 +178,7 @@
                     </execution>
                 </executions>
                 <configuration>
-<!--                    <failIfNoTests>true</failIfNoTests>-->
+                    <failIfNoTests>true</failIfNoTests>
                     <includes>
                         <include>${maven-failsafe-plugin.include}</include>
                     </includes>
@@ -275,104 +258,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- GraphQL -->
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-spring-boot-starter</artifactId>
-            <version>${graphql-spring-boot-starter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-java-tools</artifactId>
-            <version>${graphql-java-tools.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphiql-spring-boot-starter</artifactId>
-            <version>${graphql-spring-boot-starter.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Websocket -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-websocket</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-messaging</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-messaging</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Stomp -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>webjars-locator-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>sockjs-client</artifactId>
-            <version>${sockjs-client.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>stomp-websocket</artifactId>
-            <version>${stomp-websocket.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>${bootstrap.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-            <version>${jquery.version}</version>
-            <scope>test</scope>
-        </dependency>
-
         <!-- DNS -->
         <dependency>
             <groupId>dnsjava</groupId>
@@ -385,18 +270,6 @@
             <artifactId>slf4j-nop</artifactId>
             <!-- must match slf4j version from dnsjava -->
             <version>${slf4j-nop.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>${jna.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna-platform</artifactId>
-            <version>${jna.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- Spock -->
