@@ -7,6 +7,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.monetdb
+    environment:
+      # default 127.0.0.1 prevents listening on custom port
+      MDB_FARM_PROPERTIES: listenaddr=0.0.0.0
     container_name: jsql-monetdb
     networks:
       - jsql-network

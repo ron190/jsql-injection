@@ -63,16 +63,6 @@ services:
 #    networks:
 #      - jsql-network
 
-  #  monetdb:
-  #    ports:
-  #      - "50001:50000"
-  #    build:
-  #      context: .
-  #      dockerfile: Dockerfile.monetdb
-  #    container_name: jsql-monetdb
-  #    networks:
-  #      - jsql-network
-
   mysql:
     container_name: jsql-mysql
     ports:

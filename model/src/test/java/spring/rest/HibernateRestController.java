@@ -64,9 +64,9 @@ public class HibernateRestController {
             Session session = this.sessionFactory.getCurrentSession();
             Query<Object> query = session.createNativeQuery(String.format(sqlQuery, inject), Object.class);
             if (isUpdate) {
-                var transaction = session.beginTransaction();
+                // should beginTransaction depending on context
                 query.executeUpdate();
-                transaction.commit();
+                // then should commit
             } else {
                 if (isStack) {
                     try (Connection connection = ((SessionImpl) session).getJdbcConnectionAccess().obtainConnection()) {
