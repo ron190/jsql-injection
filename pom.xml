@@ -60,6 +60,7 @@
         <maven-surefire-plugin.skipTests>true</maven-surefire-plugin.skipTests>
         <maven-failsafe-plugin.include/>
         <maven-failsafe-plugin.exclude/>
+        <profileId/>
 
         <!-- menu not working with 2.3.5 -->
         <site.skin.version>2.3.4</site.skin.version>
@@ -82,6 +83,7 @@
         <profile>
             <id>tests</id>
             <properties>
+                <profileId>tests</profileId>
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
                 <maven-surefire-plugin.skipTests>false</maven-surefire-plugin.skipTests>
@@ -99,6 +101,7 @@
         <profile>
             <id>tests-db2</id>
             <properties>
+                <profileId>tests-db2</profileId>
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*Db2*SuiteIT.java</maven-failsafe-plugin.include>
@@ -107,6 +110,7 @@
         <profile>
             <id>tests-monetdb</id>
             <properties>
+                <profileId>tests-monetdb</profileId>
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*MonetDb*SuiteIT.java</maven-failsafe-plugin.include>
@@ -115,6 +119,7 @@
         <profile>
             <id>tests-oracle</id>
             <properties>
+                <profileId>tests-oracle</profileId>
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*Oracle*SuiteIT.java</maven-failsafe-plugin.include>
@@ -123,6 +128,7 @@
         <profile>
             <id>tests-sqlserver</id>
             <properties>
+                <profileId>tests-sqlserver</profileId>
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*SqlServer*SuiteIT.java</maven-failsafe-plugin.include>
@@ -131,6 +137,7 @@
         <profile>
             <id>tests-sybase</id>
             <properties>
+                <profileId>tests-sybase</profileId>
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*Sybase*SuiteIT.java</maven-failsafe-plugin.include>
@@ -139,6 +146,7 @@
         <profile>
             <id>tests-vertica</id>
             <properties>
+                <profileId>tests-vertica</profileId>
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*Vertica*SuiteIT.java</maven-failsafe-plugin.include>

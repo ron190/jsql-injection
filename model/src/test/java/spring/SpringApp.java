@@ -107,6 +107,7 @@ public class SpringApp {
     }
 
     public static void initDatabases() throws Exception {
+        LOGGER.info("Current profileId: {}", System.getProperty("profileId"));
         if (System.getProperty("profileId") == null || "tests".equals(System.getProperty("profileId"))) {
             SpringApp.initHsqldb();
             SpringApp.initH2();
@@ -137,7 +138,7 @@ public class SpringApp {
                 session.persist(new StudentForDelete());
                 transaction.commit();
             } catch (Exception e) {
-                LOGGER.error(e);
+                LOGGER.error(e, e);
             }
         });
     }

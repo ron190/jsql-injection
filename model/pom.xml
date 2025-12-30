@@ -193,7 +193,7 @@
                     <!-- Display each method time metrics on a test class -->
                     <reportFormat>plain</reportFormat>
                     <systemPropertyVariables>
-                        <profileId>${project.activeProfiles[0].id}</profileId>
+                        <profileId>${profileId}</profileId>
                     </systemPropertyVariables>
                 </configuration>
                 <dependencies>
