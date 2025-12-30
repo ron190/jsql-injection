@@ -82,9 +82,9 @@
         <profile>
             <id>tests</id>
             <properties>
-<!--                <skipTests>false</skipTests>-->
-<!--                <skipITs>false</skipITs>-->
-<!--                <maven-surefire-plugin.skipTests>false</maven-surefire-plugin.skipTests>-->
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
+                <maven-surefire-plugin.skipTests>false</maven-surefire-plugin.skipTests>
                 <maven-failsafe-plugin.include>**/*SuiteIT.java</maven-failsafe-plugin.include>
                 <maven-failsafe-plugin.exclude>
                     **/*Db2*SuiteIT.java,
@@ -99,48 +99,48 @@
         <profile>
             <id>tests-db2</id>
             <properties>
-<!--                <skipTests>false</skipTests>-->
-<!--                <skipITs>false</skipITs>-->
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*Db2*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
         <profile>
             <id>tests-monetdb</id>
             <properties>
-<!--                <skipTests>false</skipTests>-->
-<!--                <skipITs>false</skipITs>-->
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*MonetDb*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
         <profile>
             <id>tests-oracle</id>
             <properties>
-<!--                <skipTests>false</skipTests>-->
-<!--                <skipITs>false</skipITs>-->
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*Oracle*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
         <profile>
             <id>tests-sqlserver</id>
             <properties>
-<!--                <skipTests>false</skipTests>-->
-<!--                <skipITs>false</skipITs>-->
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*SqlServer*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
         <profile>
             <id>tests-sybase</id>
             <properties>
-<!--                <skipTests>false</skipTests>-->
-<!--                <skipITs>false</skipITs>-->
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*Sybase*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
         <profile>
             <id>tests-vertica</id>
             <properties>
-<!--                <skipTests>false</skipTests>-->
-<!--                <skipITs>false</skipITs>-->
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*Vertica*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
@@ -176,9 +176,9 @@
                 <reportSets>
                     <reportSet>
                         <reports>
-<!--                            <report>dependencies</report>-->
-<!--                            <report>dependency-convergence</report>-->
-<!--                            <report>dependency-info</report>-->
+                            <report>dependencies</report>
+                            <report>dependency-convergence</report>
+                            <report>dependency-info</report>
                             <!-- dependency-management: disabled as slow performance-->
                             <report>index</report>
                             <report>modules</report>
@@ -238,24 +238,24 @@
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>${maven-jxr-plugin.version}</version>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>com.github.spotbugs</groupId>-->
-<!--                <artifactId>spotbugs-maven-plugin</artifactId>-->
-<!--                <version>${spotbugs-maven-plugin.version}</version>-->
-<!--                <configuration>-->
-<!--                    <goal>check</goal>-->
-<!--                    <failOnError>false</failOnError>-->
-<!--                    <quiet>true</quiet>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-pmd-plugin</artifactId>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs-maven-plugin.version}</version>
+                <configuration>
+                    <goal>check</goal>
+                    <failOnError>false</failOnError>
+                    <quiet>true</quiet>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -470,7 +470,7 @@
                 <artifactId>maven-scm-publish-plugin</artifactId>
                 <version>${maven-scm-publish-plugin.version}</version>
                 <configuration>
-                    <scmBranch>test-deploy</scmBranch>
+                    <scmBranch>site</scmBranch>
                     <password>${GITHUB_TOKEN}</password>
                 </configuration>
             </plugin>

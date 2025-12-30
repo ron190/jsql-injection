@@ -77,10 +77,10 @@
 
     <reporting>
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.pitest</groupId>-->
-<!--                <artifactId>pitest-maven</artifactId>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+            </plugin>
         </plugins>
     </reporting>
 

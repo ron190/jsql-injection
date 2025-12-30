@@ -45,7 +45,7 @@
         <jcabi-log.version>0.24.3</jcabi-log.version>
         <jna.version>5.17.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
-        <json.version>20250517</json.version>
+        <json.version>20251224</json.version>
         <jsoup.version>1.21.2</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <junit-platform.version>1.14.1</junit-platform.version>
@@ -62,6 +62,7 @@
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
         <ojdbc8.version>23.26.0.0.0</ojdbc8.version>
         <postgresql.version>42.7.8</postgresql.version>
+        <!-- aligned with dnsjava -->
         <slf4j-nop.version>1.7.36</slf4j-nop.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
@@ -89,10 +90,10 @@
 
     <reporting>
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.pitest</groupId>-->
-<!--                <artifactId>pitest-maven</artifactId>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+            </plugin>
         </plugins>
     </reporting>
 
