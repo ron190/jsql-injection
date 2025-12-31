@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CallableBlindBin.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.strategy.blind.callable</a> &gt; <span class="el_source">CallableBlindBin.java</span></div><h1>CallableBlindBin.java</h1><pre class="source lang-java linenums">package com.jsql.model.injection.strategy.blind.callable;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
+import com.jsql.model.injection.strategy.blind.InjectionBlindBin;
+import com.jsql.model.injection.strategy.blind.patch.Diff;
+import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+/**
+ * Define a call HTTP to the server, require the associated url, character
+ * position and bit. Diffs represent the differences between
+ * the reference page, and the current page.
+ */
+public class CallableBlindBin extends AbstractCallableBit&lt;CallableBlindBin&gt; {
+
+    private final int low;
+    private final int mid;
+    private final int high;
+
+<span class="fc" id="L24">    private LinkedList&lt;Diff&gt; diffsWithReference = new LinkedList&lt;&gt;();  // List of differences found between the reference page, and the current page</span>
+<span class="fc" id="L25">    private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();</span>
+    private final InjectionBlindBin injectionBlind;
+
+    private final String metadataInjectionProcess;
+
+    /**
+     * Constructor for preparation and blind confirmation.
+     */
+    public CallableBlindBin(
+        String sqlQuery,
+        InjectionModel injectionModel,
+        InjectionBlindBin injectionBlind,
+        BlindOperator blindOperator,
+        int low, int mid, int high,
+        String metadataInjectionProcess
+<span class="fc" id="L40">    ) {</span>
+<span class="fc" id="L41">        this.isBinary = true;</span>
+<span class="fc" id="L42">        this.low = low;</span>
+<span class="fc" id="L43">        this.mid = mid;</span>
+<span class="fc" id="L44">        this.high = high;</span>
+<span class="fc" id="L45">        this.injectionBlind = injectionBlind;</span>
+<span class="fc" id="L46">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L47">        this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * Constructor for bits test.
+     */
+    public CallableBlindBin(
+        String sqlQuery,
+        int indexChar,
+        InjectionModel injectionModel,
+        InjectionBlindBin injectionBlind,
+        BlindOperator blindOperator,
+        int low, int mid, int high,
+        String metadataInjectionProcess
+    ) {
+<span class="fc" id="L62">        this(sqlQuery, injectionModel, injectionBlind, blindOperator, low, mid, high, metadataInjectionProcess);</span>
+<span class="fc" id="L63">        this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBin(sqlQuery, indexChar, mid, blindOperator);</span>
+<span class="fc" id="L64">        this.currentIndex = indexChar;</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Check if a result page means the SQL query is true,
+     * confirm that nothing in the resulting page is also defined
+     * in the pages from every FALSE SQL queries.
+     * @return true if the current SQL query is true
+     */
+    @Override
+    public boolean isTrue() {
+        // Fix #95426: ConcurrentModificationException on iterator.next()
+<span class="fc" id="L76">        List&lt;Diff&gt; falseDiffs = new CopyOnWriteArrayList&lt;&gt;(this.injectionBlind.getFalseDiffs());</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (Diff falseDiff: falseDiffs) {  // ignored when false OR false =&gt; falsy empty</span>
+            // Fix #4386: NullPointerException on contains(), diffsWithReference initialized to new LinkedList&lt;&gt;()
+<span class="fc bfc" id="L79" title="All 2 branches covered.">            if (this.diffsWithReference.contains(falseDiff)) {</span>
+<span class="fc" id="L80">                return false;</span>
+            }
+<span class="fc" id="L82">        }</span>
+<span class="fc" id="L83">        List&lt;Diff&gt; trueDiffs = new CopyOnWriteArrayList&lt;&gt;(this.injectionBlind.getTrueDiffs());</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for (Diff trueDiff: trueDiffs) {</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">            if (!this.diffsWithReference.contains(trueDiff)) {  // required, set to false when empty falseDiffs</span>
+<span class="nc" id="L86">                return false;</span>
+            }
+<span class="fc" id="L88">        }</span>
+<span class="fc" id="L89">        return true;  // not in falseDiffs and in trueDiffs</span>
+    }
+
+    /**
+     * Process the URL HTTP call, use function inject() from the model.
+     * Build the list of differences found between TRUE and the current page.
+     * @return Functional Blind Callable
+     */
+    @Override
+    public CallableBlindBin call() {
+<span class="fc" id="L99">        String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
+<span class="fc" id="L100">        this.diffsWithReference = CallableBlindBin.DIFF_MATCH_PATCH.diffMain(this.injectionBlind.getSourceReferencePage(), result, true);</span>
+<span class="fc" id="L101">        CallableBlindBin.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);</span>
+<span class="fc" id="L102">        return this;</span>
+    }
+
+    public List&lt;Diff&gt; getDiffsWithReference() {
+<span class="fc" id="L106">        return this.diffsWithReference;</span>
+    }
+
+    public int getLow() {
+<span class="fc" id="L110">        return this.low;</span>
+    }
+
+    public int getMid() {
+<span class="fc" id="L114">        return this.mid;</span>
+    }
+
+    public int getHigh() {
+<span class="fc" id="L118">        return this.high;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>SqlEngine xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../apidocs/com/jsql/view/swing/sql/SqlEngine.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.view.swing.sql;
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.Vendor;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.yaml.Method;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.yaml.ModelYaml;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.util.I18nUtil;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.swing.tab.TabbedPaneWheeled;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.swing.text.listener.DocumentListenerEditing;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.I18nViewUtil;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.MediatorHelper;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> com.jsql.view.swing.util.UiUtil;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.lang3.StringUtils;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> org.fife.ui.rtextarea.RTextScrollPane;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> javax.swing.*;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> java.awt.*;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> java.awt.event.MouseAdapter;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> java.awt.event.MouseEvent;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> java.util.AbstractMap.SimpleEntry;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> java.util.Arrays;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.util.LinkedList;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.util.stream.Collectors;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.util.stream.Stream;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="SqlEngine" href="../../../../../com/jsql/view/swing/sql/SqlEngine.html#SqlEngine">SqlEngine</a> <strong class="jxr_keyword">extends</strong> JPanel {
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> JTabbedPane tabsError = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>(SwingConstants.RIGHT);
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> List&lt;JSyntaxTextArea&gt; listTextareasError = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      enum TextareaWithColor {
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <em class="jxr_comment">// Default</em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          DATABASE_DEFAULT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>              v -&gt; SqlEngine.modelYaml.getResource().getSchema().setDatabase(v),
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>              () -&gt; SqlEngine.modelYaml.getResource().getSchema().getDatabase()
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>          )),
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          TABLE_DEFAULT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>              v -&gt; SqlEngine.modelYaml.getResource().getSchema().setTable(v),
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>              () -&gt; SqlEngine.modelYaml.getResource().getSchema().getTable()
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>          )),
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          COLUMN_DEFAULT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>              v -&gt; SqlEngine.modelYaml.getResource().getSchema().setColumn(v),
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>              () -&gt; SqlEngine.modelYaml.getResource().getSchema().getColumn()
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          )),
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          QUERY_DEFAULT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>              v -&gt; SqlEngine.modelYaml.getResource().getSchema().getRow().setQuery(v),
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>              () -&gt; SqlEngine.modelYaml.getResource().getSchema().getRow().getQuery()
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          )),
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          FIELD_DEFAULT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>              v -&gt; SqlEngine.modelYaml.getResource().getSchema().getRow().getFields().setField(v),
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>              () -&gt; SqlEngine.modelYaml.getResource().getSchema().getRow().getFields().getField()
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          )),
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          CONCAT_DEFAULT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>              v -&gt; SqlEngine.modelYaml.getResource().getSchema().getRow().getFields().setConcat(v),
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>              () -&gt; SqlEngine.modelYaml.getResource().getSchema().getRow().getFields().getConcat()
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          )),
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          <em class="jxr_comment">// Zip</em>
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>          DATABASE_ZIP(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>              v -&gt; SqlEngine.modelYaml.getResource().getZip().setDatabase(v),
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>              () -&gt; SqlEngine.modelYaml.getResource().getZip().getDatabase()
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          )),
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>          TABLE_ZIP(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>              v -&gt; SqlEngine.modelYaml.getResource().getZip().setTable(v),
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>              () -&gt; SqlEngine.modelYaml.getResource().getZip().getTable()
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          )),
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          COLUMN_ZIP(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>              v -&gt; SqlEngine.modelYaml.getResource().getZip().setColumn(v),
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>              () -&gt; SqlEngine.modelYaml.getResource().getZip().getColumn()
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>          )),
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          QUERY_ZIP(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>              v -&gt; SqlEngine.modelYaml.getResource().getZip().getRow().setQuery(v),
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>              () -&gt; SqlEngine.modelYaml.getResource().getZip().getRow().getQuery()
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          )),
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          FIELD_ZIP(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>              v -&gt; SqlEngine.modelYaml.getResource().getZip().getRow().getFields().setField(v),
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>              () -&gt; SqlEngine.modelYaml.getResource().getZip().getRow().getFields().getField()
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          )),
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          CONCAT_ZIP(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>              v -&gt; SqlEngine.modelYaml.getResource().getZip().getRow().getFields().setConcat(v),
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>              () -&gt; SqlEngine.modelYaml.getResource().getZip().getRow().getFields().getConcat()
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>          )),
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          <em class="jxr_comment">// Dios</em>
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>          DATABASE_DIOS(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>              v -&gt; SqlEngine.modelYaml.getResource().getDios().setDatabase(v),
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>              () -&gt; SqlEngine.modelYaml.getResource().getDios().getDatabase()
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>          )),
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>          TABLE_DIOS(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>              v -&gt; SqlEngine.modelYaml.getResource().getDios().setTable(v),
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>              () -&gt; SqlEngine.modelYaml.getResource().getDios().getTable()
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>          )),
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>          COLUMN_DIOS(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>              v -&gt; SqlEngine.modelYaml.getResource().getDios().setColumn(v),
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>             () -&gt; SqlEngine.modelYaml.getResource().getDios().getColumn()
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         )),
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>         QUERY_DIOS(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>             v -&gt; SqlEngine.modelYaml.getResource().getDios().getRow().setQuery(v),
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>             () -&gt; SqlEngine.modelYaml.getResource().getDios().getRow().getQuery()
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>         )),
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         FIELD_DIOS(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>             v -&gt; SqlEngine.modelYaml.getResource().getDios().getRow().getFields().setField(v),
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>             () -&gt; SqlEngine.modelYaml.getResource().getDios().getRow().getFields().getField()
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>         )),
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>         CONCAT_DIOS(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>             v -&gt; SqlEngine.modelYaml.getResource().getDios().getRow().getFields().setConcat(v),
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>             () -&gt; SqlEngine.modelYaml.getResource().getDios().getRow().getFields().getConcat()
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         )),
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         INFO(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>             v -&gt; SqlEngine.modelYaml.getResource().setInfo(v),
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>             () -&gt; SqlEngine.modelYaml.getResource().getInfo()
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>         )),
+<a class="jxr_linenumber" name="L119" href="#L119">119</a> 
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>         <em class="jxr_comment">// Configuration</em>
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         SLIDING_WINDOW(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().setSlidingWindow(v),
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getSlidingWindow()
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         )),
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>         LIMIT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().setLimit(v),
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getLimit()
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>         )),
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         FAILSAFE(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().setFailsafe(v),
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFailsafe()
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>         )),
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>         CALIBRATOR(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().setCalibrator(v),
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getCalibrator()
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         )),
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         ENDING_COMMENT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().setEndingComment(v),
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getEndingComment()
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>         )),
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         LIMIT_BOUNDARY(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().setLimitBoundary(v),
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getLimitBoundary()
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         )),
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>         
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <em class="jxr_comment">// Union</em>
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>         INDICES(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getUnion().setIndices(v),
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getUnion().getIndices()
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>         )),
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>         CAPACITY(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getUnion().setCapacity(v),
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getUnion().getCapacity()
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>         )),
+<a class="jxr_linenumber" name="L155" href="#L155">155</a> 
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         STACK(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>             v -&gt; SqlEngine.modelYaml.getStrategy().setStack(v),
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getStack()
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>         )),
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>         DNS(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>             v -&gt; SqlEngine.modelYaml.getStrategy().setDns(v),
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getDns()
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>         )),
+<a class="jxr_linenumber" name="L164" href="#L164">164</a> 
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>         <em class="jxr_comment">// Boolean</em>
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>         MODE_AND(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().setModeAnd(v),
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getModeAnd()
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>         )),
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>         MODE_OR(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().setModeOr(v),
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getModeOr()
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>         )),
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>         MODE_STACK(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().setModeStack(v),
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getModeStack()
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>         )),
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>         BLIND(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().setBlind(v),
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getBlind()
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>         )),
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>         TIME(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().setTime(v),
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTime()
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>         )),
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>         MULTIBIT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().setMultibit(v),
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getMultibit()
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         )),
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         TEST_BIT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().setBit(v),
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getBit()
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         )),
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>         TEST_BIN(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().setBin(v),
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getBin()
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         )),
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         TRUTHY_BIN(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().setTruthyBin(v),
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getTruthyBinAsString()
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         )),
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         FALSY_BIN(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().setFalsyBin(v),
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getFalsyBinAsString()
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>         )),
+<a class="jxr_linenumber" name="L206" href="#L206">206</a> 
+<a class="jxr_linenumber" name="L207" href="#L207">207</a> 
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <em class="jxr_comment">// Exploit</em>
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>         EXPLOIT(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>             v -&gt; SqlEngine.modelYaml.getResource().setExploit(v),
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>             () -&gt; SqlEngine.modelYaml.getResource().getExploit()
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>         )),
+<a class="jxr_linenumber" name="L213" href="#L213">213</a> 
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>         <em class="jxr_comment">// Fingerprint</em>
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>         TRUTHY(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().setTruthyBit(v),
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getTruthyBitAsString()
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>         )),
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>         FALSY(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().setFalsyBit(v),
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getBinary().getTest().getFalsyBitAsString()
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>         )),
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>         INCORRECT_STRING_ERROR_MESSAGE(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>         )),
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>         ORDER_BY_ERROR_MESSAGE(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>         )),
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>         ORDER_BY(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getUnion().setOrderBy(v),
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getUnion().getOrderBy()
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>         )),
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>         VENDOR_SPECIFIC(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>         )),
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>         ;
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>         
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>         <strong class="jxr_keyword">final</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a> textarea;
+<a class="jxr_linenumber" name="L242" href="#L242">242</a> 
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>         <strong class="jxr_keyword">public</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a> getTextArea() {
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.textarea;
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>         }
+<a class="jxr_linenumber" name="L246" href="#L246">246</a> 
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>         TextareaWithColor(<a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a> textarea) {
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>             <strong class="jxr_keyword">this</strong>.textarea = textarea;
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>         }
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>     }
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>     
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>     <strong class="jxr_keyword">public</strong> <a name="SqlEngine" href="../../../../../com/jsql/view/swing/sql/SqlEngine.html#SqlEngine">SqlEngine</a>() {
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>         <em class="jxr_comment">// user can switch to another vendor then close, so restore current vendor</em>
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>         SqlEngine.modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
+<a class="jxr_linenumber" name="L255" href="#L255">255</a> 
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>         SqlEngine.initTextComponents();
+<a class="jxr_linenumber" name="L257" href="#L257">257</a> 
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>         JTabbedPane panelStructure = <strong class="jxr_keyword">this</strong>.getPanelStructure();
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>         RTextScrollPane panelFile = <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.EXPLOIT.getTextArea(), false);
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>         JTabbedPane panelStrategy = <strong class="jxr_keyword">this</strong>.getPanelStrategy();
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>         JTabbedPane panelConfiguration = <strong class="jxr_keyword">this</strong>.getPanelConfiguration();
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>         JTabbedPane panelFingerprinting = <strong class="jxr_keyword">this</strong>.getPanelFingerprinting();
+<a class="jxr_linenumber" name="L263" href="#L263">263</a> 
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>         JTabbedPane tabsBottom = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>(SwingConstants.BOTTOM);
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>         
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>         Stream.of(
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_STRUCTURE"</span>, panelStructure),
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_STRATEGY"</span>, panelStrategy),
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_CONFIGURATION"</span>, panelConfiguration),
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_FINGERPRINTING"</span>, panelFingerprinting),
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_EXPLOIT"</span>, panelFile)
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>         )
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>         .forEach(entry -&gt; {
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>             tabsBottom.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>             <strong class="jxr_keyword">var</strong> label = <strong class="jxr_keyword">new</strong> JLabel(I18nUtil.valueByKey(entry.getKey()));
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>             tabsBottom.setTabComponentAt(
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>                 tabsBottom.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>                 label
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>             );
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>             I18nViewUtil.addComponentForKey(entry.getKey(), label);
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>         });
+<a class="jxr_linenumber" name="L282" href="#L282">282</a> 
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>         <strong class="jxr_keyword">this</strong>.setLayout(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L284" href="#L284">284</a> 
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>         JPanel panelCombo = SqlEngine.initMenuVendor();
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>         tabsBottom.putClientProperty(<span class="jxr_string">"JTabbedPane.trailingComponent"</span>, panelCombo);
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>         <strong class="jxr_keyword">this</strong>.add(tabsBottom);
+<a class="jxr_linenumber" name="L288" href="#L288">288</a> 
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>         SwingUtilities.invokeLater(() -&gt; {
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>             MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale());  <em class="jxr_comment">// required for arabic</em>
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>             SqlEngine.tabsError.updateUI();  <em class="jxr_comment">// required for theme switch when tabs closed</em>
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>         });
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>     }
+<a class="jxr_linenumber" name="L294" href="#L294">294</a> 
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>     <strong class="jxr_keyword">private</strong> JTabbedPane getPanelStructure() {
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> keyDatabases = <span class="jxr_string">"SQLENGINE_DATABASES"</span>;
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> keyTables = <span class="jxr_string">"SQLENGINE_TABLES"</span>;
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> keyColumns = <span class="jxr_string">"SQLENGINE_COLUMNS"</span>;
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> keyRows = <span class="jxr_string">"SQLENGINE_ROWS"</span>;
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> keyField = <span class="jxr_string">"SQLENGINE_FIELD"</span>;
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> keyFieldSeparator = <span class="jxr_string">"SQLENGINE_FIELDS_SEPARATOR"</span>;
+<a class="jxr_linenumber" name="L302" href="#L302">302</a> 
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>         JTabbedPane tabsDefault = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>();
+<a class="jxr_linenumber" name="L304" href="#L304">304</a>         Stream.of(
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyDatabases, TextareaWithColor.DATABASE_DEFAULT.getTextArea()),
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyTables, TextareaWithColor.TABLE_DEFAULT.getTextArea()),
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyColumns, TextareaWithColor.COLUMN_DEFAULT.getTextArea()),
+<a class="jxr_linenumber" name="L308" href="#L308">308</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyRows, TextareaWithColor.QUERY_DEFAULT.getTextArea()),
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyField, TextareaWithColor.FIELD_DEFAULT.getTextArea()),
+<a class="jxr_linenumber" name="L310" href="#L310">310</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyFieldSeparator, TextareaWithColor.CONCAT_DEFAULT.getTextArea()),
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_METADATA"</span>, TextareaWithColor.INFO.getTextArea())
+<a class="jxr_linenumber" name="L312" href="#L312">312</a>         )
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>         .forEach(entry -&gt; {
+<a class="jxr_linenumber" name="L314" href="#L314">314</a>             tabsDefault.addTab(I18nUtil.valueByKey(entry.getKey()), <strong class="jxr_keyword">new</strong> RTextScrollPane(entry.getValue(), false));
+<a class="jxr_linenumber" name="L315" href="#L315">315</a>             <strong class="jxr_keyword">var</strong> label = <strong class="jxr_keyword">new</strong> JLabel(I18nUtil.valueByKey(entry.getKey()));
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>             tabsDefault.setTabComponentAt(tabsDefault.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>             I18nViewUtil.addComponentForKey(entry.getKey(), label);
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>         });
+<a class="jxr_linenumber" name="L319" href="#L319">319</a>         
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>         JTabbedPane tabsZip = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>();
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>         Stream.of(
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyDatabases, TextareaWithColor.DATABASE_ZIP.getTextArea()),
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyTables, TextareaWithColor.TABLE_ZIP.getTextArea()),
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyColumns, TextareaWithColor.COLUMN_ZIP.getTextArea()),
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyRows, TextareaWithColor.QUERY_ZIP.getTextArea()),
+<a class="jxr_linenumber" name="L326" href="#L326">326</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyField, TextareaWithColor.FIELD_ZIP.getTextArea()),
+<a class="jxr_linenumber" name="L327" href="#L327">327</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyFieldSeparator, TextareaWithColor.CONCAT_ZIP.getTextArea())
+<a class="jxr_linenumber" name="L328" href="#L328">328</a>         )
+<a class="jxr_linenumber" name="L329" href="#L329">329</a>         .forEach(entry -&gt; {
+<a class="jxr_linenumber" name="L330" href="#L330">330</a>             tabsZip.addTab(I18nUtil.valueByKey(entry.getKey()), <strong class="jxr_keyword">new</strong> RTextScrollPane(entry.getValue(), false));
+<a class="jxr_linenumber" name="L331" href="#L331">331</a>             <strong class="jxr_keyword">var</strong> label = <strong class="jxr_keyword">new</strong> JLabel(I18nUtil.valueByKey(entry.getKey()));
+<a class="jxr_linenumber" name="L332" href="#L332">332</a>             tabsZip.setTabComponentAt(tabsZip.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
+<a class="jxr_linenumber" name="L333" href="#L333">333</a>             I18nViewUtil.addComponentForKey(entry.getKey(), label);
+<a class="jxr_linenumber" name="L334" href="#L334">334</a>         });
+<a class="jxr_linenumber" name="L335" href="#L335">335</a>         
+<a class="jxr_linenumber" name="L336" href="#L336">336</a>         JTabbedPane tabsDios = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>();
+<a class="jxr_linenumber" name="L337" href="#L337">337</a>         Stream.of(
+<a class="jxr_linenumber" name="L338" href="#L338">338</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyDatabases, TextareaWithColor.DATABASE_DIOS.getTextArea()),
+<a class="jxr_linenumber" name="L339" href="#L339">339</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyTables, TextareaWithColor.TABLE_DIOS.getTextArea()),
+<a class="jxr_linenumber" name="L340" href="#L340">340</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyColumns, TextareaWithColor.COLUMN_DIOS.getTextArea()),
+<a class="jxr_linenumber" name="L341" href="#L341">341</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyRows, TextareaWithColor.QUERY_DIOS.getTextArea()),
+<a class="jxr_linenumber" name="L342" href="#L342">342</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyField, TextareaWithColor.FIELD_DIOS.getTextArea()),
+<a class="jxr_linenumber" name="L343" href="#L343">343</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(keyFieldSeparator, TextareaWithColor.CONCAT_DIOS.getTextArea())
+<a class="jxr_linenumber" name="L344" href="#L344">344</a>         )
+<a class="jxr_linenumber" name="L345" href="#L345">345</a>         .forEach(entry -&gt; {
+<a class="jxr_linenumber" name="L346" href="#L346">346</a>             tabsDios.addTab(I18nUtil.valueByKey(entry.getKey()), <strong class="jxr_keyword">new</strong> RTextScrollPane(entry.getValue(), false));
+<a class="jxr_linenumber" name="L347" href="#L347">347</a>             <strong class="jxr_keyword">var</strong> label = <strong class="jxr_keyword">new</strong> JLabel(I18nUtil.valueByKey(entry.getKey()));
+<a class="jxr_linenumber" name="L348" href="#L348">348</a>             tabsDios.setTabComponentAt(tabsDios.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
+<a class="jxr_linenumber" name="L349" href="#L349">349</a>             I18nViewUtil.addComponentForKey(entry.getKey(), label);
+<a class="jxr_linenumber" name="L350" href="#L350">350</a>         });
+<a class="jxr_linenumber" name="L351" href="#L351">351</a> 
+<a class="jxr_linenumber" name="L352" href="#L352">352</a>         JTabbedPane tabs = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>(SwingConstants.RIGHT);
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>         Stream.of(
+<a class="jxr_linenumber" name="L354" href="#L354">354</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_STANDARD"</span>, tabsDefault),
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_ZIP"</span>, tabsZip),
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_DIOS"</span>, tabsDios)
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>         )
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>         .forEach(entry -&gt; {
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>             tabs.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>             <strong class="jxr_keyword">var</strong> label = <strong class="jxr_keyword">new</strong> JLabel(I18nUtil.valueByKey(entry.getKey()));
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>             tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(entry.getKey())), label);
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>             I18nViewUtil.addComponentForKey(entry.getKey(), label);
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>         });
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>         <strong class="jxr_keyword">return</strong> tabs;
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>     }
+<a class="jxr_linenumber" name="L366" href="#L366">366</a> 
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>     <strong class="jxr_keyword">private</strong> JTabbedPane getPanelStrategy() {
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>         JTabbedPane tabs = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>();
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_UNION"</span>), <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.INDICES.getTextArea(), false));
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_STACK"</span>), <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.STACK.getTextArea(), false));
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_ERROR"</span>), SqlEngine.tabsError);
+<a class="jxr_linenumber" name="L372" href="#L372">372</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_DNS"</span>), <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.DNS.getTextArea(), false));
+<a class="jxr_linenumber" name="L373" href="#L373">373</a> 
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>         JTabbedPane tabsBoolean = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>(SwingConstants.RIGHT);
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>         Stream.of(
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"AND mode"</span>, TextareaWithColor.MODE_AND.getTextArea()),
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"OR mode"</span>, TextareaWithColor.MODE_OR.getTextArea()),
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"Stack mode"</span>, TextareaWithColor.MODE_STACK.getTextArea()),
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"Time"</span>, TextareaWithColor.TIME.getTextArea()),
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"Blind"</span>, TextareaWithColor.BLIND.getTextArea()),
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"Bin test"</span>, TextareaWithColor.TEST_BIN.getTextArea()),
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"Bin truthy"</span>, TextareaWithColor.TRUTHY_BIN.getTextArea()),
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"Bin falsy"</span>, TextareaWithColor.FALSY_BIN.getTextArea()),
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"Bit test"</span>, TextareaWithColor.TEST_BIT.getTextArea()),
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"Multibit"</span>, TextareaWithColor.MULTIBIT.getTextArea())
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>         )
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>         .forEach(entry -&gt; {
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>             tabsBoolean.addTab(entry.getKey(), <strong class="jxr_keyword">new</strong> RTextScrollPane(entry.getValue(), false));
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>             tabsBoolean.setTitleAt(
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>                 tabsBoolean.getTabCount() - 1,
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>                 String.format(
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>                     <span class="jxr_string">"&lt;html&gt;&lt;div style=\&quot;text-align:left;width:60px;\&quot;&gt;%s&lt;/div&gt;&lt;/html&gt;"</span>,
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>                     entry.getKey()
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>                 )
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>             );
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>         });
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_BOOLEAN"</span>), tabsBoolean);
+<a class="jxr_linenumber" name="L398" href="#L398">398</a> 
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>         Stream.of(
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>             <span class="jxr_string">"SQLENGINE_UNION"</span>,
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>             <span class="jxr_string">"SQLENGINE_STACK"</span>,
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>             <span class="jxr_string">"SQLENGINE_ERROR"</span>,
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>             <span class="jxr_string">"SQLENGINE_BOOLEAN"</span>
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>         )
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>         .forEach(keyI18n -&gt; {
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>             <strong class="jxr_keyword">var</strong> label = <strong class="jxr_keyword">new</strong> JLabel(I18nUtil.valueByKey(keyI18n));
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>             tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)), label);
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>             I18nViewUtil.addComponentForKey(keyI18n, label);
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>         });
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>         <strong class="jxr_keyword">return</strong> tabs;
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>     }
+<a class="jxr_linenumber" name="L412" href="#L412">412</a> 
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>     <strong class="jxr_keyword">private</strong> JTabbedPane getPanelConfiguration() {
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>         JTabbedPane tabs = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>();
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>         Stream.of(
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_CHARACTERS_SLIDINGWINDOW"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.SLIDING_WINDOW.getTextArea(), false)),
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_ROWS_SLIDINGWINDOW"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.LIMIT.getTextArea(), false)),
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_LIMIT_START_INDEX"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.LIMIT_BOUNDARY.getTextArea(), false)),
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_CAPACITY"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.CAPACITY.getTextArea(), false)),
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_CALIBRATOR"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.CALIBRATOR.getTextArea(), false)),
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_FAILSAFE"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.FAILSAFE.getTextArea(), false)),
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(<span class="jxr_string">"SQLENGINE_END_COMMENT"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.ENDING_COMMENT.getTextArea(), false))
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>         )
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>         .forEach(keyI18n -&gt; {
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>             tabs.addTab(I18nUtil.valueByKey(keyI18n.getKey()), keyI18n.getValue());
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>             <strong class="jxr_keyword">var</strong> label = <strong class="jxr_keyword">new</strong> JLabel(I18nUtil.valueByKey(keyI18n.getKey()));
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>             tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n.getKey())), label);
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>             I18nViewUtil.addComponentForKey(keyI18n.getKey(), label);
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>         });
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>         <strong class="jxr_keyword">return</strong> tabs;
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>     }
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>     
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>     <strong class="jxr_keyword">private</strong> JTabbedPane getPanelFingerprinting() {
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>         JTabbedPane tabs = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>();
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_ORDER_BY"</span>), <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.ORDER_BY.getTextArea(), false));
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>         tabs.addTab(<span class="jxr_string">"Order by error"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getTextArea(), false));
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>         tabs.addTab(<span class="jxr_string">"String error"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getTextArea(), false));
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>         tabs.addTab(<span class="jxr_string">"Vendor specific"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.VENDOR_SPECIFIC.getTextArea(), false));
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>         tabs.addTab(<span class="jxr_string">"Truthy"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.TRUTHY.getTextArea(), false));
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>         tabs.addTab(<span class="jxr_string">"Falsy"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.FALSY.getTextArea(), false));
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>         
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>         Stream.of(<span class="jxr_string">"SQLENGINE_ORDER_BY"</span>).forEach(keyI18n -&gt; {
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>             <strong class="jxr_keyword">var</strong> label = <strong class="jxr_keyword">new</strong> JLabel(I18nUtil.valueByKey(keyI18n));
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>             tabs.setTabComponentAt(tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)), label);
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>             I18nViewUtil.addComponentForKey(keyI18n, label);
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>         });
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">return</strong> tabs;
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>     }
+<a class="jxr_linenumber" name="L449" href="#L449">449</a> 
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> JPanel initMenuVendor() {
+<a class="jxr_linenumber" name="L451" href="#L451">451</a>         <strong class="jxr_keyword">var</strong> panelMenuVendor = <strong class="jxr_keyword">new</strong> JPanel();  <em class="jxr_comment">// required for label on right</em>
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>         panelMenuVendor.setLayout(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L453" href="#L453">453</a> 
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>         JPopupMenu popupMenuVendors = <strong class="jxr_keyword">new</strong> JPopupMenu();
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>         popupMenuVendors.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorVendor().getVendors().size()));
+<a class="jxr_linenumber" name="L456" href="#L456">456</a> 
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>         JLabel labelVendor = <strong class="jxr_keyword">new</strong> JLabel(MediatorHelper.model().getMediatorVendor().getVendor().toString(), UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>         labelVendor.setBorder(UiUtil.BORDER_5PX);  <em class="jxr_comment">// required for padding</em>
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>         labelVendor.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>             @Override
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent e) {
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>                 Arrays.stream(popupMenuVendors.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>                 popupMenuVendors.updateUI();  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>                 popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>                 popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>             }
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>         });
+<a class="jxr_linenumber" name="L468" href="#L468">468</a> 
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>         List&lt;Vendor&gt; listVendors = <strong class="jxr_keyword">new</strong> LinkedList&lt;&gt;(MediatorHelper.model().getMediatorVendor().getVendors());
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>         listVendors.removeIf(vendor -&gt; vendor == MediatorHelper.model().getMediatorVendor().getAuto());
+<a class="jxr_linenumber" name="L471" href="#L471">471</a> 
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>         <strong class="jxr_keyword">var</strong> groupVendor = <strong class="jxr_keyword">new</strong> ButtonGroup();
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Vendor vendor: listVendors) {
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>             JMenuItem itemRadioVendor = <strong class="jxr_keyword">new</strong> JRadioButtonMenuItem(
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>                 vendor.toString(),
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>                 vendor == MediatorHelper.model().getMediatorVendor().getVendor()
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>             );
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>             
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>             itemRadioVendor.addActionListener(actionEvent -&gt; {
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>                 SqlEngine.modelYaml = vendor.instance().getModelYaml();
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>                 SqlEngine.initTextComponents();
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>                 labelVendor.setText(vendor.toString());
+<a class="jxr_linenumber" name="L483" href="#L483">483</a>             });
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>             
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>             groupVendor.add(itemRadioVendor);
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>             popupMenuVendors.add(itemRadioVendor);
+<a class="jxr_linenumber" name="L487" href="#L487">487</a>         }
+<a class="jxr_linenumber" name="L488" href="#L488">488</a>         
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>         panelMenuVendor.add(labelVendor, BorderLayout.LINE_END);  <em class="jxr_comment">// required to set on right</em>
+<a class="jxr_linenumber" name="L490" href="#L490">490</a>         <strong class="jxr_keyword">return</strong> panelMenuVendor;
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>     }
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>     
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L494" href="#L494">494</a> <em class="jxr_javadoccomment">     * Configure all text components with new coloring and new modelYaml setter.</em>
+<a class="jxr_linenumber" name="L495" href="#L495">495</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L496" href="#L496">496</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initTextComponents() {
+<a class="jxr_linenumber" name="L497" href="#L497">497</a>         SqlEngine.getTextareas().forEach(SqlEngine::reset);
+<a class="jxr_linenumber" name="L498" href="#L498">498</a>         SqlEngine.getTextareas().forEach(textPaneLexer -&gt; textPaneLexer.setText(StringUtils.EMPTY));
+<a class="jxr_linenumber" name="L499" href="#L499">499</a> 
+<a class="jxr_linenumber" name="L500" href="#L500">500</a>         Stream.of(TextareaWithColor.values())
+<a class="jxr_linenumber" name="L501" href="#L501">501</a>         .map(textareaWithColor -&gt; textareaWithColor.textarea)
+<a class="jxr_linenumber" name="L502" href="#L502">502</a>         .forEach(textArea -&gt; {
+<a class="jxr_linenumber" name="L503" href="#L503">503</a>             textArea.setText(textArea.getSupplierGetter().get().trim());
+<a class="jxr_linenumber" name="L504" href="#L504">504</a>             textArea.setCaretPosition(0);
+<a class="jxr_linenumber" name="L505" href="#L505">505</a>         });
+<a class="jxr_linenumber" name="L506" href="#L506">506</a> 
+<a class="jxr_linenumber" name="L507" href="#L507">507</a>         SqlEngine.populateTabError();
+<a class="jxr_linenumber" name="L508" href="#L508">508</a>         SqlEngine.applyTheme();
+<a class="jxr_linenumber" name="L509" href="#L509">509</a>     }
+<a class="jxr_linenumber" name="L510" href="#L510">510</a> 
+<a class="jxr_linenumber" name="L511" href="#L511">511</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> applyTheme() {
+<a class="jxr_linenumber" name="L512" href="#L512">512</a>         SqlEngine.getTextareas().forEach(UiUtil::applySyntaxTheme);
+<a class="jxr_linenumber" name="L513" href="#L513">513</a>     }
+<a class="jxr_linenumber" name="L514" href="#L514">514</a> 
+<a class="jxr_linenumber" name="L515" href="#L515">515</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L516" href="#L516">516</a> <em class="jxr_javadoccomment">     * Dynamically add textPanes to Error tab for current vendor.</em>
+<a class="jxr_linenumber" name="L517" href="#L517">517</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L518" href="#L518">518</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> populateTabError() {
+<a class="jxr_linenumber" name="L519" href="#L519">519</a>         SqlEngine.tabsError.removeAll();
+<a class="jxr_linenumber" name="L520" href="#L520">520</a> 
+<a class="jxr_linenumber" name="L521" href="#L521">521</a>         <strong class="jxr_keyword">if</strong> (SqlEngine.modelYaml.getStrategy().getError() == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L522" href="#L522">522</a>             <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L523" href="#L523">523</a>         }
+<a class="jxr_linenumber" name="L524" href="#L524">524</a>             
+<a class="jxr_linenumber" name="L525" href="#L525">525</a>         <strong class="jxr_keyword">for</strong> (Method methodError: SqlEngine.modelYaml.getStrategy().getError().getMethod()) {
+<a class="jxr_linenumber" name="L526" href="#L526">526</a>             <strong class="jxr_keyword">var</strong> panelError = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L527" href="#L527">527</a> 
+<a class="jxr_linenumber" name="L528" href="#L528">528</a>             <strong class="jxr_keyword">var</strong> textareaError = <strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(methodError::setQuery, methodError::getQuery);
+<a class="jxr_linenumber" name="L529" href="#L529">529</a>             SqlEngine.reset(textareaError);
+<a class="jxr_linenumber" name="L530" href="#L530">530</a>             textareaError.setText(methodError.getQuery().trim());
+<a class="jxr_linenumber" name="L531" href="#L531">531</a>             textareaError.setCaretPosition(0);
+<a class="jxr_linenumber" name="L532" href="#L532">532</a>             panelError.add(<strong class="jxr_keyword">new</strong> RTextScrollPane(textareaError, false), BorderLayout.CENTER);
+<a class="jxr_linenumber" name="L533" href="#L533">533</a>             
+<a class="jxr_linenumber" name="L534" href="#L534">534</a>             <strong class="jxr_keyword">var</strong> panelLimit = <strong class="jxr_keyword">new</strong> JPanel();  <em class="jxr_comment">// TODO Integrate Error limit</em>
+<a class="jxr_linenumber" name="L535" href="#L535">535</a>             panelLimit.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelLimit, BoxLayout.LINE_AXIS));
+<a class="jxr_linenumber" name="L536" href="#L536">536</a>             panelLimit.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">" Overflow limit: "</span>));
+<a class="jxr_linenumber" name="L537" href="#L537">537</a>             panelLimit.add(<strong class="jxr_keyword">new</strong> JTextField(Integer.toString(methodError.getCapacity())));
+<a class="jxr_linenumber" name="L538" href="#L538">538</a>             panelError.add(panelLimit, BorderLayout.SOUTH);
+<a class="jxr_linenumber" name="L539" href="#L539">539</a> 
+<a class="jxr_linenumber" name="L540" href="#L540">540</a>             SqlEngine.tabsError.addTab(methodError.getName(), panelError);
+<a class="jxr_linenumber" name="L541" href="#L541">541</a>             SqlEngine.tabsError.setTitleAt(
+<a class="jxr_linenumber" name="L542" href="#L542">542</a>                 SqlEngine.tabsError.getTabCount() - 1,
+<a class="jxr_linenumber" name="L543" href="#L543">543</a>                 String.format(
+<a class="jxr_linenumber" name="L544" href="#L544">544</a>                     <span class="jxr_string">"&lt;html&gt;&lt;div style=\&quot;text-align:left;width:100px;\&quot;&gt;%s&lt;/div&gt;&lt;/html&gt;"</span>,
+<a class="jxr_linenumber" name="L545" href="#L545">545</a>                     methodError.getName()
+<a class="jxr_linenumber" name="L546" href="#L546">546</a>                 )
+<a class="jxr_linenumber" name="L547" href="#L547">547</a>             );
+<a class="jxr_linenumber" name="L548" href="#L548">548</a>             SqlEngine.listTextareasError.add(textareaError);
+<a class="jxr_linenumber" name="L549" href="#L549">549</a>         }
+<a class="jxr_linenumber" name="L550" href="#L550">550</a>     }
+<a class="jxr_linenumber" name="L551" href="#L551">551</a>     
+<a class="jxr_linenumber" name="L552" href="#L552">552</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L553" href="#L553">553</a> <em class="jxr_javadoccomment">     * Reset the textarea colorer.</em>
+<a class="jxr_linenumber" name="L554" href="#L554">554</a> <em class="jxr_javadoccomment">     * @param textarea which colorer will be reset.</em>
+<a class="jxr_linenumber" name="L555" href="#L555">555</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L556" href="#L556">556</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> reset(<a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a> textarea) {
+<a class="jxr_linenumber" name="L557" href="#L557">557</a>         textarea.setDocument(<strong class="jxr_keyword">new</strong> RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_SQL));  <em class="jxr_comment">// required else empty on reopen</em>
+<a class="jxr_linenumber" name="L558" href="#L558">558</a>         textarea.getDocument().addDocumentListener(<strong class="jxr_keyword">new</strong> <a name="DocumentListenerEditing" href="../../../../../com/jsql/view/swing/text/listener/DocumentListenerEditing.html#DocumentListenerEditing">DocumentListenerEditing</a>() {
+<a class="jxr_linenumber" name="L559" href="#L559">559</a>             @Override
+<a class="jxr_linenumber" name="L560" href="#L560">560</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> process() {
+<a class="jxr_linenumber" name="L561" href="#L561">561</a>                 textarea.setAttribute();
+<a class="jxr_linenumber" name="L562" href="#L562">562</a>             }
+<a class="jxr_linenumber" name="L563" href="#L563">563</a>         });
+<a class="jxr_linenumber" name="L564" href="#L564">564</a>     }
+<a class="jxr_linenumber" name="L565" href="#L565">565</a>     
+<a class="jxr_linenumber" name="L566" href="#L566">566</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L567" href="#L567">567</a> <em class="jxr_javadoccomment">     * Merge list of Error textPanes and list of other textAreas.</em>
+<a class="jxr_linenumber" name="L568" href="#L568">568</a> <em class="jxr_javadoccomment">     * @return the merged list</em>
+<a class="jxr_linenumber" name="L569" href="#L569">569</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L570" href="#L570">570</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;JSyntaxTextArea&gt; getTextareas() {
+<a class="jxr_linenumber" name="L571" href="#L571">571</a>         <strong class="jxr_keyword">return</strong> Stream.concat(
+<a class="jxr_linenumber" name="L572" href="#L572">572</a>             SqlEngine.listTextareasError.stream(),
+<a class="jxr_linenumber" name="L573" href="#L573">573</a>             Stream.of(TextareaWithColor.values()).map(TextareaWithColor::getTextArea)
+<a class="jxr_linenumber" name="L574" href="#L574">574</a>         )
+<a class="jxr_linenumber" name="L575" href="#L575">575</a>         .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L576" href="#L576">576</a>     }
+<a class="jxr_linenumber" name="L577" href="#L577">577</a> }
+</pre>
+<hr/>
+<div id="footer">© 2025</div>
+</body>
+</html>
