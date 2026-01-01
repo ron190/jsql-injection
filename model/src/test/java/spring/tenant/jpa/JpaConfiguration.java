@@ -19,16 +19,16 @@ import javax.sql.DataSource;
 import java.sql.DriverManager;
 import java.util.*;
 
-//@Configuration
-//@EnableTransactionManagement
+@Configuration
+@EnableTransactionManagement
 public class JpaConfiguration {
 
-//    @Bean("jpaTransactionManager")
+    @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 
-//    @Bean
+    @Bean
     public EntityManagerFactoryBuilder entityManagerFactoryBuilder(
         JpaVendorAdapter jpaVendorAdapter,
         ObjectProvider<PersistenceUnitManager> persistenceUnitManager
@@ -40,7 +40,7 @@ public class JpaConfiguration {
         );
     }
 
-//    @Bean
+    @Bean
     public DataSource dataSource() {  // unused when hibernate tenant active
         Map<Object, Object> resolvedDataSources = new HashMap<>();
 

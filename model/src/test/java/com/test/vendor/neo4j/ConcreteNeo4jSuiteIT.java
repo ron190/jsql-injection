@@ -1,6 +1,8 @@
 package com.test.vendor.neo4j;
 
 import com.test.AbstractTestSuite;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 
 public abstract class ConcreteNeo4jSuiteIT extends AbstractTestSuite {
 
@@ -38,5 +40,13 @@ public abstract class ConcreteNeo4jSuiteIT extends AbstractTestSuite {
              "MATCH (n:Movie)         "
             +"WITH DISTINCT n         "
             +"RETURN n.title as title ";
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getNeo4j()
+        );
     }
 }

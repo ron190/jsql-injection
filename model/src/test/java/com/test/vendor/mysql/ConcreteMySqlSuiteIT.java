@@ -2,6 +2,8 @@ package com.test.vendor.mysql;
 
 import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import spring.SpringApp;
 
 public abstract class ConcreteMySqlSuiteIT extends AbstractTestSuite {
@@ -31,5 +33,13 @@ public abstract class ConcreteMySqlSuiteIT extends AbstractTestSuite {
         this.jdbcQueryForTableNames =    "select TABLE_NAME from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"'";
         this.jdbcQueryForColumnNames =   "select COLUMN_NAME from information_schema.columns where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"' and TABLE_NAME='"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from `"+ this.jsqlDatabaseName +"`.`"+ this.jsqlTableName +"`";
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getMysql()
+        );
     }
 }

@@ -2,6 +2,8 @@ package com.test.vendor.derby;
 
 import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import spring.SpringApp;
 
 public abstract class ConcreteDerbySuiteIT extends AbstractTestSuite {
@@ -30,5 +32,13 @@ public abstract class ConcreteDerbySuiteIT extends AbstractTestSuite {
             + " and columndatatype || '' not like 'DECIMAL%'"
             + " and columndatatype || '' not like 'BLOB%'";
         this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getDerby()
+        );
     }
 }

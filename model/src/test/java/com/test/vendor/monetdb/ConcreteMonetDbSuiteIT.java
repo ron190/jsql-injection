@@ -1,12 +1,14 @@
 package com.test.vendor.monetdb;
 
 import com.test.AbstractTestSuite;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 
 public abstract class ConcreteMonetDbSuiteIT extends AbstractTestSuite {
 
     public ConcreteMonetDbSuiteIT() {
 
-        this.jdbcURL = "jdbc:monetdb://jsql-monetdb:50001/db";
+        this.jdbcURL = "jdbc:monetdb://jsql-monetdb:50000/db";
         this.jdbcUser = "monetdb";
         this.jdbcPass = "monetdb";
 
@@ -22,5 +24,13 @@ public abstract class ConcreteMonetDbSuiteIT extends AbstractTestSuite {
         this.jdbcQueryForTableNames = "select t.name from tables t inner join schemas s on t.schema_id = s.id where s.name = 'sys'";
         this.jdbcQueryForColumnNames = "select c.name from tables t inner join schemas s on t.schema_id = s.id inner join columns c on t.id = c.table_id where s.name = 'sys' and t.name = 'db_user_info'";
         this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getMonetdb()
+        );
     }
 }

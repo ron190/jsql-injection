@@ -1,6 +1,8 @@
 package com.test.vendor.mimer;
 
 import com.test.AbstractTestSuite;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 
 public abstract class ConcreteMimerSuiteIgnoreIT extends AbstractTestSuite {
 
@@ -22,5 +24,13 @@ public abstract class ConcreteMimerSuiteIgnoreIT extends AbstractTestSuite {
         this.jdbcQueryForTableNames = "select table_name from information_schema.tables where table_schema = '"+ this.jsqlDatabaseName +"'";
         this.jdbcQueryForColumnNames = "select column_name from information_schema.columns where table_schema = '"+ this.jsqlDatabaseName +"' and table_name = '"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getMimer()
+        );
     }
 }

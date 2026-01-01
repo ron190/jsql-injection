@@ -2,6 +2,8 @@ package com.test.vendor.firebird;
 
 import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import spring.SpringApp;
 
 public abstract class ConcreteFirebirdSuiteIT extends AbstractTestSuite {
@@ -24,5 +26,13 @@ public abstract class ConcreteFirebirdSuiteIT extends AbstractTestSuite {
         this.jdbcQueryForTableNames = "select trim(rdb$relation_name) from rdb$relations";
         this.jdbcQueryForColumnNames = "select trim(rdb$field_name) from rdb$relation_fields where rdb$relation_name = '"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlTableName;
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getFirebird()
+        );
     }
 }

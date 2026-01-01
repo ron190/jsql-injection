@@ -42,7 +42,6 @@ import java.util.Properties;
 import java.util.stream.Stream;
 
 @SpringBootApplication(exclude = {
-    HibernateJpaAutoConfiguration.class,
     UserDetailsServiceAutoConfiguration.class  // remove password warning at startup
 })
 @EntityScan({"spring.rest"})
@@ -212,6 +211,7 @@ public class SpringApp {
         return SpringApp.propertiesByEngine.parallelStream().filter(propertyByEngine ->
             System.getProperty("profileId") == null
             || propertyByEngine.getKey().getProperty("jsql.profile").equals(System.getProperty("profileId"))
+            || propertyByEngine.getKey().getProperty("jsql.tenant").equals("h2")
         );
     }
 

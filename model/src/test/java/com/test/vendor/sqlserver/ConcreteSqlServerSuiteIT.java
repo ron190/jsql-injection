@@ -2,6 +2,8 @@ package com.test.vendor.sqlserver;
 
 import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import spring.SpringApp;
 
 public abstract class ConcreteSqlServerSuiteIT extends AbstractTestSuite {
@@ -24,5 +26,13 @@ public abstract class ConcreteSqlServerSuiteIT extends AbstractTestSuite {
         this.jdbcQueryForTableNames = "select name from "+ this.jsqlDatabaseName +"..sysobjects WHERE xtype='U'";
         this.jdbcQueryForColumnNames = "select c.name FROM "+ this.jsqlDatabaseName +"..syscolumns c, "+ this.jsqlDatabaseName +"..sysobjects t WHERE c.id=t.id AND t.name='"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues = "select LTRIM(RTRIM("+ this.jsqlColumnName +")) "+ this.jsqlColumnName +" FROM "+ this.jsqlDatabaseName +".dbo."+ this.jsqlTableName;
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getSqlserver()
+        );
     }
 }

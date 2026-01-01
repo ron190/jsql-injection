@@ -5,7 +5,7 @@ resource:
   select trim(
       dbinfo('version','full')
       || '${enclose_value_sql}'
-      || bservername
+      || dbservername
       || '${enclose_value_sql}'
       || user
       || '${trail_sql}'

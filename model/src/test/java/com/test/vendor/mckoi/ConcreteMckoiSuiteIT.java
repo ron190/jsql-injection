@@ -1,6 +1,8 @@
 package com.test.vendor.mckoi;
 
 import com.test.AbstractTestSuite;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 
 public abstract class ConcreteMckoiSuiteIT extends AbstractTestSuite {
 
@@ -22,5 +24,13 @@ public abstract class ConcreteMckoiSuiteIT extends AbstractTestSuite {
         this.jdbcQueryForTableNames = "select name from SYS_INFO.sUSRTableInfo where \"schema\" = '"+ this.jsqlDatabaseName +"'";
         this.jdbcQueryForColumnNames = "select \"column\" from SYS_INFO.sUSRTableColumns where \"schema\" = '"+ this.jsqlDatabaseName +"' and \"table\" = '"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlTableName;
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getMckoi()
+        );
     }
 }

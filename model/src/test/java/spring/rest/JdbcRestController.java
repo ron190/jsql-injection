@@ -39,7 +39,7 @@ public class JdbcRestController {
         StringBuilder result = new StringBuilder();
 
         try (
-            Connection con = DriverManager.getConnection("jdbc:monetdb://jsql-monetdb:50001/db", "monetdb", "monetdb");
+            Connection con = DriverManager.getConnection("jdbc:monetdb://jsql-monetdb:50000/db", "monetdb", "monetdb");
             PreparedStatement pstmt = con.prepareStatement("select name from schemas where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();

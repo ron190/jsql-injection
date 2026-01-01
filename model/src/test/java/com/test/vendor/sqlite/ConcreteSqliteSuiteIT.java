@@ -3,6 +3,8 @@ package com.test.vendor.sqlite;
 import com.jsql.model.accessible.DataAccess;
 import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import spring.SpringApp;
 
 import java.util.ArrayList;
@@ -58,5 +60,13 @@ public abstract class ConcreteSqliteSuiteIT extends AbstractTestSuite {
         }
         
         return columns;
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getSqlite()
+        );
     }
 }

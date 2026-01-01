@@ -3,7 +3,7 @@ services:
 
   db2:
     ports:
-      - "50000:50000"
+      - "50001:50000"
     privileged: true
     build:
       context: .

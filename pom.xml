@@ -24,6 +24,8 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.java.binaries>target/classes</sonar.java.binaries>
         <sonar.java.source>11</sonar.java.source>
+        <!-- hides analysis verbose logs -->
+        <sonar.log.level>ERROR</sonar.log.level>
 
         <commons-text.version>1.15.0</commons-text.version>
         <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>

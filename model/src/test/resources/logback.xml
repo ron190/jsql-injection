@@ -14,4 +14,6 @@
     <logger name="org.hibernate" level="OFF" additivity="false" />
     <!-- Hide informix warnings about selected database and transactions -->
     <logger name="com.mchange.v2.c3p0.SQLWarnings" level="OFF" additivity="false" />
+    <!-- Hide XPATH syntax error on SQL containing unicode -->
+    <logger name="com.zaxxer.hikari.pool.ProxyConnection" level="OFF" additivity="false" />
 </configuration>

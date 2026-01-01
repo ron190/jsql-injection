@@ -51,7 +51,8 @@ import java.util.List;
 import java.util.*;
 import java.util.regex.Pattern;
 
-class AppUiTest {
+// public for javadoc
+public class AppUiTest {
     private static int counterLog = 0;
     private static FrameFixture window;
     private static final Connection connection = Mockito.mock(Connection.class);
@@ -60,7 +61,7 @@ class AppUiTest {
     private static Robot robot;
 
     @BeforeAll
-    static void setUpOnce() {
+    public static void setUpOnce() {
         AppUiTest.logMethod();
         FailOnThreadViolationRepaintManager.install();
 
@@ -113,14 +114,14 @@ class AppUiTest {
     }
 
     @AfterAll  // when all test methods end, keeps class active
-    static void afterAll()  {
+    public static void afterAll()  {
         AppUiTest.logMethod();
         AppUiTest.window.cleanUp();  // allow mvn retry
         AppUiTest.robot.cleanUp();
     }
 
     @Test
-    void shouldDnDList() {
+    public void shouldDnDList() {
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane("tabManagers").selectTab("Admin page");
 
@@ -167,7 +168,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldDnDScanList() {
+    public void shouldDnDScanList() {
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane("tabManagers").selectTab("Batch scan");
         Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", AppUiTest.window.list(ManagerScan.NAME).valueAt(0));
@@ -201,7 +202,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldDnDTabs() {
+    public void shouldDnDTabs() {
         AppUiTest.logMethod();
         var request = new Request();
         request.setMessage(Interaction.CREATE_FILE_TAB);
@@ -249,7 +250,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindFile() {
+    public void shouldFindFile() {
         AppUiTest.logMethod();
         var request = new Request();
         request.setMessage(Interaction.CREATE_FILE_TAB);
@@ -268,7 +269,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindWebshell() {
+    public void shouldFindWebshell() {
         AppUiTest.logMethod();
         var request = new Request();
         request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
@@ -302,7 +303,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindVendorAndErrorMethods() {
+    public void shouldFindVendorAndErrorMethods() {
         AppUiTest.logMethod();
         AppUiTest.window.label("menuStrategy").click();
         AppUiTest.window.menuItem("itemRadioStrategyError").requireDisabled();
@@ -356,7 +357,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindNetworkHeader() {
+    public void shouldFindNetworkHeader() {
         AppUiTest.logMethod();
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, "url");
@@ -398,7 +399,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindSqlshell() {
+    public void shouldFindSqlshell() {
         AppUiTest.logMethod();
         var request = new Request();
         request.setMessage(Interaction.ADD_TAB_EXPLOIT_SQL);
@@ -417,7 +418,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldRunCoder() {
+    public void shouldRunCoder() {
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane("tabManagers").selectTab("Encoding");
         AppUiTest.window.label("menuMethodManagerCoder").click();
@@ -462,7 +463,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindAdminpage() throws IOException {
+    public void shouldFindAdminpage() throws IOException {
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane("tabManagers").selectTab("Admin page");
         AppUiTest.window.list("listManagerAdminPage").item(0).select().rightClick();
@@ -486,7 +487,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindDatabase() {
+    public void shouldFindDatabase() {
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane("tabManagers").selectTab("Database");
 
@@ -541,7 +542,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindOkButton() {
+    public void shouldFindOkButton() {
         AppUiTest.logMethod();
         try {
             AppUiTest.window.button("buttonInUrl").click();
@@ -551,7 +552,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindConsoleButton() {
+    public void shouldFindConsoleButton() {
         AppUiTest.logMethod();
         AppUiTest.window.label("buttonShowSouth").click();
         AppUiTest.window.label("buttonShowConsolesHidden").click();
@@ -565,7 +566,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindConnectionPreferences() {
+    public void shouldFindConnectionPreferences() {
         AppUiTest.logMethod();
         AppUiTest.window.label("advancedButton").click();
         AppUiTest.window.menuItemWithPath("Windows", "Preferences").click();
@@ -595,7 +596,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindInjectionPreferences() {
+    public void shouldFindInjectionPreferences() {
         AppUiTest.logMethod();
         AppUiTest.window.label("advancedButton").click();
         AppUiTest.window.menuItemWithPath("Windows", "Preferences").click();
@@ -661,7 +662,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindSqlEngine() {
+    public void shouldFindSqlEngine() {
         AppUiTest.logMethod();
         AppUiTest.window.label("advancedButton").click();
         AppUiTest.window.menuItemWithPath("Windows", "SQL Engine").click();
@@ -676,7 +677,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindLanguage() {
+    public void shouldFindLanguage() {
         AppUiTest.logMethod();
         AppUiTest.window.label("advancedButton").click();
         AppUiTest.window.menuItem("menuWindows").click();
@@ -696,7 +697,7 @@ class AppUiTest {
 
 //    Unstable?
 //    @Test
-//    void shouldFindReportIssue() {
+//    public void shouldFindReportIssue() {
 //
 //        window.label("advancedButton").click();
 //        window.menuItem("menuCommunity").click();
@@ -713,7 +714,7 @@ class AppUiTest {
 //    }
 
     @Test
-    void shouldFindIHelpTranslate() {
+    public void shouldFindIHelpTranslate() {
         AppUiTest.logMethod();
         AppUiTest.window.label("advancedButton").click();
         AppUiTest.window.menuItem("menuCommunity").click();
@@ -735,7 +736,7 @@ class AppUiTest {
     }
 
     @Test
-    void shouldFindAbout() {
+    public void shouldFindAbout() {
         AppUiTest.logMethod();
         AppUiTest.window.label("advancedButton").click();
         AppUiTest.window.menuItem("menuHelp").click();

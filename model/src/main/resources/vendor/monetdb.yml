@@ -2,11 +2,11 @@ vendor: MonetDB
 
 resource:
  info: |
-    'version()'
+    select (select value from env() where name='monet_version')
     || '${enclose_value_sql}'
-    || 'database()'
+    || (select value from var_values where var_name='current_schema')
     || '${enclose_value_sql}'
-    || 'user()'
+    || (select value from var_values where var_name='current_user')
     || '${trail_sql}'
 
  schema:

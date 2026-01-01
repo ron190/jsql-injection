@@ -2,6 +2,8 @@ package com.test.vendor.informix;
 
 import com.test.AbstractTestSuite;
 import org.hibernate.cfg.JdbcSettings;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import spring.SpringApp;
 
 public abstract class ConcreteInformixSuiteIT extends AbstractTestSuite {
@@ -24,5 +26,13 @@ public abstract class ConcreteInformixSuiteIT extends AbstractTestSuite {
         this.jdbcQueryForTableNames =    "select distinct trim(tabname)tabname from "+ this.jsqlDatabaseName +":informix.systables";
         this.jdbcQueryForColumnNames =   "select distinct colname from "+ this.jsqlDatabaseName +":informix.syscolumns c join "+ this.jsqlDatabaseName +":informix.systables t on c.tabid = t.tabid where tabname = '"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues =        "select distinct "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +":"+ this.jsqlTableName;
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getInformix()
+        );
     }
 }

@@ -25,7 +25,6 @@
         <sonar.exclusions>**/DigestMD4.java, **/blind/patch/*</sonar.exclusions>
 
         <awaitility.version>4.3.0</awaitility.version>
-        <bootstrap.version>5.3.8</bootstrap.version>
         <!-- required as commons-text:1.11.0 not working -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.2.0053</cubrid-jdbc.version>
@@ -33,20 +32,16 @@
         <!-- must align slf4j-nop when bumped -->
         <dnsjava.version>3.6.3</dnsjava.version>
         <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
-        <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
-        <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy.version>5.0.3</groovy.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <h2.version>2.4.240</h2.version>
         <hsqldb.version>2.7.4</hsqldb.version>
         <informix.jdbc.version>15.0.1.0</informix.jdbc.version>
-        <jaxb-api.version>2.1</jaxb-api.version>
         <jaybird.version>6.0.3</jaybird.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
-        <jna.version>5.17.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20251224</json.version>
-        <jsoup.version>1.21.2</jsoup.version>
+        <jsoup.version>1.22.1</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <junit-platform.version>1.14.1</junit-platform.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
@@ -65,12 +60,10 @@
         <!-- aligned with dnsjava -->
         <slf4j-nop.version>1.7.36</slf4j-nop.version>
         <snakeyaml.version>2.5</snakeyaml.version>
-        <sockjs-client.version>1.5.1</sockjs-client.version>
         <spock-core.version>2.4-groovy-5.0</spock-core.version>
         <spring-boot-dependencies.version>3.5.8</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
         <sqlite-jdbc.version>3.51.1.0</sqlite-jdbc.version>
-        <stomp-websocket.version>2.3.4</stomp-websocket.version>
         <sybase-jconn4.version>16.0</sybase-jconn4.version>
         <vertica-jdbc.version>25.3.0-0</vertica-jdbc.version>
     </properties>
@@ -310,6 +303,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <!-- provides also hikari -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>wsdl4j</groupId>
             <artifactId>wsdl4j</artifactId>
             <scope>test</scope>
@@ -351,23 +350,6 @@
 <!--        </dependency>-->
 
         <!-- Hibernate -->
-        <dependency>
-            <!-- Bridge with Hibernate -->
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <!-- display c3p0 logs -->
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-c3p0</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-community-dialects</artifactId>

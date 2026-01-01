@@ -1,6 +1,8 @@
 package com.test.vendor.oracle;
 
 import com.test.AbstractTestSuite;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 
 public abstract class ConcreteOracleSuiteIT extends AbstractTestSuite {
 
@@ -24,5 +26,13 @@ public abstract class ConcreteOracleSuiteIT extends AbstractTestSuite {
         this.jdbcQueryForTableNames = "SELECT distinct table_name FROM all_tables where owner='XDB'";
         this.jdbcQueryForColumnNames = "SELECT distinct column_name FROM all_tab_columns where owner='XDB' and table_name='APP_USERS_AND_ROLES'";
         this.jdbcQueryForValues = "SELECT distinct NAME FROM XDB.APP_USERS_AND_ROLES";
+    }
+
+    @AfterEach
+    public void checkVendor() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorVendor().getVendor(),
+            this.injectionModel.getMediatorVendor().getOracle()
+        );
     }
 }

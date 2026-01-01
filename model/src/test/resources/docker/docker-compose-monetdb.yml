@@ -3,7 +3,7 @@ services:
 
   monetdb:
     ports:
-      - "50001:50000"
+      - "50000:50000"
     build:
       context: .
       dockerfile: Dockerfile.monetdb

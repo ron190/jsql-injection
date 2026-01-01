@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/jpa")
 public class JpaRestController {
 
     private static final String TEMPLATE = "Hello, s!";
@@ -44,7 +43,7 @@ public class JpaRestController {
         return this.getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false, false);
     }
 
-    @Transactional("jpaTransactionManager")
+    @Transactional
     private Greeting getResponse(
         String name,
         String sqlQuery,
@@ -70,7 +69,8 @@ public class JpaRestController {
                 transaction.commit();
             } else {
                 if (isStack) {
-                    try (Connection connection = ((SessionImpl) this.entityManager).getJdbcConnectionAccess().obtainConnection()) {
+                    SessionImpl session = this.entityManager.unwrap(SessionImpl.class);
+                    try (Connection connection = session.getJdbcConnectionAccess().obtainConnection()) {
                         Statement stmt = connection.createStatement();
                         boolean hasMoreResultSets = stmt.execute(String.format(sqlQuery, inject));
                         StringBuilder results = new StringBuilder();
