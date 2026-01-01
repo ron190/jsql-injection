@@ -46,7 +46,7 @@
         <jna.version>5.17.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20251224</json.version>
-        <jsoup.version>1.21.2</jsoup.version>
+        <jsoup.version>1.22.1</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <junit-platform.version>1.14.1</junit-platform.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
