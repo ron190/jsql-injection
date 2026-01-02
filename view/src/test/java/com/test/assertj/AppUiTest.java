@@ -52,6 +52,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 // public for javadoc
+@SuppressWarnings("java:S5786")
 public class AppUiTest {
     private static int counterLog = 0;
     private static FrameFixture window;

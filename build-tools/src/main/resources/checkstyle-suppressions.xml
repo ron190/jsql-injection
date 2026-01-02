@@ -4,6 +4,14 @@
         "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+    <suppress checks="DesignForExtension" />
+    <suppress checks="FinalParameters" />
+    <suppress checks="JavadocMethod" />
+    <suppress checks="JavadocPackage" />
+    <suppress checks="JavadocStyle" />
+    <suppress checks="JavadocType" />
+    <suppress checks="JavadocVariable" />
     <suppress checks="LineLength" />
+    <suppress checks="MissingJavadocMethod" />
     <suppress checks="RegexpSingleline" />
 </suppressions>

@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.jsql.util;
 
-import com.jsql.util.bruter.Base16;
 import com.jsql.util.bruter.Base58;
+import org.apache.commons.codec.binary.Base16;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;

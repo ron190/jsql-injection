@@ -28,7 +28,7 @@
         <!-- required as commons-text:1.11.0 not working -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <cubrid-jdbc.version>11.3.2.0053</cubrid-jdbc.version>
-        <derby.version>10.16.1.1</derby.version>
+        <derby.version>10.17.1.0</derby.version>
         <!-- must align slf4j-nop when bumped -->
         <dnsjava.version>3.6.3</dnsjava.version>
         <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
@@ -61,7 +61,7 @@
         <slf4j-nop.version>1.7.36</slf4j-nop.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <spock-core.version>2.4-groovy-5.0</spock-core.version>
-        <spring-boot-dependencies.version>3.5.8</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>4.0.1</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
         <sqlite-jdbc.version>3.51.1.0</sqlite-jdbc.version>
         <sybase-jconn4.version>16.0</sybase-jconn4.version>
@@ -86,6 +86,10 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
             </plugin>
         </plugins>
     </reporting>
@@ -340,14 +344,9 @@
             <version>${springloaded.version}</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            &lt;!&ndash; Not usable, table rows not created:&ndash;&gt;-->
-<!--            &lt;!&ndash; org.hibernate.property.access.spi.PropertyAccessException: Error accessing field [private java.lang.Integer spring.rest.Student.studentId] by reflection &ndash;&gt;-->
-<!--            &lt;!&ndash; for persistent property [spring.rest.Student#studentId] : spring.rest.Student@4fa700f1 &ndash;&gt;-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!-- org.springframework.boot:spring-boot-devtools useless, intellij advanced property auto-make works -->
+        <!-- instead add/update jsp in model/target/test-classes/META-INF/resources/ -->
+        <!-- also not usable for hibernate: error accessing field studentId by reflection-->
 
         <!-- Hibernate -->
         <dependency>
@@ -365,7 +364,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

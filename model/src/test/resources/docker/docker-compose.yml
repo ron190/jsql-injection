@@ -1,5 +1,9 @@
 version: "3.7"
 services:
+  # intellij setup
+  # docker/docker-compose executable: path to docker.exe/docker-compose.exe
+  # tcp socket, engine api url: https://192.168.99.100:2376
+  # certificates folder: x:/Users/<user>/.docker/machine/machines/default/
 
   cubrid:
     container_name: jsql-cubrid

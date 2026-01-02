@@ -27,6 +27,9 @@ cat <<EOF | docker exec -i --workdir /database/config/db2inst1/sqllib/bin --user
     . /database/config/db2inst1/sqllib/db2profile
     db2 update dbm cfg using SVCENAME 50011
     db2 force applications all
-    db2stop
+    db2 deactivate db TESTDB || true
+    db2stop force || true
+    db2stop || true
+    db2_kill || true
     db2start
 EOF

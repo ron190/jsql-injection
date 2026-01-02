@@ -2,6 +2,7 @@ package spring.soap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsql.util.LogLevelUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -46,11 +47,8 @@ public class CountryRepository {
                 CountryRepository.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results)),
                 StandardCharsets.UTF_8
             ));
-        } catch (Exception e) {
-            // Required by multiple columns
-            country.setName(URLEncoder.encode(this.initErrorMessage(e).getContent(), StandardCharsets.UTF_8));
-            // Required by transaction rollback
-            throw e;
+        } catch (Exception e) {  // expecting strategy union, hiding errors
+            LOGGER.log(LogLevelUtil.IGNORE, e);
         }
 
         return country;

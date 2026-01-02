@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.cfg.JdbcSettings;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
@@ -32,7 +32,7 @@ public class JpaConfiguration {
     public EntityManagerFactoryBuilder entityManagerFactoryBuilder(
         JpaVendorAdapter jpaVendorAdapter,
         ObjectProvider<PersistenceUnitManager> persistenceUnitManager
-    ) {
+    ) {  // init entity, required for h2
         return new EntityManagerFactoryBuilder(
             jpaVendorAdapter,
             f -> Map.of(),
