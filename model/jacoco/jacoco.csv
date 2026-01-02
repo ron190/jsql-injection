@@ -128,7 +128,6 @@ model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,0,2
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,0,2
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,10,0,0,0,2,0,2,0,2
-model,com.jsql.util.bruter,CodecPolicy,0,15,0,0,0,3,0,1,0,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,0,2
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
@@ -146,10 +145,8 @@ model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,BaseNCodec.Context,59,3,0,0,10,1,1,1,1,1
 model,com.jsql.util.bruter,Crc64Helper,0,78,0,8,0,14,0,6,0,2
 model,com.jsql.util.bruter,HashUtil,0,254,0,2,0,44,0,10,0,9
-model,com.jsql.util.bruter,BaseNCodec,288,202,54,12,56,43,50,11,17,11
 model,com.jsql.util.bruter,ActionCoder,19,369,0,4,5,50,4,11,4,9
 model,com.jsql.util.bruter,Coder,0,175,0,0,0,28,0,3,0,3
 model,com.jsql.util.bruter,Base58,26,284,14,30,7,64,14,14,0,6
@@ -165,7 +162,6 @@ model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,8,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,Bruter,19,402,0,12,8,52,3,23,3,17
-model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
 model,com.jsql.model.accessible.vendor.h2,File,6,27,0,0,2,11,2,5,2,5
 model,com.jsql.model.accessible.vendor.h2,Rce,3,60,0,0,1,24,1,12,1,12
 model,com.jsql.model.accessible.vendor.h2,ModelYamlH2,0,27,0,0,0,9,0,5,0,5

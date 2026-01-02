@@ -12,7 +12,7 @@
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.hibernate.cfg.JdbcSettings;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.ObjectProvider;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.springframework.boot.jdbc.DataSourceBuilder;
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.springframework.boot.jpa.EntityManagerFactoryBuilder;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> org.springframework.context.annotation.Bean;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.springframework.context.annotation.Configuration;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
@@ -40,7 +40,7 @@
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">public</strong> EntityManagerFactoryBuilder entityManagerFactoryBuilder(
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          JpaVendorAdapter jpaVendorAdapter,
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>          ObjectProvider&lt;PersistenceUnitManager&gt; persistenceUnitManager
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      ) {
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      ) {  <em class="jxr_comment">// init entity, required for h2</em>
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> EntityManagerFactoryBuilder(
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>              jpaVendorAdapter,
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>              f -&gt; Map.of(),
