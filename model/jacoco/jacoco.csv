@@ -27,9 +27,9 @@ model,com.jsql.model.accessible.vendor.postgres,ModelYamlPostgres,0,27,0,0,0,9,0
 model,com.jsql.model.accessible.vendor.postgres,Extension,0,23,0,0,0,9,0,5,0,5
 model,com.jsql.model.accessible.vendor.postgres,Udf,0,143,0,0,0,53,0,27,0,27
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
-model,com.jsql.model,InjectionModel,143,1304,16,68,35,291,14,62,2,32
+model,com.jsql.model,InjectionModel,154,1293,16,68,38,288,15,61,3,31
 model,com.jsql.model,MediatorUtils,6,137,0,0,2,59,2,39,2,39
-model,com.jsql.model.injection.vendor,MediatorVendor,30,1032,0,12,10,112,10,36,10,30
+model,com.jsql.model.injection.vendor,MediatorVendor,18,1044,0,12,6,116,6,40,6,34
 model,com.jsql.model.injection.vendor,MediatorVendor.new Vendor() {...},0,85,2,6,0,17,2,4,0,2
 model,com.jsql.util.tampering,TamperingType,6,113,0,0,2,20,0,3,0,3
 model,com.jsql.util.tampering,ModelYamlTampering,9,22,0,0,3,10,3,6,3,6
@@ -100,7 +100,7 @@ model,com.jsql.util.reverse,ModelReverse,14,9,0,0,6,4,4,1,4,1
 model,com.jsql.model.accessible,ResourceAccess,371,1227,35,61,87,251,36,47,7,28
 model,com.jsql.model.accessible,CallableHttpHead,62,141,2,2,12,38,3,6,1,6
 model,com.jsql.model.accessible,ExploitMode,18,46,0,0,5,9,4,2,4,2
-model,com.jsql.model.accessible,DataAccess,135,840,6,22,34,165,9,20,3,12
+model,com.jsql.model.accessible,DataAccess,188,787,9,19,46,153,11,18,4,11
 model,com.jsql.model.accessible,CallableFile,37,176,4,2,11,27,3,14,1,13
 model,com.jsql.model.injection.strategy,StrategyBlindBin,0,277,0,14,0,60,0,23,0,16
 model,com.jsql.model.injection.strategy,StrategyStack,22,269,1,13,4,63,3,20,2,14
@@ -113,7 +113,7 @@ model,com.jsql.model.injection.strategy,StrategyError,31,387,1,21,7,85,4,26,3,16
 model,com.jsql.model.injection.strategy,AbstractStrategy,0,92,0,2,0,22,0,9,0,8
 model,com.jsql.model.injection.strategy,MediatorStrategy,3,512,2,26,1,110,3,29,1,17
 model,com.jsql.model.injection.strategy,StrategyTime,10,266,1,13,3,57,2,21,1,15
-model,com.jsql.model.exception,AbstractSlidingException,35,27,6,0,14,10,5,4,2,4
+model,com.jsql.model.exception,AbstractSlidingException,41,21,6,0,16,8,7,2,4,2
 model,com.jsql.model.exception,JSqlRuntimeException,14,0,0,0,6,0,3,0,3,0
 model,com.jsql.model.exception,LoopDetectedSlidingException,6,0,0,0,2,0,1,0,1,0
 model,com.jsql.model.exception,InjectionFailureException,4,9,0,0,2,4,1,2,1,2
