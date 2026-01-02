@@ -31,8 +31,8 @@ public abstract class ConcreteSybaseSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getSybase()
+            this.injectionModel.getMediatorVendor().getSybase(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

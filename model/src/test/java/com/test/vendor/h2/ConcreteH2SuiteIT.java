@@ -31,8 +31,8 @@ public abstract class ConcreteH2SuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getH2()
+            this.injectionModel.getMediatorVendor().getH2(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

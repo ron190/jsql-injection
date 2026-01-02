@@ -38,8 +38,8 @@ public abstract class ConcreteMySqlSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getMysql()
+            this.injectionModel.getMediatorVendor().getMysql(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

@@ -35,8 +35,8 @@ public abstract class ConcreteCubridSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getCubrid()
+            this.injectionModel.getMediatorVendor().getCubrid(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

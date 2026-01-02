@@ -29,8 +29,8 @@ public abstract class ConcreteMckoiSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getMckoi()
+            this.injectionModel.getMediatorVendor().getMckoi(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

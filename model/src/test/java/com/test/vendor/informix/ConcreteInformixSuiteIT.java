@@ -31,8 +31,8 @@ public abstract class ConcreteInformixSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getInformix()
+            this.injectionModel.getMediatorVendor().getInformix(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

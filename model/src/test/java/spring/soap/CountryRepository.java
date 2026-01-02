@@ -2,14 +2,13 @@ package spring.soap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.NativeQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import spring.rest.Greeting;
@@ -24,24 +23,23 @@ public class CountryRepository {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
     
     private static final String TEMPLATE = "Hello, s!";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Transactional("hibernateTransactionManager")
+    @Transactional
 	public Country findCountry(String name) throws JsonProcessingException {
         Country country = new Country();
-        Session session = this.sessionFactory.getCurrentSession();
         String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
 
         try {
-            NativeQuery<Object> query = session.createNativeQuery(
+            Query query = this.entityManager.createNativeQuery(
                 "select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '" + nameUrlDecoded + "'",
                 Object.class
             );
-            
+
             List<Object> results = query.getResultList();
 
             country.setName(URLEncoder.encode(

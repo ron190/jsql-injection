@@ -31,8 +31,8 @@ public abstract class ConcreteHsqldbSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getHsqldb()
+            this.injectionModel.getMediatorVendor().getHsqldb(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

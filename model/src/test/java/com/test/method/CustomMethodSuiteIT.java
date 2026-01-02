@@ -17,8 +17,8 @@ public class CustomMethodSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/custom?name=");
-        model.getMediatorUtils().getParameterUtil().initRequest("tenant=mysql-error");
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/custom?tenant=mysql-error&name=");
+        model.getMediatorUtils().getParameterUtil().initRequest("mock=");  // required, should not
 
         model.setIsScanning(true);
 

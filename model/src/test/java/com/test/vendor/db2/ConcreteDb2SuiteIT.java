@@ -35,8 +35,8 @@ public abstract class ConcreteDb2SuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getDb2()
+            this.injectionModel.getMediatorVendor().getDb2(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

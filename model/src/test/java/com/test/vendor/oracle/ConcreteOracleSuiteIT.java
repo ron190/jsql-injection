@@ -31,8 +31,8 @@ public abstract class ConcreteOracleSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getOracle()
+            this.injectionModel.getMediatorVendor().getOracle(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

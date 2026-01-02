@@ -31,8 +31,8 @@ public abstract class ConcreteSqlServerSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getSqlserver()
+            this.injectionModel.getMediatorVendor().getSqlserver(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

@@ -30,8 +30,8 @@ public abstract class ConcretePostgresSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getPostgres()
+            this.injectionModel.getMediatorVendor().getPostgres(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

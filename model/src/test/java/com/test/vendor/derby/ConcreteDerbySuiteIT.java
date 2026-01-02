@@ -37,8 +37,8 @@ public abstract class ConcreteDerbySuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getDerby()
+            this.injectionModel.getMediatorVendor().getDerby(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

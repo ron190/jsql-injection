@@ -17,7 +17,7 @@ class SoapSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/ws");
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/ws?tenant=mysql");
         model.getMediatorUtils().getParameterUtil().initRequest(
             "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:gs=\"http://www.baeldung.com/springsoap/gen\">" +
             "    <soapenv:Header/>" +

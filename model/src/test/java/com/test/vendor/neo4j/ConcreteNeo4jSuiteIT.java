@@ -45,8 +45,8 @@ public abstract class ConcreteNeo4jSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getNeo4j()
+            this.injectionModel.getMediatorVendor().getNeo4j(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

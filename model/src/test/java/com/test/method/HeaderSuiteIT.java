@@ -15,8 +15,8 @@ class HeaderSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/header");
-        model.getMediatorUtils().getParameterUtil().initHeader("tenant: mysql\\r\\nname:");
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/header?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().initHeader("name:");
         
         model.setIsScanning(true);
 

@@ -31,8 +31,8 @@ public abstract class ConcreteFirebirdSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getFirebird()
+            this.injectionModel.getMediatorVendor().getFirebird(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }

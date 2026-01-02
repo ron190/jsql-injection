@@ -29,8 +29,8 @@ public abstract class ConcreteVerticaSuiteIT extends AbstractTestSuite {
     @AfterEach
     public void checkVendor() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorVendor().getVendor(),
-            this.injectionModel.getMediatorVendor().getVertica()
+            this.injectionModel.getMediatorVendor().getVertica(),
+            this.injectionModel.getMediatorVendor().getVendor()
         );
     }
 }
