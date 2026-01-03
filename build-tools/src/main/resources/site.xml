@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <site name="Reflow Maven Skin"
-      xmlns="http://maven.apache.org/SITE/2.0.0"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 http://maven.apache.org/xsd/site-2.0.0.xsd">
+    xmlns="http://maven.apache.org/SITE/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 http://maven.apache.org/xsd/site-2.0.0.xsd">
 
     <skin>
         <groupId>io.github.devacfr.maven.skins</groupId>
@@ -32,6 +32,9 @@
     </custom>
 
     <body>
+        <links>
+            <item name="Back to GitHub" href="https://github.com/ron190/jsql-injection" />
+        </links>
         <!-- inherits required -->
         <!-- always displayed -->
         <menu ref="reports" inherit="bottom" />
@@ -39,8 +42,5 @@
         <menu ref="modules" inherit="bottom" />
         <!-- displayed on root only -->
         <menu ref="parent" inherit="bottom" />
-        <links>
-            <item name="Back to GitHub" href="https://github.com/ron190/jsql-injection" />
-        </links>
     </body>
 </site>

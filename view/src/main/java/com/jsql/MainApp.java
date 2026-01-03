@@ -1,5 +1,6 @@
 package com.jsql;
 
+import com.formdev.flatlaf.util.SystemInfo;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.JFrameView;
@@ -9,6 +10,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -32,6 +34,10 @@ public class MainApp {
         INJECTION_MODEL = new InjectionModel();
         MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();
 
+        if (SystemInfo.isLinux) {  // enable flatlaf decorated window
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            JDialog.setDefaultLookAndFeelDecorated(true);
+        }
         var nameTheme = MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName();
         UiUtil.applyTheme(nameTheme);  // required init but not enough, reapplied next
         MainApp.apply4K();

@@ -265,13 +265,15 @@ public class UiUtil {
 
     public static void applyTheme(String nameTheme) {
         try {
-            Class<?> c = Class.forName(StringUtils.isEmpty(nameTheme) ? FlatLightFlatIJTheme.class.getName() : nameTheme);
-            LookAndFeel lookAndFeel = (LookAndFeel) c.getDeclaredConstructor().newInstance();
-            UIManager.setLookAndFeel(lookAndFeel);
-        } catch (
-            ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
-            InvocationTargetException | UnsupportedLookAndFeelException e
-        ) {
+            UIManager.setLookAndFeel(StringUtils.isBlank(nameTheme) ? FlatLightFlatIJTheme.class.getName() : nameTheme);
+        } catch (ClassNotFoundException e) {  // when preference is set with a theme name deleted
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Theme not found, falling back to default theme");
+            try {
+                UIManager.setLookAndFeel(FlatLightFlatIJTheme.class.getName());
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e2) {
+                throw new IllegalArgumentException(e);
+            }
+        } catch (InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             throw new IllegalArgumentException(e);
         }
         FlatLaf.updateUI();  // required

@@ -24,6 +24,7 @@ import com.jsql.view.swing.panel.preferences.PanelTampering;
 import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.ModelSvgIcon;
@@ -266,8 +267,16 @@ public class AppMenubar extends JMenuBar {
         return menuHelp;
     }
 
-    public static void applyTheme(String theme) {
-        UiUtil.applyTheme(theme);
+    public static void applyTheme(String nameTheme) {
+        UiUtil.applyTheme(nameTheme);
+
+        for (String key : I18nViewUtil.keys()) {
+            for (Object component : I18nViewUtil.componentsByKey(key)) {
+                if (component instanceof JToolTipI18n) {
+                    ((JToolTipI18n) component).updateUI();  // required
+                }
+            }
+        }
 
         Arrays.asList(
             UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.UPLOAD, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH,
@@ -284,7 +293,7 @@ public class AppMenubar extends JMenuBar {
         MediatorHelper.frame().setIconImages(UiUtil.getIcons());
         MediatorHelper.frame().revalidate();
 
-        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withThemeFlatLafName(theme).persist();
+        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withThemeFlatLafName(nameTheme).persist();
     }
     
     public void switchLocale(Locale newLocale) {

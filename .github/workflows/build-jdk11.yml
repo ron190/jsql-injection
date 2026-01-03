@@ -8,7 +8,7 @@ on:
 jobs:
 
   build-jdk11:
-    name: Test view on Docker
+    name: docker
     runs-on: ubuntu-latest
     env:
       JSQL_DOCKERFILE: 3.8.1-jdk-11-slim

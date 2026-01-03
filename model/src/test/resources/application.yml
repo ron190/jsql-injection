@@ -12,7 +12,11 @@ server:
 
 # Prevent Factory method 'httpSecurity' threw exception with message: Cannot pass null or empty values to constructor
 spring.main.allow-circular-references: true
+
+# Hide warnings
 server.tomcat.additional-tld-skip-patterns: derbyLocale_*.jar, pdq.jar, derbyshared.jar, derby.jar, derbytools.jar, derbyclient.jar, derbynet.jar
+spring.jpa.open-in-view: false
+spring.profiles.active: default
 
 # hotreload not working without intellij option auto-make
 #spring.thymeleaf.cache: false

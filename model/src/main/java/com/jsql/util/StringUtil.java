@@ -57,7 +57,7 @@ public final class StringUtil {
         private final String suffix;
         private final int radix;
         
-        public CharEncoder(String prefix, String suffix, int radix) {
+        CharEncoder(String prefix, String suffix, int radix) {
             this.prefix = prefix;
             this.suffix = suffix;
             this.radix = radix;

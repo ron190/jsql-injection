@@ -45,14 +45,14 @@ public class JpaConfiguration {
         Map<Object, Object> resolvedDataSources = new HashMap<>();
 
         DriverManager.setLogWriter(null);  // remove annoying logs from jdbc driver
-        SpringApp.getPropertiesFilterByProfile().map(AbstractMap.SimpleEntry::getKey).forEach(props -> {
+        SpringApp.getPropertiesFilterByProfile().map(AbstractMap.SimpleEntry::getValue).forEach(props -> {
             DataSource dataSource = DataSourceBuilder.create()
                 .url(props.getProperty(JdbcSettings.JAKARTA_JDBC_URL))
                 .username(props.getProperty(JdbcSettings.JAKARTA_JDBC_USER))
                 .password(props.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD))
                 .driverClassName(props.getProperty(JdbcSettings.JAKARTA_JDBC_DRIVER))
             .build();
-            resolvedDataSources.put(props.getProperty("jsql.tenant"), dataSource);
+            resolvedDataSources.put(props.getProperty(SpringApp.JSQL_TENANT), dataSource);
         });
 
         AbstractRoutingDataSource dataSource = new MultitenantDataSource();

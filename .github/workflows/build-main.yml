@@ -7,8 +7,8 @@ on:
 
 jobs:
 
-  build:
-    name: Tests on Docker
+  build-main:
+    name: docker
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -47,12 +47,12 @@ jobs:
       - name: Install Maven dependencies
         run: mvn clean install -DskipTests dependency:tree
 
-      - name: Run databases and LAMP
+      - name: Mount databases on docker
         run: |
           docker compose -f $DOCKER_RESOURCES/docker-compose.yml build --parallel
           docker compose -f $DOCKER_RESOURCES/docker-compose.yml up -d
 
-      - name: List images and containers
+      - name: List docker images and containers
         run: docker images && docker container ls
 
       - name: Database health checks and configuration
@@ -64,7 +64,7 @@ jobs:
       - name: Build project container
         run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
 
-      - name: Unit and integration tests with Sonar scan
+      - name: Unit and integration tests with reports
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           # for maven publish-scm
@@ -73,14 +73,14 @@ jobs:
         # goal site:stage to merge modules into single site
         # goal pitest to force triggering, not working in pom
         # reduce logs verbosity on sonar and scm for site publish
-        # git config to allow maven publish-scm
+        # git config to allow maven publish-scm, hide verbose logs
         run: |
           $DOCKER_RESOURCES/scripts/run-on-docker.sh '
             git config --global user.name "Github Actions"
             git config --global user.email no-response@github.com
             mvn clean install \
               --no-transfer-progress \
-              -Dorg.slf4j.simpleLogger.log.org.sonarsource.scanner.maven.SonarQubeMojo=error \
+              -Dorg.slf4j.simpleLogger.log.org.sonarsource.scanner=error \
               -Dorg.slf4j.simpleLogger.log.org.apache.maven.scm=warn \
               -Dorg.slf4j.simpleLogger.log.org.apache.maven.plugins.scmpublish=warn \
               -P tests \

@@ -46,6 +46,9 @@ import java.util.stream.Stream;
 @EntityScan({"spring.rest"})
 public class SpringApp {
 
+    public static final String PROFILE_ID = "profileId";
+    public static final String JSQL_TENANT = "jsql.tenant";
+
     static {
         try {  // ensure driver is loaded
             Class.forName("com.mimer.jdbc.Driver");  // required
@@ -77,27 +80,27 @@ public class SpringApp {
     public static final Properties propsInformix = new Properties();
     public static final Properties propsSybase = new Properties();
 
-    public static final List<SimpleEntry<Properties, String>> propertiesByEngine = Arrays.asList(
-        new SimpleEntry<>(SpringApp.propsH2, "hibernate/hibernate.h2.properties"),
-        new SimpleEntry<>(SpringApp.propsMysql, "hibernate/hibernate.mysql.properties"),
-        new SimpleEntry<>(SpringApp.propsMysqlError, "hibernate/hibernate.mysql-5-5-53.properties"),
-        new SimpleEntry<>(SpringApp.propsPostgres, "hibernate/hibernate.postgres.properties"),
-        new SimpleEntry<>(SpringApp.propsSqlServer, "hibernate/hibernate.sqlserver.properties"),
-        new SimpleEntry<>(SpringApp.propsCubrid, "hibernate/hibernate.cubrid.properties"),
-        new SimpleEntry<>(SpringApp.propsSqlite, "hibernate/hibernate.sqlite.properties"),
-        new SimpleEntry<>(SpringApp.propsDb2, "hibernate/hibernate.db2.properties"),
-        new SimpleEntry<>(SpringApp.propsHsqldb, "hibernate/hibernate.hsqldb.properties"),
-        new SimpleEntry<>(SpringApp.propsDerby, "hibernate/hibernate.derby.properties"),
-        new SimpleEntry<>(SpringApp.propsFirebird, "hibernate/hibernate.firebird.properties"),
-        new SimpleEntry<>(SpringApp.propsInformix, "hibernate/hibernate.informix.properties"),
-        new SimpleEntry<>(SpringApp.propsSybase, "hibernate/hibernate.sybase.properties")
+    public static final List<SimpleEntry<String, Properties>> propertiesByEngine = Arrays.asList(
+        new SimpleEntry<>("hibernate/hibernate.h2.properties", SpringApp.propsH2),
+        new SimpleEntry<>("hibernate/hibernate.mysql.properties", SpringApp.propsMysql),
+        new SimpleEntry<>("hibernate/hibernate.mysql-5-5-53.properties", SpringApp.propsMysqlError),
+        new SimpleEntry<>("hibernate/hibernate.postgres.properties", SpringApp.propsPostgres),
+        new SimpleEntry<>("hibernate/hibernate.sqlserver.properties", SpringApp.propsSqlServer),
+        new SimpleEntry<>("hibernate/hibernate.cubrid.properties", SpringApp.propsCubrid),
+        new SimpleEntry<>("hibernate/hibernate.sqlite.properties", SpringApp.propsSqlite),
+        new SimpleEntry<>("hibernate/hibernate.db2.properties", SpringApp.propsDb2),
+        new SimpleEntry<>("hibernate/hibernate.hsqldb.properties", SpringApp.propsHsqldb),
+        new SimpleEntry<>("hibernate/hibernate.derby.properties", SpringApp.propsDerby),
+        new SimpleEntry<>("hibernate/hibernate.firebird.properties", SpringApp.propsFirebird),
+        new SimpleEntry<>("hibernate/hibernate.informix.properties", SpringApp.propsInformix),
+        new SimpleEntry<>("hibernate/hibernate.sybase.properties", SpringApp.propsSybase)
     );
 
     static {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         SpringApp.propertiesByEngine.forEach(simpleEntry -> {
-            try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getValue())) {
-                simpleEntry.getKey().load(inputStream);
+            try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getKey())) {
+                simpleEntry.getValue().load(inputStream);
             } catch (IOException e) {
                 LOGGER.error(e, e);
             }
@@ -105,8 +108,8 @@ public class SpringApp {
     }
 
     public static void initDatabases() throws Exception {
-        LOGGER.info("Current profileId: {}", System.getProperty("profileId"));
-        if (System.getProperty("profileId") == null || "tests".equals(System.getProperty("profileId"))) {
+        LOGGER.info("Current profileId: {}", System.getProperty(SpringApp.PROFILE_ID));
+        if (System.getProperty(SpringApp.PROFILE_ID) == null || "tests".equals(System.getProperty(SpringApp.PROFILE_ID))) {
             SpringApp.initHsqldb();
             SpringApp.initH2();
             SpringApp.initNeo4j();
@@ -115,10 +118,12 @@ public class SpringApp {
         }
 
         SpringApp.getPropertiesFilterByProfile().forEach(propertyByEngine -> {
-            Configuration configuration = new Configuration();
-            configuration.addProperties(propertyByEngine.getKey()).configure("hibernate/hibernate.cfg.xml");
-            configuration.addAnnotatedClass(Student.class);
-            configuration.addAnnotatedClass(StudentForDelete.class);
+            LOGGER.info("Configuring {} hibernate entities...", propertyByEngine.getValue().getProperty(SpringApp.JSQL_TENANT));
+            Configuration configuration = new Configuration()
+                .addProperties(propertyByEngine.getValue())
+                .configure("hibernate/hibernate.cfg.xml")
+                .addAnnotatedClass(Student.class)
+                .addAnnotatedClass(StudentForDelete.class);
 
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
             try (
@@ -142,11 +147,13 @@ public class SpringApp {
     }
 
     private static void initDerby() throws Exception {
+        LOGGER.info("Starting Derby...");
         SpringApp.serverDerby = new NetworkServerControl();
         SpringApp.serverDerby.start(null);
     }
 
     private static void initHsqldb() {
+        LOGGER.info("Starting Hsqldb...");
         SpringApp.serverHsqldb = new org.hsqldb.server.Server();
         SpringApp.serverHsqldb.setSilent(true);
         SpringApp.serverHsqldb.setDatabaseName(0, "mainDb");
@@ -156,6 +163,7 @@ public class SpringApp {
     }
 
     private static void initMckoi() throws SQLException, IOException {
+        LOGGER.info("Starting Mckoi...");
         DefaultDBConfig config = new DefaultDBConfig(File.createTempFile("mckoi.config", null));
         config.setMinimumDebugLevel(Lvl.ERROR);
 
@@ -173,22 +181,24 @@ public class SpringApp {
 
         if (!isDatabaseExists) {
             try (
-                Connection con = DriverManager.getConnection("jdbc:mckoi://127.0.0.1/APP", "user", "password");
-                PreparedStatement pstmt = con.prepareStatement("CREATE TABLE APP.pwn (dataz text)");
-                PreparedStatement pstmtinsert = con.prepareStatement("INSERT INTO APP.pwn (dataz) VALUES ('jsql data')")
+                Connection connection = DriverManager.getConnection("jdbc:mckoi://127.0.0.1/APP", "user", "password");
+                PreparedStatement preparedStatement = connection.prepareStatement("CREATE TABLE APP.pwn (dataz text)");
+                PreparedStatement prepareStatementInsert = connection.prepareStatement("INSERT INTO APP.pwn (dataz) VALUES ('jsql data')")
             ) {
-                pstmt.execute();
-                pstmtinsert.executeUpdate();
+                preparedStatement.execute();
+                prepareStatementInsert.executeUpdate();
             }
         }
     }
 
     private static void initH2() throws SQLException {
+        LOGGER.info("Starting H2...");
         SpringApp.serverH2 = Server.createTcpServer();
         SpringApp.serverH2.start();
     }
 
     private static void initNeo4j() throws IOException {
+        LOGGER.info("Starting Neo4j...");
         String graphMovie;
         try (InputStream stream = new ClassPathResource("neo4j/movie-graph.txt").getInputStream()) {
             graphMovie = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
@@ -206,11 +216,11 @@ public class SpringApp {
         driver.close();
     }
 
-    public static Stream<SimpleEntry<Properties, String>> getPropertiesFilterByProfile() {
+    public static Stream<SimpleEntry<String, Properties>> getPropertiesFilterByProfile() {
         return SpringApp.propertiesByEngine.parallelStream().filter(propertyByEngine ->
-            System.getProperty("profileId") == null
-            || propertyByEngine.getKey().getProperty("jsql.profile").equals(System.getProperty("profileId"))
-            || propertyByEngine.getKey().getProperty("jsql.tenant").equals("h2")
+            System.getProperty(SpringApp.PROFILE_ID) == null
+            || propertyByEngine.getValue().getProperty("jsql.profile").equals(System.getProperty(SpringApp.PROFILE_ID))
+            || propertyByEngine.getValue().getProperty(SpringApp.JSQL_TENANT).equals("h2")
         );
     }
 
@@ -224,7 +234,7 @@ public class SpringApp {
     
     @PreDestroy
     public void onDestroy() throws Exception {
-        if (System.getProperty("profileId") == null || "tests".equals(System.getProperty("profileId"))) {
+        if (System.getProperty(SpringApp.PROFILE_ID) == null || "tests".equals(System.getProperty(SpringApp.PROFILE_ID))) {
             LOGGER.info("Ending in-memory databases...");
             SpringApp.serverDerby.shutdown();
             SpringApp.serverH2.stop();

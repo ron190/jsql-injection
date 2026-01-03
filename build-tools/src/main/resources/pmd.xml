@@ -16,7 +16,12 @@
 
     <rule ref="category/java/bestpractices.xml"/>
     <rule ref="category/java/codestyle.xml">
+        <exclude name="CallSuperInConstructor"/>
+        <exclude name="LocalVariableCouldBeFinal"/>
+        <exclude name="LongVariable"/>
+        <exclude name="ShortVariable"/>
         <exclude name="UnnecessaryFullyQualifiedName"/>
+        <exclude name="UseExplicitTypes"/>
     </rule>
     <rule ref="category/java/design.xml">
         <!-- prevent error No packages or classes specified -->
@@ -24,6 +29,7 @@
     </rule>
     <rule ref="category/java/documentation.xml">
         <exclude name="CommentRequired"/>
+        <exclude name="CommentSize"/>
     </rule>
     <rule ref="category/java/errorprone.xml">
         <!-- deprecated -->

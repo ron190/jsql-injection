@@ -10,6 +10,7 @@ public class LogLevelUtil {
     public static final Color COLOR_RED = new Color(0xFF6B68);
     public static final Color COLOR_BLU = new Color(0x5394EC);
     public static final Color COLOR_GREEN = new Color(0x299999);
+    public static final Color COLOR_GRAY = new Color(0x555555);
 
     // ERROR 200
     public static final Level CONSOLE_JAVA = Level.forName("CONSOLE_JAVA", 202);

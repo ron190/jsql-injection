@@ -56,7 +56,7 @@ public class MenuWindows extends JMenu {
         menuAppearance.setMnemonic('A');
 
         JMenuItem itemNewWindows4k = new JMenuItem(
-            new ActionNewWindow("New 4K Window", "-Dsun.java2d.uiScale=2.5")
+            new ActionNewWindow("Open window with 4K resolution...", "-Dsun.java2d.uiScale=2.5")
         );
         menuAppearance.add(itemNewWindows4k);
 

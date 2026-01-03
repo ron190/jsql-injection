@@ -29,12 +29,16 @@ jobs:
   build-vendor:
     needs: set-global-env-var
     uses: ./.github/workflows/build-vendor.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        vendor: [oracle, db2, sqlserver, sybase, vertica, monetdb]
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
 
-  build:
+  build-main:
     needs: set-global-env-var
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/build-main.yml
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
     secrets: inherit

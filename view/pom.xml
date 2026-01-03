@@ -89,6 +89,8 @@
 
     <build>
         <plugins>
+            <!-- pitest-maven with pitest-junit5-plugin dependency too slow -->
+            <!-- currently only logs empty execution, add pitest-junit5-plugin for full run -->
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>

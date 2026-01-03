@@ -1,19 +1,21 @@
-<configuration>
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration
+    xmlns="http://ch.qos.logback/xml/ns/logback"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd">
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>
-                [jsql-logback] %date{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %class{36}.%M %logger{36} - %msg%n
-            </Pattern>
+        <encoder>
+            <pattern>
+                jsql [%thread] %highlight(%level) %class{36}.%method%replace( %logger{36}){'^\s+$', ''} - %message%n
+            </pattern>
         </encoder>
     </appender>
-    <root level="INFO" additivity="false">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
     <!-- Disable massive SQL error logging during injection -->
     <!-- Detailed Exception must also be in try/catch -->
     <logger name="org.hibernate" level="OFF" additivity="false" />
-    <!-- Hide informix warnings about selected database and transactions -->
-    <logger name="com.mchange.v2.c3p0.SQLWarnings" level="OFF" additivity="false" />
     <!-- Hide XPATH syntax error on SQL containing unicode -->
     <logger name="com.zaxxer.hikari.pool.ProxyConnection" level="OFF" additivity="false" />
 </configuration>

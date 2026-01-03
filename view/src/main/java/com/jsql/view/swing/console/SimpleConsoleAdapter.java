@@ -1,8 +1,9 @@
 package com.jsql.view.swing.console;
 
+import com.jsql.util.LogLevelUtil;
+
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import java.awt.*;
 
 /**
  * A textpane with color.
@@ -17,7 +18,7 @@ public class SimpleConsoleAdapter extends AbstractColoredConsole {
      */
     public SimpleConsoleAdapter(String tabName, String placeholder) {
         super(tabName, placeholder);
-        StyleConstants.setForeground(this.attributeTimestamp, new Color(0x555555));  // timestamp color
+        StyleConstants.setForeground(this.attributeTimestamp, LogLevelUtil.COLOR_GRAY);  // timestamp color
     }
 
     @Override
