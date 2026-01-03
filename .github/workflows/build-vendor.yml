@@ -4,6 +4,9 @@ on:
       DOCKER_RESOURCES:
         type: string
         required: true
+      NAME_VENDOR:
+        type: string
+        required: true
 
 jobs:
 
@@ -15,7 +18,7 @@ jobs:
       MAVEN_NASHORN: ""
       MAVEN_BYTEBUDDY: ""
       DOCKER_RESOURCES: ${{ inputs.DOCKER_RESOURCES }}
-      NAME_VENDOR: ${{ matrix.vendor }}
+      NAME_VENDOR: ${{ inputs.NAME_VENDOR }}
     steps:
 
       - name: Checkout code

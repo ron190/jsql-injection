@@ -35,6 +35,7 @@ jobs:
         vendor: [oracle, db2, sqlserver, sybase, vertica, monetdb]
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
+      NAME_VENDOR: ${{ matrix.vendor }}
 
   build-main:
     needs: set-global-env-var
