@@ -47,6 +47,6 @@ jobs:
     uses: ./.github/workflows/codeql.yml
 
   release:
-    needs: [build-jdk11, build, build-vendor, codeql]
+    needs: [build-jdk11, build-main, build-vendor, codeql]
     uses: ./.github/workflows/release.yml
     secrets: inherit
