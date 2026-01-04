@@ -29,8 +29,8 @@ import java.util.stream.Stream;
 public class SqlEngine extends JPanel {
 
     private static ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
-    private static final JTabbedPane tabsError = new TabbedPaneWheeled(SwingConstants.RIGHT);
-    private static final List<JSyntaxTextArea> listTextareasError = new ArrayList<>();
+    private static final JTabbedPane TABS_ERROR = new TabbedPaneWheeled(SwingConstants.RIGHT);
+    private static final List<JSyntaxTextArea> LIST_TEXTAREAS_ERROR = new ArrayList<>();
     
     enum TextareaWithColor {
         
@@ -288,7 +288,7 @@ public class SqlEngine extends JPanel {
 
         SwingUtilities.invokeLater(() -> {
             MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale());  // required for arabic
-            SqlEngine.tabsError.updateUI();  // required for theme switch when tabs closed
+            SqlEngine.TABS_ERROR.updateUI();  // required for theme switch when tabs closed
         });
     }
 
@@ -368,7 +368,7 @@ public class SqlEngine extends JPanel {
         JTabbedPane tabs = new TabbedPaneWheeled();
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_UNION"), new RTextScrollPane(TextareaWithColor.INDICES.getTextArea(), false));
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_STACK"), new RTextScrollPane(TextareaWithColor.STACK.getTextArea(), false));
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), SqlEngine.tabsError);
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), SqlEngine.TABS_ERROR);
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_DNS"), new RTextScrollPane(TextareaWithColor.DNS.getTextArea(), false));
 
         JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT);
@@ -516,7 +516,7 @@ public class SqlEngine extends JPanel {
      * Dynamically add textPanes to Error tab for current vendor.
      */
     private static void populateTabError() {
-        SqlEngine.tabsError.removeAll();
+        SqlEngine.TABS_ERROR.removeAll();
 
         if (SqlEngine.modelYaml.getStrategy().getError() == null) {
             return;
@@ -537,15 +537,15 @@ public class SqlEngine extends JPanel {
             panelLimit.add(new JTextField(Integer.toString(methodError.getCapacity())));
             panelError.add(panelLimit, BorderLayout.SOUTH);
 
-            SqlEngine.tabsError.addTab(methodError.getName(), panelError);
-            SqlEngine.tabsError.setTitleAt(
-                SqlEngine.tabsError.getTabCount() - 1,
+            SqlEngine.TABS_ERROR.addTab(methodError.getName(), panelError);
+            SqlEngine.TABS_ERROR.setTitleAt(
+                SqlEngine.TABS_ERROR.getTabCount() - 1,
                 String.format(
                     "<html><div style=\"text-align:left;width:100px;\">%s</div></html>",
                     methodError.getName()
                 )
             );
-            SqlEngine.listTextareasError.add(textareaError);
+            SqlEngine.LIST_TEXTAREAS_ERROR.add(textareaError);
         }
     }
     
@@ -569,7 +569,7 @@ public class SqlEngine extends JPanel {
      */
     private static List<JSyntaxTextArea> getTextareas() {
         return Stream.concat(
-            SqlEngine.listTextareasError.stream(),
+            SqlEngine.LIST_TEXTAREAS_ERROR.stream(),
             Stream.of(TextareaWithColor.values()).map(TextareaWithColor::getTextArea)
         )
         .collect(Collectors.toList());

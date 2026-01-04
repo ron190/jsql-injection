@@ -26,7 +26,7 @@ public class DigestSecurityConfig {
     public static final CustomFilter FILTER = new CustomFilter("digest");
 
     @Bean
-    public SecurityFilterChain filterChainDigest(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChainDigest(HttpSecurity http) {
         return http.securityMatcher("/digest/**")
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth

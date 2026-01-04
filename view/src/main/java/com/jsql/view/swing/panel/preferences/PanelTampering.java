@@ -35,25 +35,25 @@ public class PanelTampering extends JPanel {
     private final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();
     private final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton();
 
-    private static final RSyntaxTextArea textPaneEval = new SyntaxTextArea("Click on a tamper to paste source and edit custom script");
+    private static final RSyntaxTextArea TEXT_PANE_EVAL = new SyntaxTextArea("Click on a tamper to paste source and edit custom script");
 
     public PanelTampering(PanelPreferences panelPreferences) {
         this.checkboxIsTamperingEval.setToolTipText("Custom tamper in JavaScript and Java, e.g. sql.replace(/\\+/gm,'/**/')");
 
-        PanelTampering.textPaneEval.setText(StringUtils.EMPTY);
-        PanelTampering.textPaneEval.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-        PanelTampering.textPaneEval.setPopupMenu(new JPopupMenuComponent(PanelTampering.textPaneEval));
+        PanelTampering.TEXT_PANE_EVAL.setText(StringUtils.EMPTY);
+        PanelTampering.TEXT_PANE_EVAL.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        PanelTampering.TEXT_PANE_EVAL.setPopupMenu(new JPopupMenuComponent(PanelTampering.TEXT_PANE_EVAL));
         PanelTampering.applyTheme();
 
-        var textAreaIsTamperingEval = new RTextScrollPane(PanelTampering.textPaneEval, false);
+        var textAreaIsTamperingEval = new RTextScrollPane(PanelTampering.TEXT_PANE_EVAL, false);
 
-        PanelTampering.textPaneEval.getDocument().addDocumentListener(new DocumentListenerEditing() {
+        PanelTampering.TEXT_PANE_EVAL.getDocument().addDocumentListener(new DocumentListenerEditing() {
             @Override
             public void process() {
-                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.textPaneEval.getText());
+                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.TEXT_PANE_EVAL.getText());
             }
         });
-        PanelTampering.textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
+        PanelTampering.TEXT_PANE_EVAL.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
         this.checkboxIsTamperingEval.addActionListener(panelPreferences.getActionListenerSave());
         this.checkboxIsTamperingEval.setText("Enable user tamper script:");
 
@@ -74,7 +74,7 @@ public class PanelTampering extends JPanel {
         .forEach(entry -> {
             entry.getKey().setText(entry.getValue().instance().getDescription());
             entry.getKey().setToolTipText(entry.getValue().instance().getTooltip());
-            entry.getKey().addMouseListener(new TamperingMouseAdapter(entry.getValue(), PanelTampering.textPaneEval));
+            entry.getKey().addMouseListener(new TamperingMouseAdapter(entry.getValue(), PanelTampering.TEXT_PANE_EVAL));
             entry.getKey().addActionListener(panelPreferences.getActionListenerSave());
         });
 
@@ -219,7 +219,7 @@ public class PanelTampering extends JPanel {
     }
 
     public static void applyTheme() {
-        UiUtil.applySyntaxTheme(PanelTampering.textPaneEval);
+        UiUtil.applySyntaxTheme(PanelTampering.TEXT_PANE_EVAL);
     }
     
     

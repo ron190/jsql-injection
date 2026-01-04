@@ -18,12 +18,12 @@ public class I18nViewUtil {
     /**
      * A list of graphical components for each i18n keys in the main properties
      */
-    private static final Map<String, Set<Object>> componentsLocalized = new HashMap<>();
+    private static final Map<String, Set<Object>> COMPONENTS_LOCALIZED = new HashMap<>();
     
     // Initialize the list of graphical components
     static {
         for (String keyI18n: I18nUtil.BUNDLE_ROOT.keySet()) {
-            I18nViewUtil.componentsLocalized.put(keyI18n, new HashSet<>());
+            I18nViewUtil.COMPONENTS_LOCALIZED.put(keyI18n, new HashSet<>());
         }
     }
 
@@ -37,7 +37,7 @@ public class I18nViewUtil {
      * @return a set of key names of an i18n key in the properties
      */
     public static Set<String> keys() {
-        return I18nViewUtil.componentsLocalized.keySet();
+        return I18nViewUtil.COMPONENTS_LOCALIZED.keySet();
     }
     
     /**
@@ -47,7 +47,7 @@ public class I18nViewUtil {
      * @return set of graphical components
      */
     public static Set<Object> componentsByKey(String key) {
-        return I18nViewUtil.componentsLocalized.get(key);
+        return I18nViewUtil.COMPONENTS_LOCALIZED.get(key);
     }
 
     public static void switchI18nComponents() {
@@ -78,7 +78,7 @@ public class I18nViewUtil {
      * @param component graphical component which will receive the translated text
      */
     public static void addComponentForKey(String key, Object component) {
-        I18nViewUtil.componentsLocalized.get(key.replace(" ", "_")).add(component);  // e.g BIND BINARY
+        I18nViewUtil.COMPONENTS_LOCALIZED.get(key.replace(" ", "_")).add(component);  // e.g BIND BINARY
     }
 
     /**

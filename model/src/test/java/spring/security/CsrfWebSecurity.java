@@ -22,7 +22,7 @@ public class CsrfWebSecurity {
     public static final CustomFilter FILTER = new CustomFilter("csrf");
 
     @Bean
-    public SecurityFilterChain filterChainCsrf(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChainCsrf(HttpSecurity http) {
 
         CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();

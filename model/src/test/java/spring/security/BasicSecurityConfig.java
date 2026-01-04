@@ -29,7 +29,7 @@ public class BasicSecurityConfig {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
         auth.inMemoryAuthentication()
             .withUser(BasicSecurityConfig.BASIC_USERNAME)
             .password(this.passwordEncoder().encode(BasicSecurityConfig.BASIC_PASSWORD))
@@ -37,7 +37,7 @@ public class BasicSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChainBasic(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChainBasic(HttpSecurity http) {
         return http.securityMatcher("/basic/**")
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth

@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Transactional  // stack not working when annotation on method
 public class JpaRestController {
 
     private static final String TEMPLATE = "Hello, s!";
@@ -43,7 +44,6 @@ public class JpaRestController {
         return this.getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false, false);
     }
 
-    @Transactional
     private Greeting getResponse(
         String name,
         String sqlQuery,

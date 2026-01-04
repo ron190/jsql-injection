@@ -25,7 +25,7 @@ public class Bruter {
     protected long starttime;
     protected long endtime;
      
-    private static final char[] specialCharacters = {
+    private static final char[] SPECIAL_CHARACTERS = {
         '~', '`', '!', '@', '#', '$', '%', '^',
         '&', '*', '(', ')', '_', '-', '+', '=', '{', '}', '[', ']', '|', '\\',
         ';', ':', '\'', '"', '<', '.', ',', '>', '/', '?', ' '
@@ -64,7 +64,7 @@ public class Bruter {
     }
 
     public void addSpecialCharacters() {
-        for (char c: Bruter.specialCharacters) {
+        for (char c: Bruter.SPECIAL_CHARACTERS) {
             this.characters.add(String.valueOf(c));
         }
     }
