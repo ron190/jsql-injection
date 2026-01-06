@@ -64,7 +64,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Panel displaying table of HTTP requests and responses.
      */
-    private JSplitPane networkSplitPane;
+    public JSplitPane networkSplitPane;
 
     /**
      * Console for binary representation of characters found with blind/time injection.
@@ -82,32 +82,29 @@ public class PanelConsoles extends JPanel {
      * Create panel at the bottom with different consoles to report injection process.
      */
     public PanelConsoles() {
+        this.setLayout(new BorderLayout());
         I18nViewUtil.addComponentForKey(PanelConsoles.CONSOLE_JAVA_TOOLTIP, this.javaTextPane.getProxy());
         this.javaTextPane.getProxy().setEditable(false);
         JTextPaneAppender.registerJavaConsole(this.javaTextPane);
-        
+
         this.initSplit();
 
         MediatorHelper.register(this.tabConsoles);
         this.initTabsConsoles();
-        this.setLayout(new BorderLayout());
 
         JPanel expandPanel = this.initExpandPanel();
         this.tabConsoles.putClientProperty("JTabbedPane.trailingComponent", expandPanel);
         this.add(this.tabConsoles);
-
-        this.tabConsoles.setAlignmentX(FlowLayout.LEADING);
     }
 
     private void initSplit() {
         this.networkSplitPane = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
         this.networkSplitPane.setDividerLocation(600);
-        this.networkSplitPane.setPreferredSize(new Dimension(0,0));  // required for correct scroll placement
 
         this.tabbedPaneNetworkTab = new TabbedPaneNetworkTab();
         this.networkSplitPane.setRightComponent(this.tabbedPaneNetworkTab);
         this.networkTable = new NetworkTable(this.tabbedPaneNetworkTab);
-        
+
         JPanel panelTable = new JPanel(new BorderLayout());  // required for correct scroll placement
         panelTable.add(new JScrollPane(this.networkTable), BorderLayout.CENTER);
         this.networkSplitPane.setLeftComponent(panelTable);
@@ -193,7 +190,7 @@ public class PanelConsoles extends JPanel {
         });
 
         var panelExpander = new JPanel();
-        panelExpander.setLayout(new BoxLayout(panelExpander, BoxLayout.X_AXIS));
+        panelExpander.setLayout(new BoxLayout(panelExpander, BoxLayout.LINE_AXIS));
         panelExpander.add(Box.createGlue());
         panelExpander.add(this.labelShowNorth);
         panelExpander.add(labelShowSouth);
@@ -253,7 +250,7 @@ public class PanelConsoles extends JPanel {
             "CONSOLE_NETWORK_LABEL",
             "CONSOLE_NETWORK_TOOLTIP",
             UiUtil.NETWORK.getIcon(),
-            new JScrollPane(this.networkSplitPane),
+            this.networkSplitPane,  // no scroller on split, instead managed by scrollers on network table and tabs
             this.tabConsoles.getTabCount() - positionFromJava
         );
     }
