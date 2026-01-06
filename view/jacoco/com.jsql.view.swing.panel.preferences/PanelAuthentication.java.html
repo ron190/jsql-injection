@@ -33,13 +33,13 @@ public class PanelAuthentication extends JPanel {
         );
 
 <span class="fc" id="L35">        var panelUsername = new JPanel();</span>
-<span class="fc" id="L36">        panelUsername.setLayout(new BoxLayout(panelUsername, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L36">        panelUsername.setLayout(new BoxLayout(panelUsername, BoxLayout.LINE_AXIS));</span>
 <span class="fc" id="L37">        panelUsername.add(new JLabel(&quot;Username &quot;));</span>
 <span class="fc" id="L38">        panelUsername.add(this.textDigestAuthenticationUsername);</span>
 <span class="fc" id="L39">        panelUsername.setMaximumSize(new Dimension(325, this.textDigestAuthenticationUsername.getPreferredSize().height));</span>
 
 <span class="fc" id="L41">        var panelPassword = new JPanel();</span>
-<span class="fc" id="L42">        panelPassword.setLayout(new BoxLayout(panelPassword, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L42">        panelPassword.setLayout(new BoxLayout(panelPassword, BoxLayout.LINE_AXIS));</span>
 <span class="fc" id="L43">        panelPassword.add(new JLabel(&quot;Password &quot;));</span>
 <span class="fc" id="L44">        panelPassword.add(this.textDigestAuthenticationPassword);</span>
 <span class="fc" id="L45">        panelPassword.setMaximumSize(new Dimension(325, this.textDigestAuthenticationPassword.getPreferredSize().height));</span>
@@ -80,13 +80,13 @@ public class PanelAuthentication extends JPanel {
 <span class="fc" id="L80">        this.checkboxUseKerberos.setToolTipText(tooltipUseKerberos);</span>
 
 <span class="fc" id="L82">        var panelLoginConf = new JPanel();</span>
-<span class="fc" id="L83">        panelLoginConf.setLayout(new BoxLayout(panelLoginConf, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L83">        panelLoginConf.setLayout(new BoxLayout(panelLoginConf, BoxLayout.LINE_AXIS));</span>
 <span class="fc" id="L84">        panelLoginConf.add(new JLabel(&quot;login.conf &quot;));</span>
 <span class="fc" id="L85">        panelLoginConf.add(this.textKerberosLoginConf);</span>
 <span class="fc" id="L86">        panelLoginConf.setMaximumSize(new Dimension(325, this.textKerberosLoginConf.getPreferredSize().height));</span>
 
 <span class="fc" id="L88">        var panelKrb5Conf = new JPanel();</span>
-<span class="fc" id="L89">        panelKrb5Conf.setLayout(new BoxLayout(panelKrb5Conf, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L89">        panelKrb5Conf.setLayout(new BoxLayout(panelKrb5Conf, BoxLayout.LINE_AXIS));</span>
 <span class="fc" id="L90">        panelKrb5Conf.add(new JLabel(&quot;krb5.conf &quot;));</span>
 <span class="fc" id="L91">        panelKrb5Conf.add(this.textKerberosKrb5Conf);</span>
 <span class="fc" id="L92">        panelKrb5Conf.setMaximumSize(new Dimension(325, this.textKerberosKrb5Conf.getPreferredSize().height));</span>

@@ -192,7 +192,7 @@ model,com.jsql.util,GitUtil,418,9,18,0,88,4,18,2,9,2
 model,com.jsql.util,ThreadUtil,29,79,3,3,7,23,4,7,1,7
 model,com.jsql.util,ExceptionUtil.ExceptionHandler,134,0,14,0,30,0,11,0,4,0
 model,com.jsql.util,FormUtil,232,18,17,1,43,7,13,3,4,3
-model,com.jsql.util,LogLevelUtil,0,40,0,0,0,9,0,1,0,1
+model,com.jsql.util,LogLevelUtil,0,45,0,0,0,10,0,1,0,1
 model,com.jsql.util,CookiesUtil,29,178,5,9,7,34,5,13,0,11
 model,com.jsql.util,UserAgentUtil,4,13,0,0,2,5,1,3,1,3
 model,com.jsql.util,ParameterUtil,169,693,35,79,40,160,29,62,1,33

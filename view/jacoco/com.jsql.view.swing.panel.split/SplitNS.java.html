@@ -52,16 +52,16 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
     public SplitNS() {
 <span class="fc" id="L53">        super(JSplitPane.VERTICAL_SPLIT);</span>
 <span class="fc" id="L54">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
-<span class="fc" id="L55">        var verticalLeftRightSplitter = preferences.getInt(PreferencesUtil.EW_SPLIT, 350);</span>
-<span class="fc" id="L56">        var tabManagersProxy = new TabManagersCards();</span>
-<span class="fc" id="L57">        new TabResults();  // initialized but hidden</span>
+<span class="fc" id="L55">        var tabManagersProxy = new TabManagersCards();</span>
+<span class="fc" id="L56">        new TabResults();  // initialized but hidden</span>
 
         // Tree and tabs on top
-<span class="fc" id="L60">        this.splitEW.setLeftComponent(tabManagersProxy);</span>
-<span class="fc" id="L61">        JLabel labelApp = new JLabel(UiUtil.APP_BIG.getIcon());</span>
-<span class="fc" id="L62">        labelApp.setMinimumSize(new Dimension(100, 0));</span>
-<span class="fc" id="L63">        this.splitEW.setRightComponent(labelApp);</span>
-<span class="fc" id="L64">        this.splitEW.setDividerLocation(verticalLeftRightSplitter);</span>
+<span class="fc" id="L59">        this.splitEW.setLeftComponent(tabManagersProxy);</span>
+<span class="fc" id="L60">        JLabel labelApp = new JLabel(UiUtil.APP_BIG.getIcon());</span>
+<span class="fc" id="L61">        labelApp.setMinimumSize(new Dimension(100, 0));</span>
+<span class="fc" id="L62">        this.splitEW.setRightComponent(labelApp);</span>
+<span class="fc" id="L63">        var verticalLeftRightSplitter = preferences.getDouble(PreferencesUtil.EW_SPLIT, 0.33);</span>
+<span class="fc" id="L64">        this.splitEW.setDividerLocation(Math.max(0.0, Math.min(1.0, verticalLeftRightSplitter)));</span>
 
 <span class="fc" id="L66">        JLabel labelShowConsoles = new JLabel(UiUtil.ARROW_UP.getIcon());</span>
 <span class="fc" id="L67">        labelShowConsoles.setBorder(BorderFactory.createEmptyBorder());</span>
@@ -97,7 +97,7 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
 <span class="fc" id="L97">    }</span>
 
     /**
-     * Switch left component with right component when locale orientation requires this.
+     * Switch left component with right component when locale orientation requires it.
      */
     public void initSplitOrientation() {
 <span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (MediatorHelper.tabResults().getTabCount() == 0) {</span>
@@ -115,7 +115,7 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
     // Getter and setter
 
     public JSplitPane getSplitEW() {
-<span class="nc" id="L118">        return this.splitEW;</span>
+<span class="fc" id="L118">        return this.splitEW;</span>
     }
 
     public static ActionHideShowConsole getActionHideShowConsole() {

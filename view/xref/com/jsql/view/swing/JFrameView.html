@@ -77,7 +77,7 @@
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          I18nUtil.checkCurrentLanguage();
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">this</strong>.check4K();
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          SwingUtilities.invokeLater(() -&gt; {  <em class="jxr_comment">// paint native blu svg in theme color behind scene</em>
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          SwingUtilities.invokeLater(() -&gt; {  <em class="jxr_comment">// paint native blu svg in theme color behind the scene</em>
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>              AppMenubar.applyTheme(injectionModel.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName());  <em class="jxr_comment">// refresh missing components</em>
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>              <strong class="jxr_keyword">if</strong> (injectionModel.getMediatorUtils().getProxyUtil().isNotLive(GitUtil.ShowOnConsole.YES)) {  <em class="jxr_comment">// network access</em>
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>                  <strong class="jxr_keyword">return</strong>;
@@ -124,120 +124,135 @@
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>             @Override
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> windowOpened(WindowEvent event) {
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>                 <strong class="jxr_keyword">double</strong> nsProportion = preferences.getDouble(PreferencesUtil.NS_SPLIT, 0.75);
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>                 <strong class="jxr_keyword">if</strong> (preferences.getBoolean(PreferencesUtil.IS_MAXIMIZED, false)) {
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>                     JFrameView.<strong class="jxr_keyword">this</strong>.setExtendedState(Frame.MAXIMIZED_BOTH);
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>                 }
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>                 <em class="jxr_comment">// Proportion means different location relative to whether frame is maximized or not</em>
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>                 <em class="jxr_comment">// Maximizing must wait AWT events to reflect the new divider location proportion</em>
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>                 SwingUtilities.invokeLater(() -&gt; JFrameView.<strong class="jxr_keyword">this</strong>.splitNS.setDividerLocation(
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>                     Math.max(0.0, Math.min(1.0, nsProportion))
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>                 ));
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>             }
-<a class="jxr_linenumber" name="L128" href="#L128">128</a> 
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>             @Override
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> windowClosing(WindowEvent e) {
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>                 preferences.putBoolean(PreferencesUtil.IS_MAXIMIZED, JFrameView.<strong class="jxr_keyword">this</strong>.isMaximized);
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>                 preferences.putInt(
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>                     PreferencesUtil.EW_SPLIT,
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>                     JFrameView.<strong class="jxr_keyword">this</strong>.splitNS.getSplitEW().getDividerLocation()  <em class="jxr_comment">// TODO not compatible arabic location</em>
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>                 );
-<a class="jxr_linenumber" name="L136" href="#L136">136</a> 
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>                 <strong class="jxr_keyword">int</strong> nsDividerLocation = JFrameView.<strong class="jxr_keyword">this</strong>.splitNS.getDividerLocation();
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>                 <strong class="jxr_keyword">int</strong> nsHeight = JFrameView.<strong class="jxr_keyword">this</strong>.splitNS.getHeight();
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>                 <strong class="jxr_keyword">double</strong> nsProportion = 100.0 * nsDividerLocation / nsHeight;
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>                 <strong class="jxr_keyword">double</strong> nsLocationProportionCapped = Math.max(0.0, Math.min(1.0,
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>                     nsProportion / 100.0
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>                 ));
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>                 <strong class="jxr_keyword">double</strong> ewProportion = preferences.getDouble(PreferencesUtil.EW_SPLIT, 0.33);
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>                 <strong class="jxr_keyword">if</strong> (preferences.getBoolean(PreferencesUtil.IS_MAXIMIZED, false)) {
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>                     JFrameView.<strong class="jxr_keyword">this</strong>.setExtendedState(Frame.MAXIMIZED_BOTH);
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>                 }
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>                 <em class="jxr_comment">// Proportion means different location relative to whether frame is maximized or not</em>
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>                 <em class="jxr_comment">// Maximizing must wait AWT events to reflect the new divider location proportion</em>
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>                 SwingUtilities.invokeLater(() -&gt; {
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>                     JFrameView.<strong class="jxr_keyword">this</strong>.splitNS.setDividerLocation(
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>                         Math.max(0.0, Math.min(1.0, nsProportion))
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>                     );
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>                     JFrameView.<strong class="jxr_keyword">this</strong>.splitNS.getSplitEW().setDividerLocation(
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>                         Math.max(0.0, Math.min(1.0, ewProportion))
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>                     );
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>                     MediatorHelper.panelConsoles().networkSplitPane.setDividerLocation(
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>                         ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()).isLeftToRight()
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>                         ? 0.33
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>                         : 0.66
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>                     );
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>                 });
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>             }
+<a class="jxr_linenumber" name="L139" href="#L139">139</a> 
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>             @Override
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> windowClosing(WindowEvent e) {
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>                 preferences.putBoolean(PreferencesUtil.IS_MAXIMIZED, JFrameView.<strong class="jxr_keyword">this</strong>.isMaximized);
 <a class="jxr_linenumber" name="L143" href="#L143">143</a> 
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>                 <em class="jxr_comment">// Divider location changes when window is maximized, instead stores location percentage between 0.0 and 1.0</em>
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>                 preferences.putDouble(PreferencesUtil.NS_SPLIT, nsLocationProportionCapped);
-<a class="jxr_linenumber" name="L146" href="#L146">146</a> 
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>                 preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, false);
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>                 preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, false);
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>                 preferences.putBoolean(PreferencesUtil.NETWORK_VISIBLE, false);
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>                 preferences.putBoolean(PreferencesUtil.JAVA_VISIBLE, false);
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>                 <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>                     <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"CONSOLE_BINARY_LABEL"</span>.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>                         preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>                     } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"CONSOLE_CHUNK_LABEL"</span>.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>                         preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>                     } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"CONSOLE_NETWORK_LABEL"</span>.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>                         preferences.putBoolean(PreferencesUtil.NETWORK_VISIBLE, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>                     } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"CONSOLE_JAVA_LABEL"</span>.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>                         preferences.putBoolean(PreferencesUtil.JAVA_VISIBLE, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>                     }
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>                 }
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>             }
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         });
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>         
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>         <strong class="jxr_keyword">this</strong>.setSize(1024, 768);
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>         <strong class="jxr_keyword">this</strong>.setLocationRelativeTo(<strong class="jxr_keyword">null</strong>);  <em class="jxr_comment">// center the window</em>
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">this</strong>.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>     }
-<a class="jxr_linenumber" name="L169" href="#L169">169</a> 
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initShortcuts() {
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>         HotkeyUtil.addShortcut(<strong class="jxr_keyword">this</strong>.getRootPane(), MediatorHelper.tabResults());
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>         HotkeyUtil.addTextFieldShortcutSelectAll();
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>     }
-<a class="jxr_linenumber" name="L174" href="#L174">174</a> 
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> resetInterface() {  <em class="jxr_comment">// Empty the interface</em>
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>         <strong class="jxr_keyword">this</strong>.mapUuidShell.clear();
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>         MediatorHelper.panelAddressBar().getPanelTrailingAddress().reset();
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>         MediatorHelper.panelConsoles().reset();
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>         MediatorHelper.treeDatabase().reset();
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>         
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>             <strong class="jxr_keyword">var</strong> tabComponent = MediatorHelper.tabConsoles().getTabComponentAt(i);
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>             <strong class="jxr_keyword">if</strong> (tabComponent != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>                 tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>             }
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>         }
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>         
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>         Stream.of(MediatorHelper.managerFile(), MediatorHelper.managerExploit()).forEach(managerList -&gt; {
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>             managerList.setButtonEnable(false);
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>             managerList.changePrivilegeIcon(UiUtil.SQUARE.getIcon());
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         });
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>     }
-<a class="jxr_linenumber" name="L193" href="#L193">193</a> 
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> displayVersion() {
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         LOGGER.log(
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>             LogLevelUtil.CONSOLE_DEFAULT,
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>             <span class="jxr_string">"{} v{} on Java {}-{}-{}"</span>,
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>             () -&gt; StringUtil.APP_NAME,
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>             () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getPropertiesUtil().getVersionJsql(),
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>             () -&gt; SystemUtils.JAVA_VERSION,
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>             () -&gt; SystemUtils.OS_ARCH,
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>             () -&gt; SystemUtils.USER_LANGUAGE
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>         );
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>     }
-<a class="jxr_linenumber" name="L205" href="#L205">205</a> 
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> check4K() {
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <strong class="jxr_keyword">int</strong> width = (<strong class="jxr_keyword">int</strong>) screenSize.getWidth();
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>         <strong class="jxr_keyword">if</strong> (width &gt;= 3840 &amp;&amp; !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Screen compatible with resolution 4K, enable high-definition in Preferences"</span>);
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>         }
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>     }
-<a class="jxr_linenumber" name="L213" href="#L213">213</a> 
-<a class="jxr_linenumber" name="L214" href="#L214">214</a> 
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>     <em class="jxr_comment">// Getters and setters</em>
-<a class="jxr_linenumber" name="L216" href="#L216">216</a> 
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> Map&lt;UUID, AbstractExploit&gt; getMapUuidShell() {
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mapUuidShell;
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>                 <strong class="jxr_keyword">int</strong> ewDividerLocation = JFrameView.<strong class="jxr_keyword">this</strong>.splitNS.getSplitEW().getDividerLocation();
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>                 <strong class="jxr_keyword">int</strong> ewHeight = JFrameView.<strong class="jxr_keyword">this</strong>.splitNS.getSplitEW().getWidth();
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>                 <strong class="jxr_keyword">double</strong> ewProportion = 100.0 * ewDividerLocation / ewHeight;
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>                 <strong class="jxr_keyword">double</strong> ewLocationProportionCapped = Math.max(0.0, Math.min(1.0,
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>                     ewProportion / 100.0
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>                 ));
+<a class="jxr_linenumber" name="L150" href="#L150">150</a> 
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>                 <strong class="jxr_keyword">int</strong> nsDividerLocation = JFrameView.<strong class="jxr_keyword">this</strong>.splitNS.getDividerLocation();
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>                 <strong class="jxr_keyword">int</strong> nsHeight = JFrameView.<strong class="jxr_keyword">this</strong>.splitNS.getHeight();
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>                 <strong class="jxr_keyword">double</strong> nsProportion = 100.0 * nsDividerLocation / nsHeight;
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>                 <strong class="jxr_keyword">double</strong> nsLocationProportionCapped = Math.max(0.0, Math.min(1.0,
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>                     nsProportion / 100.0
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>                 ));
+<a class="jxr_linenumber" name="L157" href="#L157">157</a> 
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>                 <em class="jxr_comment">// Divider location changes when window is maximized, instead stores location percentage between 0.0 and 1.0</em>
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>                 preferences.putDouble(PreferencesUtil.NS_SPLIT, nsLocationProportionCapped);
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>                 preferences.putDouble(PreferencesUtil.EW_SPLIT, ewLocationProportionCapped);
+<a class="jxr_linenumber" name="L161" href="#L161">161</a> 
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>                 preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, false);
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>                 preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, false);
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>                 preferences.putBoolean(PreferencesUtil.NETWORK_VISIBLE, false);
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>                 preferences.putBoolean(PreferencesUtil.JAVA_VISIBLE, false);
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>                 <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>                     <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"CONSOLE_BINARY_LABEL"</span>.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>                         preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>                     } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"CONSOLE_CHUNK_LABEL"</span>.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>                         preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>                     } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"CONSOLE_NETWORK_LABEL"</span>.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>                         preferences.putBoolean(PreferencesUtil.NETWORK_VISIBLE, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>                     } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"CONSOLE_JAVA_LABEL"</span>.equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>                         preferences.putBoolean(PreferencesUtil.JAVA_VISIBLE, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>                     }
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>                 }
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>             }
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>         });
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>         
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">this</strong>.setSize(1024, 768);
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>         <strong class="jxr_keyword">this</strong>.setLocationRelativeTo(<strong class="jxr_keyword">null</strong>);  <em class="jxr_comment">// center the window</em>
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>         <strong class="jxr_keyword">this</strong>.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>     }
+<a class="jxr_linenumber" name="L184" href="#L184">184</a> 
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initShortcuts() {
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>         HotkeyUtil.addShortcut(<strong class="jxr_keyword">this</strong>.getRootPane(), MediatorHelper.tabResults());
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>         HotkeyUtil.addTextFieldShortcutSelectAll();
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     }
+<a class="jxr_linenumber" name="L189" href="#L189">189</a> 
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> resetInterface() {  <em class="jxr_comment">// Empty the interface</em>
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <strong class="jxr_keyword">this</strong>.mapUuidShell.clear();
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>         MediatorHelper.panelAddressBar().getPanelTrailingAddress().reset();
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         MediatorHelper.panelConsoles().reset();
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>         MediatorHelper.treeDatabase().reset();
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>         
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>             <strong class="jxr_keyword">var</strong> tabComponent = MediatorHelper.tabConsoles().getTabComponentAt(i);
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>             <strong class="jxr_keyword">if</strong> (tabComponent != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>                 tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>             }
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         }
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>         Stream.of(MediatorHelper.managerFile(), MediatorHelper.managerExploit()).forEach(managerList -&gt; {
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>             managerList.setButtonEnable(false);
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>             managerList.changePrivilegeIcon(UiUtil.SQUARE.getIcon());
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>         });
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>     }
+<a class="jxr_linenumber" name="L208" href="#L208">208</a> 
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> displayVersion() {
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>         LOGGER.log(
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>             LogLevelUtil.CONSOLE_DEFAULT,
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>             <span class="jxr_string">"{} v{} on Java {}-{}-{}"</span>,
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>             () -&gt; StringUtil.APP_NAME,
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>             () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getPropertiesUtil().getVersionJsql(),
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>             () -&gt; SystemUtils.JAVA_VERSION,
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>             () -&gt; SystemUtils.OS_ARCH,
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>             () -&gt; SystemUtils.USER_LANGUAGE
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>         );
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>     }
 <a class="jxr_linenumber" name="L220" href="#L220">220</a> 
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>     <strong class="jxr_keyword">public</strong> SubscriberInteraction getSubscriber() {
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.subscriber;
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>     }
-<a class="jxr_linenumber" name="L224" href="#L224">224</a> 
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>     <strong class="jxr_keyword">public</strong> <a name="SplitNS" href="../../../../com/jsql/view/swing/panel/split/SplitNS.html#SplitNS">SplitNS</a> getSplitNS() {
-<a class="jxr_linenumber" name="L226" href="#L226">226</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.splitNS;
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> check4K() {
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>         <strong class="jxr_keyword">int</strong> width = (<strong class="jxr_keyword">int</strong>) screenSize.getWidth();
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>         <strong class="jxr_keyword">if</strong> (width &gt;= 3840 &amp;&amp; !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Screen compatible with resolution 4K, enable high-definition in Preferences"</span>);
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>         }
 <a class="jxr_linenumber" name="L227" href="#L227">227</a>     }
 <a class="jxr_linenumber" name="L228" href="#L228">228</a> 
-<a class="jxr_linenumber" name="L229" href="#L229">229</a>     <strong class="jxr_keyword">public</strong> <a name="TabManagers" href="../../../../com/jsql/view/swing/tab/TabManagers.html#TabManagers">TabManagers</a> getTabManagers() {
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.tabManagers;
-<a class="jxr_linenumber" name="L231" href="#L231">231</a>     }
-<a class="jxr_linenumber" name="L232" href="#L232">232</a> }
+<a class="jxr_linenumber" name="L229" href="#L229">229</a> 
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>     <em class="jxr_comment">// Getters and setters</em>
+<a class="jxr_linenumber" name="L231" href="#L231">231</a> 
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> Map&lt;UUID, AbstractExploit&gt; getMapUuidShell() {
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mapUuidShell;
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>     }
+<a class="jxr_linenumber" name="L235" href="#L235">235</a> 
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>     <strong class="jxr_keyword">public</strong> SubscriberInteraction getSubscriber() {
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.subscriber;
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>     }
+<a class="jxr_linenumber" name="L239" href="#L239">239</a> 
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>     <strong class="jxr_keyword">public</strong> <a name="SplitNS" href="../../../../com/jsql/view/swing/panel/split/SplitNS.html#SplitNS">SplitNS</a> getSplitNS() {
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.splitNS;
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>     }
+<a class="jxr_linenumber" name="L243" href="#L243">243</a> 
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>     <strong class="jxr_keyword">public</strong> <a name="TabManagers" href="../../../../com/jsql/view/swing/tab/TabManagers.html#TabManagers">TabManagers</a> getTabManagers() {
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.tabManagers;
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>     }
+<a class="jxr_linenumber" name="L247" href="#L247">247</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

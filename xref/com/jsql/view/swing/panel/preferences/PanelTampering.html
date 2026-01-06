@@ -43,25 +43,25 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsTamperingSpaceToDashComment = <strong class="jxr_keyword">new</strong> JRadioButton();
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsTamperingSpaceToSharpComment = <strong class="jxr_keyword">new</strong> JRadioButton();
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> RSyntaxTextArea textPaneEval = <strong class="jxr_keyword">new</strong> <a name="SyntaxTextArea" href="../../../../../../com/jsql/view/swing/text/SyntaxTextArea.html#SyntaxTextArea">SyntaxTextArea</a>(<span class="jxr_string">"Click on a tamper to paste source and edit custom script"</span>);
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> RSyntaxTextArea TEXT_PANE_EVAL = <strong class="jxr_keyword">new</strong> <a name="SyntaxTextArea" href="../../../../../../com/jsql/view/swing/text/SyntaxTextArea.html#SyntaxTextArea">SyntaxTextArea</a>(<span class="jxr_string">"Click on a tamper to paste source and edit custom script"</span>);
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">public</strong> <a name="PanelTampering" href="../../../../../../com/jsql/view/swing/panel/preferences/PanelTampering.html#PanelTampering">PanelTampering</a>(<a name="PanelPreferences" href="../../../../../../com/jsql/view/swing/panel/PanelPreferences.html#PanelPreferences">PanelPreferences</a> panelPreferences) {
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">this</strong>.checkboxIsTamperingEval.setToolTipText(<span class="jxr_string">"Custom tamper in JavaScript and Java, e.g. sql.replace(/&#92;&#92;+/gm,'/**/')"</span>);
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          PanelTampering.textPaneEval.setText(StringUtils.EMPTY);
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          PanelTampering.textPaneEval.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>          PanelTampering.textPaneEval.setPopupMenu(<strong class="jxr_keyword">new</strong> <a name="JPopupMenuComponent" href="../../../../../../com/jsql/view/swing/popupmenu/JPopupMenuComponent.html#JPopupMenuComponent">JPopupMenuComponent</a>(PanelTampering.textPaneEval));
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>          PanelTampering.TEXT_PANE_EVAL.setText(StringUtils.EMPTY);
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>          PanelTampering.TEXT_PANE_EVAL.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>          PanelTampering.TEXT_PANE_EVAL.setPopupMenu(<strong class="jxr_keyword">new</strong> <a name="JPopupMenuComponent" href="../../../../../../com/jsql/view/swing/popupmenu/JPopupMenuComponent.html#JPopupMenuComponent">JPopupMenuComponent</a>(PanelTampering.TEXT_PANE_EVAL));
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>          PanelTampering.applyTheme();
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">var</strong> textAreaIsTamperingEval = <strong class="jxr_keyword">new</strong> RTextScrollPane(PanelTampering.textPaneEval, false);
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">var</strong> textAreaIsTamperingEval = <strong class="jxr_keyword">new</strong> RTextScrollPane(PanelTampering.TEXT_PANE_EVAL, false);
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>          PanelTampering.textPaneEval.getDocument().addDocumentListener(<strong class="jxr_keyword">new</strong> <a name="DocumentListenerEditing" href="../../../../../../com/jsql/view/swing/text/listener/DocumentListenerEditing.html#DocumentListenerEditing">DocumentListenerEditing</a>() {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          PanelTampering.TEXT_PANE_EVAL.getDocument().addDocumentListener(<strong class="jxr_keyword">new</strong> <a name="DocumentListenerEditing" href="../../../../../../com/jsql/view/swing/text/listener/DocumentListenerEditing.html#DocumentListenerEditing">DocumentListenerEditing</a>() {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              @Override
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> process() {
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>                  MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.textPaneEval.getText());
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>                  MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.TEXT_PANE_EVAL.getText());
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>              }
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          });
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          PanelTampering.textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          PanelTampering.TEXT_PANE_EVAL.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">this</strong>.checkboxIsTamperingEval.addActionListener(panelPreferences.getActionListenerSave());
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">this</strong>.checkboxIsTamperingEval.setText(<span class="jxr_string">"Enable user tamper script:"</span>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  
@@ -82,7 +82,7 @@
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          .forEach(entry -&gt; {
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>              entry.getKey().setText(entry.getValue().instance().getDescription());
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>              entry.getKey().setToolTipText(entry.getValue().instance().getTooltip());
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>              entry.getKey().addMouseListener(<strong class="jxr_keyword">new</strong> <a name="TamperingMouseAdapter" href="../../../../../../com/jsql/view/swing/panel/preferences/listener/TamperingMouseAdapter.html#TamperingMouseAdapter">TamperingMouseAdapter</a>(entry.getValue(), PanelTampering.textPaneEval));
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>              entry.getKey().addMouseListener(<strong class="jxr_keyword">new</strong> <a name="TamperingMouseAdapter" href="../../../../../../com/jsql/view/swing/panel/preferences/listener/TamperingMouseAdapter.html#TamperingMouseAdapter">TamperingMouseAdapter</a>(entry.getValue(), PanelTampering.TEXT_PANE_EVAL));
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>              entry.getKey().addActionListener(panelPreferences.getActionListenerSave());
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>          });
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  
@@ -227,7 +227,7 @@
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>     }
 <a class="jxr_linenumber" name="L220" href="#L220">220</a> 
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> applyTheme() {
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>         UiUtil.applySyntaxTheme(PanelTampering.textPaneEval);
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>         UiUtil.applySyntaxTheme(PanelTampering.TEXT_PANE_EVAL);
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>     }
 <a class="jxr_linenumber" name="L224" href="#L224">224</a>     
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>     

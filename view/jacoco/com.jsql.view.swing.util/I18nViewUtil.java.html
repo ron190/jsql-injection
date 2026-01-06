@@ -18,12 +18,12 @@ public class I18nViewUtil {
     /**
      * A list of graphical components for each i18n keys in the main properties
      */
-<span class="fc" id="L21">    private static final Map&lt;String, Set&lt;Object&gt;&gt; componentsLocalized = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L21">    private static final Map&lt;String, Set&lt;Object&gt;&gt; COMPONENTS_LOCALIZED = new HashMap&lt;&gt;();</span>
     
     // Initialize the list of graphical components
     static {
 <span class="fc bfc" id="L25" title="All 2 branches covered.">        for (String keyI18n: I18nUtil.BUNDLE_ROOT.keySet()) {</span>
-<span class="fc" id="L26">            I18nViewUtil.componentsLocalized.put(keyI18n, new HashSet&lt;&gt;());</span>
+<span class="fc" id="L26">            I18nViewUtil.COMPONENTS_LOCALIZED.put(keyI18n, new HashSet&lt;&gt;());</span>
 <span class="fc" id="L27">        }</span>
 <span class="fc" id="L28">    }</span>
 
@@ -37,7 +37,7 @@ public class I18nViewUtil {
      * @return a set of key names of an i18n key in the properties
      */
     public static Set&lt;String&gt; keys() {
-<span class="fc" id="L40">        return I18nViewUtil.componentsLocalized.keySet();</span>
+<span class="fc" id="L40">        return I18nViewUtil.COMPONENTS_LOCALIZED.keySet();</span>
     }
     
     /**
@@ -47,7 +47,7 @@ public class I18nViewUtil {
      * @return set of graphical components
      */
     public static Set&lt;Object&gt; componentsByKey(String key) {
-<span class="fc" id="L50">        return I18nViewUtil.componentsLocalized.get(key);</span>
+<span class="fc" id="L50">        return I18nViewUtil.COMPONENTS_LOCALIZED.get(key);</span>
     }
 
     public static void switchI18nComponents() {
@@ -78,7 +78,7 @@ public class I18nViewUtil {
      * @param component graphical component which will receive the translated text
      */
     public static void addComponentForKey(String key, Object component) {
-<span class="fc" id="L81">        I18nViewUtil.componentsLocalized.get(key.replace(&quot; &quot;, &quot;_&quot;)).add(component);  // e.g BIND BINARY</span>
+<span class="fc" id="L81">        I18nViewUtil.COMPONENTS_LOCALIZED.get(key.replace(&quot; &quot;, &quot;_&quot;)).add(component);  // e.g BIND BINARY</span>
 <span class="fc" id="L82">    }</span>
 
     /**

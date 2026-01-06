@@ -30,7 +30,7 @@
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <a name="CustomFilter" href="../../spring/security/CustomFilter.html#CustomFilter">CustomFilter</a> FILTER = <strong class="jxr_keyword">new</strong> <a name="CustomFilter" href="../../spring/security/CustomFilter.html#CustomFilter">CustomFilter</a>(<span class="jxr_string">"csrf"</span>);
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>      @Bean
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">public</strong> SecurityFilterChain filterChainCsrf(HttpSecurity http) <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">public</strong> SecurityFilterChain filterChainCsrf(HttpSecurity http) {
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>          CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>          CsrfTokenRequestAttributeHandler requestHandler = <strong class="jxr_keyword">new</strong> CsrfTokenRequestAttributeHandler();

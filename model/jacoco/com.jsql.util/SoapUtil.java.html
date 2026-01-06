@@ -47,7 +47,7 @@ public class SoapUtil {
 <span class="fc" id="L47">                var doc = SoapUtil.convertToDocument(this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest());</span>
 <span class="fc" id="L48">                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Parsing SOAP from Request...&quot;);</span>
 <span class="fc" id="L49">                return this.isTextNodeInjectable(doc, doc.getDocumentElement());</span>
-<span class="nc" id="L50">            } catch (Exception e) {</span>
+<span class="nc" id="L50">            } catch (ParserConfigurationException | IOException | SAXException e) {</span>
 <span class="nc" id="L51">                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;SOAP not detected&quot;);</span>
             }
         }

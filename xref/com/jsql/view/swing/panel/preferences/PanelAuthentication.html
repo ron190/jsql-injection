@@ -41,13 +41,13 @@
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          );
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          <strong class="jxr_keyword">var</strong> panelUsername = <strong class="jxr_keyword">new</strong> JPanel();
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          panelUsername.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelUsername, BoxLayout.X_AXIS));
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          panelUsername.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelUsername, BoxLayout.LINE_AXIS));
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          panelUsername.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"Username "</span>));
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>          panelUsername.add(<strong class="jxr_keyword">this</strong>.textDigestAuthenticationUsername);
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>          panelUsername.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(325, <strong class="jxr_keyword">this</strong>.textDigestAuthenticationUsername.getPreferredSize().height));
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">var</strong> panelPassword = <strong class="jxr_keyword">new</strong> JPanel();
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>          panelPassword.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelPassword, BoxLayout.X_AXIS));
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          panelPassword.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelPassword, BoxLayout.LINE_AXIS));
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>          panelPassword.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"Password "</span>));
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>          panelPassword.add(<strong class="jxr_keyword">this</strong>.textDigestAuthenticationPassword);
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>          panelPassword.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(325, <strong class="jxr_keyword">this</strong>.textDigestAuthenticationPassword.getPreferredSize().height));
@@ -88,13 +88,13 @@
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">this</strong>.checkboxUseKerberos.setToolTipText(tooltipUseKerberos);
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">var</strong> panelLoginConf = <strong class="jxr_keyword">new</strong> JPanel();
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          panelLoginConf.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelLoginConf, BoxLayout.X_AXIS));
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          panelLoginConf.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelLoginConf, BoxLayout.LINE_AXIS));
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          panelLoginConf.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"login.conf "</span>));
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          panelLoginConf.add(<strong class="jxr_keyword">this</strong>.textKerberosLoginConf);
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          panelLoginConf.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(325, <strong class="jxr_keyword">this</strong>.textKerberosLoginConf.getPreferredSize().height));
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>          <strong class="jxr_keyword">var</strong> panelKrb5Conf = <strong class="jxr_keyword">new</strong> JPanel();
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>          panelKrb5Conf.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelKrb5Conf, BoxLayout.X_AXIS));
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          panelKrb5Conf.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelKrb5Conf, BoxLayout.LINE_AXIS));
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          panelKrb5Conf.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"krb5.conf "</span>));
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>          panelKrb5Conf.add(<strong class="jxr_keyword">this</strong>.textKerberosKrb5Conf);
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>          panelKrb5Conf.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(325, <strong class="jxr_keyword">this</strong>.textKerberosKrb5Conf.getPreferredSize().height));

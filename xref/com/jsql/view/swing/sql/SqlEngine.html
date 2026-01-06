@@ -37,8 +37,8 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="SqlEngine" href="../../../../../com/jsql/view/swing/sql/SqlEngine.html#SqlEngine">SqlEngine</a> <strong class="jxr_keyword">extends</strong> JPanel {
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a name="ModelYaml" href="../../../../../com/jsql/model/injection/vendor/model/yaml/ModelYaml.html#ModelYaml">ModelYaml</a> modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> JTabbedPane tabsError = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>(SwingConstants.RIGHT);
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> List&lt;JSyntaxTextArea&gt; listTextareasError = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> JTabbedPane TABS_ERROR = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>(SwingConstants.RIGHT);
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> List&lt;JSyntaxTextArea&gt; LIST_TEXTAREAS_ERROR = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      enum TextareaWithColor {
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>          
@@ -296,7 +296,7 @@
 <a class="jxr_linenumber" name="L288" href="#L288">288</a> 
 <a class="jxr_linenumber" name="L289" href="#L289">289</a>         SwingUtilities.invokeLater(() -&gt; {
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>             MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale());  <em class="jxr_comment">// required for arabic</em>
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>             SqlEngine.tabsError.updateUI();  <em class="jxr_comment">// required for theme switch when tabs closed</em>
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>             SqlEngine.TABS_ERROR.updateUI();  <em class="jxr_comment">// required for theme switch when tabs closed</em>
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>         });
 <a class="jxr_linenumber" name="L293" href="#L293">293</a>     }
 <a class="jxr_linenumber" name="L294" href="#L294">294</a> 
@@ -376,7 +376,7 @@
 <a class="jxr_linenumber" name="L368" href="#L368">368</a>         JTabbedPane tabs = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>();
 <a class="jxr_linenumber" name="L369" href="#L369">369</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_UNION"</span>), <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.INDICES.getTextArea(), false));
 <a class="jxr_linenumber" name="L370" href="#L370">370</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_STACK"</span>), <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.STACK.getTextArea(), false));
-<a class="jxr_linenumber" name="L371" href="#L371">371</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_ERROR"</span>), SqlEngine.tabsError);
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_ERROR"</span>), SqlEngine.TABS_ERROR);
 <a class="jxr_linenumber" name="L372" href="#L372">372</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_DNS"</span>), <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.DNS.getTextArea(), false));
 <a class="jxr_linenumber" name="L373" href="#L373">373</a> 
 <a class="jxr_linenumber" name="L374" href="#L374">374</a>         JTabbedPane tabsBoolean = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>(SwingConstants.RIGHT);
@@ -524,7 +524,7 @@
 <a class="jxr_linenumber" name="L516" href="#L516">516</a> <em class="jxr_javadoccomment">     * Dynamically add textPanes to Error tab for current vendor.</em>
 <a class="jxr_linenumber" name="L517" href="#L517">517</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L518" href="#L518">518</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> populateTabError() {
-<a class="jxr_linenumber" name="L519" href="#L519">519</a>         SqlEngine.tabsError.removeAll();
+<a class="jxr_linenumber" name="L519" href="#L519">519</a>         SqlEngine.TABS_ERROR.removeAll();
 <a class="jxr_linenumber" name="L520" href="#L520">520</a> 
 <a class="jxr_linenumber" name="L521" href="#L521">521</a>         <strong class="jxr_keyword">if</strong> (SqlEngine.modelYaml.getStrategy().getError() == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L522" href="#L522">522</a>             <strong class="jxr_keyword">return</strong>;
@@ -545,15 +545,15 @@
 <a class="jxr_linenumber" name="L537" href="#L537">537</a>             panelLimit.add(<strong class="jxr_keyword">new</strong> JTextField(Integer.toString(methodError.getCapacity())));
 <a class="jxr_linenumber" name="L538" href="#L538">538</a>             panelError.add(panelLimit, BorderLayout.SOUTH);
 <a class="jxr_linenumber" name="L539" href="#L539">539</a> 
-<a class="jxr_linenumber" name="L540" href="#L540">540</a>             SqlEngine.tabsError.addTab(methodError.getName(), panelError);
-<a class="jxr_linenumber" name="L541" href="#L541">541</a>             SqlEngine.tabsError.setTitleAt(
-<a class="jxr_linenumber" name="L542" href="#L542">542</a>                 SqlEngine.tabsError.getTabCount() - 1,
+<a class="jxr_linenumber" name="L540" href="#L540">540</a>             SqlEngine.TABS_ERROR.addTab(methodError.getName(), panelError);
+<a class="jxr_linenumber" name="L541" href="#L541">541</a>             SqlEngine.TABS_ERROR.setTitleAt(
+<a class="jxr_linenumber" name="L542" href="#L542">542</a>                 SqlEngine.TABS_ERROR.getTabCount() - 1,
 <a class="jxr_linenumber" name="L543" href="#L543">543</a>                 String.format(
 <a class="jxr_linenumber" name="L544" href="#L544">544</a>                     <span class="jxr_string">"&lt;html&gt;&lt;div style=\&quot;text-align:left;width:100px;\&quot;&gt;%s&lt;/div&gt;&lt;/html&gt;"</span>,
 <a class="jxr_linenumber" name="L545" href="#L545">545</a>                     methodError.getName()
 <a class="jxr_linenumber" name="L546" href="#L546">546</a>                 )
 <a class="jxr_linenumber" name="L547" href="#L547">547</a>             );
-<a class="jxr_linenumber" name="L548" href="#L548">548</a>             SqlEngine.listTextareasError.add(textareaError);
+<a class="jxr_linenumber" name="L548" href="#L548">548</a>             SqlEngine.LIST_TEXTAREAS_ERROR.add(textareaError);
 <a class="jxr_linenumber" name="L549" href="#L549">549</a>         }
 <a class="jxr_linenumber" name="L550" href="#L550">550</a>     }
 <a class="jxr_linenumber" name="L551" href="#L551">551</a>     
@@ -577,7 +577,7 @@
 <a class="jxr_linenumber" name="L569" href="#L569">569</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L570" href="#L570">570</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;JSyntaxTextArea&gt; getTextareas() {
 <a class="jxr_linenumber" name="L571" href="#L571">571</a>         <strong class="jxr_keyword">return</strong> Stream.concat(
-<a class="jxr_linenumber" name="L572" href="#L572">572</a>             SqlEngine.listTextareasError.stream(),
+<a class="jxr_linenumber" name="L572" href="#L572">572</a>             SqlEngine.LIST_TEXTAREAS_ERROR.stream(),
 <a class="jxr_linenumber" name="L573" href="#L573">573</a>             Stream.of(TextareaWithColor.values()).map(TextareaWithColor::getTextArea)
 <a class="jxr_linenumber" name="L574" href="#L574">574</a>         )
 <a class="jxr_linenumber" name="L575" href="#L575">575</a>         .collect(Collectors.toList());

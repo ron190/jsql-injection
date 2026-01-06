@@ -25,7 +25,7 @@ import java.util.List;
     protected long starttime;
     protected long endtime;
      
-<span class="fc" id="L28">    private static final char[] specialCharacters = {</span>
+<span class="fc" id="L28">    private static final char[] SPECIAL_CHARACTERS = {</span>
         '~', '`', '!', '@', '#', '$', '%', '^',
         '&amp;', '*', '(', ')', '_', '-', '+', '=', '{', '}', '[', ']', '|', '\\',
         ';', ':', '\'', '&quot;', '&lt;', '.', ',', '&gt;', '/', '?', ' '
@@ -64,7 +64,7 @@ import java.util.List;
 <span class="fc" id="L64">    }</span>
 
     public void addSpecialCharacters() {
-<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (char c: Bruter.specialCharacters) {</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (char c: Bruter.SPECIAL_CHARACTERS) {</span>
 <span class="fc" id="L68">            this.characters.add(String.valueOf(c));</span>
         }
 <span class="fc" id="L70">    }</span>

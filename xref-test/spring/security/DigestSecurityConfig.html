@@ -34,7 +34,7 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <a name="CustomFilter" href="../../spring/security/CustomFilter.html#CustomFilter">CustomFilter</a> FILTER = <strong class="jxr_keyword">new</strong> <a name="CustomFilter" href="../../spring/security/CustomFilter.html#CustomFilter">CustomFilter</a>(<span class="jxr_string">"digest"</span>);
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      @Bean
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">public</strong> SecurityFilterChain filterChainDigest(HttpSecurity http) <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">public</strong> SecurityFilterChain filterChainDigest(HttpSecurity http) {
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>          <strong class="jxr_keyword">return</strong> http.securityMatcher(<span class="jxr_string">"/digest/**"</span>)
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>              .csrf(Customizer.withDefaults())
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>              .authorizeHttpRequests(auth -&gt; auth

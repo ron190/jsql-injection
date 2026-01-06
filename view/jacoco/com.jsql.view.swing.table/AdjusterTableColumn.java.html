@@ -311,12 +311,12 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
     /**
      * Action to adjust or restore the width of a single column or all columns
      */
-    class ColumnAction extends AbstractAction {
+    private class ColumnAction extends AbstractAction {
         
         private final boolean isSelectedColumn;
         private final boolean isAdjust;
 
-<span class="fc" id="L319">        public ColumnAction(boolean isSelectedColumn, boolean isAdjust) {</span>
+<span class="fc" id="L319">        ColumnAction(boolean isSelectedColumn, boolean isAdjust) {</span>
 <span class="fc" id="L320">            this.isSelectedColumn = isSelectedColumn;</span>
 <span class="fc" id="L321">            this.isAdjust = isAdjust;</span>
 <span class="fc" id="L322">        }</span>
@@ -348,12 +348,12 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      * Toggle properties of the TableColumnAdjuster so the user can
      * customize the functionality to their preferences
      */
-    class ToggleAction extends AbstractAction {
+    private class ToggleAction extends AbstractAction {
         
         private final boolean isToggleDynamic;
         private final boolean isToggleLarger;
 
-<span class="fc" id="L356">        public ToggleAction(boolean isToggleDynamic, boolean isToggleLarger) {</span>
+<span class="fc" id="L356">        ToggleAction(boolean isToggleDynamic, boolean isToggleLarger) {</span>
 <span class="fc" id="L357">            this.isToggleDynamic = isToggleDynamic;</span>
 <span class="fc" id="L358">            this.isToggleLarger = isToggleLarger;</span>
 <span class="fc" id="L359">        }</span>

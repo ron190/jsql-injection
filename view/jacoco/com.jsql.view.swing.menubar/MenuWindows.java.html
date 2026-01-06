@@ -56,7 +56,7 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L56">        menuAppearance.setMnemonic('A');</span>
 
 <span class="fc" id="L58">        JMenuItem itemNewWindows4k = new JMenuItem(</span>
-            new ActionNewWindow(&quot;New 4K Window&quot;, &quot;-Dsun.java2d.uiScale=2.5&quot;)
+            new ActionNewWindow(&quot;Open window in 4K resolution...&quot;, &quot;-Dsun.java2d.uiScale=2.5&quot;)
         );
 <span class="fc" id="L61">        menuAppearance.add(itemNewWindows4k);</span>
 
@@ -190,7 +190,7 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L190">        itemSqlEngine.setName(&quot;itemSqlEngine&quot;);</span>
 <span class="fc" id="L191">        itemSqlEngine.setMnemonic('S');</span>
 
-        // Render the SQL Engine dialog behind scene
+        // Render the SQL Engine dialog behind the scene
 <span class="fc" id="L194">        var titleTabSqlEngine = &quot;SQL Engine&quot;;</span>
 
 <span class="fc" id="L196">        itemSqlEngine.addActionListener(actionEvent -&gt; {</span>
@@ -224,7 +224,7 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L224">        I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, itemPreferences);</span>
 <span class="fc" id="L225">        itemPreferences.setName(&quot;itemPreferences&quot;);</span>
 
-        // Render the Preferences dialog behind scene
+        // Render the Preferences dialog behind the scene
 <span class="fc" id="L228">        var titleTabPreferences = &quot;Preferences&quot;;</span>
 
 <span class="fc" id="L230">        itemPreferences.addActionListener(actionEvent -&gt; {</span>
@@ -295,18 +295,17 @@ public class MenuWindows extends JMenu {
     }
 
     public void switchLocaleFromPreferences() {
-<span class="fc" id="L298">        AppMenubar.MODELS_ITEM.stream()</span>
-<span class="fc" id="L299">        .filter(model -&gt; model.getLanguage().getLanguageTag().equals(</span>
-<span class="fc" id="L300">            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()</span>
+<span class="fc" id="L298">        AppMenubar.MODELS_ITEM.stream().filter(model -&gt; model.getLanguage().getLanguageTag().equals(</span>
+<span class="fc" id="L299">            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()</span>
         ))
-<span class="pc" id="L302">        .forEach(modelItem -&gt; modelItem.getMenuItem().doClick());</span>
-<span class="fc" id="L303">    }</span>
+<span class="pc" id="L301">        .forEach(modelItem -&gt; modelItem.getMenuItem().doClick());</span>
+<span class="fc" id="L302">    }</span>
 
 
     // Getter and setter
 
     public JMenu getMenuView() {
-<span class="nc" id="L309">        return this.menuView;</span>
+<span class="nc" id="L308">        return this.menuView;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

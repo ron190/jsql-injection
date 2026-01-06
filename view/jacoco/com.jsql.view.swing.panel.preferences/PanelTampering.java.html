@@ -35,25 +35,25 @@ public class PanelTampering extends JPanel {
 <span class="fc" id="L35">    private final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();</span>
 <span class="fc" id="L36">    private final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton();</span>
 
-<span class="fc" id="L38">    private static final RSyntaxTextArea textPaneEval = new SyntaxTextArea(&quot;Click on a tamper to paste source and edit custom script&quot;);</span>
+<span class="fc" id="L38">    private static final RSyntaxTextArea TEXT_PANE_EVAL = new SyntaxTextArea(&quot;Click on a tamper to paste source and edit custom script&quot;);</span>
 
 <span class="fc" id="L40">    public PanelTampering(PanelPreferences panelPreferences) {</span>
 <span class="fc" id="L41">        this.checkboxIsTamperingEval.setToolTipText(&quot;Custom tamper in JavaScript and Java, e.g. sql.replace(/\\+/gm,'/**/')&quot;);</span>
 
-<span class="fc" id="L43">        PanelTampering.textPaneEval.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L44">        PanelTampering.textPaneEval.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);</span>
-<span class="fc" id="L45">        PanelTampering.textPaneEval.setPopupMenu(new JPopupMenuComponent(PanelTampering.textPaneEval));</span>
+<span class="fc" id="L43">        PanelTampering.TEXT_PANE_EVAL.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L44">        PanelTampering.TEXT_PANE_EVAL.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);</span>
+<span class="fc" id="L45">        PanelTampering.TEXT_PANE_EVAL.setPopupMenu(new JPopupMenuComponent(PanelTampering.TEXT_PANE_EVAL));</span>
 <span class="fc" id="L46">        PanelTampering.applyTheme();</span>
 
-<span class="fc" id="L48">        var textAreaIsTamperingEval = new RTextScrollPane(PanelTampering.textPaneEval, false);</span>
+<span class="fc" id="L48">        var textAreaIsTamperingEval = new RTextScrollPane(PanelTampering.TEXT_PANE_EVAL, false);</span>
 
-<span class="fc" id="L50">        PanelTampering.textPaneEval.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
+<span class="fc" id="L50">        PanelTampering.TEXT_PANE_EVAL.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-<span class="nc" id="L53">                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.textPaneEval.getText());</span>
+<span class="nc" id="L53">                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.TEXT_PANE_EVAL.getText());</span>
 <span class="nc" id="L54">            }</span>
         });
-<span class="fc" id="L56">        PanelTampering.textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());</span>
+<span class="fc" id="L56">        PanelTampering.TEXT_PANE_EVAL.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());</span>
 <span class="fc" id="L57">        this.checkboxIsTamperingEval.addActionListener(panelPreferences.getActionListenerSave());</span>
 <span class="fc" id="L58">        this.checkboxIsTamperingEval.setText(&quot;Enable user tamper script:&quot;);</span>
 
@@ -74,7 +74,7 @@ public class PanelTampering extends JPanel {
 <span class="fc" id="L74">        .forEach(entry -&gt; {</span>
 <span class="fc" id="L75">            entry.getKey().setText(entry.getValue().instance().getDescription());</span>
 <span class="fc" id="L76">            entry.getKey().setToolTipText(entry.getValue().instance().getTooltip());</span>
-<span class="fc" id="L77">            entry.getKey().addMouseListener(new TamperingMouseAdapter(entry.getValue(), PanelTampering.textPaneEval));</span>
+<span class="fc" id="L77">            entry.getKey().addMouseListener(new TamperingMouseAdapter(entry.getValue(), PanelTampering.TEXT_PANE_EVAL));</span>
 <span class="fc" id="L78">            entry.getKey().addActionListener(panelPreferences.getActionListenerSave());</span>
 <span class="fc" id="L79">        });</span>
 
@@ -219,7 +219,7 @@ public class PanelTampering extends JPanel {
 <span class="fc" id="L219">    }</span>
 
     public static void applyTheme() {
-<span class="fc" id="L222">        UiUtil.applySyntaxTheme(PanelTampering.textPaneEval);</span>
+<span class="fc" id="L222">        UiUtil.applySyntaxTheme(PanelTampering.TEXT_PANE_EVAL);</span>
 <span class="fc" id="L223">    }</span>
     
     

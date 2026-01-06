@@ -53,14 +53,14 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>          Map&lt;Object, Object&gt; resolvedDataSources = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>          DriverManager.setLogWriter(<strong class="jxr_keyword">null</strong>);  <em class="jxr_comment">// remove annoying logs from jdbc driver</em>
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>          SpringApp.getPropertiesFilterByProfile().map(AbstractMap.SimpleEntry::getKey).forEach(props -&gt; {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>          SpringApp.getPropertiesFilterByProfile().map(AbstractMap.SimpleEntry::getValue).forEach(props -&gt; {
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>              DataSource dataSource = DataSourceBuilder.create()
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>                  .url(props.getProperty(JdbcSettings.JAKARTA_JDBC_URL))
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>                  .username(props.getProperty(JdbcSettings.JAKARTA_JDBC_USER))
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>                  .password(props.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD))
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>                  .driverClassName(props.getProperty(JdbcSettings.JAKARTA_JDBC_DRIVER))
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>              .build();
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>              resolvedDataSources.put(props.getProperty(<span class="jxr_string">"jsql.tenant"</span>), dataSource);
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>              resolvedDataSources.put(props.getProperty(SpringApp.JSQL_TENANT), dataSource);
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          });
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          AbstractRoutingDataSource dataSource = <strong class="jxr_keyword">new</strong> <a name="MultitenantDataSource" href="../../../spring/tenant/jpa/MultitenantDataSource.html#MultitenantDataSource">MultitenantDataSource</a>();

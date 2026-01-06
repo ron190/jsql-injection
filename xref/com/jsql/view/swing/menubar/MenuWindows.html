@@ -64,7 +64,7 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          menuAppearance.setMnemonic('A');
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          JMenuItem itemNewWindows4k = <strong class="jxr_keyword">new</strong> JMenuItem(
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>              <strong class="jxr_keyword">new</strong> <a name="ActionNewWindow" href="../../../../../com/jsql/view/swing/action/ActionNewWindow.html#ActionNewWindow">ActionNewWindow</a>(<span class="jxr_string">"New 4K Window"</span>, <span class="jxr_string">"-Dsun.java2d.uiScale=2.5"</span>)
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>              <strong class="jxr_keyword">new</strong> <a name="ActionNewWindow" href="../../../../../com/jsql/view/swing/action/ActionNewWindow.html#ActionNewWindow">ActionNewWindow</a>(<span class="jxr_string">"Open window in 4K resolution..."</span>, <span class="jxr_string">"-Dsun.java2d.uiScale=2.5"</span>)
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          );
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          menuAppearance.add(itemNewWindows4k);
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  
@@ -198,7 +198,7 @@
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>         itemSqlEngine.setName(<span class="jxr_string">"itemSqlEngine"</span>);
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>         itemSqlEngine.setMnemonic('S');
 <a class="jxr_linenumber" name="L192" href="#L192">192</a> 
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <em class="jxr_comment">// Render the SQL Engine dialog behind scene</em>
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <em class="jxr_comment">// Render the SQL Engine dialog behind the scene</em>
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         <strong class="jxr_keyword">var</strong> titleTabSqlEngine = <span class="jxr_string">"SQL Engine"</span>;
 <a class="jxr_linenumber" name="L195" href="#L195">195</a> 
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>         itemSqlEngine.addActionListener(actionEvent -&gt; {
@@ -232,7 +232,7 @@
 <a class="jxr_linenumber" name="L224" href="#L224">224</a>         I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, itemPreferences);
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>         itemPreferences.setName(<span class="jxr_string">"itemPreferences"</span>);
 <a class="jxr_linenumber" name="L226" href="#L226">226</a> 
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>         <em class="jxr_comment">// Render the Preferences dialog behind scene</em>
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>         <em class="jxr_comment">// Render the Preferences dialog behind the scene</em>
 <a class="jxr_linenumber" name="L228" href="#L228">228</a>         <strong class="jxr_keyword">var</strong> titleTabPreferences = <span class="jxr_string">"Preferences"</span>;
 <a class="jxr_linenumber" name="L229" href="#L229">229</a> 
 <a class="jxr_linenumber" name="L230" href="#L230">230</a>         itemPreferences.addActionListener(actionEvent -&gt; {
@@ -303,20 +303,19 @@
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>     }
 <a class="jxr_linenumber" name="L296" href="#L296">296</a> 
 <a class="jxr_linenumber" name="L297" href="#L297">297</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> switchLocaleFromPreferences() {
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>         AppMenubar.MODELS_ITEM.stream()
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>         .filter(model -&gt; model.getLanguage().getLanguageTag().equals(
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>         ))
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>         .forEach(modelItem -&gt; modelItem.getMenuItem().doClick());
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>     }
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>         AppMenubar.MODELS_ITEM.stream().filter(model -&gt; model.getLanguage().getLanguageTag().equals(
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>         ))
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>         .forEach(modelItem -&gt; modelItem.getMenuItem().doClick());
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>     }
+<a class="jxr_linenumber" name="L303" href="#L303">303</a> 
 <a class="jxr_linenumber" name="L304" href="#L304">304</a> 
-<a class="jxr_linenumber" name="L305" href="#L305">305</a> 
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>     <em class="jxr_comment">// Getter and setter</em>
-<a class="jxr_linenumber" name="L307" href="#L307">307</a> 
-<a class="jxr_linenumber" name="L308" href="#L308">308</a>     <strong class="jxr_keyword">public</strong> JMenu getMenuView() {
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.menuView;
-<a class="jxr_linenumber" name="L310" href="#L310">310</a>     }
-<a class="jxr_linenumber" name="L311" href="#L311">311</a> }
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>     <em class="jxr_comment">// Getter and setter</em>
+<a class="jxr_linenumber" name="L306" href="#L306">306</a> 
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>     <strong class="jxr_keyword">public</strong> JMenu getMenuView() {
+<a class="jxr_linenumber" name="L308" href="#L308">308</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.menuView;
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>     }
+<a class="jxr_linenumber" name="L310" href="#L310">310</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

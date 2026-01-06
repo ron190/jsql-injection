@@ -40,7 +40,7 @@
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      <em class="jxr_comment">// Integration tests on docker</em>
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      @RequestMapping(<span class="jxr_string">"/monetdb"</span>)
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      @RequestMapping(<span class="jxr_string">"/monetdb"</span>)  <em class="jxr_comment">// no working dialect</em>
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMonetDB(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>          String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
@@ -390,115 +390,88 @@
 <a class="jxr_linenumber" name="L382" href="#L382">382</a>         <strong class="jxr_keyword">return</strong> greeting;
 <a class="jxr_linenumber" name="L383" href="#L383">383</a>     }
 <a class="jxr_linenumber" name="L384" href="#L384">384</a> 
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>     @RequestMapping(<span class="jxr_string">"/oracle"</span>)
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingOracle(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>         Class.forName(<span class="jxr_string">"oracle.jdbc.OracleDriver"</span>);
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>     @RequestMapping(<span class="jxr_string">"/postgres"</span>)  <em class="jxr_comment">// local testing, not used</em>
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingPostgres(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>         Class.forName(<span class="jxr_string">"org.postgresql.Driver"</span>);
 <a class="jxr_linenumber" name="L388" href="#L388">388</a> 
 <a class="jxr_linenumber" name="L389" href="#L389">389</a>         AtomicReference&lt;Greeting&gt; greeting = <strong class="jxr_keyword">new</strong> AtomicReference&lt;&gt;();
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="L392" href="#L392">392</a> 
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>         Arrays.stream(inject.split(<span class="jxr_string">";"</span>)).map(String::trim).forEach(query -&gt; {
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>             query = query +<span class="jxr_string">";"</span>;
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>             <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>                 Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:oracle:thin:@jsql-oracle:1521:XE"</span>, <span class="jxr_string">"system"</span>, <span class="jxr_string">"Password1_One"</span>);
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>                 PreparedStatement pstmt = con.prepareStatement(<span class="jxr_string">"select distinct owner from all_tables where '1' = '"</span>+ query +<span class="jxr_string">"'"</span>)
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>             ) {
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>                 ResultSet rs = pstmt.executeQuery();
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>                 <strong class="jxr_keyword">while</strong>(rs.next()) {
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>                     result.append(rs.getString(1));
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>                 }
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>                 greeting.set(<strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString())));
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>             } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>                 greeting.set(<strong class="jxr_keyword">this</strong>.initErrorMessage(e));
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>             }
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>         });
-<a class="jxr_linenumber" name="L408" href="#L408">408</a> 
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>         <strong class="jxr_keyword">return</strong> greeting.get();
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>     }
-<a class="jxr_linenumber" name="L411" href="#L411">411</a> 
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>     @RequestMapping(<span class="jxr_string">"/postgres"</span>)  <em class="jxr_comment">// local testing, not used</em>
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingPostgres(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>         Class.forName(<span class="jxr_string">"org.postgresql.Driver"</span>);
-<a class="jxr_linenumber" name="L415" href="#L415">415</a> 
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>         AtomicReference&lt;Greeting&gt; greeting = <strong class="jxr_keyword">new</strong> AtomicReference&lt;&gt;();
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="L391" href="#L391">391</a> 
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>         Arrays.stream((<span class="jxr_string">"SELECT table_schema FROM information_schema.tables where '1' = '"</span>+ name +<span class="jxr_string">"'"</span>).split(<span class="jxr_string">";"</span>)).map(String::trim).forEach(query -&gt; {
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>             System.out.println(query);
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>             <strong class="jxr_keyword">try</strong> (
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>                 Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:postgresql://jsql-postgresql:5432/"</span>, <span class="jxr_string">"postgres"</span>, <span class="jxr_string">"my-secret-pw"</span>);
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>                 PreparedStatement pstmt = con.prepareStatement(query)
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>             ) {
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>                 ResultSet rs = pstmt.executeQuery();
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>                 <strong class="jxr_keyword">while</strong>(rs.next()) {
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>                     result.append(rs.getString(1));
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>                 }
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>                 greeting.set(<strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString())));
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>             } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>                 greeting.set(<strong class="jxr_keyword">this</strong>.initErrorMessage(e));
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>             }
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>         });
+<a class="jxr_linenumber" name="L407" href="#L407">407</a> 
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>         <strong class="jxr_keyword">return</strong> greeting.get();
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>     }
+<a class="jxr_linenumber" name="L410" href="#L410">410</a> 
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>     @RequestMapping(<span class="jxr_string">"/mysql"</span>)  <em class="jxr_comment">// local testing, not used</em>
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMysql(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>         Class.forName(<span class="jxr_string">"com.mysql.cj.jdbc.Driver"</span>);
+<a class="jxr_linenumber" name="L414" href="#L414">414</a> 
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
 <a class="jxr_linenumber" name="L417" href="#L417">417</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
 <a class="jxr_linenumber" name="L418" href="#L418">418</a> 
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>         Arrays.stream((<span class="jxr_string">"SELECT table_schema FROM information_schema.tables where '1' = '"</span>+ name +<span class="jxr_string">"'"</span>).split(<span class="jxr_string">";"</span>)).map(String::trim).forEach(query -&gt; {
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>             System.out.println(query);
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>             <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>                 Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:postgresql://jsql-postgresql:5432/"</span>, <span class="jxr_string">"postgres"</span>, <span class="jxr_string">"my-secret-pw"</span>);
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>                 PreparedStatement pstmt = con.prepareStatement(query)
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>             ) {
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>                 ResultSet rs = pstmt.executeQuery();
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>                 <strong class="jxr_keyword">while</strong>(rs.next()) {
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>                     result.append(rs.getString(1));
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>                 }
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>                 greeting.set(<strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString())));
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>             } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>                 greeting.set(<strong class="jxr_keyword">this</strong>.initErrorMessage(e));
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>             }
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>         });
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>         <strong class="jxr_keyword">try</strong> (
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>             Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:mysql://127.0.0.1:3306/?allowMultiQueries=true"</span>, <span class="jxr_string">"test193746285"</span>, <span class="jxr_string">"~Aa1"</span>);
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>             PreparedStatement pstmt = con.prepareStatement(<span class="jxr_string">"select TABLE_SCHEMA from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"</span>+ inject +<span class="jxr_string">"'"</span>)
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>         ) {
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>             ResultSet rs = pstmt.executeQuery();
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>             <strong class="jxr_keyword">while</strong>(rs.next()) {
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>                 result.append(rs.getString(1));
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>             }
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + result);
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>         }
+<a class="jxr_linenumber" name="L431" href="#L431">431</a> 
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>         <strong class="jxr_keyword">return</strong> greeting;
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>     }
 <a class="jxr_linenumber" name="L434" href="#L434">434</a> 
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>         <strong class="jxr_keyword">return</strong> greeting.get();
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>     }
-<a class="jxr_linenumber" name="L437" href="#L437">437</a> 
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>     @RequestMapping(<span class="jxr_string">"/mysql"</span>)  <em class="jxr_comment">// local testing, not used</em>
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMysql(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>         Class.forName(<span class="jxr_string">"com.mysql.cj.jdbc.Driver"</span>);
-<a class="jxr_linenumber" name="L441" href="#L441">441</a> 
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="L445" href="#L445">445</a> 
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>         <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>             Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:mysql://127.0.0.1:3306/?allowMultiQueries=true"</span>, <span class="jxr_string">"test193746285"</span>, <span class="jxr_string">"~Aa1"</span>);
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>             PreparedStatement pstmt = con.prepareStatement(<span class="jxr_string">"select TABLE_SCHEMA from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"</span>+ inject +<span class="jxr_string">"'"</span>)
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>         ) {
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>             ResultSet rs = pstmt.executeQuery();
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>             <strong class="jxr_keyword">while</strong>(rs.next()) {
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>                 result.append(rs.getString(1));
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>             }
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + result);
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
-<a class="jxr_linenumber" name="L457" href="#L457">457</a>         }
-<a class="jxr_linenumber" name="L458" href="#L458">458</a> 
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>         <strong class="jxr_keyword">return</strong> greeting;
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>     }
-<a class="jxr_linenumber" name="L461" href="#L461">461</a> 
-<a class="jxr_linenumber" name="L462" href="#L462">462</a> 
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>     <em class="jxr_comment">// missing hana: docker fails 13.9GB image</em>
-<a class="jxr_linenumber" name="L464" href="#L464">464</a> <em class="jxr_comment">// jdbc:sap://127.0.0.1:30115</em>
-<a class="jxr_linenumber" name="L465" href="#L465">465</a> <em class="jxr_comment">// XSA_ADMIN 1anaHEXH</em>
-<a class="jxr_linenumber" name="L466" href="#L466">466</a> 
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>     <em class="jxr_comment">// missing ingress: missing services</em>
-<a class="jxr_linenumber" name="L468" href="#L468">468</a> <em class="jxr_comment">// jdbc:ingres://localhost:II7/demodb</em>
-<a class="jxr_linenumber" name="L469" href="#L469">469</a> 
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>     <em class="jxr_comment">// missing maxdb: broken installation</em>
-<a class="jxr_linenumber" name="L471" href="#L471">471</a> <em class="jxr_comment">// no docker</em>
-<a class="jxr_linenumber" name="L472" href="#L472">472</a> <em class="jxr_comment">// jdbc:sapdb://127.0.0.1/MAXDB</em>
-<a class="jxr_linenumber" name="L473" href="#L473">473</a> <em class="jxr_comment">// DBADMIN TEST</em>
-<a class="jxr_linenumber" name="L474" href="#L474">474</a> 
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>     <em class="jxr_comment">//nuodb</em>
-<a class="jxr_linenumber" name="L476" href="#L476">476</a> <em class="jxr_comment">// license</em>
-<a class="jxr_linenumber" name="L477" href="#L477">477</a> <em class="jxr_comment">// jdbc:com.nuodb://127.0.0.1/test</em>
-<a class="jxr_linenumber" name="L478" href="#L478">478</a> <em class="jxr_comment">// dba nuodb</em>
-<a class="jxr_linenumber" name="L479" href="#L479">479</a> 
-<a class="jxr_linenumber" name="L480" href="#L480">480</a>     <em class="jxr_comment">// teradata</em>
-<a class="jxr_linenumber" name="L481" href="#L481">481</a> <em class="jxr_comment">//# jdbc:teradata://127.0.0.1</em>
-<a class="jxr_linenumber" name="L482" href="#L482">482</a> <em class="jxr_comment">//# dbc dbc</em>
-<a class="jxr_linenumber" name="L483" href="#L483">483</a> 
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>     <em class="jxr_comment">// vertica</em>
-<a class="jxr_linenumber" name="L485" href="#L485">485</a> <em class="jxr_comment">//# jdbc:vertica://127.0.0.1:5433/</em>
-<a class="jxr_linenumber" name="L486" href="#L486">486</a> <em class="jxr_comment">//# dbadmin password</em>
-<a class="jxr_linenumber" name="L487" href="#L487">487</a> 
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> initErrorMessage(Exception e) {
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>         String stacktrace = ExceptionUtils.getStackTrace(e);
-<a class="jxr_linenumber" name="L490" href="#L490">490</a>         LOGGER.debug(stacktrace);
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>     }
-<a class="jxr_linenumber" name="L493" href="#L493">493</a> }
+<a class="jxr_linenumber" name="L435" href="#L435">435</a> 
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>     <em class="jxr_comment">// missing hana: docker fails 13.9GB image</em>
+<a class="jxr_linenumber" name="L437" href="#L437">437</a> <em class="jxr_comment">// jdbc:sap://127.0.0.1:30115</em>
+<a class="jxr_linenumber" name="L438" href="#L438">438</a> <em class="jxr_comment">// XSA_ADMIN 1anaHEXH</em>
+<a class="jxr_linenumber" name="L439" href="#L439">439</a> 
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>     <em class="jxr_comment">// missing ingress: missing services</em>
+<a class="jxr_linenumber" name="L441" href="#L441">441</a> <em class="jxr_comment">// jdbc:ingres://localhost:II7/demodb</em>
+<a class="jxr_linenumber" name="L442" href="#L442">442</a> 
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>     <em class="jxr_comment">// missing maxdb: broken installation</em>
+<a class="jxr_linenumber" name="L444" href="#L444">444</a> <em class="jxr_comment">// no docker</em>
+<a class="jxr_linenumber" name="L445" href="#L445">445</a> <em class="jxr_comment">// jdbc:sapdb://127.0.0.1/MAXDB</em>
+<a class="jxr_linenumber" name="L446" href="#L446">446</a> <em class="jxr_comment">// DBADMIN TEST</em>
+<a class="jxr_linenumber" name="L447" href="#L447">447</a> 
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>     <em class="jxr_comment">//nuodb</em>
+<a class="jxr_linenumber" name="L449" href="#L449">449</a> <em class="jxr_comment">// license</em>
+<a class="jxr_linenumber" name="L450" href="#L450">450</a> <em class="jxr_comment">// jdbc:com.nuodb://127.0.0.1/test</em>
+<a class="jxr_linenumber" name="L451" href="#L451">451</a> <em class="jxr_comment">// dba nuodb</em>
+<a class="jxr_linenumber" name="L452" href="#L452">452</a> 
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>     <em class="jxr_comment">// teradata</em>
+<a class="jxr_linenumber" name="L454" href="#L454">454</a> <em class="jxr_comment">//# jdbc:teradata://127.0.0.1</em>
+<a class="jxr_linenumber" name="L455" href="#L455">455</a> <em class="jxr_comment">//# dbc dbc</em>
+<a class="jxr_linenumber" name="L456" href="#L456">456</a> 
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>     <em class="jxr_comment">// vertica</em>
+<a class="jxr_linenumber" name="L458" href="#L458">458</a> <em class="jxr_comment">//# jdbc:vertica://127.0.0.1:5433/</em>
+<a class="jxr_linenumber" name="L459" href="#L459">459</a> <em class="jxr_comment">//# dbadmin password</em>
+<a class="jxr_linenumber" name="L460" href="#L460">460</a> 
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> initErrorMessage(Exception e) {
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>         String stacktrace = ExceptionUtils.getStackTrace(e);
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>         LOGGER.debug(stacktrace);
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>     }
+<a class="jxr_linenumber" name="L466" href="#L466">466</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

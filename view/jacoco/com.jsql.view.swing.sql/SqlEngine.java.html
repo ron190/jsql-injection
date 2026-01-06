@@ -29,8 +29,8 @@ import java.util.stream.Stream;
 public class SqlEngine extends JPanel {
 
 <span class="fc" id="L31">    private static ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();</span>
-<span class="fc" id="L32">    private static final JTabbedPane tabsError = new TabbedPaneWheeled(SwingConstants.RIGHT);</span>
-<span class="fc" id="L33">    private static final List&lt;JSyntaxTextArea&gt; listTextareasError = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L32">    private static final JTabbedPane TABS_ERROR = new TabbedPaneWheeled(SwingConstants.RIGHT);</span>
+<span class="fc" id="L33">    private static final List&lt;JSyntaxTextArea&gt; LIST_TEXTAREAS_ERROR = new ArrayList&lt;&gt;();</span>
     
 <span class="fc" id="L35">    enum TextareaWithColor {</span>
         
@@ -288,7 +288,7 @@ public class SqlEngine extends JPanel {
 
 <span class="fc" id="L289">        SwingUtilities.invokeLater(() -&gt; {</span>
 <span class="fc" id="L290">            MediatorHelper.menubar().switchLocale(I18nUtil.getCurrentLocale());  // required for arabic</span>
-<span class="fc" id="L291">            SqlEngine.tabsError.updateUI();  // required for theme switch when tabs closed</span>
+<span class="fc" id="L291">            SqlEngine.TABS_ERROR.updateUI();  // required for theme switch when tabs closed</span>
 <span class="fc" id="L292">        });</span>
 <span class="fc" id="L293">    }</span>
 
@@ -368,7 +368,7 @@ public class SqlEngine extends JPanel {
 <span class="fc" id="L368">        JTabbedPane tabs = new TabbedPaneWheeled();</span>
 <span class="fc" id="L369">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_UNION&quot;), new RTextScrollPane(TextareaWithColor.INDICES.getTextArea(), false));</span>
 <span class="fc" id="L370">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_STACK&quot;), new RTextScrollPane(TextareaWithColor.STACK.getTextArea(), false));</span>
-<span class="fc" id="L371">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_ERROR&quot;), SqlEngine.tabsError);</span>
+<span class="fc" id="L371">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_ERROR&quot;), SqlEngine.TABS_ERROR);</span>
 <span class="fc" id="L372">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_DNS&quot;), new RTextScrollPane(TextareaWithColor.DNS.getTextArea(), false));</span>
 
 <span class="fc" id="L374">        JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT);</span>
@@ -516,7 +516,7 @@ public class SqlEngine extends JPanel {
      * Dynamically add textPanes to Error tab for current vendor.
      */
     private static void populateTabError() {
-<span class="fc" id="L519">        SqlEngine.tabsError.removeAll();</span>
+<span class="fc" id="L519">        SqlEngine.TABS_ERROR.removeAll();</span>
 
 <span class="pc bpc" id="L521" title="1 of 2 branches missed.">        if (SqlEngine.modelYaml.getStrategy().getError() == null) {</span>
 <span class="nc" id="L522">            return;</span>
@@ -537,15 +537,15 @@ public class SqlEngine extends JPanel {
 <span class="fc" id="L537">            panelLimit.add(new JTextField(Integer.toString(methodError.getCapacity())));</span>
 <span class="fc" id="L538">            panelError.add(panelLimit, BorderLayout.SOUTH);</span>
 
-<span class="fc" id="L540">            SqlEngine.tabsError.addTab(methodError.getName(), panelError);</span>
-<span class="fc" id="L541">            SqlEngine.tabsError.setTitleAt(</span>
-<span class="fc" id="L542">                SqlEngine.tabsError.getTabCount() - 1,</span>
+<span class="fc" id="L540">            SqlEngine.TABS_ERROR.addTab(methodError.getName(), panelError);</span>
+<span class="fc" id="L541">            SqlEngine.TABS_ERROR.setTitleAt(</span>
+<span class="fc" id="L542">                SqlEngine.TABS_ERROR.getTabCount() - 1,</span>
 <span class="fc" id="L543">                String.format(</span>
                     &quot;&lt;html&gt;&lt;div style=\&quot;text-align:left;width:100px;\&quot;&gt;%s&lt;/div&gt;&lt;/html&gt;&quot;,
 <span class="fc" id="L545">                    methodError.getName()</span>
                 )
             );
-<span class="fc" id="L548">            SqlEngine.listTextareasError.add(textareaError);</span>
+<span class="fc" id="L548">            SqlEngine.LIST_TEXTAREAS_ERROR.add(textareaError);</span>
 <span class="fc" id="L549">        }</span>
 <span class="fc" id="L550">    }</span>
     
@@ -569,7 +569,7 @@ public class SqlEngine extends JPanel {
      */
     private static List&lt;JSyntaxTextArea&gt; getTextareas() {
 <span class="fc" id="L571">        return Stream.concat(</span>
-<span class="fc" id="L572">            SqlEngine.listTextareasError.stream(),</span>
+<span class="fc" id="L572">            SqlEngine.LIST_TEXTAREAS_ERROR.stream(),</span>
 <span class="fc" id="L573">            Stream.of(TextareaWithColor.values()).map(TextareaWithColor::getTextArea)</span>
         )
 <span class="fc" id="L575">        .collect(Collectors.toList());</span>

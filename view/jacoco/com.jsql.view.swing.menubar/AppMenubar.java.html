@@ -24,6 +24,7 @@ import com.jsql.view.swing.panel.preferences.PanelTampering;
 import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.ModelSvgIcon;
@@ -53,145 +54,145 @@ import java.util.stream.Stream;
  */
 public class AppMenubar extends JMenuBar {
     
-<span class="fc" id="L56">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L57">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     private final MenuWindows menuWindows;
 
-<span class="fc" id="L60">    protected static final List&lt;ModelItemTranslate&gt; MODELS_ITEM = Stream.of(</span>
+<span class="fc" id="L61">    protected static final List&lt;ModelItemTranslate&gt; MODELS_ITEM = Stream.of(</span>
         Language.EN, Language.FR, Language.RU, Language.ZH, Language.ES, Language.TR, Language.KO, Language.SE, Language.FI,
         Language.AR, Language.CS, Language.IT, Language.PT, Language.PL, Language.IN, Language.NL, Language.RO, Language.DE
-<span class="fc" id="L63">    ).map(ModelItemTranslate::new).collect(Collectors.toList());</span>
+<span class="fc" id="L64">    ).map(ModelItemTranslate::new).collect(Collectors.toList());</span>
 
-<span class="fc" id="L65">    private static final List&lt;ModelItemTranslate&gt; MODELS_ITEM_INTO = Stream.of(</span>
+<span class="fc" id="L66">    private static final List&lt;ModelItemTranslate&gt; MODELS_ITEM_INTO = Stream.of(</span>
         Language.FR, Language.ES, Language.SE, Language.FI, Language.TR, Language.CS, Language.RO, Language.IT, Language.PT, Language.AR,
         Language.PL, Language.RU, Language.ZH, Language.DE, Language.IN, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA
-<span class="fc" id="L68">    ).map(ModelItemTranslate::new).collect(Collectors.toList());</span>
+<span class="fc" id="L69">    ).map(ModelItemTranslate::new).collect(Collectors.toList());</span>
 
     /**
      * Create a menubar on main frame.
      */
-<span class="fc" id="L73">    public AppMenubar() {</span>
-<span class="fc" id="L74">        this.add(this.initMenuFile());</span>
-<span class="fc" id="L75">        this.add(this.initMenuEdit());</span>
-<span class="fc" id="L76">        this.add(this.initMenuCommunity());</span>
-<span class="fc" id="L77">        this.menuWindows = new MenuWindows(this);</span>
-<span class="fc" id="L78">        this.add(this.menuWindows);</span>
-<span class="fc" id="L79">        this.add(this.initMenuHelp());</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L74">    public AppMenubar() {</span>
+<span class="fc" id="L75">        this.add(this.initMenuFile());</span>
+<span class="fc" id="L76">        this.add(this.initMenuEdit());</span>
+<span class="fc" id="L77">        this.add(this.initMenuCommunity());</span>
+<span class="fc" id="L78">        this.menuWindows = new MenuWindows(this);</span>
+<span class="fc" id="L79">        this.add(this.menuWindows);</span>
+<span class="fc" id="L80">        this.add(this.initMenuHelp());</span>
+<span class="fc" id="L81">    }</span>
 
     private JMenu initMenuFile() {
-<span class="fc" id="L83">        var menuFile = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_FILE&quot;));</span>
-<span class="fc" id="L84">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_FILE&quot;, menuFile);</span>
-<span class="fc" id="L85">        menuFile.setMnemonic('F');</span>
+<span class="fc" id="L84">        var menuFile = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_FILE&quot;));</span>
+<span class="fc" id="L85">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_FILE&quot;, menuFile);</span>
+<span class="fc" id="L86">        menuFile.setMnemonic('F');</span>
 
-<span class="fc" id="L87">        JMenuItem itemSave = new JMenuItem(new ActionSaveTab());</span>
-<span class="fc" id="L88">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_FILE_SAVETABAS&quot;, itemSave);</span>
+<span class="fc" id="L88">        JMenuItem itemSave = new JMenuItem(new ActionSaveTab());</span>
+<span class="fc" id="L89">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_FILE_SAVETABAS&quot;, itemSave);</span>
 
-<span class="fc" id="L90">        JMenuItem itemExit = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_FILE_EXIT&quot;), 'x');</span>
-<span class="fc" id="L91">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_FILE_EXIT&quot;, itemExit);</span>
-<span class="pc" id="L92">        itemExit.addActionListener(actionEvent -&gt; MediatorHelper.frame().dispose());</span>
+<span class="fc" id="L91">        JMenuItem itemExit = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_FILE_EXIT&quot;), 'x');</span>
+<span class="fc" id="L92">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_FILE_EXIT&quot;, itemExit);</span>
+<span class="pc" id="L93">        itemExit.addActionListener(actionEvent -&gt; MediatorHelper.frame().dispose());</span>
 
-<span class="fc" id="L94">        HotkeyUtil.addShortcut(this);</span>
+<span class="fc" id="L95">        HotkeyUtil.addShortcut(this);</span>
 
-<span class="fc" id="L96">        menuFile.add(itemSave);</span>
-<span class="fc" id="L97">        menuFile.add(new JSeparator());</span>
-<span class="fc" id="L98">        menuFile.add(itemExit);</span>
-<span class="fc" id="L99">        return menuFile;</span>
+<span class="fc" id="L97">        menuFile.add(itemSave);</span>
+<span class="fc" id="L98">        menuFile.add(new JSeparator());</span>
+<span class="fc" id="L99">        menuFile.add(itemExit);</span>
+<span class="fc" id="L100">        return menuFile;</span>
     }
 
     private JMenu initMenuEdit() {
-<span class="fc" id="L103">        var menuEdit = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_EDIT&quot;));</span>
-<span class="fc" id="L104">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_EDIT&quot;, menuEdit);</span>
-<span class="fc" id="L105">        menuEdit.setMnemonic('E');</span>
+<span class="fc" id="L104">        var menuEdit = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_EDIT&quot;));</span>
+<span class="fc" id="L105">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_EDIT&quot;, menuEdit);</span>
+<span class="fc" id="L106">        menuEdit.setMnemonic('E');</span>
 
-<span class="fc" id="L107">        JMenuItem itemCopy = new JMenuItem(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY&quot;), 'C');</span>
-<span class="fc" id="L108">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY&quot;, itemCopy);</span>
-<span class="fc" id="L109">        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
-<span class="fc" id="L110">        itemCopy.addActionListener(actionEvent -&gt; {</span>
-<span class="nc bnc" id="L111" title="All 2 branches missed.">            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {</span>
-<span class="nc" id="L112">                ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).copyTable();</span>
-<span class="nc bnc" id="L113" title="All 2 branches missed.">            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {</span>
-<span class="nc" id="L114">                ((JTextComponent) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).copy();</span>
+<span class="fc" id="L108">        JMenuItem itemCopy = new JMenuItem(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY&quot;), 'C');</span>
+<span class="fc" id="L109">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY&quot;, itemCopy);</span>
+<span class="fc" id="L110">        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L111">        itemCopy.addActionListener(actionEvent -&gt; {</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {</span>
+<span class="nc" id="L113">                ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).copyTable();</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {</span>
+<span class="nc" id="L115">                ((JTextComponent) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).copy();</span>
             }
-<span class="nc" id="L116">        });</span>
+<span class="nc" id="L117">        });</span>
 
-<span class="fc" id="L118">        JMenuItem itemSelectAll = new JMenuItem(I18nUtil.valueByKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;), 'A');</span>
-<span class="fc" id="L119">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;, itemSelectAll);</span>
-<span class="fc" id="L120">        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
-<span class="fc" id="L121">        itemSelectAll.addActionListener(actionEvent -&gt; {</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {</span>
-<span class="nc" id="L123">                ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).selectTable();</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {</span>
+<span class="fc" id="L119">        JMenuItem itemSelectAll = new JMenuItem(I18nUtil.valueByKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;), 'A');</span>
+<span class="fc" id="L120">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;, itemSelectAll);</span>
+<span class="fc" id="L121">        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L122">        itemSelectAll.addActionListener(actionEvent -&gt; {</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {</span>
+<span class="nc" id="L124">                ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).selectTable();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {</span>
                 // Textarea need focus to select all
-<span class="nc" id="L126">                ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();</span>
-<span class="nc" id="L127">                ((JTextComponent) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();</span>
+<span class="nc" id="L127">                ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();</span>
+<span class="nc" id="L128">                ((JTextComponent) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();</span>
             }
-<span class="nc" id="L129">        });</span>
+<span class="nc" id="L130">        });</span>
 
-<span class="fc" id="L131">        menuEdit.add(itemCopy);</span>
-<span class="fc" id="L132">        menuEdit.add(new JSeparator());</span>
-<span class="fc" id="L133">        menuEdit.add(itemSelectAll);</span>
-<span class="fc" id="L134">        return menuEdit;</span>
+<span class="fc" id="L132">        menuEdit.add(itemCopy);</span>
+<span class="fc" id="L133">        menuEdit.add(new JSeparator());</span>
+<span class="fc" id="L134">        menuEdit.add(itemSelectAll);</span>
+<span class="fc" id="L135">        return menuEdit;</span>
     }
 
     private JMenu initMenuCommunity() {
-<span class="fc" id="L138">        var menuCommunity = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY&quot;));</span>
-<span class="fc" id="L139">        menuCommunity.setMnemonic('C');</span>
-<span class="fc" id="L140">        menuCommunity.setName(&quot;menuCommunity&quot;);</span>
-<span class="fc" id="L141">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY&quot;, menuCommunity);</span>
+<span class="fc" id="L139">        var menuCommunity = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY&quot;));</span>
+<span class="fc" id="L140">        menuCommunity.setMnemonic('C');</span>
+<span class="fc" id="L141">        menuCommunity.setName(&quot;menuCommunity&quot;);</span>
+<span class="fc" id="L142">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY&quot;, menuCommunity);</span>
 
-<span class="fc" id="L143">        JMenu menuI18nContribution = this.initMenuI18nContribution();</span>
-<span class="fc" id="L144">        menuI18nContribution.setName(&quot;menuI18nContribution&quot;);</span>
+<span class="fc" id="L144">        JMenu menuI18nContribution = this.initMenuI18nContribution();</span>
+<span class="fc" id="L145">        menuI18nContribution.setName(&quot;menuI18nContribution&quot;);</span>
 
-<span class="fc" id="L146">        JMenuItem itemReportIssue = this.initItemReportIssue();</span>
-<span class="fc" id="L147">        itemReportIssue.setName(&quot;itemReportIssue&quot;);</span>
+<span class="fc" id="L147">        JMenuItem itemReportIssue = this.initItemReportIssue();</span>
+<span class="fc" id="L148">        itemReportIssue.setName(&quot;itemReportIssue&quot;);</span>
 
-<span class="fc" id="L149">        menuCommunity.add(menuI18nContribution);</span>
-<span class="fc" id="L150">        menuCommunity.add(new JSeparator());</span>
-<span class="fc" id="L151">        menuCommunity.add(itemReportIssue);</span>
-<span class="fc" id="L152">        return menuCommunity;</span>
+<span class="fc" id="L150">        menuCommunity.add(menuI18nContribution);</span>
+<span class="fc" id="L151">        menuCommunity.add(new JSeparator());</span>
+<span class="fc" id="L152">        menuCommunity.add(itemReportIssue);</span>
+<span class="fc" id="L153">        return menuCommunity;</span>
     }
 
     private JMenu initMenuI18nContribution() {
-<span class="fc" id="L156">        var menuI18nContribution = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY_HELPTRANSLATE&quot;));</span>
-<span class="fc" id="L157">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_HELPTRANSLATE&quot;, menuI18nContribution);</span>
+<span class="fc" id="L157">        var menuI18nContribution = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY_HELPTRANSLATE&quot;));</span>
+<span class="fc" id="L158">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_HELPTRANSLATE&quot;, menuI18nContribution);</span>
 
-<span class="fc" id="L159">        final var dialogTranslate = new DialogTranslate();  // Render the About dialog behind scene</span>
-<span class="fc" id="L160">        AppMenubar.MODELS_ITEM_INTO.forEach(model -&gt; {</span>
-<span class="fc" id="L161">            model.setMenuItem(new JMenuItem(model.getLanguage().getMenuItemLabel(), model.getLanguage().getFlag()));</span>
-<span class="fc" id="L162">            model.getMenuItem().addActionListener(new ActionTranslate(dialogTranslate, model.getLanguage()));</span>
-<span class="fc" id="L163">            menuI18nContribution.add(model.getMenuItem());</span>
-<span class="fc" id="L164">        });</span>
+<span class="fc" id="L160">        final var dialogTranslate = new DialogTranslate();  // Render the About dialog behind the scene</span>
+<span class="fc" id="L161">        AppMenubar.MODELS_ITEM_INTO.forEach(model -&gt; {</span>
+<span class="fc" id="L162">            model.setMenuItem(new JMenuItem(model.getLanguage().getMenuItemLabel(), model.getLanguage().getFlag()));</span>
+<span class="fc" id="L163">            model.getMenuItem().addActionListener(new ActionTranslate(dialogTranslate, model.getLanguage()));</span>
+<span class="fc" id="L164">            menuI18nContribution.add(model.getMenuItem());</span>
+<span class="fc" id="L165">        });</span>
 
-<span class="fc" id="L166">        var itemIntoOther = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY_ANOTHERLANGUAGE&quot;));</span>
-<span class="fc" id="L167">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_ANOTHERLANGUAGE&quot;, itemIntoOther);</span>
+<span class="fc" id="L167">        var itemIntoOther = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY_ANOTHERLANGUAGE&quot;));</span>
+<span class="fc" id="L168">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_ANOTHERLANGUAGE&quot;, itemIntoOther);</span>
 
-<span class="fc bfc" id="L169" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM_INTO.stream().filter(model -&gt; model.getLanguage() == Language.AR)</span>
-<span class="fc" id="L170">        .forEach(modelItemTranslate -&gt; modelItemTranslate.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));</span>
-<span class="fc bfc" id="L171" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM_INTO.stream().filter(model -&gt; model.getLanguage() == Language.FR)</span>
-<span class="fc" id="L172">        .forEach(modelItemTranslate -&gt; modelItemTranslate.getMenuItem().setName(&quot;itemIntoFrench&quot;));</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM_INTO.stream().filter(model -&gt; model.getLanguage() == Language.AR)</span>
+<span class="fc" id="L171">        .forEach(modelItemTranslate -&gt; modelItemTranslate.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM_INTO.stream().filter(model -&gt; model.getLanguage() == Language.FR)</span>
+<span class="fc" id="L173">        .forEach(modelItemTranslate -&gt; modelItemTranslate.getMenuItem().setName(&quot;itemIntoFrench&quot;));</span>
 
-<span class="fc" id="L174">        menuI18nContribution.add(new JSeparator());</span>
-<span class="fc" id="L175">        menuI18nContribution.add(itemIntoOther);</span>
-<span class="fc" id="L176">        itemIntoOther.addActionListener(new ActionTranslate(dialogTranslate, Language.OT));</span>
+<span class="fc" id="L175">        menuI18nContribution.add(new JSeparator());</span>
+<span class="fc" id="L176">        menuI18nContribution.add(itemIntoOther);</span>
+<span class="fc" id="L177">        itemIntoOther.addActionListener(new ActionTranslate(dialogTranslate, Language.OT));</span>
 
-<span class="fc" id="L178">        return menuI18nContribution;</span>
+<span class="fc" id="L179">        return menuI18nContribution;</span>
     }
 
     private JMenuItem initItemReportIssue() {
-<span class="fc" id="L182">        JMenuItem itemReportIssue = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY_REPORTISSUE&quot;), 'R');</span>
-<span class="fc" id="L183">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_REPORTISSUE&quot;, itemReportIssue);</span>
+<span class="fc" id="L183">        JMenuItem itemReportIssue = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY_REPORTISSUE&quot;), 'R');</span>
+<span class="fc" id="L184">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_REPORTISSUE&quot;, itemReportIssue);</span>
 
-<span class="fc" id="L185">        itemReportIssue.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L186">        itemReportIssue.addActionListener(actionEvent -&gt; {</span>
 
-<span class="nc" id="L187">            var panel = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L188">            final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();</span>
-<span class="nc" id="L189">            textarea.setFont(new Font(</span>
+<span class="nc" id="L188">            var panel = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L189">            final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();</span>
+<span class="nc" id="L190">            textarea.setFont(new Font(</span>
                 UiUtil.FONT_NAME_MONOSPACED,
                 Font.PLAIN,
-<span class="nc" id="L192">                UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getSize()</span>
+<span class="nc" id="L193">                UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getSize()</span>
             ));
-<span class="nc" id="L194">            textarea.setText(</span>
+<span class="nc" id="L195">            textarea.setText(</span>
                 &quot;## What's the expected behavior?\n\n&quot;
                 + &quot;## What's the actual behavior?\n\n&quot;
                 + &quot;## Any other detailed information on the Issue?\n\n&quot;
@@ -200,21 +201,21 @@ public class AppMenubar extends JMenuBar {
                 + &quot;  2. ...\n\n&quot;
                 + &quot;## [Community] Request for new feature\n\n&quot;
             );
-<span class="nc" id="L203">            panel.add(new JLabel(&quot;Describe your bug or issue:&quot;), BorderLayout.NORTH);</span>
-<span class="nc" id="L204">            panel.add(new JScrollPane(textarea));</span>
-<span class="nc" id="L205">            panel.setPreferredSize(new Dimension(500, 350));</span>
-<span class="nc" id="L206">            panel.setMinimumSize(new Dimension(500, 350));</span>
+<span class="nc" id="L204">            panel.add(new JLabel(&quot;Describe your bug or issue:&quot;), BorderLayout.NORTH);</span>
+<span class="nc" id="L205">            panel.add(new JScrollPane(textarea));</span>
+<span class="nc" id="L206">            panel.setPreferredSize(new Dimension(500, 350));</span>
+<span class="nc" id="L207">            panel.setMinimumSize(new Dimension(500, 350));</span>
 
-<span class="nc" id="L208">            textarea.addMouseListener(new MouseAdapter() {</span>
+<span class="nc" id="L209">            textarea.addMouseListener(new MouseAdapter() {</span>
                 @Override
                 public void mousePressed(MouseEvent e) {
-<span class="nc" id="L211">                    super.mousePressed(e);</span>
-<span class="nc" id="L212">                    textarea.requestFocusInWindow();</span>
-<span class="nc" id="L213">                }</span>
+<span class="nc" id="L212">                    super.mousePressed(e);</span>
+<span class="nc" id="L213">                    textarea.requestFocusInWindow();</span>
+<span class="nc" id="L214">                }</span>
             });
 
-<span class="nc" id="L216">            int result = JOptionPane.showOptionDialog(</span>
-<span class="nc" id="L217">                MediatorHelper.frame(),</span>
+<span class="nc" id="L217">            int result = JOptionPane.showOptionDialog(</span>
+<span class="nc" id="L218">                MediatorHelper.frame(),</span>
                 panel,
                 &quot;Report an issue or a bug&quot;,
                 JOptionPane.OK_CANCEL_OPTION,
@@ -222,173 +223,194 @@ public class AppMenubar extends JMenuBar {
                 null,
                 new String[] {
                     &quot;Send&quot;,
-<span class="nc" id="L225">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
+<span class="nc" id="L226">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
                 },
-<span class="nc" id="L227">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
+<span class="nc" id="L228">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
             );
 
-<span class="nc bnc" id="L230" title="All 4 branches missed.">            if (StringUtils.isNotEmpty(textarea.getText()) &amp;&amp; result == JOptionPane.YES_OPTION) {</span>
-<span class="nc" id="L231">                MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, &quot;Report&quot;);</span>
+<span class="nc bnc" id="L231" title="All 4 branches missed.">            if (StringUtils.isNotEmpty(textarea.getText()) &amp;&amp; result == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L232">                MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, &quot;Report&quot;);</span>
             }
-<span class="nc" id="L233">        });</span>
+<span class="nc" id="L234">        });</span>
 
-<span class="fc" id="L235">        return itemReportIssue;</span>
+<span class="fc" id="L236">        return itemReportIssue;</span>
     }
 
     private JMenu initMenuHelp() {
-<span class="fc" id="L239">        var menuHelp = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_HELP&quot;));</span>
-<span class="fc" id="L240">        menuHelp.setMnemonic('H');</span>
-<span class="fc" id="L241">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP&quot;, menuHelp);</span>
-<span class="fc" id="L242">        menuHelp.setName(&quot;menuHelp&quot;);</span>
+<span class="fc" id="L240">        var menuHelp = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_HELP&quot;));</span>
+<span class="fc" id="L241">        menuHelp.setMnemonic('H');</span>
+<span class="fc" id="L242">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP&quot;, menuHelp);</span>
+<span class="fc" id="L243">        menuHelp.setName(&quot;menuHelp&quot;);</span>
 
-<span class="fc" id="L244">        JMenuItem itemHelp = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_HELP_ABOUT&quot;), 'A');</span>
-<span class="fc" id="L245">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP_ABOUT&quot;, itemHelp);</span>
-<span class="fc" id="L246">        itemHelp.setName(&quot;itemHelp&quot;);</span>
+<span class="fc" id="L245">        JMenuItem itemHelp = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_HELP_ABOUT&quot;), 'A');</span>
+<span class="fc" id="L246">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP_ABOUT&quot;, itemHelp);</span>
+<span class="fc" id="L247">        itemHelp.setName(&quot;itemHelp&quot;);</span>
 
-<span class="fc" id="L248">        JMenuItem itemUpdate = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_HELP_UPDATE&quot;), 'U');</span>
-<span class="fc" id="L249">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP_UPDATE&quot;, itemUpdate);</span>
+<span class="fc" id="L249">        JMenuItem itemUpdate = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_HELP_UPDATE&quot;), 'U');</span>
+<span class="fc" id="L250">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP_UPDATE&quot;, itemUpdate);</span>
 
-        // Render the About dialog behind scene
-<span class="fc" id="L252">        itemHelp.addActionListener(actionEvent -&gt; {</span>
-<span class="fc" id="L253">            final var dialogAbout = new DialogAbout();</span>
-<span class="pc bpc" id="L254" title="1 of 2 branches missed.">            if (!dialogAbout.isVisible()) {</span>
-<span class="fc" id="L255">                dialogAbout.initDialog();</span>
-<span class="fc" id="L256">                dialogAbout.setVisible(true);  // needed here for button focus</span>
-<span class="fc" id="L257">                dialogAbout.requestButtonFocus();</span>
+        // Render the About dialog behind the scene
+<span class="fc" id="L253">        itemHelp.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L254">            final var dialogAbout = new DialogAbout();</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">            if (!dialogAbout.isVisible()) {</span>
+<span class="fc" id="L256">                dialogAbout.initDialog();</span>
+<span class="fc" id="L257">                dialogAbout.setVisible(true);  // needed here for button focus</span>
+<span class="fc" id="L258">                dialogAbout.requestButtonFocus();</span>
             }
-<span class="fc" id="L259">            dialogAbout.setVisible(true);</span>
-<span class="fc" id="L260">        });</span>
-<span class="fc" id="L261">        itemUpdate.addActionListener(new ActionCheckUpdate());</span>
+<span class="fc" id="L260">            dialogAbout.setVisible(true);</span>
+<span class="fc" id="L261">        });</span>
+<span class="fc" id="L262">        itemUpdate.addActionListener(new ActionCheckUpdate());</span>
 
-<span class="fc" id="L263">        menuHelp.add(itemUpdate);</span>
-<span class="fc" id="L264">        menuHelp.add(new JSeparator());</span>
-<span class="fc" id="L265">        menuHelp.add(itemHelp);</span>
-<span class="fc" id="L266">        return menuHelp;</span>
+<span class="fc" id="L264">        menuHelp.add(itemUpdate);</span>
+<span class="fc" id="L265">        menuHelp.add(new JSeparator());</span>
+<span class="fc" id="L266">        menuHelp.add(itemHelp);</span>
+<span class="fc" id="L267">        return menuHelp;</span>
     }
 
-    public static void applyTheme(String theme) {
-<span class="fc" id="L270">        UiUtil.applyTheme(theme);</span>
+    public static void applyTheme(String nameTheme) {
+<span class="fc" id="L271">        UiUtil.applyTheme(nameTheme);</span>
 
-<span class="fc" id="L272">        Arrays.asList(</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">        for (String key : I18nViewUtil.keys()) {</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">            for (Object component : I18nViewUtil.componentsByKey(key)) {</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">                if (component instanceof JToolTipI18n) {</span>
+<span class="fc" id="L276">                    ((JToolTipI18n) component).updateUI();  // required</span>
+                }
+<span class="fc" id="L278">            }</span>
+<span class="fc" id="L279">        }</span>
+
+<span class="fc" id="L281">        Arrays.asList(</span>
             UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.UPLOAD, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH,
             UiUtil.TABLE_LINEAR, UiUtil.TABLE_BOLD, UiUtil.NETWORK, UiUtil.DATABASE_LINEAR, UiUtil.COG, UiUtil.CUP, UiUtil.CONSOLE, UiUtil.BINARY, UiUtil.CHUNK,
-            UiUtil.ARROW, UiUtil.ARROW_HOVER, UiUtil.ARROW_PRESSED, UiUtil.EXPAND, UiUtil.EXPAND_HOVER, UiUtil.EXPAND_PRESSED,
+            UiUtil.ARROW, UiUtil.ARROW_HOVER, UiUtil.ARROW_PRESSED, UiUtil.ARROW_LEFT, UiUtil.ARROW_LEFT_HOVER, UiUtil.ARROW_LEFT_PRESSED,
+            UiUtil.EXPAND, UiUtil.EXPAND_HOVER, UiUtil.EXPAND_PRESSED,
             UiUtil.HOURGLASS, UiUtil.ARROW_DOWN, UiUtil.ARROW_UP, UiUtil.SQUARE, UiUtil.GLOBE, UiUtil.TICK_GREEN, UiUtil.CROSS_RED,
             UiUtil.APP_ICON, UiUtil.APP_BIG, UiUtil.APP_MIDDLE
-<span class="fc" id="L278">        ).forEach(ModelSvgIcon::setColorFilter);</span>
+<span class="fc" id="L288">        ).forEach(ModelSvgIcon::setColorFilter);</span>
 
-<span class="fc" id="L280">        SqlEngine.applyTheme();</span>
-<span class="fc" id="L281">        PanelTampering.applyTheme();</span>
-<span class="fc" id="L282">        PanelExploit.applyTheme();</span>
-<span class="fc" id="L283">        MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyTheme();</span>
-<span class="fc" id="L284">        MediatorHelper.frame().setIconImages(UiUtil.getIcons());</span>
-<span class="fc" id="L285">        MediatorHelper.frame().revalidate();</span>
+<span class="fc" id="L290">        SqlEngine.applyTheme();</span>
+<span class="fc" id="L291">        PanelTampering.applyTheme();</span>
+<span class="fc" id="L292">        PanelExploit.applyTheme();</span>
+<span class="fc" id="L293">        MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyTheme();</span>
+<span class="fc" id="L294">        MediatorHelper.frame().setIconImages(UiUtil.getIcons());</span>
+<span class="fc" id="L295">        MediatorHelper.frame().revalidate();</span>
 
-<span class="fc" id="L287">        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withThemeFlatLafName(theme).persist();</span>
-<span class="fc" id="L288">    }</span>
+<span class="fc" id="L297">        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withThemeFlatLafName(nameTheme).persist();</span>
+<span class="fc" id="L298">    }</span>
     
     public void switchLocale(Locale newLocale) {
-<span class="fc" id="L291">        this.switchLocale(I18nUtil.getCurrentLocale(), newLocale, false);</span>
-<span class="fc" id="L292">    }</span>
+<span class="fc" id="L301">        this.switchLocale(I18nUtil.getCurrentLocale(), newLocale, false);</span>
+<span class="fc" id="L302">    }</span>
     
     public void switchLocaleWithStatus(Locale oldLocale, Locale newLocale, boolean isStartup) {
-<span class="nc" id="L295">        this.switchLocale(oldLocale, newLocale, isStartup);</span>
-<span class="nc" id="L296">        MediatorHelper.model().getPropertiesUtil().displayStatus(newLocale);</span>
-<span class="nc" id="L297">    }</span>
+<span class="nc" id="L305">        this.switchLocale(oldLocale, newLocale, isStartup);</span>
+<span class="nc" id="L306">        MediatorHelper.model().getPropertiesUtil().displayStatus(newLocale);</span>
+<span class="nc" id="L307">    }</span>
 
     public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
-<span class="fc" id="L300">        I18nUtil.setCurrentBundle(newLocale);</span>
+<span class="fc" id="L310">        I18nUtil.setCurrentBundle(newLocale);</span>
 
-<span class="fc" id="L302">        Stream.of(</span>
+<span class="fc" id="L312">        Stream.of(</span>
             JTextPaneAppender.ATTRIBUTE_WARN,
             JTextPaneAppender.ATTRIBUTE_INFORM,
             JTextPaneAppender.ATTRIBUTE_SUCCESS,
             JTextPaneAppender.ATTRIBUTE_ALL
         )
-<span class="fc" id="L308">        .forEach(attribute -&gt; {</span>
-<span class="pc bpc" id="L309" title="1 of 2 branches missed.">            StyleConstants.setFontFamily(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_NAME_MONO_ASIAN : UiUtil.FONT_NAME_MONO_NON_ASIAN);</span>
-<span class="pc bpc" id="L310" title="1 of 2 branches missed.">            StyleConstants.setFontSize(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_SIZE_MONO_ASIAN : UiUtil.FONT_SIZE_MONO_NON_ASIAN);</span>
-<span class="fc" id="L311">        });</span>
+<span class="fc" id="L318">        .forEach(attribute -&gt; {</span>
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">            StyleConstants.setFontFamily(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_NAME_MONO_ASIAN : UiUtil.FONT_NAME_MONO_NON_ASIAN);</span>
+<span class="pc bpc" id="L320" title="1 of 2 branches missed.">            StyleConstants.setFontSize(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_SIZE_MONO_ASIAN : UiUtil.FONT_SIZE_MONO_NON_ASIAN);</span>
+<span class="fc" id="L321">        });</span>
 
-<span class="pc bpc" id="L313" title="1 of 2 branches missed.">        MediatorHelper.managerBruteForce().getResult().setFont(I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_MONO_ASIAN : UiUtil.FONT_MONO_NON_ASIAN);</span>
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">        MediatorHelper.managerBruteForce().getResult().setFont(I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_MONO_ASIAN : UiUtil.FONT_MONO_NON_ASIAN);</span>
 
-<span class="fc" id="L315">        this.switchNetworkTable();</span>
-<span class="fc" id="L316">        I18nViewUtil.switchI18nComponents();</span>
-<span class="fc" id="L317">        this.switchOrientation(oldLocale, newLocale, isStartup);</span>
-<span class="fc" id="L318">        this.switchMenuItems();  // required to restore proper language orientation</span>
+<span class="fc" id="L325">        this.switchNetworkTable();</span>
+<span class="fc" id="L326">        I18nViewUtil.switchI18nComponents();</span>
+<span class="fc" id="L327">        this.switchOrientation(oldLocale, newLocale, isStartup);</span>
+<span class="fc" id="L328">        this.switchMenuItems();  // required to restore proper language orientation</span>
         
-<span class="fc" id="L320">        MediatorHelper.treeDatabase().reloadNodes();</span>
+<span class="fc" id="L330">        MediatorHelper.treeDatabase().reloadNodes();</span>
+<span class="fc" id="L331">        MediatorHelper.panelAddressBar().getPanelTrailingAddress().buttonStart.setIcons();</span>
+<span class="pc bpc" id="L332" title="1 of 2 branches missed.">        int textPosition = ComponentOrientation.getOrientation(newLocale).isLeftToRight()  // leading/trailing not working</span>
+<span class="fc" id="L333">            ? SwingConstants.LEFT</span>
+<span class="pc" id="L334">            : SwingConstants.RIGHT;</span>
+<span class="fc" id="L335">        MediatorHelper.panelAddressBar().getAtomicRadioRequest().setHorizontalTextPosition(textPosition);  // component orientation not working</span>
+<span class="fc" id="L336">        MediatorHelper.panelAddressBar().getAtomicRadioMethod().setHorizontalTextPosition(textPosition);</span>
+<span class="fc" id="L337">        MediatorHelper.panelAddressBar().getAtomicRadioHeader().setHorizontalTextPosition(textPosition);</span>
 
         // Fix #92981: IllegalArgumentException on revalidate()
         // Fix #96185: NullPointerException on revalidate()
         // Fix #96226: ArrayIndexOutOfBoundsException on revalidate()
         try {
-<span class="fc" id="L326">            MediatorHelper.frame().revalidate();  // Fix glitches on Linux</span>
-<span class="nc" id="L327">        } catch (NullPointerException | IllegalArgumentException | ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L328">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L329">        }</span>
-<span class="fc" id="L330">    }</span>
+<span class="fc" id="L343">            MediatorHelper.frame().revalidate();  // Fix glitches on Linux</span>
+<span class="nc" id="L344">        } catch (NullPointerException | IllegalArgumentException | ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L345">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L346">        }</span>
+<span class="fc" id="L347">    }</span>
 
     private void switchOrientation(Locale oldLocale, Locale newLocale, boolean isStartup) {
-<span class="fc" id="L333">        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
-<span class="fc" id="L334">        MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
+<span class="fc" id="L350">        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
+<span class="fc" id="L351">        MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
         
-<span class="pc bpc" id="L336" title="1 of 2 branches missed.">        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {</span>
-            
-<span class="nc" id="L338">            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitNS().getSplitEW();</span>
-<span class="nc" id="L339">            var componentLeft = splitPaneLeftRight.getLeftComponent();</span>
-<span class="nc" id="L340">            var componentRight = splitPaneLeftRight.getRightComponent();</span>
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {</span>
+            // not rendered at startup, only on switch (unreliable components width can be 0 at startup)
+            // use event windowOpen instead when required
+
+<span class="nc" id="L357">            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitNS().getSplitEW();</span>
+<span class="nc" id="L358">            var componentLeft = splitPaneLeftRight.getLeftComponent();</span>
+<span class="nc" id="L359">            var componentRight = splitPaneLeftRight.getRightComponent();</span>
 
             // Reset components
-<span class="nc" id="L343">            splitPaneLeftRight.setLeftComponent(null);</span>
-<span class="nc" id="L344">            splitPaneLeftRight.setRightComponent(null);</span>
-<span class="nc" id="L345">            splitPaneLeftRight.setLeftComponent(componentRight);</span>
-<span class="nc" id="L346">            splitPaneLeftRight.setRightComponent(componentLeft);</span>
+<span class="nc" id="L362">            splitPaneLeftRight.setLeftComponent(null);</span>
+<span class="nc" id="L363">            splitPaneLeftRight.setRightComponent(null);</span>
+<span class="nc" id="L364">            splitPaneLeftRight.setLeftComponent(componentRight);</span>
+<span class="nc" id="L365">            splitPaneLeftRight.setRightComponent(componentLeft);</span>
 
-<span class="nc bnc" id="L348" title="All 2 branches missed.">            if (isStartup) {</span>
-                // TODO unclear and not working properly when starting as locale arabic
-<span class="nc" id="L350">                splitPaneLeftRight.setDividerLocation(</span>
-<span class="nc" id="L351">                    splitPaneLeftRight.getDividerLocation()</span>
-                );
-            } else {  // required as switch to arabic uses reversed location
-<span class="nc" id="L354">                splitPaneLeftRight.setDividerLocation(</span>
-<span class="nc" id="L355">                    splitPaneLeftRight.getWidth() -</span>
-<span class="nc" id="L356">                    splitPaneLeftRight.getDividerLocation()</span>
-                );
-            }
+            // required as switch to arabic uses reversed location
+<span class="nc" id="L368">            splitPaneLeftRight.setDividerLocation(splitPaneLeftRight.getWidth() - splitPaneLeftRight.getDividerLocation());</span>
+
+<span class="nc" id="L370">            JSplitPane networkSplitPane = MediatorHelper.panelConsoles().networkSplitPane;</span>
+<span class="nc" id="L371">            var componentLefta = networkSplitPane.getLeftComponent();</span>
+<span class="nc" id="L372">            var componentRighta = networkSplitPane.getRightComponent();</span>
+
+            // Reset components
+<span class="nc" id="L375">            networkSplitPane.setLeftComponent(null);</span>
+<span class="nc" id="L376">            networkSplitPane.setRightComponent(null);</span>
+<span class="nc" id="L377">            networkSplitPane.setLeftComponent(componentRighta);</span>
+<span class="nc" id="L378">            networkSplitPane.setRightComponent(componentLefta);</span>
+
+<span class="nc" id="L380">            networkSplitPane.setDividerLocation(networkSplitPane.getWidth() - networkSplitPane.getDividerLocation());</span>
         }
         
-<span class="fc" id="L361">        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
-<span class="fc" id="L362">    }</span>
+<span class="fc" id="L383">        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
+<span class="fc" id="L384">    }</span>
 
     private void switchMenuItems() {
-<span class="fc" id="L365">        Stream.concat(AppMenubar.MODELS_ITEM.stream(), AppMenubar.MODELS_ITEM_INTO.stream())</span>
-<span class="fc" id="L366">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
-<span class="fc bfc" id="L367" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
-<span class="fc" id="L368">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
-<span class="fc" id="L369">            : ComponentOrientation.LEFT_TO_RIGHT</span>
+<span class="fc" id="L387">        Stream.concat(AppMenubar.MODELS_ITEM.stream(), AppMenubar.MODELS_ITEM_INTO.stream())</span>
+<span class="fc" id="L388">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
+<span class="fc bfc" id="L389" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
+<span class="fc" id="L390">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
+<span class="fc" id="L391">            : ComponentOrientation.LEFT_TO_RIGHT</span>
         ));
-<span class="fc" id="L371">    }</span>
+<span class="fc" id="L393">    }</span>
 
     private void switchNetworkTable() {
-<span class="fc" id="L374">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
-<span class="fc" id="L375">        TableColumnModel columnModel = header.getColumnModel();</span>
-<span class="fc" id="L376">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
-<span class="fc" id="L377">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
-<span class="fc" id="L378">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
-<span class="fc" id="L379">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
-<span class="fc" id="L380">        header.repaint();</span>
-<span class="fc" id="L381">    }</span>
+<span class="fc" id="L396">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
+<span class="fc" id="L397">        TableColumnModel columnModel = header.getColumnModel();</span>
+<span class="fc" id="L398">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
+<span class="fc" id="L399">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
+<span class="fc" id="L400">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
+<span class="fc" id="L401">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
+<span class="fc" id="L402">        header.repaint();</span>
+<span class="fc" id="L403">    }</span>
     
     
     // Getter and setter
 
     public JMenu getMenuView() {
-<span class="nc" id="L387">        return this.menuWindows.getMenuView();</span>
+<span class="nc" id="L409">        return this.menuWindows.getMenuView();</span>
     }
 
     public MenuWindows getMenuWindows() {
-<span class="fc" id="L391">        return this.menuWindows;</span>
+<span class="fc" id="L413">        return this.menuWindows;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
