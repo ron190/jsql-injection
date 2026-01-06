@@ -22,7 +22,7 @@ class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/delete?tenant=mysql-error&name="
+            "http://localhost:8080/tx/delete?tenant=mysql-error&name="
         );
 
         model.setIsScanning(true);

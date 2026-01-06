@@ -1,5 +1,6 @@
 package spring.rest;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,7 +8,8 @@ import java.util.Arrays;
 import java.util.Map;
 
 @org.springframework.web.bind.annotation.RestController
-@Transactional  // stack not working when annotation on method
+// no propagation to prevent: Transaction silently rolled back because it has been marked as rollback-only
+@Transactional(propagation = Propagation.NEVER)
 @RequestMapping("/tx")
 public class JpaStackRestController extends RestController {
 
@@ -32,5 +34,20 @@ public class JpaStackRestController extends RestController {
         });
         greeting.setContent(result.toString());
         return greeting;
+    }
+
+    @RequestMapping("/update")
+    public Greeting endpointUpdatea(@RequestParam(value="name", defaultValue="World") String name) {
+        return this.getResponse(name, "update StudentForDelete set Class_Name = '' where 'not_found' = '%s'", true, true, false);
+    }
+
+    @RequestMapping("/delete")
+    public Greeting endpointDelete(@RequestParam(value="name", defaultValue="World") String name) {
+        return this.getResponse(name, "delete from StudentForDelete where 'not_found' = '%s'", true, true, false);
+    }
+
+    @RequestMapping("/insert")
+    public Greeting endpointInsert(@RequestParam(value="name", defaultValue="World") String name) {
+        return this.getResponse(name, "insert into StudentForDelete select * from StudentForDelete where 'not_found' = '%s'", true, true, false);
     }
 }

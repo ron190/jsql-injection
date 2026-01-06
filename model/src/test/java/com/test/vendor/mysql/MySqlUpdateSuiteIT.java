@@ -22,7 +22,7 @@ class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/update?tenant=mysql-error&name="
+            "http://localhost:8080/tx/update?tenant=mysql-error&name="
         );
 
         model.setIsScanning(true);

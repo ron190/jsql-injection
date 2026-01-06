@@ -37,7 +37,7 @@ public class RestController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private Greeting getResponse(String name, String sqlQuery, boolean isError, boolean isUpdate, boolean isVisible) {
+    protected Greeting getResponse(String name, String sqlQuery, boolean isError, boolean isUpdate, boolean isVisible) {
         return this.getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false, false);
     }
 
@@ -149,21 +149,6 @@ public class RestController {
     @RequestMapping("/select")
     public Greeting endpointSelect(@RequestParam(value="name", defaultValue="World") String name) {
         return this.getResponse(name, "select %s", false, false, false);
-    }
-
-    @RequestMapping("/delete")
-    public Greeting endpointDelete(@RequestParam(value="name", defaultValue="World") String name) {
-        return this.getResponse(name, "delete from StudentForDelete where 'not_found' = '%s'", true, true, false);
-    }
-    
-    @RequestMapping("/insert")
-    public Greeting endpointInsert(@RequestParam(value="name", defaultValue="World") String name) {
-        return this.getResponse(name, "insert into StudentForDelete select * from StudentForDelete where 'not_found' = '%s'", true, true, false);
-    }
-    
-    @RequestMapping("/update")
-    public Greeting endpointUpdate(@RequestParam(value="name", defaultValue="World") String name) {
-        return this.getResponse(name, "update StudentForDelete set Class_Name = '' where 'not_found' = '%s'", true, true, false);
     }
 
     @RequestMapping("/order-by")
