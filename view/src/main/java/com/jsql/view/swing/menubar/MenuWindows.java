@@ -56,7 +56,7 @@ public class MenuWindows extends JMenu {
         menuAppearance.setMnemonic('A');
 
         JMenuItem itemNewWindows4k = new JMenuItem(
-            new ActionNewWindow("Open window with 4K resolution...", "-Dsun.java2d.uiScale=2.5")
+            new ActionNewWindow("Open window in 4K resolution...", "-Dsun.java2d.uiScale=2.5")
         );
         menuAppearance.add(itemNewWindows4k);
 
@@ -190,7 +190,7 @@ public class MenuWindows extends JMenu {
         itemSqlEngine.setName("itemSqlEngine");
         itemSqlEngine.setMnemonic('S');
 
-        // Render the SQL Engine dialog behind scene
+        // Render the SQL Engine dialog behind the scene
         var titleTabSqlEngine = "SQL Engine";
 
         itemSqlEngine.addActionListener(actionEvent -> {
@@ -224,7 +224,7 @@ public class MenuWindows extends JMenu {
         I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, itemPreferences);
         itemPreferences.setName("itemPreferences");
 
-        // Render the Preferences dialog behind scene
+        // Render the Preferences dialog behind the scene
         var titleTabPreferences = "Preferences";
 
         itemPreferences.addActionListener(actionEvent -> {
@@ -295,8 +295,7 @@ public class MenuWindows extends JMenu {
     }
 
     public void switchLocaleFromPreferences() {
-        AppMenubar.MODELS_ITEM.stream()
-        .filter(model -> model.getLanguage().getLanguageTag().equals(
+        AppMenubar.MODELS_ITEM.stream().filter(model -> model.getLanguage().getLanguageTag().equals(
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()
         ))
         .forEach(modelItem -> modelItem.getMenuItem().doClick());

@@ -32,7 +32,7 @@ public class JdbcRestController {
 
     // Integration tests on docker
 
-    @RequestMapping("/monetdb")
+    @RequestMapping("/monetdb")  // no working dialect
     public Greeting greetingMonetDB(@RequestParam(value="name", defaultValue="World") String name) {
         Greeting greeting;
         String inject = name.replace(":", "\\:");
@@ -380,33 +380,6 @@ public class JdbcRestController {
         }
         
         return greeting;
-    }
-
-    @RequestMapping("/oracle")
-    public Greeting greetingOracle(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
-        Class.forName("oracle.jdbc.OracleDriver");
-
-        AtomicReference<Greeting> greeting = new AtomicReference<>();
-        String inject = name.replace(":", "\\:");
-        StringBuilder result = new StringBuilder();
-
-        Arrays.stream(inject.split(";")).map(String::trim).forEach(query -> {
-            query = query +";";
-            try (
-                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@jsql-oracle:1521:XE", "system", "Password1_One");
-                PreparedStatement pstmt = con.prepareStatement("select distinct owner from all_tables where '1' = '"+ query +"'")
-            ) {
-                ResultSet rs = pstmt.executeQuery();
-                while(rs.next()) {
-                    result.append(rs.getString(1));
-                }
-                greeting.set(new Greeting(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString())));
-            } catch (Exception e) {
-                greeting.set(this.initErrorMessage(e));
-            }
-        });
-
-        return greeting.get();
     }
 
     @RequestMapping("/postgres")  // local testing, not used

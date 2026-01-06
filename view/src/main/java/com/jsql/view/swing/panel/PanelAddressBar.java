@@ -173,8 +173,8 @@ public class PanelAddressBar extends JPanel {
         panelTextFields.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
         this.add(panelTextFields);
 
-        final var popup = new JPopupMenu();
-        final var buttonGroupMethod = new ButtonGroup();
+        final var popupMethods = new JPopupMenu();
+        final var buttonGroupMethods = new ButtonGroup();
 
         for (String method: new String[]{ "DELETE", StringUtil.GET, "HEAD", "OPTIONS", StringUtil.POST, "PUT", "TRACE" }) {
             final JMenuItem newMenuItem = new RadioItemNonClosing(method, StringUtil.GET.equals(method));
@@ -183,18 +183,18 @@ public class PanelAddressBar extends JPanel {
                 this.atomicRadioMethod.get().setText(this.typeRequest);
                 this.atomicRadioMethod.get().requestFocusInWindow();  // required to set proper focus
             });
-            popup.add(newMenuItem);
-            buttonGroupMethod.add(newMenuItem);
+            popupMethods.add(newMenuItem);
+            buttonGroupMethods.add(newMenuItem);
         }
 
-        var tooltipPanel = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("METHOD_CUSTOM_TOOLTIP")));
+        var tooltipMethods = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey("METHOD_CUSTOM_TOOLTIP")));
         var panelCustomMethod = new JPanel(new BorderLayout()) {
             @Override
             public JToolTip createToolTip() {
-                return tooltipPanel.get();
+                return tooltipMethods.get();
             }
         };
-        I18nViewUtil.addComponentForKey("METHOD_CUSTOM_TOOLTIP", tooltipPanel.get());
+        I18nViewUtil.addComponentForKey("METHOD_CUSTOM_TOOLTIP", tooltipMethods.get());
         Supplier<Color> colorBackground = () -> UIManager.getColor("MenuItem.background");  // adapt to current theme
         Supplier<Color> colorSelectionBackground = () -> UIManager.getColor("MenuItem.selectionBackground");  // adapt to current theme
         panelCustomMethod.setBackground(colorBackground.get());  // required for correct color
@@ -202,18 +202,18 @@ public class PanelAddressBar extends JPanel {
         final var radioCustomMethod = new JRadioButton() {
             @Override
             public JToolTip createToolTip() {
-                return tooltipPanel.get();
+                return tooltipMethods.get();
             }
         };
         radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
         radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());
         radioCustomMethod.setBackground(colorBackground.get());  // required for correct color
-        buttonGroupMethod.add(radioCustomMethod);
+        buttonGroupMethods.add(radioCustomMethod);
 
         final JTextField inputCustomMethod = new JPopupTextField("CUSTOM"){
             @Override
             public JToolTip createToolTip() {
-                return tooltipPanel.get();
+                return tooltipMethods.get();
             }
         }.getProxy();
         inputCustomMethod.addMouseListener(new MouseAdapter() {
@@ -257,17 +257,16 @@ public class PanelAddressBar extends JPanel {
 
         panelCustomMethod.add(radioCustomMethod, BorderLayout.LINE_START);
         panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);
-        popup.insert(panelCustomMethod, popup.getComponentCount());
+        popupMethods.insert(panelCustomMethod, popupMethods.getComponentCount());
 
         this.atomicRadioMethod.get().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Arrays.stream(popup.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
+                Arrays.stream(popupMethods.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
                 radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());
                 radioCustomMethod.updateUI();  // required: incorrect when dark/light mode switch
                 inputCustomMethod.updateUI();  // required: incorrect when dark/light mode switch
-                popup.updateUI();  // required: incorrect when dark/light mode switch
-                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
+                popupMethods.updateUI();  // required: incorrect when dark/light mode switch
 
                 if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
@@ -275,25 +274,22 @@ public class PanelAddressBar extends JPanel {
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
                 }
 
-                // TODO Failure on arabic
-                // Fix #96032: NullPointerException on show()
-                try {
-                    popup.show(
-                        e.getComponent(),
-                        ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
-                            ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()
-                            : e.getComponent().getX(),
-                        e.getComponent().getY() + e.getComponent().getHeight()
-                    );
-                    popup.setLocation(  // required for proper location
-                        ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
-                            ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()
-                            : e.getComponent().getLocationOnScreen().x,
-                        e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight()
-                    );
-                } catch (NullPointerException ex) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, ex);
-                }
+                popupMethods.show(
+                    e.getComponent(),
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
+                        ? e.getComponent().getX() - e.getComponent().getWidth() - popupMethods.getWidth()
+                        : e.getComponent().getX(),
+                    e.getComponent().getY() + e.getComponent().getHeight()
+                );
+                popupMethods.setLocation(  // required for proper location
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
+                        ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popupMethods.getWidth()
+                        : e.getComponent().getLocationOnScreen().x,
+                    e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight()
+                );
+
+                // Orientation set after popup placement, Fix #96032: NullPointerException on show() when arabic
+                popupMethods.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
             }
         });
 

@@ -17,7 +17,7 @@ class MySqlStackSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/stack?tenant=mysql&name="
+            "http://localhost:8080/tx/stack?tenant=mysql&name="
         );
 
         model

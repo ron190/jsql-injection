@@ -23,26 +23,26 @@ public class PanelProxy extends JPanel {
 
     public PanelProxy(PanelPreferences panelPreferences) {
         var panelHttpIpAddress = new JPanel();
-        panelHttpIpAddress.setLayout(new BoxLayout(panelHttpIpAddress, BoxLayout.X_AXIS));
+        panelHttpIpAddress.setLayout(new BoxLayout(panelHttpIpAddress, BoxLayout.LINE_AXIS));
         panelHttpIpAddress.add(new JLabel("IP "));
         panelHttpIpAddress.add(this.textProxyAddress);
         panelHttpIpAddress.setMaximumSize(new Dimension(325, this.textProxyAddress.getPreferredSize().height));
 
         var panelHttpPort = new JPanel();
-        panelHttpPort.setLayout(new BoxLayout(panelHttpPort, BoxLayout.X_AXIS));
+        panelHttpPort.setLayout(new BoxLayout(panelHttpPort, BoxLayout.LINE_AXIS));
         panelHttpPort.add(new JLabel("Port "));
         panelHttpPort.add(this.textProxyPort);
         panelHttpPort.setMaximumSize(new Dimension(325, this.textProxyPort.getPreferredSize().height));
         panelHttpPort.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
 
         var panelHttpsIpAddress = new JPanel();
-        panelHttpsIpAddress.setLayout(new BoxLayout(panelHttpsIpAddress, BoxLayout.X_AXIS));
+        panelHttpsIpAddress.setLayout(new BoxLayout(panelHttpsIpAddress, BoxLayout.LINE_AXIS));
         panelHttpsIpAddress.add(new JLabel("IP "));
         panelHttpsIpAddress.add(this.textProxyAddressHttps);
         panelHttpsIpAddress.setMaximumSize(new Dimension(325, this.textProxyAddressHttps.getPreferredSize().height));
 
         var panelHttpsPort = new JPanel();
-        panelHttpsPort.setLayout(new BoxLayout(panelHttpsPort, BoxLayout.X_AXIS));
+        panelHttpsPort.setLayout(new BoxLayout(panelHttpsPort, BoxLayout.LINE_AXIS));
         panelHttpsPort.add(new JLabel("Port "));
         panelHttpsPort.add(this.textProxyPortHttps);
         panelHttpsPort.setMaximumSize(new Dimension(325, this.textProxyPortHttps.getPreferredSize().height));

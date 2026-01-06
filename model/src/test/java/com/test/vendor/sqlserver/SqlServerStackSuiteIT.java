@@ -17,7 +17,7 @@ class SqlServerStackSuiteIT extends ConcreteSqlServerSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/stack?tenant=sqlserver&name="
+            "http://localhost:8080/tx/stack?tenant=sqlserver&name="
         );
 
         model

@@ -41,16 +41,18 @@ public class DialogTranslate extends JDialog {
     /**
      * Button receiving focus.
      */
-    private final JButton buttonSend = new JButton(I18nViewUtil.valueByKey("TRANSLATION_SEND"));
+    private final JButton buttonSend = new JButton();  // "Send" text displayed in target locale at runtime
 
     private Language languageInto;
     private final JLabel labelTranslation = new JLabel();
     private final JTextArea textToTranslate = new JPopupTextArea(new JTextAreaPlaceholder(I18nViewUtil.valueByKey("TRANSLATION_PLACEHOLDER"))).getProxy();
     private final JProgressBar progressBarTranslation = new JProgressBar();
     private String textBeforeChange = StringUtils.EMPTY;
+    private final JPanel lastLine;
 
     /**
-     * Create a dialog for general information on project jsql.
+     * Displays dialog into target locale.
+     * Switching language does not affect this dialog
      */
     public DialogTranslate() {
         super(MediatorHelper.frame(), Dialog.ModalityType.MODELESS);
@@ -64,12 +66,12 @@ public class DialogTranslate extends JDialog {
             JComponent.WHEN_IN_FOCUSED_WINDOW
         );
 
-        JPanel lastLine = this.initLastLine();
+        this.lastLine = this.initLastLine();
 
         this.labelTranslation.setBorder(UiUtil.BORDER_5PX);
         var contentPane = this.getContentPane();
         contentPane.add(this.labelTranslation, BorderLayout.NORTH);
-        contentPane.add(lastLine, BorderLayout.SOUTH);
+        contentPane.add(this.lastLine, BorderLayout.SOUTH);
 
         this.initTextToTranslate();
 
@@ -92,6 +94,16 @@ public class DialogTranslate extends JDialog {
                 localeInto.getDisplayLanguage(localeInto),
                 localeInto.getDisplayLanguage(localeInto)
             )
+        );
+        ComponentOrientation orientation = ComponentOrientation.getOrientation(Locale.forLanguageTag(language.getLanguageTag()));
+        this.labelTranslation.setComponentOrientation(orientation);
+        this.progressBarTranslation.setComponentOrientation(orientation);
+        this.lastLine.setComponentOrientation(orientation);
+        this.buttonSend.setText(  // display text at runtime
+            ResourceBundle.getBundle(
+                I18nUtil.BASE_NAME,
+                Locale.forLanguageTag(language.getLanguageTag())
+            ).getString("TRANSLATION_SEND")
         );
 
         this.textToTranslate.setText(null);

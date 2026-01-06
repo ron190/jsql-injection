@@ -157,7 +157,7 @@ public class AppMenubar extends JMenuBar {
         var menuI18nContribution = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY_HELPTRANSLATE"));
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_HELPTRANSLATE", menuI18nContribution);
 
-        final var dialogTranslate = new DialogTranslate();  // Render the About dialog behind scene
+        final var dialogTranslate = new DialogTranslate();  // Render the About dialog behind the scene
         AppMenubar.MODELS_ITEM_INTO.forEach(model -> {
             model.setMenuItem(new JMenuItem(model.getLanguage().getMenuItemLabel(), model.getLanguage().getFlag()));
             model.getMenuItem().addActionListener(new ActionTranslate(dialogTranslate, model.getLanguage()));
@@ -249,7 +249,7 @@ public class AppMenubar extends JMenuBar {
         JMenuItem itemUpdate = new JMenuItem(I18nUtil.valueByKey("MENUBAR_HELP_UPDATE"), 'U');
         I18nViewUtil.addComponentForKey("MENUBAR_HELP_UPDATE", itemUpdate);
 
-        // Render the About dialog behind scene
+        // Render the About dialog behind the scene
         itemHelp.addActionListener(actionEvent -> {
             final var dialogAbout = new DialogAbout();
             if (!dialogAbout.isVisible()) {
@@ -281,7 +281,8 @@ public class AppMenubar extends JMenuBar {
         Arrays.asList(
             UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.UPLOAD, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH,
             UiUtil.TABLE_LINEAR, UiUtil.TABLE_BOLD, UiUtil.NETWORK, UiUtil.DATABASE_LINEAR, UiUtil.COG, UiUtil.CUP, UiUtil.CONSOLE, UiUtil.BINARY, UiUtil.CHUNK,
-            UiUtil.ARROW, UiUtil.ARROW_HOVER, UiUtil.ARROW_PRESSED, UiUtil.EXPAND, UiUtil.EXPAND_HOVER, UiUtil.EXPAND_PRESSED,
+            UiUtil.ARROW, UiUtil.ARROW_HOVER, UiUtil.ARROW_PRESSED, UiUtil.ARROW_LEFT, UiUtil.ARROW_LEFT_HOVER, UiUtil.ARROW_LEFT_PRESSED,
+            UiUtil.EXPAND, UiUtil.EXPAND_HOVER, UiUtil.EXPAND_PRESSED,
             UiUtil.HOURGLASS, UiUtil.ARROW_DOWN, UiUtil.ARROW_UP, UiUtil.SQUARE, UiUtil.GLOBE, UiUtil.TICK_GREEN, UiUtil.CROSS_RED,
             UiUtil.APP_ICON, UiUtil.APP_BIG, UiUtil.APP_MIDDLE
         ).forEach(ModelSvgIcon::setColorFilter);
@@ -327,6 +328,13 @@ public class AppMenubar extends JMenuBar {
         this.switchMenuItems();  // required to restore proper language orientation
         
         MediatorHelper.treeDatabase().reloadNodes();
+        MediatorHelper.panelAddressBar().getPanelTrailingAddress().buttonStart.setIcons();
+        int textPosition = ComponentOrientation.getOrientation(newLocale).isLeftToRight()  // leading/trailing not working
+            ? SwingConstants.LEFT
+            : SwingConstants.RIGHT;
+        MediatorHelper.panelAddressBar().getAtomicRadioRequest().setHorizontalTextPosition(textPosition);  // component orientation not working
+        MediatorHelper.panelAddressBar().getAtomicRadioMethod().setHorizontalTextPosition(textPosition);
+        MediatorHelper.panelAddressBar().getAtomicRadioHeader().setHorizontalTextPosition(textPosition);
 
         // Fix #92981: IllegalArgumentException on revalidate()
         // Fix #96185: NullPointerException on revalidate()
@@ -343,7 +351,9 @@ public class AppMenubar extends JMenuBar {
         MediatorHelper.frame().applyComponentOrientation(componentOrientation);
         
         if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {
-            
+            // not rendered at startup, only on switch (unreliable components width can be 0 at startup)
+            // use event windowOpen instead when required
+
             JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitNS().getSplitEW();
             var componentLeft = splitPaneLeftRight.getLeftComponent();
             var componentRight = splitPaneLeftRight.getRightComponent();
@@ -354,17 +364,20 @@ public class AppMenubar extends JMenuBar {
             splitPaneLeftRight.setLeftComponent(componentRight);
             splitPaneLeftRight.setRightComponent(componentLeft);
 
-            if (isStartup) {
-                // TODO unclear and not working properly when starting as locale arabic
-                splitPaneLeftRight.setDividerLocation(
-                    splitPaneLeftRight.getDividerLocation()
-                );
-            } else {  // required as switch to arabic uses reversed location
-                splitPaneLeftRight.setDividerLocation(
-                    splitPaneLeftRight.getWidth() -
-                    splitPaneLeftRight.getDividerLocation()
-                );
-            }
+            // required as switch to arabic uses reversed location
+            splitPaneLeftRight.setDividerLocation(splitPaneLeftRight.getWidth() - splitPaneLeftRight.getDividerLocation());
+
+            JSplitPane networkSplitPane = MediatorHelper.panelConsoles().networkSplitPane;
+            var componentLefta = networkSplitPane.getLeftComponent();
+            var componentRighta = networkSplitPane.getRightComponent();
+
+            // Reset components
+            networkSplitPane.setLeftComponent(null);
+            networkSplitPane.setRightComponent(null);
+            networkSplitPane.setLeftComponent(componentRighta);
+            networkSplitPane.setRightComponent(componentLefta);
+
+            networkSplitPane.setDividerLocation(networkSplitPane.getWidth() - networkSplitPane.getDividerLocation());
         }
         
         MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));

@@ -52,7 +52,6 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
     public SplitNS() {
         super(JSplitPane.VERTICAL_SPLIT);
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
-        var verticalLeftRightSplitter = preferences.getInt(PreferencesUtil.EW_SPLIT, 350);
         var tabManagersProxy = new TabManagersCards();
         new TabResults();  // initialized but hidden
 
@@ -61,7 +60,8 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
         JLabel labelApp = new JLabel(UiUtil.APP_BIG.getIcon());
         labelApp.setMinimumSize(new Dimension(100, 0));
         this.splitEW.setRightComponent(labelApp);
-        this.splitEW.setDividerLocation(verticalLeftRightSplitter);
+        var verticalLeftRightSplitter = preferences.getDouble(PreferencesUtil.EW_SPLIT, 0.33);
+        this.splitEW.setDividerLocation(Math.max(0.0, Math.min(1.0, verticalLeftRightSplitter)));
 
         JLabel labelShowConsoles = new JLabel(UiUtil.ARROW_UP.getIcon());
         labelShowConsoles.setBorder(BorderFactory.createEmptyBorder());
@@ -97,7 +97,7 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
     }
 
     /**
-     * Switch left component with right component when locale orientation requires this.
+     * Switch left component with right component when locale orientation requires it.
      */
     public void initSplitOrientation() {
         if (MediatorHelper.tabResults().getTabCount() == 0) {

@@ -2,6 +2,7 @@ package com.jsql.view.swing.panel.preferences;
 
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.panel.preferences.listener.SpinnerMouseWheelListener;
+import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 
@@ -27,8 +28,8 @@ public class PanelConnection extends JPanel {
     private final JSpinner spinnerConnectionTimeout = new JSpinner();
     
     private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox("Custom CSRF:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag());
-    private final JTextField textfieldCustomCsrfInputToken = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTag());
-    private final JTextField textfieldCustomCsrfOutputToken = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTagOutput());
+    private final JTextField textfieldCustomCsrfInputToken = new JPopupTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTag()).getProxy();
+    private final JTextField textfieldCustomCsrfOutputToken = new JPopupTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTagOutput()).getProxy();
     
     public PanelConnection(PanelPreferences panelPreferences) {
         this.checkboxIsFollowingRedirection.setToolTipText(
@@ -103,13 +104,13 @@ public class PanelConnection extends JPanel {
         );
 
         var panelCsrfUserTagInput = new JPanel();
-        panelCsrfUserTagInput.setLayout(new BoxLayout(panelCsrfUserTagInput, BoxLayout.X_AXIS));
+        panelCsrfUserTagInput.setLayout(new BoxLayout(panelCsrfUserTagInput, BoxLayout.LINE_AXIS));
         panelCsrfUserTagInput.add(new JLabel("Input token to find "));
         panelCsrfUserTagInput.add(this.textfieldCustomCsrfInputToken);
         panelCsrfUserTagInput.setMaximumSize(new Dimension(450, this.textfieldCustomCsrfInputToken.getPreferredSize().height));
 
         var panelCsrfUserTagOutput = new JPanel();
-        panelCsrfUserTagOutput.setLayout(new BoxLayout(panelCsrfUserTagOutput, BoxLayout.X_AXIS));
+        panelCsrfUserTagOutput.setLayout(new BoxLayout(panelCsrfUserTagOutput, BoxLayout.LINE_AXIS));
         panelCsrfUserTagOutput.add(new JLabel("Output token to write "));
         panelCsrfUserTagOutput.add(this.textfieldCustomCsrfOutputToken);
         panelCsrfUserTagOutput.setMaximumSize(new Dimension(450, this.textfieldCustomCsrfInputToken.getPreferredSize().height));

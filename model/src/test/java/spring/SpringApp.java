@@ -53,7 +53,6 @@ public class SpringApp {
         try {  // ensure driver is loaded
             Class.forName("com.mimer.jdbc.Driver");  // required
             Class.forName("com.mckoi.JDBCDriver");  // required
-            Class.forName("oracle.jdbc.OracleDriver");
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(e);
         }
@@ -79,6 +78,7 @@ public class SpringApp {
     public static final Properties propsFirebird = new Properties();
     public static final Properties propsInformix = new Properties();
     public static final Properties propsSybase = new Properties();
+    public static final Properties propsOracle = new Properties();
 
     public static final List<SimpleEntry<String, Properties>> propertiesByEngine = Arrays.asList(
         new SimpleEntry<>("hibernate/hibernate.h2.properties", SpringApp.propsH2),
@@ -93,7 +93,8 @@ public class SpringApp {
         new SimpleEntry<>("hibernate/hibernate.derby.properties", SpringApp.propsDerby),
         new SimpleEntry<>("hibernate/hibernate.firebird.properties", SpringApp.propsFirebird),
         new SimpleEntry<>("hibernate/hibernate.informix.properties", SpringApp.propsInformix),
-        new SimpleEntry<>("hibernate/hibernate.sybase.properties", SpringApp.propsSybase)
+        new SimpleEntry<>("hibernate/hibernate.sybase.properties", SpringApp.propsSybase),
+        new SimpleEntry<>("hibernate/hibernate.oracle.properties", SpringApp.propsOracle)
     );
 
     static {

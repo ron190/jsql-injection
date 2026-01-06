@@ -52,7 +52,7 @@ public class WorkerTranslateInto extends SwingWorker<Object, Object> {
         } finally {
             this.displayDiff();
         }
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Text remaining to translate loaded");
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Remaining text to translate loaded, send your version to contribute");
         return null;
     }
 

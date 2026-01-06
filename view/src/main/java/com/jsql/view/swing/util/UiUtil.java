@@ -98,9 +98,13 @@ public class UiUtil {
 
     public static final ModelSvgIcon CROSS_RED = new ModelSvgIcon("cross", new Color(0x0F0F0F), null, LogLevelUtil.COLOR_RED, 0.025f);
     private static final String NAME_ARROW = "arrow";
+    private static final String NAME_ARROW_LEFT = "arrow-left";
     public static final ModelSvgIcon ARROW = new ModelSvgIcon(UiUtil.NAME_ARROW, new Color(0x005a96), "ComboBox.buttonArrowColor", 1f);
     public static final ModelSvgIcon ARROW_HOVER = new ModelSvgIcon(UiUtil.NAME_ARROW, new Color(0x005a96), "ComboBox.buttonHoverArrowColor", 1f);
     public static final ModelSvgIcon ARROW_PRESSED = new ModelSvgIcon(UiUtil.NAME_ARROW, new Color(0x005a96), "ComboBox.buttonPressedArrowColor", 1f);
+    public static final ModelSvgIcon ARROW_LEFT = new ModelSvgIcon(UiUtil.NAME_ARROW_LEFT, new Color(0x005a96), "ComboBox.buttonArrowColor", 1f);
+    public static final ModelSvgIcon ARROW_LEFT_HOVER = new ModelSvgIcon(UiUtil.NAME_ARROW_LEFT, new Color(0x005a96), "ComboBox.buttonHoverArrowColor", 1f);
+    public static final ModelSvgIcon ARROW_LEFT_PRESSED = new ModelSvgIcon(UiUtil.NAME_ARROW_LEFT, new Color(0x005a96), "ComboBox.buttonPressedArrowColor", 1f);
     private static final String NAME_EXPAND = "expand";
     public static final ModelSvgIcon EXPAND = new ModelSvgIcon(UiUtil.NAME_EXPAND, Color.BLACK, "ComboBox.buttonArrowColor", 0.02f);
     public static final ModelSvgIcon EXPAND_HOVER = new ModelSvgIcon(UiUtil.NAME_EXPAND, Color.BLACK, "ComboBox.buttonHoverArrowColor", 0.02f);
@@ -211,9 +215,9 @@ public class UiUtil {
         int w = textComponent.getWidth();
         
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        
-        var ins = textComponent.getInsets();
-        var fm = g.getFontMetrics();
+
+        var insets = textComponent.getInsets();
+        var fontMetrics = g.getFontMetrics();
         
         int c0 = UIManager.getColor("TextArea.background").getRGB();
         int c1 = UIManager.getColor("TextArea.foreground").getRGB();
@@ -227,18 +231,16 @@ public class UiUtil {
             : UiUtil.FONT_MONO_ASIAN.deriveFont(Font.ITALIC);  // fine for address bar, console, textfield
         g.setFont(
             I18nViewUtil.isNonUbuntu(I18nUtil.getCurrentLocale())
+            || !ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()).isLeftToRight()
             ? fontNonUbuntu
             : textComponent.getFont().deriveFont(Font.ITALIC)  // same
         );
 
-        g.drawString(
-            placeholderText,
-            x +
-            (ComponentOrientation.RIGHT_TO_LEFT.equals(textComponent.getComponentOrientation())
-            ? w - (fm.stringWidth(placeholderText) + ins.left + 2)
-            : ins.left + 2),
-            y
-        );
+        g.drawString(placeholderText,  (
+            textComponent.getComponentOrientation().isLeftToRight()
+            ? x + insets.left + 2
+            : w - (fontMetrics.stringWidth(placeholderText) + insets.left + 2 + 2*x)  // 2*x magic number for ar address bar margin
+        ), y);
     }
     
     public static void init(JTextComponent component) {

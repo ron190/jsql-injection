@@ -63,11 +63,17 @@ public class ButtonStart extends JButton {
         this.setIcons();
     }
 
-    private void setIcons() {
+    public void setIcons() {
         // required to get correct color at startup instead of blu
-        this.setIcon(UiUtil.ARROW.getIcon());
-        this.setRolloverIcon(UiUtil.ARROW_HOVER.getIcon());
-        this.setPressedIcon(UiUtil.ARROW_PRESSED.getIcon());
+        if (ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()).isLeftToRight()) {
+            this.setIcon(UiUtil.ARROW.getIcon());
+            this.setRolloverIcon(UiUtil.ARROW_HOVER.getIcon());
+            this.setPressedIcon(UiUtil.ARROW_PRESSED.getIcon());
+        } else {
+            this.setIcon(UiUtil.ARROW_LEFT.getIcon());
+            this.setRolloverIcon(UiUtil.ARROW_LEFT_HOVER.getIcon());
+            this.setPressedIcon(UiUtil.ARROW_LEFT_PRESSED.getIcon());
+        }
     }
 
     /**

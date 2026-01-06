@@ -193,7 +193,7 @@ public class PanelTable extends JPanel {
         
         JButton buttonCloseSearch = new ButtonClose();
         buttonCloseSearch.addActionListener(actionCloseSearch);
-        panelSearch.add(buttonCloseSearch, BorderLayout.EAST);
+        panelSearch.add(buttonCloseSearch, BorderLayout.LINE_END);
         panelSearch.setVisible(false);
         this.add(panelSearch, BorderLayout.SOUTH);
     }

@@ -69,7 +69,7 @@ public class JFrameView extends JFrame {
         I18nUtil.checkCurrentLanguage();
         this.check4K();
 
-        SwingUtilities.invokeLater(() -> {  // paint native blu svg in theme color behind scene
+        SwingUtilities.invokeLater(() -> {  // paint native blu svg in theme color behind the scene
             AppMenubar.applyTheme(injectionModel.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName());  // refresh missing components
             if (injectionModel.getMediatorUtils().getProxyUtil().isNotLive(GitUtil.ShowOnConsole.YES)) {  // network access
                 return;
@@ -116,23 +116,37 @@ public class JFrameView extends JFrame {
             @Override
             public void windowOpened(WindowEvent event) {
                 double nsProportion = preferences.getDouble(PreferencesUtil.NS_SPLIT, 0.75);
+                double ewProportion = preferences.getDouble(PreferencesUtil.EW_SPLIT, 0.33);
                 if (preferences.getBoolean(PreferencesUtil.IS_MAXIMIZED, false)) {
                     JFrameView.this.setExtendedState(Frame.MAXIMIZED_BOTH);
                 }
                 // Proportion means different location relative to whether frame is maximized or not
                 // Maximizing must wait AWT events to reflect the new divider location proportion
-                SwingUtilities.invokeLater(() -> JFrameView.this.splitNS.setDividerLocation(
-                    Math.max(0.0, Math.min(1.0, nsProportion))
-                ));
+                SwingUtilities.invokeLater(() -> {
+                    JFrameView.this.splitNS.setDividerLocation(
+                        Math.max(0.0, Math.min(1.0, nsProportion))
+                    );
+                    JFrameView.this.splitNS.getSplitEW().setDividerLocation(
+                        Math.max(0.0, Math.min(1.0, ewProportion))
+                    );
+                    MediatorHelper.panelConsoles().networkSplitPane.setDividerLocation(
+                        ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()).isLeftToRight()
+                        ? 0.33
+                        : 0.66
+                    );
+                });
             }
 
             @Override
             public void windowClosing(WindowEvent e) {
                 preferences.putBoolean(PreferencesUtil.IS_MAXIMIZED, JFrameView.this.isMaximized);
-                preferences.putInt(
-                    PreferencesUtil.EW_SPLIT,
-                    JFrameView.this.splitNS.getSplitEW().getDividerLocation()  // TODO not compatible arabic location
-                );
+
+                int ewDividerLocation = JFrameView.this.splitNS.getSplitEW().getDividerLocation();
+                int ewHeight = JFrameView.this.splitNS.getSplitEW().getWidth();
+                double ewProportion = 100.0 * ewDividerLocation / ewHeight;
+                double ewLocationProportionCapped = Math.max(0.0, Math.min(1.0,
+                    ewProportion / 100.0
+                ));
 
                 int nsDividerLocation = JFrameView.this.splitNS.getDividerLocation();
                 int nsHeight = JFrameView.this.splitNS.getHeight();
@@ -143,6 +157,7 @@ public class JFrameView extends JFrame {
 
                 // Divider location changes when window is maximized, instead stores location percentage between 0.0 and 1.0
                 preferences.putDouble(PreferencesUtil.NS_SPLIT, nsLocationProportionCapped);
+                preferences.putDouble(PreferencesUtil.EW_SPLIT, ewLocationProportionCapped);
 
                 preferences.putBoolean(PreferencesUtil.BINARY_VISIBLE, false);
                 preferences.putBoolean(PreferencesUtil.CHUNK_VISIBLE, false);

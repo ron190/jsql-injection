@@ -17,7 +17,7 @@ class OracleTimeGetSuiteIT extends ConcreteOracleSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/oracle?name="
+            "http://localhost:8080/time?tenant=oracle&name="
         );
         
         model.setIsScanning(true);

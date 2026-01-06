@@ -113,7 +113,8 @@ strategy:
     - javadb
    orderByErrorMessage:
     - Column position '1337' is out of range for the query expression
-   vendorSpecific: 0=(select CASE WHEN ${test} THEN 0 ELSE 1%2bIDENTITY_VAL_LOCAL()END from sysibm.sysdummy1)
+   # left join to avoid collision with db2
+   vendorSpecific: 0=(select case when ${test} then 0 else 1%2bidentity_val_local() end from sysibm.sysdummy1 left join sys.systableperms on 1=2)
 
  binary:
   test:

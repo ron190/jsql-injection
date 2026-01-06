@@ -33,13 +33,13 @@ public class PanelAuthentication extends JPanel {
         );
 
         var panelUsername = new JPanel();
-        panelUsername.setLayout(new BoxLayout(panelUsername, BoxLayout.X_AXIS));
+        panelUsername.setLayout(new BoxLayout(panelUsername, BoxLayout.LINE_AXIS));
         panelUsername.add(new JLabel("Username "));
         panelUsername.add(this.textDigestAuthenticationUsername);
         panelUsername.setMaximumSize(new Dimension(325, this.textDigestAuthenticationUsername.getPreferredSize().height));
 
         var panelPassword = new JPanel();
-        panelPassword.setLayout(new BoxLayout(panelPassword, BoxLayout.X_AXIS));
+        panelPassword.setLayout(new BoxLayout(panelPassword, BoxLayout.LINE_AXIS));
         panelPassword.add(new JLabel("Password "));
         panelPassword.add(this.textDigestAuthenticationPassword);
         panelPassword.setMaximumSize(new Dimension(325, this.textDigestAuthenticationPassword.getPreferredSize().height));
@@ -80,13 +80,13 @@ public class PanelAuthentication extends JPanel {
         this.checkboxUseKerberos.setToolTipText(tooltipUseKerberos);
 
         var panelLoginConf = new JPanel();
-        panelLoginConf.setLayout(new BoxLayout(panelLoginConf, BoxLayout.X_AXIS));
+        panelLoginConf.setLayout(new BoxLayout(panelLoginConf, BoxLayout.LINE_AXIS));
         panelLoginConf.add(new JLabel("login.conf "));
         panelLoginConf.add(this.textKerberosLoginConf);
         panelLoginConf.setMaximumSize(new Dimension(325, this.textKerberosLoginConf.getPreferredSize().height));
 
         var panelKrb5Conf = new JPanel();
-        panelKrb5Conf.setLayout(new BoxLayout(panelKrb5Conf, BoxLayout.X_AXIS));
+        panelKrb5Conf.setLayout(new BoxLayout(panelKrb5Conf, BoxLayout.LINE_AXIS));
         panelKrb5Conf.add(new JLabel("krb5.conf "));
         panelKrb5Conf.add(this.textKerberosKrb5Conf);
         panelKrb5Conf.setMaximumSize(new Dimension(325, this.textKerberosKrb5Conf.getPreferredSize().height));

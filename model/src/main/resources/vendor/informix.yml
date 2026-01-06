@@ -120,7 +120,8 @@ strategy:
     - Found a quote for which there is no matching quote\. \[SQL State=
     - "\\[Informix\\]\\[Informix ODBC Driver\\]General error\\. \\(SQLPrepare\\["
     - Informix database
-   vendorSpecific: 1=case when ${test} then 1 else (select 2 from table(set{1})) end
+   # 'where matches' to avoid collision with cubrid
+   vendorSpecific: 1=case when ${test} then 1 else (select 2 from table(set{1}) where '' matches '') end
 
  binary:
   test:

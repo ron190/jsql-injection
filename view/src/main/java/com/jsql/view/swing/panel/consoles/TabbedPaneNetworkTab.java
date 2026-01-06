@@ -52,9 +52,8 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     public TabbedPaneNetworkTab() {
         this.setName("tabNetwork");
         var panelDecode = new JPanel(new BorderLayout());
-        panelDecode.add(this.checkBoxDecode, BorderLayout.EAST);  // reduce to minimum size as checkbox expands by the label
+        panelDecode.add(this.checkBoxDecode, BorderLayout.LINE_END);  // reduce to minimum size as checkbox expands by the label
         this.putClientProperty("JTabbedPane.trailingComponent", panelDecode);
-        this.checkBoxDecode.setHorizontalTextPosition(SwingConstants.TRAILING);
 
         I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_URL", this.textAreaUrl);
         I18nViewUtil.addComponentForKey("NETWORK_LINE_PLACEHOLDER_RESPONSE", this.textAreaResponse);

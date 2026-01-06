@@ -135,6 +135,7 @@ strategy:
     - 'Warning: db2_fetch_array()'
    orderByErrorMessage:
     - 'DB2 SQL Error: SQLCODE=.*, SQLSTATE=.*, SQLERRMC=null, DRIVER=.*'
+   vendorSpecific: 0=(select CASE WHEN ${test} THEN 0 ELSE 1%2bIDENTITY_VAL_LOCAL()%2bRANK()OVER(ORDER BY 1 DESC)END from sysibm.sysdummy1)
 
  union:
   indices: union select ${indices} from sysibm.sysdummy1
