@@ -10,11 +10,6 @@ import org.junitpioneer.jupiter.RetryingTest;
 class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @Override
-    public void initTable() {
-        this.jsqlTableName = "StudentForDelete";
-    }
-
-    @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
