@@ -17,7 +17,7 @@ class OracleTimeGetSuiteIT extends ConcreteOracleSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/time?tenant=oracle&name="
+            "http://localhost:8080/time?tenant=oracle&name=1'"  // todo Time really slow on oracle
         );
         
         model.setIsScanning(true);
@@ -35,7 +35,8 @@ class OracleTimeGetSuiteIT extends ConcreteOracleSuiteIT {
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
+
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getOracle());
         model.beginInjection();
     }
     
