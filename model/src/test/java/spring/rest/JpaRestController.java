@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 @org.springframework.web.bind.annotation.RestController
 public class JpaRestController extends RestController {
 
+    @Override
     @Transactional  // non-stack not working with silent rollback when annotation on class
     protected Greeting getResponse(
         String name,

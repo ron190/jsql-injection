@@ -48,7 +48,7 @@ public class DialogTranslate extends JDialog {
     private final JTextArea textToTranslate = new JPopupTextArea(new JTextAreaPlaceholder(I18nViewUtil.valueByKey("TRANSLATION_PLACEHOLDER"))).getProxy();
     private final JProgressBar progressBarTranslation = new JProgressBar();
     private String textBeforeChange = StringUtils.EMPTY;
-    private final JPanel lastLine;
+    private JPanel lastLine;
 
     /**
      * Displays dialog into target locale.
@@ -66,7 +66,7 @@ public class DialogTranslate extends JDialog {
             JComponent.WHEN_IN_FOCUSED_WINDOW
         );
 
-        this.lastLine = this.initLastLine();
+        this.initLastLine();
 
         this.labelTranslation.setBorder(UiUtil.BORDER_5PX);
         var contentPane = this.getContentPane();
@@ -132,10 +132,10 @@ public class DialogTranslate extends JDialog {
         this.setVisible(true);
     }
 
-    private JPanel initLastLine() {
-        var lastLine = new JPanel();
-        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
-        lastLine.setBorder(UiUtil.BORDER_5PX);
+    private void initLastLine() {
+        this.lastLine = new JPanel();
+        this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.LINE_AXIS));
+        this.lastLine.setBorder(UiUtil.BORDER_5PX);
         
         this.buttonSend.setToolTipText(
             String.join(
@@ -171,11 +171,10 @@ public class DialogTranslate extends JDialog {
         
         this.progressBarTranslation.setStringPainted(true);
         this.progressBarTranslation.setValue(0);
-        
-        lastLine.add(this.progressBarTranslation);
-        lastLine.add(Box.createGlue());
-        lastLine.add(this.buttonSend);
-        return lastLine;
+
+        this.lastLine.add(this.progressBarTranslation);
+        this.lastLine.add(Box.createGlue());
+        this.lastLine.add(this.buttonSend);
     }
 
     private void initTextToTranslate() {

@@ -129,7 +129,7 @@ public class JFrameView extends JFrame {
                     JFrameView.this.splitNS.getSplitEW().setDividerLocation(
                         Math.max(0.0, Math.min(1.0, ewProportion))
                     );
-                    MediatorHelper.panelConsoles().networkSplitPane.setDividerLocation(
+                    MediatorHelper.panelConsoles().getNetworkSplitPane().setDividerLocation(
                         ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()).isLeftToRight()
                         ? 0.33
                         : 0.66

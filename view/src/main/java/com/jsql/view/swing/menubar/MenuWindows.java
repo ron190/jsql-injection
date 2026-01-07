@@ -18,6 +18,7 @@ import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.RadioItemNonClosing;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.logging.log4j.util.Strings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +36,7 @@ public class MenuWindows extends JMenu {
 
     private static final String I18N_SQL_ENGINE = "MENUBAR_SQL_ENGINE";
     private static final String I18N_PREFERENCES = "MENUBAR_PREFERENCES";
+    public static final String ACTION_STARTING_APP = "init";
     private final AppMenubar appMenubar;
 
     private final JMenu menuView;
@@ -262,7 +264,7 @@ public class MenuWindows extends JMenu {
 
         var groupRadioLanguage = new ButtonGroup();
         var atomicIsAnySelected = new AtomicBoolean(false);
-        AppMenubar.MODELS_ITEM.forEach(model -> {
+        AppMenubar.ITEMS_TRANSLATE.forEach(model -> {
             atomicIsAnySelected.set(atomicIsAnySelected.get() || model.getLanguage().isCurrentLanguage());
             model.setMenuItem(new RadioItemNonClosing(
                 model.getLanguage().getMenuItemLabel(),
@@ -270,35 +272,44 @@ public class MenuWindows extends JMenu {
                 model.getLanguage().isCurrentLanguage()
             ));
             model.getMenuItem().addActionListener(actionEvent -> {
-                this.appMenubar.switchLocale(
-                    model.getLanguage() == Language.EN
+                var newLocale = model.getLanguage() == Language.EN
                     ? Locale.ROOT  // required as no bundle 'en'
-                    : Locale.forLanguageTag(model.getLanguage().getLanguageTag())
-                );
+                    : Locale.forLanguageTag(model.getLanguage().getLanguageTag());
+                this.appMenubar.switchLocale(newLocale);
+                if (!MenuWindows.ACTION_STARTING_APP.equals(model.getMenuItem().getActionCommand())) {
+                    MediatorHelper.model().getPropertiesUtil().displayI18nStatus(newLocale);
+                }
+                model.getMenuItem().setActionCommand(Strings.EMPTY);
                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withLanguageTag(model.getLanguage().getLanguageTag()).persist();
             });
             menuTranslation.add(model.getMenuItem());
             groupRadioLanguage.add(model.getMenuItem());
         });
 
-        AppMenubar.MODELS_ITEM.stream().filter(model -> model.getLanguage() == Language.EN)
+        AppMenubar.ITEMS_TRANSLATE.stream()
+        .filter(model -> model.getLanguage() == Language.EN)
         .forEach(modelItem -> {
             modelItem.getMenuItem().setSelected(!atomicIsAnySelected.get());
             modelItem.getMenuItem().setName("itemEnglish");
         });
-        AppMenubar.MODELS_ITEM.stream().filter(model -> model.getLanguage() == Language.RU)
+        AppMenubar.ITEMS_TRANSLATE.stream()
+        .filter(model -> model.getLanguage() == Language.RU)
         .forEach(modelItem -> modelItem.getMenuItem().setName("itemRussian"));
-        AppMenubar.MODELS_ITEM.stream().filter(model -> model.getLanguage() == Language.AR)
+        AppMenubar.ITEMS_TRANSLATE.stream()
+        .filter(model -> model.getLanguage() == Language.AR)
         .forEach(modelItem -> modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
 
         return menuTranslation;
     }
 
     public void switchLocaleFromPreferences() {
-        AppMenubar.MODELS_ITEM.stream().filter(model -> model.getLanguage().getLanguageTag().equals(
+        AppMenubar.ITEMS_TRANSLATE.stream().filter(model -> model.getLanguage().getLanguageTag().equals(
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()
         ))
-        .forEach(modelItem -> modelItem.getMenuItem().doClick());
+        .forEach(modelItem -> {
+            modelItem.getMenuItem().setActionCommand(MenuWindows.ACTION_STARTING_APP);
+            modelItem.getMenuItem().doClick();
+        });
     }
 
 

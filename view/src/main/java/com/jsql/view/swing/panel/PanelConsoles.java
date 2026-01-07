@@ -64,7 +64,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Panel displaying table of HTTP requests and responses.
      */
-    public JSplitPane networkSplitPane;
+    private JSplitPane networkSplitPane;
 
     /**
      * Console for binary representation of characters found with blind/time injection.
@@ -342,5 +342,9 @@ public class PanelConsoles extends JPanel {
 
     public TabbedPaneNetworkTab getTabbedPaneNetworkTab() {
         return this.tabbedPaneNetworkTab;
+    }
+
+    public JSplitPane getNetworkSplitPane() {
+        return this.networkSplitPane;
     }
 }

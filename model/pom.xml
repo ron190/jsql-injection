@@ -43,7 +43,7 @@
         <json.version>20251224</json.version>
         <jsoup.version>1.22.1</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
-        <junit-platform.version>1.14.1</junit-platform.version>
+        <junit-platform-runner.version>1.14.1</junit-platform-runner.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <mckoisqldb.version>1.0.5</mckoisqldb.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
@@ -369,7 +369,7 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-runner</artifactId>
-            <version>${junit-platform.version}</version>
+            <version>${junit-platform-runner.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

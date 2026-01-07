@@ -53,10 +53,4 @@ public class CountryRepository {
 
         return country;
 	}
-
-    private Greeting initErrorMessage(Exception e) {
-        String stacktrace = ExceptionUtils.getStackTrace(e);
-        LOGGER.debug(stacktrace);
-        return new Greeting(CountryRepository.TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
-    }
 }

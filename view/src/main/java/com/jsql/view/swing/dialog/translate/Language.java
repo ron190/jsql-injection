@@ -18,7 +18,7 @@ public enum Language {
     CS("Czech", "cs", UiUtil.ICON_FLAG_CS),
     DE("German", "de", UiUtil.ICON_FLAG_DE),
     NL("Dutch", "nl", UiUtil.ICON_FLAG_NL),
-    IN("Indonesian", "in", UiUtil.ICON_FLAG_IN),
+    ID("Indonesian", "id", UiUtil.ICON_FLAG_ID),
     IT("Italian", "it", UiUtil.ICON_FLAG_IT),
     ES("Spanish", "es", UiUtil.ICON_FLAG_ES),
     PT("Portuguese", "pt", UiUtil.ICON_FLAG_PT),

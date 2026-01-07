@@ -58,14 +58,14 @@ public class AppMenubar extends JMenuBar {
 
     private final MenuWindows menuWindows;
 
-    protected static final List<ModelItemTranslate> MODELS_ITEM = Stream.of(
-        Language.EN, Language.FR, Language.RU, Language.ZH, Language.ES, Language.TR, Language.KO, Language.SE, Language.FI,
-        Language.AR, Language.CS, Language.IT, Language.PT, Language.PL, Language.IN, Language.NL, Language.RO, Language.DE
+    protected static final List<ModelItemTranslate> ITEMS_TRANSLATE = Stream.of(
+        Language.EN, Language.FR, Language.RU, Language.ZH, Language.AR, Language.IT, Language.ES, Language.TR, Language.KO,
+        Language.SE, Language.FI, Language.CS, Language.PT, Language.PL, Language.ID, Language.NL, Language.RO, Language.DE
     ).map(ModelItemTranslate::new).collect(Collectors.toList());
 
-    private static final List<ModelItemTranslate> MODELS_ITEM_INTO = Stream.of(
+    private static final List<ModelItemTranslate> ITEMS_TRANSLATE_INTO = Stream.of(
         Language.FR, Language.ES, Language.SE, Language.FI, Language.TR, Language.CS, Language.RO, Language.IT, Language.PT, Language.AR,
-        Language.PL, Language.RU, Language.ZH, Language.DE, Language.IN, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA
+        Language.PL, Language.RU, Language.ZH, Language.DE, Language.ID, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA
     ).map(ModelItemTranslate::new).collect(Collectors.toList());
 
     /**
@@ -158,7 +158,7 @@ public class AppMenubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_HELPTRANSLATE", menuI18nContribution);
 
         final var dialogTranslate = new DialogTranslate();  // Render the About dialog behind the scene
-        AppMenubar.MODELS_ITEM_INTO.forEach(model -> {
+        AppMenubar.ITEMS_TRANSLATE_INTO.forEach(model -> {
             model.setMenuItem(new JMenuItem(model.getLanguage().getMenuItemLabel(), model.getLanguage().getFlag()));
             model.getMenuItem().addActionListener(new ActionTranslate(dialogTranslate, model.getLanguage()));
             menuI18nContribution.add(model.getMenuItem());
@@ -167,9 +167,9 @@ public class AppMenubar extends JMenuBar {
         var itemIntoOther = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);
 
-        AppMenubar.MODELS_ITEM_INTO.stream().filter(model -> model.getLanguage() == Language.AR)
+        AppMenubar.ITEMS_TRANSLATE_INTO.stream().filter(model -> model.getLanguage() == Language.AR)
         .forEach(modelItemTranslate -> modelItemTranslate.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
-        AppMenubar.MODELS_ITEM_INTO.stream().filter(model -> model.getLanguage() == Language.FR)
+        AppMenubar.ITEMS_TRANSLATE_INTO.stream().filter(model -> model.getLanguage() == Language.FR)
         .forEach(modelItemTranslate -> modelItemTranslate.getMenuItem().setName("itemIntoFrench"));
 
         menuI18nContribution.add(new JSeparator());
@@ -298,15 +298,7 @@ public class AppMenubar extends JMenuBar {
     }
     
     public void switchLocale(Locale newLocale) {
-        this.switchLocale(I18nUtil.getCurrentLocale(), newLocale, false);
-    }
-    
-    public void switchLocaleWithStatus(Locale oldLocale, Locale newLocale, boolean isStartup) {
-        this.switchLocale(oldLocale, newLocale, isStartup);
-        MediatorHelper.model().getPropertiesUtil().displayStatus(newLocale);
-    }
-
-    public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
+        Locale oldLocale = I18nUtil.getCurrentLocale();
         I18nUtil.setCurrentBundle(newLocale);
 
         Stream.of(
@@ -324,7 +316,7 @@ public class AppMenubar extends JMenuBar {
 
         this.switchNetworkTable();
         I18nViewUtil.switchI18nComponents();
-        this.switchOrientation(oldLocale, newLocale, isStartup);
+        this.switchOrientation(oldLocale, newLocale);
         this.switchMenuItems();  // required to restore proper language orientation
         
         MediatorHelper.treeDatabase().reloadNodes();
@@ -346,45 +338,36 @@ public class AppMenubar extends JMenuBar {
         }
     }
 
-    private void switchOrientation(Locale oldLocale, Locale newLocale, boolean isStartup) {
+    private void switchOrientation(Locale oldLocale, Locale newLocale) {
         var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
         MediatorHelper.frame().applyComponentOrientation(componentOrientation);
         
         if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {
-            // not rendered at startup, only on switch (unreliable components width can be 0 at startup)
+            // not rendered at startup, only on switch, unreliable components width can be 0 at startup
             // use event windowOpen instead when required
-
-            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitNS().getSplitEW();
-            var componentLeft = splitPaneLeftRight.getLeftComponent();
-            var componentRight = splitPaneLeftRight.getRightComponent();
-
-            // Reset components
-            splitPaneLeftRight.setLeftComponent(null);
-            splitPaneLeftRight.setRightComponent(null);
-            splitPaneLeftRight.setLeftComponent(componentRight);
-            splitPaneLeftRight.setRightComponent(componentLeft);
-
-            // required as switch to arabic uses reversed location
-            splitPaneLeftRight.setDividerLocation(splitPaneLeftRight.getWidth() - splitPaneLeftRight.getDividerLocation());
-
-            JSplitPane networkSplitPane = MediatorHelper.panelConsoles().networkSplitPane;
-            var componentLefta = networkSplitPane.getLeftComponent();
-            var componentRighta = networkSplitPane.getRightComponent();
-
-            // Reset components
-            networkSplitPane.setLeftComponent(null);
-            networkSplitPane.setRightComponent(null);
-            networkSplitPane.setLeftComponent(componentRighta);
-            networkSplitPane.setRightComponent(componentLefta);
-
-            networkSplitPane.setDividerLocation(networkSplitPane.getWidth() - networkSplitPane.getDividerLocation());
+            AppMenubar.reverse(MediatorHelper.frame().getSplitNS().getSplitEW());
+            AppMenubar.reverse(MediatorHelper.panelConsoles().getNetworkSplitPane());
         }
         
         MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));
     }
 
+    private static void reverse(JSplitPane splitPane) {
+        var componentLeft = splitPane.getLeftComponent();
+        var componentRight = splitPane.getRightComponent();
+
+        // Reset components
+        splitPane.setLeftComponent(null);
+        splitPane.setRightComponent(null);
+        splitPane.setLeftComponent(componentRight);
+        splitPane.setRightComponent(componentLeft);
+
+        // required as switch to arabic uses reversed location
+        splitPane.setDividerLocation(splitPane.getWidth() - splitPane.getDividerLocation());
+    }
+
     private void switchMenuItems() {
-        Stream.concat(AppMenubar.MODELS_ITEM.stream(), AppMenubar.MODELS_ITEM_INTO.stream())
+        Stream.concat(AppMenubar.ITEMS_TRANSLATE.stream(), AppMenubar.ITEMS_TRANSLATE_INTO.stream())
         .forEach(model -> model.getMenuItem().setComponentOrientation(
             model.getLanguage().isRightToLeft()
             ? ComponentOrientation.RIGHT_TO_LEFT

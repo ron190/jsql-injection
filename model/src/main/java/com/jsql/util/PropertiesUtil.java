@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -38,43 +40,27 @@ public class PropertiesUtil {
         }
     }
 
-    public void displayStatus(Locale newLocale) {
-        AtomicInteger countJvm = new AtomicInteger();
-        var statusJvm = StringUtils.EMPTY;
-        AtomicInteger countGui = new AtomicInteger();
-        var statusGui = StringUtils.EMPTY;
-        var propertiesRoot = PropertiesUtil.getProperties("i18n/jsql.properties");
-
+    public void displayI18nStatus(Locale newLocale) {
         if (!Arrays.asList(StringUtils.EMPTY, "en").contains(newLocale.getLanguage())) {
+            AtomicInteger countGui = new AtomicInteger();
+            var bundleRoot = PropertiesUtil.getProperties("i18n/jsql.properties");
             var bundleUser = PropertiesUtil.getProperties("i18n/jsql_" + newLocale.getLanguage() + ".properties");
-            propertiesRoot.entrySet().stream()
-            .filter(key -> bundleUser.isEmpty() || !bundleUser.containsKey(key.getKey()))
-            .forEach(key -> countGui.getAndIncrement());
-            statusGui = String.format("gui %s %s%% %s",
-                newLocale.getDisplayLanguage(newLocale),
-                countGui.get() * 100 / propertiesRoot.size(),
-                countGui.get() <= 0 ? StringUtils.EMPTY : "("+ countGui.get() +" items)"
+            bundleRoot.entrySet().stream().filter(
+                key -> bundleUser.isEmpty() || !bundleUser.containsKey(key.getKey())
+            ).forEach(
+                key -> countGui.getAndIncrement()
             );
-        }
-
-        if (!Locale.getDefault().getLanguage().equals("en")) {
-            var propertiesJvm = PropertiesUtil.getProperties("i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
-            propertiesRoot.entrySet().stream()
-            .filter(key -> propertiesJvm.isEmpty() || !propertiesJvm.containsKey(key.getKey()))
-            .forEach(key -> countJvm.getAndIncrement());
-            statusJvm = String.format("jvm %s %s%% %s",
-                Locale.getDefault().getDisplayLanguage(newLocale),
-                countJvm.get() * 100 / propertiesRoot.size(),
-                countJvm.get() <= 0 ? StringUtils.EMPTY : " ("+ countJvm.get() +" items)"
-            );
-        }
-
-        if (countJvm.get() > 0 || countGui.get() > 0) {
-            LOGGER.info(
-                "i18n status: {}{}",
-                countJvm.get() > 0 ? statusJvm : StringUtils.EMPTY,
-                countGui.get() > 0 ? statusGui : StringUtils.EMPTY
-            );
+            if (countGui.get() > 0) {
+                LOGGER.log(
+                    LogLevelUtil.CONSOLE_SUCCESS,
+                    "Switched to {} with {}% translated, contribute and translate any of {} items in menu Community",
+                    newLocale.getDisplayLanguage(newLocale),
+                    BigDecimal.valueOf(
+                        100.0 - countGui.get() * 100.0 / bundleRoot.size()
+                    ).setScale(1, RoundingMode.HALF_UP).doubleValue(),
+                    countGui.get()
+                );
+            }
         }
     }
 
