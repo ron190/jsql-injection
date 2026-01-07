@@ -58,14 +58,14 @@ public class AppMenubar extends JMenuBar {
 
     private final MenuWindows menuWindows;
 
-<span class="fc" id="L61">    protected static final List&lt;ModelItemTranslate&gt; MODELS_ITEM = Stream.of(</span>
-        Language.EN, Language.FR, Language.RU, Language.ZH, Language.ES, Language.TR, Language.KO, Language.SE, Language.FI,
-        Language.AR, Language.CS, Language.IT, Language.PT, Language.PL, Language.IN, Language.NL, Language.RO, Language.DE
+<span class="fc" id="L61">    protected static final List&lt;ModelItemTranslate&gt; ITEMS_TRANSLATE = Stream.of(</span>
+        Language.EN, Language.FR, Language.RU, Language.ZH, Language.AR, Language.IT, Language.ES, Language.TR, Language.KO,
+        Language.SE, Language.FI, Language.CS, Language.PT, Language.PL, Language.ID, Language.NL, Language.RO, Language.DE
 <span class="fc" id="L64">    ).map(ModelItemTranslate::new).collect(Collectors.toList());</span>
 
-<span class="fc" id="L66">    private static final List&lt;ModelItemTranslate&gt; MODELS_ITEM_INTO = Stream.of(</span>
+<span class="fc" id="L66">    private static final List&lt;ModelItemTranslate&gt; ITEMS_TRANSLATE_INTO = Stream.of(</span>
         Language.FR, Language.ES, Language.SE, Language.FI, Language.TR, Language.CS, Language.RO, Language.IT, Language.PT, Language.AR,
-        Language.PL, Language.RU, Language.ZH, Language.DE, Language.IN, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA
+        Language.PL, Language.RU, Language.ZH, Language.DE, Language.ID, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA
 <span class="fc" id="L69">    ).map(ModelItemTranslate::new).collect(Collectors.toList());</span>
 
     /**
@@ -158,7 +158,7 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L158">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_HELPTRANSLATE&quot;, menuI18nContribution);</span>
 
 <span class="fc" id="L160">        final var dialogTranslate = new DialogTranslate();  // Render the About dialog behind the scene</span>
-<span class="fc" id="L161">        AppMenubar.MODELS_ITEM_INTO.forEach(model -&gt; {</span>
+<span class="fc" id="L161">        AppMenubar.ITEMS_TRANSLATE_INTO.forEach(model -&gt; {</span>
 <span class="fc" id="L162">            model.setMenuItem(new JMenuItem(model.getLanguage().getMenuItemLabel(), model.getLanguage().getFlag()));</span>
 <span class="fc" id="L163">            model.getMenuItem().addActionListener(new ActionTranslate(dialogTranslate, model.getLanguage()));</span>
 <span class="fc" id="L164">            menuI18nContribution.add(model.getMenuItem());</span>
@@ -167,9 +167,9 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L167">        var itemIntoOther = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY_ANOTHERLANGUAGE&quot;));</span>
 <span class="fc" id="L168">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_ANOTHERLANGUAGE&quot;, itemIntoOther);</span>
 
-<span class="fc bfc" id="L170" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM_INTO.stream().filter(model -&gt; model.getLanguage() == Language.AR)</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        AppMenubar.ITEMS_TRANSLATE_INTO.stream().filter(model -&gt; model.getLanguage() == Language.AR)</span>
 <span class="fc" id="L171">        .forEach(modelItemTranslate -&gt; modelItemTranslate.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));</span>
-<span class="fc bfc" id="L172" title="All 2 branches covered.">        AppMenubar.MODELS_ITEM_INTO.stream().filter(model -&gt; model.getLanguage() == Language.FR)</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        AppMenubar.ITEMS_TRANSLATE_INTO.stream().filter(model -&gt; model.getLanguage() == Language.FR)</span>
 <span class="fc" id="L173">        .forEach(modelItemTranslate -&gt; modelItemTranslate.getMenuItem().setName(&quot;itemIntoFrench&quot;));</span>
 
 <span class="fc" id="L175">        menuI18nContribution.add(new JSeparator());</span>
@@ -298,119 +298,102 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L298">    }</span>
     
     public void switchLocale(Locale newLocale) {
-<span class="fc" id="L301">        this.switchLocale(I18nUtil.getCurrentLocale(), newLocale, false);</span>
-<span class="fc" id="L302">    }</span>
-    
-    public void switchLocaleWithStatus(Locale oldLocale, Locale newLocale, boolean isStartup) {
-<span class="nc" id="L305">        this.switchLocale(oldLocale, newLocale, isStartup);</span>
-<span class="nc" id="L306">        MediatorHelper.model().getPropertiesUtil().displayStatus(newLocale);</span>
-<span class="nc" id="L307">    }</span>
+<span class="fc" id="L301">        Locale oldLocale = I18nUtil.getCurrentLocale();</span>
+<span class="fc" id="L302">        I18nUtil.setCurrentBundle(newLocale);</span>
 
-    public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
-<span class="fc" id="L310">        I18nUtil.setCurrentBundle(newLocale);</span>
-
-<span class="fc" id="L312">        Stream.of(</span>
+<span class="fc" id="L304">        Stream.of(</span>
             JTextPaneAppender.ATTRIBUTE_WARN,
             JTextPaneAppender.ATTRIBUTE_INFORM,
             JTextPaneAppender.ATTRIBUTE_SUCCESS,
             JTextPaneAppender.ATTRIBUTE_ALL
         )
-<span class="fc" id="L318">        .forEach(attribute -&gt; {</span>
-<span class="pc bpc" id="L319" title="1 of 2 branches missed.">            StyleConstants.setFontFamily(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_NAME_MONO_ASIAN : UiUtil.FONT_NAME_MONO_NON_ASIAN);</span>
-<span class="pc bpc" id="L320" title="1 of 2 branches missed.">            StyleConstants.setFontSize(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_SIZE_MONO_ASIAN : UiUtil.FONT_SIZE_MONO_NON_ASIAN);</span>
-<span class="fc" id="L321">        });</span>
+<span class="fc" id="L310">        .forEach(attribute -&gt; {</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">            StyleConstants.setFontFamily(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_NAME_MONO_ASIAN : UiUtil.FONT_NAME_MONO_NON_ASIAN);</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">            StyleConstants.setFontSize(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_SIZE_MONO_ASIAN : UiUtil.FONT_SIZE_MONO_NON_ASIAN);</span>
+<span class="fc" id="L313">        });</span>
 
-<span class="pc bpc" id="L323" title="1 of 2 branches missed.">        MediatorHelper.managerBruteForce().getResult().setFont(I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_MONO_ASIAN : UiUtil.FONT_MONO_NON_ASIAN);</span>
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">        MediatorHelper.managerBruteForce().getResult().setFont(I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_MONO_ASIAN : UiUtil.FONT_MONO_NON_ASIAN);</span>
 
-<span class="fc" id="L325">        this.switchNetworkTable();</span>
-<span class="fc" id="L326">        I18nViewUtil.switchI18nComponents();</span>
-<span class="fc" id="L327">        this.switchOrientation(oldLocale, newLocale, isStartup);</span>
-<span class="fc" id="L328">        this.switchMenuItems();  // required to restore proper language orientation</span>
+<span class="fc" id="L317">        this.switchNetworkTable();</span>
+<span class="fc" id="L318">        I18nViewUtil.switchI18nComponents();</span>
+<span class="fc" id="L319">        this.switchOrientation(oldLocale, newLocale);</span>
+<span class="fc" id="L320">        this.switchMenuItems();  // required to restore proper language orientation</span>
         
-<span class="fc" id="L330">        MediatorHelper.treeDatabase().reloadNodes();</span>
-<span class="fc" id="L331">        MediatorHelper.panelAddressBar().getPanelTrailingAddress().buttonStart.setIcons();</span>
-<span class="pc bpc" id="L332" title="1 of 2 branches missed.">        int textPosition = ComponentOrientation.getOrientation(newLocale).isLeftToRight()  // leading/trailing not working</span>
-<span class="fc" id="L333">            ? SwingConstants.LEFT</span>
-<span class="pc" id="L334">            : SwingConstants.RIGHT;</span>
-<span class="fc" id="L335">        MediatorHelper.panelAddressBar().getAtomicRadioRequest().setHorizontalTextPosition(textPosition);  // component orientation not working</span>
-<span class="fc" id="L336">        MediatorHelper.panelAddressBar().getAtomicRadioMethod().setHorizontalTextPosition(textPosition);</span>
-<span class="fc" id="L337">        MediatorHelper.panelAddressBar().getAtomicRadioHeader().setHorizontalTextPosition(textPosition);</span>
+<span class="fc" id="L322">        MediatorHelper.treeDatabase().reloadNodes();</span>
+<span class="fc" id="L323">        MediatorHelper.panelAddressBar().getPanelTrailingAddress().buttonStart.setIcons();</span>
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">        int textPosition = ComponentOrientation.getOrientation(newLocale).isLeftToRight()  // leading/trailing not working</span>
+<span class="fc" id="L325">            ? SwingConstants.LEFT</span>
+<span class="pc" id="L326">            : SwingConstants.RIGHT;</span>
+<span class="fc" id="L327">        MediatorHelper.panelAddressBar().getAtomicRadioRequest().setHorizontalTextPosition(textPosition);  // component orientation not working</span>
+<span class="fc" id="L328">        MediatorHelper.panelAddressBar().getAtomicRadioMethod().setHorizontalTextPosition(textPosition);</span>
+<span class="fc" id="L329">        MediatorHelper.panelAddressBar().getAtomicRadioHeader().setHorizontalTextPosition(textPosition);</span>
 
         // Fix #92981: IllegalArgumentException on revalidate()
         // Fix #96185: NullPointerException on revalidate()
         // Fix #96226: ArrayIndexOutOfBoundsException on revalidate()
         try {
-<span class="fc" id="L343">            MediatorHelper.frame().revalidate();  // Fix glitches on Linux</span>
-<span class="nc" id="L344">        } catch (NullPointerException | IllegalArgumentException | ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L345">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L346">        }</span>
-<span class="fc" id="L347">    }</span>
+<span class="fc" id="L335">            MediatorHelper.frame().revalidate();  // Fix glitches on Linux</span>
+<span class="nc" id="L336">        } catch (NullPointerException | IllegalArgumentException | ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L337">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L338">        }</span>
+<span class="fc" id="L339">    }</span>
 
-    private void switchOrientation(Locale oldLocale, Locale newLocale, boolean isStartup) {
-<span class="fc" id="L350">        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
-<span class="fc" id="L351">        MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
+    private void switchOrientation(Locale oldLocale, Locale newLocale) {
+<span class="fc" id="L342">        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
+<span class="fc" id="L343">        MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
         
-<span class="pc bpc" id="L353" title="1 of 2 branches missed.">        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {</span>
-            // not rendered at startup, only on switch (unreliable components width can be 0 at startup)
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {</span>
+            // not rendered at startup, only on switch, unreliable components width can be 0 at startup
             // use event windowOpen instead when required
-
-<span class="nc" id="L357">            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitNS().getSplitEW();</span>
-<span class="nc" id="L358">            var componentLeft = splitPaneLeftRight.getLeftComponent();</span>
-<span class="nc" id="L359">            var componentRight = splitPaneLeftRight.getRightComponent();</span>
-
-            // Reset components
-<span class="nc" id="L362">            splitPaneLeftRight.setLeftComponent(null);</span>
-<span class="nc" id="L363">            splitPaneLeftRight.setRightComponent(null);</span>
-<span class="nc" id="L364">            splitPaneLeftRight.setLeftComponent(componentRight);</span>
-<span class="nc" id="L365">            splitPaneLeftRight.setRightComponent(componentLeft);</span>
-
-            // required as switch to arabic uses reversed location
-<span class="nc" id="L368">            splitPaneLeftRight.setDividerLocation(splitPaneLeftRight.getWidth() - splitPaneLeftRight.getDividerLocation());</span>
-
-<span class="nc" id="L370">            JSplitPane networkSplitPane = MediatorHelper.panelConsoles().networkSplitPane;</span>
-<span class="nc" id="L371">            var componentLefta = networkSplitPane.getLeftComponent();</span>
-<span class="nc" id="L372">            var componentRighta = networkSplitPane.getRightComponent();</span>
-
-            // Reset components
-<span class="nc" id="L375">            networkSplitPane.setLeftComponent(null);</span>
-<span class="nc" id="L376">            networkSplitPane.setRightComponent(null);</span>
-<span class="nc" id="L377">            networkSplitPane.setLeftComponent(componentRighta);</span>
-<span class="nc" id="L378">            networkSplitPane.setRightComponent(componentLefta);</span>
-
-<span class="nc" id="L380">            networkSplitPane.setDividerLocation(networkSplitPane.getWidth() - networkSplitPane.getDividerLocation());</span>
+<span class="nc" id="L348">            AppMenubar.reverse(MediatorHelper.frame().getSplitNS().getSplitEW());</span>
+<span class="nc" id="L349">            AppMenubar.reverse(MediatorHelper.panelConsoles().getNetworkSplitPane());</span>
         }
         
-<span class="fc" id="L383">        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
-<span class="fc" id="L384">    }</span>
+<span class="fc" id="L352">        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
+<span class="fc" id="L353">    }</span>
+
+    private static void reverse(JSplitPane splitPane) {
+<span class="nc" id="L356">        var componentLeft = splitPane.getLeftComponent();</span>
+<span class="nc" id="L357">        var componentRight = splitPane.getRightComponent();</span>
+
+        // Reset components
+<span class="nc" id="L360">        splitPane.setLeftComponent(null);</span>
+<span class="nc" id="L361">        splitPane.setRightComponent(null);</span>
+<span class="nc" id="L362">        splitPane.setLeftComponent(componentRight);</span>
+<span class="nc" id="L363">        splitPane.setRightComponent(componentLeft);</span>
+
+        // required as switch to arabic uses reversed location
+<span class="nc" id="L366">        splitPane.setDividerLocation(splitPane.getWidth() - splitPane.getDividerLocation());</span>
+<span class="nc" id="L367">    }</span>
 
     private void switchMenuItems() {
-<span class="fc" id="L387">        Stream.concat(AppMenubar.MODELS_ITEM.stream(), AppMenubar.MODELS_ITEM_INTO.stream())</span>
-<span class="fc" id="L388">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
-<span class="fc bfc" id="L389" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
-<span class="fc" id="L390">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
-<span class="fc" id="L391">            : ComponentOrientation.LEFT_TO_RIGHT</span>
+<span class="fc" id="L370">        Stream.concat(AppMenubar.ITEMS_TRANSLATE.stream(), AppMenubar.ITEMS_TRANSLATE_INTO.stream())</span>
+<span class="fc" id="L371">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
+<span class="fc" id="L373">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
+<span class="fc" id="L374">            : ComponentOrientation.LEFT_TO_RIGHT</span>
         ));
-<span class="fc" id="L393">    }</span>
+<span class="fc" id="L376">    }</span>
 
     private void switchNetworkTable() {
-<span class="fc" id="L396">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
-<span class="fc" id="L397">        TableColumnModel columnModel = header.getColumnModel();</span>
-<span class="fc" id="L398">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
-<span class="fc" id="L399">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
-<span class="fc" id="L400">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
-<span class="fc" id="L401">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
-<span class="fc" id="L402">        header.repaint();</span>
-<span class="fc" id="L403">    }</span>
+<span class="fc" id="L379">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
+<span class="fc" id="L380">        TableColumnModel columnModel = header.getColumnModel();</span>
+<span class="fc" id="L381">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
+<span class="fc" id="L382">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
+<span class="fc" id="L383">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
+<span class="fc" id="L384">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
+<span class="fc" id="L385">        header.repaint();</span>
+<span class="fc" id="L386">    }</span>
     
     
     // Getter and setter
 
     public JMenu getMenuView() {
-<span class="nc" id="L409">        return this.menuWindows.getMenuView();</span>
+<span class="nc" id="L392">        return this.menuWindows.getMenuView();</span>
     }
 
     public MenuWindows getMenuWindows() {
-<span class="fc" id="L413">        return this.menuWindows;</span>
+<span class="fc" id="L396">        return this.menuWindows;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

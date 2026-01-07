@@ -205,7 +205,7 @@ model,com.jsql.util,ConnectionUtil.new Authenticator() {...},0,23,0,0,0,4,0,2,0,
 model,com.jsql.util,AuthenticationUtil.new Authenticator() {...},11,6,0,0,2,1,1,1,1,1
 model,com.jsql.util,GitUtil.ShowOnConsole,0,15,0,0,0,1,0,1,0,1
 model,com.jsql.util,SoapUtil,28,254,3,19,8,59,3,19,0,11
-model,com.jsql.util,PropertiesUtil,242,35,27,1,45,11,20,4,6,4
+model,com.jsql.util,PropertiesUtil,142,35,11,1,33,11,10,4,4,4
 model,com.jsql.util,AuthenticationUtil,114,150,11,5,21,46,11,13,4,12
 model,com.jsql.util,MultipartUtil,23,128,2,6,6,28,2,10,0,8
 model,com.jsql.util,DigestUtil,6,243,2,6,2,44,2,10,0,8

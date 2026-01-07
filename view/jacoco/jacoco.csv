@@ -41,11 +41,11 @@ view,com.jsql.view.swing.menubar,MenuWindows.new AbstractAction() {...},6,9,0,0,
 view,com.jsql.view.swing.menubar,MenuWindows.new JCheckBoxMenuItem() {...},8,9,2,0,3,1,2,1,1,1
 view,com.jsql.view.swing.menubar,ActionTranslate,0,15,0,0,0,6,0,2,0,2
 view,com.jsql.view.swing.menubar,AppMenubar.new MouseAdapter() {...},17,0,0,0,4,0,2,0,2,0
-view,com.jsql.view.swing.menubar,AppMenubar,237,933,18,18,50,158,18,29,6,23
+view,com.jsql.view.swing.menubar,AppMenubar,203,928,18,18,41,157,18,28,6,22
 view,com.jsql.view.swing.menubar,ModelItemTranslate,0,16,0,0,0,7,0,4,0,4
 view,com.jsql.view.swing.menubar,ActionCheckUpdate,13,3,0,0,4,1,2,1,2,1
 view,com.jsql.view.swing.menubar,ModelCheckboxMenu,0,34,0,0,0,10,0,2,0,2
-view,com.jsql.view.swing.menubar,MenuWindows,74,700,10,14,19,144,15,24,8,19
+view,com.jsql.view.swing.menubar,MenuWindows,78,716,11,15,22,150,16,24,8,19
 view,com.jsql.view.swing.tree.custom,CheckBoxMenuItemIconCustom,194,0,16,0,44,0,13,0,5,0
 view,com.jsql.view.swing.tree.custom,JPopupMenuCustomExtract,42,3,0,0,18,1,12,1,12,1
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JButtonStateful() {...},5,10,0,0,1,1,1,1,1,1
@@ -194,7 +194,7 @@ view,com.jsql.view.swing.list,ItemListScan,0,42,0,0,0,13,0,4,0,4
 view,com.jsql.view.swing.list,BeanInjection,12,108,0,2,4,30,0,12,0,11
 view,com.jsql.view.swing.dialog,DialogAbout.new FocusAdapter() {...},11,9,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.dialog,DialogAbout.new MouseAdapter() {...},8,9,0,0,3,1,1,1,1,1
-view,com.jsql.view.swing.dialog,DialogTranslate,48,337,3,1,12,77,6,9,4,9
+view,com.jsql.view.swing.dialog,DialogTranslate,48,341,3,1,12,77,6,9,4,9
 view,com.jsql.view.swing.dialog,ReplaceFileChooser,44,4,8,0,18,2,6,1,1,1
 view,com.jsql.view.swing.dialog,DialogAbout,42,247,2,2,13,60,3,8,2,7
 view,com.jsql.view.swing.dialog,DialogTranslate.new MouseAdapter() {...},9,6,0,0,3,1,1,1,1,1
@@ -225,8 +225,8 @@ view,com.jsql.view.swing.panel,PanelConsoles.new MouseAdapter() {...},6,17,0,0,2
 view,com.jsql.view.swing.panel,PanelPreferences.CategoryPreference,0,65,0,0,0,11,0,2,0,2
 view,com.jsql.view.swing.panel,PanelAddressBar,75,808,4,10,13,143,9,22,7,17
 view,com.jsql.view.swing.panel,PanelPreferences,0,267,0,2,0,56,0,15,0,14
-view,com.jsql.view.swing.panel,PanelConsoles,75,482,8,8,20,108,11,16,3,16
-view,com.jsql.view.swing.tab.dnd,TabTransferHandler,78,254,24,18,13,59,22,8,1,8
+view,com.jsql.view.swing.panel,PanelConsoles,75,485,8,8,20,109,11,17,3,17
+view,com.jsql.view.swing.tab.dnd,TabTransferHandler,76,256,23,19,12,60,21,9,1,8
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,12,167,9,15,4,39,9,9,0,6
 view,com.jsql.view.swing.tab.dnd,DnDTabData,0,6,0,0,0,3,0,1,0,1
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.DnDDropLocation,0,20,0,0,0,8,0,4,0,4

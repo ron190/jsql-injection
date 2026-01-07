@@ -48,7 +48,7 @@ public class DialogTranslate extends JDialog {
 <span class="fc" id="L48">    private final JTextArea textToTranslate = new JPopupTextArea(new JTextAreaPlaceholder(I18nViewUtil.valueByKey(&quot;TRANSLATION_PLACEHOLDER&quot;))).getProxy();</span>
 <span class="fc" id="L49">    private final JProgressBar progressBarTranslation = new JProgressBar();</span>
 <span class="fc" id="L50">    private String textBeforeChange = StringUtils.EMPTY;</span>
-    private final JPanel lastLine;
+    private JPanel lastLine;
 
     /**
      * Displays dialog into target locale.
@@ -66,7 +66,7 @@ public class DialogTranslate extends JDialog {
             JComponent.WHEN_IN_FOCUSED_WINDOW
         );
 
-<span class="fc" id="L69">        this.lastLine = this.initLastLine();</span>
+<span class="fc" id="L69">        this.initLastLine();</span>
 
 <span class="fc" id="L71">        this.labelTranslation.setBorder(UiUtil.BORDER_5PX);</span>
 <span class="fc" id="L72">        var contentPane = this.getContentPane();</span>
@@ -132,10 +132,10 @@ public class DialogTranslate extends JDialog {
 <span class="fc" id="L132">        this.setVisible(true);</span>
 <span class="fc" id="L133">    }</span>
 
-    private JPanel initLastLine() {
-<span class="fc" id="L136">        var lastLine = new JPanel();</span>
-<span class="fc" id="L137">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));</span>
-<span class="fc" id="L138">        lastLine.setBorder(UiUtil.BORDER_5PX);</span>
+    private void initLastLine() {
+<span class="fc" id="L136">        this.lastLine = new JPanel();</span>
+<span class="fc" id="L137">        this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.LINE_AXIS));</span>
+<span class="fc" id="L138">        this.lastLine.setBorder(UiUtil.BORDER_5PX);</span>
         
 <span class="fc" id="L140">        this.buttonSend.setToolTipText(</span>
 <span class="fc" id="L141">            String.join(</span>
@@ -171,59 +171,58 @@ public class DialogTranslate extends JDialog {
         
 <span class="fc" id="L172">        this.progressBarTranslation.setStringPainted(true);</span>
 <span class="fc" id="L173">        this.progressBarTranslation.setValue(0);</span>
-        
-<span class="fc" id="L175">        lastLine.add(this.progressBarTranslation);</span>
-<span class="fc" id="L176">        lastLine.add(Box.createGlue());</span>
-<span class="fc" id="L177">        lastLine.add(this.buttonSend);</span>
-<span class="fc" id="L178">        return lastLine;</span>
-    }
+
+<span class="fc" id="L175">        this.lastLine.add(this.progressBarTranslation);</span>
+<span class="fc" id="L176">        this.lastLine.add(Box.createGlue());</span>
+<span class="fc" id="L177">        this.lastLine.add(this.buttonSend);</span>
+<span class="fc" id="L178">    }</span>
 
     private void initTextToTranslate() {
-<span class="fc" id="L182">        this.textToTranslate.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L181">        this.textToTranslate.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="nc" id="L185">                super.mousePressed(e);</span>
-<span class="nc" id="L186">                DialogTranslate.this.textToTranslate.requestFocusInWindow();</span>
-<span class="nc" id="L187">            }</span>
+<span class="nc" id="L184">                super.mousePressed(e);</span>
+<span class="nc" id="L185">                DialogTranslate.this.textToTranslate.requestFocusInWindow();</span>
+<span class="nc" id="L186">            }</span>
         });
-<span class="fc" id="L189">        this.textToTranslate.addFocusListener(new FocusAdapter() {</span>
+<span class="fc" id="L188">        this.textToTranslate.addFocusListener(new FocusAdapter() {</span>
             @Override
             public void focusGained(FocusEvent focusEvent) {
-<span class="fc" id="L192">                DialogTranslate.this.textToTranslate.getCaret().setVisible(true);</span>
-<span class="fc" id="L193">                DialogTranslate.this.textToTranslate.getCaret().setSelectionVisible(true);</span>
-<span class="fc" id="L194">            }</span>
+<span class="fc" id="L191">                DialogTranslate.this.textToTranslate.getCaret().setVisible(true);</span>
+<span class="fc" id="L192">                DialogTranslate.this.textToTranslate.getCaret().setSelectionVisible(true);</span>
+<span class="fc" id="L193">            }</span>
         });
-<span class="fc" id="L196">        this.textToTranslate.setBorder(UiUtil.BORDER_5PX);</span>
-<span class="fc" id="L197">        this.textToTranslate.setDragEnabled(true);</span>
-<span class="fc" id="L198">        this.textToTranslate.getCaret().setBlinkRate(500);</span>
-<span class="fc" id="L199">        this.textToTranslate.setComponentPopupMenu(new JPopupMenuText(this.textToTranslate));</span>
-<span class="fc" id="L200">    }</span>
+<span class="fc" id="L195">        this.textToTranslate.setBorder(UiUtil.BORDER_5PX);</span>
+<span class="fc" id="L196">        this.textToTranslate.setDragEnabled(true);</span>
+<span class="fc" id="L197">        this.textToTranslate.getCaret().setBlinkRate(500);</span>
+<span class="fc" id="L198">        this.textToTranslate.setComponentPopupMenu(new JPopupMenuText(this.textToTranslate));</span>
+<span class="fc" id="L199">    }</span>
     
     
     // Getter / Setter
 
     public Language getLanguageInto() {
-<span class="fc" id="L206">        return this.languageInto;</span>
+<span class="fc" id="L205">        return this.languageInto;</span>
     }
 
     public String getTextBeforeChange() {
-<span class="nc" id="L210">        return this.textBeforeChange;</span>
+<span class="nc" id="L209">        return this.textBeforeChange;</span>
     }
 
     public void setTextBeforeChange(String textBeforeChange) {
-<span class="fc" id="L214">        this.textBeforeChange = textBeforeChange;</span>
-<span class="fc" id="L215">    }</span>
+<span class="fc" id="L213">        this.textBeforeChange = textBeforeChange;</span>
+<span class="fc" id="L214">    }</span>
 
     public JButton getButtonSend() {
-<span class="fc" id="L218">        return this.buttonSend;</span>
+<span class="fc" id="L217">        return this.buttonSend;</span>
     }
 
     public JTextArea getTextToTranslate() {
-<span class="nc" id="L222">        return this.textToTranslate;</span>
+<span class="nc" id="L221">        return this.textToTranslate;</span>
     }
 
     public JProgressBar getProgressBarTranslation() {
-<span class="fc" id="L226">        return this.progressBarTranslation;</span>
+<span class="fc" id="L225">        return this.progressBarTranslation;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
