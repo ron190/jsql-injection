@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.jsql.view.swing.list;
 
+import com.formdev.flatlaf.util.SystemFileChooser;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -29,7 +30,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class MenuActionExport implements ActionListener {
     
-<span class="fc" id="L32">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L33">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * List to export.
@@ -40,60 +41,45 @@ public class MenuActionExport implements ActionListener {
      * Create action to export a list.
      * @param myList List to export.
      */
-<span class="fc" id="L43">    public MenuActionExport(DnDList myList) {</span>
-<span class="fc" id="L44">        this.myList = myList;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L44">    public MenuActionExport(DnDList myList) {</span>
+<span class="fc" id="L45">        this.myList = myList;</span>
+<span class="fc" id="L46">    }</span>
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-<span class="nc" id="L49">        final JFileChooser importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {</span>
-            @Override
-            public void approveSelection() {
-<span class="nc" id="L52">                var file = this.getSelectedFile();</span>
-<span class="nc bnc" id="L53" title="All 4 branches missed.">                if (file.exists() &amp;&amp; this.getDialogType() == JFileChooser.SAVE_DIALOG) {</span>
-<span class="nc" id="L54">                    int replace = JOptionPane.showConfirmDialog(</span>
-<span class="nc" id="L55">                        MediatorHelper.frame(),</span>
-<span class="nc" id="L56">                        String.format(&quot;%s %s&quot;, file.getName(), I18nUtil.valueByKey(&quot;LIST_EXPORT_CONFIRM_LABEL&quot;)),</span>
-<span class="nc" id="L57">                        I18nUtil.valueByKey(&quot;LIST_EXPORT_CONFIRM_TITLE&quot;),</span>
-                        JOptionPane.YES_NO_OPTION
-                    );
-                    
-<span class="nc bnc" id="L61" title="All 4 branches missed.">                    switch (replace) {</span>
-                        case JOptionPane.YES_OPTION:
-<span class="nc" id="L63">                            super.approveSelection();</span>
-<span class="nc" id="L64">                            return;</span>
-                        case JOptionPane.NO_OPTION:
-                        case JOptionPane.CLOSED_OPTION:
-<span class="nc" id="L67">                            return;</span>
-                        case JOptionPane.CANCEL_OPTION:
-<span class="nc" id="L69">                            this.cancelSelection();</span>
-<span class="nc" id="L70">                            return;</span>
-                        default:
-                            break;
-                    }
-<span class="nc" id="L74">                } else {</span>
-<span class="nc" id="L75">                    super.approveSelection();</span>
-                }
-<span class="nc" id="L77">            }</span>
-        };
+<span class="nc" id="L50">        final SystemFileChooser importFileDialog = new SystemFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());</span>
+<span class="nc" id="L51">        importFileDialog.setApproveCallback((selectedFiles, context) -&gt; {</span>
+<span class="nc" id="L52">            var file = selectedFiles[0];</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (file.exists()) {</span>
+<span class="nc" id="L54">                return context.showMessageDialog(</span>
+                    JOptionPane.QUESTION_MESSAGE,
+<span class="nc" id="L56">                    String.format(&quot;%s %s&quot;, file.getName(), I18nUtil.valueByKey(&quot;LIST_EXPORT_CONFIRM_LABEL&quot;)),</span>
+<span class="nc" id="L57">                    I18nUtil.valueByKey(&quot;LIST_EXPORT_CONFIRM_TITLE&quot;),</span>
+                    JOptionPane.YES_NO_OPTION
+                );
+            } else {
+<span class="nc" id="L61">                return SystemFileChooser.APPROVE_OPTION;</span>
+            }
+        });
         
-<span class="nc" id="L80">        importFileDialog.setDialogTitle(I18nUtil.valueByKey(&quot;LIST_EXPORT_TITLE&quot;));</span>
-<span class="nc" id="L81">        int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (choice != JFileChooser.APPROVE_OPTION) {</span>
-<span class="nc" id="L83">            return;</span>
+<span class="nc" id="L65">        importFileDialog.setDialogTitle(I18nUtil.valueByKey(&quot;LIST_EXPORT_TITLE&quot;));</span>
+<span class="nc" id="L66">        int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (choice != JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L68">            return;</span>
         }
 
         try (
-<span class="nc" id="L87">            var file = new FileOutputStream(importFileDialog.getSelectedFile());</span>
-<span class="nc" id="L88">            var out = new PrintStream(file, false, StandardCharsets.UTF_8)</span>
+<span class="nc" id="L72">            var file = new FileOutputStream(importFileDialog.getSelectedFile());</span>
+<span class="nc" id="L73">            var out = new PrintStream(file, false, StandardCharsets.UTF_8)</span>
         ) {
-<span class="nc" id="L90">            int len = this.myList.getModel().getSize();</span>
-<span class="nc bnc" id="L91" title="All 2 branches missed.">            for (var i = 0 ; i &lt; len ; i++) {</span>
-<span class="nc" id="L92">                out.println(this.myList.getModel().getElementAt(i).toString());</span>
+<span class="nc" id="L75">            int len = this.myList.getModel().getSize();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            for (var i = 0 ; i &lt; len ; i++) {</span>
+<span class="nc" id="L77">                out.println(this.myList.getModel().getElementAt(i).toString());</span>
             }
-<span class="nc" id="L94">        } catch (IOException e) {</span>
-<span class="nc" id="L95">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L96">        }</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L79">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;List saved: {}&quot;, importFileDialog.getSelectedFile());</span>
+<span class="nc" id="L80">        } catch (IOException e) {</span>
+<span class="nc" id="L81">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L82">        }</span>
+<span class="nc" id="L83">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

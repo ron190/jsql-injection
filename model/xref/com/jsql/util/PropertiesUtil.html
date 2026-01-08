@@ -62,11 +62,11 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>                  LOGGER.log(
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>                      LogLevelUtil.CONSOLE_SUCCESS,
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>                      <span class="jxr_string">"Switched to {} with {}% translated, contribute and translate any of {} items in menu Community"</span>,
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>                      newLocale.getDisplayLanguage(newLocale),
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>                      BigDecimal.valueOf(
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>                      () -&gt; newLocale.getDisplayLanguage(newLocale),
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>                      () -&gt; BigDecimal.valueOf(
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>                          100.0 - countGui.get() * 100.0 / bundleRoot.size()
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>                      ).setScale(1, RoundingMode.HALF_UP).doubleValue(),
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>                      countGui.get()
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>                      countGui::get
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>                  );
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>              }
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          }

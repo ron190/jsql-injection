@@ -54,11 +54,11 @@ public class PropertiesUtil {
 <span class="nc" id="L54">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_SUCCESS,
                     &quot;Switched to {} with {}% translated, contribute and translate any of {} items in menu Community&quot;,
-<span class="nc" id="L57">                    newLocale.getDisplayLanguage(newLocale),</span>
-<span class="nc" id="L58">                    BigDecimal.valueOf(</span>
+<span class="nc" id="L57">                    () -&gt; newLocale.getDisplayLanguage(newLocale),</span>
+<span class="nc" id="L58">                    () -&gt; BigDecimal.valueOf(</span>
 <span class="nc" id="L59">                        100.0 - countGui.get() * 100.0 / bundleRoot.size()</span>
 <span class="nc" id="L60">                    ).setScale(1, RoundingMode.HALF_UP).doubleValue(),</span>
-<span class="nc" id="L61">                    countGui.get()</span>
+<span class="nc" id="L61">                    countGui::get</span>
                 );
             }
         }

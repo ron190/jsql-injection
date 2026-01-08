@@ -211,7 +211,7 @@ public class DnDList extends JList&lt;ItemList&gt; {
 <span class="nc" id="L211">            return;</span>
         }
 
-<span class="nc" id="L214">        int startPosition = position;</span>
+<span class="nc" id="L214">        int startPosition = Math.max(position, 0);  // can be -1 when empty JList</span>
 <span class="nc bnc" id="L215" title="All 2 branches missed.">        if (answer == JOptionPane.YES_OPTION) {</span>
 <span class="nc" id="L216">            this.listModel.clear();</span>
 <span class="nc" id="L217">            startPosition = 0;</span>
@@ -254,28 +254,27 @@ public class DnDList extends JList&lt;ItemList&gt; {
 <span class="nc" id="L254">                if (</span>
 <span class="nc bnc" id="L255" title="All 4 branches missed.">                    StringUtils.isNotEmpty(line)</span>
                     // Fix Report #60
-                    &amp;&amp; 0 &lt;= endPosition
-<span class="nc bnc" id="L258" title="All 2 branches missed.">                    &amp;&amp; endPosition &lt;= this.listModel.size()</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">                    &amp;&amp; 0 &lt;= endPosition &amp;&amp; endPosition &lt;= this.listModel.size()</span>
                 ) {
-<span class="nc" id="L260">                    this.addItem(endPosition++, line);</span>
+<span class="nc" id="L259">                    this.addItem(endPosition++, line);</span>
                 }
             }
-<span class="nc" id="L263">        } catch (IOException e) {</span>
-<span class="nc" id="L264">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L265">        }</span>
+<span class="nc" id="L262">        } catch (IOException e) {</span>
+<span class="nc" id="L263">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L264">        }</span>
         
-<span class="nc" id="L267">        return endPosition;</span>
+<span class="nc" id="L266">        return endPosition;</span>
     }
     
     public void restore() {
-<span class="nc" id="L271">        this.listModel.clear();</span>
-<span class="nc bnc" id="L272" title="All 2 branches missed.">        for (ItemList path: this.defaultList) {</span>
-<span class="nc" id="L273">            this.listModel.addElement(path);</span>
-<span class="nc" id="L274">        }</span>
-<span class="nc" id="L275">    }</span>
+<span class="nc" id="L270">        this.listModel.clear();</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">        for (ItemList path: this.defaultList) {</span>
+<span class="nc" id="L272">            this.listModel.addElement(path);</span>
+<span class="nc" id="L273">        }</span>
+<span class="nc" id="L274">    }</span>
     
     public void addItem(int endPosition, String line) {
-<span class="nc" id="L278">        this.listModel.add(endPosition, new ItemList(line.replace(&quot;\\&quot;, &quot;/&quot;)));</span>
-<span class="nc" id="L279">    }</span>
+<span class="nc" id="L277">        this.listModel.add(endPosition, new ItemList(line.replace(&quot;\\&quot;, &quot;/&quot;)));</span>
+<span class="nc" id="L278">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
