@@ -59,7 +59,7 @@ public class AppMenubar extends JMenuBar {
     private final MenuWindows menuWindows;
 
     protected static final List<ModelItemTranslate> ITEMS_TRANSLATE = Stream.of(
-        Language.EN, Language.FR, Language.RU, Language.ZH, Language.AR, Language.IT, Language.ES, Language.TR, Language.KO,
+        Language.EN, Language.FR, Language.ES, Language.IT, Language.AR, Language.ZH, Language.RU, Language.TR, Language.KO,
         Language.SE, Language.FI, Language.CS, Language.PT, Language.PL, Language.ID, Language.NL, Language.RO, Language.DE
     ).map(ModelItemTranslate::new).collect(Collectors.toList());
 

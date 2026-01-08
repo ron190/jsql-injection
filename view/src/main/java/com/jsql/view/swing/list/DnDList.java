@@ -211,7 +211,7 @@ public class DnDList extends JList<ItemList> {
             return;
         }
 
-        int startPosition = position;
+        int startPosition = Math.max(position, 0);  // can be -1 when empty JList
         if (answer == JOptionPane.YES_OPTION) {
             this.listModel.clear();
             startPosition = 0;
@@ -254,8 +254,7 @@ public class DnDList extends JList<ItemList> {
                 if (
                     StringUtils.isNotEmpty(line)
                     // Fix Report #60
-                    && 0 <= endPosition
-                    && endPosition <= this.listModel.size()
+                    && 0 <= endPosition && endPosition <= this.listModel.size()
                 ) {
                     this.addItem(endPosition++, line);
                 }

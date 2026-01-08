@@ -12,6 +12,8 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.io.IOException;
 import java.io.StringReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -52,7 +54,12 @@ public class WorkerTranslateInto extends SwingWorker<Object, Object> {
         } finally {
             this.displayDiff();
         }
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Remaining text to translate loaded, send your version to contribute");
+        var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());
+        LOGGER.log(
+            LogLevelUtil.CONSOLE_SUCCESS,
+            "Remaining text to translate into {} loaded, send any part translated to contribute",
+            localeInto.getDisplayLanguage(localeInto)
+        );
         return null;
     }
 
@@ -73,15 +80,15 @@ public class WorkerTranslateInto extends SwingWorker<Object, Object> {
         this.dialogTranslate.getTextToTranslate().setCaretPosition(0);
         this.dialogTranslate.getTextToTranslate().setEditable(true);
         if (this.dialogTranslate.getLanguageInto() != Language.OT) {
-            int percentTranslated = 100 * this.propertiesLanguageToTranslate.size() / this.propertiesRoot.size();
-            this.dialogTranslate.getProgressBarTranslation().setValue(percentTranslated);
+            double percentTranslated = 100.0 * this.propertiesLanguageToTranslate.size() / this.propertiesRoot.size();
+            this.dialogTranslate.getProgressBarTranslation().setValue((int) percentTranslated);
 
             var bundleInto = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag()));
             var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());
             this.dialogTranslate.getProgressBarTranslation().setString(
                 String.format(
                     "%s%% %s %s",
-                    percentTranslated,
+                    BigDecimal.valueOf(percentTranslated).setScale(1, RoundingMode.HALF_UP).doubleValue(),
                     bundleInto.getString("TRANSLATION_PROGRESS"),
                     localeInto.getDisplayLanguage(localeInto)
                 )

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.jsql.view.swing.list;
 
+import com.formdev.flatlaf.util.SystemFileChooser;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -46,36 +47,20 @@ public class MenuActionExport implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        final JFileChooser importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {
-            @Override
-            public void approveSelection() {
-                var file = this.getSelectedFile();
-                if (file.exists() && this.getDialogType() == JFileChooser.SAVE_DIALOG) {
-                    int replace = JOptionPane.showConfirmDialog(
-                        MediatorHelper.frame(),
-                        String.format("%s %s", file.getName(), I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_LABEL")),
-                        I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
-                        JOptionPane.YES_NO_OPTION
-                    );
-                    
-                    switch (replace) {
-                        case JOptionPane.YES_OPTION:
-                            super.approveSelection();
-                            return;
-                        case JOptionPane.NO_OPTION:
-                        case JOptionPane.CLOSED_OPTION:
-                            return;
-                        case JOptionPane.CANCEL_OPTION:
-                            this.cancelSelection();
-                            return;
-                        default:
-                            break;
-                    }
-                } else {
-                    super.approveSelection();
-                }
+        final SystemFileChooser importFileDialog = new SystemFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        importFileDialog.setApproveCallback((selectedFiles, context) -> {
+            var file = selectedFiles[0];
+            if (file.exists()) {
+                return context.showMessageDialog(
+                    JOptionPane.QUESTION_MESSAGE,
+                    String.format("%s %s", file.getName(), I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_LABEL")),
+                    I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
+                    JOptionPane.YES_NO_OPTION
+                );
+            } else {
+                return SystemFileChooser.APPROVE_OPTION;
             }
-        };
+        });
         
         importFileDialog.setDialogTitle(I18nUtil.valueByKey("LIST_EXPORT_TITLE"));
         int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());
@@ -91,6 +76,7 @@ public class MenuActionExport implements ActionListener {
             for (var i = 0 ; i < len ; i++) {
                 out.println(this.myList.getModel().getElementAt(i).toString());
             }
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "List saved: {}", importFileDialog.getSelectedFile());
         } catch (IOException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }

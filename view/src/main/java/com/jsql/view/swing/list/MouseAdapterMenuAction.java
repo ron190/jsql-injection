@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.list;
 
+import com.formdev.flatlaf.util.SystemFileChooser;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -118,7 +119,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         menuPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
         menuSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         
-        final var importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        final var importFileDialog = new SystemFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
         importFileDialog.setDialogTitle(I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
         importFileDialog.setMultiSelectionEnabled(true);
 
