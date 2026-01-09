@@ -1,5 +1,5 @@
 {
-    "version": "0.112",
+    "version": "0.113",
     "news": [
         "[Release] Next release will still be compatible Java 11, then Java 16 will be required",
         "[DNS strategy] Implementation is done. You're a security expert? Give it a try and report your feedback",
