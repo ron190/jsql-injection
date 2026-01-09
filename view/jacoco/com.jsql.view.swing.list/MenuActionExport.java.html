@@ -48,38 +48,25 @@ public class MenuActionExport implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 <span class="nc" id="L50">        final SystemFileChooser importFileDialog = new SystemFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());</span>
-<span class="nc" id="L51">        importFileDialog.setApproveCallback((selectedFiles, context) -&gt; {</span>
-<span class="nc" id="L52">            var file = selectedFiles[0];</span>
-<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (file.exists()) {</span>
-<span class="nc" id="L54">                return context.showMessageDialog(</span>
-                    JOptionPane.QUESTION_MESSAGE,
-<span class="nc" id="L56">                    String.format(&quot;%s %s&quot;, file.getName(), I18nUtil.valueByKey(&quot;LIST_EXPORT_CONFIRM_LABEL&quot;)),</span>
-<span class="nc" id="L57">                    I18nUtil.valueByKey(&quot;LIST_EXPORT_CONFIRM_TITLE&quot;),</span>
-                    JOptionPane.YES_NO_OPTION
-                );
-            } else {
-<span class="nc" id="L61">                return SystemFileChooser.APPROVE_OPTION;</span>
-            }
-        });
-        
-<span class="nc" id="L65">        importFileDialog.setDialogTitle(I18nUtil.valueByKey(&quot;LIST_EXPORT_TITLE&quot;));</span>
-<span class="nc" id="L66">        int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (choice != JFileChooser.APPROVE_OPTION) {</span>
-<span class="nc" id="L68">            return;</span>
+
+<span class="nc" id="L52">        importFileDialog.setDialogTitle(I18nUtil.valueByKey(&quot;LIST_EXPORT_TITLE&quot;));</span>
+<span class="nc" id="L53">        int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (choice != JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L55">            return;</span>
         }
 
         try (
-<span class="nc" id="L72">            var file = new FileOutputStream(importFileDialog.getSelectedFile());</span>
-<span class="nc" id="L73">            var out = new PrintStream(file, false, StandardCharsets.UTF_8)</span>
+<span class="nc" id="L59">            var file = new FileOutputStream(importFileDialog.getSelectedFile());</span>
+<span class="nc" id="L60">            var out = new PrintStream(file, false, StandardCharsets.UTF_8)</span>
         ) {
-<span class="nc" id="L75">            int len = this.myList.getModel().getSize();</span>
-<span class="nc bnc" id="L76" title="All 2 branches missed.">            for (var i = 0 ; i &lt; len ; i++) {</span>
-<span class="nc" id="L77">                out.println(this.myList.getModel().getElementAt(i).toString());</span>
+<span class="nc" id="L62">            int len = this.myList.getModel().getSize();</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            for (var i = 0 ; i &lt; len ; i++) {</span>
+<span class="nc" id="L64">                out.println(this.myList.getModel().getElementAt(i).toString());</span>
             }
-<span class="nc" id="L79">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;List saved: {}&quot;, importFileDialog.getSelectedFile());</span>
-<span class="nc" id="L80">        } catch (IOException e) {</span>
-<span class="nc" id="L81">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L82">        }</span>
-<span class="nc" id="L83">    }</span>
+<span class="nc" id="L66">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;List saved: {}&quot;, importFileDialog.getSelectedFile());</span>
+<span class="nc" id="L67">        } catch (IOException e) {</span>
+<span class="nc" id="L68">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L69">        }</span>
+<span class="nc" id="L70">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

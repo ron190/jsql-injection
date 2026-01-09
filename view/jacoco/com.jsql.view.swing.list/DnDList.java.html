@@ -12,7 +12,6 @@ package com.jsql.view.swing.list;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,50 +165,50 @@ public class DnDList extends JList&lt;ItemList&gt; {
     /**
      * Load a file into the list (drag/drop or copy/paste).
      */
-    public void dropPasteFile(final List&lt;File&gt; filesToImport, int position) {
+    public void dropPasteFile(final List&lt;File&gt; filesToImport, int position) throws IOException {
 <span class="nc bnc" id="L169" title="All 2 branches missed.">        if (filesToImport.isEmpty()) {</span>
 <span class="nc" id="L170">            return;</span>
         }
         
 <span class="nc bnc" id="L173" title="All 2 branches missed.">        for (File fileToImport : filesToImport) {</span>
             // Report NoSuchMethodError #1617
-<span class="nc" id="L175">            if (</span>
-                !FilenameUtils
-<span class="nc" id="L177">                .getExtension(fileToImport.getPath())</span>
-<span class="nc bnc" id="L178" title="All 2 branches missed.">                .matches(&quot;txt|csv|ini&quot;)</span>
-            ) {
+<span class="nc" id="L175">            String type = Files.probeContentType(fileToImport.toPath());</span>
+<span class="nc bnc" id="L176" title="All 4 branches missed.">            if (type != null &amp;&amp; !type.startsWith(&quot;text&quot;)) {</span>
                 // Fix #42832: ClassCastException on showMessageDialog()
                 try {
-<span class="nc" id="L182">                    JOptionPane.showMessageDialog(</span>
-<span class="nc" id="L183">                        this.getTopLevelAncestor(),</span>
-<span class="nc" id="L184">                        I18nUtil.valueByKey(&quot;LIST_IMPORT_ERROR_LABEL&quot;),</span>
-<span class="nc" id="L185">                        I18nUtil.valueByKey(&quot;LIST_IMPORT_ERROR_TITLE&quot;),</span>
+<span class="nc" id="L179">                    JOptionPane.showMessageDialog(</span>
+<span class="nc" id="L180">                        this.getTopLevelAncestor(),</span>
+<span class="nc" id="L181">                        I18nUtil.valueByKey(&quot;LIST_IMPORT_ERROR_LABEL&quot;),</span>
+<span class="nc" id="L182">                        I18nUtil.valueByKey(&quot;LIST_IMPORT_ERROR_TITLE&quot;),</span>
                         JOptionPane.ERROR_MESSAGE
                     );
-<span class="nc" id="L188">                } catch (ClassCastException e) {</span>
-<span class="nc" id="L189">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L190">                }</span>
-<span class="nc" id="L191">                return;</span>
+<span class="nc" id="L185">                } catch (ClassCastException e) {</span>
+<span class="nc" id="L186">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L187">                }</span>
+<span class="nc" id="L188">                return;</span>
             }
-<span class="nc" id="L193">        }</span>
+<span class="nc" id="L190">        }</span>
 
-<span class="nc" id="L195">        var options = new String[] {</span>
-<span class="nc" id="L196">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_REPLACE&quot;),</span>
-<span class="nc" id="L197">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_ADD&quot;),</span>
-<span class="nc" id="L198">            I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
-        };
-<span class="nc" id="L200">        int answer = JOptionPane.showOptionDialog(</span>
-<span class="nc" id="L201">            this.getTopLevelAncestor(),</span>
-<span class="nc" id="L202">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_LABEL&quot;),</span>
-<span class="nc" id="L203">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_TITLE&quot;),</span>
-            JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            options,
-            options[2]
-        );
-<span class="nc bnc" id="L210" title="All 4 branches missed.">        if (answer != JOptionPane.YES_OPTION &amp;&amp; answer != JOptionPane.NO_OPTION) {</span>
-<span class="nc" id="L211">            return;</span>
+<span class="nc" id="L192">        int answer = JOptionPane.YES_OPTION;</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (!this.listModel.isEmpty()) {</span>
+<span class="nc" id="L194">            var options = new String[]{</span>
+<span class="nc" id="L195">                I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_REPLACE&quot;),</span>
+<span class="nc" id="L196">                I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_ADD&quot;),</span>
+<span class="nc" id="L197">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
+            };
+<span class="nc" id="L199">            answer = JOptionPane.showOptionDialog(</span>
+<span class="nc" id="L200">                this.getTopLevelAncestor(),</span>
+<span class="nc" id="L201">                I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_LABEL&quot;),</span>
+<span class="nc" id="L202">                I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_TITLE&quot;),</span>
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[2]
+            );
+<span class="nc bnc" id="L209" title="All 4 branches missed.">            if (answer != JOptionPane.YES_OPTION &amp;&amp; answer != JOptionPane.NO_OPTION) {</span>
+<span class="nc" id="L210">                return;</span>
+            }
         }
 
 <span class="nc" id="L214">        int startPosition = Math.max(position, 0);  // can be -1 when empty JList</span>

@@ -146,20 +146,19 @@ public class JsonUtil {
             } finally {
                 // Erase * at the end of each params
                 // TODO useless
-<span class="fc" id="L149">                methodInjection.getParams()</span>
-<span class="fc" id="L150">                    .forEach(e -&gt; e.setValue(</span>
-<span class="fc" id="L151">                        e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +&quot;$&quot;, StringUtils.EMPTY)</span>
-                    ));
+<span class="fc" id="L149">                methodInjection.getParams().forEach(e -&gt; e.setValue(</span>
+<span class="fc" id="L150">                    e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +&quot;$&quot;, StringUtils.EMPTY)</span>
+                ));
                 
                 // Erase * from JSON if failure
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">                if (!hasFoundInjection) {</span>
-<span class="nc" id="L156">                    paramStar.setValue(</span>
-<span class="nc" id="L157">                        paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">                if (!hasFoundInjection) {</span>
+<span class="nc" id="L155">                    paramStar.setValue(</span>
+<span class="nc" id="L156">                        paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                     );
                 }
             }
-<span class="nc" id="L161">        }</span>
-<span class="fc" id="L162">        return hasFoundInjection;</span>
+<span class="nc" id="L160">        }</span>
+<span class="fc" id="L161">        return hasFoundInjection;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

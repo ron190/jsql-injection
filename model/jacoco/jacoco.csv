@@ -2,7 +2,7 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,5,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Patch,208,0,14,0,46,0,20,0,12,0
 model,com.jsql.model.injection.strategy.blind.patch,Diff,51,62,11,7,10,19,10,8,3,6
-model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3173,2110,400,287,651,460,245,148,23,20
+model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3155,2128,397,290,647,464,244,149,23,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.callable,AbstractCallableBit,3,37,0,0,1,13,1,8,1,8
 model,com.jsql.model.injection.strategy.blind.callable,CallableVendor,0,76,0,4,0,19,0,7,0,5
@@ -185,7 +185,7 @@ model,com.jsql.model.injection.vendor.model,VendorYaml,203,1030,11,39,32,237,21,
 model,com.jsql.util,CsrfUtil,143,315,11,19,28,74,10,19,1,13
 model,com.jsql.util,ExceptionUtil,25,14,0,0,8,5,2,2,2,2
 model,com.jsql.util,PreferencesUtil,205,1273,0,0,75,330,49,86,49,86
-model,com.jsql.util,JsonUtil,48,303,5,27,11,66,4,22,0,10
+model,com.jsql.util,JsonUtil,48,303,5,27,11,65,4,22,0,10
 model,com.jsql.util,CertificateUtil,6,39,0,0,2,10,0,3,0,3
 model,com.jsql.util,TamperingUtil,112,323,2,14,38,84,16,25,14,19
 model,com.jsql.util,GitUtil,418,9,18,0,88,4,18,2,9,2
@@ -205,7 +205,7 @@ model,com.jsql.util,ConnectionUtil.new Authenticator() {...},0,23,0,0,0,4,0,2,0,
 model,com.jsql.util,AuthenticationUtil.new Authenticator() {...},11,6,0,0,2,1,1,1,1,1
 model,com.jsql.util,GitUtil.ShowOnConsole,0,15,0,0,0,1,0,1,0,1
 model,com.jsql.util,SoapUtil,28,254,3,19,8,59,3,19,0,11
-model,com.jsql.util,PropertiesUtil,162,35,11,1,33,11,12,4,6,4
+model,com.jsql.util,PropertiesUtil,168,35,13,1,35,11,13,4,6,4
 model,com.jsql.util,AuthenticationUtil,114,150,11,5,21,46,11,13,4,12
 model,com.jsql.util,MultipartUtil,23,128,2,6,6,28,2,10,0,8
 model,com.jsql.util,DigestUtil,6,243,2,6,2,44,2,10,0,8

@@ -154,22 +154,21 @@
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>             } <strong class="jxr_keyword">finally</strong> {
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>                 <em class="jxr_comment">// Erase * at the end of each params</em>
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>                 <em class="jxr_comment">// TODO useless</em>
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>                 methodInjection.getParams()
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>                     .forEach(e -&gt; e.setValue(
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>                         e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +<span class="jxr_string">"$"</span>, StringUtils.EMPTY)
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>                     ));
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>                 
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>                 <em class="jxr_comment">// Erase * from JSON if failure</em>
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>                 <strong class="jxr_keyword">if</strong> (!hasFoundInjection) {
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>                     paramStar.setValue(
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>                         paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>                     );
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>                 }
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>             }
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>         }
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>         <strong class="jxr_keyword">return</strong> hasFoundInjection;
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>     }
-<a class="jxr_linenumber" name="L164" href="#L164">164</a> }
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>                 methodInjection.getParams().forEach(e -&gt; e.setValue(
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>                     e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +<span class="jxr_string">"$"</span>, StringUtils.EMPTY)
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>                 ));
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>                 
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>                 <em class="jxr_comment">// Erase * from JSON if failure</em>
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>                 <strong class="jxr_keyword">if</strong> (!hasFoundInjection) {
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>                     paramStar.setValue(
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>                         paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>                     );
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>                 }
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>             }
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>         }
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>         <strong class="jxr_keyword">return</strong> hasFoundInjection;
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>     }
+<a class="jxr_linenumber" name="L163" href="#L163">163</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

@@ -80,8 +80,8 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
 <span class="fc" id="L80">            var foregroundColor = UIManager.getColor(&quot;TextArea.foreground&quot;);</span>
 <span class="fc bfc" id="L81" title="All 2 branches covered.">            if (attribut == JTextPaneAppender.ATTRIBUTE_WARN) {</span>
 <span class="fc" id="L82">                foregroundColor = LogLevelUtil.COLOR_RED;</span>
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">            } else if (attribut == JTextPaneAppender.ATTRIBUTE_SUCCESS) {</span>
-<span class="nc" id="L84">                foregroundColor = LogLevelUtil.COLOR_GREEN;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            } else if (attribut == JTextPaneAppender.ATTRIBUTE_SUCCESS) {</span>
+<span class="fc" id="L84">                foregroundColor = LogLevelUtil.COLOR_GREEN;</span>
             }
             
 <span class="fc" id="L87">            int tabIndex = MediatorHelper.tabConsoles().indexOfTab(this.tabName);</span>

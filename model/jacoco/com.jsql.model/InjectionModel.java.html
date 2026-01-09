@@ -158,7 +158,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L158">            this.mediatorUtils.getParameterUtil().checkParametersFormat();</span>
 <span class="fc" id="L159">            this.mediatorUtils.getConnectionUtil().testConnection();</span>
 
-            // TODO Check all path params
+            // TODO Check all path params URL segments
 <span class="fc" id="L162">            boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters(false);</span>
 <span class="fc" id="L163">            hasFoundInjection = this.mediatorUtils.getMultipartUtil().testParameters(hasFoundInjection);</span>
 <span class="fc" id="L164">            hasFoundInjection = this.mediatorUtils.getSoapUtil().testParameters(hasFoundInjection);</span>

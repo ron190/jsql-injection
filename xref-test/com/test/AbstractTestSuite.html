@@ -268,20 +268,19 @@
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>             Assertions.assertTrue(
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>                 !setValuesFromInjection.isEmpty()
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>                 &amp;&amp; !setValuesFromJdbc.isEmpty()
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>                 <em class="jxr_comment">// TODO update and delete injection prevent exact matching =&gt; create a specific table</em>
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>                 &amp;&amp; setValuesFromInjection.containsAll(setValuesFromJdbc)
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>             );
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>         } <strong class="jxr_keyword">catch</strong> (AssertionError e) {
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>             Set&lt;String&gt; valuesUnknown = Stream.concat(
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>                 setValuesFromInjection.stream().filter(value -&gt; !setValuesFromJdbc.contains(value)),
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>                 setValuesFromJdbc.stream().filter(value -&gt; !setValuesFromInjection.contains(value))
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>             )
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>             .collect(Collectors.toCollection(TreeSet::<strong class="jxr_keyword">new</strong>));
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>             
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> AssertionError(String.format(<span class="jxr_string">"Unknown values: %s%n%s"</span>, valuesUnknown, e));
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>         }
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>     }
-<a class="jxr_linenumber" name="L276" href="#L276">276</a> }
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>                 &amp;&amp; setValuesFromInjection.containsAll(setValuesFromJdbc)
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>             );
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>         } <strong class="jxr_keyword">catch</strong> (AssertionError e) {
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>             Set&lt;String&gt; valuesUnknown = Stream.concat(
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>                 setValuesFromInjection.stream().filter(value -&gt; !setValuesFromJdbc.contains(value)),
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>                 setValuesFromJdbc.stream().filter(value -&gt; !setValuesFromInjection.contains(value))
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>             )
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>             .collect(Collectors.toCollection(TreeSet::<strong class="jxr_keyword">new</strong>));
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>             
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> AssertionError(String.format(<span class="jxr_string">"Unknown values: %s%n%s"</span>, valuesUnknown, e));
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>         }
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>     }
+<a class="jxr_linenumber" name="L275" href="#L275">275</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>
