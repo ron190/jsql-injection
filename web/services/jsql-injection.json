@@ -1,11 +1,9 @@
 {
     "version": "0.112",
     "news": [
-        "[Shoutout] Thanks for the latest Spanish translation contribution, I'll review and integrate it to the next release",
+        "[Release] Next release will still be compatible Java 11, then Java 16 will be required",
         "[DNS strategy] Implementation is done. You're a security expert? Give it a try and report your feedback",
-        "[Exploit] During your security journey you experiment with RCE, UDF and reverse shell? Give also a try and share your thoughts",
-        "[Tests] Now adding integration tests for Dns strategy using docker",
-        "[Note] I produce English and French translation only, any other language has been shared by you the community",
+        "[Exploit] Give also a try to RCE, UDF and reverse shell and share your thoughts, injection is just the tip of the iceberg",
         "[RCE shell] How to open RCE shell and reverse shell? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
         "[Pinned] Report any bugs and thoughts, also add your star at https://github.com/ron190/jsql-injection"
     ]

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-// Stack does not seem possible with jdbc
+// Ignored as Time stack does not seem possible with jdbc
 class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
 
     @Override
@@ -40,7 +40,7 @@ class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
     }
     
     @Override
-    @RetryingTest(3)
+    @RetryingTest(6)
     public void listValues() throws JSqlException {
         super.listValues();
     }

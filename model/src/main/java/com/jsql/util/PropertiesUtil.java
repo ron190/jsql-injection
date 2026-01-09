@@ -10,10 +10,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Properties;
@@ -43,8 +40,8 @@ public class PropertiesUtil {
     public void displayI18nStatus(Locale newLocale) {
         if (!Arrays.asList(StringUtils.EMPTY, "en").contains(newLocale.getLanguage())) {
             AtomicInteger countGui = new AtomicInteger();
-            var bundleRoot = PropertiesUtil.getProperties("i18n/jsql.properties");
-            var bundleUser = PropertiesUtil.getProperties("i18n/jsql_" + newLocale.getLanguage() + ".properties");
+            var bundleRoot = PropertiesUtil.getProperties("/i18n/jsql.properties");
+            var bundleUser = PropertiesUtil.getProperties("/i18n/jsql_" + newLocale.getLanguage() + ".properties");
             bundleRoot.entrySet().stream().filter(
                 key -> bundleUser.isEmpty() || !bundleUser.containsKey(key.getKey())
             ).forEach(
@@ -66,16 +63,18 @@ public class PropertiesUtil {
 
     private static Properties getProperties(String name) {
         var properties = new Properties();
-        try {
-            var uri = ClassLoader.getSystemResource(name).toURI();
-            var path = Paths.get(uri);
-            byte[] root = Files.readAllBytes(path);
-            var rootI18n = new String(root, StandardCharsets.UTF_8);
-            String rootI18nFixed = Pattern.compile("\\\\[\n\r]+")
-                .matcher(Matcher.quoteReplacement(rootI18n))
-                .replaceAll("a");
-            properties.load(new StringReader(rootI18nFixed));
-        } catch (IOException | URISyntaxException e) {
+        try (InputStream in = PropertiesUtil.class.getResourceAsStream(name)) {  // do not use path as resources in .jar may not be files
+            if (in != null) {
+                byte[] root = in.readAllBytes(); // usable in Java 9+
+                var rootI18n = new String(root, StandardCharsets.UTF_8);
+                String rootI18nFixed = Pattern.compile("\\\\[\n\r]+")
+                    .matcher(Matcher.quoteReplacement(rootI18n))
+                    .replaceAll("a");
+                properties.load(new StringReader(rootI18nFixed));
+            } else {
+                throw new JSqlRuntimeException("Resource not found: "+ name);
+            }
+        } catch (IOException e) {
             throw new JSqlRuntimeException(e);
         }
         return properties;

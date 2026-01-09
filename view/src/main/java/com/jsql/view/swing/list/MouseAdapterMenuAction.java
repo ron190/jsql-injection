@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -131,14 +132,14 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             // Fix #42831: ClassCastException on showOpenDialog()
             try {
                 choice = importFileDialog.showOpenDialog(this.dndList.getTopLevelAncestor());
-            } catch (ClassCastException | NullPointerException e) {
+                if (choice == JFileChooser.APPROVE_OPTION) {
+                    this.dndList.dropPasteFile(
+                        Arrays.asList(importFileDialog.getSelectedFiles()),
+                        this.dndList.locationToIndex(mouseEvent.getPoint())
+                    );
+                }
+            } catch (ClassCastException | NullPointerException | IOException e) {
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            }
-            if (choice == JFileChooser.APPROVE_OPTION) {
-                this.dndList.dropPasteFile(
-                    Arrays.asList(importFileDialog.getSelectedFiles()),
-                    this.dndList.locationToIndex(mouseEvent.getPoint())
-                );
             }
         });
 
@@ -171,6 +172,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
         menuDelete.addActionListener(actionEvent -> this.dndList.removeSelectedItem());
         menuExport.addActionListener(new MenuActionExport(this.dndList));
+        menuExport.setEnabled(!this.dndList.listModel.isEmpty());
         menuRestoreDefault.addActionListener(actionEvent -> this.dndList.restore());
         menuSelectAll.addActionListener(actionEvent -> {
             var start = 0;

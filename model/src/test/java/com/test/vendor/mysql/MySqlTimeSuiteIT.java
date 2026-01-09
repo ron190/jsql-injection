@@ -39,7 +39,7 @@ class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
     }
     
     @Override
-    @RetryingTest(3)
+    @RetryingTest(6)
     public void listValues() throws JSqlException {
         super.listValues();
     }

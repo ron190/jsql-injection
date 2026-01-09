@@ -118,10 +118,6 @@ strategy:
   failsafe: trim(cast(1337${indice}7330%2b1 as char(100)))
   calibrator: "'${calibrator_raw}'"
   limitBoundary: 0
-  # Encoded space mandatory to avoid space cleaning
-  # TODO keep raw space
-  # endingComment: --+-
-  # pentesterlab does not work with --+-, switch to #
   endingComment: '--+-'
   fingerprint:
    errorMessage:

@@ -124,10 +124,6 @@ strategy:
   failsafe: 1337${indice}7330%2b1
   calibrator: repeat('${calibrator_sql}', 65536)
   limitBoundary: 0
-  # Encoded space mandatory to avoid space cleaning
-  # TODO keep raw space
-  # endingComment: --+-
-  # pentesterlab does not work with --+-, switch to #
   endingComment: --+-
   fingerprint:
    errorMessage:

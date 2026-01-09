@@ -146,10 +146,9 @@ public class JsonUtil {
             } finally {
                 // Erase * at the end of each params
                 // TODO useless
-                methodInjection.getParams()
-                    .forEach(e -> e.setValue(
-                        e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)
-                    ));
+                methodInjection.getParams().forEach(e -> e.setValue(
+                    e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)
+                ));
                 
                 // Erase * from JSON if failure
                 if (!hasFoundInjection) {

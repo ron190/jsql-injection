@@ -68,6 +68,8 @@ public class ActionSaveTab extends AbstractAction {
         ) {
             JTextComponent textarea = (JTextComponent) ((JScrollPane) componentResult).getViewport().getView();
             this.saveToFile(textarea);
+        } else {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Nothing to save");
         }
     }
     

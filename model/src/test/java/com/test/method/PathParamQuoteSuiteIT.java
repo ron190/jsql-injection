@@ -17,7 +17,6 @@ class PathParamQuoteSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        // TODO Test all PathParam URL segments
         model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://localhost:8080/path-quote/*/suffix?tenant=mysql&fake="
         );

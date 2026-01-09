@@ -12,7 +12,6 @@ package com.jsql.view.swing.list;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,18 +165,15 @@ public class DnDList extends JList<ItemList> {
     /**
      * Load a file into the list (drag/drop or copy/paste).
      */
-    public void dropPasteFile(final List<File> filesToImport, int position) {
+    public void dropPasteFile(final List<File> filesToImport, int position) throws IOException {
         if (filesToImport.isEmpty()) {
             return;
         }
         
         for (File fileToImport : filesToImport) {
             // Report NoSuchMethodError #1617
-            if (
-                !FilenameUtils
-                .getExtension(fileToImport.getPath())
-                .matches("txt|csv|ini")
-            ) {
+            String type = Files.probeContentType(fileToImport.toPath());
+            if (type != null && !type.startsWith("text")) {
                 // Fix #42832: ClassCastException on showMessageDialog()
                 try {
                     JOptionPane.showMessageDialog(
@@ -192,23 +189,26 @@ public class DnDList extends JList<ItemList> {
             }
         }
 
-        var options = new String[] {
-            I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_REPLACE"),
-            I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_ADD"),
-            I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
-        };
-        int answer = JOptionPane.showOptionDialog(
-            this.getTopLevelAncestor(),
-            I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_LABEL"),
-            I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_TITLE"),
-            JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            options,
-            options[2]
-        );
-        if (answer != JOptionPane.YES_OPTION && answer != JOptionPane.NO_OPTION) {
-            return;
+        int answer = JOptionPane.YES_OPTION;
+        if (!this.listModel.isEmpty()) {
+            var options = new String[]{
+                I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_REPLACE"),
+                I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_ADD"),
+                I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
+            };
+            answer = JOptionPane.showOptionDialog(
+                this.getTopLevelAncestor(),
+                I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_LABEL"),
+                I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_TITLE"),
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[2]
+            );
+            if (answer != JOptionPane.YES_OPTION && answer != JOptionPane.NO_OPTION) {
+                return;
+            }
         }
 
         int startPosition = Math.max(position, 0);  // can be -1 when empty JList

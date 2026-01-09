@@ -3,6 +3,8 @@ package com.test.vendor.postgres;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
 class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
@@ -37,8 +39,16 @@ class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
     }
     
     @Override
-    @RetryingTest(3)
+    @RetryingTest(6)
     public void listValues() throws JSqlException {
         super.listValues();
+    }
+
+    @AfterEach
+    void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getTime(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

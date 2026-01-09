@@ -260,7 +260,6 @@ public abstract class AbstractTestSuite {
             Assertions.assertTrue(
                 !setValuesFromInjection.isEmpty()
                 && !setValuesFromJdbc.isEmpty()
-                // TODO update and delete injection prevent exact matching => create a specific table
                 && setValuesFromInjection.containsAll(setValuesFromJdbc)
             );
         } catch (AssertionError e) {
