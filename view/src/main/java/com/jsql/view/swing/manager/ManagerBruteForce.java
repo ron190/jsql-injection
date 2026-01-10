@@ -162,17 +162,17 @@ public class ManagerBruteForce extends JPanel {
             new ModelBrute(this.numericCharacters, "0-9", "BRUTEFORCE_NUM_TOOLTIP"),
             new ModelBrute(this.specialCharacters, "Special", "BRUTEFORCE_SPEC_TOOLTIP")
         ).forEach(modelBrute -> {
-            var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(modelBrute.i18nTooltip)));
-            modelBrute.checkbox.set(new JCheckBox(modelBrute.text, true) {
+            var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(modelBrute.i18nTooltip())));
+            modelBrute.checkbox().set(new JCheckBox(modelBrute.text(), true) {
                 @Override
                 public JToolTip createToolTip() {
                     return tooltip.get();
                 }
             });
-            modelBrute.checkbox.get().setToolTipText(I18nUtil.valueByKey(modelBrute.i18nTooltip));
-            I18nViewUtil.addComponentForKey(modelBrute.i18nTooltip, tooltip.get());
+            modelBrute.checkbox().get().setToolTipText(I18nUtil.valueByKey(modelBrute.i18nTooltip()));
+            I18nViewUtil.addComponentForKey(modelBrute.i18nTooltip(), tooltip.get());
             secondLine.add(Box.createHorizontalStrut(5));
-            secondLine.add(modelBrute.checkbox.get());
+            secondLine.add(modelBrute.checkbox().get());
         });
 
         return secondLine;
@@ -199,9 +199,9 @@ public class ManagerBruteForce extends JPanel {
             new ModelSpinner(1, this.minimumLength, "BRUTEFORCE_MIN_TOOLTIP"),
             new ModelSpinner(5, this.maximumLength, "BRUTEFORCE_MAX_TOOLTIP")
         ).forEach(model -> {
-            final var tooltipMax = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(model.i18n)));
+            final var tooltipMax = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(model.i18n())));
             try {  // Fixes #96099: NullPointerException on new JSpinner
-                model.spinner.set(new JSpinner() {
+                model.spinner().set(new JSpinner() {
                     @Override
                     public JToolTip createToolTip() {
                         return tooltipMax.get();
@@ -211,13 +211,13 @@ public class ManagerBruteForce extends JPanel {
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Spinner creation failed, restart app or check your jre", e);
                 return;
             }
-            model.spinner.get().setModel(new SpinnerNumberModel(model.value, 1, 10000, 1));
-            model.spinner.get().addMouseWheelListener(new SpinnerMouseWheelListener());
-            model.spinner.get().setToolTipText(I18nUtil.valueByKey(model.i18n));
-            I18nViewUtil.addComponentForKey(model.i18n, tooltipMax.get());
-            model.spinner.get().setPreferredSize(new Dimension(
-                (int) (model.spinner.get().getPreferredSize().width/1.8),
-                model.spinner.get().getPreferredSize().height
+            model.spinner().get().setModel(new SpinnerNumberModel(model.value(), 1, 10000, 1));
+            model.spinner().get().addMouseWheelListener(new SpinnerMouseWheelListener());
+            model.spinner().get().setToolTipText(I18nUtil.valueByKey(model.i18n()));
+            I18nViewUtil.addComponentForKey(model.i18n(), tooltipMax.get());
+            model.spinner().get().setPreferredSize(new Dimension(
+                (int) (model.spinner().get().getPreferredSize().width/1.8),
+                model.spinner().get().getPreferredSize().height
             ));
         });
 

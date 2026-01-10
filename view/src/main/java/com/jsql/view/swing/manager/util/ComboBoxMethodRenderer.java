@@ -15,8 +15,7 @@ public class ComboBoxMethodRenderer extends JLabel implements ListCellRenderer<O
         if (ComboBoxMethodRenderer.SEPARATOR.equals(value)) {
             return ComboBoxMethodRenderer.SEPARATOR;
         }
-        if (value instanceof ExploitMode) {
-            var exploitMethods = (ExploitMode) value;
+        if (value instanceof ExploitMode exploitMethods) {
             this.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.getKeyTooltip()));
             this.setText(I18nViewUtil.valueByKey(exploitMethods.getKeyLabel()));
         }

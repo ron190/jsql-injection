@@ -229,8 +229,7 @@ public class DnDTabbedPane extends JTabbedPane {
 
         private void repaintDropLocation() {
             Component c = DnDTabbedPane.this.getRootPane().getGlassPane();
-            if (c instanceof GhostGlassPane) {
-                GhostGlassPane glassPane = (GhostGlassPane) c;
+            if (c instanceof GhostGlassPane glassPane) {
                 glassPane.setTargetTabbedPane(DnDTabbedPane.this);
                 glassPane.repaint();
             }

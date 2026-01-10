@@ -66,7 +66,7 @@ public class AppMenubar extends JMenuBar {
     private static final List<ModelItemTranslate> ITEMS_TRANSLATE_INTO = Stream.of(
         Language.FR, Language.ES, Language.SE, Language.FI, Language.TR, Language.CS, Language.RO, Language.IT, Language.PT, Language.AR,
         Language.PL, Language.RU, Language.ZH, Language.DE, Language.ID, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA
-    ).map(ModelItemTranslate::new).collect(Collectors.toList());
+    ).map(ModelItemTranslate::new).toList();
 
     /**
      * Create a menubar on main frame.
@@ -192,14 +192,21 @@ public class AppMenubar extends JMenuBar {
                 Font.PLAIN,
                 UIManager.getDefaults().getFont("TextField.font").getSize()
             ));
-            textarea.setText(
-                "## What's the expected behavior?\n\n"
-                + "## What's the actual behavior?\n\n"
-                + "## Any other detailed information on the Issue?\n\n"
-                + "## Steps to reproduce the problem\n\n"
-                + "  1. ...\n"
-                + "  2. ...\n\n"
-                + "## [Community] Request for new feature\n\n"
+            textarea.setText("""
+                ## What's the expected behavior?
+                
+                ## What's the actual behavior?
+                
+                ## Any other detailed information on the Issue?
+                
+                ## Steps to reproduce the problem
+                
+                  1. ...
+                  2. ...
+                
+                ## [Community] Request for new feature
+                
+                """
             );
             panel.add(new JLabel("Describe your bug or issue:"), BorderLayout.NORTH);
             panel.add(new JScrollPane(textarea));

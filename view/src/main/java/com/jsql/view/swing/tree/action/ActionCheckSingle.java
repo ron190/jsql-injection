@@ -35,8 +35,7 @@ public class ActionCheckSingle implements ActionListener {
         
         for (var i = 0 ; i < tableChildCount ; i++) {
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
-            if (currentChild.getUserObject() instanceof AbstractNodeModel) {
-                AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
+            if (currentChild.getUserObject() instanceof AbstractNodeModel columnTreeNodeModel) {
                 if (columnTreeNodeModel.isSelected()) {
                     isOneChildSelected = true;
                     break;

@@ -351,14 +351,12 @@ public class VendorYaml implements AbstractVendor {
     }
 
     private String getMode(BlindOperator blindOperator) {
-        String replacement;
-        switch (blindOperator) {
-            case AND: replacement = this.modelYaml.getStrategy().getBinary().getModeAnd(); break;
-            case OR: replacement = this.modelYaml.getStrategy().getBinary().getModeOr(); break;
-            case STACK: replacement = this.modelYaml.getStrategy().getBinary().getModeStack(); break;
-            case NO_MODE: default: replacement = StringUtils.EMPTY; break;
-        }
-        return replacement;
+        return switch (blindOperator) {
+            case AND -> this.modelYaml.getStrategy().getBinary().getModeAnd();
+            case OR -> this.modelYaml.getStrategy().getBinary().getModeOr();
+            case STACK -> this.modelYaml.getStrategy().getBinary().getModeStack();
+            default -> StringUtils.EMPTY;
+        };
     }
 
     @Override

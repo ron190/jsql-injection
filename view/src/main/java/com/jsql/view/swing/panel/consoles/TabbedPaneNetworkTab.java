@@ -113,16 +113,16 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     }
     
     public void changeTextNetwork(HttpHeader networkData) {
-        this.textAreaRequest.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.getPost()));
-        this.textAreaUrl.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.getUrl()));
-        this.updateTextArea(this.textAreaHeader, networkData.getHeader());
-        this.updateTextArea(this.textAreaResponse, networkData.getResponse());
+        this.textAreaRequest.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.post()));
+        this.textAreaUrl.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.url()));
+        this.updateTextArea(this.textAreaHeader, networkData.header());
+        this.updateTextArea(this.textAreaResponse, networkData.response());
 
         // Fix #53736: ArrayIndexOutOfBoundsException on setText()
         // Fix #54573: NullPointerException on setText()
         try {
             this.textAreaSource.setText(
-                StringUtil.detectUtf8(networkData.getSource())
+                StringUtil.detectUtf8(networkData.source())
                 .replaceAll(VendorYaml.CALIBRATOR_SQL +"{5,}", VendorYaml.CALIBRATOR_SQL +"*")
                 .trim()
             );
@@ -141,7 +141,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
                 Jsoup.clean(
                     String.format(
                         "<html>%s</html>",
-                        StringUtil.detectUtf8(networkData.getSource())
+                        StringUtil.detectUtf8(networkData.source())
                     )
                     .replaceAll("<img[^>]*>",StringUtils.EMPTY)  // avoid loading external resources
                     .replaceAll("<input[^>]*type=\"?hidden\"?.*>", StringUtils.EMPTY)

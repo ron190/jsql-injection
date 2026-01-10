@@ -42,11 +42,8 @@ public final class HotkeyUtil {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
             "permanentFocusOwner",
             propertyChangeEvent -> {
-                if (propertyChangeEvent.getNewValue() instanceof JTextField) {
-                    SwingUtilities.invokeLater(() -> {
-                        JTextField textField = (JTextField) propertyChangeEvent.getNewValue();
-                        textField.selectAll();
-                    });
+                if (propertyChangeEvent.getNewValue() instanceof JTextField textField) {
+                    SwingUtilities.invokeLater(textField::selectAll);
                 }
             }
         );

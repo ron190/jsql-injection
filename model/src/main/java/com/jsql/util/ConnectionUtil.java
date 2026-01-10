@@ -251,7 +251,7 @@ public class ConnectionUtil {
             String agents = this.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();
             List<String> listAgents = Stream.of(agents.split("[\\r\\n]+"))
                 .filter(q -> !q.matches("^#.*"))
-                .collect(Collectors.toList());
+                .toList();
             String randomElement = listAgents.get(this.randomForUserAgent.nextInt(listAgents.size()));
             httpRequest.setHeader("User-Agent", randomElement);
         }

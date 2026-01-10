@@ -94,8 +94,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
             return;
         }
 
-        if (node.getUserObject() instanceof AbstractNodeModel) {
-            AbstractNodeModel dataModel = (AbstractNodeModel) node.getUserObject();
+        if (node.getUserObject() instanceof AbstractNodeModel dataModel) {
             if (!dataModel.isLoaded()) {
                 dataModel.runAction();
             }
@@ -118,8 +117,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         }
 
         DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        if (currentTableNode.getUserObject() instanceof AbstractNodeModel) {
-            AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
+        if (currentTableNode.getUserObject() instanceof AbstractNodeModel currentTableModel) {
             if (currentTableModel.isPopupDisplayable()) {
                 currentTableModel.showPopup(currentTableNode, path, mouseEvent);
             }

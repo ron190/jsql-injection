@@ -102,11 +102,11 @@ public class PanelAddressBar extends JPanel {
             )
         )
         .forEach(modelLine -> {
-            var i18nTooltip = String.format("FIELD_%s_TOOLTIP", modelLine.i18n);
+            var i18nTooltip = String.format("FIELD_%s_TOOLTIP", modelLine.i18n());
             var tooltipTextfield = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(i18nTooltip)));
-            modelLine.textfield.set(new JPopupTextField(new JTextFieldPlaceholder(
-                modelLine.placeholder,
-                modelLine.radio == this.atomicRadioRequest ? 18 : 0
+            modelLine.textfield().set(new JPopupTextField(new JTextFieldPlaceholder(
+                modelLine.placeholder(),
+                modelLine.radio() == this.atomicRadioRequest ? 18 : 0
             ) {
                 @Override
                 public JToolTip createToolTip() {
@@ -114,14 +114,14 @@ public class PanelAddressBar extends JPanel {
                 }
             }).getProxy());
             I18nViewUtil.addComponentForKey(i18nTooltip, tooltipTextfield.get());
-            modelLine.textfield.get().addActionListener(new ActionEnterAddressBar(this));
-            modelLine.textfield.get().setVisible(false);  // query will be set back to visible
-            modelLine.textfield.get().setToolTipText(I18nUtil.valueByKey(i18nTooltip));
+            modelLine.textfield().get().addActionListener(new ActionEnterAddressBar(this));
+            modelLine.textfield().get().setVisible(false);  // query will be set back to visible
+            modelLine.textfield().get().setToolTipText(I18nUtil.valueByKey(i18nTooltip));
 
-            var i18nRadio = String.format("METHOD_%s_TOOLTIP", modelLine.i18n);
+            var i18nRadio = String.format("METHOD_%s_TOOLTIP", modelLine.i18n());
             var tooltipRadio = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(i18nRadio)));
-            modelLine.radio.set(
-                new JRadioButton(modelLine.request) {
+            modelLine.radio().set(
+                new JRadioButton(modelLine.request()) {
                     @Override
                     public JToolTip createToolTip() {
                         return tooltipRadio.get();
@@ -129,15 +129,15 @@ public class PanelAddressBar extends JPanel {
                 }
             );
             I18nViewUtil.addComponentForKey(i18nRadio, tooltipRadio.get());
-            modelLine.radio.get().setToolTipText(I18nUtil.valueByKey(i18nRadio));
-            modelLine.radio.get().setSelected(modelLine.radio == this.atomicRadioRequest);
-            modelLine.radio.get().setHorizontalTextPosition(SwingConstants.LEFT);
-            modelLine.radio.get().setVisible(false);
-            modelLine.radio.get().setBorder(BorderFactory.createEmptyBorder(
-                modelLine.radio == this.atomicRadioRequest ? 0 : 6, 3, 0, 3
+            modelLine.radio().get().setToolTipText(I18nUtil.valueByKey(i18nRadio));
+            modelLine.radio().get().setSelected(modelLine.radio() == this.atomicRadioRequest);
+            modelLine.radio().get().setHorizontalTextPosition(SwingConstants.LEFT);
+            modelLine.radio().get().setVisible(false);
+            modelLine.radio().get().setBorder(BorderFactory.createEmptyBorder(
+                modelLine.radio() == this.atomicRadioRequest ? 0 : 6, 3, 0, 3
             ));
-            modelLine.radio.get().addActionListener(e -> MediatorHelper.panelAddressBar().setMethodInjection(modelLine.method));
-            buttonGroup.add(modelLine.radio.get());
+            modelLine.radio().get().addActionListener(e -> MediatorHelper.panelAddressBar().setMethodInjection(modelLine.method()));
+            buttonGroup.add(modelLine.radio().get());
         });
 
         this.atomicTextFieldAddress.get().setFont(UiUtil.FONT_NON_MONO_BIG);

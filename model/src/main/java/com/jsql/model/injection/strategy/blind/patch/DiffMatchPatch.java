@@ -955,7 +955,7 @@ public class DiffMatchPatch {
                 bestEquality2 = equality2.toString();
                 bestScore = this.diffCleanupSemanticScore(equality1.toString(), edit)
                         + this.diffCleanupSemanticScore(edit, equality2.toString());
-                while (!edit.isEmpty() && equality2.length() != 0
+                while (!edit.isEmpty() && !equality2.isEmpty()
                         && edit.charAt(0) == equality2.charAt(0)) {
                     equality1.append(edit.charAt(0));
                     edit = edit.substring(1) + equality2.charAt(0);
@@ -1248,10 +1248,10 @@ public class DiffMatchPatch {
                             }
                         }
                         // Insert the merged records.
-                        if (textDelete.length() != 0) {
+                        if (!textDelete.isEmpty()) {
                             pointer.add(new Diff(Operation.DELETE, textDelete.toString()));
                         }
-                        if (textInsert.length() != 0) {
+                        if (!textInsert.isEmpty()) {
                             pointer.add(new Diff(Operation.INSERT, textInsert.toString()));
                         }
                         // Step forward to the equality.
@@ -1590,8 +1590,7 @@ public class DiffMatchPatch {
         } else if (text.isEmpty()) {
             // Nothing to match.
             return -1;
-        } else if (loc + pattern.length() <= text.length()
-                && text.substring(loc, loc + pattern.length()).equals(pattern)) {
+        } else if (loc + pattern.length() <= text.length() && text.startsWith(pattern, loc)) {
             // Perfect match at the perfect spot!  (Includes case of null pattern)
             return loc;
         } else {
@@ -1669,13 +1668,13 @@ public class DiffMatchPatch {
                 } else {
                     charMatch = s.get(text.charAt(j - 1));
                 }
+                int i = ((rd[j + 1] << 1) | 1) & charMatch;
                 if (d == 0) {
                     // First pass: exact match.
-                    rd[j] = ((rd[j + 1] << 1) | 1) & charMatch;
+                    rd[j] = i;
                 } else {
                     // Subsequent passes : fuzzy match.
-                    rd[j] = (((rd[j + 1] << 1) | 1) & charMatch)
-                            | (((lastRd[j + 1] | lastRd[j]) << 1) | 1) | lastRd[j + 1];
+                    rd[j] = i | (((lastRd[j + 1] | lastRd[j]) << 1) | 1) | lastRd[j + 1];
                 }
 
                 if ((rd[j] & matchmask) != 0) {

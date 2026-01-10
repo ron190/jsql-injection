@@ -116,8 +116,7 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     public int getSourceActions(JComponent c) {
-        if (c instanceof DnDTabbedPane) {
-            DnDTabbedPane src = (DnDTabbedPane) c;
+        if (c instanceof DnDTabbedPane src) {
             c.getRootPane().setGlassPane(new GhostGlassPane(src));
             
             if (src.dragTabIndex < 0) {

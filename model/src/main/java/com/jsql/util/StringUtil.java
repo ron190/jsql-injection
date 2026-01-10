@@ -51,23 +51,11 @@ public final class StringUtil {
      * This utility class defines a schema used to encode a text into a specialized
      * representation
      */
-    private static class CharEncoder {
-        
-        private final String prefix;
-        private final String suffix;
-        private final int radix;
-        
-        CharEncoder(String prefix, String suffix, int radix) {
-            this.prefix = prefix;
-            this.suffix = suffix;
-            this.radix = radix;
-        }
-        
-        protected void encode(char c, StringBuilder buff) {
-            buff
-            .append(this.prefix)
-            .append(Integer.toString(c, this.radix))
-            .append(this.suffix);
+    private record CharEncoder(String prefix, String suffix, int radix) {
+        private void encode(char c, StringBuilder buff) {
+            buff.append(this.prefix)
+                .append(Integer.toString(c, this.radix))
+                .append(this.suffix);
         }
     }
 
@@ -85,7 +73,7 @@ public final class StringUtil {
     }
     
     /**
-     * Non-trivial methods to convert unicode characters to html entities.
+     * Non-trivial methods to convert Unicode characters to html entities.
      * @param text string to encode
      * @return string representation using the encoder schema
      */

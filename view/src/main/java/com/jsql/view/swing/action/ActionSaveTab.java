@@ -64,9 +64,8 @@ public class ActionSaveTab extends AbstractAction {
             this.saveToFile(table);
         } else if (
             componentResult instanceof JScrollPane
-            && ((JScrollPane) componentResult).getViewport().getView() instanceof JTextComponent
+            && ((JScrollPane) componentResult).getViewport().getView() instanceof JTextComponent textarea
         ) {
-            JTextComponent textarea = (JTextComponent) ((JScrollPane) componentResult).getViewport().getView();
             this.saveToFile(textarea);
         } else {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Nothing to save");

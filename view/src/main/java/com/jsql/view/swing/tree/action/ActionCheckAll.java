@@ -31,10 +31,8 @@ public class ActionCheckAll implements ActionListener {
         int tableChildCount = treeModel.getChildCount(currentTableNode);
         for (var i = 0 ; i < tableChildCount ; i++) {
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
-            if (currentChild.getUserObject() instanceof AbstractNodeModel) {
-                AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
+            if (currentChild.getUserObject() instanceof AbstractNodeModel columnTreeNodeModel) {
                 columnTreeNodeModel.setSelected(this.isCheckboxesSelected);
-                
                 currentTableModel.setIsAnyCheckboxSelected(this.isCheckboxesSelected);
             }
         }

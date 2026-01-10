@@ -46,7 +46,7 @@ public class CookiesUtil {
                 arrayEntry[0].trim(),
                 arrayEntry[1] == null ? StringUtils.EMPTY : arrayEntry[1].trim()
             ))
-            .collect(Collectors.toList());
+            .toList();
 
         for (AbstractMap.SimpleEntry<String, String> cookie: cookies) {
             String keyValue = cookie.getKey() + "=" + cookie.getValue();

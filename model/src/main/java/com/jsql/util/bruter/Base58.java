@@ -69,7 +69,7 @@ public class Base58 {
         for (var i = 0; i < input.length(); ++i) {
             var c = input.charAt(i);
             int digit58 = -1;
-            if (c >= 0 && c < 128) {
+            if (c < 128) {
                 digit58 = Base58.INDEXES[c];
             }
             if (digit58 < 0) {

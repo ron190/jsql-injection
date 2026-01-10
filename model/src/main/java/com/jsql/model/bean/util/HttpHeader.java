@@ -4,77 +4,21 @@ import java.util.Map;
 
 /**
  * An HTTP object containing request and response data.
+ *
+ * @param url      GET request.
+ * @param post     POST request.
+ * @param header   Header request.
+ * @param response Header sent back by server.
  */
-public class HttpHeader {
-    
-    /**
-     * GET request.
-     */
-    private final String url;
-    
-    /**
-     * POST request.
-     */
-    private final String post;
-    
-    /**
-     * Header request.
-     */
-    private final Map<String, String> header;
-    
-    /**
-     * Header sent back by server.
-     */
-    private final Map<String, String> response;
-    
-    private final String source;
-    
-    /**
-     * Create object containing HTTP data to display in Network panel.
-     * @param url URL called
-     * @param post POST text sent with url
-     * @param header HEADER text sent with url
-     * @param response RESPONSE header sent by url
-     */
-    public HttpHeader(
-        String url,
-        String post,
-        Map<String, String> header,
-        Map<String, String> response,
-        String source
-    ) {
-        this.url = url;
-        this.post = post;
-        this.header = header;
-        this.response = response;
-        this.source = source;
-    }
-
+public record HttpHeader(
+    String url,
+    String post,
+    Map<String, String> header,
+    Map<String, String> response,
+    String source
+) {
     @Override
     public String toString() {
         return this.url;
-    }
-
-
-    // Getter
-    
-    public String getUrl() {
-        return this.url;
-    }
-
-    public String getPost() {
-        return this.post;
-    }
-
-    public Map<String, String> getHeader() {
-        return this.header;
-    }
-
-    public Map<String, String> getResponse() {
-        return this.response;
-    }
-
-    public String getSource() {
-        return this.source;
     }
 }
