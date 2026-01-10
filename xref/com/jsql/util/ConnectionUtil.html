@@ -259,7 +259,7 @@
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>             String agents = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();
 <a class="jxr_linenumber" name="L252" href="#L252">252</a>             List&lt;String&gt; listAgents = Stream.of(agents.split(<span class="jxr_string">"[&#92;&#92;r&#92;&#92;n]+"</span>))
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>                 .filter(q -&gt; !q.matches(<span class="jxr_string">"^#.*"</span>))
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>                 .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>                 .toList();
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>             String randomElement = listAgents.get(<strong class="jxr_keyword">this</strong>.randomForUserAgent.nextInt(listAgents.size()));
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>             httpRequest.setHeader(<span class="jxr_string">"User-Agent"</span>, randomElement);
 <a class="jxr_linenumber" name="L257" href="#L257">257</a>         }

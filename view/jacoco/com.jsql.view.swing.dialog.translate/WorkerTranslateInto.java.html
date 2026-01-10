@@ -58,7 +58,7 @@ public class WorkerTranslateInto extends SwingWorker&lt;Object, Object&gt; {
 <span class="nc" id="L58">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_SUCCESS,
             &quot;Remaining text to translate into {} loaded, send any part translated to contribute&quot;,
-<span class="nc" id="L61">            localeInto.getDisplayLanguage(localeInto)</span>
+<span class="nc" id="L61">            () -&gt; localeInto.getDisplayLanguage(localeInto)</span>
         );
 <span class="nc" id="L63">        return null;</span>
     }

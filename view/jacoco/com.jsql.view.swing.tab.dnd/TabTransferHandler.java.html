@@ -55,8 +55,8 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     public boolean canImport(TransferHandler.TransferSupport support) {
-<span class="pc bpc" id="L58" title="1 of 4 branches missed.">        if (!support.isDrop() || !support.isDataFlavorSupported(this.localObjectFlavor)) {</span>
-<span class="fc" id="L59">            return false;</span>
+<span class="pc bpc" id="L58" title="2 of 4 branches missed.">        if (!support.isDrop() || !support.isDataFlavorSupported(this.localObjectFlavor)) {</span>
+<span class="nc" id="L59">            return false;</span>
         }
         
 <span class="fc" id="L62">        support.setDropAction(TransferHandler.MOVE);</span>
@@ -116,56 +116,55 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     public int getSourceActions(JComponent c) {
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (c instanceof DnDTabbedPane) {</span>
-<span class="fc" id="L120">            DnDTabbedPane src = (DnDTabbedPane) c;</span>
-<span class="fc" id="L121">            c.getRootPane().setGlassPane(new GhostGlassPane(src));</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (c instanceof DnDTabbedPane src) {</span>
+<span class="fc" id="L120">            c.getRootPane().setGlassPane(new GhostGlassPane(src));</span>
             
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">            if (src.dragTabIndex &lt; 0) {</span>
-<span class="nc" id="L124">                return TransferHandler.NONE;</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">            if (src.dragTabIndex &lt; 0) {</span>
+<span class="nc" id="L123">                return TransferHandler.NONE;</span>
             }
             
-<span class="fc" id="L127">            this.setDragImage(this.makeDragTabImage(src));</span>
-<span class="fc" id="L128">            c.getRootPane().getGlassPane().setVisible(true);</span>
+<span class="fc" id="L126">            this.setDragImage(this.makeDragTabImage(src));</span>
+<span class="fc" id="L127">            c.getRootPane().getGlassPane().setVisible(true);</span>
             
-<span class="fc" id="L130">            return TransferHandler.MOVE;</span>
+<span class="fc" id="L129">            return TransferHandler.MOVE;</span>
         }
-<span class="nc" id="L132">        return TransferHandler.NONE;</span>
+<span class="nc" id="L131">        return TransferHandler.NONE;</span>
     }
     
     @Override
     public boolean importData(TransferHandler.TransferSupport support) {
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (!this.canImport(support)) {</span>
-<span class="nc" id="L138">            return false;</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (!this.canImport(support)) {</span>
+<span class="nc" id="L137">            return false;</span>
         }
 
-<span class="fc" id="L141">        DnDTabbedPane target = (DnDTabbedPane) support.getComponent();</span>
-<span class="fc" id="L142">        DnDTabbedPane.DnDDropLocation dl = target.getDropLocation();</span>
+<span class="fc" id="L140">        DnDTabbedPane target = (DnDTabbedPane) support.getComponent();</span>
+<span class="fc" id="L141">        DnDTabbedPane.DnDDropLocation dl = target.getDropLocation();</span>
         
         try {
-<span class="fc" id="L145">            DnDTabData data = (DnDTabData) support.getTransferable().getTransferData(this.localObjectFlavor);</span>
-<span class="fc" id="L146">            DnDTabbedPane src = data.tabbedPane;</span>
-<span class="fc" id="L147">            int index = dl.getIndex();</span>
+<span class="fc" id="L144">            DnDTabData data = (DnDTabData) support.getTransferable().getTransferData(this.localObjectFlavor);</span>
+<span class="fc" id="L145">            DnDTabbedPane src = data.tabbedPane;</span>
+<span class="fc" id="L146">            int index = dl.getIndex();</span>
             
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">            if (target.equals(src)) {</span>
-<span class="fc" id="L150">                src.convertTab(src.dragTabIndex, index);</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">            if (target.equals(src)) {</span>
+<span class="fc" id="L149">                src.convertTab(src.dragTabIndex, index);</span>
             } else {
-<span class="nc" id="L152">                src.exportTab(src.dragTabIndex, target, index);</span>
+<span class="nc" id="L151">                src.exportTab(src.dragTabIndex, target, index);</span>
             }
-<span class="fc" id="L154">            return true;</span>
-<span class="nc" id="L155">        } catch (UnsupportedFlavorException | IOException e) {</span>
-<span class="nc" id="L156">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L153">            return true;</span>
+<span class="nc" id="L154">        } catch (UnsupportedFlavorException | IOException e) {</span>
+<span class="nc" id="L155">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
         }
         
-<span class="nc" id="L159">        return false;</span>
+<span class="nc" id="L158">        return false;</span>
     }
     
     @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
-<span class="fc" id="L164">        DnDTabbedPane src = (DnDTabbedPane) c;</span>
-<span class="fc" id="L165">        src.getRootPane().getGlassPane().setVisible(false);</span>
-<span class="fc" id="L166">        src.setDropLocation(null, false);</span>
-<span class="fc" id="L167">        src.repaint();</span>
-<span class="fc" id="L168">        src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
-<span class="fc" id="L169">    }</span>
+<span class="fc" id="L163">        DnDTabbedPane src = (DnDTabbedPane) c;</span>
+<span class="fc" id="L164">        src.getRootPane().getGlassPane().setVisible(false);</span>
+<span class="fc" id="L165">        src.setDropLocation(null, false);</span>
+<span class="fc" id="L166">        src.repaint();</span>
+<span class="fc" id="L167">        src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
+<span class="fc" id="L168">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -162,17 +162,17 @@ public class ManagerBruteForce extends JPanel {
             new ModelBrute(this.numericCharacters, &quot;0-9&quot;, &quot;BRUTEFORCE_NUM_TOOLTIP&quot;),
             new ModelBrute(this.specialCharacters, &quot;Special&quot;, &quot;BRUTEFORCE_SPEC_TOOLTIP&quot;)
 <span class="fc" id="L164">        ).forEach(modelBrute -&gt; {</span>
-<span class="fc" id="L165">            var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(modelBrute.i18nTooltip)));</span>
-<span class="fc" id="L166">            modelBrute.checkbox.set(new JCheckBox(modelBrute.text, true) {</span>
+<span class="fc" id="L165">            var tooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(modelBrute.i18nTooltip())));</span>
+<span class="fc" id="L166">            modelBrute.checkbox().set(new JCheckBox(modelBrute.text(), true) {</span>
                 @Override
                 public JToolTip createToolTip() {
 <span class="nc" id="L169">                    return tooltip.get();</span>
                 }
             });
-<span class="fc" id="L172">            modelBrute.checkbox.get().setToolTipText(I18nUtil.valueByKey(modelBrute.i18nTooltip));</span>
-<span class="fc" id="L173">            I18nViewUtil.addComponentForKey(modelBrute.i18nTooltip, tooltip.get());</span>
+<span class="fc" id="L172">            modelBrute.checkbox().get().setToolTipText(I18nUtil.valueByKey(modelBrute.i18nTooltip()));</span>
+<span class="fc" id="L173">            I18nViewUtil.addComponentForKey(modelBrute.i18nTooltip(), tooltip.get());</span>
 <span class="fc" id="L174">            secondLine.add(Box.createHorizontalStrut(5));</span>
-<span class="fc" id="L175">            secondLine.add(modelBrute.checkbox.get());</span>
+<span class="fc" id="L175">            secondLine.add(modelBrute.checkbox().get());</span>
 <span class="fc" id="L176">        });</span>
 
 <span class="fc" id="L178">        return secondLine;</span>
@@ -199,9 +199,9 @@ public class ManagerBruteForce extends JPanel {
             new ModelSpinner(1, this.minimumLength, &quot;BRUTEFORCE_MIN_TOOLTIP&quot;),
             new ModelSpinner(5, this.maximumLength, &quot;BRUTEFORCE_MAX_TOOLTIP&quot;)
 <span class="fc" id="L201">        ).forEach(model -&gt; {</span>
-<span class="fc" id="L202">            final var tooltipMax = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(model.i18n)));</span>
+<span class="fc" id="L202">            final var tooltipMax = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(model.i18n())));</span>
             try {  // Fixes #96099: NullPointerException on new JSpinner
-<span class="fc" id="L204">                model.spinner.set(new JSpinner() {</span>
+<span class="fc" id="L204">                model.spinner().set(new JSpinner() {</span>
                     @Override
                     public JToolTip createToolTip() {
 <span class="nc" id="L207">                        return tooltipMax.get();</span>
@@ -211,13 +211,13 @@ public class ManagerBruteForce extends JPanel {
 <span class="nc" id="L211">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Spinner creation failed, restart app or check your jre&quot;, e);</span>
 <span class="nc" id="L212">                return;</span>
 <span class="fc" id="L213">            }</span>
-<span class="fc" id="L214">            model.spinner.get().setModel(new SpinnerNumberModel(model.value, 1, 10000, 1));</span>
-<span class="fc" id="L215">            model.spinner.get().addMouseWheelListener(new SpinnerMouseWheelListener());</span>
-<span class="fc" id="L216">            model.spinner.get().setToolTipText(I18nUtil.valueByKey(model.i18n));</span>
-<span class="fc" id="L217">            I18nViewUtil.addComponentForKey(model.i18n, tooltipMax.get());</span>
-<span class="fc" id="L218">            model.spinner.get().setPreferredSize(new Dimension(</span>
-<span class="fc" id="L219">                (int) (model.spinner.get().getPreferredSize().width/1.8),</span>
-<span class="fc" id="L220">                model.spinner.get().getPreferredSize().height</span>
+<span class="fc" id="L214">            model.spinner().get().setModel(new SpinnerNumberModel(model.value(), 1, 10000, 1));</span>
+<span class="fc" id="L215">            model.spinner().get().addMouseWheelListener(new SpinnerMouseWheelListener());</span>
+<span class="fc" id="L216">            model.spinner().get().setToolTipText(I18nUtil.valueByKey(model.i18n()));</span>
+<span class="fc" id="L217">            I18nViewUtil.addComponentForKey(model.i18n(), tooltipMax.get());</span>
+<span class="fc" id="L218">            model.spinner().get().setPreferredSize(new Dimension(</span>
+<span class="fc" id="L219">                (int) (model.spinner().get().getPreferredSize().width/1.8),</span>
+<span class="fc" id="L220">                model.spinner().get().getPreferredSize().height</span>
             ));
 <span class="fc" id="L222">        });</span>
 

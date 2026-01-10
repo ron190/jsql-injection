@@ -8,29 +8,12 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Util class to create GUI dynamically
  */
-public class ModelAddressLine {
-
-    public final String request;
-    public final AbstractMethodInjection method;
-    public final String i18n;
-    public final AtomicReference&lt;JRadioButton&gt; radio;
-    public final String placeholder;
-    public final AtomicReference&lt;JTextField&gt; textfield;
-
-    public ModelAddressLine(
-        String request,
-        AbstractMethodInjection method,
-        String i18n,
-        AtomicReference&lt;JRadioButton&gt; radio,
-        String placeholder,
-        AtomicReference&lt;JTextField&gt; textfield
-<span class="fc" id="L27">    ) {</span>
-<span class="fc" id="L28">        this.request = request;</span>
-<span class="fc" id="L29">        this.method = method;</span>
-<span class="fc" id="L30">        this.i18n = i18n;</span>
-<span class="fc" id="L31">        this.radio = radio;</span>
-<span class="fc" id="L32">        this.placeholder = placeholder;</span>
-<span class="fc" id="L33">        this.textfield = textfield;</span>
-<span class="fc" id="L34">    }</span>
-}
+<span class="fc" id="L11">public record ModelAddressLine(</span>
+    String request,
+    AbstractMethodInjection method,
+    String i18n,
+    AtomicReference&lt;JRadioButton&gt; radio,
+    String placeholder,
+    AtomicReference&lt;JTextField&gt; textfield
+) {}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -113,16 +113,16 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
 <span class="fc" id="L113">    }</span>
     
     public void changeTextNetwork(HttpHeader networkData) {
-<span class="fc" id="L116">        this.textAreaRequest.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.getPost()));</span>
-<span class="fc" id="L117">        this.textAreaUrl.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.getUrl()));</span>
-<span class="fc" id="L118">        this.updateTextArea(this.textAreaHeader, networkData.getHeader());</span>
-<span class="fc" id="L119">        this.updateTextArea(this.textAreaResponse, networkData.getResponse());</span>
+<span class="fc" id="L116">        this.textAreaRequest.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.post()));</span>
+<span class="fc" id="L117">        this.textAreaUrl.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.url()));</span>
+<span class="fc" id="L118">        this.updateTextArea(this.textAreaHeader, networkData.header());</span>
+<span class="fc" id="L119">        this.updateTextArea(this.textAreaResponse, networkData.response());</span>
 
         // Fix #53736: ArrayIndexOutOfBoundsException on setText()
         // Fix #54573: NullPointerException on setText()
         try {
 <span class="fc" id="L124">            this.textAreaSource.setText(</span>
-<span class="fc" id="L125">                StringUtil.detectUtf8(networkData.getSource())</span>
+<span class="fc" id="L125">                StringUtil.detectUtf8(networkData.source())</span>
 <span class="fc" id="L126">                .replaceAll(VendorYaml.CALIBRATOR_SQL +&quot;{5,}&quot;, VendorYaml.CALIBRATOR_SQL +&quot;*&quot;)</span>
 <span class="fc" id="L127">                .trim()</span>
             );
@@ -141,7 +141,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
 <span class="fc" id="L141">                Jsoup.clean(</span>
 <span class="fc" id="L142">                    String.format(</span>
                         &quot;&lt;html&gt;%s&lt;/html&gt;&quot;,
-<span class="fc" id="L144">                        StringUtil.detectUtf8(networkData.getSource())</span>
+<span class="fc" id="L144">                        StringUtil.detectUtf8(networkData.source())</span>
                     )
 <span class="fc" id="L146">                    .replaceAll(&quot;&lt;img[^&gt;]*&gt;&quot;,StringUtils.EMPTY)  // avoid loading external resources</span>
 <span class="fc" id="L147">                    .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?.*&gt;&quot;, StringUtils.EMPTY)</span>

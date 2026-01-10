@@ -110,11 +110,11 @@
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>             )
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         )
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>         .forEach(modelLine -&gt; {
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>             <strong class="jxr_keyword">var</strong> i18nTooltip = String.format(<span class="jxr_string">"FIELD_%s_TOOLTIP"</span>, modelLine.i18n);
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>             <strong class="jxr_keyword">var</strong> i18nTooltip = String.format(<span class="jxr_string">"FIELD_%s_TOOLTIP"</span>, modelLine.i18n());
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>             <strong class="jxr_keyword">var</strong> tooltipTextfield = <strong class="jxr_keyword">new</strong> AtomicReference&lt;&gt;(<strong class="jxr_keyword">new</strong> <a name="JToolTipI18n" href="../../../../../com/jsql/view/swing/text/JToolTipI18n.html#JToolTipI18n">JToolTipI18n</a>(I18nUtil.valueByKey(i18nTooltip)));
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>             modelLine.textfield.set(<strong class="jxr_keyword">new</strong> <a name="JPopupTextField" href="../../../../../com/jsql/view/swing/text/JPopupTextField.html#JPopupTextField">JPopupTextField</a>(<strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>                 modelLine.placeholder,
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>                 modelLine.radio == <strong class="jxr_keyword">this</strong>.atomicRadioRequest ? 18 : 0
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>             modelLine.textfield().set(<strong class="jxr_keyword">new</strong> <a name="JPopupTextField" href="../../../../../com/jsql/view/swing/text/JPopupTextField.html#JPopupTextField">JPopupTextField</a>(<strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>                 modelLine.placeholder(),
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>                 modelLine.radio() == <strong class="jxr_keyword">this</strong>.atomicRadioRequest ? 18 : 0
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>             ) {
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>                 @Override
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>                 <strong class="jxr_keyword">public</strong> JToolTip createToolTip() {
@@ -122,14 +122,14 @@
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>                 }
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>             }).getProxy());
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>             I18nViewUtil.addComponentForKey(i18nTooltip, tooltipTextfield.get());
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>             modelLine.textfield.get().addActionListener(<strong class="jxr_keyword">new</strong> <a name="ActionEnterAddressBar" href="../../../../../com/jsql/view/swing/panel/address/ActionEnterAddressBar.html#ActionEnterAddressBar">ActionEnterAddressBar</a>(<strong class="jxr_keyword">this</strong>));
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>             modelLine.textfield.get().setVisible(false);  <em class="jxr_comment">// query will be set back to visible</em>
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>             modelLine.textfield.get().setToolTipText(I18nUtil.valueByKey(i18nTooltip));
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>             modelLine.textfield().get().addActionListener(<strong class="jxr_keyword">new</strong> <a name="ActionEnterAddressBar" href="../../../../../com/jsql/view/swing/panel/address/ActionEnterAddressBar.html#ActionEnterAddressBar">ActionEnterAddressBar</a>(<strong class="jxr_keyword">this</strong>));
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>             modelLine.textfield().get().setVisible(false);  <em class="jxr_comment">// query will be set back to visible</em>
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>             modelLine.textfield().get().setToolTipText(I18nUtil.valueByKey(i18nTooltip));
 <a class="jxr_linenumber" name="L120" href="#L120">120</a> 
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>             <strong class="jxr_keyword">var</strong> i18nRadio = String.format(<span class="jxr_string">"METHOD_%s_TOOLTIP"</span>, modelLine.i18n);
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>             <strong class="jxr_keyword">var</strong> i18nRadio = String.format(<span class="jxr_string">"METHOD_%s_TOOLTIP"</span>, modelLine.i18n());
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>             <strong class="jxr_keyword">var</strong> tooltipRadio = <strong class="jxr_keyword">new</strong> AtomicReference&lt;&gt;(<strong class="jxr_keyword">new</strong> <a name="JToolTipI18n" href="../../../../../com/jsql/view/swing/text/JToolTipI18n.html#JToolTipI18n">JToolTipI18n</a>(I18nUtil.valueByKey(i18nRadio)));
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>             modelLine.radio.set(
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>                 <strong class="jxr_keyword">new</strong> JRadioButton(modelLine.request) {
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>             modelLine.radio().set(
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>                 <strong class="jxr_keyword">new</strong> JRadioButton(modelLine.request()) {
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>                     @Override
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>                     <strong class="jxr_keyword">public</strong> JToolTip createToolTip() {
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>                         <strong class="jxr_keyword">return</strong> tooltipRadio.get();
@@ -137,15 +137,15 @@
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>                 }
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>             );
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>             I18nViewUtil.addComponentForKey(i18nRadio, tooltipRadio.get());
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>             modelLine.radio.get().setToolTipText(I18nUtil.valueByKey(i18nRadio));
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>             modelLine.radio.get().setSelected(modelLine.radio == <strong class="jxr_keyword">this</strong>.atomicRadioRequest);
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>             modelLine.radio.get().setHorizontalTextPosition(SwingConstants.LEFT);
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>             modelLine.radio.get().setVisible(false);
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>             modelLine.radio.get().setBorder(BorderFactory.createEmptyBorder(
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>                 modelLine.radio == <strong class="jxr_keyword">this</strong>.atomicRadioRequest ? 0 : 6, 3, 0, 3
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>             modelLine.radio().get().setToolTipText(I18nUtil.valueByKey(i18nRadio));
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>             modelLine.radio().get().setSelected(modelLine.radio() == <strong class="jxr_keyword">this</strong>.atomicRadioRequest);
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>             modelLine.radio().get().setHorizontalTextPosition(SwingConstants.LEFT);
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>             modelLine.radio().get().setVisible(false);
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>             modelLine.radio().get().setBorder(BorderFactory.createEmptyBorder(
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>                 modelLine.radio() == <strong class="jxr_keyword">this</strong>.atomicRadioRequest ? 0 : 6, 3, 0, 3
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>             ));
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>             modelLine.radio.get().addActionListener(e -&gt; MediatorHelper.panelAddressBar().setMethodInjection(modelLine.method));
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>             buttonGroup.add(modelLine.radio.get());
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>             modelLine.radio().get().addActionListener(e -&gt; MediatorHelper.panelAddressBar().setMethodInjection(modelLine.method()));
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>             buttonGroup.add(modelLine.radio().get());
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>         });
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> 
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">this</strong>.atomicTextFieldAddress.get().setFont(UiUtil.FONT_NON_MONO_BIG);

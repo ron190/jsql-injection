@@ -229,82 +229,81 @@ public class DnDTabbedPane extends JTabbedPane {
 
         private void repaintDropLocation() {
 <span class="fc" id="L231">            Component c = DnDTabbedPane.this.getRootPane().getGlassPane();</span>
-<span class="pc bpc" id="L232" title="1 of 2 branches missed.">            if (c instanceof GhostGlassPane) {</span>
-<span class="fc" id="L233">                GhostGlassPane glassPane = (GhostGlassPane) c;</span>
-<span class="fc" id="L234">                glassPane.setTargetTabbedPane(DnDTabbedPane.this);</span>
-<span class="fc" id="L235">                glassPane.repaint();</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">            if (c instanceof GhostGlassPane glassPane) {</span>
+<span class="fc" id="L233">                glassPane.setTargetTabbedPane(DnDTabbedPane.this);</span>
+<span class="fc" id="L234">                glassPane.repaint();</span>
             }
-<span class="fc" id="L237">        }</span>
+<span class="fc" id="L236">        }</span>
         
         // PropertyChangeListener
         @Override
         public void propertyChange(PropertyChangeEvent e) {
-<span class="fc" id="L242">            String propertyName = e.getPropertyName();</span>
-<span class="fc bfc" id="L243" title="All 2 branches covered.">            if (&quot;dropLocation&quot;.equals(propertyName)) {</span>
-<span class="fc" id="L244">                this.repaintDropLocation();</span>
+<span class="fc" id="L241">            String propertyName = e.getPropertyName();</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">            if (&quot;dropLocation&quot;.equals(propertyName)) {</span>
+<span class="fc" id="L243">                this.repaintDropLocation();</span>
             }
-<span class="fc" id="L246">        }</span>
+<span class="fc" id="L245">        }</span>
         
         // MouseListener
         @Override
         public void mousePressed(MouseEvent e) {
-<span class="fc" id="L251">            DnDTabbedPane src = (DnDTabbedPane) e.getComponent();</span>
-<span class="fc bfc" id="L252" title="All 2 branches covered.">            boolean isOnlyOneTab = src.getTabCount() &lt;= 1;</span>
-<span class="fc bfc" id="L253" title="All 2 branches covered.">            if (isOnlyOneTab) {</span>
-<span class="fc" id="L254">                this.startPt = null;</span>
-<span class="fc" id="L255">                return;</span>
+<span class="fc" id="L250">            DnDTabbedPane src = (DnDTabbedPane) e.getComponent();</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">            boolean isOnlyOneTab = src.getTabCount() &lt;= 1;</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">            if (isOnlyOneTab) {</span>
+<span class="fc" id="L253">                this.startPt = null;</span>
+<span class="fc" id="L254">                return;</span>
             }
             
-<span class="fc" id="L258">            var tabPt = e.getPoint();</span>
+<span class="fc" id="L257">            var tabPt = e.getPoint();</span>
             int idx;
             // Fix #95782: IllegalArgumentException on indexAtLocation()
             try {
-<span class="fc" id="L262">                idx = src.indexAtLocation(tabPt.x, tabPt.y);</span>
-<span class="nc" id="L263">            } catch (IllegalArgumentException err) {</span>
-<span class="nc" id="L264">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, err);</span>
-<span class="nc" id="L265">                return;</span>
-<span class="fc" id="L266">            }</span>
+<span class="fc" id="L261">                idx = src.indexAtLocation(tabPt.x, tabPt.y);</span>
+<span class="nc" id="L262">            } catch (IllegalArgumentException err) {</span>
+<span class="nc" id="L263">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, err);</span>
+<span class="nc" id="L264">                return;</span>
+<span class="fc" id="L265">            }</span>
             
             // disabled tab, null component problem.
             // pointed out by daryl. NullPointerException: i.e. addTab(&quot;Tab&quot;, null)
-<span class="pc bpc" id="L270" title="3 of 6 branches missed.">            boolean flag = idx &lt; 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));</span>
+<span class="pc bpc" id="L269" title="3 of 6 branches missed.">            boolean flag = idx &lt; 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));</span>
             
-<span class="pc bpc" id="L272" title="1 of 2 branches missed.">            this.startPt = flag ? null : tabPt;</span>
-<span class="fc" id="L273">        }</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">            this.startPt = flag ? null : tabPt;</span>
+<span class="fc" id="L272">        }</span>
         
         @Override
         public void mouseDragged(MouseEvent e) {
-<span class="fc" id="L277">            var tabPt = e.getPoint();</span>
-<span class="pc bpc" id="L278" title="2 of 4 branches missed.">            if (Objects.nonNull(this.startPt) &amp;&amp; this.startPt.distance(tabPt) &gt; this.gestureMotionThreshold) {</span>
-<span class="fc" id="L279">                DnDTabbedPane src = (DnDTabbedPane) e.getComponent();</span>
-<span class="fc" id="L280">                var th = src.getTransferHandler();</span>
-<span class="fc" id="L281">                DnDTabbedPane.this.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);</span>
+<span class="fc" id="L276">            var tabPt = e.getPoint();</span>
+<span class="pc bpc" id="L277" title="2 of 4 branches missed.">            if (Objects.nonNull(this.startPt) &amp;&amp; this.startPt.distance(tabPt) &gt; this.gestureMotionThreshold) {</span>
+<span class="fc" id="L278">                DnDTabbedPane src = (DnDTabbedPane) e.getComponent();</span>
+<span class="fc" id="L279">                var th = src.getTransferHandler();</span>
+<span class="fc" id="L280">                DnDTabbedPane.this.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);</span>
                 
                 // Unhandled NoClassDefFoundError #56620: Could not initialize class java.awt.dnd.DragSource
-<span class="fc" id="L284">                th.exportAsDrag(src, e, TransferHandler.MOVE);</span>
+<span class="fc" id="L283">                th.exportAsDrag(src, e, TransferHandler.MOVE);</span>
 
-<span class="fc" id="L286">                DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);</span>
-<span class="fc" id="L287">                src.getRootPane().getGlassPane().setVisible(true);</span>
-<span class="fc" id="L288">                src.setDropLocation(new DnDDropLocation(tabPt, -1), true);</span>
+<span class="fc" id="L285">                DnDTabbedPane.RECT_LINE.setBounds(0, 0, 0, 0);</span>
+<span class="fc" id="L286">                src.getRootPane().getGlassPane().setVisible(true);</span>
+<span class="fc" id="L287">                src.setDropLocation(new DnDDropLocation(tabPt, -1), true);</span>
                 
-<span class="fc" id="L290">                this.startPt = null;</span>
+<span class="fc" id="L289">                this.startPt = null;</span>
             }
-<span class="fc" id="L292">        }</span>
+<span class="fc" id="L291">        }</span>
 
         @Override
         public void mouseClicked(MouseEvent e) {
-<span class="fc" id="L296">            var tabPt = e.getPoint();</span>
-<span class="fc" id="L297">            JTabbedPane src = (JTabbedPane) e.getSource();</span>
+<span class="fc" id="L295">            var tabPt = e.getPoint();</span>
+<span class="fc" id="L296">            JTabbedPane src = (JTabbedPane) e.getSource();</span>
             
-<span class="fc" id="L299">            int i = src.indexAtLocation(tabPt.x, tabPt.y);</span>
-<span class="pc bpc" id="L300" title="2 of 4 branches missed.">            if (-1 &lt; i &amp;&amp; e.getButton() == MouseEvent.BUTTON2) {</span>
-<span class="nc" id="L301">                ActionCloseTabResult.perform(i);</span>
+<span class="fc" id="L298">            int i = src.indexAtLocation(tabPt.x, tabPt.y);</span>
+<span class="pc bpc" id="L299" title="2 of 4 branches missed.">            if (-1 &lt; i &amp;&amp; e.getButton() == MouseEvent.BUTTON2) {</span>
+<span class="nc" id="L300">                ActionCloseTabResult.perform(i);</span>
             }
-<span class="fc" id="L303">        }</span>
+<span class="fc" id="L302">        }</span>
     }
     
     public final DnDDropLocation getDropLocation() {
-<span class="fc" id="L307">        return this.dropLocation;</span>
+<span class="fc" id="L306">        return this.dropLocation;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

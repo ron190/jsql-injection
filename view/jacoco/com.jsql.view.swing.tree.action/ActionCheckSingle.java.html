@@ -35,17 +35,16 @@ public class ActionCheckSingle implements ActionListener {
         
 <span class="nc bnc" id="L36" title="All 2 branches missed.">        for (var i = 0 ; i &lt; tableChildCount ; i++) {</span>
 <span class="nc" id="L37">            DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);</span>
-<span class="nc bnc" id="L38" title="All 2 branches missed.">            if (currentChild.getUserObject() instanceof AbstractNodeModel) {</span>
-<span class="nc" id="L39">                AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();</span>
-<span class="nc bnc" id="L40" title="All 2 branches missed.">                if (columnTreeNodeModel.isSelected()) {</span>
-<span class="nc" id="L41">                    isOneChildSelected = true;</span>
-<span class="nc" id="L42">                    break;</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">            if (currentChild.getUserObject() instanceof AbstractNodeModel columnTreeNodeModel) {</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">                if (columnTreeNodeModel.isSelected()) {</span>
+<span class="nc" id="L40">                    isOneChildSelected = true;</span>
+<span class="nc" id="L41">                    break;</span>
                 }
             }
         }
 
-<span class="nc" id="L47">        AbstractNodeModel nodeUserObject = (AbstractNodeModel) tableNode.getUserObject();</span>
-<span class="nc" id="L48">        nodeUserObject.setIsAnyCheckboxSelected(isOneChildSelected);</span>
-<span class="nc" id="L49">    }</span>
+<span class="nc" id="L46">        AbstractNodeModel nodeUserObject = (AbstractNodeModel) tableNode.getUserObject();</span>
+<span class="nc" id="L47">        nodeUserObject.setIsAnyCheckboxSelected(isOneChildSelected);</span>
+<span class="nc" id="L48">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

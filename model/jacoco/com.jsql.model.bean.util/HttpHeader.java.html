@@ -4,78 +4,22 @@ import java.util.Map;
 
 /**
  * An HTTP object containing request and response data.
+ *
+ * @param url      GET request.
+ * @param post     POST request.
+ * @param header   Header request.
+ * @param response Header sent back by server.
  */
-public class HttpHeader {
-    
-    /**
-     * GET request.
-     */
-    private final String url;
-    
-    /**
-     * POST request.
-     */
-    private final String post;
-    
-    /**
-     * Header request.
-     */
-    private final Map&lt;String, String&gt; header;
-    
-    /**
-     * Header sent back by server.
-     */
-    private final Map&lt;String, String&gt; response;
-    
-    private final String source;
-    
-    /**
-     * Create object containing HTTP data to display in Network panel.
-     * @param url URL called
-     * @param post POST text sent with url
-     * @param header HEADER text sent with url
-     * @param response RESPONSE header sent by url
-     */
-    public HttpHeader(
-        String url,
-        String post,
-        Map&lt;String, String&gt; header,
-        Map&lt;String, String&gt; response,
-        String source
-<span class="nc" id="L45">    ) {</span>
-<span class="nc" id="L46">        this.url = url;</span>
-<span class="nc" id="L47">        this.post = post;</span>
-<span class="nc" id="L48">        this.header = header;</span>
-<span class="nc" id="L49">        this.response = response;</span>
-<span class="nc" id="L50">        this.source = source;</span>
-<span class="nc" id="L51">    }</span>
-
+<span class="nc" id="L13">public record HttpHeader(</span>
+    String url,
+    String post,
+    Map&lt;String, String&gt; header,
+    Map&lt;String, String&gt; response,
+    String source
+) {
     @Override
     public String toString() {
-<span class="nc" id="L55">        return this.url;</span>
-    }
-
-
-    // Getter
-    
-    public String getUrl() {
-<span class="nc" id="L62">        return this.url;</span>
-    }
-
-    public String getPost() {
-<span class="nc" id="L66">        return this.post;</span>
-    }
-
-    public Map&lt;String, String&gt; getHeader() {
-<span class="nc" id="L70">        return this.header;</span>
-    }
-
-    public Map&lt;String, String&gt; getResponse() {
-<span class="nc" id="L74">        return this.response;</span>
-    }
-
-    public String getSource() {
-<span class="nc" id="L78">        return this.source;</span>
+<span class="nc" id="L22">        return this.url;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

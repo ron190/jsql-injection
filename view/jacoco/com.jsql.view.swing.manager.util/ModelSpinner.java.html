@@ -3,15 +3,9 @@
 import javax.swing.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ModelSpinner {
-    public final int value;
-    public final AtomicReference&lt;JSpinner&gt; spinner;
-    public final String i18n;
-
-<span class="fc" id="L11">    public ModelSpinner(int value, AtomicReference&lt;JSpinner&gt; spinner, String i18n) {</span>
-<span class="fc" id="L12">        this.value = value;</span>
-<span class="fc" id="L13">        this.spinner = spinner;</span>
-<span class="fc" id="L14">        this.i18n = i18n;</span>
-<span class="fc" id="L15">    }</span>
-}
+<span class="fc" id="L6">public record ModelSpinner(</span>
+    int value,
+    AtomicReference&lt;JSpinner&gt; spinner,
+    String i18n
+) {}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

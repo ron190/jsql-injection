@@ -12,18 +12,17 @@ import java.awt.*;
 <span class="fc bfc" id="L12" title="All 2 branches covered.">        if (value == ComboBoxMethodRenderer.SEPARATOR) {</span>
 <span class="fc" id="L13">            return ComboBoxMethodRenderer.SEPARATOR;</span>
         }
-<span class="pc bpc" id="L15" title="1 of 2 branches missed.">        if (value instanceof ModelItemType) {</span>
-<span class="fc" id="L16">            var exploitMethods = (ModelItemType) value;</span>
-<span class="fc" id="L17">            this.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.getKeyTooltip()));</span>
-<span class="fc" id="L18">            this.setText(I18nViewUtil.valueByKey(exploitMethods.getKeyLabel()));</span>
+<span class="pc bpc" id="L15" title="1 of 2 branches missed.">        if (value instanceof ModelItemType exploitMethods) {</span>
+<span class="fc" id="L16">            this.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.keyTooltip()));</span>
+<span class="fc" id="L17">            this.setText(I18nViewUtil.valueByKey(exploitMethods.keyLabel()));</span>
         }
-<span class="fc" id="L20">        this.setForeground(UIManager.getColor(&quot;ComboBox.foreground&quot;));</span>
-<span class="fc" id="L21">        this.setBackground(UIManager.getColor(&quot;ComboBox.background&quot;));</span>
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        if (isSelected) {</span>
-<span class="nc" id="L23">            this.setForeground(UIManager.getColor(&quot;ComboBox.selectionForeground&quot;));</span>
-<span class="nc" id="L24">            this.setBackground(UIManager.getColor(&quot;ComboBox.selectionBackground&quot;));</span>
+<span class="fc" id="L19">        this.setForeground(UIManager.getColor(&quot;ComboBox.foreground&quot;));</span>
+<span class="fc" id="L20">        this.setBackground(UIManager.getColor(&quot;ComboBox.background&quot;));</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        if (isSelected) {</span>
+<span class="nc" id="L22">            this.setForeground(UIManager.getColor(&quot;ComboBox.selectionForeground&quot;));</span>
+<span class="nc" id="L23">            this.setBackground(UIManager.getColor(&quot;ComboBox.selectionBackground&quot;));</span>
         }
-<span class="fc" id="L26">        return this;</span>
+<span class="fc" id="L25">        return this;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

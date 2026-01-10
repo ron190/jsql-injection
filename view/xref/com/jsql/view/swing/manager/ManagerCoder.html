@@ -69,151 +69,150 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          }
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          @Override
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> stateChanged(ChangeEvent e) {
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>              <strong class="jxr_keyword">if</strong> (e.getSource() instanceof JMenuItem) {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>                  JMenuItem item = (JMenuItem) e.getSource();
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>                  <strong class="jxr_keyword">if</strong> (item.isSelected() || item.isArmed()) {
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>                      ManagerCoder.<strong class="jxr_keyword">this</strong>.actionCoder.actionPerformed(<strong class="jxr_keyword">this</strong>.nameMethod);
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>                  }
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>              }
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          }
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>      }
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>  
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>  <em class="jxr_javadoccomment">     * Create a panel to encode a string.</em>
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">public</strong> <a name="ManagerCoder" href="../../../../../com/jsql/view/swing/manager/ManagerCoder.html#ManagerCoder">ManagerCoder</a>() {
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">super</strong>(<strong class="jxr_keyword">new</strong> BorderLayout());
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>  
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>          <strong class="jxr_keyword">var</strong> placeholderInput = <strong class="jxr_keyword">new</strong> <a name="JTextAreaPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextAreaPlaceholder.html#JTextAreaPlaceholder">JTextAreaPlaceholder</a>(I18nUtil.valueByKey(<span class="jxr_string">"CODER_INPUT"</span>));
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">this</strong>.textInput = <strong class="jxr_keyword">new</strong> <a name="JPopupTextArea" href="../../../../../com/jsql/view/swing/text/JPopupTextArea.html#JPopupTextArea">JPopupTextArea</a>(placeholderInput).getProxy();
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>          I18nViewUtil.addComponentForKey(<span class="jxr_string">"CODER_INPUT"</span>, placeholderInput);
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">this</strong>.textInput.getCaret().setBlinkRate(500);
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">this</strong>.textInput.setLineWrap(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">this</strong>.textInput.setName(<span class="jxr_string">"textInputManagerCoder"</span>);
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">this</strong>.textInput.getDocument().addDocumentListener(<strong class="jxr_keyword">new</strong> <a name="DocumentListenerEditing" href="../../../../../com/jsql/view/swing/text/listener/DocumentListenerEditing.html#DocumentListenerEditing">DocumentListenerEditing</a>() {
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>              @Override
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> process() {
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>                  ManagerCoder.<strong class="jxr_keyword">this</strong>.actionCoder.actionPerformed();
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>              }
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>          });
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>  
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>          JPanel topMixed = <strong class="jxr_keyword">this</strong>.getTopPanel();
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>  
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">var</strong> placeholderResult = <strong class="jxr_keyword">new</strong> <a name="JTextAreaPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextAreaPlaceholder.html#JTextAreaPlaceholder">JTextAreaPlaceholder</a>(I18nUtil.valueByKey(<span class="jxr_string">"CODER_RESULT"</span>));
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>          <strong class="jxr_keyword">this</strong>.result = <strong class="jxr_keyword">new</strong> <a name="JPopupTextArea" href="../../../../../com/jsql/view/swing/text/JPopupTextArea.html#JPopupTextArea">JPopupTextArea</a>(placeholderResult).getProxy();
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>          I18nViewUtil.addComponentForKey(<span class="jxr_string">"CODER_RESULT"</span>, placeholderResult);
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">this</strong>.result.setName(<span class="jxr_string">"resultManagerCoder"</span>);
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>          <strong class="jxr_keyword">this</strong>.result.setLineWrap(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">this</strong>.result.setEditable(false);
-<a class="jxr_linenumber" name="L100" href="#L100">100</a> 
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">var</strong> bottom = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>         bottom.add(<strong class="jxr_keyword">new</strong> JScrollPane(<strong class="jxr_keyword">this</strong>.result), BorderLayout.CENTER);
-<a class="jxr_linenumber" name="L103" href="#L103">103</a> 
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>         <strong class="jxr_keyword">var</strong> divider = <strong class="jxr_keyword">new</strong> <a name="JSplitPaneWithZeroSizeDivider" href="../../../../../com/jsql/view/swing/util/JSplitPaneWithZeroSizeDivider.html#JSplitPaneWithZeroSizeDivider">JSplitPaneWithZeroSizeDivider</a>(JSplitPane.VERTICAL_SPLIT);
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>         divider.setResizeWeight(0.5);
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>         divider.setTopComponent(topMixed);
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>         divider.setBottomComponent(bottom);
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">this</strong>.add(divider, BorderLayout.CENTER);
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>     }
-<a class="jxr_linenumber" name="L110" href="#L110">110</a> 
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>     <strong class="jxr_keyword">private</strong> JPanel getTopPanel() {
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">var</strong> comboMenubar = <strong class="jxr_keyword">this</strong>.getLabelMenu();
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">var</strong> topMixed = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>         topMixed.add(<strong class="jxr_keyword">new</strong> JScrollPane(<strong class="jxr_keyword">this</strong>.textInput), BorderLayout.CENTER);
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>         topMixed.add(comboMenubar, BorderLayout.SOUTH);
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>         <strong class="jxr_keyword">return</strong> topMixed;
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>     }
-<a class="jxr_linenumber" name="L118" href="#L118">118</a> 
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>     <strong class="jxr_keyword">private</strong> JLabel getLabelMenu() {
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         Map&lt;String, JMenu&gt; mapMenus = <strong class="jxr_keyword">new</strong> LinkedHashMap&lt;&gt;();
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>         
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>         mapMenus.put(Coder.BASE16.label, <strong class="jxr_keyword">new</strong> JMenu());
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>         mapMenus.put(Coder.BASE32.label, <strong class="jxr_keyword">new</strong> JMenu());
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>         mapMenus.put(Coder.BASE58.label, <strong class="jxr_keyword">new</strong> JMenu());
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>         mapMenus.put(Coder.BASE64.label, <strong class="jxr_keyword">new</strong> JMenu());
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>         mapMenus.put(Coder.HEX.label, <strong class="jxr_keyword">new</strong> JMenu());
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         mapMenus.put(Coder.URL.label, <strong class="jxr_keyword">new</strong> JMenu());
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>         mapMenus.put(Coder.UNICODE.label, <strong class="jxr_keyword">new</strong> JMenu());
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>         <strong class="jxr_keyword">var</strong> menuHtml = <strong class="jxr_keyword">new</strong> JMenu();
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>         mapMenus.put(Coder.HTML.label, menuHtml);
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>         mapMenus.put(Coder.BASE64_ZIP.label, <strong class="jxr_keyword">new</strong> JMenu());
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>         mapMenus.put(Coder.HEX_ZIP.label, <strong class="jxr_keyword">new</strong> JMenu());
-<a class="jxr_linenumber" name="L133" href="#L133">133</a> 
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>         <strong class="jxr_keyword">var</strong> menuEncodeHtmlDecimal = <strong class="jxr_keyword">new</strong> JMenuItem(ManagerCoder.ENCODE_TO + Coder.HTML_DECIMAL.label);
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         menuHtml.add(menuEncodeHtmlDecimal);
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>         menuEncodeHtmlDecimal.addActionListener(<strong class="jxr_keyword">this</strong>.actionCoder);
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>         menuEncodeHtmlDecimal.addChangeListener(<strong class="jxr_keyword">new</strong> ChangeMenuListener(ManagerCoder.ENCODE_TO + Coder.HTML_DECIMAL.label));
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>         
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         mapMenus.forEach((label, menu) -&gt; {
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>             <strong class="jxr_keyword">var</strong> menuEncode = <strong class="jxr_keyword">new</strong> JMenuItem(ManagerCoder.ENCODE_TO + label);
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>             menuEncode.addActionListener(<strong class="jxr_keyword">this</strong>.actionCoder);
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>             menuEncode.addChangeListener(<strong class="jxr_keyword">new</strong> ChangeMenuListener(ManagerCoder.ENCODE_TO + label));
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>             menuEncode.setName(<span class="jxr_string">"encodeTo"</span>+ label);
-<a class="jxr_linenumber" name="L144" href="#L144">144</a> 
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>             <strong class="jxr_keyword">var</strong> menuDecode = <strong class="jxr_keyword">new</strong> JMenuItem(<span class="jxr_string">"Decode from "</span>+ label);
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>             menuDecode.addActionListener(<strong class="jxr_keyword">this</strong>.actionCoder);
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>             menuDecode.addChangeListener(<strong class="jxr_keyword">new</strong> ChangeMenuListener(<span class="jxr_string">"Decode from "</span>+ label));
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>             menuDecode.setName(<span class="jxr_string">"decodeFrom"</span>+ label);
-<a class="jxr_linenumber" name="L149" href="#L149">149</a> 
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>             menu.setText(label);
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>             menu.add(menuEncode);
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>             menu.add(menuDecode);
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>             menu.setName(label);
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>         });
-<a class="jxr_linenumber" name="L155" href="#L155">155</a> 
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>         mapMenus.put(<span class="jxr_string">"Hash"</span>, <strong class="jxr_keyword">new</strong> JMenu(<span class="jxr_string">"Hash"</span>));
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>         mapMenus.get(<span class="jxr_string">"Hash"</span>).setName(<span class="jxr_string">"Hash"</span>);
-<a class="jxr_linenumber" name="L158" href="#L158">158</a> 
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         ActionCoder.getHashes().forEach(hash -&gt; {
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>             <strong class="jxr_keyword">var</strong> menuEncode = <strong class="jxr_keyword">new</strong> JMenuItem(<span class="jxr_string">"Hash to "</span>+ hash);
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>             menuEncode.addActionListener(<strong class="jxr_keyword">this</strong>.actionCoder);
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>             menuEncode.addChangeListener(<strong class="jxr_keyword">new</strong> ChangeMenuListener(<span class="jxr_string">"Hash to "</span>+ hash));
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>             menuEncode.setName(<span class="jxr_string">"hashTo"</span>+ hash);
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>             mapMenus.get(<span class="jxr_string">"Hash"</span>).add(menuEncode);
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>         });
-<a class="jxr_linenumber" name="L166" href="#L166">166</a> 
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>         JPopupMenu popupMenu = <strong class="jxr_keyword">new</strong> JPopupMenu();
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">for</strong> (JMenu menu: mapMenus.values()) {
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>             popupMenu.add(menu);
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>         }
-<a class="jxr_linenumber" name="L171" href="#L171">171</a> 
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>         JLabel labelMenu = <strong class="jxr_keyword">new</strong> JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>         <strong class="jxr_keyword">this</strong>.menuMethod = labelMenu;
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>         labelMenu.setText(ManagerCoder.ENCODE_TO + Coder.BASE64.label);
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>         labelMenu.setName(<span class="jxr_string">"menuMethodManagerCoder"</span>);
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>         labelMenu.setBorder(UiUtil.BORDER_5PX);
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>         labelMenu.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>             @Override
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent e) {
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>                 Arrays.stream(popupMenu.getComponents()).map(JMenu.<strong class="jxr_keyword">class</strong>::<strong class="jxr_keyword">cast</strong>).forEach(menu -&gt; {
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>                     menu.updateUI();
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>                     <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; menu.getItemCount() ; i++) {
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>                         menu.getItem(i).updateUI();
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>                     }
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>                 });  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>                 popupMenu.updateUI();  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>                 popupMenu.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>                 popupMenu.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>             }
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         });
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <strong class="jxr_keyword">return</strong> labelMenu;
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>     }
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>              <strong class="jxr_keyword">if</strong> (e.getSource() instanceof JMenuItem item) {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>                  <strong class="jxr_keyword">if</strong> (item.isSelected() || item.isArmed()) {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>                      ManagerCoder.<strong class="jxr_keyword">this</strong>.actionCoder.actionPerformed(<strong class="jxr_keyword">this</strong>.nameMethod);
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>                  }
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>              }
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>          }
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>      }
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>  
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>  <em class="jxr_javadoccomment">     * Create a panel to encode a string.</em>
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">public</strong> <a name="ManagerCoder" href="../../../../../com/jsql/view/swing/manager/ManagerCoder.html#ManagerCoder">ManagerCoder</a>() {
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">super</strong>(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>  
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">var</strong> placeholderInput = <strong class="jxr_keyword">new</strong> <a name="JTextAreaPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextAreaPlaceholder.html#JTextAreaPlaceholder">JTextAreaPlaceholder</a>(I18nUtil.valueByKey(<span class="jxr_string">"CODER_INPUT"</span>));
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          <strong class="jxr_keyword">this</strong>.textInput = <strong class="jxr_keyword">new</strong> <a name="JPopupTextArea" href="../../../../../com/jsql/view/swing/text/JPopupTextArea.html#JPopupTextArea">JPopupTextArea</a>(placeholderInput).getProxy();
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          I18nViewUtil.addComponentForKey(<span class="jxr_string">"CODER_INPUT"</span>, placeholderInput);
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>          <strong class="jxr_keyword">this</strong>.textInput.getCaret().setBlinkRate(500);
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">this</strong>.textInput.setLineWrap(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">this</strong>.textInput.setName(<span class="jxr_string">"textInputManagerCoder"</span>);
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">this</strong>.textInput.getDocument().addDocumentListener(<strong class="jxr_keyword">new</strong> <a name="DocumentListenerEditing" href="../../../../../com/jsql/view/swing/text/listener/DocumentListenerEditing.html#DocumentListenerEditing">DocumentListenerEditing</a>() {
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>              @Override
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> process() {
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>                  ManagerCoder.<strong class="jxr_keyword">this</strong>.actionCoder.actionPerformed();
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>              }
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          });
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>  
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          JPanel topMixed = <strong class="jxr_keyword">this</strong>.getTopPanel();
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>  
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>          <strong class="jxr_keyword">var</strong> placeholderResult = <strong class="jxr_keyword">new</strong> <a name="JTextAreaPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextAreaPlaceholder.html#JTextAreaPlaceholder">JTextAreaPlaceholder</a>(I18nUtil.valueByKey(<span class="jxr_string">"CODER_RESULT"</span>));
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">this</strong>.result = <strong class="jxr_keyword">new</strong> <a name="JPopupTextArea" href="../../../../../com/jsql/view/swing/text/JPopupTextArea.html#JPopupTextArea">JPopupTextArea</a>(placeholderResult).getProxy();
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>          I18nViewUtil.addComponentForKey(<span class="jxr_string">"CODER_RESULT"</span>, placeholderResult);
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>          <strong class="jxr_keyword">this</strong>.result.setName(<span class="jxr_string">"resultManagerCoder"</span>);
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">this</strong>.result.setLineWrap(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>          <strong class="jxr_keyword">this</strong>.result.setEditable(false);
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>  
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>         <strong class="jxr_keyword">var</strong> bottom = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         bottom.add(<strong class="jxr_keyword">new</strong> JScrollPane(<strong class="jxr_keyword">this</strong>.result), BorderLayout.CENTER);
+<a class="jxr_linenumber" name="L102" href="#L102">102</a> 
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">var</strong> divider = <strong class="jxr_keyword">new</strong> <a name="JSplitPaneWithZeroSizeDivider" href="../../../../../com/jsql/view/swing/util/JSplitPaneWithZeroSizeDivider.html#JSplitPaneWithZeroSizeDivider">JSplitPaneWithZeroSizeDivider</a>(JSplitPane.VERTICAL_SPLIT);
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>         divider.setResizeWeight(0.5);
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>         divider.setTopComponent(topMixed);
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         divider.setBottomComponent(bottom);
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         <strong class="jxr_keyword">this</strong>.add(divider, BorderLayout.CENTER);
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>     }
+<a class="jxr_linenumber" name="L109" href="#L109">109</a> 
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>     <strong class="jxr_keyword">private</strong> JPanel getTopPanel() {
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         <strong class="jxr_keyword">var</strong> comboMenubar = <strong class="jxr_keyword">this</strong>.getLabelMenu();
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">var</strong> topMixed = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         topMixed.add(<strong class="jxr_keyword">new</strong> JScrollPane(<strong class="jxr_keyword">this</strong>.textInput), BorderLayout.CENTER);
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         topMixed.add(comboMenubar, BorderLayout.SOUTH);
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">return</strong> topMixed;
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>     }
+<a class="jxr_linenumber" name="L117" href="#L117">117</a> 
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">private</strong> JLabel getLabelMenu() {
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>         Map&lt;String, JMenu&gt; mapMenus = <strong class="jxr_keyword">new</strong> LinkedHashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>         
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         mapMenus.put(Coder.BASE16.label, <strong class="jxr_keyword">new</strong> JMenu());
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>         mapMenus.put(Coder.BASE32.label, <strong class="jxr_keyword">new</strong> JMenu());
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         mapMenus.put(Coder.BASE58.label, <strong class="jxr_keyword">new</strong> JMenu());
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         mapMenus.put(Coder.BASE64.label, <strong class="jxr_keyword">new</strong> JMenu());
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>         mapMenus.put(Coder.HEX.label, <strong class="jxr_keyword">new</strong> JMenu());
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>         mapMenus.put(Coder.URL.label, <strong class="jxr_keyword">new</strong> JMenu());
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         mapMenus.put(Coder.UNICODE.label, <strong class="jxr_keyword">new</strong> JMenu());
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">var</strong> menuHtml = <strong class="jxr_keyword">new</strong> JMenu();
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         mapMenus.put(Coder.HTML.label, menuHtml);
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         mapMenus.put(Coder.BASE64_ZIP.label, <strong class="jxr_keyword">new</strong> JMenu());
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>         mapMenus.put(Coder.HEX_ZIP.label, <strong class="jxr_keyword">new</strong> JMenu());
+<a class="jxr_linenumber" name="L132" href="#L132">132</a> 
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>         <strong class="jxr_keyword">var</strong> menuEncodeHtmlDecimal = <strong class="jxr_keyword">new</strong> JMenuItem(ManagerCoder.ENCODE_TO + Coder.HTML_DECIMAL.label);
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>         menuHtml.add(menuEncodeHtmlDecimal);
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>         menuEncodeHtmlDecimal.addActionListener(<strong class="jxr_keyword">this</strong>.actionCoder);
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         menuEncodeHtmlDecimal.addChangeListener(<strong class="jxr_keyword">new</strong> ChangeMenuListener(ManagerCoder.ENCODE_TO + Coder.HTML_DECIMAL.label));
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         mapMenus.forEach((label, menu) -&gt; {
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>             <strong class="jxr_keyword">var</strong> menuEncode = <strong class="jxr_keyword">new</strong> JMenuItem(ManagerCoder.ENCODE_TO + label);
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>             menuEncode.addActionListener(<strong class="jxr_keyword">this</strong>.actionCoder);
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>             menuEncode.addChangeListener(<strong class="jxr_keyword">new</strong> ChangeMenuListener(ManagerCoder.ENCODE_TO + label));
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>             menuEncode.setName(<span class="jxr_string">"encodeTo"</span>+ label);
+<a class="jxr_linenumber" name="L143" href="#L143">143</a> 
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>             <strong class="jxr_keyword">var</strong> menuDecode = <strong class="jxr_keyword">new</strong> JMenuItem(<span class="jxr_string">"Decode from "</span>+ label);
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>             menuDecode.addActionListener(<strong class="jxr_keyword">this</strong>.actionCoder);
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>             menuDecode.addChangeListener(<strong class="jxr_keyword">new</strong> ChangeMenuListener(<span class="jxr_string">"Decode from "</span>+ label));
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>             menuDecode.setName(<span class="jxr_string">"decodeFrom"</span>+ label);
+<a class="jxr_linenumber" name="L148" href="#L148">148</a> 
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>             menu.setText(label);
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>             menu.add(menuEncode);
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>             menu.add(menuDecode);
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>             menu.setName(label);
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         });
+<a class="jxr_linenumber" name="L154" href="#L154">154</a> 
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>         mapMenus.put(<span class="jxr_string">"Hash"</span>, <strong class="jxr_keyword">new</strong> JMenu(<span class="jxr_string">"Hash"</span>));
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         mapMenus.get(<span class="jxr_string">"Hash"</span>).setName(<span class="jxr_string">"Hash"</span>);
+<a class="jxr_linenumber" name="L157" href="#L157">157</a> 
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>         ActionCoder.getHashes().forEach(hash -&gt; {
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>             <strong class="jxr_keyword">var</strong> menuEncode = <strong class="jxr_keyword">new</strong> JMenuItem(<span class="jxr_string">"Hash to "</span>+ hash);
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>             menuEncode.addActionListener(<strong class="jxr_keyword">this</strong>.actionCoder);
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>             menuEncode.addChangeListener(<strong class="jxr_keyword">new</strong> ChangeMenuListener(<span class="jxr_string">"Hash to "</span>+ hash));
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>             menuEncode.setName(<span class="jxr_string">"hashTo"</span>+ hash);
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>             mapMenus.get(<span class="jxr_string">"Hash"</span>).add(menuEncode);
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>         });
+<a class="jxr_linenumber" name="L165" href="#L165">165</a> 
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>         JPopupMenu popupMenu = <strong class="jxr_keyword">new</strong> JPopupMenu();
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">for</strong> (JMenu menu: mapMenus.values()) {
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>             popupMenu.add(menu);
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>         }
+<a class="jxr_linenumber" name="L170" href="#L170">170</a> 
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>         JLabel labelMenu = <strong class="jxr_keyword">new</strong> JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>         <strong class="jxr_keyword">this</strong>.menuMethod = labelMenu;
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>         labelMenu.setText(ManagerCoder.ENCODE_TO + Coder.BASE64.label);
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>         labelMenu.setName(<span class="jxr_string">"menuMethodManagerCoder"</span>);
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>         labelMenu.setBorder(UiUtil.BORDER_5PX);
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>         labelMenu.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>             @Override
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent e) {
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>                 Arrays.stream(popupMenu.getComponents()).map(JMenu.<strong class="jxr_keyword">class</strong>::<strong class="jxr_keyword">cast</strong>).forEach(menu -&gt; {
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>                     menu.updateUI();
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>                     <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; menu.getItemCount() ; i++) {
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>                         menu.getItem(i).updateUI();
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>                     }
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>                 });  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>                 popupMenu.updateUI();  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>                 popupMenu.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>                 popupMenu.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>             }
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         });
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">return</strong> labelMenu;
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>     }
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>     
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>     
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>     
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>     <em class="jxr_comment">// Getter and setter</em>
-<a class="jxr_linenumber" name="L196" href="#L196">196</a> 
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>     <strong class="jxr_keyword">public</strong> JTextArea getTextInput() {
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.textInput;
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>     }
-<a class="jxr_linenumber" name="L200" href="#L200">200</a> 
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <strong class="jxr_keyword">public</strong> JLabel getMenuMethod() {
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.menuMethod;
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>     }
-<a class="jxr_linenumber" name="L204" href="#L204">204</a> 
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>     <strong class="jxr_keyword">public</strong> JTextArea getResult() {
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.result;
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>     }
-<a class="jxr_linenumber" name="L208" href="#L208">208</a> }
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <em class="jxr_comment">// Getter and setter</em>
+<a class="jxr_linenumber" name="L195" href="#L195">195</a> 
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>     <strong class="jxr_keyword">public</strong> JTextArea getTextInput() {
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.textInput;
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>     }
+<a class="jxr_linenumber" name="L199" href="#L199">199</a> 
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>     <strong class="jxr_keyword">public</strong> JLabel getMenuMethod() {
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.menuMethod;
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>     }
+<a class="jxr_linenumber" name="L203" href="#L203">203</a> 
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>     <strong class="jxr_keyword">public</strong> JTextArea getResult() {
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.result;
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>     }
+<a class="jxr_linenumber" name="L207" href="#L207">207</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

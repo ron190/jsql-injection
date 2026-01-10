@@ -46,7 +46,7 @@ public class CookiesUtil {
 <span class="fc" id="L46">                arrayEntry[0].trim(),</span>
 <span class="pc bpc" id="L47" title="1 of 2 branches missed.">                arrayEntry[1] == null ? StringUtils.EMPTY : arrayEntry[1].trim()</span>
             ))
-<span class="fc" id="L49">            .collect(Collectors.toList());</span>
+<span class="fc" id="L49">            .toList();</span>
 
 <span class="pc bpc" id="L51" title="1 of 2 branches missed.">        for (AbstractMap.SimpleEntry&lt;String, String&gt; cookie: cookies) {</span>
 <span class="fc" id="L52">            String keyValue = cookie.getKey() + &quot;=&quot; + cookie.getValue();</span>

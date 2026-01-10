@@ -69,7 +69,7 @@ public class Base58 {
 <span class="fc bfc" id="L69" title="All 2 branches covered.">        for (var i = 0; i &lt; input.length(); ++i) {</span>
 <span class="fc" id="L70">            var c = input.charAt(i);</span>
 <span class="fc" id="L71">            int digit58 = -1;</span>
-<span class="pc bpc" id="L72" title="2 of 4 branches missed.">            if (c &gt;= 0 &amp;&amp; c &lt; 128) {</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">            if (c &lt; 128) {</span>
 <span class="fc" id="L73">                digit58 = Base58.INDEXES[c];</span>
             }
 <span class="pc bpc" id="L75" title="1 of 2 branches missed.">            if (digit58 &lt; 0) {</span>

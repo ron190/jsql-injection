@@ -102,11 +102,11 @@ public class PanelAddressBar extends JPanel {
             )
         )
 <span class="fc" id="L104">        .forEach(modelLine -&gt; {</span>
-<span class="fc" id="L105">            var i18nTooltip = String.format(&quot;FIELD_%s_TOOLTIP&quot;, modelLine.i18n);</span>
+<span class="fc" id="L105">            var i18nTooltip = String.format(&quot;FIELD_%s_TOOLTIP&quot;, modelLine.i18n());</span>
 <span class="fc" id="L106">            var tooltipTextfield = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(i18nTooltip)));</span>
-<span class="fc" id="L107">            modelLine.textfield.set(new JPopupTextField(new JTextFieldPlaceholder(</span>
-                modelLine.placeholder,
-<span class="fc bfc" id="L109" title="All 2 branches covered.">                modelLine.radio == this.atomicRadioRequest ? 18 : 0</span>
+<span class="fc" id="L107">            modelLine.textfield().set(new JPopupTextField(new JTextFieldPlaceholder(</span>
+<span class="fc" id="L108">                modelLine.placeholder(),</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">                modelLine.radio() == this.atomicRadioRequest ? 18 : 0</span>
 <span class="fc" id="L110">            ) {</span>
                 @Override
                 public JToolTip createToolTip() {
@@ -114,14 +114,14 @@ public class PanelAddressBar extends JPanel {
                 }
 <span class="fc" id="L115">            }).getProxy());</span>
 <span class="fc" id="L116">            I18nViewUtil.addComponentForKey(i18nTooltip, tooltipTextfield.get());</span>
-<span class="fc" id="L117">            modelLine.textfield.get().addActionListener(new ActionEnterAddressBar(this));</span>
-<span class="fc" id="L118">            modelLine.textfield.get().setVisible(false);  // query will be set back to visible</span>
-<span class="fc" id="L119">            modelLine.textfield.get().setToolTipText(I18nUtil.valueByKey(i18nTooltip));</span>
+<span class="fc" id="L117">            modelLine.textfield().get().addActionListener(new ActionEnterAddressBar(this));</span>
+<span class="fc" id="L118">            modelLine.textfield().get().setVisible(false);  // query will be set back to visible</span>
+<span class="fc" id="L119">            modelLine.textfield().get().setToolTipText(I18nUtil.valueByKey(i18nTooltip));</span>
 
-<span class="fc" id="L121">            var i18nRadio = String.format(&quot;METHOD_%s_TOOLTIP&quot;, modelLine.i18n);</span>
+<span class="fc" id="L121">            var i18nRadio = String.format(&quot;METHOD_%s_TOOLTIP&quot;, modelLine.i18n());</span>
 <span class="fc" id="L122">            var tooltipRadio = new AtomicReference&lt;&gt;(new JToolTipI18n(I18nUtil.valueByKey(i18nRadio)));</span>
-<span class="fc" id="L123">            modelLine.radio.set(</span>
-<span class="fc" id="L124">                new JRadioButton(modelLine.request) {</span>
+<span class="fc" id="L123">            modelLine.radio().set(</span>
+<span class="fc" id="L124">                new JRadioButton(modelLine.request()) {</span>
                     @Override
                     public JToolTip createToolTip() {
 <span class="nc" id="L127">                        return tooltipRadio.get();</span>
@@ -129,15 +129,15 @@ public class PanelAddressBar extends JPanel {
                 }
             );
 <span class="fc" id="L131">            I18nViewUtil.addComponentForKey(i18nRadio, tooltipRadio.get());</span>
-<span class="fc" id="L132">            modelLine.radio.get().setToolTipText(I18nUtil.valueByKey(i18nRadio));</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">            modelLine.radio.get().setSelected(modelLine.radio == this.atomicRadioRequest);</span>
-<span class="fc" id="L134">            modelLine.radio.get().setHorizontalTextPosition(SwingConstants.LEFT);</span>
-<span class="fc" id="L135">            modelLine.radio.get().setVisible(false);</span>
-<span class="fc" id="L136">            modelLine.radio.get().setBorder(BorderFactory.createEmptyBorder(</span>
-<span class="fc bfc" id="L137" title="All 2 branches covered.">                modelLine.radio == this.atomicRadioRequest ? 0 : 6, 3, 0, 3</span>
+<span class="fc" id="L132">            modelLine.radio().get().setToolTipText(I18nUtil.valueByKey(i18nRadio));</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">            modelLine.radio().get().setSelected(modelLine.radio() == this.atomicRadioRequest);</span>
+<span class="fc" id="L134">            modelLine.radio().get().setHorizontalTextPosition(SwingConstants.LEFT);</span>
+<span class="fc" id="L135">            modelLine.radio().get().setVisible(false);</span>
+<span class="fc" id="L136">            modelLine.radio().get().setBorder(BorderFactory.createEmptyBorder(</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">                modelLine.radio() == this.atomicRadioRequest ? 0 : 6, 3, 0, 3</span>
             ));
-<span class="pc" id="L139">            modelLine.radio.get().addActionListener(e -&gt; MediatorHelper.panelAddressBar().setMethodInjection(modelLine.method));</span>
-<span class="fc" id="L140">            buttonGroup.add(modelLine.radio.get());</span>
+<span class="pc" id="L139">            modelLine.radio().get().addActionListener(e -&gt; MediatorHelper.panelAddressBar().setMethodInjection(modelLine.method()));</span>
+<span class="fc" id="L140">            buttonGroup.add(modelLine.radio().get());</span>
 <span class="fc" id="L141">        });</span>
 
 <span class="fc" id="L143">        this.atomicTextFieldAddress.get().setFont(UiUtil.FONT_NON_MONO_BIG);</span>

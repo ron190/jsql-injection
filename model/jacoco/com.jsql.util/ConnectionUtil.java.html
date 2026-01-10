@@ -251,7 +251,7 @@ public class ConnectionUtil {
 <span class="fc" id="L251">            String agents = this.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();</span>
 <span class="fc" id="L252">            List&lt;String&gt; listAgents = Stream.of(agents.split(&quot;[\\r\\n]+&quot;))</span>
 <span class="pc bpc" id="L253" title="1 of 2 branches missed.">                .filter(q -&gt; !q.matches(&quot;^#.*&quot;))</span>
-<span class="fc" id="L254">                .collect(Collectors.toList());</span>
+<span class="fc" id="L254">                .toList();</span>
 <span class="fc" id="L255">            String randomElement = listAgents.get(this.randomForUserAgent.nextInt(listAgents.size()));</span>
 <span class="fc" id="L256">            httpRequest.setHeader(&quot;User-Agent&quot;, randomElement);</span>
         }

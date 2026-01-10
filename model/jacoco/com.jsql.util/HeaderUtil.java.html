@@ -53,7 +53,7 @@ public class HeaderUtil {
 <span class="fc bfc" id="L53" title="All 4 branches covered.">        if (&quot;cookie&quot;.equalsIgnoreCase(keyHeader) &amp;&amp; Pattern.compile(&quot;.+=.*&quot;).matcher(valueHeader).find()) {</span>
             // Encode cookies to double quotes: Cookie: key=&quot;&lt;value&gt;&quot;
 <span class="fc" id="L55">            List&lt;String&gt; cookies = Stream.of(valueHeader.split(&quot;;&quot;))</span>
-<span class="pc bpc" id="L56" title="1 of 4 branches missed.">                .filter(value -&gt; value != null &amp;&amp; value.contains(&quot;=&quot;))</span>
+<span class="fc" id="L56">                .filter(value -&gt; value.contains(&quot;=&quot;))</span>
 <span class="fc" id="L57">                .map(cookie -&gt; cookie.split(&quot;=&quot;, 2))</span>
 <span class="fc" id="L58">                .map(arrayEntry -&gt; arrayEntry[0].trim() + &quot;=&quot; + (</span>
 <span class="pc bpc" id="L59" title="1 of 2 branches missed.">                    arrayEntry[1] == null</span>

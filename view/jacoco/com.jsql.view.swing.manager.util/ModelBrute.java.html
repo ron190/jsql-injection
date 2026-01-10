@@ -3,15 +3,9 @@
 import javax.swing.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ModelBrute {
-    public final AtomicReference&lt;JCheckBox&gt; checkbox;
-    public final String text;
-    public final String i18nTooltip;
-
-<span class="fc" id="L11">    public ModelBrute(AtomicReference&lt;JCheckBox&gt; checkbox, String text, String i18nTooltip) {</span>
-<span class="fc" id="L12">        this.checkbox = checkbox;</span>
-<span class="fc" id="L13">        this.text = text;</span>
-<span class="fc" id="L14">        this.i18nTooltip = i18nTooltip;</span>
-<span class="fc" id="L15">    }</span>
-}
+<span class="fc" id="L6">public record ModelBrute(</span>
+    AtomicReference&lt;JCheckBox&gt; checkbox,
+    String text,
+    String i18nTooltip
+) {}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -31,15 +31,13 @@ public class ActionCheckAll implements ActionListener {
 <span class="nc" id="L31">        int tableChildCount = treeModel.getChildCount(currentTableNode);</span>
 <span class="nc bnc" id="L32" title="All 2 branches missed.">        for (var i = 0 ; i &lt; tableChildCount ; i++) {</span>
 <span class="nc" id="L33">            DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);</span>
-<span class="nc bnc" id="L34" title="All 2 branches missed.">            if (currentChild.getUserObject() instanceof AbstractNodeModel) {</span>
-<span class="nc" id="L35">                AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();</span>
-<span class="nc" id="L36">                columnTreeNodeModel.setSelected(this.isCheckboxesSelected);</span>
-                
-<span class="nc" id="L38">                currentTableModel.setIsAnyCheckboxSelected(this.isCheckboxesSelected);</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            if (currentChild.getUserObject() instanceof AbstractNodeModel columnTreeNodeModel) {</span>
+<span class="nc" id="L35">                columnTreeNodeModel.setSelected(this.isCheckboxesSelected);</span>
+<span class="nc" id="L36">                currentTableModel.setIsAnyCheckboxSelected(this.isCheckboxesSelected);</span>
             }
         }
 
-<span class="nc" id="L42">        treeModel.nodeChanged(currentTableNode);</span>
-<span class="nc" id="L43">    }</span>
+<span class="nc" id="L40">        treeModel.nodeChanged(currentTableNode);</span>
+<span class="nc" id="L41">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
