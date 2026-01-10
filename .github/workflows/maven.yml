@@ -3,7 +3,6 @@ on:
     branches: [ master ]
     
 env:
-  MAVEN_NASHORN: ""
   MAVEN_BYTEBUDDY: ""
   DOCKER_RESOURCES: ./model/src/test/resources/docker
 
@@ -19,9 +18,9 @@ jobs:
     outputs:
       DOCKER_RESOURCES: ${{ steps.set-vars.outputs.DOCKER_RESOURCES }}
 
-  build-jdk11:
+  virustotal:
     needs: set-global-env-var
-    uses: ./.github/workflows/build-jdk11.yml
+    uses: ./.github/workflows/scan/virustotal.yml
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
     secrets: inherit
@@ -32,7 +31,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        vendor: [oracle, db2, sqlserver, sybase, vertica, monetdb]
+        vendor: [db2, exasol, hana, monetdb, oracle, sqlserver, sybase, vertica]
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
       NAME_VENDOR: ${{ matrix.vendor }}
@@ -45,9 +44,9 @@ jobs:
     secrets: inherit
 
   codeql:
-    uses: ./.github/workflows/codeql.yml
+    uses: ./.github/workflows/scan/codeql.yml
 
   release:
-    needs: [build-jdk11, build-main, build-vendor, codeql]
+    needs: [virustotal, build-main, build-vendor, codeql]
     uses: ./.github/workflows/release.yml
     secrets: inherit

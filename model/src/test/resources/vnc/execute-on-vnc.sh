@@ -29,7 +29,6 @@ OLD_DISPLAY=${DISPLAY}
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 1024x780 -depth 16
 export DISPLAY=:${NEW_DISPLAY}
 
-echo MAVEN_NASHORN="${MAVEN_NASHORN}"
 echo MAVEN_BYTEBUDDY="${MAVEN_BYTEBUDDY}"
 
 "$@"

@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+
+  hana:
+    container_name: jsql-hana
+    ports:
+      - "39017:39017"
+    build:
+      context: .
+      dockerfile: Dockerfile.hana
+    command:  # CMD in Dockerfile not working
+      - --master-password
+      - 1anaHEXH
+      - --agree-to-sap-license
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

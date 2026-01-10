@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JSQL_DOCKERFILE: 3.9.12-eclipse-temurin-21
-      MAVEN_NASHORN: ""
       MAVEN_BYTEBUDDY: ""
       DOCKER_RESOURCES: ${{ inputs.DOCKER_RESOURCES }}
       NAME_VENDOR: ${{ inputs.NAME_VENDOR }}

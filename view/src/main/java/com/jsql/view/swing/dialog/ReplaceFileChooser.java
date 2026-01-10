@@ -44,18 +44,8 @@ public class ReplaceFileChooser extends JFileChooser {
                     I18nUtil.valueByKey("SAVE_TAB_CONFIRM_TITLE"),
                     JOptionPane.YES_NO_OPTION
                 );
-                switch (result) {
-                    case JOptionPane.YES_OPTION:
-                        super.approveSelection();
-                        return;
-                    case JOptionPane.NO_OPTION:
-                    case JOptionPane.CLOSED_OPTION:
-                        return;
-                    case JOptionPane.CANCEL_OPTION:
-                        this.cancelSelection();
-                        return;
-                    default:
-                        break;
+                if (result == JOptionPane.YES_OPTION) {
+                    super.approveSelection();
                 }
             } else {
                 super.approveSelection();

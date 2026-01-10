@@ -233,14 +233,14 @@ public enum ActionCoder {
         return Arrays.stream(ActionCoder.values())
             .filter(action -> action.isHash)
             .map(actionCoder -> actionCoder.name)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     public static List<String> getHashesEmpty() {
         return Arrays.stream(ActionCoder.values())
             .filter(action -> action.isHash && action.isEmptyPossible)
             .map(actionCoder -> actionCoder.name)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     public static Optional<ActionCoder> forName(String name) {

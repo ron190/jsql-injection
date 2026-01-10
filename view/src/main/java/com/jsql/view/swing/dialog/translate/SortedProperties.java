@@ -12,9 +12,9 @@ public class SortedProperties extends Properties {
             keyList.add((String) keysEnum.nextElement());
         }
         Collections.sort(keyList);
-        return Collections.enumeration(keyList.stream()
-            .map(s -> (Object) s)
-            .collect(Collectors.toList()));
+        return Collections.enumeration(
+            keyList.stream().map(s -> (Object) s).toList()
+        );
     }
     @Override
     public Set<Map.Entry<Object, Object>> entrySet() {

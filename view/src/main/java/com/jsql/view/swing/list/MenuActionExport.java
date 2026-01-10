@@ -63,7 +63,7 @@ public class MenuActionExport implements ActionListener {
             for (var i = 0 ; i < len ; i++) {
                 out.println(this.myList.getModel().getElementAt(i).toString());
             }
-            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "List saved: {}", importFileDialog.getSelectedFile());
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "List saved to {}", importFileDialog.getSelectedFile());
         } catch (IOException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }

@@ -56,11 +56,11 @@ public class DnDTabbedPane extends JTabbedPane {
         JButton scrollBackwardButton = null;
         
         for (Component c: this.getComponents()) {
-            if (c instanceof JButton) {
+            if (c instanceof JButton jButton) {
                 if (scrollForwardButton == null) {
-                    scrollForwardButton = (JButton) c;
+                    scrollForwardButton = jButton;
                 } else if (scrollBackwardButton == null) {
-                    scrollBackwardButton = (JButton) c;
+                    scrollBackwardButton = jButton;
                 }
             }
         }
@@ -117,8 +117,8 @@ public class DnDTabbedPane extends JTabbedPane {
         
         if (Objects.isNull(location) || !forDrop) {
             this.dropLocation = new DnDDropLocation(new Point(), -1);
-        } else if (location instanceof DnDDropLocation) {
-            this.dropLocation = (DnDDropLocation) location;
+        } else if (location instanceof DnDDropLocation dnDDropLocation) {
+            this.dropLocation = dnDDropLocation;
         }
         
         this.firePropertyChange("dropLocation", old, this.dropLocation);
@@ -139,8 +139,8 @@ public class DnDTabbedPane extends JTabbedPane {
         target.setTabComponentAt(targetIndex, tab);
         target.setSelectedIndex(targetIndex);
         
-        if (tab instanceof JComponent) {
-            ((JComponent) tab).scrollRectToVisible(tab.getBounds());
+        if (tab instanceof JComponent jComponent) {
+            jComponent.scrollRectToVisible(tab.getBounds());
         }
     }
     

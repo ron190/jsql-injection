@@ -61,10 +61,8 @@ public class ManagerCoder extends JPanel {
         }
         @Override
         public void stateChanged(ChangeEvent e) {
-            if (e.getSource() instanceof JMenuItem item) {
-                if (item.isSelected() || item.isArmed()) {
-                    ManagerCoder.this.actionCoder.actionPerformed(this.nameMethod);
-                }
+            if (e.getSource() instanceof JMenuItem item && (item.isSelected() || item.isArmed())) {
+                ManagerCoder.this.actionCoder.actionPerformed(this.nameMethod);
             }
         }
     }

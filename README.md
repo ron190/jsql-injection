@@ -1,13 +1,14 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a server.
 
-It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac, and it works with Java from version 11 to 23.
+It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac, and it works with Java from version 16 to 25.
 
 jSQL Injection is also part of the official penetration testing distribution [Kali Linux](https://www.kali.org) and is included in various other distributions like [Pentest Box](https://pentestbox.com), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org) and [BlackArch Linux](http://www.blackarch.org).
 
-[![Java](https://img.shields.io/badge/java-11%20to%2023-orange?logo=java "Version range compatibility")](http://www.oracle.com/technetwork/java/javase/downloads/)
+[![Java](https://img.shields.io/badge/java-16%20to%2025-orange?logo=java "Version range compatibility")](http://www.oracle.com/technetwork/java/javase/downloads/)
 [![JUnit](https://img.shields.io/badge/junit-5-50940f "Tests")](http://junit.org)
 [![Maven](https://img.shields.io/badge/maven-3.6-a2265a "Build")](https://maven.apache.org/)
+[![Spring](https://img.shields.io/badge/spring-4-6cb52d "Spring")](https://spring.io/)
 [![License](https://img.shields.io/github/license/ron190/jsql-injection "License")](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
 [![GitHub](https://img.shields.io/badge/build-blue?logo=github "Github Actions status")](https://github.com/ron190/jsql-injection/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=coverage&logo=codecov "Codecov test coverage")](https://codecov.io/gh/ron190/jsql-injection)
@@ -21,14 +22,14 @@ Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki/General
 For programmers, access the generated [Maven reports](https://ron190.github.io/jsql-injection/) and [Sonar analysis](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection) to analyze internal metrics, and open the [programming section](https://github.com/ron190/jsql-injection/wiki/Programming) in the wiki for more details.
 
 ## Install
-First, install :coffee: [Java](http://java.com) 11 or up to version 23, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.112.jar` to run the software.
+First, install :coffee: [Java](http://java.com) 16 or up to version 25, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.113.jar` to run the software.
 
-You can also type `java -jar jsql-injection-v0.112.jar` in your terminal to start the program.
+You can also type `java -jar jsql-injection-v0.113.jar` in your terminal to start the program.
 
 If you use Kali Linux then get the latest version with `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 > [!NOTE]
-> Download the latest version from GitHub: [jsql-injection-v0.112.jar](https://github.com/ron190/jsql-injection/releases/download/v0.112/jsql-injection-v0.112.jar)
+> Download the latest version from GitHub: [jsql-injection-v0.113.jar](https://github.com/ron190/jsql-injection/releases/download/v0.113/jsql-injection-v0.113.jar)
 ___
 ## Screenshots
 [<img src=https://github.com/ron190/jsql-injection/raw/master/web/images/app/theme-light.png width=404/>](https://github.com/ron190/jsql-injection/raw/master/web/images/app/theme-light.png)

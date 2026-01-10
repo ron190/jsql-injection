@@ -59,8 +59,8 @@ public class JsonUtil {
             // Not possible to make generic with scanJsonObject() because of JSONArray.put(int) != JSONObject.put(String)
             if (value instanceof JSONArray || value instanceof JSONObject) {
                 attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));
-            } else if (value instanceof String) {
-                SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, (String) value);
+            } else if (value instanceof String string) {
+                SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, string);
                 attributesXPath.add(stringValue);
                 
                 if (parentXPath == null) {
@@ -83,9 +83,8 @@ public class JsonUtil {
             // Not possible to make generic with scanJsonObject() because of JSONArray.put(int) != JSONObject.put(String)
             if (value instanceof JSONArray || value instanceof JSONObject) {
                 attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));
-            } else if (value instanceof String) {
-                
-                SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, (String) value);
+            } else if (value instanceof String string) {
+                SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, string);
                 attributesXPath.add(stringValue);
                 
                 if (parentXPath == null) {

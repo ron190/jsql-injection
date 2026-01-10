@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+
+  exasol:
+    container_name: jsql-exasol
+    ports:
+      - "8563:8563"
+    privileged: true
+    build:
+      context: .
+      dockerfile: Dockerfile.exasol
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

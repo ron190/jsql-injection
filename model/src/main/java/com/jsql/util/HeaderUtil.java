@@ -61,7 +61,7 @@ public class HeaderUtil {
                     // Url encode: new cookie RFC restricts chars to non ()<>@,;:\"/[]?={} => server must url decode the request
                     : URLEncoder.encode(arrayEntry[1].trim().replace("+", "%2B"), StandardCharsets.UTF_8)
                 ))
-                .collect(Collectors.toList());
+                .toList();
             valueHeader = String.join("; ", cookies);
         }
 

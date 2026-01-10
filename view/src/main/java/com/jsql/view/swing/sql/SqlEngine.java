@@ -572,6 +572,6 @@ public class SqlEngine extends JPanel {
             SqlEngine.LIST_TEXTAREAS_ERROR.stream(),
             Stream.of(TextareaWithColor.values()).map(TextareaWithColor::getTextArea)
         )
-        .collect(Collectors.toList());
+        .toList();
     }
 }

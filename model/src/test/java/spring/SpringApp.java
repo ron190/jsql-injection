@@ -51,8 +51,8 @@ public class SpringApp {
 
     static {
         try {  // ensure driver is loaded
-            Class.forName("com.mimer.jdbc.Driver");  // required
-            Class.forName("com.mckoi.JDBCDriver");  // required
+            Class.forName("com.mimer.jdbc.Driver");  // required static for expected jdbc result
+            Class.forName("com.mckoi.JDBCDriver");  // required static for expected jdbc result
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(e);
         }
@@ -65,36 +65,38 @@ public class SpringApp {
     private static Server serverH2;
     private static TCPJDBCServer serverMckoi;
 
-    public static final Properties propsH2 = new Properties();
-    public static final Properties propsMysql = new Properties();
-    public static final Properties propsMysqlError = new Properties();
-    public static final Properties propsPostgres = new Properties();
-    public static final Properties propsSqlServer = new Properties();
-    public static final Properties propsSqlite = new Properties();
     public static final Properties propsCubrid = new Properties();
     public static final Properties propsDb2 = new Properties();
-    public static final Properties propsHsqldb = new Properties();
     public static final Properties propsDerby = new Properties();
     public static final Properties propsFirebird = new Properties();
+    public static final Properties propsH2 = new Properties();
+    public static final Properties propsHana = new Properties();
+    public static final Properties propsHsqldb = new Properties();
     public static final Properties propsInformix = new Properties();
-    public static final Properties propsSybase = new Properties();
+    public static final Properties propsMysql = new Properties();
+    public static final Properties propsMysqlError = new Properties();
     public static final Properties propsOracle = new Properties();
+    public static final Properties propsPostgres = new Properties();
+    public static final Properties propsSqlite = new Properties();
+    public static final Properties propsSqlServer = new Properties();
+    public static final Properties propsSybase = new Properties();
 
     public static final List<SimpleEntry<String, Properties>> propertiesByEngine = Arrays.asList(
-        new SimpleEntry<>("hibernate/hibernate.h2.properties", SpringApp.propsH2),
-        new SimpleEntry<>("hibernate/hibernate.mysql.properties", SpringApp.propsMysql),
-        new SimpleEntry<>("hibernate/hibernate.mysql-5-5-53.properties", SpringApp.propsMysqlError),
-        new SimpleEntry<>("hibernate/hibernate.postgres.properties", SpringApp.propsPostgres),
-        new SimpleEntry<>("hibernate/hibernate.sqlserver.properties", SpringApp.propsSqlServer),
         new SimpleEntry<>("hibernate/hibernate.cubrid.properties", SpringApp.propsCubrid),
-        new SimpleEntry<>("hibernate/hibernate.sqlite.properties", SpringApp.propsSqlite),
         new SimpleEntry<>("hibernate/hibernate.db2.properties", SpringApp.propsDb2),
-        new SimpleEntry<>("hibernate/hibernate.hsqldb.properties", SpringApp.propsHsqldb),
         new SimpleEntry<>("hibernate/hibernate.derby.properties", SpringApp.propsDerby),
         new SimpleEntry<>("hibernate/hibernate.firebird.properties", SpringApp.propsFirebird),
+        new SimpleEntry<>("hibernate/hibernate.h2.properties", SpringApp.propsH2),
+        new SimpleEntry<>("hibernate/hibernate.hana.properties", SpringApp.propsHana),
+        new SimpleEntry<>("hibernate/hibernate.hsqldb.properties", SpringApp.propsHsqldb),
         new SimpleEntry<>("hibernate/hibernate.informix.properties", SpringApp.propsInformix),
-        new SimpleEntry<>("hibernate/hibernate.sybase.properties", SpringApp.propsSybase),
-        new SimpleEntry<>("hibernate/hibernate.oracle.properties", SpringApp.propsOracle)
+        new SimpleEntry<>("hibernate/hibernate.mysql.properties", SpringApp.propsMysql),
+        new SimpleEntry<>("hibernate/hibernate.mysql-5-5-53.properties", SpringApp.propsMysqlError),
+        new SimpleEntry<>("hibernate/hibernate.oracle.properties", SpringApp.propsOracle),
+        new SimpleEntry<>("hibernate/hibernate.postgres.properties", SpringApp.propsPostgres),
+        new SimpleEntry<>("hibernate/hibernate.sqlite.properties", SpringApp.propsSqlite),
+        new SimpleEntry<>("hibernate/hibernate.sqlserver.properties", SpringApp.propsSqlServer),
+        new SimpleEntry<>("hibernate/hibernate.sybase.properties", SpringApp.propsSybase)
     );
 
     static {

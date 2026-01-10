@@ -132,7 +132,7 @@ public class PreferencesUtil {
                 map.get("name"),
                 map.get("command").replaceAll("\\n\\s*", StringUtils.EMPTY)
             ))
-            .collect(Collectors.toList());
+            .toList();
         this.commandsReverseYaml = commandsReverseYaml;
     }
 

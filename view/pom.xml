@@ -168,7 +168,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <!-- ignore warn during UTs: 'module java.base does not "opens java.util" to unnamed module' -->
-                    <argLine>@{argLine} ${MAVEN_NASHORN} ${MAVEN_BYTEBUDDY} --add-opens=java.base/java.util=ALL-UNNAMED</argLine>
+                    <argLine>@{argLine} ${MAVEN_BYTEBUDDY} --add-opens=java.base/java.util=ALL-UNNAMED</argLine>
                     <rerunFailingTestsCount>2</rerunFailingTestsCount>
                     <includes>
                         <include>**/*UiTest</include>

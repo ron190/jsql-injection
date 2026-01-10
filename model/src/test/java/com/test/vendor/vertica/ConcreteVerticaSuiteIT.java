@@ -17,8 +17,8 @@ public abstract class ConcreteVerticaSuiteIT extends AbstractTestSuite {
         this.jsqlColumnName = "dummy";
         
         this.jdbcColumnForDatabaseName = "schema_name";
-        this.jdbcColumnForTableName = "table_name";  // prevent tabulation
-        this.jdbcColumnForColumnName = "column_name";  // prevent tabulation
+        this.jdbcColumnForTableName = "table_name";
+        this.jdbcColumnForColumnName = "column_name";
         
         this.jdbcQueryForDatabaseNames = "select schema_name from v_catalog.all_tables";
         this.jdbcQueryForTableNames = "select table_name from v_catalog.all_tables where schema_name = '"+ this.jsqlDatabaseName +"'";

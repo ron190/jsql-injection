@@ -1,0 +1,2 @@
+FROM exasol/docker-db
+EXPOSE 8563

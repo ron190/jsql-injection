@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Configuration
@@ -28,7 +27,7 @@ public class Firewall {
         List<String> httpMethods = Stream.concat(
             Stream.of(CustomMethodSuiteIT.CUSTOM_METHOD),
             Arrays.stream(RequestMethod.values()).map(Enum::name)
-        ).collect(Collectors.toList());
+        ).toList();
 
         firewall.setAllowedHttpMethods(httpMethods);
         firewall.setUnsafeAllowAnyHttpMethod(true);

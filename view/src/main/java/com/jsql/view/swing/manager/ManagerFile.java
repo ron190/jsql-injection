@@ -77,7 +77,7 @@ public class ManagerFile extends AbstractManagerList {
                         ManagerFile.this.horizontalGlue.setVisible(false);
                         ManagerFile.this.progressBar.setVisible(true);
                         try {
-                            List<String> filePaths = ManagerFile.this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());
+                            List<String> filePaths = ManagerFile.this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).toList();
                             MediatorHelper.model().getResourceAccess().readFile(filePaths);
                         } catch (InterruptedException e) {
                             LOGGER.log(LogLevelUtil.IGNORE, e, e);

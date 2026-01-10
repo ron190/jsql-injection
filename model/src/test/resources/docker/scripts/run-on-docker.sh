@@ -8,7 +8,6 @@ docker run                                          \
   -e SONAR_TOKEN                                    \
   -e CODACY_PROJECT_TOKEN                           \
   -e CODECOV_TOKEN                                  \
-  -e MAVEN_NASHORN                                  \
   -e MAVEN_BYTEBUDDY                                \
   -e GITHUB_TOKEN                                   \
   jsql:latest                                       \

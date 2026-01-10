@@ -123,7 +123,7 @@ strategy:
        )
    from dummy
   limit: limit 65536 offset ${limit.value}
-  failsafe: (1337${indice}7330%2b1)
+  failsafe: cast((1337${indice}7330%2b1) as varchar)
   calibrator: rpad('${calibrator_sql}', 1024, '${calibrator_sql}')
   limitBoundary: 0
   endingComment: --+-

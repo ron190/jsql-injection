@@ -29,8 +29,8 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     protected Transferable createTransferable(JComponent c) {
-        if (c instanceof DnDTabbedPane) {
-            this.source = (DnDTabbedPane) c;
+        if (c instanceof DnDTabbedPane dnDTabbedPane) {
+            this.source = dnDTabbedPane;
         }
 
         return new Transferable() {

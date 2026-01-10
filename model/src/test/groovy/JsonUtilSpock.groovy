@@ -38,7 +38,7 @@ class JsonUtilSpock extends Specification {
         and: List<SimpleEntry<String, String>> entries = JsonUtil.createEntries(oJsonObject, "root", null)
         
         then:
-            entries.stream().map({e -> e.toString()}).collect(Collectors.toList()) ==
+            entries.stream().map({e -> e.toString()}).toList() ==
             [
                 'root.a=a',
                 'root.b.b=b',
@@ -64,7 +64,7 @@ class JsonUtilSpock extends Specification {
         when: List<SimpleEntry<String, String>> entriesJsonObject = JsonUtil.createEntries(oJsonObject, "root", null)
         and: List<SimpleEntry<String, String>> entriesJsonArray = JsonUtil.createEntries(oJsonArray, "root", null)
         then:
-            entriesJsonObject.stream().map({e -> e.toString()}).collect(Collectors.toList()) ==
+            entriesJsonObject.stream().map({e -> e.toString()}).toList() ==
             [
                 'root.a=a',
                 'root.b.b=b',
@@ -73,7 +73,7 @@ class JsonUtilSpock extends Specification {
                 'root.e.e[2][0].e=e',
                 'root.f[2][4].f[2]=f',
             ]
-            entriesJsonArray.stream().map({e -> e.toString()}).collect(Collectors.toList()) ==
+            entriesJsonArray.stream().map({e -> e.toString()}).toList() ==
             [
                 'root[3].a=a',
                 'root[3].b.b=b',

@@ -80,7 +80,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                 this.horizontalGlue.setVisible(false);
                 MediatorHelper.model().getResourceAccess().createAdminPages(
                     urlAddressBar,
-                    this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList())
+                    this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).toList()
                 );
                 this.endProcess();
             }

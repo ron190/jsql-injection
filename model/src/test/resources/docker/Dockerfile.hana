@@ -1,0 +1,2 @@
+FROM saplabs/hanaexpress
+EXPOSE 39017

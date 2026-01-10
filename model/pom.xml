@@ -27,17 +27,11 @@
         <awaitility.version>4.3.0</awaitility.version>
         <!-- required as commons-text:1.11.0 not working -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
-        <cubrid-jdbc.version>11.3.2.0053</cubrid-jdbc.version>
-        <derby.version>10.17.1.0</derby.version>
         <!-- must align slf4j-nop when bumped -->
         <dnsjava.version>3.6.3</dnsjava.version>
         <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
         <groovy.version>5.0.3</groovy.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
-        <h2.version>2.4.240</h2.version>
-        <hsqldb.version>2.7.4</hsqldb.version>
-        <informix.jdbc.version>15.0.1.0</informix.jdbc.version>
-        <jaybird.version>6.0.3</jaybird.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20251224</json.version>
@@ -45,24 +39,34 @@
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <junit-platform-runner.version>1.14.2</junit-platform-runner.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
-        <mckoisqldb.version>1.0.5</mckoisqldb.version>
-        <mimjdbc.version>3.42.3</mimjdbc.version>
-        <monetdb-jdbc.version>12.2</monetdb-jdbc.version>
-        <mssql-jdbc.version>13.2.1.jre11</mssql-jdbc.version>
-        <mysql-connector-j.version>9.5.0</mysql-connector-j.version>
         <nashorn-core.version>15.7</nashorn-core.version>
-        <!-- failure with 5.28.2 -->
-        <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
-        <!-- both java-driver and jdbc-driver required, should use neo4j-jdbc instead -->
-        <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
-        <ojdbc8.version>23.26.0.0.0</ojdbc8.version>
-        <postgresql.version>42.7.8</postgresql.version>
         <!-- aligned with dnsjava -->
         <slf4j-nop.version>1.7.36</slf4j-nop.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <spock-core.version>2.4-groovy-5.0</spock-core.version>
         <spring-boot-dependencies.version>4.0.1</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
+
+        <!-- databases -->
+        <cubrid-jdbc.version>11.3.2.0053</cubrid-jdbc.version>
+        <derby.version>10.17.1.0</derby.version>
+        <h2.version>2.4.240</h2.version>
+        <hana.version>2.27.6</hana.version>
+        <hsqldb.version>2.7.4</hsqldb.version>
+        <exasol.version>25.2.6</exasol.version>
+        <informix.jdbc.version>15.0.1.0</informix.jdbc.version>
+        <jaybird.version>6.0.3</jaybird.version>
+        <mckoisqldb.version>1.0.5</mckoisqldb.version>
+        <mimjdbc.version>3.42.3</mimjdbc.version>
+        <monetdb-jdbc.version>12.2</monetdb-jdbc.version>
+        <mssql-jdbc.version>13.2.1.jre11</mssql-jdbc.version>
+        <mysql-connector-j.version>9.5.0</mysql-connector-j.version>
+        <!-- failure with 5.28.2 -->
+        <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
+        <!-- both java-driver and jdbc-driver required, should use neo4j-jdbc instead -->
+        <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
+        <ojdbc8.version>23.26.0.0.0</ojdbc8.version>
+        <postgresql.version>42.7.8</postgresql.version>
         <sqlite-jdbc.version>3.51.1.0</sqlite-jdbc.version>
         <sybase-jconn4.version>16.0</sybase-jconn4.version>
         <vertica-jdbc.version>25.3.0-0</vertica-jdbc.version>
@@ -146,8 +150,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <!-- Compatible only jdk > 9 -->
-                    <argLine>@{argLine} ${MAVEN_NASHORN} ${MAVEN_BYTEBUDDY}</argLine>
+                    <argLine>@{argLine} ${MAVEN_BYTEBUDDY}</argLine>
                     <includes>
                         <include>**/*Spock</include>
                     </includes>
@@ -184,7 +187,7 @@
                         <exclude>${maven-failsafe-plugin.exclude}</exclude>
                     </excludes>
                     <!-- Don't override, it breaks generating report -->
-                    <argLine>@{argLine} ${MAVEN_NASHORN} ${MAVEN_BYTEBUDDY}</argLine>
+                    <argLine>@{argLine} ${MAVEN_BYTEBUDDY}</argLine>
                     <!-- Set number of retry, allows 1st test to run Spring then run other tests -->
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <!-- Display each method time metrics on a test class -->
@@ -397,62 +400,14 @@
 
         <!-- JDBC drivers -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>${mysql-connector-j.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <version>${mssql-jdbc.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-            <version>${sqlite-jdbc.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>cubrid</groupId>
             <artifactId>cubrid-jdbc</artifactId>
             <version>${cubrid-jdbc.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.neo4j.driver</groupId>
-            <artifactId>neo4j-java-driver</artifactId>
-            <version>${neo4j-java-driver.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-jdbc-driver</artifactId>
-            <version>${neo4j-jdbc-driver.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.ibm.db2</groupId>
             <artifactId>jcc</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>${hsqldb.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -474,15 +429,44 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc8</artifactId>
-            <version>${ojdbc8.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.firebirdsql.jdbc</groupId>
             <artifactId>jaybird</artifactId>
             <version>${jaybird.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.exasol</groupId>
+            <artifactId>exasol-jdbc</artifactId>
+            <version>${exasol.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sap.cloud.db.jdbc</groupId>
+            <artifactId>ngdbc</artifactId>
+            <version>${hana.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.informix</groupId>
+            <artifactId>jdbc</artifactId>
+            <version>${informix.jdbc.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mckoi</groupId>
+            <artifactId>mckoisqldb</artifactId>
+            <version>${mckoisqldb.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -498,15 +482,45 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.mckoi</groupId>
-            <artifactId>mckoisqldb</artifactId>
-            <version>${mckoisqldb.version}</version>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>${mysql-connector-j.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.ibm.informix</groupId>
-            <artifactId>jdbc</artifactId>
-            <version>${informix.jdbc.version}</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>${sqlite-jdbc.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>${mssql-jdbc.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j.driver</groupId>
+            <artifactId>neo4j-java-driver</artifactId>
+            <version>${neo4j-java-driver.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-jdbc-driver</artifactId>
+            <version>${neo4j-jdbc-driver.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>${ojdbc8.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -521,52 +535,5 @@
             <version>${vertica-jdbc.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--         <dependency> -->
-        <!--             <groupId>altibase</groupId> -->
-        <!--             <artifactId>altibase-connector-java</artifactId> -->
-        <!--             <scope>system</scope> -->
-        <!--             <version>7.1</version> -->
-        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/Altibase.jar</systemPath> -->
-        <!--         </dependency> -->
-        <!--         <dependency> -->
-        <!--             <groupId>ctreeACE</groupId> -->
-        <!--             <artifactId>ctreeace-connector-java</artifactId> -->
-        <!--             <scope>system</scope> -->
-        <!--             <version>0.0</version> -->
-        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/ctreeJDBC.jar</systemPath> -->
-        <!--         </dependency> -->
-        <!--         <dependency> -->
-        <!--             <groupId>frontbase</groupId> -->
-        <!--             <artifactId>frontbase-connector-java</artifactId> -->
-        <!--             <scope>system</scope> -->
-        <!--             <version>2.5.9</version> -->
-        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/frontbasejdbc.jar</systemPath> -->
-        <!--         </dependency> -->
-        <!--         <dependency> -->
-        <!--             <groupId>intersystems-iris</groupId> -->
-        <!--             <artifactId>intersystems-iris-connector-java</artifactId> -->
-        <!--             <scope>system</scope> -->
-        <!--             <version>3.1.0</version> -->
-        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/intersystems-jdbc-3.1.0.jar</systemPath> -->
-        <!--         </dependency> -->
-        <!--         <dependency> -->
-        <!--             <groupId>netezza</groupId> -->
-        <!--             <artifactId>netezza</artifactId> -->
-        <!--             <scope>system</scope> -->
-        <!--             <version>3.40</version> -->
-        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/nzjdbc-1.0.jar</systemPath> -->
-        <!--         </dependency> -->
-        <!--         <dependency> -->
-        <!--             <groupId>com.exasol</groupId> -->
-        <!--             <artifactId>exasol-jdbc</artifactId> -->
-        <!--             <version>7.0.3</version> -->
-        <!--             <scope>test</scope> -->
-        <!--         </dependency> -->
-        <!--         <dependency> -->
-        <!--             <groupId>com.facebook.presto</groupId> -->
-        <!--             <artifactId>presto-jdbc</artifactId> -->
-        <!--             <version>0.243.2</version> -->
-        <!--             <scope>test</scope> -->
-        <!--         </dependency> -->
     </dependencies>
 </project>

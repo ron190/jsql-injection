@@ -126,7 +126,7 @@ public abstract class AbstractTestSuite {
                 .listDatabases()
                 .stream()
                 .map(Database::toString)
-                .collect(Collectors.toList());
+                .toList();
 
             setValuesFromInjection.addAll(databases);
             setValuesFromJdbc.addAll(this.databasesFromJdbc);
@@ -159,7 +159,7 @@ public abstract class AbstractTestSuite {
                 .listTables(new Database(this.jsqlDatabaseName, "0"))
                 .stream()
                 .map(Table::toString)
-                .collect(Collectors.toList());
+                .toList();
 
             setValuesFromInjection.addAll(tables);
             setValuesFromJdbc.addAll(this.tablesFromJdbc);
@@ -195,7 +195,7 @@ public abstract class AbstractTestSuite {
                 )
                 .stream()
                 .map(Column::toString)
-                .collect(Collectors.toList());
+                .toList();
 
             setValuesFromInjection.addAll(columns);
             setValuesFromJdbc.addAll(this.parse(this.columnsFromJdbc));
@@ -242,7 +242,7 @@ public abstract class AbstractTestSuite {
             List<String> valuesFound = Arrays.stream(rows)
                 // => row number, occurrence, value1, value2...
                 .map(row -> row[2].replaceAll("\r\n", "\n"))
-                .collect(Collectors.toList());
+                .toList();
 
             setValuesFromInjection.addAll(valuesFound);
             setValuesFromJdbc.addAll(this.valuesFromJdbc);

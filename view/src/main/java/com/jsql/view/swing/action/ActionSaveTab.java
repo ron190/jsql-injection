@@ -59,12 +59,12 @@ public class ActionSaveTab extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         this.replaceFileChooser.setDialogTitle("Save Tab As");
         var componentResult = MediatorHelper.tabResults().getSelectedComponent();
-        if (componentResult instanceof PanelTable) {
-            JTable table = ((PanelTable) componentResult).getTableValues();
+        if (componentResult instanceof PanelTable panelTable) {
+            JTable table = panelTable.getTableValues();
             this.saveToFile(table);
         } else if (
-            componentResult instanceof JScrollPane
-            && ((JScrollPane) componentResult).getViewport().getView() instanceof JTextComponent textarea
+            componentResult instanceof JScrollPane jScrollPane
+            && jScrollPane.getViewport().getView() instanceof JTextComponent textarea
         ) {
             this.saveToFile(textarea);
         } else {
@@ -72,8 +72,8 @@ public class ActionSaveTab extends AbstractAction {
         }
     }
     
-    private void saveToFile(JComponent textarea) {
-        if (textarea == null) {
+    private void saveToFile(JComponent jComponent) {
+        if (jComponent == null) {
             return;
         }
 
@@ -83,10 +83,10 @@ public class ActionSaveTab extends AbstractAction {
             if (stateSave == JFileChooser.APPROVE_OPTION) {
                 var folderSelectedFile = this.replaceFileChooser.getCurrentDirectory().toString();
                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
-                if (textarea instanceof JTextComponent) {
-                    this.saveTextToFile((JTextComponent) textarea);
-                } else if (textarea instanceof JTable) {
-                    this.saveTableToFile((JTable) textarea);
+                if (jComponent instanceof JTextComponent jTextComponent) {
+                    this.saveTextToFile(jTextComponent);
+                } else if (jComponent instanceof JTable jTable) {
+                    this.saveTableToFile(jTable);
                 }
             }
         } catch (InvalidPathException e) {

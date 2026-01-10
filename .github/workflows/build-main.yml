@@ -15,11 +15,9 @@ jobs:
       matrix:
         include:
           - jdk: 3.9.12-eclipse-temurin-21
-            nashorn: ""
             bytebuddy: "-Dnet.bytebuddy.experimental=true"
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
-      MAVEN_NASHORN: ${{ matrix.nashorn }}
       # experimental enabled on jdk21 to prevent 'Mockito cannot mock this class: class org.jsoup.nodes.Document'
       MAVEN_BYTEBUDDY: ${{ matrix.bytebuddy }}
       DOCKER_RESOURCES: ${{ inputs.DOCKER_RESOURCES }}
@@ -95,7 +93,7 @@ jobs:
         run: $DOCKER_RESOURCES/scripts/verify.sh
 
       - name: Coverage
-        uses: ./.github/workflows/scan/
+        uses: ./.github/workflows/scan/coverage.yml
         with:  # composite cannot use secrets directly
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}

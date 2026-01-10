@@ -71,10 +71,8 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         var currentNodeModel = currentNode.getUserObject();
         try {
             this.nodeModel = (AbstractNodeModel) currentNodeModel;
-            if (componentRenderer instanceof JCheckBox) {
-                ((JCheckBox) componentRenderer).addActionListener(
-                    new ActionCheckSingle(this.nodeModel, currentNode)
-                );
+            if (componentRenderer instanceof JCheckBox checkboxRenderer) {
+                checkboxRenderer.addActionListener(new ActionCheckSingle(this.nodeModel, currentNode));
             }
         } catch (Exception e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
@@ -94,10 +92,8 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
             return;
         }
 
-        if (node.getUserObject() instanceof AbstractNodeModel dataModel) {
-            if (!dataModel.isLoaded()) {
-                dataModel.runAction();
-            }
+        if (node.getUserObject() instanceof AbstractNodeModel dataModel && !dataModel.isLoaded()) {
+            dataModel.runAction();
         }
     }
 
@@ -117,10 +113,11 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         }
 
         DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        if (currentTableNode.getUserObject() instanceof AbstractNodeModel currentTableModel) {
-            if (currentTableModel.isPopupDisplayable()) {
-                currentTableModel.showPopup(currentTableNode, path, mouseEvent);
-            }
+        if (
+            currentTableNode.getUserObject() instanceof AbstractNodeModel currentTableModel
+            && currentTableModel.isPopupDisplayable()
+        ) {
+            currentTableModel.showPopup(currentTableNode, path, mouseEvent);
         }
     }
 

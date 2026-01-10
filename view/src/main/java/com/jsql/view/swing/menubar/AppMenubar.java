@@ -61,7 +61,7 @@ public class AppMenubar extends JMenuBar {
     protected static final List<ModelItemTranslate> ITEMS_TRANSLATE = Stream.of(
         Language.EN, Language.FR, Language.ES, Language.IT, Language.AR, Language.ZH, Language.RU, Language.TR, Language.KO,
         Language.SE, Language.FI, Language.CS, Language.PT, Language.PL, Language.ID, Language.NL, Language.RO, Language.DE
-    ).map(ModelItemTranslate::new).collect(Collectors.toList());
+    ).map(ModelItemTranslate::new).toList();
 
     private static final List<ModelItemTranslate> ITEMS_TRANSLATE_INTO = Stream.of(
         Language.FR, Language.ES, Language.SE, Language.FI, Language.TR, Language.CS, Language.RO, Language.IT, Language.PT, Language.AR,
@@ -109,10 +109,10 @@ public class AppMenubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
         itemCopy.addActionListener(actionEvent -> {
-            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {
-                ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).copyTable();
-            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {
-                ((JTextComponent) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).copy();
+            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable panelTable) {
+                panelTable.copyTable();
+            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane jScrollPane) {
+                ((JTextComponent) jScrollPane.getViewport().getView()).copy();
             }
         });
 
@@ -120,12 +120,12 @@ public class AppMenubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         itemSelectAll.addActionListener(actionEvent -> {
-            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {
-                ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).selectTable();
-            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {
+            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable panelTable) {
+                panelTable.selectTable();
+            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane jScrollPane) {
                 // Textarea need focus to select all
-                ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
-                ((JTextComponent) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
+                jScrollPane.getViewport().getView().requestFocusInWindow();
+                ((JTextComponent) jScrollPane.getViewport().getView()).selectAll();
             }
         });
 
@@ -183,8 +183,22 @@ public class AppMenubar extends JMenuBar {
         JMenuItem itemReportIssue = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_REPORTISSUE"), 'R');
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_REPORTISSUE", itemReportIssue);
 
+        String reportBody = """
+            ## What's the expected behavior?
+            
+            ## What's the actual behavior?
+            
+            ## Any other detailed information on the Issue?
+            
+            ## Steps to reproduce the problem
+            
+              1. ...
+              2. ...
+            
+            ## [Community] Request for new feature
+            
+            """;
         itemReportIssue.addActionListener(actionEvent -> {
-
             var panel = new JPanel(new BorderLayout());
             final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
             textarea.setFont(new Font(
@@ -192,22 +206,7 @@ public class AppMenubar extends JMenuBar {
                 Font.PLAIN,
                 UIManager.getDefaults().getFont("TextField.font").getSize()
             ));
-            textarea.setText("""
-                ## What's the expected behavior?
-                
-                ## What's the actual behavior?
-                
-                ## Any other detailed information on the Issue?
-                
-                ## Steps to reproduce the problem
-                
-                  1. ...
-                  2. ...
-                
-                ## [Community] Request for new feature
-                
-                """
-            );
+            textarea.setText(reportBody);
             panel.add(new JLabel("Describe your bug or issue:"), BorderLayout.NORTH);
             panel.add(new JScrollPane(textarea));
             panel.setPreferredSize(new Dimension(500, 350));
@@ -279,8 +278,8 @@ public class AppMenubar extends JMenuBar {
 
         for (String key : I18nViewUtil.keys()) {
             for (Object component : I18nViewUtil.componentsByKey(key)) {
-                if (component instanceof JToolTipI18n) {
-                    ((JToolTipI18n) component).updateUI();  // required
+                if (component instanceof JToolTipI18n jToolTipI18n) {
+                    jToolTipI18n.updateUI();  // required
                 }
             }
         }

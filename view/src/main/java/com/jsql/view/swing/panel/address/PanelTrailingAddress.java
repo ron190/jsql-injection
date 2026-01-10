@@ -124,8 +124,10 @@ public class PanelTrailingAddress extends JPanel {
                     .map(JComponent.class::cast)
                     .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
                 PanelTrailingAddress.this.popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch
-                PanelTrailingAddress.this.popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
-                PanelTrailingAddress.this.popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+                SwingUtilities.invokeLater(() -> {  // reduce flickering on linux
+                    PanelTrailingAddress.this.popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
+                    PanelTrailingAddress.this.popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+                });
             }
         });
         this.labelStrategy.addMouseListener(new MouseAdapter() {
@@ -136,8 +138,10 @@ public class PanelTrailingAddress extends JPanel {
                     PanelTrailingAddress.this.getMenuError().getItem(i).updateUI();  // required: incorrect when dark/light mode switch
                 }
                 PanelTrailingAddress.this.popupMenuStrategies.updateUI();  // required: incorrect when dark/light mode switch
-                PanelTrailingAddress.this.popupMenuStrategies.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
-                PanelTrailingAddress.this.popupMenuStrategies.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+                SwingUtilities.invokeLater(() -> {  // reduce flickering on linux
+                    PanelTrailingAddress.this.popupMenuStrategies.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
+                    PanelTrailingAddress.this.popupMenuStrategies.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+                });
             }
         });
 

@@ -83,10 +83,11 @@ public class ActionLoadStop implements ActionListener {
         int tableChildCount = treeModel.getChildCount(tableNode);
         for (var i = 0 ; i < tableChildCount ; i++) {
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
-            if (currentChild.getUserObject() instanceof AbstractNodeModel columnTreeNodeModel) {
-                if (columnTreeNodeModel.isSelected()) {
-                    columnsToSearch.add((Column) columnTreeNodeModel.getElementDatabase());
-                }
+            if (
+                currentChild.getUserObject() instanceof AbstractNodeModel columnTreeNodeModel
+                && columnTreeNodeModel.isSelected()
+            ) {
+                columnsToSearch.add((Column) columnTreeNodeModel.getElementDatabase());
             }
         }
         return columnsToSearch;
