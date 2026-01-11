@@ -23,14 +23,14 @@ public abstract class ConcreteHsqldbSuiteIT extends AbstractTestSuite {
             right join INFORMATION_SCHEMA.schemata s on t.TABLE_SCHEMA = s.schema_name
         """;
         this.queryAssertTables = String.format("""
-            select TABLE_NAME 
-            from information_schema.tables 
+            select TABLE_NAME
+            from information_schema.tables
             where TABLE_SCHEMA = '%s'
         """, this.databaseToInject);
         this.queryAssertColumns = String.format("""
-            select COLUMN_NAME 
-            from information_schema.columns 
-            where TABLE_SCHEMA='%s' 
+            select COLUMN_NAME
+            from information_schema.columns
+            where TABLE_SCHEMA='%s'
             and TABLE_NAME='%s'
         """, this.databaseToInject, this.tableToInject);
         this.queryAssertValues = String.format("select %s from %s.%s", this.columnToInject, this.databaseToInject, this.tableToInject);

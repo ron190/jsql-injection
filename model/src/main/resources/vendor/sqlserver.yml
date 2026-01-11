@@ -274,8 +274,7 @@ strategy:
       ))
      capacity: 1991       
   
-   - name: Cast:stack explicit
-     # TODO Not tested
+   - name: Cast:stack explicit  # todo stack Error unconfirmed on jdbc
      query: |
       ; select convert(int,(
           ${window}
@@ -298,7 +297,6 @@ strategy:
      capacity: 1991       
   
    - name: Cast:stack implicit
-     # TODO Not tested
      query: |
       ; select 1/(
           ${window}
@@ -321,7 +319,6 @@ strategy:
      capacity: 1991       
   
    - name: User_name:stack
-     # TODO Not tested
      query: |
       ; select user_name((
           ${window}

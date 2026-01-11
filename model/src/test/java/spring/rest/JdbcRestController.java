@@ -53,6 +53,8 @@ public class JdbcRestController {
         // SELECT SERVICE_NAME, PORT, SQL_PORT, (PORT + 2) HTTP_PORT FROM SYS.M_SERVICES
         // ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system') SET ('public_hostname_resolution', 'use_default_route') = 'name' WITH RECONFIGURE;
         // ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system') SET ('public_hostname_resolution', 'map_jsql-hana') = '$()' WITH RECONFIGURE;
+        // alter system alter configuration('global.ini','system') set ('public_hostname_resolution','use_default_route')='no' with reconfigure;
+        // hdblcm --action=rename_system --hostmap=<old host>=<new host>
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
             "jdbc:sap://127.0.0.1:39017?encrypt=false&validateCertificate=false",

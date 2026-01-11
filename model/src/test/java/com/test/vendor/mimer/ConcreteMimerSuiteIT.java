@@ -16,8 +16,8 @@ public abstract class ConcreteMimerSuiteIT extends AbstractTestSuite {
         this.columnToInject = "TABLE_TYPE";
         
         this.queryAssertDatabases = """
-            select distinct schema_name 
-            from information_schema.tables 
+            select distinct schema_name
+            from information_schema.tables
             right join information_schema.schemata on schema_name = table_schema
         """;
         this.queryAssertTables = String.format("""

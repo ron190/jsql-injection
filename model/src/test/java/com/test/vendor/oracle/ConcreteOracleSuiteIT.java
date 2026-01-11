@@ -22,13 +22,13 @@ public abstract class ConcreteOracleSuiteIT extends AbstractTestSuite {
         this.columnToInject = "NAME";
         
         this.queryAssertDatabases = "SELECT distinct owner FROM all_tables";
-        this.queryAssertTables = "SELECT distinct table_name FROM all_tables where owner='XDB'";
-        this.queryAssertColumns = """
+        this.queryAssertTables = String.format("SELECT distinct table_name FROM all_tables where owner='%s'", this.databaseToInject);
+        this.queryAssertColumns = String.format("""
             SELECT distinct column_name
             FROM all_tab_columns
-            where owner='XDB' and table_name='APP_USERS_AND_ROLES'
-        """;
-        this.queryAssertValues = "SELECT distinct NAME FROM XDB.APP_USERS_AND_ROLES";
+            where owner='%s' and table_name='%s'
+        """, this.databaseToInject, this.tableToInject);
+        this.queryAssertValues = String.format("select distinct %s from %s.%s", this.columnToInject, this.databaseToInject, this.tableToInject);
     }
 
     @AfterEach

@@ -25,9 +25,7 @@ public abstract class ConcreteSqlServerSuiteIT extends AbstractTestSuite {
             WHERE c.id = t.id
             AND t.name = '%s'
         """, this.databaseToInject, this.databaseToInject, this.tableToInject);
-        this.queryAssertValues = String.format("""
-            select LTRIM(RTRIM(%s)) %s FROM %s.dbo.%s
-        """, this.columnToInject, this.columnToInject, this.databaseToInject, this.tableToInject);
+        this.queryAssertValues = String.format("select LTRIM(RTRIM(%s)) FROM %s.dbo.%s", this.columnToInject, this.databaseToInject, this.tableToInject);
     }
 
     @AfterEach

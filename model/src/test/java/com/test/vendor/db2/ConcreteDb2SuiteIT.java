@@ -21,7 +21,7 @@ public abstract class ConcreteDb2SuiteIT extends AbstractTestSuite {
         this.tableToInject = "STUDENT";
         this.columnToInject = "STUDENT_ID";
         
-        this.queryAssertDatabases = "select trim(name) name from sysibm.sysschemata";
+        this.queryAssertDatabases = "select trim(name) from sysibm.sysschemata";
         this.queryAssertTables = String.format("""
             select name
             from sysibm.systables

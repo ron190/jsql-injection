@@ -33,12 +33,12 @@ public abstract class ConcreteHanaSuiteIT extends AbstractTestSuite {
         );
         this.queryAssertColumns = String.format(
             """
-            select distinct c.name r
+            select distinct c.name
             from sys.rs_columns_ c
             inner join sys.rs_tables_ t on c.cid = t.oid
             where t.schema = '%s' and t.name = '%s'
             union
-            select distinct c1.name r
+            select distinct c1.name
             from sys.rs_columns_ c1
             inner join sys.rs_views_ v on c1.cid = v.oid
             where v.schema = '%s' and v.name = '%s'

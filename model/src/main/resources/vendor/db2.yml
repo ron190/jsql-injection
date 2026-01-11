@@ -190,5 +190,4 @@ strategy:
       or 1=(select cast(raise_error('70001',(
           ${window}
       )) as varchar) from sysibm.sysdummy1)
-     # TODO Add to SQLEngine
      capacity: 70

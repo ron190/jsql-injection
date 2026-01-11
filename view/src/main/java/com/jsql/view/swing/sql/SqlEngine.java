@@ -530,7 +530,7 @@ public class SqlEngine extends JPanel {
             textareaError.setCaretPosition(0);
             panelError.add(new RTextScrollPane(textareaError, false), BorderLayout.CENTER);
             
-            var panelLimit = new JPanel();  // TODO Integrate Error limit
+            var panelLimit = new JPanel();  // TODO add Error capacity
             panelLimit.setLayout(new BoxLayout(panelLimit, BoxLayout.LINE_AXIS));
             panelLimit.add(new JLabel(" Overflow limit: "));
             panelLimit.add(new JTextField(Integer.toString(methodError.getCapacity())));

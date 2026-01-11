@@ -18,11 +18,11 @@ public abstract class ConcreteInformixSuiteIT extends AbstractTestSuite {
         this.columnToInject = "student_id";
         
         this.queryAssertDatabases = """
-            select distinct trim(name) name
+            select distinct trim(name)
             from sysmaster:informix.sysdatabases
         """;
         this.queryAssertTables = String.format("""
-            select distinct trim(tabname) tabname
+            select distinct trim(tabname)
             from %s:informix.systables
         """, this.databaseToInject);
         this.queryAssertColumns = String.format("""

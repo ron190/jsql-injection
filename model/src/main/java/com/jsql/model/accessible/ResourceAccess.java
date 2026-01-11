@@ -377,10 +377,6 @@ public class ResourceAccess {
                 List<Integer> listFieldsLength = this.parseColumnLength(listRows);
                 result = this.convert(listRows, listFieldsLength);
             }
-        } else if (result.contains("<SQLm>")) {  // todo deprecated
-            result = result.replace("<SQLm>", StringUtils.EMPTY) +"\n";
-        } else if (result.contains("<SQLe>")) {  // todo deprecated
-            result = result.replace("<SQLe>", StringUtils.EMPTY) +"\n";
         }
 
         if (isResultSentToView) {

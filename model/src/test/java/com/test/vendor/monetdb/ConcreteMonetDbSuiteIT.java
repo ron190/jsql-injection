@@ -16,19 +16,19 @@ public abstract class ConcreteMonetDbSuiteIT extends AbstractTestSuite {
         this.columnToInject = "name";
         
         this.queryAssertDatabases = "select name from sys.schemas";
-        this.queryAssertTables = """
+        this.queryAssertTables = String.format("""
             select t.name
             from tables t
             inner join schemas s on t.schema_id = s.id
-            where s.name = 'sys'
-        """;
-        this.queryAssertColumns = """
+            where s.name = '%s'
+        """, this.databaseToInject);
+        this.queryAssertColumns = String.format("""
             select c.name
             from tables t
             inner join schemas s on t.schema_id = s.id
             inner join columns c on t.id = c.table_id
-            where s.name = 'sys' and t.name = 'db_user_info'
-        """;
+            where s.name = '%s' and t.name = '%s'
+        """, this.databaseToInject, this.tableToInject);
         this.queryAssertValues = String.format("select %s from %s.%s", this.columnToInject, this.databaseToInject, this.tableToInject);
     }
 

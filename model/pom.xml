@@ -82,6 +82,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <!-- dependency in junit-pioneer deprecated by transitive junit-bom => force version -->
+                <!-- to remove when junit-pioneer aligns junit-bom -->
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${junit-bom.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

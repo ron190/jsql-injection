@@ -4,6 +4,8 @@ set -e
 
 retry=0
 
+docker logs jsql-mimer
+
 until cat <<EOF | docker exec -i jsql-mimer bsql -u SYSADM -p SYSADM
   select 'jsqlValue' as jsqlColumn from (values(0));
 EOF

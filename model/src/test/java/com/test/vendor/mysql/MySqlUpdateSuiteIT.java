@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {
+class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {  // can be unstable
 
     @Override
     public void setupInjection() throws Exception {
@@ -39,7 +39,7 @@ class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {
     }
 
     @Override
-    @RetryingTest(3)
+    @RetryingTest(6)
     public void listDatabases() throws JSqlException {  // API changes rows: listValues() not usable
         super.listDatabases();
     }

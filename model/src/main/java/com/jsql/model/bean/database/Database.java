@@ -23,7 +23,6 @@ public class Database extends AbstractElementDatabase {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     // The number of tables in the database.
-    // TODO to int
     private String tableCount;
 
     /**

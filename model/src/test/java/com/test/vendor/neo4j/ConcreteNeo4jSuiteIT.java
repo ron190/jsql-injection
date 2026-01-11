@@ -16,22 +16,25 @@ public abstract class ConcreteNeo4jSuiteIT extends AbstractTestSuite {
         this.columnToInject = "title";
         
         this.queryAssertDatabases = "RETURN 'neo4j' AS A";
-        this.queryAssertTables =
-             "CALL db.labels() "
-            +"YIELD label      "
-            +"WITH label       "
-            +"RETURN   label   ";
-        this.queryAssertColumns =
-             "MATCH (n:Movie)               "
-            +"WITH collect(keys(n)) AS attr "
-            +"UNWIND attr AS r              "
-            +"WITH DISTINCT r[0] AS d       "
-            +"ORDER BY d                    "
-            +"RETURN  d                     ";
-        this.queryAssertValues =
-             "MATCH (n:Movie)         "
-            +"WITH DISTINCT n         "
-            +"RETURN n.title as title ";
+        this.queryAssertTables = """
+            CALL db.labels()
+            YIELD label
+            WITH label
+            RETURN label
+        """;
+        this.queryAssertColumns = """
+            MATCH (n:Movie)
+            WITH collect(keys(n)) AS attr
+            UNWIND attr AS r
+            WITH DISTINCT r[0] AS d
+            ORDER BY d
+            RETURN d
+        """;
+        this.queryAssertValues = """
+            MATCH (n:Movie)
+            WITH DISTINCT n
+            RETURN n.title as title
+        """;
     }
 
     @AfterEach
