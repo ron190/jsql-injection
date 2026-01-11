@@ -20,7 +20,7 @@ jobs:
 
   virustotal:
     needs: set-global-env-var
-    uses: ./.github/workflows/scan/virustotal.yml
+    uses: ./.github/workflows/virustotal.yml  # required in top folder, else composite
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
     secrets: inherit
@@ -44,7 +44,7 @@ jobs:
     secrets: inherit
 
   codeql:
-    uses: ./.github/workflows/scan/codeql.yml
+    uses: ./.github/workflows/codeql.yml  # required in top folder, else composite
 
   release:
     needs: [virustotal, build-main, build-vendor, codeql]

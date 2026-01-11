@@ -93,7 +93,7 @@ jobs:
         run: $DOCKER_RESOURCES/scripts/verify.sh
 
       - name: Coverage
-        uses: ./.github/workflows/scan/coverage.yml
+        uses: ./.github/workflows/composite/coverage/
         with:  # composite cannot use secrets directly
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
