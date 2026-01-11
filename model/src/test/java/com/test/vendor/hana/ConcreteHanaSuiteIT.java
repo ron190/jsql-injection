@@ -8,7 +8,7 @@ public abstract class ConcreteHanaSuiteIT extends AbstractTestSuite {
 
     public ConcreteHanaSuiteIT() {
 
-        this.jdbcURL = "jdbc:sap://jsql-hana:39017?encrypt=false&validateCertificate=false";
+        this.jdbcURL = "jdbc:sap://127.0.0.1:39017?encrypt=false&validateCertificate=false";
         this.jdbcUser = "system";
         this.jdbcPass = "1anaHEXH";
 

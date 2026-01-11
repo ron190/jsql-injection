@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
-import java.util.stream.Collectors;
 
 /**
  * Utility class to manage JVM preferences previously saved into the system.

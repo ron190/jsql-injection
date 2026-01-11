@@ -51,9 +51,11 @@ public class JdbcRestController {
         // SELECT * FROM "SYS_DATABASES"."M_SERVICE_MEMORY";
         // ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'DATABASE', '') SET ('memorymanager', 'allocationlimit') = '8192' WITH RECONFIGURE;
         // SELECT SERVICE_NAME, PORT, SQL_PORT, (PORT + 2) HTTP_PORT FROM SYS.M_SERVICES
+        // ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system') SET ('public_hostname_resolution', 'use_default_route') = 'name' WITH RECONFIGURE;
+        // ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system') SET ('public_hostname_resolution', 'map_jsql-hana') = '$()' WITH RECONFIGURE;
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:sap://jsql-hana:39017?encrypt=false&validateCertificate=false",
+            "jdbc:sap://127.0.0.1:39017?encrypt=false&validateCertificate=false",
             "system",
             "1anaHEXH",
             "select schema_name from sys.schemas where '1' = '" + inject + "'"
@@ -61,7 +63,7 @@ public class JdbcRestController {
     }
 
     @RequestMapping("/mckoi")  // no dialect
-    public Greeting greetingMckoi(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+    public Greeting greetingMckoi(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
             "jdbc:mckoi://127.0.0.1",
@@ -264,7 +266,7 @@ public class JdbcRestController {
     }
 
     @RequestMapping("/postgres")  // local testing, not used
-    public Greeting greetingPostgres(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+    public Greeting greetingPostgres(@RequestParam(value="name", defaultValue="World") String name) {
         AtomicReference<Greeting> greeting = new AtomicReference<>();
         StringBuilder result = new StringBuilder();
 
@@ -288,7 +290,7 @@ public class JdbcRestController {
     }
 
     @RequestMapping("/mysql")  // local testing, not used
-    public Greeting greetingMysql(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+    public Greeting greetingMysql(@RequestParam(value="name", defaultValue="World") String name) {
         Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();

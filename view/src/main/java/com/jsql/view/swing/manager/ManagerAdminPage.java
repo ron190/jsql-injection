@@ -21,7 +21,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
-import java.util.stream.Collectors;
 
 /**
  * Manager to display webpages frequently used as backoffice administration.

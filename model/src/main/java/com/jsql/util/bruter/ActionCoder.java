@@ -8,7 +8,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public enum ActionCoder {
     MD2(Coder.MD2.label, true) {

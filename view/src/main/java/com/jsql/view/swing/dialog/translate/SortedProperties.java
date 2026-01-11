@@ -1,7 +1,6 @@
 package com.jsql.view.swing.dialog.translate;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SortedProperties extends Properties {
     @Override
