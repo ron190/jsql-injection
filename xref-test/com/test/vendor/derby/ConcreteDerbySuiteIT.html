@@ -17,39 +17,43 @@
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a name="ConcreteDerbySuiteIT" href="../../../../com/test/vendor/derby/ConcreteDerbySuiteIT.html#ConcreteDerbySuiteIT">ConcreteDerbySuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractTestSuite" href="../../../../com/test/AbstractTestSuite.html#AbstractTestSuite">AbstractTestSuite</a> {
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>      <strong class="jxr_keyword">public</strong> <a name="ConcreteDerbySuiteIT" href="../../../../com/test/vendor/derby/ConcreteDerbySuiteIT.html#ConcreteDerbySuiteIT">ConcreteDerbySuiteIT</a>() {
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>          <strong class="jxr_keyword">this</strong>.jdbcURL = SpringApp.propsDerby.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>          <strong class="jxr_keyword">this</strong>.jdbcUser = SpringApp.propsDerby.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>          <strong class="jxr_keyword">this</strong>.jdbcPass = SpringApp.propsDerby.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>          <strong class="jxr_keyword">this</strong>.jsqlDatabaseName = <span class="jxr_string">"ADMIN"</span>;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">this</strong>.jsqlTableName = <span class="jxr_string">"STUDENT"</span>;
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">this</strong>.jsqlColumnName = <span class="jxr_string">"FIRST_NAME"</span>;
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>          
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForDatabaseName = <span class="jxr_string">"schemaname"</span>;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForTableName = <span class="jxr_string">"tablename"</span>;
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForColumnName = <span class="jxr_string">"columnname"</span>;
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>          
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForDatabaseNames = <span class="jxr_string">"select schemaname from SYS.SYSSCHEMAS"</span>;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForTableNames = <span class="jxr_string">"select tablename from sys.systables t inner join sys.sysschemas s on t.schemaid = s.schemaid where schemaname='"</span>+ <strong class="jxr_keyword">this</strong>.jsqlDatabaseName +<span class="jxr_string">"'"</span>;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForColumnNames =
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>              <span class="jxr_string">"select columnname from sys.systables t inner join sys.sysschemas s on t.schemaid = s.schemaid inner join sys.syscolumns c on t.tableid = c.referenceid"</span>
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>              + <span class="jxr_string">" where schemaname = '"</span>+ <strong class="jxr_keyword">this</strong>.jsqlDatabaseName +<span class="jxr_string">"' and tablename = '"</span>+ <strong class="jxr_keyword">this</strong>.jsqlTableName +<span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>              + <span class="jxr_string">" and columndatatype || '' not like 'DOUBLE%'"</span>
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>              + <span class="jxr_string">" and columndatatype || '' not like 'INTEGER%'"</span>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>              + <span class="jxr_string">" and columndatatype || '' not like 'DECIMAL%'"</span>
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>              + <span class="jxr_string">" and columndatatype || '' not like 'BLOB%'"</span>;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForValues = <span class="jxr_string">"select "</span>+ <strong class="jxr_keyword">this</strong>.jsqlColumnName +<span class="jxr_string">" from "</span>+ <strong class="jxr_keyword">this</strong>.jsqlDatabaseName +<span class="jxr_string">"."</span>+ <strong class="jxr_keyword">this</strong>.jsqlTableName;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      }
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>      @AfterEach
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> checkVendor() {
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>          Assertions.assertEquals(
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getDerby(),
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor()
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>          );
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      }
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  }
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>          <strong class="jxr_keyword">this</strong>.jdbcURL = SpringApp.propsDerby.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>          <strong class="jxr_keyword">this</strong>.jdbcUser = SpringApp.propsDerby.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>          <strong class="jxr_keyword">this</strong>.jdbcPass = SpringApp.propsDerby.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>          <strong class="jxr_keyword">this</strong>.databaseToInject = <span class="jxr_string">"ADMIN"</span>;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>          <strong class="jxr_keyword">this</strong>.tableToInject = <span class="jxr_string">"STUDENT"</span>;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">this</strong>.columnToInject = <span class="jxr_string">"FIRST_NAME"</span>;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>          
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>          <strong class="jxr_keyword">this</strong>.queryAssertDatabases = <span class="jxr_string">"select schemaname from SYS.SYSSCHEMAS"</span>;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">this</strong>.queryAssertTables = String.format(<span class="jxr_string">""</span><span class="jxr_string">"
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>              select tablename
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>              from sys.systables t
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>              <strong class="jxr_keyword">inner</strong> join sys.sysschemas s on t.schemaid = s.schemaid
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>              where schemaname='%s'
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>          <span class="jxr_string">""</span><span class="jxr_string">", <strong class="jxr_keyword">this</strong>.databaseToInject);
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>          <strong class="jxr_keyword">this</strong>.queryAssertColumns = String.format(<span class="jxr_string">""</span><span class="jxr_string">"
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>              select columnname
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>              from sys.systables t
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>              <strong class="jxr_keyword">inner</strong> join sys.sysschemas s on t.schemaid = s.schemaid
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>              <strong class="jxr_keyword">inner</strong> join sys.syscolumns c on t.tableid = c.referenceid
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>              where schemaname = '%s' and tablename = '%s'
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>              and columndatatype || '' not like 'DOUBLE%%'
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>              and columndatatype || '' not like 'INTEGER%%'
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>              and columndatatype || '' not like 'DECIMAL%%'
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>              and columndatatype || '' not like 'BLOB%%'
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <span class="jxr_string">""</span><span class="jxr_string">", <strong class="jxr_keyword">this</strong>.databaseToInject, <strong class="jxr_keyword">this</strong>.tableToInject);
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <strong class="jxr_keyword">this</strong>.queryAssertValues = String.format(<span class="jxr_string">"select %s from %s.%s"</span>, <strong class="jxr_keyword">this</strong>.columnToInject, <strong class="jxr_keyword">this</strong>.databaseToInject, <strong class="jxr_keyword">this</strong>.tableToInject);
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      }
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      @AfterEach
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> checkVendor() {
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>          Assertions.assertEquals(
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getDerby(),
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor()
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          );
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      }
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

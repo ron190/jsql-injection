@@ -15,49 +15,41 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a name="ConcreteNeo4jSuiteIT" href="../../../../com/test/vendor/neo4j/ConcreteNeo4jSuiteIT.html#ConcreteNeo4jSuiteIT">ConcreteNeo4jSuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractTestSuite" href="../../../../com/test/AbstractTestSuite.html#AbstractTestSuite">AbstractTestSuite</a> {
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>       <strong class="jxr_keyword">public</strong> <a name="ConcreteNeo4jSuiteIT" href="../../../../com/test/vendor/neo4j/ConcreteNeo4jSuiteIT.html#ConcreteNeo4jSuiteIT">ConcreteNeo4jSuiteIT</a>() {
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>          <strong class="jxr_keyword">this</strong>.jdbcURL = <span class="jxr_string">"jdbc:neo4j:bolt://jsql-neo4j"</span>;
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>          <strong class="jxr_keyword">this</strong>.jdbcUser = <span class="jxr_string">"neo4j"</span>;
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>          <strong class="jxr_keyword">this</strong>.jdbcPass = <span class="jxr_string">"test"</span>;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>          
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>          <strong class="jxr_keyword">this</strong>.jsqlDatabaseName = <span class="jxr_string">"neo4j"</span>;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>          <strong class="jxr_keyword">this</strong>.jsqlTableName = <span class="jxr_string">"Movie"</span>;
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>          <strong class="jxr_keyword">this</strong>.jsqlColumnName = <span class="jxr_string">"title"</span>;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>          
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForDatabaseName = <span class="jxr_string">"A"</span>;
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForTableName = <span class="jxr_string">"label"</span>;
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForColumnName = <span class="jxr_string">"d"</span>;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>          
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForDatabaseNames = <span class="jxr_string">"RETURN 'neo4j' AS A"</span>;
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>          
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForTableNames =
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>               <span class="jxr_string">"CALL db.labels() "</span>
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>              +<span class="jxr_string">"YIELD label      "</span>
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>              +<span class="jxr_string">"WITH label       "</span>
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>              +<span class="jxr_string">"RETURN   label   "</span>;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>          
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForColumnNames =
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>               <span class="jxr_string">"MATCH (n:Movie)               "</span>
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>              +<span class="jxr_string">"WITH collect(keys(n)) AS attr "</span>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>              +<span class="jxr_string">"UNWIND attr AS r              "</span>
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>              +<span class="jxr_string">"WITH DISTINCT r[0] AS d       "</span>
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>              +<span class="jxr_string">"ORDER BY d                    "</span>
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>              +<span class="jxr_string">"RETURN  d                     "</span>;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForValues =
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>               <span class="jxr_string">"MATCH (n:Movie)         "</span>
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>              +<span class="jxr_string">"WITH DISTINCT n         "</span>
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>              +<span class="jxr_string">"RETURN n.title as title "</span>;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>          <strong class="jxr_keyword">this</strong>.jdbcURL = <span class="jxr_string">"jdbc:neo4j:bolt://jsql-neo4j"</span>;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>          <strong class="jxr_keyword">this</strong>.jdbcUser = <span class="jxr_string">"neo4j"</span>;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>          <strong class="jxr_keyword">this</strong>.jdbcPass = <span class="jxr_string">"test"</span>;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>          
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>          <strong class="jxr_keyword">this</strong>.databaseToInject = <span class="jxr_string">"neo4j"</span>;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>          <strong class="jxr_keyword">this</strong>.tableToInject = <span class="jxr_string">"Movie"</span>;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>          <strong class="jxr_keyword">this</strong>.columnToInject = <span class="jxr_string">"title"</span>;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>          
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">this</strong>.queryAssertDatabases = <span class="jxr_string">"RETURN 'neo4j' AS A"</span>;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">this</strong>.queryAssertTables =
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>               <span class="jxr_string">"CALL db.labels() "</span>
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>              +<span class="jxr_string">"YIELD label      "</span>
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>              +<span class="jxr_string">"WITH label       "</span>
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>              +<span class="jxr_string">"RETURN   label   "</span>;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>          <strong class="jxr_keyword">this</strong>.queryAssertColumns =
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>               <span class="jxr_string">"MATCH (n:Movie)               "</span>
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>              +<span class="jxr_string">"WITH collect(keys(n)) AS attr "</span>
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>              +<span class="jxr_string">"UNWIND attr AS r              "</span>
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>              +<span class="jxr_string">"WITH DISTINCT r[0] AS d       "</span>
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>              +<span class="jxr_string">"ORDER BY d                    "</span>
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>              +<span class="jxr_string">"RETURN  d                     "</span>;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">this</strong>.queryAssertValues =
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>               <span class="jxr_string">"MATCH (n:Movie)         "</span>
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>              +<span class="jxr_string">"WITH DISTINCT n         "</span>
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>              +<span class="jxr_string">"RETURN n.title as title "</span>;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      }
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>      @AfterEach
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> checkVendor() {
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>          Assertions.assertEquals(
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getNeo4j(),
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor()
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          );
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      }
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      @AfterEach
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> checkVendor() {
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>          Assertions.assertEquals(
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getNeo4j(),
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor()
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>          );
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      }
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  }
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>
