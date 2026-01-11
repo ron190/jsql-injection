@@ -85,7 +85,7 @@
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>                          ManagerFile.<strong class="jxr_keyword">this</strong>.horizontalGlue.setVisible(false);
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>                          ManagerFile.<strong class="jxr_keyword">this</strong>.progressBar.setVisible(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>                          <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>                              List&lt;String&gt; filePaths = ManagerFile.<strong class="jxr_keyword">this</strong>.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>                              List&lt;String&gt; filePaths = ManagerFile.<strong class="jxr_keyword">this</strong>.listPaths.getSelectedValuesList().stream().map(ItemList::toString).toList();
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>                              MediatorHelper.model().getResourceAccess().readFile(filePaths);
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>                          } <strong class="jxr_keyword">catch</strong> (InterruptedException e) {
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>                              LOGGER.log(LogLevelUtil.IGNORE, e, e);

@@ -134,7 +134,7 @@
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>                 .listDatabases()
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>                 .stream()
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>                 .map(Database::toString)
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>                 .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>                 .toList();
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> 
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>             setValuesFromInjection.addAll(databases);
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>             setValuesFromJdbc.addAll(<strong class="jxr_keyword">this</strong>.databasesFromJdbc);
@@ -167,7 +167,7 @@
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>                 .listTables(<strong class="jxr_keyword">new</strong> Database(<strong class="jxr_keyword">this</strong>.jsqlDatabaseName, <span class="jxr_string">"0"</span>))
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>                 .stream()
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>                 .map(Table::toString)
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>                 .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>                 .toList();
 <a class="jxr_linenumber" name="L163" href="#L163">163</a> 
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>             setValuesFromInjection.addAll(tables);
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>             setValuesFromJdbc.addAll(<strong class="jxr_keyword">this</strong>.tablesFromJdbc);
@@ -203,7 +203,7 @@
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>                 )
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>                 .stream()
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>                 .map(Column::toString)
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>                 .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>                 .toList();
 <a class="jxr_linenumber" name="L199" href="#L199">199</a> 
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>             setValuesFromInjection.addAll(columns);
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>             setValuesFromJdbc.addAll(<strong class="jxr_keyword">this</strong>.parse(<strong class="jxr_keyword">this</strong>.columnsFromJdbc));
@@ -250,7 +250,7 @@
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>             List&lt;String&gt; valuesFound = Arrays.stream(rows)
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>                 <em class="jxr_comment">// =&gt; row number, occurrence, value1, value2...</em>
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>                 .map(row -&gt; row[2].replaceAll(<span class="jxr_string">"\r\n"</span>, <span class="jxr_string">"\n"</span>))
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>                 .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>                 .toList();
 <a class="jxr_linenumber" name="L246" href="#L246">246</a> 
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>             setValuesFromInjection.addAll(valuesFound);
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>             setValuesFromJdbc.addAll(<strong class="jxr_keyword">this</strong>.valuesFromJdbc);

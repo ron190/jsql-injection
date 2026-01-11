@@ -144,7 +144,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 }
 <span class="fc" id="L145">                return optionalOrderByErrorMatch.isPresent();</span>
             })
-<span class="fc" id="L147">            .collect(Collectors.toList());</span>
+<span class="fc" id="L147">            .toList();</span>
     }
 
     private List&lt;String&gt; initCallables(CompletionService&lt;CallablePageSource&gt; taskCompletionService, String[] charFromBooleanMatch) throws JSqlException {

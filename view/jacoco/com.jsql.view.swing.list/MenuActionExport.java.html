@@ -63,7 +63,7 @@ public class MenuActionExport implements ActionListener {
 <span class="nc bnc" id="L63" title="All 2 branches missed.">            for (var i = 0 ; i &lt; len ; i++) {</span>
 <span class="nc" id="L64">                out.println(this.myList.getModel().getElementAt(i).toString());</span>
             }
-<span class="nc" id="L66">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;List saved: {}&quot;, importFileDialog.getSelectedFile());</span>
+<span class="nc" id="L66">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;List saved to {}&quot;, importFileDialog.getSelectedFile());</span>
 <span class="nc" id="L67">        } catch (IOException e) {</span>
 <span class="nc" id="L68">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="nc" id="L69">        }</span>

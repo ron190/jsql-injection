@@ -56,11 +56,11 @@ public class DnDTabbedPane extends JTabbedPane {
 <span class="nc" id="L56">        JButton scrollBackwardButton = null;</span>
         
 <span class="nc bnc" id="L58" title="All 2 branches missed.">        for (Component c: this.getComponents()) {</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">            if (c instanceof JButton) {</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if (c instanceof JButton jButton) {</span>
 <span class="nc bnc" id="L60" title="All 2 branches missed.">                if (scrollForwardButton == null) {</span>
-<span class="nc" id="L61">                    scrollForwardButton = (JButton) c;</span>
+<span class="nc" id="L61">                    scrollForwardButton = jButton;</span>
 <span class="nc bnc" id="L62" title="All 2 branches missed.">                } else if (scrollBackwardButton == null) {</span>
-<span class="nc" id="L63">                    scrollBackwardButton = (JButton) c;</span>
+<span class="nc" id="L63">                    scrollBackwardButton = jButton;</span>
                 }
             }
         }
@@ -117,8 +117,8 @@ public class DnDTabbedPane extends JTabbedPane {
         
 <span class="pc bpc" id="L118" title="1 of 4 branches missed.">        if (Objects.isNull(location) || !forDrop) {</span>
 <span class="fc" id="L119">            this.dropLocation = new DnDDropLocation(new Point(), -1);</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        } else if (location instanceof DnDDropLocation) {</span>
-<span class="fc" id="L121">            this.dropLocation = (DnDDropLocation) location;</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        } else if (location instanceof DnDDropLocation dnDDropLocation) {</span>
+<span class="fc" id="L121">            this.dropLocation = dnDDropLocation;</span>
         }
         
 <span class="fc" id="L124">        this.firePropertyChange(&quot;dropLocation&quot;, old, this.dropLocation);</span>
@@ -139,8 +139,8 @@ public class DnDTabbedPane extends JTabbedPane {
 <span class="nc" id="L139">        target.setTabComponentAt(targetIndex, tab);</span>
 <span class="nc" id="L140">        target.setSelectedIndex(targetIndex);</span>
         
-<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (tab instanceof JComponent) {</span>
-<span class="nc" id="L143">            ((JComponent) tab).scrollRectToVisible(tab.getBounds());</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (tab instanceof JComponent jComponent) {</span>
+<span class="nc" id="L143">            jComponent.scrollRectToVisible(tab.getBounds());</span>
         }
 <span class="nc" id="L145">    }</span>
     

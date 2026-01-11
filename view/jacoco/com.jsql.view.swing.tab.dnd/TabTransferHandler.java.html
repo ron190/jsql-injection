@@ -29,8 +29,8 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     protected Transferable createTransferable(JComponent c) {
-<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (c instanceof DnDTabbedPane) {</span>
-<span class="fc" id="L33">            this.source = (DnDTabbedPane) c;</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (c instanceof DnDTabbedPane dnDTabbedPane) {</span>
+<span class="fc" id="L33">            this.source = dnDTabbedPane;</span>
         }
 
 <span class="fc" id="L36">        return new Transferable() {</span>
@@ -55,8 +55,8 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     public boolean canImport(TransferHandler.TransferSupport support) {
-<span class="pc bpc" id="L58" title="2 of 4 branches missed.">        if (!support.isDrop() || !support.isDataFlavorSupported(this.localObjectFlavor)) {</span>
-<span class="nc" id="L59">            return false;</span>
+<span class="pc bpc" id="L58" title="1 of 4 branches missed.">        if (!support.isDrop() || !support.isDataFlavorSupported(this.localObjectFlavor)) {</span>
+<span class="fc" id="L59">            return false;</span>
         }
         
 <span class="fc" id="L62">        support.setDropAction(TransferHandler.MOVE);</span>

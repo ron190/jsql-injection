@@ -233,14 +233,14 @@ import java.util.stream.Collectors;
 <span class="nc" id="L233">        return Arrays.stream(ActionCoder.values())</span>
 <span class="nc" id="L234">            .filter(action -&gt; action.isHash)</span>
 <span class="nc" id="L235">            .map(actionCoder -&gt; actionCoder.name)</span>
-<span class="nc" id="L236">            .collect(Collectors.toList());</span>
+<span class="nc" id="L236">            .toList();</span>
     }
 
     public static List&lt;String&gt; getHashesEmpty() {
 <span class="fc" id="L240">        return Arrays.stream(ActionCoder.values())</span>
 <span class="fc bfc" id="L241" title="All 4 branches covered.">            .filter(action -&gt; action.isHash &amp;&amp; action.isEmptyPossible)</span>
 <span class="fc" id="L242">            .map(actionCoder -&gt; actionCoder.name)</span>
-<span class="fc" id="L243">            .collect(Collectors.toList());</span>
+<span class="fc" id="L243">            .toList();</span>
     }
 
     public static Optional&lt;ActionCoder&gt; forName(String name) {

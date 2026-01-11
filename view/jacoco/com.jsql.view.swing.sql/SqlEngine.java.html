@@ -572,7 +572,7 @@ public class SqlEngine extends JPanel {
 <span class="fc" id="L572">            SqlEngine.LIST_TEXTAREAS_ERROR.stream(),</span>
 <span class="fc" id="L573">            Stream.of(TextareaWithColor.values()).map(TextareaWithColor::getTextArea)</span>
         )
-<span class="fc" id="L575">        .collect(Collectors.toList());</span>
+<span class="fc" id="L575">        .toList();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

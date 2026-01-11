@@ -80,7 +80,7 @@ public class ManagerAdminPage extends AbstractManagerList {
 <span class="nc" id="L80">                this.horizontalGlue.setVisible(false);</span>
 <span class="nc" id="L81">                MediatorHelper.model().getResourceAccess().createAdminPages(</span>
                     urlAddressBar,
-<span class="nc" id="L83">                    this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList())</span>
+<span class="nc" id="L83">                    this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).toList()</span>
                 );
 <span class="nc" id="L85">                this.endProcess();</span>
             }

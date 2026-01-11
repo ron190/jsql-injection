@@ -44,23 +44,13 @@ public class ReplaceFileChooser extends JFileChooser {
 <span class="nc" id="L44">                    I18nUtil.valueByKey(&quot;SAVE_TAB_CONFIRM_TITLE&quot;),</span>
                     JOptionPane.YES_NO_OPTION
                 );
-<span class="nc bnc" id="L47" title="All 4 branches missed.">                switch (result) {</span>
-                    case JOptionPane.YES_OPTION:
-<span class="nc" id="L49">                        super.approveSelection();</span>
-<span class="nc" id="L50">                        return;</span>
-                    case JOptionPane.NO_OPTION:
-                    case JOptionPane.CLOSED_OPTION:
-<span class="nc" id="L53">                        return;</span>
-                    case JOptionPane.CANCEL_OPTION:
-<span class="nc" id="L55">                        this.cancelSelection();</span>
-<span class="nc" id="L56">                        return;</span>
-                    default:
-                        break;
+<span class="nc bnc" id="L47" title="All 2 branches missed.">                if (result == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L48">                    super.approveSelection();</span>
                 }
-<span class="nc" id="L60">            } else {</span>
-<span class="nc" id="L61">                super.approveSelection();</span>
+<span class="nc" id="L50">            } else {</span>
+<span class="nc" id="L51">                super.approveSelection();</span>
             }
         }
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L54">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

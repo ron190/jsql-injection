@@ -83,13 +83,14 @@ public class ActionLoadStop implements ActionListener {
 <span class="nc" id="L83">        int tableChildCount = treeModel.getChildCount(tableNode);</span>
 <span class="nc bnc" id="L84" title="All 2 branches missed.">        for (var i = 0 ; i &lt; tableChildCount ; i++) {</span>
 <span class="nc" id="L85">            DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">            if (currentChild.getUserObject() instanceof AbstractNodeModel columnTreeNodeModel) {</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">                if (columnTreeNodeModel.isSelected()) {</span>
-<span class="nc" id="L88">                    columnsToSearch.add((Column) columnTreeNodeModel.getElementDatabase());</span>
-                }
+            if (
+<span class="nc bnc" id="L87" title="All 2 branches missed.">                currentChild.getUserObject() instanceof AbstractNodeModel columnTreeNodeModel</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                &amp;&amp; columnTreeNodeModel.isSelected()</span>
+            ) {
+<span class="nc" id="L90">                columnsToSearch.add((Column) columnTreeNodeModel.getElementDatabase());</span>
             }
         }
-<span class="nc" id="L92">        return columnsToSearch;</span>
+<span class="nc" id="L93">        return columnsToSearch;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

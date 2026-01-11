@@ -132,7 +132,7 @@ public class PreferencesUtil {
 <span class="fc" id="L132">                map.get(&quot;name&quot;),</span>
 <span class="fc" id="L133">                map.get(&quot;command&quot;).replaceAll(&quot;\\n\\s*&quot;, StringUtils.EMPTY)</span>
             ))
-<span class="fc" id="L135">            .collect(Collectors.toList());</span>
+<span class="fc" id="L135">            .toList();</span>
 <span class="fc" id="L136">        this.commandsReverseYaml = commandsReverseYaml;</span>
 <span class="fc" id="L137">    }</span>
 

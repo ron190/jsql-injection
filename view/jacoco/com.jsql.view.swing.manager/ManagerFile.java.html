@@ -77,7 +77,7 @@ public class ManagerFile extends AbstractManagerList {
 <span class="nc" id="L77">                        ManagerFile.this.horizontalGlue.setVisible(false);</span>
 <span class="nc" id="L78">                        ManagerFile.this.progressBar.setVisible(true);</span>
                         try {
-<span class="nc" id="L80">                            List&lt;String&gt; filePaths = ManagerFile.this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
+<span class="nc" id="L80">                            List&lt;String&gt; filePaths = ManagerFile.this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).toList();</span>
 <span class="nc" id="L81">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
 <span class="nc" id="L82">                        } catch (InterruptedException e) {</span>
 <span class="nc" id="L83">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>

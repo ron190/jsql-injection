@@ -69,7 +69,7 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>                      <em class="jxr_comment">// Url encode: new cookie RFC restricts chars to non ()&lt;&gt;@,;:\&quot;/[]?={} =&gt; server must url decode the request</em>
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>                      : URLEncoder.encode(arrayEntry[1].trim().replace(<span class="jxr_string">"+"</span>, <span class="jxr_string">"%2B"</span>), StandardCharsets.UTF_8)
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>                  ))
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>                  .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>                  .toList();
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>              valueHeader = String.join(<span class="jxr_string">"; "</span>, cookies);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          }
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  

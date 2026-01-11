@@ -61,7 +61,7 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L61">    protected static final List&lt;ModelItemTranslate&gt; ITEMS_TRANSLATE = Stream.of(</span>
         Language.EN, Language.FR, Language.ES, Language.IT, Language.AR, Language.ZH, Language.RU, Language.TR, Language.KO,
         Language.SE, Language.FI, Language.CS, Language.PT, Language.PL, Language.ID, Language.NL, Language.RO, Language.DE
-<span class="fc" id="L64">    ).map(ModelItemTranslate::new).collect(Collectors.toList());</span>
+<span class="fc" id="L64">    ).map(ModelItemTranslate::new).toList();</span>
 
 <span class="fc" id="L66">    private static final List&lt;ModelItemTranslate&gt; ITEMS_TRANSLATE_INTO = Stream.of(</span>
         Language.FR, Language.ES, Language.SE, Language.FI, Language.TR, Language.CS, Language.RO, Language.IT, Language.PT, Language.AR,
@@ -109,10 +109,10 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L109">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY&quot;, itemCopy);</span>
 <span class="fc" id="L110">        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
 <span class="fc" id="L111">        itemCopy.addActionListener(actionEvent -&gt; {</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {</span>
-<span class="nc" id="L113">                ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).copyTable();</span>
-<span class="nc bnc" id="L114" title="All 2 branches missed.">            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {</span>
-<span class="nc" id="L115">                ((JTextComponent) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).copy();</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable panelTable) {</span>
+<span class="nc" id="L113">                panelTable.copyTable();</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane jScrollPane) {</span>
+<span class="nc" id="L115">                ((JTextComponent) jScrollPane.getViewport().getView()).copy();</span>
             }
 <span class="nc" id="L117">        });</span>
 
@@ -120,12 +120,12 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L120">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;, itemSelectAll);</span>
 <span class="fc" id="L121">        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
 <span class="fc" id="L122">        itemSelectAll.addActionListener(actionEvent -&gt; {</span>
-<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {</span>
-<span class="nc" id="L124">                ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).selectTable();</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable panelTable) {</span>
+<span class="nc" id="L124">                panelTable.selectTable();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane jScrollPane) {</span>
                 // Textarea need focus to select all
-<span class="nc" id="L127">                ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();</span>
-<span class="nc" id="L128">                ((JTextComponent) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();</span>
+<span class="nc" id="L127">                jScrollPane.getViewport().getView().requestFocusInWindow();</span>
+<span class="nc" id="L128">                ((JTextComponent) jScrollPane.getViewport().getView()).selectAll();</span>
             }
 <span class="nc" id="L130">        });</span>
 
@@ -183,46 +183,45 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L183">        JMenuItem itemReportIssue = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_COMMUNITY_REPORTISSUE&quot;), 'R');</span>
 <span class="fc" id="L184">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_COMMUNITY_REPORTISSUE&quot;, itemReportIssue);</span>
 
-<span class="fc" id="L186">        itemReportIssue.addActionListener(actionEvent -&gt; {</span>
-
-<span class="nc" id="L188">            var panel = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L189">            final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();</span>
-<span class="nc" id="L190">            textarea.setFont(new Font(</span>
+<span class="fc" id="L186">        String reportBody = &quot;&quot;&quot;</span>
+            ## What's the expected behavior?
+            
+            ## What's the actual behavior?
+            
+            ## Any other detailed information on the Issue?
+            
+            ## Steps to reproduce the problem
+            
+              1. ...
+              2. ...
+            
+            ## [Community] Request for new feature
+            
+            &quot;&quot;&quot;;
+<span class="fc" id="L201">        itemReportIssue.addActionListener(actionEvent -&gt; {</span>
+<span class="nc" id="L202">            var panel = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L203">            final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();</span>
+<span class="nc" id="L204">            textarea.setFont(new Font(</span>
                 UiUtil.FONT_NAME_MONOSPACED,
                 Font.PLAIN,
-<span class="nc" id="L193">                UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getSize()</span>
+<span class="nc" id="L207">                UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getSize()</span>
             ));
-<span class="nc" id="L195">            textarea.setText(&quot;&quot;&quot;</span>
-                ## What's the expected behavior?
-                
-                ## What's the actual behavior?
-                
-                ## Any other detailed information on the Issue?
-                
-                ## Steps to reproduce the problem
-                
-                  1. ...
-                  2. ...
-                
-                ## [Community] Request for new feature
-                
-                &quot;&quot;&quot;
-            );
-<span class="nc" id="L211">            panel.add(new JLabel(&quot;Describe your bug or issue:&quot;), BorderLayout.NORTH);</span>
-<span class="nc" id="L212">            panel.add(new JScrollPane(textarea));</span>
-<span class="nc" id="L213">            panel.setPreferredSize(new Dimension(500, 350));</span>
-<span class="nc" id="L214">            panel.setMinimumSize(new Dimension(500, 350));</span>
+<span class="nc" id="L209">            textarea.setText(reportBody);</span>
+<span class="nc" id="L210">            panel.add(new JLabel(&quot;Describe your bug or issue:&quot;), BorderLayout.NORTH);</span>
+<span class="nc" id="L211">            panel.add(new JScrollPane(textarea));</span>
+<span class="nc" id="L212">            panel.setPreferredSize(new Dimension(500, 350));</span>
+<span class="nc" id="L213">            panel.setMinimumSize(new Dimension(500, 350));</span>
 
-<span class="nc" id="L216">            textarea.addMouseListener(new MouseAdapter() {</span>
+<span class="nc" id="L215">            textarea.addMouseListener(new MouseAdapter() {</span>
                 @Override
                 public void mousePressed(MouseEvent e) {
-<span class="nc" id="L219">                    super.mousePressed(e);</span>
-<span class="nc" id="L220">                    textarea.requestFocusInWindow();</span>
-<span class="nc" id="L221">                }</span>
+<span class="nc" id="L218">                    super.mousePressed(e);</span>
+<span class="nc" id="L219">                    textarea.requestFocusInWindow();</span>
+<span class="nc" id="L220">                }</span>
             });
 
-<span class="nc" id="L224">            int result = JOptionPane.showOptionDialog(</span>
-<span class="nc" id="L225">                MediatorHelper.frame(),</span>
+<span class="nc" id="L223">            int result = JOptionPane.showOptionDialog(</span>
+<span class="nc" id="L224">                MediatorHelper.frame(),</span>
                 panel,
                 &quot;Report an issue or a bug&quot;,
                 JOptionPane.OK_CANCEL_OPTION,
@@ -230,177 +229,177 @@ public class AppMenubar extends JMenuBar {
                 null,
                 new String[] {
                     &quot;Send&quot;,
-<span class="nc" id="L233">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
+<span class="nc" id="L232">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
                 },
-<span class="nc" id="L235">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
+<span class="nc" id="L234">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
             );
 
-<span class="nc bnc" id="L238" title="All 4 branches missed.">            if (StringUtils.isNotEmpty(textarea.getText()) &amp;&amp; result == JOptionPane.YES_OPTION) {</span>
-<span class="nc" id="L239">                MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, &quot;Report&quot;);</span>
+<span class="nc bnc" id="L237" title="All 4 branches missed.">            if (StringUtils.isNotEmpty(textarea.getText()) &amp;&amp; result == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L238">                MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, &quot;Report&quot;);</span>
             }
-<span class="nc" id="L241">        });</span>
+<span class="nc" id="L240">        });</span>
 
-<span class="fc" id="L243">        return itemReportIssue;</span>
+<span class="fc" id="L242">        return itemReportIssue;</span>
     }
 
     private JMenu initMenuHelp() {
-<span class="fc" id="L247">        var menuHelp = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_HELP&quot;));</span>
-<span class="fc" id="L248">        menuHelp.setMnemonic('H');</span>
-<span class="fc" id="L249">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP&quot;, menuHelp);</span>
-<span class="fc" id="L250">        menuHelp.setName(&quot;menuHelp&quot;);</span>
+<span class="fc" id="L246">        var menuHelp = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_HELP&quot;));</span>
+<span class="fc" id="L247">        menuHelp.setMnemonic('H');</span>
+<span class="fc" id="L248">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP&quot;, menuHelp);</span>
+<span class="fc" id="L249">        menuHelp.setName(&quot;menuHelp&quot;);</span>
 
-<span class="fc" id="L252">        JMenuItem itemHelp = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_HELP_ABOUT&quot;), 'A');</span>
-<span class="fc" id="L253">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP_ABOUT&quot;, itemHelp);</span>
-<span class="fc" id="L254">        itemHelp.setName(&quot;itemHelp&quot;);</span>
+<span class="fc" id="L251">        JMenuItem itemHelp = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_HELP_ABOUT&quot;), 'A');</span>
+<span class="fc" id="L252">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP_ABOUT&quot;, itemHelp);</span>
+<span class="fc" id="L253">        itemHelp.setName(&quot;itemHelp&quot;);</span>
 
-<span class="fc" id="L256">        JMenuItem itemUpdate = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_HELP_UPDATE&quot;), 'U');</span>
-<span class="fc" id="L257">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP_UPDATE&quot;, itemUpdate);</span>
+<span class="fc" id="L255">        JMenuItem itemUpdate = new JMenuItem(I18nUtil.valueByKey(&quot;MENUBAR_HELP_UPDATE&quot;), 'U');</span>
+<span class="fc" id="L256">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_HELP_UPDATE&quot;, itemUpdate);</span>
 
         // Render the About dialog behind the scene
-<span class="fc" id="L260">        itemHelp.addActionListener(actionEvent -&gt; {</span>
-<span class="fc" id="L261">            final var dialogAbout = new DialogAbout();</span>
-<span class="pc bpc" id="L262" title="1 of 2 branches missed.">            if (!dialogAbout.isVisible()) {</span>
-<span class="fc" id="L263">                dialogAbout.initDialog();</span>
-<span class="fc" id="L264">                dialogAbout.setVisible(true);  // needed here for button focus</span>
-<span class="fc" id="L265">                dialogAbout.requestButtonFocus();</span>
+<span class="fc" id="L259">        itemHelp.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L260">            final var dialogAbout = new DialogAbout();</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">            if (!dialogAbout.isVisible()) {</span>
+<span class="fc" id="L262">                dialogAbout.initDialog();</span>
+<span class="fc" id="L263">                dialogAbout.setVisible(true);  // needed here for button focus</span>
+<span class="fc" id="L264">                dialogAbout.requestButtonFocus();</span>
             }
-<span class="fc" id="L267">            dialogAbout.setVisible(true);</span>
-<span class="fc" id="L268">        });</span>
-<span class="fc" id="L269">        itemUpdate.addActionListener(new ActionCheckUpdate());</span>
+<span class="fc" id="L266">            dialogAbout.setVisible(true);</span>
+<span class="fc" id="L267">        });</span>
+<span class="fc" id="L268">        itemUpdate.addActionListener(new ActionCheckUpdate());</span>
 
-<span class="fc" id="L271">        menuHelp.add(itemUpdate);</span>
-<span class="fc" id="L272">        menuHelp.add(new JSeparator());</span>
-<span class="fc" id="L273">        menuHelp.add(itemHelp);</span>
-<span class="fc" id="L274">        return menuHelp;</span>
+<span class="fc" id="L270">        menuHelp.add(itemUpdate);</span>
+<span class="fc" id="L271">        menuHelp.add(new JSeparator());</span>
+<span class="fc" id="L272">        menuHelp.add(itemHelp);</span>
+<span class="fc" id="L273">        return menuHelp;</span>
     }
 
     public static void applyTheme(String nameTheme) {
-<span class="fc" id="L278">        UiUtil.applyTheme(nameTheme);</span>
+<span class="fc" id="L277">        UiUtil.applyTheme(nameTheme);</span>
 
-<span class="fc bfc" id="L280" title="All 2 branches covered.">        for (String key : I18nViewUtil.keys()) {</span>
-<span class="fc bfc" id="L281" title="All 2 branches covered.">            for (Object component : I18nViewUtil.componentsByKey(key)) {</span>
-<span class="fc bfc" id="L282" title="All 2 branches covered.">                if (component instanceof JToolTipI18n) {</span>
-<span class="fc" id="L283">                    ((JToolTipI18n) component).updateUI();  // required</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">        for (String key : I18nViewUtil.keys()) {</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">            for (Object component : I18nViewUtil.componentsByKey(key)) {</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">                if (component instanceof JToolTipI18n jToolTipI18n) {</span>
+<span class="fc" id="L282">                    jToolTipI18n.updateUI();  // required</span>
                 }
-<span class="fc" id="L285">            }</span>
-<span class="fc" id="L286">        }</span>
+<span class="fc" id="L284">            }</span>
+<span class="fc" id="L285">        }</span>
 
-<span class="fc" id="L288">        Arrays.asList(</span>
+<span class="fc" id="L287">        Arrays.asList(</span>
             UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.UPLOAD, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH,
             UiUtil.TABLE_LINEAR, UiUtil.TABLE_BOLD, UiUtil.NETWORK, UiUtil.DATABASE_LINEAR, UiUtil.COG, UiUtil.CUP, UiUtil.CONSOLE, UiUtil.BINARY, UiUtil.CHUNK,
             UiUtil.ARROW, UiUtil.ARROW_HOVER, UiUtil.ARROW_PRESSED, UiUtil.ARROW_LEFT, UiUtil.ARROW_LEFT_HOVER, UiUtil.ARROW_LEFT_PRESSED,
             UiUtil.EXPAND, UiUtil.EXPAND_HOVER, UiUtil.EXPAND_PRESSED,
             UiUtil.HOURGLASS, UiUtil.ARROW_DOWN, UiUtil.ARROW_UP, UiUtil.SQUARE, UiUtil.GLOBE, UiUtil.TICK_GREEN, UiUtil.CROSS_RED,
             UiUtil.APP_ICON, UiUtil.APP_BIG, UiUtil.APP_MIDDLE
-<span class="fc" id="L295">        ).forEach(ModelSvgIcon::setColorFilter);</span>
+<span class="fc" id="L294">        ).forEach(ModelSvgIcon::setColorFilter);</span>
 
-<span class="fc" id="L297">        SqlEngine.applyTheme();</span>
-<span class="fc" id="L298">        PanelTampering.applyTheme();</span>
-<span class="fc" id="L299">        PanelExploit.applyTheme();</span>
-<span class="fc" id="L300">        MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyTheme();</span>
-<span class="fc" id="L301">        MediatorHelper.frame().setIconImages(UiUtil.getIcons());</span>
-<span class="fc" id="L302">        MediatorHelper.frame().revalidate();</span>
+<span class="fc" id="L296">        SqlEngine.applyTheme();</span>
+<span class="fc" id="L297">        PanelTampering.applyTheme();</span>
+<span class="fc" id="L298">        PanelExploit.applyTheme();</span>
+<span class="fc" id="L299">        MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyTheme();</span>
+<span class="fc" id="L300">        MediatorHelper.frame().setIconImages(UiUtil.getIcons());</span>
+<span class="fc" id="L301">        MediatorHelper.frame().revalidate();</span>
 
-<span class="fc" id="L304">        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withThemeFlatLafName(nameTheme).persist();</span>
-<span class="fc" id="L305">    }</span>
+<span class="fc" id="L303">        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withThemeFlatLafName(nameTheme).persist();</span>
+<span class="fc" id="L304">    }</span>
     
     public void switchLocale(Locale newLocale) {
-<span class="fc" id="L308">        Locale oldLocale = I18nUtil.getCurrentLocale();</span>
-<span class="fc" id="L309">        I18nUtil.setCurrentBundle(newLocale);</span>
+<span class="fc" id="L307">        Locale oldLocale = I18nUtil.getCurrentLocale();</span>
+<span class="fc" id="L308">        I18nUtil.setCurrentBundle(newLocale);</span>
 
-<span class="fc" id="L311">        Stream.of(</span>
+<span class="fc" id="L310">        Stream.of(</span>
             JTextPaneAppender.ATTRIBUTE_WARN,
             JTextPaneAppender.ATTRIBUTE_INFORM,
             JTextPaneAppender.ATTRIBUTE_SUCCESS,
             JTextPaneAppender.ATTRIBUTE_ALL
         )
-<span class="fc" id="L317">        .forEach(attribute -&gt; {</span>
-<span class="pc bpc" id="L318" title="1 of 2 branches missed.">            StyleConstants.setFontFamily(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_NAME_MONO_ASIAN : UiUtil.FONT_NAME_MONO_NON_ASIAN);</span>
-<span class="pc bpc" id="L319" title="1 of 2 branches missed.">            StyleConstants.setFontSize(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_SIZE_MONO_ASIAN : UiUtil.FONT_SIZE_MONO_NON_ASIAN);</span>
-<span class="fc" id="L320">        });</span>
+<span class="fc" id="L316">        .forEach(attribute -&gt; {</span>
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">            StyleConstants.setFontFamily(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_NAME_MONO_ASIAN : UiUtil.FONT_NAME_MONO_NON_ASIAN);</span>
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">            StyleConstants.setFontSize(attribute, I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_SIZE_MONO_ASIAN : UiUtil.FONT_SIZE_MONO_NON_ASIAN);</span>
+<span class="fc" id="L319">        });</span>
 
-<span class="pc bpc" id="L322" title="1 of 2 branches missed.">        MediatorHelper.managerBruteForce().getResult().setFont(I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_MONO_ASIAN : UiUtil.FONT_MONO_NON_ASIAN);</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">        MediatorHelper.managerBruteForce().getResult().setFont(I18nViewUtil.isNonUbuntu(newLocale) ? UiUtil.FONT_MONO_ASIAN : UiUtil.FONT_MONO_NON_ASIAN);</span>
 
-<span class="fc" id="L324">        this.switchNetworkTable();</span>
-<span class="fc" id="L325">        I18nViewUtil.switchI18nComponents();</span>
-<span class="fc" id="L326">        this.switchOrientation(oldLocale, newLocale);</span>
-<span class="fc" id="L327">        this.switchMenuItems();  // required to restore proper language orientation</span>
+<span class="fc" id="L323">        this.switchNetworkTable();</span>
+<span class="fc" id="L324">        I18nViewUtil.switchI18nComponents();</span>
+<span class="fc" id="L325">        this.switchOrientation(oldLocale, newLocale);</span>
+<span class="fc" id="L326">        this.switchMenuItems();  // required to restore proper language orientation</span>
         
-<span class="fc" id="L329">        MediatorHelper.treeDatabase().reloadNodes();</span>
-<span class="fc" id="L330">        MediatorHelper.panelAddressBar().getPanelTrailingAddress().buttonStart.setIcons();</span>
-<span class="pc bpc" id="L331" title="1 of 2 branches missed.">        int textPosition = ComponentOrientation.getOrientation(newLocale).isLeftToRight()  // leading/trailing not working</span>
-<span class="fc" id="L332">            ? SwingConstants.LEFT</span>
-<span class="pc" id="L333">            : SwingConstants.RIGHT;</span>
-<span class="fc" id="L334">        MediatorHelper.panelAddressBar().getAtomicRadioRequest().setHorizontalTextPosition(textPosition);  // component orientation not working</span>
-<span class="fc" id="L335">        MediatorHelper.panelAddressBar().getAtomicRadioMethod().setHorizontalTextPosition(textPosition);</span>
-<span class="fc" id="L336">        MediatorHelper.panelAddressBar().getAtomicRadioHeader().setHorizontalTextPosition(textPosition);</span>
+<span class="fc" id="L328">        MediatorHelper.treeDatabase().reloadNodes();</span>
+<span class="fc" id="L329">        MediatorHelper.panelAddressBar().getPanelTrailingAddress().buttonStart.setIcons();</span>
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">        int textPosition = ComponentOrientation.getOrientation(newLocale).isLeftToRight()  // leading/trailing not working</span>
+<span class="fc" id="L331">            ? SwingConstants.LEFT</span>
+<span class="pc" id="L332">            : SwingConstants.RIGHT;</span>
+<span class="fc" id="L333">        MediatorHelper.panelAddressBar().getAtomicRadioRequest().setHorizontalTextPosition(textPosition);  // component orientation not working</span>
+<span class="fc" id="L334">        MediatorHelper.panelAddressBar().getAtomicRadioMethod().setHorizontalTextPosition(textPosition);</span>
+<span class="fc" id="L335">        MediatorHelper.panelAddressBar().getAtomicRadioHeader().setHorizontalTextPosition(textPosition);</span>
 
         // Fix #92981: IllegalArgumentException on revalidate()
         // Fix #96185: NullPointerException on revalidate()
         // Fix #96226: ArrayIndexOutOfBoundsException on revalidate()
         try {
-<span class="fc" id="L342">            MediatorHelper.frame().revalidate();  // Fix glitches on Linux</span>
-<span class="nc" id="L343">        } catch (NullPointerException | IllegalArgumentException | ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L344">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L345">        }</span>
-<span class="fc" id="L346">    }</span>
+<span class="fc" id="L341">            MediatorHelper.frame().revalidate();  // Fix glitches on Linux</span>
+<span class="nc" id="L342">        } catch (NullPointerException | IllegalArgumentException | ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L343">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L344">        }</span>
+<span class="fc" id="L345">    }</span>
 
     private void switchOrientation(Locale oldLocale, Locale newLocale) {
-<span class="fc" id="L349">        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
-<span class="fc" id="L350">        MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
+<span class="fc" id="L348">        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
+<span class="fc" id="L349">        MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
         
-<span class="pc bpc" id="L352" title="1 of 2 branches missed.">        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {</span>
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {</span>
             // not rendered at startup, only on switch, unreliable components width can be 0 at startup
             // use event windowOpen instead when required
-<span class="nc" id="L355">            AppMenubar.reverse(MediatorHelper.frame().getSplitNS().getSplitEW());</span>
-<span class="nc" id="L356">            AppMenubar.reverse(MediatorHelper.panelConsoles().getNetworkSplitPane());</span>
+<span class="nc" id="L354">            AppMenubar.reverse(MediatorHelper.frame().getSplitNS().getSplitEW());</span>
+<span class="nc" id="L355">            AppMenubar.reverse(MediatorHelper.panelConsoles().getNetworkSplitPane());</span>
         }
         
-<span class="fc" id="L359">        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
-<span class="fc" id="L360">    }</span>
+<span class="fc" id="L358">        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
+<span class="fc" id="L359">    }</span>
 
     private static void reverse(JSplitPane splitPane) {
-<span class="nc" id="L363">        var componentLeft = splitPane.getLeftComponent();</span>
-<span class="nc" id="L364">        var componentRight = splitPane.getRightComponent();</span>
+<span class="nc" id="L362">        var componentLeft = splitPane.getLeftComponent();</span>
+<span class="nc" id="L363">        var componentRight = splitPane.getRightComponent();</span>
 
         // Reset components
-<span class="nc" id="L367">        splitPane.setLeftComponent(null);</span>
-<span class="nc" id="L368">        splitPane.setRightComponent(null);</span>
-<span class="nc" id="L369">        splitPane.setLeftComponent(componentRight);</span>
-<span class="nc" id="L370">        splitPane.setRightComponent(componentLeft);</span>
+<span class="nc" id="L366">        splitPane.setLeftComponent(null);</span>
+<span class="nc" id="L367">        splitPane.setRightComponent(null);</span>
+<span class="nc" id="L368">        splitPane.setLeftComponent(componentRight);</span>
+<span class="nc" id="L369">        splitPane.setRightComponent(componentLeft);</span>
 
         // required as switch to arabic uses reversed location
-<span class="nc" id="L373">        splitPane.setDividerLocation(splitPane.getWidth() - splitPane.getDividerLocation());</span>
-<span class="nc" id="L374">    }</span>
+<span class="nc" id="L372">        splitPane.setDividerLocation(splitPane.getWidth() - splitPane.getDividerLocation());</span>
+<span class="nc" id="L373">    }</span>
 
     private void switchMenuItems() {
-<span class="fc" id="L377">        Stream.concat(AppMenubar.ITEMS_TRANSLATE.stream(), AppMenubar.ITEMS_TRANSLATE_INTO.stream())</span>
-<span class="fc" id="L378">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
-<span class="fc bfc" id="L379" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
-<span class="fc" id="L380">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
-<span class="fc" id="L381">            : ComponentOrientation.LEFT_TO_RIGHT</span>
+<span class="fc" id="L376">        Stream.concat(AppMenubar.ITEMS_TRANSLATE.stream(), AppMenubar.ITEMS_TRANSLATE_INTO.stream())</span>
+<span class="fc" id="L377">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
+<span class="fc bfc" id="L378" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
+<span class="fc" id="L379">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
+<span class="fc" id="L380">            : ComponentOrientation.LEFT_TO_RIGHT</span>
         ));
-<span class="fc" id="L383">    }</span>
+<span class="fc" id="L382">    }</span>
 
     private void switchNetworkTable() {
-<span class="fc" id="L386">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
-<span class="fc" id="L387">        TableColumnModel columnModel = header.getColumnModel();</span>
-<span class="fc" id="L388">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
-<span class="fc" id="L389">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
-<span class="fc" id="L390">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
-<span class="fc" id="L391">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
-<span class="fc" id="L392">        header.repaint();</span>
-<span class="fc" id="L393">    }</span>
+<span class="fc" id="L385">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
+<span class="fc" id="L386">        TableColumnModel columnModel = header.getColumnModel();</span>
+<span class="fc" id="L387">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
+<span class="fc" id="L388">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
+<span class="fc" id="L389">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
+<span class="fc" id="L390">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
+<span class="fc" id="L391">        header.repaint();</span>
+<span class="fc" id="L392">    }</span>
     
     
     // Getter and setter
 
     public JMenu getMenuView() {
-<span class="nc" id="L399">        return this.menuWindows.getMenuView();</span>
+<span class="nc" id="L398">        return this.menuWindows.getMenuView();</span>
     }
 
     public MenuWindows getMenuWindows() {
-<span class="fc" id="L403">        return this.menuWindows;</span>
+<span class="fc" id="L402">        return this.menuWindows;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -241,14 +241,14 @@
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>         <strong class="jxr_keyword">return</strong> Arrays.stream(ActionCoder.values())
 <a class="jxr_linenumber" name="L234" href="#L234">234</a>             .filter(action -&gt; action.isHash)
 <a class="jxr_linenumber" name="L235" href="#L235">235</a>             .map(actionCoder -&gt; actionCoder.name)
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>             .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>             .toList();
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>     }
 <a class="jxr_linenumber" name="L238" href="#L238">238</a> 
 <a class="jxr_linenumber" name="L239" href="#L239">239</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> List&lt;String&gt; getHashesEmpty() {
 <a class="jxr_linenumber" name="L240" href="#L240">240</a>         <strong class="jxr_keyword">return</strong> Arrays.stream(ActionCoder.values())
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>             .filter(action -&gt; action.isHash &amp;&amp; action.isEmptyPossible)
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>             .map(actionCoder -&gt; actionCoder.name)
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>             .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>             .toList();
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>     }
 <a class="jxr_linenumber" name="L245" href="#L245">245</a> 
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> Optional&lt;ActionCoder&gt; forName(String name) {

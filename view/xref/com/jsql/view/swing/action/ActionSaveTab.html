@@ -67,12 +67,12 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> actionPerformed(ActionEvent e) {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.replaceFileChooser.setDialogTitle(<span class="jxr_string">"Save Tab As"</span>);
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">var</strong> componentResult = MediatorHelper.tabResults().getSelectedComponent();
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">if</strong> (componentResult instanceof <a name="PanelTable" href="../../../../../com/jsql/view/swing/table/PanelTable.html#PanelTable">PanelTable</a>) {
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>              JTable table = ((<a name="PanelTable" href="../../../../../com/jsql/view/swing/table/PanelTable.html#PanelTable">PanelTable</a>) componentResult).getTableValues();
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">if</strong> (componentResult instanceof <a name="PanelTable" href="../../../../../com/jsql/view/swing/table/PanelTable.html#PanelTable">PanelTable</a> panelTable) {
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>              JTable table = panelTable.getTableValues();
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>              <strong class="jxr_keyword">this</strong>.saveToFile(table);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>              componentResult instanceof JScrollPane
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>              &amp;&amp; ((JScrollPane) componentResult).getViewport().getView() instanceof JTextComponent textarea
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>              componentResult instanceof JScrollPane jScrollPane
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>              &amp;&amp; jScrollPane.getViewport().getView() instanceof JTextComponent textarea
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          ) {
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>              <strong class="jxr_keyword">this</strong>.saveToFile(textarea);
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          } <strong class="jxr_keyword">else</strong> {
@@ -80,8 +80,8 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          }
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>      }
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> saveToFile(JComponent textarea) {
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">if</strong> (textarea == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> saveToFile(JComponent jComponent) {
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">if</strong> (jComponent == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>              <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>          }
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  
@@ -91,10 +91,10 @@
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>              <strong class="jxr_keyword">if</strong> (stateSave == JFileChooser.APPROVE_OPTION) {
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>                  <strong class="jxr_keyword">var</strong> folderSelectedFile = <strong class="jxr_keyword">this</strong>.replaceFileChooser.getCurrentDirectory().toString();
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>                  MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>                  <strong class="jxr_keyword">if</strong> (textarea instanceof JTextComponent) {
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>                      <strong class="jxr_keyword">this</strong>.saveTextToFile((JTextComponent) textarea);
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>                  } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (textarea instanceof JTable) {
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>                      <strong class="jxr_keyword">this</strong>.saveTableToFile((JTable) textarea);
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>                  <strong class="jxr_keyword">if</strong> (jComponent instanceof JTextComponent jTextComponent) {
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>                      <strong class="jxr_keyword">this</strong>.saveTextToFile(jTextComponent);
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>                  } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (jComponent instanceof JTable jTable) {
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>                      <strong class="jxr_keyword">this</strong>.saveTableToFile(jTable);
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>                  }
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>              }
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>          } <strong class="jxr_keyword">catch</strong> (InvalidPathException e) {

@@ -59,12 +59,12 @@ public class ActionSaveTab extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
 <span class="nc" id="L60">        this.replaceFileChooser.setDialogTitle(&quot;Save Tab As&quot;);</span>
 <span class="nc" id="L61">        var componentResult = MediatorHelper.tabResults().getSelectedComponent();</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (componentResult instanceof PanelTable) {</span>
-<span class="nc" id="L63">            JTable table = ((PanelTable) componentResult).getTableValues();</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (componentResult instanceof PanelTable panelTable) {</span>
+<span class="nc" id="L63">            JTable table = panelTable.getTableValues();</span>
 <span class="nc" id="L64">            this.saveToFile(table);</span>
 <span class="nc bnc" id="L65" title="All 2 branches missed.">        } else if (</span>
-            componentResult instanceof JScrollPane
-<span class="nc bnc" id="L67" title="All 2 branches missed.">            &amp;&amp; ((JScrollPane) componentResult).getViewport().getView() instanceof JTextComponent textarea</span>
+<span class="nc" id="L66">            componentResult instanceof JScrollPane jScrollPane</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            &amp;&amp; jScrollPane.getViewport().getView() instanceof JTextComponent textarea</span>
         ) {
 <span class="nc" id="L69">            this.saveToFile(textarea);</span>
         } else {
@@ -72,8 +72,8 @@ public class ActionSaveTab extends AbstractAction {
         }
 <span class="nc" id="L73">    }</span>
     
-    private void saveToFile(JComponent textarea) {
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (textarea == null) {</span>
+    private void saveToFile(JComponent jComponent) {
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (jComponent == null) {</span>
 <span class="nc" id="L77">            return;</span>
         }
 
@@ -83,10 +83,10 @@ public class ActionSaveTab extends AbstractAction {
 <span class="nc bnc" id="L83" title="All 2 branches missed.">            if (stateSave == JFileChooser.APPROVE_OPTION) {</span>
 <span class="nc" id="L84">                var folderSelectedFile = this.replaceFileChooser.getCurrentDirectory().toString();</span>
 <span class="nc" id="L85">                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">                if (textarea instanceof JTextComponent) {</span>
-<span class="nc" id="L87">                    this.saveTextToFile((JTextComponent) textarea);</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">                } else if (textarea instanceof JTable) {</span>
-<span class="nc" id="L89">                    this.saveTableToFile((JTable) textarea);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                if (jComponent instanceof JTextComponent jTextComponent) {</span>
+<span class="nc" id="L87">                    this.saveTextToFile(jTextComponent);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                } else if (jComponent instanceof JTable jTable) {</span>
+<span class="nc" id="L89">                    this.saveTableToFile(jTable);</span>
                 }
             }
 <span class="nc" id="L92">        } catch (InvalidPathException e) {</span>

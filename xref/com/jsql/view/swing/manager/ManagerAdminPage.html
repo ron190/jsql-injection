@@ -88,7 +88,7 @@
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>                  <strong class="jxr_keyword">this</strong>.horizontalGlue.setVisible(false);
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>                  MediatorHelper.model().getResourceAccess().createAdminPages(
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>                      urlAddressBar,
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>                      <strong class="jxr_keyword">this</strong>.listPaths.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList())
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>                      <strong class="jxr_keyword">this</strong>.listPaths.getSelectedValuesList().stream().map(ItemList::toString).toList()
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>                  );
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>                  <strong class="jxr_keyword">this</strong>.endProcess();
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>              }

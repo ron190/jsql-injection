@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 <span class="nc" id="L12">            keyList.add((String) keysEnum.nextElement());</span>
         }
 <span class="nc" id="L14">        Collections.sort(keyList);</span>
-<span class="nc" id="L15">        return Collections.enumeration(keyList.stream()</span>
-<span class="nc" id="L16">            .map(s -&gt; (Object) s)</span>
-<span class="nc" id="L17">            .collect(Collectors.toList()));</span>
+<span class="nc" id="L15">        return Collections.enumeration(</span>
+<span class="nc" id="L16">            keyList.stream().map(s -&gt; (Object) s).toList()</span>
+        );
     }
     @Override
     public Set&lt;Map.Entry&lt;Object, Object&gt;&gt; entrySet() {

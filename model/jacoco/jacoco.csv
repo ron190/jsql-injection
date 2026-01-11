@@ -2,7 +2,7 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,5,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Patch,208,0,14,0,46,0,20,0,12,0
 model,com.jsql.model.injection.strategy.blind.patch,Diff,51,62,11,7,10,19,10,8,3,6
-model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3121,2149,393,294,643,468,242,151,23,20
+model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3142,2128,397,290,647,464,244,149,23,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.callable,AbstractCallableBit,3,37,0,0,1,13,1,8,1,8
 model,com.jsql.model.injection.strategy.blind.callable,CallableVendor,0,76,0,4,0,19,0,7,0,5
@@ -29,7 +29,7 @@ model,com.jsql.model.accessible.vendor.postgres,Udf,0,143,0,0,0,53,0,27,0,27
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
 model,com.jsql.model,InjectionModel,154,1293,16,68,38,288,15,61,3,31
 model,com.jsql.model,MediatorUtils,6,137,0,0,2,59,2,39,2,39
-model,com.jsql.model.injection.vendor,MediatorVendor,18,1044,0,12,6,116,6,40,6,34
+model,com.jsql.model.injection.vendor,MediatorVendor,24,1050,0,12,8,116,8,40,8,34
 model,com.jsql.model.injection.vendor,MediatorVendor.new Vendor() {...},0,85,2,6,0,17,2,4,0,2
 model,com.jsql.util.tampering,TamperingType,6,113,0,0,2,20,0,3,0,3
 model,com.jsql.util.tampering,ModelYamlTampering,9,22,0,0,3,10,3,6,3,6
@@ -147,7 +147,7 @@ model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,Crc64Helper,0,78,0,8,0,14,0,6,0,2
 model,com.jsql.util.bruter,HashUtil,0,254,0,2,0,44,0,10,0,9
-model,com.jsql.util.bruter,ActionCoder,19,369,0,4,5,50,4,11,4,9
+model,com.jsql.util.bruter,ActionCoder,17,367,0,4,5,50,4,11,4,9
 model,com.jsql.util.bruter,Coder,0,175,0,0,0,28,0,3,0,3
 model,com.jsql.util.bruter,Base58,26,282,13,29,7,64,13,14,0,6
 model,com.jsql.util.bruter,DigestMD4,68,961,7,19,15,105,9,15,3,8
@@ -165,7 +165,7 @@ model,com.jsql.util.bruter,Bruter,19,402,0,12,8,52,3,23,3,17
 model,com.jsql.model.accessible.vendor.h2,File,6,27,0,0,2,11,2,5,2,5
 model,com.jsql.model.accessible.vendor.h2,Rce,3,60,0,0,1,24,1,12,1,12
 model,com.jsql.model.accessible.vendor.h2,ModelYamlH2,0,27,0,0,0,9,0,5,0,5
-model,com.jsql.model.suspendable,SuspendableGetCharInsertion,71,505,8,34,14,106,9,31,2,17
+model,com.jsql.model.suspendable,SuspendableGetCharInsertion,71,503,8,34,14,106,9,31,2,17
 model,com.jsql.model.suspendable,SuspendableGetVendor,11,140,2,6,3,31,2,8,0,6
 model,com.jsql.model.suspendable,SuspendableGetRows,72,687,17,43,21,167,15,33,0,18
 model,com.jsql.model.suspendable,SuspendableGetIndexes,43,144,3,9,10,31,3,7,0,4
@@ -184,8 +184,8 @@ model,com.jsql.model.injection.vendor.model,Vendor,2,23,0,0,1,9,1,4,1,4
 model,com.jsql.model.injection.vendor.model,VendorYaml,203,1025,11,39,32,236,21,51,10,36
 model,com.jsql.util,CsrfUtil,143,315,11,19,28,74,10,19,1,13
 model,com.jsql.util,ExceptionUtil,25,14,0,0,8,5,2,2,2,2
-model,com.jsql.util,PreferencesUtil,205,1273,0,0,75,330,49,86,49,86
-model,com.jsql.util,JsonUtil,48,303,5,27,11,65,4,22,0,10
+model,com.jsql.util,PreferencesUtil,205,1271,0,0,75,330,49,86,49,86
+model,com.jsql.util,JsonUtil,48,307,5,27,11,65,4,22,0,10
 model,com.jsql.util,CertificateUtil,6,39,0,0,2,10,0,3,0,3
 model,com.jsql.util,TamperingUtil,112,323,2,14,38,84,16,25,14,19
 model,com.jsql.util,GitUtil,418,9,18,0,88,4,18,2,9,2
@@ -211,7 +211,7 @@ model,com.jsql.util,MultipartUtil,23,128,2,6,6,28,2,10,0,8
 model,com.jsql.util,DigestUtil,6,243,2,6,2,44,2,10,0,8
 model,com.jsql.util,StringUtil,27,613,4,30,6,120,4,53,0,40
 model,com.jsql.util,ProxyUtil,346,30,23,3,81,12,32,5,19,5
-model,com.jsql.util,HeaderUtil,70,422,17,43,12,87,15,29,0,14
+model,com.jsql.util,HeaderUtil,70,420,17,43,12,87,15,29,0,14
 model,com.jsql.model.suspendable.callable,ThreadFactoryCallable,0,13,0,0,0,4,0,2,0,2
 model,com.jsql.model.suspendable.callable,CallablePageSource,0,51,0,0,0,16,0,7,0,7
 model,com.jsql.model.accessible.vendor.sqlite,Extension,6,37,0,0,2,15,2,7,2,7
