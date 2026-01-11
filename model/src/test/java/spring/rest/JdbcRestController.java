@@ -87,7 +87,7 @@ public class JdbcRestController {
     public Greeting greetingMonetDB(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:mimer://jsql-mimer:1360/mimerdb",
+            "jdbc:monetdb://jsql-monetdb:50000/db",
             "monetdb",
             "monetdb",
             "select name from schemas where '1' = '"+ inject +"'"

@@ -93,6 +93,8 @@
                 <maven-failsafe-plugin.include>**/*SuiteIT.java</maven-failsafe-plugin.include>
                 <maven-failsafe-plugin.exclude>
                     **/*Db2*SuiteIT.java,
+                    **/*Exasol*SuiteIT.java,
+                    **/*Hana*SuiteIT.java,
                     **/*MonetDb*SuiteIT.java,
                     **/*Oracle*SuiteIT.java,
                     **/*SqlServer*SuiteIT.java,
