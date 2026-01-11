@@ -225,7 +225,7 @@ view,com.jsql.view.swing.panel,PanelPreferences.CategoryPreference,0,65,0,0,0,11
 view,com.jsql.view.swing.panel,PanelAddressBar,75,808,4,10,13,145,9,22,7,17
 view,com.jsql.view.swing.panel,PanelPreferences,0,267,0,2,0,56,0,15,0,14
 view,com.jsql.view.swing.panel,PanelConsoles,75,485,8,8,20,109,11,17,3,17
-view,com.jsql.view.swing.tab.dnd,TabTransferHandler,76,258,23,19,12,59,21,9,1,8
+view,com.jsql.view.swing.tab.dnd,TabTransferHandler,78,256,24,18,13,58,22,8,1,8
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,12,167,9,15,4,38,9,9,0,6
 view,com.jsql.view.swing.tab.dnd,DnDTabData,0,6,0,0,0,3,0,1,0,1
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.DnDDropLocation,0,20,0,0,0,8,0,4,0,4
