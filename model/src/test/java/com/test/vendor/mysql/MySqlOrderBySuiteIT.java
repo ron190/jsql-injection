@@ -25,10 +25,9 @@ class MySqlOrderBySuiteIT extends ConcreteMySqlErrorSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyDnsDisabled(true)
+        .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
-        .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyTimeDisabled(true);
+        .withIsStrategyBlindBinDisabled(true);
 
         model
         .getMediatorUtils()

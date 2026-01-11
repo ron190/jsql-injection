@@ -13,23 +13,28 @@ public abstract class ConcreteCubridSuiteIT extends AbstractTestSuite {
     }
 
     public void config() {
-
         this.jdbcURL = SpringApp.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
         this.jdbcUser = SpringApp.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
         this.jdbcPass = SpringApp.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
-        this.jsqlDatabaseName = "PUBLIC";
-        this.jsqlTableName = "student";
-        this.jsqlColumnName = "Student_Id";
+        this.databaseToInject = "PUBLIC";
+        this.tableToInject = "student";
+        this.columnToInject = "Student_Id";
         
-        this.jdbcColumnForDatabaseName = "owner_name";
-        this.jdbcColumnForTableName = "class_name";
-        this.jdbcColumnForColumnName = "attr_name";
-        
-        this.jdbcQueryForDatabaseNames = "select " + this.jdbcColumnForDatabaseName + " from db_class";
-        this.jdbcQueryForTableNames =    "select " + this.jdbcColumnForTableName + " from db_class where " + this.jdbcColumnForDatabaseName + "='"+ this.jsqlDatabaseName +"'";
-        this.jdbcQueryForColumnNames =   "select " + this.jdbcColumnForColumnName + " from db_attribute c inner join db_class t on t." + this.jdbcColumnForTableName + " = c." + this.jdbcColumnForTableName + " where t." + this.jdbcColumnForDatabaseName + "='"+ this.jsqlDatabaseName +"' and t." + this.jdbcColumnForTableName + "='"+ this.jsqlTableName +"'";
-        this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from "+ this.jsqlTableName;
+        this.queryAssertDatabases = "select owner_name from db_class";
+        this.queryAssertTables = String.format("""
+            select class_name
+            from db_class
+            where owner_name='%s'
+        """, this.databaseToInject);
+        this.queryAssertColumns = String.format("""
+            select attr_name
+            from db_attribute c
+            inner join db_class t on t.class_name = c.class_name
+            where t.owner_name='%s'
+            and t.class_name='%s'
+        """, this.databaseToInject, this.tableToInject);
+        this.queryAssertValues = String.format("select %s from %s", this.columnToInject, this.tableToInject);
     }
 
     @AfterEach

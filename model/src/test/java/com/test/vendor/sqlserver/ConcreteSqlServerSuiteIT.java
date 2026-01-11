@@ -9,23 +9,25 @@ import spring.SpringApp;
 public abstract class ConcreteSqlServerSuiteIT extends AbstractTestSuite {
 
     public ConcreteSqlServerSuiteIT() {
-
         this.jdbcURL = SpringApp.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
         this.jdbcUser = SpringApp.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
         this.jdbcPass = SpringApp.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
-        this.jsqlDatabaseName = "master";
-        this.jsqlTableName = "student";
-        this.jsqlColumnName = "Student_Id";
+        this.databaseToInject = "master";
+        this.tableToInject = "student";
+        this.columnToInject = "Student_Id";
         
-        this.jdbcColumnForDatabaseName = "name";
-        this.jdbcColumnForTableName = "name";
-        this.jdbcColumnForColumnName = "name";
-        
-        this.jdbcQueryForDatabaseNames = "select name from "+ this.jsqlDatabaseName +"..sysdatabases";
-        this.jdbcQueryForTableNames = "select name from "+ this.jsqlDatabaseName +"..sysobjects WHERE xtype='U'";
-        this.jdbcQueryForColumnNames = "select c.name FROM "+ this.jsqlDatabaseName +"..syscolumns c, "+ this.jsqlDatabaseName +"..sysobjects t WHERE c.id=t.id AND t.name='"+ this.jsqlTableName +"'";
-        this.jdbcQueryForValues = "select LTRIM(RTRIM("+ this.jsqlColumnName +")) "+ this.jsqlColumnName +" FROM "+ this.jsqlDatabaseName +".dbo."+ this.jsqlTableName;
+        this.queryAssertDatabases = String.format("select name from %s..sysdatabases", this.databaseToInject);
+        this.queryAssertTables = String.format("select name from %s..sysobjects WHERE xtype='U'", this.databaseToInject);
+        this.queryAssertColumns = String.format("""
+            select c.name
+            FROM %s..syscolumns c, %s..sysobjects t
+            WHERE c.id = t.id
+            AND t.name = '%s'
+        """, this.databaseToInject, this.databaseToInject, this.tableToInject);
+        this.queryAssertValues = String.format("""
+            select LTRIM(RTRIM(%s)) %s FROM %s.dbo.%s
+        """, this.columnToInject, this.columnToInject, this.databaseToInject, this.tableToInject);
     }
 
     @AfterEach

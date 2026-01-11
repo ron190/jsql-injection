@@ -25,9 +25,8 @@ class OracleBlindBitGetSuiteIT extends ConcreteOracleSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyUnionDisabled(true)
-        .withIsStrategyErrorDisabled(true)
-        .withIsStrategyTimeDisabled(true);
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyBlindBinDisabled(true);
 
         model
         .getMediatorUtils()

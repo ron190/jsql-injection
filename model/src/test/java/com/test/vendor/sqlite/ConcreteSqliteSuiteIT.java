@@ -20,23 +20,22 @@ public abstract class ConcreteSqliteSuiteIT extends AbstractTestSuite {
     }
     
     public void config() {
-
         this.jdbcURL = SpringApp.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
         this.jdbcUser = SpringApp.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
         this.jdbcPass = SpringApp.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
-        this.jsqlDatabaseName = "musicstore";
-        this.jsqlTableName = "Student";
-        this.jsqlColumnName = "Student_Id";
+        this.databaseToInject = "musicstore";
+        this.tableToInject = "Student";
+        this.columnToInject = "Student_Id";
         
-        this.jdbcColumnForDatabaseName = "sqlite_master";
-        this.jdbcColumnForTableName = "name";
-        this.jdbcColumnForColumnName = "sql";
-        
-        this.jdbcQueryForDatabaseNames = "select '"+ this.jdbcColumnForDatabaseName +"' "+ this.jdbcColumnForDatabaseName +" from "+ this.jdbcColumnForDatabaseName +" WHERE type = 'table'";
-        this.jdbcQueryForTableNames =    "select "+ this.jdbcColumnForTableName +" from sqlite_master WHERE type = 'table'";
-        this.jdbcQueryForColumnNames =   "select "+ this.jdbcColumnForColumnName +" from "+ this.jdbcColumnForDatabaseName +" where tbl_name = '"+ this.jsqlTableName +"' and type = 'table'";
-        this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from "+ this.jsqlTableName;
+        this.queryAssertDatabases = "select 'sqlite_master' sqlite_master from sqlite_master WHERE type = 'table'";
+        this.queryAssertTables = "select name from sqlite_master WHERE type = 'table'";
+        this.queryAssertColumns = String.format("""
+            select sql from sqlite_master
+            where tbl_name = '%s'
+            and type = 'table'
+        """, this.tableToInject);
+        this.queryAssertValues = String.format("select %s from %s", this.columnToInject, this.tableToInject);
     }
     
     @Override

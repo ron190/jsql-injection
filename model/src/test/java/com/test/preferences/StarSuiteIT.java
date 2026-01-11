@@ -24,11 +24,10 @@ class StarSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyDnsDisabled(true)
-        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyTimeDisabled(true);
-        
+        .withIsStrategyBlindBitDisabled(true);
+
         model.setIsScanning(true);
         
         model

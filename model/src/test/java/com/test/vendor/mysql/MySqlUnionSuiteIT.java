@@ -23,10 +23,9 @@ class MySqlUnionSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyDnsDisabled(true)
+        .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
-        .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyTimeDisabled(true);
+        .withIsStrategyBlindBinDisabled(true);
 
         model
         .getMediatorUtils()

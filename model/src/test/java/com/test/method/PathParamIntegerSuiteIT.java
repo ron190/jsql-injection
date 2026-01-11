@@ -29,11 +29,10 @@ class PathParamIntegerSuiteIT extends ConcreteMySqlSuiteIT {
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsNotTestingConnection(true)
-        .withIsStrategyDnsDisabled(true)
-        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyTimeDisabled(true);
-        
+        .withIsStrategyBlindBitDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

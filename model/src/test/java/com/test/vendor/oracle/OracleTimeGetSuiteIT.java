@@ -25,10 +25,8 @@ class OracleTimeGetSuiteIT extends ConcreteOracleSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyUnionDisabled(true)
-        .withIsStrategyErrorDisabled(true)
-        .withIsStrategyBlindBitDisabled(true)
-        .withIsStrategyBlindBinDisabled(true);
+        .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyBlindBitDisabled(true);
 
         model
         .getMediatorUtils()

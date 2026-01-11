@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MimerBlindBitGetSuiteIgnoreIT extends ConcreteMimerSuiteIgnoreIT {
+class MimerUnionGetSuiteIT extends ConcreteMimerSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -19,23 +19,34 @@ class MimerBlindBitGetSuiteIgnoreIT extends ConcreteMimerSuiteIgnoreIT {
         model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://localhost:8080/mimer?name="
         );
-
-        model.setIsScanning(true);
-
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsStrategyUnionDisabled(true);
-
         model.beginInjection();
     }
-
+    
+    @Override
+    @RetryingTest(3)
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+    
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
@@ -45,7 +56,7 @@ class MimerBlindBitGetSuiteIgnoreIT extends ConcreteMimerSuiteIgnoreIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBit(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

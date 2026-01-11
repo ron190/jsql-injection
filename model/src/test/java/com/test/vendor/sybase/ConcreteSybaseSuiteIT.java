@@ -9,23 +9,23 @@ import spring.SpringApp;
 public abstract class ConcreteSybaseSuiteIT extends AbstractTestSuite {
 
     public ConcreteSybaseSuiteIT() {
-
         this.jdbcURL = SpringApp.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
         this.jdbcUser = SpringApp.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
         this.jdbcPass = SpringApp.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
-        this.jsqlDatabaseName = "master";
-        this.jsqlTableName = "Student";
-        this.jsqlColumnName = "First_Name";
+        this.databaseToInject = "master";
+        this.tableToInject = "Student";
+        this.columnToInject = "First_Name";
         
-        this.jdbcColumnForDatabaseName = "name";
-        this.jdbcColumnForTableName = "name";
-        this.jdbcColumnForColumnName = "name";
-        
-        this.jdbcQueryForDatabaseNames = "select distinct name from "+ this.jsqlDatabaseName +"..sysdatabases";
-        this.jdbcQueryForTableNames = "select distinct name from "+ this.jsqlDatabaseName +"..sysobjects where type = 'U'";
-        this.jdbcQueryForColumnNames = "select distinct c.name from "+ this.jsqlDatabaseName +"..syscolumns c inner join "+ this.jsqlDatabaseName +"..sysobjects t on c.id = t.id where t.name = '"+ this.jsqlTableName +"'";
-        this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +".."+ this.jsqlTableName;
+        this.queryAssertDatabases = String.format("select distinct name from %s..sysdatabases", this.databaseToInject);
+        this.queryAssertTables = String.format("select distinct name from %s..sysobjects where type = 'U'", this.databaseToInject);
+        this.queryAssertColumns = String.format("""
+            select distinct c.name
+            from %s..syscolumns c
+            inner join %s..sysobjects t on c.id = t.id
+            where t.name = '%s'
+        """, this.databaseToInject, this.databaseToInject, this.tableToInject);
+        this.queryAssertValues = String.format("select %s from %s..%s", this.columnToInject, this.databaseToInject, this.tableToInject);
     }
 
     @AfterEach

@@ -13,23 +13,28 @@ public abstract class ConcreteDb2SuiteIT extends AbstractTestSuite {
     }
     
     public void config() {
-
         this.jdbcURL = SpringApp.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
         this.jdbcUser = SpringApp.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
         this.jdbcPass = SpringApp.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
-        this.jsqlDatabaseName = "DB2INST1";
-        this.jsqlTableName = "STUDENT";
-        this.jsqlColumnName = "STUDENT_ID";
+        this.databaseToInject = "DB2INST1";
+        this.tableToInject = "STUDENT";
+        this.columnToInject = "STUDENT_ID";
         
-        this.jdbcColumnForDatabaseName = "name";
-        this.jdbcColumnForTableName = "name";
-        this.jdbcColumnForColumnName = "name";
-        
-        this.jdbcQueryForDatabaseNames = "select trim("+ this.jdbcColumnForDatabaseName +") "+ this.jdbcColumnForDatabaseName +" from sysibm.sysschemata";
-        this.jdbcQueryForTableNames = "select "+ this.jdbcColumnForTableName +" from sysibm.systables where creator = '"+ this.jsqlDatabaseName +"'";
-        this.jdbcQueryForColumnNames = "select "+ this.jdbcColumnForColumnName + " from sysibm.syscolumns where coltype != 'BLOB' and tbcreator = '"+ this.jsqlDatabaseName +"' and tbname = '"+ this.jsqlTableName +"'";
-        this.jdbcQueryForValues = "SELECT "+ this.jsqlColumnName +" FROM "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
+        this.queryAssertDatabases = "select trim(name) name from sysibm.sysschemata";
+        this.queryAssertTables = String.format("""
+            select name
+            from sysibm.systables
+            where creator = '%s'
+        """, this.databaseToInject);
+        this.queryAssertColumns = String.format("""
+            select name
+            from sysibm.syscolumns
+            where coltype != 'BLOB'
+            and tbcreator = '%s'
+            and tbname = '%s'
+        """, this.databaseToInject, this.tableToInject);
+        this.queryAssertValues = String.format("select %s from %s.%s", this.columnToInject, this.databaseToInject, this.tableToInject);
     }
 
     @AfterEach

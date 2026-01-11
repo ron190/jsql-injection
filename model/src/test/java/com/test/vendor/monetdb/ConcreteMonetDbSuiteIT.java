@@ -7,23 +7,29 @@ import org.junit.jupiter.api.Assertions;
 public abstract class ConcreteMonetDbSuiteIT extends AbstractTestSuite {
 
     public ConcreteMonetDbSuiteIT() {
-
         this.jdbcURL = "jdbc:monetdb://jsql-monetdb:50000/db";
         this.jdbcUser = "monetdb";
         this.jdbcPass = "monetdb";
 
-        this.jsqlDatabaseName = "sys";
-        this.jsqlTableName = "db_user_info";
-        this.jsqlColumnName = "name";
+        this.databaseToInject = "sys";
+        this.tableToInject = "db_user_info";
+        this.columnToInject = "name";
         
-        this.jdbcColumnForDatabaseName = "name";
-        this.jdbcColumnForTableName = "name";
-        this.jdbcColumnForColumnName = "name";
-        
-        this.jdbcQueryForDatabaseNames = "select name from sys.schemas";
-        this.jdbcQueryForTableNames = "select t.name from tables t inner join schemas s on t.schema_id = s.id where s.name = 'sys'";
-        this.jdbcQueryForColumnNames = "select c.name from tables t inner join schemas s on t.schema_id = s.id inner join columns c on t.id = c.table_id where s.name = 'sys' and t.name = 'db_user_info'";
-        this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
+        this.queryAssertDatabases = "select name from sys.schemas";
+        this.queryAssertTables = """
+            select t.name
+            from tables t
+            inner join schemas s on t.schema_id = s.id
+            where s.name = 'sys'
+        """;
+        this.queryAssertColumns = """
+            select c.name
+            from tables t
+            inner join schemas s on t.schema_id = s.id
+            inner join columns c on t.id = c.table_id
+            where s.name = 'sys' and t.name = 'db_user_info'
+        """;
+        this.queryAssertValues = String.format("select %s from %s.%s", this.columnToInject, this.databaseToInject, this.tableToInject);
     }
 
     @AfterEach

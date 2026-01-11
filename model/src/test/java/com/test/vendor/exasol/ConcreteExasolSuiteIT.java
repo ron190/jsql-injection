@@ -7,23 +7,27 @@ import org.junit.jupiter.api.Assertions;
 public abstract class ConcreteExasolSuiteIT extends AbstractTestSuite {
 
     public ConcreteExasolSuiteIT() {
-
         this.jdbcURL = "jdbc:exa:jsql-exasol:8563/nocertcheck";
         this.jdbcUser = "sys";
         this.jdbcPass = "exasol";
 
-        this.jsqlDatabaseName = "SYS";
-        this.jsqlTableName = "EXA_CLUSTERS";
-        this.jsqlColumnName = "CLUSTER_NAME";
+        this.databaseToInject = "SYS";
+        this.tableToInject = "EXA_CLUSTERS";
+        this.columnToInject = "CLUSTER_NAME";
         
-        this.jdbcColumnForDatabaseName = "column_schema";
-        this.jdbcColumnForTableName = "column_table";
-        this.jdbcColumnForColumnName = "column_name";
-        
-        this.jdbcQueryForDatabaseNames = "select distinct column_schema from exa_sys_columns";
-        this.jdbcQueryForTableNames = "select column_table from exa_sys_columns where column_schema = '"+ this.jsqlDatabaseName +"'";
-        this.jdbcQueryForColumnNames = "select column_name from exa_sys_columns where column_schema = '"+ this.jsqlDatabaseName +"' and column_table = '"+ this.jsqlTableName +"'";
-        this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlTableName;
+        this.queryAssertDatabases = "select distinct column_schema from exa_sys_columns";
+        this.queryAssertTables = String.format("""
+            select column_table
+            from exa_sys_columns
+            where column_schema = '%s'
+        """, this.databaseToInject);
+        this.queryAssertColumns = String.format("""
+            select column_name
+            from exa_sys_columns
+            where column_schema = '%s'
+            and column_table = '%s'
+        """, this.databaseToInject, this.tableToInject);
+        this.queryAssertValues = String.format("select %s from %s", this.columnToInject, this.tableToInject);
     }
 
     @AfterEach

@@ -1,27 +1,24 @@
 package com.test.vendor.hana;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.JdbcSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import spring.SpringApp;
 
 public abstract class ConcreteHanaSuiteIT extends AbstractTestSuite {
 
     public ConcreteHanaSuiteIT() {
+        this.jdbcURL = SpringApp.propsHana.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = SpringApp.propsHana.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = SpringApp.propsHana.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
-        this.jdbcURL = "jdbc:sap://127.0.0.1:39017?encrypt=false&validateCertificate=false";
-        this.jdbcUser = "system";
-        this.jdbcPass = "1anaHEXH";
-
-        this.jsqlDatabaseName = "SYS";
-        this.jsqlTableName = "USERS";
-        this.jsqlColumnName = "USER_NAME";
+        this.databaseToInject = "SYS";
+        this.tableToInject = "USERS";
+        this.columnToInject = "USER_NAME";
         
-        this.jdbcColumnForDatabaseName = "schema_name";
-        this.jdbcColumnForTableName = "name";
-        this.jdbcColumnForColumnName = "r";
-        
-        this.jdbcQueryForDatabaseNames = "select schema_name from sys.schemas";
-        this.jdbcQueryForTableNames = String.format(
+        this.queryAssertDatabases = "select schema_name from sys.schemas";
+        this.queryAssertTables = String.format(
             """
             select distinct name
             from sys.rs_tables_ t
@@ -31,10 +28,10 @@ public abstract class ConcreteHanaSuiteIT extends AbstractTestSuite {
             from sys.rs_views_ v
             where v.schema = '%s'
             """,
-            this.jsqlDatabaseName,
-            this.jsqlDatabaseName
+            this.databaseToInject,
+            this.databaseToInject
         );
-        this.jdbcQueryForColumnNames = String.format(
+        this.queryAssertColumns = String.format(
             """
             select distinct c.name r
             from sys.rs_columns_ c
@@ -46,10 +43,10 @@ public abstract class ConcreteHanaSuiteIT extends AbstractTestSuite {
             inner join sys.rs_views_ v on c1.cid = v.oid
             where v.schema = '%s' and v.name = '%s'
             """,
-            this.jsqlDatabaseName, this.jsqlTableName,
-            this.jsqlDatabaseName, this.jsqlTableName
+            this.databaseToInject, this.tableToInject,
+            this.databaseToInject, this.tableToInject
         );
-        this.jdbcQueryForValues = "select distinct "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
+        this.queryAssertValues = String.format("select distinct %s from %s.%s", this.columnToInject, this.databaseToInject, this.tableToInject);
     }
 
     @AfterEach

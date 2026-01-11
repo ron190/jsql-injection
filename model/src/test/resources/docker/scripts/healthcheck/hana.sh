@@ -2,7 +2,7 @@
 
 set -e
 
-sleep 60
+sleep 120  # hana setup
 
 retry=0
 while ! echo "$result" | grep -q "1337331"; do
@@ -12,39 +12,9 @@ while ! echo "$result" | grep -q "1337331"; do
     fi
 
     >&2 echo "Hana is unavailable - sleeping #${retry}"
-    sleep 5
+    sleep 10
 
-    echo '
-        Class.forName("com.sap.db.jdbc.Driver")
-        import java.sql.*;
-
-        StringBuilder result = new StringBuilder();
-        try (
-            Connection con = DriverManager.getConnection("jdbc:sap://127.0.0.1:39017?encrypt=false&validateCertificate=false", "system", "1anaHEXH");
-            PreparedStatement pstmt = con.prepareStatement("select 1337330+1 from dummy");
-            ResultSet rs = pstmt.executeQuery()
-        ) {
-            while (rs.next()) result.append(rs.getString(1));
-        }
-        System.out.println(result);
-    ' | jshell --class-path "model/src/test/resources/docker/scripts/healthcheck/jdbc/ngdbc-2.27.6.jar" --feedback silent
-
-    echo '
-        Class.forName("com.sap.db.jdbc.Driver")
-        import java.sql.*;
-
-        StringBuilder result = new StringBuilder();
-        try (
-            Connection con = DriverManager.getConnection("jdbc:sap://localhost:39017?encrypt=false&validateCertificate=false", "system", "1anaHEXH");
-            PreparedStatement pstmt = con.prepareStatement("select 1337330+1 from dummy");
-            ResultSet rs = pstmt.executeQuery()
-        ) {
-            while (rs.next()) result.append(rs.getString(1));
-        }
-        System.out.println(result);
-    ' | jshell --class-path "model/src/test/resources/docker/scripts/healthcheck/jdbc/ngdbc-2.27.6.jar" --feedback silent
-
-    # should use hdbsql cli instead though not working
+    # todo should use hdbsql cli instead (not working)
     result=$(echo '
         Class.forName("com.sap.db.jdbc.Driver")
         import java.sql.*;
@@ -61,6 +31,6 @@ while ! echo "$result" | grep -q "1337331"; do
     ' | jshell --class-path "model/src/test/resources/docker/scripts/healthcheck/jdbc/ngdbc-2.27.6.jar" --feedback silent)
 done
 
-sleep 180  # end of startup after getting result
+sleep 300  # end of startup after getting result
 
 >&2 echo "Hana is up - executing command"

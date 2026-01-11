@@ -40,18 +40,14 @@ public abstract class AbstractTestSuite {
     protected String jdbcUser;
     protected String jdbcPass;
     
-    protected String jdbcQueryForDatabaseNames;
-    protected String jdbcQueryForTableNames;
-    protected String jdbcQueryForColumnNames;
-    protected String jdbcQueryForValues;
+    protected String queryAssertDatabases;
+    protected String queryAssertTables;
+    protected String queryAssertColumns;
+    protected String queryAssertValues;
     
-    protected String jdbcColumnForDatabaseName;
-    protected String jdbcColumnForTableName;
-    protected String jdbcColumnForColumnName;
-    
-    protected String jsqlDatabaseName;
-    protected String jsqlTableName;
-    protected String jsqlColumnName;
+    protected String databaseToInject;
+    protected String tableToInject;
+    protected String columnToInject;
     
     private static final AtomicBoolean isSetupStarted = new AtomicBoolean(false);
     protected static final AtomicBoolean isSetupDone = new AtomicBoolean(false);
@@ -82,33 +78,33 @@ public abstract class AbstractTestSuite {
     public void requestJdbc() {
         try (
             Connection connection = DriverManager.getConnection(this.jdbcURL, this.jdbcUser, this.jdbcPass);
-                
+
             Statement statementDatabase = connection.createStatement();
-            ResultSet resultSetDatabase = statementDatabase.executeQuery(this.jdbcQueryForDatabaseNames);
-                
+            ResultSet resultSetDatabase = statementDatabase.executeQuery(this.queryAssertDatabases);
+
             Statement statementTable = connection.createStatement();
-            ResultSet resultSetTable = statementTable.executeQuery(this.jdbcQueryForTableNames);
-                
+            ResultSet resultSetTable = statementTable.executeQuery(this.queryAssertTables);
+
             Statement statementColumn = connection.createStatement();
-            ResultSet resultSetColumn = statementColumn.executeQuery(this.jdbcQueryForColumnNames);
-                
+            ResultSet resultSetColumn = statementColumn.executeQuery(this.queryAssertColumns);
+
             Statement statementValues = connection.createStatement();
-            ResultSet resultSetValues = statementValues.executeQuery(this.jdbcQueryForValues)
+            ResultSet resultSetValues = statementValues.executeQuery(this.queryAssertValues)
         ) {
             while (resultSetDatabase.next()) {
-                String dbName = resultSetDatabase.getString(this.jdbcColumnForDatabaseName);
+                String dbName = resultSetDatabase.getString(1);
                 this.databasesFromJdbc.add(dbName);
             }
             while (resultSetTable.next()) {
-                String tableName = resultSetTable.getString(this.jdbcColumnForTableName);
+                String tableName = resultSetTable.getString(1);
                 this.tablesFromJdbc.add(tableName);
             }
             while (resultSetColumn.next()) {
-                String colName = resultSetColumn.getString(this.jdbcColumnForColumnName);
+                String colName = resultSetColumn.getString(1);
                 this.columnsFromJdbc.add(colName);
             }
             while (resultSetValues.next()) {
-                String value = resultSetValues.getString(this.jsqlColumnName);
+                String value = resultSetValues.getString(1);
                 this.valuesFromJdbc.add(value);
             }
         } catch (SQLException e) {
@@ -156,7 +152,7 @@ public abstract class AbstractTestSuite {
 
         try {
             List<String> tables = this.injectionModel.getDataAccess()
-                .listTables(new Database(this.jsqlDatabaseName, "0"))
+                .listTables(new Database(this.databaseToInject, "0"))
                 .stream()
                 .map(Table::toString)
                 .toList();
@@ -189,8 +185,8 @@ public abstract class AbstractTestSuite {
         try {
             List<String> columns = this.injectionModel.getDataAccess()
                 .listColumns(
-                    new Table(this.jsqlTableName, "0",
-                        new Database(this.jsqlDatabaseName, "0")
+                    new Table(this.tableToInject, "0",
+                        new Database(this.databaseToInject, "0")
                     )
                 )
                 .stream()
@@ -232,9 +228,9 @@ public abstract class AbstractTestSuite {
 
         try {
             String[][] rows = this.injectionModel.getDataAccess().listValues(List.of(
-                new Column(this.jsqlColumnName,
-                    new Table(this.jsqlTableName, "0",
-                        new Database(this.jsqlDatabaseName, "0")
+                new Column(this.columnToInject,
+                    new Table(this.tableToInject, "0",
+                        new Database(this.databaseToInject, "0")
                     )
                 )
             ));

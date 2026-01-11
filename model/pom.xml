@@ -48,28 +48,28 @@
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
 
         <!-- databases -->
-        <cubrid-jdbc.version>11.3.2.0053</cubrid-jdbc.version>
+        <cubrid.version>11.3.2.0053</cubrid.version>
         <derby.version>10.17.1.0</derby.version>
         <h2.version>2.4.240</h2.version>
         <hana.version>2.27.6</hana.version>
         <hsqldb.version>2.7.4</hsqldb.version>
         <exasol.version>25.2.6</exasol.version>
-        <informix.jdbc.version>15.0.1.0</informix.jdbc.version>
+        <informix.version>15.0.1.0</informix.version>
         <jaybird.version>6.0.3</jaybird.version>
-        <mckoisqldb.version>1.0.5</mckoisqldb.version>
-        <mimjdbc.version>3.42.3</mimjdbc.version>
-        <monetdb-jdbc.version>12.2</monetdb-jdbc.version>
-        <mssql-jdbc.version>13.2.1.jre11</mssql-jdbc.version>
-        <mysql-connector-j.version>9.5.0</mysql-connector-j.version>
+        <mckoi.version>1.0.5</mckoi.version>
+        <mimer.version>3.42.3</mimer.version>
+        <monetdb.version>12.2</monetdb.version>
+        <mssql.version>13.2.1.jre11</mssql.version>
+        <mysql.version>9.5.0</mysql.version>
         <!-- failure with 5.28.2 -->
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
         <!-- both java-driver and jdbc-driver required, should use neo4j-jdbc instead -->
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
-        <ojdbc8.version>23.26.0.0.0</ojdbc8.version>
-        <postgresql.version>42.7.8</postgresql.version>
-        <sqlite-jdbc.version>3.51.1.0</sqlite-jdbc.version>
-        <sybase-jconn4.version>16.0</sybase-jconn4.version>
-        <vertica-jdbc.version>25.3.0-0</vertica-jdbc.version>
+        <oracle.version>23.26.0.0.0</oracle.version>
+        <postgres.version>42.7.8</postgres.version>
+        <sqlite.version>3.51.1.0</sqlite.version>
+        <sybase.version>16.0</sybase.version>
+        <vertica.version>25.3.0-0</vertica.version>
     </properties>
 
     <dependencyManagement>
@@ -402,7 +402,7 @@
         <dependency>
             <groupId>cubrid</groupId>
             <artifactId>cubrid-jdbc</artifactId>
-            <version>${cubrid-jdbc.version}</version>
+            <version>${cubrid.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -460,49 +460,49 @@
         <dependency>
             <groupId>com.ibm.informix</groupId>
             <artifactId>jdbc</artifactId>
-            <version>${informix.jdbc.version}</version>
+            <version>${informix.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.mckoi</groupId>
             <artifactId>mckoisqldb</artifactId>
-            <version>${mckoisqldb.version}</version>
+            <version>${mckoi.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.mimer.jdbc</groupId>
             <artifactId>mimjdbc</artifactId>
-            <version>${mimjdbc.version}</version>
+            <version>${mimer.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>monetdb</groupId>
             <artifactId>monetdb-jdbc</artifactId>
-            <version>${monetdb-jdbc.version}</version>
+            <version>${monetdb.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>${mysql-connector-j.version}</version>
+            <version>${mysql.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
+            <version>${postgres.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>${sqlite-jdbc.version}</version>
+            <version>${sqlite.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>${mssql-jdbc.version}</version>
+            <version>${mssql.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -520,19 +520,19 @@
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc8</artifactId>
-            <version>${ojdbc8.version}</version>
+            <version>${oracle.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jumpmind.symmetric.module</groupId>
             <artifactId>jconn4</artifactId>
-            <version>${sybase-jconn4.version}</version>
+            <version>${sybase.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.vertica.jdbc</groupId>
             <artifactId>vertica-jdbc</artifactId>
-            <version>${vertica-jdbc.version}</version>
+            <version>${vertica.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

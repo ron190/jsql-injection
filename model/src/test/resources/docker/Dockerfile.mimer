@@ -1,2 +1,2 @@
-FROM mimersql/mimersql_v11.0:v11.0.7a
+FROM mimersql/mimersql_v11.0:v11.0.9
 EXPOSE 1360

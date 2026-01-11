@@ -34,12 +34,11 @@ class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyTimeDisabled(true)
-        .withIsStrategyStackDisabled(true)
         .withIsStrategyMultibitDisabled(true)
-        .withIsStrategyDnsDisabled(true)
+        .withIsStrategyStackDisabled(true)
         .withIsStrategyErrorDisabled(true);
         
         model.beginInjection();

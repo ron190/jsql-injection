@@ -95,6 +95,7 @@
                     **/*Db2*SuiteIT.java,
                     **/*Exasol*SuiteIT.java,
                     **/*Hana*SuiteIT.java,
+                    **/*Mimer*SuiteIT.java,
                     **/*MonetDb*SuiteIT.java,
                     **/*Oracle*SuiteIT.java,
                     **/*SqlServer*SuiteIT.java,
@@ -148,6 +149,15 @@
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*MonetDb*SuiteIT.java</maven-failsafe-plugin.include>
+            </properties>
+        </profile>
+        <profile>
+            <id>tests-mimer</id>
+            <properties>
+                <profileId>tests-mimer</profileId>
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
+                <maven-failsafe-plugin.include>**/*Mimer*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
         <profile>

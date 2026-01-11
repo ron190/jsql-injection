@@ -7,23 +7,27 @@ import org.junit.jupiter.api.Assertions;
 public abstract class ConcreteMckoiSuiteIT extends AbstractTestSuite {
 
     public ConcreteMckoiSuiteIT() {
-
         this.jdbcURL = "jdbc:mckoi://127.0.0.1/APP";
         this.jdbcUser = "user";
         this.jdbcPass = "password";
 
-        this.jsqlDatabaseName = "APP";
-        this.jsqlTableName = "pwn";
-        this.jsqlColumnName = "dataz";
+        this.databaseToInject = "APP";
+        this.tableToInject = "pwn";
+        this.columnToInject = "dataz";
 
-        this.jdbcColumnForDatabaseName = "name";
-        this.jdbcColumnForTableName = "name";
-        this.jdbcColumnForColumnName = "column";
-        
-        this.jdbcQueryForDatabaseNames = "select name from SYS_INFO.sUSRSchemaInfo";
-        this.jdbcQueryForTableNames = "select name from SYS_INFO.sUSRTableInfo where \"schema\" = '"+ this.jsqlDatabaseName +"'";
-        this.jdbcQueryForColumnNames = "select \"column\" from SYS_INFO.sUSRTableColumns where \"schema\" = '"+ this.jsqlDatabaseName +"' and \"table\" = '"+ this.jsqlTableName +"'";
-        this.jdbcQueryForValues = "select "+ this.jsqlColumnName +" from "+ this.jsqlTableName;
+        this.queryAssertDatabases = "select name from SYS_INFO.sUSRSchemaInfo";
+        this.queryAssertTables = String.format("""
+            select name
+            from SYS_INFO.sUSRTableInfo
+            where "schema" = '%s'
+        """, this.databaseToInject);
+        this.queryAssertColumns = String.format("""
+            select "column"
+            from SYS_INFO.sUSRTableColumns
+            where "schema" = '%s'
+            and "table" = '%s'
+        """, this.databaseToInject, this.tableToInject);
+        this.queryAssertValues = String.format("select %s from %s", this.columnToInject, this.tableToInject);
     }
 
     @AfterEach
