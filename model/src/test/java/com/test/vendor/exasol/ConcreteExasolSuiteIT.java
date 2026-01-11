@@ -8,7 +8,7 @@ public abstract class ConcreteExasolSuiteIT extends AbstractTestSuite {
 
     public ConcreteExasolSuiteIT() {
 
-        this.jdbcURL = "jdbc:exa:127.0.0.1:8563/nocertcheck";
+        this.jdbcURL = "jdbc:exa:jsql-exasol:8563/nocertcheck";
         this.jdbcUser = "sys";
         this.jdbcPass = "exasol";
 

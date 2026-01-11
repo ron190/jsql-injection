@@ -3,8 +3,7 @@
 set -e
 
 retry=0
-until [[ "$result" == *"1337331"* ]]
-do
+while ! echo "$result" | grep -q "1337331"; do
     retry=$((retry+1))
     if [ $retry -gt 60 ] ; then
       exit 1
