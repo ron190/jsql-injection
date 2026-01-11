@@ -120,6 +120,17 @@
                 <skipITs>false</skipITs>
                 <maven-failsafe-plugin.include>**/*Exasol*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <argLine>@{argLine} -DLOG_LEVEL=DEBUG</argLine>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>tests-hana</id>

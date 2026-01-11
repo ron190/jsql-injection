@@ -36,7 +36,7 @@ public class JdbcRestController {
     public Greeting greetingExasol(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:exa:jsql-exasol/C48C3E80ECB8139DCEB043DA179068C640D6F029C7D85A20A837F24840068CB4:8563",
+            "jdbc:exa:jsql-exasol:8563/nocertcheck",
             "sys",
             "exasol",
             "select COLUMN_SCHEMA from EXA_SYS_COLUMNS where '1' = '" + inject + "'"

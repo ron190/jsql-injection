@@ -17,7 +17,7 @@ class ExasolUnionGetSuiteIT extends ConcreteExasolSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/exasol?name="
+            "http://localhost:8080/exasol?name=1'"  // remove when stable
         );
         
         model
@@ -25,7 +25,20 @@ class ExasolUnionGetSuiteIT extends ConcreteExasolSuiteIT {
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
+
+        model  // remove when stable
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsNotSearchingCharInsertion(true)
+        .withCountLimitingThreads(2)
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyMultibitDisabled(true)
+        .withIsStrategyErrorDisabled(true)
+        .withIsStrategyStackDisabled(true);
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getExasol());
+
         model.beginInjection();
     }
     

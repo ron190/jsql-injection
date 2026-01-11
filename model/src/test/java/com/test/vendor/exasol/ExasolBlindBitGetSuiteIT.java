@@ -17,15 +17,20 @@ class ExasolBlindBitGetSuiteIT extends ConcreteExasolSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/exasol?name="
+            "http://localhost:8080/exasol?name=1'"  // remove when stable
         );
 
         model.setIsScanning(true);
-
-        model
+        model  // remove when stable
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsNotSearchingCharInsertion(true)
+        .withCountLimitingThreads(2)
+        .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyMultibitDisabled(true)
+        .withIsStrategyErrorDisabled(true)
+        .withIsStrategyStackDisabled(true)
         .withIsStrategyUnionDisabled(true);
 
         model
@@ -33,7 +38,8 @@ class ExasolBlindBitGetSuiteIT extends ConcreteExasolSuiteIT {
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
+
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getExasol());  // remove when stable
         model.beginInjection();
     }
 
