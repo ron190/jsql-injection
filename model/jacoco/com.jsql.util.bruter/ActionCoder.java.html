@@ -8,205 +8,204 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-<span class="fc" id="L13">public enum ActionCoder {</span>
-<span class="fc" id="L14">    MD2(Coder.MD2.label, true) {</span>
+<span class="fc" id="L12">public enum ActionCoder {</span>
+<span class="fc" id="L13">    MD2(Coder.MD2.label, true) {</span>
         @Override
         public String run(String value) throws NoSuchAlgorithmException {
-<span class="fc" id="L17">            return HashUtil.toHash(this.name, value);</span>
+<span class="fc" id="L16">            return HashUtil.toHash(this.name, value);</span>
         }
     },
-<span class="fc" id="L20">    MD4(Coder.MD4.label, true) {</span>
+<span class="fc" id="L19">    MD4(Coder.MD4.label, true) {</span>
         @Override
         public String run(String value) {
-<span class="fc" id="L23">            return HashUtil.toMd4(value);</span>
+<span class="fc" id="L22">            return HashUtil.toMd4(value);</span>
         }
     },
-<span class="fc" id="L26">    MD5(Coder.MD5.label, true) {</span>
+<span class="fc" id="L25">    MD5(Coder.MD5.label, true) {</span>
         @Override
         public String run(String value) throws NoSuchAlgorithmException {
-<span class="fc" id="L29">            return HashUtil.toHash(this.name, value);</span>
+<span class="fc" id="L28">            return HashUtil.toHash(this.name, value);</span>
         }
     },
-<span class="fc" id="L32">    SHA_1(Coder.SHA1.label, true) {</span>
+<span class="fc" id="L31">    SHA_1(Coder.SHA1.label, true) {</span>
         @Override
         public String run(String value) throws NoSuchAlgorithmException {
-<span class="fc" id="L35">            return HashUtil.toHash(this.name, value);</span>
+<span class="fc" id="L34">            return HashUtil.toHash(this.name, value);</span>
         }
     },
-<span class="fc" id="L38">    SHA_256(Coder.SHA256.label, true) {</span>
+<span class="fc" id="L37">    SHA_256(Coder.SHA256.label, true) {</span>
         @Override
         public String run(String value) throws NoSuchAlgorithmException {
-<span class="fc" id="L41">            return HashUtil.toHash(this.name, value);</span>
+<span class="fc" id="L40">            return HashUtil.toHash(this.name, value);</span>
         }
     },
-<span class="fc" id="L44">    SHA_384(Coder.SHA384.label, true) {</span>
+<span class="fc" id="L43">    SHA_384(Coder.SHA384.label, true) {</span>
         @Override
         public String run(String value) throws NoSuchAlgorithmException {
-<span class="fc" id="L47">            return HashUtil.toHash(this.name, value);</span>
+<span class="fc" id="L46">            return HashUtil.toHash(this.name, value);</span>
         }
     },
-<span class="fc" id="L50">    SHA_512(Coder.SHA512.label, true) {</span>
+<span class="fc" id="L49">    SHA_512(Coder.SHA512.label, true) {</span>
         @Override
         public String run(String value) throws NoSuchAlgorithmException {
-<span class="fc" id="L53">            return HashUtil.toHash(this.name, value);</span>
+<span class="fc" id="L52">            return HashUtil.toHash(this.name, value);</span>
         }
     },
-<span class="fc" id="L56">    MYSQL(Coder.MYSQL.label, true) {</span>
+<span class="fc" id="L55">    MYSQL(Coder.MYSQL.label, true) {</span>
         @Override
         public String run(String value) throws NoSuchAlgorithmException {
-<span class="fc" id="L59">            return HashUtil.toMySql(value);</span>
+<span class="fc" id="L58">            return HashUtil.toMySql(value);</span>
         }
     },
-<span class="fc" id="L62">    ADLER32(Coder.ADLER32.label, true, false) {</span>
+<span class="fc" id="L61">    ADLER32(Coder.ADLER32.label, true, false) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L65">            return HashUtil.toAdler32(value);</span>
+<span class="nc" id="L64">            return HashUtil.toAdler32(value);</span>
         }
     },
-<span class="fc" id="L68">    CRC16(Coder.CRC16.label, true, false) {</span>
+<span class="fc" id="L67">    CRC16(Coder.CRC16.label, true, false) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L71">            return HashUtil.toCrc16(value);</span>
+<span class="nc" id="L70">            return HashUtil.toCrc16(value);</span>
         }
     },
-<span class="fc" id="L74">    CRC32(Coder.CRC32.label, true, false) {</span>
+<span class="fc" id="L73">    CRC32(Coder.CRC32.label, true, false) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L77">            return HashUtil.toCrc32(value);</span>
+<span class="nc" id="L76">            return HashUtil.toCrc32(value);</span>
         }
     },
-<span class="fc" id="L80">    CRC64(Coder.CRC64.label, true, false) {</span>
+<span class="fc" id="L79">    CRC64(Coder.CRC64.label, true, false) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L83">            return HashUtil.toCrc64(value);</span>
+<span class="nc" id="L82">            return HashUtil.toCrc64(value);</span>
         }
     },
-<span class="fc" id="L86">    ENCODE_TO_HEX(ActionCoder.ENCODE_TO + Coder.HEX) {</span>
+<span class="fc" id="L85">    ENCODE_TO_HEX(ActionCoder.ENCODE_TO + Coder.HEX) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L89">            return StringUtil.toHex(value);</span>
+<span class="nc" id="L88">            return StringUtil.toHex(value);</span>
         }
     },
-<span class="fc" id="L92">    ENCODE_TO_HEX_ZIP(ActionCoder.ENCODE_TO + Coder.HEX_ZIP) {</span>
+<span class="fc" id="L91">    ENCODE_TO_HEX_ZIP(ActionCoder.ENCODE_TO + Coder.HEX_ZIP) {</span>
         @Override
         public String run(String value) throws IOException {
-<span class="nc" id="L95">            return StringUtil.toHexZip(value);</span>
+<span class="nc" id="L94">            return StringUtil.toHexZip(value);</span>
         }
     },
-<span class="fc" id="L98">    ENCODE_TO_BASE64_ZIP(ActionCoder.ENCODE_TO + Coder.BASE64_ZIP) {</span>
+<span class="fc" id="L97">    ENCODE_TO_BASE64_ZIP(ActionCoder.ENCODE_TO + Coder.BASE64_ZIP) {</span>
         @Override
         public String run(String value) throws IOException {
-<span class="nc" id="L101">            return StringUtil.toBase64Zip(value);</span>
+<span class="nc" id="L100">            return StringUtil.toBase64Zip(value);</span>
         }
     },
-<span class="fc" id="L104">    ENCODE_TO_BASE64(ActionCoder.ENCODE_TO + Coder.BASE64) {</span>
+<span class="fc" id="L103">    ENCODE_TO_BASE64(ActionCoder.ENCODE_TO + Coder.BASE64) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L107">            return StringUtil.base64Encode(value);</span>
+<span class="nc" id="L106">            return StringUtil.base64Encode(value);</span>
         }
     },
-<span class="fc" id="L110">    ENCODE_TO_BASE32(ActionCoder.ENCODE_TO + Coder.BASE32) {</span>
+<span class="fc" id="L109">    ENCODE_TO_BASE32(ActionCoder.ENCODE_TO + Coder.BASE32) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L113">            return StringUtil.base32Encode(value);</span>
+<span class="nc" id="L112">            return StringUtil.base32Encode(value);</span>
         }
     },
-<span class="fc" id="L116">    ENCODE_TO_BASE58(ActionCoder.ENCODE_TO + Coder.BASE58) {</span>
+<span class="fc" id="L115">    ENCODE_TO_BASE58(ActionCoder.ENCODE_TO + Coder.BASE58) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L119">            return StringUtil.base58Encode(value);</span>
+<span class="nc" id="L118">            return StringUtil.base58Encode(value);</span>
         }
     },
-<span class="fc" id="L122">    ENCODE_TO_BASE16(ActionCoder.ENCODE_TO + Coder.BASE16) {</span>
+<span class="fc" id="L121">    ENCODE_TO_BASE16(ActionCoder.ENCODE_TO + Coder.BASE16) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L125">            return StringUtil.base16Encode(value);</span>
+<span class="nc" id="L124">            return StringUtil.base16Encode(value);</span>
         }
     },
-<span class="fc" id="L128">    ENCODE_TO_HTML(ActionCoder.ENCODE_TO + Coder.HTML) {</span>
+<span class="fc" id="L127">    ENCODE_TO_HTML(ActionCoder.ENCODE_TO + Coder.HTML) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L131">            return StringUtil.toHtml(value);</span>
+<span class="nc" id="L130">            return StringUtil.toHtml(value);</span>
         }
     },
-<span class="fc" id="L134">    ENCODE_TO_HTML_DECIMAL(ActionCoder.ENCODE_TO + Coder.HTML_DECIMAL) {</span>
+<span class="fc" id="L133">    ENCODE_TO_HTML_DECIMAL(ActionCoder.ENCODE_TO + Coder.HTML_DECIMAL) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L137">            return StringUtil.toHtmlDecimal(value);</span>
+<span class="nc" id="L136">            return StringUtil.toHtmlDecimal(value);</span>
         }
     },
-<span class="fc" id="L140">    ENCODE_TO_URL(ActionCoder.ENCODE_TO + Coder.URL) {</span>
+<span class="fc" id="L139">    ENCODE_TO_URL(ActionCoder.ENCODE_TO + Coder.URL) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L143">            return StringUtil.toUrl(value);</span>
+<span class="nc" id="L142">            return StringUtil.toUrl(value);</span>
         }
     },
-<span class="fc" id="L146">    ENCODE_TO_UNICODE(ActionCoder.ENCODE_TO + Coder.UNICODE) {</span>
+<span class="fc" id="L145">    ENCODE_TO_UNICODE(ActionCoder.ENCODE_TO + Coder.UNICODE) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L149">            return StringEscapeUtils.escapeJava(value);</span>
+<span class="nc" id="L148">            return StringEscapeUtils.escapeJava(value);</span>
         }
     },
-<span class="fc" id="L152">    DECODE_FROM_HEX(ActionCoder.DECODE_FROM + Coder.HEX) {</span>
+<span class="fc" id="L151">    DECODE_FROM_HEX(ActionCoder.DECODE_FROM + Coder.HEX) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L155">            return StringUtil.fromHex(value);</span>
+<span class="nc" id="L154">            return StringUtil.fromHex(value);</span>
         }
     },
-<span class="fc" id="L158">    DECODE_FROM_HEX_ZIP(ActionCoder.DECODE_FROM + Coder.HEX_ZIP) {</span>
+<span class="fc" id="L157">    DECODE_FROM_HEX_ZIP(ActionCoder.DECODE_FROM + Coder.HEX_ZIP) {</span>
         @Override
         public String run(String value) throws IOException {
-<span class="nc" id="L161">            return StringUtil.fromHexZip(value);</span>
+<span class="nc" id="L160">            return StringUtil.fromHexZip(value);</span>
         }
     },
-<span class="fc" id="L164">    DECODE_FROM_BASE64_ZIP(ActionCoder.DECODE_FROM + Coder.BASE64_ZIP) {</span>
+<span class="fc" id="L163">    DECODE_FROM_BASE64_ZIP(ActionCoder.DECODE_FROM + Coder.BASE64_ZIP) {</span>
         @Override
         public String run(String value) throws IOException {
-<span class="nc" id="L167">            return StringUtil.fromBase64Zip(value);</span>
+<span class="nc" id="L166">            return StringUtil.fromBase64Zip(value);</span>
         }
     },
-<span class="fc" id="L170">    DECODE_FROM_BASE64(ActionCoder.DECODE_FROM + Coder.BASE64) {</span>
+<span class="fc" id="L169">    DECODE_FROM_BASE64(ActionCoder.DECODE_FROM + Coder.BASE64) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L173">            return StringUtil.base64Decode(value);</span>
+<span class="nc" id="L172">            return StringUtil.base64Decode(value);</span>
         }
     },
-<span class="fc" id="L176">    DECODE_FROM_BASE32(ActionCoder.DECODE_FROM + Coder.BASE32) {</span>
+<span class="fc" id="L175">    DECODE_FROM_BASE32(ActionCoder.DECODE_FROM + Coder.BASE32) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L179">            return StringUtil.base32Decode(value);</span>
+<span class="nc" id="L178">            return StringUtil.base32Decode(value);</span>
         }
     },
-<span class="fc" id="L182">    DECODE_FROM_BASE58(ActionCoder.DECODE_FROM + Coder.BASE58) {</span>
+<span class="fc" id="L181">    DECODE_FROM_BASE58(ActionCoder.DECODE_FROM + Coder.BASE58) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L185">            return StringUtil.base58Decode(value);</span>
+<span class="nc" id="L184">            return StringUtil.base58Decode(value);</span>
         }
     },
-<span class="fc" id="L188">    DECODE_FROM_BASE16(ActionCoder.DECODE_FROM + Coder.BASE16) {</span>
+<span class="fc" id="L187">    DECODE_FROM_BASE16(ActionCoder.DECODE_FROM + Coder.BASE16) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L191">            return StringUtil.base16Decode(value);</span>
+<span class="nc" id="L190">            return StringUtil.base16Decode(value);</span>
         }
     },
-<span class="fc" id="L194">    DECODE_FROM_HTML(ActionCoder.DECODE_FROM + Coder.HTML) {</span>
+<span class="fc" id="L193">    DECODE_FROM_HTML(ActionCoder.DECODE_FROM + Coder.HTML) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L197">            return StringUtil.fromHtml(value);</span>
+<span class="nc" id="L196">            return StringUtil.fromHtml(value);</span>
         }
     },
-<span class="fc" id="L200">    DECODE_FROM_UNICODE(ActionCoder.DECODE_FROM + Coder.UNICODE) {</span>
+<span class="fc" id="L199">    DECODE_FROM_UNICODE(ActionCoder.DECODE_FROM + Coder.UNICODE) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L203">            return StringEscapeUtils.unescapeJava(value);</span>
+<span class="nc" id="L202">            return StringEscapeUtils.unescapeJava(value);</span>
         }
     },
-<span class="fc" id="L206">    DECODE_FROM_URL(ActionCoder.DECODE_FROM + Coder.URL) {</span>
+<span class="fc" id="L205">    DECODE_FROM_URL(ActionCoder.DECODE_FROM + Coder.URL) {</span>
         @Override
         public String run(String value) {
-<span class="nc" id="L209">            return StringUtil.fromUrl(value);</span>
+<span class="nc" id="L208">            return StringUtil.fromUrl(value);</span>
         }
     };
 
@@ -218,41 +217,41 @@ import java.util.stream.Collectors;
     private final boolean isEmptyPossible;
 
     ActionCoder(String name) {
-<span class="fc" id="L221">        this(name, false, false);</span>
-<span class="fc" id="L222">    }</span>
+<span class="fc" id="L220">        this(name, false, false);</span>
+<span class="fc" id="L221">    }</span>
     ActionCoder(String name, boolean isHash) {
-<span class="fc" id="L224">        this(name, isHash, true);</span>
-<span class="fc" id="L225">    }</span>
-<span class="fc" id="L226">    ActionCoder(String name, boolean isHash, boolean isEmptyPossible) {</span>
-<span class="fc" id="L227">        this.name = name;</span>
-<span class="fc" id="L228">        this.isHash = isHash;</span>
-<span class="fc" id="L229">        this.isEmptyPossible = isEmptyPossible;</span>
-<span class="fc" id="L230">    }</span>
+<span class="fc" id="L223">        this(name, isHash, true);</span>
+<span class="fc" id="L224">    }</span>
+<span class="fc" id="L225">    ActionCoder(String name, boolean isHash, boolean isEmptyPossible) {</span>
+<span class="fc" id="L226">        this.name = name;</span>
+<span class="fc" id="L227">        this.isHash = isHash;</span>
+<span class="fc" id="L228">        this.isEmptyPossible = isEmptyPossible;</span>
+<span class="fc" id="L229">    }</span>
 
     public static List&lt;String&gt; getHashes() {
-<span class="nc" id="L233">        return Arrays.stream(ActionCoder.values())</span>
-<span class="nc" id="L234">            .filter(action -&gt; action.isHash)</span>
-<span class="nc" id="L235">            .map(actionCoder -&gt; actionCoder.name)</span>
-<span class="nc" id="L236">            .toList();</span>
+<span class="nc" id="L232">        return Arrays.stream(ActionCoder.values())</span>
+<span class="nc" id="L233">            .filter(action -&gt; action.isHash)</span>
+<span class="nc" id="L234">            .map(actionCoder -&gt; actionCoder.name)</span>
+<span class="nc" id="L235">            .toList();</span>
     }
 
     public static List&lt;String&gt; getHashesEmpty() {
-<span class="fc" id="L240">        return Arrays.stream(ActionCoder.values())</span>
-<span class="fc bfc" id="L241" title="All 4 branches covered.">            .filter(action -&gt; action.isHash &amp;&amp; action.isEmptyPossible)</span>
-<span class="fc" id="L242">            .map(actionCoder -&gt; actionCoder.name)</span>
-<span class="fc" id="L243">            .toList();</span>
+<span class="fc" id="L239">        return Arrays.stream(ActionCoder.values())</span>
+<span class="fc bfc" id="L240" title="All 4 branches covered.">            .filter(action -&gt; action.isHash &amp;&amp; action.isEmptyPossible)</span>
+<span class="fc" id="L241">            .map(actionCoder -&gt; actionCoder.name)</span>
+<span class="fc" id="L242">            .toList();</span>
     }
 
     public static Optional&lt;ActionCoder&gt; forName(String name) {
-<span class="fc" id="L247">        return Arrays.stream(ActionCoder.values())</span>
-<span class="fc" id="L248">            .filter(action -&gt; name.equals(action.name))</span>
-<span class="fc" id="L249">            .findFirst();</span>
+<span class="fc" id="L246">        return Arrays.stream(ActionCoder.values())</span>
+<span class="fc" id="L247">            .filter(action -&gt; name.equals(action.name))</span>
+<span class="fc" id="L248">            .findFirst();</span>
     }
 
     public abstract String run(String value) throws IOException, NoSuchAlgorithmException;
 
     public String getName() {
-<span class="nc" id="L255">        return this.name;</span>
+<span class="nc" id="L254">        return this.name;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

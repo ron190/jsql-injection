@@ -59,316 +59,318 @@
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          <em class="jxr_comment">// SELECT * FROM "SYS_DATABASES"."M_SERVICE_MEMORY";</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          <em class="jxr_comment">// ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'DATABASE', '') SET ('memorymanager', 'allocationlimit') = '8192' WITH RECONFIGURE;</em>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          <em class="jxr_comment">// SELECT SERVICE_NAME, PORT, SQL_PORT, (PORT + 2) HTTP_PORT FROM SYS.M_SERVICES</em>
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>              <span class="jxr_string">"jdbc:sap://jsql-hana:39017?encrypt=false&amp;validateCertificate=false"</span>,
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>              <span class="jxr_string">"system"</span>,
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>              <span class="jxr_string">"1anaHEXH"</span>,
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>              <span class="jxr_string">"select schema_name from sys.schemas where '1' = '"</span> + inject + <span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          );
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      }
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      @RequestMapping(<span class="jxr_string">"/mckoi"</span>)  <em class="jxr_comment">// no dialect</em>
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMckoi(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>              <span class="jxr_string">"jdbc:mckoi://127.0.0.1"</span>,
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>              <span class="jxr_string">"user"</span>,
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>              <span class="jxr_string">"password"</span>,
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>              <span class="jxr_string">"select name from SYS_INFO.sUSRSchemaInfo where 1 = "</span>+ inject
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          );
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>      }
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>  
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      @RequestMapping(<span class="jxr_string">"/mimer"</span>)  <em class="jxr_comment">// todo use MimerSQLDialect instead when docker container fixed</em>
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMimerSQL(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          Class.forName(<span class="jxr_string">"com.mimer.jdbc.Driver"</span>);  <em class="jxr_comment">// required</em>
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>              <span class="jxr_string">"jdbc:mimer://jsql-mimer:1360/mimerdb"</span>,
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>              <span class="jxr_string">"SYSADM"</span>,
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>              <span class="jxr_string">"SYSADM"</span>,
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>              <span class="jxr_string">"select table_name from information_schema.tables where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          );
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>      }
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>  
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>      @RequestMapping(<span class="jxr_string">"/monetdb"</span>)  <em class="jxr_comment">// no dialect</em>
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMonetDB(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>          String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>              <span class="jxr_string">"jdbc:monetdb://jsql-monetdb:50000/db"</span>,
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>              <span class="jxr_string">"monetdb"</span>,
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>              <span class="jxr_string">"monetdb"</span>,
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>              <span class="jxr_string">"select name from schemas where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          );
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>      }
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>  
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>      @RequestMapping(<span class="jxr_string">"/neo4j"</span>)
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingNeo4j(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
-<a class="jxr_linenumber" name="L100" href="#L100">100</a> 
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">try</strong> (org.neo4j.driver.Session session = <strong class="jxr_keyword">this</strong>.driver.session()) {
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>             Result result = session.run(<span class="jxr_string">"MATCH (n:Person) where 1="</span>+ name +<span class="jxr_string">" RETURN n.name, n.from, n.title, n.hobby"</span>);
-<a class="jxr_linenumber" name="L103" href="#L103">103</a> 
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>             String collected = result.stream().map(driverRecord -&gt; driverRecord.keys().stream()
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>                 .map(key -&gt; key + <span class="jxr_string">"="</span> + driverRecord.get(key))
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>                 .collect(Collectors.joining(<span class="jxr_string">", "</span>, <span class="jxr_string">"{"</span>, <span class="jxr_string">"}"</span>))
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>             ).collect(Collectors.joining());
-<a class="jxr_linenumber" name="L108" href="#L108">108</a> 
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(<strong class="jxr_keyword">this</strong>.objectMapper.writeValueAsString(collected)));
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         }
-<a class="jxr_linenumber" name="L113" href="#L113">113</a> 
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">return</strong> greeting;
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>     }
-<a class="jxr_linenumber" name="L116" href="#L116">116</a> 
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>     @RequestMapping(<span class="jxr_string">"/vertica"</span>)
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingVertica(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>             <span class="jxr_string">"jdbc:vertica://jsql-vertica:5433/"</span>,
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>             <span class="jxr_string">"dbadmin"</span>,
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>             <span class="jxr_string">"password"</span>,
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>             <span class="jxr_string">"select table_schema from v_catalog.system_tables where 1 = "</span>+ inject
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>         );
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>     }
-<a class="jxr_linenumber" name="L127" href="#L127">127</a> 
-<a class="jxr_linenumber" name="L128" href="#L128">128</a> 
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <em class="jxr_comment">// Other</em>
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <em class="jxr_comment">// ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system') SET ('public_hostname_resolution', 'use_default_route') = 'name' WITH RECONFIGURE;</em>
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <em class="jxr_comment">// ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system') SET ('public_hostname_resolution', 'map_jsql-hana') = '$()' WITH RECONFIGURE;</em>
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>              <span class="jxr_string">"jdbc:sap://127.0.0.1:39017?encrypt=false&amp;validateCertificate=false"</span>,
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>              <span class="jxr_string">"system"</span>,
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>              <span class="jxr_string">"1anaHEXH"</span>,
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>              <span class="jxr_string">"select schema_name from sys.schemas where '1' = '"</span> + inject + <span class="jxr_string">"'"</span>
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          );
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      }
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      @RequestMapping(<span class="jxr_string">"/mckoi"</span>)  <em class="jxr_comment">// no dialect</em>
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMckoi(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>              <span class="jxr_string">"jdbc:mckoi://127.0.0.1"</span>,
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>              <span class="jxr_string">"user"</span>,
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>              <span class="jxr_string">"password"</span>,
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>              <span class="jxr_string">"select name from SYS_INFO.sUSRSchemaInfo where 1 = "</span>+ inject
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          );
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>      }
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>  
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>      @RequestMapping(<span class="jxr_string">"/mimer"</span>)  <em class="jxr_comment">// todo use MimerSQLDialect instead when docker container fixed</em>
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMimerSQL(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          Class.forName(<span class="jxr_string">"com.mimer.jdbc.Driver"</span>);  <em class="jxr_comment">// required</em>
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>              <span class="jxr_string">"jdbc:mimer://jsql-mimer:1360/mimerdb"</span>,
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>              <span class="jxr_string">"SYSADM"</span>,
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>              <span class="jxr_string">"SYSADM"</span>,
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>              <span class="jxr_string">"select table_name from information_schema.tables where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>          );
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>      }
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>  
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>      @RequestMapping(<span class="jxr_string">"/monetdb"</span>)  <em class="jxr_comment">// no dialect</em>
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMonetDB(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>          String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>              <span class="jxr_string">"jdbc:monetdb://jsql-monetdb:50000/db"</span>,
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>              <span class="jxr_string">"monetdb"</span>,
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>              <span class="jxr_string">"monetdb"</span>,
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>              <span class="jxr_string">"select name from schemas where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>          );
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>      }
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>  
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>      @RequestMapping(<span class="jxr_string">"/neo4j"</span>)
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingNeo4j(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
+<a class="jxr_linenumber" name="L102" href="#L102">102</a> 
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">try</strong> (org.neo4j.driver.Session session = <strong class="jxr_keyword">this</strong>.driver.session()) {
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>             Result result = session.run(<span class="jxr_string">"MATCH (n:Person) where 1="</span>+ name +<span class="jxr_string">" RETURN n.name, n.from, n.title, n.hobby"</span>);
+<a class="jxr_linenumber" name="L105" href="#L105">105</a> 
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>             String collected = result.stream().map(driverRecord -&gt; driverRecord.keys().stream()
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>                 .map(key -&gt; key + <span class="jxr_string">"="</span> + driverRecord.get(key))
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>                 .collect(Collectors.joining(<span class="jxr_string">", "</span>, <span class="jxr_string">"{"</span>, <span class="jxr_string">"}"</span>))
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>             ).collect(Collectors.joining());
+<a class="jxr_linenumber" name="L110" href="#L110">110</a> 
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(<strong class="jxr_keyword">this</strong>.objectMapper.writeValueAsString(collected)));
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         }
+<a class="jxr_linenumber" name="L115" href="#L115">115</a> 
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>         <strong class="jxr_keyword">return</strong> greeting;
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>     }
+<a class="jxr_linenumber" name="L118" href="#L118">118</a> 
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>     @RequestMapping(<span class="jxr_string">"/vertica"</span>)
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingVertica(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>             <span class="jxr_string">"jdbc:vertica://jsql-vertica:5433/"</span>,
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>             <span class="jxr_string">"dbadmin"</span>,
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>             <span class="jxr_string">"password"</span>,
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>             <span class="jxr_string">"select table_schema from v_catalog.system_tables where 1 = "</span>+ inject
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         );
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>     }
+<a class="jxr_linenumber" name="L129" href="#L129">129</a> 
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> 
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>     @RequestMapping(<span class="jxr_string">"/altibase"</span>)
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingAltibase(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>         <em class="jxr_comment">// License required, Read-only file system</em>
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>         <em class="jxr_comment">// jdbc altibase:altibase-connector-java:7.1 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/Altibase.jar</em>
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         <em class="jxr_comment">// docker run -it altibase/altibase</em>
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>         <em class="jxr_comment">// jdbc:Altibase://localhost:20300/mydb</em>
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>         <em class="jxr_comment">// sys manager</em>
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>         <em class="jxr_comment">// isql -s 127.0.0.1 -u sys -p manager -sysdba</em>
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         <em class="jxr_comment">// startup service</em>
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>         <em class="jxr_comment">// Connecting to the DB server...............................Startup Failure. Check</em>
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         <em class="jxr_comment">// Your Environment.</em>
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>         Class.forName(<span class="jxr_string">"Altibase.jdbc.driver.AltibaseDriver"</span>);
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>             <span class="jxr_string">"jdbc:Altibase://jsql-altibase:20300/mydb"</span>,
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>             <span class="jxr_string">"sys"</span>,
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>             <span class="jxr_string">"manager"</span>,
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>             <span class="jxr_string">"select db_name from SYSTEM_.SYS_DATABASE_ where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>         );
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>     }
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>     
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>     @RequestMapping(<span class="jxr_string">"/ctreeace"</span>)
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingCTreeAce(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>         <em class="jxr_comment">// no container</em>
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>         <em class="jxr_comment">// jdbc ctreeACE:ctreeace-connector-java:0.0 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/ctreeJDBC.jar</em>
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>         <em class="jxr_comment">// c-treeACE-Express.windows.64bit.v11.5.1.64705.190310.ACE.msi</em>
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>         <em class="jxr_comment">// jdbc:ctree://localhost:6597/ctreeSQL</em>
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>         <em class="jxr_comment">// ADMIN ADMIN</em>
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         Class.forName(<span class="jxr_string">"ctree.jdbc.ctreeDriver"</span>);
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>             <span class="jxr_string">"jdbc:ctree://localhost:6597/ctreeSQL"</span>,
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>             <span class="jxr_string">"ADMIN"</span>,
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>             <span class="jxr_string">"ADMIN"</span>,
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>             <span class="jxr_string">"select tbl from systables where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>         );
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>     }
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>     
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>     @RequestMapping(<span class="jxr_string">"/ignite"</span>)
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingIgnite(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>         <em class="jxr_comment">// Fail: tables and system views cannot be used in the same query.</em>
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>         <em class="jxr_comment">// docker run -d -p 10800:10800 apacheignite/ignite</em>
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>         <em class="jxr_comment">// jdbc:ignite:thin://127.0.0.1</em>
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>         <em class="jxr_comment">// ignite ignite</em>
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>         Class.forName(<span class="jxr_string">"org.apache.ignite.IgniteJdbcThinDriver"</span>);
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>             <span class="jxr_string">"jdbc:ignite:thin://127.0.0.1"</span>,
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <span class="jxr_string">"ignite"</span>,
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <span class="jxr_string">"ignite"</span>,
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>             <span class="jxr_string">"select 'name' from PUBLIC.STUDENT where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>         );
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>     }
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>     
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>     @RequestMapping(<span class="jxr_string">"/frontbase"</span>)
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingFrontbase(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>         <em class="jxr_comment">// container issue</em>
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>         <em class="jxr_comment">// frontbase:frontbase-connector-java:2.5.9 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/frontbasejdbc.jar</em>
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <em class="jxr_comment">// FrontBase-8.2.18-WinNT.zip</em>
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <em class="jxr_comment">// sql92.exe</em>
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <em class="jxr_comment">// create database firstdb</em>
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>         <em class="jxr_comment">// connect to firstdb user _system</em>
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <em class="jxr_comment">//  Auto committing is on: SET COMMIT TRUE</em>
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         <em class="jxr_comment">//      create user test</em>
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         <em class="jxr_comment">//      commit</em>
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>         <em class="jxr_comment">//  Service FBExec</em>
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>         <em class="jxr_comment">//  Service FrontBase firstdb</em>
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <em class="jxr_comment">//  jdbc:FrontBase://127.0.0.1/firstdb</em>
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>         <em class="jxr_comment">//  _system</em>
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         Class.forName(<span class="jxr_string">"com.frontbase.jdbc.FBJDriver"</span>);
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>             <span class="jxr_string">"jdbc:FrontBase://127.0.0.1/firstdb"</span>,
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>             <span class="jxr_string">"_system"</span>,
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>             StringUtils.EMPTY,
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>             <span class="jxr_string">"select \&quot;SCHEMA_NAME\&quot; from INFORMATION_SCHEMA.SCHEMATA where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>         );
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>     }
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>     
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>     @RequestMapping(<span class="jxr_string">"/iris"</span>)
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingIris(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>         <em class="jxr_comment">// [FATAL] Unsupported CPU.  Please see InterSystems documentation for information on supported CPUs.</em>
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>         <em class="jxr_comment">// jdnc intersystems-iris:intersystems-iris-connector-java:3.1.0 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/intersystems-jdbc-3.1.0.jar</em>
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>         <em class="jxr_comment">// docker run --name my-iris -d --publish 1972:1972 --publish 52773:52773 intersystems/iris-community:2020.3.0.221.0</em>
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>         <em class="jxr_comment">// [ERROR] Error - cannot write to /home/irisowner/irissys.</em>
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>         <em class="jxr_comment">// http://127.0.0.1:52773/csp/sys/UtilHome.csp</em>
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>         <em class="jxr_comment">// usr pwd: _SYSTEM SYS</em>
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>         <em class="jxr_comment">// Change pwd</em>
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>         <em class="jxr_comment">// jdbc:IRIS://127.0.0.1:1972/USER</em>
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>         <em class="jxr_comment">// _SYSTEM Mw7SUqLPFbZWUu4</em>
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>         Class.forName(<span class="jxr_string">"com.intersystems.jdbc.IRISDriver"</span>);
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L224" href="#L224">224</a>             <span class="jxr_string">"jdbc:IRIS://127.0.0.1:1972/USER"</span>,
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>             <span class="jxr_string">"_SYSTEM"</span>,
-<a class="jxr_linenumber" name="L226" href="#L226">226</a>             <span class="jxr_string">"Mw7SUqLPFbZWUu4"</span>,
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>             <span class="jxr_string">"select SCHEMA_NAME from INFORMATION_SCHEMA.SCHEMATA where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>         );
-<a class="jxr_linenumber" name="L229" href="#L229">229</a>     }
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>     
-<a class="jxr_linenumber" name="L231" href="#L231">231</a>     @RequestMapping(<span class="jxr_string">"/presto"</span>)
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingPresto(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>         <em class="jxr_comment">// jdbc com.facebook.presto:presto-jdbc:0.243.2</em>
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>         <em class="jxr_comment">// docker run -p 8080:8080 --name presto prestosql/presto</em>
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>         <em class="jxr_comment">// jdbc:presto://127.0.0.1:8078/system</em>
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>         <em class="jxr_comment">// test</em>
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>         <em class="jxr_comment">// 4Go</em>
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>         Class.forName(<span class="jxr_string">"com.facebook.presto.jdbc.PrestoDriver"</span>);
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>             <span class="jxr_string">"jdbc:presto://127.0.0.1:8078/system"</span>,
-<a class="jxr_linenumber" name="L242" href="#L242">242</a>             <span class="jxr_string">"test"</span>,
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>             StringUtils.EMPTY,
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>             <span class="jxr_string">"select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>         );
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>     }
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>     
-<a class="jxr_linenumber" name="L248" href="#L248">248</a>     @RequestMapping(<span class="jxr_string">"/netezza"</span>)
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingNetezza(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L250" href="#L250">250</a>         <em class="jxr_comment">// no container</em>
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>         <em class="jxr_comment">// jdbc netezza:netezza:3.40 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/nzjdbc-1.0.jar</em>
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>         <em class="jxr_comment">// NetezzaSoftwareEmulator_7.2.1.ova</em>
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>         <em class="jxr_comment">// jdbc:netezza://127.0.0.1:5480/SYSTEM</em>
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>         <em class="jxr_comment">// admin password</em>
-<a class="jxr_linenumber" name="L255" href="#L255">255</a>         <em class="jxr_comment">// no docker, custom dialect</em>
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>         Class.forName(<span class="jxr_string">"org.netezza.Driver"</span>);
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>             <span class="jxr_string">"jdbc:netezza://127.0.0.1:5480/SYSTEM"</span>,
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>             <span class="jxr_string">"admin"</span>,
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>             <span class="jxr_string">"password"</span>,
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>             <span class="jxr_string">"select schema_name from schemata where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>         );
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>     }
-<a class="jxr_linenumber" name="L265" href="#L265">265</a> 
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>     @RequestMapping(<span class="jxr_string">"/postgres"</span>)  <em class="jxr_comment">// local testing, not used</em>
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingPostgres(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>         AtomicReference&lt;Greeting&gt; greeting = <strong class="jxr_keyword">new</strong> AtomicReference&lt;&gt;();
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="L270" href="#L270">270</a> 
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>         Arrays.stream((<span class="jxr_string">"SELECT table_schema FROM information_schema.tables where '1' = '"</span>+ name +<span class="jxr_string">"'"</span>).split(<span class="jxr_string">";"</span>)).map(String::trim).forEach(query -&gt; {
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>             System.out.println(query);
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>             <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>                 Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:postgresql://jsql-postgresql:5432/"</span>, <span class="jxr_string">"postgres"</span>, <span class="jxr_string">"my-secret-pw"</span>);
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>                 PreparedStatement pstmt = con.prepareStatement(query)
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>             ) {
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>                 ResultSet rs = pstmt.executeQuery();
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>                 <strong class="jxr_keyword">while</strong>(rs.next()) {
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>                     result.append(rs.getString(1));
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>                 }
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>                 greeting.set(<strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString())));
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>             } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>                 greeting.set(<strong class="jxr_keyword">this</strong>.initErrorMessage(e));
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>             }
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>         });
-<a class="jxr_linenumber" name="L286" href="#L286">286</a> 
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>         <strong class="jxr_keyword">return</strong> greeting.get();
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>     }
-<a class="jxr_linenumber" name="L289" href="#L289">289</a> 
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>     @RequestMapping(<span class="jxr_string">"/mysql"</span>)  <em class="jxr_comment">// local testing, not used</em>
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMysql(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="L295" href="#L295">295</a> 
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>             Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:mysql://127.0.0.1:3306/?allowMultiQueries=true"</span>, <span class="jxr_string">"test193746285"</span>, <span class="jxr_string">"~Aa1"</span>);
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>             PreparedStatement pstmt = con.prepareStatement(<span class="jxr_string">"select TABLE_SCHEMA from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"</span>+ inject +<span class="jxr_string">"'"</span>)
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>         ) {
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>             ResultSet rs = pstmt.executeQuery();
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>             <strong class="jxr_keyword">while</strong>(rs.next()) {
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>                 result.append(rs.getString(1));
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>             }
-<a class="jxr_linenumber" name="L304" href="#L304">304</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + result);
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>         }
-<a class="jxr_linenumber" name="L308" href="#L308">308</a> 
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>         <strong class="jxr_keyword">return</strong> greeting;
-<a class="jxr_linenumber" name="L310" href="#L310">310</a>     }
-<a class="jxr_linenumber" name="L311" href="#L311">311</a> 
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> getGreeting(String url, String user, String password, String sql) {
-<a class="jxr_linenumber" name="L313" href="#L313">313</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
-<a class="jxr_linenumber" name="L314" href="#L314">314</a>         <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>             Connection connection = DriverManager.getConnection(url, user, password);
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>         ) {
-<a class="jxr_linenumber" name="L318" href="#L318">318</a>             ResultSet resultSet = preparedStatement.executeQuery();
-<a class="jxr_linenumber" name="L319" href="#L319">319</a>             StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>             <strong class="jxr_keyword">while</strong>(resultSet.next()) {
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>                 result.append(resultSet.getString(1));
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>             }
-<a class="jxr_linenumber" name="L323" href="#L323">323</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
-<a class="jxr_linenumber" name="L326" href="#L326">326</a>         }
-<a class="jxr_linenumber" name="L327" href="#L327">327</a>         <strong class="jxr_keyword">return</strong> greeting;
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>     }
-<a class="jxr_linenumber" name="L329" href="#L329">329</a> 
-<a class="jxr_linenumber" name="L330" href="#L330">330</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> initErrorMessage(Exception e) {
-<a class="jxr_linenumber" name="L331" href="#L331">331</a>         String stacktrace = ExceptionUtils.getStackTrace(e);
-<a class="jxr_linenumber" name="L332" href="#L332">332</a>         LOGGER.debug(stacktrace);
-<a class="jxr_linenumber" name="L333" href="#L333">333</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
-<a class="jxr_linenumber" name="L334" href="#L334">334</a>     }
-<a class="jxr_linenumber" name="L335" href="#L335">335</a> 
-<a class="jxr_linenumber" name="L336" href="#L336">336</a> 
-<a class="jxr_linenumber" name="L337" href="#L337">337</a>     <em class="jxr_comment">// AltibaseDialect: container issue</em>
-<a class="jxr_linenumber" name="L338" href="#L338">338</a>     <em class="jxr_comment">// CockroachLegacyDialect</em>
-<a class="jxr_linenumber" name="L339" href="#L339">339</a>     <em class="jxr_comment">// GaussDBDialect</em>
-<a class="jxr_linenumber" name="L340" href="#L340">340</a>     <em class="jxr_comment">// MaxDBDialect: broken installation</em>
-<a class="jxr_linenumber" name="L341" href="#L341">341</a>     <em class="jxr_comment">// RDMSOS2200Dialect</em>
-<a class="jxr_linenumber" name="L342" href="#L342">342</a>     <em class="jxr_comment">// SingleStoreDialect</em>
-<a class="jxr_linenumber" name="L343" href="#L343">343</a>     <em class="jxr_comment">// TeradataDialect</em>
-<a class="jxr_linenumber" name="L344" href="#L344">344</a>     <em class="jxr_comment">// TiDBDialect</em>
-<a class="jxr_linenumber" name="L345" href="#L345">345</a>     <em class="jxr_comment">// TimesTenDialect</em>
-<a class="jxr_linenumber" name="L346" href="#L346">346</a> 
-<a class="jxr_linenumber" name="L347" href="#L347">347</a>     <em class="jxr_comment">// missing ingress: missing services</em>
-<a class="jxr_linenumber" name="L348" href="#L348">348</a>     <em class="jxr_comment">// jdbc:ingres://localhost:II7/demodb</em>
-<a class="jxr_linenumber" name="L349" href="#L349">349</a> 
-<a class="jxr_linenumber" name="L350" href="#L350">350</a>     <em class="jxr_comment">// missing maxdb: broken installation</em>
-<a class="jxr_linenumber" name="L351" href="#L351">351</a>     <em class="jxr_comment">// no docker</em>
-<a class="jxr_linenumber" name="L352" href="#L352">352</a>     <em class="jxr_comment">// jdbc:sapdb://127.0.0.1/MAXDB</em>
-<a class="jxr_linenumber" name="L353" href="#L353">353</a>     <em class="jxr_comment">// DBADMIN TEST</em>
-<a class="jxr_linenumber" name="L354" href="#L354">354</a> 
-<a class="jxr_linenumber" name="L355" href="#L355">355</a>     <em class="jxr_comment">// nuodb</em>
-<a class="jxr_linenumber" name="L356" href="#L356">356</a>     <em class="jxr_comment">// license</em>
-<a class="jxr_linenumber" name="L357" href="#L357">357</a>     <em class="jxr_comment">// jdbc:com.nuodb://127.0.0.1/test</em>
-<a class="jxr_linenumber" name="L358" href="#L358">358</a>     <em class="jxr_comment">// dba nuodb</em>
-<a class="jxr_linenumber" name="L359" href="#L359">359</a> 
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>     <em class="jxr_comment">// teradata: config required</em>
-<a class="jxr_linenumber" name="L361" href="#L361">361</a>     <em class="jxr_comment">// jdbc:teradata://127.0.0.1</em>
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>     <em class="jxr_comment">// dbc dbc</em>
-<a class="jxr_linenumber" name="L363" href="#L363">363</a> }
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>     <em class="jxr_comment">// Other</em>
+<a class="jxr_linenumber" name="L132" href="#L132">132</a> 
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>     @RequestMapping(<span class="jxr_string">"/altibase"</span>)
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingAltibase(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>         <em class="jxr_comment">// License required, Read-only file system</em>
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         <em class="jxr_comment">// jdbc altibase:altibase-connector-java:7.1 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/Altibase.jar</em>
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         <em class="jxr_comment">// docker run -it altibase/altibase</em>
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         <em class="jxr_comment">// jdbc:Altibase://localhost:20300/mydb</em>
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>         <em class="jxr_comment">// sys manager</em>
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>         <em class="jxr_comment">// isql -s 127.0.0.1 -u sys -p manager -sysdba</em>
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         <em class="jxr_comment">// startup service</em>
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>         <em class="jxr_comment">// Connecting to the DB server...............................Startup Failure. Check</em>
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <em class="jxr_comment">// Your Environment.</em>
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         Class.forName(<span class="jxr_string">"Altibase.jdbc.driver.AltibaseDriver"</span>);
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>             <span class="jxr_string">"jdbc:Altibase://jsql-altibase:20300/mydb"</span>,
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>             <span class="jxr_string">"sys"</span>,
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>             <span class="jxr_string">"manager"</span>,
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>             <span class="jxr_string">"select db_name from SYSTEM_.SYS_DATABASE_ where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>         );
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>     }
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>     
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>     @RequestMapping(<span class="jxr_string">"/ctreeace"</span>)
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingCTreeAce(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         <em class="jxr_comment">// no container</em>
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>         <em class="jxr_comment">// jdbc ctreeACE:ctreeace-connector-java:0.0 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/ctreeJDBC.jar</em>
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>         <em class="jxr_comment">// c-treeACE-Express.windows.64bit.v11.5.1.64705.190310.ACE.msi</em>
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>         <em class="jxr_comment">// jdbc:ctree://localhost:6597/ctreeSQL</em>
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>         <em class="jxr_comment">// ADMIN ADMIN</em>
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>         Class.forName(<span class="jxr_string">"ctree.jdbc.ctreeDriver"</span>);
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>             <span class="jxr_string">"jdbc:ctree://localhost:6597/ctreeSQL"</span>,
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>             <span class="jxr_string">"ADMIN"</span>,
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>             <span class="jxr_string">"ADMIN"</span>,
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>             <span class="jxr_string">"select tbl from systables where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>         );
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>     }
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>     
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>     @RequestMapping(<span class="jxr_string">"/ignite"</span>)
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingIgnite(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>         <em class="jxr_comment">// Fail: tables and system views cannot be used in the same query.</em>
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>         <em class="jxr_comment">// docker run -d -p 10800:10800 apacheignite/ignite</em>
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>         <em class="jxr_comment">// jdbc:ignite:thin://127.0.0.1</em>
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>         <em class="jxr_comment">// ignite ignite</em>
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>         Class.forName(<span class="jxr_string">"org.apache.ignite.IgniteJdbcThinDriver"</span>);
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <span class="jxr_string">"jdbc:ignite:thin://127.0.0.1"</span>,
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>             <span class="jxr_string">"ignite"</span>,
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>             <span class="jxr_string">"ignite"</span>,
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>             <span class="jxr_string">"select 'name' from PUBLIC.STUDENT where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>         );
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>     }
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>     
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>     @RequestMapping(<span class="jxr_string">"/frontbase"</span>)
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingFrontbase(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <em class="jxr_comment">// container issue</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <em class="jxr_comment">// frontbase:frontbase-connector-java:2.5.9 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/frontbasejdbc.jar</em>
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <em class="jxr_comment">// FrontBase-8.2.18-WinNT.zip</em>
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>         <em class="jxr_comment">// sql92.exe</em>
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <em class="jxr_comment">// create database firstdb</em>
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>         <em class="jxr_comment">// connect to firstdb user _system</em>
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>         <em class="jxr_comment">//  Auto committing is on: SET COMMIT TRUE</em>
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>         <em class="jxr_comment">//      create user test</em>
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         <em class="jxr_comment">//      commit</em>
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <em class="jxr_comment">//  Service FBExec</em>
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>         <em class="jxr_comment">//  Service FrontBase firstdb</em>
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>         <em class="jxr_comment">//  jdbc:FrontBase://127.0.0.1/firstdb</em>
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <em class="jxr_comment">//  _system</em>
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         Class.forName(<span class="jxr_string">"com.frontbase.jdbc.FBJDriver"</span>);
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>             <span class="jxr_string">"jdbc:FrontBase://127.0.0.1/firstdb"</span>,
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>             <span class="jxr_string">"_system"</span>,
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>             StringUtils.EMPTY,
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>             <span class="jxr_string">"select \&quot;SCHEMA_NAME\&quot; from INFORMATION_SCHEMA.SCHEMATA where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>         );
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>     }
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>     
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>     @RequestMapping(<span class="jxr_string">"/iris"</span>)
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingIris(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>         <em class="jxr_comment">// [FATAL] Unsupported CPU.  Please see InterSystems documentation for information on supported CPUs.</em>
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>         <em class="jxr_comment">// jdnc intersystems-iris:intersystems-iris-connector-java:3.1.0 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/intersystems-jdbc-3.1.0.jar</em>
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>         <em class="jxr_comment">// docker run --name my-iris -d --publish 1972:1972 --publish 52773:52773 intersystems/iris-community:2020.3.0.221.0</em>
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>         <em class="jxr_comment">// [ERROR] Error - cannot write to /home/irisowner/irissys.</em>
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>         <em class="jxr_comment">// http://127.0.0.1:52773/csp/sys/UtilHome.csp</em>
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>         <em class="jxr_comment">// usr pwd: _SYSTEM SYS</em>
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>         <em class="jxr_comment">// Change pwd</em>
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>         <em class="jxr_comment">// jdbc:IRIS://127.0.0.1:1972/USER</em>
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>         <em class="jxr_comment">// _SYSTEM Mw7SUqLPFbZWUu4</em>
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>         Class.forName(<span class="jxr_string">"com.intersystems.jdbc.IRISDriver"</span>);
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>             <span class="jxr_string">"jdbc:IRIS://127.0.0.1:1972/USER"</span>,
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>             <span class="jxr_string">"_SYSTEM"</span>,
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>             <span class="jxr_string">"Mw7SUqLPFbZWUu4"</span>,
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>             <span class="jxr_string">"select SCHEMA_NAME from INFORMATION_SCHEMA.SCHEMATA where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>         );
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>     }
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>     
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>     @RequestMapping(<span class="jxr_string">"/presto"</span>)
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingPresto(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>         <em class="jxr_comment">// jdbc com.facebook.presto:presto-jdbc:0.243.2</em>
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>         <em class="jxr_comment">// docker run -p 8080:8080 --name presto prestosql/presto</em>
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>         <em class="jxr_comment">// jdbc:presto://127.0.0.1:8078/system</em>
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>         <em class="jxr_comment">// test</em>
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>         <em class="jxr_comment">// 4Go</em>
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>         Class.forName(<span class="jxr_string">"com.facebook.presto.jdbc.PrestoDriver"</span>);
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>             <span class="jxr_string">"jdbc:presto://127.0.0.1:8078/system"</span>,
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>             <span class="jxr_string">"test"</span>,
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>             StringUtils.EMPTY,
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>             <span class="jxr_string">"select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>         );
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>     }
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>     
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>     @RequestMapping(<span class="jxr_string">"/netezza"</span>)
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingNetezza(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) <strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>         <em class="jxr_comment">// no container</em>
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>         <em class="jxr_comment">// jdbc netezza:netezza:3.40 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/nzjdbc-1.0.jar</em>
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>         <em class="jxr_comment">// NetezzaSoftwareEmulator_7.2.1.ova</em>
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>         <em class="jxr_comment">// jdbc:netezza://127.0.0.1:5480/SYSTEM</em>
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>         <em class="jxr_comment">// admin password</em>
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>         <em class="jxr_comment">// no docker, custom dialect</em>
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>         Class.forName(<span class="jxr_string">"org.netezza.Driver"</span>);
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getGreeting(
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>             <span class="jxr_string">"jdbc:netezza://127.0.0.1:5480/SYSTEM"</span>,
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>             <span class="jxr_string">"admin"</span>,
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>             <span class="jxr_string">"password"</span>,
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>             <span class="jxr_string">"select schema_name from schemata where '1' = '"</span>+ inject +<span class="jxr_string">"'"</span>
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>         );
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>     }
+<a class="jxr_linenumber" name="L267" href="#L267">267</a> 
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>     @RequestMapping(<span class="jxr_string">"/postgres"</span>)  <em class="jxr_comment">// local testing, not used</em>
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingPostgres(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>         AtomicReference&lt;Greeting&gt; greeting = <strong class="jxr_keyword">new</strong> AtomicReference&lt;&gt;();
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="L272" href="#L272">272</a> 
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>         Arrays.stream((<span class="jxr_string">"SELECT table_schema FROM information_schema.tables where '1' = '"</span>+ name +<span class="jxr_string">"'"</span>).split(<span class="jxr_string">";"</span>)).map(String::trim).forEach(query -&gt; {
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>             System.out.println(query);
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>             <strong class="jxr_keyword">try</strong> (
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>                 Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:postgresql://jsql-postgresql:5432/"</span>, <span class="jxr_string">"postgres"</span>, <span class="jxr_string">"my-secret-pw"</span>);
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>                 PreparedStatement pstmt = con.prepareStatement(query)
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>             ) {
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>                 ResultSet rs = pstmt.executeQuery();
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>                 <strong class="jxr_keyword">while</strong>(rs.next()) {
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>                     result.append(rs.getString(1));
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>                 }
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>                 greeting.set(<strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString())));
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>             } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>                 greeting.set(<strong class="jxr_keyword">this</strong>.initErrorMessage(e));
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>             }
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>         });
+<a class="jxr_linenumber" name="L288" href="#L288">288</a> 
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>         <strong class="jxr_keyword">return</strong> greeting.get();
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>     }
+<a class="jxr_linenumber" name="L291" href="#L291">291</a> 
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>     @RequestMapping(<span class="jxr_string">"/mysql"</span>)  <em class="jxr_comment">// local testing, not used</em>
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMysql(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="L297" href="#L297">297</a> 
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>         <strong class="jxr_keyword">try</strong> (
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>             Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:mysql://127.0.0.1:3306/?allowMultiQueries=true"</span>, <span class="jxr_string">"test193746285"</span>, <span class="jxr_string">"~Aa1"</span>);
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>             PreparedStatement pstmt = con.prepareStatement(<span class="jxr_string">"select TABLE_SCHEMA from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"</span>+ inject +<span class="jxr_string">"'"</span>)
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>         ) {
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>             ResultSet rs = pstmt.executeQuery();
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>             <strong class="jxr_keyword">while</strong>(rs.next()) {
+<a class="jxr_linenumber" name="L304" href="#L304">304</a>                 result.append(rs.getString(1));
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>             }
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + result);
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L308" href="#L308">308</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>         }
+<a class="jxr_linenumber" name="L310" href="#L310">310</a> 
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>         <strong class="jxr_keyword">return</strong> greeting;
+<a class="jxr_linenumber" name="L312" href="#L312">312</a>     }
+<a class="jxr_linenumber" name="L313" href="#L313">313</a> 
+<a class="jxr_linenumber" name="L314" href="#L314">314</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> getGreeting(String url, String user, String password, String sql) {
+<a class="jxr_linenumber" name="L315" href="#L315">315</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>         <strong class="jxr_keyword">try</strong> (
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>             Connection connection = DriverManager.getConnection(url, user, password);
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+<a class="jxr_linenumber" name="L319" href="#L319">319</a>         ) {
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>             ResultSet resultSet = preparedStatement.executeQuery();
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>             StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>             <strong class="jxr_keyword">while</strong>(resultSet.next()) {
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>                 result.append(resultSet.getString(1));
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>             }
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
+<a class="jxr_linenumber" name="L326" href="#L326">326</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L327" href="#L327">327</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
+<a class="jxr_linenumber" name="L328" href="#L328">328</a>         }
+<a class="jxr_linenumber" name="L329" href="#L329">329</a>         <strong class="jxr_keyword">return</strong> greeting;
+<a class="jxr_linenumber" name="L330" href="#L330">330</a>     }
+<a class="jxr_linenumber" name="L331" href="#L331">331</a> 
+<a class="jxr_linenumber" name="L332" href="#L332">332</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> initErrorMessage(Exception e) {
+<a class="jxr_linenumber" name="L333" href="#L333">333</a>         String stacktrace = ExceptionUtils.getStackTrace(e);
+<a class="jxr_linenumber" name="L334" href="#L334">334</a>         LOGGER.debug(stacktrace);
+<a class="jxr_linenumber" name="L335" href="#L335">335</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
+<a class="jxr_linenumber" name="L336" href="#L336">336</a>     }
+<a class="jxr_linenumber" name="L337" href="#L337">337</a> 
+<a class="jxr_linenumber" name="L338" href="#L338">338</a> 
+<a class="jxr_linenumber" name="L339" href="#L339">339</a>     <em class="jxr_comment">// AltibaseDialect: container issue</em>
+<a class="jxr_linenumber" name="L340" href="#L340">340</a>     <em class="jxr_comment">// CockroachLegacyDialect</em>
+<a class="jxr_linenumber" name="L341" href="#L341">341</a>     <em class="jxr_comment">// GaussDBDialect</em>
+<a class="jxr_linenumber" name="L342" href="#L342">342</a>     <em class="jxr_comment">// MaxDBDialect: broken installation</em>
+<a class="jxr_linenumber" name="L343" href="#L343">343</a>     <em class="jxr_comment">// RDMSOS2200Dialect</em>
+<a class="jxr_linenumber" name="L344" href="#L344">344</a>     <em class="jxr_comment">// SingleStoreDialect</em>
+<a class="jxr_linenumber" name="L345" href="#L345">345</a>     <em class="jxr_comment">// TeradataDialect</em>
+<a class="jxr_linenumber" name="L346" href="#L346">346</a>     <em class="jxr_comment">// TiDBDialect</em>
+<a class="jxr_linenumber" name="L347" href="#L347">347</a>     <em class="jxr_comment">// TimesTenDialect</em>
+<a class="jxr_linenumber" name="L348" href="#L348">348</a> 
+<a class="jxr_linenumber" name="L349" href="#L349">349</a>     <em class="jxr_comment">// missing ingress: missing services</em>
+<a class="jxr_linenumber" name="L350" href="#L350">350</a>     <em class="jxr_comment">// jdbc:ingres://localhost:II7/demodb</em>
+<a class="jxr_linenumber" name="L351" href="#L351">351</a> 
+<a class="jxr_linenumber" name="L352" href="#L352">352</a>     <em class="jxr_comment">// missing maxdb: broken installation</em>
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>     <em class="jxr_comment">// no docker</em>
+<a class="jxr_linenumber" name="L354" href="#L354">354</a>     <em class="jxr_comment">// jdbc:sapdb://127.0.0.1/MAXDB</em>
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>     <em class="jxr_comment">// DBADMIN TEST</em>
+<a class="jxr_linenumber" name="L356" href="#L356">356</a> 
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>     <em class="jxr_comment">// nuodb</em>
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>     <em class="jxr_comment">// license</em>
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>     <em class="jxr_comment">// jdbc:com.nuodb://127.0.0.1/test</em>
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>     <em class="jxr_comment">// dba nuodb</em>
+<a class="jxr_linenumber" name="L361" href="#L361">361</a> 
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>     <em class="jxr_comment">// teradata: config required</em>
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>     <em class="jxr_comment">// jdbc:teradata://127.0.0.1</em>
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>     <em class="jxr_comment">// dbc dbc</em>
+<a class="jxr_linenumber" name="L365" href="#L365">365</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>
