@@ -59,6 +59,7 @@ public class MediatorVendor {
     private final Vendor neo4j;
     private final Vendor oracle;
     private final Vendor postgres;
+    private final Vendor presto;
     private final Vendor sqlite;
     private final Vendor sqlserver;
     private final Vendor sybase;
@@ -68,7 +69,7 @@ public class MediatorVendor {
     private final List<Vendor> vendorsForFingerprint;
 
     private final InjectionModel injectionModel;
-    
+
     public MediatorVendor(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
@@ -81,7 +82,6 @@ public class MediatorVendor {
         Vendor maxdb = new Vendor(new VendorYaml("maxdb.yml", injectionModel));
         Vendor netezza = new Vendor(new VendorYaml("netezza.yml", injectionModel));
         Vendor nuodb = new Vendor(new VendorYaml("nuodb.yml", injectionModel));
-        Vendor presto = new Vendor(new VendorYaml("presto.yml", injectionModel));
         Vendor teradata = new Vendor(new VendorYaml("teradata.yml", injectionModel));
 
         this.auto = new Vendor();
@@ -101,6 +101,7 @@ public class MediatorVendor {
         this.neo4j = new Vendor(new VendorYaml("neo4j.yml", injectionModel));
         this.oracle = new Vendor(new VendorYaml("oracle.yml", injectionModel));
         this.postgres = new Vendor(new VendorYaml("postgres.yml", injectionModel));
+        this.presto = new Vendor(new VendorYaml("presto.yml", injectionModel));
         this.sqlite = new Vendor(new VendorYaml("sqlite.yml", injectionModel)) {
             @Override
             public String transformSqlite(String resultToParse) {
@@ -357,5 +358,9 @@ public class MediatorVendor {
 
     public Vendor getHana() {
         return this.hana;
+    }
+
+    public Vendor getPresto() {
+        return this.presto;
     }
 }

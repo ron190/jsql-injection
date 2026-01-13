@@ -70,16 +70,18 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 
                 List<Vendor> vendorsOrderByMatch = this.getVendorsOrderByMatch(mediatorVendor, pageSource);
                 if (!vendorsOrderByMatch.isEmpty()) {
-                    this.setVendor(mediatorVendor, vendorsOrderByMatch);
-                    
-                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using [{}]", mediatorVendor.getVendor());
-                    var requestSetVendor = new Request();
-                    requestSetVendor.setMessage(Interaction.SET_VENDOR);
-                    Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-                    msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
-                    msgHeader.put(Header.VENDOR, mediatorVendor.getVendor());
-                    requestSetVendor.setParameters(msgHeader);
-                    this.injectionModel.sendToViews(requestSetVendor);
+                    if (this.injectionModel.getMediatorVendor().getVendorByUser() == this.injectionModel.getMediatorVendor().getAuto()) {
+                        this.setVendor(mediatorVendor, vendorsOrderByMatch);
+
+                        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using [{}]", mediatorVendor.getVendor());
+                        var requestSetVendor = new Request();
+                        requestSetVendor.setMessage(Interaction.SET_VENDOR);
+                        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+                        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
+                        msgHeader.put(Header.VENDOR, mediatorVendor.getVendor());
+                        requestSetVendor.setParameters(msgHeader);
+                        this.injectionModel.sendToViews(requestSetVendor);
+                    }
                     
                     charFromOrderBy = currentCallable.getCharacterInsertion();
                     LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Character insertion [{}] matching with Order by and compatible with Error strategy", charFromOrderBy);

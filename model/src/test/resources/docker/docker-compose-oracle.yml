@@ -3,11 +3,9 @@ services:
 
   oracle:
     container_name: jsql-oracle
+    image: oracle/database:18.4.0-xe
     ports:
       - "1521:1521"
-    build:
-      context: .
-      dockerfile: Dockerfile.oracle
     environment:
       ORACLE_PWD: Password1_One
       ORACLE_CHARACTERSET: AL32UTF8

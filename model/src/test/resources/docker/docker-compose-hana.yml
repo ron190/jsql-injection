@@ -3,12 +3,10 @@ services:
 
   hana:
     container_name: jsql-hana
+    image: saplabs/hanaexpress
     ports:
       - "39017:39017"
-    build:
-      context: .
-      dockerfile: Dockerfile.hana
-    command:  # CMD in Dockerfile not working
+    command:
       - --master-password
       - 1anaHEXH
       - --agree-to-sap-license

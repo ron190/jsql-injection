@@ -23,6 +23,7 @@ class MckoiUnionGetSuiteIT extends ConcreteMckoiSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsStrategyBlindBinDisabled(true)
         .withIsUrlRandomSuffixDisabled(true);  // todo fall working if disabled as merged to table alias, should be auto disabled
 
         model

@@ -3,11 +3,9 @@ services:
 
   sybase:
     container_name: jsql-sybase
+    image: ifnazar/sybase_15_7
     ports:
       - "5000:5000"
-    build:
-      context: .
-      dockerfile: Dockerfile.sybase
     networks:
       - jsql-network
     command: bash /sybase/start

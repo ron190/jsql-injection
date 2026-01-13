@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
 class MonetDbUnionGetSuiteIT extends ConcreteMonetDbSuiteIT {
-    // Error during jdbc connection on GitHub Actions (works on local)
-    // SQLNonTransientConnectionException: Unable to connect (jsql-monetdb:50001): Connection refused
 
     @Override
     public void setupInjection() throws Exception {

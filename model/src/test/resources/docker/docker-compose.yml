@@ -17,11 +17,9 @@ services:
 
   firebird:
     container_name: jsql-firebird
+    image: jacobalberty/firebird
     ports:
       - "3050:3050"
-    build:
-      context: .
-      dockerfile: Dockerfile.firebird
     environment:
       FIREBIRD_DATABASE: EMPLOYEE.FDB
       FIREBIRD_USER: sysdba2
@@ -31,11 +29,9 @@ services:
 
   informix:
     container_name: jsql-informix
+    image: icr.io/informix/informix-developer-database
     ports:
       - "9088:9088"
-    build:
-      context: .
-      dockerfile: Dockerfile.informix
     environment:
       LICENSE: accept
     networks:
@@ -54,18 +50,6 @@ services:
       - "4444:4444"
     networks:
       - jsql-network
-
-#  mimer:
-#    container_name: jsql-mimer
-#    ports:
-#      - "1360:1360"
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.mimer
-#    environment:
-#      MIMER_SYSADM_PASSWORD: SYSADM
-#    networks:
-#      - jsql-network
 
   mysql:
     container_name: jsql-mysql
@@ -93,11 +77,9 @@ services:
 
   neo4j:
     container_name: jsql-neo4j
+    image: neo4j:4.1.3
     ports:
       - "7687:7687"
-    build:
-      context: .
-      dockerfile: Dockerfile.neo4j
     environment:
       NEO4J_AUTH: neo4j/test
     networks:
@@ -105,11 +87,9 @@ services:
 
   postgres:
     container_name: jsql-postgres
+    image: postgres:9.6
     ports:
       - "5432:5432"
-    build:
-      context: .
-      dockerfile: Dockerfile.postgres
     environment:
       POSTGRES_PASSWORD: my-secret-pw
     networks:

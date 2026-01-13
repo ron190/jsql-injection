@@ -3,12 +3,10 @@ services:
 
   exasol:
     container_name: jsql-exasol
+    image: exasol/docker-db
+    privileged: true
     ports:
       - "8563:8563"
-    privileged: true
-    build:
-      context: .
-      dockerfile: Dockerfile.exasol
     networks:
       - jsql-network
 

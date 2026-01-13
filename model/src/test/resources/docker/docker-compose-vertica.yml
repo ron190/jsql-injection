@@ -3,11 +3,9 @@ services:
 
   vertica:
     container_name: jsql-vertica
+    image: jbfavre/vertica:9.2.0-7_debian-8
     ports:
       - "5433:5433"
-    build:
-      context: .
-      dockerfile: Dockerfile.vertica
     networks:
       - jsql-network
 

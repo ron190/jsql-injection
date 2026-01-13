@@ -170,6 +170,15 @@
             </properties>
         </profile>
         <profile>
+            <id>tests-presto</id>
+            <properties>
+                <profileId>tests-presto</profileId>
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
+                <maven-failsafe-plugin.include>**/*Presto*SuiteIT.java</maven-failsafe-plugin.include>
+            </properties>
+        </profile>
+        <profile>
             <id>tests-sqlserver</id>
             <properties>
                 <profileId>tests-sqlserver</profileId>

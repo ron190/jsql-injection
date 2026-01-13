@@ -17,8 +17,16 @@ class MimerUnionGetSuiteIT extends ConcreteMimerSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/mimer?name="
+            "http://localhost:8080/mimer?name='"
         );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withCountLimitingThreads(1)
+        .withIsNotSearchingCharInsertion(true)  // reduce db calls: enabled on single other IT
+        .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyBlindBitDisabled(true);
         
         model
         .getMediatorUtils()
@@ -26,6 +34,7 @@ class MimerUnionGetSuiteIT extends ConcreteMimerSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMimer());  // reduce db calls: enabled on single other IT
         model.beginInjection();
     }
     

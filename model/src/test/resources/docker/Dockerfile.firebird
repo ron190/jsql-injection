@@ -1,2 +1,0 @@
-FROM jacobalberty/firebird
-EXPOSE 3050

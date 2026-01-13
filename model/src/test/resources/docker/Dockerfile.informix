@@ -1,2 +1,0 @@
-FROM icr.io/informix/informix-developer-database
-EXPOSE 9088

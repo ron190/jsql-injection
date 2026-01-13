@@ -25,6 +25,7 @@ class VerticaBlindBitGetSuiteIT extends ConcreteVerticaSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyUnionDisabled(true);
 
         model

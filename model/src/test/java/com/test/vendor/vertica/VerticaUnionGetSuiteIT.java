@@ -22,6 +22,12 @@ class VerticaUnionGetSuiteIT extends ConcreteVerticaSuiteIT {
         
         model
         .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyBlindBitDisabled(true);
+
+        model
+        .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");

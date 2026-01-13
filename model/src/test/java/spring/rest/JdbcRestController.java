@@ -75,7 +75,8 @@ public class JdbcRestController {
         );
     }
 
-    @RequestMapping("/mimer")  // todo use MimerSQLDialect instead when docker container fixed
+    // Requires low traffic to avoid error: Operation not allowed. Configured number of users exceeded
+    @RequestMapping("/mimer")  // MimerSQLDialect not working: SQLGrammarException Could not prepare statement, Sequence does not exist, or no privilege
     public Greeting greetingMimerSQL(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("com.mimer.jdbc.Driver");  // required
         String inject = name.replace(":", "\\:");
@@ -234,15 +235,10 @@ public class JdbcRestController {
     
     @RequestMapping("/presto")
     public Greeting greetingPresto(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
-        // jdbc com.facebook.presto:presto-jdbc:0.243.2
-        // docker run -p 8080:8080 --name presto prestosql/presto
-        // jdbc:presto://127.0.0.1:8078/system
-        // test
-        // 4Go
         Class.forName("com.facebook.presto.jdbc.PrestoDriver");
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:presto://127.0.0.1:8078/system",
+            "jdbc:presto://jsql-presto:18080/system",
             "test",
             StringUtils.EMPTY,
             "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"

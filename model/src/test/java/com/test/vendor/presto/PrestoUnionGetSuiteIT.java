@@ -1,4 +1,4 @@
-package com.test.vendor.exasol;
+package com.test.vendor.presto;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,8 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class ExasolUnionGetSuiteIT extends ConcreteExasolSuiteIT {
-    
+class PrestoUnionGetSuiteIT extends ConcretePrestoSuiteIT {
+
     @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
@@ -17,21 +17,16 @@ class ExasolUnionGetSuiteIT extends ConcreteExasolSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/exasol?name="
+            "http://localhost:8080/presto?name="
         );
-
-        model  // remove when stable
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyBlindBitDisabled(true);
-
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPresto());  // collision with postgres to fix
         model.beginInjection();
     }
     

@@ -24,15 +24,16 @@ class MimerBlindBinGetSuiteIT extends ConcreteMimerSuiteIT {
 
         model
         .getMediatorUtils()
-        .getConnectionUtil()
-        .withMethodInjection(model.getMediatorMethod().getQuery())
-        .withTypeRequest("GET");
+        .getPreferencesUtil()
+        .withCountLimitingThreads(2)
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyUnionDisabled(true);
 
         model
         .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsStrategyBlindBitDisabled(true)
-        .withIsStrategyUnionDisabled(true);
+        .getConnectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
 
         model.beginInjection();
     }

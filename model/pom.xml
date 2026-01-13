@@ -67,6 +67,7 @@
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
         <oracle.version>23.26.0.0.0</oracle.version>
         <postgres.version>42.7.8</postgres.version>
+        <presto.version>0.296</presto.version>
         <sqlite.version>3.51.1.0</sqlite.version>
         <sybase.version>16.0</sybase.version>
         <vertica.version>25.3.0-0</vertica.version>
@@ -534,6 +535,12 @@
             <groupId>org.jumpmind.symmetric.module</groupId>
             <artifactId>jconn4</artifactId>
             <version>${sybase.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.facebook.presto</groupId>
+            <artifactId>presto-jdbc</artifactId>
+            <version>${presto.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
