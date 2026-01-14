@@ -132,7 +132,8 @@ strategy:
     - "Sybase: Server message:"
     - Invalid SQL statement or JDBC escape, terminating '
     - sybase
-   vendorSpecific: "'a' = case when ${test} then 'a' else show_sec_services() end"
+   # add @@version to fix collision with virtuoso
+   vendorSpecific: "'a' = case when ${test} then 'a' else show_sec_services() %2b @@version end"
 
  binary:
   test:

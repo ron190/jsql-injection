@@ -205,6 +205,15 @@
                 <maven-failsafe-plugin.include>**/*Vertica*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
+        <profile>
+            <id>tests-virtuoso</id>
+            <properties>
+                <profileId>tests-virtuoso</profileId>
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
+                <maven-failsafe-plugin.include>**/*Virtuoso*SuiteIT.java</maven-failsafe-plugin.include>
+            </properties>
+        </profile>
     </profiles>
 
     <dependencyManagement>

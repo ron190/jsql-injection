@@ -1,4 +1,4 @@
-package com.test.vendor.vertica;
+package com.test.vendor.virtuoso;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class VerticaBlindBinGetSuiteIT extends ConcreteVerticaSuiteIT {
+class VirtuosoUnionGetSuiteIT extends ConcreteVirtuosoSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -17,17 +17,14 @@ class VerticaBlindBinGetSuiteIT extends ConcreteVerticaSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/vertica?name="
+            "http://localhost:8080/virtuoso?name="
         );
-
-        model.setIsScanning(true);
-
+        
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindBitDisabled(true)
-        .withIsStrategyErrorDisabled(true)
-        .withIsStrategyUnionDisabled(true);
+        .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyBlindBitDisabled(true);
 
         model
         .getMediatorUtils()
@@ -37,7 +34,25 @@ class VerticaBlindBinGetSuiteIT extends ConcreteVerticaSuiteIT {
         
         model.beginInjection();
     }
-
+    
+    @Override
+    @RetryingTest(3)
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+    
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
@@ -47,7 +62,7 @@ class VerticaBlindBinGetSuiteIT extends ConcreteVerticaSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBin(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

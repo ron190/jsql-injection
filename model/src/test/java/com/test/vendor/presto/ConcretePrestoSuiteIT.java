@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 public abstract class ConcretePrestoSuiteIT extends AbstractTestSuite {
 
     public ConcretePrestoSuiteIT() {
-        this.jdbcURL = "jdbc:presto://jsql-presto:18080/system";
+        this.jdbcURL = "jdbc:presto://jsql-presto:8084/system";
         this.jdbcUser = "test";
         this.jdbcPass = StringUtils.EMPTY;
 

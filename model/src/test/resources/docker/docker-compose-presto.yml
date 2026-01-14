@@ -5,8 +5,10 @@ services:
     container_name: jsql-presto
     image: prestodb/presto
     privileged: true  # required on local
+    volumes:
+      - ./presto.config.properties:/opt/presto-server/etc/config.properties
     ports:
-      - "18080:8080"
+      - "8084:8084"
     networks:
       - jsql-network
 

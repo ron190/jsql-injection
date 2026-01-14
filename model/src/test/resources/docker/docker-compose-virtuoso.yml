@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+
+  virtuoso:
+    container_name: jsql-virtuoso
+    image: joernhees/virtuoso
+    ports:
+      - "1111:1111"
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

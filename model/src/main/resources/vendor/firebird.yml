@@ -84,7 +84,8 @@ strategy:
     - Unexpected end of command - line
    orderByErrorMessage:
     - Invalid column position used in the ORDER BY clause
-   vendorSpecific: 1=case when ${test} then 1 else bin_and(2,2) end
+   # add rdb$get_context to fix collision with virtuoso
+   vendorSpecific: 1=case when ${test} then 1 else bin_and(2,2) || rdb$get_context('SYSTEM', 'DB_NAME') end
 
  binary:
   test:

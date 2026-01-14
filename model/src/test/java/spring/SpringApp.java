@@ -51,6 +51,7 @@ public class SpringApp {
 
     static {
         try {  // ensure driver is loaded
+            Class.forName("virtuoso.jdbc3.Driver");  // required static for expected jdbc result
             Class.forName("com.mimer.jdbc.Driver");  // required static for expected jdbc result
             Class.forName("com.mckoi.JDBCDriver");  // required static for expected jdbc result
         } catch (ClassNotFoundException e) {

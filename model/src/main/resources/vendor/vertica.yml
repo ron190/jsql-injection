@@ -124,7 +124,8 @@ strategy:
    orderByErrorMessage:
     # Collision with postgres
     - (?!.*Vertica)ORDER BY position 1337 is not in select list
-   vendorSpecific: "'a' = case when ${test} then 'a' else URI_PERCENT_ENCODE('') end"
+   # binary & to fix collision with virtuoso
+   vendorSpecific: "'a' = case when ${test} then 'a' else URI_PERCENT_ENCODE('') || (1 & 1) end"
 
  union:
   indices: union select ${indices}

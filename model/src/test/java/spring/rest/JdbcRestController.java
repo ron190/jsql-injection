@@ -238,7 +238,7 @@ public class JdbcRestController {
         Class.forName("com.facebook.presto.jdbc.PrestoDriver");
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:presto://jsql-presto:18080/system",
+            "jdbc:presto://jsql-presto:8084/system",
             "test",
             StringUtils.EMPTY,
             "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
@@ -308,6 +308,19 @@ public class JdbcRestController {
 
         return greeting;
     }
+
+    @RequestMapping("/virtuoso")
+    public Greeting greetingVirtuoso(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+        Class.forName("virtuoso.jdbc3.Driver");
+        String inject = name.replace(":", "\\:");
+        return this.getGreeting(
+            "jdbc:virtuoso://jsql-virtuoso:1111",
+            "dba",
+            "dba",
+            "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
+        );
+    }
+
 
     private Greeting getGreeting(String url, String user, String password, String sql) {
         Greeting greeting;

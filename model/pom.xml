@@ -18,6 +18,10 @@
             <id>monetdb-repository</id>
             <url>https://clojars.org/repo/</url>
         </repository>
+        <repository>
+            <id>virtuoso-repository</id>
+            <url>https://maven.aksw.org/repository/internal/</url>
+        </repository>
     </repositories>
 
     <properties>
@@ -71,6 +75,7 @@
         <sqlite.version>3.51.1.0</sqlite.version>
         <sybase.version>16.0</sybase.version>
         <vertica.version>25.3.0-0</vertica.version>
+        <virtuoso.version>6.0.0-tp1</virtuoso.version>
     </properties>
 
     <dependencyManagement>
@@ -547,6 +552,12 @@
             <groupId>com.vertica.jdbc</groupId>
             <artifactId>vertica-jdbc</artifactId>
             <version>${vertica.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.openlinksw</groupId>
+            <artifactId>virtuoso-jdbc3</artifactId>
+            <version>${virtuoso.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

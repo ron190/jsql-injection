@@ -64,6 +64,7 @@ public class MediatorVendor {
     private final Vendor sqlserver;
     private final Vendor sybase;
     private final Vendor vertica;
+    private final Vendor virtuoso;
 
     private final List<Vendor> vendors;
     private final List<Vendor> vendorsForFingerprint;
@@ -135,16 +136,18 @@ public class MediatorVendor {
         this.sqlserver = new Vendor(new VendorYaml("sqlserver.yml", injectionModel));
         this.sybase = new Vendor(new VendorYaml("sybase.yml", injectionModel));
         this.vertica = new Vendor(new VendorYaml("vertica.yml", injectionModel));
+        this.virtuoso = new Vendor(new VendorYaml("virtuoso.yml", injectionModel));
 
         this.vendors = Arrays.asList(
             this.auto, access, altibase, ctreeace, this.cubrid, this.db2, this.derby, exasol, this.firebird, frontbase, this.h2,
             hana, this.hsqldb, this.informix, ingres, iris, maxdb, this.mckoi, this.mimer, this.monetdb, this.mysql, this.neo4j,
-            netezza, nuodb, this.oracle, this.postgres, presto, this.sqlite, this.sqlserver, this.sybase, teradata, this.vertica
+            netezza, nuodb, this.oracle, this.postgres, presto, this.sqlite, this.sqlserver, this.sybase, teradata, this.vertica,
+            this.virtuoso
         );
-        this.vendorsForFingerprint = Arrays.asList(
+        this.vendorsForFingerprint = Arrays.asList(  // Add sortIndex
             this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, access, altibase, ctreeace,
             this.cubrid, this.db2, this.derby, exasol, this.firebird, frontbase, hana, this.informix, ingres, iris, maxdb, this.mckoi,
-            this.mimer, this.monetdb, this.neo4j, netezza, nuodb, presto, this.sybase, teradata, this.vertica
+            this.mimer, this.monetdb, this.neo4j, netezza, nuodb, presto, this.sybase, teradata, this.vertica, this.virtuoso
         );
 
         this.setVendor(this.mysql);
@@ -362,5 +365,9 @@ public class MediatorVendor {
 
     public Vendor getPresto() {
         return this.presto;
+    }
+
+    public Vendor getVirtuoso() {
+        return this.virtuoso;
     }
 }
