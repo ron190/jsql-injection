@@ -5,6 +5,9 @@ services:
     container_name: jsql-mimer
     image: mimersql/mimersql_v11.0:v11.0.9
     privileged: true  # required on local
+    command:
+      - --security-opt
+      - seccomp=unconfined
     ports:
       - "1360:1360"
     environment:

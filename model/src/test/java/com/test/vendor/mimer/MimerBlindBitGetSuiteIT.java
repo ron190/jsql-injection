@@ -25,9 +25,10 @@ class MimerBlindBitGetSuiteIT extends ConcreteMimerSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withCountLimitingThreads(2)
-        .withIsNotSearchingCharInsertion(true)  // reduce db calls: enabled on single other IT
+        .withCountLimitingThreads(1)
+        .withIsNotSearchingCharInsertion(true)  // reduce db calls
         .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyStackDisabled(true)
         .withIsStrategyUnionDisabled(true);
 
         model
@@ -36,7 +37,7 @@ class MimerBlindBitGetSuiteIT extends ConcreteMimerSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMimer());  // reduce db calls: enabled on single other IT
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMimer());  // reduce db calls
         model.beginInjection();
     }
 

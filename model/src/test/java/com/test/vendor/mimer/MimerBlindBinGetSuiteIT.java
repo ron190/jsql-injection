@@ -17,7 +17,7 @@ class MimerBlindBinGetSuiteIT extends ConcreteMimerSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/mimer?name="
+            "http://localhost:8080/mimer?name='"
         );
 
         model.setIsScanning(true);
@@ -25,8 +25,10 @@ class MimerBlindBinGetSuiteIT extends ConcreteMimerSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withCountLimitingThreads(2)
+        .withCountLimitingThreads(1)
+        .withIsNotSearchingCharInsertion(true)  // reduce db calls
         .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyStackDisabled(true)
         .withIsStrategyUnionDisabled(true);
 
         model
@@ -35,6 +37,7 @@ class MimerBlindBinGetSuiteIT extends ConcreteMimerSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMimer());  // reduce db calls
         model.beginInjection();
     }
 

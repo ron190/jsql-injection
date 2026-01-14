@@ -23,11 +23,9 @@ resource:
        '${trail_sql}'
    ) r from (
        select distinct
-           schema_name r,
+           table_schema r,
            '0' q
        from information_schema.tables
-       right join information_schema.schemata
-       on schema_name = table_schema
        ${limit}
    ) x
 

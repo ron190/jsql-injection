@@ -24,17 +24,19 @@ class MimerUnionGetSuiteIT extends ConcreteMimerSuiteIT {
         .getMediatorUtils()
         .getPreferencesUtil()
         .withCountLimitingThreads(1)
-        .withIsNotSearchingCharInsertion(true)  // reduce db calls: enabled on single other IT
+        .withCountUnionIndex(10)
+        .withIsNotSearchingCharInsertion(true)  // reduce db calls
         .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyBlindBitDisabled(true);
-        
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyStackDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMimer());  // reduce db calls: enabled on single other IT
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMimer());  // reduce db calls
         model.beginInjection();
     }
     

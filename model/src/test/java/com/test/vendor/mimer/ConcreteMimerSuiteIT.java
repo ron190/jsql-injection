@@ -6,19 +6,19 @@ import org.junit.jupiter.api.Assertions;
 
 public abstract class ConcreteMimerSuiteIT extends AbstractTestSuite {
 
+    // mimer detects heavy load and will throw SQLException: Operation not allowed. Configured number of users exceeded.
     public ConcreteMimerSuiteIT() {
         this.jdbcURL = "jdbc:mimer://jsql-mimer:1360/mimerdb";
         this.jdbcUser = "SYSADM";
         this.jdbcPass = "SYSADM";
 
-        this.databaseToInject = "MIMER";
-        this.tableToInject = "ODBC_TABLE_TYPES";
-        this.columnToInject = "TABLE_TYPE";
+        this.databaseToInject = "SYSTEM";
+        this.tableToInject = "ONEROW";
+        this.columnToInject = "M";
         
         this.queryAssertDatabases = """
-            select distinct schema_name
+            select distinct table_schema
             from information_schema.tables
-            right join information_schema.schemata on schema_name = table_schema
         """;
         this.queryAssertTables = String.format("""
             select table_name

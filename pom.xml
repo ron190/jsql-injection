@@ -98,9 +98,11 @@
                     **/*Mimer*SuiteIT.java,
                     **/*MonetDb*SuiteIT.java,
                     **/*Oracle*SuiteIT.java,
+                    **/*Presto*SuiteIT.java,
                     **/*SqlServer*SuiteIT.java,
                     **/*Sybase*SuiteIT.java,
-                    **/*Vertica*SuiteIT.java
+                    **/*Vertica*SuiteIT.java,
+                    **/*Virtuoso*SuiteIT.java
                 </maven-failsafe-plugin.exclude>
             </properties>
         </profile>

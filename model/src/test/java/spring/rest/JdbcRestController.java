@@ -119,6 +119,18 @@ public class JdbcRestController {
         return greeting;
     }
 
+    @RequestMapping("/presto")
+    public Greeting greetingPresto(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+        Class.forName("com.facebook.presto.jdbc.PrestoDriver");
+        String inject = name.replace(":", "\\:");
+        return this.getGreeting(
+                "jdbc:presto://jsql-presto:8084/system",
+                "test",
+                StringUtils.EMPTY,
+                "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
+        );
+    }
+
     @RequestMapping("/vertica")
     public Greeting greetingVertica(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
@@ -127,6 +139,18 @@ public class JdbcRestController {
             "dbadmin",
             "password",
             "select table_schema from v_catalog.system_tables where 1 = "+ inject
+        );
+    }
+
+    @RequestMapping("/virtuoso")
+    public Greeting greetingVirtuoso(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+        Class.forName("virtuoso.jdbc3.Driver");
+        String inject = name.replace(":", "\\:");
+        return this.getGreeting(
+                "jdbc:virtuoso://jsql-virtuoso:1111",
+                "dba",
+                "dba",
+                "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
         );
     }
 
@@ -232,19 +256,7 @@ public class JdbcRestController {
             "select SCHEMA_NAME from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
         );
     }
-    
-    @RequestMapping("/presto")
-    public Greeting greetingPresto(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
-        Class.forName("com.facebook.presto.jdbc.PrestoDriver");
-        String inject = name.replace(":", "\\:");
-        return this.getGreeting(
-            "jdbc:presto://jsql-presto:8084/system",
-            "test",
-            StringUtils.EMPTY,
-            "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
-        );
-    }
-    
+
     @RequestMapping("/netezza")
     public Greeting greetingNetezza(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         // no container
@@ -307,18 +319,6 @@ public class JdbcRestController {
         }
 
         return greeting;
-    }
-
-    @RequestMapping("/virtuoso")
-    public Greeting greetingVirtuoso(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
-        Class.forName("virtuoso.jdbc3.Driver");
-        String inject = name.replace(":", "\\:");
-        return this.getGreeting(
-            "jdbc:virtuoso://jsql-virtuoso:1111",
-            "dba",
-            "dba",
-            "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
-        );
     }
 
 
