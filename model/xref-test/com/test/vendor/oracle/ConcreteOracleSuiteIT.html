@@ -30,13 +30,13 @@
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          <strong class="jxr_keyword">this</strong>.columnToInject = <span class="jxr_string">"NAME"</span>;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>          
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>          <strong class="jxr_keyword">this</strong>.queryAssertDatabases = <span class="jxr_string">"SELECT distinct owner FROM all_tables"</span>;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>          <strong class="jxr_keyword">this</strong>.queryAssertTables = <span class="jxr_string">"SELECT distinct table_name FROM all_tables where owner='XDB'"</span>;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>          <strong class="jxr_keyword">this</strong>.queryAssertColumns = <span class="jxr_string">""</span><span class="jxr_string">"
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>          <strong class="jxr_keyword">this</strong>.queryAssertTables = String.format(<span class="jxr_string">"SELECT distinct table_name FROM all_tables where owner='%s'"</span>, <strong class="jxr_keyword">this</strong>.databaseToInject);
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>          <strong class="jxr_keyword">this</strong>.queryAssertColumns = String.format(<span class="jxr_string">""</span><span class="jxr_string">"
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>              SELECT distinct column_name
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>              FROM all_tab_columns
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>              where owner='XDB' and table_name='APP_USERS_AND_ROLES'
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>          <span class="jxr_string">""</span><span class="jxr_string">";
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">this</strong>.queryAssertValues = <span class="jxr_string">"SELECT distinct NAME FROM XDB.APP_USERS_AND_ROLES"</span>;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>              where owner='%s' and table_name='%s'
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>          <span class="jxr_string">""</span><span class="jxr_string">", <strong class="jxr_keyword">this</strong>.databaseToInject, <strong class="jxr_keyword">this</strong>.tableToInject);
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">this</strong>.queryAssertValues = String.format(<span class="jxr_string">"select distinct %s from %s.%s"</span>, <strong class="jxr_keyword">this</strong>.columnToInject, <strong class="jxr_keyword">this</strong>.databaseToInject, <strong class="jxr_keyword">this</strong>.tableToInject);
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      }
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      @AfterEach

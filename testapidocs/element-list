@@ -21,10 +21,12 @@ com.test.vendor.mysql
 com.test.vendor.neo4j
 com.test.vendor.oracle
 com.test.vendor.postgres
+com.test.vendor.presto
 com.test.vendor.sqlite
 com.test.vendor.sqlserver
 com.test.vendor.sybase
 com.test.vendor.vertica
+com.test.vendor.virtuoso
 spring
 spring.page
 spring.rest

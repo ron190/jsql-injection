@@ -538,7 +538,7 @@
 <a class="jxr_linenumber" name="L530" href="#L530">530</a>             textareaError.setCaretPosition(0);
 <a class="jxr_linenumber" name="L531" href="#L531">531</a>             panelError.add(<strong class="jxr_keyword">new</strong> RTextScrollPane(textareaError, false), BorderLayout.CENTER);
 <a class="jxr_linenumber" name="L532" href="#L532">532</a>             
-<a class="jxr_linenumber" name="L533" href="#L533">533</a>             <strong class="jxr_keyword">var</strong> panelLimit = <strong class="jxr_keyword">new</strong> JPanel();  <em class="jxr_comment">// TODO Integrate Error limit</em>
+<a class="jxr_linenumber" name="L533" href="#L533">533</a>             <strong class="jxr_keyword">var</strong> panelLimit = <strong class="jxr_keyword">new</strong> JPanel();  <em class="jxr_comment">// TODO add Error capacity</em>
 <a class="jxr_linenumber" name="L534" href="#L534">534</a>             panelLimit.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelLimit, BoxLayout.LINE_AXIS));
 <a class="jxr_linenumber" name="L535" href="#L535">535</a>             panelLimit.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">" Overflow limit: "</span>));
 <a class="jxr_linenumber" name="L536" href="#L536">536</a>             panelLimit.add(<strong class="jxr_keyword">new</strong> JTextField(Integer.toString(methodError.getCapacity())));

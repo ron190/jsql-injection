@@ -530,7 +530,7 @@ public class SqlEngine extends JPanel {
 <span class="fc" id="L530">            textareaError.setCaretPosition(0);</span>
 <span class="fc" id="L531">            panelError.add(new RTextScrollPane(textareaError, false), BorderLayout.CENTER);</span>
             
-<span class="fc" id="L533">            var panelLimit = new JPanel();  // TODO Integrate Error limit</span>
+<span class="fc" id="L533">            var panelLimit = new JPanel();  // TODO add Error capacity</span>
 <span class="fc" id="L534">            panelLimit.setLayout(new BoxLayout(panelLimit, BoxLayout.LINE_AXIS));</span>
 <span class="fc" id="L535">            panelLimit.add(new JLabel(&quot; Overflow limit: &quot;));</span>
 <span class="fc" id="L536">            panelLimit.add(new JTextField(Integer.toString(methodError.getCapacity())));</span>

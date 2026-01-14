@@ -28,7 +28,7 @@ public class Table extends AbstractElementDatabase {
     private final Database parentDatabase;
     
     // The number of rows in the table.
-    // TODO to int and move to abstract class
+    // TODO to int and move to abstract class, same for tableCount in Database
     private String rowCount;
 
     /**

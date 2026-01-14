@@ -24,19 +24,19 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>          <strong class="jxr_keyword">this</strong>.columnToInject = <span class="jxr_string">"name"</span>;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>          
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">this</strong>.queryAssertDatabases = <span class="jxr_string">"select name from sys.schemas"</span>;
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">this</strong>.queryAssertTables = <span class="jxr_string">""</span><span class="jxr_string">"
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">this</strong>.queryAssertTables = String.format(<span class="jxr_string">""</span><span class="jxr_string">"
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>              select t.name
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>              from tables t
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>              <strong class="jxr_keyword">inner</strong> join schemas s on t.schema_id = s.id
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>              where s.name = 'sys'
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>          <span class="jxr_string">""</span><span class="jxr_string">";
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>          <strong class="jxr_keyword">this</strong>.queryAssertColumns = <span class="jxr_string">""</span><span class="jxr_string">"
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>              where s.name = '%s'
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>          <span class="jxr_string">""</span><span class="jxr_string">", <strong class="jxr_keyword">this</strong>.databaseToInject);
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>          <strong class="jxr_keyword">this</strong>.queryAssertColumns = String.format(<span class="jxr_string">""</span><span class="jxr_string">"
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>              select c.name
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>              from tables t
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>              <strong class="jxr_keyword">inner</strong> join schemas s on t.schema_id = s.id
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>              <strong class="jxr_keyword">inner</strong> join columns c on t.id = c.table_id
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>              where s.name = 'sys' and t.name = 'db_user_info'
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <span class="jxr_string">""</span><span class="jxr_string">";
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>              where s.name = '%s' and t.name = '%s'
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <span class="jxr_string">""</span><span class="jxr_string">", <strong class="jxr_keyword">this</strong>.databaseToInject, <strong class="jxr_keyword">this</strong>.tableToInject);
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>          <strong class="jxr_keyword">this</strong>.queryAssertValues = String.format(<span class="jxr_string">"select %s from %s.%s"</span>, <strong class="jxr_keyword">this</strong>.columnToInject, <strong class="jxr_keyword">this</strong>.databaseToInject, <strong class="jxr_keyword">this</strong>.tableToInject);
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      }
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
