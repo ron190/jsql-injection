@@ -182,7 +182,7 @@ strategy:
     - SQLite
    orderByErrorMessage:
     - ORDER BY term out of range - should be between
-   vendorSpecific: case when ${test} then 'a' else quote('b') end=printf('a')
+   vendorSpecific: printf('a') = case when ${test} then printf('a') else quote('b') end
 
  union:
   indices: union select ${indices}

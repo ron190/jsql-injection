@@ -77,7 +77,7 @@ public class CallableFile implements Callable<CallableFile> {
             .orElse(new AbstractMap.SimpleEntry<>(null, () -> {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_DEFAULT,
-                    "Read file not implemented for [{}], share a working example to GitHub to speed up release",
+                    "Read file not implemented for [{}], share a working example on GitHub to speed up release",
                     this.injectionModel.getMediatorVendor().getVendor()
                 );
                 return StringUtils.EMPTY;

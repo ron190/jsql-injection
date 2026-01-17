@@ -156,6 +156,8 @@
                                         <exclude>img/**/*</exclude>
                                         <exclude>images/**/*</exclude>
                                         <exclude>licences/**/*</exclude>
+                                        <!-- hide build warnings -->
+                                        <exclude>module-info.class</exclude>
                                     </excludes>
                                 </filter>
                             </filters>

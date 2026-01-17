@@ -61,7 +61,7 @@ public class ManagerFile extends AbstractManagerList {
             ).contains(MediatorHelper.model().getMediatorVendor().getVendor())) {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
-                    "Read file for [{}] not implemented, share a working example to GitHub to speed up release",
+                    "Read file not implemented for [{}], share a working example on GitHub to speed up release",
                     MediatorHelper.model().getMediatorVendor().getVendor()
                 );
                 return;
