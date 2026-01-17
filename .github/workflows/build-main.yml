@@ -47,15 +47,15 @@ jobs:
 
       - name: Mount databases on docker
         run: |
-          docker compose -f $DOCKER_RESOURCES/docker-compose.yml build --parallel
-          docker compose -f $DOCKER_RESOURCES/docker-compose.yml up -d
+          docker compose -f $DOCKER_RESOURCES/docker-compose-Main.yml build --parallel
+          docker compose -f $DOCKER_RESOURCES/docker-compose-Main.yml up -d
 
       - name: List docker images and containers
         run: docker images && docker container ls
 
       - name: Database health checks and configuration
         run: |
-          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh
+          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh Main
           $DOCKER_RESOURCES/scripts/buff.sh
           $DOCKER_RESOURCES/scripts/verify.sh
 

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SqlServerUnionGetSuiteIT extends ConcreteSqlServerSuiteIT {
+class SqlserverErrorSuiteIT extends ConcreteSqlserverSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -17,16 +17,16 @@ class SqlServerUnionGetSuiteIT extends ConcreteSqlServerSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/union?tenant=sqlserver&name="
+            "http://localhost:8080/errors?tenant=sqlserver&name="
         );
 
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyTimeDisabled(true);
-        
+        .withIsStrategyBlindBitDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
@@ -35,7 +35,7 @@ class SqlServerUnionGetSuiteIT extends ConcreteSqlServerSuiteIT {
         
         model.beginInjection();
     }
-
+    
     @Override
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
@@ -63,7 +63,7 @@ class SqlServerUnionGetSuiteIT extends ConcreteSqlServerSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

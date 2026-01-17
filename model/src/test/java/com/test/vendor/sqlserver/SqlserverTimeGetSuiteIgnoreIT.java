@@ -7,8 +7,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SqlServerStackSuiteIT extends ConcreteSqlServerSuiteIT {
-    
+// Ignored as Time stack does not seem possible with jdbc
+class SqlserverTimeGetSuiteIgnoreIT extends ConcreteSqlserverSuiteIT {
+
     @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
@@ -17,45 +18,29 @@ class SqlServerStackSuiteIT extends ConcreteSqlServerSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/tx/stack?tenant=sqlserver&name="
+            "http://localhost:8080/time?tenant=sqlserver&name=1'"
         );
+        
+        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsStrategyBlindBitDisabled(true)
-        .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyTimeDisabled(true);
+        .withIsStrategyBlindBinDisabled(true);
 
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-
+        
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlserver());
         model.beginInjection();
     }
     
     @Override
-    @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
-    }
-    
-    @Override
-    @RetryingTest(3)
+    @RetryingTest(6)
     public void listValues() throws JSqlException {
         super.listValues();
     }
@@ -63,7 +48,7 @@ class SqlServerStackSuiteIT extends ConcreteSqlServerSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getStack(),
+            this.injectionModel.getMediatorStrategy().getTime(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

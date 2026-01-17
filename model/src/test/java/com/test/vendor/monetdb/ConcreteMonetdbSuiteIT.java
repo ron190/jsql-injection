@@ -4,9 +4,9 @@ import com.test.AbstractTestSuite;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 
-public abstract class ConcreteMonetDbSuiteIT extends AbstractTestSuite {
+public abstract class ConcreteMonetdbSuiteIT extends AbstractTestSuite {
 
-    public ConcreteMonetDbSuiteIT() {
+    public ConcreteMonetdbSuiteIT() {
         this.jdbcURL = "jdbc:monetdb://jsql-monetdb:50000/db";
         this.jdbcUser = "monetdb";
         this.jdbcPass = "monetdb";

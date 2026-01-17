@@ -6,9 +6,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import spring.SpringApp;
 
-public abstract class ConcreteSqlServerSuiteIT extends AbstractTestSuite {
+public abstract class ConcreteSqlserverSuiteIT extends AbstractTestSuite {
 
-    public ConcreteSqlServerSuiteIT() {
+    public ConcreteSqlserverSuiteIT() {
         this.jdbcURL = SpringApp.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
         this.jdbcUser = SpringApp.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
         this.jdbcPass = SpringApp.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);

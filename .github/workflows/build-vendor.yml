@@ -51,15 +51,15 @@ jobs:
 
       - name: Mount databases
         run: |
-          docker compose -f $DOCKER_RESOURCES/docker-compose-${NAME_VENDOR,,}.yml build --parallel
-          docker compose -f $DOCKER_RESOURCES/docker-compose-${NAME_VENDOR,,}.yml up -d
+          docker compose -f $DOCKER_RESOURCES/docker-compose-$NAME_VENDOR.yml build --parallel
+          docker compose -f $DOCKER_RESOURCES/docker-compose-$NAME_VENDOR.yml up -d
 
       - name: List images and containers
         run: docker images && docker container ls
 
       - name: Database health checks and configuration
         run: |
-          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck-${NAME_VENDOR,,}.sh
+          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh $NAME_VENDOR
 
       - name: Build project container
         run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .

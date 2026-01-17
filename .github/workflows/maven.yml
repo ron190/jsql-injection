@@ -32,7 +32,7 @@ jobs:
       fail-fast: false
       matrix:
         # must match java classes
-        vendor: [Clickhouse, Db2, Exasol, Hana, MonetDb, Mimer, Oracle, Presto, SqlServer, Sybase, Vertica, Virtuoso]
+        vendor: [Clickhouse, Db2, Exasol, Hana, Monetdb, Mimer, Oracle, Presto, Sqlserver, Sybase, Vertica, Virtuoso]
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
       NAME_VENDOR: ${{ matrix.vendor }}

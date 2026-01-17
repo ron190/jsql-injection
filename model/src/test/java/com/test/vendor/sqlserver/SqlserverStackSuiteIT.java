@@ -7,8 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SqlServerErrorSuiteIT extends ConcreteSqlServerSuiteIT {
-
+class SqlserverStackSuiteIT extends ConcreteSqlserverSuiteIT {
+    
     @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
@@ -17,22 +17,22 @@ class SqlServerErrorSuiteIT extends ConcreteSqlServerSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/errors?tenant=sqlserver&name="
+            "http://localhost:8080/tx/stack?tenant=sqlserver&name="
         );
 
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyBlindBitDisabled(true);
+        .withIsStrategyTimeDisabled(true);
 
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
+
         model.beginInjection();
     }
     
@@ -41,19 +41,19 @@ class SqlServerErrorSuiteIT extends ConcreteSqlServerSuiteIT {
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
-
+    
     @Override
     @RetryingTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
-
+    
     @Override
     @RetryingTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
-
+    
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
@@ -63,7 +63,7 @@ class SqlServerErrorSuiteIT extends ConcreteSqlServerSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getError(),
+            this.injectionModel.getMediatorStrategy().getStack(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

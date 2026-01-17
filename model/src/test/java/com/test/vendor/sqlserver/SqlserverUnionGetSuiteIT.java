@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SqlServerBlindGetSuiteIT extends ConcreteSqlServerSuiteIT {
+class SqlserverUnionGetSuiteIT extends ConcreteSqlserverSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -17,14 +17,14 @@ class SqlServerBlindGetSuiteIT extends ConcreteSqlServerSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=sqlserver&name=1'*"
+            "http://localhost:8080/union?tenant=sqlserver&name="
         );
-        
-        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
         .getPreferencesUtil()
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true);
         
         model
@@ -38,6 +38,24 @@ class SqlServerBlindGetSuiteIT extends ConcreteSqlServerSuiteIT {
 
     @Override
     @RetryingTest(3)
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
+    }
+
+    @Override
+    @RetryingTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+
+    @Override
+    @RetryingTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+
+    @Override
+    @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
@@ -45,7 +63,7 @@ class SqlServerBlindGetSuiteIT extends ConcreteSqlServerSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBit(),
+            this.injectionModel.getMediatorStrategy().getUnion(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }
