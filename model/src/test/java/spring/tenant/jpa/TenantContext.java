@@ -9,7 +9,7 @@ public class TenantContext {
     public static String getCurrentTenant() {
         return TenantContext.CURRENT_TENANT.get() != null
             ? TenantContext.CURRENT_TENANT.get()
-            : SpringApp.H2;
+            : SpringApp.TENANT_H2;
     }
 
     public static void setCurrentTenant(String tenant) {

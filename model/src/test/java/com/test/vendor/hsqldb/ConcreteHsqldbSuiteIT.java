@@ -9,9 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteHsqldbSuiteIT extends AbstractTestSuite {
 
     public ConcreteHsqldbSuiteIT() {
-        this.jdbcURL = SpringApp.propsHsqldb.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsHsqldb.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsHsqldb.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("hsqldb");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "PUBLIC";
         this.tableToInject = "STUDENT";

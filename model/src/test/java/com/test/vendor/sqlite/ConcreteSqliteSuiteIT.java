@@ -16,13 +16,10 @@ import java.util.regex.Pattern;
 public abstract class ConcreteSqliteSuiteIT extends AbstractTestSuite {
 
     public ConcreteSqliteSuiteIT() {
-        this.config();
-    }
-    
-    public void config() {
-        this.jdbcURL = SpringApp.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsSqlite.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("sqlite");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "musicstore";
         this.tableToInject = "Student";

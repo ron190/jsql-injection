@@ -9,9 +9,10 @@ import spring.SpringApp;
 public abstract class ConcretePostgresSuiteIT extends AbstractTestSuite {
 
     public ConcretePostgresSuiteIT() {
-        this.jdbcURL = SpringApp.propsPostgres.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsPostgres.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsPostgres.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("postgres");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "public";
         this.tableToInject = "student";

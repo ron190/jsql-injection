@@ -1,15 +1,18 @@
 package com.test.vendor.exasol;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.JdbcSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import spring.SpringApp;
 
 public abstract class ConcreteExasolSuiteIT extends AbstractTestSuite {
 
     public ConcreteExasolSuiteIT() {
-        this.jdbcURL = "jdbc:exa:jsql-exasol:8563/nocertcheck";
-        this.jdbcUser = "sys";
-        this.jdbcPass = "exasol";
+        var property = SpringApp.get("exasol");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "SYS";
         this.tableToInject = "EXA_CLUSTERS";

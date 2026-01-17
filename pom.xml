@@ -64,7 +64,7 @@
         <maven-failsafe-plugin.include/>
         <maven-failsafe-plugin.exclude/>
         <!-- property set on run command -->
-        <nameVendor/>
+        <testProfile/>
         <!-- disabled on specific vendor -->
         <parallel.enabled>true</parallel.enabled>
 
@@ -99,10 +99,10 @@
                     **/*Exasol*SuiteIT.java,
                     **/*Hana*SuiteIT.java,
                     **/*Mimer*SuiteIT.java,
-                    **/*MonetDb*SuiteIT.java,
+                    **/*Monetdb*SuiteIT.java,
                     **/*Oracle*SuiteIT.java,
                     **/*Presto*SuiteIT.java,
-                    **/*SqlServer*SuiteIT.java,
+                    **/*Sqlserver*SuiteIT.java,
                     **/*Sybase*SuiteIT.java,
                     **/*Vertica*SuiteIT.java,
                     **/*Virtuoso*SuiteIT.java
@@ -120,7 +120,7 @@
             <properties>
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*${nameVendor}*SuiteIT.java</maven-failsafe-plugin.include>
+                <maven-failsafe-plugin.include>**/*${testProfile}*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
     </profiles>

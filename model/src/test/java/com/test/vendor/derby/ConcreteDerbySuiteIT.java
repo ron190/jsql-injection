@@ -9,9 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteDerbySuiteIT extends AbstractTestSuite {
 
     public ConcreteDerbySuiteIT() {
-        this.jdbcURL = SpringApp.propsDerby.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsDerby.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsDerby.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("derby");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "ADMIN";
         this.tableToInject = "STUDENT";

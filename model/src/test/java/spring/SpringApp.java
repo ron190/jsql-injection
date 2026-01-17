@@ -25,6 +25,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import spring.rest.Student;
 import spring.rest.StudentForDelete;
 
@@ -34,7 +36,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -46,10 +47,10 @@ import java.util.stream.Stream;
 @EntityScan({"spring.rest"})
 public class SpringApp {
 
-    public static final String H2 = "h2";
-    public static final String NAME_VENDOR = "nameVendor";
-    public static final String JSQL_TENANT = "jsql.tenant";
-    public static final String VENDOR_MAIN = "Main";
+    public static final String TEST_PROFILE = "testProfile";
+    public static final String TEST_PROFILE_MAIN = "Main";
+    public static final String TENANT = "tenant";
+    public static final String TENANT_H2 = "h2";
 
     static {
         try {  // ensure driver is loaded, required static for expected jdbc result
@@ -68,68 +69,42 @@ public class SpringApp {
     private static Server serverH2;
     private static TCPJDBCServer serverMckoi;
 
-    public static final Properties propsCubrid = new Properties();
-    public static final Properties propsDb2 = new Properties();
-    public static final Properties propsDerby = new Properties();
-    public static final Properties propsFirebird = new Properties();
-    public static final Properties propsH2 = new Properties();
-    public static final Properties propsHana = new Properties();
-    public static final Properties propsHsqldb = new Properties();
-    public static final Properties propsInformix = new Properties();
-    public static final Properties propsMysql = new Properties();
-    public static final Properties propsMysqlError = new Properties();
-    public static final Properties propsOracle = new Properties();
-    public static final Properties propsPostgres = new Properties();
-    public static final Properties propsSqlite = new Properties();
-    public static final Properties propsSqlServer = new Properties();
-    public static final Properties propsSybase = new Properties();
-
-    public static final List<SimpleEntry<String, Properties>> propertiesByEngine = Arrays.asList(
-        new SimpleEntry<>("hibernate/hibernate.cubrid.properties", SpringApp.propsCubrid),
-        new SimpleEntry<>("hibernate/hibernate.db2.properties", SpringApp.propsDb2),
-        new SimpleEntry<>("hibernate/hibernate.derby.properties", SpringApp.propsDerby),
-        new SimpleEntry<>("hibernate/hibernate.firebird.properties", SpringApp.propsFirebird),
-        new SimpleEntry<>("hibernate/hibernate.h2.properties", SpringApp.propsH2),
-        new SimpleEntry<>("hibernate/hibernate.hana.properties", SpringApp.propsHana),
-        new SimpleEntry<>("hibernate/hibernate.hsqldb.properties", SpringApp.propsHsqldb),
-        new SimpleEntry<>("hibernate/hibernate.informix.properties", SpringApp.propsInformix),
-        new SimpleEntry<>("hibernate/hibernate.mysql.properties", SpringApp.propsMysql),
-        new SimpleEntry<>("hibernate/hibernate.mysql-5-5-53.properties", SpringApp.propsMysqlError),
-        new SimpleEntry<>("hibernate/hibernate.oracle.properties", SpringApp.propsOracle),
-        new SimpleEntry<>("hibernate/hibernate.postgres.properties", SpringApp.propsPostgres),
-        new SimpleEntry<>("hibernate/hibernate.sqlite.properties", SpringApp.propsSqlite),
-        new SimpleEntry<>("hibernate/hibernate.sqlserver.properties", SpringApp.propsSqlServer),
-        new SimpleEntry<>("hibernate/hibernate.sybase.properties", SpringApp.propsSybase)
-    );
+    public static final List<Properties> propertiesByEngine;
 
     static {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        SpringApp.propertiesByEngine.forEach(simpleEntry -> {
-            try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getKey())) {
-                simpleEntry.getValue().load(inputStream);
-            } catch (IOException e) {
-                LOGGER.error(e, e);
-            }
-        });
+        try {
+            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+            Resource[] hibernateProperties = resolver.getResources("classpath:hibernate/hibernate.*.properties");
+            propertiesByEngine = Arrays.stream(hibernateProperties).map(SpringApp::getProperties).toList();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private static Properties getProperties(Resource resource) {
+        try {
+            var properties = new Properties();
+            properties.load(resource.getInputStream());
+            return properties;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     public static void initDatabases() throws Exception {
-        LOGGER.info("Current nameVendor: {}", System.getProperty(SpringApp.NAME_VENDOR));
-        if (
-            System.getProperty(SpringApp.NAME_VENDOR) == null
-            || SpringApp.VENDOR_MAIN.equals(System.getProperty(SpringApp.NAME_VENDOR))
-        ) {
+        LOGGER.info("Current testProfile: {}", System.getProperty(SpringApp.TEST_PROFILE));
+        SpringApp.initH2();
+        if (SpringApp.TEST_PROFILE_MAIN.equals(System.getProperty(SpringApp.TEST_PROFILE))) {
             SpringApp.initHsqldb();
-            SpringApp.initH2();
             SpringApp.initNeo4j();
             SpringApp.initDerby();
             SpringApp.initMckoi();
         }
 
         SpringApp.getPropertiesFilterByProfile().forEach(propertyByEngine -> {
-            LOGGER.info("Configuring {} hibernate entities...", propertyByEngine.getValue().getProperty(SpringApp.JSQL_TENANT));
+            LOGGER.info("Configuring {} hibernate entities...", propertyByEngine.getProperty(SpringApp.TENANT));
             Configuration configuration = new Configuration()
-                .addProperties(propertyByEngine.getValue())
+                .addProperties(propertyByEngine)
                 .configure("hibernate/hibernate.cfg.xml")
                 .addAnnotatedClass(Student.class)
                 .addAnnotatedClass(StudentForDelete.class);
@@ -225,25 +200,28 @@ public class SpringApp {
         driver.close();
     }
 
-    public static Stream<SimpleEntry<String, Properties>> getPropertiesFilterByProfile() {
+    public static Stream<Properties> getPropertiesFilterByProfile() {
         return SpringApp.propertiesByEngine.parallelStream().filter(propertyByEngine ->
-            System.getProperty(SpringApp.NAME_VENDOR) == null
-            || propertyByEngine.getValue().getProperty(SpringApp.NAME_VENDOR).equals(System.getProperty(SpringApp.NAME_VENDOR))
-            || propertyByEngine.getValue().getProperty(SpringApp.JSQL_TENANT).equals(SpringApp.H2)
+            System.getProperty(SpringApp.TEST_PROFILE).equals(propertyByEngine.getProperty(SpringApp.TEST_PROFILE))
+            || SpringApp.TENANT_H2.equals(propertyByEngine.getProperty(SpringApp.TENANT))
         );
     }
 
-    /**
-     * For debug purpose only.
-     */
     public static void main(String[] args) throws Exception {
         SpringApp.initDatabases();
         SpringApplication.run(SpringApp.class, args);
     }
+
+    public static Properties get(String tenant) {
+        return SpringApp.propertiesByEngine.stream()
+            .filter(p -> p.get(SpringApp.TENANT).equals(tenant))
+            .findFirst()
+            .get();
+    }
     
     @PreDestroy
     public void onDestroy() throws Exception {
-        if (System.getProperty(SpringApp.NAME_VENDOR) == null || SpringApp.VENDOR_MAIN.equals(System.getProperty(SpringApp.NAME_VENDOR))) {
+        if (System.getProperty(SpringApp.TEST_PROFILE) == null || SpringApp.TEST_PROFILE_MAIN.equals(System.getProperty(SpringApp.TEST_PROFILE))) {
             LOGGER.info("Ending in-memory databases...");
             SpringApp.serverDerby.shutdown();
             SpringApp.serverH2.stop();

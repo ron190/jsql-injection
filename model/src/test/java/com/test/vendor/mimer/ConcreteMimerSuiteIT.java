@@ -1,16 +1,19 @@
 package com.test.vendor.mimer;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.JdbcSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import spring.SpringApp;
 
 public abstract class ConcreteMimerSuiteIT extends AbstractTestSuite {
 
     // mimer detects heavy load and will throw SQLException: Operation not allowed. Configured number of users exceeded.
     public ConcreteMimerSuiteIT() {
-        this.jdbcURL = "jdbc:mimer://jsql-mimer:1360/mimerdb";
-        this.jdbcUser = "SYSADM";
-        this.jdbcPass = "SYSADM";
+        var property = SpringApp.get("mimer");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "SYSTEM";
         this.tableToInject = "ONEROW";

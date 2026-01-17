@@ -9,9 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteH2SuiteIT extends AbstractTestSuite {
 
     public ConcreteH2SuiteIT() {
-        this.jdbcURL = SpringApp.propsH2.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsH2.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsH2.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("h2");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "PUBLIC";
         this.tableToInject = "STUDENT";

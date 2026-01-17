@@ -9,9 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteSqlserverSuiteIT extends AbstractTestSuite {
 
     public ConcreteSqlserverSuiteIT() {
-        this.jdbcURL = SpringApp.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsSqlServer.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("sqlserver");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "master";
         this.tableToInject = "student";

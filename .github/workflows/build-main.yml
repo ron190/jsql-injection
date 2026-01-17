@@ -82,7 +82,7 @@ jobs:
               -Dorg.slf4j.simpleLogger.log.org.apache.maven.scm=warn \
               -Dorg.slf4j.simpleLogger.log.org.apache.maven.plugins.scmpublish=warn \
               -P tests \
-              -DnameVendor=Main \
+              -DtestProfile=Main \
               org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
               org.pitest:pitest-maven:mutationCoverage \
               site \

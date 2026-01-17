@@ -9,9 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteFirebirdSuiteIT extends AbstractTestSuite {
 
     public ConcreteFirebirdSuiteIT() {
-        this.jdbcURL = SpringApp.propsFirebird.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsFirebird.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsFirebird.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("firebird");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "ADMIN";
         this.tableToInject = "STUDENT";

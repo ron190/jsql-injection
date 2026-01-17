@@ -1,15 +1,18 @@
 package com.test.vendor.vertica;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.JdbcSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import spring.SpringApp;
 
 public abstract class ConcreteVerticaSuiteIT extends AbstractTestSuite {
 
     public ConcreteVerticaSuiteIT() {
-        this.jdbcURL = "jdbc:vertica://jsql-vertica:5433/";
-        this.jdbcUser = "dbadmin";
-        this.jdbcPass = "password";
+        var property = SpringApp.get("vertica");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "v_catalog";
         this.tableToInject = "dual";

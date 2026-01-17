@@ -2,15 +2,18 @@ package com.test.vendor.presto;
 
 import com.test.AbstractTestSuite;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.cfg.JdbcSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import spring.SpringApp;
 
 public abstract class ConcretePrestoSuiteIT extends AbstractTestSuite {
 
     public ConcretePrestoSuiteIT() {
-        this.jdbcURL = "jdbc:presto://jsql-presto:8084/system";
-        this.jdbcUser = "test";
-        this.jdbcPass = StringUtils.EMPTY;
+        var property = SpringApp.get("presto");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "jdbc";
         this.tableToInject = "table_types";

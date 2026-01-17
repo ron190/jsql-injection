@@ -9,13 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteOracleSuiteIT extends AbstractTestSuite {
 
     public ConcreteOracleSuiteIT() {
-        this.config();
-    }
-    
-    public void config() {
-        this.jdbcURL = SpringApp.propsOracle.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsOracle.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsOracle.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("oracle");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "XDB";
         this.tableToInject = "APP_USERS_AND_ROLES";

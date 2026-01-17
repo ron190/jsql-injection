@@ -13,9 +13,9 @@ class TenantFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String tenant = request.getParameter("tenant");  // Undefined used by SOAP
+        String tenant = request.getParameter(SpringApp.TENANT);  // Undefined used by SOAP
         if (tenant == null) {
-            tenant = SpringApp.H2;
+            tenant = SpringApp.TENANT_H2;
         }
         TenantContext.setCurrentTenant(tenant);
         chain.doFilter(request, response);

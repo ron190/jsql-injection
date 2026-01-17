@@ -9,9 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteSybaseSuiteIT extends AbstractTestSuite {
 
     public ConcreteSybaseSuiteIT() {
-        this.jdbcURL = SpringApp.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsSybase.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("sybase");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "master";
         this.tableToInject = "Student";

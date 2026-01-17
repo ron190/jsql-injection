@@ -14,9 +14,23 @@ function main {
       waiter Mysql  # last as slow
     ;;
 
+    Db2)
+      waiter "$1"
+
+      # should be in Dockerfile or docker-compose when db is up
+      cat <<EOF | docker exec -i --workdir /database/config/db2inst1/sqllib/bin --user db2inst1 jsql-db2 /bin/bash
+        . /database/config/db2inst1/sqllib/db2profile
+        db2 update dbm cfg using SVCENAME 50011
+        db2 force applications all
+        sleep 6
+        db2stop || true
+        db2start || true
+EOF
+    ;;
+
     Hana)
       sleep 120  # hana setup
-      waiter $1
+      waiter "$1"
       echo Starting post start phase, creating tenant database, sleeping 300s...
       sleep 300  # end of startup after getting result
     ;;
@@ -203,11 +217,11 @@ function waiter {
   echo "Checking $1..."
   until eval "$1"; do
     retry=$((retry+1))
-    if [ $retry -gt 30 ]; then
+    if [ $retry -gt $((60 * 10)) ]; then
       exit 1
     fi
     >&2 echo "Unavailable - sleeping #${retry}"
-    sleep 5
+    sleep 10
   done
   >&2 echo "Up"
 }

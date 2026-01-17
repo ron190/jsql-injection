@@ -9,9 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteInformixSuiteIT extends AbstractTestSuite {
 
     public ConcreteInformixSuiteIT() {
-        this.jdbcURL = SpringApp.propsInformix.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsInformix.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsInformix.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("informix");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "sysutils";
         this.tableToInject = "student";

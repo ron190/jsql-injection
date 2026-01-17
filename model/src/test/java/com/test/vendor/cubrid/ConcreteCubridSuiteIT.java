@@ -9,13 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteCubridSuiteIT extends AbstractTestSuite {
 
     public ConcreteCubridSuiteIT() {
-        this.config();
-    }
-
-    public void config() {
-        this.jdbcURL = SpringApp.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsCubrid.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("cubrid");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "PUBLIC";
         this.tableToInject = "student";

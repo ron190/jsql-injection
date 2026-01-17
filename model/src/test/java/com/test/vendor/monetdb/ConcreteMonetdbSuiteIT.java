@@ -1,15 +1,18 @@
 package com.test.vendor.monetdb;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.JdbcSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import spring.SpringApp;
 
 public abstract class ConcreteMonetdbSuiteIT extends AbstractTestSuite {
 
     public ConcreteMonetdbSuiteIT() {
-        this.jdbcURL = "jdbc:monetdb://jsql-monetdb:50000/db";
-        this.jdbcUser = "monetdb";
-        this.jdbcPass = "monetdb";
+        var property = SpringApp.get("monetdb");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "sys";
         this.tableToInject = "db_user_info";

@@ -5,9 +5,8 @@ import spring.SpringApp;
 
 public abstract class ConcreteMySqlErrorSuiteIT extends ConcreteMySqlSuiteIT {
 
-    @Override
-    public void config() {
-        super.config();
-        this.jdbcURL = SpringApp.propsMysqlError.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+    public ConcreteMySqlErrorSuiteIT() {
+        var property = SpringApp.get("mysql-error");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
     }
 }

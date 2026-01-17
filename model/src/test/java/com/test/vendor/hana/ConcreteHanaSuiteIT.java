@@ -9,9 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteHanaSuiteIT extends AbstractTestSuite {
 
     public ConcreteHanaSuiteIT() {
-        this.jdbcURL = SpringApp.propsHana.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsHana.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsHana.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("hana");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "SYS";
         this.tableToInject = "USERS";

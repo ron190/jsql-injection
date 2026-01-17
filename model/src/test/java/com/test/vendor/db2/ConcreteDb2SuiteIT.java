@@ -9,13 +9,10 @@ import spring.SpringApp;
 public abstract class ConcreteDb2SuiteIT extends AbstractTestSuite {
 
     public ConcreteDb2SuiteIT() {
-        this.config();
-    }
-    
-    public void config() {
-        this.jdbcURL = SpringApp.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-        this.jdbcUser = SpringApp.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
-        this.jdbcPass = SpringApp.propsDb2.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
+        var property = SpringApp.get("db2");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "DB2INST1";
         this.tableToInject = "STUDENT";

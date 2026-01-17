@@ -65,13 +65,13 @@ jobs:
         run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
 
       - name: Integration tests
-        # profile tests-vendor: tests configuration
-        # profile tests-$NAME_VENDOR: overrides by vendor when required
-        # property nameVendor: run matching java classes
+        # profile tests-vendor: generic configuration
+        # profile tests-$NAME_VENDOR: specific configuration when required
+        # property testProfile: run matching java classes
         run: |
           $DOCKER_RESOURCES/scripts/run-on-docker.sh "
             mvn clean install \
               --no-transfer-progress \
               -P tests-vendor,tests-$NAME_VENDOR \
-              -DnameVendor=$NAME_VENDOR
+              -DtestProfile=$NAME_VENDOR
           "

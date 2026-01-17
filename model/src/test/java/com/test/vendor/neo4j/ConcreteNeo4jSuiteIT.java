@@ -1,15 +1,18 @@
 package com.test.vendor.neo4j;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.JdbcSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import spring.SpringApp;
 
 public abstract class ConcreteNeo4jSuiteIT extends AbstractTestSuite {
 
     public ConcreteNeo4jSuiteIT() {
-        this.jdbcURL = "jdbc:neo4j:bolt://jsql-neo4j";
-        this.jdbcUser = "neo4j";
-        this.jdbcPass = "test";
+        var property = SpringApp.get("neo4j");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
         
         this.databaseToInject = "neo4j";
         this.tableToInject = "Movie";

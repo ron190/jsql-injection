@@ -1,19 +1,18 @@
 package com.test.vendor.clickhouse;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.JdbcSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import spring.SpringApp;
 
 public abstract class ConcreteClickhouseSuiteIT extends AbstractTestSuite {
 
     public ConcreteClickhouseSuiteIT() {
-        this.config();
-    }
-
-    public void config() {
-        this.jdbcURL = "jdbc:clickhouse:http://jsql-clickhouse:8123/";
-        this.jdbcUser = "dba";
-        this.jdbcPass = "dba";
+        var property = SpringApp.get("clickhouse");
+        this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+        this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);
+        this.jdbcPass = property.getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD);
 
         this.databaseToInject = "system";
         this.tableToInject = "one";

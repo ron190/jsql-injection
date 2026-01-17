@@ -6,6 +6,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.cfg.JdbcSettings;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
@@ -13,6 +14,7 @@ import org.neo4j.driver.Result;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import spring.SpringApp;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,15 +32,13 @@ public class JdbcRestController {
     private final Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    // Integration tests on docker
-
     @RequestMapping("/clickhouse")
     public Greeting greetingClickhouse(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:clickhouse:http://jsql-clickhouse:8123/",
-            "dba",
-            "dba",
+            SpringApp.get("clickhouse").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("clickhouse").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("clickhouse").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
             "select schema_name from information_schema.schemata where '1' = '" + inject + "'"
         );
     }
@@ -47,30 +47,20 @@ public class JdbcRestController {
     public Greeting greetingExasol(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:exa:jsql-exasol:8563/nocertcheck",
-            "sys",
-            "exasol",
+            SpringApp.get("exasol").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("exasol").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("exasol").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
             "select COLUMN_SCHEMA from EXA_SYS_COLUMNS where '1' = '" + inject + "'"
         );
     }
 
     @RequestMapping("/hana")
     public Greeting greetingHana(@RequestParam(value="name", defaultValue="World") String name) {
-        // hdbuserstore LIST
-        // hdbuserstore SET keytest localhost:30015@SYS SYSTEM Welcome1
-        // SELECT DISTINCT(sql_port) FROM SYS.M_SERVICES WHERE SQL_PORT > 0
-        // SELECT * FROM "SYS_DATABASES"."M_SERVICE_MEMORY";
-        // ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'DATABASE', '') SET ('memorymanager', 'allocationlimit') = '8192' WITH RECONFIGURE;
-        // SELECT SERVICE_NAME, PORT, SQL_PORT, (PORT + 2) HTTP_PORT FROM SYS.M_SERVICES
-        // ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system') SET ('public_hostname_resolution', 'use_default_route') = 'name' WITH RECONFIGURE;
-        // ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system') SET ('public_hostname_resolution', 'map_jsql-hana') = '$()' WITH RECONFIGURE;
-        // alter system alter configuration('global.ini','system') set ('public_hostname_resolution','use_default_route')='no' with reconfigure;
-        // hdblcm --action=rename_system --hostmap=<old host>=<new host>
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:sap://127.0.0.1:39017?encrypt=false&validateCertificate=false",
-            "system",
-            "1anaHEXH",
+            SpringApp.get("hana").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("hana").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("hana").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
             "select schema_name from sys.schemas where '1' = '" + inject + "'"
         );
     }
@@ -79,9 +69,9 @@ public class JdbcRestController {
     public Greeting greetingMckoi(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:mckoi://127.0.0.1",
-            "user",
-            "password",
+            SpringApp.get("mckoi").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("mckoi").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("mckoi").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
             "select name from SYS_INFO.sUSRSchemaInfo where 1 = "+ inject
         );
     }
@@ -92,20 +82,20 @@ public class JdbcRestController {
         Class.forName("com.mimer.jdbc.Driver");  // required
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:mimer://jsql-mimer:1360/mimerdb",
-            "SYSADM",
-            "SYSADM",
+            SpringApp.get("mimer").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("mimer").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("mimer").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
             "select table_name from information_schema.tables where '1' = '"+ inject +"'"
         );
     }
 
-    @RequestMapping("/monetdb")  // no dialect
+    @RequestMapping("/monetdb")
     public Greeting greetingMonetDB(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:monetdb://jsql-monetdb:50000/db",
-            "monetdb",
-            "monetdb",
+            SpringApp.get("monetdb").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("monetdb").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("monetdb").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
             "select name from schemas where '1' = '"+ inject +"'"
         );
     }
@@ -135,10 +125,10 @@ public class JdbcRestController {
         Class.forName("com.facebook.presto.jdbc.PrestoDriver");
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-                "jdbc:presto://jsql-presto:8084/system",
-                "test",
-                StringUtils.EMPTY,
-                "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
+            SpringApp.get("presto").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("presto").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("presto").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
+            "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
         );
     }
 
@@ -146,9 +136,9 @@ public class JdbcRestController {
     public Greeting greetingVertica(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-            "jdbc:vertica://jsql-vertica:5433/",
-            "dbadmin",
-            "password",
+            SpringApp.get("vertica").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("vertica").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("vertica").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
             "select table_schema from v_catalog.system_tables where 1 = "+ inject
         );
     }
@@ -158,10 +148,10 @@ public class JdbcRestController {
         Class.forName("virtuoso.jdbc3.Driver");
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
-                "jdbc:virtuoso://jsql-virtuoso:1111",
-                "dba",
-                "dba",
-                "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
+            SpringApp.get("virtuoso").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("virtuoso").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("virtuoso").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
+            "select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
         );
     }
 
