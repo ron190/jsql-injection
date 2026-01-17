@@ -13,12 +13,11 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a name="ConcreteMySqlErrorSuiteIT" href="../../../../com/test/vendor/mysql/ConcreteMySqlErrorSuiteIT.html#ConcreteMySqlErrorSuiteIT">ConcreteMySqlErrorSuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="ConcreteMySqlSuiteIT" href="../../../../com/test/vendor/mysql/ConcreteMySqlSuiteIT.html#ConcreteMySqlSuiteIT">ConcreteMySqlSuiteIT</a> {
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>       @Override
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> config() {
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>          <strong class="jxr_keyword">super</strong>.config();
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>          <strong class="jxr_keyword">this</strong>.jdbcURL = SpringApp.propsMysqlError.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>      }
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  }
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>       <strong class="jxr_keyword">public</strong> <a name="ConcreteMySqlErrorSuiteIT" href="../../../../com/test/vendor/mysql/ConcreteMySqlErrorSuiteIT.html#ConcreteMySqlErrorSuiteIT">ConcreteMySqlErrorSuiteIT</a>() {
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>           <strong class="jxr_keyword">var</strong> property = SpringApp.get(<span class="jxr_string">"mysql-error"</span>);
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>          <strong class="jxr_keyword">this</strong>.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>      }
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>
