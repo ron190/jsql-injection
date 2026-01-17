@@ -4,6 +4,7 @@ com.test.method
 com.test.preferences
 com.test.security
 com.test.special
+com.test.vendor.clickhouse
 com.test.vendor.cubrid
 com.test.vendor.db2
 com.test.vendor.derby

@@ -64,7 +64,7 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          });
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          AbstractRoutingDataSource dataSource = <strong class="jxr_keyword">new</strong> <a name="MultitenantDataSource" href="../../../spring/tenant/jpa/MultitenantDataSource.html#MultitenantDataSource">MultitenantDataSource</a>();
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          dataSource.setDefaultTargetDataSource(resolvedDataSources.get(<span class="jxr_string">"h2"</span>));
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          dataSource.setDefaultTargetDataSource(resolvedDataSources.get(SpringApp.H2));
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          dataSource.setTargetDataSources(resolvedDataSources);
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          dataSource.afterPropertiesSet();

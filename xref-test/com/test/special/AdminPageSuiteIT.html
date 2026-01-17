@@ -24,7 +24,7 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>          <strong class="jxr_keyword">this</strong>.injectionModel.subscribe(<strong class="jxr_keyword">new</strong> SystemOutTerminal());
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>      }
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>      
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>      @RepeatedTest(3)
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      @RepeatedTest(3)  <em class="jxr_comment">// todo choose @RetryingTest or @RepeatedTest</em>
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">void</strong> listAdminPages() {
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">int</strong> pagesFound = <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().createAdminPages(<span class="jxr_string">"http://localhost:8080"</span>, List.of(<span class="jxr_string">"greeting"</span>));
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          Assertions.assertEquals(1, pagesFound);
