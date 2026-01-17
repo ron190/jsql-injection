@@ -56,7 +56,7 @@ public class JpaConfiguration {
         });
 
         AbstractRoutingDataSource dataSource = new MultitenantDataSource();
-        dataSource.setDefaultTargetDataSource(resolvedDataSources.get("h2"));
+        dataSource.setDefaultTargetDataSource(resolvedDataSources.get(SpringApp.H2));
         dataSource.setTargetDataSources(resolvedDataSources);
 
         dataSource.afterPropertiesSet();

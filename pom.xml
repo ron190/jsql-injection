@@ -63,7 +63,10 @@
         <maven-surefire-plugin.skipTests>true</maven-surefire-plugin.skipTests>
         <maven-failsafe-plugin.include/>
         <maven-failsafe-plugin.exclude/>
-        <profileId/>
+        <!-- property set on run command -->
+        <nameVendor/>
+        <!-- disabled on specific vendor -->
+        <parallel.enabled>true</parallel.enabled>
 
         <!-- menu not working with 2.3.5 -->
         <site.skin.version>2.3.4</site.skin.version>
@@ -86,12 +89,12 @@
         <profile>
             <id>tests</id>
             <properties>
-                <profileId>tests</profileId>
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
                 <maven-surefire-plugin.skipTests>false</maven-surefire-plugin.skipTests>
                 <maven-failsafe-plugin.include>**/*SuiteIT.java</maven-failsafe-plugin.include>
                 <maven-failsafe-plugin.exclude>
+                    **/*Clickhouse*SuiteIT.java,
                     **/*Db2*SuiteIT.java,
                     **/*Exasol*SuiteIT.java,
                     **/*Hana*SuiteIT.java,
@@ -107,113 +110,17 @@
             </properties>
         </profile>
         <profile>
-            <id>tests-db2</id>
+            <id>tests-Mimer</id>
             <properties>
-                <profileId>tests-db2</profileId>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*Db2*SuiteIT.java</maven-failsafe-plugin.include>
+                <parallel.enabled>false</parallel.enabled>
             </properties>
         </profile>
         <profile>
-            <id>tests-exasol</id>
+            <id>tests-vendor</id>
             <properties>
-                <profileId>tests-exasol</profileId>
                 <skipTests>false</skipTests>
                 <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*Exasol*SuiteIT.java</maven-failsafe-plugin.include>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <argLine>@{argLine} -DLOG_LEVEL=DEBUG</argLine>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>tests-hana</id>
-            <properties>
-                <profileId>tests-hana</profileId>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*Hana*SuiteIT.java</maven-failsafe-plugin.include>
-            </properties>
-        </profile>
-        <profile>
-            <id>tests-monetdb</id>
-            <properties>
-                <profileId>tests-monetdb</profileId>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*MonetDb*SuiteIT.java</maven-failsafe-plugin.include>
-            </properties>
-        </profile>
-        <profile>
-            <id>tests-mimer</id>
-            <properties>
-                <profileId>tests-mimer</profileId>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*Mimer*SuiteIT.java</maven-failsafe-plugin.include>
-            </properties>
-        </profile>
-        <profile>
-            <id>tests-oracle</id>
-            <properties>
-                <profileId>tests-oracle</profileId>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*Oracle*SuiteIT.java</maven-failsafe-plugin.include>
-            </properties>
-        </profile>
-        <profile>
-            <id>tests-presto</id>
-            <properties>
-                <profileId>tests-presto</profileId>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*Presto*SuiteIT.java</maven-failsafe-plugin.include>
-            </properties>
-        </profile>
-        <profile>
-            <id>tests-sqlserver</id>
-            <properties>
-                <profileId>tests-sqlserver</profileId>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*SqlServer*SuiteIT.java</maven-failsafe-plugin.include>
-            </properties>
-        </profile>
-        <profile>
-            <id>tests-sybase</id>
-            <properties>
-                <profileId>tests-sybase</profileId>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*Sybase*SuiteIT.java</maven-failsafe-plugin.include>
-            </properties>
-        </profile>
-        <profile>
-            <id>tests-vertica</id>
-            <properties>
-                <profileId>tests-vertica</profileId>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*Vertica*SuiteIT.java</maven-failsafe-plugin.include>
-            </properties>
-        </profile>
-        <profile>
-            <id>tests-virtuoso</id>
-            <properties>
-                <profileId>tests-virtuoso</profileId>
-                <skipTests>false</skipTests>
-                <skipITs>false</skipITs>
-                <maven-failsafe-plugin.include>**/*Virtuoso*SuiteIT.java</maven-failsafe-plugin.include>
+                <maven-failsafe-plugin.include>**/*${nameVendor}*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
     </profiles>

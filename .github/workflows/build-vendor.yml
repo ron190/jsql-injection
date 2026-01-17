@@ -43,7 +43,7 @@ jobs:
         run: mvn clean install -DskipTests dependency:tree
 
       - name: Build oracle container
-        if: ${{ env.NAME_VENDOR == 'oracle' }}
+        if: ${{ env.NAME_VENDOR == 'Oracle' }}
         run: |
           git clone https://github.com/oracle/docker-images.git
           cd docker-images/OracleDatabase/SingleInstance/dockerfiles/
@@ -51,23 +51,27 @@ jobs:
 
       - name: Mount databases
         run: |
-          docker compose -f $DOCKER_RESOURCES/docker-compose-$NAME_VENDOR.yml build --parallel
-          docker compose -f $DOCKER_RESOURCES/docker-compose-$NAME_VENDOR.yml up -d
+          docker compose -f $DOCKER_RESOURCES/docker-compose-${NAME_VENDOR,,}.yml build --parallel
+          docker compose -f $DOCKER_RESOURCES/docker-compose-${NAME_VENDOR,,}.yml up -d
 
       - name: List images and containers
         run: docker images && docker container ls
 
       - name: Database health checks and configuration
         run: |
-          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck-$NAME_VENDOR.sh
+          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck-${NAME_VENDOR,,}.sh
 
       - name: Build project container
         run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
 
       - name: Integration tests
+        # profile tests-vendor: tests configuration
+        # profile tests-$NAME_VENDOR: overrides by vendor when required
+        # property nameVendor: run matching java classes
         run: |
           $DOCKER_RESOURCES/scripts/run-on-docker.sh "
             mvn clean install \
               --no-transfer-progress \
-              -P tests-$NAME_VENDOR
+              -P tests-vendor,tests-$NAME_VENDOR \
+              -DnameVendor=$NAME_VENDOR
           "

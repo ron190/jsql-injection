@@ -46,14 +46,16 @@ import java.util.stream.Stream;
 @EntityScan({"spring.rest"})
 public class SpringApp {
 
-    public static final String PROFILE_ID = "profileId";
+    public static final String H2 = "h2";
+    public static final String NAME_VENDOR = "nameVendor";
     public static final String JSQL_TENANT = "jsql.tenant";
+    public static final String VENDOR_MAIN = "Main";
 
     static {
-        try {  // ensure driver is loaded
-            Class.forName("virtuoso.jdbc3.Driver");  // required static for expected jdbc result
-            Class.forName("com.mimer.jdbc.Driver");  // required static for expected jdbc result
-            Class.forName("com.mckoi.JDBCDriver");  // required static for expected jdbc result
+        try {  // ensure driver is loaded, required static for expected jdbc result
+            Class.forName("virtuoso.jdbc3.Driver");
+            Class.forName("com.mimer.jdbc.Driver");
+            Class.forName("com.mckoi.JDBCDriver");
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(e);
         }
@@ -112,8 +114,11 @@ public class SpringApp {
     }
 
     public static void initDatabases() throws Exception {
-        LOGGER.info("Current profileId: {}", System.getProperty(SpringApp.PROFILE_ID));
-        if (System.getProperty(SpringApp.PROFILE_ID) == null || "tests".equals(System.getProperty(SpringApp.PROFILE_ID))) {
+        LOGGER.info("Current nameVendor: {}", System.getProperty(SpringApp.NAME_VENDOR));
+        if (
+            System.getProperty(SpringApp.NAME_VENDOR) == null
+            || SpringApp.VENDOR_MAIN.equals(System.getProperty(SpringApp.NAME_VENDOR))
+        ) {
             SpringApp.initHsqldb();
             SpringApp.initH2();
             SpringApp.initNeo4j();
@@ -222,9 +227,9 @@ public class SpringApp {
 
     public static Stream<SimpleEntry<String, Properties>> getPropertiesFilterByProfile() {
         return SpringApp.propertiesByEngine.parallelStream().filter(propertyByEngine ->
-            System.getProperty(SpringApp.PROFILE_ID) == null
-            || propertyByEngine.getValue().getProperty("jsql.profile").equals(System.getProperty(SpringApp.PROFILE_ID))
-            || propertyByEngine.getValue().getProperty(SpringApp.JSQL_TENANT).equals("h2")
+            System.getProperty(SpringApp.NAME_VENDOR) == null
+            || propertyByEngine.getValue().getProperty(SpringApp.NAME_VENDOR).equals(System.getProperty(SpringApp.NAME_VENDOR))
+            || propertyByEngine.getValue().getProperty(SpringApp.JSQL_TENANT).equals(SpringApp.H2)
         );
     }
 
@@ -238,7 +243,7 @@ public class SpringApp {
     
     @PreDestroy
     public void onDestroy() throws Exception {
-        if (System.getProperty(SpringApp.PROFILE_ID) == null || "tests".equals(System.getProperty(SpringApp.PROFILE_ID))) {
+        if (System.getProperty(SpringApp.NAME_VENDOR) == null || SpringApp.VENDOR_MAIN.equals(System.getProperty(SpringApp.NAME_VENDOR))) {
             LOGGER.info("Ending in-memory databases...");
             SpringApp.serverDerby.shutdown();
             SpringApp.serverH2.stop();

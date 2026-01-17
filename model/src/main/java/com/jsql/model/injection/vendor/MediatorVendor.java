@@ -43,6 +43,7 @@ public class MediatorVendor {
 
     // TODO Replace with enum
     private final Vendor auto;
+    private final Vendor clickhouse;
     private final Vendor cubrid;
     private final Vendor db2;
     private final Vendor derby;
@@ -87,6 +88,7 @@ public class MediatorVendor {
 
         this.auto = new Vendor();
         this.cubrid = new Vendor(new VendorYaml("cubrid.yml", injectionModel));
+        this.clickhouse = new Vendor(new VendorYaml("clickhouse.yml", injectionModel));
         this.db2 = new Vendor(new VendorYaml("db2.yml", injectionModel));
         this.derby = new Vendor(new VendorYaml("derby.yml", injectionModel));
         this.exasol = new Vendor(new VendorYaml("exasol.yml", injectionModel));
@@ -139,15 +141,15 @@ public class MediatorVendor {
         this.virtuoso = new Vendor(new VendorYaml("virtuoso.yml", injectionModel));
 
         this.vendors = Arrays.asList(
-            this.auto, access, altibase, ctreeace, this.cubrid, this.db2, this.derby, exasol, this.firebird, frontbase, this.h2,
-            hana, this.hsqldb, this.informix, ingres, iris, maxdb, this.mckoi, this.mimer, this.monetdb, this.mysql, this.neo4j,
-            netezza, nuodb, this.oracle, this.postgres, presto, this.sqlite, this.sqlserver, this.sybase, teradata, this.vertica,
-            this.virtuoso
+            this.auto, access, altibase, this.clickhouse, ctreeace, this.cubrid, this.db2, this.derby, this.exasol, this.firebird,
+            frontbase, this.h2, this.hana, this.hsqldb, this.informix, ingres, iris, maxdb, this.mckoi, this.mimer, this.monetdb,
+            this.mysql, this.neo4j, netezza, nuodb, this.oracle, this.postgres, this.presto, this.sqlite, this.sqlserver, this.sybase,
+            teradata, this.vertica, this.virtuoso
         );
         this.vendorsForFingerprint = Arrays.asList(  // Add sortIndex
             this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, access, altibase, ctreeace,
-            this.cubrid, this.db2, this.derby, exasol, this.firebird, frontbase, hana, this.informix, ingres, iris, maxdb, this.mckoi,
-            this.mimer, this.monetdb, this.neo4j, netezza, nuodb, presto, this.sybase, teradata, this.vertica, this.virtuoso
+            this.cubrid, this.db2, this.derby, this.exasol, this.firebird, frontbase, this.hana, this.informix, ingres, iris, maxdb, this.mckoi,
+            this.mimer, this.monetdb, this.neo4j, netezza, nuodb, this.presto, this.sybase, teradata, this.vertica, this.virtuoso, this.clickhouse
         );
 
         this.setVendor(this.mysql);
@@ -369,5 +371,9 @@ public class MediatorVendor {
 
     public Vendor getVirtuoso() {
         return this.virtuoso;
+    }
+
+    public Vendor getClickhouse() {
+        return this.clickhouse;
     }
 }

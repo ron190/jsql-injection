@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+
+  clickhouse:
+    container_name: jsql-clickhouse
+    image: clickhouse/clickhouse-server
+    privileged: true
+    ports:
+      - "8123:8123"
+    environment:
+      - CLICKHOUSE_USER=dba
+      - CLICKHOUSE_PASSWORD=dba
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

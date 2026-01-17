@@ -132,11 +132,11 @@ strategy:
     - "Semantic: 1337 in sort spec is out of range"
    # select in if fixes collision with mckoi
    vendorSpecific: |
-    if(
+    clob_to_char(char_to_clob('a')) = if(
       ${test}, 
       (select clob_to_char(char_to_clob('a'))), 
       clob_to_char(char_to_clob('b'))
-    )=clob_to_char(char_to_clob('a'))
+    )
 
  binary:
   test:

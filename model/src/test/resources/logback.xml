@@ -18,4 +18,5 @@
     <logger name="org.hibernate" level="OFF" additivity="false" />
     <!-- Hide XPATH syntax error on SQL containing unicode -->
     <logger name="com.zaxxer.hikari.pool.ProxyConnection" level="OFF" additivity="false" />
+    <logger name="com.clickhouse.jdbc.internal.parser.javacc.ClickHouseSqlParser" level="OFF" additivity="false" />
 </configuration>

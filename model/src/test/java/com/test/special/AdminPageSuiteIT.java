@@ -16,7 +16,7 @@ class AdminPageSuiteIT extends ConcreteMySqlSuiteIT {
         this.injectionModel.subscribe(new SystemOutTerminal());
     }
     
-    @RepeatedTest(3)
+    @RepeatedTest(3)  // todo choose @RetryingTest or @RepeatedTest
     void listAdminPages() {
         int pagesFound = this.injectionModel.getResourceAccess().createAdminPages("http://localhost:8080", List.of("greeting"));
         Assertions.assertEquals(1, pagesFound);

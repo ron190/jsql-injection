@@ -32,6 +32,17 @@ public class JdbcRestController {
 
     // Integration tests on docker
 
+    @RequestMapping("/clickhouse")
+    public Greeting greetingClickhouse(@RequestParam(value="name", defaultValue="World") String name) {
+        String inject = name.replace(":", "\\:");
+        return this.getGreeting(
+            "jdbc:clickhouse:http://jsql-clickhouse:8123/",
+            "dba",
+            "dba",
+            "select schema_name from information_schema.schemata where '1' = '" + inject + "'"
+        );
+    }
+
     @RequestMapping("/exasol")
     public Greeting greetingExasol(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
@@ -373,4 +384,10 @@ public class JdbcRestController {
     // teradata: config required
     // jdbc:teradata://127.0.0.1
     // dbc dbc
+
+    // elasticsearch: no structure lookup
+    // elasticsearch-reset-password -u elastic
+    // POST https://localhost:9200/_license/start_trial?acknowledge=true
+    // browser => view cert => save pem => import as jks in kse
+    // jdbc:es://https://localhost:9200/?ssl.truststore.location=E:/tmp/certificate.jks
 }

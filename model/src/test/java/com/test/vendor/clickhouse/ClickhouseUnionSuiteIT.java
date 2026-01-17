@@ -1,0 +1,71 @@
+package com.test.vendor.clickhouse;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlException;
+import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
+
+@SuppressWarnings("java:S2699")
+class ClickhouseUnionSuiteIT extends ConcreteClickhouseSuiteIT {
+
+    @Override
+    public void setupInjection() throws Exception {
+        InjectionModel model = new InjectionModel();
+        this.injectionModel = model;
+
+        model.subscribe(new SystemOutTerminal());
+
+        model.getMediatorUtils().getParameterUtil().initQueryString(
+            "http://localhost:8080/clickhouse?name="
+        );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withCountLimitingThreads(2)  // for perf only, can throw MEMORY_LIMIT_EXCEEDED
+        .withIsStrategyBlindBinDisabled(true)  // Time disabled no required: sleep 5s > 3s max on clickhouse
+        .withIsStrategyBlindBitDisabled(true);
+
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
+        
+        model.beginInjection();
+    }
+    
+    @Override
+    @RepeatedTest(3)
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
+    }
+    
+    @Override
+    @RepeatedTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+    
+    @Override
+    @RepeatedTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+    
+    @Override
+    @RepeatedTest(3)
+    public void listValues() throws JSqlException {
+        super.listValues();
+    }
+
+    @AfterEach
+    void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
+    }
+}
