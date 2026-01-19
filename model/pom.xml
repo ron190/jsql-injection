@@ -32,7 +32,7 @@
         <!-- required as commons-text:1.11.0 not working -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <!-- must align slf4j-nop when bumped -->
-        <dnsjava.version>3.6.3</dnsjava.version>
+        <dnsjava.version>3.6.4</dnsjava.version>
         <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
         <groovy.version>5.0.3</groovy.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
