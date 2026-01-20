@@ -74,6 +74,16 @@ EOF
   esac
 }
 
+function Altibase {  # shellcheck disable=SC2317
+  cat <<EOF | docker exec -i --user root jsql-altibase /bin/bash
+    export ALTIBASE_HOME=/root/altibase_home
+    export LD_LIBRARY_PATH=/root/altibase_home/lib:.:/root/altibase_home/lib:/usr/local/lib:/usr/lib:/lib/x86_64-linux-gnu:
+    /root/altibase_home/bin/isql -s 127.0.0.1 -u sys -p manager <<EOF2
+      select 'jsqlValue' as jsqlColumn;
+EOF2
+EOF
+}  # no status 1 on error
+
 function Clickhouse {  # shellcheck disable=SC2317
   docker exec -i jsql-clickhouse clickhouse-client -u dba --password dba -q "select 'jsqlValue' as jsqlColumn"
 }  # correct status 1 on error
@@ -223,7 +233,7 @@ function waiter {
     >&2 echo "Unavailable - sleeping #${retry}"
     sleep 10
   done
-  >&2 echo "Up"
+  >&2 printf "Up\n\n"
 }
 
 function fn_exists {

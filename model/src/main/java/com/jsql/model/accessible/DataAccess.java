@@ -12,8 +12,7 @@ package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.*;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
@@ -195,10 +194,7 @@ public class DataAccess {
             databases.add(newDatabase);
         }
 
-        var request = new Request();
-        request.setMessage(Interaction.ADD_DATABASES);
-        request.setParameters(databases);
-        this.injectionModel.sendToViews(request);
+        this.injectionModel.sendToViews(new Request3.AddDatabases(databases));
         return databases;
     }
 
@@ -218,10 +214,7 @@ public class DataAccess {
         this.injectionModel.setIsStoppedByUser(false);
         
         // Inform the view that database has just been used
-        var requestStartProgress = new Request();
-        requestStartProgress.setMessage(Interaction.START_PROGRESS);
-        requestStartProgress.setParameters(database);
-        this.injectionModel.sendToViews(requestStartProgress);
+        this.injectionModel.sendToViews(new Request3.StartProgress(database));
 
         var tableCount = Integer.toString(database.getChildCount());
         
@@ -251,11 +244,8 @@ public class DataAccess {
             )
             .matcher(resultToParse);
         
-        var requestEndProgress = new Request();
-        requestEndProgress.setMessage(Interaction.END_PROGRESS);
-        requestEndProgress.setParameters(database);
-        this.injectionModel.sendToViews(requestEndProgress);
-        
+        this.injectionModel.sendToViews(new Request3.EndProgress(database));
+
         if (!regexSearch.find()) {
             throw new InjectionFailureException("No match while injecting tables");
         }
@@ -271,11 +261,8 @@ public class DataAccess {
             var newTable = new Table(tableName, rowCount, database);
             tables.add(newTable);
         }
-        
-        var requestAddTables = new Request();
-        requestAddTables.setMessage(Interaction.ADD_TABLES);
-        requestAddTables.setParameters(tables);
-        this.injectionModel.sendToViews(requestAddTables);
+
+        this.injectionModel.sendToViews(new Request3.AddTables(tables));
         return tables;
     }
 
@@ -293,10 +280,7 @@ public class DataAccess {
         List<Column> columns = new ArrayList<>();
         
         // Inform the view that table has just been used
-        var requestStartProgress = new Request();
-        requestStartProgress.setMessage(Interaction.START_INDETERMINATE_PROGRESS);
-        requestStartProgress.setParameters(table);
-        this.injectionModel.sendToViews(requestStartProgress);
+        this.injectionModel.sendToViews(new Request3.StartIndeterminateProgress(table));
 
         String resultToParse = StringUtils.EMPTY;
         
@@ -330,10 +314,7 @@ public class DataAccess {
             )
             .matcher(resultToParse);
 
-        var requestEndProgress = new Request();
-        requestEndProgress.setMessage(Interaction.END_INDETERMINATE_PROGRESS);
-        requestEndProgress.setParameters(table);
-        this.injectionModel.sendToViews(requestEndProgress);
+        this.injectionModel.sendToViews(new Request3.EndIndeterminateProgress(table));
 
         if (!regexSearch.find()) {
             throw new InjectionFailureException("No match while injecting columns");
@@ -348,10 +329,7 @@ public class DataAccess {
             columns.add(column);
         }
 
-        var requestAddColumns = new Request();
-        requestAddColumns.setMessage(Interaction.ADD_COLUMNS);
-        requestAddColumns.setParameters(columns);
-        this.injectionModel.sendToViews(requestAddColumns);
+        this.injectionModel.sendToViews(new Request3.AddColumns(columns));
         return columns;
     }
 
@@ -371,10 +349,7 @@ public class DataAccess {
         int rowCount = columnsBean.get(0).getParent().getChildCount();
 
         // Inform the view that table has just been used
-        var request = new Request();
-        request.setMessage(Interaction.START_PROGRESS);
-        request.setParameters(tableBean);
-        this.injectionModel.sendToViews(request);
+        this.injectionModel.sendToViews(new Request3.StartProgress(tableBean));
 
         // Build an array of column names
         List<String> columnsName = new ArrayList<>();
@@ -397,18 +372,8 @@ public class DataAccess {
 
         columns = columnsName.toArray(new String[0]);
         
-        // Group the columns names, values and Table object in one array
-        var objectData = new Object[]{ columns, table, tableBean };
-
-        var requestCreateValuesTab = new Request();
-        requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);
-        requestCreateValuesTab.setParameters(objectData);
-        this.injectionModel.sendToViews(requestCreateValuesTab);
-
-        var requestEndProgress = new Request();
-        requestEndProgress.setMessage(Interaction.END_PROGRESS);
-        requestEndProgress.setParameters(tableBean);
-        this.injectionModel.sendToViews(requestEndProgress);
+        this.injectionModel.sendToViews(new Request3.CreateValuesTab(columns, table, tableBean));
+        this.injectionModel.sendToViews(new Request3.EndProgress(tableBean));
         return table;
     }
 

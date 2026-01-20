@@ -1,6 +1,6 @@
 package com.jsql.view.swing.panel.consoles;
 
-import com.jsql.model.bean.util.HttpHeader;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -23,7 +23,7 @@ public class NetworkTable extends JTable {
     /**
      * List of HTTP injection requests and responses.
      */
-    private final transient List<HttpHeader> listHttpHeader = new ArrayList<>();
+    private final transient List<Request3.MessageHeader> listHttpHeader = new ArrayList<>();
 
     public NetworkTable(TabbedPaneNetworkTab tabbedPaneNetworkTab) {
         super(0, 4);
@@ -121,11 +121,11 @@ public class NetworkTable extends JTable {
         return false;
     }
 
-    public List<HttpHeader> getListHttpHeader() {
+    public List<Request3.MessageHeader> getListHttpHeader() {
         return this.listHttpHeader;
     }
-    
-    public void addHeader(HttpHeader header) {
+
+    public void addHeader(Request3.MessageHeader header) {
         this.listHttpHeader.add(header);
     }
 }

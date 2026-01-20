@@ -157,27 +157,6 @@ public class JdbcRestController {
 
 
     // Other
-
-    @RequestMapping("/altibase")
-    public Greeting greetingAltibase(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
-        // License required, Read-only file system
-        // jdbc altibase:altibase-connector-java:7.1 scope:system systemPath:${project.basedir}/src/test/resources/jdbc/Altibase.jar
-        // docker run -it altibase/altibase
-        // jdbc:Altibase://localhost:20300/mydb
-        // sys manager
-        // isql -s 127.0.0.1 -u sys -p manager -sysdba
-        // startup service
-        // Connecting to the DB server...............................Startup Failure. Check
-        // Your Environment.
-        Class.forName("Altibase.jdbc.driver.AltibaseDriver");
-        String inject = name.replace(":", "\\:");
-        return this.getGreeting(
-            "jdbc:Altibase://jsql-altibase:20300/mydb",
-            "sys",
-            "manager",
-            "select db_name from SYSTEM_.SYS_DATABASE_ where '1' = '"+ inject +"'"
-        );
-    }
     
     @RequestMapping("/ctreeace")
     public Greeting greetingCTreeAce(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
@@ -346,38 +325,27 @@ public class JdbcRestController {
         LOGGER.debug(stacktrace);
         return new Greeting(JdbcRestController.TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
     }
-
-
-    // AltibaseDialect: container issue
-    // CockroachLegacyDialect
-    // GaussDBDialect
-    // MaxDBDialect: broken installation
-    // RDMSOS2200Dialect
-    // SingleStoreDialect
-    // TeradataDialect
-    // TiDBDialect
-    // TimesTenDialect
-
-    // missing ingress: missing services
-    // jdbc:ingres://localhost:II7/demodb
-
-    // missing maxdb: broken installation
-    // no docker
-    // jdbc:sapdb://127.0.0.1/MAXDB
-    // DBADMIN TEST
-
-    // nuodb
-    // license
-    // jdbc:com.nuodb://127.0.0.1/test
-    // dba nuodb
-
-    // teradata: config required
-    // jdbc:teradata://127.0.0.1
-    // dbc dbc
-
-    // elasticsearch: no structure lookup
-    // elasticsearch-reset-password -u elastic
-    // POST https://localhost:9200/_license/start_trial?acknowledge=true
-    // browser => view cert => save pem => import as jks in kse
-    // jdbc:es://https://localhost:9200/?ssl.truststore.location=E:/tmp/certificate.jks
 }
+
+// CockroachLegacyDialect
+// GaussDBDialect
+// MaxDBDialect: broken installation
+// RDMSOS2200Dialect
+// SingleStoreDialect
+// TeradataDialect
+// TiDBDialect
+// TimesTenDialect
+
+// missing ingress: missing services
+// jdbc:ingres://localhost:II7/demodb
+
+// elasticsearch: no structure lookup
+// elasticsearch-reset-password -u elastic
+// POST https://localhost:9200/_license/start_trial?acknowledge=true
+// browser => view cert => save pem => import as jks in kse
+// jdbc:es://https://localhost:9200/?ssl.truststore.location=E:/tmp/certificate.jks
+
+// localstack snowflake: wsl2
+// docker run --rm -it -p 4566:4566 -e LOCALSTACK_AUTH_TOKEN=<token> localstack/snowflake
+// export LOCALSTACK_AUTH_TOKEN=<token>
+// IMAGE_NAME=localstack/snowflake /opt/code/localstack/.venv/bin/localstack start

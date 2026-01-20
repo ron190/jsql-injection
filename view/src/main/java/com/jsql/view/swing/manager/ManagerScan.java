@@ -10,13 +10,11 @@
  ******************************************************************************/
 package com.jsql.view.swing.manager;
 
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.scan.ScanListTerminal;
+import com.jsql.view.subscriber.SubscriberScan;
 import com.jsql.view.swing.list.*;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -185,11 +183,10 @@ public class ManagerScan extends AbstractManagerList {
         }
 
         // Display result only in console
-        var requestUnsubscribe = new Request();
-        requestUnsubscribe.setMessage(Interaction.UNSUBSCRIBE);
-        MediatorHelper.model().sendToViews(requestUnsubscribe);
-        MediatorHelper.model().subscribe(new ScanListTerminal());
-        
+        MediatorHelper.frame().getSubscriberView().subscription.cancel();
+        var subscriberScan = new SubscriberScan();
+        MediatorHelper.model().subscribe(subscriberScan);
+
         MediatorHelper.model().setIsScanning(true);
         MediatorHelper.model().getResourceAccess().setScanStopped(false);
         
@@ -230,9 +227,9 @@ public class ManagerScan extends AbstractManagerList {
         }
         
         // Get back the default view
-        MediatorHelper.model().sendToViews(requestUnsubscribe);
-        MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriber());
-        
+        subscriberScan.subscription.cancel();
+        MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriberView());
+
         MediatorHelper.model().setIsScanning(false);
         MediatorHelper.model().setIsStoppedByUser(false);
         MediatorHelper.model().getResourceAccess().setScanStopped(false);

@@ -12,8 +12,7 @@ package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.ResourceAccess;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -136,12 +135,12 @@ public class StrategyDns extends AbstractStrategy {
                 null
             )
         );
-        this.markVulnerability(Interaction.MARK_DNS_VULNERABLE);
+        this.injectionModel.sendToViews(new Request3.MarkDnsVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.markVulnerability(Interaction.MARK_DNS_INVULNERABLE);
+        this.injectionModel.sendToViews(new Request3.MarkDnsInvulnerable(this));
     }
 
     @Override
@@ -198,10 +197,7 @@ public class StrategyDns extends AbstractStrategy {
                 this.blindOperator::name
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-
-            var request = new Request();
-            request.setMessage(Interaction.MARK_DNS_STRATEGY);
-            this.injectionModel.sendToViews(request);
+            this.injectionModel.sendToViews(new Request3.MarkDnsStrategy(this));
         }
     }
     

@@ -1,9 +1,7 @@
 package com.jsql.model.suspendable;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit;
@@ -13,8 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SuspendableGetVendor extends AbstractSuspendable {
@@ -55,13 +51,10 @@ public class SuspendableGetVendor extends AbstractSuspendable {
                     this.injectionModel.getMediatorVendor().setVendor(vendor);
                     isVendorFound.set(true);
 
-                    var requestSetVendor = new Request();
-                    requestSetVendor.setMessage(Interaction.SET_VENDOR);
-                    Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-                    msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
-                    msgHeader.put(Header.VENDOR, this.injectionModel.getMediatorVendor().getVendor());
-                    requestSetVendor.setParameters(msgHeader);
-                    this.injectionModel.sendToViews(requestSetVendor);
+                    this.injectionModel.sendToViews(new Request3.SetVendor(
+                        this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser(),
+                        this.injectionModel.getMediatorVendor().getVendor()
+                    ));
                 }
             } catch (StoppedByUserSlidingException e) {
                 throw new JSqlRuntimeException(e);

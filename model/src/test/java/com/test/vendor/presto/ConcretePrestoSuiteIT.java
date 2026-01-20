@@ -1,7 +1,6 @@
 package com.test.vendor.presto;
 
 import com.test.AbstractTestSuite;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.cfg.JdbcSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

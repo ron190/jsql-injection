@@ -11,8 +11,7 @@
 package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.strategy.blind.InjectionBlindBin;
@@ -59,10 +58,7 @@ public class StrategyBlindBin extends AbstractStrategy {
 
         if (this.isApplicable) {
             this.allow();
-            var requestMessageBinary = new Request();
-            requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-            requestMessageBinary.setParameters(this.injection.getInfoMessage());
-            this.injectionModel.sendToViews(requestMessageBinary);
+            this.injectionModel.sendToViews(new Request3.MessageBinary(this.injection.getInfoMessage()));
         } else {
             this.unallow();
         }
@@ -105,12 +101,12 @@ public class StrategyBlindBin extends AbstractStrategy {
                 null
             )
         );
-        this.markVulnerability(Interaction.MARK_BLIND_BIN_VULNERABLE);
+        this.injectionModel.sendToViews(new Request3.MarkBlindBinVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.markVulnerability(Interaction.MARK_BLIND_BIN_INVULNERABLE);
+        this.injectionModel.sendToViews(new Request3.MarkBlindBinInvulnerable(this));
     }
 
     @Override
@@ -132,10 +128,7 @@ public class StrategyBlindBin extends AbstractStrategy {
                 () -> this.injection.getBlindOperator().name()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-
-            var request = new Request();
-            request.setMessage(Interaction.MARK_BLIND_BIN_STRATEGY);
-            this.injectionModel.sendToViews(request);
+            this.injectionModel.sendToViews(new Request3.MarkBlindBinStrategy(this));
         }
     }
     

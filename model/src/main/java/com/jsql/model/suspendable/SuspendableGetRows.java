@@ -3,8 +3,7 @@ package com.jsql.model.suspendable;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
@@ -257,10 +256,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         // Premature end of results
         // if it's not the root (empty tree)
         if (searchName != null) {
-            var request = new Request();
-            request.setMessage(Interaction.END_PROGRESS);
-            request.setParameters(searchName);
-            this.injectionModel.sendToViews(request);
+            this.injectionModel.sendToViews(new Request3.EndProgress(searchName));
         }
         var messageError = new StringBuilder("Fetching fails: no data to parse");
         if (searchName != null) {
@@ -273,17 +269,14 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private void sendChunk(String currentChunk) {
-        var request = new Request();
-        request.setMessage(Interaction.MESSAGE_CHUNK);
-        request.setParameters(
+        this.injectionModel.sendToViews(new Request3.MessageChunk(
             Pattern.compile(MODE + TRAIL_RGX +".*")
             .matcher(currentChunk)
             .replaceAll(StringUtils.EMPTY)
             .replace("\\n", "\\\\\\n")
             .replace("\\r", "\\\\\\r")
             .replace("\\t", "\\\\\\t")
-        );
-        this.injectionModel.sendToViews(request);
+        ));
     }
 
     // TODO pb for same char string like aaaaaaaaaaaaa...aaaaaaaaaaaaa
@@ -378,10 +371,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     private void sendProgress(int numberToFind, int countProgress, AbstractElementDatabase searchName) {
         if (numberToFind > 0 && searchName != null) {
-            var request = new Request();
-            request.setMessage(Interaction.UPDATE_PROGRESS);
-            request.setParameters(searchName, countProgress);
-            this.injectionModel.sendToViews(request);
+            this.injectionModel.sendToViews(new Request3.UpdateProgress(searchName, countProgress));
         }
     }
     

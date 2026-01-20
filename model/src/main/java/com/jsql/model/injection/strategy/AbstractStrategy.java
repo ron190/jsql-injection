@@ -1,9 +1,6 @@
 package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -11,9 +8,6 @@ import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.EnumMap;
-import java.util.Map;
 
 /**
  * Define a strategy to inject SQL with methods like Error and Time.
@@ -83,23 +77,6 @@ public abstract class AbstractStrategy {
             () -> I18nUtil.valueByKey(AbstractStrategy.KEY_LOG_CHECKING_STRATEGY),
             this::getName
         );
-    }
-    
-    public void markVulnerability(Interaction message, int... indexErrorStrategy) {
-        var request = new Request();
-        request.setMessage(message);
-        
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
-        
-        // Ellipse default to non null array
-        if (indexErrorStrategy.length > 0) {
-            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);
-            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);
-        }
-
-        request.setParameters(msgHeader);
-        this.injectionModel.sendToViews(request);
     }
     
     @Override

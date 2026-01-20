@@ -2,7 +2,7 @@
     "version": "0.113",
     "news": [
         "[DNS strategy] You're a security expert? Give a try to the new DNS strategy and report your feedback, you can easily test it on local mysql",
-        "[Java] Latest release v0.113 is still compatible Java 11, then the next release v0.114 will require Java 16",
+        "[Java] Latest release v0.113 is still compatible Java 11, then the next release v0.114 will require Java 21",
         "[Exploit] Give also a try to RCE, UDF and reverse shell and share your thoughts, injection can also lead to shell",
         "[RCE shell] How to open RCE shell and reverse shell? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
         "[Pinned] Report any bugs and thoughts, also add your star at https://github.com/ron190/jsql-injection"

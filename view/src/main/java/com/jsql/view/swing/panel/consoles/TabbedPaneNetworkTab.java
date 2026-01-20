@@ -1,6 +1,6 @@
 package com.jsql.view.swing.panel.consoles;
 
-import com.jsql.model.bean.util.HttpHeader;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
@@ -112,7 +112,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         });
     }
     
-    public void changeTextNetwork(HttpHeader networkData) {
+    public void changeTextNetwork(Request3.MessageHeader networkData) {
         this.textAreaRequest.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.post()));
         this.textAreaUrl.setText(this.getDecodedValue(this.checkBoxDecode.isSelected(), networkData.url()));
         this.updateTextArea(this.textAreaHeader, networkData.header());

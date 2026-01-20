@@ -1,9 +1,7 @@
 package com.jsql.model.suspendable;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.InjectionCharInsertion;
@@ -74,13 +72,10 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                         this.setVendor(mediatorVendor, vendorsOrderByMatch);
 
                         LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using [{}]", mediatorVendor.getVendor());
-                        var requestSetVendor = new Request();
-                        requestSetVendor.setMessage(Interaction.SET_VENDOR);
-                        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-                        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
-                        msgHeader.put(Header.VENDOR, mediatorVendor.getVendor());
-                        requestSetVendor.setParameters(msgHeader);
-                        this.injectionModel.sendToViews(requestSetVendor);
+                        this.injectionModel.sendToViews(new Request3.SetVendor(
+                            this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser(),
+                            mediatorVendor.getVendor()
+                        ));
                     }
                     
                     charFromOrderBy = currentCallable.getCharacterInsertion();

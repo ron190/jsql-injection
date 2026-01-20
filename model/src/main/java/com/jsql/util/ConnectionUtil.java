@@ -2,8 +2,7 @@ package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
@@ -237,10 +236,17 @@ public class ConnectionUtil {
         } finally {
             msgHeader.put(Header.SOURCE, pageSource);
             // Inform the view about the log infos
-            var request = new Request();
-            request.setMessage(Interaction.MESSAGE_HEADER);
-            request.setParameters(msgHeader);
-            this.injectionModel.sendToViews(request);
+            this.injectionModel.sendToViews(new Request3.MessageHeader(
+                (String) msgHeader.get(Header.URL),
+                null,
+                (Map<String, String>) msgHeader.get(Header.HEADER),
+                (Map<String, String>) msgHeader.get(Header.RESPONSE),
+                (String) msgHeader.get(Header.SOURCE),
+                null,
+                null,
+                null,
+                null
+            ));
         }
         
         return pageSource.trim();

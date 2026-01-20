@@ -11,8 +11,7 @@
 package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.strategy.blind.InjectionMultibit;
@@ -56,10 +55,7 @@ public class StrategyMultibit extends AbstractStrategy {
 
         if (this.isApplicable) {
             this.allow();
-            var requestMessageBinary = new Request();
-            requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-            requestMessageBinary.setParameters(this.injection.getInfoMessage());
-            this.injectionModel.sendToViews(requestMessageBinary);
+            this.injectionModel.sendToViews(new Request3.MessageBinary(this.injection.getInfoMessage()));
         } else {
             this.unallow();
         }
@@ -99,12 +95,12 @@ public class StrategyMultibit extends AbstractStrategy {
                 null
             )
         );
-        this.markVulnerability(Interaction.MARK_MULTIBIT_VULNERABLE);
+        this.injectionModel.sendToViews(new Request3.MarkMultibitVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.markVulnerability(Interaction.MARK_MULTIBIT_INVULNERABLE);
+        this.injectionModel.sendToViews(new Request3.MarkMultibitInvulnerable(this));
     }
 
     @Override
@@ -125,10 +121,7 @@ public class StrategyMultibit extends AbstractStrategy {
                 this::getName
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-
-            var request = new Request();
-            request.setMessage(Interaction.MARK_MULTIBIT_STRATEGY);
-            this.injectionModel.sendToViews(request);
+            this.injectionModel.sendToViews(new Request3.MarkMultibitStrategy(this));
         }
     }
     

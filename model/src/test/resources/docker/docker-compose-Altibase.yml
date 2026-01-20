@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+
+  altibase:
+    container_name: jsql-altibase
+    image: altibase/a_plus_edition
+    environment:
+      - MODE=foreground
+    ports:
+      - "20300:20300"
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

@@ -1,9 +1,7 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.JSqlException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +16,6 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -103,32 +100,27 @@ public class HeaderUtil {
         this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapResponseHeaders);
         this.injectionModel.getMediatorUtils().getDigestUtil().parseWwwAuthenticate(mapResponseHeaders);
 
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        
         int sizeHeaders = mapResponseHeaders.keySet()
             .stream()
             .map(key -> mapResponseHeaders.get(key).length() + key.length())
             .mapToInt(Integer::intValue)
             .sum();
-        
         float size = (float) (pageSource.length() + sizeHeaders) / 1024;
         var decimalFormat = new DecimalFormat("0.000");
-        msgHeader.put(Header.PAGE_SIZE, decimalFormat.format(size));
 
-        msgHeader.put(Header.URL, httpRequest.uri().toURL().toString());
-        msgHeader.put(Header.POST, body);
-        msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
-        msgHeader.put(Header.RESPONSE, mapResponseHeaders);
-        msgHeader.put(Header.SOURCE, pageSource);
-        msgHeader.put(Header.METADATA_STRATEGY, "#none");
-        msgHeader.put(Header.METADATA_PROCESS, "test#conn");
-        
         // Inform the view about the log info
-        var request = new Request();
-        request.setMessage(Interaction.MESSAGE_HEADER);
-        request.setParameters(msgHeader);
-        this.injectionModel.sendToViews(request);
-        
+        this.injectionModel.sendToViews(new Request3.MessageHeader(
+            httpRequest.uri().toURL().toString(),
+            body,
+            ConnectionUtil.getHeadersMap(httpRequest.headers()),
+            mapResponseHeaders,
+            pageSource,
+            decimalFormat.format(size),
+            "#none",
+            "test#conn",
+            null
+        ));
+
         return httpResponse;
     }
 

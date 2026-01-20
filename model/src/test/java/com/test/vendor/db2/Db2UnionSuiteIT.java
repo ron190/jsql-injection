@@ -2,7 +2,7 @@ package com.test.vendor.db2;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.view.terminal.SystemOutTerminal;
+import com.jsql.view.subscriber.SubscriberLogger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
@@ -15,7 +15,7 @@ class Db2UnionSuiteIT extends ConcreteDb2SuiteIT {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
-        model.subscribe(new SystemOutTerminal());
+        model.subscribe(new SubscriberLogger(model));
 
         // Slow fingerprinting => star
         model.getMediatorUtils().getParameterUtil().initQueryString(

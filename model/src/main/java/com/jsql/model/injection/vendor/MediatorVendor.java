@@ -1,9 +1,7 @@
 package com.jsql.model.injection.vendor;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.I18nUtil;
@@ -19,9 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 public class MediatorVendor {
     
@@ -43,6 +39,7 @@ public class MediatorVendor {
 
     // TODO Replace with enum
     private final Vendor auto;
+    private final Vendor altibase;
     private final Vendor clickhouse;
     private final Vendor cubrid;
     private final Vendor db2;
@@ -76,7 +73,6 @@ public class MediatorVendor {
         this.injectionModel = injectionModel;
         
         Vendor access = new Vendor(new VendorYaml("access.yml", injectionModel));
-        Vendor altibase = new Vendor(new VendorYaml("altibase.yml", injectionModel));
         Vendor ctreeace = new Vendor(new VendorYaml("ctreeace.yml", injectionModel));
         Vendor frontbase = new Vendor(new VendorYaml("frontbase.yml", injectionModel));
         Vendor ingres = new Vendor(new VendorYaml("ingres.yml", injectionModel));
@@ -87,6 +83,7 @@ public class MediatorVendor {
         Vendor teradata = new Vendor(new VendorYaml("teradata.yml", injectionModel));
 
         this.auto = new Vendor();
+        this.altibase = new Vendor(new VendorYaml("altibase.yml", injectionModel));
         this.cubrid = new Vendor(new VendorYaml("cubrid.yml", injectionModel));
         this.clickhouse = new Vendor(new VendorYaml("clickhouse.yml", injectionModel));
         this.db2 = new Vendor(new VendorYaml("db2.yml", injectionModel));
@@ -141,13 +138,13 @@ public class MediatorVendor {
         this.virtuoso = new Vendor(new VendorYaml("virtuoso.yml", injectionModel));
 
         this.vendors = Arrays.asList(
-            this.auto, access, altibase, this.clickhouse, ctreeace, this.cubrid, this.db2, this.derby, this.exasol, this.firebird,
+            this.auto, access, this.altibase, this.clickhouse, ctreeace, this.cubrid, this.db2, this.derby, this.exasol, this.firebird,
             frontbase, this.h2, this.hana, this.hsqldb, this.informix, ingres, iris, maxdb, this.mckoi, this.mimer, this.monetdb,
             this.mysql, this.neo4j, netezza, nuodb, this.oracle, this.postgres, this.presto, this.sqlite, this.sqlserver, this.sybase,
             teradata, this.vertica, this.virtuoso
         );
         this.vendorsForFingerprint = Arrays.asList(  // Add sortIndex
-            this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, access, altibase, ctreeace,
+            this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, access, this.altibase, ctreeace,
             this.cubrid, this.db2, this.derby, this.exasol, this.firebird, frontbase, this.hana, this.informix, ingres, iris, maxdb, this.mckoi,
             this.mimer, this.monetdb, this.neo4j, netezza, nuodb, this.presto, this.sybase, teradata, this.vertica, this.virtuoso, this.clickhouse
         );
@@ -211,14 +208,10 @@ public class MediatorVendor {
             true
         );
 
-        var requestSetVendor = new Request();
-        requestSetVendor.setMessage(Interaction.SET_VENDOR);
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
-        msgHeader.put(Header.VENDOR, vendorFound);
-        requestSetVendor.setParameters(msgHeader);
-        this.injectionModel.sendToViews(requestSetVendor);
-        
+        this.injectionModel.sendToViews(new Request3.SetVendor(
+            this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser(),
+            vendorFound
+        ));
         return vendorFound;
     }
 
@@ -239,17 +232,10 @@ public class MediatorVendor {
                 () -> I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"),
                 () -> vendor
             );
-            Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-            msgHeader.put(
-                Header.URL,
-                this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()
-            );
-            msgHeader.put(Header.VENDOR, vendorFixed);
-            
-            var requestDatabaseIdentified = new Request();
-            requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);
-            requestDatabaseIdentified.setParameters(msgHeader);
-            this.injectionModel.sendToViews(requestDatabaseIdentified);
+            this.injectionModel.sendToViews(new Request3.DatabaseIdentified(
+                this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser(),
+                vendorFixed
+            ));
         }
         return vendorFixed;
     }
@@ -375,5 +361,9 @@ public class MediatorVendor {
 
     public Vendor getClickhouse() {
         return this.clickhouse;
+    }
+
+    public Vendor getAltibase() {
+        return this.altibase;
     }
 }

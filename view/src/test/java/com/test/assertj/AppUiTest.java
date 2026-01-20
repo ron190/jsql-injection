@@ -5,9 +5,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.manager.ManagerScan;
@@ -110,7 +108,7 @@ public class AppUiTest {
 
         AppUiTest.window = new FrameFixture(AppUiTest.robot, frame);
 
-        injectionModel.subscribe(frame.getSubscriber());
+        injectionModel.subscribe(frame.getSubscriberView());
         AppUiTest.logMethod();
     }
 
@@ -205,20 +203,9 @@ public class AppUiTest {
     @Test
     public void shouldDnDTabs() {
         AppUiTest.logMethod();
-        var request = new Request();
-        request.setMessage(Interaction.CREATE_FILE_TAB);
-        request.setParameters("dragfile", "content", "path");
-        MediatorHelper.model().sendToViews(request);
-
-        request = new Request();
-        request.setMessage(Interaction.CREATE_FILE_TAB);
-        request.setParameters("jumpfile", "content", "path");
-        MediatorHelper.model().sendToViews(request);
-
-        request = new Request();
-        request.setMessage(Interaction.CREATE_FILE_TAB);
-        request.setParameters("dropfile", "content", "path");
-        MediatorHelper.model().sendToViews(request);
+        MediatorHelper.model().sendToViews(new Request3.CreateFileTab("dragfile", "content", "path"));
+        MediatorHelper.model().sendToViews(new Request3.CreateFileTab("jumpfile", "content", "path"));
+        MediatorHelper.model().sendToViews(new Request3.CreateFileTab("dropfile", "content", "path"));
 
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(0));
@@ -253,10 +240,7 @@ public class AppUiTest {
     @Test
     public void shouldFindFile() {
         AppUiTest.logMethod();
-        var request = new Request();
-        request.setMessage(Interaction.CREATE_FILE_TAB);
-        request.setParameters("file", "content", "path");
-        MediatorHelper.model().sendToViews(request);
+        MediatorHelper.model().sendToViews(new Request3.CreateFileTab("file", "content", "path"));
 
         try {
             AppUiTest.window.tabbedPane("tabResults").selectTab("file ").requireVisible();
@@ -272,10 +256,7 @@ public class AppUiTest {
     @Test
     public void shouldFindWebshell() {
         AppUiTest.logMethod();
-        var request = new Request();
-        request.setMessage(Interaction.ADD_TAB_EXPLOIT_WEB);
-        request.setParameters("http://webshell", "http://webshell/path");
-        MediatorHelper.model().sendToViews(request);
+        MediatorHelper.model().sendToViews(new Request3.AddTabExploitWeb("http://webshell"));
 
         try {
             AppUiTest.window.tabbedPane("tabResults").selectTab("Web shell").requireVisible();
@@ -309,23 +290,10 @@ public class AppUiTest {
         AppUiTest.window.label("menuStrategy").click();
         AppUiTest.window.menuItem("itemRadioStrategyError").requireDisabled();
 
-        var request = new Request();
-        request.setMessage(Interaction.SET_VENDOR);
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMysql());
-        request.setParameters(msgHeader);
-        MediatorHelper.model().sendToViews(request);
-
-        msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, StringUtils.EMPTY);
-        msgHeader.put(Header.INDEX_ERROR_STRATEGY, 0);
-        msgHeader.put(Header.INJECTION_MODEL, MediatorHelper.model());
-        msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMysql());
-
-        var requestError = new Request();
-        requestError.setMessage(Interaction.MARK_ERROR_VULNERABLE);
-        requestError.setParameters(msgHeader);
-        MediatorHelper.model().sendToViews(requestError);
+        MediatorHelper.model().sendToViews(new Request3.SetVendor(null, MediatorHelper.model().getMediatorVendor().getMysql()));
+        MediatorHelper.model().sendToViews(
+            new Request3.MarkErrorVulnerable(0, MediatorHelper.model().getMediatorStrategy().getError())
+        );
 
         AppUiTest.logMethod();
         AppUiTest.window.menuItem("itemRadioStrategyError").requireEnabled(Timeout.timeout(1000));
@@ -360,20 +328,18 @@ public class AppUiTest {
     @Test
     public void shouldFindNetworkHeader() {
         AppUiTest.logMethod();
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, "url");
-        msgHeader.put(Header.POST, "post");
-        msgHeader.put(Header.HEADER, new TreeMap<>(Map.of("key1","value1", "key2", "value2")));
-        msgHeader.put(Header.RESPONSE, new TreeMap<>(Map.of("key1","value1", "key2", "value2")));
-        msgHeader.put(Header.SOURCE, "source");
-        msgHeader.put(Header.PAGE_SIZE, "1");
-        msgHeader.put(Header.METADATA_PROCESS, "meta process");
-        msgHeader.put(Header.METADATA_STRATEGY, "meta strategy");
 
-        var request = new Request();
-        request.setMessage(Interaction.MESSAGE_HEADER);
-        request.setParameters(msgHeader);
-        MediatorHelper.model().sendToViews(request);
+        MediatorHelper.model().sendToViews(new Request3.MessageHeader(
+            "url",
+            "post",
+            new TreeMap<>(Map.of("key1","value1", "key2", "value2")),
+            new TreeMap<>(Map.of("key1","value1", "key2", "value2")),
+            "source",
+            "1",
+            "meta strategy",
+            "meta process",
+            null
+        ));
 
         try {
             AppUiTest.window.label("CONSOLE_NETWORK_LABEL").click().requireVisible();
@@ -402,10 +368,9 @@ public class AppUiTest {
     @Test
     public void shouldFindSqlshell() {
         AppUiTest.logMethod();
-        var request = new Request();
-        request.setMessage(Interaction.ADD_TAB_EXPLOIT_SQL);
-        request.setParameters("http://sqlshell", "http://sqlshell/path", "username", "password");
-        MediatorHelper.model().sendToViews(request);
+        MediatorHelper.model().sendToViews(
+            new Request3.AddTabExploitSql("http://sqlshell", "username", "password")
+        );
 
         try {
             AppUiTest.logMethod();
@@ -469,10 +434,7 @@ public class AppUiTest {
         AppUiTest.window.tabbedPane("tabManagers").selectTab("Admin page");
         AppUiTest.window.list("listManagerAdminPage").item(0).select().rightClick();
 
-        var request = new Request();
-        request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);
-        request.setParameters("http://adminpage");
-        MediatorHelper.model().sendToViews(request);
+        MediatorHelper.model().sendToViews(new Request3.CreateAdminPageTab("http://adminpage"));
 
         AppUiTest.logMethod();
         try {
@@ -495,18 +457,12 @@ public class AppUiTest {
         var nameDatabase = "database";
         Database database = new Database(nameDatabase, "1");
 
-        var requestDatabase = new Request();
-        requestDatabase.setMessage(Interaction.ADD_DATABASES);
-        requestDatabase.setParameters(List.of(database));
-        MediatorHelper.model().sendToViews(requestDatabase);
+        MediatorHelper.model().sendToViews(new Request3.AddDatabases(List.of(database)));
         Assertions.assertEquals(nameDatabase +" (1 table)", AppUiTest.window.tree("treeDatabases").valueAt(0));
 
         var nameTable = "table";
         Table table = new Table(nameTable, "2", database);
-        var requestTable = new Request();
-        requestTable.setMessage(Interaction.ADD_TABLES);
-        requestTable.setParameters(List.of(table));
-        MediatorHelper.model().sendToViews(requestTable);
+        MediatorHelper.model().sendToViews(new Request3.AddTables(List.of(table)));
         Assertions.assertEquals(nameTable +" (2 rows)", AppUiTest.window.tree("treeDatabases").valueAt(1));
 
         AppUiTest.logMethod();
@@ -514,10 +470,9 @@ public class AppUiTest {
         var nameColumn1 = "column 1";
         Column column1 = new Column(nameColumn0, table);
         Column column2 = new Column(nameColumn1, table);
-        var request = new Request();
-        request.setMessage(Interaction.ADD_COLUMNS);
-        request.setParameters(Arrays.asList(column1, column2));
-        MediatorHelper.model().sendToViews(request);
+        MediatorHelper.model().sendToViews(new Request3.AddColumns(
+            Arrays.asList(column1, column2)
+        ));
         Assertions.assertEquals(nameColumn0, AppUiTest.window.tree("treeDatabases").valueAt(2));
         Assertions.assertEquals(nameColumn1, AppUiTest.window.tree("treeDatabases").valueAt(3));
 
@@ -526,11 +481,7 @@ public class AppUiTest {
             { StringUtils.EMPTY, StringUtils.EMPTY, "[0, 0]", "[0, 1]" },
             { StringUtils.EMPTY, StringUtils.EMPTY, "[1, 0]", "[1, 1]" }
         };
-        var objectData = new Object[]{ arrayColumns, tableDatas, table };
-        var requestValues = new Request();
-        requestValues.setMessage(Interaction.CREATE_VALUES_TAB);
-        requestValues.setParameters(objectData);
-        MediatorHelper.model().sendToViews(requestValues);
+        MediatorHelper.model().sendToViews(new Request3.CreateValuesTab(arrayColumns, tableDatas, table));
 
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane("tabResults").selectTab(nameTable).requireVisible();

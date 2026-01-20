@@ -52,6 +52,7 @@
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
 
         <!-- databases -->
+        <altibase.version>7.3.0.1.1</altibase.version>
         <clickhouse.version>0.9.6</clickhouse.version>
         <cubrid.version>11.3.2.0053</cubrid.version>
         <derby.version>10.17.1.0</derby.version>
@@ -414,6 +415,12 @@
         </dependency>
 
         <!-- JDBC drivers -->
+        <dependency>
+            <groupId>com.altibase</groupId>
+            <artifactId>altibase-jdbc</artifactId>
+            <version>${altibase.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>

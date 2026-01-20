@@ -1,7 +1,7 @@
 package com.test.special;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.terminal.SystemOutTerminal;
+import com.jsql.view.subscriber.SubscriberLogger;
 import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
@@ -13,7 +13,7 @@ class AdminPageSuiteIT extends ConcreteMySqlSuiteIT {
     @Override
     public void setupInjection() {
         this.injectionModel = new InjectionModel();
-        this.injectionModel.subscribe(new SystemOutTerminal());
+        this.injectionModel.subscribe(new SubscriberLogger(this.injectionModel));
     }
     
     @RepeatedTest(3)  // todo choose @RetryingTest or @RepeatedTest

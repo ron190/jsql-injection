@@ -2,8 +2,7 @@ package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.injection.vendor.model.yaml.Configuration;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -113,12 +112,12 @@ public class StrategyStack extends AbstractStrategy {
                 "metadataInjectionProcess"
             )
         );
-        this.markVulnerability(Interaction.MARK_STACK_VULNERABLE);
+        this.injectionModel.sendToViews(new Request3.MarkStackVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.markVulnerability(Interaction.MARK_STACK_INVULNERABLE);
+        this.injectionModel.sendToViews(new Request3.MarkStackInvulnerable(this));
     }
 
     @Override
@@ -139,10 +138,7 @@ public class StrategyStack extends AbstractStrategy {
                 this::getName
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-
-            var request = new Request();
-            request.setMessage(Interaction.MARK_STACK_STRATEGY);
-            this.injectionModel.sendToViews(request);
+            this.injectionModel.sendToViews(new Request3.MarkStackStrategy(this));
         }
     }
 

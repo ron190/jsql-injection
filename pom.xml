@@ -16,14 +16,14 @@
         <revision>v0.113</revision>
         <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
 
-        <maven.compiler.release>16</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <!-- Required to avoid error 'Target bytecode 1.8 isn't accepted by Groovy 5.0.0-alpha-1' -->
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.target>21</maven.compiler.target>
 
         <sonar.organization>ron190-github</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.java.binaries>target/classes</sonar.java.binaries>
-        <sonar.java.source>16</sonar.java.source>
+        <sonar.java.source>21</sonar.java.source>
         <!-- hides analysis verbose logs -->
         <sonar.log.level>ERROR</sonar.log.level>
         <sonar.verbose>false</sonar.verbose>
@@ -111,6 +111,12 @@
         </profile>
         <profile>
             <id>tests-Mimer</id>
+            <properties>
+                <parallel.enabled>false</parallel.enabled>
+            </properties>
+        </profile>
+        <profile>
+            <id>tests-Virtuoso</id>
             <properties>
                 <parallel.enabled>false</parallel.enabled>
             </properties>
@@ -349,8 +355,13 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
-                        <!-- hide build warning on jdk21 -->
+                        <!-- prevents warning on jdk21: Annotation processing is enabled because one or more processors were found -->
                         <proc>full</proc>
+                        <!-- prevents warning: `GraalVmProcessor` annotation processor missing `log4j.graalvm.groupId` and `log4j.graalvm.artifactId` -->
+                        <compilerArgs combine.children="append">
+                            <arg>-Alog4j.graalvm.groupId=${project.groupId}</arg>
+                            <arg>-Alog4j.graalvm.artifactId=${project.artifactId}</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>

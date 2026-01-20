@@ -3,6 +3,7 @@ package com.jsql.model.injection.strategy.blind;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.callable.BinRanges;
 import com.jsql.model.injection.strategy.blind.callable.CallableBlindBin;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
@@ -66,7 +67,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
                 injectionModel,
                 this,
                 blindOperator,
-                -1, -1, -1,
+                new BinRanges(-1, -1, -1),
                 "bin#falsy"
             ));
         }
@@ -111,7 +112,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
                 injectionModel,
                 this,
                 blindOperator,
-                -1, -1, -1,
+                new BinRanges(-1, -1, -1),
                 "bin#truthy"
             ));
         }
@@ -154,7 +155,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
             this.injectionModel,
             this,
             this.blindOperator,
-            -1, -1, -1,
+            new BinRanges(-1, -1, -1),
             "bin#confirm"
         );
         try {
@@ -183,9 +184,9 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
         int high;
 
         if (currentCallable != null) {
-            low = currentCallable.getLow();
-            mid = currentCallable.getMid();
-            high = currentCallable.getHigh();
+            low = currentCallable.getBinRanges().low();
+            mid = currentCallable.getBinRanges().mid();
+            high = currentCallable.getBinRanges().high();
 
             if (low >= high) {  // char found
                 if (this.isCorruptOrElseNextChar(bytes, indexChar, countBadAsciiCode, currentCallable, low)) {
@@ -213,7 +214,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
                 this.injectionModel,
                 this,
                 this.blindOperator,
-                low, mid, high,
+                new BinRanges(low, mid, high),
                 String.format("bin#%s~%s<%s<%s", indexChar, low, mid, high)
             )
         );

@@ -2,7 +2,7 @@ package com.test.method;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.view.terminal.SystemOutTerminal;
+import com.jsql.view.subscriber.SubscriberLogger;
 import com.test.vendor.mysql.ConcreteMySqlErrorSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
@@ -13,7 +13,7 @@ class CustomUserAgentSuiteIT extends ConcreteMySqlErrorSuiteIT {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
-        model.subscribe(new SystemOutTerminal());
+        model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().getParameterUtil().initQueryString(
             "http://localhost:8080/user-agent?tenant=mysql-error&name="

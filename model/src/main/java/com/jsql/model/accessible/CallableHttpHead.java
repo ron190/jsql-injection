@@ -1,9 +1,7 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -17,8 +15,6 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -95,16 +91,17 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
 
             this.responseCodeHttp = String.valueOf(response.statusCode());
 
-            Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-            msgHeader.put(Header.URL, this.urlAdminPage);
-            msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
-            msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(response));
-            msgHeader.put(Header.METADATA_PROCESS, this.metadataInjectionProcess);
-            
-            var request = new Request();
-            request.setMessage(Interaction.MESSAGE_HEADER);
-            request.setParameters(msgHeader);
-            this.injectionModel.sendToViews(request);
+            this.injectionModel.sendToViews(new Request3.MessageHeader(
+                this.urlAdminPage,
+                null,
+                ConnectionUtil.getHeadersMap(httpRequest.headers()),
+                ConnectionUtil.getHeadersMap(response),
+                null,
+                null,
+                null,
+                this.metadataInjectionProcess,
+                null
+            ));
         } catch (InterruptedException e) {
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();

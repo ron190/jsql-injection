@@ -13,8 +13,7 @@ package com.jsql.model;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.ResourceAccess;
 import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
@@ -168,10 +167,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
             if (hasFoundInjection && !this.isScanning) {
                 if (!this.getMediatorUtils().getPreferencesUtil().isNotShowingVulnReport()) {
-                    var requestSetVendor = new Request();
-                    requestSetVendor.setMessage(Interaction.CREATE_ANALYSIS_REPORT);
-                    requestSetVendor.setParameters(this.analysisReport);
-                    this.sendToViews(requestSetVendor);
+                    this.sendToViews(new Request3.CreateAnalysisReport(this.analysisReport));
                 }
                 if (this.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using Zip mode for reduced query size");
@@ -197,9 +193,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 e.getMessage() == null ? InjectionModel.getImplicitReason(e) : e.getMessage()
             );
         } finally {
-            var request = new Request();
-            request.setMessage(Interaction.END_PREPARATION);
-            this.sendToViews(request);
+            this.sendToViews(new Request3.EndPreparation());
         }
     }
     
@@ -325,10 +319,17 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             msgHeader.put(Header.METADATA_BOOLEAN, callableBoolean);
             
             // Send data to Views
-            var request = new Request();
-            request.setMessage(Interaction.MESSAGE_HEADER);
-            request.setParameters(msgHeader);
-            this.sendToViews(request);
+            this.sendToViews(new Request3.MessageHeader(
+                (String) msgHeader.get(Header.URL),
+                (String) msgHeader.get(Header.POST),
+                (Map<String, String>) msgHeader.get(Header.HEADER),
+                (Map<String, String>) msgHeader.get(Header.RESPONSE),
+                (String) msgHeader.get(Header.SOURCE),
+                (String) msgHeader.get(Header.PAGE_SIZE),
+                (String) msgHeader.get(Header.METADATA_STRATEGY),
+                (String) msgHeader.get(Header.METADATA_PROCESS),
+                (AbstractCallableBit<?>) msgHeader.get(Header.METADATA_BOOLEAN)
+            ));
         } catch (IOException e) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,

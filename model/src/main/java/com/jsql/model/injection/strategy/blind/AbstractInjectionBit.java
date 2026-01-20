@@ -2,8 +2,7 @@ package com.jsql.model.injection.strategy.blind;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
@@ -154,17 +153,14 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
 
             currentCallable.setCharText(Character.toString((char) asciiCode));
             
-            var interaction = new Request();
-            interaction.setMessage(Interaction.MESSAGE_BINARY);
-            interaction.setParameters(
+            this.injectionModel.sendToViews(new Request3.MessageBinary(
                 asciiCodeBit
                 + "="
                 + currentCallable.getCharText()
                 .replace("\n", "\\n")
                 .replace("\r", "\\r")
                 .replace("\t", "\\t")
-            );
-            this.injectionModel.sendToViews(interaction);
+            ));
             isComplete = true;
         }
         return isComplete;

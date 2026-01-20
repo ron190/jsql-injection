@@ -17,9 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
 
-    private final int low;
-    private final int mid;
-    private final int high;
+    private final BinRanges binRanges;
 
     private LinkedList<Diff> diffsWithReference = new LinkedList<>();  // List of differences found between the reference page, and the current page
     private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
@@ -35,13 +33,11 @@ public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
         InjectionModel injectionModel,
         InjectionBlindBin injectionBlind,
         BlindOperator blindOperator,
-        int low, int mid, int high,
+        BinRanges binRanges,
         String metadataInjectionProcess
     ) {
         this.isBinary = true;
-        this.low = low;
-        this.mid = mid;
-        this.high = high;
+        this.binRanges = binRanges;
         this.injectionBlind = injectionBlind;
         this.metadataInjectionProcess = metadataInjectionProcess;
         this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);
@@ -56,11 +52,11 @@ public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
         InjectionModel injectionModel,
         InjectionBlindBin injectionBlind,
         BlindOperator blindOperator,
-        int low, int mid, int high,
+        BinRanges binRanges,
         String metadataInjectionProcess
     ) {
-        this(sqlQuery, injectionModel, injectionBlind, blindOperator, low, mid, high, metadataInjectionProcess);
-        this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBin(sqlQuery, indexChar, mid, blindOperator);
+        this(sqlQuery, injectionModel, injectionBlind, blindOperator, binRanges, metadataInjectionProcess);
+        this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBin(sqlQuery, indexChar, binRanges.mid(), blindOperator);
         this.currentIndex = indexChar;
     }
 
@@ -106,15 +102,7 @@ public class CallableBlindBin extends AbstractCallableBit<CallableBlindBin> {
         return this.diffsWithReference;
     }
 
-    public int getLow() {
-        return this.low;
-    }
-
-    public int getMid() {
-        return this.mid;
-    }
-
-    public int getHigh() {
-        return this.high;
+    public BinRanges getBinRanges() {
+        return this.binRanges;
     }
 }
