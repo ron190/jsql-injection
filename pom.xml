@@ -55,7 +55,7 @@
         <!-- enabled on modules builds only, as parent build not reporting -->
         <pitest-maven.version>1.22.0</pitest-maven.version>
         <spotbugs-maven-plugin.version>4.9.8.2</spotbugs-maven-plugin.version>
-        <versions-maven-plugin.version>2.20.1</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
 
         <!-- Tests are disabled for scans by default, profile restores the tests only when required -->
         <skipTests>true</skipTests>
@@ -94,6 +94,7 @@
                 <maven-surefire-plugin.skipTests>false</maven-surefire-plugin.skipTests>
                 <maven-failsafe-plugin.include>**/*SuiteIT.java</maven-failsafe-plugin.include>
                 <maven-failsafe-plugin.exclude>
+                    **/*Altibase*SuiteIT.java,
                     **/*Clickhouse*SuiteIT.java,
                     **/*Db2*SuiteIT.java,
                     **/*Exasol*SuiteIT.java,
