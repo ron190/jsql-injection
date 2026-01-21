@@ -3,8 +3,7 @@
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
@@ -42,150 +41,150 @@ import static com.jsql.model.injection.vendor.model.VendorYaml.LIMIT;
  */
 public class SuspendableGetRows extends AbstractSuspendable {
 
-<span class="fc" id="L45">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L44">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     public SuspendableGetRows(InjectionModel injectionModel) {
-<span class="fc" id="L48">        super(injectionModel);</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L47">        super(injectionModel);</span>
+<span class="fc" id="L48">    }</span>
 
     @Override
     public String run(Object... args) throws AbstractSlidingException {
         // TODO Map class or record
-<span class="fc" id="L54">        String initialSqlQuery = (String) args[0];</span>
-<span class="fc" id="L55">        String[] sourcePage = (String[]) args[1];</span>
-<span class="fc" id="L56">        boolean isMultipleRows = (Boolean) args[2];</span>
-<span class="fc" id="L57">        int countRowsToFind = (Integer) args[3];</span>
-<span class="fc" id="L58">        AbstractElementDatabase elementDatabase = (AbstractElementDatabase) args[4];</span>
-<span class="fc" id="L59">        String metadataInjectionProcess = (String) args[5];</span>
+<span class="fc" id="L53">        String initialSqlQuery = (String) args[0];</span>
+<span class="fc" id="L54">        String[] sourcePage = (String[]) args[1];</span>
+<span class="fc" id="L55">        boolean isMultipleRows = (Boolean) args[2];</span>
+<span class="fc" id="L56">        int countRowsToFind = (Integer) args[3];</span>
+<span class="fc" id="L57">        AbstractElementDatabase elementDatabase = (AbstractElementDatabase) args[4];</span>
+<span class="fc" id="L58">        String metadataInjectionProcess = (String) args[5];</span>
         
-<span class="fc" id="L61">        this.injectionModel.getMediatorUtils().getThreadUtil().put(elementDatabase, this);</span>
+<span class="fc" id="L60">        this.injectionModel.getMediatorUtils().getThreadUtil().put(elementDatabase, this);</span>
 
-<span class="fc" id="L63">        AbstractStrategy strategy = this.injectionModel.getMediatorStrategy().getStrategy();</span>
+<span class="fc" id="L62">        AbstractStrategy strategy = this.injectionModel.getMediatorStrategy().getStrategy();</span>
         
         // Fix #14417
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (strategy == null) {</span>
-<span class="nc" id="L67">            return StringUtils.EMPTY;</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (strategy == null) {</span>
+<span class="nc" id="L66">            return StringUtils.EMPTY;</span>
         }
         
         // Stop injection if all rows are found, skip rows and characters collected
-<span class="fc" id="L71">        var slidingWindowAllRows = new StringBuilder();</span>
-<span class="fc" id="L72">        var slidingWindowCurrentRow = new StringBuilder();</span>
+<span class="fc" id="L70">        var slidingWindowAllRows = new StringBuilder();</span>
+<span class="fc" id="L71">        var slidingWindowCurrentRow = new StringBuilder();</span>
         
-<span class="fc" id="L74">        String previousChunk = StringUtils.EMPTY;</span>
-<span class="fc" id="L75">        var countAllRows = 0;</span>
-<span class="fc" id="L76">        var charPositionInCurrentRow = 1;</span>
-<span class="fc" id="L77">        var countInfiniteLoop = 0;</span>
+<span class="fc" id="L73">        String previousChunk = StringUtils.EMPTY;</span>
+<span class="fc" id="L74">        var countAllRows = 0;</span>
+<span class="fc" id="L75">        var charPositionInCurrentRow = 1;</span>
+<span class="fc" id="L76">        var countInfiniteLoop = 0;</span>
         
-<span class="fc" id="L79">        String queryGetRows = this.getQuery(initialSqlQuery, countAllRows);</span>
+<span class="fc" id="L78">        String queryGetRows = this.getQuery(initialSqlQuery, countAllRows);</span>
         
         while (true) {
-<span class="fc" id="L82">            this.checkSuspend(strategy, slidingWindowAllRows, slidingWindowCurrentRow);</span>
+<span class="fc" id="L81">            this.checkSuspend(strategy, slidingWindowAllRows, slidingWindowCurrentRow);</span>
             
-<span class="fc" id="L84">            sourcePage[0] = strategy.inject(queryGetRows, Integer.toString(charPositionInCurrentRow), this, metadataInjectionProcess);</span>
+<span class="fc" id="L83">            sourcePage[0] = strategy.inject(queryGetRows, Integer.toString(charPositionInCurrentRow), this, metadataInjectionProcess);</span>
             // Parse all the data we have retrieved
-<span class="fc" id="L86">            Matcher regexLeadFound = this.parseLeadFound(sourcePage[0], strategy.getPerformanceLength());</span>
-<span class="fc" id="L87">            Matcher regexTrailOnlyFound = this.parseTrailOnlyFound(sourcePage[0]);</span>
+<span class="fc" id="L85">            Matcher regexLeadFound = this.parseLeadFound(sourcePage[0], strategy.getPerformanceLength());</span>
+<span class="fc" id="L86">            Matcher regexTrailOnlyFound = this.parseTrailOnlyFound(sourcePage[0]);</span>
             
-<span class="fc" id="L89">            if (</span>
-<span class="fc bfc" id="L90" title="All 6 branches covered.">                (!regexLeadFound.find() || regexTrailOnlyFound.find())</span>
+<span class="fc" id="L88">            if (</span>
+<span class="fc bfc" id="L89" title="All 6 branches covered.">                (!regexLeadFound.find() || regexTrailOnlyFound.find())</span>
                 &amp;&amp; isMultipleRows
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
             ) {
-<span class="fc" id="L94">                this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);</span>
-<span class="fc" id="L95">                break;</span>
+<span class="fc" id="L93">                this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);</span>
+<span class="fc" id="L94">                break;</span>
             }
 
             // Add the result to the data already found.
             // Fix #40947: OutOfMemoryError on append()
             // Fix #95382: IllegalArgumentException on URLDecoder.decode()
             try {
-<span class="fc" id="L102">                String currentChunk = regexLeadFound.group(1);</span>
-<span class="fc" id="L103">                currentChunk = this.decodeUnicode(currentChunk, initialSqlQuery);</span>
-<span class="fc" id="L104">                currentChunk = this.decodeUrl(currentChunk);</span>
+<span class="fc" id="L101">                String currentChunk = regexLeadFound.group(1);</span>
+<span class="fc" id="L102">                currentChunk = this.decodeUnicode(currentChunk, initialSqlQuery);</span>
+<span class="fc" id="L103">                currentChunk = this.decodeUrl(currentChunk);</span>
 
-<span class="fc" id="L106">                countInfiniteLoop = this.checkInfinite(countInfiniteLoop, previousChunk, currentChunk, slidingWindowCurrentRow, slidingWindowAllRows);</span>
+<span class="fc" id="L105">                countInfiniteLoop = this.checkInfinite(countInfiniteLoop, previousChunk, currentChunk, slidingWindowCurrentRow, slidingWindowAllRows);</span>
                 
-<span class="fc" id="L108">                previousChunk = currentChunk;</span>
-<span class="fc" id="L109">                slidingWindowCurrentRow.append(currentChunk);</span>
-<span class="fc" id="L110">                this.sendChunk(currentChunk);</span>
-<span class="fc" id="L111">            } catch (IllegalArgumentException | IllegalStateException | OutOfMemoryError e) {</span>
-<span class="nc" id="L112">                this.endInjection(elementDatabase, e);</span>
-<span class="fc" id="L113">            }</span>
+<span class="fc" id="L107">                previousChunk = currentChunk;</span>
+<span class="fc" id="L108">                slidingWindowCurrentRow.append(currentChunk);</span>
+<span class="fc" id="L109">                this.sendChunk(currentChunk);</span>
+<span class="fc" id="L110">            } catch (IllegalArgumentException | IllegalStateException | OutOfMemoryError e) {</span>
+<span class="nc" id="L111">                this.endInjection(elementDatabase, e);</span>
+<span class="fc" id="L112">            }</span>
 
             // Check how many rows we have collected from the beginning of that chunk
-<span class="fc" id="L116">            int countChunkRows = this.getCountRows(slidingWindowCurrentRow);</span>
-<span class="fc" id="L117">            this.sendProgress(countRowsToFind, countAllRows + countChunkRows, elementDatabase);</span>
+<span class="fc" id="L115">            int countChunkRows = this.getCountRows(slidingWindowCurrentRow);</span>
+<span class="fc" id="L116">            this.sendProgress(countRowsToFind, countAllRows + countChunkRows, elementDatabase);</span>
 
             // End of rows detected: \1\3\3\7
             // =&gt; \4xxxxxxxx\500\4\6\4...\4\1\3\3\7
-<span class="fc bfc" id="L121" title="All 2 branches covered.">            if (</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            if (</span>
                 countChunkRows &gt; 0
-<span class="fc bfc" id="L123" title="All 2 branches covered.">                || slidingWindowCurrentRow.toString().matches(&quot;(?s).*&quot;+ TRAIL_RGX +&quot;.*&quot;)</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">                || slidingWindowCurrentRow.toString().matches(&quot;(?s).*&quot;+ TRAIL_RGX +&quot;.*&quot;)</span>
             ) {
-<span class="fc" id="L125">                this.scrapeTrailJunk(slidingWindowCurrentRow);</span>
-<span class="fc" id="L126">                slidingWindowAllRows.append(slidingWindowCurrentRow);</span>
+<span class="fc" id="L124">                this.scrapeTrailJunk(slidingWindowCurrentRow);</span>
+<span class="fc" id="L125">                slidingWindowAllRows.append(slidingWindowCurrentRow);</span>
                 
-<span class="fc bfc" id="L128" title="All 2 branches covered.">                if (isMultipleRows) {</span>
-<span class="fc" id="L129">                    this.scrap(slidingWindowAllRows);</span>
-<span class="fc" id="L130">                    this.scrap(slidingWindowCurrentRow);</span>
-<span class="fc" id="L131">                    this.appendRowFixed(slidingWindowAllRows, slidingWindowCurrentRow);</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">                if (isMultipleRows) {</span>
+<span class="fc" id="L128">                    this.scrap(slidingWindowAllRows);</span>
+<span class="fc" id="L129">                    this.scrap(slidingWindowCurrentRow);</span>
+<span class="fc" id="L130">                    this.appendRowFixed(slidingWindowAllRows, slidingWindowCurrentRow);</span>
 
-<span class="fc" id="L133">                    countAllRows = this.getCountRows(slidingWindowAllRows);</span>
-<span class="fc" id="L134">                    this.sendProgress(countRowsToFind, countAllRows, elementDatabase);</span>
+<span class="fc" id="L132">                    countAllRows = this.getCountRows(slidingWindowAllRows);</span>
+<span class="fc" id="L133">                    this.sendProgress(countRowsToFind, countAllRows, elementDatabase);</span>
 
                     // Ending condition: every expected rows have been retrieved.
-<span class="fc bfc" id="L137" title="All 2 branches covered.">                    if (countAllRows == countRowsToFind) {</span>
-<span class="fc" id="L138">                        break;</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">                    if (countAllRows == countRowsToFind) {</span>
+<span class="fc" id="L137">                        break;</span>
                     }
                     // Add the LIMIT statement to the next SQL query and reset variables.
                     // Put the character cursor to the beginning of the line, and reset the result of the current query
-<span class="fc" id="L142">                    queryGetRows = this.getQuery(initialSqlQuery, countAllRows);</span>
-<span class="fc" id="L143">                    slidingWindowCurrentRow.setLength(0);</span>
+<span class="fc" id="L141">                    queryGetRows = this.getQuery(initialSqlQuery, countAllRows);</span>
+<span class="fc" id="L142">                    slidingWindowCurrentRow.setLength(0);</span>
                 } else {
-<span class="fc" id="L145">                    this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);</span>
-<span class="fc" id="L146">                    break;</span>
+<span class="fc" id="L144">                    this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);</span>
+<span class="fc" id="L145">                    break;</span>
                 }
             }
-<span class="fc" id="L149">            charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;</span>
-<span class="fc" id="L150">        }</span>
-<span class="fc" id="L151">        this.injectionModel.getMediatorUtils().getThreadUtil().remove(elementDatabase);</span>
-<span class="fc" id="L152">        return slidingWindowAllRows.toString();</span>
+<span class="fc" id="L148">            charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;</span>
+<span class="fc" id="L149">        }</span>
+<span class="fc" id="L150">        this.injectionModel.getMediatorUtils().getThreadUtil().remove(elementDatabase);</span>
+<span class="fc" id="L151">        return slidingWindowAllRows.toString();</span>
     }
 
     private String decodeUrl(String currentChunk) {
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {</span>
             try {
-<span class="fc" id="L158">                return URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text</span>
-<span class="nc" id="L159">            } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L160">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Decoding fails on UT8, keeping raw result&quot;);</span>
+<span class="fc" id="L157">                return URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text</span>
+<span class="nc" id="L158">            } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L159">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Decoding fails on UT8, keeping raw result&quot;);</span>
             }
         }
-<span class="nc" id="L163">        return currentChunk;</span>
+<span class="nc" id="L162">        return currentChunk;</span>
     }
 
     private String decodeUnicode(String currentChunk, String initialSqlQuery) {
-<span class="fc" id="L167">        if (</span>
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">            !this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()</span>
-<span class="fc bfc" id="L169" title="All 4 branches covered.">            &amp;&amp; !&quot;select@@plugin_dir&quot;.equals(initialSqlQuery)  // can give C:\path\</span>
-<span class="fc bfc" id="L170" title="All 2 branches covered.">            &amp;&amp; initialSqlQuery != null &amp;&amp; !initialSqlQuery.matches(&quot;(?si).*select.*sys_eval\\('.*'\\).*&quot;)</span>
+<span class="fc" id="L166">        if (</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">            !this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()</span>
+<span class="fc bfc" id="L168" title="All 4 branches covered.">            &amp;&amp; !&quot;select@@plugin_dir&quot;.equals(initialSqlQuery)  // can give C:\path\</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">            &amp;&amp; initialSqlQuery != null &amp;&amp; !initialSqlQuery.matches(&quot;(?si).*select.*sys_eval\\('.*'\\).*&quot;)</span>
         ) {
-<span class="fc" id="L172">            return StringEscapeUtils.unescapeJava(  // transform \u0000 entities to text</span>
+<span class="fc" id="L171">            return StringEscapeUtils.unescapeJava(  // transform \u0000 entities to text</span>
                 currentChunk
-<span class="fc" id="L174">                .replaceAll(&quot;\\\\u.{0,3}$&quot;, StringUtils.EMPTY)  // remove incorrect entities</span>
-<span class="fc" id="L175">                .replaceAll(&quot;\\\\(\\d{4})&quot;, &quot;\\\\u$1&quot;)  // transform PDO Error 10.11.3-MariaDB-1 \0000 entities</span>
+<span class="fc" id="L173">                .replaceAll(&quot;\\\\u.{0,3}$&quot;, StringUtils.EMPTY)  // remove incorrect entities</span>
+<span class="fc" id="L174">                .replaceAll(&quot;\\\\(\\d{4})&quot;, &quot;\\\\u$1&quot;)  // transform PDO Error 10.11.3-MariaDB-1 \0000 entities</span>
             );
         }
-<span class="fc" id="L178">        return currentChunk;</span>
+<span class="fc" id="L177">        return currentChunk;</span>
     }
 
     private String getQuery(String initialSqlQuery, int countAllRows) {
-<span class="fc" id="L182">        return initialSqlQuery.replace(LIMIT, this.injectionModel.getMediatorVendor().getVendor().instance().sqlLimit(countAllRows));</span>
+<span class="fc" id="L181">        return initialSqlQuery.replace(LIMIT, this.injectionModel.getMediatorVendor().getVendor().instance().sqlLimit(countAllRows));</span>
     }
 
     private void appendRowFixed(StringBuilder slidingWindowAllRows, StringBuilder slidingWindowCurrentRow) {
         // Check either if there is more than 1 row and if there is less than 1 complete row
-<span class="fc" id="L187">        var regexAtLeastOneRow = Pattern.compile(</span>
-<span class="fc" id="L188">            String.format(</span>
+<span class="fc" id="L186">        var regexAtLeastOneRow = Pattern.compile(</span>
+<span class="fc" id="L187">            String.format(</span>
                 &quot;%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]%s%s%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$&quot;,
                 MODE,
                 ENCLOSE_VALUE_RGX,
@@ -193,51 +192,51 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 ENCLOSE_VALUE_RGX
             )
         )
-<span class="fc" id="L196">        .matcher(slidingWindowCurrentRow);</span>
+<span class="fc" id="L195">        .matcher(slidingWindowCurrentRow);</span>
         
-<span class="fc" id="L198">        var regexRowIncomplete = Pattern.compile(</span>
+<span class="fc" id="L197">        var regexRowIncomplete = Pattern.compile(</span>
             MODE
             + ENCLOSE_VALUE_RGX
             + &quot;[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$&quot;
         )
-<span class="fc" id="L203">        .matcher(slidingWindowCurrentRow);</span>
+<span class="fc" id="L202">        .matcher(slidingWindowCurrentRow);</span>
 
         // If there is more than 1 row, delete the last incomplete one in order to restart properly from it at the next loop,
         // else if there is 1 row but incomplete, mark it as cut with the letter c
-<span class="fc bfc" id="L207" title="All 2 branches covered.">        if (regexAtLeastOneRow.find()) {</span>
-<span class="fc" id="L208">            var allLine = slidingWindowAllRows.toString();</span>
-<span class="fc" id="L209">            slidingWindowAllRows.setLength(0);</span>
-<span class="fc" id="L210">            slidingWindowAllRows.append(</span>
-<span class="fc" id="L211">                Pattern.compile(</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        if (regexAtLeastOneRow.find()) {</span>
+<span class="fc" id="L207">            var allLine = slidingWindowAllRows.toString();</span>
+<span class="fc" id="L208">            slidingWindowAllRows.setLength(0);</span>
+<span class="fc" id="L209">            slidingWindowAllRows.append(</span>
+<span class="fc" id="L210">                Pattern.compile(</span>
                     MODE
                     + ENCLOSE_VALUE_RGX
                     + &quot;[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$&quot;
                 )
-<span class="fc" id="L216">                .matcher(allLine)</span>
-<span class="fc" id="L217">                .replaceAll(StringUtils.EMPTY)</span>
+<span class="fc" id="L215">                .matcher(allLine)</span>
+<span class="fc" id="L216">                .replaceAll(StringUtils.EMPTY)</span>
             );
-<span class="fc" id="L219">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Chunk unreliable, reloading row part...&quot;);</span>
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        } else if (regexRowIncomplete.find()) {</span>
-<span class="nc" id="L221">            slidingWindowAllRows.append(StringUtil.hexstr(&quot;05&quot;)).append(&quot;1&quot;).append(StringUtil.hexstr(&quot;0804&quot;));</span>
-<span class="nc" id="L222">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Chunk unreliable, keeping row parts only&quot;);</span>
+<span class="fc" id="L218">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Chunk unreliable, reloading row part...&quot;);</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        } else if (regexRowIncomplete.find()) {</span>
+<span class="nc" id="L220">            slidingWindowAllRows.append(StringUtil.hexstr(&quot;05&quot;)).append(&quot;1&quot;).append(StringUtil.hexstr(&quot;0804&quot;));</span>
+<span class="nc" id="L221">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Chunk unreliable, keeping row parts only&quot;);</span>
         }
-<span class="fc" id="L224">    }</span>
+<span class="fc" id="L223">    }</span>
 
     private void scrapeTrailJunk(StringBuilder slidingWindowCurrentRow) {
         // Remove everything after chunk
         // =&gt; \4xxxxxxxx\500\4\6\4...\4 =&gt; \1\3\3\7junk
-<span class="fc" id="L229">        var currentRow = slidingWindowCurrentRow.toString();</span>
-<span class="fc" id="L230">        slidingWindowCurrentRow.setLength(0);</span>
-<span class="fc" id="L231">        slidingWindowCurrentRow.append(</span>
-<span class="fc" id="L232">            Pattern.compile(MODE + TRAIL_RGX +&quot;.*&quot;)</span>
-<span class="fc" id="L233">            .matcher(currentRow)</span>
-<span class="fc" id="L234">            .replaceAll(StringUtils.EMPTY)</span>
+<span class="fc" id="L228">        var currentRow = slidingWindowCurrentRow.toString();</span>
+<span class="fc" id="L229">        slidingWindowCurrentRow.setLength(0);</span>
+<span class="fc" id="L230">        slidingWindowCurrentRow.append(</span>
+<span class="fc" id="L231">            Pattern.compile(MODE + TRAIL_RGX +&quot;.*&quot;)</span>
+<span class="fc" id="L232">            .matcher(currentRow)</span>
+<span class="fc" id="L233">            .replaceAll(StringUtils.EMPTY)</span>
         );
-<span class="fc" id="L236">    }</span>
+<span class="fc" id="L235">    }</span>
 
     private int getCountRows(StringBuilder slidingWindowCurrentRow) {
-<span class="fc" id="L239">        var regexAtLeastOneRow = Pattern.compile(</span>
-<span class="fc" id="L240">            String.format(</span>
+<span class="fc" id="L238">        var regexAtLeastOneRow = Pattern.compile(</span>
+<span class="fc" id="L239">            String.format(</span>
                 &quot;%s(%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?%s)&quot;,
                 MODE,
                 ENCLOSE_VALUE_RGX,
@@ -245,46 +244,40 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 ENCLOSE_VALUE_RGX
             )
         )
-<span class="fc" id="L248">        .matcher(slidingWindowCurrentRow);</span>
-<span class="fc" id="L249">        var nbCompleteLine = 0;</span>
-<span class="fc bfc" id="L250" title="All 2 branches covered.">        while (regexAtLeastOneRow.find()) {</span>
-<span class="fc" id="L251">            nbCompleteLine++;</span>
+<span class="fc" id="L247">        .matcher(slidingWindowCurrentRow);</span>
+<span class="fc" id="L248">        var nbCompleteLine = 0;</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        while (regexAtLeastOneRow.find()) {</span>
+<span class="fc" id="L250">            nbCompleteLine++;</span>
         }
-<span class="fc" id="L253">        return nbCompleteLine;</span>
+<span class="fc" id="L252">        return nbCompleteLine;</span>
     }
 
     private void endInjection(AbstractElementDatabase searchName, Throwable e) throws InjectionFailureException {
         // Premature end of results
         // if it's not the root (empty tree)
-<span class="pc bpc" id="L259" title="1 of 2 branches missed.">        if (searchName != null) {</span>
-<span class="fc" id="L260">            var request = new Request();</span>
-<span class="fc" id="L261">            request.setMessage(Interaction.END_PROGRESS);</span>
-<span class="fc" id="L262">            request.setParameters(searchName);</span>
-<span class="fc" id="L263">            this.injectionModel.sendToViews(request);</span>
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">        if (searchName != null) {</span>
+<span class="fc" id="L259">            this.injectionModel.sendToViews(new Request3.EndProgress(searchName));</span>
         }
-<span class="fc" id="L265">        var messageError = new StringBuilder(&quot;Fetching fails: no data to parse&quot;);</span>
-<span class="pc bpc" id="L266" title="1 of 2 branches missed.">        if (searchName != null) {</span>
-<span class="fc" id="L267">            messageError.append(&quot; for &quot;).append(StringUtil.detectUtf8(searchName.toString()));</span>
+<span class="fc" id="L261">        var messageError = new StringBuilder(&quot;Fetching fails: no data to parse&quot;);</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">        if (searchName != null) {</span>
+<span class="fc" id="L263">            messageError.append(&quot; for &quot;).append(StringUtil.detectUtf8(searchName.toString()));</span>
         }
-<span class="pc bpc" id="L269" title="3 of 4 branches missed.">        if (searchName instanceof Table &amp;&amp; searchName.getChildCount() &gt; 0) {</span>
-<span class="nc" id="L270">            messageError.append(&quot;, check Network tab for logs&quot;);</span>
+<span class="pc bpc" id="L265" title="3 of 4 branches missed.">        if (searchName instanceof Table &amp;&amp; searchName.getChildCount() &gt; 0) {</span>
+<span class="nc" id="L266">            messageError.append(&quot;, check Network tab for logs&quot;);</span>
         }
-<span class="fc" id="L272">        throw new InjectionFailureException(messageError.toString(), e);</span>
+<span class="fc" id="L268">        throw new InjectionFailureException(messageError.toString(), e);</span>
     }
 
     private void sendChunk(String currentChunk) {
-<span class="fc" id="L276">        var request = new Request();</span>
-<span class="fc" id="L277">        request.setMessage(Interaction.MESSAGE_CHUNK);</span>
-<span class="fc" id="L278">        request.setParameters(</span>
-<span class="fc" id="L279">            Pattern.compile(MODE + TRAIL_RGX +&quot;.*&quot;)</span>
-<span class="fc" id="L280">            .matcher(currentChunk)</span>
-<span class="fc" id="L281">            .replaceAll(StringUtils.EMPTY)</span>
-<span class="fc" id="L282">            .replace(&quot;\\n&quot;, &quot;\\\\\\n&quot;)</span>
-<span class="fc" id="L283">            .replace(&quot;\\r&quot;, &quot;\\\\\\r&quot;)</span>
-<span class="fc" id="L284">            .replace(&quot;\\t&quot;, &quot;\\\\\\t&quot;)</span>
-        );
-<span class="fc" id="L286">        this.injectionModel.sendToViews(request);</span>
-<span class="fc" id="L287">    }</span>
+<span class="fc" id="L272">        this.injectionModel.sendToViews(new Request3.MessageChunk(</span>
+<span class="fc" id="L273">            Pattern.compile(MODE + TRAIL_RGX +&quot;.*&quot;)</span>
+<span class="fc" id="L274">            .matcher(currentChunk)</span>
+<span class="fc" id="L275">            .replaceAll(StringUtils.EMPTY)</span>
+<span class="fc" id="L276">            .replace(&quot;\\n&quot;, &quot;\\\\\\n&quot;)</span>
+<span class="fc" id="L277">            .replace(&quot;\\r&quot;, &quot;\\\\\\r&quot;)</span>
+<span class="fc" id="L278">            .replace(&quot;\\t&quot;, &quot;\\\\\\t&quot;)</span>
+        ));
+<span class="fc" id="L280">    }</span>
 
     // TODO pb for same char string like aaaaaaaaaaaaa...aaaaaaaaaaaaa
     // detected as infinite
@@ -295,28 +288,28 @@ public class SuspendableGetRows extends AbstractSuspendable {
         StringBuilder slidingWindowCurrentRow,
         StringBuilder slidingWindowAllRows
     ) throws LoopDetectedSlidingException {
-<span class="fc" id="L298">        int infiniteLoop = loop;</span>
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">        if (previousChunk.equals(currentChunk)) {</span>
-<span class="nc" id="L300">            infiniteLoop++;</span>
-<span class="nc bnc" id="L301" title="All 2 branches missed.">            if (infiniteLoop &gt;= 20) {</span>
-<span class="nc" id="L302">                this.stop();</span>
-<span class="nc" id="L303">                throw new LoopDetectedSlidingException(</span>
-<span class="nc" id="L304">                    slidingWindowAllRows.toString(),</span>
-<span class="nc" id="L305">                    slidingWindowCurrentRow.toString()</span>
+<span class="fc" id="L291">        int infiniteLoop = loop;</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">        if (previousChunk.equals(currentChunk)) {</span>
+<span class="nc" id="L293">            infiniteLoop++;</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">            if (infiniteLoop &gt;= 20) {</span>
+<span class="nc" id="L295">                this.stop();</span>
+<span class="nc" id="L296">                throw new LoopDetectedSlidingException(</span>
+<span class="nc" id="L297">                    slidingWindowAllRows.toString(),</span>
+<span class="nc" id="L298">                    slidingWindowCurrentRow.toString()</span>
                 );
             }
         }
-<span class="fc" id="L309">        return infiniteLoop;</span>
+<span class="fc" id="L302">        return infiniteLoop;</span>
     }
 
     private Matcher parseTrailOnlyFound(String sourcePage) {
-<span class="fc" id="L313">        String sourcePageUnicodeDecoded = this.decodeUnicode(sourcePage, null);</span>
+<span class="fc" id="L306">        String sourcePageUnicodeDecoded = this.decodeUnicode(sourcePage, null);</span>
         // TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX
         // It creates extra query which can be endless if not nullified
-<span class="fc" id="L316">        return Pattern.compile(</span>
-<span class="fc" id="L317">            String.format(&quot;(?s)%s(?i)%s&quot;, LEAD, TRAIL_RGX)</span>
+<span class="fc" id="L309">        return Pattern.compile(</span>
+<span class="fc" id="L310">            String.format(&quot;(?s)%s(?i)%s&quot;, LEAD, TRAIL_RGX)</span>
         )
-<span class="fc" id="L319">        .matcher(sourcePageUnicodeDecoded);</span>
+<span class="fc" id="L312">        .matcher(sourcePageUnicodeDecoded);</span>
     }
 
     /**
@@ -328,15 +321,15 @@ public class SuspendableGetRows extends AbstractSuspendable {
     private Matcher parseLeadFound(String sourcePage, String performanceLength) throws InjectionFailureException {
         Matcher regexAtLeastOneRow;
         try {
-<span class="fc" id="L331">            regexAtLeastOneRow = Pattern.compile(</span>
-<span class="fc" id="L332">                String.format(&quot;(?s)%s(?i)(.{1,%s})&quot;, LEAD, performanceLength)</span>
+<span class="fc" id="L324">            regexAtLeastOneRow = Pattern.compile(</span>
+<span class="fc" id="L325">                String.format(&quot;(?s)%s(?i)(.{1,%s})&quot;, LEAD, performanceLength)</span>
             )
-<span class="fc" id="L334">            .matcher(sourcePage);</span>
-<span class="nc" id="L335">        } catch (PatternSyntaxException e) {</span>
+<span class="fc" id="L327">            .matcher(sourcePage);</span>
+<span class="nc" id="L328">        } catch (PatternSyntaxException e) {</span>
             // Fix #35382 : PatternSyntaxException null on SQLi(.{1,null})
-<span class="nc" id="L337">            throw new InjectionFailureException(&quot;Row parsing failed using capacity&quot;, e);</span>
-<span class="fc" id="L338">        }</span>
-<span class="fc" id="L339">        return regexAtLeastOneRow;</span>
+<span class="nc" id="L330">            throw new InjectionFailureException(&quot;Row parsing failed using capacity&quot;, e);</span>
+<span class="fc" id="L331">        }</span>
+<span class="fc" id="L332">        return regexAtLeastOneRow;</span>
     }
 
     private void checkSuspend(
@@ -344,26 +337,26 @@ public class SuspendableGetRows extends AbstractSuspendable {
         StringBuilder slidingWindowAllRows,
         StringBuilder slidingWindowCurrentRow
     ) throws StoppedByUserSlidingException, InjectionFailureException {
-<span class="pc bpc" id="L347" title="1 of 2 branches missed.">        if (this.isSuspended()) {</span>
-<span class="nc" id="L348">            throw new StoppedByUserSlidingException(</span>
-<span class="nc" id="L349">                slidingWindowAllRows.toString(),</span>
-<span class="nc" id="L350">                slidingWindowCurrentRow.toString()</span>
+<span class="pc bpc" id="L340" title="1 of 2 branches missed.">        if (this.isSuspended()) {</span>
+<span class="nc" id="L341">            throw new StoppedByUserSlidingException(</span>
+<span class="nc" id="L342">                slidingWindowAllRows.toString(),</span>
+<span class="nc" id="L343">                slidingWindowCurrentRow.toString()</span>
             );
-<span class="pc bpc" id="L352" title="1 of 2 branches missed.">        } else if (strategy == null) {</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">        } else if (strategy == null) {</span>
             // Fix #1905 : NullPointerException on injectionStrategy.inject()
-<span class="nc" id="L354">            throw new InjectionFailureException(&quot;Undefined strategy&quot;);</span>
+<span class="nc" id="L347">            throw new InjectionFailureException(&quot;Undefined strategy&quot;);</span>
         }
-<span class="fc" id="L356">    }</span>
+<span class="fc" id="L349">    }</span>
 
     private void scrap(StringBuilder slidingWindowAllRows) {
         // Remove everything not properly attached to the last row:
         // 1. very start of a new row: XXXXX\4[\6\4]$
         // 2. very end of the last row: XXXXX[\500]$
-<span class="fc" id="L362">        var allRowsLimit = slidingWindowAllRows.toString();</span>
-<span class="fc" id="L363">        slidingWindowAllRows.setLength(0);</span>
-<span class="fc" id="L364">        slidingWindowAllRows.append(</span>
-<span class="fc" id="L365">            Pattern.compile(</span>
-<span class="fc" id="L366">                String.format(</span>
+<span class="fc" id="L355">        var allRowsLimit = slidingWindowAllRows.toString();</span>
+<span class="fc" id="L356">        slidingWindowAllRows.setLength(0);</span>
+<span class="fc" id="L357">        slidingWindowAllRows.append(</span>
+<span class="fc" id="L358">            Pattern.compile(</span>
+<span class="fc" id="L359">                String.format(</span>
                     &quot;%s(%s%s|%s\\d*)$&quot;,
                     MODE,
                     SEPARATOR_CELL_RGX,
@@ -371,24 +364,21 @@ public class SuspendableGetRows extends AbstractSuspendable {
                     SEPARATOR_QTE_RGX
                 )
             )
-<span class="fc" id="L374">            .matcher(allRowsLimit)</span>
-<span class="fc" id="L375">            .replaceAll(StringUtils.EMPTY)</span>
+<span class="fc" id="L367">            .matcher(allRowsLimit)</span>
+<span class="fc" id="L368">            .replaceAll(StringUtils.EMPTY)</span>
         );
-<span class="fc" id="L377">    }</span>
+<span class="fc" id="L370">    }</span>
 
     private void sendProgress(int numberToFind, int countProgress, AbstractElementDatabase searchName) {
-<span class="pc bpc" id="L380" title="1 of 4 branches missed.">        if (numberToFind &gt; 0 &amp;&amp; searchName != null) {</span>
-<span class="fc" id="L381">            var request = new Request();</span>
-<span class="fc" id="L382">            request.setMessage(Interaction.UPDATE_PROGRESS);</span>
-<span class="fc" id="L383">            request.setParameters(searchName, countProgress);</span>
-<span class="fc" id="L384">            this.injectionModel.sendToViews(request);</span>
+<span class="pc bpc" id="L373" title="1 of 4 branches missed.">        if (numberToFind &gt; 0 &amp;&amp; searchName != null) {</span>
+<span class="fc" id="L374">            this.injectionModel.sendToViews(new Request3.UpdateProgress(searchName, countProgress));</span>
         }
-<span class="fc" id="L386">    }</span>
+<span class="fc" id="L376">    }</span>
     
     public static List&lt;List&lt;String&gt;&gt; parse(String rows) throws InjectionFailureException {
         // Parse all the data we have retrieved
-<span class="fc" id="L390">        var regexSearch = Pattern.compile(</span>
-<span class="fc" id="L391">                String.format(</span>
+<span class="fc" id="L380">        var regexSearch = Pattern.compile(</span>
+<span class="fc" id="L381">                String.format(</span>
                     &quot;%s%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?%s&quot;,
                     MODE,
                     ENCLOSE_VALUE_RGX,
@@ -396,29 +386,29 @@ public class SuspendableGetRows extends AbstractSuspendable {
                     ENCLOSE_VALUE_RGX
                 )
             )
-<span class="fc" id="L399">            .matcher(rows);</span>
-<span class="pc bpc" id="L400" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
-<span class="nc" id="L401">            throw new InjectionFailureException();</span>
+<span class="fc" id="L389">            .matcher(rows);</span>
+<span class="pc bpc" id="L390" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
+<span class="nc" id="L391">            throw new InjectionFailureException();</span>
         }
-<span class="fc" id="L403">        regexSearch.reset();</span>
-<span class="fc" id="L404">        var rowsFound = 0;</span>
-<span class="fc" id="L405">        List&lt;List&lt;String&gt;&gt; listValues = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L393">        regexSearch.reset();</span>
+<span class="fc" id="L394">        var rowsFound = 0;</span>
+<span class="fc" id="L395">        List&lt;List&lt;String&gt;&gt; listValues = new ArrayList&lt;&gt;();</span>
 
         // Build a 2D array of strings from the data we have parsed
         // =&gt; row number, occurrence, value1, value2...
-<span class="fc bfc" id="L409" title="All 2 branches covered.">        while (regexSearch.find()) {</span>
-<span class="fc" id="L410">            String values = regexSearch.group(1);</span>
-<span class="fc" id="L411">            var instances = Integer.parseInt(regexSearch.group(2));</span>
+<span class="fc bfc" id="L399" title="All 2 branches covered.">        while (regexSearch.find()) {</span>
+<span class="fc" id="L400">            String values = regexSearch.group(1);</span>
+<span class="fc" id="L401">            var instances = Integer.parseInt(regexSearch.group(2));</span>
 
-<span class="fc" id="L413">            listValues.add(new ArrayList&lt;&gt;());</span>
-<span class="fc" id="L414">            listValues.get(rowsFound).add(Integer.toString(rowsFound + 1));</span>
-<span class="fc" id="L415">            listValues.get(rowsFound).add(&quot;x&quot;+ instances);</span>
-<span class="fc bfc" id="L416" title="All 2 branches covered.">            for (String cellValue: values.split(&quot;\\x7F&quot;, -1)) {</span>
-<span class="fc" id="L417">                listValues.get(rowsFound).add(cellValue);</span>
+<span class="fc" id="L403">            listValues.add(new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L404">            listValues.get(rowsFound).add(Integer.toString(rowsFound + 1));</span>
+<span class="fc" id="L405">            listValues.get(rowsFound).add(&quot;x&quot;+ instances);</span>
+<span class="fc bfc" id="L406" title="All 2 branches covered.">            for (String cellValue: values.split(&quot;\\x7F&quot;, -1)) {</span>
+<span class="fc" id="L407">                listValues.get(rowsFound).add(cellValue);</span>
             }
-<span class="fc" id="L419">            rowsFound++;</span>
-<span class="fc" id="L420">        }</span>
-<span class="fc" id="L421">        return listValues;</span>
+<span class="fc" id="L409">            rowsFound++;</span>
+<span class="fc" id="L410">        }</span>
+<span class="fc" id="L411">        return listValues;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

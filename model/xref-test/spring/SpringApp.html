@@ -62,9 +62,9 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">static</strong> {
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">try</strong> {  <em class="jxr_comment">// ensure driver is loaded, required static for expected jdbc result</em>
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>              Class.forName(<span class="jxr_string">"virtuoso.jdbc3.Driver"</span>);
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>              Class.forName(<span class="jxr_string">"com.mckoi.JDBCDriver"</span>);
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>              Class.forName(<span class="jxr_string">"com.mimer.jdbc.Driver"</span>);
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>              Class.forName(<span class="jxr_string">"com.mckoi.JDBCDriver"</span>);
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>              Class.forName(<span class="jxr_string">"virtuoso.jdbc3.Driver"</span>);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException e) {
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(e);
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          }

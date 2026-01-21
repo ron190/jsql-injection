@@ -1,12 +1,10 @@
 com.jsql
-com.jsql.view.scan
-com.jsql.view.scan.interaction
+com.jsql.view.subscriber
 com.jsql.view.swing
 com.jsql.view.swing.action
 com.jsql.view.swing.console
 com.jsql.view.swing.dialog
 com.jsql.view.swing.dialog.translate
-com.jsql.view.swing.interaction
 com.jsql.view.swing.list
 com.jsql.view.swing.manager
 com.jsql.view.swing.manager.util

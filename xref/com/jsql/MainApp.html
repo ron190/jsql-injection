@@ -69,24 +69,28 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>              <strong class="jxr_keyword">var</strong> view = <strong class="jxr_keyword">new</strong> <a name="JFrameView" href="../../com/jsql/view/swing/JFrameView.html#JFrameView">JFrameView</a>(MainApp.INJECTION_MODEL);
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>              MediatorHelper.register(view);
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>              MainApp.INJECTION_MODEL.subscribe(view.getSubscriber());
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>              MainApp.INJECTION_MODEL.subscribe(view.getSubscriberView());
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          } <strong class="jxr_keyword">catch</strong> (HeadlessException e) {
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>              LOGGER.log(LogLevelUtil.CONSOLE_JAVA, <span class="jxr_string">"HeadlessException, command line execution not supported: %s"</span>, e);
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          } <strong class="jxr_keyword">catch</strong> (AWTError e) {
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>              <em class="jxr_comment">// Fix #22668: Assistive Technology not found</em>
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>              LOGGER.log(LogLevelUtil.CONSOLE_JAVA, String.format(
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>                  <span class="jxr_string">"Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: %s"</span>,
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>                  e.getMessage()
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>              ), e);
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          }
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      }
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>  
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> apply4K() {  <em class="jxr_comment">// required not in UiUtil before frame is set</em>
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">if</strong> (MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().is4K()) {
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>              System.setProperty(<span class="jxr_string">"sun.java2d.uiScale"</span>, <span class="jxr_string">"2.5"</span>);  <em class="jxr_comment">// jdk &gt;= 9</em>
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>          }
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>      }
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>  }
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>              LOGGER.log(
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>                  LogLevelUtil.CONSOLE_JAVA,
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>                  String.format(
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>                      <span class="jxr_string">"Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: %s"</span>,
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>                      e.getMessage()
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>                  ),
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>                  e
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>              );
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          }
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>      }
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>  
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> apply4K() {  <em class="jxr_comment">// required not in UiUtil before frame is set</em>
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>          <strong class="jxr_keyword">if</strong> (MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().is4K()) {
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>              System.setProperty(<span class="jxr_string">"sun.java2d.uiScale"</span>, <span class="jxr_string">"2.5"</span>);  <em class="jxr_comment">// jdk &gt;= 9</em>
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          }
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>      }
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>  }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

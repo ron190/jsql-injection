@@ -25,6 +25,4 @@ com.jsql.util
 com.jsql.util.bruter
 com.jsql.util.reverse
 com.jsql.util.tampering
-com.jsql.view.interaction
-com.jsql.view.terminal
-com.jsql.view.terminal.interaction
+com.jsql.view.subscriber

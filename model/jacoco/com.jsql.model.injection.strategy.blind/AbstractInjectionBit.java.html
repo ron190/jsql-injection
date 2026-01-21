@@ -2,8 +2,7 @@
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
@@ -22,19 +21,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T&gt;&gt; {
     
-<span class="fc" id="L25">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L24">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
-<span class="fc" id="L27">    public enum BlindOperator {</span>
-<span class="fc" id="L28">        AND, OR, STACK, NO_MODE</span>
+<span class="fc" id="L26">    public enum BlindOperator {</span>
+<span class="fc" id="L27">        AND, OR, STACK, NO_MODE</span>
     }
 
     protected final InjectionModel injectionModel;
     protected final BlindOperator blindOperator;
     
-<span class="fc" id="L34">    protected AbstractInjectionBit(InjectionModel injectionModel, BlindOperator blindOperator) {</span>
-<span class="fc" id="L35">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L36">        this.blindOperator = blindOperator;</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L33">    protected AbstractInjectionBit(InjectionModel injectionModel, BlindOperator blindOperator) {</span>
+<span class="fc" id="L34">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L35">        this.blindOperator = blindOperator;</span>
+<span class="fc" id="L36">    }</span>
 
     /**
      * Start one test to verify if boolean works.
@@ -68,67 +67,67 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
     public String inject(String sqlQuery, AbstractSuspendable suspendable) throws StoppedByUserSlidingException {
         // List of the characters, each one represented by an array of 8 bits
         // e.g. SQLi: bytes[0] =&gt; 01010011:S, bytes[1] =&gt; 01010001:Q ...
-<span class="fc" id="L71">        List&lt;char[]&gt; bytes = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L72">        var indexChar = new AtomicInteger(0);  // current char position</span>
+<span class="fc" id="L70">        List&lt;char[]&gt; bytes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L71">        var indexChar = new AtomicInteger(0);  // current char position</span>
 
         // Concurrent URL requests
-<span class="fc" id="L75">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableAbstractBoolean&quot;);</span>
-<span class="fc" id="L76">        CompletionService&lt;T&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
+<span class="fc" id="L74">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableAbstractBoolean&quot;);</span>
+<span class="fc" id="L75">        CompletionService&lt;T&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
-<span class="fc" id="L78">        var countTasksSubmitted = new AtomicInteger(0);</span>
-<span class="fc" id="L79">        var countBadAsciiCode = new AtomicInteger(0);</span>
+<span class="fc" id="L77">        var countTasksSubmitted = new AtomicInteger(0);</span>
+<span class="fc" id="L78">        var countBadAsciiCode = new AtomicInteger(0);</span>
 
-<span class="fc" id="L81">        this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, countBadAsciiCode, null);</span>
+<span class="fc" id="L80">        this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, countBadAsciiCode, null);</span>
 
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
-<span class="fc bfc" id="L85" title="All 2 branches covered.">        while (countTasksSubmitted.get() &gt; 0) {</span>
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">            if (suspendable.isSuspended()) {</span>
-<span class="nc" id="L87">                String result = this.stop(bytes, taskExecutor);</span>
-<span class="nc" id="L88">                throw new StoppedByUserSlidingException(result);</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        while (countTasksSubmitted.get() &gt; 0) {</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">            if (suspendable.isSuspended()) {</span>
+<span class="nc" id="L86">                String result = this.stop(bytes, taskExecutor);</span>
+<span class="nc" id="L87">                throw new StoppedByUserSlidingException(result);</span>
             }
             
             try {
-<span class="fc" id="L92">                var currentCallable = taskCompletionService.take().get();  // URL call done</span>
-<span class="fc" id="L93">                countTasksSubmitted.decrementAndGet();  // one task just ended</span>
+<span class="fc" id="L91">                var currentCallable = taskCompletionService.take().get();  // URL call done</span>
+<span class="fc" id="L92">                countTasksSubmitted.decrementAndGet();  // one task just ended</span>
                 
                 // If SQL result is not empty, then add a new unknown character and define a new array of 7 undefined bit.
                 // Then add 7 bits requests for that new character.
-<span class="fc" id="L97">                var isComplete = this.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);</span>
-<span class="fc bfc" id="L98" title="All 4 branches covered.">                if (isComplete || currentCallable.isBinary()) {  // prevents bitwise overload new char init on each bit</span>
-<span class="fc" id="L99">                    this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, countBadAsciiCode, currentCallable);</span>
+<span class="fc" id="L96">                var isComplete = this.isCharCompleteWithCorruptCheck(bytes, countBadAsciiCode, currentCallable);</span>
+<span class="fc bfc" id="L97" title="All 4 branches covered.">                if (isComplete || currentCallable.isBinary()) {  // prevents bitwise overload new char init on each bit</span>
+<span class="fc" id="L98">                    this.initNextChar(sqlQuery, bytes, indexChar, taskCompletionService, countTasksSubmitted, countBadAsciiCode, currentCallable);</span>
                 }
 
-<span class="fc" id="L102">                String result = AbstractInjectionBit.convert(bytes);</span>
-<span class="fc bfc" id="L103" title="All 2 branches covered.">                if (result.matches(&quot;(?s).*&quot;+ DataAccess.TRAIL_RGX +&quot;.*&quot;)) {</span>
-<span class="fc" id="L104">                    countTasksSubmitted.set(0);</span>
-<span class="fc" id="L105">                    break;</span>
+<span class="fc" id="L101">                String result = AbstractInjectionBit.convert(bytes);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">                if (result.matches(&quot;(?s).*&quot;+ DataAccess.TRAIL_RGX +&quot;.*&quot;)) {</span>
+<span class="fc" id="L103">                    countTasksSubmitted.set(0);</span>
+<span class="fc" id="L104">                    break;</span>
                 }
-<span class="nc" id="L107">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L108">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L109">                Thread.currentThread().interrupt();</span>
-<span class="nc" id="L110">            } catch (ExecutionException e) {</span>
-<span class="nc" id="L111">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L112">            } catch (InjectionFailureException e) {</span>
-<span class="fc" id="L113">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());</span>
-<span class="fc" id="L114">                break;</span>
-<span class="pc" id="L115">            }</span>
+<span class="nc" id="L106">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L107">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L108">                Thread.currentThread().interrupt();</span>
+<span class="nc" id="L109">            } catch (ExecutionException e) {</span>
+<span class="nc" id="L110">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L111">            } catch (InjectionFailureException e) {</span>
+<span class="fc" id="L112">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());</span>
+<span class="fc" id="L113">                break;</span>
+<span class="pc" id="L114">            }</span>
         }
-<span class="fc" id="L117">        return this.stop(bytes, taskExecutor);</span>
+<span class="fc" id="L116">        return this.stop(bytes, taskExecutor);</span>
     }
 
     private static String convert(List&lt;char[]&gt; bytes) {
-<span class="fc" id="L121">        var result = new StringBuilder();</span>
-<span class="fc bfc" id="L122" title="All 2 branches covered.">        for (char[] c: bytes) {</span>
+<span class="fc" id="L120">        var result = new StringBuilder();</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        for (char[] c: bytes) {</span>
             try {
-<span class="fc" id="L124">                var charCode = Integer.parseInt(new String(c), 2);</span>
-<span class="fc" id="L125">                var str = Character.toString((char) charCode);</span>
-<span class="fc" id="L126">                result.append(str);</span>
-<span class="fc" id="L127">            } catch (NumberFormatException err) {</span>
+<span class="fc" id="L123">                var charCode = Integer.parseInt(new String(c), 2);</span>
+<span class="fc" id="L124">                var str = Character.toString((char) charCode);</span>
+<span class="fc" id="L125">                result.append(str);</span>
+<span class="fc" id="L126">            } catch (NumberFormatException err) {</span>
                 // Ignore, byte string not fully constructed (0x1x010x)
-<span class="fc" id="L129">            }</span>
-<span class="fc" id="L130">        }</span>
-<span class="fc" id="L131">        return result.toString();</span>
+<span class="fc" id="L128">            }</span>
+<span class="fc" id="L129">        }</span>
+<span class="fc" id="L130">        return result.toString();</span>
     }
 
     protected boolean isCharCompleteWithCorruptCheck(
@@ -138,55 +137,52 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
     ) throws InjectionFailureException {
         // Process url that has just checked one bit, convert bits to chars,
         // and change current bit from undefined to 0 or 1
-<span class="fc" id="L141">        char[] maskAsciiChar = this.initMaskAsciiChar(bytes, currentCallable);</span>
-<span class="fc" id="L142">        var asciiCodeBit = new String(maskAsciiChar);</span>
-<span class="fc" id="L143">        var isComplete = false;</span>
+<span class="fc" id="L140">        char[] maskAsciiChar = this.initMaskAsciiChar(bytes, currentCallable);</span>
+<span class="fc" id="L141">        var asciiCodeBit = new String(maskAsciiChar);</span>
+<span class="fc" id="L142">        var isComplete = false;</span>
 
         // Inform the View if bits array is complete, else nothing #Need fix
-<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (asciiCodeBit.matches(&quot;^[01]{8}$&quot;)) {</span>
-<span class="fc" id="L147">            var asciiCode = Integer.parseInt(asciiCodeBit, 2);</span>
-<span class="pc bpc" id="L148" title="1 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
-<span class="fc bfc" id="L149" title="All 2 branches covered.">                if (countBadAsciiCode.get() &gt; 15) {</span>
-<span class="fc" id="L150">                    throw new InjectionFailureException(&quot;Boolean false positive, stopping...&quot;);</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (asciiCodeBit.matches(&quot;^[01]{8}$&quot;)) {</span>
+<span class="fc" id="L146">            var asciiCode = Integer.parseInt(asciiCodeBit, 2);</span>
+<span class="pc bpc" id="L147" title="1 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">                if (countBadAsciiCode.get() &gt; 15) {</span>
+<span class="fc" id="L149">                    throw new InjectionFailureException(&quot;Boolean false positive, stopping...&quot;);</span>
                 }
-<span class="fc" id="L152">                countBadAsciiCode.incrementAndGet();</span>
+<span class="fc" id="L151">                countBadAsciiCode.incrementAndGet();</span>
             }
 
-<span class="fc" id="L155">            currentCallable.setCharText(Character.toString((char) asciiCode));</span>
+<span class="fc" id="L154">            currentCallable.setCharText(Character.toString((char) asciiCode));</span>
             
-<span class="fc" id="L157">            var interaction = new Request();</span>
-<span class="fc" id="L158">            interaction.setMessage(Interaction.MESSAGE_BINARY);</span>
-<span class="fc" id="L159">            interaction.setParameters(</span>
+<span class="fc" id="L156">            this.injectionModel.sendToViews(new Request3.MessageBinary(</span>
                 asciiCodeBit
                 + &quot;=&quot;
-<span class="fc" id="L162">                + currentCallable.getCharText()</span>
-<span class="fc" id="L163">                .replace(&quot;\n&quot;, &quot;\\n&quot;)</span>
-<span class="fc" id="L164">                .replace(&quot;\r&quot;, &quot;\\r&quot;)</span>
-<span class="fc" id="L165">                .replace(&quot;\t&quot;, &quot;\\t&quot;)</span>
-            );
-<span class="fc" id="L167">            this.injectionModel.sendToViews(interaction);</span>
-<span class="fc" id="L168">            isComplete = true;</span>
+<span class="fc" id="L159">                + currentCallable.getCharText()</span>
+<span class="fc" id="L160">                .replace(&quot;\n&quot;, &quot;\\n&quot;)</span>
+<span class="fc" id="L161">                .replace(&quot;\r&quot;, &quot;\\r&quot;)</span>
+<span class="fc" id="L162">                .replace(&quot;\t&quot;, &quot;\\t&quot;)</span>
+            ));
+<span class="fc" id="L164">            isComplete = true;</span>
         }
-<span class="fc" id="L170">        return isComplete;</span>
+<span class="fc" id="L166">        return isComplete;</span>
     }
 
     private String stop(List&lt;char[]&gt; bytes, ExecutorService taskExecutor) {
-<span class="fc" id="L174">        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L170">        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
 
         // Get current progress and display
-<span class="fc" id="L177">        var result = new StringBuilder();</span>
+<span class="fc" id="L173">        var result = new StringBuilder();</span>
         
-<span class="fc bfc" id="L179" title="All 2 branches covered.">        for (char[] c: bytes) {</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">        for (char[] c: bytes) {</span>
             try {
-<span class="fc" id="L181">                var charCode = Integer.parseInt(new String(c), 2);</span>
-<span class="fc" id="L182">                var str = Character.toString((char) charCode);</span>
-<span class="fc" id="L183">                result.append(str);</span>
-<span class="fc" id="L184">            } catch (NumberFormatException err) {</span>
+<span class="fc" id="L177">                var charCode = Integer.parseInt(new String(c), 2);</span>
+<span class="fc" id="L178">                var str = Character.toString((char) charCode);</span>
+<span class="fc" id="L179">                result.append(str);</span>
+<span class="fc" id="L180">            } catch (NumberFormatException err) {</span>
                 // Byte string not fully constructed : 0x1x010x
                 // Ignore
-<span class="fc" id="L187">            }</span>
-<span class="fc" id="L188">        }</span>
-<span class="fc" id="L189">        return result.toString();</span>
+<span class="fc" id="L183">            }</span>
+<span class="fc" id="L184">        }</span>
+<span class="fc" id="L185">        return result.toString();</span>
     }
 
     /**
@@ -195,19 +191,19 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
      * @return Source code
      */
     public String callUrl(String urlString, String metadataInjectionProcess) {
-<span class="fc" id="L198">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);</span>
+<span class="fc" id="L194">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);</span>
     }
 
     public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBit&lt;?&gt; callableBoolean) {
-<span class="fc" id="L202">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);</span>
+<span class="fc" id="L198">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);</span>
     }
 
     public BlindOperator getBlindOperator() {
-<span class="fc" id="L206">        return this.blindOperator;</span>
+<span class="fc" id="L202">        return this.blindOperator;</span>
     }
 
     protected static char[] getBitsUnset() {
-<span class="fc" id="L210">        return new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' };</span>
+<span class="fc" id="L206">        return new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' };</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

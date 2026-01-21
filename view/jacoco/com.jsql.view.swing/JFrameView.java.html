@@ -12,8 +12,8 @@ package com.jsql.view.swing;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.util.*;
-import com.jsql.view.interaction.SubscriberInteraction;
 import com.jsql.view.swing.action.HotkeyUtil;
+import com.jsql.view.subscriber.SubscriberView;
 import com.jsql.view.swing.menubar.AppMenubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.split.SplitNS;
@@ -51,7 +51,7 @@ public class JFrameView extends JFrame {
      * Map of terminal by unique identifier.
      */
 <span class="fc" id="L53">    private final Map&lt;UUID, AbstractExploit&gt; mapUuidShell = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L54">    private final transient SubscriberInteraction subscriber = new SubscriberInteraction(&quot;com.jsql.view.swing.interaction&quot;);</span>
+<span class="fc" id="L54">    private final transient SubscriberView subscriberView = new SubscriberView();</span>
     private TabManagers tabManagers;
 <span class="fc" id="L56">    private boolean isMaximized = false;</span>
     private final InjectionModel injectionModel;
@@ -233,8 +233,8 @@ public class JFrameView extends JFrame {
 <span class="fc" id="L233">        return this.mapUuidShell;</span>
     }
 
-    public SubscriberInteraction getSubscriber() {
-<span class="fc" id="L237">        return this.subscriber;</span>
+    public SubscriberView getSubscriberView() {
+<span class="fc" id="L237">        return this.subscriberView;</span>
     }
 
     public SplitNS getSplitNS() {

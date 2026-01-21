@@ -26,15 +26,12 @@ com.jsql.util
 com.jsql.util.bruter
 com.jsql.util.reverse
 com.jsql.util.tampering
-com.jsql.view.interaction
-com.jsql.view.scan
-com.jsql.view.scan.interaction
+com.jsql.view.subscriber
 com.jsql.view.swing
 com.jsql.view.swing.action
 com.jsql.view.swing.console
 com.jsql.view.swing.dialog
 com.jsql.view.swing.dialog.translate
-com.jsql.view.swing.interaction
 com.jsql.view.swing.list
 com.jsql.view.swing.manager
 com.jsql.view.swing.manager.util
@@ -61,5 +58,3 @@ com.jsql.view.swing.tree.action
 com.jsql.view.swing.tree.custom
 com.jsql.view.swing.tree.model
 com.jsql.view.swing.util
-com.jsql.view.terminal
-com.jsql.view.terminal.interaction

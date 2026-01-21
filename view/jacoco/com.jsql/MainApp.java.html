@@ -61,22 +61,26 @@ public class MainApp {
         try {
 <span class="nc" id="L62">            var view = new JFrameView(MainApp.INJECTION_MODEL);</span>
 <span class="nc" id="L63">            MediatorHelper.register(view);</span>
-<span class="nc" id="L64">            MainApp.INJECTION_MODEL.subscribe(view.getSubscriber());</span>
+<span class="nc" id="L64">            MainApp.INJECTION_MODEL.subscribe(view.getSubscriberView());</span>
 <span class="nc" id="L65">        } catch (HeadlessException e) {</span>
 <span class="nc" id="L66">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;HeadlessException, command line execution not supported: %s&quot;, e);</span>
 <span class="nc" id="L67">        } catch (AWTError e) {</span>
             // Fix #22668: Assistive Technology not found
-<span class="nc" id="L69">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, String.format(</span>
-                &quot;Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: %s&quot;,
-<span class="nc" id="L71">                e.getMessage()</span>
-            ), e);
-<span class="nc" id="L73">        }</span>
-<span class="nc" id="L74">    }</span>
+<span class="nc" id="L69">            LOGGER.log(</span>
+                LogLevelUtil.CONSOLE_JAVA,
+<span class="nc" id="L71">                String.format(</span>
+                    &quot;Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: %s&quot;,
+<span class="nc" id="L73">                    e.getMessage()</span>
+                ),
+                e
+            );
+<span class="nc" id="L77">        }</span>
+<span class="nc" id="L78">    }</span>
 
     private static void apply4K() {  // required not in UiUtil before frame is set
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().is4K()) {</span>
-<span class="nc" id="L78">            System.setProperty(&quot;sun.java2d.uiScale&quot;, &quot;2.5&quot;);  // jdk &gt;= 9</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().is4K()) {</span>
+<span class="nc" id="L82">            System.setProperty(&quot;sun.java2d.uiScale&quot;, &quot;2.5&quot;);  // jdk &gt;= 9</span>
         }
-<span class="nc" id="L80">    }</span>
+<span class="nc" id="L84">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
