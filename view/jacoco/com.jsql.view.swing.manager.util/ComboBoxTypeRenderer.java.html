@@ -12,9 +12,9 @@ import java.awt.*;
 <span class="fc bfc" id="L12" title="All 2 branches covered.">        if (value == ComboBoxMethodRenderer.SEPARATOR) {</span>
 <span class="fc" id="L13">            return ComboBoxMethodRenderer.SEPARATOR;</span>
         }
-<span class="pc bpc" id="L15" title="1 of 2 branches missed.">        if (value instanceof ModelItemType exploitMethods) {</span>
-<span class="fc" id="L16">            this.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.keyTooltip()));</span>
-<span class="fc" id="L17">            this.setText(I18nViewUtil.valueByKey(exploitMethods.keyLabel()));</span>
+<span class="pc bpc" id="L15" title="1 of 2 branches missed.">        if (value instanceof ModelItemType(var label, var tooltip)) {</span>
+<span class="fc" id="L16">            this.setToolTipText(I18nViewUtil.valueByKey(tooltip));</span>
+<span class="fc" id="L17">            this.setText(I18nViewUtil.valueByKey(label));</span>
         }
 <span class="fc" id="L19">        this.setForeground(UIManager.getColor(&quot;ComboBox.foreground&quot;));</span>
 <span class="fc" id="L20">        this.setBackground(UIManager.getColor(&quot;ComboBox.background&quot;));</span>

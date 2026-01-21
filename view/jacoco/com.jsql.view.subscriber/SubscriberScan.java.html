@@ -17,19 +17,15 @@ import com.jsql.view.swing.util.MediatorHelper;
     @Override
     protected void execute(Request3 request) {
 <span class="nc" id="L19">        var urlByUser = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getUrlByUser();</span>
-<span class="nc bnc" id="L20" title="All 11 branches missed.">        switch (request) {</span>
-<span class="nc" id="L21">            case Request3.DatabaseIdentified r -&gt; MediatorHelper.managerScan().highlight(r.url(), r.vendor().toString());</span>
-<span class="nc" id="L22">            case Request3.MarkBlindBinVulnerable r -&gt; MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());</span>
-<span class="nc" id="L23">            case Request3.MarkBlindBitVulnerable r -&gt; MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());</span>
-<span class="nc" id="L24">            case Request3.MarkDnsVulnerable r -&gt; MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());</span>
-<span class="nc" id="L25">            case Request3.MarkErrorVulnerable r -&gt; MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());</span>
-<span class="nc" id="L26">            case Request3.MarkMultibitVulnerable r -&gt; MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());</span>
-<span class="nc" id="L27">            case Request3.MarkStackVulnerable r -&gt; MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());</span>
-<span class="nc" id="L28">            case Request3.MarkTimeVulnerable r -&gt; MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());</span>
-<span class="nc" id="L29">            case Request3.MarkUnionVulnerable r -&gt; MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());</span>
-<span class="nc" id="L30">            case Request3.SetVendor r -&gt; MediatorHelper.managerScan().highlight(r.url(), r.vendor().toString());</span>
-            default -&gt; {}
+<span class="nc bnc" id="L20" title="All 5 branches missed.">        switch (request) {</span>
+<span class="nc" id="L21">            case Request3.DatabaseIdentified(var url, var vendor) -&gt; MediatorHelper.managerScan().highlight(url, vendor.toString());</span>
+<span class="nc" id="L22">            case Request3.SetVendor(var url, var vendor) -&gt; MediatorHelper.managerScan().highlight(url, vendor.toString());</span>
+<span class="nc" id="L23">            case Request3.MarkStrategyVulnerable(var strategy) -&gt; MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());</span>
+<span class="nc" id="L24">            case Request3.MarkErrorVulnerable r -&gt; MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());</span>
+            default -&gt; {
+                // empty
+<span class="nc" id="L27">            }</span>
         }
-<span class="nc" id="L33">    }</span>
+<span class="nc" id="L29">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

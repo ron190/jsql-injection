@@ -20,9 +20,9 @@
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>          <strong class="jxr_keyword">if</strong> (value == ComboBoxMethodRenderer.SEPARATOR) {
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>              <strong class="jxr_keyword">return</strong> ComboBoxMethodRenderer.SEPARATOR;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>          }
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>          <strong class="jxr_keyword">if</strong> (value instanceof <a name="ModelItemType" href="../../../../../../com/jsql/view/swing/manager/util/ModelItemType.html#ModelItemType">ModelItemType</a> exploitMethods) {
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>              <strong class="jxr_keyword">this</strong>.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.keyTooltip()));
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>              <strong class="jxr_keyword">this</strong>.setText(I18nViewUtil.valueByKey(exploitMethods.keyLabel()));
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>          <strong class="jxr_keyword">if</strong> (value instanceof <a name="ModelItemType" href="../../../../../../com/jsql/view/swing/manager/util/ModelItemType.html#ModelItemType">ModelItemType</a>(<strong class="jxr_keyword">var</strong> label, <strong class="jxr_keyword">var</strong> tooltip)) {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>              <strong class="jxr_keyword">this</strong>.setToolTipText(I18nViewUtil.valueByKey(tooltip));
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>              <strong class="jxr_keyword">this</strong>.setText(I18nViewUtil.valueByKey(label));
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>          }
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">this</strong>.setForeground(UIManager.getColor(<span class="jxr_string">"ComboBox.foreground"</span>));
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>          <strong class="jxr_keyword">this</strong>.setBackground(UIManager.getColor(<span class="jxr_string">"ComboBox.background"</span>));

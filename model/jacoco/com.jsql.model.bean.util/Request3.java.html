@@ -20,53 +20,34 @@ public sealed interface Request3 permits
     Request3.AddTabExploitUdfProgramPostgres, Request3.AddTabExploitUdfSqlite, Request3.AddTabExploitUdfWalPostgres, Request3.AddTabExploitWeb,
     Request3.AddTables, Request3.CreateAdminPageTab, Request3.CreateAnalysisReport, Request3.CreateFileTab, Request3.CreateValuesTab,
     Request3.DatabaseIdentified, Request3.EndIndeterminateProgress, Request3.EndPreparation, Request3.EndProgress, Request3.GetTerminalResult,
-    Request3.MarkBlindBinInvulnerable, Request3.MarkBlindBinStrategy, Request3.MarkBlindBinVulnerable, Request3.MarkBlindBitInvulnerable,
-    Request3.MarkBlindBitStrategy, Request3.MarkBlindBitVulnerable, Request3.MarkDnsInvulnerable, Request3.MarkDnsStrategy, Request3.MarkDnsVulnerable,
     Request3.MarkErrorInvulnerable, Request3.MarkErrorStrategy, Request3.MarkErrorVulnerable, Request3.MarkFileSystemInvulnerable,
-    Request3.MarkFileSystemVulnerable, Request3.MarkMultibitInvulnerable, Request3.MarkMultibitStrategy, Request3.MarkMultibitVulnerable,
-    Request3.MarkStackInvulnerable, Request3.MarkStackStrategy, Request3.MarkStackVulnerable, Request3.MarkTimeInvulnerable, Request3.MarkTimeStrategy,
-    Request3.MarkTimeVulnerable, Request3.MarkUnionInvulnerable, Request3.MarkUnionStrategy, Request3.MarkUnionVulnerable, Request3.MessageBinary,
-    Request3.MessageChunk, Request3.MessageHeader, Request3.SetVendor, Request3.StartIndeterminateProgress, Request3.StartProgress, Request3.UpdateProgress {
+    Request3.MarkFileSystemVulnerable, Request3.MarkStrategyInvulnerable, Request3.MarkStrategyVulnerable, Request3.MessageBinary,
+    Request3.MessageChunk, Request3.MessageHeader, Request3.SetVendor, Request3.StartIndeterminateProgress, Request3.StartProgress,
+    Request3.UpdateProgress, Request3.MarkStrategy {
 
-<span class="fc" id="L31">    record AddColumns(List&lt;Column&gt; columns) implements Request3 {}</span>
-<span class="fc" id="L32">    record AddDatabases(List&lt;Database&gt; databases) implements Request3 {}</span>
-<span class="fc" id="L33">    record AddTables(List&lt;Table&gt; tables) implements Request3 {}</span>
-<span class="fc" id="L34">    record CreateValuesTab(String[] columns, String[][] table, Table tableBean) implements Request3 {}</span>
+<span class="fc" id="L28">    record AddColumns(List&lt;Column&gt; columns) implements Request3 {}</span>
+<span class="fc" id="L29">    record AddDatabases(List&lt;Database&gt; databases) implements Request3 {}</span>
+<span class="fc" id="L30">    record AddTables(List&lt;Table&gt; tables) implements Request3 {}</span>
+<span class="fc" id="L31">    record CreateValuesTab(String[] columns, String[][] table, Table tableBean) implements Request3 {}</span>
 
     /** End the refreshing of administration page search button */
-<span class="fc" id="L37">    record DatabaseIdentified(String url, Vendor vendor) implements Request3 {}</span>
-<span class="fc" id="L38">    record SetVendor(String url, Vendor vendor) implements Request3 {}</span>
+<span class="fc" id="L34">    record DatabaseIdentified(String url, Vendor vendor) implements Request3 {}</span>
+<span class="fc" id="L35">    record SetVendor(String url, Vendor vendor) implements Request3 {}</span>
 
-<span class="fc" id="L40">    record MarkTimeVulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="nc" id="L41">    record MarkTimeInvulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L42">    record MarkTimeStrategy(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L43">    record MarkBlindBinVulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L44">    record MarkBlindBinInvulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L45">    record MarkBlindBinStrategy(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L46">    record MarkBlindBitVulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L47">    record MarkBlindBitInvulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L48">    record MarkBlindBitStrategy(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L49">    record MarkMultibitVulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L50">    record MarkMultibitInvulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L51">    record MarkMultibitStrategy(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="nc" id="L52">    record MarkDnsVulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="nc" id="L53">    record MarkDnsInvulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="nc" id="L54">    record MarkDnsStrategy(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L55">    record MarkErrorVulnerable(int indexError, AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L56">    record MarkErrorInvulnerable(int indexError, AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L57">    record MarkErrorStrategy(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L58">    record MarkStackVulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L59">    record MarkStackInvulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L60">    record MarkStackStrategy(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L61">    record MarkUnionVulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L62">    record MarkUnionInvulnerable(AbstractStrategy strategy) implements Request3 {}</span>
-<span class="fc" id="L63">    record MarkUnionStrategy(AbstractStrategy strategy) implements Request3 {}</span>
+<span class="fc" id="L37">    record MarkStrategyInvulnerable(AbstractStrategy strategy) implements Request3 {}</span>
+<span class="fc" id="L38">    record MarkErrorInvulnerable(int indexError, AbstractStrategy strategy) implements Request3 {}</span>
 
-<span class="nc" id="L65">    record MarkFileSystemInvulnerable() implements Request3 {}</span>
-<span class="fc" id="L66">    record MarkFileSystemVulnerable() implements Request3 {}</span>
+<span class="fc" id="L40">    record MarkStrategyVulnerable(AbstractStrategy strategy) implements Request3 {}</span>
+<span class="fc" id="L41">    record MarkErrorVulnerable(int indexError, AbstractStrategy strategy) implements Request3 {}</span>
 
-<span class="fc" id="L68">    record MessageChunk(String message) implements Request3 {}</span>
-<span class="fc" id="L69">    record MessageBinary(String message) implements Request3 {}</span>
+<span class="fc" id="L43">    record MarkStrategy(AbstractStrategy strategy) implements Request3 {}</span>
+<span class="fc" id="L44">    record MarkErrorStrategy(AbstractStrategy strategy) implements Request3 {}</span>
+
+<span class="nc" id="L46">    record MarkFileSystemInvulnerable() implements Request3 {}</span>
+<span class="fc" id="L47">    record MarkFileSystemVulnerable() implements Request3 {}</span>
+
+<span class="fc" id="L49">    record MessageChunk(String message) implements Request3 {}</span>
+<span class="fc" id="L50">    record MessageBinary(String message) implements Request3 {}</span>
     record MessageHeader(
         String url,
         String post,
@@ -88,40 +69,40 @@ public sealed interface Request3 permits
             String metadataStrategy,
             String metadataProcess,
             AbstractCallableBit&lt;?&gt; metadataBoolean
-<span class="fc" id="L91">        ) {</span>
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">            this.url = url == null ? Strings.EMPTY : url;</span>
-<span class="fc bfc" id="L93" title="All 2 branches covered.">            this.post = post == null ? Strings.EMPTY : post;</span>
-<span class="pc bpc" id="L94" title="1 of 2 branches missed.">            this.header = header == null ? Collections.emptyMap() : header;</span>
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            this.response = response == null ? Collections.emptyMap() : response;</span>
-<span class="fc bfc" id="L96" title="All 2 branches covered.">            this.source = source == null ? Strings.EMPTY : source;</span>
-<span class="fc bfc" id="L97" title="All 2 branches covered.">            this.size = size == null ? Strings.EMPTY : size;</span>
-<span class="fc bfc" id="L98" title="All 2 branches covered.">            this.metadataStrategy = metadataStrategy == null ? Strings.EMPTY : metadataStrategy;</span>
-<span class="fc bfc" id="L99" title="All 2 branches covered.">            this.metadataProcess = metadataProcess == null ? Strings.EMPTY : metadataProcess;</span>
-<span class="fc" id="L100">            this.metadataBoolean = metadataBoolean;</span>
-<span class="fc" id="L101">        }</span>
+<span class="fc" id="L72">        ) {</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">            this.url = url == null ? Strings.EMPTY : url;</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            this.post = post == null ? Strings.EMPTY : post;</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">            this.header = header == null ? Collections.emptyMap() : header;</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">            this.response = response == null ? Collections.emptyMap() : response;</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">            this.source = source == null ? Strings.EMPTY : source;</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            this.size = size == null ? Strings.EMPTY : size;</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">            this.metadataStrategy = metadataStrategy == null ? Strings.EMPTY : metadataStrategy;</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">            this.metadataProcess = metadataProcess == null ? Strings.EMPTY : metadataProcess;</span>
+<span class="fc" id="L81">            this.metadataBoolean = metadataBoolean;</span>
+<span class="fc" id="L82">        }</span>
     }
 
-<span class="fc" id="L104">    record AddTabExploitSql(String urlSuccess, String username, String password) implements Request3 {}</span>
-<span class="fc" id="L105">    record AddTabExploitUdfExtensionPostgres() implements Request3 {}</span>
-<span class="fc" id="L106">    record AddTabExploitUdfH2() implements Request3 {}</span>
-<span class="fc" id="L107">    record AddTabExploitUdfLibraryPostgres() implements Request3 {}</span>
-<span class="fc" id="L108">    record AddTabExploitUdfMysql() implements Request3 {}</span>
-<span class="nc" id="L109">    record AddTabExploitUdfOracle() implements Request3 {}</span>
-<span class="fc" id="L110">    record AddTabExploitUdfProgramPostgres() implements Request3 {}</span>
-<span class="nc" id="L111">    record AddTabExploitUdfSqlite() implements Request3 {}</span>
-<span class="nc" id="L112">    record AddTabExploitUdfWalPostgres() implements Request3 {}</span>
-<span class="fc" id="L113">    record AddTabExploitWeb(String urlSuccess) implements Request3 {}</span>
-<span class="fc" id="L114">    record GetTerminalResult(UUID uuidShell, String result) implements Request3 {}</span>
+<span class="fc" id="L85">    record AddTabExploitSql(String urlSuccess, String username, String password) implements Request3 {}</span>
+<span class="fc" id="L86">    record AddTabExploitUdfExtensionPostgres() implements Request3 {}</span>
+<span class="fc" id="L87">    record AddTabExploitUdfH2() implements Request3 {}</span>
+<span class="fc" id="L88">    record AddTabExploitUdfLibraryPostgres() implements Request3 {}</span>
+<span class="fc" id="L89">    record AddTabExploitUdfMysql() implements Request3 {}</span>
+<span class="nc" id="L90">    record AddTabExploitUdfOracle() implements Request3 {}</span>
+<span class="fc" id="L91">    record AddTabExploitUdfProgramPostgres() implements Request3 {}</span>
+<span class="nc" id="L92">    record AddTabExploitUdfSqlite() implements Request3 {}</span>
+<span class="nc" id="L93">    record AddTabExploitUdfWalPostgres() implements Request3 {}</span>
+<span class="fc" id="L94">    record AddTabExploitWeb(String urlSuccess) implements Request3 {}</span>
+<span class="fc" id="L95">    record GetTerminalResult(UUID uuidShell, String result) implements Request3 {}</span>
 
-<span class="fc" id="L116">    record CreateAdminPageTab(String urlSuccess) implements Request3 {}</span>
-<span class="fc" id="L117">    record CreateAnalysisReport(String content) implements Request3 {}</span>
-<span class="fc" id="L118">    record CreateFileTab(String name, String content, String path) implements Request3 {}</span>
+<span class="fc" id="L97">    record CreateAdminPageTab(String urlSuccess) implements Request3 {}</span>
+<span class="fc" id="L98">    record CreateAnalysisReport(String content) implements Request3 {}</span>
+<span class="fc" id="L99">    record CreateFileTab(String name, String content, String path) implements Request3 {}</span>
 
-<span class="fc" id="L120">    record EndIndeterminateProgress(Table table) implements Request3 {}</span>
-<span class="fc" id="L121">    record EndPreparation() implements Request3 {}</span>
-<span class="fc" id="L122">    record EndProgress(AbstractElementDatabase elementDatabase) implements Request3 {}</span>
-<span class="fc" id="L123">    record StartIndeterminateProgress(Table table) implements Request3 {}</span>
-<span class="fc" id="L124">    record StartProgress(AbstractElementDatabase elementDatabase) implements Request3 {}</span>
-<span class="fc" id="L125">    record UpdateProgress(AbstractElementDatabase elementDatabase, int countProgress) implements Request3 {}</span>
+<span class="fc" id="L101">    record EndIndeterminateProgress(Table table) implements Request3 {}</span>
+<span class="fc" id="L102">    record EndPreparation() implements Request3 {}</span>
+<span class="fc" id="L103">    record EndProgress(AbstractElementDatabase elementDatabase) implements Request3 {}</span>
+<span class="fc" id="L104">    record StartIndeterminateProgress(Table table) implements Request3 {}</span>
+<span class="fc" id="L105">    record StartProgress(AbstractElementDatabase elementDatabase) implements Request3 {}</span>
+<span class="fc" id="L106">    record UpdateProgress(AbstractElementDatabase elementDatabase, int countProgress) implements Request3 {}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

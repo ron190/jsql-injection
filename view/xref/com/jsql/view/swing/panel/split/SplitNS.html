@@ -69,7 +69,7 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          labelApp.setMinimumSize(<strong class="jxr_keyword">new</strong> Dimension(100, 0));
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">this</strong>.splitEW.setRightComponent(labelApp);
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">var</strong> verticalLeftRightSplitter = preferences.getDouble(PreferencesUtil.EW_SPLIT, 0.33);
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">this</strong>.splitEW.setDividerLocation(Math.max(0.0, Math.min(1.0, verticalLeftRightSplitter)));
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">this</strong>.splitEW.setDividerLocation(Math.clamp(verticalLeftRightSplitter, 0.0, 1.0));
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          JLabel labelShowConsoles = <strong class="jxr_keyword">new</strong> JLabel(UiUtil.ARROW_UP.getIcon());
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          labelShowConsoles.setBorder(BorderFactory.createEmptyBorder());

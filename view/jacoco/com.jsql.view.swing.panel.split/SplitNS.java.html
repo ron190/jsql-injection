@@ -61,7 +61,7 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
 <span class="fc" id="L61">        labelApp.setMinimumSize(new Dimension(100, 0));</span>
 <span class="fc" id="L62">        this.splitEW.setRightComponent(labelApp);</span>
 <span class="fc" id="L63">        var verticalLeftRightSplitter = preferences.getDouble(PreferencesUtil.EW_SPLIT, 0.33);</span>
-<span class="fc" id="L64">        this.splitEW.setDividerLocation(Math.max(0.0, Math.min(1.0, verticalLeftRightSplitter)));</span>
+<span class="fc" id="L64">        this.splitEW.setDividerLocation(Math.clamp(verticalLeftRightSplitter, 0.0, 1.0));</span>
 
 <span class="fc" id="L66">        JLabel labelShowConsoles = new JLabel(UiUtil.ARROW_UP.getIcon());</span>
 <span class="fc" id="L67">        labelShowConsoles.setBorder(BorderFactory.createEmptyBorder());</span>
