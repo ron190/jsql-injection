@@ -237,6 +237,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <!-- maven-checkstyle-plugin:3.6.0:checkstyle-aggregate report: Failed during checkstyle configuration: NoViableAltException -->
+                    <excludes>
+                        **/Subscriber*.java
+                    </excludes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -356,10 +362,6 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
-                        <excludes>
-                            <!-- maven-checkstyle-plugin:3.6.0:checkstyle-aggregate report: Failed during checkstyle configuration: NoViableAltException -->
-                            <exclude>com.jsql.view.subscriber.SubscriberLogger</exclude>
-                        </excludes>
                         <!-- prevents warning on jdk21: Annotation processing is enabled because one or more processors were found -->
                         <proc>full</proc>
                     </configuration>
