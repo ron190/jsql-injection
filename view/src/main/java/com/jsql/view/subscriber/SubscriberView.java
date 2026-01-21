@@ -20,12 +20,39 @@ public class SubscriberView extends AbstractSubscriber {
 
     @Override
     protected void execute(Request3 request) {
+        this.addLog(request);
+        this.progress(request);
+        this.executeInjection(request);
+        this.createTab(request);
+        this.executeExploit(request);
+    }
+
+    private void executeInjection(Request3 request) {
         switch (request) {
             case Request3.SetVendor r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().setVendor(r.vendor());
             case Request3.AddColumns(var columns) -> MediatorHelper.treeDatabase().addColumns(columns);
             case Request3.AddTables(var tables) -> MediatorHelper.treeDatabase().addTables(tables);
             case Request3.AddDatabases(var databases) -> MediatorHelper.treeDatabase().addDatabases(databases);
 
+            case Request3.MarkStrategyInvulnerable(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(strategy);
+            case Request3.MarkErrorInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markErrorInvulnerable(r.indexError());
+
+            case Request3.MarkStrategyVulnerable(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(strategy);
+            case Request3.MarkErrorVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markErrorVulnerable(r.indexError());
+
+            case Request3.MarkStrategy(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(strategy);
+            case Request3.MarkErrorStrategy ignored -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markError();
+
+            case Request3.MarkFileSystemInvulnerable ignored -> MediatorHelper.tabManagersCards().markFileSystemInvulnerable();
+            case Request3.MarkFileSystemVulnerable ignored -> MediatorHelper.tabManagersCards().markFileSystemVulnerable();
+            default -> {
+                // ignore
+            }
+        }
+    }
+
+    private void executeExploit(Request3 request) {
+        switch (request) {
             case Request3.AddTabExploitSql(var urlSuccess, var username, var password) -> {
                 MediatorHelper.frame().getSplitNS().initSplitOrientation();
                 SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitSql(urlSuccess, username, password));
@@ -82,22 +109,6 @@ public class SubscriberView extends AbstractSubscriber {
                 MediatorHelper.frame().getSplitNS().initSplitOrientation();
                 SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitWeb(urlSuccess));
             }
-            case Request3.CreateAdminPageTab(String urlSuccess) -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addAdminTab(urlSuccess));
-            }
-            case Request3.CreateAnalysisReport(var content) -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addReportTab(content.trim()));
-            }
-            case Request3.CreateFileTab(var name, var content, var path) -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addFileTab(name, content, path));
-            }
-            case Request3.CreateValuesTab(var columns, var table, var tableBean) -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.treeDatabase().createValuesTab(table, columns, tableBean));
-            }
             case Request3.GetTerminalResult(UUID uuidShell, String result) -> {
                 AbstractExploit terminal = MediatorHelper.frame().getMapUuidShell().get(uuidShell);
                 if (terminal != null) {  // null on reverse shell connection
@@ -106,19 +117,14 @@ public class SubscriberView extends AbstractSubscriber {
                     terminal.reset();
                 }
             }
+            default -> {
+                // ignore
+            }
+        }
+    }
 
-            case Request3.MarkStrategyInvulnerable(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(strategy);
-            case Request3.MarkErrorInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markErrorInvulnerable(r.indexError());
-
-            case Request3.MarkStrategyVulnerable(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(strategy);
-            case Request3.MarkErrorVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markErrorVulnerable(r.indexError());
-
-            case Request3.MarkStrategy(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(strategy);
-            case Request3.MarkErrorStrategy ignored -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markError();
-
-            case Request3.MarkFileSystemInvulnerable ignored -> MediatorHelper.tabManagersCards().markFileSystemInvulnerable();
-            case Request3.MarkFileSystemVulnerable ignored -> MediatorHelper.tabManagersCards().markFileSystemVulnerable();
-
+    private void addLog(Request3 request) {
+        switch (request) {
             case Request3.MessageBinary(var message) -> {
                 MediatorHelper.panelConsoles().messageBinary(message);
                 MediatorHelper.tabConsoles().setBold("Boolean");
@@ -131,7 +137,6 @@ public class SubscriberView extends AbstractSubscriber {
                 NetworkTable table = MediatorHelper.panelConsoles().getNetworkTable();
                 table.addHeader(r);
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-
                 try {
                     model.addRow(new Object[] {
                         r.url(),
@@ -149,7 +154,38 @@ public class SubscriberView extends AbstractSubscriber {
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
             }
+            default -> {
+                // ignore
+            }
+        }
+    }
 
+    private void createTab(Request3 request) {
+        switch (request) {
+            case Request3.CreateAdminPageTab(String urlSuccess) -> {
+                MediatorHelper.frame().getSplitNS().initSplitOrientation();
+                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addAdminTab(urlSuccess));
+            }
+            case Request3.CreateAnalysisReport(var content) -> {
+                MediatorHelper.frame().getSplitNS().initSplitOrientation();
+                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addReportTab(content.trim()));
+            }
+            case Request3.CreateFileTab(var name, var content, var path) -> {
+                MediatorHelper.frame().getSplitNS().initSplitOrientation();
+                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addFileTab(name, content, path));
+            }
+            case Request3.CreateValuesTab(var columns, var table, var tableBean) -> {
+                MediatorHelper.frame().getSplitNS().initSplitOrientation();
+                SwingUtilities.invokeLater(() -> MediatorHelper.treeDatabase().createValuesTab(table, columns, tableBean));
+            }
+            default -> {
+                // ignore
+            }
+        }
+    }
+
+    private void progress(Request3 request) {
+        switch (request) {
             case Request3.StartIndeterminateProgress(var table) -> MediatorHelper.treeDatabase().startIndeterminateProgress(table);
             case Request3.StartProgress(var elementDatabase) -> MediatorHelper.treeDatabase().startProgress(elementDatabase);
             case Request3.UpdateProgress(var database, var countProgress) -> MediatorHelper.treeDatabase().updateProgress(database, countProgress);
@@ -161,8 +197,9 @@ public class SubscriberView extends AbstractSubscriber {
                 }
             }
             case Request3.EndProgress(var elementDatabase) -> MediatorHelper.treeDatabase().endProgress(elementDatabase);
-
-            default -> {}
+            default -> {
+                // ignore
+            }
         }
     }
 }

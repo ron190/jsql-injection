@@ -92,13 +92,13 @@ public class ConnectionUtil {
             .entrySet()
             .stream()
             .sorted(Entry.comparingByKey())
-            .map(entrySet -> new AbstractMap.SimpleEntry<>(
+            .map(entrySet -> new SimpleEntry<>(
                 entrySet.getKey(),
                 String.join(", ", entrySet.getValue())
             ))
             .collect(Collectors.toMap(
-                AbstractMap.SimpleEntry::getKey,
-                AbstractMap.SimpleEntry::getValue
+                SimpleEntry::getKey,
+                SimpleEntry::getValue
             ));
         return new TreeMap<>(unsortedMap);
     }
@@ -201,31 +201,27 @@ public class ConnectionUtil {
     }
 
     public String getSource(String url, boolean lineFeed, boolean isConnectIssueIgnored) {
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, url);
-        
         String pageSource = StringUtils.EMPTY;
-        
-        try {
+        Map<String, String> requestHeaders = Map.of();
+        Map<String, String> responseHeaders = Map.of();
+
+        try (var httpClient = this.getHttpClient().build()) {
             var httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(this.getTimeout()))
                 .build();
-            
-            HttpHeaders httpHeaders;
+
             if (lineFeed) {
-                HttpResponse<Stream<String>> response = this.getHttpClient().build().send(httpRequest, BodyHandlers.ofLines());
+                HttpResponse<Stream<String>> response = httpClient.send(httpRequest, BodyHandlers.ofLines());
                 pageSource = response.body().collect(Collectors.joining("\n"));
-                httpHeaders = response.headers();
+                responseHeaders = ConnectionUtil.getHeadersMap(response.headers());
             } else {
-                HttpResponse<String> response = this.getHttpClient().build().send(httpRequest, BodyHandlers.ofString());
+                HttpResponse<String> response = httpClient.send(httpRequest, BodyHandlers.ofString());
                 pageSource = response.body();
-                httpHeaders = response.headers();
+                responseHeaders = ConnectionUtil.getHeadersMap(response.headers());
             }
-            
-            msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(httpHeaders));
-            msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
-            
+            requestHeaders = ConnectionUtil.getHeadersMap(httpRequest.headers());
+
         } catch (IOException e) {
             if (!isConnectIssueIgnored) {  // ignoring reverse connection timeout
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
@@ -234,14 +230,13 @@ public class ConnectionUtil {
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         } finally {
-            msgHeader.put(Header.SOURCE, pageSource);
             // Inform the view about the log infos
             this.injectionModel.sendToViews(new Request3.MessageHeader(
-                (String) msgHeader.get(Header.URL),
+                url,
                 null,
-                (Map<String, String>) msgHeader.get(Header.HEADER),
-                (Map<String, String>) msgHeader.get(Header.RESPONSE),
-                (String) msgHeader.get(Header.SOURCE),
+                requestHeaders,
+                responseHeaders,
+                pageSource,
                 null,
                 null,
                 null,

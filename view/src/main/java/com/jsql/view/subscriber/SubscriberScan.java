@@ -22,7 +22,9 @@ public class SubscriberScan extends AbstractSubscriber {
             case Request3.SetVendor(var url, var vendor) -> MediatorHelper.managerScan().highlight(url, vendor.toString());
             case Request3.MarkStrategyVulnerable(var strategy) -> MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());
             case Request3.MarkErrorVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
-            default -> {}
+            default -> {
+                // empty
+            }
         }
     }
 }

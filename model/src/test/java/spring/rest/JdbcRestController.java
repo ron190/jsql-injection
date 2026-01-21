@@ -327,14 +327,14 @@ public class JdbcRestController {
     }
 }
 
-// CockroachLegacyDialect
-// GaussDBDialect
+// CockroachLegacyDialect: clone postgres
+// GaussDBDialect: clone postgres
 // MaxDBDialect: broken installation
-// RDMSOS2200Dialect
-// SingleStoreDialect
+// RDMSOS2200Dialect: no jdbc
+// SingleStoreDialect: clone mysql
 // TeradataDialect
-// TiDBDialect
-// TimesTenDialect
+// TiDBDialect: clone mysql
+// TimesTenDialect: oracle login denied
 
 // missing ingress: missing services
 // jdbc:ingres://localhost:II7/demodb

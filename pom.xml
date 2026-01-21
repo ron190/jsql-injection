@@ -356,13 +356,12 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
+                        <excludes>
+                            <!-- maven-checkstyle-plugin:3.6.0:checkstyle-aggregate report: Failed during checkstyle configuration: NoViableAltException -->
+                            <exclude>com.jsql.view.subscriber.SubscriberLogger</exclude>
+                        </excludes>
                         <!-- prevents warning on jdk21: Annotation processing is enabled because one or more processors were found -->
                         <proc>full</proc>
-                        <!-- prevents warning: `GraalVmProcessor` annotation processor missing `log4j.graalvm.groupId` and `log4j.graalvm.artifactId` -->
-                        <compilerArgs combine.children="append">
-                            <arg>-Alog4j.graalvm.groupId=${project.groupId}</arg>
-                            <arg>-Alog4j.graalvm.artifactId=${project.artifactId}</arg>
-                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>

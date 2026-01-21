@@ -61,10 +61,8 @@ public class ActionSaveTab extends AbstractAction {
         var componentResult = MediatorHelper.tabResults().getSelectedComponent();
         switch (componentResult) {
             case PanelTable panelTable -> this.saveToFile(panelTable.getTableValues());
-            case JScrollPane jScrollPane -> {
-                if (jScrollPane.getViewport().getView() instanceof JTextComponent textarea) {
-                    this.saveToFile(textarea);
-                }
+            case JScrollPane jScrollPane when jScrollPane.getViewport().getView() instanceof JTextComponent textarea -> {
+                this.saveToFile(textarea);
             }
             default -> LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Nothing to save");
         }
