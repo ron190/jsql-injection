@@ -78,12 +78,12 @@ public class StrategyUnion extends AbstractStrategy {
                 "metadataInjectionProcess"
             )
         );
-        this.injectionModel.sendToViews(new Request3.MarkUnionVulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkStrategyVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.injectionModel.sendToViews(new Request3.MarkUnionInvulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkStrategyInvulnerable(this));
     }
 
     @Override
@@ -104,7 +104,7 @@ public class StrategyUnion extends AbstractStrategy {
                 this::getName
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-            this.injectionModel.sendToViews(new Request3.MarkUnionStrategy(this));
+            this.injectionModel.sendToViews(new Request3.MarkStrategy(this));
         }
     }
     

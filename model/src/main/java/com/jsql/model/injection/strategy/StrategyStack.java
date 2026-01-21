@@ -112,12 +112,12 @@ public class StrategyStack extends AbstractStrategy {
                 "metadataInjectionProcess"
             )
         );
-        this.injectionModel.sendToViews(new Request3.MarkStackVulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkStrategyVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.injectionModel.sendToViews(new Request3.MarkStackInvulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkStrategyInvulnerable(this));
     }
 
     @Override
@@ -138,7 +138,7 @@ public class StrategyStack extends AbstractStrategy {
                 this::getName
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-            this.injectionModel.sendToViews(new Request3.MarkStackStrategy(this));
+            this.injectionModel.sendToViews(new Request3.MarkStrategy(this));
         }
     }
 

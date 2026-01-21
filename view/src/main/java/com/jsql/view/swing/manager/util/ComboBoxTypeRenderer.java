@@ -12,9 +12,9 @@ public class ComboBoxTypeRenderer extends JLabel implements ListCellRenderer<Obj
         if (value == ComboBoxMethodRenderer.SEPARATOR) {
             return ComboBoxMethodRenderer.SEPARATOR;
         }
-        if (value instanceof ModelItemType exploitMethods) {
-            this.setToolTipText(I18nViewUtil.valueByKey(exploitMethods.keyTooltip()));
-            this.setText(I18nViewUtil.valueByKey(exploitMethods.keyLabel()));
+        if (value instanceof ModelItemType(var label, var tooltip)) {
+            this.setToolTipText(I18nViewUtil.valueByKey(tooltip));
+            this.setText(I18nViewUtil.valueByKey(label));
         }
         this.setForeground(UIManager.getColor("ComboBox.foreground"));
         this.setBackground(UIManager.getColor("ComboBox.background"));

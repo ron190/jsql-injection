@@ -123,12 +123,8 @@ public class JFrameView extends JFrame {
                 // Proportion means different location relative to whether frame is maximized or not
                 // Maximizing must wait AWT events to reflect the new divider location proportion
                 SwingUtilities.invokeLater(() -> {
-                    JFrameView.this.splitNS.setDividerLocation(
-                        Math.max(0.0, Math.min(1.0, nsProportion))
-                    );
-                    JFrameView.this.splitNS.getSplitEW().setDividerLocation(
-                        Math.max(0.0, Math.min(1.0, ewProportion))
-                    );
+                    JFrameView.this.splitNS.setDividerLocation(Math.clamp(nsProportion, 0.0, 1.0));
+                    JFrameView.this.splitNS.getSplitEW().setDividerLocation(Math.clamp(ewProportion, 0.0, 1.0));
                     MediatorHelper.panelConsoles().getNetworkSplitPane().setDividerLocation(
                         ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()).isLeftToRight()
                         ? 0.33
@@ -144,16 +140,12 @@ public class JFrameView extends JFrame {
                 int ewDividerLocation = JFrameView.this.splitNS.getSplitEW().getDividerLocation();
                 int ewHeight = JFrameView.this.splitNS.getSplitEW().getWidth();
                 double ewProportion = 100.0 * ewDividerLocation / ewHeight;
-                double ewLocationProportionCapped = Math.max(0.0, Math.min(1.0,
-                    ewProportion / 100.0
-                ));
+                double ewLocationProportionCapped = Math.clamp(ewProportion / 100.0, 0.0, 1.0);
 
                 int nsDividerLocation = JFrameView.this.splitNS.getDividerLocation();
                 int nsHeight = JFrameView.this.splitNS.getHeight();
                 double nsProportion = 100.0 * nsDividerLocation / nsHeight;
-                double nsLocationProportionCapped = Math.max(0.0, Math.min(1.0,
-                    nsProportion / 100.0
-                ));
+                double nsLocationProportionCapped = Math.clamp(nsProportion / 100.0, 0.0, 1.0);
 
                 // Divider location changes when window is maximized, instead stores location percentage between 0.0 and 1.0
                 preferences.putDouble(PreferencesUtil.NS_SPLIT, nsLocationProportionCapped);

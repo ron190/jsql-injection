@@ -101,12 +101,12 @@ public class StrategyTime extends AbstractStrategy {
                 null
             )
         );
-        this.injectionModel.sendToViews(new Request3.MarkTimeVulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkStrategyVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.injectionModel.sendToViews(new Request3.MarkTimeInvulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkStrategyInvulnerable(this));
     }
 
     @Override
@@ -128,7 +128,7 @@ public class StrategyTime extends AbstractStrategy {
                 () -> this.injection.getBlindOperator().name()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-            this.injectionModel.sendToViews(new Request3.MarkTimeStrategy(this));
+            this.injectionModel.sendToViews(new Request3.MarkStrategy(this));
         }
     }
     

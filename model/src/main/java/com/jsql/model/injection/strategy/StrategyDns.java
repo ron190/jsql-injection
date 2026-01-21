@@ -135,12 +135,12 @@ public class StrategyDns extends AbstractStrategy {
                 null
             )
         );
-        this.injectionModel.sendToViews(new Request3.MarkDnsVulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkStrategyVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.injectionModel.sendToViews(new Request3.MarkDnsInvulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkStrategyInvulnerable(this));
     }
 
     @Override
@@ -197,7 +197,7 @@ public class StrategyDns extends AbstractStrategy {
                 this.blindOperator::name
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-            this.injectionModel.sendToViews(new Request3.MarkDnsStrategy(this));
+            this.injectionModel.sendToViews(new Request3.MarkStrategy(this));
         }
     }
     

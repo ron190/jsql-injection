@@ -101,12 +101,12 @@ public class StrategyBlindBin extends AbstractStrategy {
                 null
             )
         );
-        this.injectionModel.sendToViews(new Request3.MarkBlindBinVulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkStrategyVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.injectionModel.sendToViews(new Request3.MarkBlindBinInvulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkStrategyInvulnerable(this));
     }
 
     @Override
@@ -128,7 +128,7 @@ public class StrategyBlindBin extends AbstractStrategy {
                 () -> this.injection.getBlindOperator().name()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-            this.injectionModel.sendToViews(new Request3.MarkBlindBinStrategy(this));
+            this.injectionModel.sendToViews(new Request3.MarkStrategy(this));
         }
     }
     

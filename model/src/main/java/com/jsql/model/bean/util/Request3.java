@@ -20,13 +20,10 @@ public sealed interface Request3 permits
     Request3.AddTabExploitUdfProgramPostgres, Request3.AddTabExploitUdfSqlite, Request3.AddTabExploitUdfWalPostgres, Request3.AddTabExploitWeb,
     Request3.AddTables, Request3.CreateAdminPageTab, Request3.CreateAnalysisReport, Request3.CreateFileTab, Request3.CreateValuesTab,
     Request3.DatabaseIdentified, Request3.EndIndeterminateProgress, Request3.EndPreparation, Request3.EndProgress, Request3.GetTerminalResult,
-    Request3.MarkBlindBinInvulnerable, Request3.MarkBlindBinStrategy, Request3.MarkBlindBinVulnerable, Request3.MarkBlindBitInvulnerable,
-    Request3.MarkBlindBitStrategy, Request3.MarkBlindBitVulnerable, Request3.MarkDnsInvulnerable, Request3.MarkDnsStrategy, Request3.MarkDnsVulnerable,
     Request3.MarkErrorInvulnerable, Request3.MarkErrorStrategy, Request3.MarkErrorVulnerable, Request3.MarkFileSystemInvulnerable,
-    Request3.MarkFileSystemVulnerable, Request3.MarkMultibitInvulnerable, Request3.MarkMultibitStrategy, Request3.MarkMultibitVulnerable,
-    Request3.MarkStackInvulnerable, Request3.MarkStackStrategy, Request3.MarkStackVulnerable, Request3.MarkTimeInvulnerable, Request3.MarkTimeStrategy,
-    Request3.MarkTimeVulnerable, Request3.MarkUnionInvulnerable, Request3.MarkUnionStrategy, Request3.MarkUnionVulnerable, Request3.MessageBinary,
-    Request3.MessageChunk, Request3.MessageHeader, Request3.SetVendor, Request3.StartIndeterminateProgress, Request3.StartProgress, Request3.UpdateProgress {
+    Request3.MarkFileSystemVulnerable, Request3.MarkStrategyInvulnerable, Request3.MarkStrategyVulnerable, Request3.MessageBinary,
+    Request3.MessageChunk, Request3.MessageHeader, Request3.SetVendor, Request3.StartIndeterminateProgress, Request3.StartProgress,
+    Request3.UpdateProgress, Request3.MarkStrategy {
 
     record AddColumns(List<Column> columns) implements Request3 {}
     record AddDatabases(List<Database> databases) implements Request3 {}
@@ -37,30 +34,14 @@ public sealed interface Request3 permits
     record DatabaseIdentified(String url, Vendor vendor) implements Request3 {}
     record SetVendor(String url, Vendor vendor) implements Request3 {}
 
-    record MarkTimeVulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkTimeInvulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkTimeStrategy(AbstractStrategy strategy) implements Request3 {}
-    record MarkBlindBinVulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkBlindBinInvulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkBlindBinStrategy(AbstractStrategy strategy) implements Request3 {}
-    record MarkBlindBitVulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkBlindBitInvulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkBlindBitStrategy(AbstractStrategy strategy) implements Request3 {}
-    record MarkMultibitVulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkMultibitInvulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkMultibitStrategy(AbstractStrategy strategy) implements Request3 {}
-    record MarkDnsVulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkDnsInvulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkDnsStrategy(AbstractStrategy strategy) implements Request3 {}
-    record MarkErrorVulnerable(int indexError, AbstractStrategy strategy) implements Request3 {}
+    record MarkStrategyInvulnerable(AbstractStrategy strategy) implements Request3 {}
     record MarkErrorInvulnerable(int indexError, AbstractStrategy strategy) implements Request3 {}
+
+    record MarkStrategyVulnerable(AbstractStrategy strategy) implements Request3 {}
+    record MarkErrorVulnerable(int indexError, AbstractStrategy strategy) implements Request3 {}
+
+    record MarkStrategy(AbstractStrategy strategy) implements Request3 {}
     record MarkErrorStrategy(AbstractStrategy strategy) implements Request3 {}
-    record MarkStackVulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkStackInvulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkStackStrategy(AbstractStrategy strategy) implements Request3 {}
-    record MarkUnionVulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkUnionInvulnerable(AbstractStrategy strategy) implements Request3 {}
-    record MarkUnionStrategy(AbstractStrategy strategy) implements Request3 {}
 
     record MarkFileSystemInvulnerable() implements Request3 {}
     record MarkFileSystemVulnerable() implements Request3 {}

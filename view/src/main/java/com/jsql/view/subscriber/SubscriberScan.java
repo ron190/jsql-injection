@@ -18,16 +18,10 @@ public class SubscriberScan extends AbstractSubscriber {
     protected void execute(Request3 request) {
         var urlByUser = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getUrlByUser();
         switch (request) {
-            case Request3.DatabaseIdentified r -> MediatorHelper.managerScan().highlight(r.url(), r.vendor().toString());
-            case Request3.MarkBlindBinVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
-            case Request3.MarkBlindBitVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
-            case Request3.MarkDnsVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
+            case Request3.DatabaseIdentified(var url, var vendor) -> MediatorHelper.managerScan().highlight(url, vendor.toString());
+            case Request3.SetVendor(var url, var vendor) -> MediatorHelper.managerScan().highlight(url, vendor.toString());
+            case Request3.MarkStrategyVulnerable(var strategy) -> MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());
             case Request3.MarkErrorVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
-            case Request3.MarkMultibitVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
-            case Request3.MarkStackVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
-            case Request3.MarkTimeVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
-            case Request3.MarkUnionVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
-            case Request3.SetVendor r -> MediatorHelper.managerScan().highlight(r.url(), r.vendor().toString());
             default -> {}
         }
     }

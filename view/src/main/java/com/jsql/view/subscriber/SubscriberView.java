@@ -22,13 +22,13 @@ public class SubscriberView extends AbstractSubscriber {
     protected void execute(Request3 request) {
         switch (request) {
             case Request3.SetVendor r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().setVendor(r.vendor());
-            case Request3.AddColumns r -> MediatorHelper.treeDatabase().addColumns(r.columns());
-            case Request3.AddTables r -> MediatorHelper.treeDatabase().addTables(r.tables());
-            case Request3.AddDatabases r -> MediatorHelper.treeDatabase().addDatabases(r.databases());
+            case Request3.AddColumns(var columns) -> MediatorHelper.treeDatabase().addColumns(columns);
+            case Request3.AddTables(var tables) -> MediatorHelper.treeDatabase().addTables(tables);
+            case Request3.AddDatabases(var databases) -> MediatorHelper.treeDatabase().addDatabases(databases);
 
-            case Request3.AddTabExploitSql r -> {
+            case Request3.AddTabExploitSql(var urlSuccess, var username, var password) -> {
                 MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitSql(r.urlSuccess(), r.username(), r.password()));
+                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitSql(urlSuccess, username, password));
             }
             case Request3.AddTabExploitUdfExtensionPostgres ignored -> {
                 MediatorHelper.frame().getSplitNS().initSplitOrientation();
@@ -78,68 +78,53 @@ public class SubscriberView extends AbstractSubscriber {
                     (String command, UUID terminalID) -> MediatorHelper.model().getResourceAccess().getExploitPostgres().runRceArchiveCmd(command, terminalID)
                 ));
             }
-            case Request3.AddTabExploitWeb r -> {
+            case Request3.AddTabExploitWeb(String urlSuccess) -> {
                 MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitWeb(r.urlSuccess()));
+                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitWeb(urlSuccess));
             }
-            case Request3.CreateAdminPageTab r -> {
+            case Request3.CreateAdminPageTab(String urlSuccess) -> {
                 MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addAdminTab(r.urlSuccess()));
+                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addAdminTab(urlSuccess));
             }
-            case Request3.CreateAnalysisReport r -> {
+            case Request3.CreateAnalysisReport(var content) -> {
                 MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addReportTab(r.content().trim()));
+                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addReportTab(content.trim()));
             }
-            case Request3.CreateFileTab r -> {
+            case Request3.CreateFileTab(var name, var content, var path) -> {
                 MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addFileTab(r.name(), r.content(), r.path()));
+                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addFileTab(name, content, path));
             }
-            case Request3.CreateValuesTab r -> {
+            case Request3.CreateValuesTab(var columns, var table, var tableBean) -> {
                 MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.treeDatabase().createValuesTab(r.table(), r.columns(), r.tableBean()));
+                SwingUtilities.invokeLater(() -> MediatorHelper.treeDatabase().createValuesTab(table, columns, tableBean));
             }
-            case Request3.GetTerminalResult r -> {
-                AbstractExploit terminal = MediatorHelper.frame().getMapUuidShell().get(r.uuidShell());
+            case Request3.GetTerminalResult(UUID uuidShell, String result) -> {
+                AbstractExploit terminal = MediatorHelper.frame().getMapUuidShell().get(uuidShell);
                 if (terminal != null) {  // null on reverse shell connection
-                    terminal.append(r.result());
+                    terminal.append(result);
                     terminal.append("\n");
                     terminal.reset();
                 }
             }
 
-            case Request3.MarkTimeInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(r.strategy());
-            case Request3.MarkTimeStrategy r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(r.strategy());
-            case Request3.MarkTimeVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(r.strategy());
-            case Request3.MarkBlindBinInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(r.strategy());
-            case Request3.MarkBlindBinStrategy r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(r.strategy());
-            case Request3.MarkBlindBinVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(r.strategy());
-            case Request3.MarkBlindBitInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(r.strategy());
-            case Request3.MarkBlindBitStrategy r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(r.strategy());
-            case Request3.MarkBlindBitVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(r.strategy());
-            case Request3.MarkMultibitInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(r.strategy());
-            case Request3.MarkMultibitStrategy r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(r.strategy());
-            case Request3.MarkMultibitVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(r.strategy());
-            case Request3.MarkDnsInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(r.strategy());
-            case Request3.MarkDnsStrategy r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(r.strategy());
-            case Request3.MarkDnsVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(r.strategy());
+            case Request3.MarkStrategyInvulnerable(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(strategy);
             case Request3.MarkErrorInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markErrorInvulnerable(r.indexError());
-            case Request3.MarkErrorStrategy r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markError();
+
+            case Request3.MarkStrategyVulnerable(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(strategy);
             case Request3.MarkErrorVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markErrorVulnerable(r.indexError());
-            case Request3.MarkStackInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(r.strategy());
-            case Request3.MarkStackStrategy r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(r.strategy());
-            case Request3.MarkStackVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(r.strategy());
-            case Request3.MarkUnionInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(r.strategy());
-            case Request3.MarkUnionStrategy r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(r.strategy());
-            case Request3.MarkUnionVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(r.strategy());
+
+            case Request3.MarkStrategy(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(strategy);
+            case Request3.MarkErrorStrategy ignored -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markError();
+
             case Request3.MarkFileSystemInvulnerable ignored -> MediatorHelper.tabManagersCards().markFileSystemInvulnerable();
             case Request3.MarkFileSystemVulnerable ignored -> MediatorHelper.tabManagersCards().markFileSystemVulnerable();
 
-            case Request3.MessageBinary r -> {
-                MediatorHelper.panelConsoles().messageBinary(r.message());
+            case Request3.MessageBinary(var message) -> {
+                MediatorHelper.panelConsoles().messageBinary(message);
                 MediatorHelper.tabConsoles().setBold("Boolean");
             }
-            case Request3.MessageChunk r -> {
-                MediatorHelper.panelConsoles().messageChunk(r.message());
+            case Request3.MessageChunk(var message) -> {
+                MediatorHelper.panelConsoles().messageChunk(message);
                 MediatorHelper.tabConsoles().setBold("Chunk");
             }
             case Request3.MessageHeader r -> {
@@ -165,17 +150,17 @@ public class SubscriberView extends AbstractSubscriber {
                 }
             }
 
-            case Request3.StartIndeterminateProgress r -> MediatorHelper.treeDatabase().startIndeterminateProgress(r.table());
-            case Request3.StartProgress r -> MediatorHelper.treeDatabase().startProgress(r.elementDatabase());
-            case Request3.UpdateProgress r -> MediatorHelper.treeDatabase().updateProgress(r.elementDatabase(), r.countProgress());
-            case Request3.EndIndeterminateProgress r -> MediatorHelper.treeDatabase().endIndeterminateProgress(r.table());
+            case Request3.StartIndeterminateProgress(var table) -> MediatorHelper.treeDatabase().startIndeterminateProgress(table);
+            case Request3.StartProgress(var elementDatabase) -> MediatorHelper.treeDatabase().startProgress(elementDatabase);
+            case Request3.UpdateProgress(var database, var countProgress) -> MediatorHelper.treeDatabase().updateProgress(database, countProgress);
+            case Request3.EndIndeterminateProgress(var table) -> MediatorHelper.treeDatabase().endIndeterminateProgress(table);
             case Request3.EndPreparation ignored -> {
                 MediatorHelper.panelAddressBar().getPanelTrailingAddress().endPreparation();
                 if (MediatorHelper.model().shouldErasePreviousInjection()) {
                     MediatorHelper.tabManagersCards().endPreparation();
                 }
             }
-            case Request3.EndProgress r -> MediatorHelper.treeDatabase().endProgress(r.elementDatabase());
+            case Request3.EndProgress(var elementDatabase) -> MediatorHelper.treeDatabase().endProgress(elementDatabase);
 
             default -> {}
         }

@@ -31,34 +31,27 @@ public class SubscriberLogger extends AbstractSubscriber {
     @Override
     protected void execute(Request3 request) {
         switch (request) {
-            case Request3.AddColumns r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
             case Request3.AddDatabases r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-            case Request3.AddTabExploitWeb r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
             case Request3.AddTables r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
+            case Request3.AddColumns r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
+
+            case Request3.AddTabExploitWeb r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
             case Request3.GetTerminalResult r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
 
-            case Request3.MarkBlindBinInvulnerable r -> LOGGER.info(() -> AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));
-            case Request3.MarkBlindBinVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-            case Request3.MarkBlindBitInvulnerable r -> LOGGER.info(() -> AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));
-            case Request3.MarkBlindBitVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-            case Request3.MarkDnsInvulnerable r -> LOGGER.info(() -> AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));
-            case Request3.MarkDnsVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
+            case Request3.MarkStrategyInvulnerable r -> LOGGER.info(() -> AnsiColorUtil.addRedColor(r.strategy().getClass().getSimpleName()));
             case Request3.MarkErrorInvulnerable r -> LOGGER.info(() -> AnsiColorUtil.addRedColor(
                 this.model.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(r.indexError()).getName()
             ));
+
+            case Request3.MarkStrategyVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.strategy().getClass().getSimpleName()));
             case Request3.MarkErrorVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(
                 this.model.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(r.indexError()).getName()
             ));
+
             case Request3.MarkFileSystemInvulnerable r -> LOGGER.info(() -> AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));
             case Request3.MarkFileSystemVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-            case Request3.MarkMultibitVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-            case Request3.MarkStackVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-            case Request3.MarkTimeInvulnerable r -> LOGGER.info(() -> AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));
-            case Request3.MarkTimeVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-            case Request3.MarkUnionInvulnerable r -> LOGGER.info(() -> AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));
-            case Request3.MarkUnionVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
 
-            case Request3.MessageBinary r -> LOGGER.info(r.message()::trim);
+            case Request3.MessageBinary(var message) -> LOGGER.info(message::trim);
             default -> {}
         }
     }
