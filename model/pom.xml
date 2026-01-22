@@ -34,7 +34,7 @@
         <!-- must align slf4j-nop when bumped -->
         <dnsjava.version>3.6.4</dnsjava.version>
         <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
-        <groovy.version>5.0.3</groovy.version>
+        <groovy.version>5.0.4</groovy.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
         <jquery.version>3.7.1</jquery.version>
