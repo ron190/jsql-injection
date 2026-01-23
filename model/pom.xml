@@ -61,7 +61,7 @@
         <hsqldb.version>2.7.4</hsqldb.version>
         <exasol.version>25.2.6</exasol.version>
         <informix.version>15.0.1.0</informix.version>
-        <jaybird.version>6.0.3</jaybird.version>
+        <jaybird.version>6.0.4</jaybird.version>
         <mckoi.version>1.0.5</mckoi.version>
         <mimer.version>3.42.3</mimer.version>
         <monetdb.version>12.2</monetdb.version>
