@@ -30,7 +30,7 @@ public class ItemListScan extends ItemList {
             json.optString("request"),
             json.optString("header"),
             json.optString("method"),
-            json.optString("vendor"),
+            json.optString("engine"),
             json.optString("requestType")
         ));
     }

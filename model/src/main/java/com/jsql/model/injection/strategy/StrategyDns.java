@@ -14,7 +14,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.ResourceAccess;
 import com.jsql.model.bean.util.Request3;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
-import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
@@ -38,28 +38,28 @@ public class StrategyDns extends AbstractStrategy {
 
     @Override
     public void checkApplicability() {
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyDnsDisabled()) {
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isStrategyDnsDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         } else if (
-            StringUtils.isBlank(this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain())
-            || !StringUtils.isNumeric(this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsPort())
+            StringUtils.isBlank(this.injectionModel.getMediatorUtils().preferencesUtil().getDnsDomain())
+            || !StringUtils.isNumeric(this.injectionModel.getMediatorUtils().preferencesUtil().getDnsPort())
         ) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 "Incorrect domain '{}' or port '{}', skipping Dns strategy",
-                this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain(),
-                this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsPort()
+                this.injectionModel.getMediatorUtils().preferencesUtil().getDnsDomain(),
+                this.injectionModel.getMediatorUtils().preferencesUtil().getDnsPort()
             );
             return;
         } else if (
-            StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getDns())
+            StringUtils.isEmpty(this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getDns())
         ) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
                 this.getName(),
-                this.injectionModel.getMediatorVendor().getVendor()
+                this.injectionModel.getMediatorEngine().getEngine()
             );
             return;
         }
@@ -88,10 +88,10 @@ public class StrategyDns extends AbstractStrategy {
             this::getName,
             () -> blindOperator
         );
-        String vendorSpecificWithOperator = this.injectionModel.getMediatorVendor().getVendor().instance().sqlDns(
+        String engineSpecificWithOperator = this.injectionModel.getMediatorEngine().getEngine().instance().sqlDns(
             String.format(
                 "(select concat('', %s))",
-                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, "1")
+                this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getConfiguration().getFailsafe().replace(EngineYaml.INDICE, "1")
             ),
             "1",
             blindOperator,
@@ -99,10 +99,10 @@ public class StrategyDns extends AbstractStrategy {
         );
 
         new Thread(this.dnsServer::listen).start();
-        this.injectionModel.injectWithoutIndex(vendorSpecificWithOperator, "dns#confirm");
+        this.injectionModel.injectWithoutIndex(engineSpecificWithOperator, "dns#confirm");
         this.waitDnsResponse(2500);
 
-        var domainName = this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain();
+        var domainName = this.injectionModel.getMediatorUtils().preferencesUtil().getDnsDomain();
         this.isApplicable = this.dnsServer.getResults().stream().anyMatch(
             s -> s.contains(domainName) && s.contains(StringUtil.toHex(ResourceAccess.WEB_CONFIRM_RESULT))
         );
@@ -125,7 +125,7 @@ public class StrategyDns extends AbstractStrategy {
         this.injectionModel.appendAnalysisReport(
             StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithoutIndex(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlDns(
+                this.injectionModel.getMediatorEngine().getEngine().instance().sqlDns(
                     StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"),
                     "1",
                     this.blindOperator,
@@ -135,18 +135,18 @@ public class StrategyDns extends AbstractStrategy {
                 null
             )
         );
-        this.injectionModel.sendToViews(new Request3.MarkStrategyVulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.injectionModel.sendToViews(new Request3.MarkStrategyInvulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkInvulnerable(this));
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
         new Thread(() -> this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlDns(
+            this.injectionModel.getMediatorEngine().getEngine().instance().sqlDns(
                 sqlQuery,
                 startPosition,
                 this.blindOperator,
@@ -156,8 +156,8 @@ public class StrategyDns extends AbstractStrategy {
         )).start();
         this.waitDnsResponse(5000);
 
-        String result = this.dnsServer.getResults().get(0);
-        var domainName = this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain();
+        String result = this.dnsServer.getResults().getFirst();
+        var domainName = this.injectionModel.getMediatorUtils().preferencesUtil().getDnsDomain();
         String regexToMatchTamperTags = String.format("(?i).{3}\\.([a-z0-9]*)\\..{3}\\.%s\\.", domainName);
         var matcherSql = Pattern.compile(regexToMatchTamperTags).matcher(result);
         if (matcherSql.find()) {
@@ -197,13 +197,13 @@ public class StrategyDns extends AbstractStrategy {
                 this.blindOperator::name
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-            this.injectionModel.sendToViews(new Request3.MarkStrategy(this));
+            this.injectionModel.sendToViews(new Request3.ActivateStrategy(this));
         }
     }
     
     @Override
     public String getPerformanceLength() {
-        return VendorYaml.DEFAULT_CAPACITY;
+        return EngineYaml.DEFAULT_CAPACITY;
     }
     
     @Override

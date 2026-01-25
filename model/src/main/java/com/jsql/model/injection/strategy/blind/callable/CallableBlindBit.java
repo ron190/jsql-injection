@@ -31,7 +31,7 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
         this.injectionModel = injectionModel;
         this.injectionBlind = injectionBlind;
         this.metadataInjectionProcess = metadataInjectionProcess;
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);
+        this.booleanUrl = this.injectionModel.getMediatorEngine().getEngine().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);
     }
 
     /**
@@ -47,7 +47,7 @@ public class CallableBlindBit extends AbstractCallableBit<CallableBlindBit> {
         String metadataInjectionProcess
     ) {
         this(sqlQuery, injectionModel, injectionBlind, blindOperator, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBit(sqlQuery, indexChar, bit, blindOperator);
+        this.booleanUrl = this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlindBit(sqlQuery, indexChar, bit, blindOperator);
         this.currentIndex = indexChar;
         this.currentBit = bit;
     }

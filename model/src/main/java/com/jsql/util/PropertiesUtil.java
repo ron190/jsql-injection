@@ -50,7 +50,7 @@ public class PropertiesUtil {
             if (countGui.get() > 0) {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_SUCCESS,
-                    "Switched to {} with {}% translated, contribute and translate any of {} items in menu Community",
+                    "Switched to {} with {}% translated, contribute and translate any of remaining {} items in menu Community",
                     () -> newLocale.getDisplayLanguage(newLocale),
                     () -> BigDecimal.valueOf(
                         100.0 - countGui.get() * 100.0 / bundleRoot.size()

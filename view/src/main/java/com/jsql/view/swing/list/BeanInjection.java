@@ -1,7 +1,7 @@
 package com.jsql.view.swing.list;
 
 import com.jsql.model.injection.method.AbstractMethodInjection;
-import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.model.injection.engine.model.Engine;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -16,16 +16,16 @@ public class BeanInjection {
     private String requestType;
     
     private AbstractMethodInjection method;
-    private Vendor vendor;
+    private Engine engine;
 
     public BeanInjection(String url) {
         this.url = url;
         this.method = MediatorHelper.model().getMediatorMethod().getQuery();
-        this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
+        this.engine = MediatorHelper.model().getMediatorEngine().getAuto();
         this.requestType = StringUtil.GET;
     }
     
-    public BeanInjection(String url, String request, String header, String nameMethod, String vendor, String requestType) {
+    public BeanInjection(String url, String request, String header, String nameMethod, String engine, String requestType) {
         this(url);
         this.request = request;
         this.header = header;
@@ -40,12 +40,12 @@ public class BeanInjection {
         }
         
         try {
-            this.vendor = MediatorHelper.model().getMediatorVendor().getVendors().stream()
-                .filter(v -> v.toString().equals(vendor))
+            this.engine = MediatorHelper.model().getMediatorEngine().getEngines().stream()
+                .filter(v -> v.toString().equals(engine))
                 .findAny()
-                .orElse(MediatorHelper.model().getMediatorVendor().getAuto());
+                .orElse(MediatorHelper.model().getMediatorEngine().getAuto());
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
+            this.engine = MediatorHelper.model().getMediatorEngine().getAuto();
         }
         
         this.requestType = requestType.isEmpty() ? StringUtil.GET : requestType;
@@ -58,8 +58,8 @@ public class BeanInjection {
         return this.method.name();
     }
     
-    public String getVendor() {
-        return this.vendor.toString();
+    public String getEngine() {
+        return this.engine.toString();
     }
     
     

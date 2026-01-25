@@ -24,7 +24,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * A button displayed in address.
  */
 public class ButtonStart extends JButton {
+
     private static final String BUTTON_START_TOOLTIP = "BUTTON_START_TOOLTIP";
+    public static final String BUTTON_IN_URL = "buttonInUrl";
 
     /**
      * State of current injection.
@@ -51,7 +53,7 @@ public class ButtonStart extends JButton {
      * Create a button in address bar.
      */
     public ButtonStart() {
-        this.setName("buttonInUrl");
+        this.setName(ButtonStart.BUTTON_IN_URL);
         this.setToolTipText(I18nUtil.valueByKey(ButtonStart.BUTTON_START_TOOLTIP));
         I18nViewUtil.addComponentForKey(ButtonStart.BUTTON_START_TOOLTIP, this.tooltip.get());
 

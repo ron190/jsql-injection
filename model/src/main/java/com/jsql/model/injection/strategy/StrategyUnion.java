@@ -4,7 +4,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetIndexes;
 import com.jsql.util.I18nUtil;
@@ -24,6 +24,7 @@ public class StrategyUnion extends AbstractStrategy {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
 
+    private String indexesInUrl = StringUtils.EMPTY;
     protected String visibleIndex;  // matching index
     protected String sourceIndexesFound = StringUtils.EMPTY;  // matching page source
     private int nbIndexesFound = 0;
@@ -36,21 +37,21 @@ public class StrategyUnion extends AbstractStrategy {
 
     @Override
     public void checkApplicability() throws JSqlException {
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyUnionDisabled()) {
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isStrategyUnionDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         }
 
         this.logChecking();
 
-        this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());
+        this.indexesInUrl = new SuspendableGetIndexes(this.injectionModel).run();
 
         // Define visibleIndex, i.e, 2 in "...union select 1,2,...", if 2 is found in HTML body
-        if (StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())) {
+        if (StringUtils.isNotEmpty(this.indexesInUrl)) {
             this.visibleIndex = this.getVisibleIndex(this.sourceIndexesFound);
         }
         
-        this.isApplicable = StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())
+        this.isApplicable = StringUtils.isNotEmpty(this.indexesInUrl)
             && Integer.parseInt(this.injectionModel.getMediatorStrategy().getUnion().getPerformanceLength()) > 0
             && StringUtils.isNotBlank(this.visibleIndex);
         
@@ -74,22 +75,22 @@ public class StrategyUnion extends AbstractStrategy {
         this.injectionModel.appendAnalysisReport(
             StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithIndexes(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlUnion(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
+                this.injectionModel.getMediatorEngine().getEngine().instance().sqlUnion(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
                 "metadataInjectionProcess"
             )
         );
-        this.injectionModel.sendToViews(new Request3.MarkStrategyVulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.injectionModel.sendToViews(new Request3.MarkStrategyInvulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkInvulnerable(this));
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
         return this.injectionModel.injectWithIndexes(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlUnion(sqlQuery, startPosition, false),
+            this.injectionModel.getMediatorEngine().getEngine().instance().sqlUnion(sqlQuery, startPosition, false),
             metadataInjectionProcess
         );
     }
@@ -104,7 +105,7 @@ public class StrategyUnion extends AbstractStrategy {
                 this::getName
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-            this.injectionModel.sendToViews(new Request3.MarkStrategy(this));
+            this.injectionModel.sendToViews(new Request3.ActivateStrategy(this));
         }
     }
     
@@ -118,7 +119,7 @@ public class StrategyUnion extends AbstractStrategy {
     public String getVisibleIndex(String firstSuccessPageSource) {
         // Parse all indexes found
         // Fix #4007 (initialize firstSuccessPageSource to empty String instead of null)
-        String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, "(\\d+?)");
+        String regexAllIndexes = String.format(EngineYaml.FORMAT_INDEX, "(\\d+?)");
         var regexSearch = Pattern.compile("(?s)"+ regexAllIndexes).matcher(firstSuccessPageSource);
         
         List<String> foundIndexes = new ArrayList<>();
@@ -130,21 +131,21 @@ public class StrategyUnion extends AbstractStrategy {
 
         // Make url shorter, replace useless indexes from 1337[index]7331 to 1
         String regexAllExceptIndexesFound = String.format(
-            VendorYaml.FORMAT_INDEX,
+            EngineYaml.FORMAT_INDEX,
             "(?!"+ String.join("|", indexes) +"7331)\\d*"
         );
-        String indexesInUrl = this.injectionModel.getIndexesInUrl().replaceAll(regexAllExceptIndexesFound, "1");
+        String indexesInUrl = this.indexesInUrl.replaceAll(regexAllExceptIndexesFound, "1");
 
         // Replace correct indexes from 1337(index)7331 to
         // ==> ${lead}(index)######...######
         // Search for index that displays the most #
-        String performanceQuery = this.injectionModel.getMediatorVendor().getVendor().instance().sqlCapacity(indexes);
+        String performanceQuery = this.injectionModel.getMediatorEngine().getEngine().instance().sqlCapacity(indexes);
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery, "union#size");
 
         // Build a 2D array of string with:
         //     column 1: index
         //     column 2: # found, so #######...#######
-        regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(\\d+)("+ VendorYaml.CALIBRATOR_SQL +"+)").matcher(performanceSourcePage);
+        regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(\\d+)("+ EngineYaml.CALIBRATOR_SQL +"+)").matcher(performanceSourcePage);
         List<String[]> performanceResults = new ArrayList<>();
         while (regexSearch.find()) {
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
@@ -174,12 +175,12 @@ public class StrategyUnion extends AbstractStrategy {
 
         // Reduce all others indexes
         String regexAllIndexesExceptBest = String.format(
-            VendorYaml.FORMAT_INDEX,
+            EngineYaml.FORMAT_INDEX,
             "(?!"+ bestLengthFields[1] +"7331)\\d*"
         );
         indexesInUrl = indexesInUrl.replaceAll(regexAllIndexesExceptBest, "1");
         
-        this.injectionModel.setIndexesInUrl(indexesInUrl);
+        this.indexesInUrl = indexesInUrl;
         
         return Integer.toString(bestLengthFields[1]);
     }
@@ -215,5 +216,13 @@ public class StrategyUnion extends AbstractStrategy {
 
     public void setNbIndexesFound(int nbIndexesFound) {
         this.nbIndexesFound = nbIndexesFound;
+    }
+
+    public String getIndexesInUrl() {
+        return this.indexesInUrl;
+    }
+
+    public void setIndexesInUrl(String indexesInUrl) {
+        this.indexesInUrl = indexesInUrl;
     }
 }

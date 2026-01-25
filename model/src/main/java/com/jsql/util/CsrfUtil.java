@@ -48,11 +48,11 @@ public class CsrfUtil {
             )
         );
         
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {
             tags.add(
                 String.format(
                     "[name='%s']",
-                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTag()
+                    this.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTag()
                 )
             );
         }
@@ -78,8 +78,8 @@ public class CsrfUtil {
                 tokenCsrfFound::getValue
             );
             if (
-                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
-                && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
+                !this.injectionModel.getMediatorUtils().preferencesUtil().isNotProcessingCookies()
+                && this.injectionModel.getMediatorUtils().preferencesUtil().isProcessingCsrf()
             ) {
                 this.tokenCsrf = tokenCsrfFound;
                 LOGGER.log(
@@ -125,8 +125,8 @@ public class CsrfUtil {
                 cookieCsrf.getValue()
             );
             if (
-                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
-                && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
+                !this.injectionModel.getMediatorUtils().preferencesUtil().isNotProcessingCookies()
+                && this.injectionModel.getMediatorUtils().preferencesUtil().isProcessingCsrf()
             ) {
                 this.tokenCsrf = headerCsrf;
             } else {
@@ -143,9 +143,9 @@ public class CsrfUtil {
         httpRequest.setHeader("X-XSRF-TOKEN", this.tokenCsrf.getValue());
         httpRequest.setHeader("X-CSRF-TOKEN", this.tokenCsrf.getValue());
         
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {
             httpRequest.setHeader(
-                this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
+                this.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTagOutput(),
                 this.tokenCsrf.getValue()
             );
         }
@@ -168,11 +168,11 @@ public class CsrfUtil {
                 this.tokenCsrf.getValue()
             )
         );
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {
             httpRequest.append(
                 String.format(
                     "%s=%s&",
-                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
+                    this.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTagOutput(),
                     this.tokenCsrf.getValue()
                 )
             );
@@ -193,10 +193,10 @@ public class CsrfUtil {
             "&_csrf=%s",
             this.tokenCsrf.getValue()
         );
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {
             urlInjectionFixed += String.format(
                 "&%s=%s",
-                this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
+                this.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTagOutput(),
                 this.tokenCsrf.getValue()
             );
         }

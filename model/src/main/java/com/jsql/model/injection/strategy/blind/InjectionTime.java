@@ -37,14 +37,14 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
     public InjectionTime(InjectionModel injectionModel, BlindOperator blindOperator) {
         super(injectionModel, blindOperator);
 
-        List<String> falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();
+        List<String> falsys = this.injectionModel.getMediatorEngine().getEngine().instance().getFalsyBit();
         if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagFalse");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetTimeTagFalse");
         Collection<CallableTime> callablesFalsys = new ArrayList<>();
         for (String falsy: falsys) {
             callablesFalsys.add(new CallableTime(
@@ -61,7 +61,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         // Allow the user to stop the loop
         try {
             List<Future<CallableTime>> futuresFalsys = taskExecutor.invokeAll(callablesFalsys);
-            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
             for (Future<CallableTime> futureFalsy: futuresFalsys) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -82,9 +82,9 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
     }
 
     private void checkTruthys(BlindOperator blindOperator) {
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagTrue");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetTimeTagTrue");
         Collection<CallableTime> callablesTruthys = new ArrayList<>();
-        List<String> truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();
+        List<String> truthys = this.injectionModel.getMediatorEngine().getEngine().instance().getTruthyBit();
         for (String truthy: truthys) {
             callablesTruthys.add(new CallableTime(
                 truthy,
@@ -98,7 +98,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         // If one TRUE query makes more than X seconds then the test is a failure => exit
         try {
             List<Future<CallableTime>> futuresTruthys = taskExecutor.invokeAll(callablesTruthys);
-            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
             for (Future<CallableTime> futureTruthy: futuresTruthys) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -135,7 +135,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
             throw new StoppedByUserSlidingException();
         }
         var callable = new CallableTime(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),
+            this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlindConfirm(),
             this.injectionModel,
             this,
             this.blindOperator,
@@ -150,8 +150,8 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
     }
 
     public int getSleepTime() {
-        return this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
-            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
+        return this.injectionModel.getMediatorUtils().preferencesUtil().isLimitingSleepTimeStrategy()
+            ? this.injectionModel.getMediatorUtils().preferencesUtil().countSleepTimeStrategy()
             : 5;
     }
 

@@ -53,8 +53,8 @@ public class InjectionCharInsertion {
         this.injectionModel = injectionModel;
         this.prefixSuffix = prefixSuffix;
         
-        List<String> truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();
-        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();
+        List<String> truthy = this.injectionModel.getMediatorEngine().getEngine().instance().getTruthyBit();
+        this.falsy = this.injectionModel.getMediatorEngine().getEngine().instance().getFalsyBit();
         
         // No blind
         if (truthy.isEmpty() || this.injectionModel.isStoppedByUser()) {
@@ -69,7 +69,7 @@ public class InjectionCharInsertion {
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCharInsertionTagTrue");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableCharInsertionTagTrue");
         Collection<CallableCharInsertion> listCallableTagTrue = new ArrayList<>();
         
         for (String urlTest: truthy) {
@@ -78,7 +78,7 @@ public class InjectionCharInsertion {
                     String.join(
                         StringUtils.SPACE,
                         prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, "345")),
-                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
+                        this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
                         urlTest
                     ),
                     this,
@@ -92,7 +92,7 @@ public class InjectionCharInsertion {
         // Allow the user to stop the loop
         try {
             List<Future<CallableCharInsertion>> listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);
-            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
             for (var i = 1 ; i < listTagTrue.size() ; i++) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -117,7 +117,7 @@ public class InjectionCharInsertion {
     private void initFalseMarks() {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetCharInsertionTagFalse");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetCharInsertionTagFalse");
         Collection<CallableCharInsertion> listCallableTagFalse = new ArrayList<>();
         
         for (String urlTest: this.falsy) {
@@ -126,7 +126,7 @@ public class InjectionCharInsertion {
                     String.join(
                         StringUtils.SPACE,
                         this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, "345")),
-                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
+                        this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
                         urlTest
                     ),
                     this,
@@ -140,7 +140,7 @@ public class InjectionCharInsertion {
         // Allow the user to stop the loop.
         try {
             List<Future<CallableCharInsertion>> listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);
-            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
         
             for (Future<CallableCharInsertion> falseTag: listTagFalse) {
                 if (this.injectionModel.isStoppedByUser()) {
@@ -164,8 +164,8 @@ public class InjectionCharInsertion {
             String.join(
                 StringUtils.SPACE,
                 this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, "678")),
-                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm()
+                this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getBinary().getModeOr(),
+                this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlindConfirm()
             ),
             this,
             "prefix#confirm"

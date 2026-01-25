@@ -31,6 +31,8 @@ import java.util.prefs.Preferences;
  */
 public class SplitNS extends JSplitPaneWithZeroSizeDivider {
 
+    public static final String BUTTON_SHOW_CONSOLES_HIDDEN = "buttonShowConsolesHidden";
+
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.
      */
@@ -71,7 +73,7 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
                 SplitNS.ACTION_HIDE_SHOW_CONSOLE.actionPerformed(null);
             }
         });
-        labelShowConsoles.setName("buttonShowConsolesHidden");
+        labelShowConsoles.setName(SplitNS.BUTTON_SHOW_CONSOLES_HIDDEN);
         SplitNS.PANEL_HIDDEN_CONSOLES.setLayout(new BorderLayout());
         SplitNS.PANEL_HIDDEN_CONSOLES.add(labelShowConsoles, BorderLayout.LINE_END);
         SplitNS.PANEL_HIDDEN_CONSOLES.setVisible(false);
@@ -109,6 +111,13 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
             }
             this.splitEW.setDividerLocation(dividerLocation);
         }
+    }
+
+    public void invokeLaterWithSplitOrientation(Runnable runnable) {
+        SwingUtilities.invokeLater(() -> {
+            this.initSplitOrientation();
+            runnable.run();
+        });
     }
 
 

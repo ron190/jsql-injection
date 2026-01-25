@@ -5,7 +5,7 @@ import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.model.injection.engine.model.Engine;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -63,22 +63,22 @@ public class CallableFile implements Callable<CallableFile> {
      */
     @Override
     public CallableFile call() throws Exception {
-        Map<Vendor, Readable> mapVendorReadable = new HashMap<>();
-        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getMysql(), () -> this.injectionModel.getResourceAccess().getExploitMysql().getRead(this.pathFile));
-        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getH2(), () -> this.injectionModel.getResourceAccess().getExploitH2().getRead(this.pathFile));
-        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getSqlite(), () -> this.injectionModel.getResourceAccess().getExploitSqlite().getRead(this.pathFile));
-        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getDerby(), () -> this.injectionModel.getResourceAccess().getExploitDerby().getRead(this.pathFile));
-        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getHsqldb(), () -> this.injectionModel.getResourceAccess().getExploitHsqldb().getRead(this.pathFile));
-        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getPostgres(), () -> this.injectionModel.getResourceAccess().getExploitPostgres().getRead(this.pathFile));
+        Map<Engine, Readable> mapEngineReadable = new HashMap<>();
+        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getMysql(), () -> this.injectionModel.getResourceAccess().getExploitMysql().getRead(this.pathFile));
+        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getH2(), () -> this.injectionModel.getResourceAccess().getExploitH2().getRead(this.pathFile));
+        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getSqlite(), () -> this.injectionModel.getResourceAccess().getExploitSqlite().getRead(this.pathFile));
+        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getDerby(), () -> this.injectionModel.getResourceAccess().getExploitDerby().getRead(this.pathFile));
+        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getHsqldb(), () -> this.injectionModel.getResourceAccess().getExploitHsqldb().getRead(this.pathFile));
+        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getPostgres(), () -> this.injectionModel.getResourceAccess().getExploitPostgres().getRead(this.pathFile));
 
-        Readable readable = mapVendorReadable.entrySet().stream()
-            .filter(entry -> this.injectionModel.getMediatorVendor().getVendor() == entry.getKey())
+        Readable readable = mapEngineReadable.entrySet().stream()
+            .filter(entry -> this.injectionModel.getMediatorEngine().getEngine() == entry.getKey())
             .findFirst()
             .orElse(new AbstractMap.SimpleEntry<>(null, () -> {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_DEFAULT,
                     "Read file not implemented for [{}], share a working example on GitHub to speed up release",
-                    this.injectionModel.getMediatorVendor().getVendor()
+                    this.injectionModel.getMediatorEngine().getEngine()
                 );
                 return StringUtils.EMPTY;
             }))

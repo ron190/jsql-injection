@@ -36,7 +36,13 @@ public class MenuWindows extends JMenu {
 
     private static final String I18N_SQL_ENGINE = "MENUBAR_SQL_ENGINE";
     private static final String I18N_PREFERENCES = "MENUBAR_PREFERENCES";
+
     public static final String ACTION_STARTING_APP = "init";
+    public static final String MENU_WINDOWS = "menuWindows";
+    public static final String MENU_TRANSLATION = "menuTranslation";
+    public static final String ITEM_RUSSIAN = "itemRussian";
+    public static final String ITEM_ENGLISH = "itemEnglish";
+
     private final AppMenubar appMenubar;
 
     private final JMenu menuView;
@@ -45,7 +51,7 @@ public class MenuWindows extends JMenu {
         super(I18nUtil.valueByKey("MENUBAR_WINDOWS"));
         this.appMenubar = appMenubar;
 
-        this.setName("menuWindows");
+        this.setName(MenuWindows.MENU_WINDOWS);
         I18nViewUtil.addComponentForKey("MENUBAR_WINDOWS", this);
         this.setMnemonic('W');
 
@@ -85,7 +91,7 @@ public class MenuWindows extends JMenu {
                 }
             );
             item.setText(entry.getValue());
-            item.setSelected(entry.getKey().equals(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getThemeFlatLafName()));
+            item.setSelected(entry.getKey().equals(MediatorHelper.model().getMediatorUtils().preferencesUtil().getThemeFlatLafName()));
             groupRadio.add(item);
             menuThemes.add(item);
         });
@@ -259,7 +265,7 @@ public class MenuWindows extends JMenu {
     private JMenu initMenuTranslation() {
         var menuTranslation = new JMenu(I18nUtil.valueByKey("MENUBAR_LANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
-        menuTranslation.setName("menuTranslation");
+        menuTranslation.setName(MenuWindows.MENU_TRANSLATION);
         menuTranslation.setMnemonic('L');
 
         var groupRadioLanguage = new ButtonGroup();
@@ -280,7 +286,7 @@ public class MenuWindows extends JMenu {
                     MediatorHelper.model().getPropertiesUtil().displayI18nStatus(newLocale);
                 }
                 model.getMenuItem().setActionCommand(Strings.EMPTY);
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withLanguageTag(model.getLanguage().getLanguageTag()).persist();
+                MediatorHelper.model().getMediatorUtils().preferencesUtil().withLanguageTag(model.getLanguage().getLanguageTag()).persist();
             });
             menuTranslation.add(model.getMenuItem());
             groupRadioLanguage.add(model.getMenuItem());
@@ -290,11 +296,11 @@ public class MenuWindows extends JMenu {
         .filter(model -> model.getLanguage() == Language.EN)
         .forEach(modelItem -> {
             modelItem.getMenuItem().setSelected(!atomicIsAnySelected.get());
-            modelItem.getMenuItem().setName("itemEnglish");
+            modelItem.getMenuItem().setName(MenuWindows.ITEM_ENGLISH);
         });
         AppMenubar.ITEMS_TRANSLATE.stream()
         .filter(model -> model.getLanguage() == Language.RU)
-        .forEach(modelItem -> modelItem.getMenuItem().setName("itemRussian"));
+        .forEach(modelItem -> modelItem.getMenuItem().setName(MenuWindows.ITEM_RUSSIAN));
         AppMenubar.ITEMS_TRANSLATE.stream()
         .filter(model -> model.getLanguage() == Language.AR)
         .forEach(modelItem -> modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
@@ -304,7 +310,7 @@ public class MenuWindows extends JMenu {
 
     public void switchLocaleFromPreferences() {
         AppMenubar.ITEMS_TRANSLATE.stream().filter(model -> model.getLanguage().getLanguageTag().equals(
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getLanguageTag()
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().getLanguageTag()
         ))
         .forEach(modelItem -> {
             modelItem.getMenuItem().setActionCommand(MenuWindows.ACTION_STARTING_APP);

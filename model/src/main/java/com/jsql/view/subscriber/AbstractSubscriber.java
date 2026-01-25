@@ -13,13 +13,7 @@ public abstract class AbstractSubscriber implements Subscriber<Request3> {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    /**
-     * Observer pattern.<br>
-     * Receive an update order from the model:<br>
-     * - Use the Request message to get the Interaction class,<br>
-     * - Pass the parameters to that class.
-     */
-    public Subscription subscription;
+    private Subscription subscription;
 
     @Override
     public void onSubscribe(Subscription subscription) {
@@ -49,5 +43,15 @@ public abstract class AbstractSubscriber implements Subscriber<Request3> {
     @Override
     public void onComplete() {
         // Nothing
+    }
+
+    /**
+     * Observer pattern.<br>
+     * Receive an update order from the model:<br>
+     * - Use the Request message to get the Interaction class,<br>
+     * - Pass the parameters to that class.
+     */
+    public Subscription getSubscription() {
+        return this.subscription;
     }
 }

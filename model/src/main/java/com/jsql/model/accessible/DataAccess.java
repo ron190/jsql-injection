@@ -103,7 +103,7 @@ public class DataAccess {
         var resultToParse = StringUtils.EMPTY;
         try {
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlInfos(),
+                this.injectionModel.getMediatorEngine().getEngine().instance().sqlInfos(),
                 sourcePage,
                 false,
                 0,
@@ -128,7 +128,7 @@ public class DataAccess {
             var infos = String.format(
                 "Database [%s] on %s [%s] for user [%s]",
                 nameDatabase,
-                this.injectionModel.getMediatorVendor().getVendor(),
+                this.injectionModel.getMediatorEngine().getEngine(),
                 versionDatabase,
                 username
             );
@@ -159,7 +159,7 @@ public class DataAccess {
         try {
             var sourcePage = new String[]{ StringUtils.EMPTY };
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlDatabases(),
+                this.injectionModel.getMediatorEngine().getEngine().instance().sqlDatabases(),
                 sourcePage,
                 true,
                 0,
@@ -222,7 +222,7 @@ public class DataAccess {
         try {
             var pageSource = new String[]{ StringUtils.EMPTY };
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTables(database),
+                this.injectionModel.getMediatorEngine().getEngine().instance().sqlTables(database),
                 pageSource,
                 true,
                 Integer.parseInt(tableCount),
@@ -287,7 +287,7 @@ public class DataAccess {
         try {
             var pageSource = new String[]{ StringUtils.EMPTY };
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlColumns(table),
+                this.injectionModel.getMediatorEngine().getEngine().instance().sqlColumns(table),
                 pageSource,
                 true,
                 0,
@@ -301,8 +301,8 @@ public class DataAccess {
         }
 
         // Build SQLite columns
-        if (this.injectionModel.getMediatorVendor().isSqlite()) {
-            resultToParse = this.injectionModel.getMediatorVendor().getSqlite().transformSqlite(resultToParse);
+        if (this.injectionModel.getMediatorEngine().isSqlite()) {
+            resultToParse = this.injectionModel.getMediatorEngine().getSqlite().transformSqlite(resultToParse);
         }
         
         // Parse all the data we have retrieved
@@ -344,9 +344,9 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public String[][] listValues(List<Column> columnsBean) throws JSqlException {
-        var databaseBean = (Database) columnsBean.get(0).getParent().getParent();
-        var tableBean = (Table) columnsBean.get(0).getParent();
-        int rowCount = columnsBean.get(0).getParent().getChildCount();
+        var databaseBean = (Database) columnsBean.getFirst().getParent().getParent();
+        var tableBean = (Table) columnsBean.getFirst().getParent();
+        int rowCount = columnsBean.getFirst().getParent().getChildCount();
 
         // Inform the view that table has just been used
         this.injectionModel.sendToViews(new Request3.StartProgress(tableBean));
@@ -365,8 +365,8 @@ public class DataAccess {
         List<List<String>> listValues = this.getRows(databaseBean, tableBean, rowCount, columns);
 
         // Add the default title to the columns: row number, occurrence
-        columnsName.add(0, StringUtils.EMPTY);
-        columnsName.add(0, StringUtils.EMPTY);
+        columnsName.addFirst(StringUtils.EMPTY);
+        columnsName.addFirst(StringUtils.EMPTY);
 
         String[][] table = this.getTable(columnsName, listValues);
 
@@ -383,7 +383,7 @@ public class DataAccess {
         try {
             var pageSource = new String[]{ StringUtils.EMPTY };
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(columns, database, table),
+                this.injectionModel.getMediatorEngine().getEngine().instance().sqlRows(columns, database, table),
                 pageSource,
                 true,
                 rowCount,

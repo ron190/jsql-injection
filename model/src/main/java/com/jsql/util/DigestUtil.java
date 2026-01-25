@@ -55,19 +55,19 @@ public class DigestUtil {
             String nonce = cookieValues.get("nonce").replace("\"", StringUtils.EMPTY);
 
             try {
-                String username = this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication();
-                String password = this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication();
+                String username = this.injectionModel.getMediatorUtils().authenticationUtil().getUsernameAuthentication();
+                String password = this.injectionModel.getMediatorUtils().authenticationUtil().getPasswordAuthentication();
                 String nc = "00000001";
                 String cnonce = "2ecb0e39da79fcb5aa6ffb1bd45cb3bb";
 
-                URL url = new URI(this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()).toURL();
+                URL url = new URI(this.injectionModel.getMediatorUtils().connectionUtil().getUrlByUser()).toURL();
                 String path = url.getFile();
 
                 String ha1 = DigestUtils.md5Hex(
                     String.format("%s:%s:%s", username, realm, password)
                 );
                 String ha2 = DigestUtils.md5Hex(
-                    String.format("%s:%s", this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(), path)
+                    String.format("%s:%s", this.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest(), path)
                 );
                 String response = DigestUtils.md5Hex(
                     String.format("%s:%s:%s:%s:%s:%s", ha1, nonce, nc, cnonce, qop, ha2)

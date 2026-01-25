@@ -120,7 +120,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         menuPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
         menuSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         
-        final var importFileDialog = new SystemFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        final var importFileDialog = new SystemFileChooser(MediatorHelper.model().getMediatorUtils().preferencesUtil().getPathFile());
         importFileDialog.setDialogTitle(I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
         importFileDialog.setMultiSelectionEnabled(true);
 

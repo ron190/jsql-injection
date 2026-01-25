@@ -49,7 +49,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
     public InjectionBlindBin(InjectionModel injectionModel, BlindOperator blindOperator) {
         super(injectionModel, blindOperator);
 
-        List<String> falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBin();
+        List<String> falsys = this.injectionModel.getMediatorEngine().getEngine().instance().getFalsyBin();
         if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
@@ -59,7 +59,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindBinTagFalse");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetBlindBinTagFalse");
         Collection<CallableBlindBin> callablesFalsys = new ArrayList<>();
         for (String falsy: falsys) {
             callablesFalsys.add(new CallableBlindBin(
@@ -77,7 +77,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
         // Allow the user to stop the loop
         try {
             List<Future<CallableBlindBin>> futuresFalsys = taskExecutor.invokeAll(callablesFalsys);
-            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
             for (Future<CallableBlindBin> futureFalsy: futuresFalsys) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -103,9 +103,9 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
     }
 
     private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindOperator) {
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindBinTagTrue");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetBlindBinTagTrue");
         Collection<CallableBlindBin> callablesTruthys = new ArrayList<>();
-        List<String> truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBin();
+        List<String> truthys = this.injectionModel.getMediatorEngine().getEngine().instance().getTruthyBin();
         for (String truthy: truthys) {
             callablesTruthys.add(new CallableBlindBin(
                 truthy,
@@ -120,7 +120,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
         // Remove TRUE diffs in the FALSE diffs as FALSE statement shouldn't contain any TRUE diff.
         try {
             List<Future<CallableBlindBin>> futuresTruthys = taskExecutor.invokeAll(callablesTruthys);
-            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
             for (Future<CallableBlindBin> futureTruthy: futuresTruthys) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -151,7 +151,7 @@ public class InjectionBlindBin extends AbstractInjectionMonobit<CallableBlindBin
             throw new StoppedByUserSlidingException();
         }
         var blindTest = new CallableBlindBin(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),
+            this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlindConfirm(),
             this.injectionModel,
             this,
             this.blindOperator,

@@ -47,7 +47,7 @@ public class MenuActionExport implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        final SystemFileChooser importFileDialog = new SystemFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        final SystemFileChooser importFileDialog = new SystemFileChooser(MediatorHelper.model().getMediatorUtils().preferencesUtil().getPathFile());
 
         importFileDialog.setDialogTitle(I18nUtil.valueByKey("LIST_EXPORT_TITLE"));
         int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());

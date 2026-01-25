@@ -44,7 +44,7 @@ public class ActionSaveTab extends AbstractAction {
         // Unhandled IllegalArgumentException #95985 on constructor: Comparison method violates its general contract!
         try {
             this.replaceFileChooser = new ReplaceFileChooser(
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()
+                MediatorHelper.model().getMediatorUtils().preferencesUtil().getPathFile()
             );
         } catch (IllegalArgumentException | NoSuchMethodError | InternalError | NullPointerException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Internal error in JFileChooser, verify your system and see stacktrace in tab Java: {}", e.getMessage());
@@ -61,9 +61,8 @@ public class ActionSaveTab extends AbstractAction {
         var componentResult = MediatorHelper.tabResults().getSelectedComponent();
         switch (componentResult) {
             case PanelTable panelTable -> this.saveToFile(panelTable.getTableValues());
-            case JScrollPane jScrollPane when jScrollPane.getViewport().getView() instanceof JTextComponent textarea -> {
-                this.saveToFile(textarea);
-            }
+            case JScrollPane jScrollPane
+            when jScrollPane.getViewport().getView() instanceof JTextComponent textarea -> this.saveToFile(textarea);
             default -> LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Nothing to save");
         }
     }
@@ -78,7 +77,7 @@ public class ActionSaveTab extends AbstractAction {
             int stateSave = this.replaceFileChooser.showSaveDialog(MediatorHelper.frame());
             if (stateSave == JFileChooser.APPROVE_OPTION) {
                 var folderSelectedFile = this.replaceFileChooser.getCurrentDirectory().toString();
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
+                MediatorHelper.model().getMediatorUtils().preferencesUtil().set(folderSelectedFile);
                 if (jComponent instanceof JTextComponent jTextComponent) {
                     this.saveTextToFile(jTextComponent);
                 } else if (jComponent instanceof JTable jTable) {

@@ -125,14 +125,16 @@ public class TreeDatabase extends JTree {
     }
     
     public void createValuesTab(String[][] data, String[] columnNames, AbstractElementDatabase table) {
-        // Report NullPointerException #1683
-        DefaultMutableTreeNode node = this.getTreeNodeModels().get(table);
-        if (node != null) {
-            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
-            progressingTreeNodeModel.setIndexProgress(table.getChildCount());  // Update the progress value of the model, end the progress
-            progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'
-            MediatorHelper.tabResults().addTabValues(data, columnNames, table);
-        }
+        MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -> {
+            // Report NullPointerException #1683
+            DefaultMutableTreeNode node = this.getTreeNodeModels().get(table);
+            if (node != null) {
+                AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
+                progressingTreeNodeModel.setIndexProgress(table.getChildCount());  // Update the progress value of the model, end the progress
+                progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'
+                MediatorHelper.tabResults().addTabValues(data, columnNames, table);
+            }
+        });
     }
     
     public void endIndeterminateProgress(AbstractElementDatabase dataElementDatabase) {

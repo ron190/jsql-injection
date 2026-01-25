@@ -35,7 +35,7 @@ public class InjectionMultibit extends AbstractInjectionBit<CallableMultibit> {
         }
 
         this.sourceReference = this.callUrl("8", "multi#ref");
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetMultibitIds");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetMultibitIds");
         Collection<CallableMultibit> callablesId = new ArrayList<>();
 
         for (int i = 0 ; i < 8 ; i++) {
@@ -50,7 +50,7 @@ public class InjectionMultibit extends AbstractInjectionBit<CallableMultibit> {
 
         try {
             List<Future<CallableMultibit>> futuresId = taskExecutor.invokeAll(callablesId);
-            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
 
             for (Future<CallableMultibit> futureId: futuresId) {
                 List<Diff> diffsWithReference = futureId.get().getDiffsWithReference();

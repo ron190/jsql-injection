@@ -18,7 +18,7 @@ public class ActionListenerSave implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        MediatorHelper.model().getMediatorUtils().getPreferencesUtil()
+        MediatorHelper.model().getMediatorUtils().preferencesUtil()
         
         .withIsCheckingUpdate(this.panelPreferences.getPanelGeneral().getCheckboxIsCheckingUpdate().isSelected())
         .withIsReportingBugs(this.panelPreferences.getPanelGeneral().getCheckboxIsReportingBugs().isSelected())
@@ -87,7 +87,7 @@ public class ActionListenerSave implements ActionListener {
 
         .persist();
         
-        MediatorHelper.model().getMediatorUtils().getProxyUtil().setPreferences(
+        MediatorHelper.model().getMediatorUtils().proxyUtil().setPreferences(
             this.panelPreferences.getPanelProxy().getCheckboxIsUsingProxy().isSelected(),
             this.panelPreferences.getPanelProxy().getTextProxyAddress().getText(),
             this.panelPreferences.getPanelProxy().getTextProxyPort().getText(),
@@ -96,7 +96,7 @@ public class ActionListenerSave implements ActionListener {
             this.panelPreferences.getPanelProxy().getTextProxyPortHttps().getText()
         );
         
-        MediatorHelper.model().getMediatorUtils().getTamperingUtil()  // unused
+        MediatorHelper.model().getMediatorUtils().tamperingUtil()  // unused
         .withBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())
         .withEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())
         .withEval(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected())
@@ -111,7 +111,7 @@ public class ActionListenerSave implements ActionListener {
         .withStringToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingStringToChar().isSelected())
         .withVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected());
         
-        boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().set(
+        boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().authenticationUtil().set(
             this.panelPreferences.getPanelAuthentication().getCheckboxUseDigestAuthentication().isSelected(),
             this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationUsername().getText(),
             this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationPassword().getText(),

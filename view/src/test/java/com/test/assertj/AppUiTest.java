@@ -8,8 +8,22 @@ import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Request3;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.JFrameView;
+import com.jsql.view.swing.manager.ManagerAdminPage;
+import com.jsql.view.swing.manager.ManagerCoder;
+import com.jsql.view.swing.manager.ManagerDatabase;
 import com.jsql.view.swing.manager.ManagerScan;
 import com.jsql.view.swing.menubar.AppMenubar;
+import com.jsql.view.swing.menubar.MenuWindows;
+import com.jsql.view.swing.panel.PanelAddressBar;
+import com.jsql.view.swing.panel.PanelConsoles;
+import com.jsql.view.swing.panel.PanelPreferences;
+import com.jsql.view.swing.panel.address.ButtonStart;
+import com.jsql.view.swing.panel.address.PanelTrailingAddress;
+import com.jsql.view.swing.panel.consoles.NetworkTable;
+import com.jsql.view.swing.panel.preferences.PanelConnection;
+import com.jsql.view.swing.panel.preferences.PanelInjection;
+import com.jsql.view.swing.panel.split.SplitNS;
+import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -69,7 +83,7 @@ public class AppUiTest {
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);
         // Prevent URL calls and random failure on shouldFindNetworkHeader
-        MediatorHelper.model().getMediatorUtils().getPreferencesUtil()
+        MediatorHelper.model().getMediatorUtils().preferencesUtil()
             .withIsCheckingUpdate(false)
             .withIsShowNews(false);
 
@@ -122,54 +136,54 @@ public class AppUiTest {
     @Test
     public void shouldDnDList() {
         AppUiTest.logMethod();
-        AppUiTest.window.tabbedPane("tabManagers").selectTab("Admin page");
+        AppUiTest.window.tabbedPane(TabManagers.TAB_MANAGERS).selectTab("Admin page");
 
-        Assertions.assertEquals("admin", AppUiTest.window.list("listManagerAdminPage").valueAt(0));
-        Assertions.assertNotEquals("admin", AppUiTest.window.list("listManagerAdminPage").valueAt(1));
+        Assertions.assertEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(0));
+        Assertions.assertNotEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(1));
 
-        AppUiTest.window.list("listManagerAdminPage").drag(0);
-        AppUiTest.window.list("listManagerAdminPage").drop(1);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).drag(0);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).drop(1);
 
-        Assertions.assertNotEquals("admin", AppUiTest.window.list("listManagerAdminPage").valueAt(0));
-        Assertions.assertEquals("admin", AppUiTest.window.list("listManagerAdminPage").valueAt(1));
+        Assertions.assertNotEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(0));
+        Assertions.assertEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(1));
 
         AppUiTest.logMethod();
-        AppUiTest.window.list("listManagerAdminPage").selectItem(0).pressKey(KeyEvent.VK_DELETE);
-        AppUiTest.window.list("listManagerAdminPage").selectItem(0);
-        AppUiTest.window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
-        AppUiTest.window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_C);
-        AppUiTest.window.list("listManagerAdminPage").selectItem(1);
-        AppUiTest.window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
-        AppUiTest.window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).selectItem(0).pressKey(KeyEvent.VK_DELETE);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).selectItem(0);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_C);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).selectItem(1);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
 
-        Assertions.assertEquals("admin", AppUiTest.window.list("listManagerAdminPage").valueAt(0));
-        Assertions.assertEquals("admin", AppUiTest.window.list("listManagerAdminPage").valueAt(1));
+        Assertions.assertEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(0));
+        Assertions.assertEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(1));
 
         AppUiTest.logMethod();
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection("paste-from-clipboard");
         clipboard.setContents(stringSelection, null);
-        AppUiTest.window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
-        AppUiTest.window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
 
-        Assertions.assertEquals("paste-from-clipboard", AppUiTest.window.list("listManagerAdminPage").valueAt(1));
+        Assertions.assertEquals("paste-from-clipboard", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(1));
 
         AppUiTest.logMethod();
-        AppUiTest.window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_X);
-        AppUiTest.window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_X);
-        AppUiTest.window.list("listManagerAdminPage").selectItem(3);
-        AppUiTest.window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
-        AppUiTest.window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_X);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_X);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).selectItem(3);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
 
-        Assertions.assertNotEquals("paste-from-clipboard", AppUiTest.window.list("listManagerAdminPage").valueAt(1));
-        Assertions.assertEquals("paste-from-clipboard", AppUiTest.window.list("listManagerAdminPage").valueAt(3));
+        Assertions.assertNotEquals("paste-from-clipboard", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(1));
+        Assertions.assertEquals("paste-from-clipboard", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(3));
         AppUiTest.logMethod();
     }
 
     @Test
     public void shouldDnDScanList() {
         AppUiTest.logMethod();
-        AppUiTest.window.tabbedPane("tabManagers").selectTab("Batch scan");
+        AppUiTest.window.tabbedPane(TabManagers.TAB_MANAGERS).selectTab("Batch scan");
         Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", AppUiTest.window.list(ManagerScan.NAME).valueAt(0));
         Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", AppUiTest.window.list(ManagerScan.NAME).valueAt(1));
         AppUiTest.window.list(ManagerScan.NAME).drag(0);
@@ -208,9 +222,9 @@ public class AppUiTest {
         MediatorHelper.model().sendToViews(new Request3.CreateFileTab("dropfile", "content", "path"));
 
         AppUiTest.logMethod();
-        AppUiTest.window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(0));
-        AppUiTest.window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(1));
-        AppUiTest.window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("dragfile ", Index.atIndex(0));
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("jumpfile ", Index.atIndex(1));
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("dropfile ", Index.atIndex(2));
 
         AppUiTest.logMethod();
         AppUiTest.window.robot().pressMouse(
@@ -221,18 +235,18 @@ public class AppUiTest {
         AppUiTest.window.label("dropfile").drop();
 
         try {
-            AppUiTest.window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(0));
-            AppUiTest.window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(1));
-            AppUiTest.window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
+            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("jumpfile ", Index.atIndex(0));
+            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("dragfile ", Index.atIndex(1));
+            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("dropfile ", Index.atIndex(2));
         } catch (Exception e) {
             Assertions.fail();
         }
 
         AppUiTest.logMethod();
         GuiActionRunner.execute(() -> {
-            AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0);
-            AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0);
-            AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0);
+            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0);
+            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0);
+            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0);
         });
         AppUiTest.logMethod();
     }
@@ -243,13 +257,13 @@ public class AppUiTest {
         MediatorHelper.model().sendToViews(new Request3.CreateFileTab("file", "content", "path"));
 
         try {
-            AppUiTest.window.tabbedPane("tabResults").selectTab("file ").requireVisible();
+            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("file ").requireVisible();
         } catch (Exception e) {
             Assertions.fail();
         }
 
         AppUiTest.logMethod();
-        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0));
+        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
     }
 
@@ -259,7 +273,7 @@ public class AppUiTest {
         MediatorHelper.model().sendToViews(new Request3.AddTabExploitWeb("http://webshell"));
 
         try {
-            AppUiTest.window.tabbedPane("tabResults").selectTab("Web shell").requireVisible();
+            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("Web shell").requireVisible();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -280,48 +294,48 @@ public class AppUiTest {
             KeyEvent.VK_PAGE_UP, KeyEvent.VK_PAGE_DOWN
         );
 
-        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0));
+        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
     }
 
     @Test
-    public void shouldFindVendorAndErrorMethods() {
+    public void shouldFindEngineAndErrorMethods() {
         AppUiTest.logMethod();
-        AppUiTest.window.label("menuStrategy").click();
-        AppUiTest.window.menuItem("itemRadioStrategyError").requireDisabled();
+        AppUiTest.window.label(PanelTrailingAddress.MENU_STRATEGY).click();
+        AppUiTest.window.menuItem(PanelTrailingAddress.ITEM_RADIO_STRATEGY_ERROR).requireDisabled();
 
-        MediatorHelper.model().sendToViews(new Request3.SetVendor(null, MediatorHelper.model().getMediatorVendor().getMysql()));
+        MediatorHelper.model().sendToViews(new Request3.ActivateEngine(MediatorHelper.model().getMediatorEngine().getMysql()));
         MediatorHelper.model().sendToViews(
             new Request3.MarkErrorVulnerable(0, MediatorHelper.model().getMediatorStrategy().getError())
         );
 
         AppUiTest.logMethod();
-        AppUiTest.window.menuItem("itemRadioStrategyError").requireEnabled(Timeout.timeout(1000));
+        AppUiTest.window.menuItem(PanelTrailingAddress.ITEM_RADIO_STRATEGY_ERROR).requireEnabled(Timeout.timeout(1000));
 
         Assertions.assertEquals(
             "MySQL",
-            GuiActionRunner.execute(() -> AppUiTest.window.label("menuVendor").target()).getText(),
-            "Vendor should be MySQL"
+            GuiActionRunner.execute(() -> AppUiTest.window.label(PanelTrailingAddress.MENU_VENDOR).target()).getText(),
+            "Engine should be MySQL"
         );
 
         AppUiTest.logMethod();
-        AppUiTest.window.label("menuVendor").click();
-        AppUiTest.window.menuItem("itemRadioVendorMySQL").requireVisible();
+        AppUiTest.window.label(PanelTrailingAddress.MENU_VENDOR).click();
+        AppUiTest.window.menuItem(PanelTrailingAddress.ITEM_RADIO_VENDOR + "MySQL").requireVisible();
 
-        AppUiTest.window.label("menuStrategy").click();
+        AppUiTest.window.label(PanelTrailingAddress.MENU_STRATEGY).click();
 
         AppUiTest.window.robot().moveMouse(
-            GuiActionRunner.execute(() -> AppUiTest.window.menuItem("itemRadioStrategyError")).target()  // faster than click
+            GuiActionRunner.execute(() -> AppUiTest.window.menuItem(PanelTrailingAddress.ITEM_RADIO_STRATEGY_ERROR)).target()  // faster than click
         );
         AppUiTest.logMethod();
         try {
-            AppUiTest.window.menuItem("itemRadioErrorUnsigned:or").requireVisible();
+            AppUiTest.window.menuItem(PanelTrailingAddress.PREFIX_NAME_ERROR + "Unsigned:or").requireVisible();
         } catch (Exception e) {
             Assertions.fail();
         }
 
-        AppUiTest.window.menuItem("itemRadioStrategyError").requireEnabled();
-        AppUiTest.window.menuItem("itemRadioErrorUnsigned:or").click();
+        AppUiTest.window.menuItem(PanelTrailingAddress.ITEM_RADIO_STRATEGY_ERROR).requireEnabled();
+        AppUiTest.window.menuItem(PanelTrailingAddress.PREFIX_NAME_ERROR + "Unsigned:or").click();
         AppUiTest.logMethod();
     }
 
@@ -347,7 +361,7 @@ public class AppUiTest {
             Assertions.fail();
         }
 
-        AppUiTest.window.table("networkTable").selectRows(0).requireContents(new String[][] { { "url", "1", "meta strategy", "meta process" } });
+        AppUiTest.window.table(NetworkTable.NETWORK_TABLE).selectRows(0).requireContents(new String[][] { { "url", "1", "meta strategy", "meta process" } });
 
         AppUiTest.logMethod();
         AppUiTest.window.label("labelNETWORK_TAB_URL_LABEL").click();
@@ -374,38 +388,38 @@ public class AppUiTest {
 
         try {
             AppUiTest.logMethod();
-            AppUiTest.window.tabbedPane("tabResults").selectTab("SQL shell").requireVisible();
+            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("SQL shell").requireVisible();
         } catch (Exception e) {
             Assertions.fail();
         }
 
-        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0));
+        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
     }
 
     @Test
     public void shouldRunCoder() {
         AppUiTest.logMethod();
-        AppUiTest.window.tabbedPane("tabManagers").selectTab("Encoding");
-        AppUiTest.window.label("menuMethodManagerCoder").click();
+        AppUiTest.window.tabbedPane(TabManagers.TAB_MANAGERS).selectTab("Encoding");
+        AppUiTest.window.label(ManagerCoder.MENU_METHOD_MANAGER_CODER).click();
 
-        AppUiTest.window.textBox("textInputManagerCoder").setText("a");
+        AppUiTest.window.textBox(ManagerCoder.TEXT_INPUT_MANAGER_CODER).setText("a");
 
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base16").target()));
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase16").target()));
-        AppUiTest.window.textBox("resultManagerCoder").requireText(Pattern.compile("61", Pattern.DOTALL));
+        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("61", Pattern.DOTALL));
 
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base32").target()));
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase32").target()));
-        AppUiTest.window.textBox("resultManagerCoder").requireText(Pattern.compile("ME======", Pattern.DOTALL));
+        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("ME======", Pattern.DOTALL));
 
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base58").target()));
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase58").target()));
-        AppUiTest.window.textBox("resultManagerCoder").requireText(Pattern.compile("2g", Pattern.DOTALL));
+        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("2g", Pattern.DOTALL));
 
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base64").target()));
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase64").target()));
-        AppUiTest.window.textBox("resultManagerCoder").requireText(Pattern.compile("YQ==", Pattern.DOTALL));
+        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("YQ==", Pattern.DOTALL));
 
         AppUiTest.logMethod();
         try {
@@ -423,7 +437,7 @@ public class AppUiTest {
             }
 
             AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("hashTo"+ hash).target()));
-            AppUiTest.window.textBox("resultManagerCoder").requireText(result);
+            AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(result);
         });
         AppUiTest.logMethod();
     }
@@ -431,39 +445,39 @@ public class AppUiTest {
     @Test
     public void shouldFindAdminpage() throws IOException {
         AppUiTest.logMethod();
-        AppUiTest.window.tabbedPane("tabManagers").selectTab("Admin page");
-        AppUiTest.window.list("listManagerAdminPage").item(0).select().rightClick();
+        AppUiTest.window.tabbedPane(TabManagers.TAB_MANAGERS).selectTab("Admin page");
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).item(0).select().rightClick();
 
         MediatorHelper.model().sendToViews(new Request3.CreateAdminPageTab("http://adminpage"));
 
         AppUiTest.logMethod();
         try {
-            AppUiTest.window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
+            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("adminpage ").requireVisible();
         } catch (Exception e) {
             Assertions.fail();
         }
 
         AppUiTest.verifyMockAdminPage();
 
-        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0));
+        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
     }
 
     @Test
     public void shouldFindDatabase() {
         AppUiTest.logMethod();
-        AppUiTest.window.tabbedPane("tabManagers").selectTab("Database");
+        AppUiTest.window.tabbedPane(TabManagers.TAB_MANAGERS).selectTab("Database");
 
         var nameDatabase = "database";
         Database database = new Database(nameDatabase, "1");
 
         MediatorHelper.model().sendToViews(new Request3.AddDatabases(List.of(database)));
-        Assertions.assertEquals(nameDatabase +" (1 table)", AppUiTest.window.tree("treeDatabases").valueAt(0));
+        Assertions.assertEquals(nameDatabase +" (1 table)", AppUiTest.window.tree(ManagerDatabase.TREE_DATABASES).valueAt(0));
 
         var nameTable = "table";
         Table table = new Table(nameTable, "2", database);
         MediatorHelper.model().sendToViews(new Request3.AddTables(List.of(table)));
-        Assertions.assertEquals(nameTable +" (2 rows)", AppUiTest.window.tree("treeDatabases").valueAt(1));
+        Assertions.assertEquals(nameTable +" (2 rows)", AppUiTest.window.tree(ManagerDatabase.TREE_DATABASES).valueAt(1));
 
         AppUiTest.logMethod();
         var nameColumn0 = "column 0";
@@ -473,8 +487,8 @@ public class AppUiTest {
         MediatorHelper.model().sendToViews(new Request3.AddColumns(
             Arrays.asList(column1, column2)
         ));
-        Assertions.assertEquals(nameColumn0, AppUiTest.window.tree("treeDatabases").valueAt(2));
-        Assertions.assertEquals(nameColumn1, AppUiTest.window.tree("treeDatabases").valueAt(3));
+        Assertions.assertEquals(nameColumn0, AppUiTest.window.tree(ManagerDatabase.TREE_DATABASES).valueAt(2));
+        Assertions.assertEquals(nameColumn1, AppUiTest.window.tree(ManagerDatabase.TREE_DATABASES).valueAt(3));
 
         var arrayColumns = new String[] { Strings.EMPTY, Strings.EMPTY, nameColumn0, nameColumn1 };
         var tableDatas = new String[][] {
@@ -484,12 +498,12 @@ public class AppUiTest {
         MediatorHelper.model().sendToViews(new Request3.CreateValuesTab(arrayColumns, tableDatas, table));
 
         AppUiTest.logMethod();
-        AppUiTest.window.tabbedPane("tabResults").selectTab(nameTable).requireVisible();
-        AppUiTest.window.tree("treeDatabases").rightClickRow(0);
-        AppUiTest.window.tabbedPane("tabResults").click();
-        AppUiTest.window.tree("treeDatabases").rightClickRow(1);
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab(nameTable).requireVisible();
+        AppUiTest.window.tree(ManagerDatabase.TREE_DATABASES).rightClickRow(0);
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).click();
+        AppUiTest.window.tree(ManagerDatabase.TREE_DATABASES).rightClickRow(1);
 
-        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0));
+        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
     }
 
@@ -497,7 +511,7 @@ public class AppUiTest {
     public void shouldFindOkButton() {
         AppUiTest.logMethod();
         try {
-            AppUiTest.window.button("buttonInUrl").click();
+            AppUiTest.window.button(ButtonStart.BUTTON_IN_URL).click();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -506,12 +520,12 @@ public class AppUiTest {
     @Test
     public void shouldFindConsoleButton() {
         AppUiTest.logMethod();
-        AppUiTest.window.label("buttonShowSouth").click();
-        AppUiTest.window.label("buttonShowConsolesHidden").click();
-        AppUiTest.window.label("buttonShowNorth").click();
+        AppUiTest.window.label(PanelConsoles.BUTTON_SHOW_SOUTH).click();
+        AppUiTest.window.label(SplitNS.BUTTON_SHOW_CONSOLES_HIDDEN).click();
+        AppUiTest.window.label(PanelConsoles.BUTTON_SHOW_NORTH).click();
 
         try {
-            AppUiTest.window.label("buttonShowSouth").click();
+            AppUiTest.window.label(PanelConsoles.BUTTON_SHOW_SOUTH).click();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -520,128 +534,128 @@ public class AppUiTest {
     @Test
     public void shouldFindConnectionPreferences() {
         AppUiTest.logMethod();
-        AppUiTest.window.label("advancedButton").click();
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
         AppUiTest.window.menuItemWithPath("Windows", "Preferences").click();
-        AppUiTest.window.list("listCategoriesPreference").selectItem(Pattern.compile(".*Connection.*"));
+        AppUiTest.window.list(PanelPreferences.LIST_CATEGORIES_PREFERENCE).selectItem(Pattern.compile(".*Connection.*"));
 
         AppUiTest.logMethod();
         Arrays.asList(  // init
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isFollowingRedirection()
         ).forEach(Assertions::assertFalse);
 
         AppUiTest.logMethod();
-        AppUiTest.window.checkBox("checkboxIsFollowingRedirection").click();
+        AppUiTest.window.checkBox(PanelConnection.CHECKBOX_IS_FOLLOWING_REDIRECTION).click();
         Arrays.asList(  // check
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isFollowingRedirection()
         ).forEach(Assertions::assertTrue);
 
         AppUiTest.logMethod();
-        AppUiTest.window.checkBox("checkboxIsFollowingRedirection").click();
+        AppUiTest.window.checkBox(PanelConnection.CHECKBOX_IS_FOLLOWING_REDIRECTION).click();
         Arrays.asList(  // uncheck
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isFollowingRedirection()
         ).forEach(Assertions::assertFalse);
 
-        AppUiTest.window.label("advancedButton").click();
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
 
-        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0));
+        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
     }
 
     @Test
     public void shouldFindInjectionPreferences() {
         AppUiTest.logMethod();
-        AppUiTest.window.label("advancedButton").click();
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
         AppUiTest.window.menuItemWithPath("Windows", "Preferences").click();
-        AppUiTest.window.list("listCategoriesPreference").selectItem(Pattern.compile(".*Injection.*"));
+        AppUiTest.window.list(PanelPreferences.LIST_CATEGORIES_PREFERENCE).selectItem(Pattern.compile(".*Injection.*"));
 
         AppUiTest.logMethod();
         Arrays.asList(
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm()
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isParsingForm()
         ).forEach(Assertions::assertFalse);
 
         AppUiTest.logMethod();
-        AppUiTest.window.checkBox("checkboxIsParsingForm").click();
+        AppUiTest.window.checkBox(PanelInjection.CHECKBOX_IS_PARSING_FORM).click();
         Arrays.asList(
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm()
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isParsingForm()
         ).forEach(Assertions::assertTrue);
 
         AppUiTest.logMethod();
-        AppUiTest.window.checkBox("checkboxIsParsingForm").click();
+        AppUiTest.window.checkBox(PanelInjection.CHECKBOX_IS_PARSING_FORM).click();
         Arrays.asList(
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm()
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isParsingForm()
         ).forEach(Assertions::assertFalse);
 
         AppUiTest.logMethod();
-        AppUiTest.window.radioButton("radioIsZipStrategy").check();
+        AppUiTest.window.radioButton(PanelInjection.RADIO_IS_ZIP_STRATEGY).check();
         Assertions.assertArrayEquals(new boolean[] {
             false,
             false,
             true,
         }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isDefaultStrategy(),
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isDiosStrategy(),
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isZipStrategy(),
         });
 
         AppUiTest.logMethod();
-        AppUiTest.window.radioButton("radioIsDiosStrategy").check();
+        AppUiTest.window.radioButton(PanelInjection.RADIO_IS_DIOS_STRATEGY).check();
         Assertions.assertArrayEquals(new boolean[] {
             false,
             true,
             false,
         }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isDefaultStrategy(),
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isDiosStrategy(),
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isZipStrategy(),
         });
 
         AppUiTest.logMethod();
-        AppUiTest.window.radioButton("radioIsDefaultStrategy").check();
+        AppUiTest.window.radioButton(PanelInjection.RADIO_IS_DEFAULT_STRATEGY).check();
         Assertions.assertArrayEquals(new boolean[] {
             true,
             false,
             false,
         }, new boolean[] {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isDefaultStrategy(),
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isDiosStrategy(),
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().isZipStrategy(),
         });
 
-        AppUiTest.window.label("advancedButton").click();
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
 
-        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0));
+        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
     }
 
     @Test
     public void shouldFindSqlEngine() {
         AppUiTest.logMethod();
-        AppUiTest.window.label("advancedButton").click();
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
         AppUiTest.window.menuItemWithPath("Windows", "SQL Engine").click();
 
         AppUiTest.logMethod();
         try {
-            AppUiTest.window.label("advancedButton").click();
+            AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
         } catch (Exception e) {
             Assertions.fail();
         }
-        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane("tabResults").target().removeTabAt(0));
+        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
     }
 
     @Test
     public void shouldFindLanguage() {
         AppUiTest.logMethod();
-        AppUiTest.window.label("advancedButton").click();
-        AppUiTest.window.menuItem("menuWindows").click();
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.menuItem(MenuWindows.MENU_WINDOWS).click();
         AppUiTest.window.robot().moveMouse(
-            GuiActionRunner.execute(() -> AppUiTest.window.menuItem("menuTranslation").target())  // faster than click
+            GuiActionRunner.execute(() -> AppUiTest.window.menuItem(MenuWindows.MENU_TRANSLATION).target())  // faster than click
         );
-        AppUiTest.window.menuItem("itemRussian").click();
-        AppUiTest.window.menuItem("itemEnglish").click();
+        AppUiTest.window.menuItem(MenuWindows.ITEM_RUSSIAN).click();
+        AppUiTest.window.menuItem(MenuWindows.ITEM_ENGLISH).click();
 
         AppUiTest.logMethod();
         try {
-            AppUiTest.window.label("advancedButton").click();
+            AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -651,7 +665,7 @@ public class AppUiTest {
 //    @Test
 //    public void shouldFindReportIssue() {
 //
-//        window.label("advancedButton").click();
+//        window.label(PanelAddressBar.ADVANCED_BUTTON).click();
 //        window.menuItem("menuCommunity").click();
 //        window.menuItem("itemReportIssue").click();
 //
@@ -659,7 +673,7 @@ public class AppUiTest {
 //        dialog.button(JButtonMatcher.withText("Cancel")).click();
 //
 //        try {
-//            window.label("advancedButton").click();
+//            window.label(PanelAddressBar.ADVANCED_BUTTON).click();
 //        } catch (Exception e) {
 //            Assertions.fail();
 //        }
@@ -668,12 +682,12 @@ public class AppUiTest {
     @Test
     public void shouldFindIHelpTranslate() {
         AppUiTest.logMethod();
-        AppUiTest.window.label("advancedButton").click();
-        AppUiTest.window.menuItem("menuCommunity").click();
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.menuItem(AppMenubar.MENU_COMMUNITY).click();
         AppUiTest.window.robot().moveMouse(
-            GuiActionRunner.execute(() -> AppUiTest.window.menuItem("menuI18nContribution").target())  // faster than click
+            GuiActionRunner.execute(() -> AppUiTest.window.menuItem(AppMenubar.MENU_I18N_CONTRIBUTION).target())  // faster than click
         );
-        AppUiTest.window.menuItem("itemIntoFrench").click();
+        AppUiTest.window.menuItem(AppMenubar.ITEM_INTO_FRENCH).click();
 
         AppUiTest.logMethod();
         DialogFixture dialog = AppUiTest.window.dialog();
@@ -681,7 +695,7 @@ public class AppUiTest {
 
         AppUiTest.logMethod();
         try {
-            AppUiTest.window.label("advancedButton").click();
+            AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -690,16 +704,16 @@ public class AppUiTest {
     @Test
     public void shouldFindAbout() {
         AppUiTest.logMethod();
-        AppUiTest.window.label("advancedButton").click();
-        AppUiTest.window.menuItem("menuHelp").click();
-        AppUiTest.window.menuItem("itemHelp").click();
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.menuItem(AppMenubar.MENU_HELP).click();
+        AppUiTest.window.menuItem(AppMenubar.ITEM_HELP).click();
 
         DialogFixture dialog = AppUiTest.window.dialog();
         dialog.button(JButtonMatcher.withText("Close")).click();
 
         AppUiTest.logMethod();
         try {
-            AppUiTest.window.label("advancedButton").click();
+            AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
         } catch (Exception e) {
             Assertions.fail();
         }

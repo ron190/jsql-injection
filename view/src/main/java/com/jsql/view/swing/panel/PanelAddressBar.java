@@ -58,6 +58,7 @@ public class PanelAddressBar extends JPanel {
 
     private static final String KEY_ADDRESS_BAR_PLACEHOLDER = "ADDRESS_BAR_PLACEHOLDER";
     private static final String BUTTON_ADVANCED = "BUTTON_ADVANCED";
+    public static final String ADVANCED_BUTTON = "advancedButton";
 
     // Current injection method
     private AbstractMethodInjection methodInjection = MediatorHelper.model().getMediatorMethod().getQuery();
@@ -361,7 +362,7 @@ public class PanelAddressBar extends JPanel {
                 return tooltip.get();
             }
         };
-        advancedButton.setName("advancedButton");
+        advancedButton.setName(PanelAddressBar.ADVANCED_BUTTON);
         advancedButton.setToolTipText(I18nUtil.valueByKey(PanelAddressBar.BUTTON_ADVANCED));
         I18nViewUtil.addComponentForKey(PanelAddressBar.BUTTON_ADVANCED, tooltip.get());
         advancedButton.addMouseListener(new MouseAdapter() {

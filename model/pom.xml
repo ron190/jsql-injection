@@ -33,8 +33,8 @@
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <!-- must align slf4j-nop when bumped -->
         <dnsjava.version>3.6.4</dnsjava.version>
-        <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
-        <groovy.version>5.0.3</groovy.version>
+        <gmavenplus-plugin.version>4.3.0</gmavenplus-plugin.version>
+        <groovy.version>5.0.4</groovy.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
         <jquery.version>3.7.1</jquery.version>
@@ -61,7 +61,7 @@
         <hsqldb.version>2.7.4</hsqldb.version>
         <exasol.version>25.2.6</exasol.version>
         <informix.version>15.0.1.0</informix.version>
-        <jaybird.version>6.0.3</jaybird.version>
+        <firebird.version>6.0.4</firebird.version>
         <mckoi.version>1.0.5</mckoi.version>
         <mimer.version>3.42.3</mimer.version>
         <monetdb.version>12.2</monetdb.version>
@@ -459,7 +459,7 @@
         <dependency>
             <groupId>org.firebirdsql.jdbc</groupId>
             <artifactId>jaybird</artifactId>
-            <version>${jaybird.version}</version>
+            <version>${firebird.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

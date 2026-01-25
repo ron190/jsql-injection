@@ -113,7 +113,7 @@ public class GitUtil {
             ),
             String.format(
                 "Db engine: %s",
-                this.injectionModel.getMediatorVendor().getVendor().toString()
+                this.injectionModel.getMediatorEngine().getEngine().toString()
             )
         );
         
@@ -132,21 +132,21 @@ public class GitUtil {
      * @param reportTitle title of the Issue
      */
     public void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
-        if (this.injectionModel.getMediatorUtils().getProxyUtil().isNotLive(showOnConsole)) {
+        if (this.injectionModel.getMediatorUtils().proxyUtil().isNotLive(showOnConsole)) {
             return;
         }
 
         String token;
         try {
             token = StringUtil.fromHexZip(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("jsql.hash")
+                this.injectionModel.getMediatorUtils().propertiesUtil().getProperty("jsql.hash")
             );
         } catch (IOException e) {
             throw new JSqlRuntimeException(e);
         }
 
         var httpRequest = HttpRequest.newBuilder()
-            .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("github.issues.url")))
+            .uri(URI.create(this.injectionModel.getMediatorUtils().propertiesUtil().getProperty("github.issues.url")))
             .setHeader("Authorization", "token "+ token)
             .POST(BodyPublishers.ofString(
                 new JSONObject()
@@ -158,7 +158,7 @@ public class GitUtil {
             .build();
             
         try {
-            HttpResponse<String> response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());
+            HttpResponse<String> response = this.injectionModel.getMediatorUtils().connectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());
             this.readGithubResponse(response, showOnConsole);
         } catch (IOException e) {
             if (showOnConsole == ShowOnConsole.YES) {
@@ -205,8 +205,8 @@ public class GitUtil {
     public JSONObject callService() {
         if (this.jsonObject == null) {
             try {
-                String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(
-                    this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty("github.webservice.url")
+                String json = this.injectionModel.getMediatorUtils().connectionUtil().getSource(
+                    this.injectionModel.getMediatorUtils().propertiesUtil().getProperty("github.webservice.url")
                 );
                 this.jsonObject = new JSONObject(json);
             } catch (UnresolvedAddressException | JSONException e) {

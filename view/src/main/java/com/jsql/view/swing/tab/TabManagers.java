@@ -31,6 +31,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class TabManagers extends TabbedPaneWheeled {
 
+    public static final String TAB_MANAGERS = "tabManagers";
+
     private final transient List<ModelSvgIcon> iconsTabs = Arrays.asList(
         UiUtil.DATABASE_BOLD, UiUtil.ADMIN, UiUtil.DOWNLOAD, UiUtil.TERMINAL, UiUtil.LOCK, UiUtil.TEXTFIELD, UiUtil.BATCH
     );
@@ -39,7 +41,7 @@ public class TabManagers extends TabbedPaneWheeled {
      * Create manager panel.
      */
     public TabManagers() {
-        this.setName("tabManagers");
+        this.setName(TabManagers.TAB_MANAGERS);
         this.setMaximumSize(new Dimension(this.getMaximumSize().width, 35));
         this.setPreferredSize(new Dimension(this.getPreferredSize().width, 35));
 

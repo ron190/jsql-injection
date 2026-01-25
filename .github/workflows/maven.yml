@@ -25,17 +25,17 @@ jobs:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
     secrets: inherit
 
-  build-vendor:
+  build-engine:
     needs: set-global-env-var
-    uses: ./.github/workflows/build-vendor.yml
+    uses: ./.github/workflows/build-engine.yml
     strategy:
       fail-fast: false
       matrix:
         # must match java classes
-        vendor: [Altibase, Clickhouse, Db2, Exasol, Hana, Mimer, Monetdb, Oracle, Presto, Sqlserver, Sybase, Vertica, Virtuoso]
+        engine: [Altibase, Clickhouse, Db2, Exasol, Hana, Mimer, Monetdb, Oracle, Presto, Sqlserver, Sybase, Vertica, Virtuoso]
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
-      NAME_VENDOR: ${{ matrix.vendor }}
+      NAME_ENGINE: ${{ matrix.engine }}
 
   build-main:
     needs: set-global-env-var
@@ -48,6 +48,6 @@ jobs:
     uses: ./.github/workflows/codeql.yml  # required in top folder, else composite
 
   release:
-    needs: [virustotal, build-main, build-vendor, codeql]
+    needs: [virustotal, build-main, build-engine, codeql]
     uses: ./.github/workflows/release.yml
     secrets: inherit

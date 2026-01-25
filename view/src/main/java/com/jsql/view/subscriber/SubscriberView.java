@@ -8,7 +8,6 @@ import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Arrays;
@@ -29,18 +28,18 @@ public class SubscriberView extends AbstractSubscriber {
 
     private void executeInjection(Request3 request) {
         switch (request) {
-            case Request3.SetVendor r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().setVendor(r.vendor());
+            case Request3.ActivateEngine r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().setEngine(r.engine());
             case Request3.AddColumns(var columns) -> MediatorHelper.treeDatabase().addColumns(columns);
             case Request3.AddTables(var tables) -> MediatorHelper.treeDatabase().addTables(tables);
             case Request3.AddDatabases(var databases) -> MediatorHelper.treeDatabase().addDatabases(databases);
 
-            case Request3.MarkStrategyInvulnerable(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(strategy);
+            case Request3.MarkInvulnerable(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyInvulnerable(strategy);
             case Request3.MarkErrorInvulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markErrorInvulnerable(r.indexError());
 
-            case Request3.MarkStrategyVulnerable(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(strategy);
+            case Request3.MarkVulnerable(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategyVulnerable(strategy);
             case Request3.MarkErrorVulnerable r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markErrorVulnerable(r.indexError());
 
-            case Request3.MarkStrategy(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(strategy);
+            case Request3.ActivateStrategy(var strategy) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markStrategy(strategy);
             case Request3.MarkErrorStrategy ignored -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().markError();
 
             case Request3.MarkFileSystemInvulnerable ignored -> MediatorHelper.tabManagersCards().markFileSystemInvulnerable();
@@ -53,62 +52,16 @@ public class SubscriberView extends AbstractSubscriber {
 
     private void executeExploit(Request3 request) {
         switch (request) {
-            case Request3.AddTabExploitSql(var urlSuccess, var username, var password) -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitSql(urlSuccess, username, password));
-            }
-            case Request3.AddTabExploitUdfExtensionPostgres ignored -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitUdf(
-                    (String command, UUID terminalID) -> MediatorHelper.model().getResourceAccess().getExploitPostgres().runRceExtensionCmd(command, terminalID)
-                ));
-            }
-            case Request3.AddTabExploitUdfH2 ignored -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitUdf(
-                    (String command, UUID terminalID) -> MediatorHelper.model().getResourceAccess().getExploitH2().runRce(command, terminalID)
-                ));
-            }
-            case Request3.AddTabExploitUdfLibraryPostgres ignored -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitUdf(
-                    (String command, UUID terminalID) -> MediatorHelper.model().getResourceAccess().getExploitPostgres().runRceLibraryCmd(command, terminalID)
-                ));
-            }
-            case Request3.AddTabExploitUdfMysql ignored -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitUdf(
-                    (String command, UUID terminalID) -> MediatorHelper.model().getResourceAccess().getExploitMysql().runRceCmd(command, terminalID)
-                ));
-            }
-            case Request3.AddTabExploitUdfOracle ignored -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitUdf(
-                    (String command, UUID terminalID) -> MediatorHelper.model().getResourceAccess().getExploitOracle().runRceCmd(command, terminalID)
-                ));
-            }
-            case Request3.AddTabExploitUdfProgramPostgres ignored -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitUdf(
-                    (String command, UUID terminalID) -> MediatorHelper.model().getResourceAccess().getExploitPostgres().runRceProgramCmd(command, terminalID)
-                ));
-            }
-            case Request3.AddTabExploitUdfSqlite ignored -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitUdf(
-                    (String command, UUID terminalID) -> MediatorHelper.model().getResourceAccess().getExploitSqlite().runRce(command, terminalID)
-                ));
-            }
-            case Request3.AddTabExploitUdfWalPostgres ignored -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitUdf(
-                    (String command, UUID terminalID) -> MediatorHelper.model().getResourceAccess().getExploitPostgres().runRceArchiveCmd(command, terminalID)
-                ));
-            }
-            case Request3.AddTabExploitWeb(String urlSuccess) -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addTabExploitWeb(urlSuccess));
-            }
+            case Request3.AddTabExploitSql(var urlSuccess, var username, var password) -> MediatorHelper.tabResults().addTabExploitSql(urlSuccess, username, password);
+            case Request3.AddTabExploitUdfExtensionPostgres r -> MediatorHelper.tabResults().addTabExploitUdf(r.biConsumerRunCmd());
+            case Request3.AddTabExploitUdfH2 r -> MediatorHelper.tabResults().addTabExploitUdf(r.biConsumerRunCmd());
+            case Request3.AddTabExploitUdfLibraryPostgres r -> MediatorHelper.tabResults().addTabExploitUdf(r.biConsumerRunCmd());
+            case Request3.AddTabExploitUdfMysql r -> MediatorHelper.tabResults().addTabExploitUdf(r.biConsumerRunCmd());
+            case Request3.AddTabExploitUdfOracle r -> MediatorHelper.tabResults().addTabExploitUdf(r.biConsumerRunCmd());
+            case Request3.AddTabExploitUdfProgramPostgres r -> MediatorHelper.tabResults().addTabExploitUdf(r.biConsumerRunCmd());
+            case Request3.AddTabExploitUdfSqlite r -> MediatorHelper.tabResults().addTabExploitUdf(r.biConsumerRunCmd());
+            case Request3.AddTabExploitUdfWalPostgres r -> MediatorHelper.tabResults().addTabExploitUdf(r.biConsumerRunCmd());
+            case Request3.AddTabExploitWeb(String urlSuccess) -> MediatorHelper.tabResults().addTabExploitWeb(urlSuccess);
             case Request3.GetTerminalResult(UUID uuidShell, String result) -> {
                 AbstractExploit terminal = MediatorHelper.frame().getMapUuidShell().get(uuidShell);
                 if (terminal != null) {  // null on reverse shell connection
@@ -162,22 +115,10 @@ public class SubscriberView extends AbstractSubscriber {
 
     private void createTab(Request3 request) {
         switch (request) {
-            case Request3.CreateAdminPageTab(String urlSuccess) -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addAdminTab(urlSuccess));
-            }
-            case Request3.CreateAnalysisReport(var content) -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addReportTab(content.trim()));
-            }
-            case Request3.CreateFileTab(var name, var content, var path) -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.tabResults().addFileTab(name, content, path));
-            }
-            case Request3.CreateValuesTab(var columns, var table, var tableBean) -> {
-                MediatorHelper.frame().getSplitNS().initSplitOrientation();
-                SwingUtilities.invokeLater(() -> MediatorHelper.treeDatabase().createValuesTab(table, columns, tableBean));
-            }
+            case Request3.CreateAdminPageTab(String urlSuccess) -> MediatorHelper.tabResults().addAdminTab(urlSuccess);
+            case Request3.CreateAnalysisReport(var content) -> MediatorHelper.tabResults().addReportTab(content.trim());
+            case Request3.CreateFileTab(var name, var content, var path) -> MediatorHelper.tabResults().addFileTab(name, content, path);
+            case Request3.CreateValuesTab(var columns, var table, var tableBean) -> MediatorHelper.treeDatabase().createValuesTab(table, columns, tableBean);
             default -> {
                 // ignore
             }

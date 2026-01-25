@@ -71,7 +71,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
         var indexChar = new AtomicInteger(0);  // current char position
 
         // Concurrent URL requests
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableAbstractBoolean");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableAbstractBoolean");
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         var countTasksSubmitted = new AtomicInteger(0);
@@ -167,7 +167,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
     }
 
     private String stop(List<char[]> bytes, ExecutorService taskExecutor) {
-        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+        this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
 
         // Get current progress and display
         var result = new StringBuilder();

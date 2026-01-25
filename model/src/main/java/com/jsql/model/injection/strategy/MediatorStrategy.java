@@ -2,9 +2,9 @@ package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
-import com.jsql.model.suspendable.SuspendableGetVendor;
+import com.jsql.model.suspendable.SuspendableGetEngine;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -56,9 +56,9 @@ public class MediatorStrategy {
     public String getMeta() {
         String strategyName = this.strategy == null ? StringUtils.EMPTY : this.strategy.toString().toLowerCase();
         var strategyMode = "default";
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isDiosStrategy()) {
             strategyMode = "dios";
-        } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
+        } else if (this.injectionModel.getMediatorUtils().preferencesUtil().isZipStrategy()) {
             strategyMode = "zip";
         }
         return String.format("%s#%s", strategyName.replace(" ", "-"), strategyMode);
@@ -82,8 +82,8 @@ public class MediatorStrategy {
                 result = urlBase.replace(
                     InjectionModel.STAR,
                     this.encodePath(
-                        this.injectionModel.getIndexesInUrl().replaceAll(
-                            String.format(VendorYaml.FORMAT_INDEX, this.getSpecificUnion().getVisibleIndex()),
+                        this.getSpecificUnion().getIndexesInUrl().replaceAll(
+                            String.format(EngineYaml.FORMAT_INDEX, this.getSpecificUnion().getVisibleIndex()),
                             Matcher.quoteReplacement(sqlTrail)  // Oracle column can contain regex char $ => quoteReplacement()
                         )
                     )
@@ -96,7 +96,7 @@ public class MediatorStrategy {
     private String encodePath(String sqlTrail) {
         String sqlTrailEncoded = StringUtil.cleanSql(sqlTrail);
 
-        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()) {
+        if (!this.injectionModel.getMediatorUtils().preferencesUtil().isUrlEncodingDisabled()) {
             sqlTrailEncoded = sqlTrailEncoded
                 .replace("'", "%27")
                 .replace("(", "%28")
@@ -114,7 +114,7 @@ public class MediatorStrategy {
         }
 
         // URL forbidden characters
-        return (sqlTrailEncoded + this.injectionModel.getMediatorVendor().getVendor().instance().endingComment())
+        return (sqlTrailEncoded + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment())
             .replace("\"", "%22")
             .replace("|", "%7c")
             .replace("`", "%60")
@@ -134,7 +134,7 @@ public class MediatorStrategy {
         String parameterOriginalValue = null;
         
         // Fingerprint database
-        this.injectionModel.getMediatorVendor().setVendor(this.injectionModel.getMediatorVendor().fingerprintVendor());
+        this.injectionModel.getMediatorEngine().setEngine(this.injectionModel.getMediatorEngine().fingerprintEngine());
         
         // If not an injection point then find insertion character.
         // Force to 1 if no insertion char works and empty value from user,
@@ -146,9 +146,9 @@ public class MediatorStrategy {
             parameterOriginalValue = parameterToInject.getValue();
                      
             // Test for params integrity
-            String characterInsertionByUser = this.injectionModel.getMediatorUtils().getParameterUtil().initStar(parameterToInject);
+            String characterInsertionByUser = this.injectionModel.getMediatorUtils().parameterUtil().initStar(parameterToInject);
             
-            String characterInsertion = this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion()
+            String characterInsertion = this.injectionModel.getMediatorUtils().preferencesUtil().isNotSearchingCharInsertion()
                 ? characterInsertionByUser
                 : new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);
             if (characterInsertion.contains(InjectionModel.STAR)) {  // When injecting all parameters or JSON
@@ -156,17 +156,17 @@ public class MediatorStrategy {
             } else {  // When injecting last parameter
                 parameterToInject.setValue(characterInsertion.replaceAll("(\\w)$", "$1+") + InjectionModel.STAR);
             }
-        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
+        } else if (this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
             String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(StringUtils.EMPTY);
-            String urlBase = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
-            this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(
+            String urlBase = this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase();
+            this.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(
                 // Space %20 for URL, do not use +
                 urlBase.replace(InjectionModel.STAR, characterInsertion.replaceAll("(\\w)$", "$1%20") + InjectionModel.STAR)
             );
         }
 
-        if (this.injectionModel.getMediatorVendor().getVendorByUser() == this.injectionModel.getMediatorVendor().getAuto()) {
-            new SuspendableGetVendor(this.injectionModel).run();
+        if (this.injectionModel.getMediatorEngine().getEngineByUser() == this.injectionModel.getMediatorEngine().getAuto()) {
+            new SuspendableGetEngine(this.injectionModel).run();
         }
 
         // Test each injection strategies: time < blind binary < blind bitwise < multibit < error < stack < union

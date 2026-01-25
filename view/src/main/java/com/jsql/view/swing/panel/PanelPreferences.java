@@ -13,7 +13,9 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 public class PanelPreferences extends JPanel {
-    
+
+    public static final String LIST_CATEGORIES_PREFERENCE = "listCategoriesPreference";
+
     private final transient ActionListener actionListenerSave = new ActionListenerSave(this);
     
     private final PanelConnection panelConnection = new PanelConnection(this);
@@ -69,7 +71,7 @@ public class PanelPreferences extends JPanel {
     private static JList<CategoryPreference> getCategories(JPanel cards) {
         JList<CategoryPreference> categories = new JList<>(CategoryPreference.values());
         categories.setMinimumSize(new Dimension(0, 0));
-        categories.setName("listCategoriesPreference");
+        categories.setName(PanelPreferences.LIST_CATEGORIES_PREFERENCE);
         categories.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         categories.setSelectedIndex(0);
         categories.addListSelectionListener(e -> {

@@ -13,13 +13,13 @@ import java.util.stream.Stream;
 
 public class PanelProxy extends JPanel {
 
-    private final JCheckBox checkboxIsUsingProxy = new JCheckBox("<html>Enable proxy for <b>HTTP</b>:</html>", MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttp());
-    private final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox("<html>Enable proxy for <b>HTTPS</b>:</html>", MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttps());
+    private final JCheckBox checkboxIsUsingProxy = new JCheckBox("<html>Enable proxy for <b>HTTP</b>:</html>", MediatorHelper.model().getMediatorUtils().proxyUtil().isUsingProxyHttp());
+    private final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox("<html>Enable proxy for <b>HTTPS</b>:</html>", MediatorHelper.model().getMediatorUtils().proxyUtil().isUsingProxyHttps());
 
-    private final JTextField textProxyAddress = new JPopupTextField("e.g. Tor address: 127.0.0.1", MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyAddressHttp()).getProxy();
-    private final JTextField textProxyPort = new JPopupTextField("e.g. Tor port: 8118", MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyPortHttp()).getProxy();
-    private final JTextField textProxyAddressHttps = new JPopupTextField("e.g. Tor address: 127.0.0.1", MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyAddressHttps()).getProxy();
-    private final JTextField textProxyPortHttps = new JPopupTextField("e.g. Tor port: 8118", MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyPortHttps()).getProxy();
+    private final JTextField textProxyAddress = new JPopupTextField("e.g. Tor address: 127.0.0.1", MediatorHelper.model().getMediatorUtils().proxyUtil().getProxyAddressHttp()).getProxy();
+    private final JTextField textProxyPort = new JPopupTextField("e.g. Tor port: 8118", MediatorHelper.model().getMediatorUtils().proxyUtil().getProxyPortHttp()).getProxy();
+    private final JTextField textProxyAddressHttps = new JPopupTextField("e.g. Tor address: 127.0.0.1", MediatorHelper.model().getMediatorUtils().proxyUtil().getProxyAddressHttps()).getProxy();
+    private final JTextField textProxyPortHttps = new JPopupTextField("e.g. Tor port: 8118", MediatorHelper.model().getMediatorUtils().proxyUtil().getProxyPortHttps()).getProxy();
 
     public PanelProxy(PanelPreferences panelPreferences) {
         var panelHttpIpAddress = new JPanel();

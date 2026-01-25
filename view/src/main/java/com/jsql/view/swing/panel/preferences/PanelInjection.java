@@ -15,40 +15,45 @@ import java.util.stream.Stream;
 
 public class PanelInjection extends JPanel {
 
-    private final JCheckBox checkboxIsNotShowingVulnReport = new JCheckBox("Disable showing vulnerability report", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotShowingVulnReport());
-    private final JCheckBox checkboxIsNotSearchingCharInsertion = new JCheckBox("Disable search for character insertion", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion());
-    private final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox("Disable search of database name, version and user metadata", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata());
-    private final JCheckBox checkboxIsParsingForm = new JCheckBox("Get HTML tags <input/> and add parameters to URL and Request", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm());
-    
-    private final JCheckBox checkboxIsCheckingAllParam = new JCheckBox("Inject every parameters (ignore user's selection)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllParam());
-    private final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox("Inject every URL parameters when URL method is selected", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam());
-    private final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox("Inject every Request parameters when Request method is selected", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam());
-    private final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox("Inject every Header parameters when Header method is selected", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam());
-    private final JCheckBox checkboxIsCheckingAllBase64Param = new JCheckBox("Inject Base64 parameters", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllBase64Param());
-    private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox("Inject every JSON parameters", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam());
-    private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("Inject every cookie parameters", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
-    private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox("Inject SOAP parameters in Request body", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam());
+    public static final String CHECKBOX_IS_PARSING_FORM = "checkboxIsParsingForm";
+    public static final String RADIO_IS_ZIP_STRATEGY = "radioIsZipStrategy";
+    public static final String RADIO_IS_DIOS_STRATEGY = "radioIsDiosStrategy";
+    public static final String RADIO_IS_DEFAULT_STRATEGY = "radioIsDefaultStrategy";
 
-    private final JCheckBox checkboxIsLimitingUnionIndex = new JCheckBox("Limit Union strategy:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingUnionIndex());
+    private final JCheckBox checkboxIsNotShowingVulnReport = new JCheckBox("Disable showing vulnerability report", MediatorHelper.model().getMediatorUtils().preferencesUtil().isNotShowingVulnReport());
+    private final JCheckBox checkboxIsNotSearchingCharInsertion = new JCheckBox("Disable search for character insertion", MediatorHelper.model().getMediatorUtils().preferencesUtil().isNotSearchingCharInsertion());
+    private final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox("Disable search of database name, version and user metadata", MediatorHelper.model().getMediatorUtils().preferencesUtil().isNotInjectingMetadata());
+    private final JCheckBox checkboxIsParsingForm = new JCheckBox("Get HTML tags <input/> and add parameters to URL and Request", MediatorHelper.model().getMediatorUtils().preferencesUtil().isParsingForm());
+    
+    private final JCheckBox checkboxIsCheckingAllParam = new JCheckBox("Inject every parameters (ignore user's selection)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllParam());
+    private final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox("Inject every URL parameters when URL method is selected", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllURLParam());
+    private final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox("Inject every Request parameters when Request method is selected", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllRequestParam());
+    private final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox("Inject every Header parameters when Header method is selected", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllHeaderParam());
+    private final JCheckBox checkboxIsCheckingAllBase64Param = new JCheckBox("Inject Base64 parameters", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllBase64Param());
+    private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox("Inject every JSON parameters", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllJsonParam());
+    private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("Inject every cookie parameters", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllCookieParam());
+    private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox("Inject SOAP parameters in Request body", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllSoapParam());
+
+    private final JCheckBox checkboxIsLimitingUnionIndex = new JCheckBox("Limit Union strategy:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isLimitingUnionIndex());
     private final JSpinner spinnerUnionIndexCount = new JSpinner();
-    private final JCheckBox checkboxIsLimitingSleepTimeStrategy = new JCheckBox("Delay Time strategy:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy());
+    private final JCheckBox checkboxIsLimitingSleepTimeStrategy = new JCheckBox("Delay Time strategy:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isLimitingSleepTimeStrategy());
     private final JSpinner spinnerSleepTimeStrategyCount = new JSpinner();
 
-    private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox("Disable calibration (smaller SQL query during Union index selection only)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
+    private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox("Disable calibration (smaller SQL query during Union index selection only)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isPerfIndexDisabled());
     private final JRadioButton radioIsDefaultStrategy = new JRadioButton("Use Default mode (keep unchanged ; URL and processing unchanged)", true);
-    private final JRadioButton radioIsZipStrategy = new JRadioButton("Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
-    private final JRadioButton radioIsDiosStrategy = new JRadioButton("Use Dios mode (less queries ; do not use with Error strategies)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
-    private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox("Disable URL encoding (smaller URL)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
-    private final JCheckBox checkboxIsUrlRandomSuffixDisabled = new JCheckBox("Disable URL random suffix (strategy Time special use case)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlRandomSuffixDisabled());
+    private final JRadioButton radioIsZipStrategy = new JRadioButton("Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isZipStrategy());
+    private final JRadioButton radioIsDiosStrategy = new JRadioButton("Use Dios mode (less queries ; do not use with Error strategies)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isDiosStrategy());
+    private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox("Disable URL encoding (smaller URL)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlEncodingDisabled());
+    private final JCheckBox checkboxIsUrlRandomSuffixDisabled = new JCheckBox("Disable URL random suffix (strategy Time special use case)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlRandomSuffixDisabled());
 
-    private final JTextField textfieldDnsDomain = new JPopupTextField("e.g custom-domain.com", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getDnsDomain()).getProxy();
-    private final JTextField textfieldDnsPort = new JPopupTextField("e.g 53", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getDnsPort()).getProxy();
+    private final JTextField textfieldDnsDomain = new JPopupTextField("e.g custom-domain.com", MediatorHelper.model().getMediatorUtils().preferencesUtil().getDnsDomain()).getProxy();
+    private final JTextField textfieldDnsPort = new JPopupTextField("e.g 53", MediatorHelper.model().getMediatorUtils().preferencesUtil().getDnsPort()).getProxy();
 
     public PanelInjection(PanelPreferences panelPreferences) {
         this.checkboxIsNotInjectingMetadata.setName("checkboxIsNotInjectingMetadata");
         this.checkboxIsNotSearchingCharInsertion.setName("checkboxIsNotSearchingCharInsertion");
         this.checkboxIsNotShowingVulnReport.setName("checkboxIsNotShowingVulnReport");
-        this.checkboxIsParsingForm.setName("checkboxIsParsingForm");
+        this.checkboxIsParsingForm.setName(PanelInjection.CHECKBOX_IS_PARSING_FORM);
         this.checkboxIsCheckingAllURLParam.setName("checkboxIsCheckingAllURLParam");
         this.checkboxIsCheckingAllRequestParam.setName("checkboxIsCheckingAllRequestParam");
         this.checkboxIsCheckingAllHeaderParam.setName("checkboxIsCheckingAllHeaderParam");
@@ -57,9 +62,9 @@ public class PanelInjection extends JPanel {
         this.checkboxIsCheckingAllCookieParam.setName("checkboxIsCheckingAllCookieParam");
         this.checkboxIsCheckingAllSOAPParam.setName("checkboxIsCheckingAllSOAPParam");
         this.checkboxIsPerfIndexDisabled.setName("checkboxIsPerfIndexDisabled");
-        this.radioIsZipStrategy.setName("radioIsZipStrategy");
-        this.radioIsDefaultStrategy.setName("radioIsDefaultStrategy");
-        this.radioIsDiosStrategy.setName("radioIsDiosStrategy");
+        this.radioIsZipStrategy.setName(PanelInjection.RADIO_IS_ZIP_STRATEGY);
+        this.radioIsDefaultStrategy.setName(PanelInjection.RADIO_IS_DEFAULT_STRATEGY);
+        this.radioIsDiosStrategy.setName(PanelInjection.RADIO_IS_DIOS_STRATEGY);
         this.checkboxIsUrlEncodingDisabled.setName("checkboxIsUrlEncodingDisabled");
         this.checkboxIsUrlRandomSuffixDisabled.setName("checkboxIsUrlRandomSuffixDisabled");
         this.checkboxIsLimitingUnionIndex.setName("checkboxIsLimitingUnionIndex");
@@ -89,7 +94,7 @@ public class PanelInjection extends JPanel {
         panelSleepTimeStrategy.add(this.spinnerSleepTimeStrategyCount, BorderLayout.CENTER);
         panelSleepTimeStrategy.add(new JLabel(" s ; default 5s"), BorderLayout.EAST);
         panelSleepTimeStrategy.setMaximumSize(new Dimension(125, this.spinnerSleepTimeStrategyCount.getPreferredSize().height));
-        int countSleepTimeStrategy = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy();
+        int countSleepTimeStrategy = MediatorHelper.model().getMediatorUtils().preferencesUtil().countSleepTimeStrategy();
         var spinnerSleepTimeStrategy = new SpinnerNumberModel(
             countSleepTimeStrategy <= 0 ? 15 : countSleepTimeStrategy,
             1,
@@ -108,7 +113,7 @@ public class PanelInjection extends JPanel {
         panelIsLimitingUnionIndex.add(this.spinnerUnionIndexCount);
         panelIsLimitingUnionIndex.add(new JLabel(" column(s) ; default 50 columns"));
         panelIsLimitingUnionIndex.setMaximumSize(new Dimension(325, this.spinnerUnionIndexCount.getPreferredSize().height));
-        int countUnionIndex = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countUnionIndex();
+        int countUnionIndex = MediatorHelper.model().getMediatorUtils().preferencesUtil().countUnionIndex();
         var spinnerCountUnionIndex = new SpinnerNumberModel(
             countUnionIndex <= 0 ? 50 : countUnionIndex,
             1,

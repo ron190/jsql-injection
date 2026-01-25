@@ -3,7 +3,7 @@ package com.jsql.model.suspendable;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -31,14 +31,14 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
     @Override
     public String run(Object... args) throws JSqlException {
         // Concurrent search
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetIndexes");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetIndexes");
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         String initialQuery = StringUtils.EMPTY;
         int nbIndex;
         
-        int countUnionIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingUnionIndex()
-            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countUnionIndex()
+        int countUnionIndex = this.injectionModel.getMediatorUtils().preferencesUtil().isLimitingUnionIndex()
+            ? this.injectionModel.getMediatorUtils().preferencesUtil().countUnionIndex()
             : 50;
 
         // SQL fields are built like 1337[index]7330+1
@@ -47,7 +47,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
         for (nbIndex = 1 ; nbIndex <= countUnionIndex ; nbIndex++) {
             taskCompletionService.submit(
                 new CallablePageSource(
-                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
+                    this.injectionModel.getMediatorEngine().getEngine().instance().sqlIndices(nbIndex),
                     this.injectionModel,
                     "union#" + nbIndex,
                     nbIndex
@@ -64,15 +64,15 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                 CallablePageSource currentCallable = taskCompletionService.take().get();
                 nbIndex++;
                 // Found a correct mark 1337[index]7331 in the source
-                String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, "\\d+");
+                String regexAllIndexes = String.format(EngineYaml.FORMAT_INDEX, "\\d+");
                 if (Pattern.compile("(?s).*"+ regexAllIndexes +".*").matcher(currentCallable.getContent()).matches()) {
                     
                     this.injectionModel.getMediatorStrategy().getSpecificUnion().setNbIndexesFound(currentCallable.getNbIndex());
                     this.injectionModel.getMediatorStrategy().getSpecificUnion().setSourceIndexesFound(currentCallable.getContent());
                     initialQuery = currentCallable.getQuery().replace("0%2b1", "1");
                     
-                    if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {
-                        String regexIndexesExceptFirst = String.format(VendorYaml.FORMAT_INDEX, "(?!17331)\\d+");
+                    if (this.injectionModel.getMediatorUtils().preferencesUtil().isPerfIndexDisabled()) {
+                        String regexIndexesExceptFirst = String.format(EngineYaml.FORMAT_INDEX, "(?!17331)\\d+");
                         initialQuery = initialQuery.replaceAll(regexIndexesExceptFirst, "1");
                         LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Calibrating indexes disabled, forcing to index [1]");
                     }
@@ -86,7 +86,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     break;
                 }
             }
-            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
         } catch (InterruptedException e) {
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();

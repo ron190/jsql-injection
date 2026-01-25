@@ -40,11 +40,11 @@ public class SoapUtil {
         }
 
         if (
-            this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam()
-            && this.injectionModel.getMediatorUtils().getParameterUtil().isRequestSoap()
+            this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllSoapParam()
+            && this.injectionModel.getMediatorUtils().parameterUtil().isRequestSoap()
         ) {
             try {
-                var doc = SoapUtil.convertToDocument(this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest());
+                var doc = SoapUtil.convertToDocument(this.injectionModel.getMediatorUtils().parameterUtil().getRawRequest());
                 LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Parsing SOAP from Request...");
                 return this.isTextNodeInjectable(doc, doc.getDocumentElement());
             } catch (ParserConfigurationException | IOException | SAXException e) {
@@ -76,7 +76,7 @@ public class SoapUtil {
                 
                 SoapUtil.removeInjectionPoint(doc, doc.getDocumentElement());
                 currentNode.setTextContent(currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY) + InjectionModel.STAR);
-                this.injectionModel.getMediatorUtils().getParameterUtil().initRequest(SoapUtil.convertDocumentToString(doc));
+                this.injectionModel.getMediatorUtils().parameterUtil().initRequest(SoapUtil.convertDocumentToString(doc));
                 
                 try {
                     LOGGER.log(

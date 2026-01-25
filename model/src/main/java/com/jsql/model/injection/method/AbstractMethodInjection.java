@@ -56,19 +56,19 @@ public abstract class AbstractMethodInjection implements Serializable {
         // Injects URL, Request or Header params only if user tests every params
         // or method is selected by user.
         if (
-            !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
-            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this
+            !this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam()
+            && this.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection() != this
         ) {
             return false;
         }
         
         // Force injection method of model to current running method
-        this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(this);
+        this.injectionModel.getMediatorUtils().connectionUtil().setMethodInjection(this);
         
         // Injection by injection point in params or in path
         if (
             this.getParamsAsString().contains(InjectionModel.STAR)
-            || this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
+            || this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)
         ) {
             hasFoundInjection = this.checkParamWithStar();
         } else if (!this.isCheckingAllParam()) {
@@ -140,8 +140,8 @@ public abstract class AbstractMethodInjection implements Serializable {
         // When option 'Inject JSON' is selected and there's a JSON entity to inject
         // then loop through each path to add * at the end of value and test each strategy.
         // Marks * are erased between each test.
-        if (!attributesJson.isEmpty() && this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam()) {
-            hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParam(this, paramStar);
+        if (!attributesJson.isEmpty() && this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllJsonParam()) {
+            hasFoundInjection = this.injectionModel.getMediatorUtils().jsonUtil().testJsonParam(this, paramStar);
         } else {
             hasFoundInjection = this.testJsonlessParam(paramStar);  // Standard non JSON injection
         }

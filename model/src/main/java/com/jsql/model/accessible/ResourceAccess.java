@@ -11,7 +11,7 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.accessible.vendor.*;
+import com.jsql.model.accessible.engine.*;
 import com.jsql.model.bean.database.MockElement;
 import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.JSqlException;
@@ -148,7 +148,7 @@ public class ResourceAccess {
             folderSplits.add(folderName +"/");
         }
 
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetAdminPage");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetAdminPage");
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         var urlPart = new StringBuilder();
@@ -176,7 +176,7 @@ public class ResourceAccess {
             nbAdminPagesFound = this.callAdminPage(taskCompletionService, nbAdminPagesFound);
         }
 
-        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+        this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
         this.isSearchAdminStopped = false;
         this.logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
 
@@ -225,7 +225,7 @@ public class ResourceAccess {
         }
         String url = urlExploitFixed;
         if (StringUtils.isEmpty(url)) {
-            url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
+            url = this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase();
         }
         String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", StringUtils.EMPTY);
         String urlProtocol;
@@ -253,7 +253,7 @@ public class ResourceAccess {
     }
 
     private String getExploitUrl(String filename, List<String> directoryNames, String urlProtocol) {
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetExploitUrl");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetExploitUrl");
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         var urlPart = new StringBuilder();
 
@@ -286,7 +286,7 @@ public class ResourceAccess {
             }
         }
 
-        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+        this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
         return urlSuccess;
     }
 
@@ -297,7 +297,7 @@ public class ResourceAccess {
     public String callCommand(String urlCommand, boolean isConnectIssueIgnored) {
         String pageSource;
         try {
-            pageSource = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(urlCommand, isConnectIssueIgnored);
+            pageSource = this.injectionModel.getMediatorUtils().connectionUtil().getSource(urlCommand, isConnectIssueIgnored);
         } catch (Exception e) {
             pageSource = StringUtils.EMPTY;
         }
@@ -406,14 +406,14 @@ public class ResourceAccess {
         List<Integer> listFieldsLength = new ArrayList<>();
         for (
             var indexLongestRowSearch = 0;
-            indexLongestRowSearch < listRows.get(0).size();
+            indexLongestRowSearch < listRows.getFirst().size();
             indexLongestRowSearch++
         ) {
             int indexLongestRowSearchFinal = indexLongestRowSearch;
             listRows.sort(
                 (firstRow, secondRow) -> secondRow.get(indexLongestRowSearchFinal).length() - firstRow.get(indexLongestRowSearchFinal).length()
             );
-            listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch).length());
+            listFieldsLength.add(listRows.getFirst().get(indexLongestRowSearch).length());
         }
         return listFieldsLength;
     }
@@ -466,7 +466,7 @@ public class ResourceAccess {
             .setHeader("Content-Type", "multipart/form-data; boundary=" + boundary)
             .build();
 
-        var response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());
+        var response = this.injectionModel.getMediatorUtils().connectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());
         HttpHeaders httpHeaders = response.headers();
         String pageSource = response.body();
 
@@ -527,7 +527,7 @@ public class ResourceAccess {
      */
     public List<String> readFile(List<String> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
         if (
-            this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMysql()
+            this.injectionModel.getMediatorEngine().getEngine() == this.injectionModel.getMediatorEngine().getMysql()
             && this.isMysqlReadDenied()
         ) {
             return Collections.emptyList();
@@ -536,7 +536,7 @@ public class ResourceAccess {
         var countFileFound = 0;
         var results = new ArrayList<String>();
 
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableReadFile");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableReadFile");
         CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         for (String pathFile: pathsFiles) {
@@ -584,7 +584,7 @@ public class ResourceAccess {
             callableReadFile.getSuspendableReadFile().stop();
         }
         this.callablesReadFile.clear();
-        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+        this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
         this.isSearchFileStopped = false;
 
         var result = String.format(

@@ -70,15 +70,15 @@ public class JFrameView extends JFrame {
         this.check4K();
 
         SwingUtilities.invokeLater(() -> {  // paint native blu svg in theme color behind the scene
-            AppMenubar.applyTheme(injectionModel.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName());  // refresh missing components
-            if (injectionModel.getMediatorUtils().getProxyUtil().isNotLive(GitUtil.ShowOnConsole.YES)) {  // network access
+            AppMenubar.applyTheme(injectionModel.getMediatorUtils().preferencesUtil().getThemeFlatLafName());  // refresh missing components
+            if (injectionModel.getMediatorUtils().proxyUtil().isNotLive(GitUtil.ShowOnConsole.YES)) {  // network access
                 return;
             }
-            if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingUpdate()) {
-                injectionModel.getMediatorUtils().getGitUtil().checkUpdate(GitUtil.ShowOnConsole.NO);
+            if (injectionModel.getMediatorUtils().preferencesUtil().isCheckingUpdate()) {
+                injectionModel.getMediatorUtils().gitUtil().checkUpdate(GitUtil.ShowOnConsole.NO);
             }
-            if (injectionModel.getMediatorUtils().getPreferencesUtil().isShowNews()) {  // disabled when UT only
-                injectionModel.getMediatorUtils().getGitUtil().showNews();
+            if (injectionModel.getMediatorUtils().preferencesUtil().isShowNews()) {  // disabled when UT only
+                injectionModel.getMediatorUtils().gitUtil().showNews();
             }
             this.setVisible(true);
             MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();  // required here to get focus
@@ -213,7 +213,7 @@ public class JFrameView extends JFrame {
     private void check4K() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth();
-        if (width >= 3840 && !this.injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
+        if (width >= 3840 && !this.injectionModel.getMediatorUtils().preferencesUtil().is4K()) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Screen compatible with resolution 4K, enable high-definition in Preferences");
         }
     }

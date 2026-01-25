@@ -14,22 +14,24 @@ import java.util.stream.Stream;
 
 public class PanelConnection extends JPanel {
 
-    private final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("Follow redirection", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection());
-    private final JCheckBox checkboxIsHttp2Disabled = new JCheckBox("Disable HTTP/2", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isHttp2Disabled());
-    private final JCheckBox checkboxIsNotTestingConnection = new JCheckBox("Disable connection test", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection());
-    private final JCheckBox checkboxIsNotProcessingCookies = new JCheckBox("Disable session cookies", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies());
-    private final JCheckBox checkboxIsProcessingCsrf = new JCheckBox("Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf());
-    private final JCheckBox checkboxIsLimitingThreads = new JCheckBox("Limit processing threads:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
-    private final JCheckBox checkboxIsConnectionTimeout = new JCheckBox("Set timeout:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout());
-    private final JCheckBox checkboxIsUnicodeDecodeDisabled = new JCheckBox("Disable Unicode decoding in response", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled());
-    private final JCheckBox checkboxIsUrlDecodeDisabled = new JCheckBox("Disable Url decoding in response", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled());
+    public static final String CHECKBOX_IS_FOLLOWING_REDIRECTION = "checkboxIsFollowingRedirection";
+
+    private final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("Follow redirection", MediatorHelper.model().getMediatorUtils().preferencesUtil().isFollowingRedirection());
+    private final JCheckBox checkboxIsHttp2Disabled = new JCheckBox("Disable HTTP/2", MediatorHelper.model().getMediatorUtils().preferencesUtil().isHttp2Disabled());
+    private final JCheckBox checkboxIsNotTestingConnection = new JCheckBox("Disable connection test", MediatorHelper.model().getMediatorUtils().preferencesUtil().isNotTestingConnection());
+    private final JCheckBox checkboxIsNotProcessingCookies = new JCheckBox("Disable session cookies", MediatorHelper.model().getMediatorUtils().preferencesUtil().isNotProcessingCookies());
+    private final JCheckBox checkboxIsProcessingCsrf = new JCheckBox("Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isProcessingCsrf());
+    private final JCheckBox checkboxIsLimitingThreads = new JCheckBox("Limit processing threads:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isLimitingThreads());
+    private final JCheckBox checkboxIsConnectionTimeout = new JCheckBox("Set timeout:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isConnectionTimeout());
+    private final JCheckBox checkboxIsUnicodeDecodeDisabled = new JCheckBox("Disable Unicode decoding in response", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUnicodeDecodeDisabled());
+    private final JCheckBox checkboxIsUrlDecodeDisabled = new JCheckBox("Disable Url decoding in response", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlDecodeDisabled());
     
     private final JSpinner spinnerLimitingThreads = new JSpinner();
     private final JSpinner spinnerConnectionTimeout = new JSpinner();
     
-    private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox("Custom CSRF:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag());
-    private final JTextField textfieldCustomCsrfInputToken = new JPopupTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTag()).getProxy();
-    private final JTextField textfieldCustomCsrfOutputToken = new JPopupTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTagOutput()).getProxy();
+    private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox("Custom CSRF:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCsrfUserTag());
+    private final JTextField textfieldCustomCsrfInputToken = new JPopupTextField(MediatorHelper.model().getMediatorUtils().preferencesUtil().csrfUserTag()).getProxy();
+    private final JTextField textfieldCustomCsrfOutputToken = new JPopupTextField(MediatorHelper.model().getMediatorUtils().preferencesUtil().csrfUserTagOutput()).getProxy();
     
     public PanelConnection(PanelPreferences panelPreferences) {
         this.checkboxIsFollowingRedirection.setToolTipText(
@@ -70,7 +72,7 @@ public class PanelConnection extends JPanel {
         panelConnectionTimeout.add(this.spinnerConnectionTimeout);
         panelConnectionTimeout.add(new JLabel(" s ; default 15s"));
         panelConnectionTimeout.setMaximumSize(new Dimension(125, this.spinnerConnectionTimeout.getPreferredSize().height));
-        int countConnectionTimeout = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countConnectionTimeout();
+        int countConnectionTimeout = MediatorHelper.model().getMediatorUtils().preferencesUtil().countConnectionTimeout();
         var spinnerConnectionModel = new SpinnerNumberModel(
             countConnectionTimeout <= 0 ? 15 : countConnectionTimeout,
             1,
@@ -87,7 +89,7 @@ public class PanelConnection extends JPanel {
         panelThreadCount.add(this.spinnerLimitingThreads);
         panelThreadCount.add(new JLabel(" thread(s) ; default 5 threads"));
         panelThreadCount.setMaximumSize(new Dimension(125, this.spinnerLimitingThreads.getPreferredSize().height));
-        int countLimitingThreads = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+        int countLimitingThreads = MediatorHelper.model().getMediatorUtils().preferencesUtil().countLimitingThreads();
         var spinnerNumberModel = new SpinnerNumberModel(
             countLimitingThreads <= 0 ? 10 : countLimitingThreads,
             1,
@@ -156,7 +158,7 @@ public class PanelConnection extends JPanel {
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
-        this.checkboxIsFollowingRedirection.setName("checkboxIsFollowingRedirection");
+        this.checkboxIsFollowingRedirection.setName(PanelConnection.CHECKBOX_IS_FOLLOWING_REDIRECTION);
         this.checkboxIsHttp2Disabled.setName("checkboxIsHttp2Disabled");
         this.checkboxIsUnicodeDecodeDisabled.setName("checkboxIsUnicodeDecodeDisabled");
         this.checkboxIsUrlDecodeDisabled.setName("checkboxIsUrlDecodeDisabled");

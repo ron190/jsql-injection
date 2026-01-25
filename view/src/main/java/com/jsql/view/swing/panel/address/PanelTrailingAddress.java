@@ -2,8 +2,8 @@ package com.jsql.view.swing.panel.address;
 
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyError;
-import com.jsql.model.injection.vendor.model.Vendor;
-import com.jsql.model.injection.vendor.model.yaml.Method;
+import com.jsql.model.injection.engine.model.Engine;
+import com.jsql.model.injection.engine.model.yaml.Method;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.panel.PanelAddressBar;
@@ -27,15 +27,20 @@ public class PanelTrailingAddress extends JPanel {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
 
+    public static final String MENU_STRATEGY = "menuStrategy";
+    public static final String ITEM_RADIO_STRATEGY_ERROR = "itemRadioStrategyError";
+    public static final String MENU_VENDOR = "menuVendor";
+    public static final String ITEM_RADIO_VENDOR = "itemRadioVendor";
+
     private JMenu itemRadioStrategyError;
 
-    private final JLabel labelVendor = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
+    private final JLabel labelEngine = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
     private final JLabel labelStrategy = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
-    private final JPopupMenu popupMenuVendors = new JPopupMenu();
+    private final JPopupMenu popupMenuEngines = new JPopupMenu();
     private final JPopupMenu popupMenuStrategies = new JPopupMenu();
 
     private final ButtonGroup groupStrategy = new ButtonGroup();
-    private static final String PREFIX_NAME_ERROR = "itemRadioError";
+    public static final String PREFIX_NAME_ERROR = "itemRadioError";
     private static final String I18N_TOOLTIP_STRATEGY = "STRATEGY_%s_TOOLTIP";
 
     /**
@@ -53,7 +58,7 @@ public class PanelTrailingAddress extends JPanel {
         this.setOpaque(false);
         this.setBorder(null);
         this.labelStrategy.setText("Strategy auto");
-        this.labelStrategy.setName("menuStrategy");
+        this.labelStrategy.setName(PanelTrailingAddress.MENU_STRATEGY);
 
         for (final AbstractStrategy strategy: MediatorHelper.model().getMediatorStrategy().getStrategies()) {
             var nameStrategy = strategy.getName().toUpperCase(Locale.ROOT);
@@ -61,7 +66,7 @@ public class PanelTrailingAddress extends JPanel {
             if (strategy == MediatorHelper.model().getMediatorStrategy().getError()) {
                 itemRadioStrategy = new JMenu(strategy.toString());
                 this.itemRadioStrategyError = (JMenu) itemRadioStrategy;
-                itemRadioStrategy.getComponent().setName("itemRadioStrategyError");
+                itemRadioStrategy.getComponent().setName(PanelTrailingAddress.ITEM_RADIO_STRATEGY_ERROR);
             } else {
                 var atomicTooltip = new AtomicReference<>(new JToolTipI18n(
                     I18nUtil.valueByKey(String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy))
@@ -96,19 +101,19 @@ public class PanelTrailingAddress extends JPanel {
             itemRadioStrategy.setEnabled(false);
         }
 
-        this.labelVendor.setText(MediatorHelper.model().getMediatorVendor().getAuto().toString());
-        this.labelVendor.setName("menuVendor");
-        this.popupMenuVendors.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorVendor().getVendors().size()));
-        var groupVendor = new ButtonGroup();
-        for (final Vendor vendor: MediatorHelper.model().getMediatorVendor().getVendors()) {
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorHelper.model().getMediatorVendor().getAuto());
-            itemRadioVendor.setName("itemRadioVendor"+ vendor);
-            itemRadioVendor.addActionListener(actionEvent -> {
-                this.labelVendor.setText(vendor.toString());
-                MediatorHelper.model().getMediatorVendor().setVendorByUser(vendor);
+        this.labelEngine.setText(MediatorHelper.model().getMediatorEngine().getAuto().toString());
+        this.labelEngine.setName(PanelTrailingAddress.MENU_VENDOR);
+        this.popupMenuEngines.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorEngine().getEngines().size()));
+        var groupEngine = new ButtonGroup();
+        for (final Engine engine : MediatorHelper.model().getMediatorEngine().getEngines()) {
+            JMenuItem itemRadioEngine = new JRadioButtonMenuItem(engine.toString(), engine == MediatorHelper.model().getMediatorEngine().getAuto());
+            itemRadioEngine.setName(PanelTrailingAddress.ITEM_RADIO_VENDOR + engine);
+            itemRadioEngine.addActionListener(actionEvent -> {
+                this.labelEngine.setText(engine.toString());
+                MediatorHelper.model().getMediatorEngine().setEngineByUser(engine);
             });
-            this.popupMenuVendors.add(itemRadioVendor);
-            groupVendor.add(itemRadioVendor);
+            this.popupMenuEngines.add(itemRadioEngine);
+            groupEngine.add(itemRadioEngine);
         }
 
         this.loader = new JProgressBar();
@@ -117,16 +122,16 @@ public class PanelTrailingAddress extends JPanel {
         this.loader.setIndeterminate(true);
         this.add(this.loader);
 
-        this.labelVendor.addMouseListener(new MouseAdapter() {
+        this.labelEngine.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Arrays.stream(PanelTrailingAddress.this.popupMenuVendors.getComponents())
+                Arrays.stream(PanelTrailingAddress.this.popupMenuEngines.getComponents())
                     .map(JComponent.class::cast)
                     .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
-                PanelTrailingAddress.this.popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch
+                PanelTrailingAddress.this.popupMenuEngines.updateUI();  // required: incorrect when dark/light mode switch
                 SwingUtilities.invokeLater(() -> {  // reduce flickering on linux
-                    PanelTrailingAddress.this.popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
-                    PanelTrailingAddress.this.popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+                    PanelTrailingAddress.this.popupMenuEngines.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
+                    PanelTrailingAddress.this.popupMenuEngines.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
                 });
             }
         });
@@ -145,7 +150,7 @@ public class PanelTrailingAddress extends JPanel {
             }
         });
 
-        this.add(this.labelVendor);
+        this.add(this.labelEngine);
         this.add(this.labelStrategy);
         this.add(this.buttonStart);
         this.setCursor(Cursor.getDefaultCursor());
@@ -160,8 +165,8 @@ public class PanelTrailingAddress extends JPanel {
     
     public void reset() {
         this.labelStrategy.setText("Strategy auto");
-        if (MediatorHelper.model().getMediatorVendor().getVendorByUser() == MediatorHelper.model().getMediatorVendor().getAuto()) {
-            this.labelVendor.setText(MediatorHelper.model().getMediatorVendor().getAuto().toString());
+        if (MediatorHelper.model().getMediatorEngine().getEngineByUser() == MediatorHelper.model().getMediatorEngine().getAuto()) {
+            this.labelEngine.setText(MediatorHelper.model().getMediatorEngine().getAuto().toString());
         }
         Arrays.stream(this.popupMenuStrategies.getComponents())
             .forEach(component -> component.setEnabled(false));
@@ -174,15 +179,15 @@ public class PanelTrailingAddress extends JPanel {
             .forEach(this.groupStrategy::remove);
     }
     
-    public void setVendor(Vendor vendor) {
-        this.labelVendor.setText(vendor.toString());
+    public void setEngine(Engine engine) {
+        this.labelEngine.setText(engine.toString());
         this.itemRadioStrategyError.removeAll();
         var indexError = 0;
         if (
-            vendor != MediatorHelper.model().getMediatorVendor().getAuto()
-            && vendor.instance().getModelYaml().getStrategy().getError() != null
+            engine != MediatorHelper.model().getMediatorEngine().getAuto()
+            && engine.instance().getModelYaml().getStrategy().getError() != null
         ) {
-            for (Method methodError: vendor.instance().getModelYaml().getStrategy().getError().getMethod()) {
+            for (Method methodError: engine.instance().getModelYaml().getStrategy().getError().getMethod()) {
                 JMenuItem itemRadioError = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioError.setEnabled(false);
                 itemRadioError.setName(PanelTrailingAddress.PREFIX_NAME_ERROR + methodError.getName());
@@ -240,7 +245,7 @@ public class PanelTrailingAddress extends JPanel {
         StrategyError strategy = MediatorHelper.model().getMediatorStrategy().getError();
         this.labelStrategy.setText(strategy.toString());
         int indexError = strategy.getIndexErrorStrategy();
-        String nameError = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
+        String nameError = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
 
         Arrays.stream(this.getMenuError().getMenuComponents())
             .map(JRadioButtonMenuItem.class::cast)

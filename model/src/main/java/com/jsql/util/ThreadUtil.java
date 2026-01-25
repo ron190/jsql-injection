@@ -89,8 +89,8 @@ public final class ThreadUtil {
     public ExecutorService getExecutor(String nameThread) {
         ExecutorService taskExecutor;
         
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isLimitingThreads()) {
+            int countThreads = this.injectionModel.getMediatorUtils().preferencesUtil().countLimitingThreads();
             taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(nameThread));
         } else {
             taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable(nameThread));
@@ -100,8 +100,8 @@ public final class ThreadUtil {
 
     public void shutdown(ExecutorService taskExecutor) {
         int timeout = 15;
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isConnectionTimeout()) {
-            timeout = this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isConnectionTimeout()) {
+            timeout = this.injectionModel.getMediatorUtils().preferencesUtil().countConnectionTimeout();
         }
 
         try {

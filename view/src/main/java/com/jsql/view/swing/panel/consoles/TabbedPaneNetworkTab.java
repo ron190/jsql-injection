@@ -1,7 +1,7 @@
 package com.jsql.view.swing.panel.consoles;
 
 import com.jsql.model.bean.util.Request3;
-import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
@@ -47,7 +47,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     }).getProxy();
     private final RSyntaxTextArea textAreaHeader = new SyntaxTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_HEADERS"));
     private final RSyntaxTextArea textAreaRequest = new SyntaxTextArea(I18nUtil.valueByKey("NETWORK_LINE_PLACEHOLDER_REQUEST"));
-    private final JCheckBox checkBoxDecode = new JCheckBox("Decode", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlDecodeNetworkTab());
+    private final JCheckBox checkBoxDecode = new JCheckBox("Decode", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlDecodeNetworkTab());
 
     public TabbedPaneNetworkTab() {
         this.setName("tabNetwork");
@@ -123,7 +123,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         try {
             this.textAreaSource.setText(
                 StringUtil.detectUtf8(networkData.source())
-                .replaceAll(VendorYaml.CALIBRATOR_SQL +"{5,}", VendorYaml.CALIBRATOR_SQL +"*")
+                .replaceAll(EngineYaml.CALIBRATOR_SQL +"{5,}", EngineYaml.CALIBRATOR_SQL +"*")
                 .trim()
             );
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {

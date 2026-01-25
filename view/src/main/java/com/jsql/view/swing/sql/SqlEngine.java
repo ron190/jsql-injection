@@ -1,8 +1,8 @@
 package com.jsql.view.swing.sql;
 
-import com.jsql.model.injection.vendor.model.Vendor;
-import com.jsql.model.injection.vendor.model.yaml.Method;
-import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
+import com.jsql.model.injection.engine.model.Engine;
+import com.jsql.model.injection.engine.model.yaml.Method;
+import com.jsql.model.injection.engine.model.yaml.ModelYaml;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 
 public class SqlEngine extends JPanel {
 
-    private static ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
+    private static ModelYaml modelYaml = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml();
     private static final JTabbedPane TABS_ERROR = new TabbedPaneWheeled(SwingConstants.RIGHT);
     private static final List<JSyntaxTextArea> LIST_TEXTAREAS_ERROR = new ArrayList<>();
     
@@ -231,9 +231,9 @@ public class SqlEngine extends JPanel {
             v -> SqlEngine.modelYaml.getStrategy().getUnion().setOrderBy(v),
             () -> SqlEngine.modelYaml.getStrategy().getUnion().getOrderBy()
         )),
-        VENDOR_SPECIFIC(new JSyntaxTextArea(
-            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),
-            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
+        ENGINE_SPECIFIC(new JSyntaxTextArea(
+            v -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setEngineSpecific(v),
+            () -> SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getEngineSpecific()
         )),
         ;
         
@@ -249,8 +249,8 @@ public class SqlEngine extends JPanel {
     }
     
     public SqlEngine() {
-        // user can switch to another vendor then close, so restore current vendor
-        SqlEngine.modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
+        // user can switch to another engine then close, so restore current engine
+        SqlEngine.modelYaml = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml();
 
         SqlEngine.initTextComponents();
 
@@ -281,7 +281,7 @@ public class SqlEngine extends JPanel {
 
         this.setLayout(new BorderLayout());
 
-        JPanel panelCombo = SqlEngine.initMenuVendor();
+        JPanel panelCombo = SqlEngine.initMenuEngine();
         tabsBottom.putClientProperty("JTabbedPane.trailingComponent", panelCombo);
         this.add(tabsBottom);
 
@@ -434,7 +434,7 @@ public class SqlEngine extends JPanel {
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new RTextScrollPane(TextareaWithColor.ORDER_BY.getTextArea(), false));
         tabs.addTab("Order by error", new RTextScrollPane(TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getTextArea(), false));
         tabs.addTab("String error", new RTextScrollPane(TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getTextArea(), false));
-        tabs.addTab("Vendor specific", new RTextScrollPane(TextareaWithColor.VENDOR_SPECIFIC.getTextArea(), false));
+        tabs.addTab("Engine specific", new RTextScrollPane(TextareaWithColor.ENGINE_SPECIFIC.getTextArea(), false));
         tabs.addTab("Truthy", new RTextScrollPane(TextareaWithColor.TRUTHY.getTextArea(), false));
         tabs.addTab("Falsy", new RTextScrollPane(TextareaWithColor.FALSY.getTextArea(), false));
         
@@ -446,47 +446,47 @@ public class SqlEngine extends JPanel {
         return tabs;
     }
 
-    private static JPanel initMenuVendor() {
-        var panelMenuVendor = new JPanel();  // required for label on right
-        panelMenuVendor.setLayout(new BorderLayout());
+    private static JPanel initMenuEngine() {
+        var panelMenuEngine = new JPanel();  // required for label on right
+        panelMenuEngine.setLayout(new BorderLayout());
 
-        JPopupMenu popupMenuVendors = new JPopupMenu();
-        popupMenuVendors.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorVendor().getVendors().size()));
+        JPopupMenu popupMenuEngines = new JPopupMenu();
+        popupMenuEngines.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorEngine().getEngines().size()));
 
-        JLabel labelVendor = new JLabel(MediatorHelper.model().getMediatorVendor().getVendor().toString(), UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
-        labelVendor.setBorder(UiUtil.BORDER_5PX);  // required for padding
-        labelVendor.addMouseListener(new MouseAdapter() {
+        JLabel labelEngine = new JLabel(MediatorHelper.model().getMediatorEngine().getEngine().toString(), UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
+        labelEngine.setBorder(UiUtil.BORDER_5PX);  // required for padding
+        labelEngine.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Arrays.stream(popupMenuVendors.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
-                popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch
-                popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());
-                popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+                Arrays.stream(popupMenuEngines.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
+                popupMenuEngines.updateUI();  // required: incorrect when dark/light mode switch
+                popupMenuEngines.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());
+                popupMenuEngines.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
             }
         });
 
-        List<Vendor> listVendors = new LinkedList<>(MediatorHelper.model().getMediatorVendor().getVendors());
-        listVendors.removeIf(vendor -> vendor == MediatorHelper.model().getMediatorVendor().getAuto());
+        List<Engine> listEngines = new LinkedList<>(MediatorHelper.model().getMediatorEngine().getEngines());
+        listEngines.removeIf(engine -> engine == MediatorHelper.model().getMediatorEngine().getAuto());
 
-        var groupVendor = new ButtonGroup();
-        for (final Vendor vendor: listVendors) {
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(
-                vendor.toString(),
-                vendor == MediatorHelper.model().getMediatorVendor().getVendor()
+        var groupEngine = new ButtonGroup();
+        for (final Engine engine : listEngines) {
+            JMenuItem itemRadioEngine = new JRadioButtonMenuItem(
+                engine.toString(),
+                engine == MediatorHelper.model().getMediatorEngine().getEngine()
             );
             
-            itemRadioVendor.addActionListener(actionEvent -> {
-                SqlEngine.modelYaml = vendor.instance().getModelYaml();
+            itemRadioEngine.addActionListener(actionEvent -> {
+                SqlEngine.modelYaml = engine.instance().getModelYaml();
                 SqlEngine.initTextComponents();
-                labelVendor.setText(vendor.toString());
+                labelEngine.setText(engine.toString());
             });
             
-            groupVendor.add(itemRadioVendor);
-            popupMenuVendors.add(itemRadioVendor);
+            groupEngine.add(itemRadioEngine);
+            popupMenuEngines.add(itemRadioEngine);
         }
         
-        panelMenuVendor.add(labelVendor, BorderLayout.LINE_END);  // required to set on right
-        return panelMenuVendor;
+        panelMenuEngine.add(labelEngine, BorderLayout.LINE_END);  // required to set on right
+        return panelMenuEngine;
     }
     
     /**
@@ -512,7 +512,7 @@ public class SqlEngine extends JPanel {
     }
 
     /**
-     * Dynamically add textPanes to Error tab for current vendor.
+     * Dynamically add textPanes to Error tab for current engine.
      */
     private static void populateTabError() {
         SqlEngine.TABS_ERROR.removeAll();

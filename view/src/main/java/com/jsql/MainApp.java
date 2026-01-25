@@ -32,13 +32,13 @@ public class MainApp {
         }
 
         INJECTION_MODEL = new InjectionModel();
-        MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();
+        MainApp.INJECTION_MODEL.getMediatorUtils().preferencesUtil().loadSavedPreferences();
 
         if (SystemInfo.isLinux) {  // enable flatlaf decorated window
             JFrame.setDefaultLookAndFeelDecorated(true);
             JDialog.setDefaultLookAndFeelDecorated(true);
         }
-        var nameTheme = MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName();
+        var nameTheme = MainApp.INJECTION_MODEL.getMediatorUtils().preferencesUtil().getThemeFlatLafName();
         UiUtil.applyTheme(nameTheme);  // required init but not enough, reapplied next
         MainApp.apply4K();
     }
@@ -54,9 +54,9 @@ public class MainApp {
     public static void main(String[] args) {
         MediatorHelper.register(MainApp.INJECTION_MODEL);
 
-        MainApp.INJECTION_MODEL.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();
-        MainApp.INJECTION_MODEL.getMediatorUtils().getProxyUtil().initProxy();
-        MainApp.INJECTION_MODEL.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();
+        MainApp.INJECTION_MODEL.getMediatorUtils().exceptionUtil().setUncaughtExceptionHandler();
+        MainApp.INJECTION_MODEL.getMediatorUtils().proxyUtil().initProxy();
+        MainApp.INJECTION_MODEL.getMediatorUtils().authenticationUtil().setKerberosCifs();
 
         try {
             var view = new JFrameView(MainApp.INJECTION_MODEL);
@@ -78,7 +78,7 @@ public class MainApp {
     }
 
     private static void apply4K() {  // required not in UiUtil before frame is set
-        if (MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().is4K()) {
+        if (MainApp.INJECTION_MODEL.getMediatorUtils().preferencesUtil().is4K()) {
             System.setProperty("sun.java2d.uiScale", "2.5");  // jdk >= 9
         }
     }

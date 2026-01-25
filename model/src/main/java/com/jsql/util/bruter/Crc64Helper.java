@@ -14,10 +14,10 @@ package com.jsql.util.bruter;
 /**
  * CRC64 checksum calculator based on the polynom specified in ISO 3309. The
  * implementation is based on the following publications:
- * 
+ *
  * <ul>
- * <li>http://en.wikipedia.org/wiki/Cyclic_redundancy_check</li>
- * <li>http://www.geocities.com/SiliconValley/Pines/8659/crc.htm</li>
+ * <li><a href="http://en.wikipedia.org/wiki/Cyclic_redundancy_check">Cyclic_redundancy_check</a></li>
+ * <li><a href="http://www.geocities.com/SiliconValley/Pines/8659/crc.htm">crc.htm</a></li>
  * </ul>
  */
 public class Crc64Helper {

@@ -22,7 +22,7 @@ public class CookiesUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
         if (!hasFoundInjection) {
-            if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam()) {
+            if (!this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllCookieParam()) {
                 return false;
             }
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} cookies...", () -> I18nUtil.valueByKey("LOG_CHECKING"));
@@ -30,9 +30,9 @@ public class CookiesUtil {
             return true;
         }
 
-        String rawHeader = this.injectionModel.getMediatorUtils().getParameterUtil().getRawHeader();
+        String rawHeader = this.injectionModel.getMediatorUtils().parameterUtil().getRawHeader();
 
-        List<AbstractMap.SimpleEntry<String, String>> cookies = this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()
+        List<AbstractMap.SimpleEntry<String, String>> cookies = this.injectionModel.getMediatorUtils().parameterUtil().getListHeader()
             .stream()
             .filter(entry -> "cookie".equalsIgnoreCase(entry.getKey()))
             .findFirst()
@@ -51,7 +51,7 @@ public class CookiesUtil {
             String keyValue = cookie.getKey() + "=" + cookie.getValue();
             String headerCookieWithStar = rawHeader.replace(keyValue, keyValue + InjectionModel.STAR);
 
-            this.injectionModel.getMediatorUtils().getParameterUtil().initHeader(headerCookieWithStar);
+            this.injectionModel.getMediatorUtils().parameterUtil().initHeader(headerCookieWithStar);
 
             try {
                 LOGGER.log(

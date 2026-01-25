@@ -3,7 +3,7 @@ package com.test.preferences;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMySqlSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
 class CheckAllHeaderSuiteIT extends ConcreteMySqlSuiteIT {
@@ -15,14 +15,14 @@ class CheckAllHeaderSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SubscriberLogger(model));
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/header?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().initHeader("fake1:\\r\\nname:\\r\\nfake2:");
+        model.getMediatorUtils().parameterUtil().initQueryString("http://localhost:8080/header?tenant=mysql");
+        model.getMediatorUtils().parameterUtil().initHeader("fake1:\\r\\nname:\\r\\nfake2:");
         
         model.setIsScanning(true);
         
         model
         .getMediatorUtils()
-        .getPreferencesUtil()
+        .preferencesUtil()
         .withIsCheckingAllHeaderParam(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
@@ -30,7 +30,7 @@ class CheckAllHeaderSuiteIT extends ConcreteMySqlSuiteIT {
 
         model
         .getMediatorUtils()
-        .getConnectionUtil()
+        .connectionUtil()
         .setMethodInjection(model.getMediatorMethod().getHeader());
         
         model.beginInjection();

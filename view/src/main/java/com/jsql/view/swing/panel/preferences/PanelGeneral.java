@@ -11,9 +11,9 @@ public class PanelGeneral extends JPanel {
 
     public static final Border MARGIN = BorderFactory.createEmptyBorder(0,0,2,0);
 
-    private final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("Check update at startup", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingUpdate());
-    private final JCheckBox checkboxIsReportingBugs = new JCheckBox("Report unhandled exceptions", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isReportingBugs());
-    private final JCheckBox checkboxIs4K = new JCheckBox("Enable high-definition mode for 4K screens (need a restart)", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().is4K());
+    private final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("Check update at startup", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingUpdate());
+    private final JCheckBox checkboxIsReportingBugs = new JCheckBox("Report unhandled exceptions", MediatorHelper.model().getMediatorUtils().preferencesUtil().isReportingBugs());
+    private final JCheckBox checkboxIs4K = new JCheckBox("Enable high-definition mode for 4K screens (need a restart)", MediatorHelper.model().getMediatorUtils().preferencesUtil().is4K());
     
     public PanelGeneral(PanelPreferences panelPreferences) {
         this.checkboxIsReportingBugs.setToolTipText("Send unhandled exception to developer in order to fix issues.");

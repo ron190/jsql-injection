@@ -34,7 +34,7 @@ public class CallableMultibit extends AbstractCallableBit<CallableMultibit> {
         String metadataInjectionProcess
     ) {
         this(
-            injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
+            injectionModel.getMediatorEngine().getEngine().instance().sqlMultibit(
                 sqlQuery,
                 indexChar,
                 3 * block - 2

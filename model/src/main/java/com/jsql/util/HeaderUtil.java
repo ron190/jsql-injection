@@ -80,13 +80,13 @@ public class HeaderUtil {
      */
     public HttpResponse<String> checkResponseHeader(Builder httpRequestBuilder, String body) throws IOException, InterruptedException {
         var httpRequest = httpRequestBuilder.build();
-        HttpResponse<String> httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(
+        HttpResponse<String> httpResponse = this.injectionModel.getMediatorUtils().connectionUtil().getHttpClient().build().send(
             httpRequest,
             BodyHandlers.ofString()
         );
         String pageSource = httpResponse.body();
         
-        List<HttpCookie> cookies = this.injectionModel.getMediatorUtils().getConnectionUtil().getCookieManager().getCookieStore().getCookies();
+        List<HttpCookie> cookies = this.injectionModel.getMediatorUtils().connectionUtil().getCookieManager().getCookieStore().getCookies();
         if (!cookies.isEmpty()) {
             LOGGER.info("Cookies set by host: {}", cookies);
         }
@@ -96,9 +96,9 @@ public class HeaderUtil {
         this.checkResponse(responseCode, mapResponseHeaders);
         this.checkStatus(httpResponse);
         
-        this.injectionModel.getMediatorUtils().getFormUtil().parseForms(httpResponse.statusCode(), pageSource);
-        this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapResponseHeaders);
-        this.injectionModel.getMediatorUtils().getDigestUtil().parseWwwAuthenticate(mapResponseHeaders);
+        this.injectionModel.getMediatorUtils().formUtil().parseForms(httpResponse.statusCode(), pageSource);
+        this.injectionModel.getMediatorUtils().csrfUtil().parseForCsrfToken(pageSource, mapResponseHeaders);
+        this.injectionModel.getMediatorUtils().digestUtil().parseWwwAuthenticate(mapResponseHeaders);
 
         int sizeHeaders = mapResponseHeaders.keySet()
             .stream()
@@ -126,7 +126,7 @@ public class HeaderUtil {
 
     private void checkStatus(HttpResponse<String> response) {
         if (response.statusCode() >= 400) {
-            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
+            if (this.injectionModel.getMediatorUtils().preferencesUtil().isNotTestingConnection()) {
                 LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection test disabled, skipping error {}...", response.statusCode());
             } else {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Try with option 'Disable connection test' to skip HTTP error {}", response.statusCode());
@@ -169,7 +169,7 @@ public class HeaderUtil {
             
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Redirection", HeaderUtil.FOUND_STATUS_HTTP, responseCode);
             
-            if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
+            if (!this.injectionModel.getMediatorUtils().preferencesUtil().isFollowingRedirection()) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "If injection fails retry with option 'Follow HTTP redirection' activated");
             } else {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Redirecting to the next page...");

@@ -68,7 +68,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
                 .timeout(Duration.ofSeconds(4));
             
             Stream.of(
-                this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries().split("\\\\r\\\\n")
+                this.injectionModel.getMediatorUtils().parameterUtil().getHeaderFromEntries().split("\\\\r\\\\n")
             )
             .map(e -> {
                 if (e.split(":").length == 2) {
@@ -84,7 +84,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             .forEach(e -> builderHttpRequest.header(e.getKey(), e.getValue()));
             
             var httpRequest = builderHttpRequest.build();
-            var httpClient = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient()
+            var httpClient = this.injectionModel.getMediatorUtils().connectionUtil().getHttpClient()
                 .connectTimeout(Duration.ofSeconds(4))
                 .build();
             HttpResponse<Void> response = httpClient.send(httpRequest, BodyHandlers.discarding());

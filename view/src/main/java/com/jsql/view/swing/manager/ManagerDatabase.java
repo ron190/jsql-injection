@@ -37,10 +37,11 @@ import java.awt.event.MouseEvent;
  * Manager to code/decode string in various methods.
  */
 public class ManagerDatabase extends JPanel {
-    
+
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final TreeDatabase tree;
+    public static final String TREE_DATABASES = "treeDatabases";
 
     /**
      * Create a panel to encode a string.
@@ -54,7 +55,7 @@ public class ManagerDatabase extends JPanel {
         I18nViewUtil.addComponentForKey("DATABASE_EMPTY", nodeModelEmpty);
 
         this.tree = new TreeDatabase(root);
-        this.tree.setName("treeDatabases");
+        this.tree.setName(ManagerDatabase.TREE_DATABASES);
         MediatorHelper.register(this.tree);
 
         this.tree.setCellRenderer(new CellRendererNode());

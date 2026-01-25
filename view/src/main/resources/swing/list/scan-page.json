@@ -3,7 +3,7 @@
     {"url": "http://testphp.vulnweb.com/listproducts.php?cat=1"},
     {
         "url": "http://testasp.vulnweb.com/showforum.asp?id=",
-        "vendor": "SQLSERVER"
+        "engine": "SQLSERVER"
     },
     {
         "url": "http://testasp.vulnweb.com/Login.asp",
@@ -11,7 +11,7 @@
         "header": "Cookie: ASPSESSIONIDCQCARQSS=FIRST_REGISTER_USERNAME_THEN_LOGIN_AND_GET_COOKIE_VALUE",
         "requestType": "POST",
         "method": "REQUEST",
-        "vendor": "SQLSERVER"
+        "engine": "SQLSERVER"
     },
     {
         "url": "http://openvpn_address/run#level1_tryhackme_com/room/sqlinjectionlm",
@@ -61,11 +61,11 @@
     },
     {
         "url": "https://juice-shop.herokuapp.com/rest/products/search?q=",
-        "vendor": "SQLITE"
+        "engine": "SQLITE"
     },
     {
         "url": "https://demo.owasp-juice.shop/rest/products/search?q=",
-        "vendor": "SQLITE"
+        "engine": "SQLITE"
     },
     {
         "url": "http://challenges.ringzer0team.com:10001",
@@ -160,7 +160,7 @@
     {
         "url": "http://localhost/DVWA-2.0.1/vulnerabilities/sqli/?id=&Submit=Submit",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE;security=low;",
-        "vendor": "MYSQL"
+        "engine": "MYSQL"
     },
     {
         "url": "http://localhost/DVWA-2.0.1/vulnerabilities/sqli/",
@@ -203,12 +203,12 @@
     {
         "url": "http://localhost/bWAPP/sqli_1.php?action=search&title=",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
-        "vendor": "MYSQL"
+        "engine": "MYSQL"
     },
     {
         "url": "http://localhost/bWAPP/sqli_2.php?movie=1&action=go",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
-        "vendor": "MYSQL"
+        "engine": "MYSQL"
     },
     {
         "url": "http://localhost/bWAPP/sqli_3.php",
@@ -216,12 +216,12 @@
         "requestType": "POST",
         "method": "REQUEST",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
-        "vendor": "MYSQL"
+        "engine": "MYSQL"
     },
     {
         "url": "http://localhost/bWAPP/sqli_4.php?title=a'&action=search",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
-        "vendor": "MYSQL"
+        "engine": "MYSQL"
     },
     {
         "url": "http://localhost/bWAPP/sqli_6.php",
@@ -229,7 +229,7 @@
         "requestType": "POST",
         "method": "REQUEST",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
-        "vendor": "MYSQL"
+        "engine": "MYSQL"
     },
     {
         "url": "http://localhost/bWAPP/sqli_7.php",
@@ -237,7 +237,7 @@
         "requestType": "POST",
         "method": "REQUEST",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
-        "vendor": "MYSQL"
+        "engine": "MYSQL"
     },
     {
         "url": "http://localhost/bWAPP/sqli_11.php?title=a'&action=search",
@@ -249,7 +249,7 @@
         "requestType": "POST",
         "method": "REQUEST",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
-        "vendor": "MYSQL"
+        "engine": "MYSQL"
     },
     {
         "url": "http://localhost/bWAPP/sqli_17.php",

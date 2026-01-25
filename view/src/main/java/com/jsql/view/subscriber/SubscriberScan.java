@@ -16,11 +16,11 @@ import com.jsql.view.swing.util.MediatorHelper;
 public class SubscriberScan extends AbstractSubscriber {
     @Override
     protected void execute(Request3 request) {
-        var urlByUser = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getUrlByUser();
+        var urlByUser = MediatorHelper.model().getMediatorUtils().connectionUtil().getUrlByUser();
         switch (request) {
-            case Request3.DatabaseIdentified(var url, var vendor) -> MediatorHelper.managerScan().highlight(url, vendor.toString());
-            case Request3.SetVendor(var url, var vendor) -> MediatorHelper.managerScan().highlight(url, vendor.toString());
-            case Request3.MarkStrategyVulnerable(var strategy) -> MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());
+            case Request3.MarkEngineFound(var engine) -> MediatorHelper.managerScan().highlight(urlByUser, engine.toString());
+            case Request3.ActivateEngine(var engine) -> MediatorHelper.managerScan().highlight(urlByUser, engine.toString());
+            case Request3.MarkVulnerable(var strategy) -> MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());
             case Request3.MarkErrorVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
             default -> {
                 // empty

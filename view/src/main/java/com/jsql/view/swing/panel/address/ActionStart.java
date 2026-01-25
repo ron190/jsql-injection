@@ -57,7 +57,7 @@ public class ActionStart implements ActionListener {
 
             MediatorHelper.frame().resetInterface();  // Erase everything in the view from a previous injection
 
-            MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(
+            MediatorHelper.model().getMediatorUtils().parameterUtil().controlInput(
                 this.panelAddressBar.getTextFieldAddress().getText().trim(),
                 this.panelAddressBar.getTextFieldRequest().getText().trim(),
                 this.panelAddressBar.getTextFieldHeader().getText().trim(),

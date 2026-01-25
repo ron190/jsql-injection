@@ -26,8 +26,8 @@ public class MultipartUtil {
             return true;
         }
         
-        String rawHeader = this.injectionModel.getMediatorUtils().getParameterUtil().getRawHeader();
-        String rawRequest = this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest();
+        String rawHeader = this.injectionModel.getMediatorUtils().parameterUtil().getRawHeader();
+        String rawRequest = this.injectionModel.getMediatorUtils().parameterUtil().getRawRequest();
 
         Matcher matcherBoundary = Pattern.compile("boundary=([^;]*)").matcher(rawHeader);
         if (!matcherBoundary.find()) {
@@ -57,7 +57,7 @@ public class MultipartUtil {
             "$1" + InjectionModel.STAR + "$2"
         );
 
-        this.injectionModel.getMediatorUtils().getParameterUtil().initRequest(rawRequestWithStar);
+        this.injectionModel.getMediatorUtils().parameterUtil().initRequest(rawRequestWithStar);
 
         try {
             LOGGER.log(

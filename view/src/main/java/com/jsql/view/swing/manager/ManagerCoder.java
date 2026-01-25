@@ -36,6 +36,10 @@ import java.util.Map;
  */
 public class ManagerCoder extends JPanel {
 
+    public static final String MENU_METHOD_MANAGER_CODER = "menuMethodManagerCoder";
+    public static final String TEXT_INPUT_MANAGER_CODER = "textInputManagerCoder";
+    public static final String RESULT_MANAGER_CODER = "resultManagerCoder";
+
     /**
      * User input to encode.
      */
@@ -78,7 +82,7 @@ public class ManagerCoder extends JPanel {
         I18nViewUtil.addComponentForKey("CODER_INPUT", placeholderInput);
         this.textInput.getCaret().setBlinkRate(500);
         this.textInput.setLineWrap(true);
-        this.textInput.setName("textInputManagerCoder");
+        this.textInput.setName(ManagerCoder.TEXT_INPUT_MANAGER_CODER);
         this.textInput.getDocument().addDocumentListener(new DocumentListenerEditing() {
             @Override
             public void process() {
@@ -91,7 +95,7 @@ public class ManagerCoder extends JPanel {
         var placeholderResult = new JTextAreaPlaceholder(I18nUtil.valueByKey("CODER_RESULT"));
         this.result = new JPopupTextArea(placeholderResult).getProxy();
         I18nViewUtil.addComponentForKey("CODER_RESULT", placeholderResult);
-        this.result.setName("resultManagerCoder");
+        this.result.setName(ManagerCoder.RESULT_MANAGER_CODER);
         this.result.setLineWrap(true);
         this.result.setEditable(false);
 
@@ -169,7 +173,7 @@ public class ManagerCoder extends JPanel {
         JLabel labelMenu = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
         this.menuMethod = labelMenu;
         labelMenu.setText(ManagerCoder.ENCODE_TO + Coder.BASE64.label);
-        labelMenu.setName("menuMethodManagerCoder");
+        labelMenu.setName(ManagerCoder.MENU_METHOD_MANAGER_CODER);
         labelMenu.setBorder(UiUtil.BORDER_5PX);
         labelMenu.addMouseListener(new MouseAdapter() {
             @Override

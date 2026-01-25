@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import static com.jsql.model.accessible.DataAccess.*;
-import static com.jsql.model.injection.vendor.model.VendorYaml.LIMIT;
+import static com.jsql.model.injection.engine.model.EngineYaml.LIMIT;
 
 /**
  * Get data as chunks by performance query from SQL request.
@@ -57,7 +57,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         AbstractElementDatabase elementDatabase = (AbstractElementDatabase) args[4];
         String metadataInjectionProcess = (String) args[5];
         
-        this.injectionModel.getMediatorUtils().getThreadUtil().put(elementDatabase, this);
+        this.injectionModel.getMediatorUtils().threadUtil().put(elementDatabase, this);
 
         AbstractStrategy strategy = this.injectionModel.getMediatorStrategy().getStrategy();
         
@@ -147,12 +147,12 @@ public class SuspendableGetRows extends AbstractSuspendable {
             }
             charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;
         }
-        this.injectionModel.getMediatorUtils().getThreadUtil().remove(elementDatabase);
+        this.injectionModel.getMediatorUtils().threadUtil().remove(elementDatabase);
         return slidingWindowAllRows.toString();
     }
 
     private String decodeUrl(String currentChunk) {
-        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {
+        if (!this.injectionModel.getMediatorUtils().preferencesUtil().isUrlDecodeDisabled()) {
             try {
                 return URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
             } catch (IllegalArgumentException e) {
@@ -164,7 +164,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     private String decodeUnicode(String currentChunk, String initialSqlQuery) {
         if (
-            !this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()
+            !this.injectionModel.getMediatorUtils().preferencesUtil().isUnicodeDecodeDisabled()
             && !"select@@plugin_dir".equals(initialSqlQuery)  // can give C:\path\
             && initialSqlQuery != null && !initialSqlQuery.matches("(?si).*select.*sys_eval\\('.*'\\).*")
         ) {
@@ -178,7 +178,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private String getQuery(String initialSqlQuery, int countAllRows) {
-        return initialSqlQuery.replace(LIMIT, this.injectionModel.getMediatorVendor().getVendor().instance().sqlLimit(countAllRows));
+        return initialSqlQuery.replace(LIMIT, this.injectionModel.getMediatorEngine().getEngine().instance().sqlLimit(countAllRows));
     }
 
     private void appendRowFixed(StringBuilder slidingWindowAllRows, StringBuilder slidingWindowCurrentRow) {

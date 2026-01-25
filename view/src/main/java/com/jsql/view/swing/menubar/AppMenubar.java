@@ -52,8 +52,14 @@ import java.util.stream.Stream;
  * Application main menubar.
  */
 public class AppMenubar extends JMenuBar {
-    
+
     private static final Logger LOGGER = LogManager.getRootLogger();
+
+    public static final String MENU_COMMUNITY = "menuCommunity";
+    public static final String MENU_I18N_CONTRIBUTION = "menuI18nContribution";
+    public static final String ITEM_INTO_FRENCH = "itemIntoFrench";
+    public static final String MENU_HELP = "menuHelp";
+    public static final String ITEM_HELP = "itemHelp";
 
     private final MenuWindows menuWindows;
 
@@ -137,11 +143,11 @@ public class AppMenubar extends JMenuBar {
     private JMenu initMenuCommunity() {
         var menuCommunity = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY"));
         menuCommunity.setMnemonic('C');
-        menuCommunity.setName("menuCommunity");
+        menuCommunity.setName(AppMenubar.MENU_COMMUNITY);
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY", menuCommunity);
 
         JMenu menuI18nContribution = this.initMenuI18nContribution();
-        menuI18nContribution.setName("menuI18nContribution");
+        menuI18nContribution.setName(AppMenubar.MENU_I18N_CONTRIBUTION);
 
         JMenuItem itemReportIssue = this.initItemReportIssue();
         itemReportIssue.setName("itemReportIssue");
@@ -169,7 +175,7 @@ public class AppMenubar extends JMenuBar {
         AppMenubar.ITEMS_TRANSLATE_INTO.stream().filter(model -> model.getLanguage() == Language.AR)
         .forEach(modelItemTranslate -> modelItemTranslate.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
         AppMenubar.ITEMS_TRANSLATE_INTO.stream().filter(model -> model.getLanguage() == Language.FR)
-        .forEach(modelItemTranslate -> modelItemTranslate.getMenuItem().setName("itemIntoFrench"));
+        .forEach(modelItemTranslate -> modelItemTranslate.getMenuItem().setName(AppMenubar.ITEM_INTO_FRENCH));
 
         menuI18nContribution.add(new JSeparator());
         menuI18nContribution.add(itemIntoOther);
@@ -234,7 +240,7 @@ public class AppMenubar extends JMenuBar {
             );
 
             if (StringUtils.isNotEmpty(textarea.getText()) && result == JOptionPane.YES_OPTION) {
-                MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
+                MediatorHelper.model().getMediatorUtils().gitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
             }
         });
 
@@ -245,11 +251,11 @@ public class AppMenubar extends JMenuBar {
         var menuHelp = new JMenu(I18nUtil.valueByKey("MENUBAR_HELP"));
         menuHelp.setMnemonic('H');
         I18nViewUtil.addComponentForKey("MENUBAR_HELP", menuHelp);
-        menuHelp.setName("menuHelp");
+        menuHelp.setName(AppMenubar.MENU_HELP);
 
         JMenuItem itemHelp = new JMenuItem(I18nUtil.valueByKey("MENUBAR_HELP_ABOUT"), 'A');
         I18nViewUtil.addComponentForKey("MENUBAR_HELP_ABOUT", itemHelp);
-        itemHelp.setName("itemHelp");
+        itemHelp.setName(AppMenubar.ITEM_HELP);
 
         JMenuItem itemUpdate = new JMenuItem(I18nUtil.valueByKey("MENUBAR_HELP_UPDATE"), 'U');
         I18nViewUtil.addComponentForKey("MENUBAR_HELP_UPDATE", itemUpdate);
@@ -299,7 +305,7 @@ public class AppMenubar extends JMenuBar {
         MediatorHelper.frame().setIconImages(UiUtil.getIcons());
         MediatorHelper.frame().revalidate();
 
-        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withThemeFlatLafName(nameTheme).persist();
+        MediatorHelper.model().getMediatorUtils().preferencesUtil().withThemeFlatLafName(nameTheme).persist();
     }
     
     public void switchLocale(Locale newLocale) {

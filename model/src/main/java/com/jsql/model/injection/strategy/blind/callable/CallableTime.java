@@ -46,7 +46,7 @@ public class CallableTime extends AbstractCallableBit<CallableTime> {
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
         this.metadataInjectionProcess = metadataInjectionProcess;
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestTimeWithOperator(sqlQuery, blindOperator);
+        this.booleanUrl = this.injectionModel.getMediatorEngine().getEngine().instance().sqlTestTimeWithOperator(sqlQuery, blindOperator);
     }
     
     /**
@@ -62,7 +62,7 @@ public class CallableTime extends AbstractCallableBit<CallableTime> {
         String metadataInjectionProcess
     ) {
         this(sqlQuery, injectionModel, injectionTime, blindOperator, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeBit(sqlQuery, indexChar, bit, blindOperator);
+        this.booleanUrl = this.injectionModel.getMediatorEngine().getEngine().instance().sqlTimeBit(sqlQuery, indexChar, bit, blindOperator);
         this.currentIndex = indexChar;
         this.currentBit = bit;
     }

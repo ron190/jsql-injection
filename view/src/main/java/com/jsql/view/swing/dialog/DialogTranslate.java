@@ -159,7 +159,7 @@ public class DialogTranslate extends JDialog {
                 .replaceAll("(?m)^#","\\\\#")
                 .replace("<", "\\<");
               
-            MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(
+            MediatorHelper.model().getMediatorUtils().gitUtil().sendReport(
                 clientDescription,
                 ShowOnConsole.YES,
                 this.languageInto +" translation"

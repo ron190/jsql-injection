@@ -5,8 +5,8 @@ import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.InjectionCharInsertion;
-import com.jsql.model.injection.vendor.MediatorVendor;
-import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.model.injection.engine.MediatorEngine;
+import com.jsql.model.injection.engine.model.Engine;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
@@ -45,13 +45,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
     public String run(Object... args) throws JSqlException {
         String characterInsertionByUser = (String) args[0];
         
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetInsertionCharacter");
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetInsertionCharacter");
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         var charFromBooleanMatch = new String[1];
         List<String> charactersInsertion = this.initCallables(taskCompletionService, charFromBooleanMatch);
         
-        var mediatorVendor = this.injectionModel.getMediatorVendor();
+        var mediatorEngine = this.injectionModel.getMediatorEngine();
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database and character insertion with Order by match...");
 
         String charFromOrderBy = null;
@@ -66,16 +66,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 total--;
                 String pageSource = currentCallable.getContent();
                 
-                List<Vendor> vendorsOrderByMatch = this.getVendorsOrderByMatch(mediatorVendor, pageSource);
-                if (!vendorsOrderByMatch.isEmpty()) {
-                    if (this.injectionModel.getMediatorVendor().getVendorByUser() == this.injectionModel.getMediatorVendor().getAuto()) {
-                        this.setVendor(mediatorVendor, vendorsOrderByMatch);
+                List<Engine> enginesOrderByMatches = this.getEnginesOrderByMatch(mediatorEngine, pageSource);
+                if (!enginesOrderByMatches.isEmpty()) {
+                    if (this.injectionModel.getMediatorEngine().getEngineByUser() == this.injectionModel.getMediatorEngine().getAuto()) {
+                        this.setEngine(mediatorEngine, enginesOrderByMatches);
 
-                        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using [{}]", mediatorVendor.getVendor());
-                        this.injectionModel.sendToViews(new Request3.SetVendor(
-                            this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser(),
-                            mediatorVendor.getVendor()
-                        ));
+                        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using [{}]", mediatorEngine.getEngine());
+                        this.injectionModel.sendToViews(new Request3.ActivateEngine(mediatorEngine.getEngine()));
                     }
                     
                     charFromOrderBy = currentCallable.getCharacterInsertion();
@@ -89,40 +86,40 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
-        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+        this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
         if (charFromOrderBy == null && charFromBooleanMatch[0] != null) {
             charFromOrderBy = charFromBooleanMatch[0];
         }
         return this.getCharacterInsertion(characterInsertionByUser, charFromOrderBy);
     }
 
-    private void setVendor(MediatorVendor mediatorVendor, List<Vendor> vendorsOrderByMatch) {
+    private void setEngine(MediatorEngine mediatorEngine, List<Engine> enginesOrderByMatches) {
         if (
-            vendorsOrderByMatch.size() == 1
-            && vendorsOrderByMatch.get(0) != mediatorVendor.getVendor()
+            enginesOrderByMatches.size() == 1
+            && enginesOrderByMatches.getFirst() != mediatorEngine.getEngine()
         ) {
-            mediatorVendor.setVendor(vendorsOrderByMatch.get(0));
-        } else if (vendorsOrderByMatch.size() > 1) {
-            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgres())) {
-                mediatorVendor.setVendor(mediatorVendor.getPostgres());
-            } else if (vendorsOrderByMatch.contains(mediatorVendor.getMysql())) {
-                mediatorVendor.setVendor(mediatorVendor.getMysql());
+            mediatorEngine.setEngine(enginesOrderByMatches.getFirst());
+        } else if (enginesOrderByMatches.size() > 1) {
+            if (enginesOrderByMatches.contains(mediatorEngine.getPostgres())) {
+                mediatorEngine.setEngine(mediatorEngine.getPostgres());
+            } else if (enginesOrderByMatches.contains(mediatorEngine.getMysql())) {
+                mediatorEngine.setEngine(mediatorEngine.getMysql());
             } else {
-                mediatorVendor.setVendor(vendorsOrderByMatch.get(0));
+                mediatorEngine.setEngine(enginesOrderByMatches.getFirst());
             }
         }
     }
 
-    private List<Vendor> getVendorsOrderByMatch(MediatorVendor mediatorVendor, String pageSource) {
-        return mediatorVendor.getVendorsForFingerprint()
+    private List<Engine> getEnginesOrderByMatch(MediatorEngine mediatorEngine, String pageSource) {
+        return mediatorEngine.getEnginesForFingerprint()
             .stream()
-            .filter(vendor -> vendor != mediatorVendor.getAuto())
-            .filter(vendor -> StringUtils.isNotEmpty(
-                vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
+            .filter(engine -> engine != mediatorEngine.getAuto())
+            .filter(engine -> StringUtils.isNotEmpty(
+                engine.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
             ))
-            .filter(vendor -> {
+            .filter(engine -> {
                 Optional<String> optionalOrderByErrorMatch = Stream.of(
-                    vendor.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
+                    engine.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
                     .split("[\\r\\n]+")
                 )
                 .filter(errorMessage ->
@@ -135,7 +132,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 if (optionalOrderByErrorMatch.isPresent()) {
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_SUCCESS,
-                        String.format("Order by fingerprint matching vendor [%s]", vendor)
+                        String.format("Order by fingerprint matching vendor [%s]", engine)
                     );
                 }
                 return optionalOrderByErrorMatch.isPresent();
@@ -170,7 +167,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 new CallablePageSource(
                     characterInsertion
                     + StringUtils.SPACE  // covered by cleaning
-                    + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),
+                    + this.injectionModel.getMediatorEngine().getEngine().instance().sqlOrderBy(),
                     characterInsertion,
                     this.injectionModel,
                     "prefix#orderby"
@@ -225,7 +222,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 "Using [{}] and matching [{}]",
-                () -> this.injectionModel.getMediatorVendor().getVendor(),
+                () -> this.injectionModel.getMediatorEngine().getEngine(),
                 () -> characterInsertionDetected
             );
             LOGGER.log(

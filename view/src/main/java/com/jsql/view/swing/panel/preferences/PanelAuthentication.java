@@ -12,13 +12,13 @@ import java.util.stream.Stream;
 
 public class PanelAuthentication extends JPanel {
 
-    private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("<html>Enable <b>Basic</b> and <b>NTLM</b> (for <b>Digest</b>: do not enable but just set the user and password):</html>", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());
-    private final JCheckBox checkboxUseKerberos = new JCheckBox("Enable Kerberos:", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isKerberos());
+    private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("<html>Enable <b>Basic</b> and <b>NTLM</b> (for <b>Digest</b>: do not enable but just set the user and password):</html>", MediatorHelper.model().getMediatorUtils().authenticationUtil().isAuthentEnabled());
+    private final JCheckBox checkboxUseKerberos = new JCheckBox("Enable Kerberos:", MediatorHelper.model().getMediatorUtils().authenticationUtil().isKerberos());
 
-    private final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication()).getProxy();
-    private final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication()).getProxy();
-    private final JTextField textKerberosLoginConf = new JPopupTextField("Path to login.conf", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPathKerberosLogin()).getProxy();
-    private final JTextField textKerberosKrb5Conf = new JPopupTextField("Path to krb5.conf", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPathKerberosKrb5()).getProxy();
+    private final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", MediatorHelper.model().getMediatorUtils().authenticationUtil().getUsernameAuthentication()).getProxy();
+    private final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", MediatorHelper.model().getMediatorUtils().authenticationUtil().getPasswordAuthentication()).getProxy();
+    private final JTextField textKerberosLoginConf = new JPopupTextField("Path to login.conf", MediatorHelper.model().getMediatorUtils().authenticationUtil().getPathKerberosLogin()).getProxy();
+    private final JTextField textKerberosKrb5Conf = new JPopupTextField("Path to krb5.conf", MediatorHelper.model().getMediatorUtils().authenticationUtil().getPathKerberosKrb5()).getProxy();
 
     private static final String TAG_HTML_ON = "<html>";
     private static final String TAG_HTML_OFF = "</html>";

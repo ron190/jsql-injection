@@ -1,7 +1,6 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
@@ -54,25 +53,25 @@ public class ConnectionUtil {
     public HttpClient.Builder getHttpClient() {
         var httpClientBuilder = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(this.getTimeout()))
-            .sslContext(this.injectionModel.getMediatorUtils().getCertificateUtil().getSslContext())
+            .sslContext(this.injectionModel.getMediatorUtils().certificateUtil().getSslContext())
             .followRedirects(
-                this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
+                this.injectionModel.getMediatorUtils().preferencesUtil().isFollowingRedirection()
                 ? HttpClient.Redirect.ALWAYS
                 : HttpClient.Redirect.NEVER
             );
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isHttp2Disabled()) {
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isHttp2Disabled()) {
             httpClientBuilder.version(Version.HTTP_1_1);
         }
-        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {
+        if (!this.injectionModel.getMediatorUtils().preferencesUtil().isNotProcessingCookies()) {
             httpClientBuilder.cookieHandler(this.cookieManager);
         }
-        if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isAuthentEnabled()) {
+        if (this.injectionModel.getMediatorUtils().authenticationUtil().isAuthentEnabled()) {
             httpClientBuilder.authenticator(new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(
-                        ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication(),
-                        ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication().toCharArray()
+                        ConnectionUtil.this.injectionModel.getMediatorUtils().authenticationUtil().getUsernameAuthentication(),
+                        ConnectionUtil.this.injectionModel.getMediatorUtils().authenticationUtil().getPasswordAuthentication().toCharArray()
                     );
                 }
             });
@@ -109,7 +108,7 @@ public class ConnectionUtil {
      * user in case of authentication detected.
      */
     public HttpResponse<String> checkConnectionResponse() throws IOException, InterruptedException, JSqlException {
-        var queryString = this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
+        var queryString = this.injectionModel.getMediatorUtils().parameterUtil().getQueryStringFromEntries();
         var testUrl = this.getUrlBase().replaceAll("\\?$", StringUtils.EMPTY);
 
         if (StringUtils.isNotEmpty(queryString)) {
@@ -118,13 +117,13 @@ public class ConnectionUtil {
 
         String contentTypeRequest = "text/plain";
 
-        var body = this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest();
+        var body = this.injectionModel.getMediatorUtils().parameterUtil().getRawRequest();
 
-        if (this.injectionModel.getMediatorUtils().getParameterUtil().isMultipartRequest()) {
+        if (this.injectionModel.getMediatorUtils().parameterUtil().isMultipartRequest()) {
             body = body.replaceAll("(?s)\\\\n", "\r\n");
-        } else if (this.injectionModel.getMediatorUtils().getParameterUtil().isRequestSoap()) {
+        } else if (this.injectionModel.getMediatorUtils().parameterUtil().isRequestSoap()) {
             contentTypeRequest = "text/xml";
-        } else if (!this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().isEmpty()) {
+        } else if (!this.injectionModel.getMediatorUtils().parameterUtil().getListRequest().isEmpty()) {
             contentTypeRequest = "application/x-www-form-urlencoded";
         }
 
@@ -143,17 +142,17 @@ public class ConnectionUtil {
         httpRequest.setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, contentTypeRequest)
             .timeout(Duration.ofSeconds(this.getTimeout()));
         
-        this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);
-        this.injectionModel.getMediatorUtils().getDigestUtil().addHeaderToken(httpRequest);
+        this.injectionModel.getMediatorUtils().csrfUtil().addHeaderToken(httpRequest);
+        this.injectionModel.getMediatorUtils().digestUtil().addHeaderToken(httpRequest);
 
         httpRequest.method(this.typeRequest, BodyPublishers.ofString(body));
 
         // Add headers if exists (Authorization:Basic, etc.)
-        for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {
+        for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().parameterUtil().getListHeader()) {
             HeaderUtil.sanitizeHeaders(httpRequest, header);
         }
 
-        return this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest, body);
+        return this.injectionModel.getMediatorUtils().headerUtil().checkResponseHeader(httpRequest, body);
     }
 
     public void testConnection() throws IOException, InterruptedException, JSqlException {
@@ -164,21 +163,21 @@ public class ConnectionUtil {
 
         if (
             (httpResponse.statusCode() == 401 || httpResponse.statusCode() == 403)
-            && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
+            && !this.injectionModel.getMediatorUtils().preferencesUtil().isNotProcessingCookies()
             && (
-                this.injectionModel.getMediatorUtils().getCsrfUtil().isCsrf()
-                || this.injectionModel.getMediatorUtils().getDigestUtil().isDigest()
+                this.injectionModel.getMediatorUtils().csrfUtil().isCsrf()
+                || this.injectionModel.getMediatorUtils().digestUtil().isDigest()
             )
         ) {
-            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {
+            if (this.injectionModel.getMediatorUtils().preferencesUtil().isProcessingCsrf()) {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -> "Testing CSRF handshake from previous connection...");
-            } else if (StringUtils.isNotEmpty(this.injectionModel.getMediatorUtils().getDigestUtil().getTokenDigest())) {
+            } else if (StringUtils.isNotEmpty(this.injectionModel.getMediatorUtils().digestUtil().getTokenDigest())) {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -> "Testing Digest handshake from previous connection...");
             }
             httpResponse = this.checkConnectionResponse();
         }
 
-        if (httpResponse.statusCode() >= 400 && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
+        if (httpResponse.statusCode() >= 400 && !this.injectionModel.getMediatorUtils().preferencesUtil().isNotTestingConnection()) {
             throw new InjectionFailureException(String.format("Connection failed: problem when calling %s", httpResponse.uri().toURL()));
         }
     }
@@ -248,8 +247,8 @@ public class ConnectionUtil {
     }
 
     public void setCustomUserAgent(Builder httpRequest) {
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isUserAgentRandom()) {
-            String agents = this.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isUserAgentRandom()) {
+            String agents = this.injectionModel.getMediatorUtils().userAgentUtil().getCustomUserAgent();
             List<String> listAgents = Stream.of(agents.split("[\\r\\n]+"))
                 .filter(q -> !q.matches("^#.*"))
                 .toList();
@@ -310,7 +309,7 @@ public class ConnectionUtil {
      * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
      */
     public Integer getTimeout() {
-        return this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();
+        return this.injectionModel.getMediatorUtils().preferencesUtil().countConnectionTimeout();
     }
 
     public CookieManager getCookieManager() {

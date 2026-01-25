@@ -15,7 +15,7 @@ import com.jsql.model.bean.util.Request3;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.strategy.blind.InjectionBlindBin;
-import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
@@ -36,17 +36,17 @@ public class StrategyBlindBin extends AbstractStrategy {
 
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyBlindBinDisabled()) {
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isStrategyBlindBinDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         } else if (StringUtils.isEmpty(
-            this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getTest().getBin()
+            this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getBinary().getTest().getBin()
         )) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
                 this.getName(),
-                this.injectionModel.getMediatorVendor().getVendor()
+                this.injectionModel.getMediatorEngine().getEngine()
             );
             return;
         }
@@ -93,26 +93,26 @@ public class StrategyBlindBin extends AbstractStrategy {
         this.injectionModel.appendAnalysisReport(
             StringUtil.formatReport(LogLevelUtil.COLOR_BLU, "### Strategy: " + this.getName())
             + this.injectionModel.getReportWithoutIndex(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(
-                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
+                this.injectionModel.getMediatorEngine().getEngine().instance().sqlTestBlindWithOperator(
+                    this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlind(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"), "0", true),
                     this.injection.getBlindOperator()
                 ),
                 "metadataInjectionProcess",
                 null
             )
         );
-        this.injectionModel.sendToViews(new Request3.MarkStrategyVulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.injectionModel.sendToViews(new Request3.MarkStrategyInvulnerable(this));
+        this.injectionModel.sendToViews(new Request3.MarkInvulnerable(this));
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         return this.injection.inject(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),
+            this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlind(sqlQuery, startPosition, false),
             stoppable
         );
     }
@@ -128,13 +128,13 @@ public class StrategyBlindBin extends AbstractStrategy {
                 () -> this.injection.getBlindOperator().name()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-            this.injectionModel.sendToViews(new Request3.MarkStrategy(this));
+            this.injectionModel.sendToViews(new Request3.ActivateStrategy(this));
         }
     }
     
     @Override
     public String getPerformanceLength() {
-        return VendorYaml.DEFAULT_CAPACITY;
+        return EngineYaml.DEFAULT_CAPACITY;
     }
     
     @Override

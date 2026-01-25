@@ -55,7 +55,7 @@ public class NodeModelTable extends AbstractNodeModel {
     protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
         if (StringUtil.INFORMATION_SCHEMA.equals(this.getParent().toString())) {
             panelNode.showLoader();
-            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
+            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().threadUtil().get(this.getElementDatabase());
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.getIcon(), UiUtil.PATH_PAUSE));
             }

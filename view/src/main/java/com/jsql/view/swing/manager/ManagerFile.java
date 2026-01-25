@@ -52,17 +52,17 @@ public class ManagerFile extends AbstractManagerList {
                 return;
             }
             if (!Arrays.asList(
-                MediatorHelper.model().getMediatorVendor().getSqlite(),
-                MediatorHelper.model().getMediatorVendor().getDerby(),
-                MediatorHelper.model().getMediatorVendor().getH2(),
-                MediatorHelper.model().getMediatorVendor().getHsqldb(),
-                MediatorHelper.model().getMediatorVendor().getMysql(),
-                MediatorHelper.model().getMediatorVendor().getPostgres()
-            ).contains(MediatorHelper.model().getMediatorVendor().getVendor())) {
+                MediatorHelper.model().getMediatorEngine().getSqlite(),
+                MediatorHelper.model().getMediatorEngine().getDerby(),
+                MediatorHelper.model().getMediatorEngine().getH2(),
+                MediatorHelper.model().getMediatorEngine().getHsqldb(),
+                MediatorHelper.model().getMediatorEngine().getMysql(),
+                MediatorHelper.model().getMediatorEngine().getPostgres()
+            ).contains(MediatorHelper.model().getMediatorEngine().getEngine())) {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
                     "Read file not implemented for [{}], share a working example on GitHub to speed up release",
-                    MediatorHelper.model().getMediatorVendor().getVendor()
+                    MediatorHelper.model().getMediatorEngine().getEngine()
                 );
                 return;
             }

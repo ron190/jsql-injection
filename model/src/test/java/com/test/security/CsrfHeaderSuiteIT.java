@@ -3,7 +3,7 @@ package com.test.security;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.vendor.mysql.ConcreteMySqlErrorSuiteIT;
+import com.test.engine.mysql.ConcreteMySqlErrorSuiteIT;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +20,7 @@ class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SubscriberLogger(model));
 
-        model.getMediatorUtils().getParameterUtil().initQueryString(
+        model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/csrf?tenant=mysql&name="
         );
         
@@ -28,7 +28,7 @@ class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model
         .getMediatorUtils()
-        .getPreferencesUtil()
+        .preferencesUtil()
         .withIsProcessingCsrf(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
@@ -36,7 +36,7 @@ class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model
         .getMediatorUtils()
-        .getConnectionUtil()
+        .connectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         

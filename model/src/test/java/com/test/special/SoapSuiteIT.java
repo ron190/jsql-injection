@@ -3,7 +3,7 @@ package com.test.special;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMySqlSuiteIT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
@@ -17,8 +17,8 @@ class SoapSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SubscriberLogger(model));
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/ws?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().initRequest(
+        model.getMediatorUtils().parameterUtil().initQueryString("http://localhost:8080/ws?tenant=mysql");
+        model.getMediatorUtils().parameterUtil().initRequest(
             "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:gs=\"http://www.baeldung.com/springsoap/gen\">" +
             "    <soapenv:Header/>" +
             "    <soapenv:Body>" +
@@ -28,7 +28,7 @@ class SoapSuiteIT extends ConcreteMySqlSuiteIT {
             "    </soapenv:Body>" +
             "</soapenv:Envelope>"
         );
-        model.getMediatorUtils().getPreferencesUtil()
+        model.getMediatorUtils().preferencesUtil()
         .withIsNotTestingConnection(true)  // Expected error 500 on connection test (SQL failure)
         .withIsCheckingAllSoapParam(true)
         .withIsNotSearchingCharInsertion(true)
@@ -41,7 +41,7 @@ class SoapSuiteIT extends ConcreteMySqlSuiteIT {
         
         model
         .getMediatorUtils()
-        .getConnectionUtil()
+        .connectionUtil()
         .withMethodInjection(model.getMediatorMethod().getRequest())
         .withTypeRequest("POST");
         

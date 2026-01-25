@@ -12,11 +12,11 @@ import java.awt.*;
 
 public class PanelUserAgent extends JPanel {
     
-    private final JCheckBox checkboxIsCustomUserAgent = new JCheckBox("Randomize agent with the following list:", MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUserAgentRandom());
+    private final JCheckBox checkboxIsCustomUserAgent = new JCheckBox("Randomize agent with the following list:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUserAgentRandom());
 
     public PanelUserAgent(PanelPreferences panelPreferences) {
         var userAgents = StringUtil.getFile("swing/list/user-agent.txt");
-        MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(userAgents);
+        MediatorHelper.model().getMediatorUtils().userAgentUtil().setCustomUserAgent(userAgents);
 
         this.checkboxIsCustomUserAgent.addActionListener(panelPreferences.getActionListenerSave());
 
@@ -24,11 +24,11 @@ public class PanelUserAgent extends JPanel {
         textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));
         textfieldCustomUserAgent.getCaret().setBlinkRate(500);
         textfieldCustomUserAgent.setText(userAgents);
-        MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(userAgents);
+        MediatorHelper.model().getMediatorUtils().userAgentUtil().setCustomUserAgent(userAgents);
         textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerEditing() {
             @Override
             public void process() {
-                MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(
+                MediatorHelper.model().getMediatorUtils().userAgentUtil().setCustomUserAgent(
                     textfieldCustomUserAgent.getText()
                 );
             }

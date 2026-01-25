@@ -51,6 +51,9 @@ public class PanelConsoles extends JPanel {
     public static final String CONSOLE_BINARY_TOOLTIP = "CONSOLE_BINARY_TOOLTIP";
     public static final String CONSOLE_MAIN_TOOLTIP = "CONSOLE_MAIN_TOOLTIP";
 
+    public static final String BUTTON_SHOW_SOUTH = "buttonShowSouth";
+    public static final String BUTTON_SHOW_NORTH = "buttonShowNorth";
+
     /**
      * Console for java exception messages.
      */
@@ -173,7 +176,7 @@ public class PanelConsoles extends JPanel {
 
     private JPanel initExpandPanel() {
         var labelShowSouth = new JLabel(UiUtil.ARROW_DOWN.getIcon());
-        labelShowSouth.setName("buttonShowSouth");
+        labelShowSouth.setName(PanelConsoles.BUTTON_SHOW_SOUTH);
         labelShowSouth.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -181,7 +184,7 @@ public class PanelConsoles extends JPanel {
             }
         });
         
-        this.labelShowNorth.setName("buttonShowNorth");
+        this.labelShowNorth.setName(PanelConsoles.BUTTON_SHOW_NORTH);
         this.labelShowNorth.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

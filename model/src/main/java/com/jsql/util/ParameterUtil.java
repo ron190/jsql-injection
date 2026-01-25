@@ -111,8 +111,8 @@ public class ParameterUtil {
             this.initHeader(rawHeader);
             this.initRequest(rawRequest);
 
-            this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);
-            this.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);
+            this.injectionModel.getMediatorUtils().connectionUtil().setMethodInjection(methodInjection);
+            this.injectionModel.getMediatorUtils().connectionUtil().setTypeRequest(typeRequest);
             
             if (isScanning) {
                 this.injectionModel.beginInjection();
@@ -136,10 +136,10 @@ public class ParameterUtil {
         this.checkStarMatchMethod();
         this.checkMethodNotEmpty();
         this.checkMultipart();
-        if (ParameterUtil.isInvalidName(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {
+        if (ParameterUtil.isInvalidName(this.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest())) {
             throw new InjectionFailureException(String.format(
                 "Illegal method: \"%s\"",
-                this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest()
+                this.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest()
             ));
         }
     }
@@ -210,8 +210,8 @@ public class ParameterUtil {
     }
     
     public void checkStarMatchMethod() throws InjectionFailureException {
-        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
-        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
+        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection();
+        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam();
 
         if (
             this.getQueryStringFromEntries().contains(InjectionModel.STAR)
@@ -235,14 +235,14 @@ public class ParameterUtil {
     }
     
     public void checkMethodNotEmpty() throws InjectionFailureException {
-        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
-        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
+        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection();
+        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam();
         
         if (
             methodInjection == this.injectionModel.getMediatorMethod().getQuery()
             && !isCheckingAllParam
             && this.getListQueryString().isEmpty()
-            && !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
+            && !this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)
         ) {
             throw new InjectionFailureException("No query string");
         } else if (
@@ -280,8 +280,8 @@ public class ParameterUtil {
             throw new MalformedURLException("empty URL");
         }
         
-        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlByUser(urlQuery);
-        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(urlQuery);
+        this.injectionModel.getMediatorUtils().connectionUtil().setUrlByUser(urlQuery);
+        this.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(urlQuery);
         this.listQueryString.clear();
         
         // Parse url and GET query string
@@ -290,7 +290,7 @@ public class ParameterUtil {
             return;
         }
         
-        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexQueryString.group(1));
+        this.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(regexQueryString.group(1));
         
         if (StringUtils.isNotEmpty(url.getQuery())) {
             this.listQueryString = Pattern.compile("&")

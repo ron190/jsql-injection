@@ -3,7 +3,7 @@ package com.test.preferences;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMySqlSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
 class CheckAllRequestSuiteIT extends ConcreteMySqlSuiteIT {
@@ -15,14 +15,14 @@ class CheckAllRequestSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SubscriberLogger(model));
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/post?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().initRequest("name=&fake=empty");
+        model.getMediatorUtils().parameterUtil().initQueryString("http://localhost:8080/post?tenant=mysql");
+        model.getMediatorUtils().parameterUtil().initRequest("name=&fake=empty");
         
         model.setIsScanning(true);
         
         model
         .getMediatorUtils()
-        .getPreferencesUtil()
+        .preferencesUtil()
         .withIsCheckingAllRequestParam(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
@@ -30,7 +30,7 @@ class CheckAllRequestSuiteIT extends ConcreteMySqlSuiteIT {
 
         model
         .getMediatorUtils()
-        .getConnectionUtil()
+        .connectionUtil()
         .withMethodInjection(model.getMediatorMethod().getRequest())
         .withTypeRequest("POST");
         

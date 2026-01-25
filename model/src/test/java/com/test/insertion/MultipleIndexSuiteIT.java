@@ -3,7 +3,7 @@ package com.test.insertion;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMySqlSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
 class MultipleIndexSuiteIT extends ConcreteMySqlSuiteIT {
@@ -15,7 +15,7 @@ class MultipleIndexSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SubscriberLogger(model));
 
-        model.getMediatorUtils().getParameterUtil().initQueryString(
+        model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/multiple-index?tenant=mysql&name="
         );
 
@@ -23,14 +23,14 @@ class MultipleIndexSuiteIT extends ConcreteMySqlSuiteIT {
 
         model
         .getMediatorUtils()
-        .getPreferencesUtil()
+        .preferencesUtil()
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 
         model
         .getMediatorUtils()
-        .getConnectionUtil()
+        .connectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         

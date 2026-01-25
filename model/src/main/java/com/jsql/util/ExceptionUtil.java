@@ -52,7 +52,7 @@ public class ExceptionUtil {
 
             // Report #214: ignore if OutOfMemoryError: Java heap space
             if (
-                ExceptionUtil.this.injectionModel.getMediatorUtils().getPreferencesUtil().isReportingBugs()
+                ExceptionUtil.this.injectionModel.getMediatorUtils().preferencesUtil().isReportingBugs()
                 && ExceptionUtils.getStackTrace(throwable).contains("com.jsql")
                 && !(throwable instanceof OutOfMemoryError)
                 && !ExceptionUtils.getStackTrace(throwable).contains("OutOfMemoryError")  // when implicit
@@ -78,7 +78,7 @@ public class ExceptionUtil {
                     var md5Exception = HashUtil.digestToHexString(encodedPassword);
                     if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {
                         ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);
-                        ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil().sendUnhandledException(
+                        ExceptionUtil.this.injectionModel.getMediatorUtils().gitUtil().sendUnhandledException(
                             thread.getName(),
                             throwable
                         );

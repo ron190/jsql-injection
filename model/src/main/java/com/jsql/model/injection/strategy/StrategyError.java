@@ -3,8 +3,8 @@ package com.jsql.model.injection.strategy;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Request3;
-import com.jsql.model.injection.vendor.model.VendorYaml;
-import com.jsql.model.injection.vendor.model.yaml.Method;
+import com.jsql.model.injection.engine.model.EngineYaml;
+import com.jsql.model.injection.engine.model.yaml.Method;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
@@ -29,12 +29,12 @@ public class StrategyError extends AbstractStrategy {
 
     @Override
     public void checkApplicability() {
-        // Reset applicability of new Vendor
+        // Reset applicability of new engine
         this.isApplicable = false;
         
-        var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
+        var strategyYaml = this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy();
 
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled()) {
+        if (this.injectionModel.getMediatorUtils().preferencesUtil().isStrategyErrorDisabled()) {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());
             return;
         } else if (strategyYaml.getError().getMethod().isEmpty()) {
@@ -42,7 +42,7 @@ public class StrategyError extends AbstractStrategy {
                 LogLevelUtil.CONSOLE_INFORM,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
                 this.getName(),
-                this.injectionModel.getMediatorVendor().getVendor()
+                this.injectionModel.getMediatorEngine().getEngine()
             );
             return;
         }
@@ -83,12 +83,12 @@ public class StrategyError extends AbstractStrategy {
         var methodIsApplicable = false;
 
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorIndice(errorMethod),
+            this.injectionModel.getMediatorEngine().getEngine().instance().sqlErrorIndice(errorMethod),
             "error#confirm"
         );
 
         var indexZeroToFind = "0";
-        String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);
+        String regexIndexZero = String.format(EngineYaml.FORMAT_INDEX, indexZeroToFind);
         if (performanceSourcePage.matches("(?s).*"+ regexIndexZero +".*")) {
             methodIsApplicable = true;
             this.isApplicable = true;
@@ -98,10 +98,10 @@ public class StrategyError extends AbstractStrategy {
 
     private Matcher getPerformance(Method errorMethod) {
         String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorCalibrator(errorMethod),
+            this.injectionModel.getMediatorEngine().getEngine().instance().sqlErrorCalibrator(errorMethod),
             "error#size"
         );
-        return Pattern.compile("(?s)"+ DataAccess.LEAD +"("+ VendorYaml.CALIBRATOR_SQL +"+)").matcher(performanceErrorSourcePage);
+        return Pattern.compile("(?s)"+ DataAccess.LEAD +"("+ EngineYaml.CALIBRATOR_SQL +"+)").matcher(performanceErrorSourcePage);
     }
 
     private int getCapacity(int indexErrorMethod, int errorCapacityDefault, Method errorMethod, Matcher regexSearch) {
@@ -133,7 +133,7 @@ public class StrategyError extends AbstractStrategy {
         this.injectionModel.appendAnalysisReport(
             StringUtil.formatReport(
                 LogLevelUtil.COLOR_BLU,
-                "### Strategy: "+ this.getName() +":"+ this.injectionModel.getMediatorVendor().getVendor().instance()
+                "### Strategy: "+ this.getName() +":"+ this.injectionModel.getMediatorEngine().getEngine().instance()
                 .getModelYaml()
                 .getStrategy()
                 .getError()
@@ -142,7 +142,7 @@ public class StrategyError extends AbstractStrategy {
                 .getName()
             )
             + this.injectionModel.getReportWithoutIndex(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(
+                this.injectionModel.getMediatorEngine().getEngine().instance().sqlError(
                     StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, "&lt;query&gt;"),
                     "0",
                     indexError[0],
@@ -162,7 +162,7 @@ public class StrategyError extends AbstractStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
         return this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition, this.indexErrorStrategy, false),
+            this.injectionModel.getMediatorEngine().getEngine().instance().sqlError(sqlQuery, startPosition, this.indexErrorStrategy, false),
             metadataInjectionProcess
         );
     }
@@ -175,7 +175,7 @@ public class StrategyError extends AbstractStrategy {
                 "{} [{} {}]",
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName,
-                () -> this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy()
+                () -> this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy()
                 .getError().getMethod().get(this.indexErrorStrategy).getName()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);

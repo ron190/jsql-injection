@@ -55,7 +55,7 @@ public class FormUtil {
             Collections.reverse(mapForms.get(form));
         }
             
-        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {
+        if (!this.injectionModel.getMediatorUtils().preferencesUtil().isParsingForm()) {
             this.logForms(statusCode, elementsForm, result);
         } else {
             this.addForms(elementsForm, result, mapForms);
@@ -73,16 +73,14 @@ public class FormUtil {
         for (Entry<Element, List<Element>> form: mapForms.entrySet()) {
             for (Element input: form.getValue()) {
                 if (StringUtil.GET.equalsIgnoreCase(form.getKey().attr(FormUtil.FORM_ATTR_VALUE))) {
-                    this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(
-                        0,
+                    this.injectionModel.getMediatorUtils().parameterUtil().getListQueryString().addFirst(
                         new SimpleEntry<>(
                             input.attr("name"),
                             input.attr(FormUtil.INPUT_ATTR_VALUE)
                         )
                     );
                 } else if (StringUtil.POST.equalsIgnoreCase(form.getKey().attr(FormUtil.FORM_ATTR_VALUE))) {
-                    this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(
-                        0,
+                    this.injectionModel.getMediatorUtils().parameterUtil().getListRequest().addFirst(
                         new SimpleEntry<>(
                             input.attr("name"),
                             input.attr(FormUtil.INPUT_ATTR_VALUE)

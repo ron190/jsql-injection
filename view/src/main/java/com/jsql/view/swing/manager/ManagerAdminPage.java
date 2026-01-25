@@ -26,8 +26,10 @@ import java.awt.*;
  * Manager to display webpages frequently used as backoffice administration.
  */
 public class ManagerAdminPage extends AbstractManagerList {
-    
+
     private static final Logger LOGGER = LogManager.getRootLogger();
+
+    public static final String LIST_MANAGER_ADMIN_PAGE = "listManagerAdminPage";
 
     /**
      * Create admin page finder.
@@ -38,7 +40,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         this.buildRunButton("ADMIN_PAGE_RUN_BUTTON_LABEL", "ADMIN_PAGE_RUN_BUTTON_TOOLTIP");
         this.run.setName("runManagerAdminPage");
         this.run.addActionListener(actionEvent -> this.runSearch());
-        this.listPaths.setName("listManagerAdminPage");  // no tooltip, too annoying
+        this.listPaths.setName(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE);  // no tooltip, too annoying
 
         this.lastLine.add(this.horizontalGlue);
         this.lastLine.add(this.progressBar);

@@ -24,11 +24,11 @@ public class ActionCheckIp implements ActionListener, Runnable {
 
     @Override
     public void run() {
-        if (MediatorHelper.model().getMediatorUtils().getProxyUtil().isNotLive(ShowOnConsole.YES)) {
+        if (MediatorHelper.model().getMediatorUtils().proxyUtil().isNotLive(ShowOnConsole.YES)) {
             return;
         }
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
-        String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
+        String addressIp = MediatorHelper.model().getMediatorUtils().connectionUtil().getSource("http://checkip.amazonaws.com");
         if (addressIp.matches("\\d+\\.\\d+\\.\\d+\\.\\d+")) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,

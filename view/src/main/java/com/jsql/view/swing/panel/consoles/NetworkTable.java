@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Set;
 
 public class NetworkTable extends JTable {
-    
+
+    public static final String NETWORK_TABLE = "networkTable";
+
     /**
      * List of HTTP injection requests and responses.
      */
@@ -28,7 +30,7 @@ public class NetworkTable extends JTable {
     public NetworkTable(TabbedPaneNetworkTab tabbedPaneNetworkTab) {
         super(0, 4);
         
-        this.setName("networkTable");
+        this.setName(NetworkTable.NETWORK_TABLE);
         this.setComponentPopupMenu(new JPopupMenuTable(this));
         this.setRowSelectionAllowed(true);
         this.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -106,7 +108,7 @@ public class NetworkTable extends JTable {
             }
         });
         tabbedPaneNetworkTab.getCheckBoxDecode().addActionListener(e -> {
-            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().withIsUrlDecodeNetworkTab(
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().withIsUrlDecodeNetworkTab(
                 tabbedPaneNetworkTab.getCheckBoxDecode().isSelected()
             ).persist();
             if (this.getSelectedRow() > -1) {  // prevent double event

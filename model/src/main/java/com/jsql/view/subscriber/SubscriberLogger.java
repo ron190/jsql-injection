@@ -38,14 +38,14 @@ public class SubscriberLogger extends AbstractSubscriber {
             case Request3.AddTabExploitWeb r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
             case Request3.GetTerminalResult r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
 
-            case Request3.MarkStrategyInvulnerable(var strategy) -> LOGGER.debug(() -> AnsiColorUtil.addRedColor(strategy.getClass().getSimpleName()));
+            case Request3.MarkInvulnerable(var strategy) -> LOGGER.debug(() -> AnsiColorUtil.addRedColor(strategy.getClass().getSimpleName()));
             case Request3.MarkErrorInvulnerable r -> LOGGER.debug(() -> AnsiColorUtil.addRedColor(
-                this.model.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(r.indexError()).getName()
+                this.model.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(r.indexError()).getName()
             ));
 
-            case Request3.MarkStrategyVulnerable(var strategy) -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(strategy.getClass().getSimpleName()));
+            case Request3.MarkVulnerable(var strategy) -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(strategy.getClass().getSimpleName()));
             case Request3.MarkErrorVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(
-                this.model.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(r.indexError()).getName()
+                this.model.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(r.indexError()).getName()
             ));
 
             case Request3.MarkFileSystemInvulnerable r -> LOGGER.debug(() -> AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));

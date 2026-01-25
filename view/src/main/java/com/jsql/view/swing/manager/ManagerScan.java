@@ -11,7 +11,7 @@
 package com.jsql.view.swing.manager;
 
 import com.jsql.model.injection.method.AbstractMethodInjection;
-import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.model.injection.engine.model.Engine;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.subscriber.SubscriberScan;
@@ -183,7 +183,7 @@ public class ManagerScan extends AbstractManagerList {
         }
 
         // Display result only in console
-        MediatorHelper.frame().getSubscriberView().subscription.cancel();
+        MediatorHelper.frame().getSubscriberView().getSubscription().cancel();
         var subscriberScan = new SubscriberScan();
         MediatorHelper.model().subscribe(subscriberScan);
 
@@ -201,15 +201,15 @@ public class ManagerScan extends AbstractManagerList {
             var urlItemListScan = (ItemListScan) urlItemList;
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Scanning {}", urlItemListScan.getBeanInjection().getUrl());
 
-            Optional<Vendor> optionalVendor = MediatorHelper.model().getMediatorVendor().getVendors()
+            Optional<Engine> optionalEngine = MediatorHelper.model().getMediatorEngine().getEngines()
                 .stream()
-                .filter(vendor -> vendor.toString().equalsIgnoreCase(urlItemListScan.getBeanInjection().getVendor()))
+                .filter(engine -> engine.toString().equalsIgnoreCase(urlItemListScan.getBeanInjection().getEngine()))
                 .findAny();
 
-            MediatorHelper.model().getMediatorVendor().setVendorByUser(
-                optionalVendor.orElse(MediatorHelper.model().getMediatorVendor().getAuto())
+            MediatorHelper.model().getMediatorEngine().setEngineByUser(
+                optionalEngine.orElse(MediatorHelper.model().getMediatorEngine().getAuto())
             );
-            MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(
+            MediatorHelper.model().getMediatorUtils().parameterUtil().controlInput(
                 urlItemListScan.getBeanInjection().getUrl(),
                 urlItemListScan.getBeanInjection().getRequest(),
                 urlItemListScan.getBeanInjection().getHeader(),
@@ -227,7 +227,7 @@ public class ManagerScan extends AbstractManagerList {
         }
         
         // Get back the default view
-        subscriberScan.subscription.cancel();
+        subscriberScan.getSubscription().cancel();
         MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriberView());
 
         MediatorHelper.model().setIsScanning(false);
