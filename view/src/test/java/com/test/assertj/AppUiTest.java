@@ -5,7 +5,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.manager.ManagerAdminPage;
@@ -217,9 +217,9 @@ public class AppUiTest {
     @Test
     public void shouldDnDTabs() {
         AppUiTest.logMethod();
-        MediatorHelper.model().sendToViews(new Request3.CreateFileTab("dragfile", "content", "path"));
-        MediatorHelper.model().sendToViews(new Request3.CreateFileTab("jumpfile", "content", "path"));
-        MediatorHelper.model().sendToViews(new Request3.CreateFileTab("dropfile", "content", "path"));
+        MediatorHelper.model().sendToViews(new Seal.CreateFileTab("dragfile", "content", "path"));
+        MediatorHelper.model().sendToViews(new Seal.CreateFileTab("jumpfile", "content", "path"));
+        MediatorHelper.model().sendToViews(new Seal.CreateFileTab("dropfile", "content", "path"));
 
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("dragfile ", Index.atIndex(0));
@@ -254,7 +254,7 @@ public class AppUiTest {
     @Test
     public void shouldFindFile() {
         AppUiTest.logMethod();
-        MediatorHelper.model().sendToViews(new Request3.CreateFileTab("file", "content", "path"));
+        MediatorHelper.model().sendToViews(new Seal.CreateFileTab("file", "content", "path"));
 
         try {
             AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("file ").requireVisible();
@@ -270,7 +270,7 @@ public class AppUiTest {
     @Test
     public void shouldFindWebshell() {
         AppUiTest.logMethod();
-        MediatorHelper.model().sendToViews(new Request3.AddTabExploitWeb("http://webshell"));
+        MediatorHelper.model().sendToViews(new Seal.AddTabExploitWeb("http://webshell"));
 
         try {
             AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("Web shell").requireVisible();
@@ -304,9 +304,9 @@ public class AppUiTest {
         AppUiTest.window.label(PanelTrailingAddress.MENU_STRATEGY).click();
         AppUiTest.window.menuItem(PanelTrailingAddress.ITEM_RADIO_STRATEGY_ERROR).requireDisabled();
 
-        MediatorHelper.model().sendToViews(new Request3.ActivateEngine(MediatorHelper.model().getMediatorEngine().getMysql()));
+        MediatorHelper.model().sendToViews(new Seal.ActivateEngine(MediatorHelper.model().getMediatorEngine().getMysql()));
         MediatorHelper.model().sendToViews(
-            new Request3.MarkErrorVulnerable(0, MediatorHelper.model().getMediatorStrategy().getError())
+            new Seal.MarkStrategyVulnerable(0, MediatorHelper.model().getMediatorStrategy().getError())
         );
 
         AppUiTest.logMethod();
@@ -343,7 +343,7 @@ public class AppUiTest {
     public void shouldFindNetworkHeader() {
         AppUiTest.logMethod();
 
-        MediatorHelper.model().sendToViews(new Request3.MessageHeader(
+        MediatorHelper.model().sendToViews(new Seal.MessageHeader(
             "url",
             "post",
             new TreeMap<>(Map.of("key1","value1", "key2", "value2")),
@@ -383,7 +383,7 @@ public class AppUiTest {
     public void shouldFindSqlshell() {
         AppUiTest.logMethod();
         MediatorHelper.model().sendToViews(
-            new Request3.AddTabExploitSql("http://sqlshell", "username", "password")
+            new Seal.AddTabExploitSql("http://sqlshell", "username", "password")
         );
 
         try {
@@ -448,7 +448,7 @@ public class AppUiTest {
         AppUiTest.window.tabbedPane(TabManagers.TAB_MANAGERS).selectTab("Admin page");
         AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).item(0).select().rightClick();
 
-        MediatorHelper.model().sendToViews(new Request3.CreateAdminPageTab("http://adminpage"));
+        MediatorHelper.model().sendToViews(new Seal.CreateAdminPageTab("http://adminpage"));
 
         AppUiTest.logMethod();
         try {
@@ -471,12 +471,12 @@ public class AppUiTest {
         var nameDatabase = "database";
         Database database = new Database(nameDatabase, "1");
 
-        MediatorHelper.model().sendToViews(new Request3.AddDatabases(List.of(database)));
+        MediatorHelper.model().sendToViews(new Seal.AddDatabases(List.of(database)));
         Assertions.assertEquals(nameDatabase +" (1 table)", AppUiTest.window.tree(ManagerDatabase.TREE_DATABASES).valueAt(0));
 
         var nameTable = "table";
         Table table = new Table(nameTable, "2", database);
-        MediatorHelper.model().sendToViews(new Request3.AddTables(List.of(table)));
+        MediatorHelper.model().sendToViews(new Seal.AddTables(List.of(table)));
         Assertions.assertEquals(nameTable +" (2 rows)", AppUiTest.window.tree(ManagerDatabase.TREE_DATABASES).valueAt(1));
 
         AppUiTest.logMethod();
@@ -484,7 +484,7 @@ public class AppUiTest {
         var nameColumn1 = "column 1";
         Column column1 = new Column(nameColumn0, table);
         Column column2 = new Column(nameColumn1, table);
-        MediatorHelper.model().sendToViews(new Request3.AddColumns(
+        MediatorHelper.model().sendToViews(new Seal.AddColumns(
             Arrays.asList(column1, column2)
         ));
         Assertions.assertEquals(nameColumn0, AppUiTest.window.tree(ManagerDatabase.TREE_DATABASES).valueAt(2));
@@ -495,7 +495,7 @@ public class AppUiTest {
             { StringUtils.EMPTY, StringUtils.EMPTY, "[0, 0]", "[0, 1]" },
             { StringUtils.EMPTY, StringUtils.EMPTY, "[1, 0]", "[1, 1]" }
         };
-        MediatorHelper.model().sendToViews(new Request3.CreateValuesTab(arrayColumns, tableDatas, table));
+        MediatorHelper.model().sendToViews(new Seal.CreateValuesTab(arrayColumns, tableDatas, table));
 
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab(nameTable).requireVisible();

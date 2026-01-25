@@ -31,7 +31,7 @@ class CustomUserAgentSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model
         .getMediatorUtils()
-        .getUserAgentUtil()
+        .userAgentUtil()
         .withCustomUserAgent("CUSTOM-USER-AGENT2\r\nCUSTOM-USER-AGENT1");
         
         model

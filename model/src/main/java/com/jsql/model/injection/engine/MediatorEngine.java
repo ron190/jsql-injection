@@ -1,7 +1,7 @@
 package com.jsql.model.injection.engine;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.injection.engine.model.Engine;
 import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.util.I18nUtil;
@@ -208,7 +208,7 @@ public class MediatorEngine {
             true
         );
 
-        this.injectionModel.sendToViews(new Request3.ActivateEngine(engineFound));
+        this.injectionModel.sendToViews(new Seal.ActivateEngine(engineFound));
         return engineFound;
     }
 
@@ -229,7 +229,7 @@ public class MediatorEngine {
                 () -> I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"),
                 () -> engine
             );
-            this.injectionModel.sendToViews(new Request3.MarkEngineFound(engineFixed));
+            this.injectionModel.sendToViews(new Seal.MarkEngineFound(engineFixed));
         }
         return engineFixed;
     }

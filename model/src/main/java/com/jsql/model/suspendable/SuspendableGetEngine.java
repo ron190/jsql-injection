@@ -1,7 +1,7 @@
 package com.jsql.model.suspendable;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit;
@@ -51,7 +51,7 @@ public class SuspendableGetEngine extends AbstractSuspendable {
                     this.injectionModel.getMediatorEngine().setEngine(engine);
                     isEngineFound.set(true);
 
-                    this.injectionModel.sendToViews(new Request3.ActivateEngine(this.injectionModel.getMediatorEngine().getEngine()));
+                    this.injectionModel.sendToViews(new Seal.ActivateEngine(this.injectionModel.getMediatorEngine().getEngine()));
                 }
             } catch (StoppedByUserSlidingException e) {
                 throw new JSqlRuntimeException(e);

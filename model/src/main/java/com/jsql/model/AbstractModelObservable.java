@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.model;
 
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 
 import java.util.concurrent.SubmissionPublisher;
@@ -21,7 +21,7 @@ import java.util.concurrent.SubmissionPublisher;
  * - Callable for parallelize HTTP tasks,<br>
  * - communication with view, via Observable.
  */
-public abstract class AbstractModelObservable extends SubmissionPublisher<Request3> {
+public abstract class AbstractModelObservable extends SubmissionPublisher<Seal> {
 
     /**
      * True if user wants to stop preparation.<br>
@@ -78,7 +78,7 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
      * Send an interaction message to registered views.
      * @param request The event bean corresponding to the interaction
      */
-    public void sendToViews(final Request3 request) {
+    public void sendToViews(final Seal request) {
         this.submit(request);
     }
 

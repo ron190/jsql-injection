@@ -27,7 +27,7 @@ class TamperingSuiteIT extends ConcreteMySqlSuiteIT {
 
         model
         .getMediatorUtils()
-        .getTamperingUtil()
+        .tamperingUtil()
         .withVersionComment()
         .withEqualToLike()
         .withRandomCase()

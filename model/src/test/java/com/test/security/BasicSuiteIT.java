@@ -31,7 +31,7 @@ class BasicSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model
         .getMediatorUtils()
-        .getAuthenticationUtil()
+        .authenticationUtil()
         .withAuthenticationEnabled()
         .withUsernameAuthentication(BasicSecurityConfig.BASIC_USERNAME)
         .withPasswordAuthentication(BasicSecurityConfig.BASIC_PASSWORD)

@@ -257,6 +257,7 @@ public class JdbcRestController {
 
     @RequestMapping("/postgres")  // local testing, not used
     public Greeting greetingPostgres(@RequestParam(value="name", defaultValue="World") String name) {
+        // pg_ctl.exe start -D "E:\Dev\pgsql\data\"
         AtomicReference<Greeting> greeting = new AtomicReference<>();
         StringBuilder result = new StringBuilder();
 

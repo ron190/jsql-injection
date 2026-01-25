@@ -13,7 +13,7 @@ package com.jsql.model.accessible;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.engine.*;
 import com.jsql.model.bean.database.MockElement;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.ConnectionUtil;
@@ -189,7 +189,7 @@ public class ResourceAccess {
         try {
             CallableHttpHead currentCallable = taskCompletionService.take().get();
             if (currentCallable.isHttpResponseOk()) {
-                this.injectionModel.sendToViews(new Request3.CreateAdminPageTab(currentCallable.getUrl()));
+                this.injectionModel.sendToViews(new Seal.CreateAdminPageTab(currentCallable.getUrl()));
                 nbAdminPagesFoundFixed++;
                 LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Found page: {}", currentCallable.getUrl());
             }
@@ -335,7 +335,7 @@ public class ResourceAccess {
         if (StringUtils.isBlank(result)) {
             result = String.format(ResourceAccess.TEMPLATE_ERROR, "empty result", command);
         }
-        this.injectionModel.sendToViews(new Request3.GetTerminalResult(uuidShell, result));  // Unfreeze GUI terminal
+        this.injectionModel.sendToViews(new Seal.GetTerminalResult(uuidShell, result));  // Unfreeze GUI terminal
         return result;
     }
 
@@ -371,7 +371,7 @@ public class ResourceAccess {
         }
 
         if (isResultSentToView) {
-            this.injectionModel.sendToViews(new Request3.GetTerminalResult(uuidShell, result));  // Unfreeze GUI terminal
+            this.injectionModel.sendToViews(new Seal.GetTerminalResult(uuidShell, result));  // Unfreeze GUI terminal
         }
         return result;
     }
@@ -470,7 +470,7 @@ public class ResourceAccess {
         HttpHeaders httpHeaders = response.headers();
         String pageSource = response.body();
 
-        this.injectionModel.sendToViews(new Request3.MessageHeader(
+        this.injectionModel.sendToViews(new Seal.MessageHeader(
             url,
             null,
             ConnectionUtil.getHeadersMap(httpRequest.headers()),
@@ -504,12 +504,12 @@ public class ResourceAccess {
 
         if (StringUtils.isEmpty(resultInjection)) {
             this.injectionModel.sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
-            this.injectionModel.sendToViews(new Request3.MarkFileSystemInvulnerable());
+            this.injectionModel.sendToViews(new Seal.MarkFileSystemInvulnerable());
         } else if ("false".equals(resultInjection)) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Privilege FILE not granted: files not readable by current user");
-            this.injectionModel.sendToViews(new Request3.MarkFileSystemInvulnerable());
+            this.injectionModel.sendToViews(new Seal.MarkFileSystemInvulnerable());
         } else {
-            this.injectionModel.sendToViews(new Request3.MarkFileSystemVulnerable());
+            this.injectionModel.sendToViews(new Seal.MarkFileSystemVulnerable());
             readingIsAllowed = true;
         }
         
@@ -562,7 +562,7 @@ public class ResourceAccess {
                 String content = currentCallable.getSourceFile();
                 String path = currentCallable.getPathFile();
 
-                this.injectionModel.sendToViews(new Request3.CreateFileTab(name, content, path));
+                this.injectionModel.sendToViews(new Seal.CreateFileTab(name, content, path));
 
                 if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {
                     LOGGER.log(

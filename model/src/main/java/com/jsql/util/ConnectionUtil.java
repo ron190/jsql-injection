@@ -1,7 +1,7 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
@@ -230,7 +230,7 @@ public class ConnectionUtil {
             Thread.currentThread().interrupt();
         } finally {
             // Inform the view about the log infos
-            this.injectionModel.sendToViews(new Request3.MessageHeader(
+            this.injectionModel.sendToViews(new Seal.MessageHeader(
                 url,
                 null,
                 requestHeaders,

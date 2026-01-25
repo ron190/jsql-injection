@@ -1,7 +1,7 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import org.apache.commons.lang3.StringUtils;
@@ -123,7 +123,7 @@ public class ParameterUtil {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Url: {}", e.getMessage());
             
             // Incorrect URL, reset the start button
-            this.injectionModel.sendToViews(new Request3.EndPreparation());
+            this.injectionModel.sendToViews(new Seal.EndPreparation());
         }
     }
 

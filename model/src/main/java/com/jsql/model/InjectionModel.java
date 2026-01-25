@@ -12,7 +12,7 @@ package com.jsql.model;
 
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.ResourceAccess;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
@@ -165,7 +165,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
             if (hasFoundInjection && !this.isScanning) {
                 if (!this.getMediatorUtils().preferencesUtil().isNotShowingVulnReport()) {
-                    this.sendToViews(new Request3.CreateAnalysisReport(this.analysisReport));
+                    this.sendToViews(new Seal.CreateAnalysisReport(this.analysisReport));
                 }
                 if (this.getMediatorUtils().preferencesUtil().isZipStrategy()) {
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using Zip mode for reduced query size");
@@ -190,7 +190,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 e.getMessage() == null ? InjectionModel.getImplicitReason(e) : e.getMessage()
             );
         } finally {
-            this.sendToViews(new Request3.EndPreparation());
+            this.sendToViews(new Seal.EndPreparation());
         }
     }
     
@@ -304,7 +304,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 .replaceAll("(jIyM){60,}", "$1...");  // Remove batch of chars created by Dios
 
             // Send data to Views
-            this.sendToViews(new Request3.MessageHeader(
+            this.sendToViews(new Seal.MessageHeader(
                 urlInjectionFixed,
                 body,
                 ConnectionUtil.getHeadersMap(httpRequest.headers()),

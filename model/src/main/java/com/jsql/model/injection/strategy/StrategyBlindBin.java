@@ -11,7 +11,7 @@
 package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.strategy.blind.InjectionBlindBin;
@@ -58,7 +58,7 @@ public class StrategyBlindBin extends AbstractStrategy {
 
         if (this.isApplicable) {
             this.allow();
-            this.injectionModel.sendToViews(new Request3.MessageBinary(this.injection.getInfoMessage()));
+            this.injectionModel.sendToViews(new Seal.MessageBinary(this.injection.getInfoMessage()));
         } else {
             this.unallow();
         }
@@ -101,12 +101,12 @@ public class StrategyBlindBin extends AbstractStrategy {
                 null
             )
         );
-        this.injectionModel.sendToViews(new Request3.MarkVulnerable(this));
+        this.injectionModel.sendToViews(new Seal.MarkStrategyVulnerable(this));
     }
 
     @Override
     public void unallow(int... i) {
-        this.injectionModel.sendToViews(new Request3.MarkInvulnerable(this));
+        this.injectionModel.sendToViews(new Seal.MarkStrategyInvulnerable(this));
     }
 
     @Override
@@ -128,7 +128,7 @@ public class StrategyBlindBin extends AbstractStrategy {
                 () -> this.injection.getBlindOperator().name()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-            this.injectionModel.sendToViews(new Request3.ActivateStrategy(this));
+            this.injectionModel.sendToViews(new Seal.ActivateStrategy(this));
         }
     }
     

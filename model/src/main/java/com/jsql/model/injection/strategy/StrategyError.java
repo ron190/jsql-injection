@@ -2,7 +2,7 @@ package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.model.injection.engine.model.yaml.Method;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -151,12 +151,12 @@ public class StrategyError extends AbstractStrategy {
                 "metadataInjectionProcess"
             )
         );
-        this.injectionModel.sendToViews(new Request3.MarkErrorVulnerable(indexError[0], this));
+        this.injectionModel.sendToViews(new Seal.MarkStrategyVulnerable(indexError[0], this));
     }
 
     @Override
     public void unallow(int... indexError) {
-        this.injectionModel.sendToViews(new Request3.MarkErrorInvulnerable(indexError[0], this));
+        this.injectionModel.sendToViews(new Seal.MarkStrategyInvulnerable(indexError[0], this));
     }
 
     @Override
@@ -179,7 +179,7 @@ public class StrategyError extends AbstractStrategy {
                 .getError().getMethod().get(this.indexErrorStrategy).getName()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this);
-            this.injectionModel.sendToViews(new Request3.MarkErrorStrategy(this));
+            this.injectionModel.sendToViews(new Seal.ActivateStrategy(this));
         }
     }
     

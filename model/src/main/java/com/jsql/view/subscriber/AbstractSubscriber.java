@@ -1,6 +1,5 @@
 package com.jsql.view.subscriber;
 
-import com.jsql.model.bean.util.Request3;
 import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,7 +8,7 @@ import javax.swing.*;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 
-public abstract class AbstractSubscriber implements Subscriber<Request3> {
+public abstract class AbstractSubscriber implements Subscriber<Seal> {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
 
@@ -22,7 +21,7 @@ public abstract class AbstractSubscriber implements Subscriber<Request3> {
     }
 
     @Override
-    public void onNext(Request3 request) {
+    public void onNext(Seal request) {
         this.subscription.request(1);
 
         // Display model thread name in logs instead of the observer name
@@ -33,7 +32,7 @@ public abstract class AbstractSubscriber implements Subscriber<Request3> {
         });
     }
 
-    protected abstract void execute(Request3 request);
+    protected abstract void execute(Seal request);
 
     @Override
     public void onError(Throwable e) {

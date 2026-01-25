@@ -10,18 +10,16 @@
  ******************************************************************************/
 package com.jsql.view.subscriber;
 
-import com.jsql.model.bean.util.Request3;
 import com.jsql.view.swing.util.MediatorHelper;
 
 public class SubscriberScan extends AbstractSubscriber {
     @Override
-    protected void execute(Request3 request) {
+    protected void execute(Seal request) {
         var urlByUser = MediatorHelper.model().getMediatorUtils().connectionUtil().getUrlByUser();
         switch (request) {
-            case Request3.MarkEngineFound(var engine) -> MediatorHelper.managerScan().highlight(urlByUser, engine.toString());
-            case Request3.ActivateEngine(var engine) -> MediatorHelper.managerScan().highlight(urlByUser, engine.toString());
-            case Request3.MarkVulnerable(var strategy) -> MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());
-            case Request3.MarkErrorVulnerable r -> MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());
+            case Seal.MarkEngineFound(var engine) -> MediatorHelper.managerScan().highlight(urlByUser, engine.toString());
+            case Seal.ActivateEngine(var engine) -> MediatorHelper.managerScan().highlight(urlByUser, engine.toString());
+            case Seal.MarkStrategyVulnerable(int ignored, var strategy) -> MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());
             default -> {
                 // empty
             }

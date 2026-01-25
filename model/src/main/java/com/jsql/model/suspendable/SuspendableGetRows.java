@@ -3,7 +3,7 @@ package com.jsql.model.suspendable;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
@@ -256,7 +256,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         // Premature end of results
         // if it's not the root (empty tree)
         if (searchName != null) {
-            this.injectionModel.sendToViews(new Request3.EndProgress(searchName));
+            this.injectionModel.sendToViews(new Seal.EndProgress(searchName));
         }
         var messageError = new StringBuilder("Fetching fails: no data to parse");
         if (searchName != null) {
@@ -269,7 +269,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private void sendChunk(String currentChunk) {
-        this.injectionModel.sendToViews(new Request3.MessageChunk(
+        this.injectionModel.sendToViews(new Seal.MessageChunk(
             Pattern.compile(MODE + TRAIL_RGX +".*")
             .matcher(currentChunk)
             .replaceAll(StringUtils.EMPTY)
@@ -371,7 +371,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     private void sendProgress(int numberToFind, int countProgress, AbstractElementDatabase searchName) {
         if (numberToFind > 0 && searchName != null) {
-            this.injectionModel.sendToViews(new Request3.UpdateProgress(searchName, countProgress));
+            this.injectionModel.sendToViews(new Seal.UpdateProgress(searchName, countProgress));
         }
     }
     

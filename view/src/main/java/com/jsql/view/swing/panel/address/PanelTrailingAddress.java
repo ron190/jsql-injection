@@ -204,23 +204,38 @@ public class PanelTrailingAddress extends JPanel {
         }
     }
     
-    public void markStrategy(AbstractStrategy strategy) {
-        this.labelStrategy.setText(strategy.toString());
-        Arrays.stream(this.popupMenuStrategies.getComponents())
-            .map(JMenuItem.class::cast)
-            .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
-            .forEach(jMenuItem -> jMenuItem.setSelected(true));
+    public void activateStrategy(AbstractStrategy strategy) {
+        if (strategy instanceof StrategyError strategyError) {
+            this.labelStrategy.setText(strategyError.toString());
+            int indexError = strategyError.getIndexErrorStrategy();
+            String nameError = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(
+                indexError
+            ).getName();
+
+            Arrays.stream(this.getMenuError().getMenuComponents())
+                .map(JRadioButtonMenuItem.class::cast)
+                .filter(component -> component.getText().equals(nameError))
+                .forEach(jRadioButtonMenuItem -> {
+                    jRadioButtonMenuItem.setSelected(true);
+                    this.labelStrategy.setText(nameError);
+                });
+        } else {
+            this.labelStrategy.setText(strategy.toString());
+            Arrays.stream(this.popupMenuStrategies.getComponents())
+                .map(JMenuItem.class::cast)
+                .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
+                .forEach(jMenuItem -> jMenuItem.setSelected(true));
+        }
     }
-    
-    public void markStrategyInvulnerable(AbstractStrategy strategy) {
+
+    public void markInvulnerable(AbstractStrategy strategy) {
         Arrays.stream(this.popupMenuStrategies.getComponents())
             .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
             .forEach(jMenuItem -> jMenuItem.setEnabled(false));
     }
     
-    public void markErrorInvulnerable(int indexMethodError) {
-        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();
+    public void markInvulnerable(int indexMethodError, AbstractStrategy strategy) {
         Arrays.stream(this.popupMenuStrategies.getSubElements())
             .map(JMenuItem.class::cast)
             .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
@@ -240,21 +255,6 @@ public class PanelTrailingAddress extends JPanel {
             })
             .forEach(jMenuItem -> jMenuItem.getItem(indexMethodError).setEnabled(false));
     }
-    
-    public void markError() {
-        StrategyError strategy = MediatorHelper.model().getMediatorStrategy().getError();
-        this.labelStrategy.setText(strategy.toString());
-        int indexError = strategy.getIndexErrorStrategy();
-        String nameError = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
-
-        Arrays.stream(this.getMenuError().getMenuComponents())
-            .map(JRadioButtonMenuItem.class::cast)
-            .filter(component -> component.getText().equals(nameError))
-            .forEach(jRadioButtonMenuItem -> {
-                jRadioButtonMenuItem.setSelected(true);
-                this.labelStrategy.setText(nameError);
-            });
-    }
 
     private JMenu getMenuError() {
         var nameError = MediatorHelper.model().getMediatorStrategy().getError().getName();
@@ -265,8 +265,14 @@ public class PanelTrailingAddress extends JPanel {
             .orElse(new JMenuItem("Mock"));
     }
 
-    public void markErrorVulnerable(int indexMethodError) {
-        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();
+    public void markVulnerable(AbstractStrategy strategy) {
+        Arrays.stream(this.popupMenuStrategies.getComponents())
+            .map(JMenuItem.class::cast)
+            .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
+            .forEach(jMenuItem -> jMenuItem.setEnabled(true));
+    }
+
+    public void markVulnerable(int indexMethodError, AbstractStrategy strategy) {
         // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
         try {
             Arrays.stream(this.popupMenuStrategies.getComponents())
@@ -281,13 +287,6 @@ public class PanelTrailingAddress extends JPanel {
         } catch (ArrayIndexOutOfBoundsException e) {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
-    }
-    
-    public void markStrategyVulnerable(AbstractStrategy strategy) {
-        Arrays.stream(this.popupMenuStrategies.getComponents())
-            .map(JMenuItem.class::cast)
-            .filter(jMenuItem -> jMenuItem.getText().equals(strategy.toString()))
-            .forEach(jMenuItem -> jMenuItem.setEnabled(true));
     }
     
     

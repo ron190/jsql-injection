@@ -1,7 +1,7 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.JSqlException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -109,7 +109,7 @@ public class HeaderUtil {
         var decimalFormat = new DecimalFormat("0.000");
 
         // Inform the view about the log info
-        this.injectionModel.sendToViews(new Request3.MessageHeader(
+        this.injectionModel.sendToViews(new Seal.MessageHeader(
             httpRequest.uri().toURL().toString(),
             body,
             ConnectionUtil.getHeadersMap(httpRequest.headers()),

@@ -11,7 +11,7 @@
 package com.jsql.view.subscriber;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.model.injection.strategy.StrategyError;
 import com.jsql.util.AnsiColorUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,29 +29,38 @@ public class SubscriberLogger extends AbstractSubscriber {
     }
 
     @Override
-    protected void execute(Request3 request) {
+    protected void execute(Seal request) {
         switch (request) {
-            case Request3.AddDatabases r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-            case Request3.AddTables r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-            case Request3.AddColumns r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
+            case Seal.AddDatabases r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
+            case Seal.AddTables r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
+            case Seal.AddColumns r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
 
-            case Request3.AddTabExploitWeb r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-            case Request3.GetTerminalResult r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
+            case Seal.AddTabExploitWeb r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
+            case Seal.GetTerminalResult r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
 
-            case Request3.MarkInvulnerable(var strategy) -> LOGGER.debug(() -> AnsiColorUtil.addRedColor(strategy.getClass().getSimpleName()));
-            case Request3.MarkErrorInvulnerable r -> LOGGER.debug(() -> AnsiColorUtil.addRedColor(
-                this.model.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(r.indexError()).getName()
-            ));
+            case Seal.MarkStrategyInvulnerable(var indexError, var strategy) -> {
+                if (strategy instanceof StrategyError) {
+                    LOGGER.debug(() -> AnsiColorUtil.addRedColor(
+                        this.model.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName()
+                    ));
+                } else {
+                    LOGGER.debug(() -> AnsiColorUtil.addRedColor(strategy.getClass().getSimpleName()));
+                }
+            }
+            case Seal.MarkStrategyVulnerable(var indexError, var strategy) -> {
+                if (strategy instanceof StrategyError) {
+                    LOGGER.info(() -> AnsiColorUtil.addGreenColor(
+                        this.model.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName()
+                    ));
+                } else {
+                    LOGGER.info(() -> AnsiColorUtil.addGreenColor(strategy.getClass().getSimpleName()));
+                }
+            }
 
-            case Request3.MarkVulnerable(var strategy) -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(strategy.getClass().getSimpleName()));
-            case Request3.MarkErrorVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(
-                this.model.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(r.indexError()).getName()
-            ));
+            case Seal.MarkFileSystemInvulnerable r -> LOGGER.debug(() -> AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));
+            case Seal.MarkFileSystemVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
 
-            case Request3.MarkFileSystemInvulnerable r -> LOGGER.debug(() -> AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));
-            case Request3.MarkFileSystemVulnerable r -> LOGGER.info(() -> AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));
-
-            case Request3.MessageBinary(var message) -> LOGGER.info(message::trim);
+            case Seal.MessageBinary(var message) -> LOGGER.info(message::trim);
             default -> {
                 // empty
             }

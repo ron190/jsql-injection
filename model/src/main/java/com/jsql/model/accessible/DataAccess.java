@@ -12,7 +12,7 @@ package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.*;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
@@ -194,7 +194,7 @@ public class DataAccess {
             databases.add(newDatabase);
         }
 
-        this.injectionModel.sendToViews(new Request3.AddDatabases(databases));
+        this.injectionModel.sendToViews(new Seal.AddDatabases(databases));
         return databases;
     }
 
@@ -214,7 +214,7 @@ public class DataAccess {
         this.injectionModel.setIsStoppedByUser(false);
         
         // Inform the view that database has just been used
-        this.injectionModel.sendToViews(new Request3.StartProgress(database));
+        this.injectionModel.sendToViews(new Seal.StartProgress(database));
 
         var tableCount = Integer.toString(database.getChildCount());
         
@@ -244,7 +244,7 @@ public class DataAccess {
             )
             .matcher(resultToParse);
         
-        this.injectionModel.sendToViews(new Request3.EndProgress(database));
+        this.injectionModel.sendToViews(new Seal.EndProgress(database));
 
         if (!regexSearch.find()) {
             throw new InjectionFailureException("No match while injecting tables");
@@ -262,7 +262,7 @@ public class DataAccess {
             tables.add(newTable);
         }
 
-        this.injectionModel.sendToViews(new Request3.AddTables(tables));
+        this.injectionModel.sendToViews(new Seal.AddTables(tables));
         return tables;
     }
 
@@ -280,7 +280,7 @@ public class DataAccess {
         List<Column> columns = new ArrayList<>();
         
         // Inform the view that table has just been used
-        this.injectionModel.sendToViews(new Request3.StartIndeterminateProgress(table));
+        this.injectionModel.sendToViews(new Seal.StartIndeterminateProgress(table));
 
         String resultToParse = StringUtils.EMPTY;
         
@@ -314,7 +314,7 @@ public class DataAccess {
             )
             .matcher(resultToParse);
 
-        this.injectionModel.sendToViews(new Request3.EndIndeterminateProgress(table));
+        this.injectionModel.sendToViews(new Seal.EndIndeterminateProgress(table));
 
         if (!regexSearch.find()) {
             throw new InjectionFailureException("No match while injecting columns");
@@ -329,7 +329,7 @@ public class DataAccess {
             columns.add(column);
         }
 
-        this.injectionModel.sendToViews(new Request3.AddColumns(columns));
+        this.injectionModel.sendToViews(new Seal.AddColumns(columns));
         return columns;
     }
 
@@ -349,7 +349,7 @@ public class DataAccess {
         int rowCount = columnsBean.getFirst().getParent().getChildCount();
 
         // Inform the view that table has just been used
-        this.injectionModel.sendToViews(new Request3.StartProgress(tableBean));
+        this.injectionModel.sendToViews(new Seal.StartProgress(tableBean));
 
         // Build an array of column names
         List<String> columnsName = new ArrayList<>();
@@ -372,8 +372,8 @@ public class DataAccess {
 
         columns = columnsName.toArray(new String[0]);
         
-        this.injectionModel.sendToViews(new Request3.CreateValuesTab(columns, table, tableBean));
-        this.injectionModel.sendToViews(new Request3.EndProgress(tableBean));
+        this.injectionModel.sendToViews(new Seal.CreateValuesTab(columns, table, tableBean));
+        this.injectionModel.sendToViews(new Seal.EndProgress(tableBean));
         return table;
     }
 

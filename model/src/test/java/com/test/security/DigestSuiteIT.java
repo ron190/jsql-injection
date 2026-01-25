@@ -49,7 +49,7 @@ class DigestSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model
         .getMediatorUtils()
-        .getAuthenticationUtil()
+        .authenticationUtil()
         .set(
             false,
             DigestSecurityConfig.DIGEST_USERNAME,

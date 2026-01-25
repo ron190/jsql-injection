@@ -1,7 +1,7 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -91,7 +91,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
 
             this.responseCodeHttp = String.valueOf(response.statusCode());
 
-            this.injectionModel.sendToViews(new Request3.MessageHeader(
+            this.injectionModel.sendToViews(new Seal.MessageHeader(
                 this.urlAdminPage,
                 null,
                 ConnectionUtil.getHeadersMap(httpRequest.headers()),

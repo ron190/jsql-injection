@@ -1,7 +1,7 @@
 package com.jsql.model.suspendable;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.InjectionCharInsertion;
@@ -72,7 +72,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                         this.setEngine(mediatorEngine, enginesOrderByMatches);
 
                         LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using [{}]", mediatorEngine.getEngine());
-                        this.injectionModel.sendToViews(new Request3.ActivateEngine(mediatorEngine.getEngine()));
+                        this.injectionModel.sendToViews(new Seal.ActivateEngine(mediatorEngine.getEngine()));
                     }
                     
                     charFromOrderBy = currentCallable.getCharacterInsertion();
