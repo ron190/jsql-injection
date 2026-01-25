@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.util;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.bean.util.Request3;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.subscriber.Seal;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.InjectionFailureException;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.method.AbstractMethodInjection;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.apache.commons.lang3.StringUtils;
@@ -119,8 +119,8 @@
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>             <strong class="jxr_keyword">this</strong>.initHeader(rawHeader);
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>             <strong class="jxr_keyword">this</strong>.initRequest(rawRequest);
 <a class="jxr_linenumber" name="L113" href="#L113">113</a> 
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().setMethodInjection(methodInjection);
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().setTypeRequest(typeRequest);
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>             
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>             <strong class="jxr_keyword">if</strong> (isScanning) {
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.beginInjection();
@@ -131,7 +131,7 @@
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Incorrect Url: {}"</span>, e.getMessage());
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>             
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>             <em class="jxr_comment">// Incorrect URL, reset the start button</em>
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.EndPreparation());
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.EndPreparation());
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>         }
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>     }
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> 
@@ -144,10 +144,10 @@
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>         <strong class="jxr_keyword">this</strong>.checkStarMatchMethod();
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>         <strong class="jxr_keyword">this</strong>.checkMethodNotEmpty();
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         <strong class="jxr_keyword">this</strong>.checkMultipart();
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         <strong class="jxr_keyword">if</strong> (ParameterUtil.isInvalidName(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>         <strong class="jxr_keyword">if</strong> (ParameterUtil.isInvalidName(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest())) {
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>(String.format(
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>                 <span class="jxr_string">"Illegal method: \&quot;%s\&quot;"</span>,
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest()
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest()
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>             ));
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         }
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>     }
@@ -218,8 +218,8 @@
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>     }
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>     
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> checkStarMatchMethod() <strong class="jxr_keyword">throws</strong> <a name="InjectionFailureException" href="../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> {
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>         <a name="AbstractMethodInjection" href="../../../com/jsql/model/injection/method/AbstractMethodInjection.html#AbstractMethodInjection">AbstractMethodInjection</a> methodInjection = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>         <strong class="jxr_keyword">boolean</strong> isCheckingAllParam = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>         <a name="AbstractMethodInjection" href="../../../com/jsql/model/injection/method/AbstractMethodInjection.html#AbstractMethodInjection">AbstractMethodInjection</a> methodInjection = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection();
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>         <strong class="jxr_keyword">boolean</strong> isCheckingAllParam = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam();
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> 
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>         <strong class="jxr_keyword">if</strong> (
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>             <strong class="jxr_keyword">this</strong>.getQueryStringFromEntries().contains(InjectionModel.STAR)
@@ -243,14 +243,14 @@
 <a class="jxr_linenumber" name="L235" href="#L235">235</a>     }
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>     
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> checkMethodNotEmpty() <strong class="jxr_keyword">throws</strong> <a name="InjectionFailureException" href="../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a> {
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>         <a name="AbstractMethodInjection" href="../../../com/jsql/model/injection/method/AbstractMethodInjection.html#AbstractMethodInjection">AbstractMethodInjection</a> methodInjection = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>         <strong class="jxr_keyword">boolean</strong> isCheckingAllParam = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>         <a name="AbstractMethodInjection" href="../../../com/jsql/model/injection/method/AbstractMethodInjection.html#AbstractMethodInjection">AbstractMethodInjection</a> methodInjection = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection();
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>         <strong class="jxr_keyword">boolean</strong> isCheckingAllParam = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam();
 <a class="jxr_linenumber" name="L240" href="#L240">240</a>         
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>         <strong class="jxr_keyword">if</strong> (
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>             methodInjection == <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorMethod().getQuery()
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>             &amp;&amp; !isCheckingAllParam
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>             &amp;&amp; <strong class="jxr_keyword">this</strong>.getListQueryString().isEmpty()
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>             &amp;&amp; !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>             &amp;&amp; !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>         ) {
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>(<span class="jxr_string">"No query string"</span>);
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (
@@ -288,8 +288,8 @@
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MalformedURLException(<span class="jxr_string">"empty URL"</span>);
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>         }
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>         
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().setUrlByUser(urlQuery);
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(urlQuery);
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().setUrlByUser(urlQuery);
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(urlQuery);
 <a class="jxr_linenumber" name="L285" href="#L285">285</a>         <strong class="jxr_keyword">this</strong>.listQueryString.clear();
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>         
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>         <em class="jxr_comment">// Parse url and GET query string</em>
@@ -298,7 +298,7 @@
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>             <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L291" href="#L291">291</a>         }
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>         
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexQueryString.group(1));
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(regexQueryString.group(1));
 <a class="jxr_linenumber" name="L294" href="#L294">294</a>         
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>         <strong class="jxr_keyword">if</strong> (StringUtils.isNotEmpty(url.getQuery())) {
 <a class="jxr_linenumber" name="L296" href="#L296">296</a>             <strong class="jxr_keyword">this</strong>.listQueryString = Pattern.compile(<span class="jxr_string">"&amp;"</span>)

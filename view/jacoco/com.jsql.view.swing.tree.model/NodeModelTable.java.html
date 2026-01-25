@@ -55,7 +55,7 @@ public class NodeModelTable extends AbstractNodeModel {
     protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
 <span class="nc bnc" id="L56" title="All 2 branches missed.">        if (StringUtil.INFORMATION_SCHEMA.equals(this.getParent().toString())) {</span>
 <span class="nc" id="L57">            panelNode.showLoader();</span>
-<span class="nc" id="L58">            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());</span>
+<span class="nc" id="L58">            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().threadUtil().get(this.getElementDatabase());</span>
 <span class="nc bnc" id="L59" title="All 4 branches missed.">            if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
 <span class="nc" id="L60">                panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.getIcon(), UiUtil.PATH_PAUSE));</span>
             }

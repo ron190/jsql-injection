@@ -10,9 +10,9 @@
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.accessible.DataAccess;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.bean.util.Request3;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.VendorYaml;
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.yaml.Configuration;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.subscriber.Seal;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.engine.model.EngineYaml;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.engine.model.yaml.Configuration;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.suspendable.AbstractSuspendable;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> com.jsql.util.I18nUtil;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> com.jsql.util.LogLevelUtil;
@@ -35,14 +35,14 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      @Override
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> checkApplicability() {
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>          <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyStackDisabled()) {
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>          <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isStrategyStackDisabled()) {
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>              LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, <strong class="jxr_keyword">this</strong>.getName());
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>              <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          }
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>          <em class="jxr_comment">// Reset applicability of new Vendor</em>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          <em class="jxr_comment">// Reset applicability of new engine</em>
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">this</strong>.isApplicable = false;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">var</strong> strategyYaml = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">var</strong> strategyYaml = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy();
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>          <strong class="jxr_keyword">var</strong> configurationYaml = strategyYaml.getConfiguration();
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">this</strong>.logChecking();
@@ -76,20 +76,20 @@
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          }
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isApplicable(<a name="Configuration" href="../../../../../com/jsql/model/injection/vendor/model/yaml/Configuration.html#Configuration">Configuration</a> configurationYaml, String stack) {
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isApplicable(<a name="Configuration" href="../../../../../com/jsql/model/injection/engine/model/yaml/Configuration.html#Configuration">Configuration</a> configurationYaml, String stack) {
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">var</strong> methodIsApplicable = false;
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">var</strong> indexZeroToFind = <span class="jxr_string">"0"</span>;
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          String performanceSourcePage = <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>              VendorYaml.replaceTags(
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>              EngineYaml.replaceTags(
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>                  stack
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>                  .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>                  .replace(VendorYaml.INJECTION, configurationYaml.getFailsafe().replace(VendorYaml.INDICE,indexZeroToFind))
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>                  .replace(VendorYaml.WINDOW_CHAR, <span class="jxr_string">"1"</span>)
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>                  .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>                  .replace(EngineYaml.WINDOW, configurationYaml.getSlidingWindow())
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>                  .replace(EngineYaml.INJECTION, configurationYaml.getFailsafe().replace(EngineYaml.INDICE,indexZeroToFind))
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>                  .replace(EngineYaml.WINDOW_CHAR, <span class="jxr_string">"1"</span>)
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>                  .replace(EngineYaml.CAPACITY, EngineYaml.DEFAULT_CAPACITY)
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>              ),
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>              <span class="jxr_string">"stack#confirm"</span>
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          );
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>          String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          String regexIndexZero = String.format(EngineYaml.FORMAT_INDEX, indexZeroToFind);
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">if</strong> (performanceSourcePage.matches(<span class="jxr_string">"(?s).*"</span>+ regexIndexZero +<span class="jxr_string">".*"</span>)) {
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>              methodIsApplicable = <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>              <strong class="jxr_keyword">this</strong>.isApplicable = <strong class="jxr_keyword">true</strong>;
@@ -97,18 +97,18 @@
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          <strong class="jxr_keyword">return</strong> methodIsApplicable;
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>      }
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>      <strong class="jxr_keyword">private</strong> Matcher getPerformance(<a name="Configuration" href="../../../../../com/jsql/model/injection/vendor/model/yaml/Configuration.html#Configuration">Configuration</a> configurationYaml, String stack) {
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      <strong class="jxr_keyword">private</strong> Matcher getPerformance(<a name="Configuration" href="../../../../../com/jsql/model/injection/engine/model/yaml/Configuration.html#Configuration">Configuration</a> configurationYaml, String stack) {
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>          String performanceSourcePage = <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>              VendorYaml.replaceTags(
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>              EngineYaml.replaceTags(
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>                  stack
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>                  .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>                  .replace(VendorYaml.INJECTION, configurationYaml.getCalibrator())
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>                  .replace(VendorYaml.WINDOW_CHAR, <span class="jxr_string">"1"</span>)
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>                  .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>                  .replace(EngineYaml.WINDOW, configurationYaml.getSlidingWindow())
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>                  .replace(EngineYaml.INJECTION, configurationYaml.getCalibrator())
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>                  .replace(EngineYaml.WINDOW_CHAR, <span class="jxr_string">"1"</span>)
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>                  .replace(EngineYaml.CAPACITY, EngineYaml.DEFAULT_CAPACITY)
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>             ),
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>             <span class="jxr_string">"stack#size"</span>
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         );
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">return</strong> Pattern.compile(<span class="jxr_string">"(?s)"</span>+ DataAccess.LEAD +<span class="jxr_string">"("</span>+ VendorYaml.CALIBRATOR_SQL +<span class="jxr_string">"+)"</span>).matcher(performanceSourcePage);
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">return</strong> Pattern.compile(<span class="jxr_string">"(?s)"</span>+ DataAccess.LEAD +<span class="jxr_string">"("</span>+ EngineYaml.CALIBRATOR_SQL +<span class="jxr_string">"+)"</span>).matcher(performanceSourcePage);
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     }
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> 
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     @Override
@@ -116,22 +116,22 @@
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">this</strong>.injectionModel.appendAnalysisReport(
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>             StringUtil.formatReport(LogLevelUtil.COLOR_BLU, <span class="jxr_string">"### Strategy: "</span> + <strong class="jxr_keyword">this</strong>.getName())
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>             + <strong class="jxr_keyword">this</strong>.injectionModel.getReportWithoutIndex(
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlStack(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, <span class="jxr_string">"&amp;lt;query&amp;gt;"</span>), <span class="jxr_string">"0"</span>, <strong class="jxr_keyword">true</strong>),
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine().instance().sqlStack(StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, <span class="jxr_string">"&amp;lt;query&amp;gt;"</span>), <span class="jxr_string">"0"</span>, <strong class="jxr_keyword">true</strong>),
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>                 <span class="jxr_string">"metadataInjectionProcess"</span>
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>             )
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         );
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.MarkStrategyVulnerable(<strong class="jxr_keyword">this</strong>));
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.MarkStrategyVulnerable(<strong class="jxr_keyword">this</strong>));
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>     }
 <a class="jxr_linenumber" name="L117" href="#L117">117</a> 
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>     @Override
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> unallow(<strong class="jxr_keyword">int</strong>... i) {
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.MarkStrategyInvulnerable(<strong class="jxr_keyword">this</strong>));
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.MarkStrategyInvulnerable(<strong class="jxr_keyword">this</strong>));
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>     }
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> 
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>     @Override
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>     <strong class="jxr_keyword">public</strong> String inject(String sqlQuery, String startPosition, <a name="AbstractSuspendable" href="../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> stoppable, String metadataInjectionProcess) {
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlStack(sqlQuery, startPosition, false),
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine().instance().sqlStack(sqlQuery, startPosition, false),
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>             metadataInjectionProcess
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         );
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>     }
@@ -146,7 +146,7 @@
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>                 <strong class="jxr_keyword">this</strong>::getName
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>             );
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().setStrategy(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.MarkStrategy(<strong class="jxr_keyword">this</strong>));
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.ActivateStrategy(<strong class="jxr_keyword">this</strong>));
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>         }
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>     }
 <a class="jxr_linenumber" name="L144" href="#L144">144</a> 

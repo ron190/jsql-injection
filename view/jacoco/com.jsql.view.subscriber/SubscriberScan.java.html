@@ -10,22 +10,20 @@
  ******************************************************************************/
 package com.jsql.view.subscriber;
 
-import com.jsql.model.bean.util.Request3;
 import com.jsql.view.swing.util.MediatorHelper;
 
-<span class="nc" id="L16">public class SubscriberScan extends AbstractSubscriber {</span>
+<span class="nc" id="L15">public class SubscriberScan extends AbstractSubscriber {</span>
     @Override
-    protected void execute(Request3 request) {
-<span class="nc" id="L19">        var urlByUser = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getUrlByUser();</span>
-<span class="nc bnc" id="L20" title="All 5 branches missed.">        switch (request) {</span>
-<span class="nc" id="L21">            case Request3.DatabaseIdentified(var url, var vendor) -&gt; MediatorHelper.managerScan().highlight(url, vendor.toString());</span>
-<span class="nc" id="L22">            case Request3.SetVendor(var url, var vendor) -&gt; MediatorHelper.managerScan().highlight(url, vendor.toString());</span>
-<span class="nc" id="L23">            case Request3.MarkStrategyVulnerable(var strategy) -&gt; MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());</span>
-<span class="nc" id="L24">            case Request3.MarkErrorVulnerable r -&gt; MediatorHelper.managerScan().highlight(urlByUser, r.strategy().toString());</span>
+    protected void execute(Seal request) {
+<span class="nc" id="L18">        var urlByUser = MediatorHelper.model().getMediatorUtils().connectionUtil().getUrlByUser();</span>
+<span class="nc bnc" id="L19" title="All 4 branches missed.">        switch (request) {</span>
+<span class="nc" id="L20">            case Seal.MarkEngineFound(var engine) -&gt; MediatorHelper.managerScan().highlight(urlByUser, engine.toString());</span>
+<span class="nc" id="L21">            case Seal.ActivateEngine(var engine) -&gt; MediatorHelper.managerScan().highlight(urlByUser, engine.toString());</span>
+<span class="nc" id="L22">            case Seal.MarkStrategyVulnerable(int ignored, var strategy) -&gt; MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());</span>
             default -&gt; {
                 // empty
-<span class="nc" id="L27">            }</span>
+<span class="nc" id="L25">            }</span>
         }
-<span class="nc" id="L29">    }</span>
+<span class="nc" id="L27">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

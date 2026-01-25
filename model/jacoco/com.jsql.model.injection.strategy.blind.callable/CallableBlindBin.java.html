@@ -40,7 +40,7 @@ public class CallableBlindBin extends AbstractCallableBit&lt;CallableBlindBin&gt
 <span class="fc" id="L40">        this.binRanges = binRanges;</span>
 <span class="fc" id="L41">        this.injectionBlind = injectionBlind;</span>
 <span class="fc" id="L42">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
-<span class="fc" id="L43">        this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);</span>
+<span class="fc" id="L43">        this.booleanUrl = injectionModel.getMediatorEngine().getEngine().instance().sqlTestBlindWithOperator(sqlQuery, blindOperator);</span>
 <span class="fc" id="L44">    }</span>
 
     /**
@@ -56,7 +56,7 @@ public class CallableBlindBin extends AbstractCallableBit&lt;CallableBlindBin&gt
         String metadataInjectionProcess
     ) {
 <span class="fc" id="L58">        this(sqlQuery, injectionModel, injectionBlind, blindOperator, binRanges, metadataInjectionProcess);</span>
-<span class="fc" id="L59">        this.booleanUrl = injectionModel.getMediatorVendor().getVendor().instance().sqlBlindBin(sqlQuery, indexChar, binRanges.mid(), blindOperator);</span>
+<span class="fc" id="L59">        this.booleanUrl = injectionModel.getMediatorEngine().getEngine().instance().sqlBlindBin(sqlQuery, indexChar, binRanges.mid(), blindOperator);</span>
 <span class="fc" id="L60">        this.currentIndex = indexChar;</span>
 <span class="fc" id="L61">    }</span>
 

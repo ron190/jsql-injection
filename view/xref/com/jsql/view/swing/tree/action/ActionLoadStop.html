@@ -70,7 +70,7 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      }
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> stopAbstractNode() {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(<strong class="jxr_keyword">this</strong>.nodeModel.getElementDatabase());
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>          AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().threadUtil().get(<strong class="jxr_keyword">this</strong>.nodeModel.getElementDatabase());
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <em class="jxr_comment">// Fix #21394: NullPointerException on stop()</em>
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          <strong class="jxr_keyword">if</strong> (suspendableTask != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>              suspendableTask.stop();
@@ -80,7 +80,7 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">this</strong>.nodeModel.setProgressing(false);
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">this</strong>.nodeModel.setLoading(false);
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>          MediatorHelper.model().getMediatorUtils().getThreadUtil().remove(<strong class="jxr_keyword">this</strong>.nodeModel.getElementDatabase());
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>          MediatorHelper.model().getMediatorUtils().threadUtil().remove(<strong class="jxr_keyword">this</strong>.nodeModel.getElementDatabase());
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      }
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">private</strong> List&lt;Column&gt; getSelectedColumns() {

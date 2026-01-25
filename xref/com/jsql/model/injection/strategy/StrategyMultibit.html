@@ -19,11 +19,11 @@
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">package</strong> com.jsql.model.injection.strategy;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.bean.util.Request3;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> com.jsql.view.subscriber.Seal;
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.exception.StoppedByUserSlidingException;
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.injection.strategy.blind.InjectionMultibit;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.VendorYaml;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.injection.engine.model.EngineYaml;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> com.jsql.model.suspendable.AbstractSuspendable;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> com.jsql.util.I18nUtil;
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> com.jsql.util.LogLevelUtil;
@@ -44,17 +44,17 @@
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      @Override
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> checkApplicability() <strong class="jxr_keyword">throws</strong> <a name="StoppedByUserSlidingException" href="../../../../../com/jsql/model/exception/StoppedByUserSlidingException.html#StoppedByUserSlidingException">StoppedByUserSlidingException</a> {
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>          <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled()) {
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>          <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isStrategyMultibitDisabled()) {
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>              LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, <strong class="jxr_keyword">this</strong>.getName());
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>              <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>          } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (StringUtils.isEmpty(
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getMultibit()
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getBinary().getMultibit()
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>          )) {
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>              LOGGER.log(
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>                  LogLevelUtil.CONSOLE_INFORM,
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>                  AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>                  <strong class="jxr_keyword">this</strong>.getName(),
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>                  <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor()
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>                  <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine()
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>              );
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          }
@@ -63,7 +63,7 @@
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.isApplicable) {
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>              <strong class="jxr_keyword">this</strong>.allow();
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>              <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.MessageBinary(<strong class="jxr_keyword">this</strong>.injection.getInfoMessage()));
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>              <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.MessageBinary(<strong class="jxr_keyword">this</strong>.injection.getInfoMessage()));
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>              <strong class="jxr_keyword">this</strong>.unallow();
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          }
@@ -90,8 +90,8 @@
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">this</strong>.injectionModel.appendAnalysisReport(
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>              StringUtil.formatReport(LogLevelUtil.COLOR_BLU, <span class="jxr_string">"### Strategy: "</span> + <strong class="jxr_keyword">this</strong>.getName())
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>              + <strong class="jxr_keyword">this</strong>.injectionModel.getReportWithoutIndex(
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>                      <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>                      <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>                      <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine().instance().sqlMultibit(
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>                      <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine().instance().sqlBlind(
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>                          StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, <span class="jxr_string">"&amp;lt;query&amp;gt;"</span>),
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>                          <span class="jxr_string">"0"</span>,
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>                          <strong class="jxr_keyword">true</strong>
@@ -103,18 +103,18 @@
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>                  <strong class="jxr_keyword">null</strong>
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>              )
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          );
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>          <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.MarkStrategyVulnerable(<strong class="jxr_keyword">this</strong>));
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>          <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.MarkStrategyVulnerable(<strong class="jxr_keyword">this</strong>));
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>      }
 <a class="jxr_linenumber" name="L100" href="#L100">100</a> 
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>     @Override
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> unallow(<strong class="jxr_keyword">int</strong>... i) {
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.MarkStrategyInvulnerable(<strong class="jxr_keyword">this</strong>));
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.MarkStrategyInvulnerable(<strong class="jxr_keyword">this</strong>));
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     }
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> 
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     @Override
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">public</strong> String inject(String sqlQuery, String startPosition, <a name="AbstractSuspendable" href="../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> stoppable, String metadataInjectionProcess) <strong class="jxr_keyword">throws</strong> <a name="StoppedByUserSlidingException" href="../../../../../com/jsql/model/exception/StoppedByUserSlidingException.html#StoppedByUserSlidingException">StoppedByUserSlidingException</a> {
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.injection.inject(
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine().instance().sqlBlind(sqlQuery, startPosition, false),
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>             stoppable
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         );
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>     }
@@ -129,13 +129,13 @@
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>                 <strong class="jxr_keyword">this</strong>::getName
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>             );
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().setStrategy(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.MarkStrategy(<strong class="jxr_keyword">this</strong>));
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.ActivateStrategy(<strong class="jxr_keyword">this</strong>));
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>         }
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>     }
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>     
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>     @Override
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>     <strong class="jxr_keyword">public</strong> String getPerformanceLength() {
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">return</strong> VendorYaml.DEFAULT_CAPACITY;
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">return</strong> EngineYaml.DEFAULT_CAPACITY;
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     }
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>     @Override

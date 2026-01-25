@@ -58,10 +58,10 @@
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          PanelTampering.TEXT_PANE_EVAL.getDocument().addDocumentListener(<strong class="jxr_keyword">new</strong> <a name="DocumentListenerEditing" href="../../../../../../com/jsql/view/swing/text/listener/DocumentListenerEditing.html#DocumentListenerEditing">DocumentListenerEditing</a>() {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              @Override
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> process() {
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>                  MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.TEXT_PANE_EVAL.getText());
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>                  MediatorHelper.model().getMediatorUtils().tamperingUtil().setCustomTamper(PanelTampering.TEXT_PANE_EVAL.getText());
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>              }
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          });
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          PanelTampering.TEXT_PANE_EVAL.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          PanelTampering.TEXT_PANE_EVAL.setText(MediatorHelper.model().getMediatorUtils().tamperingUtil().getCustomTamper());
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">this</strong>.checkboxIsTamperingEval.addActionListener(panelPreferences.getActionListenerSave());
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">this</strong>.checkboxIsTamperingEval.setText(<span class="jxr_string">"Enable user tamper script:"</span>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  

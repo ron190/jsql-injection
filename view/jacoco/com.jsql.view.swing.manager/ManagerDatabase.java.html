@@ -37,102 +37,103 @@ import java.awt.event.MouseEvent;
  * Manager to code/decode string in various methods.
  */
 public class ManagerDatabase extends JPanel {
-    
+
 <span class="fc" id="L41">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     private final TreeDatabase tree;
+    public static final String TREE_DATABASES = &quot;treeDatabases&quot;;
 
     /**
      * Create a panel to encode a string.
      */
     public ManagerDatabase() {
-<span class="fc" id="L49">        super(new BorderLayout());</span>
+<span class="fc" id="L50">        super(new BorderLayout());</span>
 
         // First node in tree
-<span class="fc" id="L52">        AbstractNodeModel nodeModelEmpty = new NodeModelEmpty(I18nViewUtil.valueByKey(&quot;DATABASE_EMPTY&quot;));</span>
-<span class="fc" id="L53">        var root = new DefaultMutableTreeNode(nodeModelEmpty);</span>
-<span class="fc" id="L54">        I18nViewUtil.addComponentForKey(&quot;DATABASE_EMPTY&quot;, nodeModelEmpty);</span>
+<span class="fc" id="L53">        AbstractNodeModel nodeModelEmpty = new NodeModelEmpty(I18nViewUtil.valueByKey(&quot;DATABASE_EMPTY&quot;));</span>
+<span class="fc" id="L54">        var root = new DefaultMutableTreeNode(nodeModelEmpty);</span>
+<span class="fc" id="L55">        I18nViewUtil.addComponentForKey(&quot;DATABASE_EMPTY&quot;, nodeModelEmpty);</span>
 
-<span class="fc" id="L56">        this.tree = new TreeDatabase(root);</span>
-<span class="fc" id="L57">        this.tree.setName(&quot;treeDatabases&quot;);</span>
-<span class="fc" id="L58">        MediatorHelper.register(this.tree);</span>
+<span class="fc" id="L57">        this.tree = new TreeDatabase(root);</span>
+<span class="fc" id="L58">        this.tree.setName(ManagerDatabase.TREE_DATABASES);</span>
+<span class="fc" id="L59">        MediatorHelper.register(this.tree);</span>
 
-<span class="fc" id="L60">        this.tree.setCellRenderer(new CellRendererNode());</span>
-<span class="fc" id="L61">        this.tree.addMouseListener(this.getTreeMouseListener());</span>
-<span class="fc" id="L62">        this.tree.addKeyListener(this.getTreeKeyListener());</span>
-<span class="fc" id="L63">        this.tree.setCellEditor(new CellEditorNode());</span>
-<span class="fc" id="L64">        this.tree.setEditable(true);  // allows repaint nodes</span>
-<span class="fc" id="L65">        this.tree.setShowsRootHandles(true);</span>
-<span class="fc" id="L66">        this.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);</span>
-<span class="fc" id="L67">        this.tree.getModel().addTreeModelListener(new TreeModelProgressListener());  // required to repaint progress bar</span>
+<span class="fc" id="L61">        this.tree.setCellRenderer(new CellRendererNode());</span>
+<span class="fc" id="L62">        this.tree.addMouseListener(this.getTreeMouseListener());</span>
+<span class="fc" id="L63">        this.tree.addKeyListener(this.getTreeKeyListener());</span>
+<span class="fc" id="L64">        this.tree.setCellEditor(new CellEditorNode());</span>
+<span class="fc" id="L65">        this.tree.setEditable(true);  // allows repaint nodes</span>
+<span class="fc" id="L66">        this.tree.setShowsRootHandles(true);</span>
+<span class="fc" id="L67">        this.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);</span>
+<span class="fc" id="L68">        this.tree.getModel().addTreeModelListener(new TreeModelProgressListener());  // required to repaint progress bar</span>
 
-<span class="fc" id="L69">        this.add(new JScrollPane(this.tree), BorderLayout.CENTER);</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L70">        this.add(new JScrollPane(this.tree), BorderLayout.CENTER);</span>
+<span class="fc" id="L71">    }</span>
 
     private KeyAdapter getTreeKeyListener() {
-<span class="fc" id="L73">        return new KeyAdapter() {</span>
+<span class="fc" id="L74">        return new KeyAdapter() {</span>
             @Override
             public void keyPressed(KeyEvent e) {
-<span class="nc bnc" id="L76" title="All 2 branches missed.">                if (e.getKeyCode() == KeyEvent.VK_F2) {</span>
-<span class="nc" id="L77">                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">                    if (treeNode != null) {</span>
-<span class="nc" id="L79">                        AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();</span>
-<span class="nc bnc" id="L80" title="All 6 branches missed.">                        if (nodeModel != null &amp;&amp; nodeModel.getPanel() != null &amp;&amp; !nodeModel.isRunning()) {</span>
-<span class="nc" id="L81">                            nodeModel.setIsEdited(true);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">                if (e.getKeyCode() == KeyEvent.VK_F2) {</span>
+<span class="nc" id="L78">                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">                    if (treeNode != null) {</span>
+<span class="nc" id="L80">                        AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();</span>
+<span class="nc bnc" id="L81" title="All 6 branches missed.">                        if (nodeModel != null &amp;&amp; nodeModel.getPanel() != null &amp;&amp; !nodeModel.isRunning()) {</span>
+<span class="nc" id="L82">                            nodeModel.setIsEdited(true);</span>
                         }
                     }
                 }
-<span class="nc" id="L85">            }</span>
+<span class="nc" id="L86">            }</span>
         };
     }
 
     private MouseAdapter getTreeMouseListener() {
-<span class="fc" id="L90">        return new MouseAdapter() {</span>
+<span class="fc" id="L91">        return new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent event) {
-<span class="fc" id="L93">                int selRow = ManagerDatabase.this.tree.getRowForLocation(event.getX(), event.getY());</span>
-<span class="fc" id="L94">                TreePath selPath = ManagerDatabase.this.tree.getPathForLocation(event.getX(), event.getY());</span>
-<span class="pc bpc" id="L95" title="2 of 4 branches missed.">                if (selRow != -1 &amp;&amp; event.getClickCount() == 2) {</span>
+<span class="fc" id="L94">                int selRow = ManagerDatabase.this.tree.getRowForLocation(event.getX(), event.getY());</span>
+<span class="fc" id="L95">                TreePath selPath = ManagerDatabase.this.tree.getPathForLocation(event.getX(), event.getY());</span>
+<span class="pc bpc" id="L96" title="2 of 4 branches missed.">                if (selRow != -1 &amp;&amp; event.getClickCount() == 2) {</span>
                     // Fix ArrayIndexOutOfBoundsException on collapsePath()
                     try {
-<span class="nc bnc" id="L98" title="All 2 branches missed.">                        if (ManagerDatabase.this.tree.isExpanded(selPath)) {</span>
-<span class="nc" id="L99">                            ManagerDatabase.this.tree.collapsePath(selPath);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                        if (ManagerDatabase.this.tree.isExpanded(selPath)) {</span>
+<span class="nc" id="L100">                            ManagerDatabase.this.tree.collapsePath(selPath);</span>
                         } else {
-<span class="nc" id="L101">                            ManagerDatabase.this.tree.expandPath(selPath);</span>
+<span class="nc" id="L102">                            ManagerDatabase.this.tree.expandPath(selPath);</span>
                         }
-<span class="nc" id="L103">                    } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L104">                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L105">                    }</span>
+<span class="nc" id="L104">                    } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L105">                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L106">                    }</span>
                 }
-<span class="fc" id="L107">            }</span>
+<span class="fc" id="L108">            }</span>
         };
     }
     
-<span class="fc" id="L111">    private class TreeModelProgressListener implements TreeModelListener {</span>
+<span class="fc" id="L112">    private class TreeModelProgressListener implements TreeModelListener {</span>
         @Override
         public void treeNodesChanged(TreeModelEvent treeModelEvent) {
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">            if (treeModelEvent == null) {</span>
-<span class="nc" id="L115">                return;</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            if (treeModelEvent == null) {</span>
+<span class="nc" id="L116">                return;</span>
             }
-<span class="fc" id="L117">            ManagerDatabase.this.tree.firePropertyChange(</span>
+<span class="fc" id="L118">            ManagerDatabase.this.tree.firePropertyChange(</span>
                 JTree.ROOT_VISIBLE_PROPERTY,
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">                !ManagerDatabase.this.tree.isRootVisible(),</span>
-<span class="fc" id="L120">                ManagerDatabase.this.tree.isRootVisible()</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">                !ManagerDatabase.this.tree.isRootVisible(),</span>
+<span class="fc" id="L121">                ManagerDatabase.this.tree.isRootVisible()</span>
             );
-<span class="fc" id="L122">            ManagerDatabase.this.tree.treeDidChange();</span>
-<span class="fc" id="L123">        }</span>
+<span class="fc" id="L123">            ManagerDatabase.this.tree.treeDidChange();</span>
+<span class="fc" id="L124">        }</span>
         @Override
         public void treeStructureChanged(TreeModelEvent treeModelEvent) {
             // Do nothing
-<span class="fc" id="L127">        }</span>
+<span class="fc" id="L128">        }</span>
         @Override
         public void treeNodesRemoved(TreeModelEvent treeModelEvent) {
             // Do nothing
-<span class="nc" id="L131">        }</span>
+<span class="nc" id="L132">        }</span>
         @Override
         public void treeNodesInserted(TreeModelEvent treeModelEvent) {
             // Do nothing
-<span class="fc" id="L135">        }</span>
+<span class="fc" id="L136">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

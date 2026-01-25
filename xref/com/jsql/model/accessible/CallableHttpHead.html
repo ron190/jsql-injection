@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.model.accessible;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.bean.util.Request3;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.subscriber.Seal;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.util.ConnectionUtil;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.util.LogLevelUtil;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.apache.commons.lang3.StringUtils;
@@ -76,7 +76,7 @@
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>                  .timeout(Duration.ofSeconds(4));
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>              
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>              Stream.of(
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>                  <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries().split(<span class="jxr_string">"&#92;&#92;&#92;&#92;r&#92;&#92;&#92;&#92;n"</span>)
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>                  <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().parameterUtil().getHeaderFromEntries().split(<span class="jxr_string">"&#92;&#92;&#92;&#92;r&#92;&#92;&#92;&#92;n"</span>)
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>              )
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>              .map(e -&gt; {
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>                  <strong class="jxr_keyword">if</strong> (e.split(<span class="jxr_string">":"</span>).length == 2) {
@@ -92,14 +92,14 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>              .forEach(e -&gt; builderHttpRequest.header(e.getKey(), e.getValue()));
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>              
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>              <strong class="jxr_keyword">var</strong> httpRequest = builderHttpRequest.build();
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>              <strong class="jxr_keyword">var</strong> httpClient = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient()
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>              <strong class="jxr_keyword">var</strong> httpClient = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getHttpClient()
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>                  .connectTimeout(Duration.ofSeconds(4))
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>                  .build();
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>              HttpResponse&lt;Void&gt; response = httpClient.send(httpRequest, BodyHandlers.discarding());
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>              <strong class="jxr_keyword">this</strong>.responseCodeHttp = String.valueOf(response.statusCode());
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>              <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.MessageHeader(
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>              <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.MessageHeader(
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>                  <strong class="jxr_keyword">this</strong>.urlAdminPage,
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>                  <strong class="jxr_keyword">null</strong>,
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>                  ConnectionUtil.getHeadersMap(httpRequest.headers()),

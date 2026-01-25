@@ -89,8 +89,8 @@ public final class ThreadUtil {
     public ExecutorService getExecutor(String nameThread) {
         ExecutorService taskExecutor;
         
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {</span>
-<span class="fc" id="L93">            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().preferencesUtil().isLimitingThreads()) {</span>
+<span class="fc" id="L93">            int countThreads = this.injectionModel.getMediatorUtils().preferencesUtil().countLimitingThreads();</span>
 <span class="fc" id="L94">            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(nameThread));</span>
 <span class="fc" id="L95">        } else {</span>
 <span class="nc" id="L96">            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable(nameThread));</span>
@@ -100,8 +100,8 @@ public final class ThreadUtil {
 
     public void shutdown(ExecutorService taskExecutor) {
 <span class="fc" id="L102">        int timeout = 15;</span>
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isConnectionTimeout()) {</span>
-<span class="nc" id="L104">            timeout = this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().preferencesUtil().isConnectionTimeout()) {</span>
+<span class="nc" id="L104">            timeout = this.injectionModel.getMediatorUtils().preferencesUtil().countConnectionTimeout();</span>
         }
 
         try {

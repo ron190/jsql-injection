@@ -3,7 +3,7 @@
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -31,14 +31,14 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
     @Override
     public String run(Object... args) throws JSqlException {
         // Concurrent search
-<span class="fc" id="L34">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetIndexes&quot;);</span>
+<span class="fc" id="L34">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetIndexes&quot;);</span>
 <span class="fc" id="L35">        CompletionService&lt;CallablePageSource&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
 <span class="fc" id="L37">        String initialQuery = StringUtils.EMPTY;</span>
         int nbIndex;
         
-<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        int countUnionIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingUnionIndex()</span>
-<span class="nc" id="L41">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countUnionIndex()</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        int countUnionIndex = this.injectionModel.getMediatorUtils().preferencesUtil().isLimitingUnionIndex()</span>
+<span class="nc" id="L41">            ? this.injectionModel.getMediatorUtils().preferencesUtil().countUnionIndex()</span>
 <span class="fc" id="L42">            : 50;</span>
 
         // SQL fields are built like 1337[index]7330+1
@@ -47,7 +47,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
 <span class="fc bfc" id="L47" title="All 2 branches covered.">        for (nbIndex = 1 ; nbIndex &lt;= countUnionIndex ; nbIndex++) {</span>
 <span class="fc" id="L48">            taskCompletionService.submit(</span>
                 new CallablePageSource(
-<span class="fc" id="L50">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),</span>
+<span class="fc" id="L50">                    this.injectionModel.getMediatorEngine().getEngine().instance().sqlIndices(nbIndex),</span>
                     this.injectionModel,
                     &quot;union#&quot; + nbIndex,
                     nbIndex
@@ -64,15 +64,15 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
 <span class="fc" id="L64">                CallablePageSource currentCallable = taskCompletionService.take().get();</span>
 <span class="fc" id="L65">                nbIndex++;</span>
                 // Found a correct mark 1337[index]7331 in the source
-<span class="fc" id="L67">                String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, &quot;\\d+&quot;);</span>
+<span class="fc" id="L67">                String regexAllIndexes = String.format(EngineYaml.FORMAT_INDEX, &quot;\\d+&quot;);</span>
 <span class="fc bfc" id="L68" title="All 2 branches covered.">                if (Pattern.compile(&quot;(?s).*&quot;+ regexAllIndexes +&quot;.*&quot;).matcher(currentCallable.getContent()).matches()) {</span>
                     
 <span class="fc" id="L70">                    this.injectionModel.getMediatorStrategy().getSpecificUnion().setNbIndexesFound(currentCallable.getNbIndex());</span>
 <span class="fc" id="L71">                    this.injectionModel.getMediatorStrategy().getSpecificUnion().setSourceIndexesFound(currentCallable.getContent());</span>
 <span class="fc" id="L72">                    initialQuery = currentCallable.getQuery().replace(&quot;0%2b1&quot;, &quot;1&quot;);</span>
                     
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">                    if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {</span>
-<span class="nc" id="L75">                        String regexIndexesExceptFirst = String.format(VendorYaml.FORMAT_INDEX, &quot;(?!17331)\\d+&quot;);</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">                    if (this.injectionModel.getMediatorUtils().preferencesUtil().isPerfIndexDisabled()) {</span>
+<span class="nc" id="L75">                        String regexIndexesExceptFirst = String.format(EngineYaml.FORMAT_INDEX, &quot;(?!17331)\\d+&quot;);</span>
 <span class="nc" id="L76">                        initialQuery = initialQuery.replaceAll(regexIndexesExceptFirst, &quot;1&quot;);</span>
 <span class="nc" id="L77">                        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Calibrating indexes disabled, forcing to index [1]&quot;);</span>
                     }
@@ -86,7 +86,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
 <span class="fc" id="L86">                    break;</span>
                 }
 <span class="fc" id="L88">            }</span>
-<span class="fc" id="L89">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L89">            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 <span class="nc" id="L90">        } catch (InterruptedException e) {</span>
 <span class="nc" id="L91">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
 <span class="nc" id="L92">            Thread.currentThread().interrupt();</span>

@@ -11,7 +11,7 @@
 package com.jsql.view.swing.manager;
 
 import com.jsql.model.injection.method.AbstractMethodInjection;
-import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.model.injection.engine.model.Engine;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.subscriber.SubscriberScan;
@@ -183,7 +183,7 @@ public class ManagerScan extends AbstractManagerList {
 <span class="nc" id="L183">        }</span>
 
         // Display result only in console
-<span class="nc" id="L186">        MediatorHelper.frame().getSubscriberView().subscription.cancel();</span>
+<span class="nc" id="L186">        MediatorHelper.frame().getSubscriberView().getSubscription().cancel();</span>
 <span class="nc" id="L187">        var subscriberScan = new SubscriberScan();</span>
 <span class="nc" id="L188">        MediatorHelper.model().subscribe(subscriberScan);</span>
 
@@ -201,15 +201,15 @@ public class ManagerScan extends AbstractManagerList {
 <span class="nc" id="L201">            var urlItemListScan = (ItemListScan) urlItemList;</span>
 <span class="nc" id="L202">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Scanning {}&quot;, urlItemListScan.getBeanInjection().getUrl());</span>
 
-<span class="nc" id="L204">            Optional&lt;Vendor&gt; optionalVendor = MediatorHelper.model().getMediatorVendor().getVendors()</span>
+<span class="nc" id="L204">            Optional&lt;Engine&gt; optionalEngine = MediatorHelper.model().getMediatorEngine().getEngines()</span>
 <span class="nc" id="L205">                .stream()</span>
-<span class="nc" id="L206">                .filter(vendor -&gt; vendor.toString().equalsIgnoreCase(urlItemListScan.getBeanInjection().getVendor()))</span>
+<span class="nc" id="L206">                .filter(engine -&gt; engine.toString().equalsIgnoreCase(urlItemListScan.getBeanInjection().getEngine()))</span>
 <span class="nc" id="L207">                .findAny();</span>
 
-<span class="nc" id="L209">            MediatorHelper.model().getMediatorVendor().setVendorByUser(</span>
-<span class="nc" id="L210">                optionalVendor.orElse(MediatorHelper.model().getMediatorVendor().getAuto())</span>
+<span class="nc" id="L209">            MediatorHelper.model().getMediatorEngine().setEngineByUser(</span>
+<span class="nc" id="L210">                optionalEngine.orElse(MediatorHelper.model().getMediatorEngine().getAuto())</span>
             );
-<span class="nc" id="L212">            MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(</span>
+<span class="nc" id="L212">            MediatorHelper.model().getMediatorUtils().parameterUtil().controlInput(</span>
 <span class="nc" id="L213">                urlItemListScan.getBeanInjection().getUrl(),</span>
 <span class="nc" id="L214">                urlItemListScan.getBeanInjection().getRequest(),</span>
 <span class="nc" id="L215">                urlItemListScan.getBeanInjection().getHeader(),</span>
@@ -227,7 +227,7 @@ public class ManagerScan extends AbstractManagerList {
 <span class="nc" id="L227">        }</span>
         
         // Get back the default view
-<span class="nc" id="L230">        subscriberScan.subscription.cancel();</span>
+<span class="nc" id="L230">        subscriberScan.getSubscription().cancel();</span>
 <span class="nc" id="L231">        MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriberView());</span>
 
 <span class="nc" id="L233">        MediatorHelper.model().setIsScanning(false);</span>

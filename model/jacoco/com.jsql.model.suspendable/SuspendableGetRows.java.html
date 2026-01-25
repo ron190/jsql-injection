@@ -3,7 +3,7 @@
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import static com.jsql.model.accessible.DataAccess.*;
-import static com.jsql.model.injection.vendor.model.VendorYaml.LIMIT;
+import static com.jsql.model.injection.engine.model.EngineYaml.LIMIT;
 
 /**
  * Get data as chunks by performance query from SQL request.
@@ -57,7 +57,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L57">        AbstractElementDatabase elementDatabase = (AbstractElementDatabase) args[4];</span>
 <span class="fc" id="L58">        String metadataInjectionProcess = (String) args[5];</span>
         
-<span class="fc" id="L60">        this.injectionModel.getMediatorUtils().getThreadUtil().put(elementDatabase, this);</span>
+<span class="fc" id="L60">        this.injectionModel.getMediatorUtils().threadUtil().put(elementDatabase, this);</span>
 
 <span class="fc" id="L62">        AbstractStrategy strategy = this.injectionModel.getMediatorStrategy().getStrategy();</span>
         
@@ -147,12 +147,12 @@ public class SuspendableGetRows extends AbstractSuspendable {
             }
 <span class="fc" id="L148">            charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;</span>
 <span class="fc" id="L149">        }</span>
-<span class="fc" id="L150">        this.injectionModel.getMediatorUtils().getThreadUtil().remove(elementDatabase);</span>
+<span class="fc" id="L150">        this.injectionModel.getMediatorUtils().threadUtil().remove(elementDatabase);</span>
 <span class="fc" id="L151">        return slidingWindowAllRows.toString();</span>
     }
 
     private String decodeUrl(String currentChunk) {
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().preferencesUtil().isUrlDecodeDisabled()) {</span>
             try {
 <span class="fc" id="L157">                return URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text</span>
 <span class="nc" id="L158">            } catch (IllegalArgumentException e) {</span>
@@ -164,7 +164,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     private String decodeUnicode(String currentChunk, String initialSqlQuery) {
 <span class="fc" id="L166">        if (</span>
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">            !this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">            !this.injectionModel.getMediatorUtils().preferencesUtil().isUnicodeDecodeDisabled()</span>
 <span class="fc bfc" id="L168" title="All 4 branches covered.">            &amp;&amp; !&quot;select@@plugin_dir&quot;.equals(initialSqlQuery)  // can give C:\path\</span>
 <span class="fc bfc" id="L169" title="All 2 branches covered.">            &amp;&amp; initialSqlQuery != null &amp;&amp; !initialSqlQuery.matches(&quot;(?si).*select.*sys_eval\\('.*'\\).*&quot;)</span>
         ) {
@@ -178,7 +178,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private String getQuery(String initialSqlQuery, int countAllRows) {
-<span class="fc" id="L181">        return initialSqlQuery.replace(LIMIT, this.injectionModel.getMediatorVendor().getVendor().instance().sqlLimit(countAllRows));</span>
+<span class="fc" id="L181">        return initialSqlQuery.replace(LIMIT, this.injectionModel.getMediatorEngine().getEngine().instance().sqlLimit(countAllRows));</span>
     }
 
     private void appendRowFixed(StringBuilder slidingWindowAllRows, StringBuilder slidingWindowCurrentRow) {
@@ -256,7 +256,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         // Premature end of results
         // if it's not the root (empty tree)
 <span class="pc bpc" id="L258" title="1 of 2 branches missed.">        if (searchName != null) {</span>
-<span class="fc" id="L259">            this.injectionModel.sendToViews(new Request3.EndProgress(searchName));</span>
+<span class="fc" id="L259">            this.injectionModel.sendToViews(new Seal.EndProgress(searchName));</span>
         }
 <span class="fc" id="L261">        var messageError = new StringBuilder(&quot;Fetching fails: no data to parse&quot;);</span>
 <span class="pc bpc" id="L262" title="1 of 2 branches missed.">        if (searchName != null) {</span>
@@ -269,7 +269,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private void sendChunk(String currentChunk) {
-<span class="fc" id="L272">        this.injectionModel.sendToViews(new Request3.MessageChunk(</span>
+<span class="fc" id="L272">        this.injectionModel.sendToViews(new Seal.MessageChunk(</span>
 <span class="fc" id="L273">            Pattern.compile(MODE + TRAIL_RGX +&quot;.*&quot;)</span>
 <span class="fc" id="L274">            .matcher(currentChunk)</span>
 <span class="fc" id="L275">            .replaceAll(StringUtils.EMPTY)</span>
@@ -371,7 +371,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     private void sendProgress(int numberToFind, int countProgress, AbstractElementDatabase searchName) {
 <span class="pc bpc" id="L373" title="1 of 4 branches missed.">        if (numberToFind &gt; 0 &amp;&amp; searchName != null) {</span>
-<span class="fc" id="L374">            this.injectionModel.sendToViews(new Request3.UpdateProgress(searchName, countProgress));</span>
+<span class="fc" id="L374">            this.injectionModel.sendToViews(new Seal.UpdateProgress(searchName, countProgress));</span>
         }
 <span class="fc" id="L376">    }</span>
     

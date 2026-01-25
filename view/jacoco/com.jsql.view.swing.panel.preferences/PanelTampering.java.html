@@ -50,10 +50,10 @@ public class PanelTampering extends JPanel {
 <span class="fc" id="L50">        PanelTampering.TEXT_PANE_EVAL.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-<span class="nc" id="L53">                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.TEXT_PANE_EVAL.getText());</span>
+<span class="nc" id="L53">                MediatorHelper.model().getMediatorUtils().tamperingUtil().setCustomTamper(PanelTampering.TEXT_PANE_EVAL.getText());</span>
 <span class="nc" id="L54">            }</span>
         });
-<span class="fc" id="L56">        PanelTampering.TEXT_PANE_EVAL.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());</span>
+<span class="fc" id="L56">        PanelTampering.TEXT_PANE_EVAL.setText(MediatorHelper.model().getMediatorUtils().tamperingUtil().getCustomTamper());</span>
 <span class="fc" id="L57">        this.checkboxIsTamperingEval.addActionListener(panelPreferences.getActionListenerSave());</span>
 <span class="fc" id="L58">        this.checkboxIsTamperingEval.setText(&quot;Enable user tamper script:&quot;);</span>
 

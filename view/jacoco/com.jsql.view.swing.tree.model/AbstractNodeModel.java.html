@@ -145,7 +145,7 @@ public abstract class AbstractNodeModel {
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
 <span class="fc" id="L147">        var popupMenu = new JPopupMenuCustomExtract();</span>
-<span class="fc" id="L148">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);</span>
+<span class="fc" id="L148">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().threadUtil().get(this.elementDatabase);</span>
 
 <span class="fc" id="L150">        this.initItemLoadPause(currentTableNode, popupMenu, suspendableTask);</span>
 <span class="fc" id="L151">        this.initItemRenameReload(currentTableNode, path, popupMenu);</span>
@@ -282,7 +282,7 @@ public abstract class AbstractNodeModel {
 <span class="nc" id="L282">            this.panelNode.showLoader();</span>
 <span class="nc" id="L283">            this.panelNode.hideIcon();</span>
 
-<span class="nc" id="L285">            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);</span>
+<span class="nc" id="L285">            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().threadUtil().get(this.elementDatabase);</span>
 <span class="nc bnc" id="L286" title="All 4 branches missed.">            if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
 <span class="nc" id="L287">                this.panelNode.setLoaderIcon(new ImageOverlap(UiUtil.HOURGLASS.getIcon(), UiUtil.PATH_PAUSE));</span>
             }
@@ -344,7 +344,7 @@ public abstract class AbstractNodeModel {
 <span class="nc" id="L344">        panelNode.getProgressBar().setVisible(true);</span>
         
         // Report #135: ignore if thread not found
-<span class="nc" id="L347">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);</span>
+<span class="nc" id="L347">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().threadUtil().get(this.elementDatabase);</span>
 <span class="nc bnc" id="L348" title="All 4 branches missed.">        if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
 <span class="nc" id="L349">            panelNode.getProgressBar().pause();</span>
         }

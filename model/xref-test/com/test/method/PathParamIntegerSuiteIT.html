@@ -11,12 +11,12 @@
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.JSqlException;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.subscriber.SubscriberLogger;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.test.vendor.mysql.ConcreteMySqlSuiteIT;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.test.engine.mysql.ConcreteMySqlSuiteIT;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.AfterEach;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Assertions;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.junitpioneer.jupiter.RetryingTest;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">class</strong> <a name="PathParamIntegerSuiteIT" href="../../../com/test/method/PathParamIntegerSuiteIT.html#PathParamIntegerSuiteIT">PathParamIntegerSuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="ConcreteMySqlSuiteIT" href="../../../com/test/vendor/mysql/ConcreteMySqlSuiteIT.html#ConcreteMySqlSuiteIT">ConcreteMySqlSuiteIT</a> {
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">class</strong> <a name="PathParamIntegerSuiteIT" href="../../../com/test/method/PathParamIntegerSuiteIT.html#PathParamIntegerSuiteIT">PathParamIntegerSuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="ConcreteMySqlSuiteIT" href="../../../com/test/engine/mysql/ConcreteMySqlSuiteIT.html#ConcreteMySqlSuiteIT">ConcreteMySqlSuiteIT</a> {
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>      
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>      @Override
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setupInjection() <strong class="jxr_keyword">throws</strong> Exception {
@@ -25,7 +25,7 @@
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>          model.subscribe(<strong class="jxr_keyword">new</strong> SubscriberLogger(model));
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>          model.getMediatorUtils().getParameterUtil().initQueryString(
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>          model.getMediatorUtils().parameterUtil().initQueryString(
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>              <em class="jxr_comment">// Can work on Error:crud 'or &lt;Error&gt; or'</em>
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>              <em class="jxr_comment">// Must also work on union</em>
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>              <span class="jxr_string">"http://localhost:8080/path-integer/*/suffix?tenant=mysql&amp;fake="</span>
@@ -35,7 +35,7 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>          
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>          model
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>          .getMediatorUtils()
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>          .getPreferencesUtil()
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>          .preferencesUtil()
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>          .withIsNotTestingConnection(<strong class="jxr_keyword">true</strong>)
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>          .withIsStrategyTimeDisabled(<strong class="jxr_keyword">true</strong>)
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          .withIsStrategyBlindBinDisabled(<strong class="jxr_keyword">true</strong>)
@@ -43,7 +43,7 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>          model
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          .getMediatorUtils()
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          .getConnectionUtil()
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          .connectionUtil()
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>          .setMethodInjection(model.getMediatorMethod().getQuery());
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>          
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          model.beginInjection();

@@ -153,7 +153,7 @@
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>         <strong class="jxr_keyword">var</strong> popupMenu = <strong class="jxr_keyword">new</strong> <a name="JPopupMenuCustomExtract" href="../../../../../../com/jsql/view/swing/tree/custom/JPopupMenuCustomExtract.html#JPopupMenuCustomExtract">JPopupMenuCustomExtract</a>();
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>         <a name="AbstractSuspendable" href="../../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(<strong class="jxr_keyword">this</strong>.elementDatabase);
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>         <a name="AbstractSuspendable" href="../../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> suspendableTask = MediatorHelper.model().getMediatorUtils().threadUtil().get(<strong class="jxr_keyword">this</strong>.elementDatabase);
 <a class="jxr_linenumber" name="L149" href="#L149">149</a> 
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>         <strong class="jxr_keyword">this</strong>.initItemLoadPause(currentTableNode, popupMenu, suspendableTask);
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">this</strong>.initItemRenameReload(currentTableNode, path, popupMenu);
@@ -290,7 +290,7 @@
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>             <strong class="jxr_keyword">this</strong>.panelNode.showLoader();
 <a class="jxr_linenumber" name="L283" href="#L283">283</a>             <strong class="jxr_keyword">this</strong>.panelNode.hideIcon();
 <a class="jxr_linenumber" name="L284" href="#L284">284</a> 
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>             <a name="AbstractSuspendable" href="../../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(<strong class="jxr_keyword">this</strong>.elementDatabase);
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>             <a name="AbstractSuspendable" href="../../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> suspendableTask = MediatorHelper.model().getMediatorUtils().threadUtil().get(<strong class="jxr_keyword">this</strong>.elementDatabase);
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>             <strong class="jxr_keyword">if</strong> (suspendableTask != <strong class="jxr_keyword">null</strong> &amp;&amp; suspendableTask.isPaused()) {
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>                 <strong class="jxr_keyword">this</strong>.panelNode.setLoaderIcon(<strong class="jxr_keyword">new</strong> <a name="ImageOverlap" href="../../../../../../com/jsql/view/swing/tree/ImageOverlap.html#ImageOverlap">ImageOverlap</a>(UiUtil.HOURGLASS.getIcon(), UiUtil.PATH_PAUSE));
 <a class="jxr_linenumber" name="L288" href="#L288">288</a>             }
@@ -352,7 +352,7 @@
 <a class="jxr_linenumber" name="L344" href="#L344">344</a>         panelNode.getProgressBar().setVisible(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L345" href="#L345">345</a>         
 <a class="jxr_linenumber" name="L346" href="#L346">346</a>         <em class="jxr_comment">// Report #135: ignore if thread not found</em>
-<a class="jxr_linenumber" name="L347" href="#L347">347</a>         <a name="AbstractSuspendable" href="../../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(<strong class="jxr_keyword">this</strong>.elementDatabase);
+<a class="jxr_linenumber" name="L347" href="#L347">347</a>         <a name="AbstractSuspendable" href="../../../../../../com/jsql/model/suspendable/AbstractSuspendable.html#AbstractSuspendable">AbstractSuspendable</a> suspendableTask = MediatorHelper.model().getMediatorUtils().threadUtil().get(<strong class="jxr_keyword">this</strong>.elementDatabase);
 <a class="jxr_linenumber" name="L348" href="#L348">348</a>         <strong class="jxr_keyword">if</strong> (suspendableTask != <strong class="jxr_keyword">null</strong> &amp;&amp; suspendableTask.isPaused()) {
 <a class="jxr_linenumber" name="L349" href="#L349">349</a>             panelNode.getProgressBar().pause();
 <a class="jxr_linenumber" name="L350" href="#L350">350</a>         }

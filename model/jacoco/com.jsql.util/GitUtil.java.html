@@ -113,7 +113,7 @@ public class GitUtil {
             ),
 <span class="nc" id="L114">            String.format(</span>
                 &quot;Db engine: %s&quot;,
-<span class="nc" id="L116">                this.injectionModel.getMediatorVendor().getVendor().toString()</span>
+<span class="nc" id="L116">                this.injectionModel.getMediatorEngine().getEngine().toString()</span>
             )
         );
         
@@ -132,21 +132,21 @@ public class GitUtil {
      * @param reportTitle title of the Issue
      */
     public void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
-<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getProxyUtil().isNotLive(showOnConsole)) {</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (this.injectionModel.getMediatorUtils().proxyUtil().isNotLive(showOnConsole)) {</span>
 <span class="nc" id="L136">            return;</span>
         }
 
         String token;
         try {
 <span class="nc" id="L141">            token = StringUtil.fromHexZip(</span>
-<span class="nc" id="L142">                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(&quot;jsql.hash&quot;)</span>
+<span class="nc" id="L142">                this.injectionModel.getMediatorUtils().propertiesUtil().getProperty(&quot;jsql.hash&quot;)</span>
             );
 <span class="nc" id="L144">        } catch (IOException e) {</span>
 <span class="nc" id="L145">            throw new JSqlRuntimeException(e);</span>
 <span class="nc" id="L146">        }</span>
 
 <span class="nc" id="L148">        var httpRequest = HttpRequest.newBuilder()</span>
-<span class="nc" id="L149">            .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(&quot;github.issues.url&quot;)))</span>
+<span class="nc" id="L149">            .uri(URI.create(this.injectionModel.getMediatorUtils().propertiesUtil().getProperty(&quot;github.issues.url&quot;)))</span>
 <span class="nc" id="L150">            .setHeader(&quot;Authorization&quot;, &quot;token &quot;+ token)</span>
 <span class="nc" id="L151">            .POST(BodyPublishers.ofString(</span>
                 new JSONObject()
@@ -158,7 +158,7 @@ public class GitUtil {
 <span class="nc" id="L158">            .build();</span>
             
         try {
-<span class="nc" id="L161">            HttpResponse&lt;String&gt; response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());</span>
+<span class="nc" id="L161">            HttpResponse&lt;String&gt; response = this.injectionModel.getMediatorUtils().connectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());</span>
 <span class="nc" id="L162">            this.readGithubResponse(response, showOnConsole);</span>
 <span class="nc" id="L163">        } catch (IOException e) {</span>
 <span class="nc bnc" id="L164" title="All 2 branches missed.">            if (showOnConsole == ShowOnConsole.YES) {</span>
@@ -205,8 +205,8 @@ public class GitUtil {
     public JSONObject callService() {
 <span class="nc bnc" id="L206" title="All 2 branches missed.">        if (this.jsonObject == null) {</span>
             try {
-<span class="nc" id="L208">                String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(</span>
-<span class="nc" id="L209">                    this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperty(&quot;github.webservice.url&quot;)</span>
+<span class="nc" id="L208">                String json = this.injectionModel.getMediatorUtils().connectionUtil().getSource(</span>
+<span class="nc" id="L209">                    this.injectionModel.getMediatorUtils().propertiesUtil().getProperty(&quot;github.webservice.url&quot;)</span>
                 );
 <span class="nc" id="L211">                this.jsonObject = new JSONObject(json);</span>
 <span class="nc" id="L212">            } catch (UnresolvedAddressException | JSONException e) {</span>

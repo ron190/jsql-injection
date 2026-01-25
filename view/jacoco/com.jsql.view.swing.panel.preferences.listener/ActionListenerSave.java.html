@@ -18,7 +18,7 @@ public class ActionListenerSave implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-<span class="fc" id="L21">        MediatorHelper.model().getMediatorUtils().getPreferencesUtil()</span>
+<span class="fc" id="L21">        MediatorHelper.model().getMediatorUtils().preferencesUtil()</span>
         
 <span class="fc" id="L23">        .withIsCheckingUpdate(this.panelPreferences.getPanelGeneral().getCheckboxIsCheckingUpdate().isSelected())</span>
 <span class="fc" id="L24">        .withIsReportingBugs(this.panelPreferences.getPanelGeneral().getCheckboxIsReportingBugs().isSelected())</span>
@@ -87,7 +87,7 @@ public class ActionListenerSave implements ActionListener {
 
 <span class="fc" id="L88">        .persist();</span>
         
-<span class="fc" id="L90">        MediatorHelper.model().getMediatorUtils().getProxyUtil().setPreferences(</span>
+<span class="fc" id="L90">        MediatorHelper.model().getMediatorUtils().proxyUtil().setPreferences(</span>
 <span class="fc" id="L91">            this.panelPreferences.getPanelProxy().getCheckboxIsUsingProxy().isSelected(),</span>
 <span class="fc" id="L92">            this.panelPreferences.getPanelProxy().getTextProxyAddress().getText(),</span>
 <span class="fc" id="L93">            this.panelPreferences.getPanelProxy().getTextProxyPort().getText(),</span>
@@ -96,7 +96,7 @@ public class ActionListenerSave implements ActionListener {
 <span class="fc" id="L96">            this.panelPreferences.getPanelProxy().getTextProxyPortHttps().getText()</span>
         );
         
-<span class="fc" id="L99">        MediatorHelper.model().getMediatorUtils().getTamperingUtil()  // unused</span>
+<span class="fc" id="L99">        MediatorHelper.model().getMediatorUtils().tamperingUtil()  // unused</span>
 <span class="fc" id="L100">        .withBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())</span>
 <span class="fc" id="L101">        .withEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())</span>
 <span class="fc" id="L102">        .withEval(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected())</span>
@@ -111,7 +111,7 @@ public class ActionListenerSave implements ActionListener {
 <span class="fc" id="L111">        .withStringToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingStringToChar().isSelected())</span>
 <span class="fc" id="L112">        .withVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected());</span>
         
-<span class="fc" id="L114">        boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().set(</span>
+<span class="fc" id="L114">        boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().authenticationUtil().set(</span>
 <span class="fc" id="L115">            this.panelPreferences.getPanelAuthentication().getCheckboxUseDigestAuthentication().isSelected(),</span>
 <span class="fc" id="L116">            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationUsername().getText(),</span>
 <span class="fc" id="L117">            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationPassword().getText(),</span>

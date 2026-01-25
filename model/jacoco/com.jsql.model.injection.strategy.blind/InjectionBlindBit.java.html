@@ -43,7 +43,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
     public InjectionBlindBit(InjectionModel injectionModel, BlindOperator blindOperator) {
 <span class="fc" id="L44">        super(injectionModel, blindOperator);</span>
 
-<span class="fc" id="L46">        List&lt;String&gt; falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();</span>
+<span class="fc" id="L46">        List&lt;String&gt; falsys = this.injectionModel.getMediatorEngine().getEngine().instance().getFalsyBit();</span>
 <span class="pc bpc" id="L47" title="2 of 4 branches missed.">        if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L48">            return;</span>
         }
@@ -53,7 +53,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-<span class="fc" id="L56">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBitTagFalse&quot;);</span>
+<span class="fc" id="L56">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetBlindBitTagFalse&quot;);</span>
 <span class="fc" id="L57">        Collection&lt;CallableBlindBit&gt; callablesFalsys = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L58" title="All 2 branches covered.">        for (String falsy: falsys) {</span>
 <span class="fc" id="L59">            callablesFalsys.add(new CallableBlindBit(</span>
@@ -70,7 +70,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
         // Allow the user to stop the loop
         try {
 <span class="fc" id="L72">            List&lt;Future&lt;CallableBlindBit&gt;&gt; futuresFalsys = taskExecutor.invokeAll(callablesFalsys);</span>
-<span class="fc" id="L73">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L73">            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 <span class="fc bfc" id="L74" title="All 2 branches covered.">            for (Future&lt;CallableBlindBit&gt; futureFalsy: futuresFalsys) {</span>
 <span class="pc bpc" id="L75" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L76">                    return;</span>
@@ -96,9 +96,9 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
 <span class="fc" id="L96">    }</span>
 
     private void cleanTrueDiffs(InjectionModel injectionModel, BlindOperator blindOperator) {
-<span class="fc" id="L99">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindBitTagTrue&quot;);</span>
+<span class="fc" id="L99">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetBlindBitTagTrue&quot;);</span>
 <span class="fc" id="L100">        Collection&lt;CallableBlindBit&gt; callablesTruthys = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L101">        List&lt;String&gt; truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();</span>
+<span class="fc" id="L101">        List&lt;String&gt; truthys = this.injectionModel.getMediatorEngine().getEngine().instance().getTruthyBit();</span>
 <span class="fc bfc" id="L102" title="All 2 branches covered.">        for (String truthy: truthys) {</span>
 <span class="fc" id="L103">            callablesTruthys.add(new CallableBlindBit(</span>
                 truthy,
@@ -112,7 +112,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
         // Remove TRUE diffs in the FALSE diffs as FALSE statement shouldn't contain any TRUE diff.
         try {
 <span class="fc" id="L114">            List&lt;Future&lt;CallableBlindBit&gt;&gt; futuresTruthys = taskExecutor.invokeAll(callablesTruthys);</span>
-<span class="fc" id="L115">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L115">            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 <span class="fc bfc" id="L116" title="All 2 branches covered.">            for (Future&lt;CallableBlindBit&gt; futureTruthy: futuresTruthys) {</span>
 <span class="pc bpc" id="L117" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L118">                    return;</span>
@@ -151,7 +151,7 @@ public class InjectionBlindBit extends AbstractInjectionMonobit&lt;CallableBlind
 <span class="nc" id="L151">            throw new StoppedByUserSlidingException();</span>
         }
 <span class="fc" id="L153">        var callable = new CallableBlindBit(</span>
-<span class="fc" id="L154">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),</span>
+<span class="fc" id="L154">            this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlindConfirm(),</span>
             this.injectionModel,
             this,
             this.blindOperator,

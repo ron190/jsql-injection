@@ -69,481 +69,495 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String WEB_SHELL = <span class="jxr_string">"webShell"</span>;
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String REV_SHELL = <span class="jxr_string">"revShell"</span>;
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String REVERSE_SHELL = <span class="jxr_string">"Reverse shell"</span>;
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>  
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment">     * Create the panel containing injection results.</em>
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">public</strong> <a name="TabResults" href="../../../../../com/jsql/view/swing/tab/TabResults.html#TabResults">TabResults</a>() {
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>          <strong class="jxr_keyword">this</strong>.setName(<span class="jxr_string">"tabResults"</span>);
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">this</strong>.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">this</strong>.setTransferHandler(<strong class="jxr_keyword">new</strong> <a name="TabTransferHandler" href="../../../../../com/jsql/view/swing/tab/dnd/TabTransferHandler.html#TabTransferHandler">TabTransferHandler</a>());
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">this</strong>.putClientProperty(<span class="jxr_string">"JTabbedPane.tabClosable"</span>, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">this</strong>.putClientProperty(<span class="jxr_string">"JTabbedPane.tabCloseCallback"</span>, (IntConsumer) ActionCloseTabResult::perform);
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          UIManager.put(<span class="jxr_string">"TabbedPane.closeHoverForeground"</span>, LogLevelUtil.COLOR_RED);
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>          HotkeyUtil.addShortcut(<strong class="jxr_keyword">this</strong>);  <em class="jxr_comment">// Add hotkeys to root-pane ctrl-tab, ctrl-shift-tab, ctrl-w</em>
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">this</strong>.addMouseWheelListener(<strong class="jxr_keyword">new</strong> <a name="TabbedPaneMouseWheelListener" href="../../../../../com/jsql/view/swing/tab/TabbedPaneMouseWheelListener.html#TabbedPaneMouseWheelListener">TabbedPaneMouseWheelListener</a>());
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          MediatorHelper.register(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>      }
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>  
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addFileTab(String label, String content, String path) {
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>          JTextArea fileText = <strong class="jxr_keyword">new</strong> <a name="JPopupTextArea" href="../../../../../com/jsql/view/swing/text/JPopupTextArea.html#JPopupTextArea">JPopupTextArea</a>().getProxy();
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>          fileText.setText(content);
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          fileText.setFont(<strong class="jxr_keyword">new</strong> Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>          fileText.setCaretPosition(0);
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">this</strong>.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.getIcon());
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>          MediatorHelper.tabManagersCards().addToLists(path, label);
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>      }
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>  
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addAdminTab(String urlSuccess) {
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>          MediatorHelper.frame().getSplitNS().initSplitOrientation();
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>          String htmlSource = StringUtils.EMPTY;
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>  
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>          <em class="jxr_comment">// Fix #4081: SocketTimeoutException on get()</em>
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <em class="jxr_comment">// Fix #44642: NoClassDefFoundError on get()</em>
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>          <em class="jxr_comment">// Fix #44641: ExceptionInInitializerError on get()</em>
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>          <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>              <em class="jxr_comment">// Previous test for 2xx Success and 3xx Redirection was Header only,</em>
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>              <em class="jxr_comment">// now get the HTML content.</em>
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>              <em class="jxr_comment">// Proxy is used by jsoup</em>
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>             htmlSource = Jsoup.clean(
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>                 Jsoup.connect(urlSuccess)
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>                     <em class="jxr_comment">// Prevent exception on UnsupportedMimeTypeException: Unhandled content type. Must be text/*, application/xml, or application/*+xml</em>
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>                     .ignoreContentType(<strong class="jxr_keyword">true</strong>)
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>                     <em class="jxr_comment">// Prevent exception on HTTP errors</em>
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>                     .ignoreHttpErrors(<strong class="jxr_keyword">true</strong>)
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>                     .get()
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>                     .html()
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>                     .replaceAll(<span class="jxr_string">"&lt;img[^&gt;]*&gt;"</span>, StringUtils.EMPTY)
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>                     .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?[^&gt;]*&gt;"</span>, StringUtils.EMPTY)
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>                     .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?[^&gt;]*&gt;"</span>, <span class="jxr_string">"&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;"</span>)
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>                     .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]*&gt;"</span>, <span class="jxr_string">"&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;"</span>),
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>                 Safelist.relaxed()
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>                     .addTags(<span class="jxr_string">"center"</span>, <span class="jxr_string">"div"</span>, <span class="jxr_string">"span"</span>)
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>                     .addAttributes(<span class="jxr_string">":all"</span>, <span class="jxr_string">"style"</span>)
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>             );
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>         } <strong class="jxr_keyword">catch</strong> (IOException e) {
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Failure opening page: {}"</span>, e.getMessage());
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>         } <strong class="jxr_keyword">catch</strong> (ExceptionInInitializerError | NoClassDefFoundError e) {
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         }
-<a class="jxr_linenumber" name="L121" href="#L121">121</a> 
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> browser = <strong class="jxr_keyword">new</strong> JTextPane();
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>         browser.setContentType(<span class="jxr_string">"text/html"</span>);
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>         browser.setEditable(false);
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>         browser.setCaretPosition(0);
-<a class="jxr_linenumber" name="L126" href="#L126">126</a> 
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         <em class="jxr_comment">// Fix #43220: EmptyStackException on setText()</em>
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>         <em class="jxr_comment">// Fix #94242: IndexOutOfBoundsException on setText()</em>
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>             browser.setText(htmlSource);
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>         } <strong class="jxr_keyword">catch</strong> (IndexOutOfBoundsException | EmptyStackException e) {
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>         }
-<a class="jxr_linenumber" name="L134" href="#L134">134</a> 
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         JMenuItem itemCopyUrl = <strong class="jxr_keyword">new</strong> JMenuItem(I18nUtil.valueByKey(<span class="jxr_string">"CONTEXT_MENU_COPY_PAGE_URL"</span>));
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>         I18nViewUtil.addComponentForKey(<span class="jxr_string">"CONTEXT_MENU_COPY_PAGE_URL"</span>, itemCopyUrl);
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String TAB_RESULTS = <span class="jxr_string">"tabResults"</span>;
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>  
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment">     * Create the panel containing injection results.</em>
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">public</strong> <a name="TabResults" href="../../../../../com/jsql/view/swing/tab/TabResults.html#TabResults">TabResults</a>() {
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">this</strong>.setName(TabResults.TAB_RESULTS);
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">this</strong>.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">this</strong>.setTransferHandler(<strong class="jxr_keyword">new</strong> <a name="TabTransferHandler" href="../../../../../com/jsql/view/swing/tab/dnd/TabTransferHandler.html#TabTransferHandler">TabTransferHandler</a>());
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">this</strong>.putClientProperty(<span class="jxr_string">"JTabbedPane.tabClosable"</span>, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          <strong class="jxr_keyword">this</strong>.putClientProperty(<span class="jxr_string">"JTabbedPane.tabCloseCallback"</span>, (IntConsumer) ActionCloseTabResult::perform);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>          UIManager.put(<span class="jxr_string">"TabbedPane.closeHoverForeground"</span>, LogLevelUtil.COLOR_RED);
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          HotkeyUtil.addShortcut(<strong class="jxr_keyword">this</strong>);  <em class="jxr_comment">// Add hotkeys to root-pane ctrl-tab, ctrl-shift-tab, ctrl-w</em>
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">this</strong>.addMouseWheelListener(<strong class="jxr_keyword">new</strong> <a name="TabbedPaneMouseWheelListener" href="../../../../../com/jsql/view/swing/tab/TabbedPaneMouseWheelListener.html#TabbedPaneMouseWheelListener">TabbedPaneMouseWheelListener</a>());
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          MediatorHelper.register(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>      }
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>  
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addFileTab(String label, String content, String path) {
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>          MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>              JTextArea fileText = <strong class="jxr_keyword">new</strong> <a name="JPopupTextArea" href="../../../../../com/jsql/view/swing/text/JPopupTextArea.html#JPopupTextArea">JPopupTextArea</a>().getProxy();
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>              fileText.setText(content);
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>              fileText.setFont(<strong class="jxr_keyword">new</strong> Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>              fileText.setCaretPosition(0);
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>              <strong class="jxr_keyword">this</strong>.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.getIcon());
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>              MediatorHelper.tabManagersCards().addToLists(path, label);
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          });
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      }
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>  
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addAdminTab(String urlSuccess) {
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>          MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>              String htmlSource = StringUtils.EMPTY;
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>  
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>              <em class="jxr_comment">// Fix #4081: SocketTimeoutException on get()</em>
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>              <em class="jxr_comment">// Fix #44642: NoClassDefFoundError on get()</em>
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>              <em class="jxr_comment">// Fix #44641: ExceptionInInitializerError on get()</em>
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>              <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>                 <em class="jxr_comment">// Previous test for 2xx Success and 3xx Redirection was Header only,</em>
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>                 <em class="jxr_comment">// now get the HTML content.</em>
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>                 <em class="jxr_comment">// Proxy is used by jsoup</em>
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>                 htmlSource = Jsoup.clean(
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>                     Jsoup.connect(urlSuccess)
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>                         <em class="jxr_comment">// Prevent exception on UnsupportedMimeTypeException: Unhandled content type. Must be text/*, application/xml, or application/*+xml</em>
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>                         .ignoreContentType(<strong class="jxr_keyword">true</strong>)
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>                         <em class="jxr_comment">// Prevent exception on HTTP errors</em>
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>                         .ignoreHttpErrors(<strong class="jxr_keyword">true</strong>)
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>                         .get()
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>                         .html()
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>                         .replaceAll(<span class="jxr_string">"&lt;img[^&gt;]*&gt;"</span>, StringUtils.EMPTY)
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>                         .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?[^&gt;]*&gt;"</span>, StringUtils.EMPTY)
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>                         .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?[^&gt;]*&gt;"</span>, <span class="jxr_string">"&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;"</span>)
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>                         .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]*&gt;"</span>, <span class="jxr_string">"&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;"</span>),
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>                     Safelist.relaxed()
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>                         .addTags(<span class="jxr_string">"center"</span>, <span class="jxr_string">"div"</span>, <span class="jxr_string">"span"</span>)
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>                         .addAttributes(<span class="jxr_string">":all"</span>, <span class="jxr_string">"style"</span>)
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>                 );
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>             } <strong class="jxr_keyword">catch</strong> (IOException e) {
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Failure opening page: {}"</span>, e.getMessage());
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>             } <strong class="jxr_keyword">catch</strong> (ExceptionInInitializerError | NoClassDefFoundError e) {
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>             }
+<a class="jxr_linenumber" name="L124" href="#L124">124</a> 
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> browser = <strong class="jxr_keyword">new</strong> JTextPane();
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>             browser.setContentType(<span class="jxr_string">"text/html"</span>);
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>             browser.setEditable(false);
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>             browser.setCaretPosition(0);
+<a class="jxr_linenumber" name="L129" href="#L129">129</a> 
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>             <em class="jxr_comment">// Fix #43220: EmptyStackException on setText()</em>
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>             <em class="jxr_comment">// Fix #94242: IndexOutOfBoundsException on setText()</em>
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>                 browser.setText(htmlSource);
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>             } <strong class="jxr_keyword">catch</strong> (IndexOutOfBoundsException | EmptyStackException e) {
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>             }
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> 
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>         JMenuItem itemCopy = <strong class="jxr_keyword">new</strong> JMenuItem();
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         itemCopy.setMnemonic('C');
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>         itemCopy.setText(I18nUtil.valueByKey(<span class="jxr_string">"CONTEXT_MENU_COPY"</span>));
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>         I18nViewUtil.addComponentForKey(<span class="jxr_string">"CONTEXT_MENU_COPY"</span>, itemCopy);
-<a class="jxr_linenumber" name="L144" href="#L144">144</a> 
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>         JMenuItem itemSelectAll = <strong class="jxr_keyword">new</strong> JMenuItem();
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>         itemSelectAll.setText(I18nUtil.valueByKey(<span class="jxr_string">"CONTEXT_MENU_SELECT_ALL"</span>));
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>         I18nViewUtil.addComponentForKey(<span class="jxr_string">"CONTEXT_MENU_SELECT_ALL"</span>, itemSelectAll);
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>         itemSelectAll.setMnemonic('A');
-<a class="jxr_linenumber" name="L151" href="#L151">151</a> 
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> menu = <strong class="jxr_keyword">new</strong> JPopupMenu();
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         menu.add(itemCopyUrl);
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>         menu.add(<strong class="jxr_keyword">new</strong> JSeparator());
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>         menu.add(itemCopy);
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>         menu.add(itemSelectAll);
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>         menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
-<a class="jxr_linenumber" name="L158" href="#L158">158</a> 
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         itemCopyUrl.addActionListener(actionEvent -&gt; {
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>             <strong class="jxr_keyword">var</strong> stringSelection = <strong class="jxr_keyword">new</strong> StringSelection(urlSuccess);
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>             <strong class="jxr_keyword">var</strong> clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>             clipboard.setContents(stringSelection, <strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         });
-<a class="jxr_linenumber" name="L164" href="#L164">164</a> 
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>         itemSelectAll.addActionListener(actionEvent -&gt; browser.selectAll());
-<a class="jxr_linenumber" name="L166" href="#L166">166</a> 
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>         browser.addFocusListener(<strong class="jxr_keyword">new</strong> FocusAdapter() {
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>             @Override
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusGained(FocusEvent focusEvent) {
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>                 browser.getCaret().setVisible(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>                 browser.getCaret().setSelectionVisible(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>             }
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>         });
-<a class="jxr_linenumber" name="L174" href="#L174">174</a> 
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>         browser.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>             @Override
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent evt) {
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>                 browser.requestFocusInWindow();
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>                 <strong class="jxr_keyword">if</strong> (evt.isPopupTrigger()) {
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>                     menu.show(evt.getComponent(), evt.getX(), evt.getY());
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>                 }
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>             }
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>             @Override
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mouseReleased(MouseEvent evt) {
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>                 <strong class="jxr_keyword">if</strong> (evt.isPopupTrigger()) {
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>                     <em class="jxr_comment">// Fix #45348: IllegalComponentStateException on show()</em>
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>                     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>                         menu.show(evt.getComponent(), evt.getX(), evt.getY());
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>                     } <strong class="jxr_keyword">catch</strong> (IllegalComponentStateException e) {
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>                         LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>                     }
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>                     menu.setLocation(
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>                         ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>                         ? evt.getXOnScreen() - menu.getWidth()
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>                         : evt.getXOnScreen(),
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>                         evt.getYOnScreen()
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>                     );
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>                 }
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>             }
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         });
-<a class="jxr_linenumber" name="L201" href="#L201">201</a> 
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> scroller = <strong class="jxr_keyword">new</strong> JScrollPane(browser);
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>         MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(<span class="jxr_string">".*/"</span>, StringUtils.EMPTY) + StringUtils.SPACE, scroller);
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>         <strong class="jxr_keyword">try</strong> {  <em class="jxr_comment">// Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()</em>
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>             MediatorHelper.tabResults().setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>         } <strong class="jxr_keyword">catch</strong> (ArrayIndexOutOfBoundsException e) {
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>         }
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>         MediatorHelper.tabResults().setToolTipTextAt(
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>             MediatorHelper.tabResults().indexOfComponent(scroller),
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>             String.format(<span class="jxr_string">"&lt;html&gt;%s&lt;/html&gt;"</span>, urlSuccess)
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>         );
-<a class="jxr_linenumber" name="L213" href="#L213">213</a> 
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>         <em class="jxr_comment">// Create a custom tab header</em>
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>         <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>             urlSuccess.replaceAll(<span class="jxr_string">".*/"</span>, StringUtils.EMPTY),
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>             UiUtil.ADMIN.getIcon()
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>         );
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>         MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  <em class="jxr_comment">// Apply the custom header to the tab</em>
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>         browser.setCaretPosition(0);
-<a class="jxr_linenumber" name="L221" href="#L221">221</a> 
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>         MediatorHelper.tabResults().updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>     }
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>             JMenuItem itemCopyUrl = <strong class="jxr_keyword">new</strong> JMenuItem(I18nUtil.valueByKey(<span class="jxr_string">"CONTEXT_MENU_COPY_PAGE_URL"</span>));
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>             I18nViewUtil.addComponentForKey(<span class="jxr_string">"CONTEXT_MENU_COPY_PAGE_URL"</span>, itemCopyUrl);
+<a class="jxr_linenumber" name="L140" href="#L140">140</a> 
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>             JMenuItem itemCopy = <strong class="jxr_keyword">new</strong> JMenuItem();
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>             itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>             itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>             itemCopy.setMnemonic('C');
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>             itemCopy.setText(I18nUtil.valueByKey(<span class="jxr_string">"CONTEXT_MENU_COPY"</span>));
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>             I18nViewUtil.addComponentForKey(<span class="jxr_string">"CONTEXT_MENU_COPY"</span>, itemCopy);
+<a class="jxr_linenumber" name="L147" href="#L147">147</a> 
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>             JMenuItem itemSelectAll = <strong class="jxr_keyword">new</strong> JMenuItem();
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>             itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>             itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>             itemSelectAll.setText(I18nUtil.valueByKey(<span class="jxr_string">"CONTEXT_MENU_SELECT_ALL"</span>));
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>             I18nViewUtil.addComponentForKey(<span class="jxr_string">"CONTEXT_MENU_SELECT_ALL"</span>, itemSelectAll);
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>             itemSelectAll.setMnemonic('A');
+<a class="jxr_linenumber" name="L154" href="#L154">154</a> 
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> menu = <strong class="jxr_keyword">new</strong> JPopupMenu();
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>             menu.add(itemCopyUrl);
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>             menu.add(<strong class="jxr_keyword">new</strong> JSeparator());
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>             menu.add(itemCopy);
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>             menu.add(itemSelectAll);
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>             menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
+<a class="jxr_linenumber" name="L161" href="#L161">161</a> 
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>             itemCopyUrl.addActionListener(actionEvent -&gt; {
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>                 <strong class="jxr_keyword">var</strong> stringSelection = <strong class="jxr_keyword">new</strong> StringSelection(urlSuccess);
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>                 <strong class="jxr_keyword">var</strong> clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>                 clipboard.setContents(stringSelection, <strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>             });
+<a class="jxr_linenumber" name="L167" href="#L167">167</a> 
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>             itemSelectAll.addActionListener(actionEvent -&gt; browser.selectAll());
+<a class="jxr_linenumber" name="L169" href="#L169">169</a> 
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>             browser.addFocusListener(<strong class="jxr_keyword">new</strong> FocusAdapter() {
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>                 @Override
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusGained(FocusEvent focusEvent) {
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>                 browser.getCaret().setVisible(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>                 browser.getCaret().setSelectionVisible(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>                 }
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>             });
+<a class="jxr_linenumber" name="L177" href="#L177">177</a> 
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>             browser.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>                 @Override
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent evt) {
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>                     browser.requestFocusInWindow();
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>                     <strong class="jxr_keyword">if</strong> (evt.isPopupTrigger()) {
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>                         menu.show(evt.getComponent(), evt.getX(), evt.getY());
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>                     }
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>                 }
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>                 @Override
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mouseReleased(MouseEvent evt) {
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>                     <strong class="jxr_keyword">if</strong> (evt.isPopupTrigger()) {
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>                         <em class="jxr_comment">// Fix #45348: IllegalComponentStateException on show()</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>                         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>                             menu.show(evt.getComponent(), evt.getX(), evt.getY());
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>                         } <strong class="jxr_keyword">catch</strong> (IllegalComponentStateException e) {
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>                             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>                         }
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>                         menu.setLocation(
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>                             ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>                             ? evt.getXOnScreen() - menu.getWidth()
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>                             : evt.getXOnScreen(),
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>                             evt.getYOnScreen()
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>                         );
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>                     }
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>                 }
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>             });
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> 
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> scroller = <strong class="jxr_keyword">new</strong> JScrollPane(browser);
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>             MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(<span class="jxr_string">".*/"</span>, StringUtils.EMPTY) + StringUtils.SPACE, scroller);
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>             <strong class="jxr_keyword">try</strong> {  <em class="jxr_comment">// Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()</em>
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>                 MediatorHelper.tabResults().setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>             } <strong class="jxr_keyword">catch</strong> (ArrayIndexOutOfBoundsException e) {
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>             }
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>             MediatorHelper.tabResults().setToolTipTextAt(
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>                 MediatorHelper.tabResults().indexOfComponent(scroller),
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>                 String.format(<span class="jxr_string">"&lt;html&gt;%s&lt;/html&gt;"</span>, urlSuccess)
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>             );
+<a class="jxr_linenumber" name="L216" href="#L216">216</a> 
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>             <em class="jxr_comment">// Create a custom tab header</em>
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>                 urlSuccess.replaceAll(<span class="jxr_string">".*/"</span>, StringUtils.EMPTY),
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>                 UiUtil.ADMIN.getIcon()
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>             );
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>             MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  <em class="jxr_comment">// Apply the custom header to the tab</em>
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>             browser.setCaretPosition(0);
 <a class="jxr_linenumber" name="L224" href="#L224">224</a> 
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addReportTab(String content) {
-<a class="jxr_linenumber" name="L226" href="#L226">226</a>         JEditorPane editorPane = <strong class="jxr_keyword">new</strong> JEditorPane();
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>         editorPane.setContentType(<span class="jxr_string">"text/html"</span>);
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>         editorPane.setText(<span class="jxr_string">"&lt;html&gt;&lt;span style=\&quot;white-space: nowrap; font-family:'"</span>+ UiUtil.FONT_NAME_MONO_NON_ASIAN +<span class="jxr_string">"'\&quot;&gt;"</span> + content + <span class="jxr_string">"&lt;/span&gt;&lt;/html&gt;"</span>);
-<a class="jxr_linenumber" name="L229" href="#L229">229</a>         editorPane.setFont(UIManager.getFont(<span class="jxr_string">"TextArea.font"</span>));  <em class="jxr_comment">// required to increase text size</em>
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>         editorPane.setDragEnabled(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L231" href="#L231">231</a>         editorPane.setEditable(false);
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>         editorPane.setCaretPosition(0);
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>         editorPane.getCaret().setBlinkRate(0);
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>         editorPane.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>         editorPane.setComponentPopupMenu(<strong class="jxr_keyword">new</strong> <a name="JPopupMenuText" href="../../../../../com/jsql/view/swing/popupmenu/JPopupMenuText.html#JPopupMenuText">JPopupMenuText</a>(editorPane));
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>         editorPane.addHyperlinkListener(linkEvent -&gt; {
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>             <strong class="jxr_keyword">if</strong> (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>                 <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>                     Desktop.getDesktop().browse(linkEvent.getURL().toURI());
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>                 } <strong class="jxr_keyword">catch</strong> (IOException | URISyntaxException | UnsupportedOperationException e) {
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Failing to browse Url"</span>, e);
-<a class="jxr_linenumber" name="L242" href="#L242">242</a>                 }
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>             }
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>         });
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>         editorPane.addFocusListener(<strong class="jxr_keyword">new</strong> FocusAdapter() {
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>             @Override
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusGained(FocusEvent focusEvent) {
-<a class="jxr_linenumber" name="L248" href="#L248">248</a>                 editorPane.getCaret().setVisible(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>                 editorPane.getCaret().setSelectionVisible(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L250" href="#L250">250</a>                 editorPane.getCaret().setBlinkRate(0);
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>             }
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>         });
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>         UiUtil.init(editorPane);  <em class="jxr_comment">// silent delete</em>
-<a class="jxr_linenumber" name="L254" href="#L254">254</a> 
-<a class="jxr_linenumber" name="L255" href="#L255">255</a>         <strong class="jxr_keyword">this</strong>.addTextTab(<span class="jxr_string">"Vulnerability report"</span>, <span class="jxr_string">"Analysis report with all payloads detected"</span>, editorPane, UiUtil.APP_ICON.getIcon());
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>     }
-<a class="jxr_linenumber" name="L257" href="#L257">257</a> 
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>         <strong class="jxr_keyword">var</strong> scroller = <strong class="jxr_keyword">new</strong> JScrollPane(componentText);
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>         <strong class="jxr_keyword">this</strong>.addTab(label + StringUtils.SPACE, scroller);
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>         <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>         <strong class="jxr_keyword">this</strong>.setToolTipTextAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), toolTipText);
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>         <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(label, icon);
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>         <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
-<a class="jxr_linenumber" name="L265" href="#L265">265</a> 
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>         <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>     }
-<a class="jxr_linenumber" name="L268" href="#L268">268</a> 
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitWeb(String url) {
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>             <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>             <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a>(terminalID, url, <span class="jxr_string">"web"</span>) {
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>                 @Override
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> action(String command, UUID terminalID, String urlShell, String... arg) {
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>                     MediatorHelper.model().getResourceAccess().runWebShell(command, terminalID, urlShell);
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>                 }
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>             };
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>             terminal.setName(TabResults.WEB_SHELL);
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
-<a class="jxr_linenumber" name="L280" href="#L280">280</a> 
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>             JPanel panelTerminalWithReverse = <strong class="jxr_keyword">this</strong>.getTerminalWithMenu(terminal);
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>             <strong class="jxr_keyword">this</strong>.addTab(<span class="jxr_string">"Web shell"</span>, panelTerminalWithReverse);
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(panelTerminalWithReverse);  <em class="jxr_comment">// Focus on the new tab</em>
-<a class="jxr_linenumber" name="L284" href="#L284">284</a> 
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"Web shell"</span>, UiUtil.TERMINAL.getIcon());
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(panelTerminalWithReverse), header);
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>             terminal.requestFocusInWindow();
-<a class="jxr_linenumber" name="L288" href="#L288">288</a> 
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>             <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>         } <strong class="jxr_keyword">catch</strong> (MalformedURLException | URISyntaxException e) {
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>         }
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>     }
-<a class="jxr_linenumber" name="L294" href="#L294">294</a> 
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitReverseShell(String port) {
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>             <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>             <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="ExploitReverseShell" href="../../../../../com/jsql/view/swing/terminal/ExploitReverseShell.html#ExploitReverseShell">ExploitReverseShell</a>(terminalID, port);
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>             terminal.setName(TabResults.REV_SHELL);
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
-<a class="jxr_linenumber" name="L301" href="#L301">301</a> 
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>             JScrollPane scroller = <strong class="jxr_keyword">new</strong> JScrollPane(terminal);
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>             <strong class="jxr_keyword">this</strong>.addTab(TabResults.REVERSE_SHELL, scroller);
-<a class="jxr_linenumber" name="L304" href="#L304">304</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
-<a class="jxr_linenumber" name="L305" href="#L305">305</a> 
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(TabResults.REVERSE_SHELL, UiUtil.TERMINAL.getIcon());
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
-<a class="jxr_linenumber" name="L308" href="#L308">308</a>             terminal.requestFocusInWindow();
-<a class="jxr_linenumber" name="L309" href="#L309">309</a> 
-<a class="jxr_linenumber" name="L310" href="#L310">310</a>             <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
-<a class="jxr_linenumber" name="L311" href="#L311">311</a>         } <strong class="jxr_keyword">catch</strong> (URISyntaxException | IOException e) {
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
-<a class="jxr_linenumber" name="L313" href="#L313">313</a>         }
-<a class="jxr_linenumber" name="L314" href="#L314">314</a>     }
-<a class="jxr_linenumber" name="L315" href="#L315">315</a> 
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitUdf(BiConsumer&lt;String, UUID&gt; biConsumerRunCmd) {
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L318" href="#L318">318</a>             <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
-<a class="jxr_linenumber" name="L319" href="#L319">319</a>             <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a>(terminalID, <strong class="jxr_keyword">null</strong>, <span class="jxr_string">"udf"</span>) {
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>                 @Override
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> action(String command, UUID terminalID, String urlShell, String... arg) {
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>                     biConsumerRunCmd.accept(command, terminalID);
-<a class="jxr_linenumber" name="L323" href="#L323">323</a>                 }
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>             };
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
-<a class="jxr_linenumber" name="L326" href="#L326">326</a> 
-<a class="jxr_linenumber" name="L327" href="#L327">327</a>             JPanel panelTerminalWithReverse = <strong class="jxr_keyword">this</strong>.getTerminalWithMenu(terminal);
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>             <strong class="jxr_keyword">this</strong>.addTab(TabResults.UDF_SHELL, panelTerminalWithReverse);
-<a class="jxr_linenumber" name="L329" href="#L329">329</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(panelTerminalWithReverse);  <em class="jxr_comment">// Focus on the new tab</em>
-<a class="jxr_linenumber" name="L330" href="#L330">330</a> 
-<a class="jxr_linenumber" name="L331" href="#L331">331</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(TabResults.UDF_SHELL, UiUtil.TERMINAL.getIcon());
-<a class="jxr_linenumber" name="L332" href="#L332">332</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(panelTerminalWithReverse), header);
-<a class="jxr_linenumber" name="L333" href="#L333">333</a>             terminal.requestFocusInWindow();
-<a class="jxr_linenumber" name="L334" href="#L334">334</a> 
-<a class="jxr_linenumber" name="L335" href="#L335">335</a>             <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
-<a class="jxr_linenumber" name="L336" href="#L336">336</a>         } <strong class="jxr_keyword">catch</strong> (MalformedURLException | URISyntaxException e) {
-<a class="jxr_linenumber" name="L337" href="#L337">337</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
-<a class="jxr_linenumber" name="L338" href="#L338">338</a>         }
-<a class="jxr_linenumber" name="L339" href="#L339">339</a>     }
-<a class="jxr_linenumber" name="L340" href="#L340">340</a> 
-<a class="jxr_linenumber" name="L341" href="#L341">341</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitSql(String url, String user, String pass) {
-<a class="jxr_linenumber" name="L342" href="#L342">342</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L343" href="#L343">343</a>             <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
-<a class="jxr_linenumber" name="L344" href="#L344">344</a>             <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a>(terminalID, url, <span class="jxr_string">"sql"</span>) {
-<a class="jxr_linenumber" name="L345" href="#L345">345</a>                 @Override
-<a class="jxr_linenumber" name="L346" href="#L346">346</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> action(String cmd, UUID terminalID, String wbhPath, String... arg) {
-<a class="jxr_linenumber" name="L347" href="#L347">347</a>                     MediatorHelper.model().getResourceAccess().runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
-<a class="jxr_linenumber" name="L348" href="#L348">348</a>                 }
-<a class="jxr_linenumber" name="L349" href="#L349">349</a>             };
-<a class="jxr_linenumber" name="L350" href="#L350">350</a>             terminal.setName(TabResults.SQL_SHELL);
-<a class="jxr_linenumber" name="L351" href="#L351">351</a>             terminal.setLoginPassword(<strong class="jxr_keyword">new</strong> String[]{ user, pass });
-<a class="jxr_linenumber" name="L352" href="#L352">352</a>             MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
-<a class="jxr_linenumber" name="L353" href="#L353">353</a> 
-<a class="jxr_linenumber" name="L354" href="#L354">354</a>             JScrollPane scroller = <strong class="jxr_keyword">new</strong> JScrollPane(terminal);
-<a class="jxr_linenumber" name="L355" href="#L355">355</a>             <strong class="jxr_keyword">this</strong>.addTab(<span class="jxr_string">"SQL shell"</span>, scroller);
-<a class="jxr_linenumber" name="L356" href="#L356">356</a>             <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
-<a class="jxr_linenumber" name="L357" href="#L357">357</a> 
-<a class="jxr_linenumber" name="L358" href="#L358">358</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"SQL shell"</span>, UiUtil.TERMINAL.getIcon());
-<a class="jxr_linenumber" name="L359" href="#L359">359</a>             <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>             terminal.requestFocusInWindow();
-<a class="jxr_linenumber" name="L361" href="#L361">361</a> 
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>             <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>         } <strong class="jxr_keyword">catch</strong> (MalformedURLException | URISyntaxException e) {
-<a class="jxr_linenumber" name="L364" href="#L364">364</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>         }
-<a class="jxr_linenumber" name="L366" href="#L366">366</a>     }
-<a class="jxr_linenumber" name="L367" href="#L367">367</a>     
-<a class="jxr_linenumber" name="L368" href="#L368">368</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabValues(String[][] data, String[] columnNames, AbstractElementDatabase table) {
-<a class="jxr_linenumber" name="L369" href="#L369">369</a>         <strong class="jxr_keyword">var</strong> panelTable = <strong class="jxr_keyword">new</strong> <a name="PanelTable" href="../../../../../com/jsql/view/swing/table/PanelTable.html#PanelTable">PanelTable</a>(data, columnNames);
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>         
-<a class="jxr_linenumber" name="L371" href="#L371">371</a>         <strong class="jxr_keyword">this</strong>.addTab(StringUtil.detectUtf8(table.toString()), panelTable);
-<a class="jxr_linenumber" name="L372" href="#L372">372</a>         panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
-<a class="jxr_linenumber" name="L373" href="#L373">373</a>         
-<a class="jxr_linenumber" name="L374" href="#L374">374</a>         <strong class="jxr_keyword">this</strong>.setSelectedComponent(panelTable);  <em class="jxr_comment">// Focus on the new tab</em>
-<a class="jxr_linenumber" name="L375" href="#L375">375</a> 
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>         <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>         <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(panelTable), header);
-<a class="jxr_linenumber" name="L378" href="#L378">378</a> 
-<a class="jxr_linenumber" name="L379" href="#L379">379</a>         <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>             MediatorHelper.tabResults().updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>         });
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>     }
+<a class="jxr_linenumber" name="L228" href="#L228">228</a> 
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addReportTab(String content) {
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>         MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>             JEditorPane editorPane = <strong class="jxr_keyword">new</strong> JEditorPane();
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>             editorPane.setContentType(<span class="jxr_string">"text/html"</span>);
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>             editorPane.setText(<span class="jxr_string">"&lt;html&gt;&lt;span style=\&quot;white-space: nowrap; font-family:'"</span>+ UiUtil.FONT_NAME_MONO_NON_ASIAN +<span class="jxr_string">"'\&quot;&gt;"</span> + content + <span class="jxr_string">"&lt;/span&gt;&lt;/html&gt;"</span>);
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>             editorPane.setFont(UIManager.getFont(<span class="jxr_string">"TextArea.font"</span>));  <em class="jxr_comment">// required to increase text size</em>
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>             editorPane.setDragEnabled(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>             editorPane.setEditable(false);
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>             editorPane.setCaretPosition(0);
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>             editorPane.getCaret().setBlinkRate(0);
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>             editorPane.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>             editorPane.setComponentPopupMenu(<strong class="jxr_keyword">new</strong> <a name="JPopupMenuText" href="../../../../../com/jsql/view/swing/popupmenu/JPopupMenuText.html#JPopupMenuText">JPopupMenuText</a>(editorPane));
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>             editorPane.addHyperlinkListener(linkEvent -&gt; {
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>                 <strong class="jxr_keyword">if</strong> (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>                     <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>                         Desktop.getDesktop().browse(linkEvent.getURL().toURI());
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>                     } <strong class="jxr_keyword">catch</strong> (IOException | URISyntaxException | UnsupportedOperationException e) {
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>                         LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Failing to browse Url"</span>, e);
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>                     }
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>                 }
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>             });
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>             editorPane.addFocusListener(<strong class="jxr_keyword">new</strong> FocusAdapter() {
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>                 @Override
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> focusGained(FocusEvent focusEvent) {
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>                 editorPane.getCaret().setVisible(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>                 editorPane.getCaret().setSelectionVisible(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>                 editorPane.getCaret().setBlinkRate(0);
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>                 }
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>             });
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>             UiUtil.init(editorPane);  <em class="jxr_comment">// silent delete</em>
+<a class="jxr_linenumber" name="L259" href="#L259">259</a> 
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>             <strong class="jxr_keyword">this</strong>.addTextTab(<span class="jxr_string">"Vulnerability report"</span>, <span class="jxr_string">"Analysis report with all payloads detected"</span>, editorPane, UiUtil.APP_ICON.getIcon());
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>         });
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>     }
+<a class="jxr_linenumber" name="L263" href="#L263">263</a> 
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>         <strong class="jxr_keyword">var</strong> scroller = <strong class="jxr_keyword">new</strong> JScrollPane(componentText);
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>         <strong class="jxr_keyword">this</strong>.addTab(label + StringUtils.SPACE, scroller);
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>         <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>         <strong class="jxr_keyword">this</strong>.setToolTipTextAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), toolTipText);
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>         <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(label, icon);
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>         <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
+<a class="jxr_linenumber" name="L271" href="#L271">271</a> 
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>         <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>     }
+<a class="jxr_linenumber" name="L274" href="#L274">274</a> 
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitWeb(String url) {
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>         MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>                 <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>                 <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a>(terminalID, url, <span class="jxr_string">"web"</span>) {
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>                     @Override
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> action(String command, UUID terminalID, String urlShell, String... arg) {
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>                         MediatorHelper.model().getResourceAccess().runWebShell(command, terminalID, urlShell);
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>                     }
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>                 };
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>                 terminal.setName(TabResults.WEB_SHELL);
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>                 MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+<a class="jxr_linenumber" name="L287" href="#L287">287</a> 
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>                 JPanel panelTerminalWithReverse = <strong class="jxr_keyword">this</strong>.getTerminalWithMenu(terminal);
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>                 <strong class="jxr_keyword">this</strong>.addTab(<span class="jxr_string">"Web shell"</span>, panelTerminalWithReverse);
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>                 <strong class="jxr_keyword">this</strong>.setSelectedComponent(panelTerminalWithReverse);  <em class="jxr_comment">// Focus on the new tab</em>
+<a class="jxr_linenumber" name="L291" href="#L291">291</a> 
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>                 <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"Web shell"</span>, UiUtil.TERMINAL.getIcon());
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>                 <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(panelTerminalWithReverse), header);
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>                 terminal.requestFocusInWindow();
+<a class="jxr_linenumber" name="L295" href="#L295">295</a> 
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>                 <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>             } <strong class="jxr_keyword">catch</strong> (MalformedURLException | URISyntaxException e) {
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>             }
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>         });
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>     }
+<a class="jxr_linenumber" name="L302" href="#L302">302</a> 
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitReverseShell(String port) {
+<a class="jxr_linenumber" name="L304" href="#L304">304</a>         MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>                 <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>                 <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="ExploitReverseShell" href="../../../../../com/jsql/view/swing/terminal/ExploitReverseShell.html#ExploitReverseShell">ExploitReverseShell</a>(terminalID, port);
+<a class="jxr_linenumber" name="L308" href="#L308">308</a>                 terminal.setName(TabResults.REV_SHELL);
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>                 MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+<a class="jxr_linenumber" name="L310" href="#L310">310</a> 
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>                 JScrollPane scroller = <strong class="jxr_keyword">new</strong> JScrollPane(terminal);
+<a class="jxr_linenumber" name="L312" href="#L312">312</a>                 <strong class="jxr_keyword">this</strong>.addTab(TabResults.REVERSE_SHELL, scroller);
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>                 <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
+<a class="jxr_linenumber" name="L314" href="#L314">314</a> 
+<a class="jxr_linenumber" name="L315" href="#L315">315</a>                 <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(TabResults.REVERSE_SHELL, UiUtil.TERMINAL.getIcon());
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>                 <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>                 terminal.requestFocusInWindow();
+<a class="jxr_linenumber" name="L318" href="#L318">318</a> 
+<a class="jxr_linenumber" name="L319" href="#L319">319</a>                 <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>             } <strong class="jxr_keyword">catch</strong> (URISyntaxException | IOException e) {
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>             }
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>         });
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>     }
+<a class="jxr_linenumber" name="L325" href="#L325">325</a> 
+<a class="jxr_linenumber" name="L326" href="#L326">326</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitUdf(BiConsumer&lt;String, UUID&gt; biConsumerRunCmd) {
+<a class="jxr_linenumber" name="L327" href="#L327">327</a>         MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {
+<a class="jxr_linenumber" name="L328" href="#L328">328</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L329" href="#L329">329</a>                 <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
+<a class="jxr_linenumber" name="L330" href="#L330">330</a>                 <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a>(terminalID, <strong class="jxr_keyword">null</strong>, <span class="jxr_string">"udf"</span>) {
+<a class="jxr_linenumber" name="L331" href="#L331">331</a>                     @Override
+<a class="jxr_linenumber" name="L332" href="#L332">332</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> action(String command, UUID terminalID, String urlShell, String... arg) {
+<a class="jxr_linenumber" name="L333" href="#L333">333</a>                         biConsumerRunCmd.accept(command, terminalID);
+<a class="jxr_linenumber" name="L334" href="#L334">334</a>                     }
+<a class="jxr_linenumber" name="L335" href="#L335">335</a>                 };
+<a class="jxr_linenumber" name="L336" href="#L336">336</a>                 MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+<a class="jxr_linenumber" name="L337" href="#L337">337</a> 
+<a class="jxr_linenumber" name="L338" href="#L338">338</a>                 JPanel panelTerminalWithReverse = <strong class="jxr_keyword">this</strong>.getTerminalWithMenu(terminal);
+<a class="jxr_linenumber" name="L339" href="#L339">339</a>                 <strong class="jxr_keyword">this</strong>.addTab(TabResults.UDF_SHELL, panelTerminalWithReverse);
+<a class="jxr_linenumber" name="L340" href="#L340">340</a>                 <strong class="jxr_keyword">this</strong>.setSelectedComponent(panelTerminalWithReverse);  <em class="jxr_comment">// Focus on the new tab</em>
+<a class="jxr_linenumber" name="L341" href="#L341">341</a> 
+<a class="jxr_linenumber" name="L342" href="#L342">342</a>                 <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(TabResults.UDF_SHELL, UiUtil.TERMINAL.getIcon());
+<a class="jxr_linenumber" name="L343" href="#L343">343</a>                 <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(panelTerminalWithReverse), header);
+<a class="jxr_linenumber" name="L344" href="#L344">344</a>                 terminal.requestFocusInWindow();
+<a class="jxr_linenumber" name="L345" href="#L345">345</a> 
+<a class="jxr_linenumber" name="L346" href="#L346">346</a>                 <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L347" href="#L347">347</a>             } <strong class="jxr_keyword">catch</strong> (MalformedURLException | URISyntaxException e) {
+<a class="jxr_linenumber" name="L348" href="#L348">348</a>                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
+<a class="jxr_linenumber" name="L349" href="#L349">349</a>             }
+<a class="jxr_linenumber" name="L350" href="#L350">350</a>         });
+<a class="jxr_linenumber" name="L351" href="#L351">351</a>     }
+<a class="jxr_linenumber" name="L352" href="#L352">352</a> 
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabExploitSql(String url, String user, String pass) {
+<a class="jxr_linenumber" name="L354" href="#L354">354</a>         MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>                 <strong class="jxr_keyword">var</strong> terminalID = UUID.randomUUID();
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>                 <strong class="jxr_keyword">var</strong> terminal = <strong class="jxr_keyword">new</strong> <a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a>(terminalID, url, <span class="jxr_string">"sql"</span>) {
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>                     @Override
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> action(String cmd, UUID terminalID, String wbhPath, String... arg) {
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>                         MediatorHelper.model().getResourceAccess().runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>                     }
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>                 };
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>                 terminal.setName(TabResults.SQL_SHELL);
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>                 terminal.setLoginPassword(<strong class="jxr_keyword">new</strong> String[]{ user, pass });
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>                 MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
+<a class="jxr_linenumber" name="L366" href="#L366">366</a> 
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>                 JScrollPane scroller = <strong class="jxr_keyword">new</strong> JScrollPane(terminal);
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>                 <strong class="jxr_keyword">this</strong>.addTab(<span class="jxr_string">"SQL shell"</span>, scroller);
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>                 <strong class="jxr_keyword">this</strong>.setSelectedComponent(scroller);  <em class="jxr_comment">// Focus on the new tab</em>
+<a class="jxr_linenumber" name="L370" href="#L370">370</a> 
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>                 <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(<span class="jxr_string">"SQL shell"</span>, UiUtil.TERMINAL.getIcon());
+<a class="jxr_linenumber" name="L372" href="#L372">372</a>                 <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(scroller), header);
+<a class="jxr_linenumber" name="L373" href="#L373">373</a>                 terminal.requestFocusInWindow();
+<a class="jxr_linenumber" name="L374" href="#L374">374</a> 
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>                 <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>             } <strong class="jxr_keyword">catch</strong> (MalformedURLException | URISyntaxException e) {
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>             }
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>         });
 <a class="jxr_linenumber" name="L380" href="#L380">380</a>     }
-<a class="jxr_linenumber" name="L381" href="#L381">381</a> 
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>     <strong class="jxr_keyword">private</strong> JPanel getTerminalWithMenu(<a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a> terminal) {
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>         JPanel panelTerminalWithReverse = <strong class="jxr_keyword">new</strong> JPanel() {
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>             @Override
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isOptimizedDrawingEnabled() {
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>                 <strong class="jxr_keyword">return</strong> false;  <em class="jxr_comment">// both components always visible</em>
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>             }
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>         };
-<a class="jxr_linenumber" name="L389" href="#L389">389</a>         OverlayLayout overlay = <strong class="jxr_keyword">new</strong> OverlayLayout(panelTerminalWithReverse);
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>         panelTerminalWithReverse.setLayout(overlay);
-<a class="jxr_linenumber" name="L391" href="#L391">391</a> 
-<a class="jxr_linenumber" name="L392" href="#L392">392</a>         <strong class="jxr_keyword">var</strong> panelReverseMargin = <strong class="jxr_keyword">new</strong> JPanel();
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>         panelReverseMargin.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelReverseMargin, BoxLayout.LINE_AXIS));
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>         panelReverseMargin.setOpaque(false);
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>         panelReverseMargin.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 15));
-<a class="jxr_linenumber" name="L396" href="#L396">396</a> 
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>         <strong class="jxr_keyword">var</strong> menuReverse = <strong class="jxr_keyword">new</strong> JLabel(TabResults.REVERSE_SHELL, UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>         menuReverse.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>             @Override
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent e) {
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>                 <strong class="jxr_keyword">var</strong> popupMenu = TabResults.<strong class="jxr_keyword">this</strong>.showMenu(terminal);
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>                 popupMenu.updateUI();  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>                 popupMenu.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>                 popupMenu.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>             }
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>         });
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>         menuReverse.setMaximumSize(menuReverse.getPreferredSize());
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>         JScrollPane scrollerTerminal = <strong class="jxr_keyword">new</strong> JScrollPane(terminal);
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>         scrollerTerminal.setAlignmentX(1f);
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>         scrollerTerminal.setAlignmentY(0f);
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>         panelReverseMargin.setAlignmentX(1f);
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>         panelReverseMargin.setAlignmentY(0f);
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>         panelReverseMargin.add(menuReverse);
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>         panelTerminalWithReverse.add(panelReverseMargin);
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>         panelTerminalWithReverse.add(scrollerTerminal);
-<a class="jxr_linenumber" name="L416" href="#L416">416</a> 
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>         <strong class="jxr_keyword">return</strong> panelTerminalWithReverse;
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>     }
-<a class="jxr_linenumber" name="L419" href="#L419">419</a> 
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>     <strong class="jxr_keyword">private</strong> JPopupMenu showMenu(<a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a> terminal) {
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>         JPopupMenu menuReverse = <strong class="jxr_keyword">new</strong> JPopupMenu();
-<a class="jxr_linenumber" name="L422" href="#L422">422</a> 
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>         <strong class="jxr_keyword">var</strong> menuListen = <strong class="jxr_keyword">new</strong> JMenu(<span class="jxr_string">"Listen"</span>);
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>         menuListen.setComponentOrientation(
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>             ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>             ? ComponentOrientation.LEFT_TO_RIGHT
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>             : ComponentOrientation.RIGHT_TO_LEFT
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>         );
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>         <strong class="jxr_keyword">var</strong> panelPublicAddress = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>         panelPublicAddress.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"&lt;html&gt;&lt;b&gt;Your public address (listener) :&lt;/b&gt;&lt;/html&gt;"</span>));
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>         menuListen.add(panelPublicAddress);
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>         menuListen.add(<strong class="jxr_keyword">new</strong> JSeparator());
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>         <strong class="jxr_keyword">var</strong> address = <strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(<span class="jxr_string">"Local IP/domain"</span>, <span class="jxr_string">"10.0.2.2"</span>);
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>         menuListen.add(address);
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>         <strong class="jxr_keyword">var</strong> port = <strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(<span class="jxr_string">"Local port"</span>, <span class="jxr_string">"4444"</span>);
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>         menuListen.add(port);
-<a class="jxr_linenumber" name="L437" href="#L437">437</a> 
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>         <strong class="jxr_keyword">var</strong> panelServerConnection = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>         panelServerConnection.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"&lt;html&gt;&lt;b&gt;Server method (connector) :&lt;/b&gt;&lt;/html&gt;"</span>));
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>         menuListen.add(panelServerConnection);
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>         menuListen.add(<strong class="jxr_keyword">new</strong> JSeparator());
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>         <strong class="jxr_keyword">var</strong> buttonGroup = <strong class="jxr_keyword">new</strong> ButtonGroup();
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>         List&lt;ModelReverse&gt; commandsReverse = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getCommandsReverse();
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>         commandsReverse.forEach(modelReverse -&gt; {
-<a class="jxr_linenumber" name="L445" href="#L445">445</a>             <strong class="jxr_keyword">var</strong> radio = <strong class="jxr_keyword">new</strong> <a name="RadioItemNonClosing" href="../../../../../com/jsql/view/swing/util/RadioItemNonClosing.html#RadioItemNonClosing">RadioItemNonClosing</a>(modelReverse.getName());
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>             radio.setActionCommand(modelReverse.getName());
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>             radio.setSelected(<span class="jxr_string">"bash"</span>.equals(modelReverse.getName()));
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>             buttonGroup.add(radio);
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>             menuListen.add(radio);
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>         });
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>     
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addTabValues(String[][] data, String[] columnNames, AbstractElementDatabase table) {
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>         <strong class="jxr_keyword">var</strong> panelTable = <strong class="jxr_keyword">new</strong> <a name="PanelTable" href="../../../../../com/jsql/view/swing/table/PanelTable.html#PanelTable">PanelTable</a>(data, columnNames);
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>         
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>         <strong class="jxr_keyword">this</strong>.addTab(StringUtil.detectUtf8(table.toString()), panelTable);
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>         panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>         
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>         <strong class="jxr_keyword">this</strong>.setSelectedComponent(panelTable);  <em class="jxr_comment">// Focus on the new tab</em>
+<a class="jxr_linenumber" name="L389" href="#L389">389</a> 
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>         <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>         <strong class="jxr_keyword">this</strong>.setTabComponentAt(<strong class="jxr_keyword">this</strong>.indexOfComponent(panelTable), header);
+<a class="jxr_linenumber" name="L392" href="#L392">392</a> 
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>         <strong class="jxr_keyword">this</strong>.updateUI();  <em class="jxr_comment">// required: light, open/close prefs, dark =&gt; light artifacts</em>
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>     }
+<a class="jxr_linenumber" name="L395" href="#L395">395</a> 
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>     <strong class="jxr_keyword">private</strong> JPanel getTerminalWithMenu(<a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a> terminal) {
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>         JPanel panelTerminalWithReverse = <strong class="jxr_keyword">new</strong> JPanel() {
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>             @Override
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isOptimizedDrawingEnabled() {
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>                 <strong class="jxr_keyword">return</strong> false;  <em class="jxr_comment">// both components always visible</em>
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>             }
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>         };
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>         OverlayLayout overlay = <strong class="jxr_keyword">new</strong> OverlayLayout(panelTerminalWithReverse);
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>         panelTerminalWithReverse.setLayout(overlay);
+<a class="jxr_linenumber" name="L405" href="#L405">405</a> 
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>         <strong class="jxr_keyword">var</strong> panelReverseMargin = <strong class="jxr_keyword">new</strong> JPanel();
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>         panelReverseMargin.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelReverseMargin, BoxLayout.LINE_AXIS));
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>         panelReverseMargin.setOpaque(false);
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>         panelReverseMargin.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 15));
+<a class="jxr_linenumber" name="L410" href="#L410">410</a> 
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>         <strong class="jxr_keyword">var</strong> menuReverse = <strong class="jxr_keyword">new</strong> JLabel(TabResults.REVERSE_SHELL, UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>         menuReverse.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>             @Override
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent e) {
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>                 <strong class="jxr_keyword">var</strong> popupMenu = TabResults.<strong class="jxr_keyword">this</strong>.showMenu(terminal);
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>                 popupMenu.updateUI();  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>                 popupMenu.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>                 popupMenu.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>             }
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>         });
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>         menuReverse.setMaximumSize(menuReverse.getPreferredSize());
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>         JScrollPane scrollerTerminal = <strong class="jxr_keyword">new</strong> JScrollPane(terminal);
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>         scrollerTerminal.setAlignmentX(1f);
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>         scrollerTerminal.setAlignmentY(0f);
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>         panelReverseMargin.setAlignmentX(1f);
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>         panelReverseMargin.setAlignmentY(0f);
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>         panelReverseMargin.add(menuReverse);
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>         panelTerminalWithReverse.add(panelReverseMargin);
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>         panelTerminalWithReverse.add(scrollerTerminal);
+<a class="jxr_linenumber" name="L430" href="#L430">430</a> 
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>         <strong class="jxr_keyword">return</strong> panelTerminalWithReverse;
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>     }
+<a class="jxr_linenumber" name="L433" href="#L433">433</a> 
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>     <strong class="jxr_keyword">private</strong> JPopupMenu showMenu(<a name="AbstractExploit" href="../../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a> terminal) {
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>         JPopupMenu menuReverse = <strong class="jxr_keyword">new</strong> JPopupMenu();
+<a class="jxr_linenumber" name="L436" href="#L436">436</a> 
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>         <strong class="jxr_keyword">var</strong> menuListen = <strong class="jxr_keyword">new</strong> JMenu(<span class="jxr_string">"Listen"</span>);
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>         menuListen.setComponentOrientation(
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>             ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>             ? ComponentOrientation.LEFT_TO_RIGHT
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>             : ComponentOrientation.RIGHT_TO_LEFT
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>         );
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>         <strong class="jxr_keyword">var</strong> panelPublicAddress = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>         panelPublicAddress.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"&lt;html&gt;&lt;b&gt;Your public address (listener) :&lt;/b&gt;&lt;/html&gt;"</span>));
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>         menuListen.add(panelPublicAddress);
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>         menuListen.add(<strong class="jxr_keyword">new</strong> JSeparator());
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">var</strong> address = <strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(<span class="jxr_string">"Local IP/domain"</span>, <span class="jxr_string">"10.0.2.2"</span>);
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>         menuListen.add(address);
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>         <strong class="jxr_keyword">var</strong> port = <strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(<span class="jxr_string">"Local port"</span>, <span class="jxr_string">"4444"</span>);
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>         menuListen.add(port);
 <a class="jxr_linenumber" name="L451" href="#L451">451</a> 
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>         Runnable runnableReverse = () -&gt; {
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>             <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>                 Thread.sleep(2500);
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getCommandsReverse().stream()
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>                 .filter(modelReverse -&gt; modelReverse.getName().equals(buttonGroup.getSelection().getActionCommand()))
-<a class="jxr_linenumber" name="L457" href="#L457">457</a>                 .findFirst()
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>                 .ifPresent(modelReverse -&gt; MediatorHelper.model().getResourceAccess().runWebShell(
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>                     String.format(modelReverse.getCommand(), address.getText(), port.getText()),
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>                     <strong class="jxr_keyword">null</strong>,  <em class="jxr_comment">// ignore connection response</em>
-<a class="jxr_linenumber" name="L461" href="#L461">461</a>                     terminal.getUrlShell(),
-<a class="jxr_linenumber" name="L462" href="#L462">462</a>                     <strong class="jxr_keyword">true</strong>
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>                 ));
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>             } <strong class="jxr_keyword">catch</strong> (InterruptedException e) {
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>                 Thread.currentThread().interrupt();
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>             }
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>         };
-<a class="jxr_linenumber" name="L469" href="#L469">469</a> 
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>         <strong class="jxr_keyword">var</strong> panelOpenIn = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>         panelOpenIn.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"&lt;html&gt;&lt;b&gt;Open In :&lt;/b&gt;&lt;/html&gt;"</span>));
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>         menuListen.add(panelOpenIn);
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>         menuListen.add(<strong class="jxr_keyword">new</strong> JSeparator());
-<a class="jxr_linenumber" name="L474" href="#L474">474</a> 
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>         <strong class="jxr_keyword">var</strong> menuBuiltInShell = <strong class="jxr_keyword">new</strong> <a name="RadioItemNonClosing" href="../../../../../com/jsql/view/swing/util/RadioItemNonClosing.html#RadioItemNonClosing">RadioItemNonClosing</a>(<span class="jxr_string">"Built-in shell"</span>, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>         <strong class="jxr_keyword">var</strong> menuExternalShell = <strong class="jxr_keyword">new</strong> <a name="RadioItemNonClosing" href="../../../../../com/jsql/view/swing/util/RadioItemNonClosing.html#RadioItemNonClosing">RadioItemNonClosing</a>(<span class="jxr_string">"External listening shell"</span>);
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>         <strong class="jxr_keyword">var</strong> buttonTypeShell = <strong class="jxr_keyword">new</strong> ButtonGroup();
-<a class="jxr_linenumber" name="L478" href="#L478">478</a>         buttonTypeShell.add(menuBuiltInShell);
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>         buttonTypeShell.add(menuExternalShell);
-<a class="jxr_linenumber" name="L480" href="#L480">480</a>         menuListen.add(menuBuiltInShell);
-<a class="jxr_linenumber" name="L481" href="#L481">481</a>         menuListen.add(menuExternalShell);
-<a class="jxr_linenumber" name="L482" href="#L482">482</a>         menuListen.add(<strong class="jxr_keyword">new</strong> JSeparator());
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>         <strong class="jxr_keyword">var</strong> panelCreate = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>         panelCreate.add(<strong class="jxr_keyword">new</strong> JButton(<strong class="jxr_keyword">new</strong> AbstractAction(<span class="jxr_string">"Create reverse shell"</span>) {
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>             @Override
-<a class="jxr_linenumber" name="L486" href="#L486">486</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> actionPerformed(ActionEvent e) {
-<a class="jxr_linenumber" name="L487" href="#L487">487</a>                 <strong class="jxr_keyword">if</strong> (menuBuiltInShell.isSelected()) {
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>                     SwingUtilities.invokeLater(() -&gt; MediatorHelper.tabResults().addTabExploitReverseShell(port.getText()));
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>                 }
-<a class="jxr_linenumber" name="L490" href="#L490">490</a>                 <strong class="jxr_keyword">new</strong> Thread(runnableReverse).start();
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>                 menuReverse.setVisible(false);
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>             }
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>         }));
-<a class="jxr_linenumber" name="L494" href="#L494">494</a>         menuListen.add(panelCreate);
-<a class="jxr_linenumber" name="L495" href="#L495">495</a> 
-<a class="jxr_linenumber" name="L496" href="#L496">496</a>         <strong class="jxr_keyword">var</strong> menuConnect = <strong class="jxr_keyword">new</strong> JMenu(<span class="jxr_string">"Connect"</span>);
-<a class="jxr_linenumber" name="L497" href="#L497">497</a>         menuConnect.setComponentOrientation(
-<a class="jxr_linenumber" name="L498" href="#L498">498</a>             ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
-<a class="jxr_linenumber" name="L499" href="#L499">499</a>             ? ComponentOrientation.LEFT_TO_RIGHT
-<a class="jxr_linenumber" name="L500" href="#L500">500</a>             : ComponentOrientation.RIGHT_TO_LEFT
-<a class="jxr_linenumber" name="L501" href="#L501">501</a>         );
-<a class="jxr_linenumber" name="L502" href="#L502">502</a>         <strong class="jxr_keyword">var</strong> panelServerPublicAddress = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
-<a class="jxr_linenumber" name="L503" href="#L503">503</a>         panelServerPublicAddress.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"&lt;html&gt;&lt;b&gt;Server public address (listener) :&lt;/b&gt;&lt;/html&gt;"</span>));
-<a class="jxr_linenumber" name="L504" href="#L504">504</a>         menuConnect.add(panelServerPublicAddress);
-<a class="jxr_linenumber" name="L505" href="#L505">505</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> JSeparator());
-<a class="jxr_linenumber" name="L506" href="#L506">506</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(<span class="jxr_string">"Target IP/domain"</span>));
-<a class="jxr_linenumber" name="L507" href="#L507">507</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(<span class="jxr_string">"Target port"</span>));
-<a class="jxr_linenumber" name="L508" href="#L508">508</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> JSeparator());
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>         <strong class="jxr_keyword">var</strong> panelServerConnection = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>         panelServerConnection.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"&lt;html&gt;&lt;b&gt;Server method (connector) :&lt;/b&gt;&lt;/html&gt;"</span>));
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>         menuListen.add(panelServerConnection);
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>         menuListen.add(<strong class="jxr_keyword">new</strong> JSeparator());
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>         <strong class="jxr_keyword">var</strong> buttonGroup = <strong class="jxr_keyword">new</strong> ButtonGroup();
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>         List&lt;ModelReverse&gt; commandsReverse = MediatorHelper.model().getMediatorUtils().preferencesUtil().getCommandsReverse();
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>         commandsReverse.forEach(modelReverse -&gt; {
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>             <strong class="jxr_keyword">var</strong> radio = <strong class="jxr_keyword">new</strong> <a name="RadioItemNonClosing" href="../../../../../com/jsql/view/swing/util/RadioItemNonClosing.html#RadioItemNonClosing">RadioItemNonClosing</a>(modelReverse.getName());
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>             radio.setActionCommand(modelReverse.getName());
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>             radio.setSelected(<span class="jxr_string">"bash"</span>.equals(modelReverse.getName()));
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>             buttonGroup.add(radio);
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>             menuListen.add(radio);
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>         });
+<a class="jxr_linenumber" name="L465" href="#L465">465</a> 
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>         Runnable runnableReverse = () -&gt; {
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L468" href="#L468">468</a>                 Thread.sleep(2500);
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>                 MediatorHelper.model().getMediatorUtils().preferencesUtil().getCommandsReverse().stream()
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>                 .filter(modelReverse -&gt; modelReverse.getName().equals(buttonGroup.getSelection().getActionCommand()))
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>                 .findFirst()
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>                 .ifPresent(modelReverse -&gt; MediatorHelper.model().getResourceAccess().runWebShell(
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>                     String.format(modelReverse.getCommand(), address.getText(), port.getText()),
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>                     <strong class="jxr_keyword">null</strong>,  <em class="jxr_comment">// ignore connection response</em>
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>                     terminal.getUrlShell(),
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>                     <strong class="jxr_keyword">true</strong>
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>                 ));
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>             } <strong class="jxr_keyword">catch</strong> (InterruptedException e) {
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>                 Thread.currentThread().interrupt();
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>             }
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>         };
+<a class="jxr_linenumber" name="L483" href="#L483">483</a> 
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>         <strong class="jxr_keyword">var</strong> panelOpenIn = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>         panelOpenIn.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"&lt;html&gt;&lt;b&gt;Open In :&lt;/b&gt;&lt;/html&gt;"</span>));
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>         menuListen.add(panelOpenIn);
+<a class="jxr_linenumber" name="L487" href="#L487">487</a>         menuListen.add(<strong class="jxr_keyword">new</strong> JSeparator());
+<a class="jxr_linenumber" name="L488" href="#L488">488</a> 
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>         <strong class="jxr_keyword">var</strong> menuBuiltInShell = <strong class="jxr_keyword">new</strong> <a name="RadioItemNonClosing" href="../../../../../com/jsql/view/swing/util/RadioItemNonClosing.html#RadioItemNonClosing">RadioItemNonClosing</a>(<span class="jxr_string">"Built-in shell"</span>, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L490" href="#L490">490</a>         <strong class="jxr_keyword">var</strong> menuExternalShell = <strong class="jxr_keyword">new</strong> <a name="RadioItemNonClosing" href="../../../../../com/jsql/view/swing/util/RadioItemNonClosing.html#RadioItemNonClosing">RadioItemNonClosing</a>(<span class="jxr_string">"External listening shell"</span>);
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>         <strong class="jxr_keyword">var</strong> buttonTypeShell = <strong class="jxr_keyword">new</strong> ButtonGroup();
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>         buttonTypeShell.add(menuBuiltInShell);
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>         buttonTypeShell.add(menuExternalShell);
+<a class="jxr_linenumber" name="L494" href="#L494">494</a>         menuListen.add(menuBuiltInShell);
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>         menuListen.add(menuExternalShell);
+<a class="jxr_linenumber" name="L496" href="#L496">496</a>         menuListen.add(<strong class="jxr_keyword">new</strong> JSeparator());
+<a class="jxr_linenumber" name="L497" href="#L497">497</a>         <strong class="jxr_keyword">var</strong> panelCreate = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L498" href="#L498">498</a>         panelCreate.add(<strong class="jxr_keyword">new</strong> JButton(<strong class="jxr_keyword">new</strong> AbstractAction(<span class="jxr_string">"Create reverse shell"</span>) {
+<a class="jxr_linenumber" name="L499" href="#L499">499</a>             @Override
+<a class="jxr_linenumber" name="L500" href="#L500">500</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> actionPerformed(ActionEvent e) {
+<a class="jxr_linenumber" name="L501" href="#L501">501</a>                 <strong class="jxr_keyword">if</strong> (menuBuiltInShell.isSelected()) {
+<a class="jxr_linenumber" name="L502" href="#L502">502</a>                     MediatorHelper.tabResults().addTabExploitReverseShell(port.getText());
+<a class="jxr_linenumber" name="L503" href="#L503">503</a>                 }
+<a class="jxr_linenumber" name="L504" href="#L504">504</a>                 <strong class="jxr_keyword">new</strong> Thread(runnableReverse).start();
+<a class="jxr_linenumber" name="L505" href="#L505">505</a>                 menuReverse.setVisible(false);
+<a class="jxr_linenumber" name="L506" href="#L506">506</a>             }
+<a class="jxr_linenumber" name="L507" href="#L507">507</a>         }));
+<a class="jxr_linenumber" name="L508" href="#L508">508</a>         menuListen.add(panelCreate);
 <a class="jxr_linenumber" name="L509" href="#L509">509</a> 
-<a class="jxr_linenumber" name="L510" href="#L510">510</a>         <strong class="jxr_keyword">var</strong> panelServerListeningConnection = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
-<a class="jxr_linenumber" name="L511" href="#L511">511</a>         panelServerListeningConnection.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"&lt;html&gt;&lt;b&gt;Server listening method :&lt;/b&gt;&lt;/html&gt;"</span>));
-<a class="jxr_linenumber" name="L512" href="#L512">512</a>         menuConnect.add(panelServerListeningConnection);
-<a class="jxr_linenumber" name="L513" href="#L513">513</a>         <strong class="jxr_keyword">var</strong> buttonGroupListening = <strong class="jxr_keyword">new</strong> ButtonGroup();
-<a class="jxr_linenumber" name="L514" href="#L514">514</a>         List.of(<span class="jxr_string">"netcat"</span>).forEach(method -&gt; {
-<a class="jxr_linenumber" name="L515" href="#L515">515</a>             <strong class="jxr_keyword">var</strong> radio = <strong class="jxr_keyword">new</strong> JRadioButtonMenuItem(method) {
-<a class="jxr_linenumber" name="L516" href="#L516">516</a>                 @Override
-<a class="jxr_linenumber" name="L517" href="#L517">517</a>                 <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> processMouseEvent(MouseEvent evt) {
-<a class="jxr_linenumber" name="L518" href="#L518">518</a>                     <strong class="jxr_keyword">if</strong> (evt.getID() == MouseEvent.MOUSE_RELEASED &amp;&amp; <strong class="jxr_keyword">this</strong>.contains(evt.getPoint())) {
-<a class="jxr_linenumber" name="L519" href="#L519">519</a>                         <strong class="jxr_keyword">this</strong>.doClick();
-<a class="jxr_linenumber" name="L520" href="#L520">520</a>                         <strong class="jxr_keyword">this</strong>.setArmed(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L521" href="#L521">521</a>                     } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L522" href="#L522">522</a>                         <strong class="jxr_keyword">super</strong>.processMouseEvent(evt);
-<a class="jxr_linenumber" name="L523" href="#L523">523</a>                     }
-<a class="jxr_linenumber" name="L524" href="#L524">524</a>                 }
-<a class="jxr_linenumber" name="L525" href="#L525">525</a>             };
-<a class="jxr_linenumber" name="L526" href="#L526">526</a>             radio.setSelected(<span class="jxr_string">"netcat"</span>.equals(method));
-<a class="jxr_linenumber" name="L527" href="#L527">527</a>             buttonGroupListening.add(radio);
-<a class="jxr_linenumber" name="L528" href="#L528">528</a>             menuConnect.add(radio);
-<a class="jxr_linenumber" name="L529" href="#L529">529</a>         });
-<a class="jxr_linenumber" name="L530" href="#L530">530</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> JSeparator());
-<a class="jxr_linenumber" name="L531" href="#L531">531</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> JMenuItem(<span class="jxr_string">"Create"</span>));
-<a class="jxr_linenumber" name="L532" href="#L532">532</a> 
-<a class="jxr_linenumber" name="L533" href="#L533">533</a>         menuReverse.add(menuListen);
-<a class="jxr_linenumber" name="L534" href="#L534">534</a>         menuReverse.add(menuConnect);
-<a class="jxr_linenumber" name="L535" href="#L535">535</a> 
-<a class="jxr_linenumber" name="L536" href="#L536">536</a>         <strong class="jxr_keyword">return</strong> menuReverse;
-<a class="jxr_linenumber" name="L537" href="#L537">537</a>     }
-<a class="jxr_linenumber" name="L538" href="#L538">538</a> }
+<a class="jxr_linenumber" name="L510" href="#L510">510</a>         <strong class="jxr_keyword">var</strong> menuConnect = <strong class="jxr_keyword">new</strong> JMenu(<span class="jxr_string">"Connect"</span>);
+<a class="jxr_linenumber" name="L511" href="#L511">511</a>         menuConnect.setComponentOrientation(
+<a class="jxr_linenumber" name="L512" href="#L512">512</a>             ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
+<a class="jxr_linenumber" name="L513" href="#L513">513</a>             ? ComponentOrientation.LEFT_TO_RIGHT
+<a class="jxr_linenumber" name="L514" href="#L514">514</a>             : ComponentOrientation.RIGHT_TO_LEFT
+<a class="jxr_linenumber" name="L515" href="#L515">515</a>         );
+<a class="jxr_linenumber" name="L516" href="#L516">516</a>         <strong class="jxr_keyword">var</strong> panelServerPublicAddress = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L517" href="#L517">517</a>         panelServerPublicAddress.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"&lt;html&gt;&lt;b&gt;Server public address (listener) :&lt;/b&gt;&lt;/html&gt;"</span>));
+<a class="jxr_linenumber" name="L518" href="#L518">518</a>         menuConnect.add(panelServerPublicAddress);
+<a class="jxr_linenumber" name="L519" href="#L519">519</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> JSeparator());
+<a class="jxr_linenumber" name="L520" href="#L520">520</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(<span class="jxr_string">"Target IP/domain"</span>));
+<a class="jxr_linenumber" name="L521" href="#L521">521</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> <a name="JTextFieldPlaceholder" href="../../../../../com/jsql/view/swing/text/JTextFieldPlaceholder.html#JTextFieldPlaceholder">JTextFieldPlaceholder</a>(<span class="jxr_string">"Target port"</span>));
+<a class="jxr_linenumber" name="L522" href="#L522">522</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> JSeparator());
+<a class="jxr_linenumber" name="L523" href="#L523">523</a> 
+<a class="jxr_linenumber" name="L524" href="#L524">524</a>         <strong class="jxr_keyword">var</strong> panelServerListeningConnection = <strong class="jxr_keyword">new</strong> JPanel(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L525" href="#L525">525</a>         panelServerListeningConnection.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"&lt;html&gt;&lt;b&gt;Server listening method :&lt;/b&gt;&lt;/html&gt;"</span>));
+<a class="jxr_linenumber" name="L526" href="#L526">526</a>         menuConnect.add(panelServerListeningConnection);
+<a class="jxr_linenumber" name="L527" href="#L527">527</a>         <strong class="jxr_keyword">var</strong> buttonGroupListening = <strong class="jxr_keyword">new</strong> ButtonGroup();
+<a class="jxr_linenumber" name="L528" href="#L528">528</a>         List.of(<span class="jxr_string">"netcat"</span>).forEach(method -&gt; {
+<a class="jxr_linenumber" name="L529" href="#L529">529</a>             <strong class="jxr_keyword">var</strong> radio = <strong class="jxr_keyword">new</strong> JRadioButtonMenuItem(method) {
+<a class="jxr_linenumber" name="L530" href="#L530">530</a>                 @Override
+<a class="jxr_linenumber" name="L531" href="#L531">531</a>                 <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> processMouseEvent(MouseEvent evt) {
+<a class="jxr_linenumber" name="L532" href="#L532">532</a>                     <strong class="jxr_keyword">if</strong> (evt.getID() == MouseEvent.MOUSE_RELEASED &amp;&amp; <strong class="jxr_keyword">this</strong>.contains(evt.getPoint())) {
+<a class="jxr_linenumber" name="L533" href="#L533">533</a>                         <strong class="jxr_keyword">this</strong>.doClick();
+<a class="jxr_linenumber" name="L534" href="#L534">534</a>                         <strong class="jxr_keyword">this</strong>.setArmed(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L535" href="#L535">535</a>                     } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L536" href="#L536">536</a>                         <strong class="jxr_keyword">super</strong>.processMouseEvent(evt);
+<a class="jxr_linenumber" name="L537" href="#L537">537</a>                     }
+<a class="jxr_linenumber" name="L538" href="#L538">538</a>                 }
+<a class="jxr_linenumber" name="L539" href="#L539">539</a>             };
+<a class="jxr_linenumber" name="L540" href="#L540">540</a>             radio.setSelected(<span class="jxr_string">"netcat"</span>.equals(method));
+<a class="jxr_linenumber" name="L541" href="#L541">541</a>             buttonGroupListening.add(radio);
+<a class="jxr_linenumber" name="L542" href="#L542">542</a>             menuConnect.add(radio);
+<a class="jxr_linenumber" name="L543" href="#L543">543</a>         });
+<a class="jxr_linenumber" name="L544" href="#L544">544</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> JSeparator());
+<a class="jxr_linenumber" name="L545" href="#L545">545</a>         menuConnect.add(<strong class="jxr_keyword">new</strong> JMenuItem(<span class="jxr_string">"Create"</span>));
+<a class="jxr_linenumber" name="L546" href="#L546">546</a> 
+<a class="jxr_linenumber" name="L547" href="#L547">547</a>         menuReverse.add(menuListen);
+<a class="jxr_linenumber" name="L548" href="#L548">548</a>         menuReverse.add(menuConnect);
+<a class="jxr_linenumber" name="L549" href="#L549">549</a> 
+<a class="jxr_linenumber" name="L550" href="#L550">550</a>         <strong class="jxr_keyword">return</strong> menuReverse;
+<a class="jxr_linenumber" name="L551" href="#L551">551</a>     }
+<a class="jxr_linenumber" name="L552" href="#L552">552</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

@@ -20,11 +20,11 @@
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="PanelUserAgent" href="../../../../../../com/jsql/view/swing/panel/preferences/PanelUserAgent.html#PanelUserAgent">PanelUserAgent</a> <strong class="jxr_keyword">extends</strong> JPanel {
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>      
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCustomUserAgent = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Randomize agent with the following list:"</span>, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUserAgentRandom());
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCustomUserAgent = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Randomize agent with the following list:"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isUserAgentRandom());
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">public</strong> <a name="PanelUserAgent" href="../../../../../../com/jsql/view/swing/panel/preferences/PanelUserAgent.html#PanelUserAgent">PanelUserAgent</a>(<a name="PanelPreferences" href="../../../../../../com/jsql/view/swing/panel/PanelPreferences.html#PanelPreferences">PanelPreferences</a> panelPreferences) {
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">var</strong> userAgents = StringUtil.getFile(<span class="jxr_string">"swing/list/user-agent.txt"</span>);
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>          MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(userAgents);
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>          MediatorHelper.model().getMediatorUtils().userAgentUtil().setCustomUserAgent(userAgents);
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">this</strong>.checkboxIsCustomUserAgent.addActionListener(panelPreferences.getActionListenerSave());
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  
@@ -32,11 +32,11 @@
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>          textfieldCustomUserAgent.setMinimumSize(<strong class="jxr_keyword">new</strong> Dimension(40000, 100));
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>          textfieldCustomUserAgent.getCaret().setBlinkRate(500);
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          textfieldCustomUserAgent.setText(userAgents);
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>          MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(userAgents);
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>          MediatorHelper.model().getMediatorUtils().userAgentUtil().setCustomUserAgent(userAgents);
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>          textfieldCustomUserAgent.getDocument().addDocumentListener(<strong class="jxr_keyword">new</strong> <a name="DocumentListenerEditing" href="../../../../../../com/jsql/view/swing/text/listener/DocumentListenerEditing.html#DocumentListenerEditing">DocumentListenerEditing</a>() {
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>              @Override
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> process() {
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>                  MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>                  MediatorHelper.model().getMediatorUtils().userAgentUtil().setCustomUserAgent(
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>                      textfieldCustomUserAgent.getText()
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>                  );
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>              }

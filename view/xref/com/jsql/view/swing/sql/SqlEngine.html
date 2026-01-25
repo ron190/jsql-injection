@@ -8,9 +8,9 @@
 <div id="overview"><a href="../../../../../../apidocs/com/jsql/view/swing/sql/SqlEngine.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.view.swing.sql;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.Vendor;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.yaml.Method;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.yaml.ModelYaml;
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.engine.model.Engine;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.engine.model.yaml.Method;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.engine.model.yaml.ModelYaml;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.util.I18nUtil;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.swing.tab.TabbedPaneWheeled;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.swing.text.listener.DocumentListenerEditing;
@@ -35,7 +35,7 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="SqlEngine" href="../../../../../com/jsql/view/swing/sql/SqlEngine.html#SqlEngine">SqlEngine</a> <strong class="jxr_keyword">extends</strong> JPanel {
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> ModelYaml modelYaml = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml();
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> JTabbedPane TABS_ERROR = <strong class="jxr_keyword">new</strong> <a name="TabbedPaneWheeled" href="../../../../../com/jsql/view/swing/tab/TabbedPaneWheeled.html#TabbedPaneWheeled">TabbedPaneWheeled</a>(SwingConstants.RIGHT);
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> List&lt;JSyntaxTextArea&gt; LIST_TEXTAREAS_ERROR = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      
@@ -239,9 +239,9 @@
 <a class="jxr_linenumber" name="L231" href="#L231">231</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getUnion().setOrderBy(v),
 <a class="jxr_linenumber" name="L232" href="#L232">232</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getUnion().getOrderBy()
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>         )),
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>         VENDOR_SPECIFIC(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>         ENGINE_SPECIFIC(<strong class="jxr_keyword">new</strong> <a name="JSyntaxTextArea" href="../../../../../com/jsql/view/swing/sql/JSyntaxTextArea.html#JSyntaxTextArea">JSyntaxTextArea</a>(
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>             v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setEngineSpecific(v),
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>             () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getEngineSpecific()
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>         )),
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>         ;
 <a class="jxr_linenumber" name="L239" href="#L239">239</a>         
@@ -257,8 +257,8 @@
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>     }
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>     
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>     <strong class="jxr_keyword">public</strong> <a name="SqlEngine" href="../../../../../com/jsql/view/swing/sql/SqlEngine.html#SqlEngine">SqlEngine</a>() {
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>         <em class="jxr_comment">// user can switch to another vendor then close, so restore current vendor</em>
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>         SqlEngine.modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>         <em class="jxr_comment">// user can switch to another engine then close, so restore current engine</em>
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>         SqlEngine.modelYaml = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml();
 <a class="jxr_linenumber" name="L254" href="#L254">254</a> 
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>         SqlEngine.initTextComponents();
 <a class="jxr_linenumber" name="L256" href="#L256">256</a> 
@@ -289,7 +289,7 @@
 <a class="jxr_linenumber" name="L281" href="#L281">281</a> 
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>         <strong class="jxr_keyword">this</strong>.setLayout(<strong class="jxr_keyword">new</strong> BorderLayout());
 <a class="jxr_linenumber" name="L283" href="#L283">283</a> 
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>         JPanel panelCombo = SqlEngine.initMenuVendor();
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>         JPanel panelCombo = SqlEngine.initMenuEngine();
 <a class="jxr_linenumber" name="L285" href="#L285">285</a>         tabsBottom.putClientProperty(<span class="jxr_string">"JTabbedPane.trailingComponent"</span>, panelCombo);
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>         <strong class="jxr_keyword">this</strong>.add(tabsBottom);
 <a class="jxr_linenumber" name="L287" href="#L287">287</a> 
@@ -442,7 +442,7 @@
 <a class="jxr_linenumber" name="L434" href="#L434">434</a>         tabs.addTab(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_ORDER_BY"</span>), <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.ORDER_BY.getTextArea(), false));
 <a class="jxr_linenumber" name="L435" href="#L435">435</a>         tabs.addTab(<span class="jxr_string">"Order by error"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getTextArea(), false));
 <a class="jxr_linenumber" name="L436" href="#L436">436</a>         tabs.addTab(<span class="jxr_string">"String error"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getTextArea(), false));
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>         tabs.addTab(<span class="jxr_string">"Vendor specific"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.VENDOR_SPECIFIC.getTextArea(), false));
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>         tabs.addTab(<span class="jxr_string">"Engine specific"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.ENGINE_SPECIFIC.getTextArea(), false));
 <a class="jxr_linenumber" name="L438" href="#L438">438</a>         tabs.addTab(<span class="jxr_string">"Truthy"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.TRUTHY.getTextArea(), false));
 <a class="jxr_linenumber" name="L439" href="#L439">439</a>         tabs.addTab(<span class="jxr_string">"Falsy"</span>, <strong class="jxr_keyword">new</strong> RTextScrollPane(TextareaWithColor.FALSY.getTextArea(), false));
 <a class="jxr_linenumber" name="L440" href="#L440">440</a>         
@@ -454,47 +454,47 @@
 <a class="jxr_linenumber" name="L446" href="#L446">446</a>         <strong class="jxr_keyword">return</strong> tabs;
 <a class="jxr_linenumber" name="L447" href="#L447">447</a>     }
 <a class="jxr_linenumber" name="L448" href="#L448">448</a> 
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> JPanel initMenuVendor() {
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>         <strong class="jxr_keyword">var</strong> panelMenuVendor = <strong class="jxr_keyword">new</strong> JPanel();  <em class="jxr_comment">// required for label on right</em>
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>         panelMenuVendor.setLayout(<strong class="jxr_keyword">new</strong> BorderLayout());
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> JPanel initMenuEngine() {
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>         <strong class="jxr_keyword">var</strong> panelMenuEngine = <strong class="jxr_keyword">new</strong> JPanel();  <em class="jxr_comment">// required for label on right</em>
+<a class="jxr_linenumber" name="L451" href="#L451">451</a>         panelMenuEngine.setLayout(<strong class="jxr_keyword">new</strong> BorderLayout());
 <a class="jxr_linenumber" name="L452" href="#L452">452</a> 
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>         JPopupMenu popupMenuVendors = <strong class="jxr_keyword">new</strong> JPopupMenu();
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>         popupMenuVendors.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorVendor().getVendors().size()));
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>         JPopupMenu popupMenuEngines = <strong class="jxr_keyword">new</strong> JPopupMenu();
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>         popupMenuEngines.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorEngine().getEngines().size()));
 <a class="jxr_linenumber" name="L455" href="#L455">455</a> 
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>         JLabel labelVendor = <strong class="jxr_keyword">new</strong> JLabel(MediatorHelper.model().getMediatorVendor().getVendor().toString(), UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
-<a class="jxr_linenumber" name="L457" href="#L457">457</a>         labelVendor.setBorder(UiUtil.BORDER_5PX);  <em class="jxr_comment">// required for padding</em>
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>         labelVendor.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>         JLabel labelEngine = <strong class="jxr_keyword">new</strong> JLabel(MediatorHelper.model().getMediatorEngine().getEngine().toString(), UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>         labelEngine.setBorder(UiUtil.BORDER_5PX);  <em class="jxr_comment">// required for padding</em>
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>         labelEngine.addMouseListener(<strong class="jxr_keyword">new</strong> MouseAdapter() {
 <a class="jxr_linenumber" name="L459" href="#L459">459</a>             @Override
 <a class="jxr_linenumber" name="L460" href="#L460">460</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent e) {
-<a class="jxr_linenumber" name="L461" href="#L461">461</a>                 Arrays.stream(popupMenuVendors.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
-<a class="jxr_linenumber" name="L462" href="#L462">462</a>                 popupMenuVendors.updateUI();  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>                 popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>                 popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>                 Arrays.stream(popupMenuEngines.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>                 popupMenuEngines.updateUI();  <em class="jxr_comment">// required: incorrect when dark/light mode switch</em>
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>                 popupMenuEngines.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>                 popupMenuEngines.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());
 <a class="jxr_linenumber" name="L465" href="#L465">465</a>             }
 <a class="jxr_linenumber" name="L466" href="#L466">466</a>         });
 <a class="jxr_linenumber" name="L467" href="#L467">467</a> 
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>         List&lt;Vendor&gt; listVendors = <strong class="jxr_keyword">new</strong> LinkedList&lt;&gt;(MediatorHelper.model().getMediatorVendor().getVendors());
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>         listVendors.removeIf(vendor -&gt; vendor == MediatorHelper.model().getMediatorVendor().getAuto());
+<a class="jxr_linenumber" name="L468" href="#L468">468</a>         List&lt;Engine&gt; listEngines = <strong class="jxr_keyword">new</strong> LinkedList&lt;&gt;(MediatorHelper.model().getMediatorEngine().getEngines());
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>         listEngines.removeIf(engine -&gt; engine == MediatorHelper.model().getMediatorEngine().getAuto());
 <a class="jxr_linenumber" name="L470" href="#L470">470</a> 
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>         <strong class="jxr_keyword">var</strong> groupVendor = <strong class="jxr_keyword">new</strong> ButtonGroup();
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Vendor vendor: listVendors) {
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>             JMenuItem itemRadioVendor = <strong class="jxr_keyword">new</strong> JRadioButtonMenuItem(
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>                 vendor.toString(),
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>                 vendor == MediatorHelper.model().getMediatorVendor().getVendor()
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>         <strong class="jxr_keyword">var</strong> groupEngine = <strong class="jxr_keyword">new</strong> ButtonGroup();
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Engine engine : listEngines) {
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>             JMenuItem itemRadioEngine = <strong class="jxr_keyword">new</strong> JRadioButtonMenuItem(
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>                 engine.toString(),
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>                 engine == MediatorHelper.model().getMediatorEngine().getEngine()
 <a class="jxr_linenumber" name="L476" href="#L476">476</a>             );
 <a class="jxr_linenumber" name="L477" href="#L477">477</a>             
-<a class="jxr_linenumber" name="L478" href="#L478">478</a>             itemRadioVendor.addActionListener(actionEvent -&gt; {
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>                 SqlEngine.modelYaml = vendor.instance().getModelYaml();
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>             itemRadioEngine.addActionListener(actionEvent -&gt; {
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>                 SqlEngine.modelYaml = engine.instance().getModelYaml();
 <a class="jxr_linenumber" name="L480" href="#L480">480</a>                 SqlEngine.initTextComponents();
-<a class="jxr_linenumber" name="L481" href="#L481">481</a>                 labelVendor.setText(vendor.toString());
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>                 labelEngine.setText(engine.toString());
 <a class="jxr_linenumber" name="L482" href="#L482">482</a>             });
 <a class="jxr_linenumber" name="L483" href="#L483">483</a>             
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>             groupVendor.add(itemRadioVendor);
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>             popupMenuVendors.add(itemRadioVendor);
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>             groupEngine.add(itemRadioEngine);
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>             popupMenuEngines.add(itemRadioEngine);
 <a class="jxr_linenumber" name="L486" href="#L486">486</a>         }
 <a class="jxr_linenumber" name="L487" href="#L487">487</a>         
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>         panelMenuVendor.add(labelVendor, BorderLayout.LINE_END);  <em class="jxr_comment">// required to set on right</em>
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>         <strong class="jxr_keyword">return</strong> panelMenuVendor;
+<a class="jxr_linenumber" name="L488" href="#L488">488</a>         panelMenuEngine.add(labelEngine, BorderLayout.LINE_END);  <em class="jxr_comment">// required to set on right</em>
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>         <strong class="jxr_keyword">return</strong> panelMenuEngine;
 <a class="jxr_linenumber" name="L490" href="#L490">490</a>     }
 <a class="jxr_linenumber" name="L491" href="#L491">491</a>     
 <a class="jxr_linenumber" name="L492" href="#L492">492</a>     <em class="jxr_javadoccomment">/**</em>
@@ -520,7 +520,7 @@
 <a class="jxr_linenumber" name="L512" href="#L512">512</a>     }
 <a class="jxr_linenumber" name="L513" href="#L513">513</a> 
 <a class="jxr_linenumber" name="L514" href="#L514">514</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L515" href="#L515">515</a> <em class="jxr_javadoccomment">     * Dynamically add textPanes to Error tab for current vendor.</em>
+<a class="jxr_linenumber" name="L515" href="#L515">515</a> <em class="jxr_javadoccomment">     * Dynamically add textPanes to Error tab for current engine.</em>
 <a class="jxr_linenumber" name="L516" href="#L516">516</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L517" href="#L517">517</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> populateTabError() {
 <a class="jxr_linenumber" name="L518" href="#L518">518</a>         SqlEngine.TABS_ERROR.removeAll();

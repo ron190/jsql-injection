@@ -42,8 +42,8 @@
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> listen() {
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">this</strong>.socket.close();  <em class="jxr_comment">// unbind if already connected</em>
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">int</strong> port = Integer.parseInt(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsPort());
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <strong class="jxr_keyword">var</strong> domainName = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain();
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">int</strong> port = Integer.parseInt(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().getDnsPort());
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <strong class="jxr_keyword">var</strong> domainName = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().getDnsDomain();
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>          <strong class="jxr_keyword">this</strong>.results.clear();
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">try</strong> (<strong class="jxr_keyword">var</strong> newSocket = <strong class="jxr_keyword">new</strong> DatagramSocket(port)) {
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>              <strong class="jxr_keyword">this</strong>.socket = newSocket;

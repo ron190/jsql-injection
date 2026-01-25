@@ -11,9 +11,9 @@ public class PanelGeneral extends JPanel {
 
 <span class="fc" id="L12">    public static final Border MARGIN = BorderFactory.createEmptyBorder(0,0,2,0);</span>
 
-<span class="fc" id="L14">    private final JCheckBox checkboxIsCheckingUpdate = new JCheckBox(&quot;Check update at startup&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingUpdate());</span>
-<span class="fc" id="L15">    private final JCheckBox checkboxIsReportingBugs = new JCheckBox(&quot;Report unhandled exceptions&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isReportingBugs());</span>
-<span class="fc" id="L16">    private final JCheckBox checkboxIs4K = new JCheckBox(&quot;Enable high-definition mode for 4K screens (need a restart)&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().is4K());</span>
+<span class="fc" id="L14">    private final JCheckBox checkboxIsCheckingUpdate = new JCheckBox(&quot;Check update at startup&quot;, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingUpdate());</span>
+<span class="fc" id="L15">    private final JCheckBox checkboxIsReportingBugs = new JCheckBox(&quot;Report unhandled exceptions&quot;, MediatorHelper.model().getMediatorUtils().preferencesUtil().isReportingBugs());</span>
+<span class="fc" id="L16">    private final JCheckBox checkboxIs4K = new JCheckBox(&quot;Enable high-definition mode for 4K screens (need a restart)&quot;, MediatorHelper.model().getMediatorUtils().preferencesUtil().is4K());</span>
     
 <span class="fc" id="L18">    public PanelGeneral(PanelPreferences panelPreferences) {</span>
 <span class="fc" id="L19">        this.checkboxIsReportingBugs.setToolTipText(&quot;Send unhandled exception to developer in order to fix issues.&quot;);</span>

@@ -19,15 +19,15 @@ public class MediatorMethod {
 <span class="fc" id="L19">        this.query = new AbstractMethodInjection(injectionModel) {</span>
             @Override
             public boolean isCheckingAllParam() {
-<span class="fc" id="L22">                return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam();</span>
+<span class="fc" id="L22">                return this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllURLParam();</span>
             }
             @Override
             public String getParamsAsString() {
-<span class="fc" id="L26">                return this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();</span>
+<span class="fc" id="L26">                return this.injectionModel.getMediatorUtils().parameterUtil().getQueryStringFromEntries();</span>
             }
             @Override
             public List&lt;SimpleEntry&lt;String, String&gt;&gt; getParams() {
-<span class="fc" id="L30">                return this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString();</span>
+<span class="fc" id="L30">                return this.injectionModel.getMediatorUtils().parameterUtil().getListQueryString();</span>
             }
             @Override
             public String name() {
@@ -38,15 +38,15 @@ public class MediatorMethod {
 <span class="fc" id="L38">        this.request = new AbstractMethodInjection(injectionModel) {</span>
             @Override
             public boolean isCheckingAllParam() {
-<span class="fc" id="L41">                return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam();</span>
+<span class="fc" id="L41">                return this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllRequestParam();</span>
             }
             @Override
             public String getParamsAsString() {
-<span class="fc" id="L45">                return this.injectionModel.getMediatorUtils().getParameterUtil().getRequestFromEntries();</span>
+<span class="fc" id="L45">                return this.injectionModel.getMediatorUtils().parameterUtil().getRequestFromEntries();</span>
             }
             @Override
             public List&lt;SimpleEntry&lt;String, String&gt;&gt; getParams() {
-<span class="fc" id="L49">                return this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest();</span>
+<span class="fc" id="L49">                return this.injectionModel.getMediatorUtils().parameterUtil().getListRequest();</span>
             }
             @Override
             public String name() {
@@ -57,15 +57,15 @@ public class MediatorMethod {
 <span class="fc" id="L57">        this.header = new AbstractMethodInjection(injectionModel) {</span>
             @Override
             public boolean isCheckingAllParam() {
-<span class="fc" id="L60">                return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam();</span>
+<span class="fc" id="L60">                return this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllHeaderParam();</span>
             }
             @Override
             public String getParamsAsString() {
-<span class="fc" id="L64">                return this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries();</span>
+<span class="fc" id="L64">                return this.injectionModel.getMediatorUtils().parameterUtil().getHeaderFromEntries();</span>
             }
             @Override
             public List&lt;SimpleEntry&lt;String, String&gt;&gt; getParams() {
-<span class="fc" id="L68">                return this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader();</span>
+<span class="fc" id="L68">                return this.injectionModel.getMediatorUtils().parameterUtil().getListHeader();</span>
             }
             @Override
             public String name() {

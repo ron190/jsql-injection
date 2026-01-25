@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.jsql.util;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.bean.util.Request3;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.subscriber.Seal;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.JSqlException;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.apache.commons.lang3.StringUtils;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.apache.logging.log4j.LogManager;
@@ -88,13 +88,13 @@
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> HttpResponse&lt;String&gt; checkResponseHeader(Builder httpRequestBuilder, String body) <strong class="jxr_keyword">throws</strong> IOException, InterruptedException {
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">var</strong> httpRequest = httpRequestBuilder.build();
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          HttpResponse&lt;String&gt; httpResponse = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          HttpResponse&lt;String&gt; httpResponse = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getHttpClient().build().send(
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>              httpRequest,
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>              BodyHandlers.ofString()
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          );
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          String pageSource = httpResponse.body();
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>          
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>          List&lt;HttpCookie&gt; cookies = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getCookieManager().getCookieStore().getCookies();
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          List&lt;HttpCookie&gt; cookies = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getCookieManager().getCookieStore().getCookies();
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          <strong class="jxr_keyword">if</strong> (!cookies.isEmpty()) {
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>              LOGGER.info(<span class="jxr_string">"Cookies set by host: {}"</span>, cookies);
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>          }
@@ -104,9 +104,9 @@
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          <strong class="jxr_keyword">this</strong>.checkResponse(responseCode, mapResponseHeaders);
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">this</strong>.checkStatus(httpResponse);
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>          
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getFormUtil().parseForms(httpResponse.statusCode(), pageSource);
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapResponseHeaders);
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getDigestUtil().parseWwwAuthenticate(mapResponseHeaders);
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().formUtil().parseForms(httpResponse.statusCode(), pageSource);
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().csrfUtil().parseForCsrfToken(pageSource, mapResponseHeaders);
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().digestUtil().parseWwwAuthenticate(mapResponseHeaders);
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> 
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">int</strong> sizeHeaders = mapResponseHeaders.keySet()
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>             .stream()
@@ -117,7 +117,7 @@
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>         <strong class="jxr_keyword">var</strong> decimalFormat = <strong class="jxr_keyword">new</strong> DecimalFormat(<span class="jxr_string">"0.000"</span>);
 <a class="jxr_linenumber" name="L110" href="#L110">110</a> 
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         <em class="jxr_comment">// Inform the view about the log info</em>
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.MessageHeader(
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.MessageHeader(
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>             httpRequest.uri().toURL().toString(),
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>             body,
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>             ConnectionUtil.getHeadersMap(httpRequest.headers()),
@@ -134,7 +134,7 @@
 <a class="jxr_linenumber" name="L126" href="#L126">126</a> 
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> checkStatus(HttpResponse&lt;String&gt; response) {
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">if</strong> (response.statusCode() &gt;= 400) {
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>             <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>             <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isNotTestingConnection()) {
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>                 LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, <span class="jxr_string">"Connection test disabled, skipping error {}..."</span>, response.statusCode());
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>             } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, <span class="jxr_string">"Try with option 'Disable connection test' to skip HTTP error {}"</span>, response.statusCode());
@@ -177,7 +177,7 @@
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>             
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"{} {} Redirection"</span>, HeaderUtil.FOUND_STATUS_HTTP, responseCode);
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>             
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>             <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>             <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isFollowingRedirection()) {
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"If injection fails retry with option 'Follow HTTP redirection' activated"</span>);
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>             } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, <span class="jxr_string">"Redirecting to the next page..."</span>);

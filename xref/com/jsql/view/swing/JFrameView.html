@@ -78,15 +78,15 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">this</strong>.check4K();
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          SwingUtilities.invokeLater(() -&gt; {  <em class="jxr_comment">// paint native blu svg in theme color behind the scene</em>
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>              AppMenubar.applyTheme(injectionModel.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName());  <em class="jxr_comment">// refresh missing components</em>
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>              <strong class="jxr_keyword">if</strong> (injectionModel.getMediatorUtils().getProxyUtil().isNotLive(GitUtil.ShowOnConsole.YES)) {  <em class="jxr_comment">// network access</em>
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>              AppMenubar.applyTheme(injectionModel.getMediatorUtils().preferencesUtil().getThemeFlatLafName());  <em class="jxr_comment">// refresh missing components</em>
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>              <strong class="jxr_keyword">if</strong> (injectionModel.getMediatorUtils().proxyUtil().isNotLive(GitUtil.ShowOnConsole.YES)) {  <em class="jxr_comment">// network access</em>
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>                  <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>              }
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>              <strong class="jxr_keyword">if</strong> (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingUpdate()) {
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>                  injectionModel.getMediatorUtils().getGitUtil().checkUpdate(GitUtil.ShowOnConsole.NO);
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>              <strong class="jxr_keyword">if</strong> (injectionModel.getMediatorUtils().preferencesUtil().isCheckingUpdate()) {
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>                  injectionModel.getMediatorUtils().gitUtil().checkUpdate(GitUtil.ShowOnConsole.NO);
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>              }
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>              <strong class="jxr_keyword">if</strong> (injectionModel.getMediatorUtils().getPreferencesUtil().isShowNews()) {  <em class="jxr_comment">// disabled when UT only</em>
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>                  injectionModel.getMediatorUtils().getGitUtil().showNews();
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>              <strong class="jxr_keyword">if</strong> (injectionModel.getMediatorUtils().preferencesUtil().isShowNews()) {  <em class="jxr_comment">// disabled when UT only</em>
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>                  injectionModel.getMediatorUtils().gitUtil().showNews();
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>              }
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>              <strong class="jxr_keyword">this</strong>.setVisible(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>              MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();  <em class="jxr_comment">// required here to get focus</em>
@@ -221,7 +221,7 @@
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> check4K() {
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>         <strong class="jxr_keyword">int</strong> width = (<strong class="jxr_keyword">int</strong>) screenSize.getWidth();
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>         <strong class="jxr_keyword">if</strong> (width &gt;= 3840 &amp;&amp; !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>         <strong class="jxr_keyword">if</strong> (width &gt;= 3840 &amp;&amp; !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().is4K()) {
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Screen compatible with resolution 4K, enable high-definition in Preferences"</span>);
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         }
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>     }

@@ -61,479 +61,493 @@ public class TabResults extends DnDTabbedPane {
     public static final String WEB_SHELL = &quot;webShell&quot;;
     public static final String REV_SHELL = &quot;revShell&quot;;
     public static final String REVERSE_SHELL = &quot;Reverse shell&quot;;
+    public static final String TAB_RESULTS = &quot;tabResults&quot;;
 
     /**
      * Create the panel containing injection results.
      */
-<span class="fc" id="L68">    public TabResults() {</span>
-<span class="fc" id="L69">        this.setName(&quot;tabResults&quot;);</span>
-<span class="fc" id="L70">        this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);</span>
-<span class="fc" id="L71">        this.setTransferHandler(new TabTransferHandler());</span>
-<span class="fc" id="L72">        this.putClientProperty(&quot;JTabbedPane.tabClosable&quot;, true);</span>
-<span class="fc" id="L73">        this.putClientProperty(&quot;JTabbedPane.tabCloseCallback&quot;, (IntConsumer) ActionCloseTabResult::perform);</span>
-<span class="fc" id="L74">        UIManager.put(&quot;TabbedPane.closeHoverForeground&quot;, LogLevelUtil.COLOR_RED);</span>
-<span class="fc" id="L75">        HotkeyUtil.addShortcut(this);  // Add hotkeys to root-pane ctrl-tab, ctrl-shift-tab, ctrl-w</span>
-<span class="fc" id="L76">        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());</span>
-<span class="fc" id="L77">        MediatorHelper.register(this);</span>
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L69">    public TabResults() {</span>
+<span class="fc" id="L70">        this.setName(TabResults.TAB_RESULTS);</span>
+<span class="fc" id="L71">        this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);</span>
+<span class="fc" id="L72">        this.setTransferHandler(new TabTransferHandler());</span>
+<span class="fc" id="L73">        this.putClientProperty(&quot;JTabbedPane.tabClosable&quot;, true);</span>
+<span class="fc" id="L74">        this.putClientProperty(&quot;JTabbedPane.tabCloseCallback&quot;, (IntConsumer) ActionCloseTabResult::perform);</span>
+<span class="fc" id="L75">        UIManager.put(&quot;TabbedPane.closeHoverForeground&quot;, LogLevelUtil.COLOR_RED);</span>
+<span class="fc" id="L76">        HotkeyUtil.addShortcut(this);  // Add hotkeys to root-pane ctrl-tab, ctrl-shift-tab, ctrl-w</span>
+<span class="fc" id="L77">        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());</span>
+<span class="fc" id="L78">        MediatorHelper.register(this);</span>
+<span class="fc" id="L79">    }</span>
 
     public void addFileTab(String label, String content, String path) {
-<span class="fc" id="L81">        JTextArea fileText = new JPopupTextArea().getProxy();</span>
-<span class="fc" id="L82">        fileText.setText(content);</span>
-<span class="fc" id="L83">        fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));</span>
-<span class="fc" id="L84">        fileText.setCaretPosition(0);</span>
-<span class="fc" id="L85">        this.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.getIcon());</span>
-<span class="fc" id="L86">        MediatorHelper.tabManagersCards().addToLists(path, label);</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L82">        MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {</span>
+<span class="fc" id="L83">            JTextArea fileText = new JPopupTextArea().getProxy();</span>
+<span class="fc" id="L84">            fileText.setText(content);</span>
+<span class="fc" id="L85">            fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));</span>
+<span class="fc" id="L86">            fileText.setCaretPosition(0);</span>
+<span class="fc" id="L87">            this.addTextTab(label, path, fileText, UiUtil.DOWNLOAD.getIcon());</span>
+<span class="fc" id="L88">            MediatorHelper.tabManagersCards().addToLists(path, label);</span>
+<span class="fc" id="L89">        });</span>
+<span class="fc" id="L90">    }</span>
 
     public void addAdminTab(String urlSuccess) {
-<span class="fc" id="L90">        MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
-<span class="fc" id="L91">        String htmlSource = StringUtils.EMPTY;</span>
+<span class="fc" id="L93">        MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {</span>
+<span class="fc" id="L94">            String htmlSource = StringUtils.EMPTY;</span>
 
-        // Fix #4081: SocketTimeoutException on get()
-        // Fix #44642: NoClassDefFoundError on get()
-        // Fix #44641: ExceptionInInitializerError on get()
-        try {
-            // Previous test for 2xx Success and 3xx Redirection was Header only,
-            // now get the HTML content.
-            // Proxy is used by jsoup
-<span class="fc" id="L100">            htmlSource = Jsoup.clean(</span>
-<span class="fc" id="L101">                Jsoup.connect(urlSuccess)</span>
-                    // Prevent exception on UnsupportedMimeTypeException: Unhandled content type. Must be text/*, application/xml, or application/*+xml
-<span class="fc" id="L103">                    .ignoreContentType(true)</span>
-                    // Prevent exception on HTTP errors
-<span class="fc" id="L105">                    .ignoreHttpErrors(true)</span>
-<span class="fc" id="L106">                    .get()</span>
-<span class="fc" id="L107">                    .html()</span>
-<span class="fc" id="L108">                    .replaceAll(&quot;&lt;img[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
-<span class="fc" id="L109">                    .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
-<span class="fc" id="L110">                    .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?[^&gt;]*&gt;&quot;, &quot;&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;&quot;)</span>
-<span class="fc" id="L111">                    .replaceAll(&quot;&lt;input[^&gt;]*&gt;&quot;, &quot;&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;&quot;),</span>
-<span class="fc" id="L112">                Safelist.relaxed()</span>
-<span class="fc" id="L113">                    .addTags(&quot;center&quot;, &quot;div&quot;, &quot;span&quot;)</span>
-<span class="fc" id="L114">                    .addAttributes(&quot;:all&quot;, &quot;style&quot;)</span>
+            // Fix #4081: SocketTimeoutException on get()
+            // Fix #44642: NoClassDefFoundError on get()
+            // Fix #44641: ExceptionInInitializerError on get()
+            try {
+                // Previous test for 2xx Success and 3xx Redirection was Header only,
+                // now get the HTML content.
+                // Proxy is used by jsoup
+<span class="fc" id="L103">                htmlSource = Jsoup.clean(</span>
+<span class="fc" id="L104">                    Jsoup.connect(urlSuccess)</span>
+                        // Prevent exception on UnsupportedMimeTypeException: Unhandled content type. Must be text/*, application/xml, or application/*+xml
+<span class="fc" id="L106">                        .ignoreContentType(true)</span>
+                        // Prevent exception on HTTP errors
+<span class="fc" id="L108">                        .ignoreHttpErrors(true)</span>
+<span class="fc" id="L109">                        .get()</span>
+<span class="fc" id="L110">                        .html()</span>
+<span class="fc" id="L111">                        .replaceAll(&quot;&lt;img[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L112">                        .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L113">                        .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?[^&gt;]*&gt;&quot;, &quot;&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;&quot;)</span>
+<span class="fc" id="L114">                        .replaceAll(&quot;&lt;input[^&gt;]*&gt;&quot;, &quot;&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;&quot;),</span>
+<span class="fc" id="L115">                    Safelist.relaxed()</span>
+<span class="fc" id="L116">                        .addTags(&quot;center&quot;, &quot;div&quot;, &quot;span&quot;)</span>
+<span class="fc" id="L117">                        .addAttributes(&quot;:all&quot;, &quot;style&quot;)</span>
+                );
+<span class="nc" id="L119">            } catch (IOException e) {</span>
+<span class="nc" id="L120">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Failure opening page: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L121">            } catch (ExceptionInInitializerError | NoClassDefFoundError e) {</span>
+<span class="nc" id="L122">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="pc" id="L123">            }</span>
+
+<span class="fc" id="L125">            final var browser = new JTextPane();</span>
+<span class="fc" id="L126">            browser.setContentType(&quot;text/html&quot;);</span>
+<span class="fc" id="L127">            browser.setEditable(false);</span>
+<span class="fc" id="L128">            browser.setCaretPosition(0);</span>
+
+            // Fix #43220: EmptyStackException on setText()
+            // Fix #94242: IndexOutOfBoundsException on setText()
+            try {
+<span class="fc" id="L133">                browser.setText(htmlSource);</span>
+<span class="nc" id="L134">            } catch (IndexOutOfBoundsException | EmptyStackException e) {</span>
+<span class="nc" id="L135">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L136">            }</span>
+
+<span class="fc" id="L138">            JMenuItem itemCopyUrl = new JMenuItem(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY_PAGE_URL&quot;));</span>
+<span class="fc" id="L139">            I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY_PAGE_URL&quot;, itemCopyUrl);</span>
+
+<span class="fc" id="L141">            JMenuItem itemCopy = new JMenuItem();</span>
+<span class="fc" id="L142">            itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));</span>
+<span class="fc" id="L143">            itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L144">            itemCopy.setMnemonic('C');</span>
+<span class="fc" id="L145">            itemCopy.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY&quot;));</span>
+<span class="fc" id="L146">            I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY&quot;, itemCopy);</span>
+
+<span class="fc" id="L148">            JMenuItem itemSelectAll = new JMenuItem();</span>
+<span class="fc" id="L149">            itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));</span>
+<span class="fc" id="L150">            itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L151">            itemSelectAll.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;));</span>
+<span class="fc" id="L152">            I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;, itemSelectAll);</span>
+<span class="fc" id="L153">            itemSelectAll.setMnemonic('A');</span>
+
+<span class="fc" id="L155">            final var menu = new JPopupMenu();</span>
+<span class="fc" id="L156">            menu.add(itemCopyUrl);</span>
+<span class="fc" id="L157">            menu.add(new JSeparator());</span>
+<span class="fc" id="L158">            menu.add(itemCopy);</span>
+<span class="fc" id="L159">            menu.add(itemSelectAll);</span>
+<span class="fc" id="L160">            menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));</span>
+
+<span class="fc" id="L162">            itemCopyUrl.addActionListener(actionEvent -&gt; {</span>
+<span class="nc" id="L163">                var stringSelection = new StringSelection(urlSuccess);</span>
+<span class="nc" id="L164">                var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();</span>
+<span class="nc" id="L165">                clipboard.setContents(stringSelection, null);</span>
+<span class="nc" id="L166">            });</span>
+
+<span class="pc" id="L168">            itemSelectAll.addActionListener(actionEvent -&gt; browser.selectAll());</span>
+
+<span class="fc" id="L170">            browser.addFocusListener(new FocusAdapter() {</span>
+                @Override
+                public void focusGained(FocusEvent focusEvent) {
+<span class="nc" id="L173">                browser.getCaret().setVisible(true);</span>
+<span class="nc" id="L174">                browser.getCaret().setSelectionVisible(true);</span>
+<span class="nc" id="L175">                }</span>
+            });
+
+<span class="fc" id="L178">            browser.addMouseListener(new MouseAdapter() {</span>
+                @Override
+                public void mousePressed(MouseEvent evt) {
+<span class="nc" id="L181">                    browser.requestFocusInWindow();</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">                    if (evt.isPopupTrigger()) {</span>
+<span class="nc" id="L183">                        menu.show(evt.getComponent(), evt.getX(), evt.getY());</span>
+                    }
+<span class="nc" id="L185">                }</span>
+                @Override
+                public void mouseReleased(MouseEvent evt) {
+<span class="nc bnc" id="L188" title="All 2 branches missed.">                    if (evt.isPopupTrigger()) {</span>
+                        // Fix #45348: IllegalComponentStateException on show()
+                        try {
+<span class="nc" id="L191">                            menu.show(evt.getComponent(), evt.getX(), evt.getY());</span>
+<span class="nc" id="L192">                        } catch (IllegalComponentStateException e) {</span>
+<span class="nc" id="L193">                            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L194">                        }</span>
+<span class="nc" id="L195">                        menu.setLocation(</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">                            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
+<span class="nc" id="L197">                            ? evt.getXOnScreen() - menu.getWidth()</span>
+<span class="nc" id="L198">                            : evt.getXOnScreen(),</span>
+<span class="nc" id="L199">                            evt.getYOnScreen()</span>
+                        );
+                    }
+<span class="nc" id="L202">                }</span>
+            });
+
+<span class="fc" id="L205">            final var scroller = new JScrollPane(browser);</span>
+<span class="fc" id="L206">            MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY) + StringUtils.SPACE, scroller);</span>
+            try {  // Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()
+<span class="fc" id="L208">                MediatorHelper.tabResults().setSelectedComponent(scroller);  // Focus on the new tab</span>
+<span class="nc" id="L209">            } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L210">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L211">            }</span>
+<span class="fc" id="L212">            MediatorHelper.tabResults().setToolTipTextAt(</span>
+<span class="fc" id="L213">                MediatorHelper.tabResults().indexOfComponent(scroller),</span>
+<span class="fc" id="L214">                String.format(&quot;&lt;html&gt;%s&lt;/html&gt;&quot;, urlSuccess)</span>
             );
-<span class="nc" id="L116">        } catch (IOException e) {</span>
-<span class="nc" id="L117">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Failure opening page: {}&quot;, e.getMessage());</span>
-<span class="nc" id="L118">        } catch (ExceptionInInitializerError | NoClassDefFoundError e) {</span>
-<span class="nc" id="L119">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="pc" id="L120">        }</span>
 
-<span class="fc" id="L122">        final var browser = new JTextPane();</span>
-<span class="fc" id="L123">        browser.setContentType(&quot;text/html&quot;);</span>
-<span class="fc" id="L124">        browser.setEditable(false);</span>
-<span class="fc" id="L125">        browser.setCaretPosition(0);</span>
+            // Create a custom tab header
+<span class="fc" id="L218">            var header = new TabHeader(</span>
+<span class="fc" id="L219">                urlSuccess.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY),</span>
+<span class="fc" id="L220">                UiUtil.ADMIN.getIcon()</span>
+            );
+<span class="fc" id="L222">            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  // Apply the custom header to the tab</span>
+<span class="fc" id="L223">            browser.setCaretPosition(0);</span>
 
-        // Fix #43220: EmptyStackException on setText()
-        // Fix #94242: IndexOutOfBoundsException on setText()
-        try {
-<span class="fc" id="L130">            browser.setText(htmlSource);</span>
-<span class="nc" id="L131">        } catch (IndexOutOfBoundsException | EmptyStackException e) {</span>
-<span class="nc" id="L132">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L133">        }</span>
-
-<span class="fc" id="L135">        JMenuItem itemCopyUrl = new JMenuItem(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY_PAGE_URL&quot;));</span>
-<span class="fc" id="L136">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY_PAGE_URL&quot;, itemCopyUrl);</span>
-
-<span class="fc" id="L138">        JMenuItem itemCopy = new JMenuItem();</span>
-<span class="fc" id="L139">        itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));</span>
-<span class="fc" id="L140">        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
-<span class="fc" id="L141">        itemCopy.setMnemonic('C');</span>
-<span class="fc" id="L142">        itemCopy.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY&quot;));</span>
-<span class="fc" id="L143">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY&quot;, itemCopy);</span>
-
-<span class="fc" id="L145">        JMenuItem itemSelectAll = new JMenuItem();</span>
-<span class="fc" id="L146">        itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));</span>
-<span class="fc" id="L147">        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
-<span class="fc" id="L148">        itemSelectAll.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;));</span>
-<span class="fc" id="L149">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;, itemSelectAll);</span>
-<span class="fc" id="L150">        itemSelectAll.setMnemonic('A');</span>
-
-<span class="fc" id="L152">        final var menu = new JPopupMenu();</span>
-<span class="fc" id="L153">        menu.add(itemCopyUrl);</span>
-<span class="fc" id="L154">        menu.add(new JSeparator());</span>
-<span class="fc" id="L155">        menu.add(itemCopy);</span>
-<span class="fc" id="L156">        menu.add(itemSelectAll);</span>
-<span class="fc" id="L157">        menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));</span>
-
-<span class="fc" id="L159">        itemCopyUrl.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L160">            var stringSelection = new StringSelection(urlSuccess);</span>
-<span class="nc" id="L161">            var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();</span>
-<span class="nc" id="L162">            clipboard.setContents(stringSelection, null);</span>
-<span class="nc" id="L163">        });</span>
-
-<span class="pc" id="L165">        itemSelectAll.addActionListener(actionEvent -&gt; browser.selectAll());</span>
-
-<span class="fc" id="L167">        browser.addFocusListener(new FocusAdapter() {</span>
-            @Override
-            public void focusGained(FocusEvent focusEvent) {
-<span class="nc" id="L170">                browser.getCaret().setVisible(true);</span>
-<span class="nc" id="L171">                browser.getCaret().setSelectionVisible(true);</span>
-<span class="nc" id="L172">            }</span>
-        });
-
-<span class="fc" id="L175">        browser.addMouseListener(new MouseAdapter() {</span>
-            @Override
-            public void mousePressed(MouseEvent evt) {
-<span class="nc" id="L178">                browser.requestFocusInWindow();</span>
-<span class="nc bnc" id="L179" title="All 2 branches missed.">                if (evt.isPopupTrigger()) {</span>
-<span class="nc" id="L180">                    menu.show(evt.getComponent(), evt.getX(), evt.getY());</span>
-                }
-<span class="nc" id="L182">            }</span>
-            @Override
-            public void mouseReleased(MouseEvent evt) {
-<span class="nc bnc" id="L185" title="All 2 branches missed.">                if (evt.isPopupTrigger()) {</span>
-                    // Fix #45348: IllegalComponentStateException on show()
-                    try {
-<span class="nc" id="L188">                        menu.show(evt.getComponent(), evt.getX(), evt.getY());</span>
-<span class="nc" id="L189">                    } catch (IllegalComponentStateException e) {</span>
-<span class="nc" id="L190">                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L191">                    }</span>
-<span class="nc" id="L192">                    menu.setLocation(</span>
-<span class="nc bnc" id="L193" title="All 2 branches missed.">                        ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
-<span class="nc" id="L194">                        ? evt.getXOnScreen() - menu.getWidth()</span>
-<span class="nc" id="L195">                        : evt.getXOnScreen(),</span>
-<span class="nc" id="L196">                        evt.getYOnScreen()</span>
-                    );
-                }
-<span class="nc" id="L199">            }</span>
-        });
-
-<span class="fc" id="L202">        final var scroller = new JScrollPane(browser);</span>
-<span class="fc" id="L203">        MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY) + StringUtils.SPACE, scroller);</span>
-        try {  // Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()
-<span class="fc" id="L205">            MediatorHelper.tabResults().setSelectedComponent(scroller);  // Focus on the new tab</span>
-<span class="nc" id="L206">        } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L207">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L208">        }</span>
-<span class="fc" id="L209">        MediatorHelper.tabResults().setToolTipTextAt(</span>
-<span class="fc" id="L210">            MediatorHelper.tabResults().indexOfComponent(scroller),</span>
-<span class="fc" id="L211">            String.format(&quot;&lt;html&gt;%s&lt;/html&gt;&quot;, urlSuccess)</span>
-        );
-
-        // Create a custom tab header
-<span class="fc" id="L215">        var header = new TabHeader(</span>
-<span class="fc" id="L216">            urlSuccess.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY),</span>
-<span class="fc" id="L217">            UiUtil.ADMIN.getIcon()</span>
-        );
-<span class="fc" id="L219">        MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  // Apply the custom header to the tab</span>
-<span class="fc" id="L220">        browser.setCaretPosition(0);</span>
-
-<span class="fc" id="L222">        MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="fc" id="L223">    }</span>
+<span class="fc" id="L225">            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="fc" id="L226">        });</span>
+<span class="fc" id="L227">    }</span>
 
     public void addReportTab(String content) {
-<span class="nc" id="L226">        JEditorPane editorPane = new JEditorPane();</span>
-<span class="nc" id="L227">        editorPane.setContentType(&quot;text/html&quot;);</span>
-<span class="nc" id="L228">        editorPane.setText(&quot;&lt;html&gt;&lt;span style=\&quot;white-space: nowrap; font-family:'&quot;+ UiUtil.FONT_NAME_MONO_NON_ASIAN +&quot;'\&quot;&gt;&quot; + content + &quot;&lt;/span&gt;&lt;/html&gt;&quot;);</span>
-<span class="nc" id="L229">        editorPane.setFont(UIManager.getFont(&quot;TextArea.font&quot;));  // required to increase text size</span>
-<span class="nc" id="L230">        editorPane.setDragEnabled(true);</span>
-<span class="nc" id="L231">        editorPane.setEditable(false);</span>
-<span class="nc" id="L232">        editorPane.setCaretPosition(0);</span>
-<span class="nc" id="L233">        editorPane.getCaret().setBlinkRate(0);</span>
-<span class="nc" id="L234">        editorPane.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));</span>
-<span class="nc" id="L235">        editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));</span>
-<span class="nc" id="L236">        editorPane.addHyperlinkListener(linkEvent -&gt; {</span>
-<span class="nc bnc" id="L237" title="All 2 branches missed.">            if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {</span>
-                try {
-<span class="nc" id="L239">                    Desktop.getDesktop().browse(linkEvent.getURL().toURI());</span>
-<span class="nc" id="L240">                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
-<span class="nc" id="L241">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Failing to browse Url&quot;, e);</span>
-<span class="nc" id="L242">                }</span>
-            }
-<span class="nc" id="L244">        });</span>
-<span class="nc" id="L245">        editorPane.addFocusListener(new FocusAdapter() {</span>
-            @Override
-            public void focusGained(FocusEvent focusEvent) {
-<span class="nc" id="L248">                editorPane.getCaret().setVisible(true);</span>
-<span class="nc" id="L249">                editorPane.getCaret().setSelectionVisible(true);</span>
-<span class="nc" id="L250">                editorPane.getCaret().setBlinkRate(0);</span>
-<span class="nc" id="L251">            }</span>
-        });
-<span class="nc" id="L253">        UiUtil.init(editorPane);  // silent delete</span>
+<span class="nc" id="L230">        MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {</span>
+<span class="nc" id="L231">            JEditorPane editorPane = new JEditorPane();</span>
+<span class="nc" id="L232">            editorPane.setContentType(&quot;text/html&quot;);</span>
+<span class="nc" id="L233">            editorPane.setText(&quot;&lt;html&gt;&lt;span style=\&quot;white-space: nowrap; font-family:'&quot;+ UiUtil.FONT_NAME_MONO_NON_ASIAN +&quot;'\&quot;&gt;&quot; + content + &quot;&lt;/span&gt;&lt;/html&gt;&quot;);</span>
+<span class="nc" id="L234">            editorPane.setFont(UIManager.getFont(&quot;TextArea.font&quot;));  // required to increase text size</span>
+<span class="nc" id="L235">            editorPane.setDragEnabled(true);</span>
+<span class="nc" id="L236">            editorPane.setEditable(false);</span>
+<span class="nc" id="L237">            editorPane.setCaretPosition(0);</span>
+<span class="nc" id="L238">            editorPane.getCaret().setBlinkRate(0);</span>
+<span class="nc" id="L239">            editorPane.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));</span>
+<span class="nc" id="L240">            editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));</span>
+<span class="nc" id="L241">            editorPane.addHyperlinkListener(linkEvent -&gt; {</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">                if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {</span>
+                    try {
+<span class="nc" id="L244">                        Desktop.getDesktop().browse(linkEvent.getURL().toURI());</span>
+<span class="nc" id="L245">                    } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
+<span class="nc" id="L246">                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Failing to browse Url&quot;, e);</span>
+<span class="nc" id="L247">                    }</span>
+                }
+<span class="nc" id="L249">            });</span>
+<span class="nc" id="L250">            editorPane.addFocusListener(new FocusAdapter() {</span>
+                @Override
+                public void focusGained(FocusEvent focusEvent) {
+<span class="nc" id="L253">                editorPane.getCaret().setVisible(true);</span>
+<span class="nc" id="L254">                editorPane.getCaret().setSelectionVisible(true);</span>
+<span class="nc" id="L255">                editorPane.getCaret().setBlinkRate(0);</span>
+<span class="nc" id="L256">                }</span>
+            });
+<span class="nc" id="L258">            UiUtil.init(editorPane);  // silent delete</span>
 
-<span class="nc" id="L255">        this.addTextTab(&quot;Vulnerability report&quot;, &quot;Analysis report with all payloads detected&quot;, editorPane, UiUtil.APP_ICON.getIcon());</span>
-<span class="nc" id="L256">    }</span>
+<span class="nc" id="L260">            this.addTextTab(&quot;Vulnerability report&quot;, &quot;Analysis report with all payloads detected&quot;, editorPane, UiUtil.APP_ICON.getIcon());</span>
+<span class="nc" id="L261">        });</span>
+<span class="nc" id="L262">    }</span>
 
     public void addTextTab(String label, String toolTipText, JComponent componentText, FlatSVGIcon icon) {
-<span class="fc" id="L259">        var scroller = new JScrollPane(componentText);</span>
-<span class="fc" id="L260">        this.addTab(label + StringUtils.SPACE, scroller);</span>
-<span class="fc" id="L261">        this.setSelectedComponent(scroller);  // Focus on the new tab</span>
-<span class="fc" id="L262">        this.setToolTipTextAt(this.indexOfComponent(scroller), toolTipText);</span>
-<span class="fc" id="L263">        var header = new TabHeader(label, icon);</span>
-<span class="fc" id="L264">        this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
+<span class="fc" id="L265">        var scroller = new JScrollPane(componentText);</span>
+<span class="fc" id="L266">        this.addTab(label + StringUtils.SPACE, scroller);</span>
+<span class="fc" id="L267">        this.setSelectedComponent(scroller);  // Focus on the new tab</span>
+<span class="fc" id="L268">        this.setToolTipTextAt(this.indexOfComponent(scroller), toolTipText);</span>
+<span class="fc" id="L269">        var header = new TabHeader(label, icon);</span>
+<span class="fc" id="L270">        this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
 
-<span class="fc" id="L266">        this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="fc" id="L267">    }</span>
+<span class="fc" id="L272">        this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="fc" id="L273">    }</span>
 
     public void addTabExploitWeb(String url) {
-        try {
-<span class="fc" id="L271">            var terminalID = UUID.randomUUID();</span>
-<span class="fc" id="L272">            var terminal = new AbstractExploit(terminalID, url, &quot;web&quot;) {</span>
-                @Override
-                public void action(String command, UUID terminalID, String urlShell, String... arg) {
-<span class="fc" id="L275">                    MediatorHelper.model().getResourceAccess().runWebShell(command, terminalID, urlShell);</span>
-<span class="fc" id="L276">                }</span>
-            };
-<span class="fc" id="L278">            terminal.setName(TabResults.WEB_SHELL);</span>
-<span class="fc" id="L279">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
+<span class="fc" id="L276">        MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {</span>
+            try {
+<span class="fc" id="L278">                var terminalID = UUID.randomUUID();</span>
+<span class="fc" id="L279">                var terminal = new AbstractExploit(terminalID, url, &quot;web&quot;) {</span>
+                    @Override
+                    public void action(String command, UUID terminalID, String urlShell, String... arg) {
+<span class="fc" id="L282">                        MediatorHelper.model().getResourceAccess().runWebShell(command, terminalID, urlShell);</span>
+<span class="fc" id="L283">                    }</span>
+                };
+<span class="fc" id="L285">                terminal.setName(TabResults.WEB_SHELL);</span>
+<span class="fc" id="L286">                MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
 
-<span class="fc" id="L281">            JPanel panelTerminalWithReverse = this.getTerminalWithMenu(terminal);</span>
-<span class="fc" id="L282">            this.addTab(&quot;Web shell&quot;, panelTerminalWithReverse);</span>
-<span class="fc" id="L283">            this.setSelectedComponent(panelTerminalWithReverse);  // Focus on the new tab</span>
+<span class="fc" id="L288">                JPanel panelTerminalWithReverse = this.getTerminalWithMenu(terminal);</span>
+<span class="fc" id="L289">                this.addTab(&quot;Web shell&quot;, panelTerminalWithReverse);</span>
+<span class="fc" id="L290">                this.setSelectedComponent(panelTerminalWithReverse);  // Focus on the new tab</span>
 
-<span class="fc" id="L285">            var header = new TabHeader(&quot;Web shell&quot;, UiUtil.TERMINAL.getIcon());</span>
-<span class="fc" id="L286">            this.setTabComponentAt(this.indexOfComponent(panelTerminalWithReverse), header);</span>
-<span class="fc" id="L287">            terminal.requestFocusInWindow();</span>
+<span class="fc" id="L292">                var header = new TabHeader(&quot;Web shell&quot;, UiUtil.TERMINAL.getIcon());</span>
+<span class="fc" id="L293">                this.setTabComponentAt(this.indexOfComponent(panelTerminalWithReverse), header);</span>
+<span class="fc" id="L294">                terminal.requestFocusInWindow();</span>
 
-<span class="fc" id="L289">            this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="nc" id="L290">        } catch (MalformedURLException | URISyntaxException e) {</span>
-<span class="nc" id="L291">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
-<span class="fc" id="L292">        }</span>
-<span class="fc" id="L293">    }</span>
+<span class="fc" id="L296">                this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="nc" id="L297">            } catch (MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L298">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
+<span class="fc" id="L299">            }</span>
+<span class="fc" id="L300">        });</span>
+<span class="fc" id="L301">    }</span>
 
     public void addTabExploitReverseShell(String port) {
-        try {
-<span class="nc" id="L297">            var terminalID = UUID.randomUUID();</span>
-<span class="nc" id="L298">            var terminal = new ExploitReverseShell(terminalID, port);</span>
-<span class="nc" id="L299">            terminal.setName(TabResults.REV_SHELL);</span>
-<span class="nc" id="L300">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
+<span class="nc" id="L304">        MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {</span>
+            try {
+<span class="nc" id="L306">                var terminalID = UUID.randomUUID();</span>
+<span class="nc" id="L307">                var terminal = new ExploitReverseShell(terminalID, port);</span>
+<span class="nc" id="L308">                terminal.setName(TabResults.REV_SHELL);</span>
+<span class="nc" id="L309">                MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
 
-<span class="nc" id="L302">            JScrollPane scroller = new JScrollPane(terminal);</span>
-<span class="nc" id="L303">            this.addTab(TabResults.REVERSE_SHELL, scroller);</span>
-<span class="nc" id="L304">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
+<span class="nc" id="L311">                JScrollPane scroller = new JScrollPane(terminal);</span>
+<span class="nc" id="L312">                this.addTab(TabResults.REVERSE_SHELL, scroller);</span>
+<span class="nc" id="L313">                this.setSelectedComponent(scroller);  // Focus on the new tab</span>
 
-<span class="nc" id="L306">            var header = new TabHeader(TabResults.REVERSE_SHELL, UiUtil.TERMINAL.getIcon());</span>
-<span class="nc" id="L307">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
-<span class="nc" id="L308">            terminal.requestFocusInWindow();</span>
+<span class="nc" id="L315">                var header = new TabHeader(TabResults.REVERSE_SHELL, UiUtil.TERMINAL.getIcon());</span>
+<span class="nc" id="L316">                this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
+<span class="nc" id="L317">                terminal.requestFocusInWindow();</span>
 
-<span class="nc" id="L310">            this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="nc" id="L311">        } catch (URISyntaxException | IOException e) {</span>
-<span class="nc" id="L312">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
-<span class="nc" id="L313">        }</span>
-<span class="nc" id="L314">    }</span>
+<span class="nc" id="L319">                this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="nc" id="L320">            } catch (URISyntaxException | IOException e) {</span>
+<span class="nc" id="L321">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
+<span class="nc" id="L322">            }</span>
+<span class="nc" id="L323">        });</span>
+<span class="nc" id="L324">    }</span>
 
     public void addTabExploitUdf(BiConsumer&lt;String, UUID&gt; biConsumerRunCmd) {
-        try {
-<span class="nc" id="L318">            var terminalID = UUID.randomUUID();</span>
-<span class="nc" id="L319">            var terminal = new AbstractExploit(terminalID, null, &quot;udf&quot;) {</span>
-                @Override
-                public void action(String command, UUID terminalID, String urlShell, String... arg) {
-<span class="nc" id="L322">                    biConsumerRunCmd.accept(command, terminalID);</span>
-<span class="nc" id="L323">                }</span>
-            };
-<span class="nc" id="L325">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
+<span class="nc" id="L327">        MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {</span>
+            try {
+<span class="nc" id="L329">                var terminalID = UUID.randomUUID();</span>
+<span class="nc" id="L330">                var terminal = new AbstractExploit(terminalID, null, &quot;udf&quot;) {</span>
+                    @Override
+                    public void action(String command, UUID terminalID, String urlShell, String... arg) {
+<span class="nc" id="L333">                        biConsumerRunCmd.accept(command, terminalID);</span>
+<span class="nc" id="L334">                    }</span>
+                };
+<span class="nc" id="L336">                MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
 
-<span class="nc" id="L327">            JPanel panelTerminalWithReverse = this.getTerminalWithMenu(terminal);</span>
-<span class="nc" id="L328">            this.addTab(TabResults.UDF_SHELL, panelTerminalWithReverse);</span>
-<span class="nc" id="L329">            this.setSelectedComponent(panelTerminalWithReverse);  // Focus on the new tab</span>
+<span class="nc" id="L338">                JPanel panelTerminalWithReverse = this.getTerminalWithMenu(terminal);</span>
+<span class="nc" id="L339">                this.addTab(TabResults.UDF_SHELL, panelTerminalWithReverse);</span>
+<span class="nc" id="L340">                this.setSelectedComponent(panelTerminalWithReverse);  // Focus on the new tab</span>
 
-<span class="nc" id="L331">            var header = new TabHeader(TabResults.UDF_SHELL, UiUtil.TERMINAL.getIcon());</span>
-<span class="nc" id="L332">            this.setTabComponentAt(this.indexOfComponent(panelTerminalWithReverse), header);</span>
-<span class="nc" id="L333">            terminal.requestFocusInWindow();</span>
+<span class="nc" id="L342">                var header = new TabHeader(TabResults.UDF_SHELL, UiUtil.TERMINAL.getIcon());</span>
+<span class="nc" id="L343">                this.setTabComponentAt(this.indexOfComponent(panelTerminalWithReverse), header);</span>
+<span class="nc" id="L344">                terminal.requestFocusInWindow();</span>
 
-<span class="nc" id="L335">            this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="nc" id="L336">        } catch (MalformedURLException | URISyntaxException e) {</span>
-<span class="nc" id="L337">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
-<span class="nc" id="L338">        }</span>
-<span class="nc" id="L339">    }</span>
+<span class="nc" id="L346">                this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="nc" id="L347">            } catch (MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L348">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
+<span class="nc" id="L349">            }</span>
+<span class="nc" id="L350">        });</span>
+<span class="nc" id="L351">    }</span>
 
     public void addTabExploitSql(String url, String user, String pass) {
-        try {
-<span class="fc" id="L343">            var terminalID = UUID.randomUUID();</span>
-<span class="fc" id="L344">            var terminal = new AbstractExploit(terminalID, url, &quot;sql&quot;) {</span>
-                @Override
-                public void action(String cmd, UUID terminalID, String wbhPath, String... arg) {
-<span class="nc" id="L347">                    MediatorHelper.model().getResourceAccess().runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);</span>
-<span class="nc" id="L348">                }</span>
-            };
-<span class="fc" id="L350">            terminal.setName(TabResults.SQL_SHELL);</span>
-<span class="fc" id="L351">            terminal.setLoginPassword(new String[]{ user, pass });</span>
-<span class="fc" id="L352">            MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
+<span class="fc" id="L354">        MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {</span>
+            try {
+<span class="fc" id="L356">                var terminalID = UUID.randomUUID();</span>
+<span class="fc" id="L357">                var terminal = new AbstractExploit(terminalID, url, &quot;sql&quot;) {</span>
+                    @Override
+                    public void action(String cmd, UUID terminalID, String wbhPath, String... arg) {
+<span class="nc" id="L360">                        MediatorHelper.model().getResourceAccess().runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);</span>
+<span class="nc" id="L361">                    }</span>
+                };
+<span class="fc" id="L363">                terminal.setName(TabResults.SQL_SHELL);</span>
+<span class="fc" id="L364">                terminal.setLoginPassword(new String[]{ user, pass });</span>
+<span class="fc" id="L365">                MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);</span>
 
-<span class="fc" id="L354">            JScrollPane scroller = new JScrollPane(terminal);</span>
-<span class="fc" id="L355">            this.addTab(&quot;SQL shell&quot;, scroller);</span>
-<span class="fc" id="L356">            this.setSelectedComponent(scroller);  // Focus on the new tab</span>
+<span class="fc" id="L367">                JScrollPane scroller = new JScrollPane(terminal);</span>
+<span class="fc" id="L368">                this.addTab(&quot;SQL shell&quot;, scroller);</span>
+<span class="fc" id="L369">                this.setSelectedComponent(scroller);  // Focus on the new tab</span>
 
-<span class="fc" id="L358">            var header = new TabHeader(&quot;SQL shell&quot;, UiUtil.TERMINAL.getIcon());</span>
-<span class="fc" id="L359">            this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
-<span class="fc" id="L360">            terminal.requestFocusInWindow();</span>
+<span class="fc" id="L371">                var header = new TabHeader(&quot;SQL shell&quot;, UiUtil.TERMINAL.getIcon());</span>
+<span class="fc" id="L372">                this.setTabComponentAt(this.indexOfComponent(scroller), header);</span>
+<span class="fc" id="L373">                terminal.requestFocusInWindow();</span>
 
-<span class="fc" id="L362">            this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="nc" id="L363">        } catch (MalformedURLException | URISyntaxException e) {</span>
-<span class="nc" id="L364">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
-<span class="fc" id="L365">        }</span>
-<span class="fc" id="L366">    }</span>
+<span class="fc" id="L375">                this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="nc" id="L376">            } catch (MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L377">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, TabResults.TAB_EXPLOIT_FAILURE_INCORRECT_URL, e);</span>
+<span class="fc" id="L378">            }</span>
+<span class="fc" id="L379">        });</span>
+<span class="fc" id="L380">    }</span>
     
     public void addTabValues(String[][] data, String[] columnNames, AbstractElementDatabase table) {
-<span class="fc" id="L369">        var panelTable = new PanelTable(data, columnNames);</span>
+<span class="fc" id="L383">        var panelTable = new PanelTable(data, columnNames);</span>
         
-<span class="fc" id="L371">        this.addTab(StringUtil.detectUtf8(table.toString()), panelTable);</span>
-<span class="fc" id="L372">        panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));</span>
+<span class="fc" id="L385">        this.addTab(StringUtil.detectUtf8(table.toString()), panelTable);</span>
+<span class="fc" id="L386">        panelTable.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));</span>
         
-<span class="fc" id="L374">        this.setSelectedComponent(panelTable);  // Focus on the new tab</span>
+<span class="fc" id="L388">        this.setSelectedComponent(panelTable);  // Focus on the new tab</span>
 
-<span class="fc" id="L376">        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());</span>
-<span class="fc" id="L377">        this.setTabComponentAt(this.indexOfComponent(panelTable), header);</span>
+<span class="fc" id="L390">        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()), UiUtil.TABLE_BOLD.getIcon());</span>
+<span class="fc" id="L391">        this.setTabComponentAt(this.indexOfComponent(panelTable), header);</span>
 
-<span class="fc" id="L379">        this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="fc" id="L380">    }</span>
+<span class="fc" id="L393">        this.updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="fc" id="L394">    }</span>
 
     private JPanel getTerminalWithMenu(AbstractExploit terminal) {
-<span class="fc" id="L383">        JPanel panelTerminalWithReverse = new JPanel() {</span>
+<span class="fc" id="L397">        JPanel panelTerminalWithReverse = new JPanel() {</span>
             @Override
             public boolean isOptimizedDrawingEnabled() {
-<span class="fc" id="L386">                return false;  // both components always visible</span>
+<span class="fc" id="L400">                return false;  // both components always visible</span>
             }
         };
-<span class="fc" id="L389">        OverlayLayout overlay = new OverlayLayout(panelTerminalWithReverse);</span>
-<span class="fc" id="L390">        panelTerminalWithReverse.setLayout(overlay);</span>
+<span class="fc" id="L403">        OverlayLayout overlay = new OverlayLayout(panelTerminalWithReverse);</span>
+<span class="fc" id="L404">        panelTerminalWithReverse.setLayout(overlay);</span>
 
-<span class="fc" id="L392">        var panelReverseMargin = new JPanel();</span>
-<span class="fc" id="L393">        panelReverseMargin.setLayout(new BoxLayout(panelReverseMargin, BoxLayout.LINE_AXIS));</span>
-<span class="fc" id="L394">        panelReverseMargin.setOpaque(false);</span>
-<span class="fc" id="L395">        panelReverseMargin.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 15));</span>
+<span class="fc" id="L406">        var panelReverseMargin = new JPanel();</span>
+<span class="fc" id="L407">        panelReverseMargin.setLayout(new BoxLayout(panelReverseMargin, BoxLayout.LINE_AXIS));</span>
+<span class="fc" id="L408">        panelReverseMargin.setOpaque(false);</span>
+<span class="fc" id="L409">        panelReverseMargin.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 15));</span>
 
-<span class="fc" id="L397">        var menuReverse = new JLabel(TabResults.REVERSE_SHELL, UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
-<span class="fc" id="L398">        menuReverse.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L411">        var menuReverse = new JLabel(TabResults.REVERSE_SHELL, UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
+<span class="fc" id="L412">        menuReverse.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="nc" id="L401">                var popupMenu = TabResults.this.showMenu(terminal);</span>
-<span class="nc" id="L402">                popupMenu.updateUI();  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L403">                popupMenu.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());</span>
-<span class="nc" id="L404">                popupMenu.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
-<span class="nc" id="L405">            }</span>
+<span class="nc" id="L415">                var popupMenu = TabResults.this.showMenu(terminal);</span>
+<span class="nc" id="L416">                popupMenu.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L417">                popupMenu.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());</span>
+<span class="nc" id="L418">                popupMenu.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
+<span class="nc" id="L419">            }</span>
         });
-<span class="fc" id="L407">        menuReverse.setMaximumSize(menuReverse.getPreferredSize());</span>
-<span class="fc" id="L408">        JScrollPane scrollerTerminal = new JScrollPane(terminal);</span>
-<span class="fc" id="L409">        scrollerTerminal.setAlignmentX(1f);</span>
-<span class="fc" id="L410">        scrollerTerminal.setAlignmentY(0f);</span>
-<span class="fc" id="L411">        panelReverseMargin.setAlignmentX(1f);</span>
-<span class="fc" id="L412">        panelReverseMargin.setAlignmentY(0f);</span>
-<span class="fc" id="L413">        panelReverseMargin.add(menuReverse);</span>
-<span class="fc" id="L414">        panelTerminalWithReverse.add(panelReverseMargin);</span>
-<span class="fc" id="L415">        panelTerminalWithReverse.add(scrollerTerminal);</span>
+<span class="fc" id="L421">        menuReverse.setMaximumSize(menuReverse.getPreferredSize());</span>
+<span class="fc" id="L422">        JScrollPane scrollerTerminal = new JScrollPane(terminal);</span>
+<span class="fc" id="L423">        scrollerTerminal.setAlignmentX(1f);</span>
+<span class="fc" id="L424">        scrollerTerminal.setAlignmentY(0f);</span>
+<span class="fc" id="L425">        panelReverseMargin.setAlignmentX(1f);</span>
+<span class="fc" id="L426">        panelReverseMargin.setAlignmentY(0f);</span>
+<span class="fc" id="L427">        panelReverseMargin.add(menuReverse);</span>
+<span class="fc" id="L428">        panelTerminalWithReverse.add(panelReverseMargin);</span>
+<span class="fc" id="L429">        panelTerminalWithReverse.add(scrollerTerminal);</span>
 
-<span class="fc" id="L417">        return panelTerminalWithReverse;</span>
+<span class="fc" id="L431">        return panelTerminalWithReverse;</span>
     }
 
     private JPopupMenu showMenu(AbstractExploit terminal) {
-<span class="nc" id="L421">        JPopupMenu menuReverse = new JPopupMenu();</span>
+<span class="nc" id="L435">        JPopupMenu menuReverse = new JPopupMenu();</span>
 
-<span class="nc" id="L423">        var menuListen = new JMenu(&quot;Listen&quot;);</span>
-<span class="nc" id="L424">        menuListen.setComponentOrientation(</span>
-<span class="nc bnc" id="L425" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
-<span class="nc" id="L426">            ? ComponentOrientation.LEFT_TO_RIGHT</span>
-<span class="nc" id="L427">            : ComponentOrientation.RIGHT_TO_LEFT</span>
+<span class="nc" id="L437">        var menuListen = new JMenu(&quot;Listen&quot;);</span>
+<span class="nc" id="L438">        menuListen.setComponentOrientation(</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
+<span class="nc" id="L440">            ? ComponentOrientation.LEFT_TO_RIGHT</span>
+<span class="nc" id="L441">            : ComponentOrientation.RIGHT_TO_LEFT</span>
         );
-<span class="nc" id="L429">        var panelPublicAddress = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L430">        panelPublicAddress.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Your public address (listener) :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
-<span class="nc" id="L431">        menuListen.add(panelPublicAddress);</span>
-<span class="nc" id="L432">        menuListen.add(new JSeparator());</span>
-<span class="nc" id="L433">        var address = new JTextFieldPlaceholder(&quot;Local IP/domain&quot;, &quot;10.0.2.2&quot;);</span>
-<span class="nc" id="L434">        menuListen.add(address);</span>
-<span class="nc" id="L435">        var port = new JTextFieldPlaceholder(&quot;Local port&quot;, &quot;4444&quot;);</span>
-<span class="nc" id="L436">        menuListen.add(port);</span>
+<span class="nc" id="L443">        var panelPublicAddress = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L444">        panelPublicAddress.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Your public address (listener) :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
+<span class="nc" id="L445">        menuListen.add(panelPublicAddress);</span>
+<span class="nc" id="L446">        menuListen.add(new JSeparator());</span>
+<span class="nc" id="L447">        var address = new JTextFieldPlaceholder(&quot;Local IP/domain&quot;, &quot;10.0.2.2&quot;);</span>
+<span class="nc" id="L448">        menuListen.add(address);</span>
+<span class="nc" id="L449">        var port = new JTextFieldPlaceholder(&quot;Local port&quot;, &quot;4444&quot;);</span>
+<span class="nc" id="L450">        menuListen.add(port);</span>
 
-<span class="nc" id="L438">        var panelServerConnection = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L439">        panelServerConnection.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Server method (connector) :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
-<span class="nc" id="L440">        menuListen.add(panelServerConnection);</span>
-<span class="nc" id="L441">        menuListen.add(new JSeparator());</span>
-<span class="nc" id="L442">        var buttonGroup = new ButtonGroup();</span>
-<span class="nc" id="L443">        List&lt;ModelReverse&gt; commandsReverse = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getCommandsReverse();</span>
-<span class="nc" id="L444">        commandsReverse.forEach(modelReverse -&gt; {</span>
-<span class="nc" id="L445">            var radio = new RadioItemNonClosing(modelReverse.getName());</span>
-<span class="nc" id="L446">            radio.setActionCommand(modelReverse.getName());</span>
-<span class="nc" id="L447">            radio.setSelected(&quot;bash&quot;.equals(modelReverse.getName()));</span>
-<span class="nc" id="L448">            buttonGroup.add(radio);</span>
-<span class="nc" id="L449">            menuListen.add(radio);</span>
-<span class="nc" id="L450">        });</span>
+<span class="nc" id="L452">        var panelServerConnection = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L453">        panelServerConnection.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Server method (connector) :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
+<span class="nc" id="L454">        menuListen.add(panelServerConnection);</span>
+<span class="nc" id="L455">        menuListen.add(new JSeparator());</span>
+<span class="nc" id="L456">        var buttonGroup = new ButtonGroup();</span>
+<span class="nc" id="L457">        List&lt;ModelReverse&gt; commandsReverse = MediatorHelper.model().getMediatorUtils().preferencesUtil().getCommandsReverse();</span>
+<span class="nc" id="L458">        commandsReverse.forEach(modelReverse -&gt; {</span>
+<span class="nc" id="L459">            var radio = new RadioItemNonClosing(modelReverse.getName());</span>
+<span class="nc" id="L460">            radio.setActionCommand(modelReverse.getName());</span>
+<span class="nc" id="L461">            radio.setSelected(&quot;bash&quot;.equals(modelReverse.getName()));</span>
+<span class="nc" id="L462">            buttonGroup.add(radio);</span>
+<span class="nc" id="L463">            menuListen.add(radio);</span>
+<span class="nc" id="L464">        });</span>
 
-<span class="nc" id="L452">        Runnable runnableReverse = () -&gt; {</span>
+<span class="nc" id="L466">        Runnable runnableReverse = () -&gt; {</span>
             try {
-<span class="nc" id="L454">                Thread.sleep(2500);</span>
-<span class="nc" id="L455">                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getCommandsReverse().stream()</span>
-<span class="nc" id="L456">                .filter(modelReverse -&gt; modelReverse.getName().equals(buttonGroup.getSelection().getActionCommand()))</span>
-<span class="nc" id="L457">                .findFirst()</span>
-<span class="nc" id="L458">                .ifPresent(modelReverse -&gt; MediatorHelper.model().getResourceAccess().runWebShell(</span>
-<span class="nc" id="L459">                    String.format(modelReverse.getCommand(), address.getText(), port.getText()),</span>
+<span class="nc" id="L468">                Thread.sleep(2500);</span>
+<span class="nc" id="L469">                MediatorHelper.model().getMediatorUtils().preferencesUtil().getCommandsReverse().stream()</span>
+<span class="nc" id="L470">                .filter(modelReverse -&gt; modelReverse.getName().equals(buttonGroup.getSelection().getActionCommand()))</span>
+<span class="nc" id="L471">                .findFirst()</span>
+<span class="nc" id="L472">                .ifPresent(modelReverse -&gt; MediatorHelper.model().getResourceAccess().runWebShell(</span>
+<span class="nc" id="L473">                    String.format(modelReverse.getCommand(), address.getText(), port.getText()),</span>
                     null,  // ignore connection response
-<span class="nc" id="L461">                    terminal.getUrlShell(),</span>
+<span class="nc" id="L475">                    terminal.getUrlShell(),</span>
                     true
                 ));
-<span class="nc" id="L464">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L465">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L466">                Thread.currentThread().interrupt();</span>
-<span class="nc" id="L467">            }</span>
-<span class="nc" id="L468">        };</span>
+<span class="nc" id="L478">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L479">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L480">                Thread.currentThread().interrupt();</span>
+<span class="nc" id="L481">            }</span>
+<span class="nc" id="L482">        };</span>
 
-<span class="nc" id="L470">        var panelOpenIn = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L471">        panelOpenIn.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Open In :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
-<span class="nc" id="L472">        menuListen.add(panelOpenIn);</span>
-<span class="nc" id="L473">        menuListen.add(new JSeparator());</span>
+<span class="nc" id="L484">        var panelOpenIn = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L485">        panelOpenIn.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Open In :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
+<span class="nc" id="L486">        menuListen.add(panelOpenIn);</span>
+<span class="nc" id="L487">        menuListen.add(new JSeparator());</span>
 
-<span class="nc" id="L475">        var menuBuiltInShell = new RadioItemNonClosing(&quot;Built-in shell&quot;, true);</span>
-<span class="nc" id="L476">        var menuExternalShell = new RadioItemNonClosing(&quot;External listening shell&quot;);</span>
-<span class="nc" id="L477">        var buttonTypeShell = new ButtonGroup();</span>
-<span class="nc" id="L478">        buttonTypeShell.add(menuBuiltInShell);</span>
-<span class="nc" id="L479">        buttonTypeShell.add(menuExternalShell);</span>
-<span class="nc" id="L480">        menuListen.add(menuBuiltInShell);</span>
-<span class="nc" id="L481">        menuListen.add(menuExternalShell);</span>
-<span class="nc" id="L482">        menuListen.add(new JSeparator());</span>
-<span class="nc" id="L483">        var panelCreate = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L484">        panelCreate.add(new JButton(new AbstractAction(&quot;Create reverse shell&quot;) {</span>
+<span class="nc" id="L489">        var menuBuiltInShell = new RadioItemNonClosing(&quot;Built-in shell&quot;, true);</span>
+<span class="nc" id="L490">        var menuExternalShell = new RadioItemNonClosing(&quot;External listening shell&quot;);</span>
+<span class="nc" id="L491">        var buttonTypeShell = new ButtonGroup();</span>
+<span class="nc" id="L492">        buttonTypeShell.add(menuBuiltInShell);</span>
+<span class="nc" id="L493">        buttonTypeShell.add(menuExternalShell);</span>
+<span class="nc" id="L494">        menuListen.add(menuBuiltInShell);</span>
+<span class="nc" id="L495">        menuListen.add(menuExternalShell);</span>
+<span class="nc" id="L496">        menuListen.add(new JSeparator());</span>
+<span class="nc" id="L497">        var panelCreate = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L498">        panelCreate.add(new JButton(new AbstractAction(&quot;Create reverse shell&quot;) {</span>
             @Override
             public void actionPerformed(ActionEvent e) {
-<span class="nc bnc" id="L487" title="All 2 branches missed.">                if (menuBuiltInShell.isSelected()) {</span>
-<span class="nc" id="L488">                    SwingUtilities.invokeLater(() -&gt; MediatorHelper.tabResults().addTabExploitReverseShell(port.getText()));</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">                if (menuBuiltInShell.isSelected()) {</span>
+<span class="nc" id="L502">                    MediatorHelper.tabResults().addTabExploitReverseShell(port.getText());</span>
                 }
-<span class="nc" id="L490">                new Thread(runnableReverse).start();</span>
-<span class="nc" id="L491">                menuReverse.setVisible(false);</span>
-<span class="nc" id="L492">            }</span>
+<span class="nc" id="L504">                new Thread(runnableReverse).start();</span>
+<span class="nc" id="L505">                menuReverse.setVisible(false);</span>
+<span class="nc" id="L506">            }</span>
         }));
-<span class="nc" id="L494">        menuListen.add(panelCreate);</span>
+<span class="nc" id="L508">        menuListen.add(panelCreate);</span>
 
-<span class="nc" id="L496">        var menuConnect = new JMenu(&quot;Connect&quot;);</span>
-<span class="nc" id="L497">        menuConnect.setComponentOrientation(</span>
-<span class="nc bnc" id="L498" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
-<span class="nc" id="L499">            ? ComponentOrientation.LEFT_TO_RIGHT</span>
-<span class="nc" id="L500">            : ComponentOrientation.RIGHT_TO_LEFT</span>
+<span class="nc" id="L510">        var menuConnect = new JMenu(&quot;Connect&quot;);</span>
+<span class="nc" id="L511">        menuConnect.setComponentOrientation(</span>
+<span class="nc bnc" id="L512" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))</span>
+<span class="nc" id="L513">            ? ComponentOrientation.LEFT_TO_RIGHT</span>
+<span class="nc" id="L514">            : ComponentOrientation.RIGHT_TO_LEFT</span>
         );
-<span class="nc" id="L502">        var panelServerPublicAddress = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L503">        panelServerPublicAddress.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Server public address (listener) :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
-<span class="nc" id="L504">        menuConnect.add(panelServerPublicAddress);</span>
-<span class="nc" id="L505">        menuConnect.add(new JSeparator());</span>
-<span class="nc" id="L506">        menuConnect.add(new JTextFieldPlaceholder(&quot;Target IP/domain&quot;));</span>
-<span class="nc" id="L507">        menuConnect.add(new JTextFieldPlaceholder(&quot;Target port&quot;));</span>
-<span class="nc" id="L508">        menuConnect.add(new JSeparator());</span>
+<span class="nc" id="L516">        var panelServerPublicAddress = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L517">        panelServerPublicAddress.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Server public address (listener) :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
+<span class="nc" id="L518">        menuConnect.add(panelServerPublicAddress);</span>
+<span class="nc" id="L519">        menuConnect.add(new JSeparator());</span>
+<span class="nc" id="L520">        menuConnect.add(new JTextFieldPlaceholder(&quot;Target IP/domain&quot;));</span>
+<span class="nc" id="L521">        menuConnect.add(new JTextFieldPlaceholder(&quot;Target port&quot;));</span>
+<span class="nc" id="L522">        menuConnect.add(new JSeparator());</span>
 
-<span class="nc" id="L510">        var panelServerListeningConnection = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L511">        panelServerListeningConnection.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Server listening method :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
-<span class="nc" id="L512">        menuConnect.add(panelServerListeningConnection);</span>
-<span class="nc" id="L513">        var buttonGroupListening = new ButtonGroup();</span>
-<span class="nc" id="L514">        List.of(&quot;netcat&quot;).forEach(method -&gt; {</span>
-<span class="nc" id="L515">            var radio = new JRadioButtonMenuItem(method) {</span>
+<span class="nc" id="L524">        var panelServerListeningConnection = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L525">        panelServerListeningConnection.add(new JLabel(&quot;&lt;html&gt;&lt;b&gt;Server listening method :&lt;/b&gt;&lt;/html&gt;&quot;));</span>
+<span class="nc" id="L526">        menuConnect.add(panelServerListeningConnection);</span>
+<span class="nc" id="L527">        var buttonGroupListening = new ButtonGroup();</span>
+<span class="nc" id="L528">        List.of(&quot;netcat&quot;).forEach(method -&gt; {</span>
+<span class="nc" id="L529">            var radio = new JRadioButtonMenuItem(method) {</span>
                 @Override
                 protected void processMouseEvent(MouseEvent evt) {
-<span class="nc bnc" id="L518" title="All 4 branches missed.">                    if (evt.getID() == MouseEvent.MOUSE_RELEASED &amp;&amp; this.contains(evt.getPoint())) {</span>
-<span class="nc" id="L519">                        this.doClick();</span>
-<span class="nc" id="L520">                        this.setArmed(true);</span>
+<span class="nc bnc" id="L532" title="All 4 branches missed.">                    if (evt.getID() == MouseEvent.MOUSE_RELEASED &amp;&amp; this.contains(evt.getPoint())) {</span>
+<span class="nc" id="L533">                        this.doClick();</span>
+<span class="nc" id="L534">                        this.setArmed(true);</span>
                     } else {
-<span class="nc" id="L522">                        super.processMouseEvent(evt);</span>
+<span class="nc" id="L536">                        super.processMouseEvent(evt);</span>
                     }
-<span class="nc" id="L524">                }</span>
+<span class="nc" id="L538">                }</span>
             };
-<span class="nc" id="L526">            radio.setSelected(&quot;netcat&quot;.equals(method));</span>
-<span class="nc" id="L527">            buttonGroupListening.add(radio);</span>
-<span class="nc" id="L528">            menuConnect.add(radio);</span>
-<span class="nc" id="L529">        });</span>
-<span class="nc" id="L530">        menuConnect.add(new JSeparator());</span>
-<span class="nc" id="L531">        menuConnect.add(new JMenuItem(&quot;Create&quot;));</span>
+<span class="nc" id="L540">            radio.setSelected(&quot;netcat&quot;.equals(method));</span>
+<span class="nc" id="L541">            buttonGroupListening.add(radio);</span>
+<span class="nc" id="L542">            menuConnect.add(radio);</span>
+<span class="nc" id="L543">        });</span>
+<span class="nc" id="L544">        menuConnect.add(new JSeparator());</span>
+<span class="nc" id="L545">        menuConnect.add(new JMenuItem(&quot;Create&quot;));</span>
 
-<span class="nc" id="L533">        menuReverse.add(menuListen);</span>
-<span class="nc" id="L534">        menuReverse.add(menuConnect);</span>
+<span class="nc" id="L547">        menuReverse.add(menuListen);</span>
+<span class="nc" id="L548">        menuReverse.add(menuConnect);</span>
 
-<span class="nc" id="L536">        return menuReverse;</span>
+<span class="nc" id="L550">        return menuReverse;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

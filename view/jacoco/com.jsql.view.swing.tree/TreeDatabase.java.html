@@ -125,79 +125,81 @@ public class TreeDatabase extends JTree {
 <span class="fc" id="L125">    }</span>
     
     public void createValuesTab(String[][] data, String[] columnNames, AbstractElementDatabase table) {
-        // Report NullPointerException #1683
-<span class="fc" id="L129">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(table);</span>
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        if (node != null) {</span>
-<span class="fc" id="L131">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
-<span class="fc" id="L132">            progressingTreeNodeModel.setIndexProgress(table.getChildCount());  // Update the progress value of the model, end the progress</span>
-<span class="fc" id="L133">            progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'</span>
-<span class="fc" id="L134">            MediatorHelper.tabResults().addTabValues(data, columnNames, table);</span>
-        }
-<span class="fc" id="L136">    }</span>
+<span class="fc" id="L128">        MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {</span>
+            // Report NullPointerException #1683
+<span class="fc" id="L130">            DefaultMutableTreeNode node = this.getTreeNodeModels().get(table);</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">            if (node != null) {</span>
+<span class="fc" id="L132">                AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
+<span class="fc" id="L133">                progressingTreeNodeModel.setIndexProgress(table.getChildCount());  // Update the progress value of the model, end the progress</span>
+<span class="fc" id="L134">                progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'</span>
+<span class="fc" id="L135">                MediatorHelper.tabResults().addTabValues(data, columnNames, table);</span>
+            }
+<span class="fc" id="L137">        });</span>
+<span class="fc" id="L138">    }</span>
     
     public void endIndeterminateProgress(AbstractElementDatabase dataElementDatabase) {
-<span class="nc" id="L139">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);</span>
+<span class="nc" id="L141">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);</span>
         // Fix #1806 : NullPointerException on ...odels().get(dataElementDatabase).getUserObject()
-<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (node != null) {</span>
-<span class="nc" id="L142">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
-<span class="nc" id="L143">            progressingTreeNodeModel.setProgressing(false);  // Mark the node model as 'no loading bar'</span>
-<span class="nc" id="L144">            progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'</span>
-<span class="nc" id="L145">            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();</span>
-<span class="nc" id="L146">            treeModel.nodeChanged(node);  // Update the node</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (node != null) {</span>
+<span class="nc" id="L144">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
+<span class="nc" id="L145">            progressingTreeNodeModel.setProgressing(false);  // Mark the node model as 'no loading bar'</span>
+<span class="nc" id="L146">            progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'</span>
+<span class="nc" id="L147">            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();</span>
+<span class="nc" id="L148">            treeModel.nodeChanged(node);  // Update the node</span>
         }
-<span class="nc" id="L148">    }</span>
+<span class="nc" id="L150">    }</span>
     
     public void endProgress(AbstractElementDatabase dataElementDatabase) {
         // Report NullPointerException #1671
-<span class="nc" id="L152">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (node != null) {</span>
-<span class="nc" id="L154">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
-<span class="nc" id="L155">            progressingTreeNodeModel.setLoading(false);  // Mark the node model as 'no progress bar'</span>
-<span class="nc" id="L156">            progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'</span>
-<span class="nc" id="L157">            progressingTreeNodeModel.setIndexProgress(0);  // Reset the progress value of the model</span>
-<span class="nc" id="L158">            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();</span>
-<span class="nc" id="L159">            treeModel.nodeChanged(node);  // Update the node and progress bar</span>
+<span class="nc" id="L154">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (node != null) {</span>
+<span class="nc" id="L156">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
+<span class="nc" id="L157">            progressingTreeNodeModel.setLoading(false);  // Mark the node model as 'no progress bar'</span>
+<span class="nc" id="L158">            progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'</span>
+<span class="nc" id="L159">            progressingTreeNodeModel.setIndexProgress(0);  // Reset the progress value of the model</span>
+<span class="nc" id="L160">            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();</span>
+<span class="nc" id="L161">            treeModel.nodeChanged(node);  // Update the node and progress bar</span>
         }
-<span class="nc" id="L161">    }</span>
+<span class="nc" id="L163">    }</span>
     
     public void startIndeterminateProgress(AbstractElementDatabase dataElementDatabase) {
-<span class="nc" id="L164">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);</span>
+<span class="nc" id="L166">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);</span>
         // Fix #45540: NullPointerException on node.getUserObject()
-<span class="nc bnc" id="L166" title="All 2 branches missed.">        if (node != null) {</span>
-<span class="nc" id="L167">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
-<span class="nc" id="L168">            progressingTreeNodeModel.setProgressing(true);  // Mark the node model as 'loading'</span>
-<span class="nc" id="L169">            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();</span>
-<span class="nc" id="L170">            treeModel.nodeChanged(node);  // Update the node</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (node != null) {</span>
+<span class="nc" id="L169">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
+<span class="nc" id="L170">            progressingTreeNodeModel.setProgressing(true);  // Mark the node model as 'loading'</span>
+<span class="nc" id="L171">            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();</span>
+<span class="nc" id="L172">            treeModel.nodeChanged(node);  // Update the node</span>
         }
-<span class="nc" id="L172">    }</span>
+<span class="nc" id="L174">    }</span>
     
     public void startProgress(AbstractElementDatabase dataElementDatabase) {
-<span class="nc" id="L175">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);</span>
+<span class="nc" id="L177">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);</span>
         // Fix rare #73981
-<span class="nc bnc" id="L177" title="All 2 branches missed.">        if (node != null) {</span>
-<span class="nc" id="L178">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (node != null) {</span>
+<span class="nc" id="L180">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
             // Fix rare Unhandled NullPointerException #66340
-<span class="nc bnc" id="L180" title="All 2 branches missed.">            if (progressingTreeNodeModel != null) {</span>
-<span class="nc" id="L181">                progressingTreeNodeModel.setLoading(true);  // Mark the node model as 'display progress bar'</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">            if (progressingTreeNodeModel != null) {</span>
+<span class="nc" id="L183">                progressingTreeNodeModel.setLoading(true);  // Mark the node model as 'display progress bar'</span>
             }
-<span class="nc" id="L183">            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();</span>
-<span class="nc" id="L184">            treeModel.nodeChanged(node);  // Update the node</span>
+<span class="nc" id="L185">            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();</span>
+<span class="nc" id="L186">            treeModel.nodeChanged(node);  // Update the node</span>
         }
-<span class="nc" id="L186">    }</span>
+<span class="nc" id="L188">    }</span>
     
     public void updateProgress(AbstractElementDatabase dataElementDatabase, int dataCount) {
-<span class="nc" id="L189">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);</span>
+<span class="nc" id="L191">        DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);</span>
         // Fix Report #1368: ignore if no element database, usually for mock (e.g. metadata, file, shell, list databases)
-<span class="nc bnc" id="L191" title="All 2 branches missed.">        if (node != null) {</span>
-<span class="nc" id="L192">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
-<span class="nc" id="L193">            progressingTreeNodeModel.setIndexProgress(dataCount);  // Update the progress value of the model</span>
-<span class="nc" id="L194">            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();</span>
-<span class="nc" id="L195">            treeModel.nodeChanged(node);  // Update the node</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (node != null) {</span>
+<span class="nc" id="L194">            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();</span>
+<span class="nc" id="L195">            progressingTreeNodeModel.setIndexProgress(dataCount);  // Update the progress value of the model</span>
+<span class="nc" id="L196">            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();</span>
+<span class="nc" id="L197">            treeModel.nodeChanged(node);  // Update the node</span>
         }
-<span class="nc" id="L197">    }</span>
+<span class="nc" id="L199">    }</span>
     
     public final Map&lt;AbstractElementDatabase, DefaultMutableTreeNode&gt; getTreeNodeModels() {
-<span class="fc" id="L200">        return this.mapNodes;</span>
+<span class="fc" id="L202">        return this.mapNodes;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -11,7 +11,7 @@
 package com.jsql.view.subscriber;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.model.injection.strategy.StrategyError;
 import com.jsql.util.AnsiColorUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,33 +29,42 @@ public class SubscriberLogger extends AbstractSubscriber {
 <span class="fc" id="L29">    }</span>
 
     @Override
-    protected void execute(Request3 request) {
-<span class="pc bpc" id="L33" title="1 of 13 branches missed.">        switch (request) {</span>
-<span class="fc" id="L34">            case Request3.AddDatabases r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
-<span class="fc" id="L35">            case Request3.AddTables r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
-<span class="fc" id="L36">            case Request3.AddColumns r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
+    protected void execute(Seal request) {
+<span class="pc bpc" id="L33" title="1 of 11 branches missed.">        switch (request) {</span>
+<span class="fc" id="L34">            case Seal.AddDatabases r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
+<span class="fc" id="L35">            case Seal.AddTables r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
+<span class="fc" id="L36">            case Seal.AddColumns r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
 
-<span class="fc" id="L38">            case Request3.AddTabExploitWeb r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
-<span class="fc" id="L39">            case Request3.GetTerminalResult r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
+<span class="fc" id="L38">            case Seal.AddTabExploitWeb r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
+<span class="fc" id="L39">            case Seal.GetTerminalResult r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
 
-<span class="pc" id="L41">            case Request3.MarkStrategyInvulnerable(var strategy) -&gt; LOGGER.debug(() -&gt; AnsiColorUtil.addRedColor(strategy.getClass().getSimpleName()));</span>
-<span class="pc" id="L42">            case Request3.MarkErrorInvulnerable r -&gt; LOGGER.debug(() -&gt; AnsiColorUtil.addRedColor(</span>
-<span class="nc" id="L43">                this.model.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(r.indexError()).getName()</span>
-            ));
+<span class="fc" id="L41">            case Seal.MarkStrategyInvulnerable(var indexError, var strategy) -&gt; {</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">                if (strategy instanceof StrategyError) {</span>
+<span class="pc" id="L43">                    LOGGER.debug(() -&gt; AnsiColorUtil.addRedColor(</span>
+<span class="nc" id="L44">                        this.model.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName()</span>
+                    ));
+                } else {
+<span class="pc" id="L47">                    LOGGER.debug(() -&gt; AnsiColorUtil.addRedColor(strategy.getClass().getSimpleName()));</span>
+                }
+<span class="fc" id="L49">            }</span>
+<span class="fc" id="L50">            case Seal.MarkStrategyVulnerable(var indexError, var strategy) -&gt; {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">                if (strategy instanceof StrategyError) {</span>
+<span class="fc" id="L52">                    LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(</span>
+<span class="fc" id="L53">                        this.model.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName()</span>
+                    ));
+                } else {
+<span class="fc" id="L56">                    LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(strategy.getClass().getSimpleName()));</span>
+                }
+<span class="fc" id="L58">            }</span>
 
-<span class="fc" id="L46">            case Request3.MarkStrategyVulnerable(var strategy) -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(strategy.getClass().getSimpleName()));</span>
-<span class="fc" id="L47">            case Request3.MarkErrorVulnerable r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(</span>
-<span class="fc" id="L48">                this.model.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(r.indexError()).getName()</span>
-            ));
+<span class="nc" id="L60">            case Seal.MarkFileSystemInvulnerable r -&gt; LOGGER.debug(() -&gt; AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));</span>
+<span class="fc" id="L61">            case Seal.MarkFileSystemVulnerable r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
 
-<span class="nc" id="L51">            case Request3.MarkFileSystemInvulnerable r -&gt; LOGGER.debug(() -&gt; AnsiColorUtil.addRedColor(r.getClass().getSimpleName()));</span>
-<span class="fc" id="L52">            case Request3.MarkFileSystemVulnerable r -&gt; LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(r.getClass().getSimpleName()));</span>
-
-<span class="fc" id="L54">            case Request3.MessageBinary(var message) -&gt; LOGGER.info(message::trim);</span>
+<span class="fc" id="L63">            case Seal.MessageBinary(var message) -&gt; LOGGER.info(message::trim);</span>
             default -&gt; {
                 // empty
-<span class="fc" id="L57">            }</span>
+<span class="fc" id="L66">            }</span>
         }
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L68">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

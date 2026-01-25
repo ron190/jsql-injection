@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Udf.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.accessible.engine.mysql</a> &gt; <span class="el_source">Udf.java</span></div><h1>Udf.java</h1><pre class="source lang-java linenums">package com.jsql.model.accessible.engine.mysql;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
+
+<span class="fc" id="L7">public class Udf implements Serializable {</span>
+
+<span class="fc" id="L9">    private String pathPlugin = StringUtils.EMPTY;</span>
+<span class="fc" id="L10">    private String osMachine = StringUtils.EMPTY;</span>
+<span class="fc" id="L11">    private AddFile addFile = new AddFile();</span>
+<span class="fc" id="L12">    private AddFunction addFunction = new AddFunction();</span>
+<span class="fc" id="L13">    private String runCmd = StringUtils.EMPTY;</span>
+
+    public String getPathPlugin() {
+<span class="fc" id="L16">        return this.pathPlugin;</span>
+    }
+
+    public void setPathPlugin(String pathPlugin) {
+<span class="fc" id="L20">        this.pathPlugin = pathPlugin;</span>
+<span class="fc" id="L21">    }</span>
+
+    public String getOsMachine() {
+<span class="fc" id="L24">        return this.osMachine;</span>
+    }
+
+    public void setOsMachine(String osMachine) {
+<span class="fc" id="L28">        this.osMachine = osMachine;</span>
+<span class="fc" id="L29">    }</span>
+
+    public AddFile getAddFile() {
+<span class="fc" id="L32">        return this.addFile;</span>
+    }
+
+    public void setAddFile(AddFile addFile) {
+<span class="fc" id="L36">        this.addFile = addFile;</span>
+<span class="fc" id="L37">    }</span>
+
+    public AddFunction getAddFunction() {
+<span class="fc" id="L40">        return this.addFunction;</span>
+    }
+
+    public void setAddFunction(AddFunction addFunction) {
+<span class="fc" id="L44">        this.addFunction = addFunction;</span>
+<span class="fc" id="L45">    }</span>
+
+    public String getRunCmd() {
+<span class="fc" id="L48">        return this.runCmd;</span>
+    }
+
+    public void setRunCmd(String runCmd) {
+<span class="fc" id="L52">        this.runCmd = runCmd;</span>
+<span class="fc" id="L53">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -56,19 +56,19 @@ public abstract class AbstractMethodInjection implements Serializable {
         // Injects URL, Request or Header params only if user tests every params
         // or method is selected by user.
 <span class="fc" id="L58">        if (</span>
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">            !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()</span>
-<span class="fc bfc" id="L60" title="All 2 branches covered.">            &amp;&amp; this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">            !this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam()</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            &amp;&amp; this.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection() != this</span>
         ) {
 <span class="fc" id="L62">            return false;</span>
         }
         
         // Force injection method of model to current running method
-<span class="fc" id="L66">        this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(this);</span>
+<span class="fc" id="L66">        this.injectionModel.getMediatorUtils().connectionUtil().setMethodInjection(this);</span>
         
         // Injection by injection point in params or in path
 <span class="fc" id="L69">        if (</span>
 <span class="fc bfc" id="L70" title="All 2 branches covered.">            this.getParamsAsString().contains(InjectionModel.STAR)</span>
-<span class="fc bfc" id="L71" title="All 2 branches covered.">            || this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">            || this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)</span>
         ) {
 <span class="fc" id="L73">            hasFoundInjection = this.checkParamWithStar();</span>
 <span class="fc bfc" id="L74" title="All 2 branches covered.">        } else if (!this.isCheckingAllParam()) {</span>
@@ -140,8 +140,8 @@ public abstract class AbstractMethodInjection implements Serializable {
         // When option 'Inject JSON' is selected and there's a JSON entity to inject
         // then loop through each path to add * at the end of value and test each strategy.
         // Marks * are erased between each test.
-<span class="pc bpc" id="L143" title="1 of 4 branches missed.">        if (!attributesJson.isEmpty() &amp;&amp; this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam()) {</span>
-<span class="fc" id="L144">            hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParam(this, paramStar);</span>
+<span class="pc bpc" id="L143" title="1 of 4 branches missed.">        if (!attributesJson.isEmpty() &amp;&amp; this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllJsonParam()) {</span>
+<span class="fc" id="L144">            hasFoundInjection = this.injectionModel.getMediatorUtils().jsonUtil().testJsonParam(this, paramStar);</span>
         } else {
 <span class="fc" id="L146">            hasFoundInjection = this.testJsonlessParam(paramStar);  // Standard non JSON injection</span>
         }

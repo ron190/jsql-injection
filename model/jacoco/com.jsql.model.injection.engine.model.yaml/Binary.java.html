@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Binary.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.engine.model.yaml</a> &gt; <span class="el_source">Binary.java</span></div><h1>Binary.java</h1><pre class="source lang-java linenums">
+package com.jsql.model.injection.engine.model.yaml;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
+
+<span class="fc" id="L8">public class Binary implements Serializable {</span>
+
+<span class="fc" id="L10">    private Test test = new Test();</span>
+<span class="fc" id="L11">    private String blind = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private String time = StringUtils.EMPTY;</span>
+<span class="fc" id="L13">    private String multibit = StringUtils.EMPTY;</span>
+<span class="fc" id="L14">    private String modeAnd = &quot;and&quot;;</span>
+<span class="fc" id="L15">    private String modeOr = &quot;or&quot;;</span>
+<span class="fc" id="L16">    private String modeStack = &quot;;&quot;;</span>
+
+    public Test getTest() {
+<span class="fc" id="L19">        return this.test;</span>
+    }
+
+    public void setTest(Test test) {
+<span class="fc" id="L23">        this.test = test;</span>
+<span class="fc" id="L24">    }</span>
+
+    public String getBlind() {
+<span class="fc" id="L27">        return this.blind;</span>
+    }
+
+    public void setBlind(String blind) {
+<span class="fc" id="L31">        this.blind = blind;</span>
+<span class="fc" id="L32">    }</span>
+
+    public String getTime() {
+<span class="fc" id="L35">        return this.time;</span>
+    }
+
+    public void setTime(String time) {
+<span class="fc" id="L39">        this.time = time;</span>
+<span class="fc" id="L40">    }</span>
+
+    public String getModeAnd() {
+<span class="fc" id="L43">        return this.modeAnd;</span>
+    }
+
+    public void setModeAnd(String modeAnd) {
+<span class="fc" id="L47">        this.modeAnd = modeAnd;</span>
+<span class="fc" id="L48">    }</span>
+
+    public String getModeOr() {
+<span class="fc" id="L51">        return this.modeOr;</span>
+    }
+
+    public void setModeOr(String modeOr) {
+<span class="fc" id="L55">        this.modeOr = modeOr;</span>
+<span class="fc" id="L56">    }</span>
+
+    public String getModeStack() {
+<span class="fc" id="L59">        return this.modeStack;</span>
+    }
+
+    public void setModeStack(String modeStack) {
+<span class="fc" id="L63">        this.modeStack = modeStack;</span>
+<span class="fc" id="L64">    }</span>
+
+    public String getMultibit() {
+<span class="fc" id="L67">        return this.multibit;</span>
+    }
+
+    public void setMultibit(String multibit) {
+<span class="fc" id="L71">        this.multibit = multibit;</span>
+<span class="fc" id="L72">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

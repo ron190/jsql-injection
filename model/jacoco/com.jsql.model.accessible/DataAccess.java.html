@@ -12,7 +12,7 @@ package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.*;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
@@ -103,7 +103,7 @@ public class DataAccess {
 <span class="fc" id="L103">        var resultToParse = StringUtils.EMPTY;</span>
         try {
 <span class="fc" id="L105">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="fc" id="L106">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlInfos(),</span>
+<span class="fc" id="L106">                this.injectionModel.getMediatorEngine().getEngine().instance().sqlInfos(),</span>
                 sourcePage,
 <span class="fc" id="L108">                false,</span>
 <span class="fc" id="L109">                0,</span>
@@ -128,7 +128,7 @@ public class DataAccess {
 <span class="fc" id="L128">            var infos = String.format(</span>
                 &quot;Database [%s] on %s [%s] for user [%s]&quot;,
                 nameDatabase,
-<span class="fc" id="L131">                this.injectionModel.getMediatorVendor().getVendor(),</span>
+<span class="fc" id="L131">                this.injectionModel.getMediatorEngine().getEngine(),</span>
                 versionDatabase,
                 username
             );
@@ -159,7 +159,7 @@ public class DataAccess {
         try {
 <span class="fc" id="L160">            var sourcePage = new String[]{ StringUtils.EMPTY };</span>
 <span class="fc" id="L161">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="fc" id="L162">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlDatabases(),</span>
+<span class="fc" id="L162">                this.injectionModel.getMediatorEngine().getEngine().instance().sqlDatabases(),</span>
                 sourcePage,
 <span class="fc" id="L164">                true,</span>
 <span class="fc" id="L165">                0,</span>
@@ -194,7 +194,7 @@ public class DataAccess {
 <span class="fc" id="L194">            databases.add(newDatabase);</span>
 <span class="fc" id="L195">        }</span>
 
-<span class="fc" id="L197">        this.injectionModel.sendToViews(new Request3.AddDatabases(databases));</span>
+<span class="fc" id="L197">        this.injectionModel.sendToViews(new Seal.AddDatabases(databases));</span>
 <span class="fc" id="L198">        return databases;</span>
     }
 
@@ -214,7 +214,7 @@ public class DataAccess {
 <span class="fc" id="L214">        this.injectionModel.setIsStoppedByUser(false);</span>
         
         // Inform the view that database has just been used
-<span class="fc" id="L217">        this.injectionModel.sendToViews(new Request3.StartProgress(database));</span>
+<span class="fc" id="L217">        this.injectionModel.sendToViews(new Seal.StartProgress(database));</span>
 
 <span class="fc" id="L219">        var tableCount = Integer.toString(database.getChildCount());</span>
         
@@ -222,7 +222,7 @@ public class DataAccess {
         try {
 <span class="fc" id="L223">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
 <span class="fc" id="L224">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="fc" id="L225">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTables(database),</span>
+<span class="fc" id="L225">                this.injectionModel.getMediatorEngine().getEngine().instance().sqlTables(database),</span>
                 pageSource,
 <span class="fc" id="L227">                true,</span>
 <span class="fc" id="L228">                Integer.parseInt(tableCount),</span>
@@ -244,7 +244,7 @@ public class DataAccess {
             )
 <span class="fc" id="L245">            .matcher(resultToParse);</span>
         
-<span class="fc" id="L247">        this.injectionModel.sendToViews(new Request3.EndProgress(database));</span>
+<span class="fc" id="L247">        this.injectionModel.sendToViews(new Seal.EndProgress(database));</span>
 
 <span class="pc bpc" id="L249" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
 <span class="nc" id="L250">            throw new InjectionFailureException(&quot;No match while injecting tables&quot;);</span>
@@ -262,7 +262,7 @@ public class DataAccess {
 <span class="fc" id="L262">            tables.add(newTable);</span>
 <span class="fc" id="L263">        }</span>
 
-<span class="fc" id="L265">        this.injectionModel.sendToViews(new Request3.AddTables(tables));</span>
+<span class="fc" id="L265">        this.injectionModel.sendToViews(new Seal.AddTables(tables));</span>
 <span class="fc" id="L266">        return tables;</span>
     }
 
@@ -280,14 +280,14 @@ public class DataAccess {
 <span class="fc" id="L280">        List&lt;Column&gt; columns = new ArrayList&lt;&gt;();</span>
         
         // Inform the view that table has just been used
-<span class="fc" id="L283">        this.injectionModel.sendToViews(new Request3.StartIndeterminateProgress(table));</span>
+<span class="fc" id="L283">        this.injectionModel.sendToViews(new Seal.StartIndeterminateProgress(table));</span>
 
 <span class="fc" id="L285">        String resultToParse = StringUtils.EMPTY;</span>
         
         try {
 <span class="fc" id="L288">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
 <span class="fc" id="L289">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="fc" id="L290">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlColumns(table),</span>
+<span class="fc" id="L290">                this.injectionModel.getMediatorEngine().getEngine().instance().sqlColumns(table),</span>
                 pageSource,
 <span class="fc" id="L292">                true,</span>
 <span class="fc" id="L293">                0,</span>
@@ -301,8 +301,8 @@ public class DataAccess {
 <span class="pc" id="L301">        }</span>
 
         // Build SQLite columns
-<span class="fc bfc" id="L304" title="All 2 branches covered.">        if (this.injectionModel.getMediatorVendor().isSqlite()) {</span>
-<span class="fc" id="L305">            resultToParse = this.injectionModel.getMediatorVendor().getSqlite().transformSqlite(resultToParse);</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        if (this.injectionModel.getMediatorEngine().isSqlite()) {</span>
+<span class="fc" id="L305">            resultToParse = this.injectionModel.getMediatorEngine().getSqlite().transformSqlite(resultToParse);</span>
         }
         
         // Parse all the data we have retrieved
@@ -314,7 +314,7 @@ public class DataAccess {
             )
 <span class="fc" id="L315">            .matcher(resultToParse);</span>
 
-<span class="fc" id="L317">        this.injectionModel.sendToViews(new Request3.EndIndeterminateProgress(table));</span>
+<span class="fc" id="L317">        this.injectionModel.sendToViews(new Seal.EndIndeterminateProgress(table));</span>
 
 <span class="pc bpc" id="L319" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
 <span class="nc" id="L320">            throw new InjectionFailureException(&quot;No match while injecting columns&quot;);</span>
@@ -329,7 +329,7 @@ public class DataAccess {
 <span class="fc" id="L329">            columns.add(column);</span>
 <span class="fc" id="L330">        }</span>
 
-<span class="fc" id="L332">        this.injectionModel.sendToViews(new Request3.AddColumns(columns));</span>
+<span class="fc" id="L332">        this.injectionModel.sendToViews(new Seal.AddColumns(columns));</span>
 <span class="fc" id="L333">        return columns;</span>
     }
 
@@ -344,12 +344,12 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public String[][] listValues(List&lt;Column&gt; columnsBean) throws JSqlException {
-<span class="fc" id="L347">        var databaseBean = (Database) columnsBean.get(0).getParent().getParent();</span>
-<span class="fc" id="L348">        var tableBean = (Table) columnsBean.get(0).getParent();</span>
-<span class="fc" id="L349">        int rowCount = columnsBean.get(0).getParent().getChildCount();</span>
+<span class="fc" id="L347">        var databaseBean = (Database) columnsBean.getFirst().getParent().getParent();</span>
+<span class="fc" id="L348">        var tableBean = (Table) columnsBean.getFirst().getParent();</span>
+<span class="fc" id="L349">        int rowCount = columnsBean.getFirst().getParent().getChildCount();</span>
 
         // Inform the view that table has just been used
-<span class="fc" id="L352">        this.injectionModel.sendToViews(new Request3.StartProgress(tableBean));</span>
+<span class="fc" id="L352">        this.injectionModel.sendToViews(new Seal.StartProgress(tableBean));</span>
 
         // Build an array of column names
 <span class="fc" id="L355">        List&lt;String&gt; columnsName = new ArrayList&lt;&gt;();</span>
@@ -365,15 +365,15 @@ public class DataAccess {
 <span class="fc" id="L365">        List&lt;List&lt;String&gt;&gt; listValues = this.getRows(databaseBean, tableBean, rowCount, columns);</span>
 
         // Add the default title to the columns: row number, occurrence
-<span class="fc" id="L368">        columnsName.add(0, StringUtils.EMPTY);</span>
-<span class="fc" id="L369">        columnsName.add(0, StringUtils.EMPTY);</span>
+<span class="fc" id="L368">        columnsName.addFirst(StringUtils.EMPTY);</span>
+<span class="fc" id="L369">        columnsName.addFirst(StringUtils.EMPTY);</span>
 
 <span class="fc" id="L371">        String[][] table = this.getTable(columnsName, listValues);</span>
 
 <span class="fc" id="L373">        columns = columnsName.toArray(new String[0]);</span>
         
-<span class="fc" id="L375">        this.injectionModel.sendToViews(new Request3.CreateValuesTab(columns, table, tableBean));</span>
-<span class="fc" id="L376">        this.injectionModel.sendToViews(new Request3.EndProgress(tableBean));</span>
+<span class="fc" id="L375">        this.injectionModel.sendToViews(new Seal.CreateValuesTab(columns, table, tableBean));</span>
+<span class="fc" id="L376">        this.injectionModel.sendToViews(new Seal.EndProgress(tableBean));</span>
 <span class="fc" id="L377">        return table;</span>
     }
 
@@ -383,7 +383,7 @@ public class DataAccess {
         try {
 <span class="fc" id="L384">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
 <span class="fc" id="L385">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="fc" id="L386">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(columns, database, table),</span>
+<span class="fc" id="L386">                this.injectionModel.getMediatorEngine().getEngine().instance().sqlRows(columns, database, table),</span>
                 pageSource,
 <span class="fc" id="L388">                true,</span>
 <span class="fc" id="L389">                rowCount,</span>

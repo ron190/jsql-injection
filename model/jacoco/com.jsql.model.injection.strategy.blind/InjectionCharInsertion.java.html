@@ -53,8 +53,8 @@ public class InjectionCharInsertion {
 <span class="fc" id="L53">        this.injectionModel = injectionModel;</span>
 <span class="fc" id="L54">        this.prefixSuffix = prefixSuffix;</span>
         
-<span class="fc" id="L56">        List&lt;String&gt; truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();</span>
-<span class="fc" id="L57">        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();</span>
+<span class="fc" id="L56">        List&lt;String&gt; truthy = this.injectionModel.getMediatorEngine().getEngine().instance().getTruthyBit();</span>
+<span class="fc" id="L57">        this.falsy = this.injectionModel.getMediatorEngine().getEngine().instance().getFalsyBit();</span>
         
         // No blind
 <span class="pc bpc" id="L60" title="2 of 4 branches missed.">        if (truthy.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
@@ -69,7 +69,7 @@ public class InjectionCharInsertion {
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-<span class="fc" id="L72">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableCharInsertionTagTrue&quot;);</span>
+<span class="fc" id="L72">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableCharInsertionTagTrue&quot;);</span>
 <span class="fc" id="L73">        Collection&lt;CallableCharInsertion&gt; listCallableTagTrue = new ArrayList&lt;&gt;();</span>
         
 <span class="fc bfc" id="L75" title="All 2 branches covered.">        for (String urlTest: truthy) {</span>
@@ -78,7 +78,7 @@ public class InjectionCharInsertion {
 <span class="fc" id="L78">                    String.join(</span>
                         StringUtils.SPACE,
 <span class="fc" id="L80">                        prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, &quot;345&quot;)),</span>
-<span class="fc" id="L81">                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
+<span class="fc" id="L81">                        this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
                         urlTest
                     ),
                     this,
@@ -92,7 +92,7 @@ public class InjectionCharInsertion {
         // Allow the user to stop the loop
         try {
 <span class="fc" id="L94">            List&lt;Future&lt;CallableCharInsertion&gt;&gt; listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);</span>
-<span class="fc" id="L95">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L95">            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 <span class="fc bfc" id="L96" title="All 2 branches covered.">            for (var i = 1 ; i &lt; listTagTrue.size() ; i++) {</span>
 <span class="pc bpc" id="L97" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L98">                    return;</span>
@@ -117,7 +117,7 @@ public class InjectionCharInsertion {
     private void initFalseMarks() {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-<span class="fc" id="L120">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetCharInsertionTagFalse&quot;);</span>
+<span class="fc" id="L120">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetCharInsertionTagFalse&quot;);</span>
 <span class="fc" id="L121">        Collection&lt;CallableCharInsertion&gt; listCallableTagFalse = new ArrayList&lt;&gt;();</span>
         
 <span class="fc bfc" id="L123" title="All 2 branches covered.">        for (String urlTest: this.falsy) {</span>
@@ -126,7 +126,7 @@ public class InjectionCharInsertion {
 <span class="fc" id="L126">                    String.join(</span>
                         StringUtils.SPACE,
 <span class="fc" id="L128">                        this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, &quot;345&quot;)),</span>
-<span class="fc" id="L129">                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
+<span class="fc" id="L129">                        this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
                         urlTest
                     ),
                     this,
@@ -140,7 +140,7 @@ public class InjectionCharInsertion {
         // Allow the user to stop the loop.
         try {
 <span class="fc" id="L142">            List&lt;Future&lt;CallableCharInsertion&gt;&gt; listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);</span>
-<span class="fc" id="L143">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L143">            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
         
 <span class="fc bfc" id="L145" title="All 2 branches covered.">            for (Future&lt;CallableCharInsertion&gt; falseTag: listTagFalse) {</span>
 <span class="pc bpc" id="L146" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
@@ -164,8 +164,8 @@ public class InjectionCharInsertion {
 <span class="fc" id="L164">            String.join(</span>
                 StringUtils.SPACE,
 <span class="fc" id="L166">                this.prefixSuffix.replace(InjectionCharInsertion.PREFIX, RandomStringUtils.secure().next(10, &quot;678&quot;)),</span>
-<span class="fc" id="L167">                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
-<span class="fc" id="L168">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm()</span>
+<span class="fc" id="L167">                this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getBinary().getModeOr(),</span>
+<span class="fc" id="L168">                this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlindConfirm()</span>
             ),
             this,
             &quot;prefix#confirm&quot;

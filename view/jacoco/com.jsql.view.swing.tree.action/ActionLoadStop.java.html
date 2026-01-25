@@ -62,7 +62,7 @@ public class ActionLoadStop implements ActionListener {
 <span class="nc" id="L62">    }</span>
 
     private void stopAbstractNode() {
-<span class="nc" id="L65">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());</span>
+<span class="nc" id="L65">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().threadUtil().get(this.nodeModel.getElementDatabase());</span>
         // Fix #21394: NullPointerException on stop()
 <span class="nc bnc" id="L67" title="All 2 branches missed.">        if (suspendableTask != null) {</span>
 <span class="nc" id="L68">            suspendableTask.stop();</span>
@@ -72,7 +72,7 @@ public class ActionLoadStop implements ActionListener {
 <span class="nc" id="L72">        this.nodeModel.setProgressing(false);</span>
 <span class="nc" id="L73">        this.nodeModel.setLoading(false);</span>
         
-<span class="nc" id="L75">        MediatorHelper.model().getMediatorUtils().getThreadUtil().remove(this.nodeModel.getElementDatabase());</span>
+<span class="nc" id="L75">        MediatorHelper.model().getMediatorUtils().threadUtil().remove(this.nodeModel.getElementDatabase());</span>
 <span class="nc" id="L76">    }</span>
 
     private List&lt;Column&gt; getSelectedColumns() {

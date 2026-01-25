@@ -32,13 +32,13 @@ public class MainApp {
         }
 
 <span class="nc" id="L34">        INJECTION_MODEL = new InjectionModel();</span>
-<span class="nc" id="L35">        MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();</span>
+<span class="nc" id="L35">        MainApp.INJECTION_MODEL.getMediatorUtils().preferencesUtil().loadSavedPreferences();</span>
 
 <span class="nc bnc" id="L37" title="All 2 branches missed.">        if (SystemInfo.isLinux) {  // enable flatlaf decorated window</span>
 <span class="nc" id="L38">            JFrame.setDefaultLookAndFeelDecorated(true);</span>
 <span class="nc" id="L39">            JDialog.setDefaultLookAndFeelDecorated(true);</span>
         }
-<span class="nc" id="L41">        var nameTheme = MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName();</span>
+<span class="nc" id="L41">        var nameTheme = MainApp.INJECTION_MODEL.getMediatorUtils().preferencesUtil().getThemeFlatLafName();</span>
 <span class="nc" id="L42">        UiUtil.applyTheme(nameTheme);  // required init but not enough, reapplied next</span>
 <span class="nc" id="L43">        MainApp.apply4K();</span>
 <span class="nc" id="L44">    }</span>
@@ -54,9 +54,9 @@ public class MainApp {
     public static void main(String[] args) {
 <span class="nc" id="L55">        MediatorHelper.register(MainApp.INJECTION_MODEL);</span>
 
-<span class="nc" id="L57">        MainApp.INJECTION_MODEL.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();</span>
-<span class="nc" id="L58">        MainApp.INJECTION_MODEL.getMediatorUtils().getProxyUtil().initProxy();</span>
-<span class="nc" id="L59">        MainApp.INJECTION_MODEL.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();</span>
+<span class="nc" id="L57">        MainApp.INJECTION_MODEL.getMediatorUtils().exceptionUtil().setUncaughtExceptionHandler();</span>
+<span class="nc" id="L58">        MainApp.INJECTION_MODEL.getMediatorUtils().proxyUtil().initProxy();</span>
+<span class="nc" id="L59">        MainApp.INJECTION_MODEL.getMediatorUtils().authenticationUtil().setKerberosCifs();</span>
 
         try {
 <span class="nc" id="L62">            var view = new JFrameView(MainApp.INJECTION_MODEL);</span>
@@ -78,7 +78,7 @@ public class MainApp {
 <span class="nc" id="L78">    }</span>
 
     private static void apply4K() {  // required not in UiUtil before frame is set
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().is4K()) {</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (MainApp.INJECTION_MODEL.getMediatorUtils().preferencesUtil().is4K()) {</span>
 <span class="nc" id="L82">            System.setProperty(&quot;sun.java2d.uiScale&quot;, &quot;2.5&quot;);  // jdk &gt;= 9</span>
         }
 <span class="nc" id="L84">    }</span>

@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.InjectionFailureException;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.LoopDetectedSlidingException;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.StoppedByUserSlidingException;
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.Vendor;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.engine.model.Engine;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.suspendable.SuspendableGetRows;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> com.jsql.util.LogLevelUtil;
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.lang3.StringUtils;
@@ -71,22 +71,22 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      @Override
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">public</strong> <a name="CallableFile" href="../../../../com/jsql/model/accessible/CallableFile.html#CallableFile">CallableFile</a> call() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          Map&lt;Vendor, Readable&gt; mapVendorReadable = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          mapVendorReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getMysql(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitMysql().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>          mapVendorReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getH2(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitH2().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>          mapVendorReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getSqlite(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitSqlite().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          mapVendorReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getDerby(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitDerby().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          mapVendorReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getHsqldb(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitHsqldb().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          mapVendorReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getPostgres(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitPostgres().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          Map&lt;Engine, Readable&gt; mapEngineReadable = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          mapEngineReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getMysql(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitMysql().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>          mapEngineReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getH2(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitH2().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>          mapEngineReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getSqlite(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitSqlite().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>          mapEngineReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getDerby(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitDerby().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          mapEngineReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getHsqldb(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitHsqldb().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          mapEngineReadable.put(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getPostgres(), () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().getExploitPostgres().getRead(<strong class="jxr_keyword">this</strong>.pathFile));
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          Readable readable = mapVendorReadable.entrySet().stream()
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>              .filter(entry -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor() == entry.getKey())
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          Readable readable = mapEngineReadable.entrySet().stream()
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>              .filter(entry -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine() == entry.getKey())
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>              .findFirst()
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>              .orElse(<strong class="jxr_keyword">new</strong> AbstractMap.SimpleEntry&lt;&gt;(<strong class="jxr_keyword">null</strong>, () -&gt; {
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>                  LOGGER.log(
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>                      LogLevelUtil.CONSOLE_DEFAULT,
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>                      <span class="jxr_string">"Read file not implemented for [{}], share a working example on GitHub to speed up release"</span>,
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>                      <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor()
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>                      <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine()
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>                  );
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>                  <strong class="jxr_keyword">return</strong> StringUtils.EMPTY;
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>              }))

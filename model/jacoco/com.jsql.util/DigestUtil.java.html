@@ -55,19 +55,19 @@ public class DigestUtil {
 <span class="fc" id="L55">            String nonce = cookieValues.get(&quot;nonce&quot;).replace(&quot;\&quot;&quot;, StringUtils.EMPTY);</span>
 
             try {
-<span class="fc" id="L58">                String username = this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication();</span>
-<span class="fc" id="L59">                String password = this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication();</span>
+<span class="fc" id="L58">                String username = this.injectionModel.getMediatorUtils().authenticationUtil().getUsernameAuthentication();</span>
+<span class="fc" id="L59">                String password = this.injectionModel.getMediatorUtils().authenticationUtil().getPasswordAuthentication();</span>
 <span class="fc" id="L60">                String nc = &quot;00000001&quot;;</span>
 <span class="fc" id="L61">                String cnonce = &quot;2ecb0e39da79fcb5aa6ffb1bd45cb3bb&quot;;</span>
 
-<span class="fc" id="L63">                URL url = new URI(this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()).toURL();</span>
+<span class="fc" id="L63">                URL url = new URI(this.injectionModel.getMediatorUtils().connectionUtil().getUrlByUser()).toURL();</span>
 <span class="fc" id="L64">                String path = url.getFile();</span>
 
 <span class="fc" id="L66">                String ha1 = DigestUtils.md5Hex(</span>
 <span class="fc" id="L67">                    String.format(&quot;%s:%s:%s&quot;, username, realm, password)</span>
                 );
 <span class="fc" id="L69">                String ha2 = DigestUtils.md5Hex(</span>
-<span class="fc" id="L70">                    String.format(&quot;%s:%s&quot;, this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(), path)</span>
+<span class="fc" id="L70">                    String.format(&quot;%s:%s&quot;, this.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest(), path)</span>
                 );
 <span class="fc" id="L72">                String response = DigestUtils.md5Hex(</span>
 <span class="fc" id="L73">                    String.format(&quot;%s:%s:%s:%s:%s:%s&quot;, ha1, nonce, nc, cnonce, qop, ha2)</span>

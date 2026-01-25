@@ -11,11 +11,11 @@
 package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.strategy.blind.InjectionMultibit;
-import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
@@ -36,17 +36,17 @@ public class StrategyMultibit extends AbstractStrategy {
 
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled()) {</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().preferencesUtil().isStrategyMultibitDisabled()) {</span>
 <span class="fc" id="L40">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());</span>
 <span class="fc" id="L41">            return;</span>
 <span class="fc bfc" id="L42" title="All 2 branches covered.">        } else if (StringUtils.isEmpty(</span>
-<span class="fc" id="L43">            this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBinary().getMultibit()</span>
+<span class="fc" id="L43">            this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getBinary().getMultibit()</span>
         )) {
 <span class="fc" id="L45">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
 <span class="fc" id="L48">                this.getName(),</span>
-<span class="fc" id="L49">                this.injectionModel.getMediatorVendor().getVendor()</span>
+<span class="fc" id="L49">                this.injectionModel.getMediatorEngine().getEngine()</span>
             );
 <span class="fc" id="L51">            return;</span>
         }
@@ -55,7 +55,7 @@ public class StrategyMultibit extends AbstractStrategy {
 
 <span class="fc bfc" id="L56" title="All 2 branches covered.">        if (this.isApplicable) {</span>
 <span class="fc" id="L57">            this.allow();</span>
-<span class="fc" id="L58">            this.injectionModel.sendToViews(new Request3.MessageBinary(this.injection.getInfoMessage()));</span>
+<span class="fc" id="L58">            this.injectionModel.sendToViews(new Seal.MessageBinary(this.injection.getInfoMessage()));</span>
         } else {
 <span class="fc" id="L60">            this.unallow();</span>
         }
@@ -82,8 +82,8 @@ public class StrategyMultibit extends AbstractStrategy {
 <span class="fc" id="L82">        this.injectionModel.appendAnalysisReport(</span>
 <span class="fc" id="L83">            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, &quot;### Strategy: &quot; + this.getName())</span>
 <span class="fc" id="L84">            + this.injectionModel.getReportWithoutIndex(</span>
-<span class="fc" id="L85">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(</span>
-<span class="fc" id="L86">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(</span>
+<span class="fc" id="L85">                    this.injectionModel.getMediatorEngine().getEngine().instance().sqlMultibit(</span>
+<span class="fc" id="L86">                    this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlind(</span>
 <span class="fc" id="L87">                        StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, &quot;&amp;lt;query&amp;gt;&quot;),</span>
                         &quot;0&quot;,
                         true
@@ -95,18 +95,18 @@ public class StrategyMultibit extends AbstractStrategy {
                 null
             )
         );
-<span class="fc" id="L98">        this.injectionModel.sendToViews(new Request3.MarkStrategyVulnerable(this));</span>
+<span class="fc" id="L98">        this.injectionModel.sendToViews(new Seal.MarkStrategyVulnerable(this));</span>
 <span class="fc" id="L99">    }</span>
 
     @Override
     public void unallow(int... i) {
-<span class="fc" id="L103">        this.injectionModel.sendToViews(new Request3.MarkStrategyInvulnerable(this));</span>
+<span class="fc" id="L103">        this.injectionModel.sendToViews(new Seal.MarkStrategyInvulnerable(this));</span>
 <span class="fc" id="L104">    }</span>
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
 <span class="fc" id="L108">        return this.injection.inject(</span>
-<span class="fc" id="L109">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),</span>
+<span class="fc" id="L109">            this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlind(sqlQuery, startPosition, false),</span>
             stoppable
         );
     }
@@ -121,13 +121,13 @@ public class StrategyMultibit extends AbstractStrategy {
                 this::getName
             );
 <span class="fc" id="L123">            this.injectionModel.getMediatorStrategy().setStrategy(this);</span>
-<span class="fc" id="L124">            this.injectionModel.sendToViews(new Request3.MarkStrategy(this));</span>
+<span class="fc" id="L124">            this.injectionModel.sendToViews(new Seal.ActivateStrategy(this));</span>
         }
 <span class="fc" id="L126">    }</span>
     
     @Override
     public String getPerformanceLength() {
-<span class="fc" id="L130">        return VendorYaml.DEFAULT_CAPACITY;</span>
+<span class="fc" id="L130">        return EngineYaml.DEFAULT_CAPACITY;</span>
     }
     
     @Override

@@ -26,7 +26,7 @@
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>      @Override
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> actionPerformed(ActionEvent e) {
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>          MediatorHelper.model().getMediatorUtils().getPreferencesUtil()
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>          MediatorHelper.model().getMediatorUtils().preferencesUtil()
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>          .withIsCheckingUpdate(<strong class="jxr_keyword">this</strong>.panelPreferences.getPanelGeneral().getCheckboxIsCheckingUpdate().isSelected())
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>          .withIsReportingBugs(<strong class="jxr_keyword">this</strong>.panelPreferences.getPanelGeneral().getCheckboxIsReportingBugs().isSelected())
@@ -95,7 +95,7 @@
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>          .persist();
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>          MediatorHelper.model().getMediatorUtils().getProxyUtil().setPreferences(
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>          MediatorHelper.model().getMediatorUtils().proxyUtil().setPreferences(
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>              <strong class="jxr_keyword">this</strong>.panelPreferences.getPanelProxy().getCheckboxIsUsingProxy().isSelected(),
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>              <strong class="jxr_keyword">this</strong>.panelPreferences.getPanelProxy().getTextProxyAddress().getText(),
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>              <strong class="jxr_keyword">this</strong>.panelPreferences.getPanelProxy().getTextProxyPort().getText(),
@@ -104,7 +104,7 @@
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>              <strong class="jxr_keyword">this</strong>.panelPreferences.getPanelProxy().getTextProxyPortHttps().getText()
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          );
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>          
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          MediatorHelper.model().getMediatorUtils().getTamperingUtil()  <em class="jxr_comment">// unused</em>
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          MediatorHelper.model().getMediatorUtils().tamperingUtil()  <em class="jxr_comment">// unused</em>
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>         .withBase64(<strong class="jxr_keyword">this</strong>.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>         .withEqualToLike(<strong class="jxr_keyword">this</strong>.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         .withEval(<strong class="jxr_keyword">this</strong>.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected())
@@ -119,7 +119,7 @@
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         .withStringToChar(<strong class="jxr_keyword">this</strong>.panelPreferences.getPanelTampering().getCheckboxIsTamperingStringToChar().isSelected())
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>         .withVersionComment(<strong class="jxr_keyword">this</strong>.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected());
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">boolean</strong> isRestartRequired = MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().set(
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">boolean</strong> isRestartRequired = MediatorHelper.model().getMediatorUtils().authenticationUtil().set(
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>             <strong class="jxr_keyword">this</strong>.panelPreferences.getPanelAuthentication().getCheckboxUseDigestAuthentication().isSelected(),
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>             <strong class="jxr_keyword">this</strong>.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationUsername().getText(),
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>             <strong class="jxr_keyword">this</strong>.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationPassword().getText(),

@@ -37,14 +37,14 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
     public InjectionTime(InjectionModel injectionModel, BlindOperator blindOperator) {
 <span class="fc" id="L38">        super(injectionModel, blindOperator);</span>
 
-<span class="fc" id="L40">        List&lt;String&gt; falsys = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsyBit();</span>
+<span class="fc" id="L40">        List&lt;String&gt; falsys = this.injectionModel.getMediatorEngine().getEngine().instance().getFalsyBit();</span>
 <span class="pc bpc" id="L41" title="2 of 4 branches missed.">        if (falsys.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L42">            return;</span>
         }
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-<span class="fc" id="L47">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagFalse&quot;);</span>
+<span class="fc" id="L47">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetTimeTagFalse&quot;);</span>
 <span class="fc" id="L48">        Collection&lt;CallableTime&gt; callablesFalsys = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L49" title="All 2 branches covered.">        for (String falsy: falsys) {</span>
 <span class="fc" id="L50">            callablesFalsys.add(new CallableTime(</span>
@@ -61,7 +61,7 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
         // Allow the user to stop the loop
         try {
 <span class="fc" id="L63">            List&lt;Future&lt;CallableTime&gt;&gt; futuresFalsys = taskExecutor.invokeAll(callablesFalsys);</span>
-<span class="fc" id="L64">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L64">            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 <span class="fc bfc" id="L65" title="All 2 branches covered.">            for (Future&lt;CallableTime&gt; futureFalsy: futuresFalsys) {</span>
 <span class="pc bpc" id="L66" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L67">                    return;</span>
@@ -82,9 +82,9 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 <span class="fc" id="L82">    }</span>
 
     private void checkTruthys(BlindOperator blindOperator) {
-<span class="fc" id="L85">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagTrue&quot;);</span>
+<span class="fc" id="L85">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetTimeTagTrue&quot;);</span>
 <span class="fc" id="L86">        Collection&lt;CallableTime&gt; callablesTruthys = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L87">        List&lt;String&gt; truthys = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthyBit();</span>
+<span class="fc" id="L87">        List&lt;String&gt; truthys = this.injectionModel.getMediatorEngine().getEngine().instance().getTruthyBit();</span>
 <span class="fc bfc" id="L88" title="All 2 branches covered.">        for (String truthy: truthys) {</span>
 <span class="fc" id="L89">            callablesTruthys.add(new CallableTime(</span>
                 truthy,
@@ -98,7 +98,7 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
         // If one TRUE query makes more than X seconds then the test is a failure =&gt; exit
         try {
 <span class="fc" id="L100">            List&lt;Future&lt;CallableTime&gt;&gt; futuresTruthys = taskExecutor.invokeAll(callablesTruthys);</span>
-<span class="fc" id="L101">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L101">            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 <span class="fc bfc" id="L102" title="All 2 branches covered.">            for (Future&lt;CallableTime&gt; futureTruthy: futuresTruthys) {</span>
 <span class="pc bpc" id="L103" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L104">                    return;</span>
@@ -135,7 +135,7 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 <span class="nc" id="L135">            throw new StoppedByUserSlidingException();</span>
         }
 <span class="fc" id="L137">        var callable = new CallableTime(</span>
-<span class="fc" id="L138">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlindConfirm(),</span>
+<span class="fc" id="L138">            this.injectionModel.getMediatorEngine().getEngine().instance().sqlBlindConfirm(),</span>
             this.injectionModel,
             this,
             this.blindOperator,
@@ -150,8 +150,8 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
     }
 
     public int getSleepTime() {
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        return this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()</span>
-<span class="nc" id="L154">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        return this.injectionModel.getMediatorUtils().preferencesUtil().isLimitingSleepTimeStrategy()</span>
+<span class="nc" id="L154">            ? this.injectionModel.getMediatorUtils().preferencesUtil().countSleepTimeStrategy()</span>
 <span class="fc" id="L155">            : 5;</span>
     }
 

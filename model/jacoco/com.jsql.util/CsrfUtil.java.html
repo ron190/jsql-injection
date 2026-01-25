@@ -48,11 +48,11 @@ public class CsrfUtil {
             )
         );
         
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {</span>
 <span class="nc" id="L52">            tags.add(</span>
 <span class="nc" id="L53">                String.format(</span>
                     &quot;[name='%s']&quot;,
-<span class="nc" id="L55">                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTag()</span>
+<span class="nc" id="L55">                    this.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTag()</span>
                 )
             );
         }
@@ -78,8 +78,8 @@ public class CsrfUtil {
 <span class="nc" id="L78">                tokenCsrfFound::getValue</span>
             );
 <span class="nc" id="L80">            if (</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">                &amp;&amp; this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">                !this.injectionModel.getMediatorUtils().preferencesUtil().isNotProcessingCookies()</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">                &amp;&amp; this.injectionModel.getMediatorUtils().preferencesUtil().isProcessingCsrf()</span>
             ) {
 <span class="nc" id="L84">                this.tokenCsrf = tokenCsrfFound;</span>
 <span class="nc" id="L85">                LOGGER.log(</span>
@@ -125,8 +125,8 @@ public class CsrfUtil {
 <span class="fc" id="L125">                cookieCsrf.getValue()</span>
             );
 <span class="fc" id="L127">            if (</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()</span>
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">                &amp;&amp; this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">                !this.injectionModel.getMediatorUtils().preferencesUtil().isNotProcessingCookies()</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">                &amp;&amp; this.injectionModel.getMediatorUtils().preferencesUtil().isProcessingCsrf()</span>
             ) {
 <span class="fc" id="L131">                this.tokenCsrf = headerCsrf;</span>
             } else {
@@ -143,9 +143,9 @@ public class CsrfUtil {
 <span class="fc" id="L143">        httpRequest.setHeader(&quot;X-XSRF-TOKEN&quot;, this.tokenCsrf.getValue());</span>
 <span class="fc" id="L144">        httpRequest.setHeader(&quot;X-CSRF-TOKEN&quot;, this.tokenCsrf.getValue());</span>
         
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {</span>
 <span class="nc" id="L147">            httpRequest.setHeader(</span>
-<span class="nc" id="L148">                this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),</span>
+<span class="nc" id="L148">                this.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTagOutput(),</span>
 <span class="nc" id="L149">                this.tokenCsrf.getValue()</span>
             );
         }
@@ -168,11 +168,11 @@ public class CsrfUtil {
 <span class="fc" id="L168">                this.tokenCsrf.getValue()</span>
             )
         );
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {</span>
 <span class="nc" id="L172">            httpRequest.append(</span>
 <span class="nc" id="L173">                String.format(</span>
                     &quot;%s=%s&amp;&quot;,
-<span class="nc" id="L175">                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),</span>
+<span class="nc" id="L175">                    this.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTagOutput(),</span>
 <span class="nc" id="L176">                    this.tokenCsrf.getValue()</span>
                 )
             );
@@ -193,10 +193,10 @@ public class CsrfUtil {
             &quot;&amp;_csrf=%s&quot;,
 <span class="fc" id="L194">            this.tokenCsrf.getValue()</span>
         );
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {</span>
 <span class="nc" id="L197">            urlInjectionFixed += String.format(</span>
                 &quot;&amp;%s=%s&quot;,
-<span class="nc" id="L199">                this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),</span>
+<span class="nc" id="L199">                this.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTagOutput(),</span>
 <span class="nc" id="L200">                this.tokenCsrf.getValue()</span>
             );
         }

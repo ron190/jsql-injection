@@ -63,19 +63,19 @@
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>              String nonce = cookieValues.get(<span class="jxr_string">"nonce"</span>).replace(<span class="jxr_string">"\&quot;"</span>, StringUtils.EMPTY);
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>              <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>                  String username = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication();
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>                  String password = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication();
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>                  String username = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().authenticationUtil().getUsernameAuthentication();
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>                  String password = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().authenticationUtil().getPasswordAuthentication();
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>                  String nc = <span class="jxr_string">"00000001"</span>;
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>                  String cnonce = <span class="jxr_string">"2ecb0e39da79fcb5aa6ffb1bd45cb3bb"</span>;
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>                  URL url = <strong class="jxr_keyword">new</strong> URI(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()).toURL();
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>                  URL url = <strong class="jxr_keyword">new</strong> URI(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getUrlByUser()).toURL();
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>                  String path = url.getFile();
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>                  String ha1 = DigestUtils.md5Hex(
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>                      String.format(<span class="jxr_string">"%s:%s:%s"</span>, username, realm, password)
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>                  );
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>                  String ha2 = DigestUtils.md5Hex(
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>                      String.format(<span class="jxr_string">"%s:%s"</span>, <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(), path)
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>                      String.format(<span class="jxr_string">"%s:%s"</span>, <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest(), path)
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>                  );
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>                  String response = DigestUtils.md5Hex(
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>                      String.format(<span class="jxr_string">"%s:%s:%s:%s:%s:%s"</span>, ha1, nonce, nc, cnonce, qop, ha2)

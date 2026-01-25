@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractSubscriber.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.subscriber</a> &gt; <span class="el_source">AbstractSubscriber.java</span></div><h1>AbstractSubscriber.java</h1><pre class="source lang-java linenums">package com.jsql.view.subscriber;
 
-import com.jsql.model.bean.util.Request3;
 import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,9 +8,41 @@ import javax.swing.*;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 
-<span class="fc" id="L12">public abstract class AbstractSubscriber implements Subscriber&lt;Request3&gt; {</span>
+<span class="fc" id="L11">public abstract class AbstractSubscriber implements Subscriber&lt;Seal&gt; {</span>
 
-<span class="fc" id="L14">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L13">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+    private Subscription subscription;
+
+    @Override
+    public void onSubscribe(Subscription subscription) {
+<span class="fc" id="L19">        this.subscription = subscription;</span>
+<span class="fc" id="L20">        subscription.request(1);  // enable receiving items</span>
+<span class="fc" id="L21">    }</span>
+
+    @Override
+    public void onNext(Seal request) {
+<span class="fc" id="L25">        this.subscription.request(1);</span>
+
+        // Display model thread name in logs instead of the observer name
+<span class="fc" id="L28">        String nameThread = Thread.currentThread().getName();</span>
+<span class="fc" id="L29">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="fc" id="L30">            Thread.currentThread().setName(&quot;from &quot; + nameThread);</span>
+<span class="fc" id="L31">            this.execute(request);</span>
+<span class="fc" id="L32">        });</span>
+<span class="fc" id="L33">    }</span>
+
+    protected abstract void execute(Seal request);
+
+    @Override
+    public void onError(Throwable e) {
+<span class="nc" id="L39">        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L40">    }</span>
+
+    @Override
+    public void onComplete() {
+        // Nothing
+<span class="nc" id="L45">    }</span>
 
     /**
      * Observer pattern.&lt;br&gt;
@@ -19,36 +50,8 @@ import java.util.concurrent.Flow.Subscription;
      * - Use the Request message to get the Interaction class,&lt;br&gt;
      * - Pass the parameters to that class.
      */
-    public Subscription subscription;
-
-    @Override
-    public void onSubscribe(Subscription subscription) {
-<span class="fc" id="L26">        this.subscription = subscription;</span>
-<span class="fc" id="L27">        subscription.request(1);  // enable receiving items</span>
-<span class="fc" id="L28">    }</span>
-
-    @Override
-    public void onNext(Request3 request) {
-<span class="fc" id="L32">        this.subscription.request(1);</span>
-
-        // Display model thread name in logs instead of the observer name
-<span class="fc" id="L35">        String nameThread = Thread.currentThread().getName();</span>
-<span class="fc" id="L36">        SwingUtilities.invokeLater(() -&gt; {</span>
-<span class="fc" id="L37">            Thread.currentThread().setName(&quot;from &quot; + nameThread);</span>
-<span class="fc" id="L38">            this.execute(request);</span>
-<span class="fc" id="L39">        });</span>
-<span class="fc" id="L40">    }</span>
-
-    protected abstract void execute(Request3 request);
-
-    @Override
-    public void onError(Throwable e) {
-<span class="nc" id="L46">        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L47">    }</span>
-
-    @Override
-    public void onComplete() {
-        // Nothing
-<span class="nc" id="L52">    }</span>
+    public Subscription getSubscription() {
+<span class="nc" id="L54">        return this.subscription;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

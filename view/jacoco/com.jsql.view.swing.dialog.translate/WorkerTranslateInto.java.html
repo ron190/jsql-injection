@@ -33,8 +33,8 @@ public class WorkerTranslateInto extends SwingWorker&lt;Object, Object&gt; {
 <span class="fc" id="L33">    private final StringBuilder propertiesToTranslate = new StringBuilder();</span>
     private final DialogTranslate dialogTranslate;
     
-<span class="fc" id="L36">    private final ConnectionUtil connectionUtil = MediatorHelper.model().getMediatorUtils().getConnectionUtil();</span>
-<span class="fc" id="L37">    private final PropertiesUtil propertiesUtil = MediatorHelper.model().getMediatorUtils().getPropertiesUtil();</span>
+<span class="fc" id="L36">    private final ConnectionUtil connectionUtil = MediatorHelper.model().getMediatorUtils().connectionUtil();</span>
+<span class="fc" id="L37">    private final PropertiesUtil propertiesUtil = MediatorHelper.model().getMediatorUtils().propertiesUtil();</span>
     
     private static final String LINE_FEED_ESCAPE = &quot;{@|@}&quot;;
     private static final String LINE_FEED = &quot;\\\\[\n\r]+&quot;;

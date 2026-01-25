@@ -2,7 +2,7 @@
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
@@ -71,7 +71,7 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
 <span class="fc" id="L71">        var indexChar = new AtomicInteger(0);  // current char position</span>
 
         // Concurrent URL requests
-<span class="fc" id="L74">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableAbstractBoolean&quot;);</span>
+<span class="fc" id="L74">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableAbstractBoolean&quot;);</span>
 <span class="fc" id="L75">        CompletionService&lt;T&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
 <span class="fc" id="L77">        var countTasksSubmitted = new AtomicInteger(0);</span>
@@ -153,7 +153,7 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
 
 <span class="fc" id="L154">            currentCallable.setCharText(Character.toString((char) asciiCode));</span>
             
-<span class="fc" id="L156">            this.injectionModel.sendToViews(new Request3.MessageBinary(</span>
+<span class="fc" id="L156">            this.injectionModel.sendToViews(new Seal.MessageBinary(</span>
                 asciiCodeBit
                 + &quot;=&quot;
 <span class="fc" id="L159">                + currentCallable.getCharText()</span>
@@ -167,7 +167,7 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
     }
 
     private String stop(List&lt;char[]&gt; bytes, ExecutorService taskExecutor) {
-<span class="fc" id="L170">        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L170">        this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 
         // Get current progress and display
 <span class="fc" id="L173">        var result = new StringBuilder();</span>

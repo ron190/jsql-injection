@@ -43,7 +43,7 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          }
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">this</strong>.sourceReference = <strong class="jxr_keyword">this</strong>.callUrl(<span class="jxr_string">"8"</span>, <span class="jxr_string">"multi#ref"</span>);
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          ExecutorService taskExecutor = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(<span class="jxr_string">"CallableGetMultibitIds"</span>);
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          ExecutorService taskExecutor = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().threadUtil().getExecutor(<span class="jxr_string">"CallableGetMultibitIds"</span>);
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>          Collection&lt;CallableMultibit&gt; callablesId = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0 ; i &lt; 8 ; i++) {
@@ -58,7 +58,7 @@
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>              List&lt;Future&lt;CallableMultibit&gt;&gt; futuresId = taskExecutor.invokeAll(callablesId);
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>              <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>              <strong class="jxr_keyword">for</strong> (Future&lt;CallableMultibit&gt; futureId: futuresId) {
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>                  List&lt;Diff&gt; diffsWithReference = futureId.get().getDiffsWithReference();

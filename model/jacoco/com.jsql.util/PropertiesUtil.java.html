@@ -50,7 +50,7 @@ public class PropertiesUtil {
 <span class="nc bnc" id="L50" title="All 2 branches missed.">            if (countGui.get() &gt; 0) {</span>
 <span class="nc" id="L51">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_SUCCESS,
-                    &quot;Switched to {} with {}% translated, contribute and translate any of {} items in menu Community&quot;,
+                    &quot;Switched to {} with {}% translated, contribute and translate any of remaining {} items in menu Community&quot;,
 <span class="nc" id="L54">                    () -&gt; newLocale.getDisplayLanguage(newLocale),</span>
 <span class="nc" id="L55">                    () -&gt; BigDecimal.valueOf(</span>
 <span class="nc" id="L56">                        100.0 - countGui.get() * 100.0 / bundleRoot.size()</span>

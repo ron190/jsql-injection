@@ -11,9 +11,9 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.accessible.vendor.*;
+import com.jsql.model.accessible.engine.*;
 import com.jsql.model.bean.database.MockElement;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.ConnectionUtil;
@@ -148,7 +148,7 @@ public class ResourceAccess {
 <span class="fc" id="L148">            folderSplits.add(folderName +&quot;/&quot;);</span>
         }
 
-<span class="fc" id="L151">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetAdminPage&quot;);</span>
+<span class="fc" id="L151">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetAdminPage&quot;);</span>
 <span class="fc" id="L152">        CompletionService&lt;CallableHttpHead&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
 <span class="fc" id="L154">        var urlPart = new StringBuilder();</span>
@@ -176,7 +176,7 @@ public class ResourceAccess {
 <span class="fc" id="L176">            nbAdminPagesFound = this.callAdminPage(taskCompletionService, nbAdminPagesFound);</span>
         }
 
-<span class="fc" id="L179">        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L179">        this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 <span class="fc" id="L180">        this.isSearchAdminStopped = false;</span>
 <span class="fc" id="L181">        this.logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);</span>
 
@@ -189,7 +189,7 @@ public class ResourceAccess {
         try {
 <span class="fc" id="L190">            CallableHttpHead currentCallable = taskCompletionService.take().get();</span>
 <span class="pc bpc" id="L191" title="1 of 2 branches missed.">            if (currentCallable.isHttpResponseOk()) {</span>
-<span class="fc" id="L192">                this.injectionModel.sendToViews(new Request3.CreateAdminPageTab(currentCallable.getUrl()));</span>
+<span class="fc" id="L192">                this.injectionModel.sendToViews(new Seal.CreateAdminPageTab(currentCallable.getUrl()));</span>
 <span class="fc" id="L193">                nbAdminPagesFoundFixed++;</span>
 <span class="fc" id="L194">                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Found page: {}&quot;, currentCallable.getUrl());</span>
             }
@@ -225,7 +225,7 @@ public class ResourceAccess {
         }
 <span class="fc" id="L226">        String url = urlExploitFixed;</span>
 <span class="pc bpc" id="L227" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(url)) {</span>
-<span class="fc" id="L228">            url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();</span>
+<span class="fc" id="L228">            url = this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase();</span>
         }
 <span class="fc" id="L230">        String urlWithoutProtocol = url.replaceAll(&quot;^https?://[^/]*&quot;, StringUtils.EMPTY);</span>
         String urlProtocol;
@@ -253,7 +253,7 @@ public class ResourceAccess {
     }
 
     private String getExploitUrl(String filename, List&lt;String&gt; directoryNames, String urlProtocol) {
-<span class="fc" id="L256">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetExploitUrl&quot;);</span>
+<span class="fc" id="L256">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetExploitUrl&quot;);</span>
 <span class="fc" id="L257">        CompletionService&lt;CallableHttpHead&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 <span class="fc" id="L258">        var urlPart = new StringBuilder();</span>
 
@@ -286,7 +286,7 @@ public class ResourceAccess {
 <span class="pc" id="L286">            }</span>
         }
 
-<span class="fc" id="L289">        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L289">        this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 <span class="fc" id="L290">        return urlSuccess;</span>
     }
 
@@ -297,7 +297,7 @@ public class ResourceAccess {
     public String callCommand(String urlCommand, boolean isConnectIssueIgnored) {
         String pageSource;
         try {
-<span class="fc" id="L300">            pageSource = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(urlCommand, isConnectIssueIgnored);</span>
+<span class="fc" id="L300">            pageSource = this.injectionModel.getMediatorUtils().connectionUtil().getSource(urlCommand, isConnectIssueIgnored);</span>
 <span class="nc" id="L301">        } catch (Exception e) {</span>
 <span class="nc" id="L302">            pageSource = StringUtils.EMPTY;</span>
 <span class="fc" id="L303">        }</span>
@@ -335,7 +335,7 @@ public class ResourceAccess {
 <span class="pc bpc" id="L335" title="1 of 2 branches missed.">        if (StringUtils.isBlank(result)) {</span>
 <span class="nc" id="L336">            result = String.format(ResourceAccess.TEMPLATE_ERROR, &quot;empty result&quot;, command);</span>
         }
-<span class="fc" id="L338">        this.injectionModel.sendToViews(new Request3.GetTerminalResult(uuidShell, result));  // Unfreeze GUI terminal</span>
+<span class="fc" id="L338">        this.injectionModel.sendToViews(new Seal.GetTerminalResult(uuidShell, result));  // Unfreeze GUI terminal</span>
 <span class="fc" id="L339">        return result;</span>
     }
 
@@ -371,7 +371,7 @@ public class ResourceAccess {
         }
 
 <span class="fc bfc" id="L373" title="All 2 branches covered.">        if (isResultSentToView) {</span>
-<span class="fc" id="L374">            this.injectionModel.sendToViews(new Request3.GetTerminalResult(uuidShell, result));  // Unfreeze GUI terminal</span>
+<span class="fc" id="L374">            this.injectionModel.sendToViews(new Seal.GetTerminalResult(uuidShell, result));  // Unfreeze GUI terminal</span>
         }
 <span class="fc" id="L376">        return result;</span>
     }
@@ -406,14 +406,14 @@ public class ResourceAccess {
 <span class="fc" id="L406">        List&lt;Integer&gt; listFieldsLength = new ArrayList&lt;&gt;();</span>
         for (
 <span class="fc" id="L408">            var indexLongestRowSearch = 0;</span>
-<span class="fc bfc" id="L409" title="All 2 branches covered.">            indexLongestRowSearch &lt; listRows.get(0).size();</span>
+<span class="fc bfc" id="L409" title="All 2 branches covered.">            indexLongestRowSearch &lt; listRows.getFirst().size();</span>
 <span class="fc" id="L410">            indexLongestRowSearch++</span>
         ) {
 <span class="fc" id="L412">            int indexLongestRowSearchFinal = indexLongestRowSearch;</span>
 <span class="fc" id="L413">            listRows.sort(</span>
 <span class="nc" id="L414">                (firstRow, secondRow) -&gt; secondRow.get(indexLongestRowSearchFinal).length() - firstRow.get(indexLongestRowSearchFinal).length()</span>
             );
-<span class="fc" id="L416">            listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch).length());</span>
+<span class="fc" id="L416">            listFieldsLength.add(listRows.getFirst().get(indexLongestRowSearch).length());</span>
         }
 <span class="fc" id="L418">        return listFieldsLength;</span>
     }
@@ -466,11 +466,11 @@ public class ResourceAccess {
 <span class="nc" id="L466">            .setHeader(&quot;Content-Type&quot;, &quot;multipart/form-data; boundary=&quot; + boundary)</span>
 <span class="nc" id="L467">            .build();</span>
 
-<span class="nc" id="L469">        var response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());</span>
+<span class="nc" id="L469">        var response = this.injectionModel.getMediatorUtils().connectionUtil().getHttpClient().build().send(httpRequest, BodyHandlers.ofString());</span>
 <span class="nc" id="L470">        HttpHeaders httpHeaders = response.headers();</span>
 <span class="nc" id="L471">        String pageSource = response.body();</span>
 
-<span class="nc" id="L473">        this.injectionModel.sendToViews(new Request3.MessageHeader(</span>
+<span class="nc" id="L473">        this.injectionModel.sendToViews(new Seal.MessageHeader(</span>
             url,
             null,
 <span class="nc" id="L476">            ConnectionUtil.getHeadersMap(httpRequest.headers()),</span>
@@ -504,12 +504,12 @@ public class ResourceAccess {
 
 <span class="pc bpc" id="L505" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(resultInjection)) {</span>
 <span class="nc" id="L506">            this.injectionModel.sendResponseFromSite(&quot;Can't read privilege&quot;, sourcePage[0].trim());</span>
-<span class="nc" id="L507">            this.injectionModel.sendToViews(new Request3.MarkFileSystemInvulnerable());</span>
+<span class="nc" id="L507">            this.injectionModel.sendToViews(new Seal.MarkFileSystemInvulnerable());</span>
 <span class="pc bpc" id="L508" title="1 of 2 branches missed.">        } else if (&quot;false&quot;.equals(resultInjection)) {</span>
 <span class="nc" id="L509">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Privilege FILE not granted: files not readable by current user&quot;);</span>
-<span class="nc" id="L510">            this.injectionModel.sendToViews(new Request3.MarkFileSystemInvulnerable());</span>
+<span class="nc" id="L510">            this.injectionModel.sendToViews(new Seal.MarkFileSystemInvulnerable());</span>
         } else {
-<span class="fc" id="L512">            this.injectionModel.sendToViews(new Request3.MarkFileSystemVulnerable());</span>
+<span class="fc" id="L512">            this.injectionModel.sendToViews(new Seal.MarkFileSystemVulnerable());</span>
 <span class="fc" id="L513">            readingIsAllowed = true;</span>
         }
         
@@ -527,7 +527,7 @@ public class ResourceAccess {
      */
     public List&lt;String&gt; readFile(List&lt;String&gt; pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
 <span class="fc" id="L529">        if (</span>
-<span class="fc bfc" id="L530" title="All 2 branches covered.">            this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMysql()</span>
+<span class="fc bfc" id="L530" title="All 2 branches covered.">            this.injectionModel.getMediatorEngine().getEngine() == this.injectionModel.getMediatorEngine().getMysql()</span>
 <span class="pc bpc" id="L531" title="1 of 2 branches missed.">            &amp;&amp; this.isMysqlReadDenied()</span>
         ) {
 <span class="nc" id="L533">            return Collections.emptyList();</span>
@@ -536,7 +536,7 @@ public class ResourceAccess {
 <span class="fc" id="L536">        var countFileFound = 0;</span>
 <span class="fc" id="L537">        var results = new ArrayList&lt;String&gt;();</span>
 
-<span class="fc" id="L539">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableReadFile&quot;);</span>
+<span class="fc" id="L539">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableReadFile&quot;);</span>
 <span class="fc" id="L540">        CompletionService&lt;CallableFile&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
 <span class="fc bfc" id="L542" title="All 2 branches covered.">        for (String pathFile: pathsFiles) {</span>
@@ -562,7 +562,7 @@ public class ResourceAccess {
 <span class="fc" id="L562">                String content = currentCallable.getSourceFile();</span>
 <span class="fc" id="L563">                String path = currentCallable.getPathFile();</span>
 
-<span class="fc" id="L565">                this.injectionModel.sendToViews(new Request3.CreateFileTab(name, content, path));</span>
+<span class="fc" id="L565">                this.injectionModel.sendToViews(new Seal.CreateFileTab(name, content, path));</span>
 
 <span class="pc bpc" id="L567" title="1 of 2 branches missed.">                if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {</span>
 <span class="fc" id="L568">                    LOGGER.log(</span>
@@ -584,7 +584,7 @@ public class ResourceAccess {
 <span class="fc" id="L584">            callableReadFile.getSuspendableReadFile().stop();</span>
 <span class="fc" id="L585">        }</span>
 <span class="fc" id="L586">        this.callablesReadFile.clear();</span>
-<span class="fc" id="L587">        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L587">        this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 <span class="fc" id="L588">        this.isSearchFileStopped = false;</span>
 
 <span class="fc" id="L590">        var result = String.format(</span>

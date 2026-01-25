@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SuspendableGetEngine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.suspendable</a> &gt; <span class="el_source">SuspendableGetEngine.java</span></div><h1>SuspendableGetEngine.java</h1><pre class="source lang-java linenums">package com.jsql.model.suspendable;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.view.subscriber.Seal;
+import com.jsql.model.exception.JSqlRuntimeException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBit;
+import com.jsql.model.injection.strategy.blind.InjectionEngine;
+import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class SuspendableGetEngine extends AbstractSuspendable {
+
+<span class="fc" id="L18">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+    public SuspendableGetEngine(InjectionModel injectionModel) {
+<span class="fc" id="L21">        super(injectionModel);</span>
+<span class="fc" id="L22">    }</span>
+
+    @Override
+    public String run(Object... args) {
+<span class="fc" id="L26">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database with Boolean match...&quot;);</span>
+
+<span class="fc" id="L28">        AtomicBoolean isEngineFound = new AtomicBoolean(false);</span>
+<span class="fc" id="L29">        this.injectionModel.getMediatorEngine().getEnginesForFingerprint()</span>
+<span class="fc" id="L30">        .stream()</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        .filter(engine -&gt; engine != this.injectionModel.getMediatorEngine().getAuto())</span>
+<span class="fc" id="L32">        .filter(engine -&gt; StringUtils.isNotEmpty(</span>
+<span class="fc" id="L33">            engine.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getEngineSpecific()</span>
+        ))
+<span class="fc" id="L35">        .forEach(engine -&gt; {</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            if (isEngineFound.get()) {</span>
+<span class="fc" id="L37">                return;</span>
+            }
+<span class="fc" id="L39">            String engineSpecificWithOperator = this.injectionModel.getMediatorEngine().getEngine().instance().sqlTestBlindWithOperator(</span>
+<span class="fc" id="L40">                engine.instance().getModelYaml().getStrategy().getConfiguration().getFingerprint().getEngineSpecific(),</span>
+                AbstractInjectionBit.BlindOperator.OR  // TODO should also test AND and no mode
+            );
+            try {
+<span class="fc" id="L44">                var injectionCharInsertion = new InjectionEngine(this.injectionModel, engineSpecificWithOperator, engine);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">                if (injectionCharInsertion.isInjectable(engineSpecificWithOperator)) {</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">                    if (this.isSuspended()) {</span>
+<span class="nc" id="L47">                        throw new StoppedByUserSlidingException();</span>
+                    }
+
+<span class="fc" id="L50">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Found [{}] using Boolean match&quot;, engine);</span>
+<span class="fc" id="L51">                    this.injectionModel.getMediatorEngine().setEngine(engine);</span>
+<span class="fc" id="L52">                    isEngineFound.set(true);</span>
+
+<span class="fc" id="L54">                    this.injectionModel.sendToViews(new Seal.ActivateEngine(this.injectionModel.getMediatorEngine().getEngine()));</span>
+                }
+<span class="nc" id="L56">            } catch (StoppedByUserSlidingException e) {</span>
+<span class="nc" id="L57">                throw new JSqlRuntimeException(e);</span>
+<span class="fc" id="L58">            }</span>
+<span class="fc" id="L59">        });</span>
+<span class="fc" id="L60">        return null;  // unused</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

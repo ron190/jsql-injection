@@ -12,9 +12,9 @@ package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.ResourceAccess;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
-import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.injection.engine.model.EngineYaml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
@@ -38,28 +38,28 @@ public class StrategyDns extends AbstractStrategy {
 
     @Override
     public void checkApplicability() {
-<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyDnsDisabled()) {</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().preferencesUtil().isStrategyDnsDisabled()) {</span>
 <span class="fc" id="L42">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, this.getName());</span>
 <span class="fc" id="L43">            return;</span>
 <span class="nc" id="L44">        } else if (</span>
-<span class="nc bnc" id="L45" title="All 2 branches missed.">            StringUtils.isBlank(this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain())</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">            || !StringUtils.isNumeric(this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsPort())</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            StringUtils.isBlank(this.injectionModel.getMediatorUtils().preferencesUtil().getDnsDomain())</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            || !StringUtils.isNumeric(this.injectionModel.getMediatorUtils().preferencesUtil().getDnsPort())</span>
         ) {
 <span class="nc" id="L48">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;Incorrect domain '{}' or port '{}', skipping Dns strategy&quot;,
-<span class="nc" id="L51">                this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain(),</span>
-<span class="nc" id="L52">                this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsPort()</span>
+<span class="nc" id="L51">                this.injectionModel.getMediatorUtils().preferencesUtil().getDnsDomain(),</span>
+<span class="nc" id="L52">                this.injectionModel.getMediatorUtils().preferencesUtil().getDnsPort()</span>
             );
 <span class="nc" id="L54">            return;</span>
 <span class="nc" id="L55">        } else if (</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">            StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getDns())</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            StringUtils.isEmpty(this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getDns())</span>
         ) {
 <span class="nc" id="L58">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
 <span class="nc" id="L61">                this.getName(),</span>
-<span class="nc" id="L62">                this.injectionModel.getMediatorVendor().getVendor()</span>
+<span class="nc" id="L62">                this.injectionModel.getMediatorEngine().getEngine()</span>
             );
 <span class="nc" id="L64">            return;</span>
         }
@@ -88,10 +88,10 @@ public class StrategyDns extends AbstractStrategy {
             this::getName,
 <span class="nc" id="L89">            () -&gt; blindOperator</span>
         );
-<span class="nc" id="L91">        String vendorSpecificWithOperator = this.injectionModel.getMediatorVendor().getVendor().instance().sqlDns(</span>
+<span class="nc" id="L91">        String engineSpecificWithOperator = this.injectionModel.getMediatorEngine().getEngine().instance().sqlDns(</span>
 <span class="nc" id="L92">            String.format(</span>
                 &quot;(select concat('', %s))&quot;,
-<span class="nc" id="L94">                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getConfiguration().getFailsafe().replace(VendorYaml.INDICE, &quot;1&quot;)</span>
+<span class="nc" id="L94">                this.injectionModel.getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getConfiguration().getFailsafe().replace(EngineYaml.INDICE, &quot;1&quot;)</span>
             ),
             &quot;1&quot;,
             blindOperator,
@@ -99,10 +99,10 @@ public class StrategyDns extends AbstractStrategy {
         );
 
 <span class="nc" id="L101">        new Thread(this.dnsServer::listen).start();</span>
-<span class="nc" id="L102">        this.injectionModel.injectWithoutIndex(vendorSpecificWithOperator, &quot;dns#confirm&quot;);</span>
+<span class="nc" id="L102">        this.injectionModel.injectWithoutIndex(engineSpecificWithOperator, &quot;dns#confirm&quot;);</span>
 <span class="nc" id="L103">        this.waitDnsResponse(2500);</span>
 
-<span class="nc" id="L105">        var domainName = this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain();</span>
+<span class="nc" id="L105">        var domainName = this.injectionModel.getMediatorUtils().preferencesUtil().getDnsDomain();</span>
 <span class="nc" id="L106">        this.isApplicable = this.dnsServer.getResults().stream().anyMatch(</span>
 <span class="nc bnc" id="L107" title="All 4 branches missed.">            s -&gt; s.contains(domainName) &amp;&amp; s.contains(StringUtil.toHex(ResourceAccess.WEB_CONFIRM_RESULT))</span>
         );
@@ -125,7 +125,7 @@ public class StrategyDns extends AbstractStrategy {
 <span class="nc" id="L125">        this.injectionModel.appendAnalysisReport(</span>
 <span class="nc" id="L126">            StringUtil.formatReport(LogLevelUtil.COLOR_BLU, &quot;### Strategy: &quot; + this.getName())</span>
 <span class="nc" id="L127">            + this.injectionModel.getReportWithoutIndex(</span>
-<span class="nc" id="L128">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlDns(</span>
+<span class="nc" id="L128">                this.injectionModel.getMediatorEngine().getEngine().instance().sqlDns(</span>
 <span class="nc" id="L129">                    StringUtil.formatReport(LogLevelUtil.COLOR_GREEN, &quot;&amp;lt;query&amp;gt;&quot;),</span>
                     &quot;1&quot;,
                     this.blindOperator,
@@ -135,18 +135,18 @@ public class StrategyDns extends AbstractStrategy {
                 null
             )
         );
-<span class="nc" id="L138">        this.injectionModel.sendToViews(new Request3.MarkStrategyVulnerable(this));</span>
+<span class="nc" id="L138">        this.injectionModel.sendToViews(new Seal.MarkStrategyVulnerable(this));</span>
 <span class="nc" id="L139">    }</span>
 
     @Override
     public void unallow(int... i) {
-<span class="nc" id="L143">        this.injectionModel.sendToViews(new Request3.MarkStrategyInvulnerable(this));</span>
+<span class="nc" id="L143">        this.injectionModel.sendToViews(new Seal.MarkStrategyInvulnerable(this));</span>
 <span class="nc" id="L144">    }</span>
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
 <span class="nc" id="L148">        new Thread(() -&gt; this.injectionModel.injectWithoutIndex(</span>
-<span class="nc" id="L149">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlDns(</span>
+<span class="nc" id="L149">            this.injectionModel.getMediatorEngine().getEngine().instance().sqlDns(</span>
                 sqlQuery,
                 startPosition,
                 this.blindOperator,
@@ -156,8 +156,8 @@ public class StrategyDns extends AbstractStrategy {
 <span class="nc" id="L156">        )).start();</span>
 <span class="nc" id="L157">        this.waitDnsResponse(5000);</span>
 
-<span class="nc" id="L159">        String result = this.dnsServer.getResults().get(0);</span>
-<span class="nc" id="L160">        var domainName = this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain();</span>
+<span class="nc" id="L159">        String result = this.dnsServer.getResults().getFirst();</span>
+<span class="nc" id="L160">        var domainName = this.injectionModel.getMediatorUtils().preferencesUtil().getDnsDomain();</span>
 <span class="nc" id="L161">        String regexToMatchTamperTags = String.format(&quot;(?i).{3}\\.([a-z0-9]*)\\..{3}\\.%s\\.&quot;, domainName);</span>
 <span class="nc" id="L162">        var matcherSql = Pattern.compile(regexToMatchTamperTags).matcher(result);</span>
 <span class="nc bnc" id="L163" title="All 2 branches missed.">        if (matcherSql.find()) {</span>
@@ -197,13 +197,13 @@ public class StrategyDns extends AbstractStrategy {
 <span class="nc" id="L197">                this.blindOperator::name</span>
             );
 <span class="nc" id="L199">            this.injectionModel.getMediatorStrategy().setStrategy(this);</span>
-<span class="nc" id="L200">            this.injectionModel.sendToViews(new Request3.MarkStrategy(this));</span>
+<span class="nc" id="L200">            this.injectionModel.sendToViews(new Seal.ActivateStrategy(this));</span>
         }
 <span class="fc" id="L202">    }</span>
     
     @Override
     public String getPerformanceLength() {
-<span class="nc" id="L206">        return VendorYaml.DEFAULT_CAPACITY;</span>
+<span class="nc" id="L206">        return EngineYaml.DEFAULT_CAPACITY;</span>
     }
     
     @Override

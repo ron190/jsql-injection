@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SqlEngine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.sql</a> &gt; <span class="el_source">SqlEngine.java</span></div><h1>SqlEngine.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.sql;
 
-import com.jsql.model.injection.vendor.model.Vendor;
-import com.jsql.model.injection.vendor.model.yaml.Method;
-import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
+import com.jsql.model.injection.engine.model.Engine;
+import com.jsql.model.injection.engine.model.yaml.Method;
+import com.jsql.model.injection.engine.model.yaml.ModelYaml;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 
 public class SqlEngine extends JPanel {
 
-<span class="fc" id="L30">    private static ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();</span>
+<span class="fc" id="L30">    private static ModelYaml modelYaml = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml();</span>
 <span class="fc" id="L31">    private static final JTabbedPane TABS_ERROR = new TabbedPaneWheeled(SwingConstants.RIGHT);</span>
 <span class="fc" id="L32">    private static final List&lt;JSyntaxTextArea&gt; LIST_TEXTAREAS_ERROR = new ArrayList&lt;&gt;();</span>
     
@@ -231,9 +231,9 @@ public class SqlEngine extends JPanel {
 <span class="fc" id="L231">            v -&gt; SqlEngine.modelYaml.getStrategy().getUnion().setOrderBy(v),</span>
 <span class="fc" id="L232">            () -&gt; SqlEngine.modelYaml.getStrategy().getUnion().getOrderBy()</span>
         )),
-<span class="fc" id="L234">        VENDOR_SPECIFIC(new JSyntaxTextArea(</span>
-<span class="fc" id="L235">            v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),</span>
-<span class="fc" id="L236">            () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getVendorSpecific()</span>
+<span class="fc" id="L234">        ENGINE_SPECIFIC(new JSyntaxTextArea(</span>
+<span class="fc" id="L235">            v -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().setEngineSpecific(v),</span>
+<span class="fc" id="L236">            () -&gt; SqlEngine.modelYaml.getStrategy().getConfiguration().getFingerprint().getEngineSpecific()</span>
         )),
         ;
         
@@ -249,8 +249,8 @@ public class SqlEngine extends JPanel {
     }
     
 <span class="fc" id="L251">    public SqlEngine() {</span>
-        // user can switch to another vendor then close, so restore current vendor
-<span class="fc" id="L253">        SqlEngine.modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();</span>
+        // user can switch to another engine then close, so restore current engine
+<span class="fc" id="L253">        SqlEngine.modelYaml = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml();</span>
 
 <span class="fc" id="L255">        SqlEngine.initTextComponents();</span>
 
@@ -281,7 +281,7 @@ public class SqlEngine extends JPanel {
 
 <span class="fc" id="L282">        this.setLayout(new BorderLayout());</span>
 
-<span class="fc" id="L284">        JPanel panelCombo = SqlEngine.initMenuVendor();</span>
+<span class="fc" id="L284">        JPanel panelCombo = SqlEngine.initMenuEngine();</span>
 <span class="fc" id="L285">        tabsBottom.putClientProperty(&quot;JTabbedPane.trailingComponent&quot;, panelCombo);</span>
 <span class="fc" id="L286">        this.add(tabsBottom);</span>
 
@@ -434,7 +434,7 @@ public class SqlEngine extends JPanel {
 <span class="fc" id="L434">        tabs.addTab(I18nUtil.valueByKey(&quot;SQLENGINE_ORDER_BY&quot;), new RTextScrollPane(TextareaWithColor.ORDER_BY.getTextArea(), false));</span>
 <span class="fc" id="L435">        tabs.addTab(&quot;Order by error&quot;, new RTextScrollPane(TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getTextArea(), false));</span>
 <span class="fc" id="L436">        tabs.addTab(&quot;String error&quot;, new RTextScrollPane(TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getTextArea(), false));</span>
-<span class="fc" id="L437">        tabs.addTab(&quot;Vendor specific&quot;, new RTextScrollPane(TextareaWithColor.VENDOR_SPECIFIC.getTextArea(), false));</span>
+<span class="fc" id="L437">        tabs.addTab(&quot;Engine specific&quot;, new RTextScrollPane(TextareaWithColor.ENGINE_SPECIFIC.getTextArea(), false));</span>
 <span class="fc" id="L438">        tabs.addTab(&quot;Truthy&quot;, new RTextScrollPane(TextareaWithColor.TRUTHY.getTextArea(), false));</span>
 <span class="fc" id="L439">        tabs.addTab(&quot;Falsy&quot;, new RTextScrollPane(TextareaWithColor.FALSY.getTextArea(), false));</span>
         
@@ -446,47 +446,47 @@ public class SqlEngine extends JPanel {
 <span class="fc" id="L446">        return tabs;</span>
     }
 
-    private static JPanel initMenuVendor() {
-<span class="fc" id="L450">        var panelMenuVendor = new JPanel();  // required for label on right</span>
-<span class="fc" id="L451">        panelMenuVendor.setLayout(new BorderLayout());</span>
+    private static JPanel initMenuEngine() {
+<span class="fc" id="L450">        var panelMenuEngine = new JPanel();  // required for label on right</span>
+<span class="fc" id="L451">        panelMenuEngine.setLayout(new BorderLayout());</span>
 
-<span class="fc" id="L453">        JPopupMenu popupMenuVendors = new JPopupMenu();</span>
-<span class="fc" id="L454">        popupMenuVendors.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorVendor().getVendors().size()));</span>
+<span class="fc" id="L453">        JPopupMenu popupMenuEngines = new JPopupMenu();</span>
+<span class="fc" id="L454">        popupMenuEngines.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorEngine().getEngines().size()));</span>
 
-<span class="fc" id="L456">        JLabel labelVendor = new JLabel(MediatorHelper.model().getMediatorVendor().getVendor().toString(), UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
-<span class="fc" id="L457">        labelVendor.setBorder(UiUtil.BORDER_5PX);  // required for padding</span>
-<span class="fc" id="L458">        labelVendor.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L456">        JLabel labelEngine = new JLabel(MediatorHelper.model().getMediatorEngine().getEngine().toString(), UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
+<span class="fc" id="L457">        labelEngine.setBorder(UiUtil.BORDER_5PX);  // required for padding</span>
+<span class="fc" id="L458">        labelEngine.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="nc" id="L461">                Arrays.stream(popupMenuVendors.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L462">                popupMenuVendors.updateUI();  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L463">                popupMenuVendors.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());</span>
-<span class="nc" id="L464">                popupMenuVendors.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
+<span class="nc" id="L461">                Arrays.stream(popupMenuEngines.getComponents()).map(a -&gt; (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L462">                popupMenuEngines.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L463">                popupMenuEngines.show(e.getComponent(), e.getComponent().getX(),e.getComponent().getY() + e.getComponent().getHeight());</span>
+<span class="nc" id="L464">                popupMenuEngines.setLocation(e.getComponent().getLocationOnScreen().x,e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
 <span class="nc" id="L465">            }</span>
         });
 
-<span class="fc" id="L468">        List&lt;Vendor&gt; listVendors = new LinkedList&lt;&gt;(MediatorHelper.model().getMediatorVendor().getVendors());</span>
-<span class="fc bfc" id="L469" title="All 2 branches covered.">        listVendors.removeIf(vendor -&gt; vendor == MediatorHelper.model().getMediatorVendor().getAuto());</span>
+<span class="fc" id="L468">        List&lt;Engine&gt; listEngines = new LinkedList&lt;&gt;(MediatorHelper.model().getMediatorEngine().getEngines());</span>
+<span class="fc bfc" id="L469" title="All 2 branches covered.">        listEngines.removeIf(engine -&gt; engine == MediatorHelper.model().getMediatorEngine().getAuto());</span>
 
-<span class="fc" id="L471">        var groupVendor = new ButtonGroup();</span>
-<span class="fc bfc" id="L472" title="All 2 branches covered.">        for (final Vendor vendor: listVendors) {</span>
-<span class="fc" id="L473">            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(</span>
-<span class="fc" id="L474">                vendor.toString(),</span>
-<span class="fc bfc" id="L475" title="All 2 branches covered.">                vendor == MediatorHelper.model().getMediatorVendor().getVendor()</span>
+<span class="fc" id="L471">        var groupEngine = new ButtonGroup();</span>
+<span class="fc bfc" id="L472" title="All 2 branches covered.">        for (final Engine engine : listEngines) {</span>
+<span class="fc" id="L473">            JMenuItem itemRadioEngine = new JRadioButtonMenuItem(</span>
+<span class="fc" id="L474">                engine.toString(),</span>
+<span class="fc bfc" id="L475" title="All 2 branches covered.">                engine == MediatorHelper.model().getMediatorEngine().getEngine()</span>
             );
             
-<span class="fc" id="L478">            itemRadioVendor.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L479">                SqlEngine.modelYaml = vendor.instance().getModelYaml();</span>
+<span class="fc" id="L478">            itemRadioEngine.addActionListener(actionEvent -&gt; {</span>
+<span class="nc" id="L479">                SqlEngine.modelYaml = engine.instance().getModelYaml();</span>
 <span class="nc" id="L480">                SqlEngine.initTextComponents();</span>
-<span class="nc" id="L481">                labelVendor.setText(vendor.toString());</span>
+<span class="nc" id="L481">                labelEngine.setText(engine.toString());</span>
 <span class="nc" id="L482">            });</span>
             
-<span class="fc" id="L484">            groupVendor.add(itemRadioVendor);</span>
-<span class="fc" id="L485">            popupMenuVendors.add(itemRadioVendor);</span>
+<span class="fc" id="L484">            groupEngine.add(itemRadioEngine);</span>
+<span class="fc" id="L485">            popupMenuEngines.add(itemRadioEngine);</span>
 <span class="fc" id="L486">        }</span>
         
-<span class="fc" id="L488">        panelMenuVendor.add(labelVendor, BorderLayout.LINE_END);  // required to set on right</span>
-<span class="fc" id="L489">        return panelMenuVendor;</span>
+<span class="fc" id="L488">        panelMenuEngine.add(labelEngine, BorderLayout.LINE_END);  // required to set on right</span>
+<span class="fc" id="L489">        return panelMenuEngine;</span>
     }
     
     /**
@@ -512,7 +512,7 @@ public class SqlEngine extends JPanel {
 <span class="fc" id="L512">    }</span>
 
     /**
-     * Dynamically add textPanes to Error tab for current vendor.
+     * Dynamically add textPanes to Error tab for current engine.
      */
     private static void populateTabError() {
 <span class="fc" id="L518">        SqlEngine.TABS_ERROR.removeAll();</span>

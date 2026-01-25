@@ -12,11 +12,11 @@ import java.awt.*;
 
 public class PanelUserAgent extends JPanel {
     
-<span class="fc" id="L15">    private final JCheckBox checkboxIsCustomUserAgent = new JCheckBox(&quot;Randomize agent with the following list:&quot;, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUserAgentRandom());</span>
+<span class="fc" id="L15">    private final JCheckBox checkboxIsCustomUserAgent = new JCheckBox(&quot;Randomize agent with the following list:&quot;, MediatorHelper.model().getMediatorUtils().preferencesUtil().isUserAgentRandom());</span>
 
 <span class="fc" id="L17">    public PanelUserAgent(PanelPreferences panelPreferences) {</span>
 <span class="fc" id="L18">        var userAgents = StringUtil.getFile(&quot;swing/list/user-agent.txt&quot;);</span>
-<span class="fc" id="L19">        MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(userAgents);</span>
+<span class="fc" id="L19">        MediatorHelper.model().getMediatorUtils().userAgentUtil().setCustomUserAgent(userAgents);</span>
 
 <span class="fc" id="L21">        this.checkboxIsCustomUserAgent.addActionListener(panelPreferences.getActionListenerSave());</span>
 
@@ -24,11 +24,11 @@ public class PanelUserAgent extends JPanel {
 <span class="fc" id="L24">        textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));</span>
 <span class="fc" id="L25">        textfieldCustomUserAgent.getCaret().setBlinkRate(500);</span>
 <span class="fc" id="L26">        textfieldCustomUserAgent.setText(userAgents);</span>
-<span class="fc" id="L27">        MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(userAgents);</span>
+<span class="fc" id="L27">        MediatorHelper.model().getMediatorUtils().userAgentUtil().setCustomUserAgent(userAgents);</span>
 <span class="fc" id="L28">        textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-<span class="nc" id="L31">                MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(</span>
+<span class="nc" id="L31">                MediatorHelper.model().getMediatorUtils().userAgentUtil().setCustomUserAgent(</span>
 <span class="nc" id="L32">                    textfieldCustomUserAgent.getText()</span>
                 );
 <span class="nc" id="L34">            }</span>

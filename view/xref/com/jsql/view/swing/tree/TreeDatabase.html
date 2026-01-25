@@ -133,81 +133,83 @@
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>     }
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>     
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> createValuesTab(String[][] data, String[] columnNames, AbstractElementDatabase table) {
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>         <em class="jxr_comment">// Report NullPointerException #1683</em>
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(table);
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>             progressingTreeNodeModel.setIndexProgress(table.getChildCount());  <em class="jxr_comment">// Update the progress value of the model, end the progress</em>
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>             progressingTreeNodeModel.setRunning(false);  <em class="jxr_comment">// Mark the node model as 'no stop/pause/resume button'</em>
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>             MediatorHelper.tabResults().addTabValues(data, columnNames, table);
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         }
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>     }
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>     
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> endIndeterminateProgress(AbstractElementDatabase dataElementDatabase) {
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>         <em class="jxr_comment">// Fix #1806 : NullPointerException on ...odels().get(dataElementDatabase).getUserObject()</em>
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>             progressingTreeNodeModel.setProgressing(false);  <em class="jxr_comment">// Mark the node model as 'no loading bar'</em>
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>             progressingTreeNodeModel.setRunning(false);  <em class="jxr_comment">// Mark the node model as 'no stop/pause/resume button'</em>
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>             DefaultTreeModel treeModel = (DefaultTreeModel) <strong class="jxr_keyword">this</strong>.getModel();
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>             treeModel.nodeChanged(node);  <em class="jxr_comment">// Update the node</em>
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>         }
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>     }
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>     
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> endProgress(AbstractElementDatabase dataElementDatabase) {
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>         <em class="jxr_comment">// Report NullPointerException #1671</em>
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>             progressingTreeNodeModel.setLoading(false);  <em class="jxr_comment">// Mark the node model as 'no progress bar'</em>
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>             progressingTreeNodeModel.setRunning(false);  <em class="jxr_comment">// Mark the node model as 'no stop/pause/resume button'</em>
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>             progressingTreeNodeModel.setIndexProgress(0);  <em class="jxr_comment">// Reset the progress value of the model</em>
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>             DefaultTreeModel treeModel = (DefaultTreeModel) <strong class="jxr_keyword">this</strong>.getModel();
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>             treeModel.nodeChanged(node);  <em class="jxr_comment">// Update the node and progress bar</em>
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>         }
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>     }
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>     
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> startIndeterminateProgress(AbstractElementDatabase dataElementDatabase) {
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>         <em class="jxr_comment">// Fix #45540: NullPointerException on node.getUserObject()</em>
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>             progressingTreeNodeModel.setProgressing(<strong class="jxr_keyword">true</strong>);  <em class="jxr_comment">// Mark the node model as 'loading'</em>
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>             DefaultTreeModel treeModel = (DefaultTreeModel) <strong class="jxr_keyword">this</strong>.getModel();
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>             treeModel.nodeChanged(node);  <em class="jxr_comment">// Update the node</em>
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>         }
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>     }
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>     
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> startProgress(AbstractElementDatabase dataElementDatabase) {
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>         <em class="jxr_comment">// Fix rare #73981</em>
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <em class="jxr_comment">// Fix rare Unhandled NullPointerException #66340</em>
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <strong class="jxr_keyword">if</strong> (progressingTreeNodeModel != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>                 progressingTreeNodeModel.setLoading(<strong class="jxr_keyword">true</strong>);  <em class="jxr_comment">// Mark the node model as 'display progress bar'</em>
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>             }
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>             DefaultTreeModel treeModel = (DefaultTreeModel) <strong class="jxr_keyword">this</strong>.getModel();
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>             treeModel.nodeChanged(node);  <em class="jxr_comment">// Update the node</em>
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>         }
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>     }
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>     
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> updateProgress(AbstractElementDatabase dataElementDatabase, <strong class="jxr_keyword">int</strong> dataCount) {
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <em class="jxr_comment">// Fix Report #1368: ignore if no element database, usually for mock (e.g. metadata, file, shell, list databases)</em>
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>             progressingTreeNodeModel.setIndexProgress(dataCount);  <em class="jxr_comment">// Update the progress value of the model</em>
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>             DefaultTreeModel treeModel = (DefaultTreeModel) <strong class="jxr_keyword">this</strong>.getModel();
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>             treeModel.nodeChanged(node);  <em class="jxr_comment">// Update the node</em>
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>         }
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>     }
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>     
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> Map&lt;AbstractElementDatabase, DefaultMutableTreeNode&gt; getTreeNodeModels() {
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mapNodes;
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>     }
-<a class="jxr_linenumber" name="L202" href="#L202">202</a> }
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>         MediatorHelper.frame().getSplitNS().invokeLaterWithSplitOrientation(() -&gt; {
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>             <em class="jxr_comment">// Report NullPointerException #1683</em>
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>             DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(table);
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>             <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>                 <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>                 progressingTreeNodeModel.setIndexProgress(table.getChildCount());  <em class="jxr_comment">// Update the progress value of the model, end the progress</em>
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>                 progressingTreeNodeModel.setRunning(false);  <em class="jxr_comment">// Mark the node model as 'no stop/pause/resume button'</em>
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>                 MediatorHelper.tabResults().addTabValues(data, columnNames, table);
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>             }
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         });
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>     }
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>     
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> endIndeterminateProgress(AbstractElementDatabase dataElementDatabase) {
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>         <em class="jxr_comment">// Fix #1806 : NullPointerException on ...odels().get(dataElementDatabase).getUserObject()</em>
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>             progressingTreeNodeModel.setProgressing(false);  <em class="jxr_comment">// Mark the node model as 'no loading bar'</em>
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>             progressingTreeNodeModel.setRunning(false);  <em class="jxr_comment">// Mark the node model as 'no stop/pause/resume button'</em>
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>             DefaultTreeModel treeModel = (DefaultTreeModel) <strong class="jxr_keyword">this</strong>.getModel();
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>             treeModel.nodeChanged(node);  <em class="jxr_comment">// Update the node</em>
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>         }
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>     }
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>     
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> endProgress(AbstractElementDatabase dataElementDatabase) {
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <em class="jxr_comment">// Report NullPointerException #1671</em>
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>             progressingTreeNodeModel.setLoading(false);  <em class="jxr_comment">// Mark the node model as 'no progress bar'</em>
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>             progressingTreeNodeModel.setRunning(false);  <em class="jxr_comment">// Mark the node model as 'no stop/pause/resume button'</em>
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>             progressingTreeNodeModel.setIndexProgress(0);  <em class="jxr_comment">// Reset the progress value of the model</em>
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>             DefaultTreeModel treeModel = (DefaultTreeModel) <strong class="jxr_keyword">this</strong>.getModel();
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>             treeModel.nodeChanged(node);  <em class="jxr_comment">// Update the node and progress bar</em>
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         }
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>     }
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>     
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> startIndeterminateProgress(AbstractElementDatabase dataElementDatabase) {
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <em class="jxr_comment">// Fix #45540: NullPointerException on node.getUserObject()</em>
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>             progressingTreeNodeModel.setProgressing(<strong class="jxr_keyword">true</strong>);  <em class="jxr_comment">// Mark the node model as 'loading'</em>
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>             DefaultTreeModel treeModel = (DefaultTreeModel) <strong class="jxr_keyword">this</strong>.getModel();
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>             treeModel.nodeChanged(node);  <em class="jxr_comment">// Update the node</em>
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>         }
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>     }
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>     
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> startProgress(AbstractElementDatabase dataElementDatabase) {
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>         <em class="jxr_comment">// Fix rare #73981</em>
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>             <em class="jxr_comment">// Fix rare Unhandled NullPointerException #66340</em>
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>             <strong class="jxr_keyword">if</strong> (progressingTreeNodeModel != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>                 progressingTreeNodeModel.setLoading(<strong class="jxr_keyword">true</strong>);  <em class="jxr_comment">// Mark the node model as 'display progress bar'</em>
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>             }
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>             DefaultTreeModel treeModel = (DefaultTreeModel) <strong class="jxr_keyword">this</strong>.getModel();
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>             treeModel.nodeChanged(node);  <em class="jxr_comment">// Update the node</em>
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>         }
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     }
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>     
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> updateProgress(AbstractElementDatabase dataElementDatabase, <strong class="jxr_keyword">int</strong> dataCount) {
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         DefaultMutableTreeNode node = <strong class="jxr_keyword">this</strong>.getTreeNodeModels().get(dataElementDatabase);
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>         <em class="jxr_comment">// Fix Report #1368: ignore if no element database, usually for mock (e.g. metadata, file, shell, list databases)</em>
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <strong class="jxr_keyword">if</strong> (node != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>             <a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a> progressingTreeNodeModel = (<a name="AbstractNodeModel" href="../../../../../com/jsql/view/swing/tree/model/AbstractNodeModel.html#AbstractNodeModel">AbstractNodeModel</a>) node.getUserObject();
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>             progressingTreeNodeModel.setIndexProgress(dataCount);  <em class="jxr_comment">// Update the progress value of the model</em>
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>             DefaultTreeModel treeModel = (DefaultTreeModel) <strong class="jxr_keyword">this</strong>.getModel();
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>             treeModel.nodeChanged(node);  <em class="jxr_comment">// Update the node</em>
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         }
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>     }
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>     
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> Map&lt;AbstractElementDatabase, DefaultMutableTreeNode&gt; getTreeNodeModels() {
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mapNodes;
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>     }
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

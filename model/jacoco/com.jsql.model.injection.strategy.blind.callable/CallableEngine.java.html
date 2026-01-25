@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CallableEngine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.strategy.blind.callable</a> &gt; <span class="el_source">CallableEngine.java</span></div><h1>CallableEngine.java</h1><pre class="source lang-java linenums">package com.jsql.model.injection.strategy.blind.callable;
+
+import com.jsql.model.injection.strategy.blind.InjectionEngine;
+import com.jsql.model.injection.strategy.blind.patch.Diff;
+import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class CallableEngine extends AbstractCallableBit&lt;CallableEngine&gt; {
+
+<span class="fc" id="L13">    private LinkedList&lt;Diff&gt; opcodes = new LinkedList&lt;&gt;();  // List of differences found between the reference page, and the present page</span>
+
+<span class="fc" id="L15">    private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();</span>
+
+    private final InjectionEngine injectionCharInsertion;
+
+    private final String metadataInjectionProcess;
+
+<span class="fc" id="L21">    public CallableEngine(String inj, InjectionEngine injectionCharInsertion, String metadataInjectionProcess) {</span>
+<span class="fc" id="L22">        this.injectionCharInsertion = injectionCharInsertion;</span>
+<span class="fc" id="L23">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L24">        this.booleanUrl = inj;</span>
+<span class="fc" id="L25">    }</span>
+
+    @Override
+    public boolean isTrue() {
+<span class="fc" id="L29">        List&lt;Diff&gt; copyTrueMarks = new CopyOnWriteArrayList&lt;&gt;(this.injectionCharInsertion.getConstantTrueMark());</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        for (Diff trueDiff: copyTrueMarks) {</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">            if (!this.opcodes.contains(trueDiff)) {</span>
+<span class="fc" id="L32">                return false;</span>
+            }
+<span class="fc" id="L34">        }</span>
+<span class="fc" id="L35">        return true;</span>
+    }
+
+    @Override
+    public CallableEngine call() {
+<span class="fc" id="L40">        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
+<span class="fc" id="L41">        this.opcodes = CallableEngine.DIFF_MATCH_PATCH.diffMain(</span>
+<span class="fc" id="L42">            this.injectionCharInsertion.getBlankFalseMark(),</span>
+            source,
+            false
+        );
+<span class="fc" id="L46">        CallableEngine.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);</span>
+<span class="fc" id="L47">        return this;</span>
+    }
+
+    public List&lt;Diff&gt; getOpcodes() {
+<span class="fc" id="L51">        return this.opcodes;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -35,7 +35,7 @@ public class InjectionMultibit extends AbstractInjectionBit&lt;CallableMultibit&
         }
 
 <span class="fc" id="L37">        this.sourceReference = this.callUrl(&quot;8&quot;, &quot;multi#ref&quot;);</span>
-<span class="fc" id="L38">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetMultibitIds&quot;);</span>
+<span class="fc" id="L38">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetMultibitIds&quot;);</span>
 <span class="fc" id="L39">        Collection&lt;CallableMultibit&gt; callablesId = new ArrayList&lt;&gt;();</span>
 
 <span class="fc bfc" id="L41" title="All 2 branches covered.">        for (int i = 0 ; i &lt; 8 ; i++) {</span>
@@ -50,7 +50,7 @@ public class InjectionMultibit extends AbstractInjectionBit&lt;CallableMultibit&
 
         try {
 <span class="fc" id="L52">            List&lt;Future&lt;CallableMultibit&gt;&gt; futuresId = taskExecutor.invokeAll(callablesId);</span>
-<span class="fc" id="L53">            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
+<span class="fc" id="L53">            this.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);</span>
 
 <span class="fc bfc" id="L55" title="All 2 branches covered.">            for (Future&lt;CallableMultibit&gt; futureId: futuresId) {</span>
 <span class="fc" id="L56">                List&lt;Diff&gt; diffsWithReference = futureId.get().getDiffsWithReference();</span>

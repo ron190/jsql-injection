@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ParameterUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util</a> &gt; <span class="el_source">ParameterUtil.java</span></div><h1>ParameterUtil.java</h1><pre class="source lang-java linenums">package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Request3;
+import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import org.apache.commons.lang3.StringUtils;
@@ -111,8 +111,8 @@ public class ParameterUtil {
 <span class="nc" id="L111">            this.initHeader(rawHeader);</span>
 <span class="nc" id="L112">            this.initRequest(rawRequest);</span>
 
-<span class="nc" id="L114">            this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);</span>
-<span class="nc" id="L115">            this.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);</span>
+<span class="nc" id="L114">            this.injectionModel.getMediatorUtils().connectionUtil().setMethodInjection(methodInjection);</span>
+<span class="nc" id="L115">            this.injectionModel.getMediatorUtils().connectionUtil().setTypeRequest(typeRequest);</span>
             
 <span class="nc bnc" id="L117" title="All 2 branches missed.">            if (isScanning) {</span>
 <span class="nc" id="L118">                this.injectionModel.beginInjection();</span>
@@ -123,7 +123,7 @@ public class ParameterUtil {
 <span class="nc" id="L123">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect Url: {}&quot;, e.getMessage());</span>
             
             // Incorrect URL, reset the start button
-<span class="nc" id="L126">            this.injectionModel.sendToViews(new Request3.EndPreparation());</span>
+<span class="nc" id="L126">            this.injectionModel.sendToViews(new Seal.EndPreparation());</span>
 <span class="nc" id="L127">        }</span>
 <span class="nc" id="L128">    }</span>
 
@@ -136,10 +136,10 @@ public class ParameterUtil {
 <span class="fc" id="L136">        this.checkStarMatchMethod();</span>
 <span class="fc" id="L137">        this.checkMethodNotEmpty();</span>
 <span class="fc" id="L138">        this.checkMultipart();</span>
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (ParameterUtil.isInvalidName(this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest())) {</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (ParameterUtil.isInvalidName(this.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest())) {</span>
 <span class="nc" id="L140">            throw new InjectionFailureException(String.format(</span>
                 &quot;Illegal method: \&quot;%s\&quot;&quot;,
-<span class="nc" id="L142">                this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest()</span>
+<span class="nc" id="L142">                this.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest()</span>
             ));
         }
 <span class="fc" id="L145">    }</span>
@@ -210,8 +210,8 @@ public class ParameterUtil {
 <span class="fc" id="L210">    }</span>
     
     public void checkStarMatchMethod() throws InjectionFailureException {
-<span class="fc" id="L213">        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();</span>
-<span class="fc" id="L214">        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();</span>
+<span class="fc" id="L213">        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection();</span>
+<span class="fc" id="L214">        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam();</span>
 
 <span class="fc" id="L216">        if (</span>
 <span class="fc bfc" id="L217" title="All 2 branches covered.">            this.getQueryStringFromEntries().contains(InjectionModel.STAR)</span>
@@ -235,14 +235,14 @@ public class ParameterUtil {
 <span class="fc" id="L235">    }</span>
     
     public void checkMethodNotEmpty() throws InjectionFailureException {
-<span class="fc" id="L238">        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();</span>
-<span class="fc" id="L239">        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();</span>
+<span class="fc" id="L238">        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection();</span>
+<span class="fc" id="L239">        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam();</span>
         
 <span class="fc" id="L241">        if (</span>
 <span class="pc bpc" id="L242" title="1 of 4 branches missed.">            methodInjection == this.injectionModel.getMediatorMethod().getQuery()</span>
             &amp;&amp; !isCheckingAllParam
 <span class="fc bfc" id="L244" title="All 2 branches covered.">            &amp;&amp; this.getListQueryString().isEmpty()</span>
-<span class="pc bpc" id="L245" title="1 of 2 branches missed.">            &amp;&amp; !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">            &amp;&amp; !this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)</span>
         ) {
 <span class="fc" id="L247">            throw new InjectionFailureException(&quot;No query string&quot;);</span>
 <span class="fc" id="L248">        } else if (</span>
@@ -280,8 +280,8 @@ public class ParameterUtil {
 <span class="nc" id="L280">            throw new MalformedURLException(&quot;empty URL&quot;);</span>
         }
         
-<span class="fc" id="L283">        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlByUser(urlQuery);</span>
-<span class="fc" id="L284">        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(urlQuery);</span>
+<span class="fc" id="L283">        this.injectionModel.getMediatorUtils().connectionUtil().setUrlByUser(urlQuery);</span>
+<span class="fc" id="L284">        this.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(urlQuery);</span>
 <span class="fc" id="L285">        this.listQueryString.clear();</span>
         
         // Parse url and GET query string
@@ -290,7 +290,7 @@ public class ParameterUtil {
 <span class="fc" id="L290">            return;</span>
         }
         
-<span class="fc" id="L293">        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexQueryString.group(1));</span>
+<span class="fc" id="L293">        this.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(regexQueryString.group(1));</span>
         
 <span class="pc bpc" id="L295" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(url.getQuery())) {</span>
 <span class="fc" id="L296">            this.listQueryString = Pattern.compile(&quot;&amp;&quot;)</span>

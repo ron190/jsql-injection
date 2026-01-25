@@ -10,9 +10,9 @@
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.JSqlException;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.vendor.model.VendorYaml;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.engine.model.EngineYaml;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.suspendable.SuspendableGetCharInsertion;
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.suspendable.SuspendableGetVendor;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.suspendable.SuspendableGetEngine;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.jsql.util.LogLevelUtil;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> com.jsql.util.StringUtil;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.lang3.StringUtils;
@@ -64,9 +64,9 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">public</strong> String getMeta() {
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          String strategyName = <strong class="jxr_keyword">this</strong>.strategy == <strong class="jxr_keyword">null</strong> ? StringUtils.EMPTY : <strong class="jxr_keyword">this</strong>.strategy.toString().toLowerCase();
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">var</strong> strategyMode = <span class="jxr_string">"default"</span>;
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isDiosStrategy()) {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>              strategyMode = <span class="jxr_string">"dios"</span>;
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>          } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isZipStrategy()) {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>              strategyMode = <span class="jxr_string">"zip"</span>;
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          }
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">return</strong> String.format(<span class="jxr_string">"%s#%s"</span>, strategyName.replace(<span class="jxr_string">" "</span>, <span class="jxr_string">"-"</span>), strategyMode);
@@ -90,8 +90,8 @@
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>                  result = urlBase.replace(
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>                      InjectionModel.STAR,
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>                      <strong class="jxr_keyword">this</strong>.encodePath(
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>                          <strong class="jxr_keyword">this</strong>.injectionModel.getIndexesInUrl().replaceAll(
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>                              String.format(VendorYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.getSpecificUnion().getVisibleIndex()),
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>                          <strong class="jxr_keyword">this</strong>.getSpecificUnion().getIndexesInUrl().replaceAll(
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>                              String.format(EngineYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.getSpecificUnion().getVisibleIndex()),
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>                              Matcher.quoteReplacement(sqlTrail)  <em class="jxr_comment">// Oracle column can contain regex char $ =&gt; quoteReplacement()</em>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>                          )
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>                      )
@@ -104,7 +104,7 @@
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">private</strong> String encodePath(String sqlTrail) {
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          String sqlTrailEncoded = StringUtil.cleanSql(sqlTrail);
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()) {
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isUrlEncodingDisabled()) {
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>             sqlTrailEncoded = sqlTrailEncoded
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>                 .replace(<span class="jxr_string">"'"</span>, <span class="jxr_string">"%27"</span>)
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>                 .replace(<span class="jxr_string">"("</span>, <span class="jxr_string">"%28"</span>)
@@ -122,7 +122,7 @@
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         }
 <a class="jxr_linenumber" name="L115" href="#L115">115</a> 
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>         <em class="jxr_comment">// URL forbidden characters</em>
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>         <strong class="jxr_keyword">return</strong> (sqlTrailEncoded + <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().endingComment())
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>         <strong class="jxr_keyword">return</strong> (sqlTrailEncoded + <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngine().instance().endingComment())
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>             .replace(<span class="jxr_string">"\&quot;"</span>, <span class="jxr_string">"%22"</span>)
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>             .replace(<span class="jxr_string">"|"</span>, <span class="jxr_string">"%7c"</span>)
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>             .replace(<span class="jxr_string">"`"</span>, <span class="jxr_string">"%60"</span>)
@@ -142,7 +142,7 @@
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>         String parameterOriginalValue = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>         
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>         <em class="jxr_comment">// Fingerprint database</em>
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().setVendor(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().fingerprintVendor());
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().setEngine(<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().fingerprintEngine());
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>         <em class="jxr_comment">// If not an injection point then find insertion character.</em>
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>         <em class="jxr_comment">// Force to 1 if no insertion char works and empty value from user,</em>
@@ -154,9 +154,9 @@
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>             parameterOriginalValue = parameterToInject.getValue();
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>                      
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>             <em class="jxr_comment">// Test for params integrity</em>
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>             String characterInsertionByUser = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getParameterUtil().initStar(parameterToInject);
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>             String characterInsertionByUser = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().parameterUtil().initStar(parameterToInject);
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>             
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>             String characterInsertion = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion()
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>             String characterInsertion = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isNotSearchingCharInsertion()
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>                 ? characterInsertionByUser
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>                 : <strong class="jxr_keyword">new</strong> <a name="SuspendableGetCharInsertion" href="../../../../../com/jsql/model/suspendable/SuspendableGetCharInsertion.html#SuspendableGetCharInsertion">SuspendableGetCharInsertion</a>(<strong class="jxr_keyword">this</strong>.injectionModel).run(characterInsertionByUser);
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>             <strong class="jxr_keyword">if</strong> (characterInsertion.contains(InjectionModel.STAR)) {  <em class="jxr_comment">// When injecting all parameters or JSON</em>
@@ -164,17 +164,17 @@
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>             } <strong class="jxr_keyword">else</strong> {  <em class="jxr_comment">// When injecting last parameter</em>
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>                 parameterToInject.setValue(characterInsertion.replaceAll(<span class="jxr_string">"(&#92;&#92;w)$"</span>, <span class="jxr_string">"$1+"</span>) + InjectionModel.STAR);
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>             }
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>             String characterInsertion = <strong class="jxr_keyword">new</strong> <a name="SuspendableGetCharInsertion" href="../../../../../com/jsql/model/suspendable/SuspendableGetCharInsertion.html#SuspendableGetCharInsertion">SuspendableGetCharInsertion</a>(<strong class="jxr_keyword">this</strong>.injectionModel).run(StringUtils.EMPTY);
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>             String urlBase = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>             String urlBase = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getUrlBase();
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>                 <em class="jxr_comment">// Space %20 for URL, do not use +</em>
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>                 urlBase.replace(InjectionModel.STAR, characterInsertion.replaceAll(<span class="jxr_string">"(&#92;&#92;w)$"</span>, <span class="jxr_string">"$1%20"</span>) + InjectionModel.STAR)
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>             );
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>         }
 <a class="jxr_linenumber" name="L167" href="#L167">167</a> 
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendorByUser() == <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getAuto()) {
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>             <strong class="jxr_keyword">new</strong> <a name="SuspendableGetVendor" href="../../../../../com/jsql/model/suspendable/SuspendableGetVendor.html#SuspendableGetVendor">SuspendableGetVendor</a>(<strong class="jxr_keyword">this</strong>.injectionModel).run();
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngineByUser() == <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getAuto()) {
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>             <strong class="jxr_keyword">new</strong> <a name="SuspendableGetEngine" href="../../../../../com/jsql/model/suspendable/SuspendableGetEngine.html#SuspendableGetEngine">SuspendableGetEngine</a>(<strong class="jxr_keyword">this</strong>.injectionModel).run();
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>         }
 <a class="jxr_linenumber" name="L171" href="#L171">171</a> 
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>         <em class="jxr_comment">// Test each injection strategies: time &lt; blind binary &lt; blind bitwise &lt; multibit &lt; error &lt; stack &lt; union</em>

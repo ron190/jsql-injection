@@ -10,7 +10,7 @@
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.accessible.DataAccess;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.bean.util.Request3;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.subscriber.Seal;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.InjectionFailureException;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.StoppedByUserSlidingException;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
@@ -79,7 +79,7 @@
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">var</strong> indexChar = <strong class="jxr_keyword">new</strong> AtomicInteger(0);  <em class="jxr_comment">// current char position</em>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>          <em class="jxr_comment">// Concurrent URL requests</em>
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          ExecutorService taskExecutor = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(<span class="jxr_string">"CallableAbstractBoolean"</span>);
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          ExecutorService taskExecutor = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().threadUtil().getExecutor(<span class="jxr_string">"CallableAbstractBoolean"</span>);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          CompletionService&lt;T&gt; taskCompletionService = <strong class="jxr_keyword">new</strong> ExecutorCompletionService&lt;&gt;(taskExecutor);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">var</strong> countTasksSubmitted = <strong class="jxr_keyword">new</strong> AtomicInteger(0);
@@ -161,7 +161,7 @@
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> 
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>             currentCallable.setCharText(Character.toString((<strong class="jxr_keyword">char</strong>) asciiCode));
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>             
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Request3.MessageBinary(
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>             <strong class="jxr_keyword">this</strong>.injectionModel.sendToViews(<strong class="jxr_keyword">new</strong> Seal.MessageBinary(
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>                 asciiCodeBit
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>                 + <span class="jxr_string">"="</span>
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>                 + currentCallable.getCharText()
@@ -175,7 +175,7 @@
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>     }
 <a class="jxr_linenumber" name="L168" href="#L168">168</a> 
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>     <strong class="jxr_keyword">private</strong> String stop(List&lt;<strong class="jxr_keyword">char</strong>[]&gt; bytes, ExecutorService taskExecutor) {
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().threadUtil().shutdown(taskExecutor);
 <a class="jxr_linenumber" name="L171" href="#L171">171</a> 
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>         <em class="jxr_comment">// Get current progress and display</em>
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>         <strong class="jxr_keyword">var</strong> result = <strong class="jxr_keyword">new</strong> StringBuilder();

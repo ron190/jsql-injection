@@ -82,7 +82,7 @@ public class DialogAbout extends JDialog {
 <span class="fc" id="L82">        I18nViewUtil.addComponentForKey(&quot;ABOUT_WEBPAGE&quot;, buttonWebpage);</span>
 <span class="fc" id="L83">        buttonWebpage.addActionListener(ev -&gt; {</span>
             try {
-<span class="nc" id="L85">                Desktop.getDesktop().browse(new URI(MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperty(&quot;github.url&quot;)));</span>
+<span class="nc" id="L85">                Desktop.getDesktop().browse(new URI(MediatorHelper.model().getMediatorUtils().propertiesUtil().getProperty(&quot;github.url&quot;)));</span>
 <span class="nc" id="L86">            } catch (IOException | URISyntaxException | UnsupportedOperationException e) {</span>
 <span class="nc" id="L87">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Browsing to Url failed&quot;, e);</span>
 <span class="nc" id="L88">            }</span>

@@ -34,8 +34,8 @@ public class DnsServer {
 
     public void listen() {
 <span class="nc" id="L36">        this.socket.close();  // unbind if already connected</span>
-<span class="nc" id="L37">        int port = Integer.parseInt(this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsPort());</span>
-<span class="nc" id="L38">        var domainName = this.injectionModel.getMediatorUtils().getPreferencesUtil().getDnsDomain();</span>
+<span class="nc" id="L37">        int port = Integer.parseInt(this.injectionModel.getMediatorUtils().preferencesUtil().getDnsPort());</span>
+<span class="nc" id="L38">        var domainName = this.injectionModel.getMediatorUtils().preferencesUtil().getDnsDomain();</span>
 <span class="nc" id="L39">        this.results.clear();</span>
 <span class="nc" id="L40">        try (var newSocket = new DatagramSocket(port)) {</span>
 <span class="nc" id="L41">            this.socket = newSocket;</span>

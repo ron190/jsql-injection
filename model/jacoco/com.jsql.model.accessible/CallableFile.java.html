@@ -5,7 +5,7 @@ import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.model.injection.engine.model.Engine;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -63,22 +63,22 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
      */
     @Override
     public CallableFile call() throws Exception {
-<span class="fc" id="L66">        Map&lt;Vendor, Readable&gt; mapVendorReadable = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L67">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getMysql(), () -&gt; this.injectionModel.getResourceAccess().getExploitMysql().getRead(this.pathFile));</span>
-<span class="fc" id="L68">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getH2(), () -&gt; this.injectionModel.getResourceAccess().getExploitH2().getRead(this.pathFile));</span>
-<span class="fc" id="L69">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getSqlite(), () -&gt; this.injectionModel.getResourceAccess().getExploitSqlite().getRead(this.pathFile));</span>
-<span class="fc" id="L70">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getDerby(), () -&gt; this.injectionModel.getResourceAccess().getExploitDerby().getRead(this.pathFile));</span>
-<span class="fc" id="L71">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getHsqldb(), () -&gt; this.injectionModel.getResourceAccess().getExploitHsqldb().getRead(this.pathFile));</span>
-<span class="fc" id="L72">        mapVendorReadable.put(this.injectionModel.getMediatorVendor().getPostgres(), () -&gt; this.injectionModel.getResourceAccess().getExploitPostgres().getRead(this.pathFile));</span>
+<span class="fc" id="L66">        Map&lt;Engine, Readable&gt; mapEngineReadable = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L67">        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getMysql(), () -&gt; this.injectionModel.getResourceAccess().getExploitMysql().getRead(this.pathFile));</span>
+<span class="fc" id="L68">        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getH2(), () -&gt; this.injectionModel.getResourceAccess().getExploitH2().getRead(this.pathFile));</span>
+<span class="fc" id="L69">        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getSqlite(), () -&gt; this.injectionModel.getResourceAccess().getExploitSqlite().getRead(this.pathFile));</span>
+<span class="fc" id="L70">        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getDerby(), () -&gt; this.injectionModel.getResourceAccess().getExploitDerby().getRead(this.pathFile));</span>
+<span class="fc" id="L71">        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getHsqldb(), () -&gt; this.injectionModel.getResourceAccess().getExploitHsqldb().getRead(this.pathFile));</span>
+<span class="fc" id="L72">        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getPostgres(), () -&gt; this.injectionModel.getResourceAccess().getExploitPostgres().getRead(this.pathFile));</span>
 
-<span class="fc" id="L74">        Readable readable = mapVendorReadable.entrySet().stream()</span>
-<span class="fc bfc" id="L75" title="All 2 branches covered.">            .filter(entry -&gt; this.injectionModel.getMediatorVendor().getVendor() == entry.getKey())</span>
+<span class="fc" id="L74">        Readable readable = mapEngineReadable.entrySet().stream()</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">            .filter(entry -&gt; this.injectionModel.getMediatorEngine().getEngine() == entry.getKey())</span>
 <span class="fc" id="L76">            .findFirst()</span>
 <span class="fc" id="L77">            .orElse(new AbstractMap.SimpleEntry&lt;&gt;(null, () -&gt; {</span>
 <span class="nc" id="L78">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_DEFAULT,
                     &quot;Read file not implemented for [{}], share a working example on GitHub to speed up release&quot;,
-<span class="nc" id="L81">                    this.injectionModel.getMediatorVendor().getVendor()</span>
+<span class="nc" id="L81">                    this.injectionModel.getMediatorEngine().getEngine()</span>
                 );
 <span class="nc" id="L83">                return StringUtils.EMPTY;</span>
             }))

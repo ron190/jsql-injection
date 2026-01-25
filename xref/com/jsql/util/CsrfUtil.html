@@ -56,11 +56,11 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>              )
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>          );
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>          <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>              tags.add(
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>                  String.format(
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>                      <span class="jxr_string">"[name='%s']"</span>,
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>                      <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTag()
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>                      <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTag()
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>                  )
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>              );
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          }
@@ -86,8 +86,8 @@
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>                  tokenCsrfFound::getValue
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>              );
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>              <strong class="jxr_keyword">if</strong> (
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>                  !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>                  &amp;&amp; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>                  !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isNotProcessingCookies()
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>                  &amp;&amp; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isProcessingCsrf()
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>              ) {
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>                  <strong class="jxr_keyword">this</strong>.tokenCsrf = tokenCsrfFound;
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>                  LOGGER.log(
@@ -133,8 +133,8 @@
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>                 cookieCsrf.getValue()
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>             );
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>             <strong class="jxr_keyword">if</strong> (
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>                 !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>                 &amp;&amp; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>                 !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isNotProcessingCookies()
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>                 &amp;&amp; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isProcessingCsrf()
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>             ) {
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>                 <strong class="jxr_keyword">this</strong>.tokenCsrf = headerCsrf;
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>             } <strong class="jxr_keyword">else</strong> {
@@ -151,9 +151,9 @@
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>         httpRequest.setHeader(<span class="jxr_string">"X-XSRF-TOKEN"</span>, <strong class="jxr_keyword">this</strong>.tokenCsrf.getValue());
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         httpRequest.setHeader(<span class="jxr_string">"X-CSRF-TOKEN"</span>, <strong class="jxr_keyword">this</strong>.tokenCsrf.getValue());
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>         
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>             httpRequest.setHeader(
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTagOutput(),
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>                 <strong class="jxr_keyword">this</strong>.tokenCsrf.getValue()
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>             );
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         }
@@ -176,11 +176,11 @@
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>                 <strong class="jxr_keyword">this</strong>.tokenCsrf.getValue()
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>             )
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>         );
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>             httpRequest.append(
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>                 String.format(
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>                     <span class="jxr_string">"%s=%s&amp;"</span>,
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>                     <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>                     <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTagOutput(),
 <a class="jxr_linenumber" name="L176" href="#L176">176</a>                     <strong class="jxr_keyword">this</strong>.tokenCsrf.getValue()
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>                 )
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>             );
@@ -201,10 +201,10 @@
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>             <span class="jxr_string">"&amp;_csrf=%s"</span>,
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>             <strong class="jxr_keyword">this</strong>.tokenCsrf.getValue()
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>         );
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isCsrfUserTag()) {
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>             urlInjectionFixed += String.format(
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>                 <span class="jxr_string">"&amp;%s=%s"</span>,
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>                 <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().csrfUserTagOutput(),
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>                 <strong class="jxr_keyword">this</strong>.tokenCsrf.getValue()
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>             );
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>         }

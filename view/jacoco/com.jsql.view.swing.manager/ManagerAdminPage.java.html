@@ -26,68 +26,70 @@ import java.awt.*;
  * Manager to display webpages frequently used as backoffice administration.
  */
 public class ManagerAdminPage extends AbstractManagerList {
-    
+
 <span class="fc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+    public static final String LIST_MANAGER_ADMIN_PAGE = &quot;listManagerAdminPage&quot;;
 
     /**
      * Create admin page finder.
      */
     public ManagerAdminPage() {
-<span class="fc" id="L36">        super(&quot;swing/list/admin-page.txt&quot;);</span>
+<span class="fc" id="L38">        super(&quot;swing/list/admin-page.txt&quot;);</span>
 
-<span class="fc" id="L38">        this.buildRunButton(&quot;ADMIN_PAGE_RUN_BUTTON_LABEL&quot;, &quot;ADMIN_PAGE_RUN_BUTTON_TOOLTIP&quot;);</span>
-<span class="fc" id="L39">        this.run.setName(&quot;runManagerAdminPage&quot;);</span>
-<span class="pc" id="L40">        this.run.addActionListener(actionEvent -&gt; this.runSearch());</span>
-<span class="fc" id="L41">        this.listPaths.setName(&quot;listManagerAdminPage&quot;);  // no tooltip, too annoying</span>
+<span class="fc" id="L40">        this.buildRunButton(&quot;ADMIN_PAGE_RUN_BUTTON_LABEL&quot;, &quot;ADMIN_PAGE_RUN_BUTTON_TOOLTIP&quot;);</span>
+<span class="fc" id="L41">        this.run.setName(&quot;runManagerAdminPage&quot;);</span>
+<span class="pc" id="L42">        this.run.addActionListener(actionEvent -&gt; this.runSearch());</span>
+<span class="fc" id="L43">        this.listPaths.setName(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE);  // no tooltip, too annoying</span>
 
-<span class="fc" id="L43">        this.lastLine.add(this.horizontalGlue);</span>
-<span class="fc" id="L44">        this.lastLine.add(this.progressBar);</span>
-<span class="fc" id="L45">        this.lastLine.add(this.run);</span>
-<span class="fc" id="L46">        this.add(this.lastLine, BorderLayout.SOUTH);</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L45">        this.lastLine.add(this.horizontalGlue);</span>
+<span class="fc" id="L46">        this.lastLine.add(this.progressBar);</span>
+<span class="fc" id="L47">        this.lastLine.add(this.run);</span>
+<span class="fc" id="L48">        this.add(this.lastLine, BorderLayout.SOUTH);</span>
+<span class="fc" id="L49">    }</span>
 
     private void runSearch() {
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (this.listPaths.getSelectedValuesList().isEmpty()) {</span>
-<span class="nc" id="L51">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select at least one admin page in the list&quot;);</span>
-<span class="nc" id="L52">            return;</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (this.listPaths.getSelectedValuesList().isEmpty()) {</span>
+<span class="nc" id="L53">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select at least one admin page in the list&quot;);</span>
+<span class="nc" id="L54">            return;</span>
         }
         
-<span class="nc" id="L55">        String urlAddressBar = MediatorHelper.panelAddressBar().getTextFieldAddress().getText();</span>
-<span class="nc bnc" id="L56" title="All 4 branches missed.">        if (!urlAddressBar.isEmpty() &amp;&amp; !urlAddressBar.matches(&quot;(?i)^https?://.*&quot;)) {</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (!urlAddressBar.matches(&quot;(?i)^\\w+://.*&quot;)) {</span>
-<span class="nc" id="L58">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_ADMIN_NO_PROTOCOL&quot;));</span>
-<span class="nc" id="L59">                urlAddressBar = &quot;http://&quot;+ urlAddressBar;</span>
+<span class="nc" id="L57">        String urlAddressBar = MediatorHelper.panelAddressBar().getTextFieldAddress().getText();</span>
+<span class="nc bnc" id="L58" title="All 4 branches missed.">        if (!urlAddressBar.isEmpty() &amp;&amp; !urlAddressBar.matches(&quot;(?i)^https?://.*&quot;)) {</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if (!urlAddressBar.matches(&quot;(?i)^\\w+://.*&quot;)) {</span>
+<span class="nc" id="L60">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_ADMIN_NO_PROTOCOL&quot;));</span>
+<span class="nc" id="L61">                urlAddressBar = &quot;http://&quot;+ urlAddressBar;</span>
             } else {
-<span class="nc" id="L61">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_ADMIN_UNKNOWN_PROTOCOL&quot;));</span>
-<span class="nc" id="L62">                return;</span>
+<span class="nc" id="L63">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_ADMIN_UNKNOWN_PROTOCOL&quot;));</span>
+<span class="nc" id="L64">                return;</span>
             }
         }
         
-<span class="nc" id="L66">        String urlFinal = urlAddressBar;</span>
-<span class="nc" id="L67">        new Thread(() -&gt; this.searchAdminPages(urlFinal), &quot;ThreadAdminPage&quot;).start();</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L68">        String urlFinal = urlAddressBar;</span>
+<span class="nc" id="L69">        new Thread(() -&gt; this.searchAdminPages(urlFinal), &quot;ThreadAdminPage&quot;).start();</span>
+<span class="nc" id="L70">    }</span>
 
     private void searchAdminPages(String urlAddressBar) {
-<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (this.run.getState() == StateButton.STARTABLE) {</span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">            if (StringUtils.isEmpty(urlAddressBar)) {</span>
-<span class="nc" id="L73">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing URL in address bar&quot;);</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (this.run.getState() == StateButton.STARTABLE) {</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (StringUtils.isEmpty(urlAddressBar)) {</span>
+<span class="nc" id="L75">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing URL in address bar&quot;);</span>
             } else {
-<span class="nc" id="L75">                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} admin pages...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
-<span class="nc" id="L76">                this.run.setText(I18nViewUtil.valueByKey(&quot;ADMIN_PAGE_RUN_BUTTON_STOP&quot;));</span>
-<span class="nc" id="L77">                this.run.setState(StateButton.STOPPABLE);</span>
-<span class="nc" id="L78">                this.progressBar.setVisible(true);</span>
-<span class="nc" id="L79">                this.horizontalGlue.setVisible(false);</span>
-<span class="nc" id="L80">                MediatorHelper.model().getResourceAccess().createAdminPages(</span>
+<span class="nc" id="L77">                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} admin pages...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
+<span class="nc" id="L78">                this.run.setText(I18nViewUtil.valueByKey(&quot;ADMIN_PAGE_RUN_BUTTON_STOP&quot;));</span>
+<span class="nc" id="L79">                this.run.setState(StateButton.STOPPABLE);</span>
+<span class="nc" id="L80">                this.progressBar.setVisible(true);</span>
+<span class="nc" id="L81">                this.horizontalGlue.setVisible(false);</span>
+<span class="nc" id="L82">                MediatorHelper.model().getResourceAccess().createAdminPages(</span>
                     urlAddressBar,
-<span class="nc" id="L82">                    this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).toList()</span>
+<span class="nc" id="L84">                    this.listPaths.getSelectedValuesList().stream().map(ItemList::toString).toList()</span>
                 );
-<span class="nc" id="L84">                this.endProcess();</span>
+<span class="nc" id="L86">                this.endProcess();</span>
             }
-<span class="nc bnc" id="L86" title="All 2 branches missed.">        } else if (this.run.getState() == StateButton.STOPPABLE) {</span>
-<span class="nc" id="L87">            MediatorHelper.model().getResourceAccess().stopSearchAdmin();</span>
-<span class="nc" id="L88">            this.run.setEnabled(false);</span>
-<span class="nc" id="L89">            this.run.setState(StateButton.STOPPING);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        } else if (this.run.getState() == StateButton.STOPPABLE) {</span>
+<span class="nc" id="L89">            MediatorHelper.model().getResourceAccess().stopSearchAdmin();</span>
+<span class="nc" id="L90">            this.run.setEnabled(false);</span>
+<span class="nc" id="L91">            this.run.setState(StateButton.STOPPING);</span>
         }
-<span class="nc" id="L91">    }</span>
+<span class="nc" id="L93">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -26,8 +26,8 @@ public class MultipartUtil {
 <span class="fc" id="L26">            return true;</span>
         }
         
-<span class="fc" id="L29">        String rawHeader = this.injectionModel.getMediatorUtils().getParameterUtil().getRawHeader();</span>
-<span class="fc" id="L30">        String rawRequest = this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest();</span>
+<span class="fc" id="L29">        String rawHeader = this.injectionModel.getMediatorUtils().parameterUtil().getRawHeader();</span>
+<span class="fc" id="L30">        String rawRequest = this.injectionModel.getMediatorUtils().parameterUtil().getRawRequest();</span>
 
 <span class="fc" id="L32">        Matcher matcherBoundary = Pattern.compile(&quot;boundary=([^;]*)&quot;).matcher(rawHeader);</span>
 <span class="fc bfc" id="L33" title="All 2 branches covered.">        if (!matcherBoundary.find()) {</span>
@@ -57,7 +57,7 @@ public class MultipartUtil {
             &quot;$1&quot; + InjectionModel.STAR + &quot;$2&quot;
         );
 
-<span class="fc" id="L60">        this.injectionModel.getMediatorUtils().getParameterUtil().initRequest(rawRequestWithStar);</span>
+<span class="fc" id="L60">        this.injectionModel.getMediatorUtils().parameterUtil().initRequest(rawRequestWithStar);</span>
 
         try {
 <span class="fc" id="L63">            LOGGER.log(</span>

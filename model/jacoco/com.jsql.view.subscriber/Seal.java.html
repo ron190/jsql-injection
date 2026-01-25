@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Seal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.subscriber</a> &gt; <span class="el_source">Seal.java</span></div><h1>Seal.java</h1><pre class="source lang-java linenums">package com.jsql.view.subscriber;
+
+import com.jsql.model.bean.database.AbstractElementDatabase;
+import com.jsql.model.bean.database.Column;
+import com.jsql.model.bean.database.Database;
+import com.jsql.model.bean.database.Table;
+import com.jsql.model.injection.strategy.AbstractStrategy;
+import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
+import com.jsql.model.injection.engine.model.Engine;
+import org.apache.logging.log4j.util.Strings;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.BiConsumer;
+
+public sealed interface Seal permits
+    Seal.AddColumns,
+    Seal.AddDatabases,
+    Seal.AddTables,
+    Seal.CreateValuesTab,
+
+    Seal.MarkEngineFound,
+    Seal.ActivateEngine,
+
+    Seal.MarkStrategyInvulnerable,
+    Seal.MarkStrategyVulnerable,
+    Seal.ActivateStrategy,
+
+    Seal.MarkFileSystemInvulnerable,
+    Seal.MarkFileSystemVulnerable,
+
+    Seal.MessageBinary,
+    Seal.MessageChunk,
+    Seal.MessageHeader,
+
+    Seal.AddTabExploitSql,
+    Seal.AddTabExploitUdf,
+    Seal.AddTabExploitWeb,
+    Seal.GetTerminalResult,
+
+    Seal.CreateAdminPageTab,
+    Seal.CreateAnalysisReport,
+    Seal.CreateFileTab,
+
+    Seal.EndIndeterminateProgress,
+    Seal.EndPreparation,
+    Seal.EndProgress,
+    Seal.StartIndeterminateProgress,
+    Seal.StartProgress,
+    Seal.UpdateProgress {
+
+<span class="fc" id="L54">    record AddColumns(List&lt;Column&gt; columns) implements Seal {}</span>
+<span class="fc" id="L55">    record AddDatabases(List&lt;Database&gt; databases) implements Seal {}</span>
+<span class="fc" id="L56">    record AddTables(List&lt;Table&gt; tables) implements Seal {}</span>
+<span class="fc" id="L57">    record CreateValuesTab(String[] columns, String[][] table, Table tableBean) implements Seal {}</span>
+
+    /** End the refreshing of administration page search button */
+<span class="fc" id="L60">    record MarkEngineFound(Engine engine) implements Seal {}</span>
+<span class="fc" id="L61">    record ActivateEngine(Engine engine) implements Seal {}</span>
+
+<span class="fc" id="L63">    record MarkStrategyInvulnerable(int indexError, AbstractStrategy strategy) implements Seal {</span>
+        public MarkStrategyInvulnerable(AbstractStrategy strategy) {
+<span class="fc" id="L65">            this(-1, strategy);</span>
+<span class="fc" id="L66">        }</span>
+    }
+<span class="fc" id="L68">    record MarkStrategyVulnerable(int indexError, AbstractStrategy strategy) implements Seal {</span>
+        public MarkStrategyVulnerable(AbstractStrategy strategy) {
+<span class="fc" id="L70">            this(-1, strategy);</span>
+<span class="fc" id="L71">        }</span>
+    }
+<span class="fc" id="L73">    record ActivateStrategy(AbstractStrategy strategy) implements Seal {}</span>
+
+<span class="nc" id="L75">    record MarkFileSystemInvulnerable() implements Seal {}</span>
+<span class="fc" id="L76">    record MarkFileSystemVulnerable() implements Seal {}</span>
+
+<span class="fc" id="L78">    record MessageChunk(String message) implements Seal {}</span>
+<span class="fc" id="L79">    record MessageBinary(String message) implements Seal {}</span>
+    record MessageHeader(
+        String url,
+        String post,
+        Map&lt;String, String&gt; header,
+        Map&lt;String, String&gt; response,
+        String source,
+        String size,
+        String metadataStrategy,
+        String metadataProcess,
+        AbstractCallableBit&lt;?&gt; metadataBoolean
+    ) implements Seal {
+        public MessageHeader(
+            String url,
+            String post,
+            Map&lt;String, String&gt; header,
+            Map&lt;String, String&gt; response,
+            String source,
+            String size,
+            String metadataStrategy,
+            String metadataProcess,
+            AbstractCallableBit&lt;?&gt; metadataBoolean
+<span class="fc" id="L101">        ) {</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">            this.url = url == null ? Strings.EMPTY : url;</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            this.post = post == null ? Strings.EMPTY : post;</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">            this.header = header == null ? Collections.emptyMap() : header;</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">            this.response = response == null ? Collections.emptyMap() : response;</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            this.source = source == null ? Strings.EMPTY : source;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">            this.size = size == null ? Strings.EMPTY : size;</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            this.metadataStrategy = metadataStrategy == null ? Strings.EMPTY : metadataStrategy;</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">            this.metadataProcess = metadataProcess == null ? Strings.EMPTY : metadataProcess;</span>
+<span class="fc" id="L110">            this.metadataBoolean = metadataBoolean;</span>
+<span class="fc" id="L111">        }</span>
+    }
+
+<span class="fc" id="L114">    record AddTabExploitSql(String urlSuccess, String username, String password) implements Seal {}</span>
+<span class="fc" id="L115">    record AddTabExploitUdf(BiConsumer&lt;String, UUID&gt; biConsumerRunCmd) implements Seal {}</span>
+<span class="fc" id="L116">    record AddTabExploitWeb(String urlSuccess) implements Seal {}</span>
+<span class="fc" id="L117">    record GetTerminalResult(UUID uuidShell, String result) implements Seal {}</span>
+
+<span class="fc" id="L119">    record CreateAdminPageTab(String urlSuccess) implements Seal {}</span>
+<span class="fc" id="L120">    record CreateAnalysisReport(String content) implements Seal {}</span>
+<span class="fc" id="L121">    record CreateFileTab(String name, String content, String path) implements Seal {}</span>
+
+<span class="fc" id="L123">    record EndIndeterminateProgress(Table table) implements Seal {}</span>
+<span class="fc" id="L124">    record EndPreparation() implements Seal {}</span>
+<span class="fc" id="L125">    record EndProgress(AbstractElementDatabase elementDatabase) implements Seal {}</span>
+<span class="fc" id="L126">    record StartIndeterminateProgress(Table table) implements Seal {}</span>
+<span class="fc" id="L127">    record StartProgress(AbstractElementDatabase elementDatabase) implements Seal {}</span>
+<span class="fc" id="L128">    record UpdateProgress(AbstractElementDatabase elementDatabase, int countProgress) implements Seal {}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

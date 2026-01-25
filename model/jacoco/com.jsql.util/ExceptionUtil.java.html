@@ -52,7 +52,7 @@ public class ExceptionUtil {
 
             // Report #214: ignore if OutOfMemoryError: Java heap space
 <span class="nc" id="L54">            if (</span>
-<span class="nc bnc" id="L55" title="All 2 branches missed.">                ExceptionUtil.this.injectionModel.getMediatorUtils().getPreferencesUtil().isReportingBugs()</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">                ExceptionUtil.this.injectionModel.getMediatorUtils().preferencesUtil().isReportingBugs()</span>
 <span class="nc bnc" id="L56" title="All 4 branches missed.">                &amp;&amp; ExceptionUtils.getStackTrace(throwable).contains(&quot;com.jsql&quot;)</span>
                 &amp;&amp; !(throwable instanceof OutOfMemoryError)
 <span class="nc bnc" id="L58" title="All 2 branches missed.">                &amp;&amp; !ExceptionUtils.getStackTrace(throwable).contains(&quot;OutOfMemoryError&quot;)  // when implicit</span>
@@ -78,7 +78,7 @@ public class ExceptionUtil {
 <span class="nc" id="L78">                    var md5Exception = HashUtil.digestToHexString(encodedPassword);</span>
 <span class="nc bnc" id="L79" title="All 2 branches missed.">                    if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {</span>
 <span class="nc" id="L80">                        ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);</span>
-<span class="nc" id="L81">                        ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil().sendUnhandledException(</span>
+<span class="nc" id="L81">                        ExceptionUtil.this.injectionModel.getMediatorUtils().gitUtil().sendUnhandledException(</span>
 <span class="nc" id="L82">                            thread.getName(),</span>
                             throwable
                         );

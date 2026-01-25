@@ -55,7 +55,7 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      @Override
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> actionPerformed(ActionEvent actionEvent) {
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">final</strong> SystemFileChooser importFileDialog = <strong class="jxr_keyword">new</strong> SystemFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">final</strong> SystemFileChooser importFileDialog = <strong class="jxr_keyword">new</strong> SystemFileChooser(MediatorHelper.model().getMediatorUtils().preferencesUtil().getPathFile());
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          importFileDialog.setDialogTitle(I18nUtil.valueByKey(<span class="jxr_string">"LIST_EXPORT_TITLE"</span>));
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">int</strong> choice = importFileDialog.showSaveDialog(<strong class="jxr_keyword">this</strong>.myList.getTopLevelAncestor());

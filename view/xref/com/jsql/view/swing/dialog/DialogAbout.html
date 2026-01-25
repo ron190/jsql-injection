@@ -90,7 +90,7 @@
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          I18nViewUtil.addComponentForKey(<span class="jxr_string">"ABOUT_WEBPAGE"</span>, buttonWebpage);
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          buttonWebpage.addActionListener(ev -&gt; {
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>              <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>                  Desktop.getDesktop().browse(<strong class="jxr_keyword">new</strong> URI(MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperty(<span class="jxr_string">"github.url"</span>)));
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>                  Desktop.getDesktop().browse(<strong class="jxr_keyword">new</strong> URI(MediatorHelper.model().getMediatorUtils().propertiesUtil().getProperty(<span class="jxr_string">"github.url"</span>)));
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>              } <strong class="jxr_keyword">catch</strong> (IOException | URISyntaxException | UnsupportedOperationException e) {
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>                  LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Browsing to Url failed"</span>, e);
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>              }

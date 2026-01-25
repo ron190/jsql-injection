@@ -40,13 +40,13 @@
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>          }
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>          INJECTION_MODEL = <strong class="jxr_keyword">new</strong> InjectionModel();
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>          MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          MainApp.INJECTION_MODEL.getMediatorUtils().preferencesUtil().loadSavedPreferences();
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">if</strong> (SystemInfo.isLinux) {  <em class="jxr_comment">// enable flatlaf decorated window</em>
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>              JFrame.setDefaultLookAndFeelDecorated(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>              JDialog.setDefaultLookAndFeelDecorated(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>          }
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">var</strong> nameTheme = MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName();
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">var</strong> nameTheme = MainApp.INJECTION_MODEL.getMediatorUtils().preferencesUtil().getThemeFlatLafName();
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>          UiUtil.applyTheme(nameTheme);  <em class="jxr_comment">// required init but not enough, reapplied next</em>
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>          MainApp.apply4K();
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      }
@@ -62,9 +62,9 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) {
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          MediatorHelper.register(MainApp.INJECTION_MODEL);
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>          MainApp.INJECTION_MODEL.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>          MainApp.INJECTION_MODEL.getMediatorUtils().getProxyUtil().initProxy();
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          MainApp.INJECTION_MODEL.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          MainApp.INJECTION_MODEL.getMediatorUtils().exceptionUtil().setUncaughtExceptionHandler();
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          MainApp.INJECTION_MODEL.getMediatorUtils().proxyUtil().initProxy();
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          MainApp.INJECTION_MODEL.getMediatorUtils().authenticationUtil().setKerberosCifs();
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>              <strong class="jxr_keyword">var</strong> view = <strong class="jxr_keyword">new</strong> <a name="JFrameView" href="../../com/jsql/view/swing/JFrameView.html#JFrameView">JFrameView</a>(MainApp.INJECTION_MODEL);
@@ -86,7 +86,7 @@
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>      }
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> apply4K() {  <em class="jxr_comment">// required not in UiUtil before frame is set</em>
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>          <strong class="jxr_keyword">if</strong> (MainApp.INJECTION_MODEL.getMediatorUtils().getPreferencesUtil().is4K()) {
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>          <strong class="jxr_keyword">if</strong> (MainApp.INJECTION_MODEL.getMediatorUtils().preferencesUtil().is4K()) {
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>              System.setProperty(<span class="jxr_string">"sun.java2d.uiScale"</span>, <span class="jxr_string">"2.5"</span>);  <em class="jxr_comment">// jdk &gt;= 9</em>
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          }
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      }

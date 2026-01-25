@@ -70,15 +70,15 @@ public class JFrameView extends JFrame {
 <span class="fc" id="L70">        this.check4K();</span>
 
 <span class="fc" id="L72">        SwingUtilities.invokeLater(() -&gt; {  // paint native blu svg in theme color behind the scene</span>
-<span class="fc" id="L73">            AppMenubar.applyTheme(injectionModel.getMediatorUtils().getPreferencesUtil().getThemeFlatLafName());  // refresh missing components</span>
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">            if (injectionModel.getMediatorUtils().getProxyUtil().isNotLive(GitUtil.ShowOnConsole.YES)) {  // network access</span>
+<span class="fc" id="L73">            AppMenubar.applyTheme(injectionModel.getMediatorUtils().preferencesUtil().getThemeFlatLafName());  // refresh missing components</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">            if (injectionModel.getMediatorUtils().proxyUtil().isNotLive(GitUtil.ShowOnConsole.YES)) {  // network access</span>
 <span class="nc" id="L75">                return;</span>
             }
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">            if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingUpdate()) {</span>
-<span class="nc" id="L78">                injectionModel.getMediatorUtils().getGitUtil().checkUpdate(GitUtil.ShowOnConsole.NO);</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">            if (injectionModel.getMediatorUtils().preferencesUtil().isCheckingUpdate()) {</span>
+<span class="nc" id="L78">                injectionModel.getMediatorUtils().gitUtil().checkUpdate(GitUtil.ShowOnConsole.NO);</span>
             }
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">            if (injectionModel.getMediatorUtils().getPreferencesUtil().isShowNews()) {  // disabled when UT only</span>
-<span class="nc" id="L81">                injectionModel.getMediatorUtils().getGitUtil().showNews();</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">            if (injectionModel.getMediatorUtils().preferencesUtil().isShowNews()) {  // disabled when UT only</span>
+<span class="nc" id="L81">                injectionModel.getMediatorUtils().gitUtil().showNews();</span>
             }
 <span class="fc" id="L83">            this.setVisible(true);</span>
 <span class="fc" id="L84">            MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();  // required here to get focus</span>
@@ -213,7 +213,7 @@ public class JFrameView extends JFrame {
     private void check4K() {
 <span class="fc" id="L214">        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();</span>
 <span class="fc" id="L215">        int width = (int) screenSize.getWidth();</span>
-<span class="pc bpc" id="L216" title="3 of 4 branches missed.">        if (width &gt;= 3840 &amp;&amp; !this.injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {</span>
+<span class="pc bpc" id="L216" title="3 of 4 branches missed.">        if (width &gt;= 3840 &amp;&amp; !this.injectionModel.getMediatorUtils().preferencesUtil().is4K()) {</span>
 <span class="nc" id="L217">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Screen compatible with resolution 4K, enable high-definition in Preferences&quot;);</span>
         }
 <span class="fc" id="L219">    }</span>

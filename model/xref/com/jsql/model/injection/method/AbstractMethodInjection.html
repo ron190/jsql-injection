@@ -64,19 +64,19 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          <em class="jxr_comment">// Injects URL, Request or Header params only if user tests every params</em>
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <em class="jxr_comment">// or method is selected by user.</em>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">if</strong> (
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>              !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>              &amp;&amp; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != <strong class="jxr_keyword">this</strong>
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>              !<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam()
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>              &amp;&amp; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection() != <strong class="jxr_keyword">this</strong>
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          ) {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>              <strong class="jxr_keyword">return</strong> false;
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          }
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <em class="jxr_comment">// Force injection method of model to current running method</em>
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().setMethodInjection(<strong class="jxr_keyword">this</strong>);
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          <em class="jxr_comment">// Injection by injection point in params or in path</em>
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          <strong class="jxr_keyword">if</strong> (
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>              <strong class="jxr_keyword">this</strong>.getParamsAsString().contains(InjectionModel.STAR)
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>              || <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>              || <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          ) {
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>              hasFoundInjection = <strong class="jxr_keyword">this</strong>.checkParamWithStar();
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.isCheckingAllParam()) {
@@ -148,8 +148,8 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>         <em class="jxr_comment">// When option 'Inject JSON' is selected and there's a JSON entity to inject</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>         <em class="jxr_comment">// then loop through each path to add * at the end of value and test each strategy.</em>
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>         <em class="jxr_comment">// Marks * are erased between each test.</em>
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">if</strong> (!attributesJson.isEmpty() &amp;&amp; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam()) {
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>             hasFoundInjection = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getJsonUtil().testJsonParam(<strong class="jxr_keyword">this</strong>, paramStar);
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">if</strong> (!attributesJson.isEmpty() &amp;&amp; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllJsonParam()) {
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>             hasFoundInjection = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().jsonUtil().testJsonParam(<strong class="jxr_keyword">this</strong>, paramStar);
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>         } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>             hasFoundInjection = <strong class="jxr_keyword">this</strong>.testJsonlessParam(paramStar);  <em class="jxr_comment">// Standard non JSON injection</em>
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>         }

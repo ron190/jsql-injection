@@ -24,11 +24,11 @@ import java.awt.event.ActionListener;
 
     @Override
     public void run() {
-<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (MediatorHelper.model().getMediatorUtils().getProxyUtil().isNotLive(ShowOnConsole.YES)) {</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (MediatorHelper.model().getMediatorUtils().proxyUtil().isNotLive(ShowOnConsole.YES)) {</span>
 <span class="nc" id="L28">            return;</span>
         }
 <span class="nc" id="L30">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_IP_ADDRESS_CHECK&quot;));</span>
-<span class="nc" id="L31">        String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource(&quot;http://checkip.amazonaws.com&quot;);</span>
+<span class="nc" id="L31">        String addressIp = MediatorHelper.model().getMediatorUtils().connectionUtil().getSource(&quot;http://checkip.amazonaws.com&quot;);</span>
 <span class="nc bnc" id="L32" title="All 2 branches missed.">        if (addressIp.matches(&quot;\\d+\\.\\d+\\.\\d+\\.\\d+&quot;)) {</span>
 <span class="nc" id="L33">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,

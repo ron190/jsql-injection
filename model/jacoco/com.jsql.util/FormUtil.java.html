@@ -55,7 +55,7 @@ public class FormUtil {
 <span class="nc" id="L55">            Collections.reverse(mapForms.get(form));</span>
 <span class="nc" id="L56">        }</span>
             
-<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().preferencesUtil().isParsingForm()) {</span>
 <span class="nc" id="L59">            this.logForms(statusCode, elementsForm, result);</span>
         } else {
 <span class="nc" id="L61">            this.addForms(elementsForm, result, mapForms);</span>
@@ -73,36 +73,34 @@ public class FormUtil {
 <span class="nc bnc" id="L73" title="All 2 branches missed.">        for (Entry&lt;Element, List&lt;Element&gt;&gt; form: mapForms.entrySet()) {</span>
 <span class="nc bnc" id="L74" title="All 2 branches missed.">            for (Element input: form.getValue()) {</span>
 <span class="nc bnc" id="L75" title="All 2 branches missed.">                if (StringUtil.GET.equalsIgnoreCase(form.getKey().attr(FormUtil.FORM_ATTR_VALUE))) {</span>
-<span class="nc" id="L76">                    this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(</span>
-                        0,
+<span class="nc" id="L76">                    this.injectionModel.getMediatorUtils().parameterUtil().getListQueryString().addFirst(</span>
                         new SimpleEntry&lt;&gt;(
-<span class="nc" id="L79">                            input.attr(&quot;name&quot;),</span>
-<span class="nc" id="L80">                            input.attr(FormUtil.INPUT_ATTR_VALUE)</span>
+<span class="nc" id="L78">                            input.attr(&quot;name&quot;),</span>
+<span class="nc" id="L79">                            input.attr(FormUtil.INPUT_ATTR_VALUE)</span>
                         )
                     );
-<span class="nc bnc" id="L83" title="All 2 branches missed.">                } else if (StringUtil.POST.equalsIgnoreCase(form.getKey().attr(FormUtil.FORM_ATTR_VALUE))) {</span>
-<span class="nc" id="L84">                    this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(</span>
-                        0,
+<span class="nc bnc" id="L82" title="All 2 branches missed.">                } else if (StringUtil.POST.equalsIgnoreCase(form.getKey().attr(FormUtil.FORM_ATTR_VALUE))) {</span>
+<span class="nc" id="L83">                    this.injectionModel.getMediatorUtils().parameterUtil().getListRequest().addFirst(</span>
                         new SimpleEntry&lt;&gt;(
-<span class="nc" id="L87">                            input.attr(&quot;name&quot;),</span>
-<span class="nc" id="L88">                            input.attr(FormUtil.INPUT_ATTR_VALUE)</span>
+<span class="nc" id="L85">                            input.attr(&quot;name&quot;),</span>
+<span class="nc" id="L86">                            input.attr(FormUtil.INPUT_ATTR_VALUE)</span>
                         )
                     );
                 }
-<span class="nc" id="L92">            }</span>
-<span class="nc" id="L93">        }</span>
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L90">            }</span>
+<span class="nc" id="L91">        }</span>
+<span class="nc" id="L92">    }</span>
 
     private void logForms(int statusCode, Elements elementsForm, StringBuilder result) {
-<span class="nc" id="L97">        LOGGER.log(</span>
+<span class="nc" id="L95">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_DEFAULT,
             &quot;Found {} ignored &lt;form&gt; in HTML body: {}&quot;,
-<span class="nc" id="L100">            elementsForm::size,</span>
-<span class="nc" id="L101">            () -&gt; result</span>
+<span class="nc" id="L98">            elementsForm::size,</span>
+<span class="nc" id="L99">            () -&gt; result</span>
         );
-<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (statusCode != 200) {</span>
-<span class="nc" id="L104">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;WAF can detect missing form parameters, you may enable 'Add &lt;input/&gt; parameters' in Preferences and retry&quot;);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (statusCode != 200) {</span>
+<span class="nc" id="L102">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;WAF can detect missing form parameters, you may enable 'Add &lt;input/&gt; parameters' in Preferences and retry&quot;);</span>
         }
-<span class="nc" id="L106">    }</span>
+<span class="nc" id="L104">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
