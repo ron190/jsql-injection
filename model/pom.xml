@@ -67,7 +67,7 @@
         <mimer.version>3.42.3</mimer.version>
         <monetdb.version>12.2</monetdb.version>
         <mssql.version>13.2.1.jre11</mssql.version>
-        <mysql.version>9.5.0</mysql.version>
+        <mysql.version>9.6.0</mysql.version>
         <!-- failure with 5.28.2 -->
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
         <!-- both java-driver and jdbc-driver required, should use neo4j-jdbc instead -->
