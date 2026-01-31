@@ -51,22 +51,22 @@ public class I18nViewUtil {
     }
 
     public static void switchI18nComponents() {
-        Map<Class<?>, BiConsumer<Object, String>> classHandlers = new LinkedHashMap<>();  // key order required
-        classHandlers.put(JPlaceholder.class, (c, s) -> ((JPlaceholder) c).setPlaceholderText(I18nUtil.valueByKey(s)));
-        classHandlers.put(DialogAbout.class, (c, s) -> ((DialogAbout) c).setTitle(I18nUtil.valueByKey(s) + " " + StringUtil.APP_NAME));
-        classHandlers.put(JToolTipI18n.class, (c, s) -> ((JToolTipI18n) c).setText(I18nViewUtil.valueByKey(s)));
-        classHandlers.put(NodeModelEmpty.class, (c, s) -> ((NodeModelEmpty) c).setText(I18nViewUtil.valueByKey(s)));
-        classHandlers.put(JLabel.class, (c, s) -> ((JLabel) c).setText(I18nViewUtil.valueByKey(s)));
-        classHandlers.put(JMenuItem.class, (c, s) -> ((JMenuItem) c).setText(I18nViewUtil.valueByKey(s)));
-        classHandlers.put(JButton.class, (c, s) -> ((JButton) c).setText(I18nViewUtil.valueByKey(s)));
-        classHandlers.put(JComboBox.class, (c, s) -> ((JComboBox<?>) c).setToolTipText(I18nViewUtil.valueByKey(s)));
-        classHandlers.put(JTextComponent.class, (c, s) -> ((JTextComponent) c).setText(I18nViewUtil.valueByKey(s))); // fallback
         for (String key : I18nViewUtil.keys()) {
             for (Object component : I18nViewUtil.componentsByKey(key)) {
-                classHandlers.entrySet().stream()
-                .filter(entry -> entry.getKey().isInstance(component))
-                .findFirst()
-                .ifPresent(entry -> entry.getValue().accept(component, key));
+                switch (component) {
+                    case JPlaceholder c -> c.setPlaceholderText(I18nUtil.valueByKey(key));
+                    case DialogAbout c -> c.setTitle(I18nUtil.valueByKey(key) + " " + StringUtil.APP_NAME);
+                    case JToolTipI18n c -> c.setText(I18nViewUtil.valueByKey(key));
+                    case NodeModelEmpty c -> c.setText(I18nViewUtil.valueByKey(key));
+                    case JLabel c -> c.setText(I18nViewUtil.valueByKey(key));
+                    case JMenuItem c -> c.setText(I18nViewUtil.valueByKey(key));
+                    case JButton c -> c.setText(I18nViewUtil.valueByKey(key));
+                    case JComboBox<?> c -> c.setToolTipText(I18nViewUtil.valueByKey(key));
+                    case JTextComponent c -> c.setText(I18nViewUtil.valueByKey(key));
+                    default -> {
+                        // ignore
+                    }
+                }
             }
         }
     }

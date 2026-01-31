@@ -26,10 +26,10 @@ public class CallableCharInsertion extends AbstractCallableBit<CallableCharInser
     /**
      * Constructor for preparation and blind confirmation.
      */
-    public CallableCharInsertion(String inj, InjectionCharInsertion injectionCharInsertion, String metadataInjectionProcess) {
+    public CallableCharInsertion(String booleanUrl, InjectionCharInsertion injectionCharInsertion, String metadataInjectionProcess) {
+        this.booleanUrl = booleanUrl;
         this.injectionCharInsertion = injectionCharInsertion;
         this.metadataInjectionProcess = metadataInjectionProcess;
-        this.booleanUrl = inj;
     }
 
     /**

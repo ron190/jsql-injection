@@ -27,9 +27,7 @@ import java.beans.PropertyChangeListener;
 public class FixedColumnTable implements ChangeListener, PropertyChangeListener {
     
     private JTable mainTable;
-    
     private JTable fixedTable;
-    
     private JScrollPane scrollPane;
 
     /**

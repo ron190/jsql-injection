@@ -135,10 +135,6 @@ strategy:
  binary:
   test:
    bit: |
-    /**
-     * true bit return bit, false bit return 0
-     * 8 & 8 = 8, 8 & 4 = 0
-     */
     0 != ascii(substr(
         (${injection}),
         ${window.char},

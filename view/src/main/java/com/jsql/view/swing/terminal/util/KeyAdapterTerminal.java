@@ -136,20 +136,17 @@ public class KeyAdapterTerminal extends KeyAdapter {
         AtomicReference<String> command
     ) throws BadLocationException {
         keyEvent.consume();
-   
         if (this.indexCommandsHistory < this.commandsHistory.size()) {
             this.indexCommandsHistory++;
         }
-   
-        if (!this.commandsHistory.isEmpty() && this.indexCommandsHistory < this.commandsHistory.size()) {
-            this.terminal.getDocument().remove(
-                root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
-                command.get().length() - 1
-            );
-   
+        this.terminal.getDocument().remove(  // remove any prompt command before appending history, or start empty when last
+            root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
+            command.get().length()
+        );
+        if (this.indexCommandsHistory < this.commandsHistory.size()) {
             this.terminal.append(this.commandsHistory.get(this.indexCommandsHistory));
-            this.terminal.setCaretPosition(this.terminal.getDocument().getLength());
         }
+        this.terminal.setCaretPosition(this.terminal.getDocument().getLength());
     }
 
     private void appendPreviousCommand(
@@ -159,28 +156,17 @@ public class KeyAdapterTerminal extends KeyAdapter {
         AtomicReference<String> command
     ) throws BadLocationException {
         keyEvent.consume();
-   
         if (this.indexCommandsHistory > 0) {
             this.indexCommandsHistory--;
         }
-   
+        this.terminal.getDocument().remove(  // remove any prompt command before appending history, also when first
+            root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
+            command.get().length()
+        );
         if (!this.commandsHistory.isEmpty()) {
-            if (
-                this.commandsHistory.size() > 1
-                && this.indexCommandsHistory == this.commandsHistory.size() - 1
-                && StringUtils.isNotEmpty(command.get())
-            ) {
-                this.indexCommandsHistory--;
-            }
-   
-            this.terminal.getDocument().remove(
-                root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
-                command.get().length() - 1
-            );
-   
             this.terminal.append(this.commandsHistory.get(this.indexCommandsHistory));
-            this.terminal.setCaretPosition(this.terminal.getDocument().getLength());
         }
+        this.terminal.setCaretPosition(this.terminal.getDocument().getLength());
     }
 
     private void runCommand(KeyEvent keyEvent, AtomicReference<String> command) {

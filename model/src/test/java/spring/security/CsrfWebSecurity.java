@@ -23,7 +23,6 @@ public class CsrfWebSecurity {
 
     @Bean
     public SecurityFilterChain filterChainCsrf(HttpSecurity http) {
-
         CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");

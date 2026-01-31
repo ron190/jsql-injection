@@ -26,26 +26,21 @@ import com.jsql.view.swing.panel.split.SplitNS;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
-import org.assertj.swing.core.BasicRobot;
-import org.assertj.swing.core.Robot;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.data.Index;
-import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.DialogFixture;
 import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.JListFixture;
+import org.assertj.swing.fixture.JTabbedPaneFixture;
 import org.assertj.swing.timing.Timeout;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Safelist;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.ArgumentMatchers;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -65,20 +60,17 @@ import java.util.regex.Pattern;
 
 // public for javadoc
 @SuppressWarnings("java:S5786")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AppUiTest {
     private static int counterLog = 0;
     private static FrameFixture window;
     private static final Connection connection = Mockito.mock(Connection.class);
     private static final Document document = Mockito.mock(Document.class);
     private static MockedStatic<Jsoup> utilities;
-    private static Robot robot;
 
     @BeforeAll
     public static void setUpOnce() {
         AppUiTest.logMethod();
-        FailOnThreadViolationRepaintManager.install();
-
-        AppUiTest.robot = BasicRobot.robotWithCurrentAwtHierarchyWithoutScreenLock();  // fix linux instabilities
 
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);
@@ -94,7 +86,6 @@ public class AppUiTest {
             }
 
             AppUiTest.utilities = Mockito.mockStatic(Jsoup.class);
-
             AppUiTest.utilities.when(() -> Jsoup.connect(ArgumentMatchers.anyString())).thenReturn(AppUiTest.connection);
             AppUiTest.utilities.when(() -> Jsoup.clean(ArgumentMatchers.anyString(), ArgumentMatchers.any(Safelist.class))).thenReturn("cleaned");
 
@@ -104,12 +95,8 @@ public class AppUiTest {
             AppUiTest.logMethod();
             Mockito.when(AppUiTest.connection.get()).thenReturn(AppUiTest.document);
             Mockito.when(AppUiTest.document.html()).thenReturn("<html><input/>test</html>");
-
             Mockito.when(AppUiTest.document.text()).thenReturn("<html><input/>test</html>");
             AppUiTest.utilities.when(() -> Jsoup.parse(Mockito.anyString())).thenReturn(AppUiTest.document);
-
-            AppUiTest.logMethod();
-            UiUtil.applyTheme(FlatDarkFlatIJTheme.class.getName());  // init but not enough, reapplied next
 
             AppUiTest.logMethod();
             var view = new JFrameView(injectionModel);
@@ -120,7 +107,7 @@ public class AppUiTest {
             return view;
         });
 
-        AppUiTest.window = new FrameFixture(AppUiTest.robot, frame);
+        AppUiTest.window = new FrameFixture(frame);
 
         injectionModel.subscribe(frame.getSubscriberView());
         AppUiTest.logMethod();
@@ -130,91 +117,96 @@ public class AppUiTest {
     public static void afterAll()  {
         AppUiTest.logMethod();
         AppUiTest.window.cleanUp();  // allow mvn retry
-        AppUiTest.robot.cleanUp();
     }
 
     @Test
+    @Order(1)  // force first, slow when last: 253.9 s
     public void shouldDnDList() {
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane(TabManagers.TAB_MANAGERS).selectTab("Admin page");
 
-        Assertions.assertEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(0));
-        Assertions.assertNotEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(1));
+        JListFixture listAdminPage = AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE);
+        Assertions.assertEquals("admin", listAdminPage.valueAt(0));
+        Assertions.assertNotEquals("admin", listAdminPage.valueAt(1));
 
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).drag(0);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).drop(1);
-
-        Assertions.assertNotEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(0));
-        Assertions.assertEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(1));
+        listAdminPage.drag(0);
+        listAdminPage.drop(1);
+        Assertions.assertNotEquals("admin", listAdminPage.valueAt(0));
+        Assertions.assertEquals("admin", listAdminPage.valueAt(1));
 
         AppUiTest.logMethod();
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).selectItem(0).pressKey(KeyEvent.VK_DELETE);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).selectItem(0);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_C);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).selectItem(1);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        listAdminPage.selectItem(0).pressKey(KeyEvent.VK_DELETE);
+        listAdminPage.selectItem(0);
+        listAdminPage.pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
+        listAdminPage.releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_C);
+        listAdminPage.selectItem(1);
+        listAdminPage.pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        listAdminPage.releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
 
-        Assertions.assertEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(0));
-        Assertions.assertEquals("admin", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(1));
+        Assertions.assertEquals("admin", listAdminPage.valueAt(0));
+        Assertions.assertEquals("admin", listAdminPage.valueAt(1));
 
         AppUiTest.logMethod();
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection("paste-from-clipboard");
         clipboard.setContents(stringSelection, null);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        listAdminPage.pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        listAdminPage.releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
 
-        Assertions.assertEquals("paste-from-clipboard", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(1));
+        Assertions.assertEquals("paste-from-clipboard", listAdminPage.valueAt(1));
 
         AppUiTest.logMethod();
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_X);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_X);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).selectItem(3);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        listAdminPage.pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_X);
+        listAdminPage.releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_X);
+        listAdminPage.selectItem(3);
+        listAdminPage.pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        listAdminPage.releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
 
-        Assertions.assertNotEquals("paste-from-clipboard", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(1));
-        Assertions.assertEquals("paste-from-clipboard", AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).valueAt(3));
+        Assertions.assertNotEquals("paste-from-clipboard", listAdminPage.valueAt(1));
+        Assertions.assertEquals("paste-from-clipboard", listAdminPage.valueAt(3));
         AppUiTest.logMethod();
     }
 
     @Test
+    @Order(1)  // force first, slow when last: 203.5 s
     public void shouldDnDScanList() {
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane(TabManagers.TAB_MANAGERS).selectTab("Batch scan");
-        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", AppUiTest.window.list(ManagerScan.NAME).valueAt(0));
-        Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", AppUiTest.window.list(ManagerScan.NAME).valueAt(1));
-        AppUiTest.window.list(ManagerScan.NAME).drag(0);
-        AppUiTest.window.list(ManagerScan.NAME).drop(1);
-        Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", AppUiTest.window.list(ManagerScan.NAME).valueAt(0));
-        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", AppUiTest.window.list(ManagerScan.NAME).valueAt(1));
+
+        JListFixture listScan = AppUiTest.window.list(ManagerScan.NAME);
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", listScan.valueAt(0));
+        Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", listScan.valueAt(1));
+
+        listScan.drag(0);
+        listScan.drop(1);
+        Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", listScan.valueAt(0));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", listScan.valueAt(1));
 
         AppUiTest.logMethod();
-        AppUiTest.window.list(ManagerScan.NAME).selectItem(0).pressKey(KeyEvent.VK_DELETE);
-        AppUiTest.window.list(ManagerScan.NAME).selectItem(0);
-        AppUiTest.window.list(ManagerScan.NAME).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
-        AppUiTest.window.list(ManagerScan.NAME).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_C);
-        AppUiTest.window.list(ManagerScan.NAME).selectItem(1);
-        AppUiTest.window.list(ManagerScan.NAME).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
-        AppUiTest.window.list(ManagerScan.NAME).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        listScan.selectItem(0).pressKey(KeyEvent.VK_DELETE);
+        listScan.selectItem(0);
+        listScan.pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
+        listScan.releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_C);
+        listScan.selectItem(1);
+        listScan.pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        listScan.releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
 
-        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", AppUiTest.window.list(ManagerScan.NAME).valueAt(0));
-        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", AppUiTest.window.list(ManagerScan.NAME).valueAt(1));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", listScan.valueAt(0));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", listScan.valueAt(1));
 
         AppUiTest.logMethod();
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection("paste-from-clipboard");
         clipboard.setContents(stringSelection, null);
-        AppUiTest.window.list(ManagerScan.NAME).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
-        AppUiTest.window.list(ManagerScan.NAME).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        listScan.pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        listScan.releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
 
-        Assertions.assertEquals("paste-from-clipboard", AppUiTest.window.list(ManagerScan.NAME).valueAt(1));
+        Assertions.assertEquals("paste-from-clipboard", listScan.valueAt(1));
         AppUiTest.logMethod();
     }
 
     @Test
+    @Order(1)  // force first, slow when last: 78.37 s
     public void shouldDnDTabs() {
         AppUiTest.logMethod();
         MediatorHelper.model().sendToViews(new Seal.CreateFileTab("dragfile", "content", "path"));
@@ -222,9 +214,10 @@ public class AppUiTest {
         MediatorHelper.model().sendToViews(new Seal.CreateFileTab("dropfile", "content", "path"));
 
         AppUiTest.logMethod();
-        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("dragfile ", Index.atIndex(0));
-        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("jumpfile ", Index.atIndex(1));
-        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("dropfile ", Index.atIndex(2));
+        JTabbedPaneFixture tabResults = AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS);
+        tabResults.requireTitle("dragfile ", Index.atIndex(0));
+        tabResults.requireTitle("jumpfile ", Index.atIndex(1));
+        tabResults.requireTitle("dropfile ", Index.atIndex(2));
 
         AppUiTest.logMethod();
         AppUiTest.window.robot().pressMouse(
@@ -234,19 +227,15 @@ public class AppUiTest {
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.label("dragfile").target()));  // required
         AppUiTest.window.label("dropfile").drop();
 
-        try {
-            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("jumpfile ", Index.atIndex(0));
-            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("dragfile ", Index.atIndex(1));
-            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).requireTitle("dropfile ", Index.atIndex(2));
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        tabResults.requireTitle("jumpfile ", Index.atIndex(0));
+        tabResults.requireTitle("dragfile ", Index.atIndex(1));
+        tabResults.requireTitle("dropfile ", Index.atIndex(2));
 
         AppUiTest.logMethod();
         GuiActionRunner.execute(() -> {
-            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0);
-            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0);
-            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0);
+            tabResults.target().removeTabAt(0);
+            tabResults.target().removeTabAt(0);
+            tabResults.target().removeTabAt(0);
         });
         AppUiTest.logMethod();
     }
@@ -256,11 +245,7 @@ public class AppUiTest {
         AppUiTest.logMethod();
         MediatorHelper.model().sendToViews(new Seal.CreateFileTab("file", "content", "path"));
 
-        try {
-            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("file ").requireVisible();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("file ").requireVisible();
 
         AppUiTest.logMethod();
         GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
@@ -272,11 +257,7 @@ public class AppUiTest {
         AppUiTest.logMethod();
         MediatorHelper.model().sendToViews(new Seal.AddTabExploitWeb("http://webshell"));
 
-        try {
-            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("Web shell").requireVisible();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("Web shell").requireVisible();
 
         AppUiTest.logMethod();
         AppUiTest.window.textBox(TabResults.WEB_SHELL).pressAndReleaseKeys(
@@ -328,11 +309,7 @@ public class AppUiTest {
             GuiActionRunner.execute(() -> AppUiTest.window.menuItem(PanelTrailingAddress.ITEM_RADIO_STRATEGY_ERROR)).target()  // faster than click
         );
         AppUiTest.logMethod();
-        try {
-            AppUiTest.window.menuItem(PanelTrailingAddress.PREFIX_NAME_ERROR + "Unsigned:or").requireVisible();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.menuItem(PanelTrailingAddress.PREFIX_NAME_ERROR + "Unsigned:or").requireVisible();
 
         AppUiTest.window.menuItem(PanelTrailingAddress.ITEM_RADIO_STRATEGY_ERROR).requireEnabled();
         AppUiTest.window.menuItem(PanelTrailingAddress.PREFIX_NAME_ERROR + "Unsigned:or").click();
@@ -343,6 +320,8 @@ public class AppUiTest {
     public void shouldFindNetworkHeader() {
         AppUiTest.logMethod();
 
+        MediatorHelper.model().sendToViews(new Seal.MessageBinary("MessageBinary"));
+        MediatorHelper.model().sendToViews(new Seal.MessageChunk("MessageChunk"));
         MediatorHelper.model().sendToViews(new Seal.MessageHeader(
             "url",
             "post",
@@ -355,11 +334,7 @@ public class AppUiTest {
             null
         ));
 
-        try {
-            AppUiTest.window.label("CONSOLE_NETWORK_LABEL").click().requireVisible();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.label("CONSOLE_NETWORK_LABEL").click().requireVisible();
 
         AppUiTest.window.table(NetworkTable.NETWORK_TABLE).selectRows(0).requireContents(new String[][] { { "url", "1", "meta strategy", "meta process" } });
 
@@ -386,12 +361,8 @@ public class AppUiTest {
             new Seal.AddTabExploitSql("http://sqlshell", "username", "password")
         );
 
-        try {
-            AppUiTest.logMethod();
-            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("SQL shell").requireVisible();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.logMethod();
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("SQL shell").requireVisible();
 
         GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
@@ -422,11 +393,7 @@ public class AppUiTest {
         AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("YQ==", Pattern.DOTALL));
 
         AppUiTest.logMethod();
-        try {
-            AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Hash").target()));
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Hash").target()));
 
         ActionCoder.getHashes().forEach(hash -> {
             String result = null;
@@ -451,11 +418,7 @@ public class AppUiTest {
         MediatorHelper.model().sendToViews(new Seal.CreateAdminPageTab("http://adminpage"));
 
         AppUiTest.logMethod();
-        try {
-            AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("adminpage ").requireVisible();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("adminpage ").requireVisible();
 
         AppUiTest.verifyMockAdminPage();
 
@@ -510,11 +473,7 @@ public class AppUiTest {
     @Test
     public void shouldFindOkButton() {
         AppUiTest.logMethod();
-        try {
-            AppUiTest.window.button(ButtonStart.BUTTON_IN_URL).click();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.button(ButtonStart.BUTTON_IN_URL).click();
     }
 
     @Test
@@ -523,12 +482,7 @@ public class AppUiTest {
         AppUiTest.window.label(PanelConsoles.BUTTON_SHOW_SOUTH).click();
         AppUiTest.window.label(SplitNS.BUTTON_SHOW_CONSOLES_HIDDEN).click();
         AppUiTest.window.label(PanelConsoles.BUTTON_SHOW_NORTH).click();
-
-        try {
-            AppUiTest.window.label(PanelConsoles.BUTTON_SHOW_SOUTH).click();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.label(PanelConsoles.BUTTON_SHOW_SOUTH).click();
     }
 
     @Test
@@ -634,11 +588,7 @@ public class AppUiTest {
         AppUiTest.window.menuItemWithPath("Windows", "SQL Engine").click();
 
         AppUiTest.logMethod();
-        try {
-            AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
         GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
     }
 
@@ -654,11 +604,7 @@ public class AppUiTest {
         AppUiTest.window.menuItem(MenuWindows.ITEM_ENGLISH).click();
 
         AppUiTest.logMethod();
-        try {
-            AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
     }
 
 //    Unstable?
@@ -694,11 +640,7 @@ public class AppUiTest {
         dialog.close();
 
         AppUiTest.logMethod();
-        try {
-            AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
     }
 
     @Test
@@ -712,11 +654,7 @@ public class AppUiTest {
         dialog.button(JButtonMatcher.withText("Close")).click();
 
         AppUiTest.logMethod();
-        try {
-            AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
     }
 
     private static void verifyMockAdminPage() throws IOException {

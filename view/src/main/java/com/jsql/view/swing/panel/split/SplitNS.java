@@ -109,7 +109,7 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
             } else {
                 this.splitEW.setRightComponent(MediatorHelper.tabResults());
             }
-            this.splitEW.setDividerLocation(dividerLocation);
+            SwingUtilities.invokeLater(() -> this.splitEW.setDividerLocation(dividerLocation));  // wait for EDT refresh to prevent wrong location
         }
     }
 

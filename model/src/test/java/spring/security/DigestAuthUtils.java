@@ -24,22 +24,17 @@ import java.security.NoSuchAlgorithmException;
 final class DigestAuthUtils {
 
 	public static String encodePasswordInA1Format(String username, String realm, String password) {
-	    
 		String a1 = username + ":" + realm + ":" + password;
-
 		return DigestAuthUtils.md5Hex(a1);
 	}
 
 	private static String md5Hex(String data) {
-	    
 		MessageDigest digest;
-		
 		try {
 			digest = MessageDigest.getInstance(Coder.MD5.label);
 		} catch (NoSuchAlgorithmException e) {
 			throw new IllegalStateException("No MD5 algorithm available!");
 		}
-
 		return new String(Hex.encode(digest.digest(data.getBytes())));
 	}
 }

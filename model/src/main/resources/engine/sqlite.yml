@@ -205,7 +205,6 @@ strategy:
     - 1 = 2
     - 1 %21= 1
     - 2 %21= 2
-   init: 0%2b1 = 1
    bit: |
     unicode(
         substr(

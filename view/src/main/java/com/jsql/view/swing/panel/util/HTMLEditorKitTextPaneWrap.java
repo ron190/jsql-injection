@@ -15,15 +15,12 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
 
             @Override
             public View create(Element e) {
-                
                 View v = super.create(e);
-                
                 if (v instanceof InlineView) {
                     return this.getInlineView(e);
                 } else if (v instanceof ParagraphView) {
                     return this.getParagraphView(e);
                 }
-                
                 return v;
             }
 
@@ -31,9 +28,7 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
                 return new ParagraphView(e) {
                     @Override
                     protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements sizeRequirements) {
-                        
                         SizeRequirements r = sizeRequirements;
-                        
                         if (r == null) {
                             r = new SizeRequirements();
                         }
@@ -47,7 +42,6 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
                         r.preferred = Math.max(r.minimum, (int) pref);
                         r.maximum = Integer.MAX_VALUE;
                         r.alignment = 0.5f;
-                        
                         return r;
                     }
                 };
@@ -63,19 +57,14 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
 
                     @Override
                     public View breakView(int axis, int p0, float pos, float len) {
-                        
                         if (axis == View.X_AXIS) {
-                            
                             this.checkPainter();
                             int p1 = this.getGlyphPainter().getBoundedPosition(this, p0, pos, len);
-                            
                             if (p0 == this.getStartOffset() && p1 == this.getEndOffset()) {
                                 return this;
                             }
-                            
                             return this.createFragment(p0, p1);
                         }
-                        
                         return this;
                     }
                 };

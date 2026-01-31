@@ -13,11 +13,8 @@ public class HashBruter extends Bruter {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private String hash;
-    
     private String generatedHash;
-    
     private String password;
-    
     private String type;
 
     public void tryBruteForce() {
@@ -38,15 +35,15 @@ public class HashBruter extends Bruter {
     private void generateAllPossibleCombinations(String baseString, int length) throws NoSuchAlgorithmException {
         if (!this.found || !this.done) {
             if (baseString.length() == length) {
-                switch (this.type.toLowerCase()) {
-                    case "adler32": this.generatedHash = HashUtil.toAdler32(baseString); break;
-                    case "crc16":   this.generatedHash = Crc16Helper.generateCRC16(baseString); break;
-                    case "crc32":   this.generatedHash = HashUtil.toCrc32(baseString); break;
-                    case "crc64":   this.generatedHash = Crc64Helper.generateCRC64(baseString.getBytes(StandardCharsets.UTF_8)); break;
-                    case "mysql":   this.generatedHash = HashUtil.toMySql(baseString); break;
-                    case "md4":     this.generatedHash = HashUtil.toMd4(baseString); break;
-                    default:        this.generatedHash = HashUtil.toHash(this.type, baseString); break;
-                }
+                this.generatedHash = switch (this.type.toLowerCase()) {
+                    case "adler32" -> HashUtil.toAdler32(baseString);
+                    case "crc16" -> Crc16Helper.generateCRC16(baseString);
+                    case "crc32" -> HashUtil.toCrc32(baseString);
+                    case "crc64" -> Crc64Helper.generateCRC64(baseString.getBytes(StandardCharsets.UTF_8));
+                    case "mysql" -> HashUtil.toMySql(baseString);
+                    case "md4" -> HashUtil.toMd4(baseString);
+                    default -> HashUtil.toHash(this.type, baseString);
+                };
                 this.password = baseString;
                 if (this.hash.equals(this.generatedHash)) {
                     this.found = true;

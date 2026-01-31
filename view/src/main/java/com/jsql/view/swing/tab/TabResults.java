@@ -42,6 +42,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.UUID;
@@ -174,33 +175,7 @@ public class TabResults extends DnDTabbedPane {
                 browser.getCaret().setSelectionVisible(true);
                 }
             });
-
-            browser.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent evt) {
-                    browser.requestFocusInWindow();
-                    if (evt.isPopupTrigger()) {
-                        menu.show(evt.getComponent(), evt.getX(), evt.getY());
-                    }
-                }
-                @Override
-                public void mouseReleased(MouseEvent evt) {
-                    if (evt.isPopupTrigger()) {
-                        // Fix #45348: IllegalComponentStateException on show()
-                        try {
-                            menu.show(evt.getComponent(), evt.getX(), evt.getY());
-                        } catch (IllegalComponentStateException e) {
-                            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-                        }
-                        menu.setLocation(
-                            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
-                            ? evt.getXOnScreen() - menu.getWidth()
-                            : evt.getXOnScreen(),
-                            evt.getYOnScreen()
-                        );
-                    }
-                }
-            });
+            browser.addMouseListener(new BrowserMouseAdapter(browser, menu));
 
             final var scroller = new JScrollPane(browser);
             MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(".*/", StringUtils.EMPTY) + StringUtils.SPACE, scroller);
@@ -546,7 +521,44 @@ public class TabResults extends DnDTabbedPane {
 
         menuReverse.add(menuListen);
         menuReverse.add(menuConnect);
-
         return menuReverse;
+    }
+
+    private static class BrowserMouseAdapter extends MouseAdapter {
+        private final JTextPane browser;
+        private final JPopupMenu menu;
+
+        public BrowserMouseAdapter(JTextPane browser, JPopupMenu menu) {
+            this.browser = browser;
+            this.menu = menu;
+        }
+
+        @Override
+        public void mousePressed(MouseEvent evt) {
+            this.browser.requestFocusInWindow();
+            if (evt.isPopupTrigger()) {
+                this.menu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent evt) {
+            if (evt.isPopupTrigger()) {
+                Arrays.stream(this.menu.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
+                this.menu.updateUI();  // required: incorrect when dark/light mode switch
+                // Fix #45348: IllegalComponentStateException on show()
+                try {
+                    this.menu.show(evt.getComponent(), evt.getX(), evt.getY());
+                } catch (IllegalComponentStateException e) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+                }
+                this.menu.setLocation(
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
+                    ? evt.getXOnScreen() - this.menu.getWidth()
+                    : evt.getXOnScreen(),
+                    evt.getYOnScreen()
+                );
+            }
+        }
     }
 }

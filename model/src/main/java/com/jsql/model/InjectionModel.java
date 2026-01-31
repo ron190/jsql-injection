@@ -328,11 +328,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return pageSource;
     }
 
-    private String initQueryString(
-        boolean isUsingIndex,
-        String urlInjection,
-        String dataInjection
-    ) throws URISyntaxException, MalformedURLException {
+    private String initQueryString(boolean isUsingIndex, String urlInjection, String dataInjection) {
         String urlInjectionFixed = urlInjection;
         if (
             this.mediatorUtils.parameterUtil().getListQueryString().isEmpty()
@@ -355,11 +351,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return this.mediatorUtils.csrfUtil().addQueryStringToken(urlInjectionFixed);
     }
 
-    private void initHeader(
-        boolean isUsingIndex,
-        String dataInjection,
-        Builder httpRequest
-    ) {
+    private void initHeader(boolean isUsingIndex, String dataInjection, Builder httpRequest) {
         if (!this.mediatorUtils.parameterUtil().getListHeader().isEmpty()) {
             Stream.of(
                 this.buildQuery(
@@ -388,11 +380,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
     }
 
-    private String initRequest(
-        boolean isUsingIndex,
-        String dataInjection,
-        Builder httpRequest
-    ) {
+    private String initRequest(boolean isUsingIndex, String dataInjection, Builder httpRequest) {
         if (
             this.mediatorUtils.parameterUtil().getListRequest().isEmpty()
             && this.mediatorUtils.csrfUtil().getTokenCsrf() == null

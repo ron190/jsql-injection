@@ -44,9 +44,8 @@ public class StrategyUnion extends AbstractStrategy {
 
         this.logChecking();
 
-        this.indexesInUrl = new SuspendableGetIndexes(this.injectionModel).run();
-
         // Define visibleIndex, i.e, 2 in "...union select 1,2,...", if 2 is found in HTML body
+        this.indexesInUrl = new SuspendableGetIndexes(this.injectionModel).run();
         if (StringUtils.isNotEmpty(this.indexesInUrl)) {
             this.visibleIndex = this.getVisibleIndex(this.sourceIndexesFound);
         }
@@ -122,24 +121,16 @@ public class StrategyUnion extends AbstractStrategy {
         String regexAllIndexes = String.format(EngineYaml.FORMAT_INDEX, "(\\d+?)");
         var regexSearch = Pattern.compile("(?s)"+ regexAllIndexes).matcher(firstSuccessPageSource);
         
-        List<String> foundIndexes = new ArrayList<>();
+        List<String> listFoundIndexes = new ArrayList<>();
         while (regexSearch.find()) {
-            foundIndexes.add(regexSearch.group(1));
+            listFoundIndexes.add(regexSearch.group(1));
         }
-
-        String[] indexes = foundIndexes.toArray(new String[0]);
-
-        // Make url shorter, replace useless indexes from 1337[index]7331 to 1
-        String regexAllExceptIndexesFound = String.format(
-            EngineYaml.FORMAT_INDEX,
-            "(?!"+ String.join("|", indexes) +"7331)\\d*"
-        );
-        String indexesInUrl = this.indexesInUrl.replaceAll(regexAllExceptIndexesFound, "1");
+        String[] arrayFoundIndexes = listFoundIndexes.toArray(new String[0]);
 
         // Replace correct indexes from 1337(index)7331 to
         // ==> ${lead}(index)######...######
         // Search for index that displays the most #
-        String performanceQuery = this.injectionModel.getMediatorEngine().getEngine().instance().sqlCapacity(indexes);
+        String performanceQuery = this.injectionModel.getMediatorEngine().getEngine().instance().sqlCapacity(arrayFoundIndexes);
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery, "union#size");
 
         // Build a 2D array of string with:
@@ -150,20 +141,19 @@ public class StrategyUnion extends AbstractStrategy {
         while (regexSearch.find()) {
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
         }
-
         if (performanceResults.isEmpty()) {
             this.performanceLength = "0";
             return null;
         }
         
         // Switch from previous array to 2D integer array
-        //     column 1: length of #######...#######
-        //     column 2: index
+        // column 1: length of #######...#######
+        // column 2: index
         var lengthFields = new Integer[performanceResults.size()][2];
-        
         for (var i = 0 ; i < performanceResults.size() ; i++) {
             lengthFields[i] = new Integer[] {
-                performanceResults.get(i)[1].length() + performanceResults.get(i)[0].length(),
+                performanceResults.get(i)[1].length()  // size of # range
+                + performanceResults.get(i)[0].length(),  // size of integer index
                 Integer.parseInt(performanceResults.get(i)[0])
             };
         }
@@ -173,15 +163,20 @@ public class StrategyUnion extends AbstractStrategy {
         Integer[] bestLengthFields = lengthFields[lengthFields.length - 1];
         this.performanceLength = bestLengthFields[0].toString();
 
+        // Make url shorter, replace useless indexes from 1337[index]7331 to 1
+        String regexAllExceptIndexesFound = String.format(
+            EngineYaml.FORMAT_INDEX,
+            "(?!"+ String.join("|", arrayFoundIndexes) +"7331)\\d*"
+        );
+        String indexesInUrlFixed = this.indexesInUrl.replaceAll(regexAllExceptIndexesFound, "1");
+
         // Reduce all others indexes
         String regexAllIndexesExceptBest = String.format(
             EngineYaml.FORMAT_INDEX,
             "(?!"+ bestLengthFields[1] +"7331)\\d*"
         );
-        indexesInUrl = indexesInUrl.replaceAll(regexAllIndexesExceptBest, "1");
-        
-        this.indexesInUrl = indexesInUrl;
-        
+        this.indexesInUrl = indexesInUrlFixed.replaceAll(regexAllIndexesExceptBest, "1");
+
         return Integer.toString(bestLengthFields[1]);
     }
     

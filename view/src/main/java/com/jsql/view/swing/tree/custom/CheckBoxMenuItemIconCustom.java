@@ -10,10 +10,8 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
 
     @Override
     public void paintIcon(Component component, Graphics graphics, int x, int y) {
-        
         AbstractButton abstractButton = (AbstractButton) component;
         ButtonModel model = abstractButton.getModel();
-
         boolean isSelected = model.isSelected();
         boolean isEnabled = model.isEnabled();
         boolean isPressed = model.isPressed();
@@ -22,9 +20,7 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
         graphics.translate(x, y);
 
         if (isEnabled) {
-            
             if (isPressed || isArmed) {
-                
                 graphics.setColor(MetalLookAndFeel.getControlInfo());
                 graphics.drawLine(0, 0, 8, 0);
                 graphics.drawLine(0, 0, 0, 8);
@@ -32,9 +28,7 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
                 graphics.drawLine(2, 8, 8, 8);
 
                 graphics.setColor(MetalLookAndFeel.getPrimaryControl());
-
             } else {
-                
                 graphics.setColor(MetalLookAndFeel.getControlDarkShadow());
                 graphics.drawLine(0, 0, 8, 0);
                 graphics.drawLine(0, 0, 0, 8);
@@ -48,9 +42,7 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
             graphics.drawLine(1, 1, 1, 7);
             graphics.drawLine(9, 1, 9, 9);
             graphics.drawLine(1, 9, 9, 9);
-
         } else {
-            
             graphics.setColor(MetalLookAndFeel.getMenuDisabledForeground());
             graphics.drawRect(0, 0, 8, 8);
         }
@@ -58,12 +50,10 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
         if (isSelected) {
             this.drawSelected(component, graphics, abstractButton, model, isEnabled);
         }
-
         graphics.translate(-x, -y);
     }
 
     private void drawSelected(Component component, Graphics graphics, AbstractButton abstractButton, ButtonModel model, boolean isEnabled) {
-        
         if (isEnabled) {
             if (model.isArmed() || (component instanceof JMenu && model.isSelected())) {
                 graphics.setColor(MetalLookAndFeel.getMenuSelectedForeground());

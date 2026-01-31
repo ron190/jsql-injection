@@ -198,10 +198,8 @@ public class MenuWindows extends JMenu {
         itemSqlEngine.setName("itemSqlEngine");
         itemSqlEngine.setMnemonic('S');
 
-        // Render the SQL Engine dialog behind the scene
-        var titleTabSqlEngine = "SQL Engine";
-
         itemSqlEngine.addActionListener(actionEvent -> {
+            var titleTabSqlEngine = "SQL Engine";
             for (var i = 0 ; i < MediatorHelper.tabResults().getTabCount() ; i++) {
                 if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     MediatorHelper.tabResults().setSelectedIndex(i);

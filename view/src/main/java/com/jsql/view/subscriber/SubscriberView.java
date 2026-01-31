@@ -29,7 +29,7 @@ public class SubscriberView extends AbstractSubscriber {
 
     private void executeInjection(Seal request) {
         switch (request) {
-            case Seal.ActivateEngine r -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().setEngine(r.engine());
+            case Seal.ActivateEngine(var engine) -> MediatorHelper.panelAddressBar().getPanelTrailingAddress().setEngine(engine);
             case Seal.AddColumns(var columns) -> MediatorHelper.treeDatabase().addColumns(columns);
             case Seal.AddTables(var tables) -> MediatorHelper.treeDatabase().addTables(tables);
             case Seal.AddDatabases(var databases) -> MediatorHelper.treeDatabase().addDatabases(databases);
@@ -61,7 +61,7 @@ public class SubscriberView extends AbstractSubscriber {
     private void executeExploit(Seal request) {
         switch (request) {
             case Seal.AddTabExploitSql(var urlSuccess, var username, var password) -> MediatorHelper.tabResults().addTabExploitSql(urlSuccess, username, password);
-            case Seal.AddTabExploitUdf r -> MediatorHelper.tabResults().addTabExploitUdf(r.biConsumerRunCmd());
+            case Seal.AddTabExploitUdf(var biConsumerRunCmd) -> MediatorHelper.tabResults().addTabExploitUdf(biConsumerRunCmd);
             case Seal.AddTabExploitWeb(String urlSuccess) -> MediatorHelper.tabResults().addTabExploitWeb(urlSuccess);
             case Seal.GetTerminalResult(UUID uuidShell, String result) -> {
                 AbstractExploit terminal = MediatorHelper.frame().getMapUuidShell().get(uuidShell);

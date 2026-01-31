@@ -22,7 +22,11 @@ public class DigestSecurityConfig {
     private static final String DIGEST_REALM = "Digest Realm";
     public static final String DIGEST_USERNAME = "login-digest";
     public static final String DIGEST_PASSWORD = "password-digest";
-    private static final String DIGEST_PASSWORD_ENCODED = DigestAuthUtils.encodePasswordInA1Format(DigestSecurityConfig.DIGEST_USERNAME, DigestSecurityConfig.DIGEST_REALM, DigestSecurityConfig.DIGEST_PASSWORD);
+    private static final String DIGEST_PASSWORD_ENCODED = DigestAuthUtils.encodePasswordInA1Format(
+        DigestSecurityConfig.DIGEST_USERNAME,
+        DigestSecurityConfig.DIGEST_REALM,
+        DigestSecurityConfig.DIGEST_PASSWORD
+    );
     public static final CustomFilter FILTER = new CustomFilter("digest");
 
     @Bean

@@ -20,11 +20,8 @@ public class DeleteNextCharAction extends AbstractCharAction {
     @Override
     protected void delete(Document doc, int dot) throws BadLocationException {
         if (dot < doc.getLength()) {
-            
             var delChars = 1;
-
             if (dot < doc.getLength() - 1) {
-                
                 String dotChars = doc.getText(dot, 2);
                 var c0 = dotChars.charAt(0);
                 var c1 = dotChars.charAt(1);
@@ -33,7 +30,6 @@ public class DeleteNextCharAction extends AbstractCharAction {
                     delChars = 2;
                 }
             }
-
             doc.remove(dot, delChars);
         }
     }

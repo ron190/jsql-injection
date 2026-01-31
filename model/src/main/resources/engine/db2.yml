@@ -149,21 +149,6 @@ strategy:
 
  binary:
   test:
-   truthyBit:
-    - 0 = 0
-    - "'a' %21= 'b'"
-    - "'a' = 'a'"
-    - 1 = 1
-    - 2 = 2
-    - 1 %21= 2
-   falsyBit:
-    - 1 = 0
-    - "'a' %21= 'a'"
-    - "'b' %21= 'b'"
-    - 1 = 2
-    - 1 %21= 1
-    - 2 %21= 2
-   init: 0%2b1 = 1
    bit: |
     0 != bitand(
         ascii(

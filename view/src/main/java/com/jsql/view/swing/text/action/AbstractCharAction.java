@@ -32,13 +32,10 @@ public abstract class AbstractCharAction extends TextAction {
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-        
         JTextComponent target = this.getTextComponent(event);
-
         if (target == null || !target.isEditable()) {
             return;
         }
-        
         try {
             var doc = target.getDocument();
             var caret = target.getCaret();

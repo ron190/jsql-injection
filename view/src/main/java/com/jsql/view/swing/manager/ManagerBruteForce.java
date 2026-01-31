@@ -11,7 +11,6 @@
 package com.jsql.view.swing.manager;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevelUtil;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.manager.util.ActionBruteForce;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -196,44 +195,35 @@ public class ManagerBruteForce extends JPanel {
         thirdLine.add(this.exclude);
 
         Arrays.asList(
-            new ModelSpinner(1, this.minimumLength, "BRUTEFORCE_MIN_TOOLTIP"),
-            new ModelSpinner(5, this.maximumLength, "BRUTEFORCE_MAX_TOOLTIP")
-        ).forEach(model -> {
+            new ModelSpinner(1, this.minimumLength, "BRUTEFORCE_MIN_LABEL", "BRUTEFORCE_MIN_TOOLTIP"),
+            new ModelSpinner(5, this.maximumLength, "BRUTEFORCE_MAX_LABEL", "BRUTEFORCE_MAX_TOOLTIP")
+        ).forEach(model -> SwingUtilities.invokeLater(() -> {  // #96099: JSpinner not fully initialized
             final var tooltipMax = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(model.i18n())));
-            try {  // Fixes #96099: NullPointerException on new JSpinner
-                model.spinner().set(new JSpinner() {
-                    @Override
-                    public JToolTip createToolTip() {
-                        return tooltipMax.get();
-                    }
-                });
-            } catch (NullPointerException e) {
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Spinner creation failed, restart app or check your jre", e);
-                return;
-            }
-            model.spinner().get().setModel(new SpinnerNumberModel(model.value(), 1, 10000, 1));
-            model.spinner().get().addMouseWheelListener(new SpinnerMouseWheelListener());
-            model.spinner().get().setToolTipText(I18nUtil.valueByKey(model.i18n()));
+            var spinner = new JSpinner() {
+                @Override
+                public JToolTip createToolTip() {
+                    return tooltipMax.get();
+                }
+            };
+            spinner.setModel(new SpinnerNumberModel(model.value(), 1, 10000, 1));
+            spinner.addMouseWheelListener(new SpinnerMouseWheelListener());
+            spinner.setToolTipText(I18nUtil.valueByKey(model.i18n()));
             I18nViewUtil.addComponentForKey(model.i18n(), tooltipMax.get());
-            model.spinner().get().setPreferredSize(new Dimension(
-                (int) (model.spinner().get().getPreferredSize().width/1.8),
-                model.spinner().get().getPreferredSize().height
+            spinner.setPreferredSize(new Dimension(
+                (int) (spinner.getPreferredSize().width/1.8),
+                spinner.getPreferredSize().height
             ));
-        });
 
-        var labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
-        labelMin.setMaximumSize(new Dimension(labelMin.getPreferredSize().width, labelMin.getPreferredSize().height));
-        thirdLine.add(Box.createHorizontalStrut(5));
-        thirdLine.add(labelMin);
-        I18nViewUtil.addComponentForKey("BRUTEFORCE_MIN_LABEL", labelMin);
-        thirdLine.add(this.minimumLength.get());
+            var label = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(model.label()), SwingConstants.RIGHT);
+            label.setMaximumSize(new Dimension(label.getPreferredSize().width, label.getPreferredSize().height));
+            thirdLine.add(Box.createHorizontalStrut(5));
+            thirdLine.add(label);
+            I18nViewUtil.addComponentForKey(model.label(), label);
 
-        var labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
-        labelMax.setMaximumSize(new Dimension(labelMax.getPreferredSize().width, labelMax.getPreferredSize().height));
-        thirdLine.add(Box.createHorizontalStrut(5));
-        thirdLine.add(labelMax);
-        I18nViewUtil.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
-        thirdLine.add(this.maximumLength.get());
+            thirdLine.add(spinner);
+            model.spinner().set(spinner);
+        }));
+
         return thirdLine;
     }
 

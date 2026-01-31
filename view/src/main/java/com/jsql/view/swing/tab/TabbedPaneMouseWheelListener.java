@@ -17,7 +17,6 @@ public class TabbedPaneMouseWheelListener implements MouseWheelListener {
     
     @Override
     public void mouseWheelMoved(MouseWheelEvent event) {
-        
         JTabbedPane tabPane = (JTabbedPane) event.getSource();
 
         int dir = -event.getWheelRotation();

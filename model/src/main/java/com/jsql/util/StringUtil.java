@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.universalchardet.UniversalDetector;
 
 import java.awt.*;
 import java.io.*;
@@ -106,37 +105,26 @@ public final class StringUtil {
         if (text == null) {
             return false;
         }
-        
-        var detector = new UniversalDetector(null);
-        detector.handleData(text.getBytes(StandardCharsets.UTF_8), 0, text.length() - 1);
-        detector.dataEnd();
-        String encoding = detector.getDetectedCharset();
-        return encoding != null;
+        return StringUtil.containsNonStandardScripts(text);
     }
     
     public static String detectUtf8(String text) {
         if (text == null) {
             return StringUtils.EMPTY;
         }
-        
-        String encoding = null;
-        
-        // ArrayIndexOutOfBoundsException on handleData()
-        try {
-            var detector = new UniversalDetector(null);
-            detector.handleData(text.getBytes(StandardCharsets.UTF_8), 0, text.length() - 1);
-            detector.dataEnd();
-            encoding = detector.getDetectedCharset();
-            
-        } catch (ArrayIndexOutOfBoundsException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-        }
-        
         String result = text;
-        if (encoding != null) {
+        if (StringUtil.containsNonStandardScripts(text)) {
             result = new String(text.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         }
         return result;
+    }
+
+    public static boolean containsNonStandardScripts(String str) {
+        return str.codePoints().anyMatch(codePoint -> {
+            Character.UnicodeScript script = Character.UnicodeScript.of(codePoint);
+            // Check for scripts other than Latin
+            return script != Character.UnicodeScript.LATIN && script != Character.UnicodeScript.COMMON;
+        });
     }
     
     public static String base32Encode(String s) {

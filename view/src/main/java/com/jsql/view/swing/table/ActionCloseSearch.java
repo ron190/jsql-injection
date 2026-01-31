@@ -10,7 +10,6 @@ public class ActionCloseSearch extends AbstractAction {
     private final PanelTable panelTable;
     
     public ActionCloseSearch(JTextField textFilter, JPanel panelSearch, PanelTable panelTable) {
-        
         this.textFilter = textFilter;
         this.panelSearch = panelSearch;
         this.panelTable = panelTable;
@@ -18,7 +17,6 @@ public class ActionCloseSearch extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        
         this.textFilter.setText(null);
         this.panelSearch.setVisible(false);
         this.panelTable.getTableValues().requestFocusInWindow();

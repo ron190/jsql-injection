@@ -119,7 +119,6 @@ public class PanelNode extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
-                
                 if (e.getKeyCode() == KeyEvent.VK_F2 && !nodeModel.isRunning()) {
                     nodeModel.setIsEdited(true);
                     

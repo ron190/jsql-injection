@@ -21,6 +21,7 @@ import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoManager;
 import java.awt.event.ActionEvent;
 
@@ -43,10 +44,22 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         this.getProxy().setDragEnabled(true);
 
         var undoRedoManager = new UndoManager();
-        var doc = this.getProxy().getDocument();
+
+        // Time-based grouping for words undo/redo instead of chars
+        final CompoundEdit[] currentEdit = {new CompoundEdit()};
+        Timer commitTimer = new Timer(500, e -> {
+            currentEdit[0].end();
+            undoRedoManager.addEdit(currentEdit[0]);
+            currentEdit[0] = new CompoundEdit();
+        });
+        commitTimer.setRepeats(false);
 
         // Listen for undo and redo events
-        doc.addUndoableEditListener(undoableEditEvent -> undoRedoManager.addEdit(undoableEditEvent.getEdit()));
+        var doc = this.getProxy().getDocument();
+        doc.addUndoableEditListener(e -> {
+            currentEdit[0].addEdit(e.getEdit());
+            commitTimer.restart();
+        });
 
         this.initUndo(undoRedoManager);
         this.initRedo(undoRedoManager);
