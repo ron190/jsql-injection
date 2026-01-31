@@ -54,7 +54,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
             }
             stringTransferable.append(new JSONArray(jsons).toString(4));
         } catch (JSONException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         return stringTransferable.toString();
     }

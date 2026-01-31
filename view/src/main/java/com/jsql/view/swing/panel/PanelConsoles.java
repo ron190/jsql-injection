@@ -311,7 +311,7 @@ public class PanelConsoles extends JPanel {
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
             // Fix #67063: NullPointerException on chunkTab.append()
             // Fix #4770 on chunkTab.append()
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
     
@@ -320,7 +320,7 @@ public class PanelConsoles extends JPanel {
             this.binaryTextArea.append(String.format("\t%s", text));
             this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
     

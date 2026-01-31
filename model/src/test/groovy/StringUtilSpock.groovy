@@ -12,9 +12,9 @@ class StringUtilSpock extends Specification {
         
         expect:
             StringUtil.hexstr('313233616263') == '123abc'
-            !StringUtil.isUtf8('eca')
-            !StringUtil.isUtf8(null)
-            StringUtil.isUtf8('יחא')
+            !StringUtil.containsNonStandardScripts('eca')
+            !StringUtil.containsNonStandardScripts(null)
+            !StringUtil.containsNonStandardScripts('יחא')
             StringUtil.base64Encode('יחא') == 'w6nDp8Og'
             StringUtil.base64Decode('w6nDp8Og') == 'יחא'
             StringUtil.base16Encode('יחא') == 'C3A9C3A7C3A0'

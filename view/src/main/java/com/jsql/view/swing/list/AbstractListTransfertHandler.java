@@ -67,7 +67,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
                 try {
                     model.remove(model.indexOf(itemPath));
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
             }
             

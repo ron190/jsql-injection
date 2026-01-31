@@ -322,7 +322,7 @@ public abstract class AbstractNodeModel {
     }
 
     private void initEditable(boolean isEdited) {
-        if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
+        if (StringUtil.containsNonStandardScripts(this.getElementDatabase().toString())) {
             this.panelNode.getTextFieldEditable().setFont(UiUtil.FONT_MONO_ASIAN);
         } else {
             this.panelNode.getTextFieldEditable().setFont(UiUtil.FONT_NON_MONO);

@@ -101,13 +101,6 @@ public final class StringUtil {
         return new String(bytes, StandardCharsets.UTF_8);
     }
     
-    public static boolean isUtf8(String text) {
-        if (text == null) {
-            return false;
-        }
-        return StringUtil.containsNonStandardScripts(text);
-    }
-    
     public static String detectUtf8(String text) {
         if (text == null) {
             return StringUtils.EMPTY;
@@ -119,8 +112,11 @@ public final class StringUtil {
         return result;
     }
 
-    public static boolean containsNonStandardScripts(String str) {
-        return str.codePoints().anyMatch(codePoint -> {
+    public static boolean containsNonStandardScripts(String text) {
+        if (text == null) {
+            return false;
+        }
+        return text.codePoints().anyMatch(codePoint -> {
             Character.UnicodeScript script = Character.UnicodeScript.of(codePoint);
             // Check for scripts other than Latin
             return script != Character.UnicodeScript.LATIN && script != Character.UnicodeScript.COMMON;

@@ -115,11 +115,15 @@ public class ManagerDatabase extends JPanel {
             if (treeModelEvent == null) {
                 return;
             }
-            ManagerDatabase.this.tree.firePropertyChange(
-                JTree.ROOT_VISIBLE_PROPERTY,
-                !ManagerDatabase.this.tree.isRootVisible(),
-                ManagerDatabase.this.tree.isRootVisible()
-            );
+            try {  // Fix #96324: ArrayIndexOutOfBoundsException on firePropertyChange()
+                ManagerDatabase.this.tree.firePropertyChange(
+                    JTree.ROOT_VISIBLE_PROPERTY,
+                    !ManagerDatabase.this.tree.isRootVisible(),
+                    ManagerDatabase.this.tree.isRootVisible()
+                );
+            } catch (ArrayIndexOutOfBoundsException e) {
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            }
             ManagerDatabase.this.tree.treeDidChange();
         }
         @Override

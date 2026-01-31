@@ -183,7 +183,7 @@ public class DnDList extends JList<ItemList> {
                         JOptionPane.ERROR_MESSAGE
                     );
                 } catch (ClassCastException e) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
                 return;
             }
@@ -238,7 +238,7 @@ public class DnDList extends JList<ItemList> {
             );
         } catch (NullPointerException e) {
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 
@@ -260,7 +260,7 @@ public class DnDList extends JList<ItemList> {
                 }
             }
         } catch (IOException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         return endPosition;
