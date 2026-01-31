@@ -51,22 +51,22 @@ public class I18nViewUtil {
     }
 
     public static void switchI18nComponents() {
-<span class="fc" id="L54">        Map&lt;Class&lt;?&gt;, BiConsumer&lt;Object, String&gt;&gt; classHandlers = new LinkedHashMap&lt;&gt;();  // key order required</span>
-<span class="fc" id="L55">        classHandlers.put(JPlaceholder.class, (c, s) -&gt; ((JPlaceholder) c).setPlaceholderText(I18nUtil.valueByKey(s)));</span>
-<span class="fc" id="L56">        classHandlers.put(DialogAbout.class, (c, s) -&gt; ((DialogAbout) c).setTitle(I18nUtil.valueByKey(s) + &quot; &quot; + StringUtil.APP_NAME));</span>
-<span class="fc" id="L57">        classHandlers.put(JToolTipI18n.class, (c, s) -&gt; ((JToolTipI18n) c).setText(I18nViewUtil.valueByKey(s)));</span>
-<span class="fc" id="L58">        classHandlers.put(NodeModelEmpty.class, (c, s) -&gt; ((NodeModelEmpty) c).setText(I18nViewUtil.valueByKey(s)));</span>
-<span class="fc" id="L59">        classHandlers.put(JLabel.class, (c, s) -&gt; ((JLabel) c).setText(I18nViewUtil.valueByKey(s)));</span>
-<span class="fc" id="L60">        classHandlers.put(JMenuItem.class, (c, s) -&gt; ((JMenuItem) c).setText(I18nViewUtil.valueByKey(s)));</span>
-<span class="fc" id="L61">        classHandlers.put(JButton.class, (c, s) -&gt; ((JButton) c).setText(I18nViewUtil.valueByKey(s)));</span>
-<span class="fc" id="L62">        classHandlers.put(JComboBox.class, (c, s) -&gt; ((JComboBox&lt;?&gt;) c).setToolTipText(I18nViewUtil.valueByKey(s)));</span>
-<span class="pc" id="L63">        classHandlers.put(JTextComponent.class, (c, s) -&gt; ((JTextComponent) c).setText(I18nViewUtil.valueByKey(s))); // fallback</span>
-<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (String key : I18nViewUtil.keys()) {</span>
-<span class="fc bfc" id="L65" title="All 2 branches covered.">            for (Object component : I18nViewUtil.componentsByKey(key)) {</span>
-<span class="fc" id="L66">                classHandlers.entrySet().stream()</span>
-<span class="fc" id="L67">                .filter(entry -&gt; entry.getKey().isInstance(component))</span>
-<span class="fc" id="L68">                .findFirst()</span>
-<span class="fc" id="L69">                .ifPresent(entry -&gt; entry.getValue().accept(component, key));</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (String key : I18nViewUtil.keys()) {</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            for (Object component : I18nViewUtil.componentsByKey(key)) {</span>
+<span class="pc bpc" id="L56" title="2 of 10 branches missed.">                switch (component) {</span>
+<span class="fc" id="L57">                    case JPlaceholder c -&gt; c.setPlaceholderText(I18nUtil.valueByKey(key));</span>
+<span class="fc" id="L58">                    case DialogAbout c -&gt; c.setTitle(I18nUtil.valueByKey(key) + &quot; &quot; + StringUtil.APP_NAME);</span>
+<span class="fc" id="L59">                    case JToolTipI18n c -&gt; c.setText(I18nViewUtil.valueByKey(key));</span>
+<span class="fc" id="L60">                    case NodeModelEmpty c -&gt; c.setText(I18nViewUtil.valueByKey(key));</span>
+<span class="fc" id="L61">                    case JLabel c -&gt; c.setText(I18nViewUtil.valueByKey(key));</span>
+<span class="fc" id="L62">                    case JMenuItem c -&gt; c.setText(I18nViewUtil.valueByKey(key));</span>
+<span class="fc" id="L63">                    case JButton c -&gt; c.setText(I18nViewUtil.valueByKey(key));</span>
+<span class="fc" id="L64">                    case JComboBox&lt;?&gt; c -&gt; c.setToolTipText(I18nViewUtil.valueByKey(key));</span>
+<span class="nc" id="L65">                    case JTextComponent c -&gt; c.setText(I18nViewUtil.valueByKey(key));</span>
+                    default -&gt; {
+                        // ignore
+                    }
+                }
 <span class="fc" id="L70">            }</span>
 <span class="fc" id="L71">        }</span>
 <span class="fc" id="L72">    }</span>

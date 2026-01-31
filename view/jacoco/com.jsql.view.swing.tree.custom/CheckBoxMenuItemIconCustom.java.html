@@ -10,84 +10,74 @@ import java.io.Serializable;
 
     @Override
     public void paintIcon(Component component, Graphics graphics, int x, int y) {
-        
-<span class="nc" id="L14">        AbstractButton abstractButton = (AbstractButton) component;</span>
-<span class="nc" id="L15">        ButtonModel model = abstractButton.getModel();</span>
+<span class="nc" id="L13">        AbstractButton abstractButton = (AbstractButton) component;</span>
+<span class="nc" id="L14">        ButtonModel model = abstractButton.getModel();</span>
+<span class="nc" id="L15">        boolean isSelected = model.isSelected();</span>
+<span class="nc" id="L16">        boolean isEnabled = model.isEnabled();</span>
+<span class="nc" id="L17">        boolean isPressed = model.isPressed();</span>
+<span class="nc" id="L18">        boolean isArmed = model.isArmed();</span>
 
-<span class="nc" id="L17">        boolean isSelected = model.isSelected();</span>
-<span class="nc" id="L18">        boolean isEnabled = model.isEnabled();</span>
-<span class="nc" id="L19">        boolean isPressed = model.isPressed();</span>
-<span class="nc" id="L20">        boolean isArmed = model.isArmed();</span>
+<span class="nc" id="L20">        graphics.translate(x, y);</span>
 
-<span class="nc" id="L22">        graphics.translate(x, y);</span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">        if (isEnabled) {</span>
+<span class="nc bnc" id="L23" title="All 4 branches missed.">            if (isPressed || isArmed) {</span>
+<span class="nc" id="L24">                graphics.setColor(MetalLookAndFeel.getControlInfo());</span>
+<span class="nc" id="L25">                graphics.drawLine(0, 0, 8, 0);</span>
+<span class="nc" id="L26">                graphics.drawLine(0, 0, 0, 8);</span>
+<span class="nc" id="L27">                graphics.drawLine(8, 2, 8, 8);</span>
+<span class="nc" id="L28">                graphics.drawLine(2, 8, 8, 8);</span>
 
-<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (isEnabled) {</span>
-            
-<span class="nc bnc" id="L26" title="All 4 branches missed.">            if (isPressed || isArmed) {</span>
-                
-<span class="nc" id="L28">                graphics.setColor(MetalLookAndFeel.getControlInfo());</span>
-<span class="nc" id="L29">                graphics.drawLine(0, 0, 8, 0);</span>
-<span class="nc" id="L30">                graphics.drawLine(0, 0, 0, 8);</span>
-<span class="nc" id="L31">                graphics.drawLine(8, 2, 8, 8);</span>
-<span class="nc" id="L32">                graphics.drawLine(2, 8, 8, 8);</span>
-
-<span class="nc" id="L34">                graphics.setColor(MetalLookAndFeel.getPrimaryControl());</span>
-
+<span class="nc" id="L30">                graphics.setColor(MetalLookAndFeel.getPrimaryControl());</span>
             } else {
-                
-<span class="nc" id="L38">                graphics.setColor(MetalLookAndFeel.getControlDarkShadow());</span>
-<span class="nc" id="L39">                graphics.drawLine(0, 0, 8, 0);</span>
-<span class="nc" id="L40">                graphics.drawLine(0, 0, 0, 8);</span>
-<span class="nc" id="L41">                graphics.drawLine(8, 2, 8, 8);</span>
-<span class="nc" id="L42">                graphics.drawLine(2, 8, 8, 8);</span>
+<span class="nc" id="L32">                graphics.setColor(MetalLookAndFeel.getControlDarkShadow());</span>
+<span class="nc" id="L33">                graphics.drawLine(0, 0, 8, 0);</span>
+<span class="nc" id="L34">                graphics.drawLine(0, 0, 0, 8);</span>
+<span class="nc" id="L35">                graphics.drawLine(8, 2, 8, 8);</span>
+<span class="nc" id="L36">                graphics.drawLine(2, 8, 8, 8);</span>
 
-<span class="nc" id="L44">                graphics.setColor(MetalLookAndFeel.getControlHighlight());</span>
+<span class="nc" id="L38">                graphics.setColor(MetalLookAndFeel.getControlHighlight());</span>
             }
 
-<span class="nc" id="L47">            graphics.drawLine(1, 1, 7, 1);</span>
-<span class="nc" id="L48">            graphics.drawLine(1, 1, 1, 7);</span>
-<span class="nc" id="L49">            graphics.drawLine(9, 1, 9, 9);</span>
-<span class="nc" id="L50">            graphics.drawLine(1, 9, 9, 9);</span>
-
+<span class="nc" id="L41">            graphics.drawLine(1, 1, 7, 1);</span>
+<span class="nc" id="L42">            graphics.drawLine(1, 1, 1, 7);</span>
+<span class="nc" id="L43">            graphics.drawLine(9, 1, 9, 9);</span>
+<span class="nc" id="L44">            graphics.drawLine(1, 9, 9, 9);</span>
         } else {
-            
-<span class="nc" id="L54">            graphics.setColor(MetalLookAndFeel.getMenuDisabledForeground());</span>
-<span class="nc" id="L55">            graphics.drawRect(0, 0, 8, 8);</span>
+<span class="nc" id="L46">            graphics.setColor(MetalLookAndFeel.getMenuDisabledForeground());</span>
+<span class="nc" id="L47">            graphics.drawRect(0, 0, 8, 8);</span>
         }
 
-<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (isSelected) {</span>
-<span class="nc" id="L59">            this.drawSelected(component, graphics, abstractButton, model, isEnabled);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (isSelected) {</span>
+<span class="nc" id="L51">            this.drawSelected(component, graphics, abstractButton, model, isEnabled);</span>
         }
-
-<span class="nc" id="L62">        graphics.translate(-x, -y);</span>
-<span class="nc" id="L63">    }</span>
+<span class="nc" id="L53">        graphics.translate(-x, -y);</span>
+<span class="nc" id="L54">    }</span>
 
     private void drawSelected(Component component, Graphics graphics, AbstractButton abstractButton, ButtonModel model, boolean isEnabled) {
-        
-<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (isEnabled) {</span>
-<span class="nc bnc" id="L68" title="All 6 branches missed.">            if (model.isArmed() || (component instanceof JMenu &amp;&amp; model.isSelected())) {</span>
-<span class="nc" id="L69">                graphics.setColor(MetalLookAndFeel.getMenuSelectedForeground());</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (isEnabled) {</span>
+<span class="nc bnc" id="L58" title="All 6 branches missed.">            if (model.isArmed() || (component instanceof JMenu &amp;&amp; model.isSelected())) {</span>
+<span class="nc" id="L59">                graphics.setColor(MetalLookAndFeel.getMenuSelectedForeground());</span>
             } else {
-<span class="nc" id="L71">                graphics.setColor(abstractButton.getForeground());</span>
+<span class="nc" id="L61">                graphics.setColor(abstractButton.getForeground());</span>
             }
         } else {
-<span class="nc" id="L74">            graphics.setColor(MetalLookAndFeel.getMenuDisabledForeground());</span>
+<span class="nc" id="L64">            graphics.setColor(MetalLookAndFeel.getMenuDisabledForeground());</span>
         }
 
-<span class="nc" id="L77">        graphics.drawLine(2, 2, 2, 6);</span>
-<span class="nc" id="L78">        graphics.drawLine(3, 2, 3, 6);</span>
-<span class="nc" id="L79">        graphics.drawLine(4, 4, 8, 0);</span>
-<span class="nc" id="L80">        graphics.drawLine(4, 5, 9, 0);</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L67">        graphics.drawLine(2, 2, 2, 6);</span>
+<span class="nc" id="L68">        graphics.drawLine(3, 2, 3, 6);</span>
+<span class="nc" id="L69">        graphics.drawLine(4, 4, 8, 0);</span>
+<span class="nc" id="L70">        graphics.drawLine(4, 5, 9, 0);</span>
+<span class="nc" id="L71">    }</span>
 
     @Override
     public int getIconWidth() {
-<span class="nc" id="L85">        return 10;</span>
+<span class="nc" id="L75">        return 10;</span>
     }
 
     @Override
     public int getIconHeight() {
-<span class="nc" id="L90">        return 10;</span>
+<span class="nc" id="L80">        return 10;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

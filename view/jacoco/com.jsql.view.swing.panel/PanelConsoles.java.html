@@ -306,23 +306,23 @@ public class PanelConsoles extends JPanel {
     
     public void messageChunk(String text) {
         try {
-<span class="nc" id="L309">            this.chunkTextArea.append(text +&quot;\n&quot;);</span>
-<span class="nc" id="L310">            this.chunkTextArea.setCaretPosition(this.chunkTextArea.getDocument().getLength());</span>
+<span class="fc" id="L309">            this.chunkTextArea.append(text +&quot;\n&quot;);</span>
+<span class="fc" id="L310">            this.chunkTextArea.setCaretPosition(this.chunkTextArea.getDocument().getLength());</span>
 <span class="nc" id="L311">        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
             // Fix #67063: NullPointerException on chunkTab.append()
             // Fix #4770 on chunkTab.append()
-<span class="nc" id="L314">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L315">        }</span>
-<span class="nc" id="L316">    }</span>
+<span class="nc" id="L314">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L315">        }</span>
+<span class="fc" id="L316">    }</span>
     
     public void messageBinary(String text) {
         try {
-<span class="nc" id="L320">            this.binaryTextArea.append(String.format(&quot;\t%s&quot;, text));</span>
-<span class="nc" id="L321">            this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());</span>
+<span class="fc" id="L320">            this.binaryTextArea.append(String.format(&quot;\t%s&quot;, text));</span>
+<span class="fc" id="L321">            this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());</span>
 <span class="nc" id="L322">        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L323">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L324">        }</span>
-<span class="nc" id="L325">    }</span>
+<span class="nc" id="L323">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L324">        }</span>
+<span class="fc" id="L325">    }</span>
     
     
     // Getter and setter

@@ -36,36 +36,35 @@ import java.util.Objects;
 
     @Override
     public void paint(Graphics graphics) {
-        
         // Fix #42285: InternalError on paint()
         try {
-<span class="nc" id="L42">            super.paint(graphics);</span>
-<span class="nc" id="L43">        } catch (InternalError e) {</span>
-<span class="nc" id="L44">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L45">        }</span>
+<span class="nc" id="L41">            super.paint(graphics);</span>
+<span class="nc" id="L42">        } catch (InternalError e) {</span>
+<span class="nc" id="L43">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L44">        }</span>
 
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (this.isIconDisplayed) {</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if (this.isIconDisplayed) {</span>
             try {
-<span class="nc" id="L49">                BufferedImage bufferedImage = ImageIO.read(</span>
-<span class="nc" id="L50">                    Objects.requireNonNull(ProgressBarPausable.class.getClassLoader().getResource(UiUtil.PATH_PAUSE))</span>
+<span class="nc" id="L48">                BufferedImage bufferedImage = ImageIO.read(</span>
+<span class="nc" id="L49">                    Objects.requireNonNull(ProgressBarPausable.class.getClassLoader().getResource(UiUtil.PATH_PAUSE))</span>
                 );
-<span class="nc" id="L52">                graphics.drawImage(</span>
+<span class="nc" id="L51">                graphics.drawImage(</span>
                     bufferedImage,
-<span class="nc" id="L54">                    (this.getWidth() - bufferedImage.getWidth()) / 2,</span>
-<span class="nc" id="L55">                    (this.getHeight() - bufferedImage.getHeight()) / 2,</span>
+<span class="nc" id="L53">                    (this.getWidth() - bufferedImage.getWidth()) / 2,</span>
+<span class="nc" id="L54">                    (this.getHeight() - bufferedImage.getHeight()) / 2,</span>
                     null
                 );
-<span class="nc" id="L58">            } catch (IOException e) {</span>
-<span class="nc" id="L59">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L60">            }</span>
+<span class="nc" id="L57">            } catch (IOException e) {</span>
+<span class="nc" id="L58">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L59">            }</span>
         }
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L61">    }</span>
 
     /**
      * Activate pause state, hence display pause icon.
      */
     public void pause() {
-<span class="nc" id="L68">        this.isIconDisplayed = true;</span>
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L67">        this.isIconDisplayed = true;</span>
+<span class="nc" id="L68">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

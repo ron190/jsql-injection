@@ -191,7 +191,7 @@
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>                         JOptionPane.ERROR_MESSAGE
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>                     );
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>                 } <strong class="jxr_keyword">catch</strong> (ClassCastException e) {
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>                 }
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>                 <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>             }
@@ -246,7 +246,7 @@
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>             );
 <a class="jxr_linenumber" name="L239" href="#L239">239</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException e) {
 <a class="jxr_linenumber" name="L240" href="#L240">240</a>             <em class="jxr_comment">// Report NullPointerException #1571 : manual scroll elsewhere then run action</em>
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>         }
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>     }
 <a class="jxr_linenumber" name="L244" href="#L244">244</a> 
@@ -268,7 +268,7 @@
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>                 }
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>             }
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>         } <strong class="jxr_keyword">catch</strong> (IOException e) {
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>         }
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>         
 <a class="jxr_linenumber" name="L266" href="#L266">266</a>         <strong class="jxr_keyword">return</strong> endPosition;

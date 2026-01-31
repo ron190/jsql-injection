@@ -651,10 +651,10 @@ import java.util.regex.Pattern;
 <span class="fc" id="L651">                return best;</span>
             }
 <span class="fc" id="L653">            length += found;</span>
-<span class="pc bpc" id="L654" title="1 of 4 branches missed.">            if (found == 0 || text1.substring(textLength - length).equals(</span>
+<span class="pc bpc" id="L654" title="2 of 4 branches missed.">            if (found == 0 || text1.substring(textLength - length).equals(</span>
 <span class="fc" id="L655">                    text2.substring(0, length))) {</span>
-<span class="fc" id="L656">                best = length;</span>
-<span class="fc" id="L657">                length++;</span>
+<span class="nc" id="L656">                best = length;</span>
+<span class="nc" id="L657">                length++;</span>
             }
 <span class="fc" id="L659">        }</span>
     }

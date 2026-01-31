@@ -21,6 +21,7 @@ import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoManager;
 import java.awt.event.ActionEvent;
 
@@ -30,78 +31,90 @@ import java.awt.event.ActionEvent;
  */
 public class JPopupTextComponent&lt;T extends JTextComponent&gt; extends JPopupComponent&lt;T&gt; implements DecoratorJComponent&lt;T&gt; {
     
-<span class="fc" id="L33">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L34">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Save the component to decorate, add the Undo/Redo.
      * @param proxy Swing component to decorate
      */
     public JPopupTextComponent(final T proxy) {
-<span class="fc" id="L40">        super(proxy);</span>
+<span class="fc" id="L41">        super(proxy);</span>
 
-<span class="fc" id="L42">        this.getProxy().setComponentPopupMenu(new JPopupMenuText(this.getProxy()));</span>
-<span class="fc" id="L43">        this.getProxy().setDragEnabled(true);</span>
+<span class="fc" id="L43">        this.getProxy().setComponentPopupMenu(new JPopupMenuText(this.getProxy()));</span>
+<span class="fc" id="L44">        this.getProxy().setDragEnabled(true);</span>
 
-<span class="fc" id="L45">        var undoRedoManager = new UndoManager();</span>
-<span class="fc" id="L46">        var doc = this.getProxy().getDocument();</span>
+<span class="fc" id="L46">        var undoRedoManager = new UndoManager();</span>
+
+        // Time-based grouping for words undo/redo instead of chars
+<span class="fc" id="L49">        final CompoundEdit[] currentEdit = {new CompoundEdit()};</span>
+<span class="fc" id="L50">        Timer commitTimer = new Timer(500, e -&gt; {</span>
+<span class="fc" id="L51">            currentEdit[0].end();</span>
+<span class="fc" id="L52">            undoRedoManager.addEdit(currentEdit[0]);</span>
+<span class="fc" id="L53">            currentEdit[0] = new CompoundEdit();</span>
+<span class="fc" id="L54">        });</span>
+<span class="fc" id="L55">        commitTimer.setRepeats(false);</span>
 
         // Listen for undo and redo events
-<span class="fc" id="L49">        doc.addUndoableEditListener(undoableEditEvent -&gt; undoRedoManager.addEdit(undoableEditEvent.getEdit()));</span>
+<span class="fc" id="L58">        var doc = this.getProxy().getDocument();</span>
+<span class="fc" id="L59">        doc.addUndoableEditListener(e -&gt; {</span>
+<span class="fc" id="L60">            currentEdit[0].addEdit(e.getEdit());</span>
+<span class="fc" id="L61">            commitTimer.restart();</span>
+<span class="fc" id="L62">        });</span>
 
-<span class="fc" id="L51">        this.initUndo(undoRedoManager);</span>
-<span class="fc" id="L52">        this.initRedo(undoRedoManager);</span>
-<span class="fc" id="L53">        this.makeDeleteSilent();</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L64">        this.initUndo(undoRedoManager);</span>
+<span class="fc" id="L65">        this.initRedo(undoRedoManager);</span>
+<span class="fc" id="L66">        this.makeDeleteSilent();</span>
+<span class="fc" id="L67">    }</span>
 
     private void initUndo(final UndoManager undo) {
-<span class="fc" id="L57">        final var undoIdentifier = &quot;Undo&quot;;  // Create an undo action and add it to the text component</span>
+<span class="fc" id="L70">        final var undoIdentifier = &quot;Undo&quot;;  // Create an undo action and add it to the text component</span>
         
-<span class="fc" id="L59">        this.getProxy().getActionMap().put(undoIdentifier, new AbstractAction(undoIdentifier) {</span>
+<span class="fc" id="L72">        this.getProxy().getActionMap().put(undoIdentifier, new AbstractAction(undoIdentifier) {</span>
             @Override
             public void actionPerformed(ActionEvent evt) {
                 // Unhandled ArrayIndexOutOfBoundsException #92146 on undo()
                 try {
-<span class="nc bnc" id="L64" title="All 2 branches missed.">                    if (undo.canUndo()) {</span>
-<span class="nc" id="L65">                        undo.undo();</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">                    if (undo.canUndo()) {</span>
+<span class="nc" id="L78">                        undo.undo();</span>
                     }
-<span class="nc" id="L67">                } catch (ArrayIndexOutOfBoundsException | CannotUndoException e) {</span>
-<span class="nc" id="L68">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L69">                }</span>
-<span class="nc" id="L70">            }</span>
+<span class="nc" id="L80">                } catch (ArrayIndexOutOfBoundsException | CannotUndoException e) {</span>
+<span class="nc" id="L81">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L82">                }</span>
+<span class="nc" id="L83">            }</span>
        });
 
         // Bind the undo action to ctl-Z
-<span class="fc" id="L74">        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke(&quot;control Z&quot;), undoIdentifier);</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L87">        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke(&quot;control Z&quot;), undoIdentifier);</span>
+<span class="fc" id="L88">    }</span>
 
     private void initRedo(final UndoManager undo) {
-<span class="fc" id="L78">        final var redoIdentifier = &quot;Redo&quot;;  // Create a redo action and add it to the text component</span>
+<span class="fc" id="L91">        final var redoIdentifier = &quot;Redo&quot;;  // Create a redo action and add it to the text component</span>
         
-<span class="fc" id="L80">        this.getProxy().getActionMap().put(redoIdentifier, new AbstractAction(redoIdentifier) {</span>
+<span class="fc" id="L93">        this.getProxy().getActionMap().put(redoIdentifier, new AbstractAction(redoIdentifier) {</span>
             @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
-<span class="nc bnc" id="L84" title="All 2 branches missed.">                    if (undo.canRedo()) {</span>
-<span class="nc" id="L85">                        undo.redo();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                    if (undo.canRedo()) {</span>
+<span class="nc" id="L98">                        undo.redo();</span>
                     }
-<span class="nc" id="L87">                } catch (CannotRedoException e) {</span>
-<span class="nc" id="L88">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L89">                }</span>
-<span class="nc" id="L90">            }</span>
+<span class="nc" id="L100">                } catch (CannotRedoException e) {</span>
+<span class="nc" id="L101">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L102">                }</span>
+<span class="nc" id="L103">            }</span>
         });
 
         // Bind the redo action to ctl-Y
-<span class="fc" id="L94">        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke(&quot;control Y&quot;), redoIdentifier);</span>
-<span class="fc" id="L95">    }</span>
+<span class="fc" id="L107">        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke(&quot;control Y&quot;), redoIdentifier);</span>
+<span class="fc" id="L108">    }</span>
 
     private void makeDeleteSilent() {
-<span class="fc" id="L98">        var actionMap = this.getProxy().getActionMap();  // Silent delete</span>
+<span class="fc" id="L111">        var actionMap = this.getProxy().getActionMap();  // Silent delete</span>
 
-<span class="fc" id="L100">        String key = DefaultEditorKit.deletePrevCharAction;</span>
-<span class="fc" id="L101">        actionMap.put(key, new SilentDeleteTextAction(key, actionMap.get(key)));</span>
+<span class="fc" id="L113">        String key = DefaultEditorKit.deletePrevCharAction;</span>
+<span class="fc" id="L114">        actionMap.put(key, new SilentDeleteTextAction(key, actionMap.get(key)));</span>
 
-<span class="fc" id="L103">        key = DefaultEditorKit.deleteNextCharAction;</span>
-<span class="fc" id="L104">        actionMap.put(key, new SilentDeleteTextAction(key, actionMap.get(key)));</span>
-<span class="fc" id="L105">    }</span>
+<span class="fc" id="L116">        key = DefaultEditorKit.deleteNextCharAction;</span>
+<span class="fc" id="L117">        actionMap.put(key, new SilentDeleteTextAction(key, actionMap.get(key)));</span>
+<span class="fc" id="L118">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

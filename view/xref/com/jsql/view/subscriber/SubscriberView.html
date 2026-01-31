@@ -37,7 +37,7 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> executeInjection(Seal request) {
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">switch</strong> (request) {
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>              <strong class="jxr_keyword">case</strong> Seal.ActivateEngine r -&gt; MediatorHelper.panelAddressBar().getPanelTrailingAddress().setEngine(r.engine());
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>              <strong class="jxr_keyword">case</strong> Seal.ActivateEngine(<strong class="jxr_keyword">var</strong> engine) -&gt; MediatorHelper.panelAddressBar().getPanelTrailingAddress().setEngine(engine);
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>              <strong class="jxr_keyword">case</strong> Seal.AddColumns(<strong class="jxr_keyword">var</strong> columns) -&gt; MediatorHelper.treeDatabase().addColumns(columns);
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>              <strong class="jxr_keyword">case</strong> Seal.AddTables(<strong class="jxr_keyword">var</strong> tables) -&gt; MediatorHelper.treeDatabase().addTables(tables);
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>              <strong class="jxr_keyword">case</strong> Seal.AddDatabases(<strong class="jxr_keyword">var</strong> databases) -&gt; MediatorHelper.treeDatabase().addDatabases(databases);
@@ -69,7 +69,7 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> executeExploit(Seal request) {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">switch</strong> (request) {
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>              <strong class="jxr_keyword">case</strong> Seal.AddTabExploitSql(<strong class="jxr_keyword">var</strong> urlSuccess, <strong class="jxr_keyword">var</strong> username, <strong class="jxr_keyword">var</strong> password) -&gt; MediatorHelper.tabResults().addTabExploitSql(urlSuccess, username, password);
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>              <strong class="jxr_keyword">case</strong> Seal.AddTabExploitUdf r -&gt; MediatorHelper.tabResults().addTabExploitUdf(r.biConsumerRunCmd());
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>              <strong class="jxr_keyword">case</strong> Seal.AddTabExploitUdf(<strong class="jxr_keyword">var</strong> biConsumerRunCmd) -&gt; MediatorHelper.tabResults().addTabExploitUdf(biConsumerRunCmd);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>              <strong class="jxr_keyword">case</strong> Seal.AddTabExploitWeb(String urlSuccess) -&gt; MediatorHelper.tabResults().addTabExploitWeb(urlSuccess);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>              <strong class="jxr_keyword">case</strong> Seal.GetTerminalResult(UUID uuidShell, String result) -&gt; {
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>                  <a name="AbstractExploit" href="../../../../com/jsql/view/swing/terminal/AbstractExploit.html#AbstractExploit">AbstractExploit</a> terminal = MediatorHelper.frame().getMapUuidShell().get(uuidShell);

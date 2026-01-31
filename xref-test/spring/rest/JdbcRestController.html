@@ -270,94 +270,93 @@
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
 <a class="jxr_linenumber" name="L263" href="#L263">263</a> 
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>         Arrays.stream((<span class="jxr_string">"SELECT table_schema FROM information_schema.tables where '1' = '"</span>+ name +<span class="jxr_string">"'"</span>).split(<span class="jxr_string">";"</span>)).map(String::trim).forEach(query -&gt; {
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>             System.out.println(query);
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>             <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>                 Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:postgresql://jsql-postgresql:5432/"</span>, <span class="jxr_string">"postgres"</span>, <span class="jxr_string">"my-secret-pw"</span>);
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>                 PreparedStatement pstmt = con.prepareStatement(query)
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>             ) {
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>                 ResultSet rs = pstmt.executeQuery();
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>                 <strong class="jxr_keyword">while</strong>(rs.next()) {
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>                     result.append(rs.getString(1));
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>                 }
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>                 greeting.set(<strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString())));
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>             } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>                 greeting.set(<strong class="jxr_keyword">this</strong>.initErrorMessage(e));
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>             }
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>         });
-<a class="jxr_linenumber" name="L279" href="#L279">279</a> 
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>         <strong class="jxr_keyword">return</strong> greeting.get();
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>     }
-<a class="jxr_linenumber" name="L282" href="#L282">282</a> 
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>     @RequestMapping(<span class="jxr_string">"/mysql"</span>)  <em class="jxr_comment">// local testing, not used</em>
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMysql(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="L288" href="#L288">288</a> 
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>         <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>             Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:mysql://127.0.0.1:3306/?allowMultiQueries=true"</span>, <span class="jxr_string">"test193746285"</span>, <span class="jxr_string">"~Aa1"</span>);
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>             PreparedStatement pstmt = con.prepareStatement(<span class="jxr_string">"select TABLE_SCHEMA from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"</span>+ inject +<span class="jxr_string">"'"</span>)
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>         ) {
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>             ResultSet rs = pstmt.executeQuery();
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>             <strong class="jxr_keyword">while</strong>(rs.next()) {
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>                 result.append(rs.getString(1));
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>             }
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + result);
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>         }
-<a class="jxr_linenumber" name="L301" href="#L301">301</a> 
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>         <strong class="jxr_keyword">return</strong> greeting;
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>     }
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>             <strong class="jxr_keyword">try</strong> (
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>                 Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:postgresql://jsql-postgresql:5432/"</span>, <span class="jxr_string">"postgres"</span>, <span class="jxr_string">"my-secret-pw"</span>);
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>                 PreparedStatement pstmt = con.prepareStatement(query)
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>             ) {
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>                 ResultSet rs = pstmt.executeQuery();
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>                 <strong class="jxr_keyword">while</strong>(rs.next()) {
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>                     result.append(rs.getString(1));
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>                 }
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>                 greeting.set(<strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString())));
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>             } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>                 greeting.set(<strong class="jxr_keyword">this</strong>.initErrorMessage(e));
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>             }
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>         });
+<a class="jxr_linenumber" name="L278" href="#L278">278</a> 
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>         <strong class="jxr_keyword">return</strong> greeting.get();
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>     }
+<a class="jxr_linenumber" name="L281" href="#L281">281</a> 
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>     @RequestMapping(<span class="jxr_string">"/mysql"</span>)  <em class="jxr_comment">// local testing, not used</em>
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>     <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greetingMysql(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>         String inject = name.replace(<span class="jxr_string">":"</span>, <span class="jxr_string">"&#92;&#92;:"</span>);
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>         StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="L287" href="#L287">287</a> 
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>         <strong class="jxr_keyword">try</strong> (
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>             Connection con = DriverManager.getConnection(<span class="jxr_string">"jdbc:mysql://127.0.0.1:3306/?allowMultiQueries=true"</span>, <span class="jxr_string">"test193746285"</span>, <span class="jxr_string">"~Aa1"</span>);
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>             PreparedStatement pstmt = con.prepareStatement(<span class="jxr_string">"select TABLE_SCHEMA from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"</span>+ inject +<span class="jxr_string">"'"</span>)
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>         ) {
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>             ResultSet rs = pstmt.executeQuery();
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>             <strong class="jxr_keyword">while</strong>(rs.next()) {
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>                 result.append(rs.getString(1));
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>             }
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + result);
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>         }
+<a class="jxr_linenumber" name="L300" href="#L300">300</a> 
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>         <strong class="jxr_keyword">return</strong> greeting;
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>     }
+<a class="jxr_linenumber" name="L303" href="#L303">303</a> 
 <a class="jxr_linenumber" name="L304" href="#L304">304</a> 
-<a class="jxr_linenumber" name="L305" href="#L305">305</a> 
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> getGreeting(String url, String user, String password, String sql) {
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
-<a class="jxr_linenumber" name="L308" href="#L308">308</a>         <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>             Connection connection = DriverManager.getConnection(url, user, password);
-<a class="jxr_linenumber" name="L310" href="#L310">310</a>             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-<a class="jxr_linenumber" name="L311" href="#L311">311</a>         ) {
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>             ResultSet resultSet = preparedStatement.executeQuery();
-<a class="jxr_linenumber" name="L313" href="#L313">313</a>             StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="L314" href="#L314">314</a>             <strong class="jxr_keyword">while</strong>(resultSet.next()) {
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>                 result.append(resultSet.getString(1));
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>             }
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
-<a class="jxr_linenumber" name="L318" href="#L318">318</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L319" href="#L319">319</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>         }
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>         <strong class="jxr_keyword">return</strong> greeting;
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>     }
-<a class="jxr_linenumber" name="L323" href="#L323">323</a> 
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> initErrorMessage(Exception e) {
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>         String stacktrace = ExceptionUtils.getStackTrace(e);
-<a class="jxr_linenumber" name="L326" href="#L326">326</a>         LOGGER.debug(stacktrace);
-<a class="jxr_linenumber" name="L327" href="#L327">327</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>     }
-<a class="jxr_linenumber" name="L329" href="#L329">329</a> }
-<a class="jxr_linenumber" name="L330" href="#L330">330</a> 
-<a class="jxr_linenumber" name="L331" href="#L331">331</a> <em class="jxr_comment">// CockroachLegacyDialect: clone postgres</em>
-<a class="jxr_linenumber" name="L332" href="#L332">332</a> <em class="jxr_comment">// GaussDBDialect: clone postgres</em>
-<a class="jxr_linenumber" name="L333" href="#L333">333</a> <em class="jxr_comment">// MaxDBDialect: broken installation</em>
-<a class="jxr_linenumber" name="L334" href="#L334">334</a> <em class="jxr_comment">// RDMSOS2200Dialect: no jdbc</em>
-<a class="jxr_linenumber" name="L335" href="#L335">335</a> <em class="jxr_comment">// SingleStoreDialect: clone mysql</em>
-<a class="jxr_linenumber" name="L336" href="#L336">336</a> <em class="jxr_comment">// TeradataDialect</em>
-<a class="jxr_linenumber" name="L337" href="#L337">337</a> <em class="jxr_comment">// TiDBDialect: clone mysql</em>
-<a class="jxr_linenumber" name="L338" href="#L338">338</a> <em class="jxr_comment">// TimesTenDialect: oracle login denied</em>
-<a class="jxr_linenumber" name="L339" href="#L339">339</a> 
-<a class="jxr_linenumber" name="L340" href="#L340">340</a> <em class="jxr_comment">// missing ingress: missing services</em>
-<a class="jxr_linenumber" name="L341" href="#L341">341</a> <em class="jxr_comment">// jdbc:ingres://localhost:II7/demodb</em>
-<a class="jxr_linenumber" name="L342" href="#L342">342</a> 
-<a class="jxr_linenumber" name="L343" href="#L343">343</a> <em class="jxr_comment">// elasticsearch: no structure lookup</em>
-<a class="jxr_linenumber" name="L344" href="#L344">344</a> <em class="jxr_comment">// elasticsearch-reset-password -u elastic</em>
-<a class="jxr_linenumber" name="L345" href="#L345">345</a> <em class="jxr_comment">// POST https://localhost:9200/_license/start_trial?acknowledge=true</em>
-<a class="jxr_linenumber" name="L346" href="#L346">346</a> <em class="jxr_comment">// browser =&gt; view cert =&gt; save pem =&gt; import as jks in kse</em>
-<a class="jxr_linenumber" name="L347" href="#L347">347</a> <em class="jxr_comment">// jdbc:es://https://localhost:9200/?ssl.truststore.location=E:/tmp/certificate.jks</em>
-<a class="jxr_linenumber" name="L348" href="#L348">348</a> 
-<a class="jxr_linenumber" name="L349" href="#L349">349</a> <em class="jxr_comment">// localstack snowflake: wsl2</em>
-<a class="jxr_linenumber" name="L350" href="#L350">350</a> <em class="jxr_comment">// docker run --rm -it -p 4566:4566 -e LOCALSTACK_AUTH_TOKEN=&lt;token&gt; localstack/snowflake</em>
-<a class="jxr_linenumber" name="L351" href="#L351">351</a> <em class="jxr_comment">// export LOCALSTACK_AUTH_TOKEN=&lt;token&gt;</em>
-<a class="jxr_linenumber" name="L352" href="#L352">352</a> <em class="jxr_comment">// IMAGE_NAME=localstack/snowflake /opt/code/localstack/.venv/bin/localstack start</em>
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> getGreeting(String url, String user, String password, String sql) {
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>         <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting;
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>         <strong class="jxr_keyword">try</strong> (
+<a class="jxr_linenumber" name="L308" href="#L308">308</a>             Connection connection = DriverManager.getConnection(url, user, password);
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+<a class="jxr_linenumber" name="L310" href="#L310">310</a>         ) {
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>             ResultSet resultSet = preparedStatement.executeQuery();
+<a class="jxr_linenumber" name="L312" href="#L312">312</a>             StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>             <strong class="jxr_keyword">while</strong>(resultSet.next()) {
+<a class="jxr_linenumber" name="L314" href="#L314">314</a>                 result.append(resultSet.getString(1));
+<a class="jxr_linenumber" name="L315" href="#L315">315</a>             }
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>             greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>             greeting = <strong class="jxr_keyword">this</strong>.initErrorMessage(e);
+<a class="jxr_linenumber" name="L319" href="#L319">319</a>         }
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>         <strong class="jxr_keyword">return</strong> greeting;
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>     }
+<a class="jxr_linenumber" name="L322" href="#L322">322</a> 
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> initErrorMessage(Exception e) {
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>         String stacktrace = ExceptionUtils.getStackTrace(e);
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>         LOGGER.debug(stacktrace);
+<a class="jxr_linenumber" name="L326" href="#L326">326</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(JdbcRestController.TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
+<a class="jxr_linenumber" name="L327" href="#L327">327</a>     }
+<a class="jxr_linenumber" name="L328" href="#L328">328</a> }
+<a class="jxr_linenumber" name="L329" href="#L329">329</a> 
+<a class="jxr_linenumber" name="L330" href="#L330">330</a> <em class="jxr_comment">// CockroachLegacyDialect: clone postgres</em>
+<a class="jxr_linenumber" name="L331" href="#L331">331</a> <em class="jxr_comment">// GaussDBDialect: clone postgres</em>
+<a class="jxr_linenumber" name="L332" href="#L332">332</a> <em class="jxr_comment">// MaxDBDialect: broken installation</em>
+<a class="jxr_linenumber" name="L333" href="#L333">333</a> <em class="jxr_comment">// RDMSOS2200Dialect: no jdbc</em>
+<a class="jxr_linenumber" name="L334" href="#L334">334</a> <em class="jxr_comment">// SingleStoreDialect: clone mysql</em>
+<a class="jxr_linenumber" name="L335" href="#L335">335</a> <em class="jxr_comment">// TeradataDialect</em>
+<a class="jxr_linenumber" name="L336" href="#L336">336</a> <em class="jxr_comment">// TiDBDialect: clone mysql</em>
+<a class="jxr_linenumber" name="L337" href="#L337">337</a> <em class="jxr_comment">// TimesTenDialect: oracle login denied</em>
+<a class="jxr_linenumber" name="L338" href="#L338">338</a> 
+<a class="jxr_linenumber" name="L339" href="#L339">339</a> <em class="jxr_comment">// missing ingress: missing services</em>
+<a class="jxr_linenumber" name="L340" href="#L340">340</a> <em class="jxr_comment">// jdbc:ingres://localhost:II7/demodb</em>
+<a class="jxr_linenumber" name="L341" href="#L341">341</a> 
+<a class="jxr_linenumber" name="L342" href="#L342">342</a> <em class="jxr_comment">// elasticsearch: no structure lookup</em>
+<a class="jxr_linenumber" name="L343" href="#L343">343</a> <em class="jxr_comment">// elasticsearch-reset-password -u elastic</em>
+<a class="jxr_linenumber" name="L344" href="#L344">344</a> <em class="jxr_comment">// POST https://localhost:9200/_license/start_trial?acknowledge=true</em>
+<a class="jxr_linenumber" name="L345" href="#L345">345</a> <em class="jxr_comment">// browser =&gt; view cert =&gt; save pem =&gt; import as jks in kse</em>
+<a class="jxr_linenumber" name="L346" href="#L346">346</a> <em class="jxr_comment">// jdbc:es://https://localhost:9200/?ssl.truststore.location=E:/tmp/certificate.jks</em>
+<a class="jxr_linenumber" name="L347" href="#L347">347</a> 
+<a class="jxr_linenumber" name="L348" href="#L348">348</a> <em class="jxr_comment">// localstack snowflake: wsl2</em>
+<a class="jxr_linenumber" name="L349" href="#L349">349</a> <em class="jxr_comment">// docker run --rm -it -p 4566:4566 -e LOCALSTACK_AUTH_TOKEN=&lt;token&gt; localstack/snowflake</em>
+<a class="jxr_linenumber" name="L350" href="#L350">350</a> <em class="jxr_comment">// export LOCALSTACK_AUTH_TOKEN=&lt;token&gt;</em>
+<a class="jxr_linenumber" name="L351" href="#L351">351</a> <em class="jxr_comment">// IMAGE_NAME=localstack/snowflake /opt/code/localstack/.venv/bin/localstack start</em>
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

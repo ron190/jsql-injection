@@ -322,7 +322,7 @@ public abstract class AbstractNodeModel {
 <span class="fc" id="L322">    }</span>
 
     private void initEditable(boolean isEdited) {
-<span class="pc bpc" id="L325" title="1 of 2 branches missed.">        if (StringUtil.isUtf8(this.getElementDatabase().toString())) {</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">        if (StringUtil.containsNonStandardScripts(this.getElementDatabase().toString())) {</span>
 <span class="nc" id="L326">            this.panelNode.getTextFieldEditable().setFont(UiUtil.FONT_MONO_ASIAN);</span>
         } else {
 <span class="fc" id="L328">            this.panelNode.getTextFieldEditable().setFont(UiUtil.FONT_NON_MONO);</span>

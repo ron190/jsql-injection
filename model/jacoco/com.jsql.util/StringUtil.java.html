@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.universalchardet.UniversalDetector;
 
 import java.awt.*;
 import java.io.*;
@@ -38,10 +37,10 @@ import java.util.zip.InflaterOutputStream;
  */
 public final class StringUtil {
     
-<span class="fc" id="L41">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L40">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     // Define the schema of conversion to html entities
-<span class="fc" id="L44">    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder(&quot;&amp;#&quot;, &quot;;&quot;, 10);</span>
+<span class="fc" id="L43">    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder(&quot;&amp;#&quot;, &quot;;&quot;, 10);</span>
     public static final String GET = &quot;GET&quot;;
     public static final String POST = &quot;POST&quot;;
     public static final String INFORMATION_SCHEMA = &quot;information_schema&quot;;
@@ -51,12 +50,12 @@ public final class StringUtil {
      * This utility class defines a schema used to encode a text into a specialized
      * representation
      */
-<span class="fc" id="L54">    private record CharEncoder(String prefix, String suffix, int radix) {</span>
+<span class="fc" id="L53">    private record CharEncoder(String prefix, String suffix, int radix) {</span>
         private void encode(char c, StringBuilder buff) {
-<span class="fc" id="L56">            buff.append(this.prefix)</span>
-<span class="fc" id="L57">                .append(Integer.toString(c, this.radix))</span>
-<span class="fc" id="L58">                .append(this.suffix);</span>
-<span class="fc" id="L59">        }</span>
+<span class="fc" id="L55">            buff.append(this.prefix)</span>
+<span class="fc" id="L56">                .append(Integer.toString(c, this.radix))</span>
+<span class="fc" id="L57">                .append(this.suffix);</span>
+<span class="fc" id="L58">        }</span>
     }
 
     private StringUtil() {
@@ -69,7 +68,7 @@ public final class StringUtil {
      * @return string encoded in html entities
      */
     public static String toHtmlDecimal(String text) {
-<span class="fc" id="L72">        return StringUtil.encode(text);</span>
+<span class="fc" id="L71">        return StringUtil.encode(text);</span>
     }
     
     /**
@@ -78,15 +77,15 @@ public final class StringUtil {
      * @return string representation using the encoder schema
      */
     private static String encode(String text) {
-<span class="fc" id="L81">        var buff = new StringBuilder();</span>
-<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (var i = 0 ; i &lt; text.length() ; i++) {</span>
-<span class="fc bfc" id="L83" title="All 2 branches covered.">            if (text.charAt(i) &gt; 128) {</span>
-<span class="fc" id="L84">                StringUtil.DECIMAL_HTML_ENCODER.encode(text.charAt(i), buff);</span>
+<span class="fc" id="L80">        var buff = new StringBuilder();</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        for (var i = 0 ; i &lt; text.length() ; i++) {</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">            if (text.charAt(i) &gt; 128) {</span>
+<span class="fc" id="L83">                StringUtil.DECIMAL_HTML_ENCODER.encode(text.charAt(i), buff);</span>
             } else {
-<span class="fc" id="L86">                buff.append(text.charAt(i));</span>
+<span class="fc" id="L85">                buff.append(text.charAt(i));</span>
             }
         }
-<span class="fc" id="L89">        return buff.toString();</span>
+<span class="fc" id="L88">        return buff.toString();</span>
     }
 
     /**
@@ -95,135 +94,120 @@ public final class StringUtil {
      * @return The string converted from hex
      */
     public static String hexstr(String hex) {
-<span class="fc" id="L98">        var bytes = new byte[hex.length() / 2];</span>
-<span class="fc bfc" id="L99" title="All 2 branches covered.">        for (var i = 0 ; i &lt; bytes.length ; i++) {</span>
-<span class="fc" id="L100">            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);</span>
+<span class="fc" id="L97">        var bytes = new byte[hex.length() / 2];</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        for (var i = 0 ; i &lt; bytes.length ; i++) {</span>
+<span class="fc" id="L99">            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);</span>
         }
-<span class="fc" id="L102">        return new String(bytes, StandardCharsets.UTF_8);</span>
-    }
-    
-    public static boolean isUtf8(String text) {
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (text == null) {</span>
-<span class="fc" id="L107">            return false;</span>
-        }
-        
-<span class="fc" id="L110">        var detector = new UniversalDetector(null);</span>
-<span class="fc" id="L111">        detector.handleData(text.getBytes(StandardCharsets.UTF_8), 0, text.length() - 1);</span>
-<span class="fc" id="L112">        detector.dataEnd();</span>
-<span class="fc" id="L113">        String encoding = detector.getDetectedCharset();</span>
-<span class="fc bfc" id="L114" title="All 2 branches covered.">        return encoding != null;</span>
+<span class="fc" id="L101">        return new String(bytes, StandardCharsets.UTF_8);</span>
     }
     
     public static String detectUtf8(String text) {
-<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (text == null) {</span>
-<span class="fc" id="L119">            return StringUtils.EMPTY;</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (text == null) {</span>
+<span class="fc" id="L106">            return StringUtils.EMPTY;</span>
         }
-        
-<span class="fc" id="L122">        String encoding = null;</span>
-        
-        // ArrayIndexOutOfBoundsException on handleData()
-        try {
-<span class="fc" id="L126">            var detector = new UniversalDetector(null);</span>
-<span class="fc" id="L127">            detector.handleData(text.getBytes(StandardCharsets.UTF_8), 0, text.length() - 1);</span>
-<span class="fc" id="L128">            detector.dataEnd();</span>
-<span class="fc" id="L129">            encoding = detector.getDetectedCharset();</span>
-            
-<span class="nc" id="L131">        } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L132">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L133">        }</span>
-        
-<span class="fc" id="L135">        String result = text;</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (encoding != null) {</span>
-<span class="fc" id="L137">            result = new String(text.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);</span>
+<span class="fc" id="L108">        String result = text;</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (StringUtil.containsNonStandardScripts(text)) {</span>
+<span class="nc" id="L110">            result = new String(text.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);</span>
         }
-<span class="fc" id="L139">        return result;</span>
+<span class="fc" id="L112">        return result;</span>
+    }
+
+    public static boolean containsNonStandardScripts(String text) {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (text == null) {</span>
+<span class="fc" id="L117">            return false;</span>
+        }
+<span class="fc" id="L119">        return text.codePoints().anyMatch(codePoint -&gt; {</span>
+<span class="fc" id="L120">            Character.UnicodeScript script = Character.UnicodeScript.of(codePoint);</span>
+            // Check for scripts other than Latin
+<span class="pc bpc" id="L122" title="1 of 4 branches missed.">            return script != Character.UnicodeScript.LATIN &amp;&amp; script != Character.UnicodeScript.COMMON;</span>
+        });
     }
     
     public static String base32Encode(String s) {
-<span class="fc" id="L143">        var base32 = new Base32();</span>
-<span class="fc" id="L144">        return base32.encodeToString(StringUtil.getBytesUtf8(s));</span>
+<span class="fc" id="L127">        var base32 = new Base32();</span>
+<span class="fc" id="L128">        return base32.encodeToString(StringUtil.getBytesUtf8(s));</span>
     }
     
     public static String base32Decode(String s) {
-<span class="fc" id="L148">        var base32 = new Base32();</span>
-<span class="fc" id="L149">        return StringUtil.newStringUtf8(base32.decode(s));</span>
+<span class="fc" id="L132">        var base32 = new Base32();</span>
+<span class="fc" id="L133">        return StringUtil.newStringUtf8(base32.decode(s));</span>
     }
     
     public static String base58Encode(String s) {
-<span class="fc" id="L153">        return Base58.encode(StringUtil.getBytesUtf8(s));</span>
+<span class="fc" id="L137">        return Base58.encode(StringUtil.getBytesUtf8(s));</span>
     }
     
     public static String base58Decode(String s) {
-<span class="fc" id="L157">        return StringUtil.newStringUtf8(Base58.decode(s));</span>
+<span class="fc" id="L141">        return StringUtil.newStringUtf8(Base58.decode(s));</span>
     }
     
     public static String base16Encode(String s) {
-<span class="fc" id="L161">        var base16 = new Base16();</span>
-<span class="fc" id="L162">        return base16.encodeToString(StringUtil.getBytesUtf8(s));</span>
+<span class="fc" id="L145">        var base16 = new Base16();</span>
+<span class="fc" id="L146">        return base16.encodeToString(StringUtil.getBytesUtf8(s));</span>
     }
     
     public static String base16Decode(String s) {
-<span class="fc" id="L166">        var base16 = new Base16();</span>
-<span class="fc" id="L167">        return StringUtil.newStringUtf8(base16.decode(s));</span>
+<span class="fc" id="L150">        var base16 = new Base16();</span>
+<span class="fc" id="L151">        return StringUtil.newStringUtf8(base16.decode(s));</span>
     }
 
     public static String base64Decode(String s) {
-<span class="fc" id="L171">        return StringUtil.newStringUtf8(Base64.getDecoder().decode(s));</span>
+<span class="fc" id="L155">        return StringUtil.newStringUtf8(Base64.getDecoder().decode(s));</span>
     }
 
     public static String base64Encode(String s) {
-<span class="fc" id="L175">        return Base64.getEncoder().encodeToString(StringUtil.getBytesUtf8(s));</span>
+<span class="fc" id="L159">        return Base64.getEncoder().encodeToString(StringUtil.getBytesUtf8(s));</span>
     }
 
     public static String toHex(String text) {
-<span class="fc" id="L179">        return StringUtil.encodeHexString(text.getBytes(StandardCharsets.UTF_8));</span>
+<span class="fc" id="L163">        return StringUtil.encodeHexString(text.getBytes(StandardCharsets.UTF_8));</span>
     }
     
     public static String fromHex(String text) {
-<span class="fc" id="L183">        byte[] hex = StringUtil.decodeHexString(text);</span>
-<span class="fc" id="L184">        return new String(hex, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L167">        byte[] hex = StringUtil.decodeHexString(text);</span>
+<span class="fc" id="L168">        return new String(hex, StandardCharsets.UTF_8);</span>
     }
     
     public static String toHexZip(String text) throws IOException {
-<span class="fc" id="L188">        byte[] zip = StringUtil.compress(text);</span>
-<span class="fc" id="L189">        return StringUtil.encodeHexString(zip);</span>
+<span class="fc" id="L172">        byte[] zip = StringUtil.compress(text);</span>
+<span class="fc" id="L173">        return StringUtil.encodeHexString(zip);</span>
     }
 
     public static String fromHexZip(String text) throws IOException {
-<span class="fc" id="L193">        return new String(StringUtil.decompress(StringUtil.decodeHexString(text)), StandardCharsets.UTF_8);</span>
+<span class="fc" id="L177">        return new String(StringUtil.decompress(StringUtil.decodeHexString(text)), StandardCharsets.UTF_8);</span>
     }
     
     public static String toBase64Zip(String text) throws IOException {
-<span class="fc" id="L197">        return new String(Base64.getEncoder().encode(StringUtil.compress(text)));</span>
+<span class="fc" id="L181">        return new String(Base64.getEncoder().encode(StringUtil.compress(text)));</span>
     }
     
     public static String fromBase64Zip(String text) throws IOException {
-<span class="fc" id="L201">        byte[] decompressedBArray = StringUtil.decompress(Base64.getDecoder().decode(text));</span>
-<span class="fc" id="L202">        return new String(decompressedBArray, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L185">        byte[] decompressedBArray = StringUtil.decompress(Base64.getDecoder().decode(text));</span>
+<span class="fc" id="L186">        return new String(decompressedBArray, StandardCharsets.UTF_8);</span>
     }
     
     public static String toHtml(String text) {
-<span class="fc" id="L206">        return StringEscapeUtils.escapeHtml4(text);</span>
+<span class="fc" id="L190">        return StringEscapeUtils.escapeHtml4(text);</span>
     }
     
     public static String fromHtml(String text) {
-<span class="fc" id="L210">        return StringEscapeUtils.unescapeHtml4(text);</span>
+<span class="fc" id="L194">        return StringEscapeUtils.unescapeHtml4(text);</span>
     }
     
     public static String toUrl(String text) {
-<span class="fc" id="L214">        return URLEncoder.encode(text, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L198">        return URLEncoder.encode(text, StandardCharsets.UTF_8);</span>
     }
     
     public static String fromUrl(String text) {
-<span class="fc" id="L218">        return URLDecoder.decode(text, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L202">        return URLDecoder.decode(text, StandardCharsets.UTF_8);</span>
     }
     
     public static String cleanSql(String query) {
-<span class="fc" id="L222">        return StringUtil.removeSqlComment(query)</span>
-<span class="fc" id="L223">            .replaceAll(&quot;(?s)([^\\s\\w])(\\s+)&quot;, &quot;$1&quot;)  // Remove spaces after a word</span>
-<span class="fc" id="L224">            .replaceAll(&quot;(?s)(\\s+)([^\\s\\w])&quot;, &quot;$2&quot;)  // Remove spaces before a word</span>
-<span class="fc" id="L225">            .replaceAll(&quot;(?s)\\s+&quot;, &quot; &quot;)  // Replace spaces</span>
-<span class="fc" id="L226">            .trim();</span>
+<span class="fc" id="L206">        return StringUtil.removeSqlComment(query)</span>
+<span class="fc" id="L207">            .replaceAll(&quot;(?s)([^\\s\\w])(\\s+)&quot;, &quot;$1&quot;)  // Remove spaces after a word</span>
+<span class="fc" id="L208">            .replaceAll(&quot;(?s)(\\s+)([^\\s\\w])&quot;, &quot;$2&quot;)  // Remove spaces before a word</span>
+<span class="fc" id="L209">            .replaceAll(&quot;(?s)\\s+&quot;, &quot; &quot;)  // Replace spaces</span>
+<span class="fc" id="L210">            .trim();</span>
     }
 
     /**
@@ -232,18 +216,18 @@ public final class StringUtil {
      * JavaScript: (?!\/\*!.*\*\/|\/\*\*\/)\/\*.*\*\/
      */
     public static String removeSqlComment(String query) {
-<span class="fc" id="L235">        return query.replaceAll(</span>
+<span class="fc" id="L219">        return query.replaceAll(</span>
             &quot;(?s)(?!/\\*\\*/|/\\*!.*\\*/)/\\*.*?\\*/&quot;,
             StringUtils.EMPTY
         );
     }
 
     public static String formatReport(Color color, String text) {
-<span class="fc" id="L242">        return String.format(</span>
+<span class="fc" id="L226">        return String.format(</span>
             &quot;&lt;span style=color:rgb(%s,%s,%s)&gt;%s&lt;/span&gt;&quot;,
-<span class="fc" id="L244">            color.getRed(),</span>
-<span class="fc" id="L245">            color.getGreen(),</span>
-<span class="fc" id="L246">            color.getBlue(),</span>
+<span class="fc" id="L228">            color.getRed(),</span>
+<span class="fc" id="L229">            color.getGreen(),</span>
+<span class="fc" id="L230">            color.getBlue(),</span>
             text
         );
     }
@@ -252,112 +236,112 @@ public final class StringUtil {
     // Utils
 
     private static byte[] compress(String text) throws IOException {
-<span class="fc" id="L255">        ByteArrayOutputStream os = new ByteArrayOutputStream();</span>
-<span class="fc" id="L256">        try (DeflaterOutputStream dos = new DeflaterOutputStream(os)) {</span>
-<span class="fc" id="L257">            dos.write(text.getBytes());</span>
+<span class="fc" id="L239">        ByteArrayOutputStream os = new ByteArrayOutputStream();</span>
+<span class="fc" id="L240">        try (DeflaterOutputStream dos = new DeflaterOutputStream(os)) {</span>
+<span class="fc" id="L241">            dos.write(text.getBytes());</span>
         }
-<span class="fc" id="L259">        return os.toByteArray();</span>
+<span class="fc" id="L243">        return os.toByteArray();</span>
     }
 
     private static byte[] decompress(byte[] compressedTxt) throws IOException {
-<span class="fc" id="L263">        ByteArrayOutputStream os = new ByteArrayOutputStream();</span>
-<span class="fc" id="L264">        try (OutputStream ios = new InflaterOutputStream(os)) {</span>
-<span class="fc" id="L265">            ios.write(compressedTxt);</span>
+<span class="fc" id="L247">        ByteArrayOutputStream os = new ByteArrayOutputStream();</span>
+<span class="fc" id="L248">        try (OutputStream ios = new InflaterOutputStream(os)) {</span>
+<span class="fc" id="L249">            ios.write(compressedTxt);</span>
         }
-<span class="fc" id="L267">        return os.toByteArray();</span>
+<span class="fc" id="L251">        return os.toByteArray();</span>
     }
 
     private static byte hexToByte(String hexString) {
-<span class="fc" id="L271">        int firstDigit = StringUtil.toDigit(hexString.charAt(0));</span>
-<span class="fc" id="L272">        int secondDigit = StringUtil.toDigit(hexString.charAt(1));</span>
-<span class="fc" id="L273">        return (byte) ((firstDigit &lt;&lt; 4) + secondDigit);</span>
+<span class="fc" id="L255">        int firstDigit = StringUtil.toDigit(hexString.charAt(0));</span>
+<span class="fc" id="L256">        int secondDigit = StringUtil.toDigit(hexString.charAt(1));</span>
+<span class="fc" id="L257">        return (byte) ((firstDigit &lt;&lt; 4) + secondDigit);</span>
     }
 
     private static int toDigit(char hexChar) {
-<span class="fc" id="L277">        int digit = Character.digit(hexChar, 16);</span>
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">        if (digit == -1) {</span>
-<span class="nc" id="L279">            throw new IllegalArgumentException(&quot;Invalid Hexadecimal Character: &quot;+ hexChar);</span>
+<span class="fc" id="L261">        int digit = Character.digit(hexChar, 16);</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">        if (digit == -1) {</span>
+<span class="nc" id="L263">            throw new IllegalArgumentException(&quot;Invalid Hexadecimal Character: &quot;+ hexChar);</span>
         }
-<span class="fc" id="L281">        return digit;</span>
+<span class="fc" id="L265">        return digit;</span>
     }
 
     private static String byteToHex(byte num) {
-<span class="fc" id="L285">        char[] hexDigits = new char[2];</span>
-<span class="fc" id="L286">        hexDigits[0] = Character.forDigit((num &gt;&gt; 4) &amp; 0xF, 16);</span>
-<span class="fc" id="L287">        hexDigits[1] = Character.forDigit(num &amp; 0xF, 16);</span>
-<span class="fc" id="L288">        return new String(hexDigits);</span>
+<span class="fc" id="L269">        char[] hexDigits = new char[2];</span>
+<span class="fc" id="L270">        hexDigits[0] = Character.forDigit((num &gt;&gt; 4) &amp; 0xF, 16);</span>
+<span class="fc" id="L271">        hexDigits[1] = Character.forDigit(num &amp; 0xF, 16);</span>
+<span class="fc" id="L272">        return new String(hexDigits);</span>
     }
 
     private static String encodeHexString(byte[] byteArray) {
-<span class="fc" id="L292">        StringBuilder hexStringBuffer = new StringBuilder();</span>
-<span class="fc bfc" id="L293" title="All 2 branches covered.">        for (byte b : byteArray) {</span>
-<span class="fc" id="L294">            hexStringBuffer.append(StringUtil.byteToHex(b));</span>
+<span class="fc" id="L276">        StringBuilder hexStringBuffer = new StringBuilder();</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">        for (byte b : byteArray) {</span>
+<span class="fc" id="L278">            hexStringBuffer.append(StringUtil.byteToHex(b));</span>
         }
-<span class="fc" id="L296">        return hexStringBuffer.toString();</span>
+<span class="fc" id="L280">        return hexStringBuffer.toString();</span>
     }
 
     private static byte[] decodeHexString(String hexString) {
-<span class="pc bpc" id="L300" title="1 of 2 branches missed.">        if (hexString.length() % 2 == 1) {</span>
-<span class="nc" id="L301">            throw new IllegalArgumentException(&quot;Invalid hexadecimal String supplied.&quot;);</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">        if (hexString.length() % 2 == 1) {</span>
+<span class="nc" id="L285">            throw new IllegalArgumentException(&quot;Invalid hexadecimal String supplied.&quot;);</span>
         }
-<span class="fc" id="L303">        byte[] bytes = new byte[hexString.length() / 2];</span>
-<span class="fc bfc" id="L304" title="All 2 branches covered.">        for (int i = 0 ; i &lt; hexString.length() ; i += 2) {</span>
-<span class="fc" id="L305">            bytes[i / 2] = StringUtil.hexToByte(hexString.substring(i, i + 2));</span>
+<span class="fc" id="L287">        byte[] bytes = new byte[hexString.length() / 2];</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        for (int i = 0 ; i &lt; hexString.length() ; i += 2) {</span>
+<span class="fc" id="L289">            bytes[i / 2] = StringUtil.hexToByte(hexString.substring(i, i + 2));</span>
         }
-<span class="fc" id="L307">        return bytes;</span>
+<span class="fc" id="L291">        return bytes;</span>
     }
 
     private static byte[] getBytesUtf8(String string) {
-<span class="pc bpc" id="L311" title="1 of 2 branches missed.">        return string == null ? null : string.getBytes(StandardCharsets.UTF_8);</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">        return string == null ? null : string.getBytes(StandardCharsets.UTF_8);</span>
     }
 
     private static String newStringUtf8(byte[] bytes) {
-<span class="pc bpc" id="L315" title="1 of 2 branches missed.">        return bytes == null ? null : new String(bytes, StandardCharsets.UTF_8);</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">        return bytes == null ? null : new String(bytes, StandardCharsets.UTF_8);</span>
     }
 
     public static byte[] xor(byte[] plaintext, int key) {
-<span class="fc" id="L319">        var ciphertext = new byte[plaintext.length];</span>
-<span class="fc bfc" id="L320" title="All 2 branches covered.">        for (var i = 0 ; i &lt; plaintext.length ; i++) {</span>
-<span class="fc" id="L321">            ciphertext[i] = (byte) (Byte.toUnsignedInt(plaintext[i]) ^ (key &gt;&gt;&gt; (8 * (i % 4))));</span>
+<span class="fc" id="L303">        var ciphertext = new byte[plaintext.length];</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        for (var i = 0 ; i &lt; plaintext.length ; i++) {</span>
+<span class="fc" id="L305">            ciphertext[i] = (byte) (Byte.toUnsignedInt(plaintext[i]) ^ (key &gt;&gt;&gt; (8 * (i % 4))));</span>
         }
-<span class="fc" id="L323">        return ciphertext;</span>
+<span class="fc" id="L307">        return ciphertext;</span>
     }
 
     public static List&lt;String&gt; toHexChunks(byte[] fileData) {
-<span class="fc" id="L327">        StringBuilder hexString = new StringBuilder();</span>
-<span class="fc bfc" id="L328" title="All 2 branches covered.">        for (byte b : fileData) {</span>
-<span class="fc" id="L329">            hexString.append(String.format(&quot;%02X&quot;, b));</span>
+<span class="fc" id="L311">        StringBuilder hexString = new StringBuilder();</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">        for (byte b : fileData) {</span>
+<span class="fc" id="L313">            hexString.append(String.format(&quot;%02X&quot;, b));</span>
         }
-<span class="fc" id="L331">        int chunkSize = 900; // 450 bytes = 900 hex characters</span>
-<span class="fc" id="L332">        List&lt;String&gt; chunks = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L333" title="All 2 branches covered.">        for (int i = 0 ; i &lt; hexString.length() ; i += chunkSize) {</span>
-<span class="fc" id="L334">            int endIndex = Math.min(i + chunkSize, hexString.length());</span>
-<span class="fc" id="L335">            chunks.add(hexString.substring(i, endIndex));</span>
+<span class="fc" id="L315">        int chunkSize = 900; // 450 bytes = 900 hex characters</span>
+<span class="fc" id="L316">        List&lt;String&gt; chunks = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L317" title="All 2 branches covered.">        for (int i = 0 ; i &lt; hexString.length() ; i += chunkSize) {</span>
+<span class="fc" id="L318">            int endIndex = Math.min(i + chunkSize, hexString.length());</span>
+<span class="fc" id="L319">            chunks.add(hexString.substring(i, endIndex));</span>
         }
-<span class="fc" id="L337">        return chunks;</span>
+<span class="fc" id="L321">        return chunks;</span>
     }
 
     public static String getFile(String path) {
-<span class="fc" id="L341">        var content = new StringBuilder();</span>
+<span class="fc" id="L325">        var content = new StringBuilder();</span>
         try (
-<span class="fc" id="L343">            var inputStream = PreferencesUtil.class.getClassLoader().getResourceAsStream(path);</span>
-<span class="fc" id="L344">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
-<span class="fc" id="L345">            var reader = new BufferedReader(inputStreamReader)</span>
+<span class="fc" id="L327">            var inputStream = PreferencesUtil.class.getClassLoader().getResourceAsStream(path);</span>
+<span class="fc" id="L328">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
+<span class="fc" id="L329">            var reader = new BufferedReader(inputStreamReader)</span>
         ) {
             String line;
-<span class="fc bfc" id="L348" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
-<span class="fc" id="L349">                content.append(line).append(&quot;\n&quot;);  // required to prevent \n&lt;text&gt;\r on edit</span>
+<span class="fc bfc" id="L332" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
+<span class="fc" id="L333">                content.append(line).append(&quot;\n&quot;);  // required to prevent \n&lt;text&gt;\r on edit</span>
             }
-<span class="nc" id="L351">        } catch (IOException e) {</span>
-<span class="nc" id="L352">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L353">        }</span>
-<span class="fc" id="L354">        return content.toString();</span>
+<span class="nc" id="L335">        } catch (IOException e) {</span>
+<span class="nc" id="L336">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L337">        }</span>
+<span class="fc" id="L338">        return content.toString();</span>
     }
 
     public static byte[] uncloak(byte[] fileData) {
-<span class="fc" id="L358">        byte[] fileDataUncloaked = StringUtil.xor(fileData, 353837730);</span>
-<span class="fc" id="L359">        ArrayUtils.reverse(fileDataUncloaked);</span>
-<span class="fc" id="L360">        return fileDataUncloaked;</span>
+<span class="fc" id="L342">        byte[] fileDataUncloaked = StringUtil.xor(fileData, 353837730);</span>
+<span class="fc" id="L343">        ArrayUtils.reverse(fileDataUncloaked);</span>
+<span class="fc" id="L344">        return fileDataUncloaked;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

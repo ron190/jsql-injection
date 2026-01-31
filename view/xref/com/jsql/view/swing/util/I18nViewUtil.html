@@ -59,22 +59,22 @@
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      }
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> switchI18nComponents() {
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          Map&lt;Class&lt;?&gt;, BiConsumer&lt;Object, String&gt;&gt; classHandlers = <strong class="jxr_keyword">new</strong> LinkedHashMap&lt;&gt;();  <em class="jxr_comment">// key order required</em>
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          classHandlers.put(JPlaceholder.<strong class="jxr_keyword">class</strong>, (c, s) -&gt; ((<a name="JPlaceholder" href="../../../../../com/jsql/view/swing/text/JPlaceholder.html#JPlaceholder">JPlaceholder</a>) c).setPlaceholderText(I18nUtil.valueByKey(s)));
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          classHandlers.put(DialogAbout.<strong class="jxr_keyword">class</strong>, (c, s) -&gt; ((<a name="DialogAbout" href="../../../../../com/jsql/view/swing/dialog/DialogAbout.html#DialogAbout">DialogAbout</a>) c).setTitle(I18nUtil.valueByKey(s) + <span class="jxr_string">" "</span> + StringUtil.APP_NAME));
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>          classHandlers.put(JToolTipI18n.<strong class="jxr_keyword">class</strong>, (c, s) -&gt; ((<a name="JToolTipI18n" href="../../../../../com/jsql/view/swing/text/JToolTipI18n.html#JToolTipI18n">JToolTipI18n</a>) c).setText(I18nViewUtil.valueByKey(s)));
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>          classHandlers.put(NodeModelEmpty.<strong class="jxr_keyword">class</strong>, (c, s) -&gt; ((<a name="NodeModelEmpty" href="../../../../../com/jsql/view/swing/tree/model/NodeModelEmpty.html#NodeModelEmpty">NodeModelEmpty</a>) c).setText(I18nViewUtil.valueByKey(s)));
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          classHandlers.put(JLabel.<strong class="jxr_keyword">class</strong>, (c, s) -&gt; ((JLabel) c).setText(I18nViewUtil.valueByKey(s)));
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          classHandlers.put(JMenuItem.<strong class="jxr_keyword">class</strong>, (c, s) -&gt; ((JMenuItem) c).setText(I18nViewUtil.valueByKey(s)));
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>          classHandlers.put(JButton.<strong class="jxr_keyword">class</strong>, (c, s) -&gt; ((JButton) c).setText(I18nViewUtil.valueByKey(s)));
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          classHandlers.put(JComboBox.<strong class="jxr_keyword">class</strong>, (c, s) -&gt; ((JComboBox&lt;?&gt;) c).setToolTipText(I18nViewUtil.valueByKey(s)));
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          classHandlers.put(JTextComponent.<strong class="jxr_keyword">class</strong>, (c, s) -&gt; ((JTextComponent) c).setText(I18nViewUtil.valueByKey(s))); <em class="jxr_comment">// fallback</em>
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">for</strong> (String key : I18nViewUtil.keys()) {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>              <strong class="jxr_keyword">for</strong> (Object component : I18nViewUtil.componentsByKey(key)) {
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>                  classHandlers.entrySet().stream()
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>                  .filter(entry -&gt; entry.getKey().isInstance(component))
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>                  .findFirst()
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>                  .ifPresent(entry -&gt; entry.getValue().accept(component, key));
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">for</strong> (String key : I18nViewUtil.keys()) {
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>              <strong class="jxr_keyword">for</strong> (Object component : I18nViewUtil.componentsByKey(key)) {
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>                  <strong class="jxr_keyword">switch</strong> (component) {
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>                      <strong class="jxr_keyword">case</strong> <a name="JPlaceholder" href="../../../../../com/jsql/view/swing/text/JPlaceholder.html#JPlaceholder">JPlaceholder</a> c -&gt; c.setPlaceholderText(I18nUtil.valueByKey(key));
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>                      <strong class="jxr_keyword">case</strong> <a name="DialogAbout" href="../../../../../com/jsql/view/swing/dialog/DialogAbout.html#DialogAbout">DialogAbout</a> c -&gt; c.setTitle(I18nUtil.valueByKey(key) + <span class="jxr_string">" "</span> + StringUtil.APP_NAME);
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>                      <strong class="jxr_keyword">case</strong> <a name="JToolTipI18n" href="../../../../../com/jsql/view/swing/text/JToolTipI18n.html#JToolTipI18n">JToolTipI18n</a> c -&gt; c.setText(I18nViewUtil.valueByKey(key));
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>                      <strong class="jxr_keyword">case</strong> <a name="NodeModelEmpty" href="../../../../../com/jsql/view/swing/tree/model/NodeModelEmpty.html#NodeModelEmpty">NodeModelEmpty</a> c -&gt; c.setText(I18nViewUtil.valueByKey(key));
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>                      <strong class="jxr_keyword">case</strong> JLabel c -&gt; c.setText(I18nViewUtil.valueByKey(key));
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>                      <strong class="jxr_keyword">case</strong> JMenuItem c -&gt; c.setText(I18nViewUtil.valueByKey(key));
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>                      <strong class="jxr_keyword">case</strong> JButton c -&gt; c.setText(I18nViewUtil.valueByKey(key));
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>                      <strong class="jxr_keyword">case</strong> JComboBox&lt;?&gt; c -&gt; c.setToolTipText(I18nViewUtil.valueByKey(key));
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>                      <strong class="jxr_keyword">case</strong> JTextComponent c -&gt; c.setText(I18nViewUtil.valueByKey(key));
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>                      <strong class="jxr_keyword">default</strong> -&gt; {
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>                          <em class="jxr_comment">// ignore</em>
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>                      }
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>                  }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>              }
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          }
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      }

@@ -2,7 +2,7 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,1,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Patch,208,0,14,0,46,0,20,0,12,0
 model,com.jsql.model.injection.strategy.blind.patch,Diff,51,62,11,7,10,19,10,8,3,6
-model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3139,2131,396,291,645,466,243,150,23,20
+model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3142,2128,397,290,647,464,244,149,23,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
 model,com.jsql.model.injection.engine,MediatorEngine.new Engine() {...},0,82,2,6,0,17,2,4,0,2
 model,com.jsql.model.injection.engine,MediatorEngine,36,1034,0,12,12,105,12,40,12,34
@@ -101,7 +101,7 @@ model,com.jsql.model.accessible,CallableFile,37,176,4,2,11,27,3,14,1,13
 model,com.jsql.model.injection.strategy,StrategyBlindBin,0,265,0,14,0,54,0,23,0,16
 model,com.jsql.model.injection.strategy,StrategyStack,22,269,1,13,4,61,3,20,2,14
 model,com.jsql.model.injection.strategy,StrategyBlindBit,0,265,0,14,0,54,0,23,0,16
-model,com.jsql.model.injection.strategy,StrategyUnion,0,444,2,22,0,84,2,32,0,22
+model,com.jsql.model.injection.strategy,StrategyUnion,0,442,2,22,0,84,2,32,0,22
 model,com.jsql.model.injection.strategy,StrategyMultibit,1,208,1,13,1,46,1,18,0,12
 model,com.jsql.model.injection.strategy,DnsServer,154,24,4,0,41,8,5,2,3,2
 model,com.jsql.model.injection.strategy,StrategyDns,420,37,26,4,83,10,26,6,12,5
@@ -128,7 +128,7 @@ model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
-model,com.jsql.util.bruter,HashBruter,39,118,10,15,9,29,10,13,0,8
+model,com.jsql.util.bruter,HashBruter,27,118,10,15,9,29,10,13,0,8
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,6,0,0,1,1,1,1,1,1
@@ -185,7 +185,7 @@ model,com.jsql.model.injection.engine.model.yaml,Write,23,0,0,0,9,0,5,0,5,0
 model,com.jsql.model.injection.engine.model.yaml,ModelYaml,0,37,0,0,0,13,0,7,0,7
 model,com.jsql.model.injection.engine.model.yaml,Row,0,25,0,0,0,9,0,5,0,5
 model,com.jsql.model.injection.engine.model.yaml,Schema,0,45,0,0,0,17,0,9,0,9
-model,com.jsql.model.injection.engine.model.yaml,Test,67,180,0,0,15,30,10,15,10,15
+model,com.jsql.model.injection.engine.model.yaml,Test,71,176,0,0,17,28,11,14,11,14
 model,com.jsql.model.accessible.engine.hsqldb,ModelYamlHsqldb,0,15,0,0,0,5,0,3,0,3
 model,com.jsql.model.accessible.engine.hsqldb,Read,3,30,0,0,1,12,1,6,1,6
 model,com.jsql.model.accessible.engine.hsqldb,File,0,25,0,0,0,9,0,5,0,5
@@ -216,7 +216,7 @@ model,com.jsql.util,PropertiesUtil,168,35,13,1,35,11,13,4,6,4
 model,com.jsql.util,AuthenticationUtil,114,150,11,5,21,46,11,13,4,12
 model,com.jsql.util,MultipartUtil,23,128,2,6,6,28,2,10,0,8
 model,com.jsql.util,DigestUtil,6,243,2,6,2,44,2,10,0,8
-model,com.jsql.util,StringUtil,27,613,4,30,6,120,4,53,0,40
+model,com.jsql.util,StringUtil,31,573,6,30,5,111,6,53,0,41
 model,com.jsql.util,ProxyUtil,346,30,23,3,81,12,32,5,19,5
 model,com.jsql.util,HeaderUtil,70,371,17,43,12,78,15,29,0,14
 model,com.jsql.model.suspendable.callable,ThreadFactoryCallable,0,13,0,0,0,4,0,2,0,2

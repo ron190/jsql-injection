@@ -136,21 +136,18 @@ public class KeyAdapterTerminal extends KeyAdapter {
         AtomicReference&lt;String&gt; command
     ) throws BadLocationException {
 <span class="fc" id="L138">        keyEvent.consume();</span>
-   
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (this.indexCommandsHistory &lt; this.commandsHistory.size()) {</span>
-<span class="nc" id="L141">            this.indexCommandsHistory++;</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (this.indexCommandsHistory &lt; this.commandsHistory.size()) {</span>
+<span class="nc" id="L140">            this.indexCommandsHistory++;</span>
         }
-   
-<span class="pc bpc" id="L144" title="3 of 4 branches missed.">        if (!this.commandsHistory.isEmpty() &amp;&amp; this.indexCommandsHistory &lt; this.commandsHistory.size()) {</span>
-<span class="nc" id="L145">            this.terminal.getDocument().remove(</span>
-<span class="nc" id="L146">                root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),</span>
-<span class="nc" id="L147">                command.get().length() - 1</span>
-            );
-   
-<span class="nc" id="L150">            this.terminal.append(this.commandsHistory.get(this.indexCommandsHistory));</span>
-<span class="nc" id="L151">            this.terminal.setCaretPosition(this.terminal.getDocument().getLength());</span>
+<span class="fc" id="L142">        this.terminal.getDocument().remove(  // remove any prompt command before appending history, or start empty when last</span>
+<span class="fc" id="L143">            root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),</span>
+<span class="fc" id="L144">            command.get().length()</span>
+        );
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (this.indexCommandsHistory &lt; this.commandsHistory.size()) {</span>
+<span class="nc" id="L147">            this.terminal.append(this.commandsHistory.get(this.indexCommandsHistory));</span>
         }
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L149">        this.terminal.setCaretPosition(this.terminal.getDocument().getLength());</span>
+<span class="fc" id="L150">    }</span>
 
     private void appendPreviousCommand(
         KeyEvent keyEvent,
@@ -158,65 +155,54 @@ public class KeyAdapterTerminal extends KeyAdapter {
         int lineNumber,
         AtomicReference&lt;String&gt; command
     ) throws BadLocationException {
-<span class="fc" id="L161">        keyEvent.consume();</span>
-   
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if (this.indexCommandsHistory &gt; 0) {</span>
-<span class="nc" id="L164">            this.indexCommandsHistory--;</span>
+<span class="fc" id="L158">        keyEvent.consume();</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        if (this.indexCommandsHistory &gt; 0) {</span>
+<span class="nc" id="L160">            this.indexCommandsHistory--;</span>
         }
-   
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">        if (!this.commandsHistory.isEmpty()) {</span>
-<span class="nc" id="L168">            if (</span>
-<span class="nc bnc" id="L169" title="All 2 branches missed.">                this.commandsHistory.size() &gt; 1</span>
-<span class="nc bnc" id="L170" title="All 2 branches missed.">                &amp;&amp; this.indexCommandsHistory == this.commandsHistory.size() - 1</span>
-<span class="nc bnc" id="L171" title="All 2 branches missed.">                &amp;&amp; StringUtils.isNotEmpty(command.get())</span>
-            ) {
-<span class="nc" id="L173">                this.indexCommandsHistory--;</span>
-            }
-   
-<span class="nc" id="L176">            this.terminal.getDocument().remove(</span>
-<span class="nc" id="L177">                root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),</span>
-<span class="nc" id="L178">                command.get().length() - 1</span>
-            );
-   
-<span class="nc" id="L181">            this.terminal.append(this.commandsHistory.get(this.indexCommandsHistory));</span>
-<span class="nc" id="L182">            this.terminal.setCaretPosition(this.terminal.getDocument().getLength());</span>
+<span class="fc" id="L162">        this.terminal.getDocument().remove(  // remove any prompt command before appending history, also when first</span>
+<span class="fc" id="L163">            root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),</span>
+<span class="fc" id="L164">            command.get().length()</span>
+        );
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">        if (!this.commandsHistory.isEmpty()) {</span>
+<span class="nc" id="L167">            this.terminal.append(this.commandsHistory.get(this.indexCommandsHistory));</span>
         }
-<span class="fc" id="L184">    }</span>
+<span class="fc" id="L169">        this.terminal.setCaretPosition(this.terminal.getDocument().getLength());</span>
+<span class="fc" id="L170">    }</span>
 
     private void runCommand(KeyEvent keyEvent, AtomicReference&lt;String&gt; command) {
-<span class="fc" id="L187">        this.terminal.getIsEdited().set(true);</span>
-<span class="fc" id="L188">        keyEvent.consume();</span>
-<span class="fc" id="L189">        this.terminal.setEditable(false);</span>
+<span class="fc" id="L173">        this.terminal.getIsEdited().set(true);</span>
+<span class="fc" id="L174">        keyEvent.consume();</span>
+<span class="fc" id="L175">        this.terminal.setEditable(false);</span>
    
         // Populate cmd list for key up/down
-<span class="fc bfc" id="L192" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(command.get())) {</span>
-<span class="fc" id="L193">            this.commandsHistory.add(command.get());</span>
-<span class="fc" id="L194">            this.indexCommandsHistory = this.commandsHistory.size();</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(command.get())) {</span>
+<span class="fc" id="L179">            this.commandsHistory.add(command.get());</span>
+<span class="fc" id="L180">            this.indexCommandsHistory = this.commandsHistory.size();</span>
         }
 
-<span class="fc" id="L197">        new SwingWorker&lt;&gt;() {  // Thread to give back control to user (SwingUtilities does not)</span>
+<span class="fc" id="L183">        new SwingWorker&lt;&gt;() {  // Thread to give back control to user (SwingUtilities does not)</span>
             @Override
             protected Object doInBackground() {
                 // Inside Swing thread to avoid flickering
-<span class="fc" id="L201">                Thread.currentThread().setName(&quot;SwingWorkerKeyAdapterTerminal&quot;);</span>
+<span class="fc" id="L187">                Thread.currentThread().setName(&quot;SwingWorkerKeyAdapterTerminal&quot;);</span>
 
-<span class="fc" id="L203">                AbstractExploit terminalCommand = KeyAdapterTerminal.this.terminal;</span>
-<span class="fc" id="L204">                terminalCommand.append(&quot;\n&quot;);</span>
+<span class="fc" id="L189">                AbstractExploit terminalCommand = KeyAdapterTerminal.this.terminal;</span>
+<span class="fc" id="L190">                terminalCommand.append(&quot;\n&quot;);</span>
                 
-<span class="fc bfc" id="L206" title="All 2 branches covered.">                if (StringUtils.isNotEmpty(command.get())) {</span>
-<span class="fc" id="L207">                    terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());</span>
-<span class="fc" id="L208">                    terminalCommand.action(</span>
-<span class="fc" id="L209">                        command.get(),</span>
-<span class="fc" id="L210">                        terminalCommand.getUuidShell(),</span>
-<span class="fc" id="L211">                        terminalCommand.getUrlShell(),</span>
-<span class="fc" id="L212">                        terminalCommand.getLoginPassword()</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">                if (StringUtils.isNotEmpty(command.get())) {</span>
+<span class="fc" id="L193">                    terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());</span>
+<span class="fc" id="L194">                    terminalCommand.action(</span>
+<span class="fc" id="L195">                        command.get(),</span>
+<span class="fc" id="L196">                        terminalCommand.getUuidShell(),</span>
+<span class="fc" id="L197">                        terminalCommand.getUrlShell(),</span>
+<span class="fc" id="L198">                        terminalCommand.getLoginPassword()</span>
                     );
                 } else {
-<span class="fc" id="L215">                    terminalCommand.reset();</span>
+<span class="fc" id="L201">                    terminalCommand.reset();</span>
                 }
-<span class="fc" id="L217">                return null;</span>
+<span class="fc" id="L203">                return null;</span>
             }
-<span class="fc" id="L219">        }.execute();</span>
-<span class="fc" id="L220">    }</span>
+<span class="fc" id="L205">        }.execute();</span>
+<span class="fc" id="L206">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

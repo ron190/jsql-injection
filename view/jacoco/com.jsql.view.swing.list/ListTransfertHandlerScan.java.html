@@ -54,7 +54,7 @@ import java.util.List;
 <span class="fc" id="L54">            }</span>
 <span class="fc" id="L55">            stringTransferable.append(new JSONArray(jsons).toString(4));</span>
 <span class="nc" id="L56">        } catch (JSONException e) {</span>
-<span class="nc" id="L57">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L57">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="fc" id="L58">        }</span>
 <span class="fc" id="L59">        return stringTransferable.toString();</span>
     }

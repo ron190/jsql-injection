@@ -117,7 +117,7 @@
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>             } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>                 <strong class="jxr_keyword">this</strong>.splitEW.setRightComponent(MediatorHelper.tabResults());
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>             }
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>             <strong class="jxr_keyword">this</strong>.splitEW.setDividerLocation(dividerLocation);
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>             SwingUtilities.invokeLater(() -&gt; <strong class="jxr_keyword">this</strong>.splitEW.setDividerLocation(dividerLocation));  <em class="jxr_comment">// wait for EDT refresh to prevent wrong location</em>
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         }
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     }
 <a class="jxr_linenumber" name="L115" href="#L115">115</a> 

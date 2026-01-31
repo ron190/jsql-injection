@@ -198,131 +198,129 @@ public class MenuWindows extends JMenu {
 <span class="fc" id="L198">        itemSqlEngine.setName(&quot;itemSqlEngine&quot;);</span>
 <span class="fc" id="L199">        itemSqlEngine.setMnemonic('S');</span>
 
-        // Render the SQL Engine dialog behind the scene
-<span class="fc" id="L202">        var titleTabSqlEngine = &quot;SQL Engine&quot;;</span>
-
-<span class="fc" id="L204">        itemSqlEngine.addActionListener(actionEvent -&gt; {</span>
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">            for (var i = 0 ; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
-<span class="nc bnc" id="L206" title="All 2 branches missed.">                if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {</span>
-<span class="nc" id="L207">                    MediatorHelper.tabResults().setSelectedIndex(i);</span>
-<span class="nc" id="L208">                    return;</span>
+<span class="fc" id="L201">        itemSqlEngine.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L202">            var titleTabSqlEngine = &quot;SQL Engine&quot;;</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">            for (var i = 0 ; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">                if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {</span>
+<span class="nc" id="L205">                    MediatorHelper.tabResults().setSelectedIndex(i);</span>
+<span class="nc" id="L206">                    return;</span>
                 }
             }
 
-<span class="fc" id="L212">            MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
+<span class="fc" id="L210">            MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
 
-<span class="fc" id="L214">            var panelSqlEngine = new SqlEngine();</span>
-<span class="fc" id="L215">            MediatorHelper.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);</span>
-<span class="fc" id="L216">            MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);  // Focus on the new tab</span>
+<span class="fc" id="L212">            var panelSqlEngine = new SqlEngine();</span>
+<span class="fc" id="L213">            MediatorHelper.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);</span>
+<span class="fc" id="L214">            MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);  // Focus on the new tab</span>
 
             // Create a custom tab header
-<span class="fc" id="L219">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.getIcon());</span>
-<span class="fc" id="L220">            I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, header.getTabLabel());</span>
+<span class="fc" id="L217">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_SQL_ENGINE), UiUtil.COG.getIcon());</span>
+<span class="fc" id="L218">            I18nViewUtil.addComponentForKey(MenuWindows.I18N_SQL_ENGINE, header.getTabLabel());</span>
 
             // Apply the custom header to the tab
-<span class="fc" id="L223">            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelSqlEngine), header);</span>
-<span class="fc" id="L224">            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="fc" id="L225">        });</span>
+<span class="fc" id="L221">            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelSqlEngine), header);</span>
+<span class="fc" id="L222">            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="fc" id="L223">        });</span>
 
-<span class="fc" id="L227">        return itemSqlEngine;</span>
+<span class="fc" id="L225">        return itemSqlEngine;</span>
     }
 
     private JMenuItem getMenuItemPreferences() {
-<span class="fc" id="L231">        JMenuItem itemPreferences = new JMenuItem(I18nUtil.valueByKey(MenuWindows.I18N_PREFERENCES), 'P');</span>
-<span class="fc" id="L232">        I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, itemPreferences);</span>
-<span class="fc" id="L233">        itemPreferences.setName(&quot;itemPreferences&quot;);</span>
+<span class="fc" id="L229">        JMenuItem itemPreferences = new JMenuItem(I18nUtil.valueByKey(MenuWindows.I18N_PREFERENCES), 'P');</span>
+<span class="fc" id="L230">        I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, itemPreferences);</span>
+<span class="fc" id="L231">        itemPreferences.setName(&quot;itemPreferences&quot;);</span>
 
         // Render the Preferences dialog behind the scene
-<span class="fc" id="L236">        var titleTabPreferences = &quot;Preferences&quot;;</span>
+<span class="fc" id="L234">        var titleTabPreferences = &quot;Preferences&quot;;</span>
 
-<span class="fc" id="L238">        itemPreferences.addActionListener(actionEvent -&gt; {</span>
-<span class="pc bpc" id="L239" title="1 of 2 branches missed.">            for (var i = 0 ; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
-<span class="nc bnc" id="L240" title="All 2 branches missed.">                if (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {</span>
-<span class="nc" id="L241">                    MediatorHelper.tabResults().setSelectedIndex(i);</span>
-<span class="nc" id="L242">                    return;</span>
+<span class="fc" id="L236">        itemPreferences.addActionListener(actionEvent -&gt; {</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">            for (var i = 0 ; i &lt; MediatorHelper.tabResults().getTabCount() ; i++) {</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">                if (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {</span>
+<span class="nc" id="L239">                    MediatorHelper.tabResults().setSelectedIndex(i);</span>
+<span class="nc" id="L240">                    return;</span>
                 }
             }
 
-<span class="fc" id="L246">            MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
+<span class="fc" id="L244">            MediatorHelper.frame().getSplitNS().initSplitOrientation();</span>
 
-<span class="fc" id="L248">            var panelPreferences = new PanelPreferences();</span>
-<span class="fc" id="L249">            MediatorHelper.tabResults().addTab(titleTabPreferences, panelPreferences);</span>
-<span class="fc" id="L250">            MediatorHelper.tabResults().setSelectedComponent(panelPreferences);  // Focus on the new tab</span>
+<span class="fc" id="L246">            var panelPreferences = new PanelPreferences();</span>
+<span class="fc" id="L247">            MediatorHelper.tabResults().addTab(titleTabPreferences, panelPreferences);</span>
+<span class="fc" id="L248">            MediatorHelper.tabResults().setSelectedComponent(panelPreferences);  // Focus on the new tab</span>
 
             // Create a custom tab header
-<span class="fc" id="L253">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.getIcon());</span>
-<span class="fc" id="L254">            I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, header.getTabLabel());</span>
+<span class="fc" id="L251">            var header = new TabHeader(I18nViewUtil.valueByKey(MenuWindows.I18N_PREFERENCES), UiUtil.COG.getIcon());</span>
+<span class="fc" id="L252">            I18nViewUtil.addComponentForKey(MenuWindows.I18N_PREFERENCES, header.getTabLabel());</span>
 
             // Apply the custom header to the tab
-<span class="fc" id="L257">            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelPreferences), header);</span>
+<span class="fc" id="L255">            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelPreferences), header);</span>
 
-<span class="fc" id="L259">            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
-<span class="fc" id="L260">        });</span>
+<span class="fc" id="L257">            MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark =&gt; light artifacts</span>
+<span class="fc" id="L258">        });</span>
 
-<span class="fc" id="L262">        return itemPreferences;</span>
+<span class="fc" id="L260">        return itemPreferences;</span>
     }
 
     private JMenu initMenuTranslation() {
-<span class="fc" id="L266">        var menuTranslation = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_LANGUAGE&quot;));</span>
-<span class="fc" id="L267">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_LANGUAGE&quot;, menuTranslation);</span>
-<span class="fc" id="L268">        menuTranslation.setName(MenuWindows.MENU_TRANSLATION);</span>
-<span class="fc" id="L269">        menuTranslation.setMnemonic('L');</span>
+<span class="fc" id="L264">        var menuTranslation = new JMenu(I18nUtil.valueByKey(&quot;MENUBAR_LANGUAGE&quot;));</span>
+<span class="fc" id="L265">        I18nViewUtil.addComponentForKey(&quot;MENUBAR_LANGUAGE&quot;, menuTranslation);</span>
+<span class="fc" id="L266">        menuTranslation.setName(MenuWindows.MENU_TRANSLATION);</span>
+<span class="fc" id="L267">        menuTranslation.setMnemonic('L');</span>
 
-<span class="fc" id="L271">        var groupRadioLanguage = new ButtonGroup();</span>
-<span class="fc" id="L272">        var atomicIsAnySelected = new AtomicBoolean(false);</span>
-<span class="fc" id="L273">        AppMenubar.ITEMS_TRANSLATE.forEach(model -&gt; {</span>
-<span class="pc bpc" id="L274" title="1 of 4 branches missed.">            atomicIsAnySelected.set(atomicIsAnySelected.get() || model.getLanguage().isCurrentLanguage());</span>
-<span class="fc" id="L275">            model.setMenuItem(new RadioItemNonClosing(</span>
-<span class="fc" id="L276">                model.getLanguage().getMenuItemLabel(),</span>
-<span class="fc" id="L277">                model.getLanguage().getFlag(),</span>
-<span class="fc" id="L278">                model.getLanguage().isCurrentLanguage()</span>
+<span class="fc" id="L269">        var groupRadioLanguage = new ButtonGroup();</span>
+<span class="fc" id="L270">        var atomicIsAnySelected = new AtomicBoolean(false);</span>
+<span class="fc" id="L271">        AppMenubar.ITEMS_TRANSLATE.forEach(model -&gt; {</span>
+<span class="pc bpc" id="L272" title="1 of 4 branches missed.">            atomicIsAnySelected.set(atomicIsAnySelected.get() || model.getLanguage().isCurrentLanguage());</span>
+<span class="fc" id="L273">            model.setMenuItem(new RadioItemNonClosing(</span>
+<span class="fc" id="L274">                model.getLanguage().getMenuItemLabel(),</span>
+<span class="fc" id="L275">                model.getLanguage().getFlag(),</span>
+<span class="fc" id="L276">                model.getLanguage().isCurrentLanguage()</span>
             ));
-<span class="fc" id="L280">            model.getMenuItem().addActionListener(actionEvent -&gt; {</span>
-<span class="fc bfc" id="L281" title="All 2 branches covered.">                var newLocale = model.getLanguage() == Language.EN</span>
-<span class="fc" id="L282">                    ? Locale.ROOT  // required as no bundle 'en'</span>
-<span class="fc" id="L283">                    : Locale.forLanguageTag(model.getLanguage().getLanguageTag());</span>
-<span class="fc" id="L284">                this.appMenubar.switchLocale(newLocale);</span>
-<span class="pc bpc" id="L285" title="1 of 2 branches missed.">                if (!MenuWindows.ACTION_STARTING_APP.equals(model.getMenuItem().getActionCommand())) {</span>
-<span class="fc" id="L286">                    MediatorHelper.model().getPropertiesUtil().displayI18nStatus(newLocale);</span>
+<span class="fc" id="L278">            model.getMenuItem().addActionListener(actionEvent -&gt; {</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">                var newLocale = model.getLanguage() == Language.EN</span>
+<span class="fc" id="L280">                    ? Locale.ROOT  // required as no bundle 'en'</span>
+<span class="fc" id="L281">                    : Locale.forLanguageTag(model.getLanguage().getLanguageTag());</span>
+<span class="fc" id="L282">                this.appMenubar.switchLocale(newLocale);</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">                if (!MenuWindows.ACTION_STARTING_APP.equals(model.getMenuItem().getActionCommand())) {</span>
+<span class="fc" id="L284">                    MediatorHelper.model().getPropertiesUtil().displayI18nStatus(newLocale);</span>
                 }
-<span class="fc" id="L288">                model.getMenuItem().setActionCommand(Strings.EMPTY);</span>
-<span class="fc" id="L289">                MediatorHelper.model().getMediatorUtils().preferencesUtil().withLanguageTag(model.getLanguage().getLanguageTag()).persist();</span>
-<span class="fc" id="L290">            });</span>
-<span class="fc" id="L291">            menuTranslation.add(model.getMenuItem());</span>
-<span class="fc" id="L292">            groupRadioLanguage.add(model.getMenuItem());</span>
-<span class="fc" id="L293">        });</span>
+<span class="fc" id="L286">                model.getMenuItem().setActionCommand(Strings.EMPTY);</span>
+<span class="fc" id="L287">                MediatorHelper.model().getMediatorUtils().preferencesUtil().withLanguageTag(model.getLanguage().getLanguageTag()).persist();</span>
+<span class="fc" id="L288">            });</span>
+<span class="fc" id="L289">            menuTranslation.add(model.getMenuItem());</span>
+<span class="fc" id="L290">            groupRadioLanguage.add(model.getMenuItem());</span>
+<span class="fc" id="L291">        });</span>
 
-<span class="fc" id="L295">        AppMenubar.ITEMS_TRANSLATE.stream()</span>
-<span class="fc bfc" id="L296" title="All 2 branches covered.">        .filter(model -&gt; model.getLanguage() == Language.EN)</span>
-<span class="fc" id="L297">        .forEach(modelItem -&gt; {</span>
-<span class="pc bpc" id="L298" title="1 of 2 branches missed.">            modelItem.getMenuItem().setSelected(!atomicIsAnySelected.get());</span>
-<span class="fc" id="L299">            modelItem.getMenuItem().setName(MenuWindows.ITEM_ENGLISH);</span>
-<span class="fc" id="L300">        });</span>
-<span class="fc" id="L301">        AppMenubar.ITEMS_TRANSLATE.stream()</span>
-<span class="fc bfc" id="L302" title="All 2 branches covered.">        .filter(model -&gt; model.getLanguage() == Language.RU)</span>
-<span class="fc" id="L303">        .forEach(modelItem -&gt; modelItem.getMenuItem().setName(MenuWindows.ITEM_RUSSIAN));</span>
-<span class="fc" id="L304">        AppMenubar.ITEMS_TRANSLATE.stream()</span>
-<span class="fc bfc" id="L305" title="All 2 branches covered.">        .filter(model -&gt; model.getLanguage() == Language.AR)</span>
-<span class="fc" id="L306">        .forEach(modelItem -&gt; modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));</span>
+<span class="fc" id="L293">        AppMenubar.ITEMS_TRANSLATE.stream()</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">        .filter(model -&gt; model.getLanguage() == Language.EN)</span>
+<span class="fc" id="L295">        .forEach(modelItem -&gt; {</span>
+<span class="pc bpc" id="L296" title="1 of 2 branches missed.">            modelItem.getMenuItem().setSelected(!atomicIsAnySelected.get());</span>
+<span class="fc" id="L297">            modelItem.getMenuItem().setName(MenuWindows.ITEM_ENGLISH);</span>
+<span class="fc" id="L298">        });</span>
+<span class="fc" id="L299">        AppMenubar.ITEMS_TRANSLATE.stream()</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">        .filter(model -&gt; model.getLanguage() == Language.RU)</span>
+<span class="fc" id="L301">        .forEach(modelItem -&gt; modelItem.getMenuItem().setName(MenuWindows.ITEM_RUSSIAN));</span>
+<span class="fc" id="L302">        AppMenubar.ITEMS_TRANSLATE.stream()</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">        .filter(model -&gt; model.getLanguage() == Language.AR)</span>
+<span class="fc" id="L304">        .forEach(modelItem -&gt; modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));</span>
 
-<span class="fc" id="L308">        return menuTranslation;</span>
+<span class="fc" id="L306">        return menuTranslation;</span>
     }
 
     public void switchLocaleFromPreferences() {
-<span class="fc" id="L312">        AppMenubar.ITEMS_TRANSLATE.stream().filter(model -&gt; model.getLanguage().getLanguageTag().equals(</span>
-<span class="fc" id="L313">            MediatorHelper.model().getMediatorUtils().preferencesUtil().getLanguageTag()</span>
+<span class="fc" id="L310">        AppMenubar.ITEMS_TRANSLATE.stream().filter(model -&gt; model.getLanguage().getLanguageTag().equals(</span>
+<span class="fc" id="L311">            MediatorHelper.model().getMediatorUtils().preferencesUtil().getLanguageTag()</span>
         ))
-<span class="fc" id="L315">        .forEach(modelItem -&gt; {</span>
-<span class="nc" id="L316">            modelItem.getMenuItem().setActionCommand(MenuWindows.ACTION_STARTING_APP);</span>
-<span class="nc" id="L317">            modelItem.getMenuItem().doClick();</span>
-<span class="nc" id="L318">        });</span>
-<span class="fc" id="L319">    }</span>
+<span class="fc" id="L313">        .forEach(modelItem -&gt; {</span>
+<span class="nc" id="L314">            modelItem.getMenuItem().setActionCommand(MenuWindows.ACTION_STARTING_APP);</span>
+<span class="nc" id="L315">            modelItem.getMenuItem().doClick();</span>
+<span class="nc" id="L316">        });</span>
+<span class="fc" id="L317">    }</span>
 
 
     // Getter and setter
 
     public JMenu getMenuView() {
-<span class="nc" id="L325">        return this.menuView;</span>
+<span class="nc" id="L323">        return this.menuView;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

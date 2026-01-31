@@ -260,7 +260,7 @@ public class DnDTabbedPane extends JTabbedPane {
             try {
 <span class="fc" id="L261">                idx = src.indexAtLocation(tabPt.x, tabPt.y);</span>
 <span class="nc" id="L262">            } catch (IllegalArgumentException err) {</span>
-<span class="nc" id="L263">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, err);</span>
+<span class="nc" id="L263">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, err, err);</span>
 <span class="nc" id="L264">                return;</span>
 <span class="fc" id="L265">            }</span>
             

@@ -52,15 +52,15 @@ public class WorkerTranslateInto extends SwingWorker&lt;Object, Object&gt; {
 <span class="nc" id="L52">        } catch (IOException eGithub) {</span>
 <span class="nc" id="L53">            this.logFileNotFound(eGithub);</span>
         } finally {
-<span class="nc" id="L55">            this.displayDiff();</span>
+<span class="fc" id="L55">            this.displayDiff();</span>
         }
-<span class="nc" id="L57">        var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());</span>
-<span class="nc" id="L58">        LOGGER.log(</span>
+<span class="fc" id="L57">        var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());</span>
+<span class="fc" id="L58">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_SUCCESS,
             &quot;Remaining text to translate into {} loaded, send any part translated to contribute&quot;,
-<span class="nc" id="L61">            () -&gt; localeInto.getDisplayLanguage(localeInto)</span>
+<span class="fc" id="L61">            () -&gt; localeInto.getDisplayLanguage(localeInto)</span>
         );
-<span class="nc" id="L63">        return null;</span>
+<span class="fc" id="L63">        return null;</span>
     }
 
     private void displayDiff() {
@@ -75,26 +75,26 @@ public class WorkerTranslateInto extends SwingWorker&lt;Object, Object&gt; {
             ));
         
 <span class="fc" id="L77">        this.dialogTranslate.setTextBeforeChange(this.propertiesToTranslate.toString().trim());</span>
-<span class="nc" id="L78">        this.dialogTranslate.getButtonSend().setEnabled(true);</span>
-<span class="nc" id="L79">        this.dialogTranslate.getTextToTranslate().setText(this.dialogTranslate.getTextBeforeChange());</span>
-<span class="nc" id="L80">        this.dialogTranslate.getTextToTranslate().setCaretPosition(0);</span>
-<span class="nc" id="L81">        this.dialogTranslate.getTextToTranslate().setEditable(true);</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (this.dialogTranslate.getLanguageInto() != Language.OT) {</span>
-<span class="nc" id="L83">            double percentTranslated = 100.0 * this.propertiesLanguageToTranslate.size() / this.propertiesRoot.size();</span>
-<span class="nc" id="L84">            this.dialogTranslate.getProgressBarTranslation().setValue((int) percentTranslated);</span>
+<span class="fc" id="L78">        this.dialogTranslate.getButtonSend().setEnabled(true);</span>
+<span class="fc" id="L79">        this.dialogTranslate.getTextToTranslate().setText(this.dialogTranslate.getTextBeforeChange());</span>
+<span class="fc" id="L80">        this.dialogTranslate.getTextToTranslate().setCaretPosition(0);</span>
+<span class="fc" id="L81">        this.dialogTranslate.getTextToTranslate().setEditable(true);</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (this.dialogTranslate.getLanguageInto() != Language.OT) {</span>
+<span class="fc" id="L83">            double percentTranslated = 100.0 * this.propertiesLanguageToTranslate.size() / this.propertiesRoot.size();</span>
+<span class="fc" id="L84">            this.dialogTranslate.getProgressBarTranslation().setValue((int) percentTranslated);</span>
 
-<span class="nc" id="L86">            var bundleInto = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag()));</span>
-<span class="nc" id="L87">            var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());</span>
-<span class="nc" id="L88">            this.dialogTranslate.getProgressBarTranslation().setString(</span>
-<span class="nc" id="L89">                String.format(</span>
+<span class="fc" id="L86">            var bundleInto = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag()));</span>
+<span class="fc" id="L87">            var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());</span>
+<span class="fc" id="L88">            this.dialogTranslate.getProgressBarTranslation().setString(</span>
+<span class="fc" id="L89">                String.format(</span>
                     &quot;%s%% %s %s&quot;,
-<span class="nc" id="L91">                    BigDecimal.valueOf(percentTranslated).setScale(1, RoundingMode.HALF_UP).doubleValue(),</span>
-<span class="nc" id="L92">                    bundleInto.getString(&quot;TRANSLATION_PROGRESS&quot;),</span>
-<span class="nc" id="L93">                    localeInto.getDisplayLanguage(localeInto)</span>
+<span class="fc" id="L91">                    BigDecimal.valueOf(percentTranslated).setScale(1, RoundingMode.HALF_UP).doubleValue(),</span>
+<span class="fc" id="L92">                    bundleInto.getString(&quot;TRANSLATION_PROGRESS&quot;),</span>
+<span class="fc" id="L93">                    localeInto.getDisplayLanguage(localeInto)</span>
                 )
             );
         }
-<span class="nc" id="L97">    }</span>
+<span class="fc" id="L97">    }</span>
 
     private void loadFromGithub() throws IOException, URISyntaxException {
 <span class="fc" id="L100">        this.loadRootFromGithub();</span>

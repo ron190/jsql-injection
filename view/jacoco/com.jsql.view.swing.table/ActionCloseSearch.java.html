@@ -10,18 +10,16 @@ public class ActionCloseSearch extends AbstractAction {
     private final PanelTable panelTable;
     
 <span class="fc" id="L12">    public ActionCloseSearch(JTextField textFilter, JPanel panelSearch, PanelTable panelTable) {</span>
-        
-<span class="fc" id="L14">        this.textFilter = textFilter;</span>
-<span class="fc" id="L15">        this.panelSearch = panelSearch;</span>
-<span class="fc" id="L16">        this.panelTable = panelTable;</span>
-<span class="fc" id="L17">    }</span>
+<span class="fc" id="L13">        this.textFilter = textFilter;</span>
+<span class="fc" id="L14">        this.panelSearch = panelSearch;</span>
+<span class="fc" id="L15">        this.panelTable = panelTable;</span>
+<span class="fc" id="L16">    }</span>
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-<span class="nc" id="L22">        this.textFilter.setText(null);</span>
-<span class="nc" id="L23">        this.panelSearch.setVisible(false);</span>
-<span class="nc" id="L24">        this.panelTable.getTableValues().requestFocusInWindow();</span>
-<span class="nc" id="L25">    }</span>
+<span class="nc" id="L20">        this.textFilter.setText(null);</span>
+<span class="nc" id="L21">        this.panelSearch.setVisible(false);</span>
+<span class="nc" id="L22">        this.panelTable.getTableValues().requestFocusInWindow();</span>
+<span class="nc" id="L23">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

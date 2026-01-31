@@ -183,7 +183,7 @@ public class DnDList extends JList&lt;ItemList&gt; {
                         JOptionPane.ERROR_MESSAGE
                     );
 <span class="nc" id="L185">                } catch (ClassCastException e) {</span>
-<span class="nc" id="L186">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L186">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="nc" id="L187">                }</span>
 <span class="nc" id="L188">                return;</span>
             }
@@ -238,7 +238,7 @@ public class DnDList extends JList&lt;ItemList&gt; {
             );
 <span class="nc" id="L239">        } catch (NullPointerException e) {</span>
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
-<span class="nc" id="L241">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L241">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="nc" id="L242">        }</span>
 <span class="nc" id="L243">    }</span>
 
@@ -260,7 +260,7 @@ public class DnDList extends JList&lt;ItemList&gt; {
                 }
             }
 <span class="nc" id="L262">        } catch (IOException e) {</span>
-<span class="nc" id="L263">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L263">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="nc" id="L264">        }</span>
         
 <span class="nc" id="L266">        return endPosition;</span>

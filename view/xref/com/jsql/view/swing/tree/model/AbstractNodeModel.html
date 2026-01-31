@@ -330,7 +330,7 @@
 <a class="jxr_linenumber" name="L322" href="#L322">322</a>     }
 <a class="jxr_linenumber" name="L323" href="#L323">323</a> 
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initEditable(<strong class="jxr_keyword">boolean</strong> isEdited) {
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>         <strong class="jxr_keyword">if</strong> (StringUtil.isUtf8(<strong class="jxr_keyword">this</strong>.getElementDatabase().toString())) {
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>         <strong class="jxr_keyword">if</strong> (StringUtil.containsNonStandardScripts(<strong class="jxr_keyword">this</strong>.getElementDatabase().toString())) {
 <a class="jxr_linenumber" name="L326" href="#L326">326</a>             <strong class="jxr_keyword">this</strong>.panelNode.getTextFieldEditable().setFont(UiUtil.FONT_MONO_ASIAN);
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>         } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L328" href="#L328">328</a>             <strong class="jxr_keyword">this</strong>.panelNode.getTextFieldEditable().setFont(UiUtil.FONT_NON_MONO);

@@ -27,9 +27,7 @@ import java.beans.PropertyChangeListener;
 <span class="fc" id="L27">public class FixedColumnTable implements ChangeListener, PropertyChangeListener {</span>
     
     private JTable mainTable;
-    
     private JTable fixedTable;
-    
     private JScrollPane scrollPane;
 
     /**
@@ -37,99 +35,99 @@ import java.beans.PropertyChangeListener;
      *  containing the table.
      */
     public void fixColumnSize(int fixedColumns, JScrollPane scrollPane) {
-<span class="fc" id="L40">        this.scrollPane = scrollPane;</span>
+<span class="fc" id="L38">        this.scrollPane = scrollPane;</span>
 
-<span class="fc" id="L42">        this.mainTable = (JTable) scrollPane.getViewport().getView();</span>
-<span class="fc" id="L43">        this.mainTable.setAutoCreateColumnsFromModel(false);</span>
-<span class="fc" id="L44">        this.mainTable.addPropertyChangeListener(this);</span>
+<span class="fc" id="L40">        this.mainTable = (JTable) scrollPane.getViewport().getView();</span>
+<span class="fc" id="L41">        this.mainTable.setAutoCreateColumnsFromModel(false);</span>
+<span class="fc" id="L42">        this.mainTable.addPropertyChangeListener(this);</span>
 
         //  Use the existing table to create a new table sharing
         //  the DataModel and ListSelectionModel
-<span class="fc" id="L48">        this.fixedTable = new JTable() {</span>
+<span class="fc" id="L46">        this.fixedTable = new JTable() {</span>
             @Override
             public boolean isCellEditable(int row,int column) {
-<span class="nc" id="L51">                return false;</span>
+<span class="nc" id="L49">                return false;</span>
             }
         };
         
-<span class="fc" id="L55">        this.fixedTable.setAutoCreateColumnsFromModel(false);</span>
+<span class="fc" id="L53">        this.fixedTable.setAutoCreateColumnsFromModel(false);</span>
         
-<span class="fc" id="L57">        final DefaultTableModel modelFixedTable = new DefaultTableModel() {</span>
+<span class="fc" id="L55">        final DefaultTableModel modelFixedTable = new DefaultTableModel() {</span>
             @Override
             public int getColumnCount() {
-<span class="fc" id="L60">                return 2;</span>
+<span class="fc" id="L58">                return 2;</span>
             }
             @Override
             public boolean isCellEditable(int row, int col) {
-<span class="nc" id="L64">                return false;</span>
+<span class="nc" id="L62">                return false;</span>
             }
             @Override
             public int getRowCount() {
-<span class="fc" id="L68">                return FixedColumnTable.this.mainTable.getRowCount();</span>
+<span class="fc" id="L66">                return FixedColumnTable.this.mainTable.getRowCount();</span>
             }
             @Override
             public Class&lt;?&gt; getColumnClass(int colNum) {
                 Class&lt;?&gt; columnClass;
-<span class="nc bnc" id="L73" title="All 2 branches missed.">                if (colNum == 0) {</span>
-<span class="nc" id="L74">                    columnClass = String.class;</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                if (colNum == 0) {</span>
+<span class="nc" id="L72">                    columnClass = String.class;</span>
                 } else {
-<span class="nc" id="L76">                    columnClass = super.getColumnClass(colNum);</span>
+<span class="nc" id="L74">                    columnClass = super.getColumnClass(colNum);</span>
                 }
-<span class="nc" id="L78">                return columnClass;</span>
+<span class="nc" id="L76">                return columnClass;</span>
             }
         };
         
-<span class="fc" id="L82">        this.fixedTable.setModel(modelFixedTable);</span>
-<span class="fc" id="L83">        this.fixedTable.setSelectionModel(this.mainTable.getSelectionModel());</span>
+<span class="fc" id="L80">        this.fixedTable.setModel(modelFixedTable);</span>
+<span class="fc" id="L81">        this.fixedTable.setSelectionModel(this.mainTable.getSelectionModel());</span>
         
-<span class="fc" id="L85">        this.fixedTable.setRowHeight(20);</span>
-<span class="fc" id="L86">        this.fixedTable.setFocusable(false);</span>
-<span class="fc" id="L87">        this.fixedTable.getTableHeader().setReorderingAllowed(false);</span>
+<span class="fc" id="L83">        this.fixedTable.setRowHeight(20);</span>
+<span class="fc" id="L84">        this.fixedTable.setFocusable(false);</span>
+<span class="fc" id="L85">        this.fixedTable.getTableHeader().setReorderingAllowed(false);</span>
         
         //  Remove the fixed columns from the main table
         //  and add them to the fixed table
-<span class="fc" id="L91">        TableColumnModel columnModel = this.mainTable.getColumnModel();</span>
-<span class="fc bfc" id="L92" title="All 2 branches covered.">        for (var i = 0 ; i &lt; fixedColumns ; i++) {</span>
-<span class="fc" id="L93">            TableColumn column = columnModel.getColumn(i);</span>
-<span class="fc" id="L94">            column.setMinWidth(0);</span>
-<span class="fc" id="L95">            column.setMaxWidth(0);</span>
-<span class="fc" id="L96">            this.fixedTable.getColumnModel().addColumn(new TableColumn(i));</span>
+<span class="fc" id="L89">        TableColumnModel columnModel = this.mainTable.getColumnModel();</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        for (var i = 0 ; i &lt; fixedColumns ; i++) {</span>
+<span class="fc" id="L91">            TableColumn column = columnModel.getColumn(i);</span>
+<span class="fc" id="L92">            column.setMinWidth(0);</span>
+<span class="fc" id="L93">            column.setMaxWidth(0);</span>
+<span class="fc" id="L94">            this.fixedTable.getColumnModel().addColumn(new TableColumn(i));</span>
         }
 
-<span class="fc" id="L99">        this.fixedTable.getColumnModel().getColumn(0).setCellRenderer(new RowHeaderRenderer());</span>
-<span class="fc" id="L100">        this.fixedTable.getColumnModel().getColumn(0).setResizable(false);</span>
-<span class="fc" id="L101">        this.fixedTable.getColumnModel().getColumn(0).setPreferredWidth(38);</span>
-<span class="fc" id="L102">        this.fixedTable.getColumnModel().getColumn(1).setCellRenderer(new RowHeaderRenderer());</span>
-<span class="fc" id="L103">        this.fixedTable.getColumnModel().getColumn(1).setResizable(false);</span>
-<span class="fc" id="L104">        this.fixedTable.getColumnModel().getColumn(1).setPreferredWidth(38);</span>
+<span class="fc" id="L97">        this.fixedTable.getColumnModel().getColumn(0).setCellRenderer(new RowHeaderRenderer());</span>
+<span class="fc" id="L98">        this.fixedTable.getColumnModel().getColumn(0).setResizable(false);</span>
+<span class="fc" id="L99">        this.fixedTable.getColumnModel().getColumn(0).setPreferredWidth(38);</span>
+<span class="fc" id="L100">        this.fixedTable.getColumnModel().getColumn(1).setCellRenderer(new RowHeaderRenderer());</span>
+<span class="fc" id="L101">        this.fixedTable.getColumnModel().getColumn(1).setResizable(false);</span>
+<span class="fc" id="L102">        this.fixedTable.getColumnModel().getColumn(1).setPreferredWidth(38);</span>
 
-<span class="fc" id="L106">        this.mainTable.getRowSorter().addRowSorterListener(rowSorterEvent -&gt; {</span>
-<span class="nc" id="L107">            modelFixedTable.fireTableDataChanged();</span>
+<span class="fc" id="L104">        this.mainTable.getRowSorter().addRowSorterListener(rowSorterEvent -&gt; {</span>
+<span class="nc" id="L105">            modelFixedTable.fireTableDataChanged();</span>
             // Copy data from hidden column in main table
-<span class="nc bnc" id="L109" title="All 2 branches missed.">            for (var i = 0; i &lt; this.mainTable.getRowCount() ; i++) {</span>
-<span class="nc" id="L110">                this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 0), i, 0);</span>
-<span class="nc" id="L111">                this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 1), i, 1);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            for (var i = 0; i &lt; this.mainTable.getRowCount() ; i++) {</span>
+<span class="nc" id="L108">                this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 0), i, 0);</span>
+<span class="nc" id="L109">                this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 1), i, 1);</span>
             }
-<span class="nc" id="L113">        });</span>
+<span class="nc" id="L111">        });</span>
         
-<span class="fc" id="L115">        this.mainTable.getSelectionModel().addListSelectionListener(listSelectionEvent -&gt;</span>
-<span class="nc" id="L116">            modelFixedTable.fireTableRowsUpdated(0, modelFixedTable.getRowCount() - 1)</span>
+<span class="fc" id="L113">        this.mainTable.getSelectionModel().addListSelectionListener(listSelectionEvent -&gt;</span>
+<span class="nc" id="L114">            modelFixedTable.fireTableRowsUpdated(0, modelFixedTable.getRowCount() - 1)</span>
         );
         
         // Copy data from first column of main table to fixed column
-<span class="fc bfc" id="L120" title="All 2 branches covered.">        for (var i = 0 ; i &lt; this.mainTable.getRowCount() ; i++) {</span>
-<span class="fc" id="L121">            this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 0), i, 0);</span>
-<span class="fc" id="L122">            this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 1), i, 1);</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        for (var i = 0 ; i &lt; this.mainTable.getRowCount() ; i++) {</span>
+<span class="fc" id="L119">            this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 0), i, 0);</span>
+<span class="fc" id="L120">            this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 1), i, 1);</span>
         }
         
         //  Add the fixed table to the scroll pane
-<span class="fc" id="L126">        this.fixedTable.setPreferredScrollableViewportSize(this.fixedTable.getPreferredSize());</span>
-<span class="fc" id="L127">        scrollPane.setRowHeaderView(this.fixedTable);</span>
-<span class="fc" id="L128">        scrollPane.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER, this.fixedTable.getTableHeader());</span>
+<span class="fc" id="L124">        this.fixedTable.setPreferredScrollableViewportSize(this.fixedTable.getPreferredSize());</span>
+<span class="fc" id="L125">        scrollPane.setRowHeaderView(this.fixedTable);</span>
+<span class="fc" id="L126">        scrollPane.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER, this.fixedTable.getTableHeader());</span>
 
         // Synchronize scrolling of the row header with the main table
-<span class="fc" id="L131">        scrollPane.getRowHeader().addChangeListener(this);</span>
-<span class="fc" id="L132">    }</span>
+<span class="fc" id="L129">        scrollPane.getRowHeader().addChangeListener(this);</span>
+<span class="fc" id="L130">    }</span>
 
     /**
      * Implement the ChangeListener
@@ -137,9 +135,9 @@ import java.beans.PropertyChangeListener;
     @Override
     public void stateChanged(ChangeEvent e) {
         //  Sync the scroll pane scrollbar with the row header
-<span class="fc" id="L140">        JViewport viewport = (JViewport) e.getSource();</span>
-<span class="fc" id="L141">        this.scrollPane.getVerticalScrollBar().setValue(viewport.getViewPosition().y);</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L138">        JViewport viewport = (JViewport) e.getSource();</span>
+<span class="fc" id="L139">        this.scrollPane.getVerticalScrollBar().setValue(viewport.getViewPosition().y);</span>
+<span class="fc" id="L140">    }</span>
     
     /**
      * Implement the PropertyChangeListener
@@ -147,13 +145,13 @@ import java.beans.PropertyChangeListener;
     @Override
     public void propertyChange(PropertyChangeEvent e) {
         //  Keep the fixed table in sync with the main table
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (&quot;selectionModel&quot;.equals(e.getPropertyName())) {</span>
-<span class="nc" id="L151">            this.fixedTable.setSelectionModel(this.mainTable.getSelectionModel());</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        if (&quot;selectionModel&quot;.equals(e.getPropertyName())) {</span>
+<span class="nc" id="L149">            this.fixedTable.setSelectionModel(this.mainTable.getSelectionModel());</span>
         }
 
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        if (&quot;model&quot;.equals(e.getPropertyName())) {</span>
-<span class="nc" id="L155">            this.fixedTable.setModel(this.mainTable.getModel());</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        if (&quot;model&quot;.equals(e.getPropertyName())) {</span>
+<span class="nc" id="L153">            this.fixedTable.setModel(this.mainTable.getModel());</span>
         }
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L155">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
