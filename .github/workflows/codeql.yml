@@ -24,6 +24,7 @@ jobs:
         uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
+          build-mode: autobuild
 
       - name: Set up JDK
         uses: actions/setup-java@v4

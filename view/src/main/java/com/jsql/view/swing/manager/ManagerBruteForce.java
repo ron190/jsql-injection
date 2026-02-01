@@ -20,8 +20,6 @@ import com.jsql.view.swing.panel.preferences.listener.SpinnerMouseWheelListener;
 import com.jsql.view.swing.text.*;
 import com.jsql.view.swing.util.I18nViewUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,8 +30,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * Manager to brute force a hash of various types.
  */
 public class ManagerBruteForce extends JPanel {
-
-    private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final String BRUTEFORCE_RUN_BUTTON_TOOLTIP = "BRUTEFORCE_RUN_BUTTON_TOOLTIP";
     public static final String BRUTEFORCE_HASH_TOOLTIP = "BRUTEFORCE_HASH_TOOLTIP";
@@ -162,16 +158,18 @@ public class ManagerBruteForce extends JPanel {
             new ModelBrute(this.specialCharacters, "Special", "BRUTEFORCE_SPEC_TOOLTIP")
         ).forEach(modelBrute -> {
             var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(modelBrute.i18nTooltip())));
-            modelBrute.checkbox().set(new JCheckBox(modelBrute.text(), true) {
+            var checkbox = new JCheckBox(modelBrute.text(), true) {
                 @Override
                 public JToolTip createToolTip() {
                     return tooltip.get();
                 }
-            });
-            modelBrute.checkbox().get().setToolTipText(I18nUtil.valueByKey(modelBrute.i18nTooltip()));
+            };
+            checkbox.setName(modelBrute.text());
+            checkbox.setToolTipText(I18nUtil.valueByKey(modelBrute.i18nTooltip()));
             I18nViewUtil.addComponentForKey(modelBrute.i18nTooltip(), tooltip.get());
             secondLine.add(Box.createHorizontalStrut(5));
-            secondLine.add(modelBrute.checkbox().get());
+            secondLine.add(checkbox);
+            modelBrute.checkbox().set(checkbox);
         });
 
         return secondLine;

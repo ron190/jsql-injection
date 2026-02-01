@@ -58,10 +58,9 @@ public class TabResults extends DnDTabbedPane {
 
     public static final String TAB_EXPLOIT_FAILURE_INCORRECT_URL = "Tab exploit failure: incorrect URL";
     public static final String UDF_SHELL = "UDF shell";
-    public static final String SQL_SHELL = "sqlShell";
-    public static final String WEB_SHELL = "webShell";
-    public static final String REV_SHELL = "revShell";
+    public static final String SQL_SHELL = "SQL shell";
     public static final String REVERSE_SHELL = "Reverse shell";
+    public static final String WEB_SHELL = "webShell";
     public static final String TAB_RESULTS = "tabResults";
 
     /**
@@ -280,7 +279,6 @@ public class TabResults extends DnDTabbedPane {
             try {
                 var terminalID = UUID.randomUUID();
                 var terminal = new ExploitReverseShell(terminalID, port);
-                terminal.setName(TabResults.REV_SHELL);
                 MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
                 JScrollPane scroller = new JScrollPane(terminal);
@@ -335,15 +333,14 @@ public class TabResults extends DnDTabbedPane {
                         MediatorHelper.model().getResourceAccess().runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
                     }
                 };
-                terminal.setName(TabResults.SQL_SHELL);
                 terminal.setLoginPassword(new String[]{ user, pass });
                 MediatorHelper.frame().getMapUuidShell().put(terminalID, terminal);
 
                 JScrollPane scroller = new JScrollPane(terminal);
-                this.addTab("SQL shell", scroller);
+                this.addTab(TabResults.SQL_SHELL, scroller);
                 this.setSelectedComponent(scroller);  // Focus on the new tab
 
-                var header = new TabHeader("SQL shell", UiUtil.TERMINAL.getIcon());
+                var header = new TabHeader(TabResults.SQL_SHELL, UiUtil.TERMINAL.getIcon());
                 this.setTabComponentAt(this.indexOfComponent(scroller), header);
                 terminal.requestFocusInWindow();
 
@@ -384,6 +381,7 @@ public class TabResults extends DnDTabbedPane {
         panelReverseMargin.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 15));
 
         var menuReverse = new JLabel(TabResults.REVERSE_SHELL, UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
+        menuReverse.setName(TabResults.REVERSE_SHELL);
         menuReverse.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

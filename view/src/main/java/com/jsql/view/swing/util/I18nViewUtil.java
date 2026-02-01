@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.util.*;
-import java.util.function.BiConsumer;
 
 public class I18nViewUtil {
 

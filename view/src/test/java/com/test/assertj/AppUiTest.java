@@ -36,6 +36,7 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JListFixture;
 import org.assertj.swing.fixture.JTabbedPaneFixture;
 import org.assertj.swing.timing.Timeout;
+import org.awaitility.Awaitility;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -52,6 +53,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -59,7 +61,10 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 // public for javadoc
-@SuppressWarnings("java:S5786")
+@SuppressWarnings({
+    "java:S5786",  // JUnit5 test classes and methods should have default package visibility
+    "java:S2699"  // Add at least one assertion to this test case
+})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AppUiTest {
     private static int counterLog = 0;
@@ -218,6 +223,16 @@ public class AppUiTest {
         tabResults.requireTitle("dragfile ", Index.atIndex(0));
         tabResults.requireTitle("jumpfile ", Index.atIndex(1));
         tabResults.requireTitle("dropfile ", Index.atIndex(2));
+        AppUiTest.window.robot().rotateMouseWheel(GuiActionRunner.execute(() -> tabResults.target().getTabComponentAt(0)), -1);
+        tabResults.requireSelectedTab(Index.atIndex(0));
+        AppUiTest.window.robot().rotateMouseWheel(GuiActionRunner.execute(() -> tabResults.target().getTabComponentAt(0)), 1);
+        tabResults.requireSelectedTab(Index.atIndex(2));
+        AppUiTest.window.robot().rotateMouseWheel(GuiActionRunner.execute(() -> tabResults.target().getTabComponentAt(0)), -1);
+        tabResults.requireSelectedTab(Index.atIndex(0));
+        AppUiTest.window.robot().rotateMouseWheel(GuiActionRunner.execute(() -> tabResults.target().getTabComponentAt(0)), -1);
+        tabResults.requireSelectedTab(Index.atIndex(1));
+        AppUiTest.window.robot().rotateMouseWheel(GuiActionRunner.execute(() -> tabResults.target().getTabComponentAt(0)), -1);
+        tabResults.requireSelectedTab(Index.atIndex(2));
 
         AppUiTest.logMethod();
         AppUiTest.window.robot().pressMouse(
@@ -274,6 +289,8 @@ public class AppUiTest {
             KeyEvent.VK_A, KeyEvent.VK_B, KeyEvent.VK_ENTER,
             KeyEvent.VK_PAGE_UP, KeyEvent.VK_PAGE_DOWN
         );
+
+        AppUiTest.window.label(TabResults.REVERSE_SHELL).click();
 
         GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
@@ -355,14 +372,28 @@ public class AppUiTest {
     }
 
     @Test
-    public void shouldFindSqlshell() {
+    public void shouldFindSqlShell() {
         AppUiTest.logMethod();
         MediatorHelper.model().sendToViews(
             new Seal.AddTabExploitSql("http://sqlshell", "username", "password")
         );
 
         AppUiTest.logMethod();
-        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab("SQL shell").requireVisible();
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab(TabResults.SQL_SHELL).requireVisible();
+
+        GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
+        AppUiTest.logMethod();
+    }
+
+    @Test
+    public void shouldFindUdfShell() {
+        AppUiTest.logMethod();
+        MediatorHelper.model().sendToViews(
+            new Seal.AddTabExploitUdf((String command, UUID terminalID) -> {})
+        );
+
+        AppUiTest.logMethod();
+        AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).selectTab(TabResults.UDF_SHELL).requireVisible();
 
         GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
@@ -410,10 +441,30 @@ public class AppUiTest {
     }
 
     @Test
+    public void shouldFindBruteForce() {
+        AppUiTest.logMethod();
+        AppUiTest.window.tabbedPane(TabManagers.TAB_MANAGERS).selectTab("Brute force");
+        AppUiTest.window.checkBox("A-Z").uncheck();
+        AppUiTest.window.checkBox("0-9").uncheck();
+        AppUiTest.window.checkBox("Special").uncheck();
+        AppUiTest.window.textBox("managerBruterHash").setText("D8022F2060AD6EFD297AB73DCC5355C9B214054B0D1776A136A669D26A7D3B14F73AA0D0EBFF19EE333368F0164B6419A96DA49E3E481753E7E96B716BDCCB6F");
+        AppUiTest.window.button("managerBruterRun").click();
+        Awaitility.await().atMost(Duration.ofSeconds(10)).until(() ->
+            AppUiTest.window.textBox("managerBruterResult").text().contains("abcd")
+        );
+    }
+
+    @Test
     public void shouldFindAdminpage() throws IOException {
         AppUiTest.logMethod();
         AppUiTest.window.tabbedPane(TabManagers.TAB_MANAGERS).selectTab("Admin page");
         AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).item(0).select().rightClick();
+
+        AppUiTest.window.menuItemWithPath("New Value(s)...").click();
+        DialogFixture dialog = AppUiTest.window.dialog();
+        dialog.textBox().setText("new-item");
+        dialog.button(JButtonMatcher.withText("Ok")).click();
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).requireSelection("new-item");
 
         MediatorHelper.model().sendToViews(new Seal.CreateAdminPageTab("http://adminpage"));
 
@@ -607,23 +658,20 @@ public class AppUiTest {
         AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
     }
 
-//    Unstable?
-//    @Test
-//    public void shouldFindReportIssue() {
-//
-//        window.label(PanelAddressBar.ADVANCED_BUTTON).click();
-//        window.menuItem("menuCommunity").click();
-//        window.menuItem("itemReportIssue").click();
-//
-//        DialogFixture dialog = window.dialog();
-//        dialog.button(JButtonMatcher.withText("Cancel")).click();
-//
-//        try {
-//            window.label(PanelAddressBar.ADVANCED_BUTTON).click();
-//        } catch (Exception e) {
-//            Assertions.fail();
-//        }
-//    }
+    @Test
+    public void shouldFindReportIssue() {
+        AppUiTest.logMethod();
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.menuItem("menuCommunity").click();
+        AppUiTest.window.menuItem("itemReportIssue").click();
+
+        AppUiTest.logMethod();
+        DialogFixture dialog = AppUiTest.window.dialog();
+        dialog.button(JButtonMatcher.withText("Cancel")).click();
+
+        AppUiTest.logMethod();
+        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+    }
 
     @Test
     public void shouldFindIHelpTranslate() {
