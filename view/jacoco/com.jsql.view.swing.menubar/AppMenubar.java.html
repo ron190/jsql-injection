@@ -204,20 +204,20 @@ public class AppMenubar extends JMenuBar {
             
             &quot;&quot;&quot;;
 <span class="fc" id="L206">        itemReportIssue.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L207">            var panel = new JPanel(new BorderLayout());</span>
-<span class="nc" id="L208">            final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();</span>
-<span class="nc" id="L209">            textarea.setFont(new Font(</span>
+<span class="fc" id="L207">            var panel = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L208">            final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();</span>
+<span class="fc" id="L209">            textarea.setFont(new Font(</span>
                 UiUtil.FONT_NAME_MONOSPACED,
                 Font.PLAIN,
-<span class="nc" id="L212">                UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getSize()</span>
+<span class="fc" id="L212">                UIManager.getDefaults().getFont(&quot;TextField.font&quot;).getSize()</span>
             ));
-<span class="nc" id="L214">            textarea.setText(reportBody);</span>
-<span class="nc" id="L215">            panel.add(new JLabel(&quot;Describe your bug or issue:&quot;), BorderLayout.NORTH);</span>
-<span class="nc" id="L216">            panel.add(new JScrollPane(textarea));</span>
-<span class="nc" id="L217">            panel.setPreferredSize(new Dimension(500, 350));</span>
-<span class="nc" id="L218">            panel.setMinimumSize(new Dimension(500, 350));</span>
+<span class="fc" id="L214">            textarea.setText(reportBody);</span>
+<span class="fc" id="L215">            panel.add(new JLabel(&quot;Describe your bug or issue:&quot;), BorderLayout.NORTH);</span>
+<span class="fc" id="L216">            panel.add(new JScrollPane(textarea));</span>
+<span class="fc" id="L217">            panel.setPreferredSize(new Dimension(500, 350));</span>
+<span class="fc" id="L218">            panel.setMinimumSize(new Dimension(500, 350));</span>
 
-<span class="nc" id="L220">            textarea.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L220">            textarea.addMouseListener(new MouseAdapter() {</span>
                 @Override
                 public void mousePressed(MouseEvent e) {
 <span class="nc" id="L223">                    super.mousePressed(e);</span>
@@ -225,8 +225,8 @@ public class AppMenubar extends JMenuBar {
 <span class="nc" id="L225">                }</span>
             });
 
-<span class="nc" id="L228">            int result = JOptionPane.showOptionDialog(</span>
-<span class="nc" id="L229">                MediatorHelper.frame(),</span>
+<span class="fc" id="L228">            int result = JOptionPane.showOptionDialog(</span>
+<span class="fc" id="L229">                MediatorHelper.frame(),</span>
                 panel,
                 &quot;Report an issue or a bug&quot;,
                 JOptionPane.OK_CANCEL_OPTION,
@@ -234,15 +234,15 @@ public class AppMenubar extends JMenuBar {
                 null,
                 new String[] {
                     &quot;Send&quot;,
-<span class="nc" id="L237">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
+<span class="fc" id="L237">                    I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
                 },
-<span class="nc" id="L239">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
+<span class="fc" id="L239">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
             );
 
-<span class="nc bnc" id="L242" title="All 4 branches missed.">            if (StringUtils.isNotEmpty(textarea.getText()) &amp;&amp; result == JOptionPane.YES_OPTION) {</span>
+<span class="pc bpc" id="L242" title="2 of 4 branches missed.">            if (StringUtils.isNotEmpty(textarea.getText()) &amp;&amp; result == JOptionPane.YES_OPTION) {</span>
 <span class="nc" id="L243">                MediatorHelper.model().getMediatorUtils().gitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, &quot;Report&quot;);</span>
             }
-<span class="nc" id="L245">        });</span>
+<span class="fc" id="L245">        });</span>
 
 <span class="fc" id="L247">        return itemReportIssue;</span>
     }

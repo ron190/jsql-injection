@@ -59,9 +59,9 @@ import java.util.UUID;
 <span class="fc" id="L59">    }</span>
 
     private void executeExploit(Seal request) {
-<span class="pc bpc" id="L62" title="1 of 5 branches missed.">        switch (request) {</span>
+<span class="fc bfc" id="L62" title="All 5 branches covered.">        switch (request) {</span>
 <span class="fc" id="L63">            case Seal.AddTabExploitSql(var urlSuccess, var username, var password) -&gt; MediatorHelper.tabResults().addTabExploitSql(urlSuccess, username, password);</span>
-<span class="nc" id="L64">            case Seal.AddTabExploitUdf(var biConsumerRunCmd) -&gt; MediatorHelper.tabResults().addTabExploitUdf(biConsumerRunCmd);</span>
+<span class="fc" id="L64">            case Seal.AddTabExploitUdf(var biConsumerRunCmd) -&gt; MediatorHelper.tabResults().addTabExploitUdf(biConsumerRunCmd);</span>
 <span class="fc" id="L65">            case Seal.AddTabExploitWeb(String urlSuccess) -&gt; MediatorHelper.tabResults().addTabExploitWeb(urlSuccess);</span>
 <span class="fc" id="L66">            case Seal.GetTerminalResult(UUID uuidShell, String result) -&gt; {</span>
 <span class="fc" id="L67">                AbstractExploit terminal = MediatorHelper.frame().getMapUuidShell().get(uuidShell);</span>
