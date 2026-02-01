@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>RestController xref</title>
+<title>AbstractRestController xref</title>
 <link type="text/css" rel="stylesheet" href="../../stylesheet.css" />
 </head>
 <body>
-<div id="overview"><a href="../../../testapidocs/spring/rest/RestController.html">View Javadoc</a></div><pre>
+<div id="overview"><a href="../../../testapidocs/spring/rest/AbstractRestController.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> spring.<strong class="jxr_keyword">rest</strong>;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +36,7 @@
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> java.util.List;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="RestController" href="../../spring/rest/RestController.html#RestController">RestController</a> {
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a name="AbstractRestController" href="../../spring/rest/AbstractRestController.html#AbstractRestController">AbstractRestController</a> {
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String TEMPLATE = <span class="jxr_string">"Hello, s!"</span>;
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Logger LOGGER = LogManager.getRootLogger();
@@ -91,7 +91,7 @@
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>                              hasMoreResultSets = stmt.getMoreResults();
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>                          }
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>                          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>                              RestController.TEMPLATE + StringEscapeUtils.unescapeJava(<strong class="jxr_keyword">this</strong>.objectMapper.writeValueAsString(results))
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>                              AbstractRestController.TEMPLATE + StringEscapeUtils.unescapeJava(<strong class="jxr_keyword">this</strong>.objectMapper.writeValueAsString(results))
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>                          );
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>                      }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>                  } <strong class="jxr_keyword">else</strong> {
@@ -100,7 +100,7 @@
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>                          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>                              isBoolean
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>                              ? results.isEmpty() ? <span class="jxr_string">"true"</span> : <span class="jxr_string">"false"</span>
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>                              : RestController.TEMPLATE + StringEscapeUtils.unescapeJava(<strong class="jxr_keyword">this</strong>.objectMapper.writeValueAsString(results))
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>                              : AbstractRestController.TEMPLATE + StringEscapeUtils.unescapeJava(<strong class="jxr_keyword">this</strong>.objectMapper.writeValueAsString(results))
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>                          );
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>                      }
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>                  }
@@ -117,7 +117,7 @@
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> initErrorMessage(Exception e) {
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         String stacktrace = ExceptionUtils.getStackTrace(e);
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         LOGGER.debug(stacktrace);
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(RestController.TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(AbstractRestController.TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>     }
 <a class="jxr_linenumber" name="L114" href="#L114">114</a> 
 <a class="jxr_linenumber" name="L115" href="#L115">115</a> 

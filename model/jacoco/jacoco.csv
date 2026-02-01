@@ -1,8 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,1,0,1,0,1
-model,com.jsql.model.injection.strategy.blind.patch,Patch,208,0,14,0,46,0,20,0,12,0
 model,com.jsql.model.injection.strategy.blind.patch,Diff,51,62,11,7,10,19,10,8,3,6
-model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3142,2128,397,290,647,464,244,149,23,20
+model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,655,2126,132,290,148,463,85,149,1,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
 model,com.jsql.model.injection.engine,MediatorEngine.new Engine() {...},0,82,2,6,0,17,2,4,0,2
 model,com.jsql.model.injection.engine,MediatorEngine,36,1034,0,12,12,105,12,40,12,34
@@ -20,7 +19,7 @@ model,com.jsql.model.accessible.engine,ExploitOracle,203,26,4,0,28,7,5,2,3,2
 model,com.jsql.model.accessible.engine,ExploitPostgres,566,1310,39,43,96,214,36,32,6,21
 model,com.jsql.model.accessible.engine,ExploitH2,168,280,4,2,31,47,6,8,3,8
 model,com.jsql.model.accessible.engine,ExploitHsqldb,132,219,3,1,26,33,4,6,2,6
-model,com.jsql.model.accessible.engine,ExploitMysql,416,923,48,50,80,164,45,32,6,22
+model,com.jsql.model.accessible.engine,ExploitMysql,418,921,48,50,81,163,45,32,6,22
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
 model,com.jsql.model,InjectionModel,143,1133,16,66,35,248,15,58,3,29
 model,com.jsql.model,MediatorUtils,0,63,0,0,0,1,0,1,0,1
@@ -103,7 +102,7 @@ model,com.jsql.model.injection.strategy,StrategyStack,22,269,1,13,4,61,3,20,2,14
 model,com.jsql.model.injection.strategy,StrategyBlindBit,0,265,0,14,0,54,0,23,0,16
 model,com.jsql.model.injection.strategy,StrategyUnion,0,442,2,22,0,84,2,32,0,22
 model,com.jsql.model.injection.strategy,StrategyMultibit,1,208,1,13,1,46,1,18,0,12
-model,com.jsql.model.injection.strategy,DnsServer,154,24,4,0,41,8,5,2,3,2
+model,com.jsql.model.injection.strategy,DnsServer,166,24,4,0,43,8,6,2,4,2
 model,com.jsql.model.injection.strategy,StrategyDns,420,37,26,4,83,10,26,6,12,5
 model,com.jsql.model.injection.strategy,StrategyError,31,381,1,21,7,83,4,26,3,16
 model,com.jsql.model.injection.strategy,AbstractStrategy,0,41,0,0,0,12,0,7,0,7

@@ -95,7 +95,7 @@ view,com.jsql.view.swing.panel.consoles,TooltipCellRenderer,0,33,0,0,0,6,0,2,0,2
 view,com.jsql.view.swing.panel.consoles,NetworkTable.new DefaultTableModel() {...},0,46,0,0,0,8,0,3,0,3
 view,com.jsql.view.swing.panel.consoles,NetworkTable.new MouseAdapter() {...},35,14,1,1,8,4,1,2,0,2
 view,com.jsql.view.swing.panel.consoles,TabbedPaneNetworkTab,36,504,2,4,11,92,2,12,0,11
-view,com.jsql.view.swing.panel.consoles,CenterRendererWithIcon,35,35,11,3,7,8,7,2,0,2
+view,com.jsql.view.swing.panel.consoles,CenterRendererWithIcon,13,57,6,8,1,14,5,4,0,2
 view,com.jsql.view.swing.panel.split,SplitNS,5,180,1,3,1,45,1,10,0,9
 view,com.jsql.view.swing.panel.split,SplitNS.new MouseAdapter() {...},0,7,0,0,0,3,0,2,0,2
 view,com.jsql.view.swing.panel.split,SplitNS.new MouseAdapter() {...},8,3,2,0,3,1,2,1,1,1
@@ -192,7 +192,7 @@ view,com.jsql.view.swing.list,MenuActionExport,69,9,4,0,15,4,3,2,1,2
 view,com.jsql.view.swing.list,AbstractListTransfertHandler,81,165,11,13,25,47,10,12,2,8
 view,com.jsql.view.swing.list,MenuActionNewValue,43,183,6,6,10,39,6,5,1,4
 view,com.jsql.view.swing.list,ItemList,19,18,0,0,8,7,5,3,5,3
-view,com.jsql.view.swing.list,DnDList,243,147,33,7,70,45,24,7,6,5
+view,com.jsql.view.swing.list,DnDList,72,318,17,23,25,90,16,15,1,10
 view,com.jsql.view.swing.list,ItemListScan,0,42,0,0,0,13,0,4,0,4
 view,com.jsql.view.swing.list,BeanInjection,12,108,0,2,4,30,0,12,0,11
 view,com.jsql.view.swing.dialog,DialogAbout.new FocusAdapter() {...},11,6,0,0,3,1,1,1,1,1
@@ -249,7 +249,7 @@ view,com.jsql.view.swing.text,JTextAreaPlaceholderConsole,0,4,0,0,0,2,0,1,0,1
 view,com.jsql.view.swing.text,JPopupTextArea,0,41,0,0,0,10,0,4,0,4
 view,com.jsql.view.swing.text,JPopupTextPane.new FocusAdapter() {...},15,6,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.text,JPopupTextPane.new JTextPanePlaceholderConsole() {...},0,6,0,0,0,2,0,2,0,2
-view,com.jsql.view.swing.text,JPasswordFieldPlaceholder,40,13,2,0,9,6,2,3,1,3
+view,com.jsql.view.swing.text,JPasswordFieldPlaceholder,37,13,2,0,9,6,2,3,1,3
 view,com.jsql.view.swing.text,JPopupComponent,0,24,0,0,0,6,0,2,0,2
 view,com.jsql.view.swing.text,JTextFieldPlaceholder,6,59,0,2,2,19,0,7,0,6
 view,com.jsql.view.swing.text,JTextPanePlaceholderConsole,0,4,0,0,0,2,0,1,0,1

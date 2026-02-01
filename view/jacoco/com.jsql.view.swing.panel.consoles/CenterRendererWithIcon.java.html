@@ -14,10 +14,10 @@ import java.util.List;
 <span class="fc" id="L14">        Object text = ((List&lt;?&gt;) value).get(0);</span>
 <span class="fc" id="L15">        Object objectCallableBoolean = ((List&lt;?&gt;) value).get(1);</span>
         
-<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if (objectCallableBoolean != null) {</span>
-<span class="nc" id="L18">            AbstractCallableBit&lt;?&gt; callableBoolean = (AbstractCallableBit&lt;?&gt;) objectCallableBoolean;</span>
-<span class="nc" id="L19">            String charText = callableBoolean.getCharText();</span>
-<span class="nc bnc" id="L20" title="All 4 branches missed.">            if (charText != null &amp;&amp; charText.charAt(0) &gt;= 32) {</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (objectCallableBoolean != null) {</span>
+<span class="fc" id="L18">            AbstractCallableBit&lt;?&gt; callableBoolean = (AbstractCallableBit&lt;?&gt;) objectCallableBoolean;</span>
+<span class="fc" id="L19">            String charText = callableBoolean.getCharText();</span>
+<span class="pc bpc" id="L20" title="3 of 4 branches missed.">            if (charText != null &amp;&amp; charText.charAt(0) &gt;= 32) {</span>
 <span class="nc" id="L21">                text += &quot;:&quot; + callableBoolean.getCharText();</span>
             }
         }
@@ -25,10 +25,10 @@ import java.util.List;
 <span class="fc" id="L25">        JLabel label = (JLabel) super.getTableCellRendererComponent(table, text, isSelected, hasFocus, row, column);</span>
 <span class="fc" id="L26">        label.setIcon(null);  // required to remove icon as same renderer applies to subsequent labels</span>
 
-<span class="pc bpc" id="L28" title="2 of 4 branches missed.">        if (column == 3 &amp;&amp; objectCallableBoolean != null) {</span>
-<span class="nc" id="L29">            AbstractCallableBit&lt;?&gt; callableBoolean = (AbstractCallableBit&lt;?&gt;) objectCallableBoolean;</span>
-<span class="nc bnc" id="L30" title="All 2 branches missed.">            if (!callableBoolean.isMultibit()) {</span>
-<span class="nc bnc" id="L31" title="All 2 branches missed.">                label.setIcon(callableBoolean.isTrue() ? UiUtil.TICK_GREEN.getIcon() : UiUtil.CROSS_RED.getIcon());</span>
+<span class="pc bpc" id="L28" title="1 of 4 branches missed.">        if (column == 3 &amp;&amp; objectCallableBoolean != null) {</span>
+<span class="fc" id="L29">            AbstractCallableBit&lt;?&gt; callableBoolean = (AbstractCallableBit&lt;?&gt;) objectCallableBoolean;</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">            if (!callableBoolean.isMultibit()) {</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">                label.setIcon(callableBoolean.isTrue() ? UiUtil.TICK_GREEN.getIcon() : UiUtil.CROSS_RED.getIcon());</span>
             }
         }
 <span class="fc" id="L34">        return label;</span>

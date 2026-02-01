@@ -15,11 +15,11 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> java.util.Arrays;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.util.Map;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  @org.springframework.web.bind.annotation.RestController
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  @RestController
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment">// no propagation to prevent: Transaction silently rolled back because it has been marked as rollback-only</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  @Transactional(propagation = Propagation.NEVER)
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  @RequestMapping(<span class="jxr_string">"/tx"</span>)
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="JpaStackRestController" href="../../spring/rest/JpaStackRestController.html#JpaStackRestController">JpaStackRestController</a> <strong class="jxr_keyword">extends</strong> <a name="RestController" href="../../spring/rest/RestController.html#RestController">RestController</a> {
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="JpaStackRestController" href="../../spring/rest/JpaStackRestController.html#JpaStackRestController">JpaStackRestController</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractRestController" href="../../spring/rest/AbstractRestController.html#AbstractRestController">AbstractRestController</a> {
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      @RequestMapping(<span class="jxr_string">"/stack"</span>)
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointStack(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name, @RequestHeader Map&lt;String, String&gt; headers) {
