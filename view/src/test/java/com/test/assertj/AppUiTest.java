@@ -270,7 +270,6 @@ public class AppUiTest {
     }
 
     @Test
-    @Order(1)  // force first, slow when last: 20.9 s
     public void shouldFindWebshell() {
         AppUiTest.logMethod();
         MediatorHelper.model().sendToViews(new Seal.AddTabExploitWeb("http://webshell"));
@@ -389,9 +388,9 @@ public class AppUiTest {
     }
 
     @Test
-    @Order(1)  // force first, slow when last: 25.92 s
     public void shouldFindUdfShell() {
         AppUiTest.logMethod();
+        MediatorHelper.model().getMediatorUtils().connectionUtil().setUrlByUser("http://udfshell");
         MediatorHelper.model().sendToViews(
             new Seal.AddTabExploitUdf((String command, UUID terminalID) -> {})
         );
