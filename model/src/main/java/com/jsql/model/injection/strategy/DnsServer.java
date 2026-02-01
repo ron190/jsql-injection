@@ -32,6 +32,10 @@ public class DnsServer {
         }
     }
 
+    public static void main(String[] args) {
+        new Thread(new DnsServer(new InjectionModel())::listen).start();
+    }
+
     public void listen() {
         this.socket.close();  // unbind if already connected
         int port = Integer.parseInt(this.injectionModel.getMediatorUtils().preferencesUtil().getDnsPort());
@@ -51,6 +55,7 @@ public class DnsServer {
                 Name name = question.getName();
 
                 if (name.toString().contains(domainName)) {
+                    // can println name on local
                     this.results.add(name.toString());
                 }
 

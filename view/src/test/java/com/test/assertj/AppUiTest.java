@@ -5,9 +5,12 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
+import com.jsql.model.injection.strategy.blind.InjectionCharInsertion;
+import com.jsql.model.injection.strategy.blind.callable.CallableCharInsertion;
 import com.jsql.view.subscriber.Seal;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.JFrameView;
+import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerCoder;
 import com.jsql.view.swing.manager.ManagerDatabase;
@@ -31,10 +34,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.data.Index;
 import org.assertj.swing.edt.GuiActionRunner;
-import org.assertj.swing.fixture.DialogFixture;
-import org.assertj.swing.fixture.FrameFixture;
-import org.assertj.swing.fixture.JListFixture;
-import org.assertj.swing.fixture.JTabbedPaneFixture;
+import org.assertj.swing.fixture.*;
 import org.assertj.swing.timing.Timeout;
 import org.awaitility.Awaitility;
 import org.jsoup.Connection;
@@ -51,6 +51,8 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -268,6 +270,7 @@ public class AppUiTest {
     }
 
     @Test
+    @Order(1)  // force first, slow when last: 20.9 s
     public void shouldFindWebshell() {
         AppUiTest.logMethod();
         MediatorHelper.model().sendToViews(new Seal.AddTabExploitWeb("http://webshell"));
@@ -348,7 +351,7 @@ public class AppUiTest {
             "1",
             "meta strategy",
             "meta process",
-            null
+            new CallableCharInsertion("url", Mockito.mock(InjectionCharInsertion.class), "meta")
         ));
 
         AppUiTest.window.label("CONSOLE_NETWORK_LABEL").click().requireVisible();
@@ -386,6 +389,7 @@ public class AppUiTest {
     }
 
     @Test
+    @Order(1)  // force first, slow when last: 25.92 s
     public void shouldFindUdfShell() {
         AppUiTest.logMethod();
         MediatorHelper.model().sendToViews(
@@ -462,9 +466,23 @@ public class AppUiTest {
 
         AppUiTest.window.menuItemWithPath("New Value(s)...").click();
         DialogFixture dialog = AppUiTest.window.dialog();
-        dialog.textBox().setText("new-item");
+        String textNewItem = "new-item";
+        dialog.textBox().setText(textNewItem);
         dialog.button(JButtonMatcher.withText("Ok")).click();
-        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).requireSelection("new-item");
+        AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).requireSelection(textNewItem);
+
+        File tempFile = File.createTempFile("drop-file", "txt");
+        try (FileOutputStream fileOutputStream = new FileOutputStream(tempFile)) {
+            String textAnotherItem = "another-item";
+            fileOutputStream.write(textAnotherItem.getBytes());
+            SwingUtilities.invokeLater(() -> GuiActionRunner.execute(() -> {  // invokeLater to give code handle
+                var dndList = AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).targetCastedTo(DnDList.class);
+                dndList.dropPasteFile(List.of(tempFile), 0);
+            }));
+            JOptionPaneFixture dialogImport = AppUiTest.window.optionPane();
+            dialogImport.button(JButtonMatcher.withText("Add")).click();
+            AppUiTest.window.list(ManagerAdminPage.LIST_MANAGER_ADMIN_PAGE).requireSelection(textAnotherItem);
+        }
 
         MediatorHelper.model().sendToViews(new Seal.CreateAdminPageTab("http://adminpage"));
 

@@ -1,9 +1,10 @@
 package spring.rest;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RestController;
 
-@org.springframework.web.bind.annotation.RestController
-public class JpaRestController extends RestController {
+@RestController
+public class JpaRestController extends AbstractRestController {
 
     @Override
     @Transactional  // non-stack not working with silent rollback when annotation on class

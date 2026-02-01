@@ -30,25 +30,7 @@ class SqliteBlindBitSuiteIT extends ConcreteSqliteSuiteIT {
         
         model.beginInjection();
     }
-    
-    @Override
-    @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
-    }
-    
+
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {

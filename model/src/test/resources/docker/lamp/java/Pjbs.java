@@ -154,7 +154,7 @@ class Utils {
         } catch (FileNotFoundException ex) {
             log("error", "file not found " + fn);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
 
         return null;
@@ -251,9 +251,9 @@ class ServerThread extends Thread {
                 } else if (cmd[0].equals("exec")) {
                     serverCommands.exec(cmd);
                 } else if (cmd[0].equals("fetch_array")) {
-                    serverCommands.fetch_array(cmd);
+                    serverCommands.fetchArray(cmd);
                 } else if (cmd[0].equals("free_result")) {
-                    serverCommands.free_result(cmd);
+                    serverCommands.freeResult(cmd);
                 } else if (cmd[0].equals("index")) {
                     serverCommands.index(cmd);
                 } else if (cmd[0].equals("search")) {
@@ -275,12 +275,13 @@ class ServerThread extends Thread {
     }
 
     public void write(String k, String v) {
-        if (v == null)
-            v = "";
+        String vFixed = v;
+        if (vFixed == null)
+            vFixed = "";
 
         out.println(
                 Base64.encodeString(k) + " " +
-                        Base64.encodeString(v)
+                        Base64.encodeString(vFixed)
         );
     }
 
@@ -486,7 +487,7 @@ class ServerCommands {
      * Fetch a row from a ResultSet.
      * @param cmd
      */
-    public void fetch_array(String[] cmd) {
+    public void fetchArray(String[] cmd) {
         if (conn != null && cmd.length == 2) {
             ResultSet rs = (ResultSet)results.get(cmd[1]);
 
@@ -518,7 +519,7 @@ class ServerCommands {
      * Release a ResultSet.
      * @param cmd
      */
-    public void free_result(String[] cmd) {
+    public void freeResult(String[] cmd) {
         if (conn != null && cmd.length == 2) {
             ResultSet rs = (ResultSet)results.get(cmd[1]);
 

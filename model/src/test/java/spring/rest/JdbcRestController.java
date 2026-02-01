@@ -263,7 +263,7 @@ public class JdbcRestController {
 
         Arrays.stream(("SELECT table_schema FROM information_schema.tables where '1' = '"+ name +"'").split(";")).map(String::trim).forEach(query -> {
             try (
-                Connection con = DriverManager.getConnection("jdbc:postgresql://jsql-postgresql:5432/", "postgres", "my-secret-pw");
+                Connection con = DriverManager.getConnection("jdbc:postgresql://jsql-postgres:5432/", "postgres", "test");
                 PreparedStatement pstmt = con.prepareStatement(query)
             ) {
                 ResultSet rs = pstmt.executeQuery();

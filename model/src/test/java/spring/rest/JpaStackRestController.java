@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.Map;
 
-@org.springframework.web.bind.annotation.RestController
+@RestController
 // no propagation to prevent: Transaction silently rolled back because it has been marked as rollback-only
 @Transactional(propagation = Propagation.NEVER)
 @RequestMapping("/tx")
-public class JpaStackRestController extends RestController {
+public class JpaStackRestController extends AbstractRestController {
 
     @RequestMapping("/stack")
     public Greeting endpointStack(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {

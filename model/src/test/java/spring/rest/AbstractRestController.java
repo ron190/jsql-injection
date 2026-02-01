@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class RestController {
+public abstract class AbstractRestController {
 
     private static final String TEMPLATE = "Hello, s!";
     private static final Logger LOGGER = LogManager.getRootLogger();
@@ -83,7 +83,7 @@ public class RestController {
                             hasMoreResultSets = stmt.getMoreResults();
                         }
                         return new Greeting(
-                            RestController.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                            AbstractRestController.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
                         );
                     }
                 } else {
@@ -92,7 +92,7 @@ public class RestController {
                         return new Greeting(
                             isBoolean
                             ? results.isEmpty() ? "true" : "false"
-                            : RestController.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                            : AbstractRestController.TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
                         );
                     }
                 }
@@ -109,7 +109,7 @@ public class RestController {
     private Greeting initErrorMessage(Exception e) {
         String stacktrace = ExceptionUtils.getStackTrace(e);
         LOGGER.debug(stacktrace);
-        return new Greeting(RestController.TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
+        return new Greeting(AbstractRestController.TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
     }
 
 
