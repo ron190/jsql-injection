@@ -54,7 +54,7 @@
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
         <!-- enabled on modules builds only, as parent build not reporting -->
-        <pitest-maven.version>1.22.0</pitest-maven.version>
+        <pitest-maven.version>1.22.1</pitest-maven.version>
         <spotbugs-maven-plugin.version>4.9.8.2</spotbugs-maven-plugin.version>
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
 
