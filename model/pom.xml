@@ -70,7 +70,7 @@
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
         <!-- both java-driver and jdbc-driver required, should use neo4j-jdbc instead -->
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
-        <oracle.version>23.26.0.0.0</oracle.version>
+        <oracle.version>23.26.1.0.0</oracle.version>
         <postgres.version>42.7.9</postgres.version>
         <presto.version>0.296</presto.version>
         <sqlite.version>3.51.1.0</sqlite.version>
