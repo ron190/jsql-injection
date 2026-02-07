@@ -32,7 +32,11 @@ public abstract class AbstractSuspendable {
     /**
      * The pausable/stoppable action.
      */
-    public abstract String run(Object... args) throws JSqlException;
+    public abstract String run(Input input) throws JSqlException;
+
+    public String run() throws JSqlException {
+        return this.run(null);
+    }
 
     /**
      * Thread's states Pause and Stop are processed by this method.<br>

@@ -100,7 +100,10 @@ strategy:
        select concat(
            '${lead}',
            substring(
-               (${injection}),
+               coalesce(
+                   (${injection}),
+                   '${trail_sql}'
+               ),
                ${window.char},
                ${capacity}
            )
@@ -108,7 +111,7 @@ strategy:
        from (values(0))
    )
   limit: offset ${limit.value} rows fetch next 100 rows only
-  failsafe: 
+  failsafe:
    select
        cast((1337${indice}7330%2b1)as varchar(2000))
        || '' r

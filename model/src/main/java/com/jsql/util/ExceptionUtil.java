@@ -51,25 +51,29 @@ public class ExceptionUtil {
             );
 
             // Report #214: ignore if OutOfMemoryError: Java heap space
+            String stackTrace = ExceptionUtils.getStackTrace(throwable);
             if (
                 ExceptionUtil.this.injectionModel.getMediatorUtils().preferencesUtil().isReportingBugs()
-                && ExceptionUtils.getStackTrace(throwable).contains("com.jsql")
+                && stackTrace.contains("com.jsql")
                 && !(throwable instanceof OutOfMemoryError)
-                && !ExceptionUtils.getStackTrace(throwable).contains("OutOfMemoryError")  // when implicit
+                && !stackTrace.contains("OutOfMemoryError")  // when implicit
             ) {
-                if (ExceptionUtils.getStackTrace(throwable).contains("Could not initialize class java.awt.Toolkit")) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "System libraries are missing, please use a proper Java runtime instead of headless runtime");
+                if (stackTrace.contains("Could not initialize class java.awt.Toolkit")) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "System libraries are missing, use a proper Java runtime instead of headless runtime", throwable);
                     return;
-                } else if (ExceptionUtils.getStackTrace(throwable).contains("Could not initialize class sun.awt.X11.XToolkit")) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "System libraries are missing or wrong DISPLAY variable, please verify your settings");
+                } else if (stackTrace.contains("Could not initialize class sun.awt.X11.XToolkit")) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "System libraries are missing or wrong DISPLAY variable, verify your settings", throwable);
+                    return;
+                } else if (stackTrace.contains("ClassFormatError: Unknown constant tag")) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Damaged class or JVM, verify your settings", throwable);
                     return;
                 }
 
                 try {
                     var messageDigest = MessageDigest.getInstance(Coder.MD5.label);
 
-                    String stackTrace = ExceptionUtils.getStackTrace(throwable).trim();
-                    var passwordString = String.valueOf(stackTrace.toCharArray());
+                    String stackTraceTrim = stackTrace.trim();
+                    var passwordString = String.valueOf(stackTraceTrim.toCharArray());
 
                     byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);
                     messageDigest.update(passwordByte, 0, passwordByte.length);

@@ -19,7 +19,7 @@ public abstract class ConcreteSybaseSuiteIT extends AbstractTestSuite {
         this.columnToInject = "First_Name";
         
         this.queryAssertDatabases = String.format("select distinct name from %s..sysdatabases", this.databaseToInject);
-        this.queryAssertTables = String.format("select distinct name from %s..sysobjects where type = 'U'", this.databaseToInject);
+        this.queryAssertTables = String.format("select distinct name from %s..sysobjects where type != 'P'", this.databaseToInject);
         this.queryAssertColumns = String.format("""
             select distinct c.name
             from %s..syscolumns c

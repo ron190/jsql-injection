@@ -1,6 +1,7 @@
 package com.jsql.model.suspendable;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
@@ -22,7 +23,7 @@ public class SuspendableGetEngine extends AbstractSuspendable {
     }
 
     @Override
-    public String run(Object... args) {
+    public String run(Input input) throws JSqlException {
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database with Boolean match...");
 
         AtomicBoolean isEngineFound = new AtomicBoolean(false);

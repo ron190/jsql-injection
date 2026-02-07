@@ -12,6 +12,7 @@ package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.*;
+import com.jsql.model.suspendable.Input;
 import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
@@ -102,14 +103,14 @@ public class DataAccess {
 
         var resultToParse = StringUtils.EMPTY;
         try {
-            resultToParse = new SuspendableGetRows(this.injectionModel).run(
+            resultToParse = new SuspendableGetRows(this.injectionModel).run(new Input(
                 this.injectionModel.getMediatorEngine().getEngine().instance().sqlInfos(),
                 sourcePage,
                 false,
                 0,
                 MockElement.MOCK,
                 "metadata"
-            );
+            ));
         } catch (AbstractSlidingException e) {
             resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
@@ -158,14 +159,14 @@ public class DataAccess {
         
         try {
             var sourcePage = new String[]{ StringUtils.EMPTY };
-            resultToParse = new SuspendableGetRows(this.injectionModel).run(
+            resultToParse = new SuspendableGetRows(this.injectionModel).run(new Input(
                 this.injectionModel.getMediatorEngine().getEngine().instance().sqlDatabases(),
                 sourcePage,
                 true,
                 0,
                 MockElement.MOCK,
                 "databases"
-            );
+            ));
         } catch (AbstractSlidingException e) {
             resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
@@ -221,14 +222,14 @@ public class DataAccess {
         String resultToParse = StringUtils.EMPTY;
         try {
             var pageSource = new String[]{ StringUtils.EMPTY };
-            resultToParse = new SuspendableGetRows(this.injectionModel).run(
+            resultToParse = new SuspendableGetRows(this.injectionModel).run(new Input(
                 this.injectionModel.getMediatorEngine().getEngine().instance().sqlTables(database),
                 pageSource,
                 true,
                 Integer.parseInt(tableCount),
                 database,
                 "tables"
-            );
+            ));
         } catch (AbstractSlidingException e) {
             resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
@@ -286,14 +287,14 @@ public class DataAccess {
         
         try {
             var pageSource = new String[]{ StringUtils.EMPTY };
-            resultToParse = new SuspendableGetRows(this.injectionModel).run(
+            resultToParse = new SuspendableGetRows(this.injectionModel).run(new Input(
                 this.injectionModel.getMediatorEngine().getEngine().instance().sqlColumns(table),
                 pageSource,
                 true,
                 0,
                 table,
                 "columns"
-            );
+            ));
         } catch (AbstractSlidingException e) {
             resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
@@ -382,14 +383,14 @@ public class DataAccess {
         
         try {
             var pageSource = new String[]{ StringUtils.EMPTY };
-            resultToParse = new SuspendableGetRows(this.injectionModel).run(
+            resultToParse = new SuspendableGetRows(this.injectionModel).run(new Input(
                 this.injectionModel.getMediatorEngine().getEngine().instance().sqlRows(columns, database, table),
                 pageSource,
                 true,
                 rowCount,
                 table,
                 "rows"
-            );
+            ));
         } catch (AbstractSlidingException e) {  // Catch all exceptions but prevent detecting bug
             resultToParse = DataAccess.getPartialResultAndLog(e, resultToParse);
         } catch (Exception e) {

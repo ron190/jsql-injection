@@ -48,14 +48,13 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     @Override
-    public String run(Object... args) throws AbstractSlidingException {
-        // TODO Map class or record
-        String initialSqlQuery = (String) args[0];
-        String[] sourcePage = (String[]) args[1];
-        boolean isMultipleRows = (Boolean) args[2];
-        int countRowsToFind = (Integer) args[3];
-        AbstractElementDatabase elementDatabase = (AbstractElementDatabase) args[4];
-        String metadataInjectionProcess = (String) args[5];
+    public String run(Input input) throws AbstractSlidingException {
+        String initialSqlQuery = input.payload();
+        String[] sourcePage = input.sourcePage();  // value overridden, useless + not sourcepage
+        boolean isMultipleRows = input.isMultipleRows();
+        int countRowsToFind = input.countRowsToFind();
+        AbstractElementDatabase elementDatabase = input.elementDatabase();
+        String metadataInjectionProcess = input.metadataInjectionProcess();
         
         this.injectionModel.getMediatorUtils().threadUtil().put(elementDatabase, this);
 

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class HanaUnionGetSuiteIT extends ConcreteHanaSuiteIT {  // add Blind bit/bin ITs when stable
+class HanaUnionGetSuiteIT extends ConcreteHanaSuiteIT {  // database unstable, Blind not possible
     
     @Override
     public void setupInjection() throws Exception {

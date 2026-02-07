@@ -47,7 +47,7 @@ public class ParameterUtil {
     private static final String FORMAT_KEY_VALUE = "%s=%s";
 
     // ABNF primitives defined in RFC 7230
-    private static final boolean[] tchar = new boolean[256];
+    private static final boolean[] TCHAR = new boolean[256];
 
     static {
         char[] allowedTokenChars = (
@@ -56,7 +56,7 @@ public class ParameterUtil {
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         ).toCharArray();
         for (char c : allowedTokenChars) {
-            ParameterUtil.tchar[c] = true;
+            ParameterUtil.TCHAR[c] = true;
         }
     }
 
@@ -150,7 +150,7 @@ public class ParameterUtil {
     public static boolean isInvalidName(String token) {
         for (int i = 0 ; i < token.length() ; i++) {
             char c = token.charAt(i);
-            if (c > 255 || !ParameterUtil.tchar[c]) {
+            if (c > 255 || !ParameterUtil.TCHAR[c]) {
                 return true;
             }
         }

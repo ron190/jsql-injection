@@ -11,159 +11,90 @@ resource:
 
  schema:
   database: |
-   select
-       replace(
-           convert(
-               varchar(max),
-               convert(
-                   varbinary(max),
-                   '0'%2bstuff(
-                       (
-                           select replace(sys.fn_varbintohexstr(cast(
-                               ','
-                               %2b'${enclose_value_sql}'
-                               %2bcast(name as varchar(max))
-                               %2b'${separator_qte_sql}0${enclose_value_sql}'
-                               as varbinary(max)
-                           )),'0x','')
-                           from (
-                               select
-                                   name,
-                                   row_number() over (order by(select 1)) as rnum
-                               from master..sysdatabases
-                           )x
-                           where 1=1
-                           ${limit}
-                           for xml path('')
-                       ),
-                       1,
-                       1,
-                       ''
-                   ),
-                   2
-               )
-           ),
-           ',',
-           '${separator_cell_sql}'
-       )
+   select replace(
+       (
+           select string_agg(
+               '${enclose_value_sql}'
+               %2bcast(name as varchar(max))
+               %2b'${separator_qte_sql}0${enclose_value_sql}', 
+               '${separator_cell_sql}'
+           ) within group (order by rnum)
+           from (
+               select name, row_number() over (order by(select 1)) as rnum
+               from master..sysdatabases
+           )x
+           where 1=1
+           ${limit}
+       ),
+       ',',
+       '${separator_cell_sql}'
+   )
 
   table: |
-   select
-       replace(
-           convert(
-               varchar(max),
-               convert(
-                   varbinary(max),
-                   '0'%2bstuff(
-                       (
-                           select replace(sys.fn_varbintohexstr(cast(
-                               ','
-                               %2b'${enclose_value_sql}'
-                               %2bcast(name as varchar(max))
-                               %2b'${separator_qte_sql}0${enclose_value_sql}'
-                               as varbinary(max)
-                           )),'0x','')
-                           from (
-                               select
-                                   name,
-                                   row_number() over (order by(select 1)) as rnum
-                               from ${database}..sysobjects
-                               where xtype='U'
-                           )x
-                           where 1=1
-                           ${limit}
-                           for xml path('')
-                       ),
-                       1,
-                       1,
-                       ''
-                   ),
-                   2
-               )
-           ),
-           ',',
-           '${separator_cell_sql}'
-       )
+   select replace(
+       (
+           select string_agg(
+               '${enclose_value_sql}'
+               %2bcast(name as varchar(max))
+               %2b'${separator_qte_sql}0${enclose_value_sql}', 
+               '${separator_cell_sql}'
+           ) within group (order by rnum)
+           from (
+               select name, row_number() over (order by(select 1)) as rnum
+               from ${database}..sysobjects
+               where xtype='U'
+           )x
+           where 1=1
+           ${limit}
+       ),
+       ',',
+       '${separator_cell_sql}'
+   )
 
   column: |
-   select
-       replace(
-           convert(
-               varchar(max),
-               convert(
-                   varbinary(max),
-                   '0'%2bstuff(
-                       (
-                           select replace(sys.fn_varbintohexstr(cast(
-                               ','
-                               %2b'${enclose_value_sql}'
-                               %2bcast(name as varchar(max))
-                               %2b'${separator_qte_sql}0${enclose_value_sql}'
-                               as varbinary(max)
-                           )),'0x','')
-                           from (
-                               select
-                                   c.name,
-                                   row_number() over (order by(select 1)) as rnum
-                               from
-                                   ${database}..syscolumns c,
-                                   ${database}..sysobjects t
-                               where c.id=t.id
-                               and t.name='${table}'
-                           )x
-                           where 1=1
-                           ${limit}
-                           for xml path('')
-                       ),
-                       1,
-                       1,
-                       ''
-                   ),
-                   2
-               )
-           ),
-           ',',
-           '${separator_cell_sql}'
-       )
+   select replace(
+       (
+           select string_agg(
+               '${enclose_value_sql}'
+               %2bcast(name as varchar(max))
+               %2b'${separator_qte_sql}0${enclose_value_sql}', 
+               '${separator_cell_sql}'
+           ) within group (order by rnum)
+           from (
+               select c.name, row_number() over (order by(select 1)) as rnum
+               from
+                   ${database}..syscolumns c,
+                   ${database}..sysobjects t
+               where c.id=t.id
+               and t.name='${table}'
+           )x
+           where 1=1
+           ${limit}
+       ),
+       ',',
+       '${separator_cell_sql}'
+   )
 
   row:
    query: |
-    select
-        replace(
-            convert(
-                varchar(max),
-                convert(
-                    varbinary(max),
-                    '0'%2bstuff(
-                        (
-                            select
-                                replace(sys.fn_varbintohexstr(cast(
-                                    ','
-                                    %2b'${enclose_value_sql}'
-                                    %2bcast(${fields} as varchar(max))
-                                    %2b'${separator_qte_sql}0${enclose_value_sql}'
-                                    as varbinary(max)
-                                )),'0x','')
-                            from (
-                                select
-                                    *,
-                                    row_number() over (order by(select 1)) as rnum
-                                from ${database}.dbo.${table}
-                            )x
-                            where 1=1
-                            ${limit}
-                            for xml path('')
-                        ),
-                        1,
-                        1,
-                        ''
-                    ),
-                    2
-                )
-            ),
-            ',',
-            '${separator_cell_sql}'
-        )
+    select replace(
+        (
+            select string_agg(
+                '${enclose_value_sql}'
+                %2bcast(${fields} as varchar(max))
+                %2b'${separator_qte_sql}0${enclose_value_sql}', 
+                '${separator_cell_sql}'
+            ) within group (order by rnum)
+            from (
+                select *, row_number() over (order by(select 1)) as rnum
+                from ${database}.dbo.${table}
+            )x
+            where 1=1
+            ${limit}
+        ),
+        ',',
+        '${separator_cell_sql}'
+    )
    fields:
     field: |
      ltrim(

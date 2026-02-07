@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import spring.SpringApp;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,19 @@ public class JdbcRestController {
     private static final Logger LOGGER = LogManager.getRootLogger();
     private final Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @RequestMapping("/access")  // local testing, not used
+    public Greeting greetingAccess(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+        String inject = name.replace(":", "\\:");
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        File file = new File(Objects.requireNonNull(classLoader.getResource("access.accdb")).getFile());
+        return this.getGreeting(
+            SpringApp.get("access").getProperty(JdbcSettings.JAKARTA_JDBC_URL) + file.getAbsolutePath(),
+            SpringApp.get("access").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("access").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
+            "select qsd from Table1 where '1' = '" + inject + "'"
+        );
+    }
 
     @RequestMapping("/clickhouse")
     public Greeting greetingClickhouse(@RequestParam(value="name", defaultValue="World") String name) {
@@ -300,7 +315,6 @@ public class JdbcRestController {
 
         return greeting;
     }
-
 
     private Greeting getGreeting(String url, String user, String password, String sql) {
         Greeting greeting;

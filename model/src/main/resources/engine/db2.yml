@@ -107,16 +107,18 @@ strategy:
    (
        select
            varchar(
-               replace(
-                   /* TODO Cleaner lead (similar to 0+1) */
-                   'Sq' || 'Li'
-                   || substr (
+               /* TODO Cleaner lead (similar to 0+1) */
+               'Sq' || 'Li'
+               /* cancel empty result for proper trail */
+               || ifnull(
+                   /* substr not an alias, fails when end of result */
+                   substring(
                        (${injection}),
                        ${window.char}
-                   ),
-                   'Sq' || 'Li${trail_sql}',
-                   'Sq' || 'Li'
+                   ), 
+                   ''
                )
+               || '${trail_sql}'
            )
        from sysibm.sysdummy1
    )
@@ -152,7 +154,7 @@ strategy:
    bit: |
     0 != bitand(
         ascii(
-            substr(
+            substring(
                 ${injection},
                 ${window.char},
                 1

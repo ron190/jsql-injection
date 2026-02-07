@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class PrestoUnionGetSuiteIT extends ConcretePrestoSuiteIT {
+class PrestoBlindBitGetSuiteIT extends ConcretePrestoSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -19,7 +19,16 @@ class PrestoUnionGetSuiteIT extends ConcretePrestoSuiteIT {
         model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/presto?name="
         );
-        
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyErrorDisabled(true)
+        .withIsStrategyUnionDisabled(true);
+
         model
         .getMediatorUtils()
         .connectionUtil()
@@ -31,24 +40,6 @@ class PrestoUnionGetSuiteIT extends ConcretePrestoSuiteIT {
     
     @Override
     @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
-    }
-    
-    @Override
-    @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
@@ -56,7 +47,7 @@ class PrestoUnionGetSuiteIT extends ConcretePrestoSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

@@ -29,6 +29,7 @@ EOF
     ;;
 
     Hana)
+      echo Setup, sleeping 120s...
       sleep 120  # hana setup
       waiter "$1"
       echo Starting post start phase, creating tenant database, sleeping 300s...

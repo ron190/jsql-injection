@@ -54,6 +54,7 @@ public class SpringApp {
 
     static {
         try {  // ensure driver is loaded, required static for expected jdbc result
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             Class.forName("com.mckoi.JDBCDriver");
             Class.forName("com.mimer.jdbc.Driver");
             Class.forName("virtuoso.jdbc3.Driver");

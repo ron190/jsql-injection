@@ -38,7 +38,7 @@
         <maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.9.0</maven-dependency-plugin.version>
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
         <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
@@ -54,7 +54,7 @@
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
         <!-- enabled on modules builds only, as parent build not reporting -->
-        <pitest-maven.version>1.22.0</pitest-maven.version>
+        <pitest-maven.version>1.22.1</pitest-maven.version>
         <spotbugs-maven-plugin.version>4.9.8.2</spotbugs-maven-plugin.version>
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
 
@@ -69,10 +69,8 @@
         <!-- disabled on specific engine -->
         <parallel.enabled>true</parallel.enabled>
 
-        <!-- menu not working with 2.3.5 -->
-        <site.skin.version>2.3.4</site.skin.version>
-        <!-- menu not working with 2.3.4 -->
-        <reflow-velocity-tools.version>2.3.5</reflow-velocity-tools.version>
+        <site.skin.version>2.4.0</site.skin.version>
+        <reflow-velocity-tools.version>2.4.0</reflow-velocity-tools.version>
     </properties>
 
     <!-- required to avoid error: Exception calling reference $config at META-INF/maven/site.vm -->

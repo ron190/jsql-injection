@@ -21,7 +21,7 @@
                 ]]></name>
                 <href>${project.url}</href>
             </brand>
-            <navbar theme="dark" background="dark" center="false" />
+            <navbar theme="dark" background="dark" />
             <breadcrumbs>false</breadcrumbs>
             <footer theme="dark" background="dark" />
             <bottomNav>

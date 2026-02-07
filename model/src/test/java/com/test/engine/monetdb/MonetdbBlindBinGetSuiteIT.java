@@ -1,4 +1,4 @@
-package com.test.engine.presto;
+package com.test.engine.monetdb;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class PrestoUnionGetSuiteIT extends ConcretePrestoSuiteIT {
+class MonetdbBlindBinGetSuiteIT extends ConcreteMonetdbSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -17,9 +17,18 @@ class PrestoUnionGetSuiteIT extends ConcretePrestoSuiteIT {
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/presto?name="
+            "http://localhost:8080/monetdb?name="
         );
-        
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsStrategyBlindBitDisabled(true)
+        .withIsStrategyErrorDisabled(true)
+        .withIsStrategyUnionDisabled(true);
+
         model
         .getMediatorUtils()
         .connectionUtil()
@@ -28,25 +37,7 @@ class PrestoUnionGetSuiteIT extends ConcretePrestoSuiteIT {
 
         model.beginInjection();
     }
-    
-    @Override
-    @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
-    }
-    
+
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
@@ -56,7 +47,7 @@ class PrestoUnionGetSuiteIT extends ConcretePrestoSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getBlindBin(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

@@ -42,8 +42,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
     }
 
     @Override
-    public String run(Object... args) throws JSqlException {
-        String characterInsertionByUser = (String) args[0];
+    public String run(Input input) throws JSqlException {
+        String characterInsertionByUser = input.payload();
         
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetInsertionCharacter");
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);

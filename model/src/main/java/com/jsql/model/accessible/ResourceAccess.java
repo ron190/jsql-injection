@@ -13,6 +13,7 @@ package com.jsql.model.accessible;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.engine.*;
 import com.jsql.model.bean.database.MockElement;
+import com.jsql.model.suspendable.Input;
 import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.suspendable.SuspendableGetRows;
@@ -491,14 +492,14 @@ public class ResourceAccess {
      */
     public boolean isMysqlReadDenied() throws JSqlException {
         var sourcePage = new String[]{ StringUtils.EMPTY };
-        String resultInjection = new SuspendableGetRows(this.injectionModel).run(
+        String resultInjection = new SuspendableGetRows(this.injectionModel).run(new Input(
             this.injectionModel.getResourceAccess().getExploitMysql().getModelYaml().getFile().getPrivilege(),
             sourcePage,
             false,
             1,
             MockElement.MOCK,
             "privilege"
-        );
+        ));
 
         boolean readingIsAllowed = false;
 
@@ -605,27 +606,27 @@ public class ResourceAccess {
 
     public String getResult(String query, String metadata) throws JSqlException {
         var sourcePage = new String[]{ StringUtils.EMPTY };
-        return new SuspendableGetRows(this.injectionModel).run(
+        return new SuspendableGetRows(this.injectionModel).run(new Input(
             query,
             sourcePage,
             false,
             0,
             MockElement.MOCK,
             metadata
-        );
+        ));
     }
 
     public String getResultWithCatch(String query, String metadata) {
         var sourcePage = new String[]{ StringUtils.EMPTY };
         try {
-            return new SuspendableGetRows(this.injectionModel).run(
+            return new SuspendableGetRows(this.injectionModel).run(new Input(
                 query,
                 sourcePage,
                 false,
                 0,
                 MockElement.MOCK,
                 metadata
-            );
+            ));
         } catch (JSqlException ignored) {
             return StringUtils.EMPTY;
         }

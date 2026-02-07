@@ -39,6 +39,7 @@ public class MediatorEngine {
 
     // TODO Replace with enum
     private final Engine auto;
+    private final Engine access;
     private final Engine altibase;
     private final Engine clickhouse;
     private final Engine cubrid;
@@ -72,7 +73,6 @@ public class MediatorEngine {
     public MediatorEngine(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
-        Engine access = new Engine(new EngineYaml("access.yml", injectionModel));
         Engine ctreeace = new Engine(new EngineYaml("ctreeace.yml", injectionModel));
         Engine frontbase = new Engine(new EngineYaml("frontbase.yml", injectionModel));
         Engine ingres = new Engine(new EngineYaml("ingres.yml", injectionModel));
@@ -83,6 +83,7 @@ public class MediatorEngine {
         Engine teradata = new Engine(new EngineYaml("teradata.yml", injectionModel));
 
         this.auto = new Engine();
+        this.access = new Engine(new EngineYaml("access.yml", injectionModel));
         this.altibase = new Engine(new EngineYaml("altibase.yml", injectionModel));
         this.cubrid = new Engine(new EngineYaml("cubrid.yml", injectionModel));
         this.clickhouse = new Engine(new EngineYaml("clickhouse.yml", injectionModel));
@@ -236,39 +237,7 @@ public class MediatorEngine {
     
     
     // Getter and setter
-    
-    public Engine getAuto() {
-        return this.auto;
-    }
 
-    public Engine getCubrid() {
-        return this.cubrid;
-    }
-
-    public Engine getH2() {
-        return this.h2;
-    }
-
-    public Engine getPostgres() {
-        return this.postgres;
-    }
-
-    public Engine getMysql() {
-        return this.mysql;
-    }
-
-    public Engine getSqlite() {
-        return this.sqlite;
-    }
-
-    public Engine getSqlserver() {
-        return this.sqlserver;
-    }
-
-    public Engine getNeo4j() {
-        return this.neo4j;
-    }
-    
     public Engine getEngine() {
         return this.engine;
     }
@@ -293,40 +262,99 @@ public class MediatorEngine {
         return this.enginesForFingerprint;
     }
 
-    public Engine getDb2() {
-        return this.db2;
+
+    // engines
+
+    public Engine getAuto() {
+        return this.auto;
     }
 
-    public Engine getHsqldb() {
-        return this.hsqldb;
+    public Engine getAccess() {
+        return this.access;
+    }
+
+    public Engine getAltibase() {
+        return this.altibase;
+    }
+
+    public Engine getClickhouse() {
+        return this.clickhouse;
+    }
+
+    public Engine getCubrid() {
+        return this.cubrid;
+    }
+
+    public Engine getDb2() {
+        return this.db2;
     }
 
     public Engine getDerby() {
         return this.derby;
     }
 
-    public Engine getOracle() {
-        return this.oracle;
+    public Engine getExasol() {
+        return this.exasol;
     }
 
     public Engine getFirebird() {
         return this.firebird;
     }
 
-    public Engine getMonetdb() {
-        return this.monetdb;
+    public Engine getH2() {
+        return this.h2;
     }
 
-    public Engine getMimer() {
-        return this.mimer;
+    public Engine getHana() {
+        return this.hana;
+    }
+
+    public Engine getHsqldb() {
+        return this.hsqldb;
+    }
+
+    public Engine getInformix() {
+        return this.informix;
     }
 
     public Engine getMckoi() {
         return this.mckoi;
     }
 
-    public Engine getInformix() {
-        return this.informix;
+    public Engine getMimer() {
+        return this.mimer;
+    }
+
+    public Engine getMonetdb() {
+        return this.monetdb;
+    }
+
+    public Engine getMysql() {
+        return this.mysql;
+    }
+
+    public Engine getNeo4j() {
+        return this.neo4j;
+    }
+
+    public Engine getOracle() {
+        return this.oracle;
+    }
+
+    public Engine getPostgres() {
+        return this.postgres;
+    }
+
+    public Engine getPresto() {
+        return this.presto;
+    }
+
+    public Engine getSqlite() {
+        return this.sqlite;
+    }
+
+    public Engine getSqlserver() {
+        return this.sqlserver;
     }
 
     public Engine getSybase() {
@@ -337,27 +365,7 @@ public class MediatorEngine {
         return this.vertica;
     }
 
-    public Engine getExasol() {
-        return this.exasol;
-    }
-
-    public Engine getHana() {
-        return this.hana;
-    }
-
-    public Engine getPresto() {
-        return this.presto;
-    }
-
     public Engine getVirtuoso() {
         return this.virtuoso;
-    }
-
-    public Engine getClickhouse() {
-        return this.clickhouse;
-    }
-
-    public Engine getAltibase() {
-        return this.altibase;
     }
 }

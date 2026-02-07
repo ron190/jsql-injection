@@ -246,8 +246,8 @@ strategy:
     - timescaleDB
     - yugabytedb
    orderByErrorMessage:
-    # Collision with vertica
-    - (?<!Vertica.*)ORDER BY position 1337 is not in select list
+    # loose postgres error message, regex negative lookbehind prevents collision with vertica
+    - "(?<!Vertica.*)ERROR: ORDER BY position 1337 is not in select list"
    engineSpecific: case when ${test} then split_part('a','',1)else'b'end='a'::text
 
  union:

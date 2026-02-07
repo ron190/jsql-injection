@@ -3,6 +3,7 @@ package com.jsql.model.injection.strategy;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.engine.model.EngineYaml;
+import com.jsql.model.suspendable.Input;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetEngine;
 import com.jsql.util.LogLevelUtil;
@@ -150,14 +151,18 @@ public class MediatorStrategy {
             
             String characterInsertion = this.injectionModel.getMediatorUtils().preferencesUtil().isNotSearchingCharInsertion()
                 ? characterInsertionByUser
-                : new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);
+                : new SuspendableGetCharInsertion(this.injectionModel).run(
+                    new Input(characterInsertionByUser)
+                );
             if (characterInsertion.contains(InjectionModel.STAR)) {  // When injecting all parameters or JSON
                 parameterToInject.setValue(characterInsertion);
             } else {  // When injecting last parameter
                 parameterToInject.setValue(characterInsertion.replaceAll("(\\w)$", "$1+") + InjectionModel.STAR);
             }
         } else if (this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
-            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(StringUtils.EMPTY);
+            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(
+                new Input(StringUtils.EMPTY)
+            );
             String urlBase = this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase();
             this.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(
                 // Space %20 for URL, do not use +
