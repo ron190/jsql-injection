@@ -586,16 +586,16 @@ import java.util.regex.Pattern;
         while (true) {
 <span class="fc" id="L587">            String pattern = text1.substring(textLength - length);</span>
 <span class="fc" id="L588">            int found = text2.indexOf(pattern);</span>
-<span class="fc bfc" id="L589" title="All 2 branches covered.">            if (found == -1) {</span>
+<span class="pc bpc" id="L589" title="1 of 2 branches missed.">            if (found == -1) {</span>
 <span class="fc" id="L590">                return best;</span>
             }
-<span class="fc" id="L592">            length += found;</span>
-<span class="pc bpc" id="L593" title="2 of 4 branches missed.">            if (found == 0 || text1.substring(textLength - length).equals(</span>
-<span class="fc" id="L594">                    text2.substring(0, length))) {</span>
+<span class="nc" id="L592">            length += found;</span>
+<span class="nc bnc" id="L593" title="All 4 branches missed.">            if (found == 0 || text1.substring(textLength - length).equals(</span>
+<span class="nc" id="L594">                    text2.substring(0, length))) {</span>
 <span class="nc" id="L595">                best = length;</span>
 <span class="nc" id="L596">                length++;</span>
             }
-<span class="fc" id="L598">        }</span>
+<span class="nc" id="L598">        }</span>
     }
 
     /**

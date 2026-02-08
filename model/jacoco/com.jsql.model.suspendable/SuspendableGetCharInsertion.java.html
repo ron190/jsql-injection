@@ -42,8 +42,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 <span class="fc" id="L42">    }</span>
 
     @Override
-    public String run(Object... args) throws JSqlException {
-<span class="fc" id="L46">        String characterInsertionByUser = (String) args[0];</span>
+    public String run(Input input) throws JSqlException {
+<span class="fc" id="L46">        String characterInsertionByUser = input.payload();</span>
         
 <span class="fc" id="L48">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetInsertionCharacter&quot;);</span>
 <span class="fc" id="L49">        CompletionService&lt;CallablePageSource&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
@@ -68,7 +68,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 
 <span class="fc" id="L69">                List&lt;Engine&gt; enginesOrderByMatches = this.getEnginesOrderByMatch(mediatorEngine, pageSource);</span>
 <span class="fc bfc" id="L70" title="All 2 branches covered.">                if (!enginesOrderByMatches.isEmpty()) {</span>
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">                    if (this.injectionModel.getMediatorEngine().getEngineByUser() == this.injectionModel.getMediatorEngine().getAuto()) {</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">                    if (this.injectionModel.getMediatorEngine().getEngineByUser() == this.injectionModel.getMediatorEngine().getAuto()) {</span>
 <span class="fc" id="L72">                        this.setEngine(mediatorEngine, enginesOrderByMatches);</span>
 
 <span class="fc" id="L74">                        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Using [{}]&quot;, mediatorEngine.getEngine());</span>
@@ -95,13 +95,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 
     private void setEngine(MediatorEngine mediatorEngine, List&lt;Engine&gt; enginesOrderByMatches) {
 <span class="fc" id="L97">        if (</span>
-<span class="fc bfc" id="L98" title="All 2 branches covered.">            enginesOrderByMatches.size() == 1</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            enginesOrderByMatches.size() == 1</span>
 <span class="pc bpc" id="L99" title="1 of 2 branches missed.">            &amp;&amp; enginesOrderByMatches.getFirst() != mediatorEngine.getEngine()</span>
         ) {
 <span class="nc" id="L101">            mediatorEngine.setEngine(enginesOrderByMatches.getFirst());</span>
-<span class="fc bfc" id="L102" title="All 2 branches covered.">        } else if (enginesOrderByMatches.size() &gt; 1) {</span>
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">            if (enginesOrderByMatches.contains(mediatorEngine.getPostgres())) {</span>
-<span class="fc" id="L104">                mediatorEngine.setEngine(mediatorEngine.getPostgres());</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        } else if (enginesOrderByMatches.size() &gt; 1) {</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">            if (enginesOrderByMatches.contains(mediatorEngine.getPostgres())) {</span>
+<span class="nc" id="L104">                mediatorEngine.setEngine(mediatorEngine.getPostgres());</span>
 <span class="nc bnc" id="L105" title="All 2 branches missed.">            } else if (enginesOrderByMatches.contains(mediatorEngine.getMysql())) {</span>
 <span class="nc" id="L106">                mediatorEngine.setEngine(mediatorEngine.getMysql());</span>
             } else {

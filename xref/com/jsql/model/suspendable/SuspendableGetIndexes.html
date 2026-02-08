@@ -37,7 +37,7 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      }
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      @Override
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">public</strong> String run(Object... args) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">public</strong> String run(<a name="Input" href="../../../../com/jsql/model/suspendable/Input.html#Input">Input</a> input) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          <em class="jxr_comment">// Concurrent search</em>
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>          ExecutorService taskExecutor = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().threadUtil().getExecutor(<span class="jxr_string">"CallableGetIndexes"</span>);
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          CompletionService&lt;CallablePageSource&gt; taskCompletionService = <strong class="jxr_keyword">new</strong> ExecutorCompletionService&lt;&gt;(taskExecutor);

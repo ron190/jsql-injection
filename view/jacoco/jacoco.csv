@@ -170,7 +170,7 @@ view,com.jsql.view.swing.panel.preferences,PanelTampering.new ButtonGroup() {...
 view,com.jsql.view.swing.panel.preferences,PanelStrategies,0,307,0,0,0,74,0,10,0,10
 view,com.jsql.view.swing.panel.preferences,PanelAuthentication.new DocumentListenerEditing() {...},6,6,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.panel.preferences,PanelAuthentication,0,393,0,0,0,83,0,9,0,9
-view,com.jsql.view.swing.panel.preferences,PanelExploit,0,95,0,0,0,31,0,3,0,3
+view,com.jsql.view.swing.panel.preferences,PanelExploit,0,96,0,0,0,31,0,3,0,3
 view,com.jsql.view.swing.panel.preferences,PanelProxy,0,411,0,0,0,88,0,9,0,9
 view,com.jsql.view.swing.panel.preferences,PanelProxy.new DocumentListenerEditing() {...},6,6,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.panel.preferences,PanelInjection.new DocumentListenerEditing() {...},6,6,0,0,2,1,1,1,1,1
@@ -282,5 +282,5 @@ view,com.jsql.view.swing.manager.util,SeparatorListener,17,13,2,0,4,5,2,1,1,1
 view,com.jsql.view.swing.manager.util,CoderListener,31,47,3,1,8,16,3,5,1,5
 view,com.jsql.view.swing.manager.util,ModelExploit,0,22,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.terminal.util,KeyAdapterTerminal.new SwingWorker() {...},0,47,0,2,0,13,0,3,0,2
-view,com.jsql.view.swing.terminal.util,BlockCaret,10,116,4,14,6,33,4,9,0,4
+view,com.jsql.view.swing.terminal.util,BlockCaret,9,117,2,16,5,34,2,11,0,4
 view,com.jsql.view.swing.terminal.util,KeyAdapterTerminal,62,312,13,37,13,71,12,23,1,9

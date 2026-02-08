@@ -50,8 +50,8 @@
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      }
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      @Override
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">public</strong> String run(Object... args) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>          String characterInsertionByUser = (String) args[0];
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">public</strong> String run(<a name="Input" href="../../../../com/jsql/model/suspendable/Input.html#Input">Input</a> input) <strong class="jxr_keyword">throws</strong> <a name="JSqlException" href="../../../../com/jsql/model/exception/JSqlException.html#JSqlException">JSqlException</a> {
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          String characterInsertionByUser = input.payload();
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>          
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>          ExecutorService taskExecutor = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().threadUtil().getExecutor(<span class="jxr_string">"CallableGetInsertionCharacter"</span>);
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>          CompletionService&lt;CallablePageSource&gt; taskCompletionService = <strong class="jxr_keyword">new</strong> ExecutorCompletionService&lt;&gt;(taskExecutor);

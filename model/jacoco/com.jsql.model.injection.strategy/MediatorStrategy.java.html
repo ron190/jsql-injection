@@ -3,6 +3,7 @@
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.engine.model.EngineYaml;
+import com.jsql.model.suspendable.Input;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetEngine;
 import com.jsql.util.LogLevelUtil;
@@ -18,7 +19,7 @@ import java.util.regex.Matcher;
 
 public class MediatorStrategy {
 
-<span class="fc" id="L21">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L22">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private final AbstractStrategy time;
     private final AbstractStrategy blindBit;
@@ -38,30 +39,30 @@ public class MediatorStrategy {
 
     private final InjectionModel injectionModel;
     
-<span class="fc" id="L41">    public MediatorStrategy(InjectionModel injectionModel) {</span>
-<span class="fc" id="L42">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L42">    public MediatorStrategy(InjectionModel injectionModel) {</span>
+<span class="fc" id="L43">        this.injectionModel = injectionModel;</span>
         
-<span class="fc" id="L44">        this.time = new StrategyTime(this.injectionModel);</span>
-<span class="fc" id="L45">        this.blindBit = new StrategyBlindBit(this.injectionModel);</span>
-<span class="fc" id="L46">        this.blindBin = new StrategyBlindBin(this.injectionModel);</span>
-<span class="fc" id="L47">        this.multibit = new StrategyMultibit(this.injectionModel);</span>
-<span class="fc" id="L48">        this.dns = new StrategyDns(this.injectionModel);</span>
-<span class="fc" id="L49">        this.error = new StrategyError(this.injectionModel);</span>
-<span class="fc" id="L50">        this.union = new StrategyUnion(this.injectionModel);</span>
-<span class="fc" id="L51">        this.stack = new StrategyStack(this.injectionModel);</span>
+<span class="fc" id="L45">        this.time = new StrategyTime(this.injectionModel);</span>
+<span class="fc" id="L46">        this.blindBit = new StrategyBlindBit(this.injectionModel);</span>
+<span class="fc" id="L47">        this.blindBin = new StrategyBlindBin(this.injectionModel);</span>
+<span class="fc" id="L48">        this.multibit = new StrategyMultibit(this.injectionModel);</span>
+<span class="fc" id="L49">        this.dns = new StrategyDns(this.injectionModel);</span>
+<span class="fc" id="L50">        this.error = new StrategyError(this.injectionModel);</span>
+<span class="fc" id="L51">        this.union = new StrategyUnion(this.injectionModel);</span>
+<span class="fc" id="L52">        this.stack = new StrategyStack(this.injectionModel);</span>
 
-<span class="fc" id="L53">        this.strategies = Arrays.asList(this.time, this.blindBin, this.blindBit, this.multibit, this.error, this.dns, this.stack, this.union);</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L54">        this.strategies = Arrays.asList(this.time, this.blindBin, this.blindBit, this.multibit, this.error, this.dns, this.stack, this.union);</span>
+<span class="fc" id="L55">    }</span>
     
     public String getMeta() {
-<span class="fc bfc" id="L57" title="All 2 branches covered.">        String strategyName = this.strategy == null ? StringUtils.EMPTY : this.strategy.toString().toLowerCase();</span>
-<span class="fc" id="L58">        var strategyMode = &quot;default&quot;;</span>
-<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().preferencesUtil().isDiosStrategy()) {</span>
-<span class="fc" id="L60">            strategyMode = &quot;dios&quot;;</span>
-<span class="fc bfc" id="L61" title="All 2 branches covered.">        } else if (this.injectionModel.getMediatorUtils().preferencesUtil().isZipStrategy()) {</span>
-<span class="fc" id="L62">            strategyMode = &quot;zip&quot;;</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        String strategyName = this.strategy == null ? StringUtils.EMPTY : this.strategy.toString().toLowerCase();</span>
+<span class="fc" id="L59">        var strategyMode = &quot;default&quot;;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().preferencesUtil().isDiosStrategy()) {</span>
+<span class="fc" id="L61">            strategyMode = &quot;dios&quot;;</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        } else if (this.injectionModel.getMediatorUtils().preferencesUtil().isZipStrategy()) {</span>
+<span class="fc" id="L63">            strategyMode = &quot;zip&quot;;</span>
         }
-<span class="fc" id="L64">        return String.format(&quot;%s#%s&quot;, strategyName.replace(&quot; &quot;, &quot;-&quot;), strategyMode);</span>
+<span class="fc" id="L65">        return String.format(&quot;%s#%s&quot;, strategyName.replace(&quot; &quot;, &quot;-&quot;), strategyMode);</span>
     }
     
     /**
@@ -74,52 +75,52 @@ public class MediatorStrategy {
      * @return Final data
      */
     public String buildPath(String urlBase, boolean isUsingIndex, String sqlTrail) {
-<span class="fc" id="L77">        String result = urlBase;</span>
-<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (urlBase.contains(InjectionModel.STAR)) {</span>
-<span class="fc bfc" id="L79" title="All 2 branches covered.">            if (!isUsingIndex) {</span>
-<span class="fc" id="L80">                result = urlBase.replace(InjectionModel.STAR, this.encodePath(sqlTrail));</span>
+<span class="fc" id="L78">        String result = urlBase;</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (urlBase.contains(InjectionModel.STAR)) {</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">            if (!isUsingIndex) {</span>
+<span class="fc" id="L81">                result = urlBase.replace(InjectionModel.STAR, this.encodePath(sqlTrail));</span>
             } else {
-<span class="fc" id="L82">                result = urlBase.replace(</span>
+<span class="fc" id="L83">                result = urlBase.replace(</span>
                     InjectionModel.STAR,
-<span class="fc" id="L84">                    this.encodePath(</span>
-<span class="fc" id="L85">                        this.getSpecificUnion().getIndexesInUrl().replaceAll(</span>
-<span class="fc" id="L86">                            String.format(EngineYaml.FORMAT_INDEX, this.getSpecificUnion().getVisibleIndex()),</span>
-<span class="fc" id="L87">                            Matcher.quoteReplacement(sqlTrail)  // Oracle column can contain regex char $ =&gt; quoteReplacement()</span>
+<span class="fc" id="L85">                    this.encodePath(</span>
+<span class="fc" id="L86">                        this.getSpecificUnion().getIndexesInUrl().replaceAll(</span>
+<span class="fc" id="L87">                            String.format(EngineYaml.FORMAT_INDEX, this.getSpecificUnion().getVisibleIndex()),</span>
+<span class="fc" id="L88">                            Matcher.quoteReplacement(sqlTrail)  // Oracle column can contain regex char $ =&gt; quoteReplacement()</span>
                         )
                     )
                 );
             }
         }
-<span class="fc" id="L93">        return result;</span>
+<span class="fc" id="L94">        return result;</span>
     }
 
     private String encodePath(String sqlTrail) {
-<span class="fc" id="L97">        String sqlTrailEncoded = StringUtil.cleanSql(sqlTrail);</span>
+<span class="fc" id="L98">        String sqlTrailEncoded = StringUtil.cleanSql(sqlTrail);</span>
 
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().preferencesUtil().isUrlEncodingDisabled()) {</span>
-<span class="fc" id="L100">            sqlTrailEncoded = sqlTrailEncoded</span>
-<span class="fc" id="L101">                .replace(&quot;'&quot;, &quot;%27&quot;)</span>
-<span class="fc" id="L102">                .replace(&quot;(&quot;, &quot;%28&quot;)</span>
-<span class="fc" id="L103">                .replace(&quot;)&quot;, &quot;%29&quot;)</span>
-<span class="fc" id="L104">                .replace(&quot;{&quot;, &quot;%7b&quot;)</span>
-<span class="fc" id="L105">                .replace(&quot;[&quot;, &quot;%5b&quot;)</span>
-<span class="fc" id="L106">                .replace(&quot;]&quot;, &quot;%5d&quot;)</span>
-<span class="fc" id="L107">                .replace(&quot;}&quot;, &quot;%7d&quot;)</span>
-<span class="fc" id="L108">                .replace(&quot;&gt;&quot;, &quot;%3e&quot;)</span>
-<span class="fc" id="L109">                .replace(&quot;&lt;&quot;, &quot;%3c&quot;)</span>
-<span class="fc" id="L110">                .replace(&quot;?&quot;, &quot;%3f&quot;)</span>
-<span class="fc" id="L111">                .replace(&quot;_&quot;, &quot;%5f&quot;)</span>
-<span class="fc" id="L112">                .replace(&quot;\\&quot;, &quot;%5c&quot;)</span>
-<span class="fc" id="L113">                .replace(&quot;,&quot;, &quot;%2c&quot;);</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().preferencesUtil().isUrlEncodingDisabled()) {</span>
+<span class="fc" id="L101">            sqlTrailEncoded = sqlTrailEncoded</span>
+<span class="fc" id="L102">                .replace(&quot;'&quot;, &quot;%27&quot;)</span>
+<span class="fc" id="L103">                .replace(&quot;(&quot;, &quot;%28&quot;)</span>
+<span class="fc" id="L104">                .replace(&quot;)&quot;, &quot;%29&quot;)</span>
+<span class="fc" id="L105">                .replace(&quot;{&quot;, &quot;%7b&quot;)</span>
+<span class="fc" id="L106">                .replace(&quot;[&quot;, &quot;%5b&quot;)</span>
+<span class="fc" id="L107">                .replace(&quot;]&quot;, &quot;%5d&quot;)</span>
+<span class="fc" id="L108">                .replace(&quot;}&quot;, &quot;%7d&quot;)</span>
+<span class="fc" id="L109">                .replace(&quot;&gt;&quot;, &quot;%3e&quot;)</span>
+<span class="fc" id="L110">                .replace(&quot;&lt;&quot;, &quot;%3c&quot;)</span>
+<span class="fc" id="L111">                .replace(&quot;?&quot;, &quot;%3f&quot;)</span>
+<span class="fc" id="L112">                .replace(&quot;_&quot;, &quot;%5f&quot;)</span>
+<span class="fc" id="L113">                .replace(&quot;\\&quot;, &quot;%5c&quot;)</span>
+<span class="fc" id="L114">                .replace(&quot;,&quot;, &quot;%2c&quot;);</span>
         }
 
         // URL forbidden characters
-<span class="fc" id="L117">        return (sqlTrailEncoded + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment())</span>
-<span class="fc" id="L118">            .replace(&quot;\&quot;&quot;, &quot;%22&quot;)</span>
-<span class="fc" id="L119">            .replace(&quot;|&quot;, &quot;%7c&quot;)</span>
-<span class="fc" id="L120">            .replace(&quot;`&quot;, &quot;%60&quot;)</span>
-<span class="fc" id="L121">            .replace(StringUtils.SPACE, &quot;%20&quot;)</span>
-<span class="fc" id="L122">            .replace(&quot;+&quot;, &quot;%20&quot;);</span>
+<span class="fc" id="L118">        return (sqlTrailEncoded + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment())</span>
+<span class="fc" id="L119">            .replace(&quot;\&quot;&quot;, &quot;%22&quot;)</span>
+<span class="fc" id="L120">            .replace(&quot;|&quot;, &quot;%7c&quot;)</span>
+<span class="fc" id="L121">            .replace(&quot;`&quot;, &quot;%60&quot;)</span>
+<span class="fc" id="L122">            .replace(StringUtils.SPACE, &quot;%20&quot;)</span>
+<span class="fc" id="L123">            .replace(&quot;+&quot;, &quot;%20&quot;);</span>
     }
     
     /**
@@ -131,10 +132,10 @@ public class MediatorStrategy {
     public boolean testStrategies(SimpleEntry&lt;String, String&gt; parameterToInject) throws JSqlException {
         // Define insertionCharacter, i.e, -1 in &quot;[..].php?id=-1 union select[..]&quot;,
         
-<span class="fc" id="L134">        String parameterOriginalValue = null;</span>
+<span class="fc" id="L135">        String parameterOriginalValue = null;</span>
         
         // Fingerprint database
-<span class="fc" id="L137">        this.injectionModel.getMediatorEngine().setEngine(this.injectionModel.getMediatorEngine().fingerprintEngine());</span>
+<span class="fc" id="L138">        this.injectionModel.getMediatorEngine().setEngine(this.injectionModel.getMediatorEngine().fingerprintEngine());</span>
         
         // If not an injection point then find insertion character.
         // Force to 1 if no insertion char works and empty value from user,
@@ -142,127 +143,131 @@ public class MediatorStrategy {
         // Force to insertion char otherwise.
         // parameterToInject null on true STAR injection
         // TODO Use also on Json injection where parameter == null
-<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (parameterToInject != null) {</span>
-<span class="fc" id="L146">            parameterOriginalValue = parameterToInject.getValue();</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (parameterToInject != null) {</span>
+<span class="fc" id="L147">            parameterOriginalValue = parameterToInject.getValue();</span>
                      
             // Test for params integrity
-<span class="fc" id="L149">            String characterInsertionByUser = this.injectionModel.getMediatorUtils().parameterUtil().initStar(parameterToInject);</span>
+<span class="fc" id="L150">            String characterInsertionByUser = this.injectionModel.getMediatorUtils().parameterUtil().initStar(parameterToInject);</span>
             
-<span class="fc bfc" id="L151" title="All 2 branches covered.">            String characterInsertion = this.injectionModel.getMediatorUtils().preferencesUtil().isNotSearchingCharInsertion()</span>
-<span class="fc" id="L152">                ? characterInsertionByUser</span>
-<span class="fc" id="L153">                : new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);</span>
-<span class="fc bfc" id="L154" title="All 2 branches covered.">            if (characterInsertion.contains(InjectionModel.STAR)) {  // When injecting all parameters or JSON</span>
-<span class="fc" id="L155">                parameterToInject.setValue(characterInsertion);</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">            String characterInsertion = this.injectionModel.getMediatorUtils().preferencesUtil().isNotSearchingCharInsertion()</span>
+<span class="fc" id="L153">                ? characterInsertionByUser</span>
+<span class="fc" id="L154">                : new SuspendableGetCharInsertion(this.injectionModel).run(</span>
+                    new Input(characterInsertionByUser)
+                );
+<span class="fc bfc" id="L157" title="All 2 branches covered.">            if (characterInsertion.contains(InjectionModel.STAR)) {  // When injecting all parameters or JSON</span>
+<span class="fc" id="L158">                parameterToInject.setValue(characterInsertion);</span>
             } else {  // When injecting last parameter
-<span class="fc" id="L157">                parameterToInject.setValue(characterInsertion.replaceAll(&quot;(\\w)$&quot;, &quot;$1+&quot;) + InjectionModel.STAR);</span>
+<span class="fc" id="L160">                parameterToInject.setValue(characterInsertion.replaceAll(&quot;(\\w)$&quot;, &quot;$1+&quot;) + InjectionModel.STAR);</span>
             }
-<span class="fc bfc" id="L159" title="All 2 branches covered.">        } else if (this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)) {</span>
-<span class="fc" id="L160">            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(StringUtils.EMPTY);</span>
-<span class="fc" id="L161">            String urlBase = this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase();</span>
-<span class="fc" id="L162">            this.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        } else if (this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)) {</span>
+<span class="fc" id="L163">            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(</span>
+                new Input(StringUtils.EMPTY)
+            );
+<span class="fc" id="L166">            String urlBase = this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase();</span>
+<span class="fc" id="L167">            this.injectionModel.getMediatorUtils().connectionUtil().setUrlBase(</span>
                 // Space %20 for URL, do not use +
-<span class="fc" id="L164">                urlBase.replace(InjectionModel.STAR, characterInsertion.replaceAll(&quot;(\\w)$&quot;, &quot;$1%20&quot;) + InjectionModel.STAR)</span>
+<span class="fc" id="L169">                urlBase.replace(InjectionModel.STAR, characterInsertion.replaceAll(&quot;(\\w)$&quot;, &quot;$1%20&quot;) + InjectionModel.STAR)</span>
             );
         }
 
-<span class="fc bfc" id="L168" title="All 2 branches covered.">        if (this.injectionModel.getMediatorEngine().getEngineByUser() == this.injectionModel.getMediatorEngine().getAuto()) {</span>
-<span class="fc" id="L169">            new SuspendableGetEngine(this.injectionModel).run();</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (this.injectionModel.getMediatorEngine().getEngineByUser() == this.injectionModel.getMediatorEngine().getAuto()) {</span>
+<span class="fc" id="L174">            new SuspendableGetEngine(this.injectionModel).run();</span>
         }
 
         // Test each injection strategies: time &lt; blind binary &lt; blind bitwise &lt; multibit &lt; error &lt; stack &lt; union
-<span class="fc" id="L173">        this.time.checkApplicability();</span>
-<span class="fc" id="L174">        this.blindBin.checkApplicability();</span>
-<span class="fc" id="L175">        this.blindBit.checkApplicability();</span>
+<span class="fc" id="L178">        this.time.checkApplicability();</span>
+<span class="fc" id="L179">        this.blindBin.checkApplicability();</span>
+<span class="fc" id="L180">        this.blindBit.checkApplicability();</span>
 
-<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (parameterToInject != null) {</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        if (parameterToInject != null) {</span>
             // Multibit requires '0'
             // TODO char insertion 0' should also work on &quot;where x='$param'&quot;
-<span class="fc" id="L180">            var backupCharacterInsertion = parameterToInject.getValue();</span>
-<span class="fc" id="L181">            parameterToInject.setValue(InjectionModel.STAR);</span>
-<span class="fc" id="L182">            this.multibit.checkApplicability();</span>
-<span class="fc" id="L183">            parameterToInject.setValue(backupCharacterInsertion);</span>
-<span class="fc" id="L184">        } else {</span>
-<span class="fc" id="L185">            this.multibit.checkApplicability();</span>
+<span class="fc" id="L185">            var backupCharacterInsertion = parameterToInject.getValue();</span>
+<span class="fc" id="L186">            parameterToInject.setValue(InjectionModel.STAR);</span>
+<span class="fc" id="L187">            this.multibit.checkApplicability();</span>
+<span class="fc" id="L188">            parameterToInject.setValue(backupCharacterInsertion);</span>
+<span class="fc" id="L189">        } else {</span>
+<span class="fc" id="L190">            this.multibit.checkApplicability();</span>
         }
 
-<span class="fc" id="L188">        this.dns.checkApplicability();</span>
-<span class="fc" id="L189">        this.error.checkApplicability();</span>
-<span class="fc" id="L190">        this.stack.checkApplicability();</span>
-<span class="fc" id="L191">        this.union.checkApplicability();</span>
+<span class="fc" id="L193">        this.dns.checkApplicability();</span>
+<span class="fc" id="L194">        this.error.checkApplicability();</span>
+<span class="fc" id="L195">        this.stack.checkApplicability();</span>
+<span class="fc" id="L196">        this.union.checkApplicability();</span>
 
         // Set most efficient strategy first
-<span class="fc" id="L194">        this.union.activateWhenApplicable();</span>
-<span class="fc" id="L195">        this.stack.activateWhenApplicable();</span>
-<span class="fc" id="L196">        this.error.activateWhenApplicable();</span>
-<span class="fc" id="L197">        this.dns.activateWhenApplicable();</span>
-<span class="fc" id="L198">        this.multibit.activateWhenApplicable();</span>
-<span class="fc" id="L199">        this.blindBit.activateWhenApplicable();</span>
-<span class="fc" id="L200">        this.blindBin.activateWhenApplicable();</span>
-<span class="fc" id="L201">        this.time.activateWhenApplicable();</span>
+<span class="fc" id="L199">        this.union.activateWhenApplicable();</span>
+<span class="fc" id="L200">        this.stack.activateWhenApplicable();</span>
+<span class="fc" id="L201">        this.error.activateWhenApplicable();</span>
+<span class="fc" id="L202">        this.dns.activateWhenApplicable();</span>
+<span class="fc" id="L203">        this.multibit.activateWhenApplicable();</span>
+<span class="fc" id="L204">        this.blindBit.activateWhenApplicable();</span>
+<span class="fc" id="L205">        this.blindBin.activateWhenApplicable();</span>
+<span class="fc" id="L206">        this.time.activateWhenApplicable();</span>
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null) {  // no strategy found</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null) {  // no strategy found</span>
             // Restore initial parameter value on injection failure
             // Only when not true STAR injection
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">            if (parameterOriginalValue != null) {</span>
-<span class="fc" id="L207">                parameterToInject.setValue(parameterOriginalValue.replace(InjectionModel.STAR, StringUtils.EMPTY));</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">            if (parameterOriginalValue != null) {</span>
+<span class="fc" id="L212">                parameterToInject.setValue(parameterOriginalValue.replace(InjectionModel.STAR, StringUtils.EMPTY));</span>
             }
 
-<span class="fc" id="L210">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;No injection found&quot;);</span>
-<span class="fc" id="L211">            return false;</span>
+<span class="fc" id="L215">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;No injection found&quot;);</span>
+<span class="fc" id="L216">            return false;</span>
         }
         
-<span class="fc" id="L214">        return true;</span>
+<span class="fc" id="L219">        return true;</span>
     }
     
     
     // Getter and setter
 
     public AbstractStrategy getUnion() {
-<span class="fc" id="L221">        return this.union;</span>
+<span class="fc" id="L226">        return this.union;</span>
     }
 
     public StrategyUnion getSpecificUnion() {
-<span class="fc" id="L225">        return (StrategyUnion) this.union;</span>
+<span class="fc" id="L230">        return (StrategyUnion) this.union;</span>
     }
 
     public StrategyError getError() {
-<span class="fc" id="L229">        return this.error;</span>
+<span class="fc" id="L234">        return this.error;</span>
     }
 
     public AbstractStrategy getBlindBit() {
-<span class="fc" id="L233">        return this.blindBit;</span>
+<span class="fc" id="L238">        return this.blindBit;</span>
     }
 
     public AbstractStrategy getBlindBin() {
-<span class="fc" id="L237">        return this.blindBin;</span>
+<span class="fc" id="L242">        return this.blindBin;</span>
     }
 
     public AbstractStrategy getMultibit() {
-<span class="fc" id="L241">        return this.multibit;</span>
+<span class="fc" id="L246">        return this.multibit;</span>
     }
 
     public AbstractStrategy getTime() {
-<span class="fc" id="L245">        return this.time;</span>
+<span class="fc" id="L250">        return this.time;</span>
     }
 
     public AbstractStrategy getStack() {
-<span class="fc" id="L249">        return this.stack;</span>
+<span class="fc" id="L254">        return this.stack;</span>
     }
 
     public AbstractStrategy getDns() {
-<span class="fc" id="L253">        return this.dns;</span>
+<span class="fc" id="L258">        return this.dns;</span>
     }
 
     public List&lt;AbstractStrategy&gt; getStrategies() {
-<span class="nc" id="L257">        return this.strategies;</span>
+<span class="nc" id="L262">        return this.strategies;</span>
     }
 
     public AbstractStrategy getStrategy() {
-<span class="fc" id="L261">        return this.strategy;</span>
+<span class="fc" id="L266">        return this.strategy;</span>
     }
 
     public void setStrategy(AbstractStrategy strategy) {
-<span class="fc" id="L265">        this.strategy = strategy;</span>
-<span class="fc" id="L266">    }</span>
+<span class="fc" id="L270">        this.strategy = strategy;</span>
+<span class="fc" id="L271">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

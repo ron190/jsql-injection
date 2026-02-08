@@ -47,7 +47,7 @@ public class ParameterUtil {
     private static final String FORMAT_KEY_VALUE = &quot;%s=%s&quot;;
 
     // ABNF primitives defined in RFC 7230
-<span class="fc" id="L50">    private static final boolean[] tchar = new boolean[256];</span>
+<span class="fc" id="L50">    private static final boolean[] TCHAR = new boolean[256];</span>
 
     static {
 <span class="fc" id="L53">        char[] allowedTokenChars = (</span>
@@ -56,7 +56,7 @@ public class ParameterUtil {
             &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;
 <span class="fc" id="L57">        ).toCharArray();</span>
 <span class="fc bfc" id="L58" title="All 2 branches covered.">        for (char c : allowedTokenChars) {</span>
-<span class="fc" id="L59">            ParameterUtil.tchar[c] = true;</span>
+<span class="fc" id="L59">            ParameterUtil.TCHAR[c] = true;</span>
         }
 <span class="fc" id="L61">    }</span>
 
@@ -150,7 +150,7 @@ public class ParameterUtil {
     public static boolean isInvalidName(String token) {
 <span class="fc bfc" id="L151" title="All 2 branches covered.">        for (int i = 0 ; i &lt; token.length() ; i++) {</span>
 <span class="fc" id="L152">            char c = token.charAt(i);</span>
-<span class="pc bpc" id="L153" title="2 of 4 branches missed.">            if (c &gt; 255 || !ParameterUtil.tchar[c]) {</span>
+<span class="pc bpc" id="L153" title="2 of 4 branches missed.">            if (c &gt; 255 || !ParameterUtil.TCHAR[c]) {</span>
 <span class="nc" id="L154">                return true;</span>
             }
         }

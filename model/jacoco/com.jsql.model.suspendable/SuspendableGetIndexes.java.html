@@ -29,7 +29,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
 <span class="fc" id="L29">    }</span>
 
     @Override
-    public String run(Object... args) throws JSqlException {
+    public String run(Input input) throws JSqlException {
         // Concurrent search
 <span class="fc" id="L34">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor(&quot;CallableGetIndexes&quot;);</span>
 <span class="fc" id="L35">        CompletionService&lt;CallablePageSource&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>

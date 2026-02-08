@@ -51,43 +51,47 @@ public class ExceptionUtil {
             );
 
             // Report #214: ignore if OutOfMemoryError: Java heap space
-<span class="nc" id="L54">            if (</span>
-<span class="nc bnc" id="L55" title="All 2 branches missed.">                ExceptionUtil.this.injectionModel.getMediatorUtils().preferencesUtil().isReportingBugs()</span>
-<span class="nc bnc" id="L56" title="All 4 branches missed.">                &amp;&amp; ExceptionUtils.getStackTrace(throwable).contains(&quot;com.jsql&quot;)</span>
+<span class="nc" id="L54">            String stackTrace = ExceptionUtils.getStackTrace(throwable);</span>
+<span class="nc" id="L55">            if (</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">                ExceptionUtil.this.injectionModel.getMediatorUtils().preferencesUtil().isReportingBugs()</span>
+<span class="nc bnc" id="L57" title="All 4 branches missed.">                &amp;&amp; stackTrace.contains(&quot;com.jsql&quot;)</span>
                 &amp;&amp; !(throwable instanceof OutOfMemoryError)
-<span class="nc bnc" id="L58" title="All 2 branches missed.">                &amp;&amp; !ExceptionUtils.getStackTrace(throwable).contains(&quot;OutOfMemoryError&quot;)  // when implicit</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">                &amp;&amp; !stackTrace.contains(&quot;OutOfMemoryError&quot;)  // when implicit</span>
             ) {
-<span class="nc bnc" id="L60" title="All 2 branches missed.">                if (ExceptionUtils.getStackTrace(throwable).contains(&quot;Could not initialize class java.awt.Toolkit&quot;)) {</span>
-<span class="nc" id="L61">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;System libraries are missing, please use a proper Java runtime instead of headless runtime&quot;);</span>
-<span class="nc" id="L62">                    return;</span>
-<span class="nc bnc" id="L63" title="All 2 branches missed.">                } else if (ExceptionUtils.getStackTrace(throwable).contains(&quot;Could not initialize class sun.awt.X11.XToolkit&quot;)) {</span>
-<span class="nc" id="L64">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;System libraries are missing or wrong DISPLAY variable, please verify your settings&quot;);</span>
-<span class="nc" id="L65">                    return;</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">                if (stackTrace.contains(&quot;Could not initialize class java.awt.Toolkit&quot;)) {</span>
+<span class="nc" id="L62">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;System libraries are missing, use a proper Java runtime instead of headless runtime&quot;, throwable);</span>
+<span class="nc" id="L63">                    return;</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">                } else if (stackTrace.contains(&quot;Could not initialize class sun.awt.X11.XToolkit&quot;)) {</span>
+<span class="nc" id="L65">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;System libraries are missing or wrong DISPLAY variable, verify your settings&quot;, throwable);</span>
+<span class="nc" id="L66">                    return;</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                } else if (stackTrace.contains(&quot;ClassFormatError: Unknown constant tag&quot;)) {</span>
+<span class="nc" id="L68">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Damaged class or JVM, verify your settings&quot;, throwable);</span>
+<span class="nc" id="L69">                    return;</span>
                 }
 
                 try {
-<span class="nc" id="L69">                    var messageDigest = MessageDigest.getInstance(Coder.MD5.label);</span>
+<span class="nc" id="L73">                    var messageDigest = MessageDigest.getInstance(Coder.MD5.label);</span>
 
-<span class="nc" id="L71">                    String stackTrace = ExceptionUtils.getStackTrace(throwable).trim();</span>
-<span class="nc" id="L72">                    var passwordString = String.valueOf(stackTrace.toCharArray());</span>
+<span class="nc" id="L75">                    String stackTraceTrim = stackTrace.trim();</span>
+<span class="nc" id="L76">                    var passwordString = String.valueOf(stackTraceTrim.toCharArray());</span>
 
-<span class="nc" id="L74">                    byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);</span>
-<span class="nc" id="L75">                    messageDigest.update(passwordByte, 0, passwordByte.length);</span>
+<span class="nc" id="L78">                    byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);</span>
+<span class="nc" id="L79">                    messageDigest.update(passwordByte, 0, passwordByte.length);</span>
 
-<span class="nc" id="L77">                    byte[] encodedPassword = messageDigest.digest();</span>
-<span class="nc" id="L78">                    var md5Exception = HashUtil.digestToHexString(encodedPassword);</span>
-<span class="nc bnc" id="L79" title="All 2 branches missed.">                    if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {</span>
-<span class="nc" id="L80">                        ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);</span>
-<span class="nc" id="L81">                        ExceptionUtil.this.injectionModel.getMediatorUtils().gitUtil().sendUnhandledException(</span>
-<span class="nc" id="L82">                            thread.getName(),</span>
+<span class="nc" id="L81">                    byte[] encodedPassword = messageDigest.digest();</span>
+<span class="nc" id="L82">                    var md5Exception = HashUtil.digestToHexString(encodedPassword);</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">                    if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {</span>
+<span class="nc" id="L84">                        ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);</span>
+<span class="nc" id="L85">                        ExceptionUtil.this.injectionModel.getMediatorUtils().gitUtil().sendUnhandledException(</span>
+<span class="nc" id="L86">                            thread.getName(),</span>
                             throwable
                         );
                     }
-<span class="nc" id="L86">                } catch (NoSuchAlgorithmException e) {</span>
-<span class="nc" id="L87">                    LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="nc" id="L88">                }</span>
+<span class="nc" id="L90">                } catch (NoSuchAlgorithmException e) {</span>
+<span class="nc" id="L91">                    LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L92">                }</span>
             }
-<span class="nc" id="L90">        }</span>
+<span class="nc" id="L94">        }</span>
     }
     
     /**
@@ -95,15 +99,15 @@ public class ExceptionUtil {
      * intercept and process the error to GitHub.
      */
     public void setUncaughtExceptionHandler() {
-<span class="nc" id="L98">        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());  // Regular Exception</span>
+<span class="nc" id="L102">        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());  // Regular Exception</span>
         try {  // Event dispatching thread Exception
-<span class="nc" id="L100">            SwingUtilities.invokeAndWait(() -&gt;</span>
-<span class="nc" id="L101">                Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())  // We are in the event dispatching thread</span>
+<span class="nc" id="L104">            SwingUtilities.invokeAndWait(() -&gt;</span>
+<span class="nc" id="L105">                Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())  // We are in the event dispatching thread</span>
             );
-<span class="nc" id="L103">        } catch (InvocationTargetException | InterruptedException e) {</span>
-<span class="nc" id="L104">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L105">            Thread.currentThread().interrupt();</span>
-<span class="nc" id="L106">        }</span>
-<span class="nc" id="L107">    }</span>
+<span class="nc" id="L107">        } catch (InvocationTargetException | InterruptedException e) {</span>
+<span class="nc" id="L108">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L109">            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L110">        }</span>
+<span class="nc" id="L111">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
