@@ -1,0 +1,4 @@
+FROM mysql:5.5.53
+RUN echo "[mysqld]" > /etc/my.cnf
+RUN echo "port=3309" >> /etc/my.cnf
+EXPOSE 3309

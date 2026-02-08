@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+
+  mysql-dns:
+    dns:
+#      - 172.17.0.1  # bridge
+      - 192.168.1.2  # bridge
+    container_name: jsql-mysql-dns
+    ports:
+      - "3309:3309"
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql-dns
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

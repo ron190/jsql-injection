@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SqlserverBlindGetSuiteIT extends ConcreteSqlserverSuiteIT {
+class SqlserverBlindBitGetSuiteIT extends ConcreteSqlserverSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -17,7 +17,7 @@ class SqlserverBlindGetSuiteIT extends ConcreteSqlserverSuiteIT {
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=sqlserver&name=1'*"
+            "http://localhost:8080/blind?tenant=sqlserver&name="
         );
         
         model.setIsScanning(true);
@@ -25,7 +25,8 @@ class SqlserverBlindGetSuiteIT extends ConcreteSqlserverSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
-        .withIsStrategyTimeDisabled(true);
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyBlindBinDisabled(true);
         
         model
         .getMediatorUtils()

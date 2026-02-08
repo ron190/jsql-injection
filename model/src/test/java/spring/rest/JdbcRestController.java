@@ -35,7 +35,7 @@ public class JdbcRestController {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @RequestMapping("/access")  // local testing, not used
-    public Greeting greetingAccess(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+    public Greeting greetingAccess(@RequestParam(value="name", defaultValue="World") String name) {
         String inject = name.replace(":", "\\:");
         ClassLoader classLoader = this.getClass().getClassLoader();
         File file = new File(Objects.requireNonNull(classLoader.getResource("access.accdb")).getFile());

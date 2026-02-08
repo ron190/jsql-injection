@@ -69,8 +69,10 @@
         <!-- disabled on specific engine -->
         <parallel.enabled>true</parallel.enabled>
 
-        <site.skin.version>2.4.0</site.skin.version>
-        <reflow-velocity-tools.version>2.4.0</reflow-velocity-tools.version>
+        <!-- menu not working with 2.3.5 -->
+        <site.skin.version>2.3.4</site.skin.version>
+        <!-- menu not working with 2.3.4 -->
+        <reflow-velocity-tools.version>2.3.5</reflow-velocity-tools.version>
     </properties>
 
     <!-- required to avoid error: Exception calling reference $config at META-INF/maven/site.vm -->

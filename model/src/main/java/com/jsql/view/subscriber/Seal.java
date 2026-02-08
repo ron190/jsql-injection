@@ -9,10 +9,7 @@ import com.jsql.model.injection.strategy.blind.callable.AbstractCallableBit;
 import com.jsql.model.injection.engine.model.Engine;
 import org.apache.logging.log4j.util.Strings;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 public sealed interface Seal permits
@@ -54,7 +51,29 @@ public sealed interface Seal permits
     record AddColumns(List<Column> columns) implements Seal {}
     record AddDatabases(List<Database> databases) implements Seal {}
     record AddTables(List<Table> tables) implements Seal {}
-    record CreateValuesTab(String[] columns, String[][] table, Table tableBean) implements Seal {}
+    record CreateValuesTab(String[] columns, String[][] table, Table tableBean) implements Seal {
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || this.getClass() != o.getClass()) return false;
+            CreateValuesTab that = (CreateValuesTab) o;
+            return Objects.equals(this.tableBean, that.tableBean) && Objects.deepEquals(this.columns, that.columns) && Objects.deepEquals(this.table, that.table);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(Arrays.hashCode(this.columns), Arrays.deepHashCode(this.table), this.tableBean);
+        }
+
+        @Override
+        public String toString() {
+            return "CreateValuesTab{" +
+                "columns=" + Arrays.toString(columns) +
+                ", table=" + Arrays.toString(table) +
+                ", tableBean=" + tableBean +
+            '}';
+        }
+    }
 
     /** End the refreshing of administration page search button */
     record MarkEngineFound(Engine engine) implements Seal {}

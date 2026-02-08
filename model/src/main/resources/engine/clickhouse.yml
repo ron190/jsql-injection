@@ -158,7 +158,6 @@ strategy:
     - ascii(char(48))%3E%3Dascii(char(49))
   modeAnd: and
   modeOr: or
-  modeStack: ; select 1 where
   blind: ${binary.mode} ${test}
   time: |
    ${binary.mode} if(
