@@ -83,8 +83,6 @@ jobs:
               -Dorg.slf4j.simpleLogger.log.org.apache.maven.plugins.scmpublish=warn \
               -P reporting \
               -DtestProfile=Main \
-              org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-              org.pitest:pitest-maven:mutationCoverage \
               site \
               site:stage \
               scm-publish:publish-scm
