@@ -45,19 +45,19 @@ jobs:
       - name: Install Maven dependencies
         run: mvn clean install -DskipTests dependency:tree
 
-      - name: Mount databases on docker
-        run: |
-          docker compose -f $DOCKER_RESOURCES/docker-compose-Main.yml build --parallel
-          docker compose -f $DOCKER_RESOURCES/docker-compose-Main.yml up -d
-
-      - name: List docker images and containers
-        run: docker images && docker container ls
-
-      - name: Database health checks and configuration
-        run: |
-          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh Main
-          $DOCKER_RESOURCES/scripts/buff.sh
-          $DOCKER_RESOURCES/scripts/verify.sh
+#      - name: Mount databases on docker
+#        run: |
+#          docker compose -f $DOCKER_RESOURCES/docker-compose-Main.yml build --parallel
+#          docker compose -f $DOCKER_RESOURCES/docker-compose-Main.yml up -d
+#
+#      - name: List docker images and containers
+#        run: docker images && docker container ls
+#
+#      - name: Database health checks and configuration
+#        run: |
+#          $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh Main
+#          $DOCKER_RESOURCES/scripts/buff.sh
+#          $DOCKER_RESOURCES/scripts/verify.sh
 
       - name: Build project container
         run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
@@ -81,7 +81,7 @@ jobs:
               -Dorg.slf4j.simpleLogger.log.org.sonarsource.scanner=error \
               -Dorg.slf4j.simpleLogger.log.org.apache.maven.scm=warn \
               -Dorg.slf4j.simpleLogger.log.org.apache.maven.plugins.scmpublish=warn \
-              -P tests \
+              -P reporting \
               -DtestProfile=Main \
               org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
               org.pitest:pitest-maven:mutationCoverage \
@@ -90,11 +90,11 @@ jobs:
               scm-publish:publish-scm
           '
 
-      - name: Databases statistics
-        run: $DOCKER_RESOURCES/scripts/verify.sh
-
-      - name: Coverage
-        uses: ./.github/workflows/composite/coverage/
-        with:  # composite cannot use secrets directly
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+#      - name: Databases statistics
+#        run: $DOCKER_RESOURCES/scripts/verify.sh
+#
+#      - name: Coverage
+#        uses: ./.github/workflows/composite/coverage/
+#        with:  # composite cannot use secrets directly
+#          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+#          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}

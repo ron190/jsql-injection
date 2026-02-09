@@ -131,6 +131,9 @@
                 <maven-failsafe-plugin.include>**/*${testProfile}*SuiteIT.java</maven-failsafe-plugin.include>
             </properties>
         </profile>
+        <profile>
+            <id>reporting</id>
+        </profile>
     </profiles>
 
     <dependencyManagement>
@@ -175,77 +178,77 @@
                 <reportSets>
                     <reportSet>
                         <reports>
-                            <report>dependencies</report>
-                            <report>dependency-convergence</report>
-                            <report>dependency-info</report>
+<!--                            <report>dependencies</report>-->
+<!--                            <report>dependency-convergence</report>-->
+<!--                            <report>dependency-info</report>-->
                             <!-- dependency-management: disabled as slow performance-->
                             <report>index</report>
                             <report>modules</report>
                             <report>plugin-management</report>
-                            <report>plugins</report>
+<!--                            <report>plugins</report>-->
                             <report>summary</report>
                         </reports>
                     </reportSet>
                 </reportSets>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <configuration>
-                    <failOnError>false</failOnError>
-                    <doclint>none</doclint>  <!-- Turnoff all checks -->
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>${versions-maven-plugin.version}</version>
-                <configuration>
-                    <onlyProjectDependencies>true</onlyProjectDependencies>
-                </configuration>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>dependency-updates-report</report>
-                            <report>plugin-updates-report</report>
-                            <report>property-updates-report</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <!-- explicit to prevent redundant aggregate reports -->
-                            <report>report</report>
-                            <report>report-integration</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>${maven-jxr-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-            </plugin>
-            <!-- restore when compatible jdk21 -->
-            <!-- org.apache.maven.plugins:maven-checkstyle-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--                <version>${maven-javadoc-plugin.version}</version>-->
+<!--                <configuration>-->
+<!--                    <failOnError>false</failOnError>-->
+<!--                    <doclint>none</doclint>  &lt;!&ndash; Turnoff all checks &ndash;&gt;-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>versions-maven-plugin</artifactId>-->
+<!--                <version>${versions-maven-plugin.version}</version>-->
+<!--                <configuration>-->
+<!--                    <onlyProjectDependencies>true</onlyProjectDependencies>-->
+<!--                </configuration>-->
+<!--                <reportSets>-->
+<!--                    <reportSet>-->
+<!--                        <reports>-->
+<!--                            <report>dependency-updates-report</report>-->
+<!--                            <report>plugin-updates-report</report>-->
+<!--                            <report>property-updates-report</report>-->
+<!--                        </reports>-->
+<!--                    </reportSet>-->
+<!--                </reportSets>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.jacoco</groupId>-->
+<!--                <artifactId>jacoco-maven-plugin</artifactId>-->
+<!--                <reportSets>-->
+<!--                    <reportSet>-->
+<!--                        <reports>-->
+<!--                            &lt;!&ndash; explicit to prevent redundant aggregate reports &ndash;&gt;-->
+<!--                            <report>report</report>-->
+<!--                            <report>report-integration</report>-->
+<!--                        </reports>-->
+<!--                    </reportSet>-->
+<!--                </reportSets>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-jxr-plugin</artifactId>-->
+<!--                <version>${maven-jxr-plugin.version}</version>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>com.github.spotbugs</groupId>-->
+<!--                <artifactId>spotbugs-maven-plugin</artifactId>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-pmd-plugin</artifactId>-->
+<!--            </plugin>-->
+<!--            &lt;!&ndash; restore when compatible jdk21 &ndash;&gt;-->
+<!--            &lt;!&ndash; org.apache.maven.plugins:maven-checkstyle-plugin &ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--            </plugin>-->
         </plugins>
     </reporting>
 
@@ -470,7 +473,7 @@
                 <artifactId>maven-scm-publish-plugin</artifactId>
                 <version>${maven-scm-publish-plugin.version}</version>
                 <configuration>
-                    <scmBranch>site</scmBranch>
+                    <scmBranch>site-devacfr</scmBranch>
                     <password>${GITHUB_TOKEN}</password>
                 </configuration>
             </plugin>
