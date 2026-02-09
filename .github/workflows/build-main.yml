@@ -73,7 +73,7 @@ jobs:
         # reduce logs verbosity on sonar and scm for site publish
         # git config to allow maven publish-scm, hide verbose logs
         run: |
-          $DOCKER_RESOURCES/scripts/run-on-docker.sh '
+          $DOCKER_RESOURCES/scripts/run-on-docker-no-network.sh '
             git config --global user.name "Github Actions"
             git config --global user.email no-response@github.com
             mvn clean install \

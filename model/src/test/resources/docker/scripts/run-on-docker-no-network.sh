@@ -3,7 +3,12 @@ docker run                                          \
   -v "$HOME/.m2":/root/.m2                          \
   -v "$HOME/.sonar/cache":/root/.sonar/cache        \
   --name docker_jsql-container                      \
+  -e GITHUB_SHA                                     \
+  -e SONAR_TOKEN                                    \
+  -e CODACY_PROJECT_TOKEN                           \
+  -e CODECOV_TOKEN                                  \
   -e MAVEN_BYTEBUDDY                                \
+  -e GITHUB_TOKEN                                   \
   jsql:latest                                       \
   ./model/src/test/resources/vnc/execute-on-vnc.sh  \
   bash -c "$1"
