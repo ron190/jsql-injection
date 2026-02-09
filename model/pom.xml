@@ -59,7 +59,7 @@
         <h2.version>2.4.240</h2.version>
         <hana.version>2.27.7</hana.version>
         <hsqldb.version>2.7.4</hsqldb.version>
-        <exasol.version>25.2.6</exasol.version>
+        <exasol.version>26.2.7</exasol.version>
         <informix.version>15.0.1.0</informix.version>
         <firebird.version>6.0.4</firebird.version>
         <mckoi.version>1.0.5</mckoi.version>
