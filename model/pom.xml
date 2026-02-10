@@ -59,7 +59,7 @@
         <h2.version>2.4.240</h2.version>
         <hana.version>2.27.7</hana.version>
         <hsqldb.version>2.7.4</hsqldb.version>
-        <exasol.version>25.2.6</exasol.version>
+        <exasol.version>26.2.7</exasol.version>
         <informix.version>15.0.1.0</informix.version>
         <firebird.version>6.0.4</firebird.version>
         <mckoi.version>1.0.5</mckoi.version>
@@ -74,7 +74,7 @@
         <oracle.version>23.26.1.0.0</oracle.version>
         <postgres.version>42.7.9</postgres.version>
         <presto.version>0.296</presto.version>
-        <sqlite.version>3.51.1.0</sqlite.version>
+        <sqlite.version>3.51.1.1</sqlite.version>
         <sybase.version>16.0</sybase.version>
         <vertica.version>25.3.0-0</vertica.version>
         <virtuoso.version>6.0.0-tp1</virtuoso.version>

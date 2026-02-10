@@ -153,14 +153,12 @@ strategy:
  binary:
   test:
    bin: |
-    ascii(
-        substring(
-            ${injection},
-            ${window.char},
-            1
-        )
+    substring(
+        ${injection},
+        ${window.char},
+        1
     )
-    %3E%3Dascii(char(${mid.int}))
+    %3E%3Dchar(${mid.int})
    bit: |
     0 != (
         ascii(

@@ -147,13 +147,11 @@ strategy:
         ${bit}
     )
    bin: |
-    code(ascii(
-        substring(
-            ${injection},
-            ${window.char},
-            1
-        )
-    ))
+    substring(
+        ${injection},
+        ${window.char},
+        1
+    )
     %3E%3Dcode(${mid.int})
    truthyBin:
     - code(97)%3E%3Dcode(97)

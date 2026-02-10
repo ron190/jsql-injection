@@ -155,14 +155,12 @@ strategy:
         ${bit}
     )
    bin: |
-    ascii(
-        substr(
-            (${injection}),
-            ${window.char},
-            1
-        )
+    substr(
+        (${injection}),
+        ${window.char},
+        1
     )
-    %3E%3Dascii(chr(${mid.int}))
+    %3E%3Dchr(${mid.int})
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}

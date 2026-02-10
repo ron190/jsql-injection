@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
 @SuppressWarnings("java:S2699")
-class CubridBlindBinSuiteIT extends ConcreteCubridSuiteIT {
+class CubridBlindBitSuiteIT extends ConcreteCubridSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -26,7 +26,7 @@ class CubridBlindBinSuiteIT extends ConcreteCubridSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
-        .withIsStrategyBlindBitDisabled(true);
+        .withIsStrategyBlindBinDisabled(true);
 
         model
         .getMediatorUtils()
@@ -46,7 +46,7 @@ class CubridBlindBinSuiteIT extends ConcreteCubridSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBin(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

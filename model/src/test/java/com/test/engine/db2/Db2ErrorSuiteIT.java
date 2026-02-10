@@ -9,7 +9,6 @@ import org.junit.jupiter.api.RepeatedTest;
 
 @SuppressWarnings("java:S2699")
 class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
-    //Unstable
 
     @Override
     public void setupInjection() throws Exception {
@@ -20,7 +19,7 @@ class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
 
         // Slow fingerprinting => star
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/errors?tenant=db2&name='*"
+            "http://localhost:8080/errors?tenant=db2&name="
         );
 
         model

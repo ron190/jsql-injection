@@ -19,7 +19,7 @@ class Db2UnionSuiteIT extends ConcreteDb2SuiteIT {
 
         // Slow fingerprinting => star
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/union?tenant=db2&name='"
+            "http://localhost:8080/union?tenant=db2&name="
         );
 
         model
@@ -36,7 +36,6 @@ class Db2UnionSuiteIT extends ConcreteDb2SuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorEngine().setEngineByUser(model.getMediatorEngine().getDb2());
         model.beginInjection();
     }
 
