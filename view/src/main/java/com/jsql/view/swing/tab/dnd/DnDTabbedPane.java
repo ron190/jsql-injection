@@ -246,21 +246,21 @@ public class DnDTabbedPane extends JTabbedPane {
         
         // MouseListener
         @Override
-        public void mousePressed(MouseEvent e) {
-            DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
+        public void mousePressed(MouseEvent mouseEvent) {
+            DnDTabbedPane src = (DnDTabbedPane) mouseEvent.getComponent();
             boolean isOnlyOneTab = src.getTabCount() <= 1;
             if (isOnlyOneTab) {
                 this.startPt = null;
                 return;
             }
             
-            var tabPt = e.getPoint();
+            var tabPt = mouseEvent.getPoint();
             int idx;
             // Fix #95782: IllegalArgumentException on indexAtLocation()
             try {
                 idx = src.indexAtLocation(tabPt.x, tabPt.y);
-            } catch (IllegalArgumentException err) {
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, err, err);
+            } catch (IllegalArgumentException e) {
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 return;
             }
             
