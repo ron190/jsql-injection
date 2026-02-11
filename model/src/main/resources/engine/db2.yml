@@ -151,13 +151,6 @@ strategy:
 
  binary:
   test:
-   bin: |
-    substring(
-        ${injection},
-        ${window.char},
-        1
-    )
-    %3E%3Dchr(${mid.int})
    bit: |
     0 != bitand(
         ascii(
@@ -169,6 +162,13 @@ strategy:
         ),
         ${bit}
     )
+   bin: |
+    substring(
+        ${injection},
+        ${window.char},
+        1
+    )
+    %3E%3Dchr(${mid.int})
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}
