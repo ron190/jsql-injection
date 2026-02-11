@@ -246,21 +246,21 @@ public class DnDTabbedPane extends JTabbedPane {
         
         // MouseListener
         @Override
-        public void mousePressed(MouseEvent e) {
-<span class="fc" id="L250">            DnDTabbedPane src = (DnDTabbedPane) e.getComponent();</span>
+        public void mousePressed(MouseEvent mouseEvent) {
+<span class="fc" id="L250">            DnDTabbedPane src = (DnDTabbedPane) mouseEvent.getComponent();</span>
 <span class="fc bfc" id="L251" title="All 2 branches covered.">            boolean isOnlyOneTab = src.getTabCount() &lt;= 1;</span>
 <span class="fc bfc" id="L252" title="All 2 branches covered.">            if (isOnlyOneTab) {</span>
 <span class="fc" id="L253">                this.startPt = null;</span>
 <span class="fc" id="L254">                return;</span>
             }
             
-<span class="fc" id="L257">            var tabPt = e.getPoint();</span>
+<span class="fc" id="L257">            var tabPt = mouseEvent.getPoint();</span>
             int idx;
             // Fix #95782: IllegalArgumentException on indexAtLocation()
             try {
 <span class="fc" id="L261">                idx = src.indexAtLocation(tabPt.x, tabPt.y);</span>
-<span class="nc" id="L262">            } catch (IllegalArgumentException err) {</span>
-<span class="nc" id="L263">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, err, err);</span>
+<span class="nc" id="L262">            } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L263">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
 <span class="nc" id="L264">                return;</span>
 <span class="fc" id="L265">            }</span>
             

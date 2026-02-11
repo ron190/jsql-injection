@@ -254,21 +254,21 @@
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>         
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>         <em class="jxr_comment">// MouseListener</em>
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>         @Override
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent e) {
-<a class="jxr_linenumber" name="L250" href="#L250">250</a>             <a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a> src = (<a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a>) e.getComponent();
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> mousePressed(MouseEvent mouseEvent) {
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>             <a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a> src = (<a name="DnDTabbedPane" href="../../../../../../com/jsql/view/swing/tab/dnd/DnDTabbedPane.html#DnDTabbedPane">DnDTabbedPane</a>) mouseEvent.getComponent();
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>             <strong class="jxr_keyword">boolean</strong> isOnlyOneTab = src.getTabCount() &lt;= 1;
 <a class="jxr_linenumber" name="L252" href="#L252">252</a>             <strong class="jxr_keyword">if</strong> (isOnlyOneTab) {
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>                 <strong class="jxr_keyword">this</strong>.startPt = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>                 <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>             }
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>             
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>             <strong class="jxr_keyword">var</strong> tabPt = e.getPoint();
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>             <strong class="jxr_keyword">var</strong> tabPt = mouseEvent.getPoint();
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>             <strong class="jxr_keyword">int</strong> idx;
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>             <em class="jxr_comment">// Fix #95782: IllegalArgumentException on indexAtLocation()</em>
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>             <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>                 idx = src.indexAtLocation(tabPt.x, tabPt.y);
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>             } <strong class="jxr_keyword">catch</strong> (IllegalArgumentException err) {
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, err, err);
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>             } <strong class="jxr_keyword">catch</strong> (IllegalArgumentException e) {
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>                 <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>             }
 <a class="jxr_linenumber" name="L266" href="#L266">266</a>             
