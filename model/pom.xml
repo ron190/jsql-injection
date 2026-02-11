@@ -56,12 +56,12 @@
         <clickhouse.version>0.9.6</clickhouse.version>
         <cubrid.version>11.3.2.0053</cubrid.version>
         <derby.version>10.17.1.0</derby.version>
+        <exasol.version>26.2.7</exasol.version>
+        <firebird.version>6.0.4</firebird.version>
         <h2.version>2.4.240</h2.version>
         <hana.version>2.27.7</hana.version>
         <hsqldb.version>2.7.4</hsqldb.version>
-        <exasol.version>26.2.7</exasol.version>
         <informix.version>15.0.1.0</informix.version>
-        <firebird.version>6.0.4</firebird.version>
         <mckoi.version>1.0.5</mckoi.version>
         <mimer.version>3.42.3</mimer.version>
         <monetdb.version>12.2</monetdb.version>
@@ -74,7 +74,7 @@
         <oracle.version>23.26.1.0.0</oracle.version>
         <postgres.version>42.7.9</postgres.version>
         <presto.version>0.296</presto.version>
-        <sqlite.version>3.51.1.1</sqlite.version>
+        <sqlite.version>3.51.2.0</sqlite.version>
         <sybase.version>16.0</sybase.version>
         <vertica.version>25.3.0-0</vertica.version>
         <virtuoso.version>6.0.0-tp1</virtuoso.version>
