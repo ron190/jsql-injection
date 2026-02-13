@@ -13,81 +13,66 @@ resource:
 
  schema:
   database: |
-   select
-       rr
-       || '${trail_sql} '
-       r
-   from (
-       select
-           '${enclose_value_sql}'
-           || t.s
-           || '${separator_qte_sql}0${enclose_value_sql}'
-           rr
-       from
-           (select name s from SYS_INFO.sUSRSchemaInfo) t,
-           (select name s from SYS_INFO.sUSRSchemaInfo) t1
-       where t.s >= t1.s
-       group by t.s
-       ${limit}
-   ) a
+   select rr || '${trail_sql} ' r from (
+     select '${enclose_value_sql}' || t.name || '${separator_qte_sql}0${enclose_value_sql}' rr
+     from SYS_INFO.sUSRSchemaInfo t
+     where ${limit} = (select count(*) from SYS_INFO.sUSRSchemaInfo t1 where t.name >= t1.name)
+     union all
+     /* force when no result for proper trail */
+     select '' as rr
+     from (select 1)
+     where 0 = (
+       select count(*)
+       from SYS_INFO.sUSRSchemaInfo t
+       where ${limit} = (select count(*) from SYS_INFO.sUSRSchemaInfo t1 where t.name >= t1.name)
+     )
+   )
 
   table: |
-   select
-       rr
-       || '${trail_sql} '
-       r
-   from (
-       select
-           '${enclose_value_sql}'
-           || t.s
-           || '${separator_qte_sql}0${enclose_value_sql}'
-           rr
-       from
-           (select name s from SYS_INFO.sUSRTableInfo where "schema" = '${database}') t,
-           (select name s from SYS_INFO.sUSRTableInfo where "schema" = '${database}') t1
-       where t.s >= t1.s
-       group by t.s
-       ${limit}
-   ) a
+   select rr || '${trail_sql} ' r from (
+     select '${enclose_value_sql}' || t.name || '${separator_qte_sql}0${enclose_value_sql}' rr
+     from SYS_INFO.sUSRTableInfo t where "schema" = '${database}'
+     and ${limit} = (select count(*) from SYS_INFO.sUSRTableInfo t1 where "schema" = '${database}' and t.name >= t1.name)
+     union all
+     select '' as rr
+     from (select 1)
+     where 0 = (
+       select count(*)
+       from SYS_INFO.sUSRTableInfo t where "schema" = '${database}'
+       and ${limit} = (select count(*) from SYS_INFO.sUSRTableInfo t1 where "schema" = '${database}' and t.name >= t1.name)
+     )
+   )
 
   column: |
-   select
-       rr
-       || '${trail_sql} '
-       r
-   from (
-       select
-           '${enclose_value_sql}'
-           || t.s
-           || '${separator_qte_sql}0${enclose_value_sql}'
-           rr
-       from
-           (select "column" s from SYS_INFO.sUSRTableColumns where "schema" = '${database}' and "table" = '${table}') t,
-           (select "column" s from SYS_INFO.sUSRTableColumns where "schema" = '${database}' and "table" = '${table}') t1
-       where t.s >= t1.s
-       group by t.s
-       ${limit}
-   ) a
+   select rr || '${trail_sql} ' r from (
+    select '${enclose_value_sql}' || t.column || '${separator_qte_sql}0${enclose_value_sql}' rr
+    from SYS_INFO.sUSRTableColumns t where "schema" = '${database}' and "table" = '${table}'
+    and ${limit} = (select count(*) from SYS_INFO.sUSRTableColumns t1 where "schema" = '${database}' and "table" = '${table}' and t.column >= t1.column)
+    union all
+    select '' as rr
+    from (select 1)
+    where 0 = (
+      select count(*)
+      from SYS_INFO.sUSRTableColumns t where "schema" = '${database}' and "table" = '${table}'
+      and ${limit} = (select count(*) from SYS_INFO.sUSRTableColumns t1 where "schema" = '${database}' and "table" = '${table}' and t.column >= t1.column)
+    )
+   )
 
   row:
    query: |
-    select
-        rr
-        || '${trail_sql} '
-        r
-    from (
-        select
-            '${enclose_value_sql}'
-            || t.s
-            || '${separator_qte_sql}0${enclose_value_sql}'
-            rr
-        from
-            (select distinct ${fields} s from "${database}"."${table}") t,
-            (select distinct ${fields} s from "${database}"."${table}") t1
-        where t.s >= t1.s
-        group by t.s
-        ${limit}
-    ) a
+    select rr || '${trail_sql} ' r from (
+     select '${enclose_value_sql}' || ${fields} || '${separator_qte_sql}0${enclose_value_sql}' rr
+     from "${database}"."${table}"
+     where ${limit} = (select count(*) from "${database}"."${table}")
+     union all
+     select '' as rr
+     from (select 1)
+     where 0 = (
+       select count(*)
+       from "${database}"."${table}"
+       where ${limit} = (select count(*) from "${database}"."${table}")
+     )
+    )
    fields:
     field: trim(coalesce(${field.value}, ''))
     concat: "|| '%7f' ||"
@@ -104,7 +89,7 @@ strategy:
    from (
        ${injection}
    )
-  limit: having count(*) between ${limit.value} and ${limit.value}
+  limit: ${limit.value}
   failsafe: select cast(x.rrr as char)rr from (select 1337${indice}7330%2b1 rrr)x
   # No method repeat() found
   calibrator: "'${calibrator_raw}'"

