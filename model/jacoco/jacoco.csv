@@ -16,7 +16,7 @@ model,com.jsql.model.injection.strategy.blind.callable,CallableMultibit,2,105,0,
 model,com.jsql.model.accessible.engine,ExploitSqlite,202,203,5,1,36,35,7,7,4,7
 model,com.jsql.model.accessible.engine,ExploitDerby,132,194,3,1,26,31,4,6,2,6
 model,com.jsql.model.accessible.engine,ExploitOracle,203,26,4,0,28,7,5,2,3,2
-model,com.jsql.model.accessible.engine,ExploitPostgres,547,1291,39,43,94,212,36,32,6,21
+model,com.jsql.model.accessible.engine,ExploitPostgres,532,1306,39,43,92,214,36,32,6,21
 model,com.jsql.model.accessible.engine,ExploitH2,168,261,4,2,31,45,6,8,3,8
 model,com.jsql.model.accessible.engine,ExploitHsqldb,132,200,3,1,26,31,4,6,2,6
 model,com.jsql.model.accessible.engine,ExploitMysql,418,883,48,50,81,159,45,32,6,22
