@@ -40,6 +40,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
@@ -63,15 +64,16 @@ public class PanelAddressBar extends JPanel {
     private final AtomicReference<JRadioButton> atomicRadioMethod = new AtomicReference<>();
     private final AtomicReference<JRadioButton> atomicRadioHeader = new AtomicReference<>();
 
-    public static final String[] METHODS = {"DELETE", StringUtil.GET, "HEAD", "OPTIONS", StringUtil.POST, "PUT", "TRACE"};
+    private static final String[] METHODS = {"DELETE", StringUtil.GET, "HEAD", "OPTIONS", StringUtil.POST, "PUT", "TRACE"};
     private JPopupMenu popupMethods;
     private JRadioButton radioCustomMethod;
     private JTextField inputCustomMethod;
     private AdvancedButtonAdapter advancedButtonAdapter;
 
+    public static final String NAME_ADVANCED_BUTTON = "advancedButton";
+    private static final String KEY_BUTTON_ADVANCED = "BUTTON_ADVANCED";
     private static final String KEY_ADDRESS_BAR_PLACEHOLDER = "ADDRESS_BAR_PLACEHOLDER";
-    private static final String BUTTON_ADVANCED = "BUTTON_ADVANCED";
-    public static final String ADVANCED_BUTTON = "advancedButton";
+    private static final String HEADER_SEPARATOR = "\\r\\n";
 
     // Current injection method
     private AbstractMethodInjection methodInjection = MediatorHelper.model().getMediatorMethod().getQuery();
@@ -163,10 +165,12 @@ public class PanelAddressBar extends JPanel {
                     String text = (String) cb.getData(DataFlavor.stringFlavor);
                     text = text.replace("\n", "\r\n").replace("\r\r\n", "\r\n");  // restore non-standardized
 
-                    String regexStartLine = "([^\\r\\n]+)";
-                    String regexHeaders = "((?:[^\\r\\n]+\\r\\n)*)";
+                    String regexStartLine = "([^"+ PanelAddressBar.HEADER_SEPARATOR +"]+)";
+                    String regexHeaders = "((?:[^"+ PanelAddressBar.HEADER_SEPARATOR +"]+"+ PanelAddressBar.HEADER_SEPARATOR +")*)";
                     String regexBody = "(.*)";
-                    var matcher = Pattern.compile("(?s)" + regexStartLine + "\\r\\n" + regexHeaders + "\\r\\n" + regexBody).matcher(text);
+                    var matcher = Pattern.compile(
+                        "(?s)" + regexStartLine + PanelAddressBar.HEADER_SEPARATOR + regexHeaders + PanelAddressBar.HEADER_SEPARATOR + regexBody
+                    ).matcher(text);
 
                     if (matcher.find()) {
                         String startLine = matcher.group(1);
@@ -175,13 +179,13 @@ public class PanelAddressBar extends JPanel {
                             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "HTTP request detected");
                             var method = matcherStartLine.group(1);
                             var requestTarget = matcherStartLine.group(2);  // absolute-form, authority-form and asterisk-form not managed
-                            var httpVersion = matcherStartLine.group(3);
+                            // httpVersion unused
                             var headers = matcher.group(2).trim();
                             var body = matcher.group(3).trim();
 
                             // Configure URL
                             if (requestTarget.startsWith("/")) {  // origin-form
-                                var listHeaders = Pattern.compile("\\r\\n")
+                                var listHeaders = Pattern.compile(PanelAddressBar.HEADER_SEPARATOR)
                                     .splitAsStream(headers)
                                     .map(keyValue -> Arrays.copyOf(keyValue.split(":"), 2))
                                     .map(keyValue -> new AbstractMap.SimpleEntry<>(
@@ -206,7 +210,7 @@ public class PanelAddressBar extends JPanel {
                                 PanelAddressBar.this.radioCustomMethod.setSelected(true);
                             } else {
                                 Arrays.stream(PanelAddressBar.this.popupMethods.getSubElements())
-                                .map(menuElement -> (JMenuItem) menuElement)
+                                .map(JMenuItem.class::cast)
                                 .filter(jMenuItem -> method.equals(jMenuItem.getText()))
                                 .findFirst()
                                 .ifPresent(jMenuItem -> jMenuItem.setSelected(true));
@@ -430,7 +434,7 @@ public class PanelAddressBar extends JPanel {
         if (StringUtils.isEmpty(inputCustomMethod.getText())) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing custom request method, forcing GET");
             Arrays.stream(this.popupMethods.getSubElements())
-            .map(menuElement -> (JMenuItem) menuElement)
+            .map(JMenuItem.class::cast)
             .filter(jMenuItem -> StringUtil.GET.equals(jMenuItem.getText()))
             .findFirst()
             .ifPresent(jMenuItem -> jMenuItem.setSelected(true));
@@ -443,22 +447,22 @@ public class PanelAddressBar extends JPanel {
     }
 
     private JLabel initAdvancedButton() {
-        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(PanelAddressBar.BUTTON_ADVANCED)));
+        var tooltip = new AtomicReference<>(new JToolTipI18n(I18nUtil.valueByKey(PanelAddressBar.KEY_BUTTON_ADVANCED)));
         var advancedButton = new JLabel(UiUtil.ARROW_DOWN.getIcon()) {
             @Override
             public JToolTip createToolTip() {
                 return tooltip.get();
             }
         };
-        advancedButton.setName(PanelAddressBar.ADVANCED_BUTTON);
-        advancedButton.setToolTipText(I18nUtil.valueByKey(PanelAddressBar.BUTTON_ADVANCED));
-        I18nViewUtil.addComponentForKey(PanelAddressBar.BUTTON_ADVANCED, tooltip.get());
+        advancedButton.setName(PanelAddressBar.NAME_ADVANCED_BUTTON);
+        advancedButton.setToolTipText(I18nUtil.valueByKey(PanelAddressBar.KEY_BUTTON_ADVANCED));
+        I18nViewUtil.addComponentForKey(PanelAddressBar.KEY_BUTTON_ADVANCED, tooltip.get());
         this.advancedButtonAdapter = new AdvancedButtonAdapter(advancedButton);
-        advancedButton.addMouseListener(new AdvancedButtonAdapter(advancedButton));
+        advancedButton.addMouseListener(this.advancedButtonAdapter);
         return advancedButton;
     }
 
-    private class AdvancedButtonAdapter extends MouseAdapter {
+    private class AdvancedButtonAdapter extends MouseAdapter implements Serializable {
 
         private final JLabel advancedButton;
 

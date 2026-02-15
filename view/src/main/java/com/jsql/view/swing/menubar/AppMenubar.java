@@ -350,31 +350,53 @@ public class AppMenubar extends JMenuBar {
     }
 
     private void switchOrientation(Locale oldLocale, Locale newLocale) {
-        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
-        MediatorHelper.frame().applyComponentOrientation(componentOrientation);
-        
+
         if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {
             // not rendered at startup, only on switch, unreliable components width can be 0 at startup
             // use event windowOpen instead when required
-            AppMenubar.reverse(MediatorHelper.frame().getSplitNS().getSplitEW());
-            AppMenubar.reverse(MediatorHelper.panelConsoles().getNetworkSplitPane());
+            record SplitReverse(JSplitPane split, Component left, Component right, int location){}
+            var splitReverseEW = new SplitReverse(
+                MediatorHelper.frame().getSplitNS().getSplitEW(),
+                MediatorHelper.frame().getSplitNS().getSplitEW().getLeftComponent(),
+                MediatorHelper.frame().getSplitNS().getSplitEW().getRightComponent(),
+                MediatorHelper.frame().getSplitNS().getSplitEW().getWidth() - MediatorHelper.frame().getSplitNS().getSplitEW().getDividerLocation()
+            );
+            var splitReverseNetwork = new SplitReverse(
+                MediatorHelper.panelConsoles().getNetworkSplitPane(),
+                MediatorHelper.panelConsoles().getNetworkSplitPane().getLeftComponent(),
+                MediatorHelper.panelConsoles().getNetworkSplitPane().getRightComponent(),
+                MediatorHelper.panelConsoles().getNetworkSplitPane().getWidth() - MediatorHelper.panelConsoles().getNetworkSplitPane().getDividerLocation()
+            );
+            var splitReverseNS = new SplitReverse(
+                MediatorHelper.frame().getSplitNS(),
+                MediatorHelper.frame().getSplitNS().getRightComponent(),
+                MediatorHelper.frame().getSplitNS().getLeftComponent(),
+                MediatorHelper.frame().getSplitNS().getDividerLocation()
+            );
+
+            // required by linux: set both to null => applyComponentOrientation => set both components
+            List.of(splitReverseEW, splitReverseNetwork, splitReverseNS).forEach(splitReverse -> {
+                splitReverse.split.setLeftComponent(null);
+                splitReverse.split.setRightComponent(null);
+            });
+
+            var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
+            MediatorHelper.frame().applyComponentOrientation(componentOrientation);
+
+            List.of(splitReverseEW, splitReverseNetwork, splitReverseNS).forEach(splitReverse -> {
+                splitReverse.split.setLeftComponent(splitReverse.right);
+                splitReverse.split.setRightComponent(splitReverse.left);
+                splitReverse.split.setDividerLocation(splitReverse.location);
+            });
+        } else {
+            var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
+            MediatorHelper.frame().applyComponentOrientation(componentOrientation);
         }
-        
-        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));
-    }
 
-    private static void reverse(JSplitPane splitPane) {
-        var componentLeft = splitPane.getLeftComponent();
-        var componentRight = splitPane.getRightComponent();
-
-        // Reset components
-        splitPane.setLeftComponent(null);
-        splitPane.setRightComponent(null);
-        splitPane.setLeftComponent(componentRight);
-        splitPane.setRightComponent(componentLeft);
-
-        // required as switch to arabic uses reversed location
-        splitPane.setDividerLocation(splitPane.getWidth() - splitPane.getDividerLocation());
+        // required by linux: applyComponentOrientation also on sub components
+        MediatorHelper.tabResults().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));
+        MediatorHelper.panelConsoles().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));
+        MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));
     }
 
     private void switchMenuItems() {

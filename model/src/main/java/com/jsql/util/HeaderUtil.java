@@ -46,7 +46,7 @@ public class HeaderUtil {
         String keyHeader = header.getKey().trim();
         String valueHeader = header.getValue().trim();
 
-        if ("cookie".equalsIgnoreCase(keyHeader) && Pattern.compile(".+=.*").matcher(valueHeader).find()) {
+        if (CookiesUtil.COOKIE.equalsIgnoreCase(keyHeader) && Pattern.compile(".+=.*").matcher(valueHeader).find()) {
             // Encode cookies to double quotes: Cookie: key="<value>"
             List<String> cookies = Stream.of(valueHeader.split(";"))
                 .filter(value -> value.contains("="))

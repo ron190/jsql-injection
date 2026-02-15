@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 public class CookiesUtil {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
+    public static final String COOKIE = "Cookie";
 
     private final InjectionModel injectionModel;
 
@@ -34,7 +35,7 @@ public class CookiesUtil {
 
         List<AbstractMap.SimpleEntry<String, String>> cookies = this.injectionModel.getMediatorUtils().parameterUtil().getListHeader()
             .stream()
-            .filter(entry -> "cookie".equalsIgnoreCase(entry.getKey()))
+            .filter(entry -> CookiesUtil.COOKIE.equalsIgnoreCase(entry.getKey()))
             .findFirst()
             .map(cookieHeader -> cookieHeader.getValue().split(";"))
             .stream()

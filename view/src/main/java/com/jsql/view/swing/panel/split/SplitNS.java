@@ -104,9 +104,19 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
     public void initSplitOrientation() {
         if (MediatorHelper.tabResults().getTabCount() == 0) {
             int dividerLocation = this.splitEW.getDividerLocation();
+
+            // required by linux: set both to null => applyComponentOrientation => set both components
+            this.splitEW.setLeftComponent(null);
+            this.splitEW.setRightComponent(null);
+
+            var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
+            this.splitEW.applyComponentOrientation(componentOrientation);
+
             if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {
                 this.splitEW.setLeftComponent(MediatorHelper.tabResults());
+                this.splitEW.setRightComponent(MediatorHelper.tabManagersCards());
             } else {
+                this.splitEW.setLeftComponent(MediatorHelper.tabManagersCards());
                 this.splitEW.setRightComponent(MediatorHelper.tabResults());
             }
             SwingUtilities.invokeLater(() -> this.splitEW.setDividerLocation(dividerLocation));  // wait for EDT refresh to prevent wrong location

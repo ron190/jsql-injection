@@ -556,7 +556,7 @@ public class AppUiTest {
     @Test
     public void shouldFindConnectionPreferences() {
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
         AppUiTest.window.menuItemWithPath("Windows", "Preferences").click();
         AppUiTest.window.list(PanelPreferences.LIST_CATEGORIES_PREFERENCE).selectItem(Pattern.compile(".*Connection.*"));
 
@@ -577,7 +577,7 @@ public class AppUiTest {
             MediatorHelper.model().getMediatorUtils().preferencesUtil().isFollowingRedirection()
         ).forEach(Assertions::assertFalse);
 
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
 
         GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
@@ -586,7 +586,7 @@ public class AppUiTest {
     @Test
     public void shouldFindInjectionPreferences() {
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
         AppUiTest.window.menuItemWithPath("Windows", "Preferences").click();
         AppUiTest.window.list(PanelPreferences.LIST_CATEGORIES_PREFERENCE).selectItem(Pattern.compile(".*Injection.*"));
 
@@ -643,7 +643,7 @@ public class AppUiTest {
             MediatorHelper.model().getMediatorUtils().preferencesUtil().isZipStrategy(),
         });
 
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
 
         GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
         AppUiTest.logMethod();
@@ -652,33 +652,34 @@ public class AppUiTest {
     @Test
     public void shouldFindSqlEngine() {
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
         AppUiTest.window.menuItemWithPath("Windows", "SQL Engine").click();
 
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
         GuiActionRunner.execute(() -> AppUiTest.window.tabbedPane(TabResults.TAB_RESULTS).target().removeTabAt(0));
     }
 
     @Test
     public void shouldFindLanguage() {
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
         AppUiTest.window.menuItem(MenuWindows.MENU_WINDOWS).click();
         AppUiTest.window.robot().moveMouse(
             GuiActionRunner.execute(() -> AppUiTest.window.menuItem(MenuWindows.MENU_TRANSLATION).target())  // faster than click
         );
         AppUiTest.window.menuItem(MenuWindows.ITEM_RUSSIAN).click();
+        AppUiTest.window.menuItem(MenuWindows.ITEM_ARABIC).click();
         AppUiTest.window.menuItem(MenuWindows.ITEM_ENGLISH).click();
 
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
     }
 
     @Test
     public void shouldFindReportIssue() {
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
         AppUiTest.window.menuItem("menuCommunity").click();
         AppUiTest.window.menuItem("itemReportIssue").click();
 
@@ -687,13 +688,13 @@ public class AppUiTest {
         dialog.button(JButtonMatcher.withText("Cancel")).click();
 
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
     }
 
     @Test
     public void shouldFindIHelpTranslate() {
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
         AppUiTest.window.menuItem(AppMenubar.MENU_COMMUNITY).click();
         AppUiTest.window.robot().moveMouse(
             GuiActionRunner.execute(() -> AppUiTest.window.menuItem(AppMenubar.MENU_I18N_CONTRIBUTION).target())  // faster than click
@@ -705,13 +706,13 @@ public class AppUiTest {
         dialog.close();
 
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
     }
 
     @Test
     public void shouldFindAbout() {
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
         AppUiTest.window.menuItem(AppMenubar.MENU_HELP).click();
         AppUiTest.window.menuItem(AppMenubar.ITEM_HELP).click();
 
@@ -719,7 +720,7 @@ public class AppUiTest {
         dialog.button(JButtonMatcher.withText("Close")).click();
 
         AppUiTest.logMethod();
-        AppUiTest.window.label(PanelAddressBar.ADVANCED_BUTTON).click();
+        AppUiTest.window.label(PanelAddressBar.NAME_ADVANCED_BUTTON).click();
     }
 
     private static void verifyMockAdminPage() throws IOException {

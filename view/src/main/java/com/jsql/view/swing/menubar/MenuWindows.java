@@ -41,6 +41,7 @@ public class MenuWindows extends JMenu {
     public static final String MENU_WINDOWS = "menuWindows";
     public static final String MENU_TRANSLATION = "menuTranslation";
     public static final String ITEM_RUSSIAN = "itemRussian";
+    public static final String ITEM_ARABIC = "itemArabic";
     public static final String ITEM_ENGLISH = "itemEnglish";
 
     private final AppMenubar appMenubar;
@@ -253,7 +254,6 @@ public class MenuWindows extends JMenu {
 
             // Apply the custom header to the tab
             MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelPreferences), header);
-
             MediatorHelper.tabResults().updateUI();  // required: light, open/close prefs, dark => light artifacts
         });
 
@@ -301,7 +301,10 @@ public class MenuWindows extends JMenu {
         .forEach(modelItem -> modelItem.getMenuItem().setName(MenuWindows.ITEM_RUSSIAN));
         AppMenubar.ITEMS_TRANSLATE.stream()
         .filter(model -> model.getLanguage() == Language.AR)
-        .forEach(modelItem -> modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
+        .forEach(modelItem -> {
+            modelItem.getMenuItem().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+            modelItem.getMenuItem().setName(MenuWindows.ITEM_ARABIC);
+        });
 
         return menuTranslation;
     }
