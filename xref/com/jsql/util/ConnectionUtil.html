@@ -300,30 +300,22 @@
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>     <strong class="jxr_keyword">public</strong> <a name="AbstractMethodInjection" href="../../../com/jsql/model/injection/method/AbstractMethodInjection.html#AbstractMethodInjection">AbstractMethodInjection</a> getMethodInjection() {
 <a class="jxr_linenumber" name="L293" href="#L293">293</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.methodInjection;
 <a class="jxr_linenumber" name="L294" href="#L294">294</a>     }
-<a class="jxr_linenumber" name="L295" href="#L295">295</a> 
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setMethodInjection(<a name="AbstractMethodInjection" href="../../../com/jsql/model/injection/method/AbstractMethodInjection.html#AbstractMethodInjection">AbstractMethodInjection</a> methodInjection) {
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>         <strong class="jxr_keyword">this</strong>.methodInjection = methodInjection;
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>     
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>     <strong class="jxr_keyword">public</strong> String getTypeRequest() {
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.typeRequest;
 <a class="jxr_linenumber" name="L298" href="#L298">298</a>     }
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>     
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>     <strong class="jxr_keyword">public</strong> String getTypeRequest() {
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.typeRequest;
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>     }
-<a class="jxr_linenumber" name="L303" href="#L303">303</a> 
-<a class="jxr_linenumber" name="L304" href="#L304">304</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setTypeRequest(String typeRequest) {
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>         <strong class="jxr_keyword">this</strong>.typeRequest = typeRequest;
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>     }
-<a class="jxr_linenumber" name="L307" href="#L307">307</a> 
-<a class="jxr_linenumber" name="L308" href="#L308">308</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L309" href="#L309">309</a> <em class="jxr_javadoccomment">     * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.</em>
-<a class="jxr_linenumber" name="L310" href="#L310">310</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L311" href="#L311">311</a>     <strong class="jxr_keyword">public</strong> Integer getTimeout() {
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().countConnectionTimeout();
-<a class="jxr_linenumber" name="L313" href="#L313">313</a>     }
-<a class="jxr_linenumber" name="L314" href="#L314">314</a> 
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>     <strong class="jxr_keyword">public</strong> CookieManager getCookieManager() {
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.cookieManager;
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>     }
-<a class="jxr_linenumber" name="L318" href="#L318">318</a> }
+<a class="jxr_linenumber" name="L299" href="#L299">299</a> 
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L301" href="#L301">301</a> <em class="jxr_javadoccomment">     * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.</em>
+<a class="jxr_linenumber" name="L302" href="#L302">302</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>     <strong class="jxr_keyword">public</strong> Integer getTimeout() {
+<a class="jxr_linenumber" name="L304" href="#L304">304</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().preferencesUtil().countConnectionTimeout();
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>     }
+<a class="jxr_linenumber" name="L306" href="#L306">306</a> 
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>     <strong class="jxr_keyword">public</strong> CookieManager getCookieManager() {
+<a class="jxr_linenumber" name="L308" href="#L308">308</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.cookieManager;
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>     }
+<a class="jxr_linenumber" name="L310" href="#L310">310</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

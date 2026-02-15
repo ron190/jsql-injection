@@ -33,42 +33,42 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsNotInjectingMetadata = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable search of database name, version and user metadata"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isNotInjectingMetadata());
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsParsingForm = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Get HTML tags &lt;input/&gt; and add parameters to URL and Request"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isParsingForm());
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>      
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject every parameters (ignore user's selection)"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllParam());
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllURLParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject every URL parameters when URL method is selected"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllURLParam());
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllRequestParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject every Request parameters when Request method is selected"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllRequestParam());
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllHeaderParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject every Header parameters when Header method is selected"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllHeaderParam());
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllBase64Param = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject Base64 parameters"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllBase64Param());
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllJSONParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject every JSON parameters"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllJsonParam());
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllCookieParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject every cookie parameters"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllCookieParam());
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllSOAPParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject SOAP parameters in Request body"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllSoapParam());
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsLimitingUnionIndex = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Limit Union strategy:"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isLimitingUnionIndex());
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JSpinner spinnerUnionIndexCount = <strong class="jxr_keyword">new</strong> JSpinner();
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsLimitingSleepTimeStrategy = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Delay Time strategy:"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isLimitingSleepTimeStrategy());
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JSpinner spinnerSleepTimeStrategyCount = <strong class="jxr_keyword">new</strong> JSpinner();
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsPerfIndexDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable calibration (smaller SQL query during Union index selection only)"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isPerfIndexDisabled());
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsDefaultStrategy = <strong class="jxr_keyword">new</strong> JRadioButton(<span class="jxr_string">"Use Default mode (keep unchanged ; URL and processing unchanged)"</span>, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsZipStrategy = <strong class="jxr_keyword">new</strong> JRadioButton(<span class="jxr_string">"Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isZipStrategy());
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsDiosStrategy = <strong class="jxr_keyword">new</strong> JRadioButton(<span class="jxr_string">"Use Dios mode (less queries ; do not use with Error strategies)"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isDiosStrategy());
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsUrlEncodingDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable URL encoding (smaller URL)"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlEncodingDisabled());
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsUrlRandomSuffixDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable URL random suffix (strategy Time special use case)"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlRandomSuffixDisabled());
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JTextField textfieldDnsDomain = <strong class="jxr_keyword">new</strong> <a name="JPopupTextField" href="../../../../../../com/jsql/view/swing/text/JPopupTextField.html#JPopupTextField">JPopupTextField</a>(<span class="jxr_string">"e.g custom-domain.com"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().getDnsDomain()).getProxy();
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JTextField textfieldDnsPort = <strong class="jxr_keyword">new</strong> <a name="JPopupTextField" href="../../../../../../com/jsql/view/swing/text/JPopupTextField.html#JPopupTextField">JPopupTextField</a>(<span class="jxr_string">"e.g 53"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().getDnsPort()).getProxy();
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">public</strong> <a name="PanelInjection" href="../../../../../../com/jsql/view/swing/panel/preferences/PanelInjection.html#PanelInjection">PanelInjection</a>(<a name="PanelPreferences" href="../../../../../../com/jsql/view/swing/panel/PanelPreferences.html#PanelPreferences">PanelPreferences</a> panelPreferences) {
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">this</strong>.checkboxIsNotInjectingMetadata.setName(<span class="jxr_string">"checkboxIsNotInjectingMetadata"</span>);
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">this</strong>.checkboxIsNotSearchingCharInsertion.setName(<span class="jxr_string">"checkboxIsNotSearchingCharInsertion"</span>);
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">this</strong>.checkboxIsNotShowingVulnReport.setName(<span class="jxr_string">"checkboxIsNotShowingVulnReport"</span>);
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">this</strong>.checkboxIsParsingForm.setName(PanelInjection.CHECKBOX_IS_PARSING_FORM);
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject all params and ignore user's selection"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllParam());
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllURLParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject all URL params when URL method is selected"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllURLParam());
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllRequestParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject all Request params when Request method is selected"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllRequestParam());
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllHeaderParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject all Header params when Header method is selected"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllHeaderParam());
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllJSONParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject all JSON params"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllJsonParam());
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllCookieParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject all Cookie params in Request body"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllCookieParam());
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsCheckingAllSoapParam = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Inject all SOAP params in Request body"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllSoapParam());
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsLimitingUnionIndex = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Limit Union strategy:"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isLimitingUnionIndex());
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JSpinner spinnerUnionIndexCount = <strong class="jxr_keyword">new</strong> JSpinner();
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsLimitingSleepTimeStrategy = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Delay Time strategy:"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isLimitingSleepTimeStrategy());
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JSpinner spinnerSleepTimeStrategyCount = <strong class="jxr_keyword">new</strong> JSpinner();
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsPerfIndexDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable calibration (smaller SQL query during Union index selection only)"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isPerfIndexDisabled());
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsDefaultStrategy = <strong class="jxr_keyword">new</strong> JRadioButton(<span class="jxr_string">"Use Default mode (keep unchanged ; URL and processing unchanged)"</span>, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsZipStrategy = <strong class="jxr_keyword">new</strong> JRadioButton(<span class="jxr_string">"Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isZipStrategy());
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JRadioButton radioIsDiosStrategy = <strong class="jxr_keyword">new</strong> JRadioButton(<span class="jxr_string">"Use Dios mode (less queries ; do not use with Error strategies)"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isDiosStrategy());
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsUrlEncodingDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable URL encoding (smaller URL)"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlEncodingDisabled());
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JCheckBox checkboxIsUrlRandomSuffixDisabled = <strong class="jxr_keyword">new</strong> JCheckBox(<span class="jxr_string">"Disable URL random suffix"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlRandomSuffixDisabled());
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JTextField textfieldDnsDomain = <strong class="jxr_keyword">new</strong> <a name="JPopupTextField" href="../../../../../../com/jsql/view/swing/text/JPopupTextField.html#JPopupTextField">JPopupTextField</a>(<span class="jxr_string">"e.g custom-domain.com"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().getDnsDomain()).getProxy();
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JTextField textfieldDnsPort = <strong class="jxr_keyword">new</strong> <a name="JPopupTextField" href="../../../../../../com/jsql/view/swing/text/JPopupTextField.html#JPopupTextField">JPopupTextField</a>(<span class="jxr_string">"e.g 53"</span>, MediatorHelper.model().getMediatorUtils().preferencesUtil().getDnsPort()).getProxy();
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">public</strong> <a name="PanelInjection" href="../../../../../../com/jsql/view/swing/panel/preferences/PanelInjection.html#PanelInjection">PanelInjection</a>(<a name="PanelPreferences" href="../../../../../../com/jsql/view/swing/panel/PanelPreferences.html#PanelPreferences">PanelPreferences</a> panelPreferences) {
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">this</strong>.checkboxIsNotInjectingMetadata.setName(<span class="jxr_string">"checkboxIsNotInjectingMetadata"</span>);
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">this</strong>.checkboxIsNotSearchingCharInsertion.setName(<span class="jxr_string">"checkboxIsNotSearchingCharInsertion"</span>);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">this</strong>.checkboxIsNotShowingVulnReport.setName(<span class="jxr_string">"checkboxIsNotShowingVulnReport"</span>);
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">this</strong>.checkboxIsParsingForm.setName(PanelInjection.CHECKBOX_IS_PARSING_FORM);
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllURLParam.setName(<span class="jxr_string">"checkboxIsCheckingAllURLParam"</span>);
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllRequestParam.setName(<span class="jxr_string">"checkboxIsCheckingAllRequestParam"</span>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllHeaderParam.setName(<span class="jxr_string">"checkboxIsCheckingAllHeaderParam"</span>);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllJSONParam.setName(<span class="jxr_string">"checkboxIsCheckingAllJSONParam"</span>);
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllBase64Param.setName(<span class="jxr_string">"checkboxIsCheckingAllBase64Param"</span>);
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllCookieParam.setName(<span class="jxr_string">"checkboxIsCheckingAllCookieParam"</span>);
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllSOAPParam.setName(<span class="jxr_string">"checkboxIsCheckingAllSOAPParam"</span>);
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllCookieParam.setName(<span class="jxr_string">"checkboxIsCheckingAllCookieParam"</span>);
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllSoapParam.setName(<span class="jxr_string">"checkboxIsCheckingAllSOAPParam"</span>);
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">this</strong>.checkboxIsPerfIndexDisabled.setName(<span class="jxr_string">"checkboxIsPerfIndexDisabled"</span>);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">this</strong>.radioIsZipStrategy.setName(PanelInjection.RADIO_IS_ZIP_STRATEGY);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">this</strong>.radioIsDefaultStrategy.setName(PanelInjection.RADIO_IS_DEFAULT_STRATEGY);
@@ -181,91 +181,91 @@
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>             <strong class="jxr_keyword">this</strong>.checkboxIsNotSearchingCharInsertion,
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>             <strong class="jxr_keyword">this</strong>.checkboxIsNotShowingVulnReport,
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>             <strong class="jxr_keyword">this</strong>.checkboxIsParsingForm,
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllURLParam,
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllRequestParam,
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllHeaderParam,
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllJSONParam,
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllBase64Param,
+<a class="jxr_linenumber" name="L176" href="#L176">176</a> 
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllURLParam,
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllRequestParam,
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllHeaderParam,
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllJSONParam,
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllCookieParam,
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllSOAPParam,
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>             <strong class="jxr_keyword">this</strong>.checkboxIsPerfIndexDisabled,
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>             <strong class="jxr_keyword">this</strong>.radioIsZipStrategy,
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>             <strong class="jxr_keyword">this</strong>.radioIsDiosStrategy,
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>             <strong class="jxr_keyword">this</strong>.radioIsDefaultStrategy,
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>             <strong class="jxr_keyword">this</strong>.checkboxIsUrlEncodingDisabled,
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>             <strong class="jxr_keyword">this</strong>.checkboxIsUrlRandomSuffixDisabled,
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>             <strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex,
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>             <strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         )
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>         .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));
-<a class="jxr_linenumber" name="L193" href="#L193">193</a> 
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         <strong class="jxr_keyword">var</strong> panelDnsDomain = <strong class="jxr_keyword">new</strong> JPanel();
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         panelDnsDomain.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelDnsDomain, BoxLayout.X_AXIS));
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>         panelDnsDomain.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"Domain name "</span>));
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>         panelDnsDomain.add(<strong class="jxr_keyword">this</strong>.textfieldDnsDomain);
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         panelDnsDomain.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">" ; default custom-domain.com"</span>));
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>         panelDnsDomain.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(400, <strong class="jxr_keyword">this</strong>.textfieldDnsDomain.getPreferredSize().height));
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         <strong class="jxr_keyword">var</strong> panelDnsPort = <strong class="jxr_keyword">new</strong> JPanel();
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         panelDnsPort.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelDnsPort, BoxLayout.X_AXIS));
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>         panelDnsPort.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"DNS port "</span>));
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>         panelDnsPort.add(<strong class="jxr_keyword">this</strong>.textfieldDnsPort);
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>         panelDnsPort.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">" ; default 53"</span>));
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>         panelDnsPort.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(125, <strong class="jxr_keyword">this</strong>.textfieldDnsPort.getPreferredSize().height));
-<a class="jxr_linenumber" name="L206" href="#L206">206</a> 
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>         DocumentListener documentListenerSave = <strong class="jxr_keyword">new</strong> <a name="DocumentListenerEditing" href="../../../../../../com/jsql/view/swing/text/listener/DocumentListenerEditing.html#DocumentListenerEditing">DocumentListenerEditing</a>() {
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>             @Override
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> process() {
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>                 panelPreferences.getActionListenerSave().actionPerformed(<strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>             }
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>         };
-<a class="jxr_linenumber" name="L213" href="#L213">213</a> 
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>         Stream.of(<strong class="jxr_keyword">this</strong>.textfieldDnsDomain, <strong class="jxr_keyword">this</strong>.textfieldDnsPort).forEach(
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>             textField -&gt; textField.getDocument().addDocumentListener(documentListenerSave)
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>         );
-<a class="jxr_linenumber" name="L217" href="#L217">217</a> 
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>         <strong class="jxr_keyword">this</strong>.textfieldDnsDomain.setToolTipText(
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>             <span class="jxr_string">"&lt;html&gt;"</span>
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>             + <span class="jxr_string">"&lt;b&gt;This domain must redirect to your IP address that runs jSQL&lt;/b&gt;&lt;br&gt;"</span>
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>             + <span class="jxr_string">"You can run DNS exfiltration on a local database, replace your ISP box address&lt;br&gt;"</span>
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>             + <span class="jxr_string">"by your system address in your OS preferred DNS.&lt;br&gt;"</span>
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>             + <span class="jxr_string">"&lt;/html&gt;"</span>
-<a class="jxr_linenumber" name="L224" href="#L224">224</a>         );
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>         <strong class="jxr_keyword">this</strong>.textfieldDnsPort.setToolTipText(<span class="jxr_string">"The DNS server port started by jSQL"</span>);
-<a class="jxr_linenumber" name="L226" href="#L226">226</a> 
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>         <strong class="jxr_keyword">var</strong> groupSpaceToComment = <strong class="jxr_keyword">new</strong> ButtonGroup();
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>         groupSpaceToComment.add(<strong class="jxr_keyword">this</strong>.radioIsZipStrategy);
-<a class="jxr_linenumber" name="L229" href="#L229">229</a>         groupSpaceToComment.add(<strong class="jxr_keyword">this</strong>.radioIsDiosStrategy);
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>         groupSpaceToComment.add(<strong class="jxr_keyword">this</strong>.radioIsDefaultStrategy);
-<a class="jxr_linenumber" name="L231" href="#L231">231</a> 
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>         <strong class="jxr_keyword">var</strong> groupLayout = <strong class="jxr_keyword">new</strong> GroupLayout(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>         <strong class="jxr_keyword">this</strong>.setLayout(groupLayout);
-<a class="jxr_linenumber" name="L234" href="#L234">234</a> 
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>         groupLayout.setHorizontalGroup(
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>             groupLayout
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>             .createSequentialGroup()
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>             .addGroup(
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>                 groupLayout
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>                 .createParallelGroup(GroupLayout.Alignment.LEADING, false)
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>                 .addComponent(labelGeneralInjection)
-<a class="jxr_linenumber" name="L242" href="#L242">242</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsParsingForm)
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsNotInjectingMetadata)
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsNotSearchingCharInsertion)
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsNotShowingVulnReport)
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex)
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>                 .addComponent(panelIsLimitingUnionIndex)
-<a class="jxr_linenumber" name="L248" href="#L248">248</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy)
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>                 .addComponent(panelSleepTimeStrategy)
-<a class="jxr_linenumber" name="L250" href="#L250">250</a> 
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>                 .addComponent(labelParamsInjection)
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllParam)
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllURLParam)
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllRequestParam)
-<a class="jxr_linenumber" name="L255" href="#L255">255</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllHeaderParam)
-<a class="jxr_linenumber" name="L256" href="#L256">256</a> 
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>                 .addComponent(labelSpecial)
-<a class="jxr_linenumber" name="L258" href="#L258">258</a> <em class="jxr_comment">//                .addComponent(this.checkboxIsCheckingAllBase64Param)</em>
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>             <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllSoapParam,
+<a class="jxr_linenumber" name="L183" href="#L183">183</a> 
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>             <strong class="jxr_keyword">this</strong>.checkboxIsPerfIndexDisabled,
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>             <strong class="jxr_keyword">this</strong>.radioIsZipStrategy,
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>             <strong class="jxr_keyword">this</strong>.radioIsDiosStrategy,
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>             <strong class="jxr_keyword">this</strong>.radioIsDefaultStrategy,
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>             <strong class="jxr_keyword">this</strong>.checkboxIsUrlEncodingDisabled,
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>             <strong class="jxr_keyword">this</strong>.checkboxIsUrlRandomSuffixDisabled,
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>             <strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex,
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>             <strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>         )
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));
+<a class="jxr_linenumber" name="L194" href="#L194">194</a> 
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>         <strong class="jxr_keyword">var</strong> panelDnsDomain = <strong class="jxr_keyword">new</strong> JPanel();
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>         panelDnsDomain.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelDnsDomain, BoxLayout.X_AXIS));
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         panelDnsDomain.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"Domain name "</span>));
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         panelDnsDomain.add(<strong class="jxr_keyword">this</strong>.textfieldDnsDomain);
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>         panelDnsDomain.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">" ; default custom-domain.com"</span>));
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>         panelDnsDomain.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(400, <strong class="jxr_keyword">this</strong>.textfieldDnsDomain.getPreferredSize().height));
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">var</strong> panelDnsPort = <strong class="jxr_keyword">new</strong> JPanel();
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         panelDnsPort.setLayout(<strong class="jxr_keyword">new</strong> BoxLayout(panelDnsPort, BoxLayout.X_AXIS));
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>         panelDnsPort.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">"DNS port "</span>));
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>         panelDnsPort.add(<strong class="jxr_keyword">this</strong>.textfieldDnsPort);
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>         panelDnsPort.add(<strong class="jxr_keyword">new</strong> JLabel(<span class="jxr_string">" ; default 53"</span>));
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>         panelDnsPort.setMaximumSize(<strong class="jxr_keyword">new</strong> Dimension(125, <strong class="jxr_keyword">this</strong>.textfieldDnsPort.getPreferredSize().height));
+<a class="jxr_linenumber" name="L207" href="#L207">207</a> 
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>         DocumentListener documentListenerSave = <strong class="jxr_keyword">new</strong> <a name="DocumentListenerEditing" href="../../../../../../com/jsql/view/swing/text/listener/DocumentListenerEditing.html#DocumentListenerEditing">DocumentListenerEditing</a>() {
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>             @Override
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> process() {
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>                 panelPreferences.getActionListenerSave().actionPerformed(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>             }
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>         };
+<a class="jxr_linenumber" name="L214" href="#L214">214</a> 
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>         Stream.of(<strong class="jxr_keyword">this</strong>.textfieldDnsDomain, <strong class="jxr_keyword">this</strong>.textfieldDnsPort).forEach(
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>             textField -&gt; textField.getDocument().addDocumentListener(documentListenerSave)
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>         );
+<a class="jxr_linenumber" name="L218" href="#L218">218</a> 
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>         <strong class="jxr_keyword">this</strong>.textfieldDnsDomain.setToolTipText(
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>             <span class="jxr_string">"&lt;html&gt;"</span>
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>             + <span class="jxr_string">"&lt;b&gt;This domain must redirect to your IP address that runs jSQL&lt;/b&gt;&lt;br&gt;"</span>
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>             + <span class="jxr_string">"You can run DNS exfiltration on a local database, replace your ISP box address&lt;br&gt;"</span>
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>             + <span class="jxr_string">"by your system address in your OS preferred DNS.&lt;br&gt;"</span>
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>             + <span class="jxr_string">"&lt;/html&gt;"</span>
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>         );
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>         <strong class="jxr_keyword">this</strong>.textfieldDnsPort.setToolTipText(<span class="jxr_string">"The DNS server port started by jSQL"</span>);
+<a class="jxr_linenumber" name="L227" href="#L227">227</a> 
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>         <strong class="jxr_keyword">var</strong> groupSpaceToComment = <strong class="jxr_keyword">new</strong> ButtonGroup();
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>         groupSpaceToComment.add(<strong class="jxr_keyword">this</strong>.radioIsZipStrategy);
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>         groupSpaceToComment.add(<strong class="jxr_keyword">this</strong>.radioIsDiosStrategy);
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>         groupSpaceToComment.add(<strong class="jxr_keyword">this</strong>.radioIsDefaultStrategy);
+<a class="jxr_linenumber" name="L232" href="#L232">232</a> 
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>         <strong class="jxr_keyword">var</strong> groupLayout = <strong class="jxr_keyword">new</strong> GroupLayout(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>         <strong class="jxr_keyword">this</strong>.setLayout(groupLayout);
+<a class="jxr_linenumber" name="L235" href="#L235">235</a> 
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>         groupLayout.setHorizontalGroup(
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>             groupLayout
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>             .createSequentialGroup()
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>             .addGroup(
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>                 groupLayout
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>                 .createParallelGroup(GroupLayout.Alignment.LEADING, false)
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>                 .addComponent(labelGeneralInjection)
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsParsingForm)
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsNotInjectingMetadata)
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsNotSearchingCharInsertion)
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsNotShowingVulnReport)
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex)
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>                 .addComponent(panelIsLimitingUnionIndex)
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy)
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>                 .addComponent(panelSleepTimeStrategy)
+<a class="jxr_linenumber" name="L251" href="#L251">251</a> 
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>                 .addComponent(labelParamsInjection)
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllParam)
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllURLParam)
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllRequestParam)
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllHeaderParam)
+<a class="jxr_linenumber" name="L257" href="#L257">257</a> 
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>                 .addComponent(labelSpecial)
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllJSONParam)
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllSOAPParam)
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllSoapParam)
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllCookieParam)
 <a class="jxr_linenumber" name="L262" href="#L262">262</a> 
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>                 .addComponent(labelQuerySize)
@@ -362,179 +362,170 @@
 <a class="jxr_linenumber" name="L354" href="#L354">354</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
 <a class="jxr_linenumber" name="L355" href="#L355">355</a>                 .addComponent(labelSpecial)
 <a class="jxr_linenumber" name="L356" href="#L356">356</a>             )
-<a class="jxr_linenumber" name="L357" href="#L357">357</a> <em class="jxr_comment">//            .addGroup(</em>
-<a class="jxr_linenumber" name="L358" href="#L358">358</a> <em class="jxr_comment">//                groupLayout</em>
-<a class="jxr_linenumber" name="L359" href="#L359">359</a> <em class="jxr_comment">//                .createParallelGroup(GroupLayout.Alignment.BASELINE)</em>
-<a class="jxr_linenumber" name="L360" href="#L360">360</a> <em class="jxr_comment">//                .addComponent(this.checkboxIsCheckingAllBase64Param)</em>
-<a class="jxr_linenumber" name="L361" href="#L361">361</a> <em class="jxr_comment">//            )</em>
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>             .addGroup(
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>                 groupLayout
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllJSONParam)
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>             )
 <a class="jxr_linenumber" name="L362" href="#L362">362</a>             .addGroup(
 <a class="jxr_linenumber" name="L363" href="#L363">363</a>                 groupLayout
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllJSONParam)
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllSoapParam)
 <a class="jxr_linenumber" name="L366" href="#L366">366</a>             )
 <a class="jxr_linenumber" name="L367" href="#L367">367</a>             .addGroup(
 <a class="jxr_linenumber" name="L368" href="#L368">368</a>                 groupLayout
 <a class="jxr_linenumber" name="L369" href="#L369">369</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllSOAPParam)
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllCookieParam)
 <a class="jxr_linenumber" name="L371" href="#L371">371</a>             )
-<a class="jxr_linenumber" name="L372" href="#L372">372</a>             .addGroup(
-<a class="jxr_linenumber" name="L373" href="#L373">373</a>                 groupLayout
-<a class="jxr_linenumber" name="L374" href="#L374">374</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L375" href="#L375">375</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllCookieParam)
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>             )
-<a class="jxr_linenumber" name="L377" href="#L377">377</a> 
+<a class="jxr_linenumber" name="L372" href="#L372">372</a> 
+<a class="jxr_linenumber" name="L373" href="#L373">373</a>             .addGroup(
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>                 groupLayout
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>                 .addComponent(labelQuerySize)
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>             )
 <a class="jxr_linenumber" name="L378" href="#L378">378</a>             .addGroup(
 <a class="jxr_linenumber" name="L379" href="#L379">379</a>                 groupLayout
 <a class="jxr_linenumber" name="L380" href="#L380">380</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L381" href="#L381">381</a>                 .addComponent(labelQuerySize)
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.radioIsDefaultStrategy)
 <a class="jxr_linenumber" name="L382" href="#L382">382</a>             )
 <a class="jxr_linenumber" name="L383" href="#L383">383</a>             .addGroup(
 <a class="jxr_linenumber" name="L384" href="#L384">384</a>                 groupLayout
 <a class="jxr_linenumber" name="L385" href="#L385">385</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.radioIsDefaultStrategy)
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.radioIsDiosStrategy)
 <a class="jxr_linenumber" name="L387" href="#L387">387</a>             )
 <a class="jxr_linenumber" name="L388" href="#L388">388</a>             .addGroup(
 <a class="jxr_linenumber" name="L389" href="#L389">389</a>                 groupLayout
 <a class="jxr_linenumber" name="L390" href="#L390">390</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.radioIsDiosStrategy)
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.radioIsZipStrategy)
 <a class="jxr_linenumber" name="L392" href="#L392">392</a>             )
 <a class="jxr_linenumber" name="L393" href="#L393">393</a>             .addGroup(
 <a class="jxr_linenumber" name="L394" href="#L394">394</a>                 groupLayout
 <a class="jxr_linenumber" name="L395" href="#L395">395</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.radioIsZipStrategy)
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsPerfIndexDisabled)
 <a class="jxr_linenumber" name="L397" href="#L397">397</a>             )
 <a class="jxr_linenumber" name="L398" href="#L398">398</a>             .addGroup(
 <a class="jxr_linenumber" name="L399" href="#L399">399</a>                 groupLayout
 <a class="jxr_linenumber" name="L400" href="#L400">400</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsPerfIndexDisabled)
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsUrlEncodingDisabled)
 <a class="jxr_linenumber" name="L402" href="#L402">402</a>             )
 <a class="jxr_linenumber" name="L403" href="#L403">403</a>             .addGroup(
 <a class="jxr_linenumber" name="L404" href="#L404">404</a>                 groupLayout
 <a class="jxr_linenumber" name="L405" href="#L405">405</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsUrlEncodingDisabled)
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsUrlRandomSuffixDisabled)
 <a class="jxr_linenumber" name="L407" href="#L407">407</a>             )
 <a class="jxr_linenumber" name="L408" href="#L408">408</a>             .addGroup(
 <a class="jxr_linenumber" name="L409" href="#L409">409</a>                 groupLayout
 <a class="jxr_linenumber" name="L410" href="#L410">410</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>                 .addComponent(<strong class="jxr_keyword">this</strong>.checkboxIsUrlRandomSuffixDisabled)
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>                 .addComponent(labelDns)
 <a class="jxr_linenumber" name="L412" href="#L412">412</a>             )
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>             .addGroup(
 <a class="jxr_linenumber" name="L414" href="#L414">414</a>                 groupLayout
 <a class="jxr_linenumber" name="L415" href="#L415">415</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>                 .addComponent(labelDns)
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>                 .addComponent(panelDnsDomain)
 <a class="jxr_linenumber" name="L417" href="#L417">417</a>             )
 <a class="jxr_linenumber" name="L418" href="#L418">418</a>             .addGroup(
 <a class="jxr_linenumber" name="L419" href="#L419">419</a>                 groupLayout
 <a class="jxr_linenumber" name="L420" href="#L420">420</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>                 .addComponent(panelDnsDomain)
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>                 .addComponent(panelDnsPort)
 <a class="jxr_linenumber" name="L422" href="#L422">422</a>             )
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>             .addGroup(
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>                 groupLayout
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>                 .addComponent(panelDnsPort)
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>             )
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>         );
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>     }
-<a class="jxr_linenumber" name="L430" href="#L430">430</a> 
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>     
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>     <em class="jxr_comment">// Getter and setter</em>
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>     
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsNotInjectingMetadata() {
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsNotInjectingMetadata;
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>     }
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>     
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsNotSearchingCharInsertion() {
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsNotSearchingCharInsertion;
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>     }
-<a class="jxr_linenumber" name="L441" href="#L441">441</a> 
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsNotShowingVulnReport() {
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsNotShowingVulnReport;
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>     }
-<a class="jxr_linenumber" name="L445" href="#L445">445</a> 
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllParam() {
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllParam;
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>     }
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>     
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllURLParam() {
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllURLParam;
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>     }
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>     
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllRequestParam() {
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllRequestParam;
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>     }
-<a class="jxr_linenumber" name="L457" href="#L457">457</a>     
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllHeaderParam() {
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllHeaderParam;
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>     }
-<a class="jxr_linenumber" name="L461" href="#L461">461</a>     
-<a class="jxr_linenumber" name="L462" href="#L462">462</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllBase64Param() {
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllBase64Param;
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>     }
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>     
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllJsonParam() {
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllJSONParam;
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>     }
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>     
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllCookieParam() {
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllCookieParam;
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>     }
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>     
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllSoapParam() {
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllSOAPParam;
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>     }
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>     
-<a class="jxr_linenumber" name="L478" href="#L478">478</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsParsingForm() {
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsParsingForm;
-<a class="jxr_linenumber" name="L480" href="#L480">480</a>     }
-<a class="jxr_linenumber" name="L481" href="#L481">481</a> 
-<a class="jxr_linenumber" name="L482" href="#L482">482</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsPerfIndexDisabled() {
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsPerfIndexDisabled;
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>     }
-<a class="jxr_linenumber" name="L485" href="#L485">485</a> 
-<a class="jxr_linenumber" name="L486" href="#L486">486</a>     <strong class="jxr_keyword">public</strong> JRadioButton getRadioIsZipStrategy() {
-<a class="jxr_linenumber" name="L487" href="#L487">487</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.radioIsZipStrategy;
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>     }
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>     
-<a class="jxr_linenumber" name="L490" href="#L490">490</a>     <strong class="jxr_keyword">public</strong> JRadioButton getRadioIsDiosStrategy() {
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.radioIsDiosStrategy;
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>     }
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>     
-<a class="jxr_linenumber" name="L494" href="#L494">494</a>     <strong class="jxr_keyword">public</strong> JRadioButton getRadioIsDefaultStrategy() {
-<a class="jxr_linenumber" name="L495" href="#L495">495</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.radioIsDefaultStrategy;
-<a class="jxr_linenumber" name="L496" href="#L496">496</a>     }
-<a class="jxr_linenumber" name="L497" href="#L497">497</a>     
-<a class="jxr_linenumber" name="L498" href="#L498">498</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsUrlEncodingDisabled() {
-<a class="jxr_linenumber" name="L499" href="#L499">499</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsUrlEncodingDisabled;
-<a class="jxr_linenumber" name="L500" href="#L500">500</a>     }
-<a class="jxr_linenumber" name="L501" href="#L501">501</a>     
-<a class="jxr_linenumber" name="L502" href="#L502">502</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsUrlRandomSuffixDisabled() {
-<a class="jxr_linenumber" name="L503" href="#L503">503</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsUrlRandomSuffixDisabled;
-<a class="jxr_linenumber" name="L504" href="#L504">504</a>     }
-<a class="jxr_linenumber" name="L505" href="#L505">505</a> 
-<a class="jxr_linenumber" name="L506" href="#L506">506</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsLimitingUnionIndex() {
-<a class="jxr_linenumber" name="L507" href="#L507">507</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex;
-<a class="jxr_linenumber" name="L508" href="#L508">508</a>     }
-<a class="jxr_linenumber" name="L509" href="#L509">509</a>     
-<a class="jxr_linenumber" name="L510" href="#L510">510</a>     <strong class="jxr_keyword">public</strong> JSpinner getSpinnerUnionIndexCount() {
-<a class="jxr_linenumber" name="L511" href="#L511">511</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.spinnerUnionIndexCount;
-<a class="jxr_linenumber" name="L512" href="#L512">512</a>     }
-<a class="jxr_linenumber" name="L513" href="#L513">513</a>     
-<a class="jxr_linenumber" name="L514" href="#L514">514</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsLimitingSleepTimeStrategy() {
-<a class="jxr_linenumber" name="L515" href="#L515">515</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy;
-<a class="jxr_linenumber" name="L516" href="#L516">516</a>     }
-<a class="jxr_linenumber" name="L517" href="#L517">517</a>     
-<a class="jxr_linenumber" name="L518" href="#L518">518</a>     <strong class="jxr_keyword">public</strong> JSpinner getSpinnerSleepTimeStrategy() {
-<a class="jxr_linenumber" name="L519" href="#L519">519</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.spinnerSleepTimeStrategyCount;
-<a class="jxr_linenumber" name="L520" href="#L520">520</a>     }
-<a class="jxr_linenumber" name="L521" href="#L521">521</a> 
-<a class="jxr_linenumber" name="L522" href="#L522">522</a>     <strong class="jxr_keyword">public</strong> JTextField getTextfieldDnsDomain() {
-<a class="jxr_linenumber" name="L523" href="#L523">523</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.textfieldDnsDomain;
-<a class="jxr_linenumber" name="L524" href="#L524">524</a>     }
-<a class="jxr_linenumber" name="L525" href="#L525">525</a> 
-<a class="jxr_linenumber" name="L526" href="#L526">526</a>     <strong class="jxr_keyword">public</strong> JTextField getTextfieldDnsPort() {
-<a class="jxr_linenumber" name="L527" href="#L527">527</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.textfieldDnsPort;
-<a class="jxr_linenumber" name="L528" href="#L528">528</a>     }
-<a class="jxr_linenumber" name="L529" href="#L529">529</a> }
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>         );
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>     }
+<a class="jxr_linenumber" name="L425" href="#L425">425</a> 
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>     
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>     <em class="jxr_comment">// Getter and setter</em>
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>     
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsNotInjectingMetadata() {
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsNotInjectingMetadata;
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>     }
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>     
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsNotSearchingCharInsertion() {
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsNotSearchingCharInsertion;
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>     }
+<a class="jxr_linenumber" name="L436" href="#L436">436</a> 
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsNotShowingVulnReport() {
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsNotShowingVulnReport;
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>     }
+<a class="jxr_linenumber" name="L440" href="#L440">440</a> 
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllParam() {
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllParam;
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>     }
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>     
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllURLParam() {
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllURLParam;
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>     }
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>     
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllRequestParam() {
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllRequestParam;
+<a class="jxr_linenumber" name="L451" href="#L451">451</a>     }
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>     
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllHeaderParam() {
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllHeaderParam;
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>     }
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>     
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllJsonParam() {
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllJSONParam;
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>     }
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>     
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllCookieParam() {
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllCookieParam;
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>     }
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>     
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsCheckingAllSoapParam() {
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsCheckingAllSoapParam;
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>     }
+<a class="jxr_linenumber" name="L468" href="#L468">468</a>     
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsParsingForm() {
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsParsingForm;
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>     }
+<a class="jxr_linenumber" name="L472" href="#L472">472</a> 
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsPerfIndexDisabled() {
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsPerfIndexDisabled;
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>     }
+<a class="jxr_linenumber" name="L476" href="#L476">476</a> 
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>     <strong class="jxr_keyword">public</strong> JRadioButton getRadioIsZipStrategy() {
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.radioIsZipStrategy;
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>     }
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>     
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>     <strong class="jxr_keyword">public</strong> JRadioButton getRadioIsDiosStrategy() {
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.radioIsDiosStrategy;
+<a class="jxr_linenumber" name="L483" href="#L483">483</a>     }
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>     
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>     <strong class="jxr_keyword">public</strong> JRadioButton getRadioIsDefaultStrategy() {
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.radioIsDefaultStrategy;
+<a class="jxr_linenumber" name="L487" href="#L487">487</a>     }
+<a class="jxr_linenumber" name="L488" href="#L488">488</a>     
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsUrlEncodingDisabled() {
+<a class="jxr_linenumber" name="L490" href="#L490">490</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsUrlEncodingDisabled;
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>     }
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>     
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsUrlRandomSuffixDisabled() {
+<a class="jxr_linenumber" name="L494" href="#L494">494</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsUrlRandomSuffixDisabled;
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>     }
+<a class="jxr_linenumber" name="L496" href="#L496">496</a> 
+<a class="jxr_linenumber" name="L497" href="#L497">497</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsLimitingUnionIndex() {
+<a class="jxr_linenumber" name="L498" href="#L498">498</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsLimitingUnionIndex;
+<a class="jxr_linenumber" name="L499" href="#L499">499</a>     }
+<a class="jxr_linenumber" name="L500" href="#L500">500</a>     
+<a class="jxr_linenumber" name="L501" href="#L501">501</a>     <strong class="jxr_keyword">public</strong> JSpinner getSpinnerUnionIndexCount() {
+<a class="jxr_linenumber" name="L502" href="#L502">502</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.spinnerUnionIndexCount;
+<a class="jxr_linenumber" name="L503" href="#L503">503</a>     }
+<a class="jxr_linenumber" name="L504" href="#L504">504</a>     
+<a class="jxr_linenumber" name="L505" href="#L505">505</a>     <strong class="jxr_keyword">public</strong> JCheckBox getCheckboxIsLimitingSleepTimeStrategy() {
+<a class="jxr_linenumber" name="L506" href="#L506">506</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.checkboxIsLimitingSleepTimeStrategy;
+<a class="jxr_linenumber" name="L507" href="#L507">507</a>     }
+<a class="jxr_linenumber" name="L508" href="#L508">508</a>     
+<a class="jxr_linenumber" name="L509" href="#L509">509</a>     <strong class="jxr_keyword">public</strong> JSpinner getSpinnerSleepTimeStrategy() {
+<a class="jxr_linenumber" name="L510" href="#L510">510</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.spinnerSleepTimeStrategyCount;
+<a class="jxr_linenumber" name="L511" href="#L511">511</a>     }
+<a class="jxr_linenumber" name="L512" href="#L512">512</a> 
+<a class="jxr_linenumber" name="L513" href="#L513">513</a>     <strong class="jxr_keyword">public</strong> JTextField getTextfieldDnsDomain() {
+<a class="jxr_linenumber" name="L514" href="#L514">514</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.textfieldDnsDomain;
+<a class="jxr_linenumber" name="L515" href="#L515">515</a>     }
+<a class="jxr_linenumber" name="L516" href="#L516">516</a> 
+<a class="jxr_linenumber" name="L517" href="#L517">517</a>     <strong class="jxr_keyword">public</strong> JTextField getTextfieldDnsPort() {
+<a class="jxr_linenumber" name="L518" href="#L518">518</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.textfieldDnsPort;
+<a class="jxr_linenumber" name="L519" href="#L519">519</a>     }
+<a class="jxr_linenumber" name="L520" href="#L520">520</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

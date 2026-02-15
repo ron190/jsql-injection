@@ -56,7 +56,7 @@ public class CookiesUtil {
             try {
 <span class="fc" id="L57">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_DEFAULT,
-                    &quot;{} cookie {}={}&quot;,
+                    &quot;{} cookie [key:{}, value:{}]&quot;,
 <span class="fc" id="L60">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;),</span>
 <span class="fc" id="L61">                    cookie::getKey,</span>
 <span class="fc" id="L62">                    () -&gt; cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>

@@ -40,8 +40,8 @@ public class SoapUtil {
         }
 
 <span class="fc" id="L42">        if (</span>
-<span class="fc bfc" id="L43" title="All 2 branches covered.">            this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllSoapParam()</span>
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">            &amp;&amp; this.injectionModel.getMediatorUtils().parameterUtil().isRequestSoap()</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">            this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllSoapParam()</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">            &amp;&amp; this.injectionModel.getMediatorUtils().parameterUtil().isRequestSoap()</span>
         ) {
             try {
 <span class="fc" id="L47">                var doc = SoapUtil.convertToDocument(this.injectionModel.getMediatorUtils().parameterUtil().getRawRequest());</span>

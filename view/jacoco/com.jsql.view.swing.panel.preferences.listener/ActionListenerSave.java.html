@@ -49,88 +49,87 @@ public class ActionListenerSave implements ActionListener {
 <span class="fc" id="L49">        .withIsCheckingAllURLParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllURLParam().isSelected())</span>
 <span class="fc" id="L50">        .withIsCheckingAllRequestParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllRequestParam().isSelected())</span>
 <span class="fc" id="L51">        .withIsCheckingAllHeaderParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllHeaderParam().isSelected())</span>
-<span class="fc" id="L52">        .withIsCheckingAllBase64Param(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllBase64Param().isSelected())</span>
-<span class="fc" id="L53">        .withIsCheckingAllJsonParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllJsonParam().isSelected())</span>
-<span class="fc" id="L54">        .withIsCheckingAllSoapParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllSoapParam().isSelected())</span>
-<span class="fc" id="L55">        .withIsCheckingAllCookieParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllCookieParam().isSelected())</span>
-<span class="fc" id="L56">        .withIsDefaultStrategy(this.panelPreferences.getPanelInjection().getRadioIsDefaultStrategy().isSelected())</span>
-<span class="fc" id="L57">        .withIsZipStrategy(this.panelPreferences.getPanelInjection().getRadioIsZipStrategy().isSelected())</span>
-<span class="fc" id="L58">        .withIsDiosStrategy(this.panelPreferences.getPanelInjection().getRadioIsDiosStrategy().isSelected())</span>
-<span class="fc" id="L59">        .withIsUrlEncodingDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsUrlEncodingDisabled().isSelected())</span>
-<span class="fc" id="L60">        .withIsUrlRandomSuffixDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsUrlRandomSuffixDisabled().isSelected())</span>
-<span class="fc" id="L61">        .withIsPerfIndexDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsPerfIndexDisabled().isSelected())</span>
-<span class="fc" id="L62">        .withIsLimitingSleepTimeStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsLimitingSleepTimeStrategy().isSelected())</span>
-<span class="fc" id="L63">        .withCountSleepTimeStrategy((Integer) this.panelPreferences.getPanelInjection().getSpinnerSleepTimeStrategy().getValue())</span>
-<span class="fc" id="L64">        .withDnsDomain(this.panelPreferences.getPanelInjection().getTextfieldDnsDomain().getText())</span>
-<span class="fc" id="L65">        .withDnsPort(this.panelPreferences.getPanelInjection().getTextfieldDnsPort().getText())</span>
+<span class="fc" id="L52">        .withIsCheckingAllJsonParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllJsonParam().isSelected())</span>
+<span class="fc" id="L53">        .withIsCheckingAllSoapParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllSoapParam().isSelected())</span>
+<span class="fc" id="L54">        .withIsCheckingAllCookieParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllCookieParam().isSelected())</span>
+<span class="fc" id="L55">        .withIsDefaultStrategy(this.panelPreferences.getPanelInjection().getRadioIsDefaultStrategy().isSelected())</span>
+<span class="fc" id="L56">        .withIsZipStrategy(this.panelPreferences.getPanelInjection().getRadioIsZipStrategy().isSelected())</span>
+<span class="fc" id="L57">        .withIsDiosStrategy(this.panelPreferences.getPanelInjection().getRadioIsDiosStrategy().isSelected())</span>
+<span class="fc" id="L58">        .withIsUrlEncodingDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsUrlEncodingDisabled().isSelected())</span>
+<span class="fc" id="L59">        .withIsUrlRandomSuffixDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsUrlRandomSuffixDisabled().isSelected())</span>
+<span class="fc" id="L60">        .withIsPerfIndexDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsPerfIndexDisabled().isSelected())</span>
+<span class="fc" id="L61">        .withIsLimitingSleepTimeStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsLimitingSleepTimeStrategy().isSelected())</span>
+<span class="fc" id="L62">        .withCountSleepTimeStrategy((Integer) this.panelPreferences.getPanelInjection().getSpinnerSleepTimeStrategy().getValue())</span>
+<span class="fc" id="L63">        .withDnsDomain(this.panelPreferences.getPanelInjection().getTextfieldDnsDomain().getText())</span>
+<span class="fc" id="L64">        .withDnsPort(this.panelPreferences.getPanelInjection().getTextfieldDnsPort().getText())</span>
 
-<span class="fc" id="L67">        .withIsTamperingBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())</span>
-<span class="fc" id="L68">        .withIsTamperingEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())</span>
-<span class="fc" id="L69">        .withIsTamperingFunctionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingFunctionComment().isSelected())</span>
-<span class="fc" id="L70">        .withIsTamperingVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected())</span>
-<span class="fc" id="L71">        .withIsTamperingRandomCase(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingRandomCase().isSelected())</span>
-<span class="fc" id="L72">        .withIsTamperingEval(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected())</span>
-<span class="fc" id="L73">        .withIsTamperingSpaceToDashComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToDashComment().isSelected())</span>
-<span class="fc" id="L74">        .withIsTamperingSpaceToMultilineComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToMultilineComment().isSelected())</span>
-<span class="fc" id="L75">        .withIsTamperingSpaceToSharpComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected())</span>
+<span class="fc" id="L66">        .withIsTamperingBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())</span>
+<span class="fc" id="L67">        .withIsTamperingEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())</span>
+<span class="fc" id="L68">        .withIsTamperingFunctionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingFunctionComment().isSelected())</span>
+<span class="fc" id="L69">        .withIsTamperingVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected())</span>
+<span class="fc" id="L70">        .withIsTamperingRandomCase(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingRandomCase().isSelected())</span>
+<span class="fc" id="L71">        .withIsTamperingEval(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected())</span>
+<span class="fc" id="L72">        .withIsTamperingSpaceToDashComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToDashComment().isSelected())</span>
+<span class="fc" id="L73">        .withIsTamperingSpaceToMultilineComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToMultilineComment().isSelected())</span>
+<span class="fc" id="L74">        .withIsTamperingSpaceToSharpComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected())</span>
         
-<span class="fc" id="L77">        .withIsStrategyTimeDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyTimeDisabled().isSelected())</span>
-<span class="fc" id="L78">        .withIsStrategyBlindBitDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyBlindBitDisabled().isSelected())</span>
-<span class="fc" id="L79">        .withIsStrategyBlindBinDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyBlindBinDisabled().isSelected())</span>
-<span class="fc" id="L80">        .withIsStrategyMultibitDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyMultibitDisabled().isSelected())</span>
-<span class="fc" id="L81">        .withIsStrategyStackDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyStackDisabled().isSelected())</span>
-<span class="fc" id="L82">        .withIsStrategyDnsDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyDnsDisabled().isSelected())</span>
-<span class="fc" id="L83">        .withIsStrategyErrorDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyErrorDisabled().isSelected())</span>
-<span class="fc" id="L84">        .withIsStrategyUnionDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyUnionDisabled().isSelected())</span>
+<span class="fc" id="L76">        .withIsStrategyTimeDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyTimeDisabled().isSelected())</span>
+<span class="fc" id="L77">        .withIsStrategyBlindBitDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyBlindBitDisabled().isSelected())</span>
+<span class="fc" id="L78">        .withIsStrategyBlindBinDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyBlindBinDisabled().isSelected())</span>
+<span class="fc" id="L79">        .withIsStrategyMultibitDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyMultibitDisabled().isSelected())</span>
+<span class="fc" id="L80">        .withIsStrategyStackDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyStackDisabled().isSelected())</span>
+<span class="fc" id="L81">        .withIsStrategyDnsDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyDnsDisabled().isSelected())</span>
+<span class="fc" id="L82">        .withIsStrategyErrorDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyErrorDisabled().isSelected())</span>
+<span class="fc" id="L83">        .withIsStrategyUnionDisabled(this.panelPreferences.getPanelStrategies().getCheckboxIsStrategyUnionDisabled().isSelected())</span>
 
-<span class="fc" id="L86">        .withIsUserAgentRandom(this.panelPreferences.getPanelUserAgent().getCheckboxIsCustomUserAgent().isSelected())</span>
+<span class="fc" id="L85">        .withIsUserAgentRandom(this.panelPreferences.getPanelUserAgent().getCheckboxIsCustomUserAgent().isSelected())</span>
 
-<span class="fc" id="L88">        .persist();</span>
+<span class="fc" id="L87">        .persist();</span>
         
-<span class="fc" id="L90">        MediatorHelper.model().getMediatorUtils().proxyUtil().setPreferences(</span>
-<span class="fc" id="L91">            this.panelPreferences.getPanelProxy().getCheckboxIsUsingProxy().isSelected(),</span>
-<span class="fc" id="L92">            this.panelPreferences.getPanelProxy().getTextProxyAddress().getText(),</span>
-<span class="fc" id="L93">            this.panelPreferences.getPanelProxy().getTextProxyPort().getText(),</span>
-<span class="fc" id="L94">            this.panelPreferences.getPanelProxy().getCheckboxIsUsingProxyHttps().isSelected(),</span>
-<span class="fc" id="L95">            this.panelPreferences.getPanelProxy().getTextProxyAddressHttps().getText(),</span>
-<span class="fc" id="L96">            this.panelPreferences.getPanelProxy().getTextProxyPortHttps().getText()</span>
+<span class="fc" id="L89">        MediatorHelper.model().getMediatorUtils().proxyUtil().setPreferences(</span>
+<span class="fc" id="L90">            this.panelPreferences.getPanelProxy().getCheckboxIsUsingProxy().isSelected(),</span>
+<span class="fc" id="L91">            this.panelPreferences.getPanelProxy().getTextProxyAddress().getText(),</span>
+<span class="fc" id="L92">            this.panelPreferences.getPanelProxy().getTextProxyPort().getText(),</span>
+<span class="fc" id="L93">            this.panelPreferences.getPanelProxy().getCheckboxIsUsingProxyHttps().isSelected(),</span>
+<span class="fc" id="L94">            this.panelPreferences.getPanelProxy().getTextProxyAddressHttps().getText(),</span>
+<span class="fc" id="L95">            this.panelPreferences.getPanelProxy().getTextProxyPortHttps().getText()</span>
         );
         
-<span class="fc" id="L99">        MediatorHelper.model().getMediatorUtils().tamperingUtil()  // unused</span>
-<span class="fc" id="L100">        .withBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())</span>
-<span class="fc" id="L101">        .withEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())</span>
-<span class="fc" id="L102">        .withEval(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected())</span>
-<span class="fc" id="L103">        .withFunctionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingFunctionComment().isSelected())</span>
-<span class="fc" id="L104">        .withHexToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingHexToChar().isSelected())</span>
-<span class="fc" id="L105">        .withQuoteToUtf8(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingQuoteToUtf8().isSelected())</span>
-<span class="fc" id="L106">        .withCharToEncoding(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingCharToEncoding().isSelected())</span>
-<span class="fc" id="L107">        .withRandomCase(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingRandomCase().isSelected())</span>
-<span class="fc" id="L108">        .withSpaceToDashComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToDashComment().isSelected())</span>
-<span class="fc" id="L109">        .withSpaceToMultilineComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToMultilineComment().isSelected())</span>
-<span class="fc" id="L110">        .withSpaceToSharpComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected())</span>
-<span class="fc" id="L111">        .withStringToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingStringToChar().isSelected())</span>
-<span class="fc" id="L112">        .withVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected());</span>
+<span class="fc" id="L98">        MediatorHelper.model().getMediatorUtils().tamperingUtil()  // unused</span>
+<span class="fc" id="L99">        .withBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())</span>
+<span class="fc" id="L100">        .withEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())</span>
+<span class="fc" id="L101">        .withEval(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected())</span>
+<span class="fc" id="L102">        .withFunctionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingFunctionComment().isSelected())</span>
+<span class="fc" id="L103">        .withHexToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingHexToChar().isSelected())</span>
+<span class="fc" id="L104">        .withQuoteToUtf8(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingQuoteToUtf8().isSelected())</span>
+<span class="fc" id="L105">        .withCharToEncoding(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingCharToEncoding().isSelected())</span>
+<span class="fc" id="L106">        .withRandomCase(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingRandomCase().isSelected())</span>
+<span class="fc" id="L107">        .withSpaceToDashComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToDashComment().isSelected())</span>
+<span class="fc" id="L108">        .withSpaceToMultilineComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToMultilineComment().isSelected())</span>
+<span class="fc" id="L109">        .withSpaceToSharpComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected())</span>
+<span class="fc" id="L110">        .withStringToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingStringToChar().isSelected())</span>
+<span class="fc" id="L111">        .withVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected());</span>
         
-<span class="fc" id="L114">        boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().authenticationUtil().set(</span>
-<span class="fc" id="L115">            this.panelPreferences.getPanelAuthentication().getCheckboxUseDigestAuthentication().isSelected(),</span>
-<span class="fc" id="L116">            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationUsername().getText(),</span>
-<span class="fc" id="L117">            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationPassword().getText(),</span>
-<span class="fc" id="L118">            this.panelPreferences.getPanelAuthentication().getCheckboxUseKerberos().isSelected(),</span>
-<span class="fc" id="L119">            this.panelPreferences.getPanelAuthentication().getTextKerberosKrb5Conf().getText(),</span>
-<span class="fc" id="L120">            this.panelPreferences.getPanelAuthentication().getTextKerberosLoginConf().getText()</span>
+<span class="fc" id="L113">        boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().authenticationUtil().set(</span>
+<span class="fc" id="L114">            this.panelPreferences.getPanelAuthentication().getCheckboxUseDigestAuthentication().isSelected(),</span>
+<span class="fc" id="L115">            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationUsername().getText(),</span>
+<span class="fc" id="L116">            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationPassword().getText(),</span>
+<span class="fc" id="L117">            this.panelPreferences.getPanelAuthentication().getCheckboxUseKerberos().isSelected(),</span>
+<span class="fc" id="L118">            this.panelPreferences.getPanelAuthentication().getTextKerberosKrb5Conf().getText(),</span>
+<span class="fc" id="L119">            this.panelPreferences.getPanelAuthentication().getTextKerberosLoginConf().getText()</span>
         );
         
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (</span>
             isRestartRequired
-<span class="nc bnc" id="L125" title="All 2 branches missed.">            &amp;&amp; JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(</span>
-<span class="nc" id="L126">                MediatorHelper.frame(),</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            &amp;&amp; JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(</span>
+<span class="nc" id="L125">                MediatorHelper.frame(),</span>
                 &quot;File krb5.conf has changed, please restart.&quot;,
                 &quot;Restart&quot;,
                 JOptionPane.YES_NO_OPTION
             )
         ) {
-<span class="nc" id="L132">            new ActionNewWindow().actionPerformed(null);</span>
+<span class="nc" id="L131">            new ActionNewWindow().actionPerformed(null);</span>
         }
-<span class="fc" id="L134">    }</span>
+<span class="fc" id="L133">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

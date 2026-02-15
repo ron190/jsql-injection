@@ -5,6 +5,7 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,64 +15,71 @@ import java.awt.event.ActionListener;
 
 public class ActionStart implements ActionListener {
     
-<span class="fc" id="L17">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L18">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     protected final PanelAddressBar panelAddressBar;
     
-<span class="fc" id="L21">    public ActionStart(PanelAddressBar panelAddressBar) {</span>
-<span class="fc" id="L22">        this.panelAddressBar = panelAddressBar;</span>
-<span class="fc" id="L23">    }</span>
+<span class="fc" id="L22">    public ActionStart(PanelAddressBar panelAddressBar) {</span>
+<span class="fc" id="L23">        this.panelAddressBar = panelAddressBar;</span>
+<span class="fc" id="L24">    }</span>
 
     @Override
     public void actionPerformed(ActionEvent e) {
         // No injection running
-<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        if (this.panelAddressBar.getPanelTrailingAddress().getButtonStart().getState() == StateButton.STARTABLE) {</span>
-<span class="fc" id="L29">            this.startInjection();</span>
-<span class="nc bnc" id="L30" title="All 2 branches missed.">        } else if (this.panelAddressBar.getPanelTrailingAddress().getButtonStart().getState() == StateButton.STOPPABLE) {</span>
-<span class="nc" id="L31">            this.stopInjection();  // Injection currently running, stop the process</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if (this.panelAddressBar.getPanelTrailingAddress().getButtonStart().getState() == StateButton.STARTABLE) {</span>
+<span class="fc" id="L30">            this.startInjection();</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        } else if (this.panelAddressBar.getPanelTrailingAddress().getButtonStart().getState() == StateButton.STOPPABLE) {</span>
+<span class="nc" id="L32">            this.stopInjection();  // Injection currently running, stop the process</span>
         }
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L34">    }</span>
     
     protected void startInjection() {
-<span class="fc" id="L36">        int option = JOptionPane.OK_OPTION;</span>
-<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (MediatorHelper.model().shouldErasePreviousInjection()) {  // Ask the user confirmation if injection already built</span>
+<span class="fc" id="L37">        int option = JOptionPane.OK_OPTION;</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if (MediatorHelper.model().shouldErasePreviousInjection()) {  // Ask the user confirmation if injection already built</span>
             // Fix #93469: IllegalArgumentException on showConfirmDialog()
             // Fix #33930: ClassCastException on showConfirmDialog()
             // Implementation by sun.awt.image
             try {
-<span class="nc" id="L42">                option = JOptionPane.showConfirmDialog(</span>
-<span class="nc" id="L43">                    MediatorHelper.frame(),</span>
-<span class="nc" id="L44">                    I18nUtil.valueByKey(&quot;DIALOG_NEW_INJECTION_TEXT&quot;),</span>
-<span class="nc" id="L45">                    I18nUtil.valueByKey(&quot;DIALOG_NEW_INJECTION_TITLE&quot;),</span>
+<span class="nc" id="L43">                option = JOptionPane.showConfirmDialog(</span>
+<span class="nc" id="L44">                    MediatorHelper.frame(),</span>
+<span class="nc" id="L45">                    I18nUtil.valueByKey(&quot;DIALOG_NEW_INJECTION_TEXT&quot;),</span>
+<span class="nc" id="L46">                    I18nUtil.valueByKey(&quot;DIALOG_NEW_INJECTION_TITLE&quot;),</span>
                     JOptionPane.OK_CANCEL_OPTION
                 );
-<span class="nc" id="L48">            } catch (IllegalArgumentException | ClassCastException e) {</span>
-<span class="nc" id="L49">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L50">            }</span>
+<span class="nc" id="L49">            } catch (IllegalArgumentException | ClassCastException e) {</span>
+<span class="nc" id="L50">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L51">            }</span>
         }
 
-<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (option == JOptionPane.OK_OPTION) {  // Then start injection</span>
-<span class="fc" id="L54">            this.panelAddressBar.getPanelTrailingAddress().getButtonStart().setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_STOP_TOOLTIP&quot;));</span>
-<span class="fc" id="L55">            this.panelAddressBar.getPanelTrailingAddress().getButtonStart().setInjectionRunning();</span>
-<span class="fc" id="L56">            this.panelAddressBar.getPanelTrailingAddress().getLoader().setVisible(true);</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (option == JOptionPane.OK_OPTION) {  // Then start injection</span>
+<span class="fc" id="L55">            this.panelAddressBar.getPanelTrailingAddress().getButtonStart().setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_STOP_TOOLTIP&quot;));</span>
+<span class="fc" id="L56">            this.panelAddressBar.getPanelTrailingAddress().getButtonStart().setInjectionRunning();</span>
+<span class="fc" id="L57">            this.panelAddressBar.getPanelTrailingAddress().getLoader().setVisible(true);</span>
 
-<span class="fc" id="L58">            MediatorHelper.frame().resetInterface();  // Erase everything in the view from a previous injection</span>
-
-<span class="fc" id="L60">            MediatorHelper.model().getMediatorUtils().parameterUtil().controlInput(</span>
-<span class="fc" id="L61">                this.panelAddressBar.getTextFieldAddress().getText().trim(),</span>
-<span class="fc" id="L62">                this.panelAddressBar.getTextFieldRequest().getText().trim(),</span>
-<span class="fc" id="L63">                this.panelAddressBar.getTextFieldHeader().getText().trim(),</span>
-<span class="fc" id="L64">                this.panelAddressBar.getMethodInjection(),</span>
-<span class="fc" id="L65">                this.panelAddressBar.getTypeRequest(),</span>
+<span class="fc" id="L59">            MediatorHelper.frame().resetInterface();  // Erase everything in the view from a previous injection</span>
+<span class="fc" id="L60">            var selection = this.panelAddressBar.getPanelTrailingAddress().getGroupRadio().getSelection();</span>
+            String selectionCommand;
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">            if (selection != null) {  // effectively final</span>
+<span class="nc" id="L63">                selectionCommand = selection.getActionCommand();</span>
+            } else {
+<span class="fc" id="L65">                selectionCommand = StringUtils.EMPTY;</span>
+            }
+<span class="fc" id="L67">            MediatorHelper.model().getMediatorUtils().parameterUtil().controlInput(</span>
+                selectionCommand,
+<span class="fc" id="L69">                this.panelAddressBar.getTextFieldAddress().getText().trim(),</span>
+<span class="fc" id="L70">                this.panelAddressBar.getTextFieldRequest().getText().trim(),</span>
+<span class="fc" id="L71">                this.panelAddressBar.getTextFieldHeader().getText().trim(),</span>
+<span class="fc" id="L72">                this.panelAddressBar.getMethodInjection(),</span>
+<span class="fc" id="L73">                this.panelAddressBar.getTypeRequest(),</span>
                 false
             );
         }
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L77">    }</span>
     
     private void stopInjection() {
-<span class="nc" id="L72">        this.panelAddressBar.getPanelTrailingAddress().getLoader().setVisible(false);</span>
-<span class="nc" id="L73">        this.panelAddressBar.getPanelTrailingAddress().getButtonStart().setInjectionStopping();</span>
-<span class="nc" id="L74">        MediatorHelper.model().setIsStoppedByUser(true);</span>
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L80">        this.panelAddressBar.getPanelTrailingAddress().getLoader().setVisible(false);</span>
+<span class="nc" id="L81">        this.panelAddressBar.getPanelTrailingAddress().getButtonStart().setInjectionStopping();</span>
+<span class="nc" id="L82">        MediatorHelper.model().setIsStoppedByUser(true);</span>
+<span class="nc" id="L83">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

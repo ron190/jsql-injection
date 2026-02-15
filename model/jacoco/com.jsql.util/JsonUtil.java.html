@@ -118,11 +118,11 @@ public class JsonUtil {
             try {
 <span class="fc" id="L119">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_INFORM,
-                    &quot;{} JSON {}={} with {}&quot;,
+                    &quot;{} {} JSON [key:{}, value:{}]&quot;,
 <span class="fc" id="L122">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;),</span>
-<span class="fc" id="L123">                    parentXPath::getKey,</span>
-<span class="fc" id="L124">                    () -&gt; parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY),</span>
-<span class="fc" id="L125">                    methodInjection::name</span>
+<span class="fc" id="L123">                    methodInjection::name,</span>
+<span class="fc" id="L124">                    parentXPath::getKey,</span>
+<span class="fc" id="L125">                    () -&gt; parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                 );
                 
                 // Test current JSON value marked with * for injection

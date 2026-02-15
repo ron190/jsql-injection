@@ -17,9 +17,9 @@ import com.jsql.view.swing.util.MediatorHelper;
     protected void execute(Seal request) {
 <span class="nc" id="L18">        var urlByUser = MediatorHelper.model().getMediatorUtils().connectionUtil().getUrlByUser();</span>
 <span class="nc bnc" id="L19" title="All 4 branches missed.">        switch (request) {</span>
-<span class="nc" id="L20">            case Seal.MarkEngineFound(var engine) -&gt; MediatorHelper.managerScan().highlight(urlByUser, engine.toString());</span>
-<span class="nc" id="L21">            case Seal.ActivateEngine(var engine) -&gt; MediatorHelper.managerScan().highlight(urlByUser, engine.toString());</span>
-<span class="nc" id="L22">            case Seal.MarkStrategyVulnerable(int ignored, var strategy) -&gt; MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());</span>
+<span class="nc" id="L20">            case Seal.MarkEngineFound(var engine) -&gt; MediatorHelper.managerScan().highlight(urlByUser, engine.toString(), false);</span>
+<span class="nc" id="L21">            case Seal.ActivateEngine(var engine) -&gt; MediatorHelper.managerScan().highlight(urlByUser, engine.toString(), false);</span>
+<span class="nc" id="L22">            case Seal.MarkStrategyVulnerable(int ignored, var strategy) -&gt; MediatorHelper.managerScan().highlight(urlByUser, strategy.toString(), true);</span>
             default -&gt; {
                 // empty
 <span class="nc" id="L25">            }</span>

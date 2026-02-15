@@ -11,10 +11,10 @@
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.JSqlException;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.subscriber.SubscriberLogger;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.test.engine.mysql.ConcreteMySqlSuiteIT;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.test.engine.mysql.ConcreteMysqlSuiteIT;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.junitpioneer.jupiter.RetryingTest;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">class</strong> <a name="BadValueSuiteIT" href="../../../com/test/insertion/BadValueSuiteIT.html#BadValueSuiteIT">BadValueSuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="ConcreteMySqlSuiteIT" href="../../../com/test/engine/mysql/ConcreteMySqlSuiteIT.html#ConcreteMySqlSuiteIT">ConcreteMySqlSuiteIT</a> {
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">class</strong> <a name="BadValueSuiteIT" href="../../../com/test/insertion/BadValueSuiteIT.html#BadValueSuiteIT">BadValueSuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="ConcreteMysqlSuiteIT" href="../../../com/test/engine/mysql/ConcreteMysqlSuiteIT.html#ConcreteMysqlSuiteIT">ConcreteMysqlSuiteIT</a> {
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>      
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>      @Override
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setupInjection() <strong class="jxr_keyword">throws</strong> Exception {
@@ -32,25 +32,26 @@
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>          model
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>          .getMediatorUtils()
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          .preferencesUtil()
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>          .withIsStrategyTimeDisabled(<strong class="jxr_keyword">true</strong>)
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>          .withIsStrategyBlindBinDisabled(<strong class="jxr_keyword">true</strong>)
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>          .withIsStrategyBlindBitDisabled(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          model
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>          .getMediatorUtils()
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>          .connectionUtil()
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>          .withMethodInjection(model.getMediatorMethod().getQuery())
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>          .withTypeRequest(<span class="jxr_string">"GET"</span>);
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>          model.beginInjection();
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>      }
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      @Override
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>      @RetryingTest(3)
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> listDatabases() <strong class="jxr_keyword">throws</strong> JSqlException {
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          <strong class="jxr_keyword">super</strong>.listDatabases();
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>      }
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  }
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>          .withIsCheckingAllURLParam(false)
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>          .withIsStrategyTimeDisabled(<strong class="jxr_keyword">true</strong>)
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>          .withIsStrategyBlindBinDisabled(<strong class="jxr_keyword">true</strong>)
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>          .withIsStrategyBlindBitDisabled(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>          model
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>          .getMediatorUtils()
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>          .connectionUtil()
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          .withMethodInjection(model.getMediatorMethod().getQuery())
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          .withTypeRequest(<span class="jxr_string">"GET"</span>);
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          model.beginInjection();
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      }
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>      
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      @Override
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      @RetryingTest(3)
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> listDatabases() <strong class="jxr_keyword">throws</strong> JSqlException {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>          <strong class="jxr_keyword">super</strong>.listDatabases();
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      }
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

@@ -11,12 +11,12 @@
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.InjectionModel;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> com.jsql.model.exception.JSqlException;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.jsql.view.subscriber.SubscriberLogger;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.test.engine.mysql.ConcreteMySqlSuiteIT;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.test.engine.mysql.ConcreteMysqlSuiteIT;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.AfterEach;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Assertions;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.junitpioneer.jupiter.RetryingTest;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">class</strong> <a name="PathParamQuoteSuiteIT" href="../../../com/test/method/PathParamQuoteSuiteIT.html#PathParamQuoteSuiteIT">PathParamQuoteSuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="ConcreteMySqlSuiteIT" href="../../../com/test/engine/mysql/ConcreteMySqlSuiteIT.html#ConcreteMySqlSuiteIT">ConcreteMySqlSuiteIT</a> {
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">class</strong> <a name="PathParamQuoteSuiteIT" href="../../../com/test/method/PathParamQuoteSuiteIT.html#PathParamQuoteSuiteIT">PathParamQuoteSuiteIT</a> <strong class="jxr_keyword">extends</strong> <a name="ConcreteMysqlSuiteIT" href="../../../com/test/engine/mysql/ConcreteMysqlSuiteIT.html#ConcreteMysqlSuiteIT">ConcreteMysqlSuiteIT</a> {
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>      
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>      @Override
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setupInjection() <strong class="jxr_keyword">throws</strong> Exception {
@@ -42,7 +42,7 @@
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>          model
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          .getMediatorUtils()
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>          .connectionUtil()
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>          .setMethodInjection(model.getMediatorMethod().getQuery());
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          .withMethodInjection(model.getMediatorMethod().getQuery());
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>          
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>          model.beginInjection();
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      }

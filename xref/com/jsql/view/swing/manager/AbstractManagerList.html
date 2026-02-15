@@ -165,13 +165,13 @@
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         }
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>     }
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>     
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> highlight(String url, String tag) {
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> highlight(String url, String tag, <strong class="jxr_keyword">boolean</strong> isVulnerable) {
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>         <strong class="jxr_keyword">var</strong> itemLabel = String.format(<span class="jxr_string">" [%s]"</span>, tag);
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>         DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) <strong class="jxr_keyword">this</strong>.listPaths.getModel();
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">var</strong> i = 0 ; i &lt; listModel.getSize() ; i++) {
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>             <a name="ItemList" href="../../../../../com/jsql/view/swing/list/ItemList.html#ItemList">ItemList</a> itemList = listModel.getElementAt(i);
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>             <strong class="jxr_keyword">if</strong> (url.contains(itemList.getOriginalString())) {
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>                 itemList.setVulnerable(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>                 itemList.setVulnerable(isVulnerable);
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>                 itemList.setInternalString(
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>                     itemList.getInternalString().replace(itemLabel, StringUtils.EMPTY) + itemLabel
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>                 );

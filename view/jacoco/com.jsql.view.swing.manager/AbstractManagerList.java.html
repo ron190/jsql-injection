@@ -157,13 +157,13 @@ public abstract class AbstractManagerList extends JPanel {
         }
 <span class="fc" id="L158">    }</span>
     
-    public void highlight(String url, String tag) {
+    public void highlight(String url, String tag, boolean isVulnerable) {
 <span class="nc" id="L161">        var itemLabel = String.format(&quot; [%s]&quot;, tag);</span>
 <span class="nc" id="L162">        DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) this.listPaths.getModel();</span>
 <span class="nc bnc" id="L163" title="All 2 branches missed.">        for (var i = 0 ; i &lt; listModel.getSize() ; i++) {</span>
 <span class="nc" id="L164">            ItemList itemList = listModel.getElementAt(i);</span>
 <span class="nc bnc" id="L165" title="All 2 branches missed.">            if (url.contains(itemList.getOriginalString())) {</span>
-<span class="nc" id="L166">                itemList.setVulnerable(true);</span>
+<span class="nc" id="L166">                itemList.setVulnerable(isVulnerable);</span>
 <span class="nc" id="L167">                itemList.setInternalString(</span>
 <span class="nc" id="L168">                    itemList.getInternalString().replace(itemLabel, StringUtils.EMPTY) + itemLabel</span>
                 );

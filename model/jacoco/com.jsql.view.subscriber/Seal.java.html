@@ -136,7 +136,7 @@ public sealed interface Seal permits
 <span class="fc" id="L136">    record GetTerminalResult(UUID uuidShell, String result) implements Seal {}</span>
 
 <span class="fc" id="L138">    record CreateAdminPageTab(String urlSuccess) implements Seal {}</span>
-<span class="fc" id="L139">    record CreateAnalysisReport(String content) implements Seal {}</span>
+<span class="nc" id="L139">    record CreateAnalysisReport(String content) implements Seal {}</span>
 <span class="fc" id="L140">    record CreateFileTab(String name, String content, String path) implements Seal {}</span>
 
 <span class="fc" id="L142">    record EndIndeterminateProgress(Table table) implements Seal {}</span>

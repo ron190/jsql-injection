@@ -24,7 +24,7 @@ public class SuspendableGetEngine extends AbstractSuspendable {
 
     @Override
     public String run(Input input) throws JSqlException {
-<span class="fc" id="L27">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database with Boolean match...&quot;);</span>
+<span class="fc" id="L27">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database with boolean match (step 4)...&quot;);</span>
 
 <span class="fc" id="L29">        AtomicBoolean isEngineFound = new AtomicBoolean(false);</span>
 <span class="fc" id="L30">        this.injectionModel.getMediatorEngine().getEnginesForFingerprint()</span>
@@ -42,13 +42,13 @@ public class SuspendableGetEngine extends AbstractSuspendable {
                 AbstractInjectionBit.BlindOperator.OR  // TODO should also test AND and no mode
             );
             try {
-<span class="fc" id="L45">                var injectionCharInsertion = new InjectionEngine(this.injectionModel, engineSpecificWithOperator, engine);</span>
-<span class="fc bfc" id="L46" title="All 2 branches covered.">                if (injectionCharInsertion.isInjectable(engineSpecificWithOperator)) {</span>
+<span class="fc" id="L45">                var injectionEngine = new InjectionEngine(this.injectionModel, engineSpecificWithOperator, engine);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">                if (injectionEngine.isInjectable(engineSpecificWithOperator)) {</span>
 <span class="pc bpc" id="L47" title="1 of 2 branches missed.">                    if (this.isSuspended()) {</span>
 <span class="nc" id="L48">                        throw new StoppedByUserSlidingException();</span>
                     }
 
-<span class="fc" id="L51">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Found [{}] using Boolean match&quot;, engine);</span>
+<span class="fc" id="L51">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Found [{}] using boolean match&quot;, engine);</span>
 <span class="fc" id="L52">                    this.injectionModel.getMediatorEngine().setEngine(engine);</span>
 <span class="fc" id="L53">                    isEngineFound.set(true);</span>
 

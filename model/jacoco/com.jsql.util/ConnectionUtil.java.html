@@ -292,28 +292,20 @@ public class ConnectionUtil {
     public AbstractMethodInjection getMethodInjection() {
 <span class="fc" id="L293">        return this.methodInjection;</span>
     }
-
-    public void setMethodInjection(AbstractMethodInjection methodInjection) {
-<span class="fc" id="L297">        this.methodInjection = methodInjection;</span>
-<span class="fc" id="L298">    }</span>
     
     public String getTypeRequest() {
-<span class="fc" id="L301">        return this.typeRequest;</span>
+<span class="fc" id="L297">        return this.typeRequest;</span>
     }
-
-    public void setTypeRequest(String typeRequest) {
-<span class="nc" id="L305">        this.typeRequest = typeRequest;</span>
-<span class="nc" id="L306">    }</span>
 
     /**
      * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
      */
     public Integer getTimeout() {
-<span class="fc" id="L312">        return this.injectionModel.getMediatorUtils().preferencesUtil().countConnectionTimeout();</span>
+<span class="fc" id="L304">        return this.injectionModel.getMediatorUtils().preferencesUtil().countConnectionTimeout();</span>
     }
 
     public CookieManager getCookieManager() {
-<span class="fc" id="L316">        return this.cookieManager;</span>
+<span class="fc" id="L308">        return this.cookieManager;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

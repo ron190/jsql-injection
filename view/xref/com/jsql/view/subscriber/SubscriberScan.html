@@ -25,9 +25,9 @@
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> execute(Seal request) {
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">var</strong> urlByUser = MediatorHelper.model().getMediatorUtils().connectionUtil().getUrlByUser();
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">switch</strong> (request) {
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>              <strong class="jxr_keyword">case</strong> Seal.MarkEngineFound(<strong class="jxr_keyword">var</strong> engine) -&gt; MediatorHelper.managerScan().highlight(urlByUser, engine.toString());
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>              <strong class="jxr_keyword">case</strong> Seal.ActivateEngine(<strong class="jxr_keyword">var</strong> engine) -&gt; MediatorHelper.managerScan().highlight(urlByUser, engine.toString());
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>              <strong class="jxr_keyword">case</strong> Seal.MarkStrategyVulnerable(<strong class="jxr_keyword">int</strong> ignored, <strong class="jxr_keyword">var</strong> strategy) -&gt; MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>              <strong class="jxr_keyword">case</strong> Seal.MarkEngineFound(<strong class="jxr_keyword">var</strong> engine) -&gt; MediatorHelper.managerScan().highlight(urlByUser, engine.toString(), false);
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>              <strong class="jxr_keyword">case</strong> Seal.ActivateEngine(<strong class="jxr_keyword">var</strong> engine) -&gt; MediatorHelper.managerScan().highlight(urlByUser, engine.toString(), false);
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>              <strong class="jxr_keyword">case</strong> Seal.MarkStrategyVulnerable(<strong class="jxr_keyword">int</strong> ignored, <strong class="jxr_keyword">var</strong> strategy) -&gt; MediatorHelper.managerScan().highlight(urlByUser, strategy.toString(), <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>              <strong class="jxr_keyword">default</strong> -&gt; {
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>                  <em class="jxr_comment">// empty</em>
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>              }
