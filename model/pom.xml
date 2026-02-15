@@ -43,7 +43,7 @@
         <junit-platform-runner.version>1.14.2</junit-platform-runner.version>
         <nashorn-core.version>15.7</nashorn-core.version>
         <!-- aligned with dnsjava -->
-        <slf4j-nop.version>1.7.36</slf4j-nop.version>
+        <slf4j-nop.version>2.0.17</slf4j-nop.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <spock-core.version>2.4-groovy-5.0</spock-core.version>
         <spring-boot-dependencies.version>4.1.0-M1</spring-boot-dependencies.version>
