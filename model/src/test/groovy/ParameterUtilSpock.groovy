@@ -16,7 +16,7 @@ class ParameterUtilSpock extends Specification {
             injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.header
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
-        
+
         when: parameterUtil.initQueryString('http://127.0.0.1')
         and: parameterUtil.initHeader('a: a*')
         and: parameterUtil.initRequest('')
@@ -36,17 +36,17 @@ class ParameterUtilSpock extends Specification {
 
     def 'Check that empty query string, request and header is not allowed'() {
         when: parameterUtil.initQueryString('http://127.0.0.1')
-        
+
         and:
             injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.query
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
-        
+
         when:
             injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.request
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
-        
+
         when:
             injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.header
             parameterUtil.checkParametersFormat()
@@ -60,7 +60,7 @@ class ParameterUtilSpock extends Specification {
             a: a*
             b: b
         ''')
-        
+
         and: parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
     }

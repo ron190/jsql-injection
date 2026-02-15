@@ -236,11 +236,9 @@ public class ParameterUtil {
     
     public void checkMethodNotEmpty() throws InjectionFailureException {
         AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection();
-        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam();
-        
+
         if (
             methodInjection == this.injectionModel.getMediatorMethod().getQuery()
-            && !isCheckingAllParam
             && this.getListQueryString().isEmpty()
             && !this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)
         ) {

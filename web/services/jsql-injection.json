@@ -1,19 +1,24 @@
 {
     "version": "0.113",
     "news": [
-        "[Community] Importing HTTP request submitted by @secfb. It should be easier to import from other tools like burp",
-        "[True story] This tool is for my own purpose only, please do not use it. The tool must stay as-is forever, do not ask for any improvement",
-        "[GUI] Putting your hand on a GUI makes you look smart? No. Do not use GUI, instead use CLI like any adult",
+        "[Community] @secfb asks for easier target param selection. It will be the final java feature, switching next to python and bumping to v1.0",
+        "[Community] Importing HTTP request also submitted by @secfb. It should be easier to import from other tools like burp. Never heard of this one.",
+        "[True story] This tool is for my own purpose, do not use it. Do not ask for any improvement, the tool must be kept as is forever",
+        "[GUI] Putting your hand on a GUI makes you look smart? No. Do not use GUI, instead use CLI like any adult. Better, go to the gym",
+        "[Reminder] Do not use this tool, it makes you look weird clicking this and scrolling that. I'm using some random python tool right now",
         "[DNS strategy] You're a security expert? Again no, but give a try to the new DNS strategy, you can test it locally without any domain",
-        "[Java] Latest release v0.113 is still compatible Java 11, next release v0.114 will then require Java 21 so prepare and bump your jdk",
-        "[Exploit] Give also a try to RCE, UDF and reverse shell and share your thoughts, injection can lead to a shell too",
         "[RCE shell] How to RCE shell and reverse shell with one click? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
         "[Pinned] Report any bugs and thoughts, and add your star at https://github.com/ron190/jsql-injection",
-        "[Reminder] Do not use this tool, it makes you look weird clicking this and scrolling that",
-        "[Community] @secfb also asks for easier target param selection. You win, it will be the final java feature, next I'll switch to python and bump version to 1.0",
-        " __   ___              __          __",
-        "|__) |__  |__| | |\\ | |  \\    \\ / /  \\ |  |",
-        "|__) |___ |  | | | \\| |__/     |  \\__/ \\__/",
-        "[Except thin air there's nothing behind you. The room is empty]"
+        "          ░░     ░       ░   ░░         ░░        ░     ░    ░░           ░",
+        " ▄▄▄▄   ▓█████  ██░ ██  ██▓ ███▄    █ ▓█████▄    ▓██   ██▓ ▒█████   █    ██",
+        "▓█████▄ ▓█   ▀ ▓██░ ██▒▓██▒ ██ ▀█   █ ▒██▀ ██▌    ▒██  ██▒▒██▒  ██▒ ██  ▓██▒",
+        "▒██▒ ▄██▒███   ▒██▀▀██░▒██▒▓██  ▀█ ██▒░██   █▌     ▒██ ██░▒██░  ██▒▓██  ▒██░",
+        "▒██░█▀  ▒▓█  ▄ ░▓█ ░██ ░██░▓██▒  ▐▌██▒░▓█▄   ▌     ░ ▐██▓░▒██   ██░▓▓█  ░██░",
+        "░▓█  ▀█▓░▒████▒░▓█▒░██▓░██░▒██░   ▓██░░▒████▓      ░ ██▒▓░░ ████▓▒░▒▒█████▓",
+        "░▒▓███▀▒░░ ▒░ ░ ▒ ░░▒░▒░▓  ░ ▒░   ▒ ▒  ▒▒▓  ▒       ██▒▒▒ ░ ▒░▒░▒░ ░▒▓▒ ▒ ▒",
+        "▒░▒   ░  ░ ░  ░ ▒ ░▒░ ░ ▒ ░░ ░░   ░ ▒░ ░ ▒  ▒     ▓██ ░▒░   ░ ▒ ▒░ ░░▒░ ░ ░",
+        "░    ░    ░    ░  ░░ ░ ▒ ░   ░   ░ ░  ░ ░  ░     ▒ ▒ ░░  ░ ░ ░ ▒   ░░░ ░ ░",
+        "░         ░  ░ ░  ░  ░ ░           ░    ░        ░ ░         ░ ░     ░",
+        "[Except for thin air, there is nothing behind you. The room is empty]"
     ]
 }
