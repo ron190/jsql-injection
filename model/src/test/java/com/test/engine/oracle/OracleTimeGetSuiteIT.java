@@ -25,6 +25,7 @@ class OracleTimeGetSuiteIT extends ConcreteOracleSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 

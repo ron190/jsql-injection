@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MySqlBlindBitSuiteIT extends ConcreteMySqlSuiteIT {
+class MysqlInsideSuiteIT extends ConcreteMysqlErrorSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -15,9 +15,9 @@ class MySqlBlindBitSuiteIT extends ConcreteMySqlSuiteIT {
         this.injectionModel = model;
 
         model.subscribe(new SubscriberLogger(model));
-        
+
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/blind?tenant=mysql&name="
+            "http://localhost:8080/inside?tenant=mysql-error&name="
         );
 
         model.setIsScanning(true);
@@ -25,8 +25,10 @@ class MySqlBlindBitSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
-        .withIsStrategyBlindBinDisabled(true);
+        .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyBlindBitDisabled(true);
 
         model
         .getMediatorUtils()
@@ -46,7 +48,7 @@ class MySqlBlindBitSuiteIT extends ConcreteMySqlSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBit(),
+            this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

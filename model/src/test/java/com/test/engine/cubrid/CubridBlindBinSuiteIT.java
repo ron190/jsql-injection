@@ -26,6 +26,7 @@ class CubridBlindBinSuiteIT extends ConcreteCubridSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBitDisabled(true);
 
         model

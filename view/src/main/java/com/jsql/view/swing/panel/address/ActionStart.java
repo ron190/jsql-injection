@@ -5,6 +5,7 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,8 +57,15 @@ public class ActionStart implements ActionListener {
             this.panelAddressBar.getPanelTrailingAddress().getLoader().setVisible(true);
 
             MediatorHelper.frame().resetInterface();  // Erase everything in the view from a previous injection
-
+            var selection = this.panelAddressBar.getPanelTrailingAddress().getGroupRadio().getSelection();
+            String selectionCommand;
+            if (selection != null) {  // effectively final
+                selectionCommand = selection.getActionCommand();
+            } else {
+                selectionCommand = StringUtils.EMPTY;
+            }
             MediatorHelper.model().getMediatorUtils().parameterUtil().controlInput(
+                selectionCommand,
                 this.panelAddressBar.getTextFieldAddress().getText().trim(),
                 this.panelAddressBar.getTextFieldRequest().getText().trim(),
                 this.panelAddressBar.getTextFieldHeader().getText().trim(),

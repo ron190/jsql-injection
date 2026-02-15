@@ -17,9 +17,9 @@ public class SubscriberScan extends AbstractSubscriber {
     protected void execute(Seal request) {
         var urlByUser = MediatorHelper.model().getMediatorUtils().connectionUtil().getUrlByUser();
         switch (request) {
-            case Seal.MarkEngineFound(var engine) -> MediatorHelper.managerScan().highlight(urlByUser, engine.toString());
-            case Seal.ActivateEngine(var engine) -> MediatorHelper.managerScan().highlight(urlByUser, engine.toString());
-            case Seal.MarkStrategyVulnerable(int ignored, var strategy) -> MediatorHelper.managerScan().highlight(urlByUser, strategy.toString());
+            case Seal.MarkEngineFound(var engine) -> MediatorHelper.managerScan().highlight(urlByUser, engine.toString(), false);
+            case Seal.ActivateEngine(var engine) -> MediatorHelper.managerScan().highlight(urlByUser, engine.toString(), false);
+            case Seal.MarkStrategyVulnerable(int ignored, var strategy) -> MediatorHelper.managerScan().highlight(urlByUser, strategy.toString(), true);
             default -> {
                 // empty
             }

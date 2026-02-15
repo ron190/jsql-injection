@@ -25,6 +25,7 @@ class SybaseBlindBinGetSuiteIT extends ConcreteSybaseSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBitDisabled(true);
 
         model

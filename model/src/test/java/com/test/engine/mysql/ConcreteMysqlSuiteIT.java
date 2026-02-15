@@ -6,9 +6,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import spring.SpringApp;
 
-public abstract class ConcreteMySqlSuiteIT extends AbstractTestSuite {
+public abstract class ConcreteMysqlSuiteIT extends AbstractTestSuite {
 
-    public ConcreteMySqlSuiteIT() {
+    public ConcreteMysqlSuiteIT() {
         var property = SpringApp.get("mysql");
         this.jdbcURL = property.getProperty(JdbcSettings.JAKARTA_JDBC_URL);
         this.jdbcUser = property.getProperty(JdbcSettings.JAKARTA_JDBC_USER);

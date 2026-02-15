@@ -20,9 +20,12 @@ class MonetdbUnionGetSuiteIT extends ConcreteMonetdbSuiteIT {
             "http://localhost:8080/monetdb?name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 

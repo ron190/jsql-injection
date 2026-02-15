@@ -22,9 +22,12 @@ class Db2UnionSuiteIT extends ConcreteDb2SuiteIT {
             "http://localhost:8080/union?tenant=db2&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyStackDisabled(true);

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {  // can be unstable
+class MysqlMultibitSuiteIT extends ConcreteMysqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -17,7 +17,7 @@ class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {  // can be unstable
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/tx/update?tenant=mysql-error&name="
+            "http://localhost:8080/multibit?tenant=mysql&name="
         );
 
         model.setIsScanning(true);
@@ -25,6 +25,7 @@ class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {  // can be unstable
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
@@ -37,17 +38,17 @@ class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {  // can be unstable
         
         model.beginInjection();
     }
-
+    
     @Override
-    @RetryingTest(6)
-    public void listDatabases() throws JSqlException {  // API changes rows: listValues() not usable
-        super.listDatabases();
+    @RetryingTest(3)
+    public void listValues() throws JSqlException {
+        super.listValues();
     }
 
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getError(),
+            this.injectionModel.getMediatorStrategy().getMultibit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

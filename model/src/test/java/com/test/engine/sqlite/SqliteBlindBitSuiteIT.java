@@ -21,7 +21,12 @@ class SqliteBlindBitSuiteIT extends ConcreteSqliteSuiteIT {
         );
         
         model.setIsScanning(true);
-        
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
+
         model
         .getMediatorUtils()
         .connectionUtil()

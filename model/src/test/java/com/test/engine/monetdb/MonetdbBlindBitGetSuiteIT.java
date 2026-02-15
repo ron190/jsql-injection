@@ -25,6 +25,7 @@ class MonetdbBlindBitGetSuiteIT extends ConcreteMonetdbSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyErrorDisabled(true)
         .withIsStrategyUnionDisabled(true);

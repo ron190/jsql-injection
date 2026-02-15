@@ -112,6 +112,7 @@ public class UiUtil {
     public static final ModelSvgIcon EXPAND_HOVER = new ModelSvgIcon(UiUtil.NAME_EXPAND, Color.BLACK, UiUtil.COMBOBOX_BUTTON_HOVER_ARROW_COLOR, 0.02f);
     public static final ModelSvgIcon EXPAND_PRESSED = new ModelSvgIcon(UiUtil.NAME_EXPAND, Color.BLACK, UiUtil.COMBOBOX_BUTTON_PRESSED_ARROW_COLOR, 0.02f);
 
+    public static final ModelSvgIcon TARGET = new ModelSvgIcon("target", 0.02f);
     public static final ModelSvgIcon HOURGLASS = new ModelSvgIcon("hourglass", 0.02f);
     public static final ModelSvgIcon ARROW_UP = new ModelSvgIcon("arrow-up", 0.02f);
     public static final ModelSvgIcon ARROW_DOWN = new ModelSvgIcon("arrow-down", 0.02f);

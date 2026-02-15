@@ -150,7 +150,7 @@ public class MediatorEngine {
             this.mimer, this.monetdb, this.neo4j, netezza, nuodb, this.presto, this.sybase, teradata, this.vertica, this.virtuoso, this.clickhouse
         );
 
-        this.setEngine(this.mysql);
+        this.engine = this.mysql;
         this.engineByUser = this.auto;
     }
     
@@ -169,7 +169,7 @@ public class MediatorEngine {
                 () -> this.injectionModel.getMediatorEngine().getEngineByUser()
             );
         } else {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database...");
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database (step 1)...");
             var insertionCharacter = URLEncoder.encode("'\"#-)'\"*", StandardCharsets.UTF_8);
             String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "test#engine");
                 
@@ -185,14 +185,21 @@ public class MediatorEngine {
                     engineFound = engineTest;
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_SUCCESS,
-                        MediatorEngine.LOG_ENGINE,
-                        () -> "Basic fingerprint matching engine",
+                        "Found [{}] using raw fingerprinting",
                         () -> engineTest
                     );
                     break;
                 }
             }
-            engineFound = this.initEngine(engineFound);
+            if (engineFound == null) {
+                engineFound = this.injectionModel.getMediatorEngine().getMysql();
+                LOGGER.log(
+                    LogLevelUtil.CONSOLE_INFORM,
+                    MediatorEngine.LOG_ENGINE,
+                    () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"),
+                    () -> this.injectionModel.getMediatorEngine().getMysql()
+                );
+            }
         }
 
         var urlGitHub = this.injectionModel.getMediatorUtils().propertiesUtil().getProperty("github.url");
@@ -211,28 +218,6 @@ public class MediatorEngine {
 
         this.injectionModel.sendToViews(new Seal.ActivateEngine(engineFound));
         return engineFound;
-    }
-
-    public Engine initEngine(Engine engine) {
-        var engineFixed = engine;
-        if (engineFixed == null) {
-            engineFixed = this.injectionModel.getMediatorEngine().getMysql();
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_INFORM,
-                MediatorEngine.LOG_ENGINE,
-                () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"),
-                () -> this.injectionModel.getMediatorEngine().getMysql()
-            );
-        } else {
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_INFORM,
-                MediatorEngine.LOG_ENGINE,
-                () -> I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"),
-                () -> engine
-            );
-            this.injectionModel.sendToViews(new Seal.MarkEngineFound(engineFixed));
-        }
-        return engineFixed;
     }
     
     

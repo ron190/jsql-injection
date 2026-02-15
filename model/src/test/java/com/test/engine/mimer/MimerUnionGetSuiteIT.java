@@ -20,9 +20,12 @@ class MimerUnionGetSuiteIT extends ConcreteMimerSuiteIT {
             "http://localhost:8080/mimer?name='"
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withCountLimitingThreads(1)
         .withCountUnionIndex(10)
         .withIsNotSearchingCharInsertion(true)  // reduce db calls

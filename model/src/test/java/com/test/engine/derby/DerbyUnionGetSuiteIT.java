@@ -19,6 +19,13 @@ class DerbyUnionGetSuiteIT extends ConcreteDerbySuiteIT {
         model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/union?tenant=derby&name="
         );
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
         
         model
         .getMediatorUtils()

@@ -22,9 +22,12 @@ class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
             "http://localhost:8080/errors?tenant=db2&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyStackDisabled(true);

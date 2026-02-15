@@ -292,17 +292,9 @@ public class ConnectionUtil {
     public AbstractMethodInjection getMethodInjection() {
         return this.methodInjection;
     }
-
-    public void setMethodInjection(AbstractMethodInjection methodInjection) {
-        this.methodInjection = methodInjection;
-    }
     
     public String getTypeRequest() {
         return this.typeRequest;
-    }
-
-    public void setTypeRequest(String typeRequest) {
-        this.typeRequest = typeRequest;
     }
 
     /**

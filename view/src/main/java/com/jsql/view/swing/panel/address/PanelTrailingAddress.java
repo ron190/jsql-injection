@@ -11,6 +11,7 @@ import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,9 +19,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class PanelTrailingAddress extends JPanel {
@@ -34,8 +41,11 @@ public class PanelTrailingAddress extends JPanel {
 
     private JMenu itemRadioStrategyError;
 
+    private final JLabel labelTarget = new JLabel(UiUtil.TARGET.getIcon(), SwingConstants.LEFT);
     private final JLabel labelEngine = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
     private final JLabel labelStrategy = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);
+    private final JPopupMenu popupMenuTargets = new JPopupMenu();
+    private ButtonGroup groupRadio = new ButtonGroup();
     private final JPopupMenu popupMenuEngines = new JPopupMenu();
     private final JPopupMenu popupMenuStrategies = new JPopupMenu();
 
@@ -138,7 +148,9 @@ public class PanelTrailingAddress extends JPanel {
         this.labelStrategy.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Arrays.stream(PanelTrailingAddress.this.popupMenuStrategies.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
+                Arrays.stream(PanelTrailingAddress.this.popupMenuStrategies.getComponents())
+                    .map(JComponent.class::cast)
+                    .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
                 for (var i = 0 ; i < PanelTrailingAddress.this.getMenuError().getItemCount() ; i++) {
                     PanelTrailingAddress.this.getMenuError().getItem(i).updateUI();  // required: incorrect when dark/light mode switch
                 }
@@ -150,6 +162,161 @@ public class PanelTrailingAddress extends JPanel {
             }
         });
 
+        this.labelTarget.setText("Param auto");
+        this.labelTarget.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent event) {
+                PanelTrailingAddress.this.popupMenuTargets.removeAll();
+                JRadioButtonMenuItem menuParamAuto = new JRadioButtonMenuItem("Param auto");
+                menuParamAuto.setActionCommand("Param auto");  // required when adding star
+                menuParamAuto.addActionListener(actionEvent -> {
+                    PanelTrailingAddress.this.labelTarget.setText(menuParamAuto.getText());
+                });
+                PanelTrailingAddress.this.popupMenuTargets.add(menuParamAuto);
+
+                var rawQuery = panelAddressBar.getTextFieldAddress().getText().trim();
+                var rawRequest = panelAddressBar.getTextFieldRequest().getText().trim();
+                var rawHeader = panelAddressBar.getTextFieldHeader().getText().trim();
+
+                var selection = PanelTrailingAddress.this.groupRadio.getSelection();
+                String selectionCommand;  // effectively final
+                if (selection != null) {
+                    selectionCommand = selection.getActionCommand();
+                } else {
+                    selectionCommand = StringUtils.EMPTY;
+                }
+                PanelTrailingAddress.this.groupRadio = new ButtonGroup();
+                PanelTrailingAddress.this.groupRadio.add(menuParamAuto);
+                JMenu menuQuery = new JMenu("Query");
+                if (!rawQuery.isEmpty()) {
+                    try {
+                        var url = new URI(rawQuery).toURL();
+                        if (url.getQuery() != null) {
+                            var listParams = Pattern.compile("&")
+                                .splitAsStream(url.getQuery())
+                                .map(keyValue -> Arrays.copyOf(keyValue.split("="), 2))
+                                .map(keyValue -> new AbstractMap.SimpleEntry<>(
+                                    keyValue[0],
+                                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
+                                )).toList();
+                            listParams.forEach(entry -> {
+                                JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());
+                                menuItem.setSelected(("Query#"+ entry.getKey()).equals(selectionCommand));
+                                menuItem.setActionCommand("Query#"+ entry.getKey());
+                                menuItem.addActionListener(actionEvent -> {
+                                    PanelTrailingAddress.this.labelTarget.setText(entry.getKey());
+                                });
+                                PanelTrailingAddress.this.groupRadio.add(menuItem);
+                                menuQuery.add(menuItem);
+                            });
+                            PanelTrailingAddress.this.popupMenuTargets.add(menuQuery);
+                        }
+                    } catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {
+                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect URL: {}", e.getMessage());
+                        return;
+                    }
+                }
+
+                JMenu menuRequest = new JMenu("Request");
+                if (!rawRequest.isEmpty()) {
+                    var listRequests = Pattern.compile("&")
+                        .splitAsStream(rawRequest)
+                        .map(keyValue -> Arrays.copyOf(keyValue.split("="), 2))
+                        .map(keyValue -> new AbstractMap.SimpleEntry<>(
+                                keyValue[0],
+                                keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
+                        )).toList();
+                    listRequests.forEach(entry -> {
+                        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());
+                        menuItem.setSelected(("Request#"+ entry.getKey()).equals(selectionCommand));
+                        menuItem.setActionCommand("Request#"+ entry.getKey());
+                        menuItem.addActionListener(actionEvent -> {
+                            PanelTrailingAddress.this.labelTarget.setText(entry.getKey());
+                        });
+                        groupRadio.add(menuItem);
+                        menuRequest.add(menuItem);
+                    });
+                    PanelTrailingAddress.this.popupMenuTargets.add(menuRequest);
+                }
+
+                JMenu menuHeader = new JMenu("Header");
+                if (!rawHeader.isEmpty()) {
+                    var listHeaders = Pattern.compile("\\\\r\\\\n")
+                        .splitAsStream(rawHeader)
+                        .map(keyValue -> Arrays.copyOf(keyValue.split(":"), 2))
+                        .map(keyValue -> new AbstractMap.SimpleEntry<>(
+                            keyValue[0],
+                            keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
+                        ))
+                        .toList();
+                    listHeaders.forEach(entry -> {
+                        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());
+                        menuItem.setSelected(("Header#"+ entry.getKey()).equals(selectionCommand));
+                        menuItem.setActionCommand("Header#"+ entry.getKey());
+                        menuItem.addActionListener(actionEvent -> {
+                            PanelTrailingAddress.this.labelTarget.setText(entry.getKey());
+                        });
+                        groupRadio.add(menuItem);
+                        menuHeader.add(menuItem);
+                    });
+                    if (listHeaders.stream().anyMatch(s -> "Cookie".equalsIgnoreCase(s.getKey()))) {
+                        var cookies = listHeaders.stream()
+                            .filter(s -> "Cookie".equalsIgnoreCase(s.getKey()))
+                            .findFirst()
+                            .orElse(new AbstractMap.SimpleEntry<>("Cookie", ""));
+                        if (!cookies.getValue().trim().isEmpty()) {
+                            JMenu menuCookie = new JMenu("Cookie");
+                            String[] cookieValues = StringUtils.split(cookies.getValue(), ";");
+                            Stream.of(cookieValues).forEach(cookie -> {
+                                String[] cookieEntry = StringUtils.split(cookie, "=");
+                                JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(cookieEntry[0].trim());
+                                menuItem.setSelected(("Cookie#"+ cookieEntry[0].trim()).equals(selectionCommand));
+                                menuItem.setActionCommand("Cookie#"+ cookieEntry[0].trim());
+                                menuItem.addActionListener(actionEvent -> {
+                                    PanelTrailingAddress.this.labelTarget.setText(cookieEntry[0].trim());
+                                });
+                                groupRadio.add(menuItem);
+                                menuCookie.add(menuItem);
+                            });
+                            menuHeader.addSeparator();
+                            menuHeader.add(menuCookie);
+                        }
+                    }
+                    PanelTrailingAddress.this.popupMenuTargets.add(menuHeader);
+                }
+
+                Arrays.stream(PanelTrailingAddress.this.popupMenuTargets.getComponents())
+                    .map(JComponent.class::cast)
+                    .forEach(c -> c.setEnabled(false));
+                menuParamAuto.setEnabled(true);
+                if (PanelTrailingAddress.this.groupRadio.getSelection() == null) {
+                    menuParamAuto.setSelected(true);
+                    PanelTrailingAddress.this.labelTarget.setText(menuParamAuto.getText());
+                }
+                menuQuery.setEnabled(menuQuery.getMenuComponentCount() > 0);
+                menuRequest.setEnabled(menuRequest.getMenuComponentCount() > 0);
+                menuHeader.setEnabled(menuHeader.getMenuComponentCount() > 0);
+
+                if (
+                    menuQuery.getMenuComponentCount() > 0
+                    || menuRequest.getMenuComponentCount() > 0
+                    || menuHeader.getMenuComponentCount() > 0
+                ) {
+                    Arrays.stream(PanelTrailingAddress.this.popupMenuTargets.getComponents())
+                    .map(JComponent.class::cast)
+                    .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
+                    PanelTrailingAddress.this.popupMenuTargets.updateUI();  // required: incorrect when dark/light mode switch
+                    SwingUtilities.invokeLater(() -> {  // reduce flickering on linux
+                        PanelTrailingAddress.this.popupMenuTargets.show(event.getComponent(), event.getComponent().getX(), 5 + event.getComponent().getY() + event.getComponent().getHeight());
+                        PanelTrailingAddress.this.popupMenuTargets.setLocation(event.getComponent().getLocationOnScreen().x, 5 + event.getComponent().getLocationOnScreen().y + event.getComponent().getHeight());
+                    });
+                } else {
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing parameter to inject");
+                }
+            }
+        });
+
+        this.add(this.labelTarget);
         this.add(this.labelEngine);
         this.add(this.labelStrategy);
         this.add(this.buttonStart);
@@ -298,5 +465,9 @@ public class PanelTrailingAddress extends JPanel {
 
     public ButtonStart getButtonStart() {
         return this.buttonStart;
+    }
+
+    public ButtonGroup getGroupRadio() {
+        return this.groupRadio;
     }
 }

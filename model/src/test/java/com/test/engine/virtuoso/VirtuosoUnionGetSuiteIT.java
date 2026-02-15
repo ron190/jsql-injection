@@ -19,10 +19,13 @@ class VirtuosoUnionGetSuiteIT extends ConcreteVirtuosoSuiteIT {
         model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/virtuoso?name="
         );
+
+        model.setIsScanning(true);
         
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 

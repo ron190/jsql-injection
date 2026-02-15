@@ -21,9 +21,11 @@ class ExasolBlindBinGetSuiteIT extends ConcreteExasolSuiteIT {
         );
 
         model.setIsScanning(true);
+
         model  // remove when stable
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyMultibitDisabled(true)

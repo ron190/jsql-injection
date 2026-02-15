@@ -3,12 +3,12 @@ package com.test.method;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMysqlSuiteIT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class PathParamQuoteSuiteIT extends ConcreteMySqlSuiteIT {
+class PathParamQuoteSuiteIT extends ConcreteMysqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -26,6 +26,7 @@ class PathParamQuoteSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsNotTestingConnection(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
@@ -34,7 +35,7 @@ class PathParamQuoteSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .connectionUtil()
-        .setMethodInjection(model.getMediatorMethod().getQuery());
+        .withMethodInjection(model.getMediatorMethod().getQuery());
         
         model.beginInjection();
     }

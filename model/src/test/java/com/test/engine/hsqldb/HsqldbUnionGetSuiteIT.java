@@ -19,6 +19,13 @@ class HsqldbUnionGetSuiteIT extends ConcreteHsqldbSuiteIT {
         model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/union?tenant=hsqldb&name="
         );
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
         
         model
         .getMediatorUtils()

@@ -20,9 +20,12 @@ class HanaUnionGetSuiteIT extends ConcreteHanaSuiteIT {  // database unstable, B
             "http://localhost:8080/union?tenant=hana&name=1'"
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsNotSearchingCharInsertion(true)
         .withCountLimitingThreads(2)
         .withIsStrategyTimeDisabled(true)

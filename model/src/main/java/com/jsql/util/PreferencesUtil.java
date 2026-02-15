@@ -46,14 +46,13 @@ public class PreferencesUtil {
     private boolean isNotSearchingCharInsertion = false;
     private boolean isNotShowingVulnReport = false;
 
-    private boolean isCheckingAllParam = false;
-    private boolean isCheckingAllURLParam = false;
-    private boolean isCheckingAllRequestParam = false;
-    private boolean isCheckingAllHeaderParam = false;
-    private boolean isCheckingAllBase64Param = false;
-    private boolean isCheckingAllJsonParam = false;
-    private boolean isCheckingAllCookieParam = false;
-    private boolean isCheckingAllSoapParam = false;
+    private boolean isCheckingAllParam = true;
+    private boolean isCheckingAllURLParam = true;
+    private boolean isCheckingAllRequestParam = true;
+    private boolean isCheckingAllHeaderParam = true;
+    private boolean isCheckingAllJsonParam = true;
+    private boolean isCheckingAllCookieParam = true;
+    private boolean isCheckingAllSoapParam = true;
     
     private boolean isPerfIndexDisabled = false;
     private boolean isDefaultStrategy = false;
@@ -155,14 +154,13 @@ public class PreferencesUtil {
         this.isNotSearchingCharInsertion = preferences.getBoolean("isNotSearchingCharInsertion", false);
         this.isNotShowingVulnReport = preferences.getBoolean("isNotShowingVulnReport", false);
 
-        this.isCheckingAllParam = preferences.getBoolean("isCheckingAllParam", false);
-        this.isCheckingAllURLParam = preferences.getBoolean("isCheckingAllURLParam", false);
-        this.isCheckingAllRequestParam = preferences.getBoolean("isCheckingAllRequestParam", false);
-        this.isCheckingAllHeaderParam = preferences.getBoolean("isCheckingAllHeaderParam", false);
-        this.isCheckingAllBase64Param = preferences.getBoolean("isCheckingAllBase64Param", false);
-        this.isCheckingAllJsonParam = preferences.getBoolean("isCheckingAllJsonParam", false);
-        this.isCheckingAllCookieParam = preferences.getBoolean("isCheckingAllCookieParam", false);
-        this.isCheckingAllSoapParam = preferences.getBoolean("isCheckingAllSoapParam", false);
+        this.isCheckingAllParam = preferences.getBoolean("isCheckingAllParamV2", true);
+        this.isCheckingAllURLParam = preferences.getBoolean("isCheckingAllURLParamV2", true);
+        this.isCheckingAllRequestParam = preferences.getBoolean("isCheckingAllRequestParamV2", true);
+        this.isCheckingAllHeaderParam = preferences.getBoolean("isCheckingAllHeaderParamV2", true);
+        this.isCheckingAllJsonParam = preferences.getBoolean("isCheckingAllJsonParamV2", true);
+        this.isCheckingAllCookieParam = preferences.getBoolean("isCheckingAllCookieParamV2", true);
+        this.isCheckingAllSoapParam = preferences.getBoolean("isCheckingAllSoapParamV2", true);
         
         this.isPerfIndexDisabled = preferences.getBoolean("isPerfIndexDisabled", false);
         this.isDefaultStrategy = preferences.getBoolean("isDefaultStrategy", false);
@@ -250,15 +248,15 @@ public class PreferencesUtil {
         preferences.putBoolean("isNotInjectingMetadata", this.isNotInjectingMetadata);
         preferences.putBoolean("isNotSearchingCharInsertion", this.isNotSearchingCharInsertion);
         preferences.putBoolean("isNotShowingVulnReport", this.isNotShowingVulnReport);
-        preferences.putBoolean("isCheckingAllParam", this.isCheckingAllParam);
-        preferences.putBoolean("isCheckingAllURLParam", this.isCheckingAllURLParam);
-        preferences.putBoolean("isCheckingAllRequestParam", this.isCheckingAllRequestParam);
-        preferences.putBoolean("isCheckingAllHeaderParam", this.isCheckingAllHeaderParam);
-        
-        preferences.putBoolean("isCheckingAllBase64Param", this.isCheckingAllBase64Param);
-        preferences.putBoolean("isCheckingAllJsonParam", this.isCheckingAllJsonParam);
-        preferences.putBoolean("isCheckingAllCookieParam", this.isCheckingAllCookieParam);
-        preferences.putBoolean("isCheckingAllSoapParam", this.isCheckingAllSoapParam);
+
+        preferences.putBoolean("isCheckingAllParamV2", this.isCheckingAllParam);
+        preferences.putBoolean("isCheckingAllURLParamV2", this.isCheckingAllURLParam);
+        preferences.putBoolean("isCheckingAllRequestParamV2", this.isCheckingAllRequestParam);
+        preferences.putBoolean("isCheckingAllHeaderParamV2", this.isCheckingAllHeaderParam);
+        preferences.putBoolean("isCheckingAllJsonParamV2", this.isCheckingAllJsonParam);
+        preferences.putBoolean("isCheckingAllCookieParamV2", this.isCheckingAllCookieParam);
+        preferences.putBoolean("isCheckingAllSoapParamV2", this.isCheckingAllSoapParam);
+
         preferences.putBoolean("isParsingForm", this.isParsingForm);
         preferences.putBoolean("isNotTestingConnection", this.isNotTestingConnection);
         preferences.putBoolean("isNotProcessingCookies", this.isNotProcessingCookies);
@@ -349,6 +347,10 @@ public class PreferencesUtil {
         return this.isNotShowingVulnReport;
     }
 
+    public boolean isCheckingAllParam() {
+        return this.isCheckingAllParam;
+    }
+
     public boolean isCheckingAllURLParam() {
         return this.isCheckingAllURLParam;
     }
@@ -361,12 +363,16 @@ public class PreferencesUtil {
         return this.isCheckingAllHeaderParam;
     }
 
-    public boolean isCheckingAllBase64Param() {
-        return this.isCheckingAllBase64Param;
-    }
-    
     public boolean isCheckingAllJsonParam() {
         return this.isCheckingAllJsonParam;
+    }
+
+    public boolean isCheckingAllCookieParam() {
+        return this.isCheckingAllCookieParam;
+    }
+
+    public boolean isCheckingAllSoapParam() {
+        return this.isCheckingAllSoapParam;
     }
 
     public boolean isParsingForm() {
@@ -381,16 +387,8 @@ public class PreferencesUtil {
         return this.isNotProcessingCookies;
     }
 
-    public boolean isCheckingAllParam() {
-        return this.isCheckingAllParam;
-    }
-
     public boolean isProcessingCsrf() {
         return this.isProcessingCsrf;
-    }
-
-    public boolean isCheckingAllCookieParam() {
-        return this.isCheckingAllCookieParam;
     }
 
     public boolean isTamperingBase64() {
@@ -427,10 +425,6 @@ public class PreferencesUtil {
 
     public boolean isTamperingEval() {
         return this.isTamperingEval;
-    }
-
-    public boolean isCheckingAllSoapParam() {
-        return this.isCheckingAllSoapParam;
     }
 
     public boolean is4K() {
@@ -651,11 +645,6 @@ public class PreferencesUtil {
 
     public PreferencesUtil withIsCheckingAllHeaderParam(boolean isCheckingAllHeaderParam) {
         this.isCheckingAllHeaderParam = isCheckingAllHeaderParam;
-        return this;
-    }
-
-    public PreferencesUtil withIsCheckingAllBase64Param(boolean isCheckingAllBase64Param) {
-        this.isCheckingAllBase64Param = isCheckingAllBase64Param;
         return this;
     }
     

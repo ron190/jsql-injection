@@ -20,6 +20,7 @@ import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -210,6 +211,7 @@ public class ManagerScan extends AbstractManagerList {
                 optionalEngine.orElse(MediatorHelper.model().getMediatorEngine().getAuto())
             );
             MediatorHelper.model().getMediatorUtils().parameterUtil().controlInput(
+                StringUtils.EMPTY,
                 urlItemListScan.getBeanInjection().getUrl(),
                 urlItemListScan.getBeanInjection().getRequest(),
                 urlItemListScan.getBeanInjection().getHeader(),

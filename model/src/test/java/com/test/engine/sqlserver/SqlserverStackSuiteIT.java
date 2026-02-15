@@ -20,9 +20,12 @@ class SqlserverStackSuiteIT extends ConcreteSqlserverSuiteIT {
             "http://localhost:8080/tx/stack?tenant=sqlserver&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true);

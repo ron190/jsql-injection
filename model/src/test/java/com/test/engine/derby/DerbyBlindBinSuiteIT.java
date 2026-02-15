@@ -21,6 +21,11 @@ class DerbyBlindBinSuiteIT extends ConcreteDerbySuiteIT {
         );
 
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
         
         model
         .getMediatorUtils()

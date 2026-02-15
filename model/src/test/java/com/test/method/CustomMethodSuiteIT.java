@@ -3,10 +3,10 @@ package com.test.method;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlErrorSuiteIT;
+import com.test.engine.mysql.ConcreteMysqlErrorSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class CustomMethodSuiteIT extends ConcreteMySqlErrorSuiteIT {
+public class CustomMethodSuiteIT extends ConcreteMysqlErrorSuiteIT {
 
     public static final String CUSTOM_METHOD = "CUSTOM-JSQL";
     
@@ -25,6 +25,7 @@ public class CustomMethodSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);

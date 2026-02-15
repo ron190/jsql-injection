@@ -19,7 +19,14 @@ class SybaseUnionGetSuiteIT extends ConcreteSybaseSuiteIT {
         model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/union?tenant=sybase&name="
         );
-        
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
+
         model
         .getMediatorUtils()
         .connectionUtil()

@@ -25,6 +25,7 @@ class OracleUnionSuiteIT extends ConcreteOracleSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true);

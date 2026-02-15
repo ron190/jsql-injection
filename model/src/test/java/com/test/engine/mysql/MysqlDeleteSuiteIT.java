@@ -1,15 +1,14 @@
-package com.test.preferences;
+package com.test.engine.mysql;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlSuiteIT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MySqlZipSuiteIT extends ConcreteMySqlSuiteIT {
-    
+class MysqlDeleteSuiteIT extends ConcreteMysqlErrorSuiteIT {
+
     @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
@@ -18,13 +17,15 @@ class MySqlZipSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/union?tenant=mysql&name="
+            "http://localhost:8080/tx/delete?tenant=mysql-error&name="
         );
-        
+
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
-        .withIsZipStrategy(true)
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
@@ -37,35 +38,17 @@ class MySqlZipSuiteIT extends ConcreteMySqlSuiteIT {
         
         model.beginInjection();
     }
-    
+
     @Override
     @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
+    public void listDatabases() throws JSqlException {  // API changes rows: listValues() not usable
         super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listValues() throws JSqlException {
-        super.listValues();
     }
 
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getUnion(),
+            this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

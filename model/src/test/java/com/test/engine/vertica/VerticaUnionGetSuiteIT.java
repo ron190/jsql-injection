@@ -19,10 +19,13 @@ class VerticaUnionGetSuiteIT extends ConcreteVerticaSuiteIT {
         model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/vertica?name="
         );
+
+        model.setIsScanning(true);
         
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 

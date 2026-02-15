@@ -1,4 +1,4 @@
-package com.test.engine.vertica;
+package com.test.engine.mysql;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,8 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class VerticaBlindBitGetSuiteIT extends ConcreteVerticaSuiteIT {
-    
+class MysqlInsertSuiteIT extends ConcreteMysqlErrorSuiteIT {  // can be unstable
+
     @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
@@ -17,7 +17,7 @@ class VerticaBlindBitGetSuiteIT extends ConcreteVerticaSuiteIT {
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/vertica?name="
+            "http://localhost:8080/tx/insert?tenant=mysql-error&name="
         );
 
         model.setIsScanning(true);
@@ -26,9 +26,9 @@ class VerticaBlindBitGetSuiteIT extends ConcreteVerticaSuiteIT {
         .getMediatorUtils()
         .preferencesUtil()
         .withIsCheckingAllURLParam(false)
+        .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyErrorDisabled(true)
-        .withIsStrategyUnionDisabled(true);
+        .withIsStrategyBlindBitDisabled(true);
 
         model
         .getMediatorUtils()
@@ -38,17 +38,17 @@ class VerticaBlindBitGetSuiteIT extends ConcreteVerticaSuiteIT {
         
         model.beginInjection();
     }
-
+    
     @Override
-    @RetryingTest(3)
-    public void listValues() throws JSqlException {
-        super.listValues();
+    @RetryingTest(6)
+    public void listDatabases() throws JSqlException {  // API changes rows: listValues() not usable
+        super.listDatabases();
     }
 
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getBlindBit(),
+            this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

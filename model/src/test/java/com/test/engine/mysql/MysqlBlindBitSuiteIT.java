@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {  // can be unstable
+class MysqlBlindBitSuiteIT extends ConcreteMysqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -15,9 +15,9 @@ class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {  // can be unstable
         this.injectionModel = model;
 
         model.subscribe(new SubscriberLogger(model));
-
+        
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/tx/insert?tenant=mysql-error&name="
+            "http://localhost:8080/blind?tenant=mysql&name="
         );
 
         model.setIsScanning(true);
@@ -25,9 +25,9 @@ class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {  // can be unstable
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
-        .withIsStrategyBlindBinDisabled(true)
-        .withIsStrategyBlindBitDisabled(true);
+        .withIsStrategyBlindBinDisabled(true);
 
         model
         .getMediatorUtils()
@@ -39,15 +39,15 @@ class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {  // can be unstable
     }
     
     @Override
-    @RetryingTest(6)
-    public void listDatabases() throws JSqlException {  // API changes rows: listValues() not usable
-        super.listDatabases();
+    @RetryingTest(3)
+    public void listValues() throws JSqlException {
+        super.listValues();
     }
 
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getError(),
+            this.injectionModel.getMediatorStrategy().getBlindBit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

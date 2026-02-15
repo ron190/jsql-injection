@@ -23,6 +23,11 @@ class AltibaseUnionSuiteIT extends ConcreteAltibaseSuiteIT {
 
         model
         .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
+
+        model
+        .getMediatorUtils()
         .connectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");

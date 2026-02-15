@@ -126,19 +126,16 @@ public class DataAccess {
             String nameDatabase = resultToParse.split(DataAccess.ENCLOSE_VALUE_RGX)[1];
             String username = resultToParse.split(DataAccess.ENCLOSE_VALUE_RGX)[2];
 
-            var infos = String.format(
-                "Database [%s] on %s [%s] for user [%s]",
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_SUCCESS,
+                "Database [{}] on {} [{}] for user [{}]",
                 nameDatabase,
                 this.injectionModel.getMediatorEngine().getEngine(),
                 versionDatabase,
                 username
             );
-            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, infos);
         } catch (ArrayIndexOutOfBoundsException e) {
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
-                String.format("%s: %s", I18nUtil.valueByKey("LOG_DB_METADATA_INCORRECT"), resultToParse)
-            );
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR,"{}: {}", I18nUtil.valueByKey("LOG_DB_METADATA_INCORRECT"), resultToParse);
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, I18nUtil.valueByKey("LOG_DB_METADATA_WARN"));
         }
     }

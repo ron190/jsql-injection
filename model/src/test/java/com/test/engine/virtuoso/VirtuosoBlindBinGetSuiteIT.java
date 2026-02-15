@@ -25,6 +25,7 @@ class VirtuosoBlindBinGetSuiteIT extends ConcreteVirtuosoSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyErrorDisabled(true)
         .withIsStrategyUnionDisabled(true);

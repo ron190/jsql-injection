@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
+class MysqlReadFileLampSuiteIT extends ConcreteMysqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -27,19 +27,20 @@ class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
 
         model
         .getMediatorUtils()
-        .connectionUtil()
-        .withMethodInjection(model.getMediatorMethod().getQuery())
-        .withTypeRequest("GET");
-
-        model
-        .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyStackDisabled(true)
         .withIsStrategyMultibitDisabled(true)
         .withIsStrategyErrorDisabled(true);
+
+        model
+        .getMediatorUtils()
+        .connectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
 
         model.beginInjection();
     }

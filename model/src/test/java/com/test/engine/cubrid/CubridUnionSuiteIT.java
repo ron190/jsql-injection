@@ -21,6 +21,13 @@ class CubridUnionSuiteIT extends ConcreteCubridSuiteIT {
             "http://localhost:8080/union?tenant=cubrid&name="
         );
 
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
+
         model
         .getMediatorUtils()
         .connectionUtil()

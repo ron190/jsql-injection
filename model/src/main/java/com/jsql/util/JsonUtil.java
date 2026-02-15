@@ -118,11 +118,11 @@ public class JsonUtil {
             try {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_INFORM,
-                    "{} JSON {}={} with {}",
+                    "{} {} JSON [key: {}, value: {}]",
                     () -> I18nUtil.valueByKey("LOG_CHECKING"),
+                    methodInjection::name,
                     parentXPath::getKey,
-                    () -> parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY),
-                    methodInjection::name
+                    () -> parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
                 );
                 
                 // Test current JSON value marked with * for injection

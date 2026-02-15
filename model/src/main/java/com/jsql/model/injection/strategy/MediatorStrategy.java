@@ -8,6 +8,7 @@ import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetEngine;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
+import com.jsql.view.subscriber.Seal;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -143,7 +144,8 @@ public class MediatorStrategy {
         // Force to insertion char otherwise.
         // parameterToInject null on true STAR injection
         // TODO Use also on Json injection where parameter == null
-        if (parameterToInject != null) {
+        String insertionGeneric = StringUtils.EMPTY;
+        if (parameterToInject != null) {  // no parameter when injection point in path
             parameterOriginalValue = parameterToInject.getValue();
                      
             // Test for params integrity
@@ -159,7 +161,9 @@ public class MediatorStrategy {
             } else {  // When injecting last parameter
                 parameterToInject.setValue(characterInsertion.replaceAll("(\\w)$", "$1+") + InjectionModel.STAR);
             }
+            insertionGeneric = characterInsertion;
         } else if (this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking path...");
             String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(
                 new Input(StringUtils.EMPTY)
             );
@@ -168,11 +172,20 @@ public class MediatorStrategy {
                 // Space %20 for URL, do not use +
                 urlBase.replace(InjectionModel.STAR, characterInsertion.replaceAll("(\\w)$", "$1%20") + InjectionModel.STAR)
             );
+            insertionGeneric = characterInsertion;
         }
 
         if (this.injectionModel.getMediatorEngine().getEngineByUser() == this.injectionModel.getMediatorEngine().getAuto()) {
             new SuspendableGetEngine(this.injectionModel).run();
         }
+
+        LOGGER.log(
+            LogLevelUtil.CONSOLE_INFORM,
+            "Using [{}] and character insertion [{}]",
+            this.injectionModel.getMediatorEngine().getEngine(),
+            insertionGeneric
+        );
+        this.injectionModel.sendToViews(new Seal.MarkEngineFound(this.injectionModel.getMediatorEngine().getEngine()));
 
         // Test each injection strategies: time < blind binary < blind bitwise < multibit < error < stack < union
         this.time.checkApplicability();

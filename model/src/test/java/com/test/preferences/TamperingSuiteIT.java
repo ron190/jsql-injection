@@ -3,10 +3,10 @@ package com.test.preferences;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMysqlSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class TamperingSuiteIT extends ConcreteMySqlSuiteIT {
+class TamperingSuiteIT extends ConcreteMysqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -18,9 +18,12 @@ class TamperingSuiteIT extends ConcreteMySqlSuiteIT {
         model.getMediatorUtils().parameterUtil().initQueryString("http://localhost:8080/post?tenant=mysql");
         model.getMediatorUtils().parameterUtil().initRequest("name=");
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
@@ -33,9 +36,7 @@ class TamperingSuiteIT extends ConcreteMySqlSuiteIT {
         .withRandomCase()
         .withHexToChar()
         .withSpaceToMultilineComment();
-        
-        model.setIsScanning(true);
-        
+
         model
         .getMediatorUtils()
         .connectionUtil()

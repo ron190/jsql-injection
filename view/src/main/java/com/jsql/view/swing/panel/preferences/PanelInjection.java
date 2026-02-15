@@ -25,14 +25,13 @@ public class PanelInjection extends JPanel {
     private final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox("Disable search of database name, version and user metadata", MediatorHelper.model().getMediatorUtils().preferencesUtil().isNotInjectingMetadata());
     private final JCheckBox checkboxIsParsingForm = new JCheckBox("Get HTML tags <input/> and add parameters to URL and Request", MediatorHelper.model().getMediatorUtils().preferencesUtil().isParsingForm());
     
-    private final JCheckBox checkboxIsCheckingAllParam = new JCheckBox("Inject every parameters (ignore user's selection)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllParam());
-    private final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox("Inject every URL parameters when URL method is selected", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllURLParam());
-    private final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox("Inject every Request parameters when Request method is selected", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllRequestParam());
-    private final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox("Inject every Header parameters when Header method is selected", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllHeaderParam());
-    private final JCheckBox checkboxIsCheckingAllBase64Param = new JCheckBox("Inject Base64 parameters", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllBase64Param());
-    private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox("Inject every JSON parameters", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllJsonParam());
-    private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("Inject every cookie parameters", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllCookieParam());
-    private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox("Inject SOAP parameters in Request body", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllSoapParam());
+    private final JCheckBox checkboxIsCheckingAllParam = new JCheckBox("Inject all params and ignore user's selection", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllParam());
+    private final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox("Inject all URL params when URL method is selected", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllURLParam());
+    private final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox("Inject all Request params when Request method is selected", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllRequestParam());
+    private final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox("Inject all Header params when Header method is selected", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllHeaderParam());
+    private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox("Inject all JSON params", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllJsonParam());
+    private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("Inject all Cookie params in Request body", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllCookieParam());
+    private final JCheckBox checkboxIsCheckingAllSoapParam = new JCheckBox("Inject all SOAP params in Request body", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCheckingAllSoapParam());
 
     private final JCheckBox checkboxIsLimitingUnionIndex = new JCheckBox("Limit Union strategy:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isLimitingUnionIndex());
     private final JSpinner spinnerUnionIndexCount = new JSpinner();
@@ -44,7 +43,7 @@ public class PanelInjection extends JPanel {
     private final JRadioButton radioIsZipStrategy = new JRadioButton("Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isZipStrategy());
     private final JRadioButton radioIsDiosStrategy = new JRadioButton("Use Dios mode (less queries ; do not use with Error strategies)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isDiosStrategy());
     private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox("Disable URL encoding (smaller URL)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlEncodingDisabled());
-    private final JCheckBox checkboxIsUrlRandomSuffixDisabled = new JCheckBox("Disable URL random suffix (strategy Time special use case)", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlRandomSuffixDisabled());
+    private final JCheckBox checkboxIsUrlRandomSuffixDisabled = new JCheckBox("Disable URL random suffix", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlRandomSuffixDisabled());
 
     private final JTextField textfieldDnsDomain = new JPopupTextField("e.g custom-domain.com", MediatorHelper.model().getMediatorUtils().preferencesUtil().getDnsDomain()).getProxy();
     private final JTextField textfieldDnsPort = new JPopupTextField("e.g 53", MediatorHelper.model().getMediatorUtils().preferencesUtil().getDnsPort()).getProxy();
@@ -54,13 +53,14 @@ public class PanelInjection extends JPanel {
         this.checkboxIsNotSearchingCharInsertion.setName("checkboxIsNotSearchingCharInsertion");
         this.checkboxIsNotShowingVulnReport.setName("checkboxIsNotShowingVulnReport");
         this.checkboxIsParsingForm.setName(PanelInjection.CHECKBOX_IS_PARSING_FORM);
+
         this.checkboxIsCheckingAllURLParam.setName("checkboxIsCheckingAllURLParam");
         this.checkboxIsCheckingAllRequestParam.setName("checkboxIsCheckingAllRequestParam");
         this.checkboxIsCheckingAllHeaderParam.setName("checkboxIsCheckingAllHeaderParam");
         this.checkboxIsCheckingAllJSONParam.setName("checkboxIsCheckingAllJSONParam");
-        this.checkboxIsCheckingAllBase64Param.setName("checkboxIsCheckingAllBase64Param");
         this.checkboxIsCheckingAllCookieParam.setName("checkboxIsCheckingAllCookieParam");
-        this.checkboxIsCheckingAllSOAPParam.setName("checkboxIsCheckingAllSOAPParam");
+        this.checkboxIsCheckingAllSoapParam.setName("checkboxIsCheckingAllSOAPParam");
+
         this.checkboxIsPerfIndexDisabled.setName("checkboxIsPerfIndexDisabled");
         this.radioIsZipStrategy.setName(PanelInjection.RADIO_IS_ZIP_STRATEGY);
         this.radioIsDefaultStrategy.setName(PanelInjection.RADIO_IS_DEFAULT_STRATEGY);
@@ -173,13 +173,14 @@ public class PanelInjection extends JPanel {
             this.checkboxIsNotSearchingCharInsertion,
             this.checkboxIsNotShowingVulnReport,
             this.checkboxIsParsingForm,
+
             this.checkboxIsCheckingAllURLParam,
             this.checkboxIsCheckingAllRequestParam,
             this.checkboxIsCheckingAllHeaderParam,
             this.checkboxIsCheckingAllJSONParam,
-            this.checkboxIsCheckingAllBase64Param,
             this.checkboxIsCheckingAllCookieParam,
-            this.checkboxIsCheckingAllSOAPParam,
+            this.checkboxIsCheckingAllSoapParam,
+
             this.checkboxIsPerfIndexDisabled,
             this.radioIsZipStrategy,
             this.radioIsDiosStrategy,
@@ -255,9 +256,8 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsCheckingAllHeaderParam)
 
                 .addComponent(labelSpecial)
-//                .addComponent(this.checkboxIsCheckingAllBase64Param)
                 .addComponent(this.checkboxIsCheckingAllJSONParam)
-                .addComponent(this.checkboxIsCheckingAllSOAPParam)
+                .addComponent(this.checkboxIsCheckingAllSoapParam)
                 .addComponent(this.checkboxIsCheckingAllCookieParam)
 
                 .addComponent(labelQuerySize)
@@ -354,11 +354,6 @@ public class PanelInjection extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelSpecial)
             )
-//            .addGroup(
-//                groupLayout
-//                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                .addComponent(this.checkboxIsCheckingAllBase64Param)
-//            )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -367,7 +362,7 @@ public class PanelInjection extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsCheckingAllSOAPParam)
+                .addComponent(this.checkboxIsCheckingAllSoapParam)
             )
             .addGroup(
                 groupLayout
@@ -459,10 +454,6 @@ public class PanelInjection extends JPanel {
         return this.checkboxIsCheckingAllHeaderParam;
     }
     
-    public JCheckBox getCheckboxIsCheckingAllBase64Param() {
-        return this.checkboxIsCheckingAllBase64Param;
-    }
-    
     public JCheckBox getCheckboxIsCheckingAllJsonParam() {
         return this.checkboxIsCheckingAllJSONParam;
     }
@@ -472,7 +463,7 @@ public class PanelInjection extends JPanel {
     }
     
     public JCheckBox getCheckboxIsCheckingAllSoapParam() {
-        return this.checkboxIsCheckingAllSOAPParam;
+        return this.checkboxIsCheckingAllSoapParam;
     }
     
     public JCheckBox getCheckboxIsParsingForm() {

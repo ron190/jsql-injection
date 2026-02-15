@@ -3,10 +3,10 @@ package com.test.method;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMysqlSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MultipartSuiteIT extends ConcreteMySqlSuiteIT {
+class MultipartSuiteIT extends ConcreteMysqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -26,6 +26,7 @@ class MultipartSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);

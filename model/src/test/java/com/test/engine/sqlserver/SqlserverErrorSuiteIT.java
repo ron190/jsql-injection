@@ -20,9 +20,12 @@ class SqlserverErrorSuiteIT extends ConcreteSqlserverSuiteIT {
             "http://localhost:8080/errors?tenant=sqlserver&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);

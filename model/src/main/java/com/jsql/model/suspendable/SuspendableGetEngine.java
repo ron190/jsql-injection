@@ -24,7 +24,7 @@ public class SuspendableGetEngine extends AbstractSuspendable {
 
     @Override
     public String run(Input input) throws JSqlException {
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database with Boolean match...");
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database with boolean match (step 4)...");
 
         AtomicBoolean isEngineFound = new AtomicBoolean(false);
         this.injectionModel.getMediatorEngine().getEnginesForFingerprint()
@@ -42,13 +42,13 @@ public class SuspendableGetEngine extends AbstractSuspendable {
                 AbstractInjectionBit.BlindOperator.OR  // TODO should also test AND and no mode
             );
             try {
-                var injectionCharInsertion = new InjectionEngine(this.injectionModel, engineSpecificWithOperator, engine);
-                if (injectionCharInsertion.isInjectable(engineSpecificWithOperator)) {
+                var injectionEngine = new InjectionEngine(this.injectionModel, engineSpecificWithOperator, engine);
+                if (injectionEngine.isInjectable(engineSpecificWithOperator)) {
                     if (this.isSuspended()) {
                         throw new StoppedByUserSlidingException();
                     }
 
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Found [{}] using Boolean match", engine);
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Found [{}] using boolean match", engine);
                     this.injectionModel.getMediatorEngine().setEngine(engine);
                     isEngineFound.set(true);
 

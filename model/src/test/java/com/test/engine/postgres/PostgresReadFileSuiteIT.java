@@ -27,18 +27,19 @@ class PostgresReadFileSuiteIT extends ConcretePostgresSuiteIT {
 
         model
         .getMediatorUtils()
-        .connectionUtil()
-        .withMethodInjection(model.getMediatorMethod().getQuery())
-        .withTypeRequest("GET");
-
-        model
-        .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyStackDisabled(true)
         .withIsStrategyErrorDisabled(true);
+
+        model
+        .getMediatorUtils()
+        .connectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
 
         model.beginInjection();
     }

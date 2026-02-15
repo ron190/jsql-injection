@@ -1,12 +1,14 @@
-package com.test.engine.neo4j;
+package com.test.engine.mysql;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class Neo4JUnionGetSuiteIT extends ConcreteNeo4jSuiteIT {
-    
+class MysqlErrorSuiteIT extends ConcreteMysqlErrorSuiteIT {
+
     @Override
     public void setupInjection() throws Exception {
         InjectionModel model = new InjectionModel();
@@ -15,16 +17,25 @@ class Neo4JUnionGetSuiteIT extends ConcreteNeo4jSuiteIT {
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/neo4j?name=1"
+            "http://localhost:8080/errors?tenant=mysql-error&name="
         );
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyBlindBinDisabled(true)
+        .withIsStrategyBlindBitDisabled(true);
 
         model
         .getMediatorUtils()
         .connectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-
-        model.getMediatorEngine().setEngineByUser(model.getMediatorEngine().getNeo4j());
+        
         model.beginInjection();
     }
     
@@ -50,5 +61,13 @@ class Neo4JUnionGetSuiteIT extends ConcreteNeo4jSuiteIT {
     @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
+    }
+
+    @AfterEach
+    void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getError(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

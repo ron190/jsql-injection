@@ -25,6 +25,7 @@ class PrestoBlindBitGetSuiteIT extends ConcretePrestoSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyErrorDisabled(true)
         .withIsStrategyUnionDisabled(true);

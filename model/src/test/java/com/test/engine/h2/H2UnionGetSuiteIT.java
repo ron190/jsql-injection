@@ -19,6 +19,13 @@ class H2UnionGetSuiteIT extends ConcreteH2SuiteIT {
         model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/union?tenant=h2&name="
         );
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
         
         model
         .getMediatorUtils()

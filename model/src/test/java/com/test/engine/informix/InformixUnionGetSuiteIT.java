@@ -19,7 +19,14 @@ class InformixUnionGetSuiteIT extends ConcreteInformixSuiteIT {
         model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/union?tenant=informix&name="
         );
-        
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
+
         model
         .getMediatorUtils()
         .connectionUtil()

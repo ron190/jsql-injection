@@ -25,6 +25,7 @@ class SqlserverBlindBitGetSuiteIT extends ConcreteSqlserverSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true);
         

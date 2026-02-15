@@ -3,7 +3,7 @@ package com.test.security;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlErrorSuiteIT;
+import com.test.engine.mysql.ConcreteMysqlErrorSuiteIT;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Order;
 import org.junitpioneer.jupiter.RetryingTest;
 import spring.security.DigestSecurityConfig;
 
-class DigestSuiteIT extends ConcreteMySqlErrorSuiteIT {
+class DigestSuiteIT extends ConcreteMysqlErrorSuiteIT {
 
     /**
      * <a href="https://en.wikipedia.org/wiki/Digest_access_authentication">Digest_access_authentication</a>
@@ -41,6 +41,7 @@ class DigestSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);

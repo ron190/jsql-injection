@@ -19,7 +19,14 @@ class PrestoUnionGetSuiteIT extends ConcretePrestoSuiteIT {
         model.getMediatorUtils().parameterUtil().initQueryString(
             "http://localhost:8080/presto?name="
         );
-        
+
+        model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
+
         model
         .getMediatorUtils()
         .connectionUtil()

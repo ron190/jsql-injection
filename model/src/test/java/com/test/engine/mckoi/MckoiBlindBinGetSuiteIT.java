@@ -25,6 +25,7 @@ class MckoiBlindBinGetSuiteIT extends ConcreteMckoiSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsUrlRandomSuffixDisabled(true);
 
         model

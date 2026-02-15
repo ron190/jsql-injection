@@ -21,17 +21,18 @@ class SqliteBlindBinSuiteIT extends ConcreteSqliteSuiteIT {
         );
         
         model.setIsScanning(true);
-        
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
+        .withIsStrategyBlindBitDisabled(true);
+
         model
         .getMediatorUtils()
         .connectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-
-        model
-        .getMediatorUtils()
-        .preferencesUtil()
-        .withIsStrategyBlindBitDisabled(true);
 
         model.beginInjection();
     }

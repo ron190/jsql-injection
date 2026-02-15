@@ -25,6 +25,7 @@ class Db2BlindBinSuiteIT extends ConcreteDb2SuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withCountLimitingThreads(3)
         .withIsStrategyBlindBitDisabled(true);
         

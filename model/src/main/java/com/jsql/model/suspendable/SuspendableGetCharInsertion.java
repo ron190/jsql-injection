@@ -52,7 +52,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         List<String> charactersInsertion = this.initCallables(taskCompletionService, charFromBooleanMatch);
         
         var mediatorEngine = this.injectionModel.getMediatorEngine();
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database and character insertion with Order by match...");
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database and character insertion using ORDER BY (step 3)...");
 
         String charFromOrderBy = null;
         
@@ -70,13 +70,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 if (!enginesOrderByMatches.isEmpty()) {
                     if (this.injectionModel.getMediatorEngine().getEngineByUser() == this.injectionModel.getMediatorEngine().getAuto()) {
                         this.setEngine(mediatorEngine, enginesOrderByMatches);
-
-                        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using [{}]", mediatorEngine.getEngine());
                         this.injectionModel.sendToViews(new Seal.ActivateEngine(mediatorEngine.getEngine()));
                     }
                     
                     charFromOrderBy = currentCallable.getCharacterInsertion();
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Character insertion [{}] matching with Order by and compatible with Error strategy", charFromOrderBy);
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Found character insertion [{}] using ORDER BY and compatible with Error strategy", charFromOrderBy);
                     break;
                 }
             } catch (InterruptedException e) {
@@ -132,7 +130,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 if (optionalOrderByErrorMatch.isPresent()) {
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_SUCCESS,
-                        String.format("Order by fingerprint matching vendor [%s]", engine)
+                        "Found [{}] using ORDER BY",
+                        engine
                     );
                 }
                 return optionalOrderByErrorMatch.isPresent();
@@ -154,7 +153,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         );
         List<String> prefixParentheses = Arrays.asList(StringUtils.EMPTY, ")", "))");
         List<String> charactersInsertion = new ArrayList<>();
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting character insertion with Boolean match...");
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting character insertion using boolean match (step 2)...");
         for (String prefixValue: prefixValues) {
             for (String prefixQuote: prefixQuotes) {
                 for (String prefixParenthesis: prefixParentheses) {
@@ -200,7 +199,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 charFromBooleanMatch[0] = characterInsertion;
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_SUCCESS,
-                    "Found character insertion [{}] using Boolean match",
+                    "Found character insertion [{}] using boolean match",
                     () -> charFromBooleanMatch[0]
                 );
             }
@@ -220,14 +219,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         } else if (!characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY).equals(characterInsertionDetectedFixed)) {
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);
             LOGGER.log(
-                LogLevelUtil.CONSOLE_INFORM,
-                "Using [{}] and matching [{}]",
-                () -> this.injectionModel.getMediatorEngine().getEngine(),
-                () -> characterInsertionDetected
-            );
-            LOGGER.log(
                 LogLevelUtil.CONSOLE_DEFAULT,
-                "Disable search for char insertion in Preferences to force the value [{}]",
+                "Disable search for char insertion in Preferences or use star * to force value [{}]",
                 () -> characterInsertionByUserFormat
             );
         } else {

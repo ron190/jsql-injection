@@ -25,6 +25,7 @@ class MimerBlindBinGetSuiteIT extends ConcreteMimerSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withCountLimitingThreads(1)
         .withIsNotSearchingCharInsertion(true)  // reduce db calls
         .withIsStrategyBlindBitDisabled(true)

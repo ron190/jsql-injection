@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MySqlErrorSuiteIT extends ConcreteMySqlErrorSuiteIT {
+class MysqlBlindBinSuiteIT extends ConcreteMysqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -15,16 +15,18 @@ class MySqlErrorSuiteIT extends ConcreteMySqlErrorSuiteIT {
         this.injectionModel = model;
 
         model.subscribe(new SubscriberLogger(model));
-
+        
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/errors?tenant=mysql-error&name="
+            "http://localhost:8080/blind?tenant=mysql&name="
         );
+
+        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
-        .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 
         model
@@ -38,24 +40,6 @@ class MySqlErrorSuiteIT extends ConcreteMySqlErrorSuiteIT {
     
     @Override
     @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RetryingTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
-    }
-    
-    @Override
-    @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
@@ -63,7 +47,7 @@ class MySqlErrorSuiteIT extends ConcreteMySqlErrorSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getError(),
+            this.injectionModel.getMediatorStrategy().getBlindBin(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

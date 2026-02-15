@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
+class MysqlUpdateSuiteIT extends ConcreteMysqlErrorSuiteIT {  // can be unstable
 
     @Override
     public void setupInjection() throws Exception {
@@ -17,7 +17,7 @@ class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/tx/delete?tenant=mysql-error&name="
+            "http://localhost:8080/tx/update?tenant=mysql-error&name="
         );
 
         model.setIsScanning(true);
@@ -25,6 +25,7 @@ class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
@@ -39,7 +40,7 @@ class MySqlDeleteSuiteIT extends ConcreteMySqlErrorSuiteIT {
     }
 
     @Override
-    @RetryingTest(3)
+    @RetryingTest(6)
     public void listDatabases() throws JSqlException {  // API changes rows: listValues() not usable
         super.listDatabases();
     }

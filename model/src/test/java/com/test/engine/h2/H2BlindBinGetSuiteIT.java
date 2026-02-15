@@ -21,6 +21,11 @@ class H2BlindBinGetSuiteIT extends ConcreteH2SuiteIT {
         );
 
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
         
         model
         .getMediatorUtils()

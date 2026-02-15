@@ -35,7 +35,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         if (!hasFoundInjection) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_DEFAULT,
-                "{} {} params...",
+                "{} [{}] params...",
                 () -> I18nUtil.valueByKey("LOG_CHECKING"),
                 () -> this.name().toLowerCase()
             );
@@ -63,7 +63,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         }
         
         // Force injection method of model to current running method
-        this.injectionModel.getMediatorUtils().connectionUtil().setMethodInjection(this);
+        this.injectionModel.getMediatorUtils().connectionUtil().withMethodInjection(this);
         
         // Injection by injection point in params or in path
         if (
@@ -84,6 +84,9 @@ public abstract class AbstractMethodInjection implements Serializable {
             .filter(entry -> entry.getValue().contains("*"))
             .findFirst()
             .orElse(null);
+        if (parameterToInject != null) {
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking selected param [{}]...", parameterToInject.getKey());
+        }
         return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
     }
 
@@ -97,6 +100,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         SimpleEntry<String, String> parameterToInject = this.getParams().stream()
             .reduce((a, b) -> b)
             .orElseThrow(() -> new JSqlException("Missing last parameter"));
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking default last param [{}]. Use address bar button or preferences to check other params...", parameterToInject.getKey());
         return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
     }
 
@@ -107,6 +111,7 @@ public abstract class AbstractMethodInjection implements Serializable {
      * - outer loop adds * to current param
      */
     private boolean checkAllParams() throws StoppedByUserSlidingException {
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking all params...");
         // This param will be marked by * if injection is found,
         // inner loop will erase mark * otherwise
         for (SimpleEntry<String, String> paramBase: this.getParams()) {
@@ -156,9 +161,9 @@ public abstract class AbstractMethodInjection implements Serializable {
         try {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
-                "{} {} parameter {}={}",
+                "{} {} param [key: {}, value: {}]",
                 () -> I18nUtil.valueByKey("LOG_CHECKING"),
-                this::name,
+                () -> this.name().toLowerCase(),
                 paramStar::getKey,
                 () -> paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
             );

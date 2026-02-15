@@ -3,10 +3,10 @@ package com.test.special;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMysqlSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class JsonCheckAllParamSuiteIT extends ConcreteMySqlSuiteIT {
+class JsonCheckAllParamSuiteIT extends ConcreteMysqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {

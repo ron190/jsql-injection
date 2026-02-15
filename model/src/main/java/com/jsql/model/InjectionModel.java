@@ -179,7 +179,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
             
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_DONE"));
-            this.shouldErasePreviousInjection = true;
+            this.shouldErasePreviousInjection = hasFoundInjection;
         } catch (InterruptedException e) {
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
@@ -233,7 +233,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             );
             urlObject = new URI(urlInjectionFixed).toURL();
         } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format("Incorrect Query Url: %s", e.getMessage()));
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Query Url: {}", e.getMessage());
             return StringUtils.EMPTY;
         }
 
@@ -316,10 +316,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 callableBoolean
             ));
         } catch (IOException e) {
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
-                String.format("Error during connection: %s", e.getMessage())
-            );
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Error during connection: {}", e.getMessage());
         } catch (InterruptedException e) {
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();

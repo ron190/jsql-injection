@@ -24,6 +24,11 @@ class FirebirdBlindBitGetSuiteIT extends ConcreteFirebirdSuiteIT {
 
         model
         .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
+
+        model
+        .getMediatorUtils()
         .connectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");

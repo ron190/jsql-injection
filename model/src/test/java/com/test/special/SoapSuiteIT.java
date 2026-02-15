@@ -3,12 +3,12 @@ package com.test.special;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMysqlSuiteIT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SoapSuiteIT extends ConcreteMySqlSuiteIT {
+class SoapSuiteIT extends ConcreteMysqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -28,7 +28,11 @@ class SoapSuiteIT extends ConcreteMySqlSuiteIT {
             "    </soapenv:Body>" +
             "</soapenv:Envelope>"
         );
+
+        model.setIsScanning(true);
+
         model.getMediatorUtils().preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsNotTestingConnection(true)  // Expected error 500 on connection test (SQL failure)
         .withIsCheckingAllSoapParam(true)
         .withIsNotSearchingCharInsertion(true)
@@ -37,8 +41,6 @@ class SoapSuiteIT extends ConcreteMySqlSuiteIT {
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyMultibitDisabled(true);
 
-        model.setIsScanning(true);
-        
         model
         .getMediatorUtils()
         .connectionUtil()

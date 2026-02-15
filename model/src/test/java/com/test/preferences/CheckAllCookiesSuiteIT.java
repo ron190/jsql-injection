@@ -3,10 +3,10 @@ package com.test.preferences;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMysqlSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class CheckAllCookiesSuiteIT extends ConcreteMySqlSuiteIT {
+class CheckAllCookiesSuiteIT extends ConcreteMysqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -23,6 +23,7 @@ class CheckAllCookiesSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsCheckingAllCookieParam(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
@@ -31,7 +32,7 @@ class CheckAllCookiesSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .connectionUtil()
-        .setMethodInjection(model.getMediatorMethod().getHeader());
+        .withMethodInjection(model.getMediatorMethod().getHeader());
         
         model.beginInjection();
     }

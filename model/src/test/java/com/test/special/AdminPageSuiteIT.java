@@ -2,13 +2,13 @@ package com.test.special;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMysqlSuiteIT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.List;
 
-class AdminPageSuiteIT extends ConcreteMySqlSuiteIT {
+class AdminPageSuiteIT extends ConcreteMysqlSuiteIT {
 
     @Override
     public void setupInjection() {

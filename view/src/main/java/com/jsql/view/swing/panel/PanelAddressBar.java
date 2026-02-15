@@ -22,7 +22,6 @@ import com.jsql.view.swing.panel.address.PanelTrailingAddress;
 import com.jsql.view.swing.panel.address.ModelAddressLine;
 import com.jsql.view.swing.panel.util.ButtonExpandText;
 import com.jsql.view.swing.text.*;
-import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.RadioItemNonClosing;
@@ -32,12 +31,20 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
@@ -55,6 +62,12 @@ public class PanelAddressBar extends JPanel {
     private final AtomicReference<JRadioButton> atomicRadioRequest = new AtomicReference<>();  // atomic to build dynamically
     private final AtomicReference<JRadioButton> atomicRadioMethod = new AtomicReference<>();
     private final AtomicReference<JRadioButton> atomicRadioHeader = new AtomicReference<>();
+
+    public static final String[] METHODS = {"DELETE", StringUtil.GET, "HEAD", "OPTIONS", StringUtil.POST, "PUT", "TRACE"};
+    private JPopupMenu popupMethods;
+    private JRadioButton radioCustomMethod;
+    private JTextField inputCustomMethod;
+    private AdvancedButtonAdapter advancedButtonAdapter;
 
     private static final String KEY_ADDRESS_BAR_PLACEHOLDER = "ADDRESS_BAR_PLACEHOLDER";
     private static final String BUTTON_ADVANCED = "BUTTON_ADVANCED";
@@ -141,6 +154,88 @@ public class PanelAddressBar extends JPanel {
             buttonGroup.add(modelLine.radio().get());
         });
 
+        Action originalPaste = this.atomicTextFieldAddress.get().getActionMap().get(DefaultEditorKit.pasteAction);
+        this.atomicTextFieldAddress.get().getActionMap().put(DefaultEditorKit.pasteAction, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    String text = (String) cb.getData(DataFlavor.stringFlavor);
+                    text = text.replace("\n", "\r\n").replace("\r\r\n", "\r\n");  // restore non-standardized
+
+                    String regexStartLine = "([^\\r\\n]+)";
+                    String regexHeaders = "((?:[^\\r\\n]+\\r\\n)*)";
+                    String regexBody = "(.*)";
+                    var matcher = Pattern.compile("(?s)" + regexStartLine + "\\r\\n" + regexHeaders + "\\r\\n" + regexBody).matcher(text);
+
+                    if (matcher.find()) {
+                        String startLine = matcher.group(1);
+                        var matcherStartLine = Pattern.compile("([^ ]+) +([^ ]+) +([^ ]+)").matcher(startLine);
+                        if (matcherStartLine.find()) {
+                            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "HTTP request detected");
+                            var method = matcherStartLine.group(1);
+                            var requestTarget = matcherStartLine.group(2);  // absolute-form, authority-form and asterisk-form not managed
+                            var httpVersion = matcherStartLine.group(3);
+                            var headers = matcher.group(2).trim();
+                            var body = matcher.group(3).trim();
+
+                            // Configure URL
+                            if (requestTarget.startsWith("/")) {  // origin-form
+                                var listHeaders = Pattern.compile("\\r\\n")
+                                    .splitAsStream(headers)
+                                    .map(keyValue -> Arrays.copyOf(keyValue.split(":"), 2))
+                                    .map(keyValue -> new AbstractMap.SimpleEntry<>(
+                                        keyValue[0],
+                                        keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
+                                    )).toList();
+                                var host = listHeaders.stream()
+                                    .filter(e -> "Host".equalsIgnoreCase(e.getKey())).findFirst()
+                                    .orElse(new AbstractMap.SimpleEntry<>("Host", StringUtils.EMPTY));
+                                if (host.getValue().isEmpty()) {
+                                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing Host in origin form");
+                                    return;
+                                }
+                                requestTarget = "https://" + host.getValue().trim() + requestTarget;
+                            }
+                            PanelAddressBar.this.atomicTextFieldAddress.get().setText(requestTarget);
+
+                            // Configure method
+                            PanelAddressBar.this.atomicRadioMethod.get().setText(method);
+                            if (!Arrays.asList(PanelAddressBar.METHODS).contains(method)) {
+                                PanelAddressBar.this.inputCustomMethod.setText(method);
+                                PanelAddressBar.this.radioCustomMethod.setSelected(true);
+                            } else {
+                                Arrays.stream(PanelAddressBar.this.popupMethods.getSubElements())
+                                .map(menuElement -> (JMenuItem) menuElement)
+                                .filter(jMenuItem -> method.equals(jMenuItem.getText()))
+                                .findFirst()
+                                .ifPresent(jMenuItem -> jMenuItem.setSelected(true));
+                            }
+
+                            PanelAddressBar.this.atomicTextFieldRequest.get().setText(
+                                body
+                                .replace("\n", "\\n")
+                                .replace("\r", "\\r")
+                            );
+                            PanelAddressBar.this.atomicTextFieldHeader.get().setText(
+                                headers
+                                .replace("\n", "\\n")
+                                .replace("\r", "\\r")
+                            );
+
+                            PanelAddressBar.this.advancedButtonAdapter.mouseClicked(true);
+                        } else {
+                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect HTTP request, start line must match 'method target version': {}", startLine);
+                        }
+                    } else {
+                        originalPaste.actionPerformed(actionEvent);
+                    }
+                } catch (IOException | UnsupportedFlavorException e) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+                }
+            }
+        });
+
         this.atomicTextFieldAddress.get().setFont(UiUtil.FONT_NON_MONO_BIG);
         this.atomicTextFieldAddress.get().setName("textFieldAddress");
         this.atomicTextFieldAddress.get().setPreferredSize(new Dimension(50, 32));  // required to set correct height
@@ -174,17 +269,17 @@ public class PanelAddressBar extends JPanel {
         panelTextFields.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
         this.add(panelTextFields);
 
-        final var popupMethods = new JPopupMenu();
+        this.popupMethods = new JPopupMenu();
         final var buttonGroupMethods = new ButtonGroup();
 
-        for (String method: new String[]{ "DELETE", StringUtil.GET, "HEAD", "OPTIONS", StringUtil.POST, "PUT", "TRACE" }) {
+        for (String method: PanelAddressBar.METHODS) {
             final JMenuItem newMenuItem = new RadioItemNonClosing(method, StringUtil.GET.equals(method));
             newMenuItem.addActionListener(actionEvent -> {
                 this.typeRequest = newMenuItem.getText();
                 this.atomicRadioMethod.get().setText(this.typeRequest);
                 this.atomicRadioMethod.get().requestFocusInWindow();  // required to set proper focus
             });
-            popupMethods.add(newMenuItem);
+            this.popupMethods.add(newMenuItem);
             buttonGroupMethods.add(newMenuItem);
         }
 
@@ -200,36 +295,24 @@ public class PanelAddressBar extends JPanel {
         Supplier<Color> colorSelectionBackground = () -> UIManager.getColor("MenuItem.selectionBackground");  // adapt to current theme
         panelCustomMethod.setBackground(colorBackground.get());  // required for correct color
 
-        final var radioCustomMethod = new JRadioButton() {
+        this.radioCustomMethod = new JRadioButton() {
             @Override
             public JToolTip createToolTip() {
                 return tooltipMethods.get();
             }
         };
-        radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());
-        radioCustomMethod.setBackground(colorBackground.get());  // required for correct color
-        buttonGroupMethods.add(radioCustomMethod);
+        this.radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        this.radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());
+        this.radioCustomMethod.setBackground(colorBackground.get());  // required for correct color
+        buttonGroupMethods.add(this.radioCustomMethod);
 
-        final JTextField inputCustomMethod = new JPopupTextField("CUSTOM"){
+        this.inputCustomMethod = new JPopupTextField("CUSTOM"){
             @Override
             public JToolTip createToolTip() {
                 return tooltipMethods.get();
             }
         }.getProxy();
-        inputCustomMethod.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                radioCustomMethod.setSelected(!radioCustomMethod.isSelected());
-            }
-        });
-        inputCustomMethod.getDocument().addDocumentListener(new DocumentListenerEditing() {
-            @Override
-            public void process() {
-                PanelAddressBar.this.validate(inputCustomMethod);
-            }
-        });
-        radioCustomMethod.addActionListener(actionEvent -> this.validate(inputCustomMethod));
+        this.radioCustomMethod.addActionListener(actionEvent -> this.validate(this.inputCustomMethod));
 
         var tooltipCustomMethod = "<html>Set user defined HTTP method.<br/>" +
             "A valid method is limited to chars:<br>" +
@@ -242,55 +325,55 @@ public class PanelAddressBar extends JPanel {
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 panelCustomMethod.setBackground(colorSelectionBackground.get());
-                radioCustomMethod.setBackground(colorSelectionBackground.get());
+                PanelAddressBar.this.radioCustomMethod.setBackground(colorSelectionBackground.get());
             }
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
                 panelCustomMethod.setBackground(colorBackground.get());
-                radioCustomMethod.setBackground(colorBackground.get());
+                PanelAddressBar.this.radioCustomMethod.setBackground(colorBackground.get());
             }
         };
-        Arrays.asList(radioCustomMethod, inputCustomMethod, panelCustomMethod).forEach(component -> {
+        Arrays.asList(this.radioCustomMethod, this.inputCustomMethod, panelCustomMethod).forEach(component -> {
             component.addMouseListener(mouseAdapterSetBackground);
             component.setToolTipText(tooltipCustomMethod);
         });
 
-        panelCustomMethod.add(radioCustomMethod, BorderLayout.LINE_START);
-        panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);
-        popupMethods.insert(panelCustomMethod, popupMethods.getComponentCount());
+        panelCustomMethod.add(this.radioCustomMethod, BorderLayout.LINE_START);
+        panelCustomMethod.add(this.inputCustomMethod, BorderLayout.CENTER);
+        this.popupMethods.insert(panelCustomMethod, this.popupMethods.getComponentCount());
 
         this.atomicRadioMethod.get().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Arrays.stream(popupMethods.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
-                radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());
-                radioCustomMethod.updateUI();  // required: incorrect when dark/light mode switch
-                inputCustomMethod.updateUI();  // required: incorrect when dark/light mode switch
-                popupMethods.updateUI();  // required: incorrect when dark/light mode switch
+                Arrays.stream(PanelAddressBar.this.popupMethods.getComponents()).map(a -> (JComponent) a).forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch
+                PanelAddressBar.this.radioCustomMethod.setIcon(new FlatRadioButtonMenuItemIcon());
+                PanelAddressBar.this.radioCustomMethod.updateUI();  // required: incorrect when dark/light mode switch
+                PanelAddressBar.this.inputCustomMethod.updateUI();  // required: incorrect when dark/light mode switch
+                PanelAddressBar.this.popupMethods.updateUI();  // required: incorrect when dark/light mode switch
 
                 if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {
-                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+                    PanelAddressBar.this.radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
                 } else {
-                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+                    PanelAddressBar.this.radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
                 }
 
-                popupMethods.show(
+                PanelAddressBar.this.popupMethods.show(
                     e.getComponent(),
                     ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
-                        ? e.getComponent().getX() - e.getComponent().getWidth() - popupMethods.getWidth()
+                        ? e.getComponent().getX() - e.getComponent().getWidth() - PanelAddressBar.this.popupMethods.getWidth()
                         : e.getComponent().getX(),
                     e.getComponent().getY() + e.getComponent().getHeight()
                 );
-                popupMethods.setLocation(  // required for proper location
+                PanelAddressBar.this.popupMethods.setLocation(  // required for proper location
                     ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))
-                        ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popupMethods.getWidth()
+                        ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - PanelAddressBar.this.popupMethods.getWidth()
                         : e.getComponent().getLocationOnScreen().x,
                     e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight()
                 );
 
                 // Orientation set after popup placement, Fix #96032: NullPointerException on show() when arabic
-                popupMethods.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
+                PanelAddressBar.this.popupMethods.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()));
             }
         });
 
@@ -345,9 +428,14 @@ public class PanelAddressBar extends JPanel {
 
     private void validate(JTextField inputCustomMethod) {
         if (StringUtils.isEmpty(inputCustomMethod.getText())) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing custom method label");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing custom request method, forcing GET");
+            Arrays.stream(this.popupMethods.getSubElements())
+            .map(menuElement -> (JMenuItem) menuElement)
+            .filter(jMenuItem -> StringUtil.GET.equals(jMenuItem.getText()))
+            .findFirst()
+            .ifPresent(jMenuItem -> jMenuItem.setSelected(true));
         } else if (ParameterUtil.isInvalidName(inputCustomMethod.getText())) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> String.format("Illegal method: \"%s\"", inputCustomMethod.getText()));
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Illegal request method: {}", inputCustomMethod.getText());
         } else {
             this.typeRequest = inputCustomMethod.getText();
             this.atomicRadioMethod.get().setText(this.typeRequest);
@@ -365,24 +453,38 @@ public class PanelAddressBar extends JPanel {
         advancedButton.setName(PanelAddressBar.ADVANCED_BUTTON);
         advancedButton.setToolTipText(I18nUtil.valueByKey(PanelAddressBar.BUTTON_ADVANCED));
         I18nViewUtil.addComponentForKey(PanelAddressBar.BUTTON_ADVANCED, tooltip.get());
-        advancedButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                boolean isVisible = advancedButton.getIcon() == UiUtil.ARROW_DOWN.getIcon();
-                PanelAddressBar.this.atomicTextFieldRequest.get().setVisible(isVisible);
-                PanelAddressBar.this.atomicTextFieldHeader.get().setVisible(isVisible);
-                PanelAddressBar.this.atomicRadioRequest.get().setVisible(isVisible);
-                PanelAddressBar.this.atomicRadioMethod.get().setVisible(isVisible);
-                PanelAddressBar.this.atomicRadioHeader.get().setVisible(isVisible);
-                PanelAddressBar.this.isAdvanceActivated = isVisible;
-                MediatorHelper.menubar().setVisible(isVisible);
-                advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.getIcon() : UiUtil.ARROW_DOWN.getIcon());
-            }
-        });
+        this.advancedButtonAdapter = new AdvancedButtonAdapter(advancedButton);
+        advancedButton.addMouseListener(new AdvancedButtonAdapter(advancedButton));
         return advancedButton;
     }
-    
-    
+
+    private class AdvancedButtonAdapter extends MouseAdapter {
+
+        private final JLabel advancedButton;
+
+        public AdvancedButtonAdapter(JLabel advancedButton) {
+            this.advancedButton = advancedButton;
+        }
+
+        public void mouseClicked(boolean isVisible) {
+            PanelAddressBar.this.atomicTextFieldRequest.get().setVisible(isVisible);
+            PanelAddressBar.this.atomicTextFieldHeader.get().setVisible(isVisible);
+            PanelAddressBar.this.atomicRadioRequest.get().setVisible(isVisible);
+            PanelAddressBar.this.atomicRadioMethod.get().setVisible(isVisible);
+            PanelAddressBar.this.atomicRadioHeader.get().setVisible(isVisible);
+            PanelAddressBar.this.isAdvanceActivated = isVisible;
+            MediatorHelper.menubar().setVisible(isVisible);
+            this.advancedButton.setIcon(isVisible ? UiUtil.ARROW_UP.getIcon() : UiUtil.ARROW_DOWN.getIcon());
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            boolean isVisible = this.advancedButton.getIcon() == UiUtil.ARROW_DOWN.getIcon();
+            this.mouseClicked(isVisible);
+        }
+    }
+
+
     // Getter and setter
 
     public void setMethodInjection(AbstractMethodInjection methodInjection) {

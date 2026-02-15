@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
+class MysqlOrderBySuiteIT extends ConcreteMysqlErrorSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -17,7 +17,7 @@ class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/time?tenant=mysql&name=1'"
+            "http://localhost:8080/order-by?tenant=mysql-error&name="
         );
 
         model.setIsScanning(true);
@@ -25,6 +25,8 @@ class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
+        .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true);
 
@@ -38,7 +40,7 @@ class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
     }
     
     @Override
-    @RetryingTest(6)
+    @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
@@ -46,7 +48,7 @@ class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
     @AfterEach
     void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getTime(),
+            this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

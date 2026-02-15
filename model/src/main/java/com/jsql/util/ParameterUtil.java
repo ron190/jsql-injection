@@ -72,6 +72,7 @@ public class ParameterUtil {
      * started in a new thread via model function inputValidation().
      */
     public void controlInput(
+        String selectionCommand,
         String urlQuery,
         String rawRequest,
         String rawHeader,
@@ -107,12 +108,12 @@ public class ParameterUtil {
                 urlQueryFixed = urlQueryFixed.replace(authority, authorityPunycode);
             }
 
-            this.initQueryString(urlQueryFixed);
-            this.initHeader(rawHeader);
-            this.initRequest(rawRequest);
+            this.initQueryString(urlQueryFixed, selectionCommand);
+            this.initRequest(rawRequest, selectionCommand);
+            this.initHeader(rawHeader, selectionCommand);
 
-            this.injectionModel.getMediatorUtils().connectionUtil().setMethodInjection(methodInjection);
-            this.injectionModel.getMediatorUtils().connectionUtil().setTypeRequest(typeRequest);
+            this.injectionModel.getMediatorUtils().connectionUtil().withMethodInjection(methodInjection);
+            this.injectionModel.getMediatorUtils().connectionUtil().withTypeRequest(typeRequest);
             
             if (isScanning) {
                 this.injectionModel.beginInjection();
@@ -138,7 +139,7 @@ public class ParameterUtil {
         this.checkMultipart();
         if (ParameterUtil.isInvalidName(this.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest())) {
             throw new InjectionFailureException(String.format(
-                "Illegal method: \"%s\"",
+                "Illegal method: %s",
                 this.injectionModel.getMediatorUtils().connectionUtil().getTypeRequest()
             ));
         }
@@ -197,15 +198,14 @@ public class ParameterUtil {
         if (this.getHeaderFromEntries().contains(InjectionModel.STAR)) {
             nbStarInParameter++;
         }
-        
-        // Injection Point
+
         if (
-            nbStarInParameter > 1
-            || StringUtils.countMatches(this.getQueryStringFromEntries(), "*") > 1
-            || StringUtils.countMatches(this.getRequestFromEntries(), "*") > 1
-            || StringUtils.countMatches(this.getHeaderFromEntries(), "*") > 1
+            nbStarInParameter >= 2
+            || StringUtils.countMatches(this.getQueryStringFromEntries(), "*") >= 2
+            || StringUtils.countMatches(this.getRequestFromEntries(), "*") >= 2
+            || StringUtils.countMatches(this.getHeaderFromEntries(), "*") >= 2
         ) {
-            throw new InjectionFailureException("Character insertion [*] must be used once in Query String, Request or Header parameters");
+            throw new InjectionFailureException("param selected or character insertion [*] can be only used once in URL, Request or Header");
         }
     }
     
@@ -218,19 +218,19 @@ public class ParameterUtil {
             && methodInjection != this.injectionModel.getMediatorMethod().getQuery()
             && !isCheckingAllParam
         ) {
-            throw new InjectionFailureException("Select method GET to use character [*] or remove [*] from GET parameters");
+            throw new InjectionFailureException("param in URL selected but method Request or Header selected");
         } else if (
             this.getRequestFromEntries().contains(InjectionModel.STAR)
             && methodInjection != this.injectionModel.getMediatorMethod().getRequest()
             && !isCheckingAllParam
         ) {
-            throw new InjectionFailureException("Select a Request method (like POST) to use [*], or remove [*] from Request parameters");
+            throw new InjectionFailureException("param in Request selected but method URL or Header selected");
         } else if (
             this.getHeaderFromEntries().contains(InjectionModel.STAR)
             && methodInjection != this.injectionModel.getMediatorMethod().getHeader()
             && !isCheckingAllParam
         ) {
-            throw new InjectionFailureException("Select method Header to use character [*] or remove [*] from Header parameters");
+            throw new InjectionFailureException("param in Header selected but method URL or Request selected");
         }
     }
     
@@ -244,17 +244,17 @@ public class ParameterUtil {
             && this.getListQueryString().isEmpty()
             && !this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)
         ) {
-            throw new InjectionFailureException("No query string");
+            throw new InjectionFailureException("empty URL param");
         } else if (
             methodInjection == this.injectionModel.getMediatorMethod().getRequest()
             && this.getListRequest().isEmpty()
         ) {
-            throw new InjectionFailureException("Incorrect Request format");
+            throw new InjectionFailureException("empty Request param");
         } else if (
             methodInjection == this.injectionModel.getMediatorMethod().getHeader()
             && this.getListHeader().isEmpty()
         ) {
-            throw new InjectionFailureException("Incorrect Header format");
+            throw new InjectionFailureException("empty Header param");
         }
     }
     
@@ -270,6 +270,10 @@ public class ParameterUtil {
     }
 
     public void initQueryString(String urlQuery) throws MalformedURLException, URISyntaxException {
+        this.initQueryString(urlQuery, StringUtils.EMPTY);
+    }
+
+    public void initQueryString(String urlQuery, String selectionCommand) throws MalformedURLException, URISyntaxException {
         // Format and get rid of anchor fragment using native URL
         var url = new URI(urlQuery).toURL();
         
@@ -296,14 +300,22 @@ public class ParameterUtil {
             this.listQueryString = Pattern.compile("&")
                 .splitAsStream(url.getQuery())
                 .map(keyValue -> Arrays.copyOf(keyValue.split("="), 2))
-                .map(keyValue -> new SimpleEntry<>(
-                    keyValue[0],
-                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
-                )).collect(Collectors.toCollection(CopyOnWriteArrayList::new));  // Fix #96224: ConcurrentModificationException
+                .map(keyValue -> {
+                    var paramToAddStar = selectionCommand.replaceAll("^Query#", StringUtils.EMPTY);
+                    return new SimpleEntry<>(
+                        keyValue[0],
+                        (keyValue[1] == null ? StringUtils.EMPTY : keyValue[1])
+                        + (paramToAddStar.equals(keyValue[0]) ? InjectionModel.STAR : StringUtils.EMPTY)
+                    );
+                }).collect(Collectors.toCollection(CopyOnWriteArrayList::new));  // Fix #96224: ConcurrentModificationException
         }
     }
 
     public void initRequest(String rawRequest) {
+        this.initRequest(rawRequest, StringUtils.EMPTY);
+    }
+
+    public void initRequest(String rawRequest, String selectionCommand) {
         this.rawRequest = rawRequest;
         this.listRequest.clear();
         if (StringUtils.isNotEmpty(rawRequest)) {
@@ -317,25 +329,37 @@ public class ParameterUtil {
                 this.listRequest = Pattern.compile("&")
                     .splitAsStream(rawRequest)
                     .map(keyValue -> Arrays.copyOf(keyValue.split("="), 2))
-                    .map(keyValue -> new SimpleEntry<>(
-                        keyValue[0],
-                        keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
-                    )).collect(Collectors.toCollection(CopyOnWriteArrayList::new));
+                    .map(keyValue -> {
+                        var paramToAddStar = selectionCommand.replaceAll("^Request#", StringUtils.EMPTY);
+                        return new SimpleEntry<>(
+                            keyValue[0],
+                            (keyValue[1] == null ? StringUtils.EMPTY : keyValue[1])
+                            + (paramToAddStar.equals(keyValue[0]) ? InjectionModel.STAR : StringUtils.EMPTY)
+                        );
+                    }).collect(Collectors.toCollection(CopyOnWriteArrayList::new));
             }
         }
     }
 
     public void initHeader(String rawHeader) {
+        this.initHeader(rawHeader, StringUtils.EMPTY);
+    }
+
+    public void initHeader(String rawHeader, String selectionCommand) {
         this.rawHeader = rawHeader;
         this.listHeader.clear();
         if (StringUtils.isNotEmpty(rawHeader)) {
             this.listHeader = Pattern.compile("\\\\r\\\\n")
                 .splitAsStream(rawHeader)
                 .map(keyValue -> Arrays.copyOf(keyValue.split(":"), 2))
-                .map(keyValue -> new SimpleEntry<>(
-                    keyValue[0],
-                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
-                )).collect(Collectors.toCollection(CopyOnWriteArrayList::new));
+                .map(keyValue -> {
+                    var paramToAddStar = selectionCommand.replaceAll("^Header#", StringUtils.EMPTY);
+                    return new SimpleEntry<>(
+                        keyValue[0],
+                        (keyValue[1] == null ? StringUtils.EMPTY : keyValue[1])
+                        + (paramToAddStar.equals(keyValue[0]) ? InjectionModel.STAR : StringUtils.EMPTY)
+                    );
+                }).collect(Collectors.toCollection(CopyOnWriteArrayList::new));
         }
     }
     

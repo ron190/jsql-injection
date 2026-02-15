@@ -24,6 +24,11 @@ class SybaseBlindBitGetSuiteIT extends ConcreteSybaseSuiteIT {
 
         model
         .getMediatorUtils()
+        .preferencesUtil()
+        .withIsCheckingAllURLParam(false);
+
+        model
+        .getMediatorUtils()
         .connectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");

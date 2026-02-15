@@ -20,9 +20,12 @@ class PostgresErrorSuiteIT extends ConcretePostgresSuiteIT {
             "http://localhost:8080/errors?tenant=postgres&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyTimeDisabled(true);

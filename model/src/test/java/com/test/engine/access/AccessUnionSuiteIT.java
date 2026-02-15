@@ -21,9 +21,12 @@ class AccessUnionSuiteIT extends ConcreteAccessSuiteIT {
             "http://localhost:8080/access?name="
         );
 
+        model.setIsScanning(true);
+
         model  // remove when stable
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 

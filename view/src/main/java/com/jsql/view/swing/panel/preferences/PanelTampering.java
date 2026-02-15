@@ -80,12 +80,11 @@ public class PanelTampering extends JPanel {
 
         var groupSpaceToComment = new ButtonGroup() {
             @Override
-            public void setSelected(ButtonModel buttonModel, boolean b) {
-                // Click a 2nd time to uncheck
-                if (!b) {
-                    this.clearSelection();
-                } else {
+            public void setSelected(ButtonModel buttonModel, boolean isSelected) {
+                if (isSelected) {  // Click a 2nd time to uncheck
                     super.setSelected(buttonModel, true);
+                } else {
+                    this.clearSelection();
                 }
             }
         };

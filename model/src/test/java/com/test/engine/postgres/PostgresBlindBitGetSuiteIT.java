@@ -25,6 +25,7 @@ class PostgresBlindBitGetSuiteIT extends ConcretePostgresSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true);
 
         model

@@ -20,9 +20,12 @@ class ExasolUnionGetSuiteIT extends ConcreteExasolSuiteIT {
             "http://localhost:8080/exasol?name="
         );
 
+        model.setIsScanning(true);
+
         model  // remove when stable
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 

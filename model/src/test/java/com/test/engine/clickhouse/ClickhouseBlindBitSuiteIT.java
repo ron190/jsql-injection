@@ -26,6 +26,7 @@ class ClickhouseBlindBitSuiteIT extends ConcreteClickhouseSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withCountLimitingThreads(2)  // for perf only
         .withIsStrategyBlindBinDisabled(true)  // Time disabled no required: sleep 5s > 3s max on clickhouse
         .withIsStrategyUnionDisabled(true);

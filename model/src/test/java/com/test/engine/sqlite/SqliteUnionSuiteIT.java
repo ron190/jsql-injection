@@ -20,9 +20,12 @@ class SqliteUnionSuiteIT extends ConcreteSqliteSuiteIT {
             "http://localhost:8080/union?tenant=sqlite&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyBlindBitDisabled(true)
         .withIsStrategyBlindBinDisabled(true);
 

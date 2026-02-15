@@ -3,12 +3,12 @@ package com.test.special;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.subscriber.SubscriberLogger;
-import com.test.engine.mysql.ConcreteMySqlSuiteIT;
+import com.test.engine.mysql.ConcreteMysqlSuiteIT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-class SelfSignedCertSuiteIT extends ConcreteMySqlSuiteIT {
+class SelfSignedCertSuiteIT extends ConcreteMysqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -21,15 +21,16 @@ class SelfSignedCertSuiteIT extends ConcreteMySqlSuiteIT {
             "https://localhost:8443/union?tenant=mysql&name="
         );
 
+        model.setIsScanning(true);
+
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
 
-        model.setIsScanning(true);
-        
         model
         .getMediatorUtils()
         .connectionUtil()

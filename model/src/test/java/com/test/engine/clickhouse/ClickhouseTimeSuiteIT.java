@@ -26,6 +26,7 @@ class ClickhouseTimeSuiteIT extends ConcreteClickhouseSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
+        .withIsCheckingAllURLParam(false)
         .withCountLimitingThreads(2)  // for perf only
         .withIsNotSearchingCharInsertion(true)  // for perf only
         .withIsLimitingSleepTimeStrategy(true)
