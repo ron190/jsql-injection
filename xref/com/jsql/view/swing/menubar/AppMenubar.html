@@ -358,63 +358,85 @@
 <a class="jxr_linenumber" name="L350" href="#L350">350</a>     }
 <a class="jxr_linenumber" name="L351" href="#L351">351</a> 
 <a class="jxr_linenumber" name="L352" href="#L352">352</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> switchOrientation(Locale oldLocale, Locale newLocale) {
-<a class="jxr_linenumber" name="L353" href="#L353">353</a>         <strong class="jxr_keyword">var</strong> componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
-<a class="jxr_linenumber" name="L354" href="#L354">354</a>         MediatorHelper.frame().applyComponentOrientation(componentOrientation);
-<a class="jxr_linenumber" name="L355" href="#L355">355</a>         
-<a class="jxr_linenumber" name="L356" href="#L356">356</a>         <strong class="jxr_keyword">if</strong> (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {
-<a class="jxr_linenumber" name="L357" href="#L357">357</a>             <em class="jxr_comment">// not rendered at startup, only on switch, unreliable components width can be 0 at startup</em>
-<a class="jxr_linenumber" name="L358" href="#L358">358</a>             <em class="jxr_comment">// use event windowOpen instead when required</em>
-<a class="jxr_linenumber" name="L359" href="#L359">359</a>             AppMenubar.reverse(MediatorHelper.frame().getSplitNS().getSplitEW());
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>             AppMenubar.reverse(MediatorHelper.panelConsoles().getNetworkSplitPane());
-<a class="jxr_linenumber" name="L361" href="#L361">361</a>         }
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>         
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>         MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));
-<a class="jxr_linenumber" name="L364" href="#L364">364</a>     }
-<a class="jxr_linenumber" name="L365" href="#L365">365</a> 
-<a class="jxr_linenumber" name="L366" href="#L366">366</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> reverse(JSplitPane splitPane) {
-<a class="jxr_linenumber" name="L367" href="#L367">367</a>         <strong class="jxr_keyword">var</strong> componentLeft = splitPane.getLeftComponent();
-<a class="jxr_linenumber" name="L368" href="#L368">368</a>         <strong class="jxr_keyword">var</strong> componentRight = splitPane.getRightComponent();
-<a class="jxr_linenumber" name="L369" href="#L369">369</a> 
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>         <em class="jxr_comment">// Reset components</em>
-<a class="jxr_linenumber" name="L371" href="#L371">371</a>         splitPane.setLeftComponent(<strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L372" href="#L372">372</a>         splitPane.setRightComponent(<strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L373" href="#L373">373</a>         splitPane.setLeftComponent(componentRight);
-<a class="jxr_linenumber" name="L374" href="#L374">374</a>         splitPane.setRightComponent(componentLeft);
-<a class="jxr_linenumber" name="L375" href="#L375">375</a> 
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>         <em class="jxr_comment">// required as switch to arabic uses reversed location</em>
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>         splitPane.setDividerLocation(splitPane.getWidth() - splitPane.getDividerLocation());
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>     }
-<a class="jxr_linenumber" name="L379" href="#L379">379</a> 
-<a class="jxr_linenumber" name="L380" href="#L380">380</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> switchMenuItems() {
-<a class="jxr_linenumber" name="L381" href="#L381">381</a>         Stream.concat(AppMenubar.ITEMS_TRANSLATE.stream(), AppMenubar.ITEMS_TRANSLATE_INTO.stream())
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>         .forEach(model -&gt; model.getMenuItem().setComponentOrientation(
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>             model.getLanguage().isRightToLeft()
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>             ? ComponentOrientation.RIGHT_TO_LEFT
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>             : ComponentOrientation.LEFT_TO_RIGHT
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>         ));
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>     }
-<a class="jxr_linenumber" name="L388" href="#L388">388</a> 
-<a class="jxr_linenumber" name="L389" href="#L389">389</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> switchNetworkTable() {
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>         JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>         TableColumnModel columnModel = header.getColumnModel();
-<a class="jxr_linenumber" name="L392" href="#L392">392</a>         columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(<span class="jxr_string">"NETWORK_TAB_URL_COLUMN"</span>));
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>         columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(<span class="jxr_string">"NETWORK_TAB_SIZE_COLUMN"</span>) +<span class="jxr_string">" (KB)"</span>);
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>         columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_STRATEGY"</span>));
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>         columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_METADATA"</span>));
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>         header.repaint();
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>     }
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>     
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>     
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>     <em class="jxr_comment">// Getter and setter</em>
+<a class="jxr_linenumber" name="L353" href="#L353">353</a> 
+<a class="jxr_linenumber" name="L354" href="#L354">354</a>         <strong class="jxr_keyword">if</strong> (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>             <em class="jxr_comment">// not rendered at startup, only on switch, unreliable components width can be 0 at startup</em>
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>             <em class="jxr_comment">// use event windowOpen instead when required</em>
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>             record SplitReverse(JSplitPane split, Component left, Component right, <strong class="jxr_keyword">int</strong> location){}
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>             <strong class="jxr_keyword">var</strong> splitReverseEW = <strong class="jxr_keyword">new</strong> SplitReverse(
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>                 MediatorHelper.frame().getSplitNS().getSplitEW(),
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>                 MediatorHelper.frame().getSplitNS().getSplitEW().getLeftComponent(),
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>                 MediatorHelper.frame().getSplitNS().getSplitEW().getRightComponent(),
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>                 MediatorHelper.frame().getSplitNS().getSplitEW().getWidth() - MediatorHelper.frame().getSplitNS().getSplitEW().getDividerLocation()
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>             );
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>             <strong class="jxr_keyword">var</strong> splitReverseNetwork = <strong class="jxr_keyword">new</strong> SplitReverse(
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>                 MediatorHelper.panelConsoles().getNetworkSplitPane(),
+<a class="jxr_linenumber" name="L366" href="#L366">366</a>                 MediatorHelper.panelConsoles().getNetworkSplitPane().getLeftComponent(),
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>                 MediatorHelper.panelConsoles().getNetworkSplitPane().getRightComponent(),
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>                 MediatorHelper.panelConsoles().getNetworkSplitPane().getWidth() - MediatorHelper.panelConsoles().getNetworkSplitPane().getDividerLocation()
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>             );
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>             <strong class="jxr_keyword">var</strong> splitReverseNS = <strong class="jxr_keyword">new</strong> SplitReverse(
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>                 MediatorHelper.frame().getSplitNS(),
+<a class="jxr_linenumber" name="L372" href="#L372">372</a>                 MediatorHelper.frame().getSplitNS().getRightComponent(),
+<a class="jxr_linenumber" name="L373" href="#L373">373</a>                 MediatorHelper.frame().getSplitNS().getLeftComponent(),
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>                 MediatorHelper.frame().getSplitNS().getDividerLocation()
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>             );
+<a class="jxr_linenumber" name="L376" href="#L376">376</a> 
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>             <em class="jxr_comment">// required by linux: set both to null =&gt; applyComponentOrientation =&gt; set both components</em>
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>             List.of(splitReverseEW, splitReverseNetwork, splitReverseNS).forEach(splitReverse -&gt; {
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>                 splitReverse.split.setLeftComponent(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>                 splitReverse.split.setRightComponent(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>             });
+<a class="jxr_linenumber" name="L382" href="#L382">382</a> 
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>             <strong class="jxr_keyword">var</strong> componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>             MediatorHelper.frame().applyComponentOrientation(componentOrientation);
+<a class="jxr_linenumber" name="L385" href="#L385">385</a> 
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>             List.of(splitReverseEW, splitReverseNetwork, splitReverseNS).forEach(splitReverse -&gt; {
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>                 splitReverse.split.setLeftComponent(splitReverse.right);
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>                 splitReverse.split.setRightComponent(splitReverse.left);
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>                 splitReverse.split.setDividerLocation(splitReverse.location);
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>             });
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>             <strong class="jxr_keyword">var</strong> componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>             MediatorHelper.frame().applyComponentOrientation(componentOrientation);
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>         }
+<a class="jxr_linenumber" name="L395" href="#L395">395</a> 
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>         <em class="jxr_comment">// required by linux: applyComponentOrientation also on sub components</em>
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>         MediatorHelper.tabResults().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>         MediatorHelper.panelConsoles().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>         MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>     }
 <a class="jxr_linenumber" name="L401" href="#L401">401</a> 
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>     <strong class="jxr_keyword">public</strong> JMenu getMenuView() {
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.menuWindows.getMenuView();
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>     }
-<a class="jxr_linenumber" name="L405" href="#L405">405</a> 
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>     <strong class="jxr_keyword">public</strong> <a name="MenuWindows" href="../../../../../com/jsql/view/swing/menubar/MenuWindows.html#MenuWindows">MenuWindows</a> getMenuWindows() {
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.menuWindows;
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>     }
-<a class="jxr_linenumber" name="L409" href="#L409">409</a> }
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> switchMenuItems() {
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>         Stream.concat(AppMenubar.ITEMS_TRANSLATE.stream(), AppMenubar.ITEMS_TRANSLATE_INTO.stream())
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>         .forEach(model -&gt; model.getMenuItem().setComponentOrientation(
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>             model.getLanguage().isRightToLeft()
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>             ? ComponentOrientation.RIGHT_TO_LEFT
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>             : ComponentOrientation.LEFT_TO_RIGHT
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>         ));
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>     }
+<a class="jxr_linenumber" name="L410" href="#L410">410</a> 
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> switchNetworkTable() {
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>         JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>         TableColumnModel columnModel = header.getColumnModel();
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>         columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(<span class="jxr_string">"NETWORK_TAB_URL_COLUMN"</span>));
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>         columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(<span class="jxr_string">"NETWORK_TAB_SIZE_COLUMN"</span>) +<span class="jxr_string">" (KB)"</span>);
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>         columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_STRATEGY"</span>));
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>         columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(<span class="jxr_string">"SQLENGINE_METADATA"</span>));
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>         header.repaint();
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>     }
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>     
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>     
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>     <em class="jxr_comment">// Getter and setter</em>
+<a class="jxr_linenumber" name="L423" href="#L423">423</a> 
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>     <strong class="jxr_keyword">public</strong> JMenu getMenuView() {
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.menuWindows.getMenuView();
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>     }
+<a class="jxr_linenumber" name="L427" href="#L427">427</a> 
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>     <strong class="jxr_keyword">public</strong> <a name="MenuWindows" href="../../../../../com/jsql/view/swing/menubar/MenuWindows.html#MenuWindows">MenuWindows</a> getMenuWindows() {
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.menuWindows;
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>     }
+<a class="jxr_linenumber" name="L431" href="#L431">431</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

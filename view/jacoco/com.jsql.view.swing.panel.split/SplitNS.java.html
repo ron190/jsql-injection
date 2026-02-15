@@ -104,35 +104,45 @@ public class SplitNS extends JSplitPaneWithZeroSizeDivider {
     public void initSplitOrientation() {
 <span class="fc bfc" id="L105" title="All 2 branches covered.">        if (MediatorHelper.tabResults().getTabCount() == 0) {</span>
 <span class="fc" id="L106">            int dividerLocation = this.splitEW.getDividerLocation();</span>
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">            if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {</span>
-<span class="nc" id="L108">                this.splitEW.setLeftComponent(MediatorHelper.tabResults());</span>
+
+            // required by linux: set both to null =&gt; applyComponentOrientation =&gt; set both components
+<span class="fc" id="L109">            this.splitEW.setLeftComponent(null);</span>
+<span class="fc" id="L110">            this.splitEW.setRightComponent(null);</span>
+
+<span class="fc" id="L112">            var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
+<span class="fc" id="L113">            this.splitEW.applyComponentOrientation(componentOrientation);</span>
+
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()))) {</span>
+<span class="nc" id="L116">                this.splitEW.setLeftComponent(MediatorHelper.tabResults());</span>
+<span class="nc" id="L117">                this.splitEW.setRightComponent(MediatorHelper.tabManagersCards());</span>
             } else {
-<span class="fc" id="L110">                this.splitEW.setRightComponent(MediatorHelper.tabResults());</span>
+<span class="fc" id="L119">                this.splitEW.setLeftComponent(MediatorHelper.tabManagersCards());</span>
+<span class="fc" id="L120">                this.splitEW.setRightComponent(MediatorHelper.tabResults());</span>
             }
-<span class="fc" id="L112">            SwingUtilities.invokeLater(() -&gt; this.splitEW.setDividerLocation(dividerLocation));  // wait for EDT refresh to prevent wrong location</span>
+<span class="fc" id="L122">            SwingUtilities.invokeLater(() -&gt; this.splitEW.setDividerLocation(dividerLocation));  // wait for EDT refresh to prevent wrong location</span>
         }
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L124">    }</span>
 
     public void invokeLaterWithSplitOrientation(Runnable runnable) {
-<span class="fc" id="L117">        SwingUtilities.invokeLater(() -&gt; {</span>
-<span class="fc" id="L118">            this.initSplitOrientation();</span>
-<span class="fc" id="L119">            runnable.run();</span>
-<span class="fc" id="L120">        });</span>
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L127">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="fc" id="L128">            this.initSplitOrientation();</span>
+<span class="fc" id="L129">            runnable.run();</span>
+<span class="fc" id="L130">        });</span>
+<span class="fc" id="L131">    }</span>
 
 
     // Getter and setter
 
     public JSplitPane getSplitEW() {
-<span class="fc" id="L127">        return this.splitEW;</span>
+<span class="fc" id="L137">        return this.splitEW;</span>
     }
 
     public static ActionHideShowConsole getActionHideShowConsole() {
-<span class="fc" id="L131">        return SplitNS.ACTION_HIDE_SHOW_CONSOLE;</span>
+<span class="fc" id="L141">        return SplitNS.ACTION_HIDE_SHOW_CONSOLE;</span>
     }
     
     public static ActionHideShowResult getActionHideShowResult() {
-<span class="fc" id="L135">        return SplitNS.ACTION_HIDE_SHOW_RESULT;</span>
+<span class="fc" id="L145">        return SplitNS.ACTION_HIDE_SHOW_RESULT;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -67,14 +67,14 @@ public class ButtonStart extends JButton {
 
     public void setIcons() {
         // required to get correct color at startup instead of blu
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        if (ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()).isLeftToRight()) {</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale()).isLeftToRight()) {</span>
 <span class="fc" id="L71">            this.setIcon(UiUtil.ARROW.getIcon());</span>
 <span class="fc" id="L72">            this.setRolloverIcon(UiUtil.ARROW_HOVER.getIcon());</span>
 <span class="fc" id="L73">            this.setPressedIcon(UiUtil.ARROW_PRESSED.getIcon());</span>
         } else {
-<span class="nc" id="L75">            this.setIcon(UiUtil.ARROW_LEFT.getIcon());</span>
-<span class="nc" id="L76">            this.setRolloverIcon(UiUtil.ARROW_LEFT_HOVER.getIcon());</span>
-<span class="nc" id="L77">            this.setPressedIcon(UiUtil.ARROW_LEFT_PRESSED.getIcon());</span>
+<span class="fc" id="L75">            this.setIcon(UiUtil.ARROW_LEFT.getIcon());</span>
+<span class="fc" id="L76">            this.setRolloverIcon(UiUtil.ARROW_LEFT_HOVER.getIcon());</span>
+<span class="fc" id="L77">            this.setPressedIcon(UiUtil.ARROW_LEFT_PRESSED.getIcon());</span>
         }
 <span class="fc" id="L79">    }</span>
 

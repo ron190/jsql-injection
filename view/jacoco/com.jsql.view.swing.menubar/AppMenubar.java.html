@@ -332,9 +332,9 @@ public class AppMenubar extends JMenuBar {
         
 <span class="fc" id="L333">        MediatorHelper.treeDatabase().reloadNodes();</span>
 <span class="fc" id="L334">        MediatorHelper.panelAddressBar().getPanelTrailingAddress().buttonStart.setIcons();</span>
-<span class="pc bpc" id="L335" title="1 of 2 branches missed.">        int textPosition = ComponentOrientation.getOrientation(newLocale).isLeftToRight()  // leading/trailing not working</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">        int textPosition = ComponentOrientation.getOrientation(newLocale).isLeftToRight()  // leading/trailing not working</span>
 <span class="fc" id="L336">            ? SwingConstants.LEFT</span>
-<span class="pc" id="L337">            : SwingConstants.RIGHT;</span>
+<span class="fc" id="L337">            : SwingConstants.RIGHT;</span>
 <span class="fc" id="L338">        MediatorHelper.panelAddressBar().getAtomicRadioRequest().setHorizontalTextPosition(textPosition);  // component orientation not working</span>
 <span class="fc" id="L339">        MediatorHelper.panelAddressBar().getAtomicRadioMethod().setHorizontalTextPosition(textPosition);</span>
 <span class="fc" id="L340">        MediatorHelper.panelAddressBar().getAtomicRadioHeader().setHorizontalTextPosition(textPosition);</span>
@@ -350,61 +350,83 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L350">    }</span>
 
     private void switchOrientation(Locale oldLocale, Locale newLocale) {
-<span class="fc" id="L353">        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
-<span class="fc" id="L354">        MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
-        
-<span class="pc bpc" id="L356" title="1 of 2 branches missed.">        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {</span>
+
+<span class="fc bfc" id="L354" title="All 2 branches covered.">        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {</span>
             // not rendered at startup, only on switch, unreliable components width can be 0 at startup
             // use event windowOpen instead when required
-<span class="nc" id="L359">            AppMenubar.reverse(MediatorHelper.frame().getSplitNS().getSplitEW());</span>
-<span class="nc" id="L360">            AppMenubar.reverse(MediatorHelper.panelConsoles().getNetworkSplitPane());</span>
+<span class="fc" id="L357">            record SplitReverse(JSplitPane split, Component left, Component right, int location){}</span>
+<span class="fc" id="L358">            var splitReverseEW = new SplitReverse(</span>
+<span class="fc" id="L359">                MediatorHelper.frame().getSplitNS().getSplitEW(),</span>
+<span class="fc" id="L360">                MediatorHelper.frame().getSplitNS().getSplitEW().getLeftComponent(),</span>
+<span class="fc" id="L361">                MediatorHelper.frame().getSplitNS().getSplitEW().getRightComponent(),</span>
+<span class="fc" id="L362">                MediatorHelper.frame().getSplitNS().getSplitEW().getWidth() - MediatorHelper.frame().getSplitNS().getSplitEW().getDividerLocation()</span>
+            );
+<span class="fc" id="L364">            var splitReverseNetwork = new SplitReverse(</span>
+<span class="fc" id="L365">                MediatorHelper.panelConsoles().getNetworkSplitPane(),</span>
+<span class="fc" id="L366">                MediatorHelper.panelConsoles().getNetworkSplitPane().getLeftComponent(),</span>
+<span class="fc" id="L367">                MediatorHelper.panelConsoles().getNetworkSplitPane().getRightComponent(),</span>
+<span class="fc" id="L368">                MediatorHelper.panelConsoles().getNetworkSplitPane().getWidth() - MediatorHelper.panelConsoles().getNetworkSplitPane().getDividerLocation()</span>
+            );
+<span class="fc" id="L370">            var splitReverseNS = new SplitReverse(</span>
+<span class="fc" id="L371">                MediatorHelper.frame().getSplitNS(),</span>
+<span class="fc" id="L372">                MediatorHelper.frame().getSplitNS().getRightComponent(),</span>
+<span class="fc" id="L373">                MediatorHelper.frame().getSplitNS().getLeftComponent(),</span>
+<span class="fc" id="L374">                MediatorHelper.frame().getSplitNS().getDividerLocation()</span>
+            );
+
+            // required by linux: set both to null =&gt; applyComponentOrientation =&gt; set both components
+<span class="fc" id="L378">            List.of(splitReverseEW, splitReverseNetwork, splitReverseNS).forEach(splitReverse -&gt; {</span>
+<span class="fc" id="L379">                splitReverse.split.setLeftComponent(null);</span>
+<span class="fc" id="L380">                splitReverse.split.setRightComponent(null);</span>
+<span class="fc" id="L381">            });</span>
+
+<span class="fc" id="L383">            var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
+<span class="fc" id="L384">            MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
+
+<span class="fc" id="L386">            List.of(splitReverseEW, splitReverseNetwork, splitReverseNS).forEach(splitReverse -&gt; {</span>
+<span class="fc" id="L387">                splitReverse.split.setLeftComponent(splitReverse.right);</span>
+<span class="fc" id="L388">                splitReverse.split.setRightComponent(splitReverse.left);</span>
+<span class="fc" id="L389">                splitReverse.split.setDividerLocation(splitReverse.location);</span>
+<span class="fc" id="L390">            });</span>
+<span class="fc" id="L391">        } else {</span>
+<span class="fc" id="L392">            var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
+<span class="fc" id="L393">            MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
         }
-        
-<span class="fc" id="L363">        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
-<span class="fc" id="L364">    }</span>
 
-    private static void reverse(JSplitPane splitPane) {
-<span class="nc" id="L367">        var componentLeft = splitPane.getLeftComponent();</span>
-<span class="nc" id="L368">        var componentRight = splitPane.getRightComponent();</span>
-
-        // Reset components
-<span class="nc" id="L371">        splitPane.setLeftComponent(null);</span>
-<span class="nc" id="L372">        splitPane.setRightComponent(null);</span>
-<span class="nc" id="L373">        splitPane.setLeftComponent(componentRight);</span>
-<span class="nc" id="L374">        splitPane.setRightComponent(componentLeft);</span>
-
-        // required as switch to arabic uses reversed location
-<span class="nc" id="L377">        splitPane.setDividerLocation(splitPane.getWidth() - splitPane.getDividerLocation());</span>
-<span class="nc" id="L378">    }</span>
+        // required by linux: applyComponentOrientation also on sub components
+<span class="fc" id="L397">        MediatorHelper.tabResults().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
+<span class="fc" id="L398">        MediatorHelper.panelConsoles().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
+<span class="fc" id="L399">        MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
+<span class="fc" id="L400">    }</span>
 
     private void switchMenuItems() {
-<span class="fc" id="L381">        Stream.concat(AppMenubar.ITEMS_TRANSLATE.stream(), AppMenubar.ITEMS_TRANSLATE_INTO.stream())</span>
-<span class="fc" id="L382">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
-<span class="fc bfc" id="L383" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
-<span class="fc" id="L384">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
-<span class="fc" id="L385">            : ComponentOrientation.LEFT_TO_RIGHT</span>
+<span class="fc" id="L403">        Stream.concat(AppMenubar.ITEMS_TRANSLATE.stream(), AppMenubar.ITEMS_TRANSLATE_INTO.stream())</span>
+<span class="fc" id="L404">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
+<span class="fc" id="L406">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
+<span class="fc" id="L407">            : ComponentOrientation.LEFT_TO_RIGHT</span>
         ));
-<span class="fc" id="L387">    }</span>
+<span class="fc" id="L409">    }</span>
 
     private void switchNetworkTable() {
-<span class="fc" id="L390">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
-<span class="fc" id="L391">        TableColumnModel columnModel = header.getColumnModel();</span>
-<span class="fc" id="L392">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
-<span class="fc" id="L393">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
-<span class="fc" id="L394">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
-<span class="fc" id="L395">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
-<span class="fc" id="L396">        header.repaint();</span>
-<span class="fc" id="L397">    }</span>
+<span class="fc" id="L412">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
+<span class="fc" id="L413">        TableColumnModel columnModel = header.getColumnModel();</span>
+<span class="fc" id="L414">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
+<span class="fc" id="L415">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
+<span class="fc" id="L416">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
+<span class="fc" id="L417">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
+<span class="fc" id="L418">        header.repaint();</span>
+<span class="fc" id="L419">    }</span>
     
     
     // Getter and setter
 
     public JMenu getMenuView() {
-<span class="nc" id="L403">        return this.menuWindows.getMenuView();</span>
+<span class="nc" id="L425">        return this.menuWindows.getMenuView();</span>
     }
 
     public MenuWindows getMenuWindows() {
-<span class="fc" id="L407">        return this.menuWindows;</span>
+<span class="fc" id="L429">        return this.menuWindows;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

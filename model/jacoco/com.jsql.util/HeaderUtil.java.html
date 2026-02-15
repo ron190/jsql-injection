@@ -46,7 +46,7 @@ public class HeaderUtil {
 <span class="fc" id="L46">        String keyHeader = header.getKey().trim();</span>
 <span class="fc" id="L47">        String valueHeader = header.getValue().trim();</span>
 
-<span class="fc bfc" id="L49" title="All 4 branches covered.">        if (&quot;cookie&quot;.equalsIgnoreCase(keyHeader) &amp;&amp; Pattern.compile(&quot;.+=.*&quot;).matcher(valueHeader).find()) {</span>
+<span class="fc bfc" id="L49" title="All 4 branches covered.">        if (CookiesUtil.COOKIE.equalsIgnoreCase(keyHeader) &amp;&amp; Pattern.compile(&quot;.+=.*&quot;).matcher(valueHeader).find()) {</span>
             // Encode cookies to double quotes: Cookie: key=&quot;&lt;value&gt;&quot;
 <span class="fc" id="L51">            List&lt;String&gt; cookies = Stream.of(valueHeader.split(&quot;;&quot;))</span>
 <span class="fc" id="L52">                .filter(value -&gt; value.contains(&quot;=&quot;))</span>

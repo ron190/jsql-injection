@@ -4,6 +4,7 @@ import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyError;
 import com.jsql.model.injection.engine.model.Engine;
 import com.jsql.model.injection.engine.model.yaml.Method;
+import com.jsql.util.CookiesUtil;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.panel.PanelAddressBar;
@@ -32,24 +33,25 @@ import java.util.stream.StreamSupport;
 
 public class PanelTrailingAddress extends JPanel {
 
-<span class="fc" id="L35">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L36">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     public static final String MENU_STRATEGY = &quot;menuStrategy&quot;;
     public static final String ITEM_RADIO_STRATEGY_ERROR = &quot;itemRadioStrategyError&quot;;
     public static final String MENU_VENDOR = &quot;menuVendor&quot;;
     public static final String ITEM_RADIO_VENDOR = &quot;itemRadioVendor&quot;;
+    public static final String PARAM_AUTO = &quot;Param auto&quot;;
 
     private JMenu itemRadioStrategyError;
 
-<span class="fc" id="L44">    private final JLabel labelTarget = new JLabel(UiUtil.TARGET.getIcon(), SwingConstants.LEFT);</span>
-<span class="fc" id="L45">    private final JLabel labelEngine = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
-<span class="fc" id="L46">    private final JLabel labelStrategy = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
-<span class="fc" id="L47">    private final JPopupMenu popupMenuTargets = new JPopupMenu();</span>
-<span class="fc" id="L48">    private ButtonGroup groupRadio = new ButtonGroup();</span>
-<span class="fc" id="L49">    private final JPopupMenu popupMenuEngines = new JPopupMenu();</span>
-<span class="fc" id="L50">    private final JPopupMenu popupMenuStrategies = new JPopupMenu();</span>
+<span class="fc" id="L46">    private final JLabel labelTarget = new JLabel(UiUtil.TARGET.getIcon(), SwingConstants.LEFT);</span>
+<span class="fc" id="L47">    private final JLabel labelEngine = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
+<span class="fc" id="L48">    private final JLabel labelStrategy = new JLabel(UiUtil.ARROW_DOWN.getIcon(), SwingConstants.LEFT);</span>
+<span class="fc" id="L49">    private final JPopupMenu popupMenuTargets = new JPopupMenu();</span>
+<span class="fc" id="L50">    private ButtonGroup groupRadio = new ButtonGroup();</span>
+<span class="fc" id="L51">    private final JPopupMenu popupMenuEngines = new JPopupMenu();</span>
+<span class="fc" id="L52">    private final JPopupMenu popupMenuStrategies = new JPopupMenu();</span>
 
-<span class="fc" id="L52">    private final ButtonGroup groupStrategy = new ButtonGroup();</span>
+<span class="fc" id="L54">    private final ButtonGroup groupStrategy = new ButtonGroup();</span>
     public static final String PREFIX_NAME_ERROR = &quot;itemRadioError&quot;;
     private static final String I18N_TOOLTIP_STRATEGY = &quot;STRATEGY_%s_TOOLTIP&quot;;
 
@@ -61,414 +63,417 @@ public class PanelTrailingAddress extends JPanel {
     /**
      * Connection button.
      */
-<span class="fc" id="L64">    public final ButtonStart buttonStart = new ButtonStart();</span>
+<span class="fc" id="L66">    public final ButtonStart buttonStart = new ButtonStart();</span>
     
-<span class="fc" id="L66">    public PanelTrailingAddress(PanelAddressBar panelAddressBar) {</span>
-<span class="fc" id="L67">        this.buttonStart.addActionListener(new ActionStart(panelAddressBar));</span>
-<span class="fc" id="L68">        this.setOpaque(false);</span>
-<span class="fc" id="L69">        this.setBorder(null);</span>
-<span class="fc" id="L70">        this.labelStrategy.setText(&quot;Strategy auto&quot;);</span>
-<span class="fc" id="L71">        this.labelStrategy.setName(PanelTrailingAddress.MENU_STRATEGY);</span>
+<span class="fc" id="L68">    public PanelTrailingAddress(PanelAddressBar panelAddressBar) {</span>
+<span class="fc" id="L69">        this.buttonStart.addActionListener(new ActionStart(panelAddressBar));</span>
+<span class="fc" id="L70">        this.setOpaque(false);</span>
+<span class="fc" id="L71">        this.setBorder(null);</span>
+<span class="fc" id="L72">        this.labelStrategy.setText(&quot;Strategy auto&quot;);</span>
+<span class="fc" id="L73">        this.labelStrategy.setName(PanelTrailingAddress.MENU_STRATEGY);</span>
 
-<span class="fc bfc" id="L73" title="All 2 branches covered.">        for (final AbstractStrategy strategy: MediatorHelper.model().getMediatorStrategy().getStrategies()) {</span>
-<span class="fc" id="L74">            var nameStrategy = strategy.getName().toUpperCase(Locale.ROOT);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (final AbstractStrategy strategy: MediatorHelper.model().getMediatorStrategy().getStrategies()) {</span>
+<span class="fc" id="L76">            var nameStrategy = strategy.getName().toUpperCase(Locale.ROOT);</span>
             JMenuItem itemRadioStrategy;
-<span class="fc bfc" id="L76" title="All 2 branches covered.">            if (strategy == MediatorHelper.model().getMediatorStrategy().getError()) {</span>
-<span class="fc" id="L77">                itemRadioStrategy = new JMenu(strategy.toString());</span>
-<span class="fc" id="L78">                this.itemRadioStrategyError = (JMenu) itemRadioStrategy;</span>
-<span class="fc" id="L79">                itemRadioStrategy.getComponent().setName(PanelTrailingAddress.ITEM_RADIO_STRATEGY_ERROR);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            if (strategy == MediatorHelper.model().getMediatorStrategy().getError()) {</span>
+<span class="fc" id="L79">                itemRadioStrategy = new JMenu(strategy.toString());</span>
+<span class="fc" id="L80">                this.itemRadioStrategyError = (JMenu) itemRadioStrategy;</span>
+<span class="fc" id="L81">                itemRadioStrategy.getComponent().setName(PanelTrailingAddress.ITEM_RADIO_STRATEGY_ERROR);</span>
             } else {
-<span class="fc" id="L81">                var atomicTooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(</span>
-<span class="fc" id="L82">                    I18nUtil.valueByKey(String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy))</span>
+<span class="fc" id="L83">                var atomicTooltip = new AtomicReference&lt;&gt;(new JToolTipI18n(</span>
+<span class="fc" id="L84">                    I18nUtil.valueByKey(String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy))</span>
                 ));
-<span class="fc" id="L84">                itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString()) {</span>
+<span class="fc" id="L86">                itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString()) {</span>
                     @Override
                     public JToolTip createToolTip() {
-<span class="nc" id="L87">                        atomicTooltip.set(new JToolTipI18n(</span>
-<span class="nc" id="L88">                            I18nUtil.valueByKey(</span>
-<span class="nc" id="L89">                                String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy)</span>
+<span class="nc" id="L89">                        atomicTooltip.set(new JToolTipI18n(</span>
+<span class="nc" id="L90">                            I18nUtil.valueByKey(</span>
+<span class="nc" id="L91">                                String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy)</span>
                             )
                         ));
-<span class="nc" id="L92">                        return atomicTooltip.get();</span>
+<span class="nc" id="L94">                        return atomicTooltip.get();</span>
                     }
                 };
-<span class="fc" id="L95">                I18nViewUtil.addComponentForKey(</span>
-<span class="fc" id="L96">                    String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy),</span>
-<span class="fc" id="L97">                    atomicTooltip.get()</span>
+<span class="fc" id="L97">                I18nViewUtil.addComponentForKey(</span>
+<span class="fc" id="L98">                    String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy),</span>
+<span class="fc" id="L99">                    atomicTooltip.get()</span>
                 );
-<span class="fc" id="L99">                itemRadioStrategy.getComponent().setName(&quot;itemRadioStrategy&quot; + strategy);</span>
-<span class="fc" id="L100">                itemRadioStrategy.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L101">                    this.labelStrategy.setText(strategy.toString());</span>
-<span class="nc" id="L102">                    MediatorHelper.model().getMediatorStrategy().setStrategy(strategy);</span>
-<span class="nc" id="L103">                });</span>
-<span class="fc" id="L104">                this.groupStrategy.add(itemRadioStrategy);</span>
+<span class="fc" id="L101">                itemRadioStrategy.getComponent().setName(&quot;itemRadioStrategy&quot; + strategy);</span>
+<span class="fc" id="L102">                itemRadioStrategy.addActionListener(actionEvent -&gt; {</span>
+<span class="nc" id="L103">                    this.labelStrategy.setText(strategy.toString());</span>
+<span class="nc" id="L104">                    MediatorHelper.model().getMediatorStrategy().setStrategy(strategy);</span>
+<span class="nc" id="L105">                });</span>
+<span class="fc" id="L106">                this.groupStrategy.add(itemRadioStrategy);</span>
             }
 
-<span class="fc" id="L107">            this.popupMenuStrategies.add(itemRadioStrategy);</span>
-<span class="fc" id="L108">            itemRadioStrategy.setToolTipText(</span>
-<span class="fc" id="L109">                I18nUtil.valueByKey(String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy))</span>
+<span class="fc" id="L109">            this.popupMenuStrategies.add(itemRadioStrategy);</span>
+<span class="fc" id="L110">            itemRadioStrategy.setToolTipText(</span>
+<span class="fc" id="L111">                I18nUtil.valueByKey(String.format(PanelTrailingAddress.I18N_TOOLTIP_STRATEGY, nameStrategy))</span>
             );
-<span class="fc" id="L111">            itemRadioStrategy.setEnabled(false);</span>
-<span class="fc" id="L112">        }</span>
+<span class="fc" id="L113">            itemRadioStrategy.setEnabled(false);</span>
+<span class="fc" id="L114">        }</span>
 
-<span class="fc" id="L114">        this.labelEngine.setText(MediatorHelper.model().getMediatorEngine().getAuto().toString());</span>
-<span class="fc" id="L115">        this.labelEngine.setName(PanelTrailingAddress.MENU_VENDOR);</span>
-<span class="fc" id="L116">        this.popupMenuEngines.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorEngine().getEngines().size()));</span>
-<span class="fc" id="L117">        var groupEngine = new ButtonGroup();</span>
-<span class="fc bfc" id="L118" title="All 2 branches covered.">        for (final Engine engine : MediatorHelper.model().getMediatorEngine().getEngines()) {</span>
-<span class="fc bfc" id="L119" title="All 2 branches covered.">            JMenuItem itemRadioEngine = new JRadioButtonMenuItem(engine.toString(), engine == MediatorHelper.model().getMediatorEngine().getAuto());</span>
-<span class="fc" id="L120">            itemRadioEngine.setName(PanelTrailingAddress.ITEM_RADIO_VENDOR + engine);</span>
-<span class="fc" id="L121">            itemRadioEngine.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L122">                this.labelEngine.setText(engine.toString());</span>
-<span class="nc" id="L123">                MediatorHelper.model().getMediatorEngine().setEngineByUser(engine);</span>
-<span class="nc" id="L124">            });</span>
-<span class="fc" id="L125">            this.popupMenuEngines.add(itemRadioEngine);</span>
-<span class="fc" id="L126">            groupEngine.add(itemRadioEngine);</span>
-<span class="fc" id="L127">        }</span>
+<span class="fc" id="L116">        this.labelEngine.setText(MediatorHelper.model().getMediatorEngine().getAuto().toString());</span>
+<span class="fc" id="L117">        this.labelEngine.setName(PanelTrailingAddress.MENU_VENDOR);</span>
+<span class="fc" id="L118">        this.popupMenuEngines.setLayout(UiUtil.getColumnLayout(MediatorHelper.model().getMediatorEngine().getEngines().size()));</span>
+<span class="fc" id="L119">        var groupEngine = new ButtonGroup();</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        for (final Engine engine : MediatorHelper.model().getMediatorEngine().getEngines()) {</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            JMenuItem itemRadioEngine = new JRadioButtonMenuItem(engine.toString(), engine == MediatorHelper.model().getMediatorEngine().getAuto());</span>
+<span class="fc" id="L122">            itemRadioEngine.setName(PanelTrailingAddress.ITEM_RADIO_VENDOR + engine);</span>
+<span class="fc" id="L123">            itemRadioEngine.addActionListener(actionEvent -&gt; {</span>
+<span class="nc" id="L124">                this.labelEngine.setText(engine.toString());</span>
+<span class="nc" id="L125">                MediatorHelper.model().getMediatorEngine().setEngineByUser(engine);</span>
+<span class="nc" id="L126">            });</span>
+<span class="fc" id="L127">            this.popupMenuEngines.add(itemRadioEngine);</span>
+<span class="fc" id="L128">            groupEngine.add(itemRadioEngine);</span>
+<span class="fc" id="L129">        }</span>
 
-<span class="fc" id="L129">        this.loader = new JProgressBar();</span>
-<span class="fc" id="L130">        var dimension = UIManager.getDimension(&quot;ProgressBar.horizontalSize&quot;);</span>
-<span class="fc" id="L131">        this.loader.setPreferredSize(new Dimension(32, dimension.height));</span>
-<span class="fc" id="L132">        this.loader.setIndeterminate(true);</span>
-<span class="fc" id="L133">        this.add(this.loader);</span>
+<span class="fc" id="L131">        this.loader = new JProgressBar();</span>
+<span class="fc" id="L132">        var dimension = UIManager.getDimension(&quot;ProgressBar.horizontalSize&quot;);</span>
+<span class="fc" id="L133">        this.loader.setPreferredSize(new Dimension(32, dimension.height));</span>
+<span class="fc" id="L134">        this.loader.setIndeterminate(true);</span>
+<span class="fc" id="L135">        this.add(this.loader);</span>
 
-<span class="fc" id="L135">        this.labelEngine.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L137">        this.labelEngine.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="fc" id="L138">                Arrays.stream(PanelTrailingAddress.this.popupMenuEngines.getComponents())</span>
-<span class="fc" id="L139">                    .map(JComponent.class::cast)</span>
-<span class="fc" id="L140">                    .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
-<span class="fc" id="L141">                PanelTrailingAddress.this.popupMenuEngines.updateUI();  // required: incorrect when dark/light mode switch</span>
-<span class="fc" id="L142">                SwingUtilities.invokeLater(() -&gt; {  // reduce flickering on linux</span>
-<span class="fc" id="L143">                    PanelTrailingAddress.this.popupMenuEngines.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());</span>
-<span class="fc" id="L144">                    PanelTrailingAddress.this.popupMenuEngines.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
-<span class="fc" id="L145">                });</span>
-<span class="fc" id="L146">            }</span>
+<span class="fc" id="L140">                Arrays.stream(PanelTrailingAddress.this.popupMenuEngines.getComponents())</span>
+<span class="fc" id="L141">                    .map(JComponent.class::cast)</span>
+<span class="fc" id="L142">                    .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
+<span class="fc" id="L143">                PanelTrailingAddress.this.popupMenuEngines.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="fc" id="L144">                SwingUtilities.invokeLater(() -&gt; {  // reduce flickering on linux</span>
+<span class="fc" id="L145">                    PanelTrailingAddress.this.popupMenuEngines.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());</span>
+<span class="fc" id="L146">                    PanelTrailingAddress.this.popupMenuEngines.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
+<span class="fc" id="L147">                });</span>
+<span class="fc" id="L148">            }</span>
         });
-<span class="fc" id="L148">        this.labelStrategy.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L150">        this.labelStrategy.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
-<span class="fc" id="L151">                Arrays.stream(PanelTrailingAddress.this.popupMenuStrategies.getComponents())</span>
-<span class="fc" id="L152">                    .map(JComponent.class::cast)</span>
-<span class="fc" id="L153">                    .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
-<span class="fc bfc" id="L154" title="All 2 branches covered.">                for (var i = 0 ; i &lt; PanelTrailingAddress.this.getMenuError().getItemCount() ; i++) {</span>
-<span class="fc" id="L155">                    PanelTrailingAddress.this.getMenuError().getItem(i).updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="fc" id="L153">                Arrays.stream(PanelTrailingAddress.this.popupMenuStrategies.getComponents())</span>
+<span class="fc" id="L154">                    .map(JComponent.class::cast)</span>
+<span class="fc" id="L155">                    .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">                for (var i = 0 ; i &lt; PanelTrailingAddress.this.getMenuError().getItemCount() ; i++) {</span>
+<span class="fc" id="L157">                    PanelTrailingAddress.this.getMenuError().getItem(i).updateUI();  // required: incorrect when dark/light mode switch</span>
                 }
-<span class="fc" id="L157">                PanelTrailingAddress.this.popupMenuStrategies.updateUI();  // required: incorrect when dark/light mode switch</span>
-<span class="fc" id="L158">                SwingUtilities.invokeLater(() -&gt; {  // reduce flickering on linux</span>
-<span class="fc" id="L159">                    PanelTrailingAddress.this.popupMenuStrategies.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());</span>
-<span class="fc" id="L160">                    PanelTrailingAddress.this.popupMenuStrategies.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
-<span class="fc" id="L161">                });</span>
-<span class="fc" id="L162">            }</span>
+<span class="fc" id="L159">                PanelTrailingAddress.this.popupMenuStrategies.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="fc" id="L160">                SwingUtilities.invokeLater(() -&gt; {  // reduce flickering on linux</span>
+<span class="fc" id="L161">                    PanelTrailingAddress.this.popupMenuStrategies.show(e.getComponent(), e.getComponent().getX(),5 + e.getComponent().getY() + e.getComponent().getHeight());</span>
+<span class="fc" id="L162">                    PanelTrailingAddress.this.popupMenuStrategies.setLocation(e.getComponent().getLocationOnScreen().x,5 + e.getComponent().getLocationOnScreen().y + e.getComponent().getHeight());</span>
+<span class="fc" id="L163">                });</span>
+<span class="fc" id="L164">            }</span>
         });
 
-<span class="fc" id="L165">        this.labelTarget.setText(&quot;Param auto&quot;);</span>
-<span class="fc" id="L166">        this.labelTarget.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L167">        this.labelTarget.setText(PanelTrailingAddress.PARAM_AUTO);</span>
+<span class="fc" id="L168">        this.labelTarget.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent event) {
-<span class="nc" id="L169">                PanelTrailingAddress.this.popupMenuTargets.removeAll();</span>
-<span class="nc" id="L170">                JRadioButtonMenuItem menuParamAuto = new JRadioButtonMenuItem(&quot;Param auto&quot;);</span>
-<span class="nc" id="L171">                menuParamAuto.setActionCommand(&quot;Param auto&quot;);  // required when adding star</span>
-<span class="nc" id="L172">                menuParamAuto.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L173">                    PanelTrailingAddress.this.labelTarget.setText(menuParamAuto.getText());</span>
-<span class="nc" id="L174">                });</span>
-<span class="nc" id="L175">                PanelTrailingAddress.this.popupMenuTargets.add(menuParamAuto);</span>
+<span class="nc" id="L171">                PanelTrailingAddress.this.popupMenuTargets.removeAll();</span>
+<span class="nc" id="L172">                JRadioButtonMenuItem menuParamAuto = new JRadioButtonMenuItem(PanelTrailingAddress.PARAM_AUTO);</span>
+<span class="nc" id="L173">                menuParamAuto.setActionCommand(PanelTrailingAddress.PARAM_AUTO);  // mock required when adding star: @ParameterUtil.controlInput</span>
+<span class="nc" id="L174">                menuParamAuto.addActionListener(actionEvent -&gt;</span>
+<span class="nc" id="L175">                    PanelTrailingAddress.this.labelTarget.setText(menuParamAuto.getText())</span>
+                );
+<span class="nc" id="L177">                PanelTrailingAddress.this.popupMenuTargets.add(menuParamAuto);</span>
 
-<span class="nc" id="L177">                var rawQuery = panelAddressBar.getTextFieldAddress().getText().trim();</span>
-<span class="nc" id="L178">                var rawRequest = panelAddressBar.getTextFieldRequest().getText().trim();</span>
-<span class="nc" id="L179">                var rawHeader = panelAddressBar.getTextFieldHeader().getText().trim();</span>
+<span class="nc" id="L179">                var rawQuery = panelAddressBar.getTextFieldAddress().getText().trim();</span>
+<span class="nc" id="L180">                var rawRequest = panelAddressBar.getTextFieldRequest().getText().trim();</span>
+<span class="nc" id="L181">                var rawHeader = panelAddressBar.getTextFieldHeader().getText().trim();</span>
 
-<span class="nc" id="L181">                var selection = PanelTrailingAddress.this.groupRadio.getSelection();</span>
+<span class="nc" id="L183">                var selection = PanelTrailingAddress.this.groupRadio.getSelection();</span>
                 String selectionCommand;  // effectively final
-<span class="nc bnc" id="L183" title="All 2 branches missed.">                if (selection != null) {</span>
-<span class="nc" id="L184">                    selectionCommand = selection.getActionCommand();</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">                if (selection != null) {</span>
+<span class="nc" id="L186">                    selectionCommand = selection.getActionCommand();</span>
                 } else {
-<span class="nc" id="L186">                    selectionCommand = StringUtils.EMPTY;</span>
+<span class="nc" id="L188">                    selectionCommand = StringUtils.EMPTY;</span>
                 }
-<span class="nc" id="L188">                PanelTrailingAddress.this.groupRadio = new ButtonGroup();</span>
-<span class="nc" id="L189">                PanelTrailingAddress.this.groupRadio.add(menuParamAuto);</span>
-<span class="nc" id="L190">                JMenu menuQuery = new JMenu(&quot;Query&quot;);</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">                if (!rawQuery.isEmpty()) {</span>
+<span class="nc" id="L190">                PanelTrailingAddress.this.groupRadio = new ButtonGroup();</span>
+<span class="nc" id="L191">                PanelTrailingAddress.this.groupRadio.add(menuParamAuto);</span>
+<span class="nc" id="L192">                JMenu menuQuery = new JMenu(&quot;Query&quot;);</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                if (!rawQuery.isEmpty()) {</span>
                     try {
-<span class="nc" id="L193">                        var url = new URI(rawQuery).toURL();</span>
-<span class="nc bnc" id="L194" title="All 2 branches missed.">                        if (url.getQuery() != null) {</span>
-<span class="nc" id="L195">                            var listParams = Pattern.compile(&quot;&amp;&quot;)</span>
-<span class="nc" id="L196">                                .splitAsStream(url.getQuery())</span>
-<span class="nc" id="L197">                                .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;=&quot;), 2))</span>
-<span class="nc" id="L198">                                .map(keyValue -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                        rawQuery = !rawQuery.matches(&quot;(?i)^\\w+://.*&quot;)</span>
+<span class="nc" id="L196">                            ? &quot;http://&quot;+ rawQuery</span>
+<span class="nc" id="L197">                            : rawQuery;</span>
+<span class="nc" id="L198">                        var url = new URI(rawQuery).toURL();</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                        if (url.getQuery() != null) {</span>
+<span class="nc" id="L200">                            var listParams = Pattern.compile(&quot;&amp;&quot;)</span>
+<span class="nc" id="L201">                                .splitAsStream(url.getQuery())</span>
+<span class="nc" id="L202">                                .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;=&quot;), 2))</span>
+<span class="nc" id="L203">                                .map(keyValue -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
                                     keyValue[0],
-<span class="nc bnc" id="L200" title="All 2 branches missed.">                                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
-<span class="nc" id="L201">                                )).toList();</span>
-<span class="nc" id="L202">                            listParams.forEach(entry -&gt; {</span>
-<span class="nc" id="L203">                                JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());</span>
-<span class="nc" id="L204">                                menuItem.setSelected((&quot;Query#&quot;+ entry.getKey()).equals(selectionCommand));</span>
-<span class="nc" id="L205">                                menuItem.setActionCommand(&quot;Query#&quot;+ entry.getKey());</span>
-<span class="nc" id="L206">                                menuItem.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L207">                                    PanelTrailingAddress.this.labelTarget.setText(entry.getKey());</span>
-<span class="nc" id="L208">                                });</span>
-<span class="nc" id="L209">                                PanelTrailingAddress.this.groupRadio.add(menuItem);</span>
-<span class="nc" id="L210">                                menuQuery.add(menuItem);</span>
-<span class="nc" id="L211">                            });</span>
-<span class="nc" id="L212">                            PanelTrailingAddress.this.popupMenuTargets.add(menuQuery);</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
+<span class="nc" id="L206">                                )).toList();</span>
+<span class="nc" id="L207">                            listParams.forEach(entry -&gt; {</span>
+<span class="nc" id="L208">                                JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());</span>
+<span class="nc" id="L209">                                menuItem.setSelected((&quot;Query#&quot;+ entry.getKey()).equals(selectionCommand));</span>
+<span class="nc" id="L210">                                menuItem.setActionCommand(&quot;Query#&quot;+ entry.getKey());</span>
+<span class="nc" id="L211">                                menuItem.addActionListener(actionEvent -&gt;</span>
+<span class="nc" id="L212">                                    PanelTrailingAddress.this.labelTarget.setText(entry.getKey())</span>
+                                );
+<span class="nc" id="L214">                                PanelTrailingAddress.this.groupRadio.add(menuItem);</span>
+<span class="nc" id="L215">                                menuQuery.add(menuItem);</span>
+<span class="nc" id="L216">                            });</span>
+<span class="nc" id="L217">                            PanelTrailingAddress.this.popupMenuTargets.add(menuQuery);</span>
                         }
-<span class="nc" id="L214">                    } catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {</span>
-<span class="nc" id="L215">                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect URL: {}&quot;, e.getMessage());</span>
-<span class="nc" id="L216">                        return;</span>
-<span class="nc" id="L217">                    }</span>
+<span class="nc" id="L219">                    } catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L220">                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect URL: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L221">                        return;</span>
+<span class="nc" id="L222">                    }</span>
                 }
 
-<span class="nc" id="L220">                JMenu menuRequest = new JMenu(&quot;Request&quot;);</span>
-<span class="nc bnc" id="L221" title="All 2 branches missed.">                if (!rawRequest.isEmpty()) {</span>
-<span class="nc" id="L222">                    var listRequests = Pattern.compile(&quot;&amp;&quot;)</span>
-<span class="nc" id="L223">                        .splitAsStream(rawRequest)</span>
-<span class="nc" id="L224">                        .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;=&quot;), 2))</span>
-<span class="nc" id="L225">                        .map(keyValue -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
+<span class="nc" id="L225">                JMenu menuRequest = new JMenu(&quot;Request&quot;);</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">                if (!rawRequest.isEmpty()) {</span>
+<span class="nc" id="L227">                    var listRequests = Pattern.compile(&quot;&amp;&quot;)</span>
+<span class="nc" id="L228">                        .splitAsStream(rawRequest)</span>
+<span class="nc" id="L229">                        .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;=&quot;), 2))</span>
+<span class="nc" id="L230">                        .map(keyValue -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
                                 keyValue[0],
-<span class="nc bnc" id="L227" title="All 2 branches missed.">                                keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
-<span class="nc" id="L228">                        )).toList();</span>
-<span class="nc" id="L229">                    listRequests.forEach(entry -&gt; {</span>
-<span class="nc" id="L230">                        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());</span>
-<span class="nc" id="L231">                        menuItem.setSelected((&quot;Request#&quot;+ entry.getKey()).equals(selectionCommand));</span>
-<span class="nc" id="L232">                        menuItem.setActionCommand(&quot;Request#&quot;+ entry.getKey());</span>
-<span class="nc" id="L233">                        menuItem.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L234">                            PanelTrailingAddress.this.labelTarget.setText(entry.getKey());</span>
-<span class="nc" id="L235">                        });</span>
-<span class="nc" id="L236">                        groupRadio.add(menuItem);</span>
-<span class="nc" id="L237">                        menuRequest.add(menuItem);</span>
-<span class="nc" id="L238">                    });</span>
-<span class="nc" id="L239">                    PanelTrailingAddress.this.popupMenuTargets.add(menuRequest);</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">                                keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
+<span class="nc" id="L233">                        )).toList();</span>
+<span class="nc" id="L234">                    listRequests.forEach(entry -&gt; {</span>
+<span class="nc" id="L235">                        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());</span>
+<span class="nc" id="L236">                        menuItem.setSelected((&quot;Request#&quot;+ entry.getKey()).equals(selectionCommand));</span>
+<span class="nc" id="L237">                        menuItem.setActionCommand(&quot;Request#&quot;+ entry.getKey());</span>
+<span class="nc" id="L238">                        menuItem.addActionListener(actionEvent -&gt;</span>
+<span class="nc" id="L239">                            PanelTrailingAddress.this.labelTarget.setText(entry.getKey())</span>
+                        );
+<span class="nc" id="L241">                        groupRadio.add(menuItem);</span>
+<span class="nc" id="L242">                        menuRequest.add(menuItem);</span>
+<span class="nc" id="L243">                    });</span>
+<span class="nc" id="L244">                    PanelTrailingAddress.this.popupMenuTargets.add(menuRequest);</span>
                 }
 
-<span class="nc" id="L242">                JMenu menuHeader = new JMenu(&quot;Header&quot;);</span>
-<span class="nc bnc" id="L243" title="All 2 branches missed.">                if (!rawHeader.isEmpty()) {</span>
-<span class="nc" id="L244">                    var listHeaders = Pattern.compile(&quot;\\\\r\\\\n&quot;)</span>
-<span class="nc" id="L245">                        .splitAsStream(rawHeader)</span>
-<span class="nc" id="L246">                        .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;:&quot;), 2))</span>
-<span class="nc" id="L247">                        .map(keyValue -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
+<span class="nc" id="L247">                JMenu menuHeader = new JMenu(&quot;Header&quot;);</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">                if (!rawHeader.isEmpty()) {</span>
+<span class="nc" id="L249">                    var listHeaders = Pattern.compile(&quot;\\\\r\\\\n&quot;)</span>
+<span class="nc" id="L250">                        .splitAsStream(rawHeader)</span>
+<span class="nc" id="L251">                        .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;:&quot;), 2))</span>
+<span class="nc" id="L252">                        .map(keyValue -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
                             keyValue[0],
-<span class="nc bnc" id="L249" title="All 2 branches missed.">                            keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">                            keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
                         ))
-<span class="nc" id="L251">                        .toList();</span>
-<span class="nc" id="L252">                    listHeaders.forEach(entry -&gt; {</span>
-<span class="nc" id="L253">                        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());</span>
-<span class="nc" id="L254">                        menuItem.setSelected((&quot;Header#&quot;+ entry.getKey()).equals(selectionCommand));</span>
-<span class="nc" id="L255">                        menuItem.setActionCommand(&quot;Header#&quot;+ entry.getKey());</span>
-<span class="nc" id="L256">                        menuItem.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L257">                            PanelTrailingAddress.this.labelTarget.setText(entry.getKey());</span>
-<span class="nc" id="L258">                        });</span>
-<span class="nc" id="L259">                        groupRadio.add(menuItem);</span>
-<span class="nc" id="L260">                        menuHeader.add(menuItem);</span>
-<span class="nc" id="L261">                    });</span>
-<span class="nc bnc" id="L262" title="All 2 branches missed.">                    if (listHeaders.stream().anyMatch(s -&gt; &quot;Cookie&quot;.equalsIgnoreCase(s.getKey()))) {</span>
-<span class="nc" id="L263">                        var cookies = listHeaders.stream()</span>
-<span class="nc" id="L264">                            .filter(s -&gt; &quot;Cookie&quot;.equalsIgnoreCase(s.getKey()))</span>
-<span class="nc" id="L265">                            .findFirst()</span>
-<span class="nc" id="L266">                            .orElse(new AbstractMap.SimpleEntry&lt;&gt;(&quot;Cookie&quot;, &quot;&quot;));</span>
-<span class="nc bnc" id="L267" title="All 2 branches missed.">                        if (!cookies.getValue().trim().isEmpty()) {</span>
-<span class="nc" id="L268">                            JMenu menuCookie = new JMenu(&quot;Cookie&quot;);</span>
-<span class="nc" id="L269">                            String[] cookieValues = StringUtils.split(cookies.getValue(), &quot;;&quot;);</span>
-<span class="nc" id="L270">                            Stream.of(cookieValues).forEach(cookie -&gt; {</span>
-<span class="nc" id="L271">                                String[] cookieEntry = StringUtils.split(cookie, &quot;=&quot;);</span>
-<span class="nc" id="L272">                                JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(cookieEntry[0].trim());</span>
-<span class="nc" id="L273">                                menuItem.setSelected((&quot;Cookie#&quot;+ cookieEntry[0].trim()).equals(selectionCommand));</span>
-<span class="nc" id="L274">                                menuItem.setActionCommand(&quot;Cookie#&quot;+ cookieEntry[0].trim());</span>
-<span class="nc" id="L275">                                menuItem.addActionListener(actionEvent -&gt; {</span>
-<span class="nc" id="L276">                                    PanelTrailingAddress.this.labelTarget.setText(cookieEntry[0].trim());</span>
-<span class="nc" id="L277">                                });</span>
-<span class="nc" id="L278">                                groupRadio.add(menuItem);</span>
-<span class="nc" id="L279">                                menuCookie.add(menuItem);</span>
-<span class="nc" id="L280">                            });</span>
-<span class="nc" id="L281">                            menuHeader.addSeparator();</span>
-<span class="nc" id="L282">                            menuHeader.add(menuCookie);</span>
+<span class="nc" id="L256">                        .toList();</span>
+<span class="nc" id="L257">                    listHeaders.forEach(entry -&gt; {</span>
+<span class="nc" id="L258">                        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());</span>
+<span class="nc" id="L259">                        menuItem.setSelected((&quot;Header#&quot;+ entry.getKey()).equals(selectionCommand));</span>
+<span class="nc" id="L260">                        menuItem.setActionCommand(&quot;Header#&quot;+ entry.getKey());</span>
+<span class="nc" id="L261">                        menuItem.addActionListener(actionEvent -&gt;</span>
+<span class="nc" id="L262">                            PanelTrailingAddress.this.labelTarget.setText(entry.getKey())</span>
+                        );
+<span class="nc" id="L264">                        groupRadio.add(menuItem);</span>
+<span class="nc" id="L265">                        menuHeader.add(menuItem);</span>
+<span class="nc" id="L266">                    });</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">                    if (listHeaders.stream().anyMatch(s -&gt; CookiesUtil.COOKIE.equalsIgnoreCase(s.getKey()))) {</span>
+<span class="nc" id="L268">                        var cookies = listHeaders.stream()</span>
+<span class="nc" id="L269">                            .filter(s -&gt; CookiesUtil.COOKIE.equalsIgnoreCase(s.getKey()))</span>
+<span class="nc" id="L270">                            .findFirst()</span>
+<span class="nc" id="L271">                            .orElse(new AbstractMap.SimpleEntry&lt;&gt;(CookiesUtil.COOKIE, &quot;&quot;));</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">                        if (!cookies.getValue().trim().isEmpty()) {</span>
+<span class="nc" id="L273">                            JMenu menuCookie = new JMenu(CookiesUtil.COOKIE);</span>
+<span class="nc" id="L274">                            String[] cookieValues = StringUtils.split(cookies.getValue(), &quot;;&quot;);</span>
+<span class="nc" id="L275">                            Stream.of(cookieValues).forEach(cookie -&gt; {</span>
+<span class="nc" id="L276">                                String[] cookieEntry = StringUtils.split(cookie, &quot;=&quot;);</span>
+<span class="nc" id="L277">                                JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(cookieEntry[0].trim());</span>
+<span class="nc" id="L278">                                menuItem.setSelected((&quot;Cookie#&quot;+ cookieEntry[0].trim()).equals(selectionCommand));</span>
+<span class="nc" id="L279">                                menuItem.setActionCommand(&quot;Cookie#&quot;+ cookieEntry[0].trim());</span>
+<span class="nc" id="L280">                                menuItem.addActionListener(actionEvent -&gt;</span>
+<span class="nc" id="L281">                                    PanelTrailingAddress.this.labelTarget.setText(cookieEntry[0].trim())</span>
+                                );
+<span class="nc" id="L283">                                groupRadio.add(menuItem);</span>
+<span class="nc" id="L284">                                menuCookie.add(menuItem);</span>
+<span class="nc" id="L285">                            });</span>
+<span class="nc" id="L286">                            menuHeader.addSeparator();</span>
+<span class="nc" id="L287">                            menuHeader.add(menuCookie);</span>
                         }
                     }
-<span class="nc" id="L285">                    PanelTrailingAddress.this.popupMenuTargets.add(menuHeader);</span>
+<span class="nc" id="L290">                    PanelTrailingAddress.this.popupMenuTargets.add(menuHeader);</span>
                 }
 
-<span class="nc" id="L288">                Arrays.stream(PanelTrailingAddress.this.popupMenuTargets.getComponents())</span>
-<span class="nc" id="L289">                    .map(JComponent.class::cast)</span>
-<span class="nc" id="L290">                    .forEach(c -&gt; c.setEnabled(false));</span>
-<span class="nc" id="L291">                menuParamAuto.setEnabled(true);</span>
-<span class="nc bnc" id="L292" title="All 2 branches missed.">                if (PanelTrailingAddress.this.groupRadio.getSelection() == null) {</span>
-<span class="nc" id="L293">                    menuParamAuto.setSelected(true);</span>
-<span class="nc" id="L294">                    PanelTrailingAddress.this.labelTarget.setText(menuParamAuto.getText());</span>
+<span class="nc" id="L293">                Arrays.stream(PanelTrailingAddress.this.popupMenuTargets.getComponents())</span>
+<span class="nc" id="L294">                    .map(JComponent.class::cast)</span>
+<span class="nc" id="L295">                    .forEach(c -&gt; c.setEnabled(false));</span>
+<span class="nc" id="L296">                menuParamAuto.setEnabled(true);</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">                if (PanelTrailingAddress.this.groupRadio.getSelection() == null) {</span>
+<span class="nc" id="L298">                    menuParamAuto.setSelected(true);</span>
+<span class="nc" id="L299">                    PanelTrailingAddress.this.labelTarget.setText(menuParamAuto.getText());</span>
                 }
-<span class="nc bnc" id="L296" title="All 2 branches missed.">                menuQuery.setEnabled(menuQuery.getMenuComponentCount() &gt; 0);</span>
-<span class="nc bnc" id="L297" title="All 2 branches missed.">                menuRequest.setEnabled(menuRequest.getMenuComponentCount() &gt; 0);</span>
-<span class="nc bnc" id="L298" title="All 2 branches missed.">                menuHeader.setEnabled(menuHeader.getMenuComponentCount() &gt; 0);</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">                menuQuery.setEnabled(menuQuery.getMenuComponentCount() &gt; 0);</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">                menuRequest.setEnabled(menuRequest.getMenuComponentCount() &gt; 0);</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">                menuHeader.setEnabled(menuHeader.getMenuComponentCount() &gt; 0);</span>
 
-<span class="nc" id="L300">                if (</span>
-<span class="nc bnc" id="L301" title="All 2 branches missed.">                    menuQuery.getMenuComponentCount() &gt; 0</span>
-<span class="nc bnc" id="L302" title="All 2 branches missed.">                    || menuRequest.getMenuComponentCount() &gt; 0</span>
-<span class="nc bnc" id="L303" title="All 2 branches missed.">                    || menuHeader.getMenuComponentCount() &gt; 0</span>
+<span class="nc" id="L305">                if (</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">                    menuQuery.getMenuComponentCount() &gt; 0</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">                    || menuRequest.getMenuComponentCount() &gt; 0</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">                    || menuHeader.getMenuComponentCount() &gt; 0</span>
                 ) {
-<span class="nc" id="L305">                    Arrays.stream(PanelTrailingAddress.this.popupMenuTargets.getComponents())</span>
-<span class="nc" id="L306">                    .map(JComponent.class::cast)</span>
-<span class="nc" id="L307">                    .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L308">                    PanelTrailingAddress.this.popupMenuTargets.updateUI();  // required: incorrect when dark/light mode switch</span>
-<span class="nc" id="L309">                    SwingUtilities.invokeLater(() -&gt; {  // reduce flickering on linux</span>
-<span class="nc" id="L310">                        PanelTrailingAddress.this.popupMenuTargets.show(event.getComponent(), event.getComponent().getX(), 5 + event.getComponent().getY() + event.getComponent().getHeight());</span>
-<span class="nc" id="L311">                        PanelTrailingAddress.this.popupMenuTargets.setLocation(event.getComponent().getLocationOnScreen().x, 5 + event.getComponent().getLocationOnScreen().y + event.getComponent().getHeight());</span>
-<span class="nc" id="L312">                    });</span>
+<span class="nc" id="L310">                    Arrays.stream(PanelTrailingAddress.this.popupMenuTargets.getComponents())</span>
+<span class="nc" id="L311">                    .map(JComponent.class::cast)</span>
+<span class="nc" id="L312">                    .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L313">                    PanelTrailingAddress.this.popupMenuTargets.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L314">                    SwingUtilities.invokeLater(() -&gt; {  // reduce flickering on linux</span>
+<span class="nc" id="L315">                        PanelTrailingAddress.this.popupMenuTargets.show(event.getComponent(), event.getComponent().getX(), 5 + event.getComponent().getY() + event.getComponent().getHeight());</span>
+<span class="nc" id="L316">                        PanelTrailingAddress.this.popupMenuTargets.setLocation(event.getComponent().getLocationOnScreen().x, 5 + event.getComponent().getLocationOnScreen().y + event.getComponent().getHeight());</span>
+<span class="nc" id="L317">                    });</span>
                 } else {
-<span class="nc" id="L314">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing parameter to inject&quot;);</span>
+<span class="nc" id="L319">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing parameter to inject&quot;);</span>
                 }
-<span class="nc" id="L316">            }</span>
+<span class="nc" id="L321">            }</span>
         });
 
-<span class="fc" id="L319">        this.add(this.labelTarget);</span>
-<span class="fc" id="L320">        this.add(this.labelEngine);</span>
-<span class="fc" id="L321">        this.add(this.labelStrategy);</span>
-<span class="fc" id="L322">        this.add(this.buttonStart);</span>
-<span class="fc" id="L323">        this.setCursor(Cursor.getDefaultCursor());</span>
-<span class="fc" id="L324">        this.loader.setVisible(false);</span>
-<span class="fc" id="L325">    }</span>
+<span class="fc" id="L324">        this.add(this.labelTarget);</span>
+<span class="fc" id="L325">        this.add(this.labelEngine);</span>
+<span class="fc" id="L326">        this.add(this.labelStrategy);</span>
+<span class="fc" id="L327">        this.add(this.buttonStart);</span>
+<span class="fc" id="L328">        this.setCursor(Cursor.getDefaultCursor());</span>
+<span class="fc" id="L329">        this.loader.setVisible(false);</span>
+<span class="fc" id="L330">    }</span>
 
     public void endPreparation() {
-<span class="fc" id="L328">        this.buttonStart.setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_START_TOOLTIP&quot;));</span>
-<span class="fc" id="L329">        this.buttonStart.setInjectionReady();</span>
-<span class="fc" id="L330">        this.loader.setVisible(false);</span>
-<span class="fc" id="L331">    }</span>
+<span class="fc" id="L333">        this.buttonStart.setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_START_TOOLTIP&quot;));</span>
+<span class="fc" id="L334">        this.buttonStart.setInjectionReady();</span>
+<span class="fc" id="L335">        this.loader.setVisible(false);</span>
+<span class="fc" id="L336">    }</span>
     
     public void reset() {
-<span class="fc" id="L334">        this.labelStrategy.setText(&quot;Strategy auto&quot;);</span>
-<span class="pc bpc" id="L335" title="1 of 2 branches missed.">        if (MediatorHelper.model().getMediatorEngine().getEngineByUser() == MediatorHelper.model().getMediatorEngine().getAuto()) {</span>
-<span class="fc" id="L336">            this.labelEngine.setText(MediatorHelper.model().getMediatorEngine().getAuto().toString());</span>
+<span class="fc" id="L339">        this.labelStrategy.setText(&quot;Strategy auto&quot;);</span>
+<span class="pc bpc" id="L340" title="1 of 2 branches missed.">        if (MediatorHelper.model().getMediatorEngine().getEngineByUser() == MediatorHelper.model().getMediatorEngine().getAuto()) {</span>
+<span class="fc" id="L341">            this.labelEngine.setText(MediatorHelper.model().getMediatorEngine().getAuto().toString());</span>
         }
-<span class="fc" id="L338">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
-<span class="fc" id="L339">            .forEach(component -&gt; component.setEnabled(false));</span>
-<span class="fc" id="L340">        this.getMenuError().removeAll();</span>
+<span class="fc" id="L343">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="fc" id="L344">            .forEach(component -&gt; component.setEnabled(false));</span>
+<span class="fc" id="L345">        this.getMenuError().removeAll();</span>
 
-<span class="fc" id="L342">        this.groupStrategy.clearSelection();</span>
-<span class="fc" id="L343">        Iterable&lt;AbstractButton&gt; iterable = () -&gt; this.groupStrategy.getElements().asIterator();</span>
-<span class="fc" id="L344">        StreamSupport.stream(iterable.spliterator(), false)</span>
-<span class="fc" id="L345">            .filter(abstractButton -&gt; abstractButton.getName().startsWith(PanelTrailingAddress.PREFIX_NAME_ERROR))</span>
-<span class="fc" id="L346">            .forEach(this.groupStrategy::remove);</span>
-<span class="fc" id="L347">    }</span>
+<span class="fc" id="L347">        this.groupStrategy.clearSelection();</span>
+<span class="fc" id="L348">        Iterable&lt;AbstractButton&gt; iterable = () -&gt; this.groupStrategy.getElements().asIterator();</span>
+<span class="fc" id="L349">        StreamSupport.stream(iterable.spliterator(), false)</span>
+<span class="fc" id="L350">            .filter(abstractButton -&gt; abstractButton.getName().startsWith(PanelTrailingAddress.PREFIX_NAME_ERROR))</span>
+<span class="fc" id="L351">            .forEach(this.groupStrategy::remove);</span>
+<span class="fc" id="L352">    }</span>
     
     public void setEngine(Engine engine) {
-<span class="fc" id="L350">        this.labelEngine.setText(engine.toString());</span>
-<span class="fc" id="L351">        this.itemRadioStrategyError.removeAll();</span>
-<span class="fc" id="L352">        var indexError = 0;</span>
-<span class="fc" id="L353">        if (</span>
-<span class="pc bpc" id="L354" title="1 of 2 branches missed.">            engine != MediatorHelper.model().getMediatorEngine().getAuto()</span>
-<span class="pc bpc" id="L355" title="1 of 2 branches missed.">            &amp;&amp; engine.instance().getModelYaml().getStrategy().getError() != null</span>
+<span class="fc" id="L355">        this.labelEngine.setText(engine.toString());</span>
+<span class="fc" id="L356">        this.itemRadioStrategyError.removeAll();</span>
+<span class="fc" id="L357">        var indexError = 0;</span>
+<span class="fc" id="L358">        if (</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">            engine != MediatorHelper.model().getMediatorEngine().getAuto()</span>
+<span class="pc bpc" id="L360" title="1 of 2 branches missed.">            &amp;&amp; engine.instance().getModelYaml().getStrategy().getError() != null</span>
         ) {
-<span class="fc bfc" id="L357" title="All 2 branches covered.">            for (Method methodError: engine.instance().getModelYaml().getStrategy().getError().getMethod()) {</span>
-<span class="fc" id="L358">                JMenuItem itemRadioError = new JRadioButtonMenuItem(methodError.getName());</span>
-<span class="fc" id="L359">                itemRadioError.setEnabled(false);</span>
-<span class="fc" id="L360">                itemRadioError.setName(PanelTrailingAddress.PREFIX_NAME_ERROR + methodError.getName());</span>
-<span class="fc" id="L361">                this.itemRadioStrategyError.add(itemRadioError);</span>
-<span class="fc" id="L362">                this.groupStrategy.add(itemRadioError);</span>
-<span class="fc" id="L363">                int indexErrorFinal = indexError;</span>
-<span class="fc" id="L364">                itemRadioError.addActionListener(actionEvent -&gt; {</span>
-<span class="fc" id="L365">                    this.labelStrategy.setText(methodError.getName());</span>
-<span class="fc" id="L366">                    MediatorHelper.model().getMediatorStrategy().setStrategy(MediatorHelper.model().getMediatorStrategy().getError());</span>
-<span class="fc" id="L367">                    MediatorHelper.model().getMediatorStrategy().getError().setIndexErrorStrategy(indexErrorFinal);</span>
-<span class="fc" id="L368">                });</span>
-<span class="fc" id="L369">                indexError++;</span>
-<span class="fc" id="L370">            }</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">            for (Method methodError: engine.instance().getModelYaml().getStrategy().getError().getMethod()) {</span>
+<span class="fc" id="L363">                JMenuItem itemRadioError = new JRadioButtonMenuItem(methodError.getName());</span>
+<span class="fc" id="L364">                itemRadioError.setEnabled(false);</span>
+<span class="fc" id="L365">                itemRadioError.setName(PanelTrailingAddress.PREFIX_NAME_ERROR + methodError.getName());</span>
+<span class="fc" id="L366">                this.itemRadioStrategyError.add(itemRadioError);</span>
+<span class="fc" id="L367">                this.groupStrategy.add(itemRadioError);</span>
+<span class="fc" id="L368">                int indexErrorFinal = indexError;</span>
+<span class="fc" id="L369">                itemRadioError.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L370">                    this.labelStrategy.setText(methodError.getName());</span>
+<span class="fc" id="L371">                    MediatorHelper.model().getMediatorStrategy().setStrategy(MediatorHelper.model().getMediatorStrategy().getError());</span>
+<span class="fc" id="L372">                    MediatorHelper.model().getMediatorStrategy().getError().setIndexErrorStrategy(indexErrorFinal);</span>
+<span class="fc" id="L373">                });</span>
+<span class="fc" id="L374">                indexError++;</span>
+<span class="fc" id="L375">            }</span>
         }
-<span class="fc" id="L372">    }</span>
+<span class="fc" id="L377">    }</span>
     
     public void activateStrategy(AbstractStrategy strategy) {
-<span class="nc bnc" id="L375" title="All 2 branches missed.">        if (strategy instanceof StrategyError strategyError) {</span>
-<span class="nc" id="L376">            this.labelStrategy.setText(strategyError.toString());</span>
-<span class="nc" id="L377">            int indexError = strategyError.getIndexErrorStrategy();</span>
-<span class="nc" id="L378">            String nameError = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">        if (strategy instanceof StrategyError strategyError) {</span>
+<span class="nc" id="L381">            this.labelStrategy.setText(strategyError.toString());</span>
+<span class="nc" id="L382">            int indexError = strategyError.getIndexErrorStrategy();</span>
+<span class="nc" id="L383">            String nameError = MediatorHelper.model().getMediatorEngine().getEngine().instance().getModelYaml().getStrategy().getError().getMethod().get(</span>
                 indexError
-<span class="nc" id="L380">            ).getName();</span>
+<span class="nc" id="L385">            ).getName();</span>
 
-<span class="nc" id="L382">            Arrays.stream(this.getMenuError().getMenuComponents())</span>
-<span class="nc" id="L383">                .map(JRadioButtonMenuItem.class::cast)</span>
-<span class="nc" id="L384">                .filter(component -&gt; component.getText().equals(nameError))</span>
-<span class="nc" id="L385">                .forEach(jRadioButtonMenuItem -&gt; {</span>
-<span class="nc" id="L386">                    jRadioButtonMenuItem.setSelected(true);</span>
-<span class="nc" id="L387">                    this.labelStrategy.setText(nameError);</span>
-<span class="nc" id="L388">                });</span>
-<span class="nc" id="L389">        } else {</span>
-<span class="nc" id="L390">            this.labelStrategy.setText(strategy.toString());</span>
-<span class="nc" id="L391">            Arrays.stream(this.popupMenuStrategies.getComponents())</span>
-<span class="nc" id="L392">                .map(JMenuItem.class::cast)</span>
-<span class="nc" id="L393">                .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
-<span class="nc" id="L394">                .forEach(jMenuItem -&gt; jMenuItem.setSelected(true));</span>
+<span class="nc" id="L387">            Arrays.stream(this.getMenuError().getMenuComponents())</span>
+<span class="nc" id="L388">                .map(JRadioButtonMenuItem.class::cast)</span>
+<span class="nc" id="L389">                .filter(component -&gt; component.getText().equals(nameError))</span>
+<span class="nc" id="L390">                .forEach(jRadioButtonMenuItem -&gt; {</span>
+<span class="nc" id="L391">                    jRadioButtonMenuItem.setSelected(true);</span>
+<span class="nc" id="L392">                    this.labelStrategy.setText(nameError);</span>
+<span class="nc" id="L393">                });</span>
+<span class="nc" id="L394">        } else {</span>
+<span class="nc" id="L395">            this.labelStrategy.setText(strategy.toString());</span>
+<span class="nc" id="L396">            Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="nc" id="L397">                .map(JMenuItem.class::cast)</span>
+<span class="nc" id="L398">                .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="nc" id="L399">                .forEach(jMenuItem -&gt; jMenuItem.setSelected(true));</span>
         }
-<span class="nc" id="L396">    }</span>
+<span class="nc" id="L401">    }</span>
 
     public void markInvulnerable(AbstractStrategy strategy) {
-<span class="nc" id="L399">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
-<span class="nc" id="L400">            .map(JMenuItem.class::cast)</span>
-<span class="nc" id="L401">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
-<span class="nc" id="L402">            .forEach(jMenuItem -&gt; jMenuItem.setEnabled(false));</span>
-<span class="nc" id="L403">    }</span>
+<span class="nc" id="L404">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="nc" id="L405">            .map(JMenuItem.class::cast)</span>
+<span class="nc" id="L406">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="nc" id="L407">            .forEach(jMenuItem -&gt; jMenuItem.setEnabled(false));</span>
+<span class="nc" id="L408">    }</span>
     
     public void markInvulnerable(int indexMethodError, AbstractStrategy strategy) {
-<span class="nc" id="L406">        Arrays.stream(this.popupMenuStrategies.getSubElements())</span>
-<span class="nc" id="L407">            .map(JMenuItem.class::cast)</span>
-<span class="nc" id="L408">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
-<span class="nc" id="L409">            .map(JMenu.class::cast)</span>
-<span class="nc" id="L410">            .filter(jMenuItem -&gt; {</span>
-<span class="nc" id="L411">                var isNotNull = true;</span>
+<span class="nc" id="L411">        Arrays.stream(this.popupMenuStrategies.getSubElements())</span>
+<span class="nc" id="L412">            .map(JMenuItem.class::cast)</span>
+<span class="nc" id="L413">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="nc" id="L414">            .map(JMenu.class::cast)</span>
+<span class="nc" id="L415">            .filter(jMenuItem -&gt; {</span>
+<span class="nc" id="L416">                var isNotNull = true;</span>
                 // Fix #36975: ArrayIndexOutOfBoundsException on getItem()
                 // Fix #40352: NullPointerException on ?
                 // Fix #95855: NPE on setEnabled()
                 try {
-<span class="nc bnc" id="L416" title="All 2 branches missed.">                    isNotNull = jMenuItem.getItem(indexMethodError) != null;</span>
-<span class="nc" id="L417">                } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L418">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L419">                    return false;</span>
-<span class="nc" id="L420">                }</span>
-<span class="nc" id="L421">                return isNotNull;</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">                    isNotNull = jMenuItem.getItem(indexMethodError) != null;</span>
+<span class="nc" id="L422">                } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L423">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L424">                    return false;</span>
+<span class="nc" id="L425">                }</span>
+<span class="nc" id="L426">                return isNotNull;</span>
             })
-<span class="nc" id="L423">            .forEach(jMenuItem -&gt; jMenuItem.getItem(indexMethodError).setEnabled(false));</span>
-<span class="nc" id="L424">    }</span>
+<span class="nc" id="L428">            .forEach(jMenuItem -&gt; jMenuItem.getItem(indexMethodError).setEnabled(false));</span>
+<span class="nc" id="L429">    }</span>
 
     private JMenu getMenuError() {
-<span class="fc" id="L427">        var nameError = MediatorHelper.model().getMediatorStrategy().getError().getName();</span>
-<span class="fc" id="L428">        return (JMenu) Arrays.stream(this.popupMenuStrategies.getComponents())</span>
-<span class="fc" id="L429">            .map(JMenuItem.class::cast)</span>
-<span class="fc" id="L430">            .filter(jMenuItem -&gt; jMenuItem.getText().equalsIgnoreCase(nameError))</span>
-<span class="fc" id="L431">            .findFirst()</span>
-<span class="fc" id="L432">            .orElse(new JMenuItem(&quot;Mock&quot;));</span>
+<span class="fc" id="L432">        var nameError = MediatorHelper.model().getMediatorStrategy().getError().getName();</span>
+<span class="fc" id="L433">        return (JMenu) Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="fc" id="L434">            .map(JMenuItem.class::cast)</span>
+<span class="fc" id="L435">            .filter(jMenuItem -&gt; jMenuItem.getText().equalsIgnoreCase(nameError))</span>
+<span class="fc" id="L436">            .findFirst()</span>
+<span class="fc" id="L437">            .orElse(new JMenuItem(&quot;Mock&quot;));</span>
     }
 
     public void markVulnerable(AbstractStrategy strategy) {
-<span class="nc" id="L436">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
-<span class="nc" id="L437">            .map(JMenuItem.class::cast)</span>
-<span class="nc" id="L438">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
-<span class="nc" id="L439">            .forEach(jMenuItem -&gt; jMenuItem.setEnabled(true));</span>
-<span class="nc" id="L440">    }</span>
+<span class="nc" id="L441">        Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="nc" id="L442">            .map(JMenuItem.class::cast)</span>
+<span class="nc" id="L443">            .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="nc" id="L444">            .forEach(jMenuItem -&gt; jMenuItem.setEnabled(true));</span>
+<span class="nc" id="L445">    }</span>
 
     public void markVulnerable(int indexMethodError, AbstractStrategy strategy) {
         // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
         try {
-<span class="fc" id="L445">            Arrays.stream(this.popupMenuStrategies.getComponents())</span>
-<span class="fc" id="L446">                .map(JMenuItem.class::cast)</span>
-<span class="fc" id="L447">                .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
-<span class="fc" id="L448">                .map(JMenu.class::cast)</span>
-<span class="pc bpc" id="L449" title="1 of 2 branches missed.">                .filter(jMenuItem -&gt; jMenuItem.getItem(indexMethodError) != null)</span>
-<span class="fc" id="L450">                .forEach(jMenuItem -&gt; {</span>
-<span class="fc" id="L451">                    jMenuItem.setEnabled(true);</span>
-<span class="fc" id="L452">                    jMenuItem.getItem(indexMethodError).setEnabled(true);</span>
-<span class="fc" id="L453">                });</span>
-<span class="nc" id="L454">        } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L455">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L456">        }</span>
-<span class="fc" id="L457">    }</span>
+<span class="fc" id="L450">            Arrays.stream(this.popupMenuStrategies.getComponents())</span>
+<span class="fc" id="L451">                .map(JMenuItem.class::cast)</span>
+<span class="fc" id="L452">                .filter(jMenuItem -&gt; jMenuItem.getText().equals(strategy.toString()))</span>
+<span class="fc" id="L453">                .map(JMenu.class::cast)</span>
+<span class="pc bpc" id="L454" title="1 of 2 branches missed.">                .filter(jMenuItem -&gt; jMenuItem.getItem(indexMethodError) != null)</span>
+<span class="fc" id="L455">                .forEach(jMenuItem -&gt; {</span>
+<span class="fc" id="L456">                    jMenuItem.setEnabled(true);</span>
+<span class="fc" id="L457">                    jMenuItem.getItem(indexMethodError).setEnabled(true);</span>
+<span class="fc" id="L458">                });</span>
+<span class="nc" id="L459">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L460">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L461">        }</span>
+<span class="fc" id="L462">    }</span>
     
     
     // Getter and setter
 
     public JComponent getLoader() {
-<span class="fc" id="L463">        return this.loader;</span>
+<span class="fc" id="L468">        return this.loader;</span>
     }
 
     public ButtonStart getButtonStart() {
-<span class="fc" id="L467">        return this.buttonStart;</span>
+<span class="fc" id="L472">        return this.buttonStart;</span>
     }
 
     public ButtonGroup getGroupRadio() {
-<span class="fc" id="L471">        return this.groupRadio;</span>
+<span class="fc" id="L476">        return this.groupRadio;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

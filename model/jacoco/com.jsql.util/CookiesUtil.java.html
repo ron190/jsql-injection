@@ -13,69 +13,70 @@ import java.util.stream.Stream;
 public class CookiesUtil {
 
 <span class="fc" id="L15">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    public static final String COOKIE = &quot;Cookie&quot;;
 
     private final InjectionModel injectionModel;
 
-<span class="fc" id="L19">    public CookiesUtil(InjectionModel injectionModel) {</span>
-<span class="fc" id="L20">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L21">    }</span>
+<span class="fc" id="L20">    public CookiesUtil(InjectionModel injectionModel) {</span>
+<span class="fc" id="L21">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L22">    }</span>
 
     public boolean testParameters(boolean hasFoundInjection) {
-<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (!hasFoundInjection) {</span>
-<span class="pc bpc" id="L25" title="1 of 2 branches missed.">            if (!this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllCookieParam()) {</span>
-<span class="nc" id="L26">                return false;</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (!hasFoundInjection) {</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">            if (!this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllCookieParam()) {</span>
+<span class="nc" id="L27">                return false;</span>
             }
-<span class="fc" id="L28">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} cookies...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
+<span class="fc" id="L29">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} cookies...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
         } else {
-<span class="fc" id="L30">            return true;</span>
+<span class="fc" id="L31">            return true;</span>
         }
 
-<span class="fc" id="L33">        String rawHeader = this.injectionModel.getMediatorUtils().parameterUtil().getRawHeader();</span>
+<span class="fc" id="L34">        String rawHeader = this.injectionModel.getMediatorUtils().parameterUtil().getRawHeader();</span>
 
-<span class="fc" id="L35">        List&lt;AbstractMap.SimpleEntry&lt;String, String&gt;&gt; cookies = this.injectionModel.getMediatorUtils().parameterUtil().getListHeader()</span>
-<span class="fc" id="L36">            .stream()</span>
-<span class="fc" id="L37">            .filter(entry -&gt; &quot;cookie&quot;.equalsIgnoreCase(entry.getKey()))</span>
-<span class="fc" id="L38">            .findFirst()</span>
-<span class="fc" id="L39">            .map(cookieHeader -&gt; cookieHeader.getValue().split(&quot;;&quot;))</span>
-<span class="fc" id="L40">            .stream()</span>
-<span class="fc" id="L41">            .flatMap(Stream::of)</span>
-<span class="pc bpc" id="L42" title="2 of 4 branches missed.">            .filter(cookie -&gt; cookie != null &amp;&amp; cookie.contains(&quot;=&quot;))</span>
-<span class="fc" id="L43">            .map(cookie -&gt; cookie.split(&quot;=&quot;, 2))</span>
-<span class="fc" id="L44">            .map(arrayEntry -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
-<span class="fc" id="L45">                arrayEntry[0].trim(),</span>
-<span class="pc bpc" id="L46" title="1 of 2 branches missed.">                arrayEntry[1] == null ? StringUtils.EMPTY : arrayEntry[1].trim()</span>
+<span class="fc" id="L36">        List&lt;AbstractMap.SimpleEntry&lt;String, String&gt;&gt; cookies = this.injectionModel.getMediatorUtils().parameterUtil().getListHeader()</span>
+<span class="fc" id="L37">            .stream()</span>
+<span class="fc" id="L38">            .filter(entry -&gt; CookiesUtil.COOKIE.equalsIgnoreCase(entry.getKey()))</span>
+<span class="fc" id="L39">            .findFirst()</span>
+<span class="fc" id="L40">            .map(cookieHeader -&gt; cookieHeader.getValue().split(&quot;;&quot;))</span>
+<span class="fc" id="L41">            .stream()</span>
+<span class="fc" id="L42">            .flatMap(Stream::of)</span>
+<span class="pc bpc" id="L43" title="2 of 4 branches missed.">            .filter(cookie -&gt; cookie != null &amp;&amp; cookie.contains(&quot;=&quot;))</span>
+<span class="fc" id="L44">            .map(cookie -&gt; cookie.split(&quot;=&quot;, 2))</span>
+<span class="fc" id="L45">            .map(arrayEntry -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L46">                arrayEntry[0].trim(),</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">                arrayEntry[1] == null ? StringUtils.EMPTY : arrayEntry[1].trim()</span>
             ))
-<span class="fc" id="L48">            .toList();</span>
+<span class="fc" id="L49">            .toList();</span>
 
-<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        for (AbstractMap.SimpleEntry&lt;String, String&gt; cookie: cookies) {</span>
-<span class="fc" id="L51">            String keyValue = cookie.getKey() + &quot;=&quot; + cookie.getValue();</span>
-<span class="fc" id="L52">            String headerCookieWithStar = rawHeader.replace(keyValue, keyValue + InjectionModel.STAR);</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        for (AbstractMap.SimpleEntry&lt;String, String&gt; cookie: cookies) {</span>
+<span class="fc" id="L52">            String keyValue = cookie.getKey() + &quot;=&quot; + cookie.getValue();</span>
+<span class="fc" id="L53">            String headerCookieWithStar = rawHeader.replace(keyValue, keyValue + InjectionModel.STAR);</span>
 
-<span class="fc" id="L54">            this.injectionModel.getMediatorUtils().parameterUtil().initHeader(headerCookieWithStar);</span>
+<span class="fc" id="L55">            this.injectionModel.getMediatorUtils().parameterUtil().initHeader(headerCookieWithStar);</span>
 
             try {
-<span class="fc" id="L57">                LOGGER.log(</span>
+<span class="fc" id="L58">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_DEFAULT,
                     &quot;{} cookie [key:{}, value:{}]&quot;,
-<span class="fc" id="L60">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;),</span>
-<span class="fc" id="L61">                    cookie::getKey,</span>
-<span class="fc" id="L62">                    () -&gt; cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="fc" id="L61">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;),</span>
+<span class="fc" id="L62">                    cookie::getKey,</span>
+<span class="fc" id="L63">                    () -&gt; cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                 );
-<span class="fc bfc" id="L64" title="All 2 branches covered.">                if (this.injectionModel.getMediatorMethod().getHeader().testParameters()) {</span>
-<span class="fc" id="L65">                    return true;</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">                if (this.injectionModel.getMediatorMethod().getHeader().testParameters()) {</span>
+<span class="fc" id="L66">                    return true;</span>
                 }
-<span class="nc" id="L67">            } catch (JSqlException e) {</span>
-<span class="nc" id="L68">                LOGGER.log(</span>
+<span class="nc" id="L68">            } catch (JSqlException e) {</span>
+<span class="nc" id="L69">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L70">                    String.format(</span>
+<span class="nc" id="L71">                    String.format(</span>
                         &quot;No Cookie injection for %s=%s&quot;,
-<span class="nc" id="L72">                        cookie.getKey(),</span>
-<span class="nc" id="L73">                        cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="nc" id="L73">                        cookie.getKey(),</span>
+<span class="nc" id="L74">                        cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                     )
                 );
-<span class="fc" id="L76">            }</span>
-<span class="fc" id="L77">        }</span>
-<span class="nc" id="L78">        return false;</span>
+<span class="fc" id="L77">            }</span>
+<span class="fc" id="L78">        }</span>
+<span class="nc" id="L79">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
