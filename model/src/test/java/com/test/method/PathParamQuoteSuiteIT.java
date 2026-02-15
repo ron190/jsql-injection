@@ -26,7 +26,6 @@ class PathParamQuoteSuiteIT extends ConcreteMysqlSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
-        .withIsCheckingAllURLParam(false)
         .withIsNotTestingConnection(true)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)

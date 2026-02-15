@@ -56,7 +56,7 @@ public class CookiesUtil {
             try {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_DEFAULT,
-                    "{} cookie {}={}",
+                    "{} cookie [key:{}, value:{}]",
                     () -> I18nUtil.valueByKey("LOG_CHECKING"),
                     cookie::getKey,
                     () -> cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)

@@ -26,7 +26,7 @@ class StarOnlySuiteIT extends ConcreteMysqlSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
-        .withIsCheckingAllURLParam(false)
+        .withIsCheckingAllURLParam(false)  // ignored as star takes precedence
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);

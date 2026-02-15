@@ -118,7 +118,7 @@ public class JsonUtil {
             try {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_INFORM,
-                    "{} {} JSON [key: {}, value: {}]",
+                    "{} {} JSON [key:{}, value:{}]",
                     () -> I18nUtil.valueByKey("LOG_CHECKING"),
                     methodInjection::name,
                     parentXPath::getKey,

@@ -220,7 +220,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);
             LOGGER.log(
                 LogLevelUtil.CONSOLE_DEFAULT,
-                "Disable search for char insertion in Preferences or use star * to force value [{}]",
+                "Char insertion found automatically, disable auto search in Preferences to force value [{}]",
                 () -> characterInsertionByUserFormat
             );
         } else {

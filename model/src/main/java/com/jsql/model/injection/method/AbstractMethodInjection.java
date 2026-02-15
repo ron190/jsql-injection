@@ -58,6 +58,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         if (
             !this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam()
             && this.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection() != this
+            || this.getParams().isEmpty()
         ) {
             return false;
         }
@@ -161,7 +162,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         try {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
-                "{} {} param [key: {}, value: {}]",
+                "{} {} param [key:{}, value:{}]",
                 () -> I18nUtil.valueByKey("LOG_CHECKING"),
                 () -> this.name().toLowerCase(),
                 paramStar::getKey,

@@ -26,7 +26,6 @@ class StarSuiteIT extends ConcreteMysqlSuiteIT {
         model
         .getMediatorUtils()
         .preferencesUtil()
-        .withIsCheckingAllURLParam(false)
         .withIsStrategyTimeDisabled(true)
         .withIsStrategyBlindBinDisabled(true)
         .withIsStrategyBlindBitDisabled(true);
