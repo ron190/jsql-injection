@@ -69,14 +69,11 @@
         <!-- disabled on specific engine -->
         <parallel.enabled>true</parallel.enabled>
 
-        <!-- menu not working with 2.3.5 -->
-        <site.skin.version>2.4.0</site.skin.version>
-        <!-- menu not working with 2.3.4 -->
-        <reflow-velocity-tools.version>2.4.0</reflow-velocity-tools.version>
+        <reflow-maven-skin.version>3.0.0-SNAPSHOT</reflow-maven-skin.version>
     </properties>
 
     <!-- required to avoid error: Exception calling reference $config at META-INF/maven/site.vm -->
-    <url>https://ron190.github.io/jsql-injection/</url>
+    <url>https://ron190.github.io/jsql-injection</url>
     <!-- publish site:stage from /staging to GitHub -->
     <!-- settings.xml with user/pass and server id:github added by actions/setup-java -->
     <distributionManagement>
@@ -464,7 +461,7 @@
                     <dependency>
                         <groupId>io.github.devacfr.maven.skins</groupId>
                         <artifactId>reflow-velocity-tools</artifactId>
-                        <version>${reflow-velocity-tools.version}</version>
+                        <version>${reflow-maven-skin.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
