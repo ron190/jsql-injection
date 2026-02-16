@@ -7,11 +7,13 @@
     <skin>
         <groupId>io.github.devacfr.maven.skins</groupId>
         <artifactId>reflow-maven-skin</artifactId>
-        <version>${site.skin.version}</version>
+        <version>${this.reflow-maven-skin.version}</version>
     </skin>
 
     <custom>
         <reflowSkin>
+            <absoluteResourceURL>${this.url}</absoluteResourceURL>
+             <localResources>false</localResources>
             <theme>bootswatch-slate</theme>
             <header type="banner" enabled="false" />
             <titleTemplate>%2$s - jSQL Injection Maven Site</titleTemplate>
