@@ -40,7 +40,7 @@
         <json.version>20251224</json.version>
         <jsoup.version>1.22.1</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
-        <junit-platform-runner.version>1.14.2</junit-platform-runner.version>
+        <junit-platform-runner.version>1.14.3</junit-platform-runner.version>
         <nashorn-core.version>15.7</nashorn-core.version>
         <!-- aligned with dnsjava -->
         <slf4j-nop.version>1.7.36</slf4j-nop.version>
