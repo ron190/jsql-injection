@@ -67,31 +67,34 @@ public class ExceptionUtil {
 <span class="nc bnc" id="L67" title="All 2 branches missed.">                } else if (stackTrace.contains(&quot;ClassFormatError: Unknown constant tag&quot;)) {</span>
 <span class="nc" id="L68">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Damaged class or JVM, verify your settings&quot;, throwable);</span>
 <span class="nc" id="L69">                    return;</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">                } else if (stackTrace.contains(&quot;AccessControlException&quot;)) {</span>
+<span class="nc" id="L71">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Access denied by security manager, verify your settings&quot;, throwable);</span>
+<span class="nc" id="L72">                    return;</span>
                 }
 
                 try {
-<span class="nc" id="L73">                    var messageDigest = MessageDigest.getInstance(Coder.MD5.label);</span>
+<span class="nc" id="L76">                    var messageDigest = MessageDigest.getInstance(Coder.MD5.label);</span>
 
-<span class="nc" id="L75">                    String stackTraceTrim = stackTrace.trim();</span>
-<span class="nc" id="L76">                    var passwordString = String.valueOf(stackTraceTrim.toCharArray());</span>
+<span class="nc" id="L78">                    String stackTraceTrim = stackTrace.trim();</span>
+<span class="nc" id="L79">                    var passwordString = String.valueOf(stackTraceTrim.toCharArray());</span>
 
-<span class="nc" id="L78">                    byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);</span>
-<span class="nc" id="L79">                    messageDigest.update(passwordByte, 0, passwordByte.length);</span>
+<span class="nc" id="L81">                    byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);</span>
+<span class="nc" id="L82">                    messageDigest.update(passwordByte, 0, passwordByte.length);</span>
 
-<span class="nc" id="L81">                    byte[] encodedPassword = messageDigest.digest();</span>
-<span class="nc" id="L82">                    var md5Exception = HashUtil.digestToHexString(encodedPassword);</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">                    if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {</span>
-<span class="nc" id="L84">                        ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);</span>
-<span class="nc" id="L85">                        ExceptionUtil.this.injectionModel.getMediatorUtils().gitUtil().sendUnhandledException(</span>
-<span class="nc" id="L86">                            thread.getName(),</span>
+<span class="nc" id="L84">                    byte[] encodedPassword = messageDigest.digest();</span>
+<span class="nc" id="L85">                    var md5Exception = HashUtil.digestToHexString(encodedPassword);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                    if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {</span>
+<span class="nc" id="L87">                        ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);</span>
+<span class="nc" id="L88">                        ExceptionUtil.this.injectionModel.getMediatorUtils().gitUtil().sendUnhandledException(</span>
+<span class="nc" id="L89">                            thread.getName(),</span>
                             throwable
                         );
                     }
-<span class="nc" id="L90">                } catch (NoSuchAlgorithmException e) {</span>
-<span class="nc" id="L91">                    LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="nc" id="L92">                }</span>
+<span class="nc" id="L93">                } catch (NoSuchAlgorithmException e) {</span>
+<span class="nc" id="L94">                    LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L95">                }</span>
             }
-<span class="nc" id="L94">        }</span>
+<span class="nc" id="L97">        }</span>
     }
     
     /**
@@ -99,15 +102,15 @@ public class ExceptionUtil {
      * intercept and process the error to GitHub.
      */
     public void setUncaughtExceptionHandler() {
-<span class="nc" id="L102">        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());  // Regular Exception</span>
+<span class="nc" id="L105">        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());  // Regular Exception</span>
         try {  // Event dispatching thread Exception
-<span class="nc" id="L104">            SwingUtilities.invokeAndWait(() -&gt;</span>
-<span class="nc" id="L105">                Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())  // We are in the event dispatching thread</span>
+<span class="nc" id="L107">            SwingUtilities.invokeAndWait(() -&gt;</span>
+<span class="nc" id="L108">                Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())  // We are in the event dispatching thread</span>
             );
-<span class="nc" id="L107">        } catch (InvocationTargetException | InterruptedException e) {</span>
-<span class="nc" id="L108">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L109">            Thread.currentThread().interrupt();</span>
-<span class="nc" id="L110">        }</span>
-<span class="nc" id="L111">    }</span>
+<span class="nc" id="L110">        } catch (InvocationTargetException | InterruptedException e) {</span>
+<span class="nc" id="L111">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L112">            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L113">        }</span>
+<span class="nc" id="L114">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

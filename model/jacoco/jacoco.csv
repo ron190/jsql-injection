@@ -197,7 +197,7 @@ model,com.jsql.util,CertificateUtil,6,39,0,0,2,10,0,3,0,3
 model,com.jsql.util,TamperingUtil,112,323,2,14,38,84,16,25,14,19
 model,com.jsql.util,GitUtil,418,9,18,0,88,4,18,2,9,2
 model,com.jsql.util,ThreadUtil,29,79,3,3,7,23,4,7,1,7
-model,com.jsql.util,ExceptionUtil.ExceptionHandler,144,0,16,0,34,0,12,0,4,0
+model,com.jsql.util,ExceptionUtil.ExceptionHandler,154,0,18,0,37,0,13,0,4,0
 model,com.jsql.util,FormUtil,230,18,17,1,43,7,13,3,4,3
 model,com.jsql.util,LogLevelUtil,0,45,0,0,0,10,0,1,0,1
 model,com.jsql.util,CookiesUtil,29,176,5,9,7,34,5,13,0,11
