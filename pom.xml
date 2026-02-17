@@ -69,7 +69,7 @@
         <!-- disabled on specific engine -->
         <parallel.enabled>true</parallel.enabled>
 
-        <reflow-maven-skin.version>3.0.0-SNAPSHOT</reflow-maven-skin.version>
+        <reflow-maven-skin.version>2.4.0</reflow-maven-skin.version>
     </properties>
 
     <!-- required to avoid error: Exception calling reference $config at META-INF/maven/site.vm -->
