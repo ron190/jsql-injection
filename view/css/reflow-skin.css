@@ -15,7 +15,7 @@
  */
 
 body {
-    position: relative;
+    overflow-x: hidden;
 }
 
 /* Hack the sticky header */
@@ -46,24 +46,14 @@ body {
 
 
 /** add external character for external link in body */
-.main-body .externalLink:after,
-footer .externalLink:after {
+.main-body .external-link:after, .main-body .externalLink:after,
+footer .external-link:after, footer .externalLink:after {
     font-family: 'Font Awesome 5 Free';
     display: inline-block;
     content: "\f35d";
     font-size: .6rem;
     font-weight: 900;
     margin-left: 3px;
-}
-
-/** add external character for external link in footer */
-footer .externalLink:after {
-    font-family: 'Font Awesome 5 Free';
-    display: inline-block;
-    content: "\f35d";
-    font-size: .7rem;
-    font-weight: 900;
-    margin-left: 5px;
 }
 
 
@@ -82,7 +72,7 @@ h3 code {
 /**
 * scrolltop
 */
-.m-scrolltop {
+.scrolltop {
     display: none;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
@@ -106,54 +96,54 @@ h3 code {
     border-radius: 4px;
 }
 
-.m-scrolltop svg {
+.scrolltop svg {
     height: 20px;
     width: 20px;
 }
 
-.m-scrolltop>i {
+.scrolltop>i {
     font-size: 1.3rem;
     color: var(--light);
 }
 
-.m-scrolltop g [fill] {
+.scrolltop g [fill] {
     -webkit-transition: fill 0.3s ease;
     transition: fill 0.3s ease;
     fill: var(--light);
 }
 
-.m-scrolltop:hover g [fill] {
+.scrolltop:hover g [fill] {
     -webkit-transition: fill 0.3s ease;
     transition: fill 0.3s ease;
 }
 
-.m-scrolltop:hover>i {
+.scrolltop:hover>i {
     color: var(--light);
 }
 
-.m-scrolltop--on .m-scrolltop {
+.scrolltop--on .scrolltop {
     opacity: 0.3;
-    -webkit-animation: m-scrolltop-show-animation 0.4s ease-out 1;
-    animation: m-scrolltop-show-animation 0.4s ease-out 1;
+    -webkit-animation: scrolltop-show-animation 0.4s ease-out 1;
+    animation: scrolltop-show-animation 0.4s ease-out 1;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
 }
 
-.m-scrolltop--on .m-scrolltop:hover {
+.scrolltop--on .scrolltop:hover {
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
     opacity: 1;
 }
 
 @media (max-width: 1024px) {
-    .m-scrolltop {
+    .scrolltop {
         bottom: 30px;
         right: 15px;
     }
 }
 
-@-webkit-keyframes m-scrolltop-show-animation {
+@-webkit-keyframes scrolltop-show-animation {
     from {
         margin-bottom: -15px;
     }
@@ -163,7 +153,7 @@ h3 code {
     }
 }
 
-@keyframes m-scrolltop-show-animation {
+@keyframes scrolltop-show-animation {
     from {
         margin-bottom: -15px;
     }
@@ -233,23 +223,9 @@ h3 code {
 }
 
 /*--------------------------------------------------
- * carousel
- *--------------------------------------------------*/
-.carousel-caption {
-    width: 100%;
-    opacity: 0.7;
-    background-color: black;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 10px;
-    padding-top: 0;
-}
-
-/*--------------------------------------------------
  * toc top
  *--------------------------------------------------*/
-#m-toc-topbar {
+#m_toc_topbar {
     z-index: 1010;
     /*must be < nav-bar bootstrap container  1020 */
     position: -webkit-sticky;
@@ -260,33 +236,33 @@ h3 code {
 /*--------------------------------------------------
  * toc sidebar
  *--------------------------------------------------*/
-#m-toc-sidebar.toc-sidebar-fixed {
+#m_toc_sidebar.toc-sidebar-fixed {
     position: -webkit-sticky;
     position: sticky;
     top: 59px;
 }
 
-#m-toc-sidebar.toc-sidebar-relative {
+#m_toc_sidebar.toc-sidebar-relative {
     position: relative;
     top: unset;
 }
 
-.m-nav--sidebar {
+.nav--sidebar {
     margin-left: 5px !important;
 }
 
-#m-toc-sidebar .toc-heading,
-.m-nav--sidebar .h1 {
+#m_toc_sidebar .toc-heading,
+.nav--sidebar .h1 {
     font-weight: 700 !important;
 }
 
-#m-toc-sidebar .toc-heading {
+#m_toc_sidebar .toc-heading {
     font-weight: 500;
     margin: 0 0 16px 8px;
     padding: 0;
 }
 
-#m-toc-sidebar li a.active:before {
+#m_toc_sidebar li a.active:before {
     content: "";
     border-radius: 50%;
     left: -3px;
@@ -297,7 +273,7 @@ h3 code {
     height: 6px;
 }
 
-#m-toc-sidebar li a {
+#m_toc_sidebar li a {
     font-size: inherit;
     overflow: visible;
     display: table-cell;
@@ -306,21 +282,21 @@ h3 code {
     line-height: 20px;
 }
 
-#m-toc-sidebar .nav-link {
+#m_toc_sidebar .nav-link {
     color: var(--gray);
 }
 
-#m-toc-sidebar li .nav-link.active {
+#m_toc_sidebar li .nav-link.active {
     color: var(--primary);
     font-weight: 500;
 }
 
-#m-toc-sidebar li:hover .nav-link {
+#m_toc_sidebar li:hover .nav-link {
     color: var(--dark);
     background-color: var(--light);
 }
 
-#m-toc-sidebar li:hover a:not(.active):before {
+#m_toc_sidebar li:hover a:not(.active):before {
     content: "";
     border-radius: 50%;
     left: -3px;
@@ -331,7 +307,7 @@ h3 code {
     height: 6px;
 }
 
-#m-toc-sidebar li {
+#m_toc_sidebar li {
     box-sizing: border-box;
     font-size: 14px;
     font-weight: 400;
@@ -343,7 +319,7 @@ h3 code {
     line-height: 16px;
 }
 
-#m-toc-sidebar li.h1:after {
+#m_toc_sidebar li.h1:after {
     content: "";
     display: block;
     height: 1px;
@@ -353,19 +329,19 @@ h3 code {
     clear: both;
 }
 
-#m-toc-sidebar li.h3 {
+#m_toc_sidebar li.h3 {
     padding-left: 10px;
 }
 
-#m-toc-sidebar li.h4 {
+#m_toc_sidebar li.h4 {
     padding-left: 20px;
 }
 
-#m-toc-sidebar li.h5 {
+#m_toc_sidebar li.h5 {
     padding-left: 30px;
 }
 
-#m-toc-sidebar .nav li:before {
+#m_toc_sidebar .nav li:before {
     border-left: 1px solid #dbdbdb;
     bottom: 0;
     content: "";
@@ -572,11 +548,16 @@ h3 code {
     color: var(--dark);
 }
 
+
 @media (min-width: 992px) {
     .navside-expand-lg {
         position: -webkit-sticky;
         position: sticky;
-        top: 0;
+        top: 50px;
+        bottom: 0;
+        overflow-y: auto;
+        height: 100vh;
+        padding-bottom: 50px;
         display: block;
         background-color: transparent;
     }
@@ -593,11 +574,6 @@ h3 code {
     }
 }
 
-#m-doc-frame {
-    /* for anchorJs */
-    padding-left: 40px;
-    height: 100%;
-}
 
 /*--------------------------------------------------
  * breadcrumb
@@ -640,6 +616,13 @@ footer .blockquote {
     padding: 0px 20px;
     font-size: 1rem !important;
 }
+
+footer.footer-dark time,
+footer.footer-light time {
+    color: var(--secondary);
+    font-size: .8rem;
+}
+
 
 footer p,
 .subfooter p {

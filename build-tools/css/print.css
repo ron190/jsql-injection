@@ -17,8 +17,8 @@
 .navbar,
 .breadcrumb,
 .toc-separator
-#m-toc-topbar,
-#m-toc-sidebar,
+#m_toc_topbar,
+#m_toc_sidebar,
 footer,
 .subfooter {
 	display: none !important;
