@@ -46,7 +46,7 @@
         <slf4j-nop.version>1.7.36</slf4j-nop.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <spock-core.version>2.4-groovy-5.0</spock-core.version>
-        <spring-boot-dependencies.version>4.1.0-M1</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>4.1.0-M2</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
 
         <!-- databases -->
