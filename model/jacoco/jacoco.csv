@@ -21,7 +21,7 @@ model,com.jsql.model.accessible.engine,ExploitH2,168,261,4,2,31,45,6,8,3,8
 model,com.jsql.model.accessible.engine,ExploitHsqldb,132,200,3,1,26,31,4,6,2,6
 model,com.jsql.model.accessible.engine,ExploitMysql,418,883,48,50,81,159,45,32,6,22
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
-model,com.jsql.model,InjectionModel,165,1099,23,59,40,242,18,55,3,29
+model,com.jsql.model,InjectionModel,148,1116,21,61,35,247,17,56,2,30
 model,com.jsql.model,MediatorUtils,0,63,0,0,0,1,0,1,0,1
 model,com.jsql.model.accessible.engine.derby,File,0,33,0,0,0,13,0,7,0,7
 model,com.jsql.model.accessible.engine.derby,ModelYamlDerby,0,15,0,0,0,5,0,3,0,3
@@ -92,8 +92,8 @@ model,com.jsql.model.accessible.engine.postgres,Read,3,32,0,0,1,12,1,6,1,6
 model,com.jsql.model.accessible.engine.postgres,Program,0,23,0,0,0,9,0,5,0,5
 model,com.jsql.model.accessible.engine.postgres,Archive,0,73,0,0,0,29,0,15,0,15
 model,com.jsql.util.reverse,ModelReverse,14,9,0,0,6,4,4,1,4,1
-model,com.jsql.model.accessible,ResourceAccess,306,1098,31,61,72,230,34,47,7,28
-model,com.jsql.model.accessible,CallableHttpHead,62,112,2,2,12,32,3,6,1,6
+model,com.jsql.model.accessible,ResourceAccess,266,1138,27,65,64,238,31,50,7,28
+model,com.jsql.model.accessible,CallableHttpHead,35,139,2,2,7,37,3,6,1,6
 model,com.jsql.model.accessible,ExploitMode,18,46,0,0,5,9,4,2,4,2
 model,com.jsql.model.accessible,DataAccess,254,467,10,18,59,98,13,16,6,9
 model,com.jsql.model.accessible,CallableFile,37,176,4,2,11,27,3,14,1,13

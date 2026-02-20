@@ -245,10 +245,10 @@ public class ResourceAccess {
 <span class="fc" id="L245">            directoryNames.add(directoryName +&quot;/&quot;);</span>
         }
 <span class="fc" id="L247">        String urlSuccess = this.getExploitUrl(nameExploit, directoryNames, urlProtocol);</span>
-<span class="pc bpc" id="L248" title="1 of 2 branches missed.">        if (urlSuccess != null) {</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">        if (urlSuccess != null) {</span>
 <span class="fc" id="L249">            urlSuccess = biFuncGetRequest.apply(nameExploit, urlSuccess);</span>
         } else {
-<span class="nc" id="L251">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit access failure: connection URL not found&quot;);</span>
+<span class="fc" id="L251">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Exploit access failure: connection URL not found&quot;);</span>
         }
 <span class="fc" id="L253">        return urlSuccess;</span>
     }
@@ -271,7 +271,7 @@ public class ResourceAccess {
 
 <span class="fc" id="L272">        String urlSuccess = null;</span>
 <span class="fc" id="L273">        int submittedTasks = directoryNames.size();</span>
-<span class="pc bpc" id="L274" title="1 of 2 branches missed.">        for (var tasksHandled = 0 ; tasksHandled &lt; submittedTasks ; tasksHandled++) {</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">        for (var tasksHandled = 0 ; tasksHandled &lt; submittedTasks ; tasksHandled++) {</span>
             try {
 <span class="fc" id="L276">                CallableHttpHead currentCallable = taskCompletionService.take().get();</span>
 <span class="fc bfc" id="L277" title="All 2 branches covered.">                if (currentCallable.isHttpResponseOk()) {</span>
@@ -299,8 +299,8 @@ public class ResourceAccess {
         String pageSource;
         try {
 <span class="fc" id="L301">            pageSource = this.injectionModel.getMediatorUtils().connectionUtil().getSource(urlCommand, isConnectIssueIgnored);</span>
-<span class="nc" id="L302">        } catch (Exception e) {</span>
-<span class="nc" id="L303">            pageSource = StringUtils.EMPTY;</span>
+<span class="fc" id="L302">        } catch (Exception e) {</span>
+<span class="fc" id="L303">            pageSource = StringUtils.EMPTY;</span>
 <span class="fc" id="L304">        }</span>
         
 <span class="fc" id="L306">        var regexSearch = Pattern.compile(&quot;(?s)&lt;&quot;+ DataAccess.LEAD +&quot;&gt;(.*?)&lt;&quot;+ DataAccess.TRAIL +&quot;&gt;&quot;).matcher(pageSource);</span>
@@ -310,10 +310,10 @@ public class ResourceAccess {
         // IllegalStateException #1544: catch incorrect execution
         try {
 <span class="fc" id="L312">            result = regexSearch.group(1);</span>
-<span class="nc" id="L313">        } catch (IllegalStateException e) {</span>
-<span class="nc" id="L314">            result = StringUtils.EMPTY;  // fix return null from regex</span>
-<span class="nc bnc" id="L315" title="All 2 branches missed.">            if (!isConnectIssueIgnored) {</span>
-<span class="nc" id="L316">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format(ResourceAccess.TEMPLATE_ERROR, &quot;empty result&quot;, &quot;command&quot;));</span>
+<span class="fc" id="L313">        } catch (IllegalStateException e) {</span>
+<span class="fc" id="L314">            result = StringUtils.EMPTY;  // fix return null from regex</span>
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">            if (!isConnectIssueIgnored) {</span>
+<span class="fc" id="L316">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, String.format(ResourceAccess.TEMPLATE_ERROR, &quot;empty result&quot;, &quot;command&quot;));</span>
             }
 <span class="fc" id="L318">        }</span>
 <span class="fc" id="L319">        return result;</span>
@@ -333,8 +333,8 @@ public class ResourceAccess {
 <span class="fc" id="L333">            urlExploit +&quot;?c=&quot;+ URLEncoder.encode(command, StandardCharsets.ISO_8859_1),</span>
             isConnectIssueIgnored
         );
-<span class="pc bpc" id="L336" title="1 of 2 branches missed.">        if (StringUtils.isBlank(result)) {</span>
-<span class="nc" id="L337">            result = String.format(ResourceAccess.TEMPLATE_ERROR, &quot;empty result&quot;, command);</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">        if (StringUtils.isBlank(result)) {</span>
+<span class="fc" id="L337">            result = String.format(ResourceAccess.TEMPLATE_ERROR, &quot;empty result&quot;, command);</span>
         }
 <span class="fc" id="L339">        this.injectionModel.sendToViews(new Seal.GetTerminalResult(uuidShell, result));  // Unfreeze GUI terminal</span>
 <span class="fc" id="L340">        return result;</span>
