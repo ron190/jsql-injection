@@ -22,7 +22,7 @@
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="JpaStackRestController" href="../../spring/rest/JpaStackRestController.html#JpaStackRestController">JpaStackRestController</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractRestController" href="../../spring/rest/AbstractRestController.html#AbstractRestController">AbstractRestController</a> {
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      @RequestMapping(<span class="jxr_string">"/stack"</span>)
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointStack(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name, @RequestHeader Map&lt;String, String&gt; headers) {
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointStack(@RequestParam(value=<span class="jxr_string">"name"</span>) String name, @RequestHeader Map&lt;String, String&gt; headers) {
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">if</strong> (name.toLowerCase().contains(<span class="jxr_string">"union"</span>)) {
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>              <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>          }
@@ -30,7 +30,7 @@
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>      }
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>      @RequestMapping(<span class="jxr_string">"/stack2"</span>)
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointStack2(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name, @RequestParam(value=<span class="jxr_string">"semicolon"</span>, defaultValue=<span class="jxr_string">"true"</span>) String semicolon, @RequestHeader Map&lt;String, String&gt; headers) {
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointStack2(@RequestParam(value=<span class="jxr_string">"name"</span>) String name, @RequestParam(value=<span class="jxr_string">"semicolon"</span>, defaultValue=<span class="jxr_string">"true"</span>) String semicolon, @RequestHeader Map&lt;String, String&gt; headers) {
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> greeting = <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(<strong class="jxr_keyword">null</strong>);
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>          <strong class="jxr_keyword">var</strong> result = <strong class="jxr_keyword">new</strong> StringBuilder();
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>          Arrays.stream((<span class="jxr_string">"select First_Name from Student where '1' = '"</span>+name+<span class="jxr_string">"'"</span>).split(<span class="jxr_string">";"</span>)).map(String::trim).forEach(query -&gt; {
@@ -45,17 +45,17 @@
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      }
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      @RequestMapping(<span class="jxr_string">"/update"</span>)
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointUpdatea(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointUpdatea(@RequestParam(value=<span class="jxr_string">"name"</span>) String name) {
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"update StudentForDelete set Class_Name = '' where 'not_found' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>, false);
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      }
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      @RequestMapping(<span class="jxr_string">"/delete"</span>)
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointDelete(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointDelete(@RequestParam(value=<span class="jxr_string">"name"</span>) String name) {
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"delete from StudentForDelete where 'not_found' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>, false);
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      }
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      @RequestMapping(<span class="jxr_string">"/insert"</span>)
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointInsert(@RequestParam(value=<span class="jxr_string">"name"</span>, defaultValue=<span class="jxr_string">"World"</span>) String name) {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">public</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> endpointInsert(@RequestParam(value=<span class="jxr_string">"name"</span>) String name) {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.getResponse(name, <span class="jxr_string">"insert into StudentForDelete select * from StudentForDelete where 'not_found' = '%s'"</span>, <strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>, false);
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      }
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  }

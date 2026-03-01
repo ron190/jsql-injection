@@ -152,7 +152,7 @@
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         <em class="jxr_comment">// Inform the View if bits array is complete, else nothing #Need fix</em>
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>         <strong class="jxr_keyword">if</strong> (asciiCodeBit.matches(<span class="jxr_string">"^[01]{8}$"</span>)) {
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>             <strong class="jxr_keyword">var</strong> asciiCode = Integer.parseInt(asciiCodeBit, 2);
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>             <strong class="jxr_keyword">if</strong> (asciiCode == 127 || asciiCode == 0) {  <em class="jxr_comment">// Stop if many 11111111, 01111111 or 00000000</em>
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>             <strong class="jxr_keyword">if</strong> (asciiCode == 255 || asciiCode == 127 || asciiCode == 0) {  <em class="jxr_comment">// Stop if many 11111111, 01111111 or 00000000</em>
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>                 <strong class="jxr_keyword">if</strong> (countBadAsciiCode.get() &gt; 15) {
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InjectionFailureException" href="../../../../../../com/jsql/model/exception/InjectionFailureException.html#InjectionFailureException">InjectionFailureException</a>(<span class="jxr_string">"Boolean false positive, stopping..."</span>);
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>                 }

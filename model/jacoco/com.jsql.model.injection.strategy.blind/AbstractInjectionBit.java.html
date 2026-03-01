@@ -144,7 +144,7 @@ public abstract class AbstractInjectionBit&lt;T extends AbstractCallableBit&lt;T
         // Inform the View if bits array is complete, else nothing #Need fix
 <span class="fc bfc" id="L145" title="All 2 branches covered.">        if (asciiCodeBit.matches(&quot;^[01]{8}$&quot;)) {</span>
 <span class="fc" id="L146">            var asciiCode = Integer.parseInt(asciiCodeBit, 2);</span>
-<span class="pc bpc" id="L147" title="1 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
+<span class="pc bpc" id="L147" title="2 of 6 branches missed.">            if (asciiCode == 255 || asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
 <span class="fc bfc" id="L148" title="All 2 branches covered.">                if (countBadAsciiCode.get() &gt; 15) {</span>
 <span class="fc" id="L149">                    throw new InjectionFailureException(&quot;Boolean false positive, stopping...&quot;);</span>
                 }

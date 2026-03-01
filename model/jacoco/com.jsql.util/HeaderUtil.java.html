@@ -174,10 +174,10 @@ public class HeaderUtil {
             } else {
 <span class="nc" id="L175">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Redirecting to the next page...&quot;);</span>
             }
-<span class="fc bfc" id="L177" title="All 2 branches covered.">        } else if (Pattern.matches(HeaderUtil.REGEX_HTTP_STATUS, responseCode)) {</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        } else if (Pattern.matches(HeaderUtil.REGEX_HTTP_STATUS, responseCode)) {</span>
 <span class="fc" id="L178">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{} {} Client Error&quot;, HeaderUtil.FOUND_STATUS_HTTP, responseCode);</span>
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        } else if (Pattern.matches(&quot;5\\d\\d&quot;, responseCode)) {</span>
-<span class="fc" id="L180">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{} {} Server Error&quot;, HeaderUtil.FOUND_STATUS_HTTP, responseCode);</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        } else if (Pattern.matches(&quot;5\\d\\d&quot;, responseCode)) {</span>
+<span class="nc" id="L180">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{} {} Server Error&quot;, HeaderUtil.FOUND_STATUS_HTTP, responseCode);</span>
         } else {
 <span class="nc" id="L182">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} {} Unknown&quot;, HeaderUtil.FOUND_STATUS_HTTP, responseCode);</span>
         }

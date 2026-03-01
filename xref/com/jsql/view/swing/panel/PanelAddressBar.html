@@ -464,7 +464,7 @@
 <a class="jxr_linenumber" name="L456" href="#L456">456</a> 
 <a class="jxr_linenumber" name="L457" href="#L457">457</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> PasteAction <strong class="jxr_keyword">extends</strong> AbstractAction {
 <a class="jxr_linenumber" name="L458" href="#L458">458</a> 
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Action originalPaste;
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> Action originalPaste;
 <a class="jxr_linenumber" name="L460" href="#L460">460</a> 
 <a class="jxr_linenumber" name="L461" href="#L461">461</a>         <strong class="jxr_keyword">public</strong> PasteAction(Action originalPaste) {
 <a class="jxr_linenumber" name="L462" href="#L462">462</a>             <strong class="jxr_keyword">this</strong>.originalPaste = originalPaste;

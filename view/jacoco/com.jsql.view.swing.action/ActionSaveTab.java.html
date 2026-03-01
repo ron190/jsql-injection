@@ -61,9 +61,9 @@ public class ActionSaveTab extends AbstractAction {
 <span class="nc" id="L61">        var componentResult = MediatorHelper.tabResults().getSelectedComponent();</span>
 <span class="nc bnc" id="L62" title="All 3 branches missed.">        switch (componentResult) {</span>
 <span class="nc" id="L63">            case PanelTable panelTable -&gt; this.saveToFile(panelTable.getTableValues());</span>
-<span class="nc" id="L64">            case JScrollPane jScrollPane</span>
-<span class="nc bnc" id="L65" title="All 2 branches missed.">            when jScrollPane.getViewport().getView() instanceof JTextComponent textarea -&gt; this.saveToFile(textarea);</span>
-<span class="nc" id="L66">            default -&gt; LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Nothing to save&quot;);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            case JScrollPane jScrollPane when jScrollPane.getViewport().getView() instanceof JTextComponent textarea -&gt; this.saveToFile(textarea);</span>
+            // Fix #96361: NullPointerException on switch
+<span class="nc" id="L66">            case null, default -&gt; LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Nothing to save&quot;);</span>
         }
 <span class="nc" id="L68">    }</span>
     

@@ -51,7 +51,7 @@ public class StrategyUnion extends AbstractStrategy {
         }
         
 <span class="fc bfc" id="L53" title="All 2 branches covered.">        this.isApplicable = StringUtils.isNotEmpty(this.indexesInUrl)</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">            &amp;&amp; Integer.parseInt(this.injectionModel.getMediatorStrategy().getUnion().getPerformanceLength()) &gt; 0</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">            &amp;&amp; Integer.parseInt(this.injectionModel.getMediatorStrategy().getUnion().getPerformanceLength()) &gt; 0</span>
 <span class="pc bpc" id="L55" title="1 of 2 branches missed.">            &amp;&amp; StringUtils.isNotBlank(this.visibleIndex);</span>
         
 <span class="fc bfc" id="L57" title="All 2 branches covered.">        if (this.isApplicable) {</span>
@@ -141,9 +141,9 @@ public class StrategyUnion extends AbstractStrategy {
 <span class="fc bfc" id="L141" title="All 2 branches covered.">        while (regexSearch.find()) {</span>
 <span class="fc" id="L142">            performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});</span>
         }
-<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (performanceResults.isEmpty()) {</span>
-<span class="fc" id="L145">            this.performanceLength = &quot;0&quot;;</span>
-<span class="fc" id="L146">            return null;</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (performanceResults.isEmpty()) {</span>
+<span class="nc" id="L145">            this.performanceLength = &quot;0&quot;;</span>
+<span class="nc" id="L146">            return null;</span>
         }
         
         // Switch from previous array to 2D integer array

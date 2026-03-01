@@ -169,7 +169,7 @@ public class MediatorEngine {
 <span class="fc" id="L169">                () -&gt; this.injectionModel.getMediatorEngine().getEngineByUser()</span>
             );
         } else {
-<span class="fc" id="L172">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database (step 1)...&quot;);</span>
+<span class="fc" id="L172">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;[Step 1] Fingerprinting database...&quot;);</span>
 <span class="fc" id="L173">            var insertionCharacter = URLEncoder.encode(&quot;'\&quot;#-)'\&quot;*&quot;, StandardCharsets.UTF_8);</span>
 <span class="fc" id="L174">            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, &quot;test#engine&quot;);</span>
                 

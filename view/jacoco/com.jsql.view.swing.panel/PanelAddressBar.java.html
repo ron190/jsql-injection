@@ -456,7 +456,7 @@ public class PanelAddressBar extends JPanel {
 
     private class PasteAction extends AbstractAction {
 
-        private final Action originalPaste;
+        private final transient Action originalPaste;
 
 <span class="fc" id="L461">        public PasteAction(Action originalPaste) {</span>
 <span class="fc" id="L462">            this.originalPaste = originalPaste;</span>

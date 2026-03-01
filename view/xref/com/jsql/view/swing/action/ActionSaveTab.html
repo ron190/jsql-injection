@@ -69,9 +69,9 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">var</strong> componentResult = MediatorHelper.tabResults().getSelectedComponent();
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">switch</strong> (componentResult) {
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>              <strong class="jxr_keyword">case</strong> <a name="PanelTable" href="../../../../../com/jsql/view/swing/table/PanelTable.html#PanelTable">PanelTable</a> panelTable -&gt; <strong class="jxr_keyword">this</strong>.saveToFile(panelTable.getTableValues());
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>              <strong class="jxr_keyword">case</strong> JScrollPane jScrollPane
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>              when jScrollPane.getViewport().getView() instanceof JTextComponent textarea -&gt; <strong class="jxr_keyword">this</strong>.saveToFile(textarea);
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>              <strong class="jxr_keyword">default</strong> -&gt; LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Nothing to save"</span>);
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>              <strong class="jxr_keyword">case</strong> JScrollPane jScrollPane when jScrollPane.getViewport().getView() instanceof JTextComponent textarea -&gt; <strong class="jxr_keyword">this</strong>.saveToFile(textarea);
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>              <em class="jxr_comment">// Fix #96361: NullPointerException on switch</em>
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>              <strong class="jxr_keyword">case</strong> <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">default</strong> -&gt; LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Nothing to save"</span>);
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          }
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      }
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      

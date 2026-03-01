@@ -24,7 +24,7 @@ public class SuspendableGetEngine extends AbstractSuspendable {
 
     @Override
     public String run(Input input) throws JSqlException {
-<span class="fc" id="L27">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database with boolean match (step 4)...&quot;);</span>
+<span class="fc" id="L27">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;[Step 4] Fingerprinting database with boolean match...&quot;);</span>
 
 <span class="fc" id="L29">        AtomicBoolean isEngineFound = new AtomicBoolean(false);</span>
 <span class="fc" id="L30">        this.injectionModel.getMediatorEngine().getEnginesForFingerprint()</span>

@@ -478,14 +478,14 @@ import java.util.regex.Pattern;
         // Modifying text would create many large strings to garbage collect.
 <span class="fc bfc" id="L479" title="All 2 branches covered.">        while (lineEnd &lt; text.length() - 1) {</span>
 <span class="fc" id="L480">            lineEnd = text.indexOf('\n', lineStart);</span>
-<span class="fc bfc" id="L481" title="All 2 branches covered.">            if (lineEnd == -1) {</span>
+<span class="pc bpc" id="L481" title="1 of 2 branches missed.">            if (lineEnd == -1) {</span>
 <span class="fc" id="L482">                lineEnd = text.length() - 1;</span>
             }
 <span class="fc" id="L484">            line = text.substring(lineStart, lineEnd + 1);</span>
 <span class="fc" id="L485">            lineStart = lineEnd + 1;</span>
 
-<span class="fc bfc" id="L487" title="All 2 branches covered.">            if (lineHash.containsKey(line)) {</span>
-<span class="fc" id="L488">                chars.append((char) (int) lineHash.get(line));</span>
+<span class="pc bpc" id="L487" title="1 of 2 branches missed.">            if (lineHash.containsKey(line)) {</span>
+<span class="nc" id="L488">                chars.append((char) (int) lineHash.get(line));</span>
             } else {
 <span class="fc" id="L490">                lineArray.add(line);</span>
 <span class="fc" id="L491">                lineHash.put(line, lineArray.size() - 1);</span>
@@ -569,7 +569,7 @@ import java.util.regex.Pattern;
         // Truncate the longer string.
 <span class="fc bfc" id="L570" title="All 2 branches covered.">        if (text1Length &gt; text2Length) {</span>
 <span class="fc" id="L571">            text1 = text1.substring(text1Length - text2Length);</span>
-<span class="pc bpc" id="L572" title="1 of 2 branches missed.">        } else if (text1Length &lt; text2Length) {</span>
+<span class="fc bfc" id="L572" title="All 2 branches covered.">        } else if (text1Length &lt; text2Length) {</span>
 <span class="fc" id="L573">            text2 = text2.substring(0, text1Length);</span>
         }
 <span class="fc" id="L575">        int textLength = Math.min(text1Length, text2Length);</span>
@@ -590,10 +590,10 @@ import java.util.regex.Pattern;
 <span class="fc" id="L590">                return best;</span>
             }
 <span class="fc" id="L592">            length += found;</span>
-<span class="pc bpc" id="L593" title="2 of 4 branches missed.">            if (found == 0 || text1.substring(textLength - length).equals(</span>
+<span class="pc bpc" id="L593" title="1 of 4 branches missed.">            if (found == 0 || text1.substring(textLength - length).equals(</span>
 <span class="fc" id="L594">                    text2.substring(0, length))) {</span>
-<span class="nc" id="L595">                best = length;</span>
-<span class="nc" id="L596">                length++;</span>
+<span class="fc" id="L595">                best = length;</span>
+<span class="fc" id="L596">                length++;</span>
             }
 <span class="fc" id="L598">        }</span>
     }

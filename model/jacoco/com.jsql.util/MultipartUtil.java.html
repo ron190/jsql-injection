@@ -21,7 +21,7 @@ public class MultipartUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
 <span class="fc bfc" id="L23" title="All 2 branches covered.">        if (!hasFoundInjection) {</span>
-<span class="fc" id="L24">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} multipart...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
+<span class="fc" id="L24">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} [multipart] params...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;));</span>
         } else {
 <span class="fc" id="L26">            return true;</span>
         }
