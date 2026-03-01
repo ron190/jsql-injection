@@ -2,6 +2,7 @@ package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.model.injection.method.AbstractMethodInjection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,11 @@ public class MultipartUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
         if (!hasFoundInjection) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} [multipart] params...", () -> I18nUtil.valueByKey("LOG_CHECKING"));
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_DEFAULT,
+                "{} [multipart] params...",
+                () -> I18nUtil.valueByKey(AbstractMethodInjection.LOG_CHECKING)
+            );
         } else {
             return true;
         }
@@ -63,7 +68,7 @@ public class MultipartUtil {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 "{} multipart boundary {}={}",
-                () -> I18nUtil.valueByKey("LOG_CHECKING"),
+                () -> I18nUtil.valueByKey(AbstractMethodInjection.LOG_CHECKING),
                 () -> nameParameter,
                 () -> valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)
             );

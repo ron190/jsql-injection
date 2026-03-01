@@ -192,28 +192,42 @@ public class ParameterUtil {
     }
 
     private void checkOneOrLessStar() throws InjectionFailureException {
-        var nbStarInParameter = 0;
+        var nbStarAcrossParameters = 0;
         
         if (this.getQueryStringFromEntries().contains(InjectionModel.STAR)) {
-            nbStarInParameter++;
+            nbStarAcrossParameters++;
         }
         if (this.getRequestFromEntries().contains(InjectionModel.STAR)) {
-            nbStarInParameter++;
+            nbStarAcrossParameters++;
         }
-        if (this.getHeaderFromEntries().contains(InjectionModel.STAR)) {
-            nbStarInParameter++;
+        if (
+            this.getHeaderFromEntries().contains(InjectionModel.STAR)
+            && this.getCountHeadersWithStar() > 1
+        ) {
+            nbStarAcrossParameters++;
         }
 
         if (
-            nbStarInParameter >= 2
+            nbStarAcrossParameters >= 2
             || StringUtils.countMatches(this.getQueryStringFromEntries(), "*") >= 2
             || StringUtils.countMatches(this.getRequestFromEntries(), "*") >= 2
-            || StringUtils.countMatches(this.getHeaderFromEntries(), "*") >= 2
+            || this.getCountHeadersWithStar() > 1
         ) {
-            throw new InjectionFailureException("param selected or prefix [*] can be only used once in URL, Request or Header");
+            throw new InjectionFailureException("param selected or [*] can be only used once in URL, Request or Header");
         }
     }
-    
+
+    private long getCountHeadersWithStar() {
+        return this.getListHeader().stream()
+            .filter(s -> s.getValue().contains(InjectionModel.STAR))
+            .filter(s ->
+                !List.of(
+                    "accept", "accept-encoding", "accept-language", "access-control-request-headers", "if-match", "if-none-match", "allow"
+                ).contains(s.getKey().toLowerCase())
+            )
+            .count();
+    }
+
     public void checkStarMatchMethod() throws InjectionFailureException {
         AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection();
         boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllParam();
@@ -234,6 +248,7 @@ public class ParameterUtil {
             this.getHeaderFromEntries().contains(InjectionModel.STAR)
             && methodInjection != this.injectionModel.getMediatorMethod().getHeader()
             && !isCheckingAllParam
+            && this.getCountHeadersWithStar() > 0
         ) {
             throw new InjectionFailureException("param in Header selected but method URL or Request selected");
         }

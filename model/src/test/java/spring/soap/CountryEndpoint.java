@@ -20,7 +20,7 @@ public class CountryEndpoint {
 
 	@PayloadRoot(namespace = CountryEndpoint.NAMESPACE_URI, localPart = "getCountryRequest")
 	@ResponsePayload
-	public GetCountryResponse getCountry(@RequestPayload GetCountryRequest request) throws Exception {
+	public GetCountryResponse getCountry(@RequestPayload GetCountryRequest request) {
 		GetCountryResponse response = new GetCountryResponse();
 		response.setCountry(this.countryRepository.findCountry(request.getName()));
 		return response;

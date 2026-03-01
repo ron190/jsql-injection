@@ -74,10 +74,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     }
                     
                     charFromOrderBy = currentCallable.getCharacterInsertion();
+                    String finalCharFromOrderBy = charFromOrderBy;
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_SUCCESS,
                         "Found prefix [{}] using ORDER BY and compatible with Error strategy",
-                        SuspendableGetCharInsertion.format(charFromOrderBy)
+                        () -> SuspendableGetCharInsertion.format(finalCharFromOrderBy)
                     );
                     break;
                 }
@@ -157,7 +158,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             "%bf'"  // GBK slash encoding use case
         );
         List<String> prefixParentheses = Arrays.asList(
-            StringUtils.EMPTY +"%20",  // %20 required, + or space not working in path
+            StringUtils.EMPTY,
             ")",
             "))"
         );
@@ -168,10 +169,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             for (String prefixQuote: prefixQuotes) {
                 for (String prefixParenthesis: prefixParentheses) {
                     if (!isFound) {  // stop checking when found
+                        var prefixValueAndQuote = prefixValue + prefixQuote;
+                        var isRequiringSpace = prefixValueAndQuote.matches(".*\\w$") && prefixParenthesis.isEmpty();
                         isFound = this.checkInsertionChar(
                             characterInsertionFoundOrByUser,
                             charactersInsertion,
-                            prefixValue + prefixQuote + prefixParenthesis
+                            prefixValueAndQuote + prefixParenthesis
+                            + (isRequiringSpace ? "%20" : StringUtils.EMPTY)  // %20 required, + or space not working in path
                         );
                     }
                 }
@@ -207,18 +211,18 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 && entry.getValue().contains(InjectionModel.STAR)
             );
         if (isCookie) {
-            charactersInsertion.add(
-                prefixParenthesis
-                + InjectionModel.STAR
-                + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment()
-            );
-        } else {
             charactersInsertion.add(characterInsertionFoundOrByUser[0].replace(
                 InjectionModel.STAR,
                 prefixParenthesis
                 + InjectionModel.STAR
                 + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment()
             ));
+        } else {
+            charactersInsertion.add(
+                prefixParenthesis
+                + InjectionModel.STAR
+                + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment()
+            );
         }
 
         InjectionCharInsertion injectionCharInsertion;
@@ -248,9 +252,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment()
                 );
             } else {
-            characterInsertionFoundOrByUser[0] = prefixParenthesis
-                + InjectionModel.STAR
-                + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment();
+                characterInsertionFoundOrByUser[0] = prefixParenthesis
+                    + InjectionModel.STAR
+                    + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment();
             }
 
             LOGGER.log(

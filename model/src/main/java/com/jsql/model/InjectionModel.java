@@ -268,7 +268,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                     report += InjectionModel.BR + StringUtil.formatReport(colorReport, "Body: ") + body;
                 }
                 report += InjectionModel.BR 
-                    + StringUtil.formatReport(colorReport, "Header: ") 
+                    + StringUtil.formatReport(colorReport, "Header: ")
                     + httpRequest.headers().map().entrySet().stream()
                     .map(entry -> 
                         String.format("%s: %s", entry.getKey(), 
@@ -463,6 +463,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // Add empty comments with space=>/**/
         if (this.mediatorUtils.connectionUtil().getMethodInjection() == methodInjection) {
             query = this.mediatorUtils.tamperingUtil().tamper(query);
+        } else {  // remove tags added on non injection point like headers 'Accept: */*'
+            String regexToRemoveTamperTags = String.format("(?i)%s|%s", TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);
+            query = query.replaceAll(regexToRemoveTamperTags, StringUtils.EMPTY);
         }
         return this.applyEncoding(methodInjection, query);
     }

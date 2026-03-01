@@ -17,9 +17,10 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public abstract class AbstractMethodInjection implements Serializable {
-    
+
     private static final Logger LOGGER = LogManager.getRootLogger();
-    
+    public static final String LOG_CHECKING = "LOG_CHECKING";
+
     protected final InjectionModel injectionModel;
     
     protected AbstractMethodInjection(InjectionModel injectionModel) {
@@ -36,7 +37,7 @@ public abstract class AbstractMethodInjection implements Serializable {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_DEFAULT,
                 "{} [{}] params...",
-                () -> I18nUtil.valueByKey("LOG_CHECKING"),
+                () -> I18nUtil.valueByKey(AbstractMethodInjection.LOG_CHECKING),
                 () -> this.name().toLowerCase()
             );
             return this.testParameters();
@@ -148,7 +149,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         // then loop through each path to add * at the end of value and test each strategy.
         // Marks * are erased between each test.
         if (!attributesJson.isEmpty() && this.injectionModel.getMediatorUtils().preferencesUtil().isCheckingAllJsonParam()) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} [JSON] params...", () -> I18nUtil.valueByKey("LOG_CHECKING"));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} [JSON] params...", () -> I18nUtil.valueByKey(AbstractMethodInjection.LOG_CHECKING));
             hasFoundInjection = this.injectionModel.getMediatorUtils().jsonUtil().testJsonParam(this, paramStar);
         } else {
             hasFoundInjection = this.testJsonlessParam(paramStar);  // Standard non JSON injection
@@ -165,7 +166,7 @@ public abstract class AbstractMethodInjection implements Serializable {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 "{} {} param [key:{}, value:{}]",
-                () -> I18nUtil.valueByKey("LOG_CHECKING"),
+                () -> I18nUtil.valueByKey(AbstractMethodInjection.LOG_CHECKING),
                 () -> this.name().toLowerCase(),
                 paramStar::getKey,
                 () -> paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)

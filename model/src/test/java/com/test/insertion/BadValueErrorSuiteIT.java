@@ -16,7 +16,7 @@ class BadValueErrorSuiteIT extends ConcreteMysqlErrorSuiteIT {
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/errors?tenant=mysql-error&name=---"
+            "http://localhost:8080/errors?tenant=mysql-error&name='a"  // force failure to search proper prefix
         );
 
         model.setIsScanning(true);

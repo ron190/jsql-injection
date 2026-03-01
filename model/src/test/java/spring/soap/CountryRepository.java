@@ -1,6 +1,5 @@
 package spring.soap;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsql.util.LogLevelUtil;
 import jakarta.persistence.EntityManager;

@@ -2,6 +2,7 @@ package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.model.injection.method.AbstractMethodInjection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +36,11 @@ public class SoapUtil {
 
     public boolean testParameters(boolean hasFoundInjection) {
         if (!hasFoundInjection) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} [SOAP] params...", () -> I18nUtil.valueByKey("LOG_CHECKING"));
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_DEFAULT,
+                "{} [SOAP] params...",
+                () -> I18nUtil.valueByKey(AbstractMethodInjection.LOG_CHECKING)
+            );
         } else {
             return true;
         }
@@ -100,7 +105,7 @@ public class SoapUtil {
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_INFORM,
                         "{} [SOAP] {}={}",
-                        () -> I18nUtil.valueByKey("LOG_CHECKING"),
+                        () -> I18nUtil.valueByKey(AbstractMethodInjection.LOG_CHECKING),
                         () -> currentNode.getParentNode().getNodeName(),
                         () -> currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY)
                     );

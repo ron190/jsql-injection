@@ -17,7 +17,6 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MediatorStrategy {
 
@@ -185,11 +184,12 @@ public class MediatorStrategy {
             new SuspendableGetEngine(this.injectionModel).run();
         }
 
+        String finalInsertionGeneric = insertionGeneric;
         LOGGER.log(
             LogLevelUtil.CONSOLE_INFORM,
             "Using [{}] and prefix [{}]",
-            this.injectionModel.getMediatorEngine().getEngine(),
-            SuspendableGetCharInsertion.format(insertionGeneric)
+            () -> this.injectionModel.getMediatorEngine().getEngine(),
+            () -> SuspendableGetCharInsertion.format(finalInsertionGeneric)
         );
         this.injectionModel.sendToViews(new Seal.MarkEngineFound(this.injectionModel.getMediatorEngine().getEngine()));
 

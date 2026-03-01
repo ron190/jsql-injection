@@ -16,7 +16,7 @@ class EmptyUnionSuiteIT extends ConcreteMysqlSuiteIT {
         model.subscribe(new SubscriberLogger(model));
 
         model.getMediatorUtils().parameterUtil().initQueryString(
-            "http://localhost:8080/insertion-char?tenant=mysql&name="
+            "http://localhost:8080/insertion-char?tenant=mysql&name='"
         );
 
         model.setIsScanning(true);
