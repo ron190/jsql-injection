@@ -214,8 +214,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 && entry.getValue().contains(InjectionModel.STAR)
             );
 
-        Object jsonEntity = JsonUtil.getJson(this.parameterOriginalValue);
-        var isJson = !JsonUtil.createEntries(jsonEntity, "root", null).isEmpty();
+        var isJson = false;
+        if (StringUtils.isNotBlank(this.parameterOriginalValue)) {  // can be null when path param
+            Object jsonEntity = JsonUtil.getJson(this.parameterOriginalValue);
+            isJson = !JsonUtil.createEntries(jsonEntity, "root", null).isEmpty();
+        }
 
         var isRawParamRequired = isJson || isCookie;
 
