@@ -2,6 +2,7 @@ package com.jsql.model.suspendable;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.util.CookiesUtil;
+import com.jsql.util.JsonUtil;
 import com.jsql.view.subscriber.Seal;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
@@ -35,9 +36,11 @@ import java.util.stream.Stream;
 public class SuspendableGetCharInsertion extends AbstractSuspendable {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
+    private final String parameterOriginalValue;
 
-    public SuspendableGetCharInsertion(InjectionModel injectionModel) {
+    public SuspendableGetCharInsertion(InjectionModel injectionModel, String parameterOriginalValue) {
         super(injectionModel);
+        this.parameterOriginalValue = parameterOriginalValue;
     }
 
     @Override
@@ -210,7 +213,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 CookiesUtil.COOKIE.equalsIgnoreCase(entry.getKey())
                 && entry.getValue().contains(InjectionModel.STAR)
             );
-        if (isCookie) {
+
+        Object jsonEntity = JsonUtil.getJson(this.parameterOriginalValue);
+        var isJson = !JsonUtil.createEntries(jsonEntity, "root", null).isEmpty();
+
+        var isRawParamRequired = isJson || isCookie;
+
+        if (isRawParamRequired) {
             charactersInsertion.add(characterInsertionFoundOrByUser[0].replace(
                 InjectionModel.STAR,
                 prefixParenthesis
@@ -226,7 +235,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         }
 
         InjectionCharInsertion injectionCharInsertion;
-        if (isCookie) {
+        if (isRawParamRequired) {
             injectionCharInsertion = new InjectionCharInsertion(
                 this.injectionModel,
                 characterInsertionFoundOrByUser[0].replace(InjectionModel.STAR, prefixParenthesis),
@@ -245,7 +254,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             throw new StoppedByUserSlidingException();
         }
         if (injectionCharInsertion.isInjectable()) {
-            if (isCookie) {
+            if (isRawParamRequired) {
                 characterInsertionFoundOrByUser[0] = characterInsertionFoundOrByUser[0].replace(
                     InjectionModel.STAR,
                     prefixParenthesis + InjectionModel.STAR

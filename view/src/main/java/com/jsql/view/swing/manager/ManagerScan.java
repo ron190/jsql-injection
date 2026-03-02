@@ -229,7 +229,9 @@ public class ManagerScan extends AbstractManagerList {
         }
         
         // Get back the default view
-        subscriberScan.getSubscription().cancel();
+        if (subscriberScan.getSubscription() != null) {  // Fix #96366: NullPointerException on cancel()
+            subscriberScan.getSubscription().cancel();
+        }
         MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriberView());
 
         MediatorHelper.model().setIsScanning(false);

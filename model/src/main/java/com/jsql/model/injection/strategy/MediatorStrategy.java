@@ -153,7 +153,7 @@ public class MediatorStrategy {
             
             String characterInsertion = this.injectionModel.getMediatorUtils().preferencesUtil().isNotSearchingCharInsertion()
                 ? characterInsertionByUser
-                : new SuspendableGetCharInsertion(this.injectionModel).run(
+                : new SuspendableGetCharInsertion(this.injectionModel, parameterOriginalValue).run(
                     new Input(characterInsertionByUser)
                 );
             if (this.injectionModel.getMediatorUtils().parameterUtil().isRequestSoap()) {
@@ -169,7 +169,7 @@ public class MediatorStrategy {
             insertionGeneric = characterInsertion;
         } else if (this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking [path] params...");
-            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(
+            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel, parameterOriginalValue).run(
                 new Input(InjectionModel.STAR + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment())
             );
             String urlBase = this.injectionModel.getMediatorUtils().connectionUtil().getUrlBase();
