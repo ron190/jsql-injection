@@ -268,7 +268,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L268">                    report += InjectionModel.BR + StringUtil.formatReport(colorReport, &quot;Body: &quot;) + body;</span>
                 }
 <span class="fc" id="L270">                report += InjectionModel.BR </span>
-<span class="fc" id="L271">                    + StringUtil.formatReport(colorReport, &quot;Header: &quot;) </span>
+<span class="fc" id="L271">                    + StringUtil.formatReport(colorReport, &quot;Header: &quot;)</span>
 <span class="fc" id="L272">                    + httpRequest.headers().map().entrySet().stream()</span>
 <span class="fc" id="L273">                    .map(entry -&gt; </span>
 <span class="fc" id="L274">                        String.format(&quot;%s: %s&quot;, entry.getKey(), </span>
@@ -463,30 +463,33 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // Add empty comments with space=&gt;/**/
 <span class="fc bfc" id="L464" title="All 2 branches covered.">        if (this.mediatorUtils.connectionUtil().getMethodInjection() == methodInjection) {</span>
 <span class="fc" id="L465">            query = this.mediatorUtils.tamperingUtil().tamper(query);</span>
+        } else {  // remove tags added on non injection point like headers 'Accept: */*'
+<span class="fc" id="L467">            String regexToRemoveTamperTags = String.format(&quot;(?i)%s|%s&quot;, TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);</span>
+<span class="fc" id="L468">            query = query.replaceAll(regexToRemoveTamperTags, StringUtils.EMPTY);</span>
         }
-<span class="fc" id="L467">        return this.applyEncoding(methodInjection, query);</span>
+<span class="fc" id="L470">        return this.applyEncoding(methodInjection, query);</span>
     }
 
     private String initRawInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
         String query;
         // Method is selected by user and there's no injection point
-<span class="pc bpc" id="L473" title="1 of 2 branches missed.">        if (!isUsingIndex) {</span>
+<span class="pc bpc" id="L476" title="1 of 2 branches missed.">        if (!isUsingIndex) {</span>
             // Several SQL expressions does not use indexes in SELECT,
             // like Boolean, Error, Shell and search for character insertion,
             // in that case concat SQL expression to the end of param.
-<span class="fc" id="L477">            query = paramLead + sqlTrail;</span>
+<span class="fc" id="L480">            query = paramLead + sqlTrail;</span>
         } else {
             // Concat indexes found for Union strategy to params
             // and use visible Index for injection
-<span class="nc" id="L481">            query = paramLead + this.getMediatorStrategy().getSpecificUnion().getIndexesInUrl().replaceAll(</span>
-<span class="nc" id="L482">                String.format(EngineYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),</span>
+<span class="nc" id="L484">            query = paramLead + this.getMediatorStrategy().getSpecificUnion().getIndexesInUrl().replaceAll(</span>
+<span class="nc" id="L485">                String.format(EngineYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),</span>
                 // Oracle column often contains $, which is reserved for regex.
                 // =&gt; need to be escape with quoteReplacement()
-<span class="nc" id="L485">                Matcher.quoteReplacement(sqlTrail)</span>
+<span class="nc" id="L488">                Matcher.quoteReplacement(sqlTrail)</span>
             );
         }
         // Add ending line comment by engine
-<span class="fc" id="L489">        return query + this.mediatorEngine.getEngine().instance().endingComment();</span>
+<span class="fc" id="L492">        return query + this.mediatorEngine.getEngine().instance().endingComment();</span>
     }
 
     private String initStarInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
@@ -495,23 +498,23 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // like Boolean, Error, Shell and search for character insertion,
         // in that case replace injection point by SQL expression.
         // Injection point is always at the end?
-<span class="fc bfc" id="L498" title="All 2 branches covered.">        if (!isUsingIndex) {</span>
-<span class="fc" id="L499">            query = paramLead.replace(</span>
+<span class="fc bfc" id="L501" title="All 2 branches covered.">        if (!isUsingIndex) {</span>
+<span class="fc" id="L502">            query = paramLead.replace(</span>
                 InjectionModel.STAR,
                 sqlTrail
             );
         } else {
             // Replace injection point by indexes found for Union strategy
             // and use visible Index for injection
-<span class="fc" id="L506">            query = paramLead.replace(</span>
+<span class="fc" id="L509">            query = paramLead.replace(</span>
                 InjectionModel.STAR,
-<span class="fc" id="L508">                this.mediatorStrategy.getSpecificUnion().getIndexesInUrl().replace(</span>
-<span class="fc" id="L509">                    String.format(EngineYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),</span>
+<span class="fc" id="L511">                this.mediatorStrategy.getSpecificUnion().getIndexesInUrl().replace(</span>
+<span class="fc" id="L512">                    String.format(EngineYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),</span>
                     sqlTrail
                 )
             );
         }
-<span class="fc" id="L514">        return query;</span>
+<span class="fc" id="L517">        return query;</span>
     }
 
     /**
@@ -519,66 +522,66 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * - Tamper space=&gt;comment
      */
     private String cleanQuery(AbstractMethodInjection methodInjection, String query) {
-<span class="fc" id="L522">        String queryFixed = query;</span>
-<span class="fc" id="L523">        if (</span>
-<span class="fc bfc" id="L524" title="All 2 branches covered.">            methodInjection == this.mediatorMethod.getRequest()</span>
+<span class="fc" id="L525">        String queryFixed = query;</span>
+<span class="fc" id="L526">        if (</span>
+<span class="fc bfc" id="L527" title="All 2 branches covered.">            methodInjection == this.mediatorMethod.getRequest()</span>
             &amp;&amp; (
-<span class="fc bfc" id="L526" title="All 2 branches covered.">                this.mediatorUtils.parameterUtil().isRequestSoap()</span>
-<span class="fc bfc" id="L527" title="All 2 branches covered.">                || this.mediatorUtils.parameterUtil().isMultipartRequest()</span>
+<span class="fc bfc" id="L529" title="All 2 branches covered.">                this.mediatorUtils.parameterUtil().isRequestSoap()</span>
+<span class="fc bfc" id="L530" title="All 2 branches covered.">                || this.mediatorUtils.parameterUtil().isMultipartRequest()</span>
             )
         ) {
-<span class="fc" id="L530">            queryFixed = StringUtil.removeSqlComment(queryFixed)</span>
-<span class="fc" id="L531">                .replace(&quot;+&quot;, &quot; &quot;)</span>
-<span class="fc" id="L532">                .replace(&quot;%2b&quot;, &quot;+&quot;)  // Failsafe</span>
-<span class="fc" id="L533">                .replace(&quot;%23&quot;, &quot;#&quot;);  // End comment</span>
-<span class="fc bfc" id="L534" title="All 2 branches covered.">            if (this.mediatorUtils.parameterUtil().isMultipartRequest()) {</span>
+<span class="fc" id="L533">            queryFixed = StringUtil.removeSqlComment(queryFixed)</span>
+<span class="fc" id="L534">                .replace(&quot;+&quot;, &quot; &quot;)</span>
+<span class="fc" id="L535">                .replace(&quot;%2b&quot;, &quot;+&quot;)  // Failsafe</span>
+<span class="fc" id="L536">                .replace(&quot;%23&quot;, &quot;#&quot;);  // End comment</span>
+<span class="fc bfc" id="L537" title="All 2 branches covered.">            if (this.mediatorUtils.parameterUtil().isMultipartRequest()) {</span>
                 // restore linefeed from textfield
-<span class="fc" id="L536">                queryFixed = queryFixed.replaceAll(&quot;(?s)\\\\n&quot;, &quot;\r\n&quot;);</span>
+<span class="fc" id="L539">                queryFixed = queryFixed.replaceAll(&quot;(?s)\\\\n&quot;, &quot;\r\n&quot;);</span>
             }
         } else {
-<span class="fc" id="L539">            queryFixed = StringUtil.cleanSql(queryFixed);</span>
+<span class="fc" id="L542">            queryFixed = StringUtil.cleanSql(queryFixed);</span>
         }
-<span class="fc" id="L541">        return queryFixed;</span>
+<span class="fc" id="L544">        return queryFixed;</span>
     }
 
     private String applyEncoding(AbstractMethodInjection methodInjection, String query) {
-<span class="fc" id="L545">        String queryFixed = query;</span>
-<span class="fc bfc" id="L546" title="All 2 branches covered.">        if (!this.mediatorUtils.parameterUtil().isRequestSoap()) {</span>
-<span class="fc bfc" id="L547" title="All 2 branches covered.">            if (methodInjection == this.mediatorMethod.getQuery()) {</span>
+<span class="fc" id="L548">        String queryFixed = query;</span>
+<span class="fc bfc" id="L549" title="All 2 branches covered.">        if (!this.mediatorUtils.parameterUtil().isRequestSoap()) {</span>
+<span class="fc bfc" id="L550" title="All 2 branches covered.">            if (methodInjection == this.mediatorMethod.getQuery()) {</span>
                 // URL encode each character because no query parameter context
-<span class="pc bpc" id="L549" title="1 of 2 branches missed.">                if (!this.mediatorUtils.preferencesUtil().isUrlEncodingDisabled()) {</span>
-<span class="fc" id="L550">                    queryFixed = queryFixed.replace(&quot;'&quot;, &quot;%27&quot;);</span>
-<span class="fc" id="L551">                    queryFixed = queryFixed.replace(&quot;(&quot;, &quot;%28&quot;);</span>
-<span class="fc" id="L552">                    queryFixed = queryFixed.replace(&quot;)&quot;, &quot;%29&quot;);</span>
-<span class="fc" id="L553">                    queryFixed = queryFixed.replace(&quot;{&quot;, &quot;%7b&quot;);</span>
-<span class="fc" id="L554">                    queryFixed = queryFixed.replace(&quot;[&quot;, &quot;%5b&quot;);</span>
-<span class="fc" id="L555">                    queryFixed = queryFixed.replace(&quot;]&quot;, &quot;%5d&quot;);</span>
-<span class="fc" id="L556">                    queryFixed = queryFixed.replace(&quot;}&quot;, &quot;%7d&quot;);</span>
-<span class="fc" id="L557">                    queryFixed = queryFixed.replace(&quot;&gt;&quot;, &quot;%3e&quot;);</span>
-<span class="fc" id="L558">                    queryFixed = queryFixed.replace(&quot;&lt;&quot;, &quot;%3c&quot;);</span>
-<span class="fc" id="L559">                    queryFixed = queryFixed.replace(&quot;?&quot;, &quot;%3f&quot;);</span>
-<span class="fc" id="L560">                    queryFixed = queryFixed.replace(&quot;_&quot;, &quot;%5f&quot;);</span>
-<span class="fc" id="L561">                    queryFixed = queryFixed.replace(&quot;,&quot;, &quot;%2c&quot;);</span>
+<span class="pc bpc" id="L552" title="1 of 2 branches missed.">                if (!this.mediatorUtils.preferencesUtil().isUrlEncodingDisabled()) {</span>
+<span class="fc" id="L553">                    queryFixed = queryFixed.replace(&quot;'&quot;, &quot;%27&quot;);</span>
+<span class="fc" id="L554">                    queryFixed = queryFixed.replace(&quot;(&quot;, &quot;%28&quot;);</span>
+<span class="fc" id="L555">                    queryFixed = queryFixed.replace(&quot;)&quot;, &quot;%29&quot;);</span>
+<span class="fc" id="L556">                    queryFixed = queryFixed.replace(&quot;{&quot;, &quot;%7b&quot;);</span>
+<span class="fc" id="L557">                    queryFixed = queryFixed.replace(&quot;[&quot;, &quot;%5b&quot;);</span>
+<span class="fc" id="L558">                    queryFixed = queryFixed.replace(&quot;]&quot;, &quot;%5d&quot;);</span>
+<span class="fc" id="L559">                    queryFixed = queryFixed.replace(&quot;}&quot;, &quot;%7d&quot;);</span>
+<span class="fc" id="L560">                    queryFixed = queryFixed.replace(&quot;&gt;&quot;, &quot;%3e&quot;);</span>
+<span class="fc" id="L561">                    queryFixed = queryFixed.replace(&quot;&lt;&quot;, &quot;%3c&quot;);</span>
+<span class="fc" id="L562">                    queryFixed = queryFixed.replace(&quot;?&quot;, &quot;%3f&quot;);</span>
+<span class="fc" id="L563">                    queryFixed = queryFixed.replace(&quot;_&quot;, &quot;%5f&quot;);</span>
+<span class="fc" id="L564">                    queryFixed = queryFixed.replace(&quot;,&quot;, &quot;%2c&quot;);</span>
                 }
                 // HTTP forbidden characters
-<span class="fc" id="L564">                queryFixed = queryFixed.replace(StringUtils.SPACE, &quot;+&quot;);</span>
-<span class="fc" id="L565">                queryFixed = queryFixed.replace(&quot;`&quot;, &quot;%60&quot;);  // from `${database}`.`${table}`</span>
-<span class="fc" id="L566">                queryFixed = queryFixed.replace(&quot;\&quot;&quot;, &quot;%22&quot;);</span>
-<span class="fc" id="L567">                queryFixed = queryFixed.replace(&quot;|&quot;, &quot;%7c&quot;);</span>
-<span class="fc" id="L568">                queryFixed = queryFixed.replace(&quot;\\&quot;, &quot;%5c&quot;);</span>
-<span class="fc bfc" id="L569" title="All 2 branches covered.">            } else if (methodInjection != this.mediatorMethod.getRequest()) {</span>
+<span class="fc" id="L567">                queryFixed = queryFixed.replace(StringUtils.SPACE, &quot;+&quot;);</span>
+<span class="fc" id="L568">                queryFixed = queryFixed.replace(&quot;`&quot;, &quot;%60&quot;);  // from `${database}`.`${table}`</span>
+<span class="fc" id="L569">                queryFixed = queryFixed.replace(&quot;\&quot;&quot;, &quot;%22&quot;);</span>
+<span class="fc" id="L570">                queryFixed = queryFixed.replace(&quot;|&quot;, &quot;%7c&quot;);</span>
+<span class="fc" id="L571">                queryFixed = queryFixed.replace(&quot;\\&quot;, &quot;%5c&quot;);</span>
+<span class="fc bfc" id="L572" title="All 2 branches covered.">            } else if (methodInjection != this.mediatorMethod.getRequest()) {</span>
                 // For cookies in Spring (confirmed, covered by integration tests)
-<span class="fc" id="L571">                queryFixed = queryFixed.replace(&quot;+&quot;, &quot;%20&quot;);</span>
-<span class="fc" id="L572">                queryFixed = queryFixed.replace(&quot;,&quot;, &quot;%2c&quot;);</span>
+<span class="fc" id="L574">                queryFixed = queryFixed.replace(&quot;+&quot;, &quot;%20&quot;);</span>
+<span class="fc" id="L575">                queryFixed = queryFixed.replace(&quot;,&quot;, &quot;%2c&quot;);</span>
                 try {  // fix #95709: IllegalArgumentException on decode()
-<span class="fc" id="L574">                    queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);</span>
-<span class="nc" id="L575">                } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L576">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect values in [{}], please check the parameters&quot;, methodInjection.name());</span>
-<span class="nc" id="L577">                    throw new JSqlRuntimeException(e);</span>
-<span class="fc" id="L578">                }</span>
+<span class="fc" id="L577">                    queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L578">                } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L579">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect values in [{}], please check the parameters&quot;, methodInjection.name());</span>
+<span class="nc" id="L580">                    throw new JSqlRuntimeException(e);</span>
+<span class="fc" id="L581">                }</span>
             }
         }
-<span class="fc" id="L581">        return queryFixed;</span>
+<span class="fc" id="L584">        return queryFixed;</span>
     }
     
     /**
@@ -587,59 +590,59 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * @param source Text to display in console
      */
     public void sendResponseFromSite(String message, String source) {
-<span class="nc" id="L590">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{}, response from site:&quot;, message);</span>
-<span class="nc" id="L591">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;&gt;&gt;&gt;{}&quot;, source);</span>
-<span class="nc" id="L592">    }</span>
+<span class="nc" id="L593">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{}, response from site:&quot;, message);</span>
+<span class="nc" id="L594">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;&gt;&gt;&gt;{}&quot;, source);</span>
+<span class="nc" id="L595">    }</span>
     
     
     // Getters and setters
 
     public boolean shouldErasePreviousInjection() {
-<span class="nc" id="L598">        return this.shouldErasePreviousInjection;</span>
+<span class="nc" id="L601">        return this.shouldErasePreviousInjection;</span>
     }
 
     public void setIsScanning(boolean isScanning) {
-<span class="fc" id="L602">        this.isScanning = isScanning;</span>
-<span class="fc" id="L603">    }</span>
+<span class="fc" id="L605">        this.isScanning = isScanning;</span>
+<span class="fc" id="L606">    }</span>
 
     public PropertiesUtil getPropertiesUtil() {
-<span class="fc" id="L606">        return this.propertiesUtil;</span>
+<span class="fc" id="L609">        return this.propertiesUtil;</span>
     }
 
     public MediatorUtils getMediatorUtils() {
-<span class="fc" id="L610">        return this.mediatorUtils;</span>
+<span class="fc" id="L613">        return this.mediatorUtils;</span>
     }
 
     public MediatorEngine getMediatorEngine() {
-<span class="fc" id="L614">        return this.mediatorEngine;</span>
+<span class="fc" id="L617">        return this.mediatorEngine;</span>
     }
 
     public MediatorMethod getMediatorMethod() {
-<span class="fc" id="L618">        return this.mediatorMethod;</span>
+<span class="fc" id="L621">        return this.mediatorMethod;</span>
     }
 
     public DataAccess getDataAccess() {
-<span class="fc" id="L622">        return this.dataAccess;</span>
+<span class="fc" id="L625">        return this.dataAccess;</span>
     }
 
     public ResourceAccess getResourceAccess() {
-<span class="fc" id="L626">        return this.resourceAccess;</span>
+<span class="fc" id="L629">        return this.resourceAccess;</span>
     }
 
     public MediatorStrategy getMediatorStrategy() {
-<span class="fc" id="L630">        return this.mediatorStrategy;</span>
+<span class="fc" id="L633">        return this.mediatorStrategy;</span>
     }
 
     public void appendAnalysisReport(String analysisReport) {
-<span class="fc" id="L634">        this.appendAnalysisReport(analysisReport, false);</span>
-<span class="fc" id="L635">    }</span>
+<span class="fc" id="L637">        this.appendAnalysisReport(analysisReport, false);</span>
+<span class="fc" id="L638">    }</span>
 
     public void appendAnalysisReport(String analysisReport, boolean isInit) {
-<span class="fc bfc" id="L638" title="All 2 branches covered.">        this.analysisReport += (isInit ? StringUtils.EMPTY : &quot;&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;&quot;) + analysisReport;</span>
-<span class="fc" id="L639">    }</span>
+<span class="fc bfc" id="L641" title="All 2 branches covered.">        this.analysisReport += (isInit ? StringUtils.EMPTY : &quot;&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;&quot;) + analysisReport;</span>
+<span class="fc" id="L642">    }</span>
 
     public void setAnalysisReport(String analysisReport) {
-<span class="fc" id="L642">        this.analysisReport = analysisReport;</span>
-<span class="fc" id="L643">    }</span>
+<span class="fc" id="L645">        this.analysisReport = analysisReport;</span>
+<span class="fc" id="L646">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

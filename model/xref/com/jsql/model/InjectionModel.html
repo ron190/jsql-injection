@@ -276,7 +276,7 @@
 <a class="jxr_linenumber" name="L268" href="#L268">268</a>                     report += InjectionModel.BR + StringUtil.formatReport(colorReport, <span class="jxr_string">"Body: "</span>) + body;
 <a class="jxr_linenumber" name="L269" href="#L269">269</a>                 }
 <a class="jxr_linenumber" name="L270" href="#L270">270</a>                 report += InjectionModel.BR 
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>                     + StringUtil.formatReport(colorReport, <span class="jxr_string">"Header: "</span>) 
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>                     + StringUtil.formatReport(colorReport, <span class="jxr_string">"Header: "</span>)
 <a class="jxr_linenumber" name="L272" href="#L272">272</a>                     + httpRequest.headers().map().entrySet().stream()
 <a class="jxr_linenumber" name="L273" href="#L273">273</a>                     .map(entry -&gt; 
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>                         String.format(<span class="jxr_string">"%s: %s"</span>, entry.getKey(), 
@@ -471,185 +471,188 @@
 <a class="jxr_linenumber" name="L463" href="#L463">463</a>         <em class="jxr_comment">// Add empty comments with space=&gt;/**/</em>
 <a class="jxr_linenumber" name="L464" href="#L464">464</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.mediatorUtils.connectionUtil().getMethodInjection() == methodInjection) {
 <a class="jxr_linenumber" name="L465" href="#L465">465</a>             query = <strong class="jxr_keyword">this</strong>.mediatorUtils.tamperingUtil().tamper(query);
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>         }
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.applyEncoding(methodInjection, query);
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>     }
-<a class="jxr_linenumber" name="L469" href="#L469">469</a> 
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>     <strong class="jxr_keyword">private</strong> String initRawInjection(String paramLead, <strong class="jxr_keyword">boolean</strong> isUsingIndex, String sqlTrail) {
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>         String query;
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>         <em class="jxr_comment">// Method is selected by user and there's no injection point</em>
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>         <strong class="jxr_keyword">if</strong> (!isUsingIndex) {
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>             <em class="jxr_comment">// Several SQL expressions does not use indexes in SELECT,</em>
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>             <em class="jxr_comment">// like Boolean, Error, Shell and search for character insertion,</em>
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>             <em class="jxr_comment">// in that case concat SQL expression to the end of param.</em>
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>             query = paramLead + sqlTrail;
-<a class="jxr_linenumber" name="L478" href="#L478">478</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>             <em class="jxr_comment">// Concat indexes found for Union strategy to params</em>
-<a class="jxr_linenumber" name="L480" href="#L480">480</a>             <em class="jxr_comment">// and use visible Index for injection</em>
-<a class="jxr_linenumber" name="L481" href="#L481">481</a>             query = paramLead + <strong class="jxr_keyword">this</strong>.getMediatorStrategy().getSpecificUnion().getIndexesInUrl().replaceAll(
-<a class="jxr_linenumber" name="L482" href="#L482">482</a>                 String.format(EngineYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.mediatorStrategy.getSpecificUnion().getVisibleIndex()),
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>                 <em class="jxr_comment">// Oracle column often contains $, which is reserved for regex.</em>
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>                 <em class="jxr_comment">// =&gt; need to be escape with quoteReplacement()</em>
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>                 Matcher.quoteReplacement(sqlTrail)
-<a class="jxr_linenumber" name="L486" href="#L486">486</a>             );
-<a class="jxr_linenumber" name="L487" href="#L487">487</a>         }
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>         <em class="jxr_comment">// Add ending line comment by engine</em>
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>         <strong class="jxr_keyword">return</strong> query + <strong class="jxr_keyword">this</strong>.mediatorEngine.getEngine().instance().endingComment();
-<a class="jxr_linenumber" name="L490" href="#L490">490</a>     }
-<a class="jxr_linenumber" name="L491" href="#L491">491</a> 
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>     <strong class="jxr_keyword">private</strong> String initStarInjection(String paramLead, <strong class="jxr_keyword">boolean</strong> isUsingIndex, String sqlTrail) {
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>         String query;
-<a class="jxr_linenumber" name="L494" href="#L494">494</a>         <em class="jxr_comment">// Several SQL expressions does not use indexes in SELECT,</em>
-<a class="jxr_linenumber" name="L495" href="#L495">495</a>         <em class="jxr_comment">// like Boolean, Error, Shell and search for character insertion,</em>
-<a class="jxr_linenumber" name="L496" href="#L496">496</a>         <em class="jxr_comment">// in that case replace injection point by SQL expression.</em>
-<a class="jxr_linenumber" name="L497" href="#L497">497</a>         <em class="jxr_comment">// Injection point is always at the end?</em>
-<a class="jxr_linenumber" name="L498" href="#L498">498</a>         <strong class="jxr_keyword">if</strong> (!isUsingIndex) {
-<a class="jxr_linenumber" name="L499" href="#L499">499</a>             query = paramLead.replace(
-<a class="jxr_linenumber" name="L500" href="#L500">500</a>                 InjectionModel.STAR,
-<a class="jxr_linenumber" name="L501" href="#L501">501</a>                 sqlTrail
-<a class="jxr_linenumber" name="L502" href="#L502">502</a>             );
-<a class="jxr_linenumber" name="L503" href="#L503">503</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L504" href="#L504">504</a>             <em class="jxr_comment">// Replace injection point by indexes found for Union strategy</em>
-<a class="jxr_linenumber" name="L505" href="#L505">505</a>             <em class="jxr_comment">// and use visible Index for injection</em>
-<a class="jxr_linenumber" name="L506" href="#L506">506</a>             query = paramLead.replace(
-<a class="jxr_linenumber" name="L507" href="#L507">507</a>                 InjectionModel.STAR,
-<a class="jxr_linenumber" name="L508" href="#L508">508</a>                 <strong class="jxr_keyword">this</strong>.mediatorStrategy.getSpecificUnion().getIndexesInUrl().replace(
-<a class="jxr_linenumber" name="L509" href="#L509">509</a>                     String.format(EngineYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.mediatorStrategy.getSpecificUnion().getVisibleIndex()),
-<a class="jxr_linenumber" name="L510" href="#L510">510</a>                     sqlTrail
-<a class="jxr_linenumber" name="L511" href="#L511">511</a>                 )
-<a class="jxr_linenumber" name="L512" href="#L512">512</a>             );
-<a class="jxr_linenumber" name="L513" href="#L513">513</a>         }
-<a class="jxr_linenumber" name="L514" href="#L514">514</a>         <strong class="jxr_keyword">return</strong> query;
-<a class="jxr_linenumber" name="L515" href="#L515">515</a>     }
-<a class="jxr_linenumber" name="L516" href="#L516">516</a> 
-<a class="jxr_linenumber" name="L517" href="#L517">517</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L518" href="#L518">518</a> <em class="jxr_javadoccomment">     * Dependency:</em>
-<a class="jxr_linenumber" name="L519" href="#L519">519</a> <em class="jxr_javadoccomment">     * - Tamper space=&gt;comment</em>
-<a class="jxr_linenumber" name="L520" href="#L520">520</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L521" href="#L521">521</a>     <strong class="jxr_keyword">private</strong> String cleanQuery(<a name="AbstractMethodInjection" href="../../../com/jsql/model/injection/method/AbstractMethodInjection.html#AbstractMethodInjection">AbstractMethodInjection</a> methodInjection, String query) {
-<a class="jxr_linenumber" name="L522" href="#L522">522</a>         String queryFixed = query;
-<a class="jxr_linenumber" name="L523" href="#L523">523</a>         <strong class="jxr_keyword">if</strong> (
-<a class="jxr_linenumber" name="L524" href="#L524">524</a>             methodInjection == <strong class="jxr_keyword">this</strong>.mediatorMethod.getRequest()
-<a class="jxr_linenumber" name="L525" href="#L525">525</a>             &amp;&amp; (
-<a class="jxr_linenumber" name="L526" href="#L526">526</a>                 <strong class="jxr_keyword">this</strong>.mediatorUtils.parameterUtil().isRequestSoap()
-<a class="jxr_linenumber" name="L527" href="#L527">527</a>                 || <strong class="jxr_keyword">this</strong>.mediatorUtils.parameterUtil().isMultipartRequest()
-<a class="jxr_linenumber" name="L528" href="#L528">528</a>             )
-<a class="jxr_linenumber" name="L529" href="#L529">529</a>         ) {
-<a class="jxr_linenumber" name="L530" href="#L530">530</a>             queryFixed = StringUtil.removeSqlComment(queryFixed)
-<a class="jxr_linenumber" name="L531" href="#L531">531</a>                 .replace(<span class="jxr_string">"+"</span>, <span class="jxr_string">" "</span>)
-<a class="jxr_linenumber" name="L532" href="#L532">532</a>                 .replace(<span class="jxr_string">"%2b"</span>, <span class="jxr_string">"+"</span>)  <em class="jxr_comment">// Failsafe</em>
-<a class="jxr_linenumber" name="L533" href="#L533">533</a>                 .replace(<span class="jxr_string">"%23"</span>, <span class="jxr_string">"#"</span>);  <em class="jxr_comment">// End comment</em>
-<a class="jxr_linenumber" name="L534" href="#L534">534</a>             <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.mediatorUtils.parameterUtil().isMultipartRequest()) {
-<a class="jxr_linenumber" name="L535" href="#L535">535</a>                 <em class="jxr_comment">// restore linefeed from textfield</em>
-<a class="jxr_linenumber" name="L536" href="#L536">536</a>                 queryFixed = queryFixed.replaceAll(<span class="jxr_string">"(?s)&#92;&#92;&#92;&#92;n"</span>, <span class="jxr_string">"\r\n"</span>);
-<a class="jxr_linenumber" name="L537" href="#L537">537</a>             }
-<a class="jxr_linenumber" name="L538" href="#L538">538</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L539" href="#L539">539</a>             queryFixed = StringUtil.cleanSql(queryFixed);
-<a class="jxr_linenumber" name="L540" href="#L540">540</a>         }
-<a class="jxr_linenumber" name="L541" href="#L541">541</a>         <strong class="jxr_keyword">return</strong> queryFixed;
-<a class="jxr_linenumber" name="L542" href="#L542">542</a>     }
-<a class="jxr_linenumber" name="L543" href="#L543">543</a> 
-<a class="jxr_linenumber" name="L544" href="#L544">544</a>     <strong class="jxr_keyword">private</strong> String applyEncoding(<a name="AbstractMethodInjection" href="../../../com/jsql/model/injection/method/AbstractMethodInjection.html#AbstractMethodInjection">AbstractMethodInjection</a> methodInjection, String query) {
-<a class="jxr_linenumber" name="L545" href="#L545">545</a>         String queryFixed = query;
-<a class="jxr_linenumber" name="L546" href="#L546">546</a>         <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.mediatorUtils.parameterUtil().isRequestSoap()) {
-<a class="jxr_linenumber" name="L547" href="#L547">547</a>             <strong class="jxr_keyword">if</strong> (methodInjection == <strong class="jxr_keyword">this</strong>.mediatorMethod.getQuery()) {
-<a class="jxr_linenumber" name="L548" href="#L548">548</a>                 <em class="jxr_comment">// URL encode each character because no query parameter context</em>
-<a class="jxr_linenumber" name="L549" href="#L549">549</a>                 <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.mediatorUtils.preferencesUtil().isUrlEncodingDisabled()) {
-<a class="jxr_linenumber" name="L550" href="#L550">550</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"'"</span>, <span class="jxr_string">"%27"</span>);
-<a class="jxr_linenumber" name="L551" href="#L551">551</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"("</span>, <span class="jxr_string">"%28"</span>);
-<a class="jxr_linenumber" name="L552" href="#L552">552</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">")"</span>, <span class="jxr_string">"%29"</span>);
-<a class="jxr_linenumber" name="L553" href="#L553">553</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"{"</span>, <span class="jxr_string">"%7b"</span>);
-<a class="jxr_linenumber" name="L554" href="#L554">554</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"["</span>, <span class="jxr_string">"%5b"</span>);
-<a class="jxr_linenumber" name="L555" href="#L555">555</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"]"</span>, <span class="jxr_string">"%5d"</span>);
-<a class="jxr_linenumber" name="L556" href="#L556">556</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"}"</span>, <span class="jxr_string">"%7d"</span>);
-<a class="jxr_linenumber" name="L557" href="#L557">557</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"&gt;"</span>, <span class="jxr_string">"%3e"</span>);
-<a class="jxr_linenumber" name="L558" href="#L558">558</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"&lt;"</span>, <span class="jxr_string">"%3c"</span>);
-<a class="jxr_linenumber" name="L559" href="#L559">559</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"?"</span>, <span class="jxr_string">"%3f"</span>);
-<a class="jxr_linenumber" name="L560" href="#L560">560</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"_"</span>, <span class="jxr_string">"%5f"</span>);
-<a class="jxr_linenumber" name="L561" href="#L561">561</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">","</span>, <span class="jxr_string">"%2c"</span>);
-<a class="jxr_linenumber" name="L562" href="#L562">562</a>                 }
-<a class="jxr_linenumber" name="L563" href="#L563">563</a>                 <em class="jxr_comment">// HTTP forbidden characters</em>
-<a class="jxr_linenumber" name="L564" href="#L564">564</a>                 queryFixed = queryFixed.replace(StringUtils.SPACE, <span class="jxr_string">"+"</span>);
-<a class="jxr_linenumber" name="L565" href="#L565">565</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">"`"</span>, <span class="jxr_string">"%60"</span>);  <em class="jxr_comment">// from `${database}`.`${table}`</em>
-<a class="jxr_linenumber" name="L566" href="#L566">566</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">"\&quot;"</span>, <span class="jxr_string">"%22"</span>);
-<a class="jxr_linenumber" name="L567" href="#L567">567</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">"|"</span>, <span class="jxr_string">"%7c"</span>);
-<a class="jxr_linenumber" name="L568" href="#L568">568</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">"&#92;&#92;"</span>, <span class="jxr_string">"%5c"</span>);
-<a class="jxr_linenumber" name="L569" href="#L569">569</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (methodInjection != <strong class="jxr_keyword">this</strong>.mediatorMethod.getRequest()) {
-<a class="jxr_linenumber" name="L570" href="#L570">570</a>                 <em class="jxr_comment">// For cookies in Spring (confirmed, covered by integration tests)</em>
-<a class="jxr_linenumber" name="L571" href="#L571">571</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">"+"</span>, <span class="jxr_string">"%20"</span>);
-<a class="jxr_linenumber" name="L572" href="#L572">572</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">","</span>, <span class="jxr_string">"%2c"</span>);
-<a class="jxr_linenumber" name="L573" href="#L573">573</a>                 <strong class="jxr_keyword">try</strong> {  <em class="jxr_comment">// fix #95709: IllegalArgumentException on decode()</em>
-<a class="jxr_linenumber" name="L574" href="#L574">574</a>                     queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);
-<a class="jxr_linenumber" name="L575" href="#L575">575</a>                 } <strong class="jxr_keyword">catch</strong> (IllegalArgumentException e) {
-<a class="jxr_linenumber" name="L576" href="#L576">576</a>                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Incorrect values in [{}], please check the parameters"</span>, methodInjection.name());
-<a class="jxr_linenumber" name="L577" href="#L577">577</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="JSqlRuntimeException" href="../../../com/jsql/model/exception/JSqlRuntimeException.html#JSqlRuntimeException">JSqlRuntimeException</a>(e);
-<a class="jxr_linenumber" name="L578" href="#L578">578</a>                 }
-<a class="jxr_linenumber" name="L579" href="#L579">579</a>             }
-<a class="jxr_linenumber" name="L580" href="#L580">580</a>         }
-<a class="jxr_linenumber" name="L581" href="#L581">581</a>         <strong class="jxr_keyword">return</strong> queryFixed;
-<a class="jxr_linenumber" name="L582" href="#L582">582</a>     }
-<a class="jxr_linenumber" name="L583" href="#L583">583</a>     
-<a class="jxr_linenumber" name="L584" href="#L584">584</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L585" href="#L585">585</a> <em class="jxr_javadoccomment">     * Display source code in console.</em>
-<a class="jxr_linenumber" name="L586" href="#L586">586</a> <em class="jxr_javadoccomment">     * @param message Error message</em>
-<a class="jxr_linenumber" name="L587" href="#L587">587</a> <em class="jxr_javadoccomment">     * @param source Text to display in console</em>
-<a class="jxr_linenumber" name="L588" href="#L588">588</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L589" href="#L589">589</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> sendResponseFromSite(String message, String source) {
-<a class="jxr_linenumber" name="L590" href="#L590">590</a>         LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"{}, response from site:"</span>, message);
-<a class="jxr_linenumber" name="L591" href="#L591">591</a>         LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"&gt;&gt;&gt;{}"</span>, source);
-<a class="jxr_linenumber" name="L592" href="#L592">592</a>     }
-<a class="jxr_linenumber" name="L593" href="#L593">593</a>     
-<a class="jxr_linenumber" name="L594" href="#L594">594</a>     
-<a class="jxr_linenumber" name="L595" href="#L595">595</a>     <em class="jxr_comment">// Getters and setters</em>
-<a class="jxr_linenumber" name="L596" href="#L596">596</a> 
-<a class="jxr_linenumber" name="L597" href="#L597">597</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> shouldErasePreviousInjection() {
-<a class="jxr_linenumber" name="L598" href="#L598">598</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.shouldErasePreviousInjection;
-<a class="jxr_linenumber" name="L599" href="#L599">599</a>     }
-<a class="jxr_linenumber" name="L600" href="#L600">600</a> 
-<a class="jxr_linenumber" name="L601" href="#L601">601</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setIsScanning(<strong class="jxr_keyword">boolean</strong> isScanning) {
-<a class="jxr_linenumber" name="L602" href="#L602">602</a>         <strong class="jxr_keyword">this</strong>.isScanning = isScanning;
-<a class="jxr_linenumber" name="L603" href="#L603">603</a>     }
-<a class="jxr_linenumber" name="L604" href="#L604">604</a> 
-<a class="jxr_linenumber" name="L605" href="#L605">605</a>     <strong class="jxr_keyword">public</strong> <a name="PropertiesUtil" href="../../../com/jsql/util/PropertiesUtil.html#PropertiesUtil">PropertiesUtil</a> getPropertiesUtil() {
-<a class="jxr_linenumber" name="L606" href="#L606">606</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.propertiesUtil;
-<a class="jxr_linenumber" name="L607" href="#L607">607</a>     }
-<a class="jxr_linenumber" name="L608" href="#L608">608</a> 
-<a class="jxr_linenumber" name="L609" href="#L609">609</a>     <strong class="jxr_keyword">public</strong> <a name="MediatorUtils" href="../../../com/jsql/model/MediatorUtils.html#MediatorUtils">MediatorUtils</a> getMediatorUtils() {
-<a class="jxr_linenumber" name="L610" href="#L610">610</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mediatorUtils;
-<a class="jxr_linenumber" name="L611" href="#L611">611</a>     }
-<a class="jxr_linenumber" name="L612" href="#L612">612</a> 
-<a class="jxr_linenumber" name="L613" href="#L613">613</a>     <strong class="jxr_keyword">public</strong> <a name="MediatorEngine" href="../../../com/jsql/model/injection/engine/MediatorEngine.html#MediatorEngine">MediatorEngine</a> getMediatorEngine() {
-<a class="jxr_linenumber" name="L614" href="#L614">614</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mediatorEngine;
-<a class="jxr_linenumber" name="L615" href="#L615">615</a>     }
-<a class="jxr_linenumber" name="L616" href="#L616">616</a> 
-<a class="jxr_linenumber" name="L617" href="#L617">617</a>     <strong class="jxr_keyword">public</strong> <a name="MediatorMethod" href="../../../com/jsql/model/injection/method/MediatorMethod.html#MediatorMethod">MediatorMethod</a> getMediatorMethod() {
-<a class="jxr_linenumber" name="L618" href="#L618">618</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mediatorMethod;
-<a class="jxr_linenumber" name="L619" href="#L619">619</a>     }
-<a class="jxr_linenumber" name="L620" href="#L620">620</a> 
-<a class="jxr_linenumber" name="L621" href="#L621">621</a>     <strong class="jxr_keyword">public</strong> <a name="DataAccess" href="../../../com/jsql/model/accessible/DataAccess.html#DataAccess">DataAccess</a> getDataAccess() {
-<a class="jxr_linenumber" name="L622" href="#L622">622</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.dataAccess;
-<a class="jxr_linenumber" name="L623" href="#L623">623</a>     }
-<a class="jxr_linenumber" name="L624" href="#L624">624</a> 
-<a class="jxr_linenumber" name="L625" href="#L625">625</a>     <strong class="jxr_keyword">public</strong> <a name="ResourceAccess" href="../../../com/jsql/model/accessible/ResourceAccess.html#ResourceAccess">ResourceAccess</a> getResourceAccess() {
-<a class="jxr_linenumber" name="L626" href="#L626">626</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.resourceAccess;
-<a class="jxr_linenumber" name="L627" href="#L627">627</a>     }
-<a class="jxr_linenumber" name="L628" href="#L628">628</a> 
-<a class="jxr_linenumber" name="L629" href="#L629">629</a>     <strong class="jxr_keyword">public</strong> <a name="MediatorStrategy" href="../../../com/jsql/model/injection/strategy/MediatorStrategy.html#MediatorStrategy">MediatorStrategy</a> getMediatorStrategy() {
-<a class="jxr_linenumber" name="L630" href="#L630">630</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mediatorStrategy;
-<a class="jxr_linenumber" name="L631" href="#L631">631</a>     }
-<a class="jxr_linenumber" name="L632" href="#L632">632</a> 
-<a class="jxr_linenumber" name="L633" href="#L633">633</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> appendAnalysisReport(String analysisReport) {
-<a class="jxr_linenumber" name="L634" href="#L634">634</a>         <strong class="jxr_keyword">this</strong>.appendAnalysisReport(analysisReport, false);
-<a class="jxr_linenumber" name="L635" href="#L635">635</a>     }
-<a class="jxr_linenumber" name="L636" href="#L636">636</a> 
-<a class="jxr_linenumber" name="L637" href="#L637">637</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> appendAnalysisReport(String analysisReport, <strong class="jxr_keyword">boolean</strong> isInit) {
-<a class="jxr_linenumber" name="L638" href="#L638">638</a>         <strong class="jxr_keyword">this</strong>.analysisReport += (isInit ? StringUtils.EMPTY : <span class="jxr_string">"&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;"</span>) + analysisReport;
-<a class="jxr_linenumber" name="L639" href="#L639">639</a>     }
-<a class="jxr_linenumber" name="L640" href="#L640">640</a> 
-<a class="jxr_linenumber" name="L641" href="#L641">641</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setAnalysisReport(String analysisReport) {
-<a class="jxr_linenumber" name="L642" href="#L642">642</a>         <strong class="jxr_keyword">this</strong>.analysisReport = analysisReport;
-<a class="jxr_linenumber" name="L643" href="#L643">643</a>     }
-<a class="jxr_linenumber" name="L644" href="#L644">644</a> }
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>         } <strong class="jxr_keyword">else</strong> {  <em class="jxr_comment">// remove tags added on non injection point like headers 'Accept: */*'</em>
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>             String regexToRemoveTamperTags = String.format(<span class="jxr_string">"(?i)%s|%s"</span>, TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);
+<a class="jxr_linenumber" name="L468" href="#L468">468</a>             query = query.replaceAll(regexToRemoveTamperTags, StringUtils.EMPTY);
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>         }
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.applyEncoding(methodInjection, query);
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>     }
+<a class="jxr_linenumber" name="L472" href="#L472">472</a> 
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>     <strong class="jxr_keyword">private</strong> String initRawInjection(String paramLead, <strong class="jxr_keyword">boolean</strong> isUsingIndex, String sqlTrail) {
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>         String query;
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>         <em class="jxr_comment">// Method is selected by user and there's no injection point</em>
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>         <strong class="jxr_keyword">if</strong> (!isUsingIndex) {
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>             <em class="jxr_comment">// Several SQL expressions does not use indexes in SELECT,</em>
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>             <em class="jxr_comment">// like Boolean, Error, Shell and search for character insertion,</em>
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>             <em class="jxr_comment">// in that case concat SQL expression to the end of param.</em>
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>             query = paramLead + sqlTrail;
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>             <em class="jxr_comment">// Concat indexes found for Union strategy to params</em>
+<a class="jxr_linenumber" name="L483" href="#L483">483</a>             <em class="jxr_comment">// and use visible Index for injection</em>
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>             query = paramLead + <strong class="jxr_keyword">this</strong>.getMediatorStrategy().getSpecificUnion().getIndexesInUrl().replaceAll(
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>                 String.format(EngineYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.mediatorStrategy.getSpecificUnion().getVisibleIndex()),
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>                 <em class="jxr_comment">// Oracle column often contains $, which is reserved for regex.</em>
+<a class="jxr_linenumber" name="L487" href="#L487">487</a>                 <em class="jxr_comment">// =&gt; need to be escape with quoteReplacement()</em>
+<a class="jxr_linenumber" name="L488" href="#L488">488</a>                 Matcher.quoteReplacement(sqlTrail)
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>             );
+<a class="jxr_linenumber" name="L490" href="#L490">490</a>         }
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>         <em class="jxr_comment">// Add ending line comment by engine</em>
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>         <strong class="jxr_keyword">return</strong> query + <strong class="jxr_keyword">this</strong>.mediatorEngine.getEngine().instance().endingComment();
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>     }
+<a class="jxr_linenumber" name="L494" href="#L494">494</a> 
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>     <strong class="jxr_keyword">private</strong> String initStarInjection(String paramLead, <strong class="jxr_keyword">boolean</strong> isUsingIndex, String sqlTrail) {
+<a class="jxr_linenumber" name="L496" href="#L496">496</a>         String query;
+<a class="jxr_linenumber" name="L497" href="#L497">497</a>         <em class="jxr_comment">// Several SQL expressions does not use indexes in SELECT,</em>
+<a class="jxr_linenumber" name="L498" href="#L498">498</a>         <em class="jxr_comment">// like Boolean, Error, Shell and search for character insertion,</em>
+<a class="jxr_linenumber" name="L499" href="#L499">499</a>         <em class="jxr_comment">// in that case replace injection point by SQL expression.</em>
+<a class="jxr_linenumber" name="L500" href="#L500">500</a>         <em class="jxr_comment">// Injection point is always at the end?</em>
+<a class="jxr_linenumber" name="L501" href="#L501">501</a>         <strong class="jxr_keyword">if</strong> (!isUsingIndex) {
+<a class="jxr_linenumber" name="L502" href="#L502">502</a>             query = paramLead.replace(
+<a class="jxr_linenumber" name="L503" href="#L503">503</a>                 InjectionModel.STAR,
+<a class="jxr_linenumber" name="L504" href="#L504">504</a>                 sqlTrail
+<a class="jxr_linenumber" name="L505" href="#L505">505</a>             );
+<a class="jxr_linenumber" name="L506" href="#L506">506</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L507" href="#L507">507</a>             <em class="jxr_comment">// Replace injection point by indexes found for Union strategy</em>
+<a class="jxr_linenumber" name="L508" href="#L508">508</a>             <em class="jxr_comment">// and use visible Index for injection</em>
+<a class="jxr_linenumber" name="L509" href="#L509">509</a>             query = paramLead.replace(
+<a class="jxr_linenumber" name="L510" href="#L510">510</a>                 InjectionModel.STAR,
+<a class="jxr_linenumber" name="L511" href="#L511">511</a>                 <strong class="jxr_keyword">this</strong>.mediatorStrategy.getSpecificUnion().getIndexesInUrl().replace(
+<a class="jxr_linenumber" name="L512" href="#L512">512</a>                     String.format(EngineYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.mediatorStrategy.getSpecificUnion().getVisibleIndex()),
+<a class="jxr_linenumber" name="L513" href="#L513">513</a>                     sqlTrail
+<a class="jxr_linenumber" name="L514" href="#L514">514</a>                 )
+<a class="jxr_linenumber" name="L515" href="#L515">515</a>             );
+<a class="jxr_linenumber" name="L516" href="#L516">516</a>         }
+<a class="jxr_linenumber" name="L517" href="#L517">517</a>         <strong class="jxr_keyword">return</strong> query;
+<a class="jxr_linenumber" name="L518" href="#L518">518</a>     }
+<a class="jxr_linenumber" name="L519" href="#L519">519</a> 
+<a class="jxr_linenumber" name="L520" href="#L520">520</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L521" href="#L521">521</a> <em class="jxr_javadoccomment">     * Dependency:</em>
+<a class="jxr_linenumber" name="L522" href="#L522">522</a> <em class="jxr_javadoccomment">     * - Tamper space=&gt;comment</em>
+<a class="jxr_linenumber" name="L523" href="#L523">523</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L524" href="#L524">524</a>     <strong class="jxr_keyword">private</strong> String cleanQuery(<a name="AbstractMethodInjection" href="../../../com/jsql/model/injection/method/AbstractMethodInjection.html#AbstractMethodInjection">AbstractMethodInjection</a> methodInjection, String query) {
+<a class="jxr_linenumber" name="L525" href="#L525">525</a>         String queryFixed = query;
+<a class="jxr_linenumber" name="L526" href="#L526">526</a>         <strong class="jxr_keyword">if</strong> (
+<a class="jxr_linenumber" name="L527" href="#L527">527</a>             methodInjection == <strong class="jxr_keyword">this</strong>.mediatorMethod.getRequest()
+<a class="jxr_linenumber" name="L528" href="#L528">528</a>             &amp;&amp; (
+<a class="jxr_linenumber" name="L529" href="#L529">529</a>                 <strong class="jxr_keyword">this</strong>.mediatorUtils.parameterUtil().isRequestSoap()
+<a class="jxr_linenumber" name="L530" href="#L530">530</a>                 || <strong class="jxr_keyword">this</strong>.mediatorUtils.parameterUtil().isMultipartRequest()
+<a class="jxr_linenumber" name="L531" href="#L531">531</a>             )
+<a class="jxr_linenumber" name="L532" href="#L532">532</a>         ) {
+<a class="jxr_linenumber" name="L533" href="#L533">533</a>             queryFixed = StringUtil.removeSqlComment(queryFixed)
+<a class="jxr_linenumber" name="L534" href="#L534">534</a>                 .replace(<span class="jxr_string">"+"</span>, <span class="jxr_string">" "</span>)
+<a class="jxr_linenumber" name="L535" href="#L535">535</a>                 .replace(<span class="jxr_string">"%2b"</span>, <span class="jxr_string">"+"</span>)  <em class="jxr_comment">// Failsafe</em>
+<a class="jxr_linenumber" name="L536" href="#L536">536</a>                 .replace(<span class="jxr_string">"%23"</span>, <span class="jxr_string">"#"</span>);  <em class="jxr_comment">// End comment</em>
+<a class="jxr_linenumber" name="L537" href="#L537">537</a>             <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.mediatorUtils.parameterUtil().isMultipartRequest()) {
+<a class="jxr_linenumber" name="L538" href="#L538">538</a>                 <em class="jxr_comment">// restore linefeed from textfield</em>
+<a class="jxr_linenumber" name="L539" href="#L539">539</a>                 queryFixed = queryFixed.replaceAll(<span class="jxr_string">"(?s)&#92;&#92;&#92;&#92;n"</span>, <span class="jxr_string">"\r\n"</span>);
+<a class="jxr_linenumber" name="L540" href="#L540">540</a>             }
+<a class="jxr_linenumber" name="L541" href="#L541">541</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L542" href="#L542">542</a>             queryFixed = StringUtil.cleanSql(queryFixed);
+<a class="jxr_linenumber" name="L543" href="#L543">543</a>         }
+<a class="jxr_linenumber" name="L544" href="#L544">544</a>         <strong class="jxr_keyword">return</strong> queryFixed;
+<a class="jxr_linenumber" name="L545" href="#L545">545</a>     }
+<a class="jxr_linenumber" name="L546" href="#L546">546</a> 
+<a class="jxr_linenumber" name="L547" href="#L547">547</a>     <strong class="jxr_keyword">private</strong> String applyEncoding(<a name="AbstractMethodInjection" href="../../../com/jsql/model/injection/method/AbstractMethodInjection.html#AbstractMethodInjection">AbstractMethodInjection</a> methodInjection, String query) {
+<a class="jxr_linenumber" name="L548" href="#L548">548</a>         String queryFixed = query;
+<a class="jxr_linenumber" name="L549" href="#L549">549</a>         <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.mediatorUtils.parameterUtil().isRequestSoap()) {
+<a class="jxr_linenumber" name="L550" href="#L550">550</a>             <strong class="jxr_keyword">if</strong> (methodInjection == <strong class="jxr_keyword">this</strong>.mediatorMethod.getQuery()) {
+<a class="jxr_linenumber" name="L551" href="#L551">551</a>                 <em class="jxr_comment">// URL encode each character because no query parameter context</em>
+<a class="jxr_linenumber" name="L552" href="#L552">552</a>                 <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.mediatorUtils.preferencesUtil().isUrlEncodingDisabled()) {
+<a class="jxr_linenumber" name="L553" href="#L553">553</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"'"</span>, <span class="jxr_string">"%27"</span>);
+<a class="jxr_linenumber" name="L554" href="#L554">554</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"("</span>, <span class="jxr_string">"%28"</span>);
+<a class="jxr_linenumber" name="L555" href="#L555">555</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">")"</span>, <span class="jxr_string">"%29"</span>);
+<a class="jxr_linenumber" name="L556" href="#L556">556</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"{"</span>, <span class="jxr_string">"%7b"</span>);
+<a class="jxr_linenumber" name="L557" href="#L557">557</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"["</span>, <span class="jxr_string">"%5b"</span>);
+<a class="jxr_linenumber" name="L558" href="#L558">558</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"]"</span>, <span class="jxr_string">"%5d"</span>);
+<a class="jxr_linenumber" name="L559" href="#L559">559</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"}"</span>, <span class="jxr_string">"%7d"</span>);
+<a class="jxr_linenumber" name="L560" href="#L560">560</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"&gt;"</span>, <span class="jxr_string">"%3e"</span>);
+<a class="jxr_linenumber" name="L561" href="#L561">561</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"&lt;"</span>, <span class="jxr_string">"%3c"</span>);
+<a class="jxr_linenumber" name="L562" href="#L562">562</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"?"</span>, <span class="jxr_string">"%3f"</span>);
+<a class="jxr_linenumber" name="L563" href="#L563">563</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">"_"</span>, <span class="jxr_string">"%5f"</span>);
+<a class="jxr_linenumber" name="L564" href="#L564">564</a>                     queryFixed = queryFixed.replace(<span class="jxr_string">","</span>, <span class="jxr_string">"%2c"</span>);
+<a class="jxr_linenumber" name="L565" href="#L565">565</a>                 }
+<a class="jxr_linenumber" name="L566" href="#L566">566</a>                 <em class="jxr_comment">// HTTP forbidden characters</em>
+<a class="jxr_linenumber" name="L567" href="#L567">567</a>                 queryFixed = queryFixed.replace(StringUtils.SPACE, <span class="jxr_string">"+"</span>);
+<a class="jxr_linenumber" name="L568" href="#L568">568</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">"`"</span>, <span class="jxr_string">"%60"</span>);  <em class="jxr_comment">// from `${database}`.`${table}`</em>
+<a class="jxr_linenumber" name="L569" href="#L569">569</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">"\&quot;"</span>, <span class="jxr_string">"%22"</span>);
+<a class="jxr_linenumber" name="L570" href="#L570">570</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">"|"</span>, <span class="jxr_string">"%7c"</span>);
+<a class="jxr_linenumber" name="L571" href="#L571">571</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">"&#92;&#92;"</span>, <span class="jxr_string">"%5c"</span>);
+<a class="jxr_linenumber" name="L572" href="#L572">572</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (methodInjection != <strong class="jxr_keyword">this</strong>.mediatorMethod.getRequest()) {
+<a class="jxr_linenumber" name="L573" href="#L573">573</a>                 <em class="jxr_comment">// For cookies in Spring (confirmed, covered by integration tests)</em>
+<a class="jxr_linenumber" name="L574" href="#L574">574</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">"+"</span>, <span class="jxr_string">"%20"</span>);
+<a class="jxr_linenumber" name="L575" href="#L575">575</a>                 queryFixed = queryFixed.replace(<span class="jxr_string">","</span>, <span class="jxr_string">"%2c"</span>);
+<a class="jxr_linenumber" name="L576" href="#L576">576</a>                 <strong class="jxr_keyword">try</strong> {  <em class="jxr_comment">// fix #95709: IllegalArgumentException on decode()</em>
+<a class="jxr_linenumber" name="L577" href="#L577">577</a>                     queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);
+<a class="jxr_linenumber" name="L578" href="#L578">578</a>                 } <strong class="jxr_keyword">catch</strong> (IllegalArgumentException e) {
+<a class="jxr_linenumber" name="L579" href="#L579">579</a>                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Incorrect values in [{}], please check the parameters"</span>, methodInjection.name());
+<a class="jxr_linenumber" name="L580" href="#L580">580</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="JSqlRuntimeException" href="../../../com/jsql/model/exception/JSqlRuntimeException.html#JSqlRuntimeException">JSqlRuntimeException</a>(e);
+<a class="jxr_linenumber" name="L581" href="#L581">581</a>                 }
+<a class="jxr_linenumber" name="L582" href="#L582">582</a>             }
+<a class="jxr_linenumber" name="L583" href="#L583">583</a>         }
+<a class="jxr_linenumber" name="L584" href="#L584">584</a>         <strong class="jxr_keyword">return</strong> queryFixed;
+<a class="jxr_linenumber" name="L585" href="#L585">585</a>     }
+<a class="jxr_linenumber" name="L586" href="#L586">586</a>     
+<a class="jxr_linenumber" name="L587" href="#L587">587</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L588" href="#L588">588</a> <em class="jxr_javadoccomment">     * Display source code in console.</em>
+<a class="jxr_linenumber" name="L589" href="#L589">589</a> <em class="jxr_javadoccomment">     * @param message Error message</em>
+<a class="jxr_linenumber" name="L590" href="#L590">590</a> <em class="jxr_javadoccomment">     * @param source Text to display in console</em>
+<a class="jxr_linenumber" name="L591" href="#L591">591</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L592" href="#L592">592</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> sendResponseFromSite(String message, String source) {
+<a class="jxr_linenumber" name="L593" href="#L593">593</a>         LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"{}, response from site:"</span>, message);
+<a class="jxr_linenumber" name="L594" href="#L594">594</a>         LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"&gt;&gt;&gt;{}"</span>, source);
+<a class="jxr_linenumber" name="L595" href="#L595">595</a>     }
+<a class="jxr_linenumber" name="L596" href="#L596">596</a>     
+<a class="jxr_linenumber" name="L597" href="#L597">597</a>     
+<a class="jxr_linenumber" name="L598" href="#L598">598</a>     <em class="jxr_comment">// Getters and setters</em>
+<a class="jxr_linenumber" name="L599" href="#L599">599</a> 
+<a class="jxr_linenumber" name="L600" href="#L600">600</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> shouldErasePreviousInjection() {
+<a class="jxr_linenumber" name="L601" href="#L601">601</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.shouldErasePreviousInjection;
+<a class="jxr_linenumber" name="L602" href="#L602">602</a>     }
+<a class="jxr_linenumber" name="L603" href="#L603">603</a> 
+<a class="jxr_linenumber" name="L604" href="#L604">604</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setIsScanning(<strong class="jxr_keyword">boolean</strong> isScanning) {
+<a class="jxr_linenumber" name="L605" href="#L605">605</a>         <strong class="jxr_keyword">this</strong>.isScanning = isScanning;
+<a class="jxr_linenumber" name="L606" href="#L606">606</a>     }
+<a class="jxr_linenumber" name="L607" href="#L607">607</a> 
+<a class="jxr_linenumber" name="L608" href="#L608">608</a>     <strong class="jxr_keyword">public</strong> <a name="PropertiesUtil" href="../../../com/jsql/util/PropertiesUtil.html#PropertiesUtil">PropertiesUtil</a> getPropertiesUtil() {
+<a class="jxr_linenumber" name="L609" href="#L609">609</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.propertiesUtil;
+<a class="jxr_linenumber" name="L610" href="#L610">610</a>     }
+<a class="jxr_linenumber" name="L611" href="#L611">611</a> 
+<a class="jxr_linenumber" name="L612" href="#L612">612</a>     <strong class="jxr_keyword">public</strong> <a name="MediatorUtils" href="../../../com/jsql/model/MediatorUtils.html#MediatorUtils">MediatorUtils</a> getMediatorUtils() {
+<a class="jxr_linenumber" name="L613" href="#L613">613</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mediatorUtils;
+<a class="jxr_linenumber" name="L614" href="#L614">614</a>     }
+<a class="jxr_linenumber" name="L615" href="#L615">615</a> 
+<a class="jxr_linenumber" name="L616" href="#L616">616</a>     <strong class="jxr_keyword">public</strong> <a name="MediatorEngine" href="../../../com/jsql/model/injection/engine/MediatorEngine.html#MediatorEngine">MediatorEngine</a> getMediatorEngine() {
+<a class="jxr_linenumber" name="L617" href="#L617">617</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mediatorEngine;
+<a class="jxr_linenumber" name="L618" href="#L618">618</a>     }
+<a class="jxr_linenumber" name="L619" href="#L619">619</a> 
+<a class="jxr_linenumber" name="L620" href="#L620">620</a>     <strong class="jxr_keyword">public</strong> <a name="MediatorMethod" href="../../../com/jsql/model/injection/method/MediatorMethod.html#MediatorMethod">MediatorMethod</a> getMediatorMethod() {
+<a class="jxr_linenumber" name="L621" href="#L621">621</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mediatorMethod;
+<a class="jxr_linenumber" name="L622" href="#L622">622</a>     }
+<a class="jxr_linenumber" name="L623" href="#L623">623</a> 
+<a class="jxr_linenumber" name="L624" href="#L624">624</a>     <strong class="jxr_keyword">public</strong> <a name="DataAccess" href="../../../com/jsql/model/accessible/DataAccess.html#DataAccess">DataAccess</a> getDataAccess() {
+<a class="jxr_linenumber" name="L625" href="#L625">625</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.dataAccess;
+<a class="jxr_linenumber" name="L626" href="#L626">626</a>     }
+<a class="jxr_linenumber" name="L627" href="#L627">627</a> 
+<a class="jxr_linenumber" name="L628" href="#L628">628</a>     <strong class="jxr_keyword">public</strong> <a name="ResourceAccess" href="../../../com/jsql/model/accessible/ResourceAccess.html#ResourceAccess">ResourceAccess</a> getResourceAccess() {
+<a class="jxr_linenumber" name="L629" href="#L629">629</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.resourceAccess;
+<a class="jxr_linenumber" name="L630" href="#L630">630</a>     }
+<a class="jxr_linenumber" name="L631" href="#L631">631</a> 
+<a class="jxr_linenumber" name="L632" href="#L632">632</a>     <strong class="jxr_keyword">public</strong> <a name="MediatorStrategy" href="../../../com/jsql/model/injection/strategy/MediatorStrategy.html#MediatorStrategy">MediatorStrategy</a> getMediatorStrategy() {
+<a class="jxr_linenumber" name="L633" href="#L633">633</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.mediatorStrategy;
+<a class="jxr_linenumber" name="L634" href="#L634">634</a>     }
+<a class="jxr_linenumber" name="L635" href="#L635">635</a> 
+<a class="jxr_linenumber" name="L636" href="#L636">636</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> appendAnalysisReport(String analysisReport) {
+<a class="jxr_linenumber" name="L637" href="#L637">637</a>         <strong class="jxr_keyword">this</strong>.appendAnalysisReport(analysisReport, false);
+<a class="jxr_linenumber" name="L638" href="#L638">638</a>     }
+<a class="jxr_linenumber" name="L639" href="#L639">639</a> 
+<a class="jxr_linenumber" name="L640" href="#L640">640</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> appendAnalysisReport(String analysisReport, <strong class="jxr_keyword">boolean</strong> isInit) {
+<a class="jxr_linenumber" name="L641" href="#L641">641</a>         <strong class="jxr_keyword">this</strong>.analysisReport += (isInit ? StringUtils.EMPTY : <span class="jxr_string">"&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;"</span>) + analysisReport;
+<a class="jxr_linenumber" name="L642" href="#L642">642</a>     }
+<a class="jxr_linenumber" name="L643" href="#L643">643</a> 
+<a class="jxr_linenumber" name="L644" href="#L644">644</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setAnalysisReport(String analysisReport) {
+<a class="jxr_linenumber" name="L645" href="#L645">645</a>         <strong class="jxr_keyword">this</strong>.analysisReport = analysisReport;
+<a class="jxr_linenumber" name="L646" href="#L646">646</a>     }
+<a class="jxr_linenumber" name="L647" href="#L647">647</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

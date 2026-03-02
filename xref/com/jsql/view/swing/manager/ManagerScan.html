@@ -237,16 +237,18 @@
 <a class="jxr_linenumber" name="L229" href="#L229">229</a>         }
 <a class="jxr_linenumber" name="L230" href="#L230">230</a>         
 <a class="jxr_linenumber" name="L231" href="#L231">231</a>         <em class="jxr_comment">// Get back the default view</em>
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>         subscriberScan.getSubscription().cancel();
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>         MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriberView());
-<a class="jxr_linenumber" name="L234" href="#L234">234</a> 
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>         MediatorHelper.model().setIsScanning(false);
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>         MediatorHelper.model().setIsStoppedByUser(false);
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>         MediatorHelper.model().getResourceAccess().setScanStopped(false);
-<a class="jxr_linenumber" name="L238" href="#L238">238</a> 
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>         <strong class="jxr_keyword">this</strong>.endProcess();
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>     }
-<a class="jxr_linenumber" name="L241" href="#L241">241</a> }
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>         <strong class="jxr_keyword">if</strong> (subscriberScan.getSubscription() != <strong class="jxr_keyword">null</strong>) {  <em class="jxr_comment">// Fix #96366: NullPointerException on cancel()</em>
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>             subscriberScan.getSubscription().cancel();
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>         }
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>         MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriberView());
+<a class="jxr_linenumber" name="L236" href="#L236">236</a> 
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>         MediatorHelper.model().setIsScanning(false);
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>         MediatorHelper.model().setIsStoppedByUser(false);
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>         MediatorHelper.model().getResourceAccess().setScanStopped(false);
+<a class="jxr_linenumber" name="L240" href="#L240">240</a> 
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>         <strong class="jxr_keyword">this</strong>.endProcess();
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>     }
+<a class="jxr_linenumber" name="L243" href="#L243">243</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

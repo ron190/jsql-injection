@@ -229,14 +229,16 @@ public class ManagerScan extends AbstractManagerList {
 <span class="nc" id="L229">        }</span>
         
         // Get back the default view
-<span class="nc" id="L232">        subscriberScan.getSubscription().cancel();</span>
-<span class="nc" id="L233">        MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriberView());</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        if (subscriberScan.getSubscription() != null) {  // Fix #96366: NullPointerException on cancel()</span>
+<span class="nc" id="L233">            subscriberScan.getSubscription().cancel();</span>
+        }
+<span class="nc" id="L235">        MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriberView());</span>
 
-<span class="nc" id="L235">        MediatorHelper.model().setIsScanning(false);</span>
-<span class="nc" id="L236">        MediatorHelper.model().setIsStoppedByUser(false);</span>
-<span class="nc" id="L237">        MediatorHelper.model().getResourceAccess().setScanStopped(false);</span>
+<span class="nc" id="L237">        MediatorHelper.model().setIsScanning(false);</span>
+<span class="nc" id="L238">        MediatorHelper.model().setIsStoppedByUser(false);</span>
+<span class="nc" id="L239">        MediatorHelper.model().getResourceAccess().setScanStopped(false);</span>
 
-<span class="nc" id="L239">        this.endProcess();</span>
-<span class="nc" id="L240">    }</span>
+<span class="nc" id="L241">        this.endProcess();</span>
+<span class="nc" id="L242">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

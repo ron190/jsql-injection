@@ -119,7 +119,7 @@ public class JsonUtil {
 <span class="fc" id="L119">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_INFORM,
                     &quot;{} {} JSON [key:{}, value:{}]&quot;,
-<span class="fc" id="L122">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING&quot;),</span>
+<span class="fc" id="L122">                    () -&gt; I18nUtil.valueByKey(AbstractMethodInjection.LOG_CHECKING),</span>
 <span class="fc" id="L123">                    methodInjection::name,</span>
 <span class="fc" id="L124">                    parentXPath::getKey,</span>
 <span class="fc" id="L125">                    () -&gt; parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>

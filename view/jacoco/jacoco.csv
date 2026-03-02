@@ -73,7 +73,7 @@ view,com.jsql.view.swing.manager,AbstractManagerList.new JLabel() {...},5,12,0,0
 view,com.jsql.view.swing.manager,AbstractManagerList.new JButtonStateful() {...},5,10,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerDatabase,0,97,0,0,0,20,0,4,0,4
 view,com.jsql.view.swing.manager,ManagerCoder.ChangeMenuListener,0,31,2,4,0,6,2,3,0,2
-view,com.jsql.view.swing.manager,ManagerScan,157,204,10,10,47,45,9,8,2,5
+view,com.jsql.view.swing.manager,ManagerScan,160,204,12,10,48,45,10,8,2,5
 view,com.jsql.view.swing.manager,ManagerScan.ActionScan,91,6,6,0,20,1,5,1,2,1
 view,com.jsql.view.swing.manager,ManagerBruteForce,0,657,0,2,0,118,0,23,0,22
 view,com.jsql.view.swing.manager,ManagerCoder,0,420,0,2,0,82,0,9,0,8
