@@ -147,50 +147,53 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             .toList();
     }
 
-    private List<String> initCallables(CompletionService<CallablePageSource> taskCompletionService, String[] characterInsertionFoundOrByUser) throws JSqlException {
-        List<String> prefixValues = Arrays.asList(
-            RandomStringUtils.secure().next(10, "012"),  // trigger probable failure
-            StringUtils.EMPTY,  // trigger matching, compatible with backtick
-            "1"  // trigger eventual success
+    private List<String> initCallables(CompletionService<CallablePageSource> completionService,
+            String[] characterInsertionFoundOrByUser) throws JSqlException {
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT,
+            "[Step 2] Fingerprinting prefix using boolean match...");
+
+        List<String> prefixValues = List.of(
+            RandomStringUtils.secure().next(10, "012"),
+            StringUtils.EMPTY,
+            "1"
         );
-        List<String> prefixQuotes = Arrays.asList(
+        List<String> prefixQuotes = List.of(
             "'",
             StringUtils.EMPTY,
             "`",
             "\"",
-            "%bf'"  // GBK slash encoding use case
+            "%bf'"
         );
-        List<String> prefixParentheses = Arrays.asList(
+        List<String> prefixParentheses = List.of(
             StringUtils.EMPTY,
             ")",
             "))"
         );
         List<String> charactersInsertion = new ArrayList<>();
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "[Step 2] Fingerprinting prefix using boolean match...");
-        boolean isFound = false;
-        for (String prefixValue: prefixValues) {
-            for (String prefixQuote: prefixQuotes) {
-                for (String prefixParenthesis: prefixParentheses) {
-                    if (!isFound) {  // stop checking when found
-                        var prefixValueAndQuote = prefixValue + prefixQuote;
-                        var isRequiringSpace = prefixValueAndQuote.matches(".*\\w$") && prefixParenthesis.isEmpty();
-                        isFound = this.checkInsertionChar(
-                            characterInsertionFoundOrByUser,
-                            charactersInsertion,
-                            prefixValueAndQuote + prefixParenthesis
-                            + (isRequiringSpace ? "%20" : StringUtils.EMPTY)  // %20 required, + or space not working in path
-                        );
-                    }
-                }
-            }
-        }
-        for (String characterInsertion: charactersInsertion) {
-            taskCompletionService.submit(
+        findWorkingPrefix(
+            prefixValues,
+            prefixQuotes,
+            prefixParentheses,
+            characterInsertionFoundOrByUser,
+            charactersInsertion
+        );
+        submitCallables(completionService, charactersInsertion);
+        return charactersInsertion;
+    }
+
+    private void submitCallables(CompletionService<CallablePageSource> completionService,
+            List<String> charactersInsertion) {
+        for (String characterInsertion : charactersInsertion) {
+            completionService.submit(
                 new CallablePageSource(
                     characterInsertion.replace(
                         InjectionModel.STAR,
-                        StringUtils.SPACE  // covered by cleaning
-                        + this.injectionModel.getMediatorEngine().getEngine().instance().sqlOrderBy()
+                        StringUtils.SPACE
+                        + this.injectionModel
+                            .getMediatorEngine()
+                            .getEngine()
+                            .instance()
+                            .sqlOrderBy()
                     ),
                     characterInsertion,
                     this.injectionModel,
@@ -198,9 +201,37 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 )
             );
         }
-        return charactersInsertion;
     }
 
+    private void findWorkingPrefix(
+        List<String> prefixValues, List<String> prefixQuotes, List<String> prefixParentheses,
+        String[] characterInsertionFoundOrByUser, List<String> charactersInsertion) throws JSqlException {
+
+        for (String value : prefixValues) {
+            for (String quote : prefixQuotes) {
+                for (String parenthesis : prefixParentheses) {
+
+                    String prefix = buildPrefix(value, quote, parenthesis);
+
+                    if (this.checkInsertionChar(
+                            characterInsertionFoundOrByUser,
+                            charactersInsertion,
+                            prefix
+                    )) {
+                        return; // replaces isFound flag
+                    }
+                }
+            }
+        }
+    }
+
+    private String buildPrefix(String value, String quote, String parenthesis) {
+        var prefixValueAndQuote = value + quote;
+        var requiresSpace = prefixValueAndQuote.matches(".*\\w$") && parenthesis.isEmpty();
+
+        return prefixValueAndQuote + parenthesis + (requiresSpace ? "%20" : StringUtils.EMPTY);
+    }
+    
     private boolean checkInsertionChar(
         String[] characterInsertionFoundOrByUser,
         List<String> charactersInsertion,
