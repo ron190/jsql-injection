@@ -13,7 +13,7 @@
         <assertj-swing-junit.version>3.17.1</assertj-swing-junit.version>
         <commons-io.version>2.21.0</commons-io.version>
         <flatlaf.version>3.7</flatlaf.version>
-        <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
+        <maven-shade-plugin.version>3.6.2</maven-shade-plugin.version>
         <mockito-inline.version>5.2.0</mockito-inline.version>
         <rsyntaxtextarea.version>3.6.2</rsyntaxtextarea.version>
     </properties>
