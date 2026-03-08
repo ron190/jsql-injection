@@ -270,6 +270,18 @@ public class JdbcRestController {
         );
     }
 
+    @RequestMapping("/spanner")
+    public Greeting greetingSpanner(@RequestParam(value="name") String name) throws ClassNotFoundException {
+        Class.forName("com.google.cloud.spanner.jdbc.JdbcDriver");
+        String inject = name.replace(":", "\\:");
+        return this.getGreeting(
+            "jdbc:cloudspanner://jsql-spanner:9010/projects/test-project/instances/test-instance/databases/test-db;autoConfigEmulator=true;usePlainText=true",
+            null,
+            null,
+            "select SCHEMA_NAME from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'"
+        );
+    }
+
     @RequestMapping("/postgres")  // local testing, not used
     public Greeting greetingPostgres(@RequestParam(value="name") String name) {
         // pg_ctl.exe start -D "E:\Dev\pgsql\data\"

