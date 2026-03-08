@@ -1,21 +1,23 @@
 {
     "version": "0.114",
     "news": [
-        "[v0.114] Releasing parameter selection and HTTP request import. Now procrastinating, until bugs wake me. Or users",
-        "[Java] Running v0.114 ? please bump your jdk to at least 21. You did already ? Can you see this message ? Does anyone care ?",
-        "[True story] This tool is for my own purpose, do not use it.",
-        "[DNS strategy] You're a security expert ? Are you joking ? Though give a try to the new DNS strategy, you can test it locally without any domain",
-        "[RCE shell] How can you trigger RCE shell and reverse shell with one click ? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
+        "[Community] First contribution in dozen years, thanks @juliusMansus. Project is now officially a multi members corporation",
+        "[v0.114] Releasing parameter selection and HTTP request import. Procrastinating now until users or bugs wake me, both slightly annoying",
+        "[Java] Running v0.114 ? please bump your jdk at least to 21. You did already ? then can you see this message ? Strange, on my side I do",
+        "[True story] This tool is for my own purpose, do not use it. You can't, it's forbidden. In exchange for cryptos or NFT ? dollars even ? any self esteem ?",
+        "[DNS strategy] You're a security expert ? Not using python or CLI ? Not an expert. Though give a try to the new DNS strategy, you can test it locally without any domain",
+        "[RCE shell] How can you trigger RCE and reverse shell with only one click ? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
         "[Pinned] Report any bugs and thoughts, add your star at https://github.com/ron190/jsql-injection",
-        "░     ░      ░ ░",
-        "██▓ ▄████▄  ▓█████",
-        "▓██▒▒██▀ ▀█  ▓█   ▀",
-        "▒██▒▒▓█    ▄ ▒███",
-        "░██░▒▓▓▄ ▄██▒▒▓█  ▄",
-        "░██░▒ ▓███▀ ░░▒████▒",
-        "░▓  ░ ░▒ ▒  ░░░ ▒░ ░",
-        "▒ ░  ░  ▒    ░ ░  ░",
-        "▒ ░░           ░",
-        "[Red hot sun daily piercing your skin tanned by yearly summer. Melting in your favorite drink, devastated by your punches and swinging pickaxe]"
+        " ░      ░   ░ ░      ░       ░░      ░  ░       ░      ░  ░    ░           ░░    ░    ░  ░       ░ ░",
+        "███▄    █ ▓█████  ▄████▄   ██▀███   ▒█████   ██▓███   ██░ ██  ▄▄▄        ▄████  ██▓  ██████ ▄▄▄█████▓",
+        "██ ▀█   █ ▓█   ▀ ▒██▀ ▀█  ▓██ ▒ ██▒▒██▒  ██▒▓██░  ██▒▓██░ ██▒▒████▄     ██▒ ▀█▒▓██▒▒██    ▒ ▓  ██▒ ▓▒",
+        "▓██  ▀█ ██▒▒███   ▒▓█    ▄ ▓██ ░▄█ ▒▒██░  ██▒▓██░ ██▓▒▒██▀▀██░▒██  ▀█▄  ▒██░▄▄▄░▒██▒░ ▓██▄   ▒ ▓██░ ▒░",
+        "▓██▒  ▐▌██▒▒▓█  ▄ ▒▓▓▄ ▄██▒▒██▀▀█▄  ▒██   ██░▒██▄█▓▒ ▒░▓█ ░██ ░██▄▄▄▄██ ░▓█  ██▓░██░  ▒   ██▒░ ▓██▓ ░",
+        "▒██░   ▓██░░▒████▒▒ ▓███▀ ░░██▓ ▒██▒░ ████▓▒░▒██▒ ░  ░░▓█▒░██▓ ▓█   ▓██▒░▒▓███▀▒░██░▒██████▒▒  ▒██▒ ░",
+        "░ ▒░   ▒ ▒ ░░ ▒░ ░░ ░▒ ▒  ░░ ▒▓ ░▒▓░░ ▒░▒░▒░ ▒▓▒░ ░  ░ ▒ ░░▒░▒ ▒▒   ▓▒█░ ░▒   ▒ ░▓  ▒ ▒▓▒ ▒ ░  ▒ ░░",
+        "░ ░░   ░ ▒░ ░ ░  ░  ░  ▒     ░▒ ░ ▒░  ░ ▒ ▒░ ░▒ ░      ▒ ░▒░ ░  ▒   ▒▒ ░  ░   ░  ▒ ░░ ░▒  ░ ░    ░",
+        "░   ░ ░    ░   ░          ░░   ░ ░ ░ ░ ▒  ░░        ░  ░░ ░  ░   ▒   ░ ░   ░  ▒ ░░  ░  ░    ░",
+        "[Subtle music flowing to your ears, light and soft arrangements taken from classical composers. Also free ad. No, you can't put cars ad here]"
     ]
 }
+

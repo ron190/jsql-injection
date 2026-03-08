@@ -412,19 +412,19 @@ public class AppUiTest {
 
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base16").target()));
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase16").target()));
-        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("61", Pattern.DOTALL));
+        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("61"));
 
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base32").target()));
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase32").target()));
-        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("ME======", Pattern.DOTALL));
+        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("ME======"));
 
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base58").target()));
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase58").target()));
-        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("2g", Pattern.DOTALL));
+        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("2g"));
 
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Base64").target()));
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("encodeToBase64").target()));
-        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("YQ==", Pattern.DOTALL));
+        AppUiTest.window.textBox(ManagerCoder.RESULT_MANAGER_CODER).requireText(Pattern.compile("YQ=="));
 
         AppUiTest.logMethod();
         AppUiTest.window.robot().moveMouse(GuiActionRunner.execute(() -> AppUiTest.window.menuItem("Hash").target()));

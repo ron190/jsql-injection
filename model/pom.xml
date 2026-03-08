@@ -52,7 +52,7 @@
         <!-- databases -->
         <access.version>5.1.5</access.version>
         <altibase.version>8.1.0.0.1</altibase.version>
-        <clickhouse.version>0.9.6</clickhouse.version>
+        <clickhouse.version>0.9.7</clickhouse.version>
         <cubrid.version>11.3.2.0053</cubrid.version>
         <derby.version>10.17.1.0</derby.version>
         <exasol.version>26.2.7</exasol.version>
