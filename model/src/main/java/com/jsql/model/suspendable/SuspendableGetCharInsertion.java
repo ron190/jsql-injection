@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  * Force to insertion char otherwise.
  */
 public class SuspendableGetCharInsertion extends AbstractSuspendable {
-    
+
     private static final Logger LOGGER = LogManager.getRootLogger();
     private final String parameterOriginalValue;
 
@@ -46,20 +46,20 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
     @Override
     public String run(Input input) throws JSqlException {
         String characterInsertionByUser = input.payload();
-        
+
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().threadUtil().getExecutor("CallableGetInsertionCharacter");
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         var characterInsertionFoundOrByUser = new String[1];
         characterInsertionFoundOrByUser[0] = characterInsertionByUser;  // either raw char or cookie char, with star
-        List<String> charactersInsertion = this.initCallables(taskCompletionService, characterInsertionFoundOrByUser);
-        
+        List<String> charactersInsertionForOrderBy = this.initCallables(taskCompletionService, characterInsertionFoundOrByUser);
+
         var mediatorEngine = this.injectionModel.getMediatorEngine();
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "[Step 3] Fingerprinting database and prefix using ORDER BY...");
 
         String charFromOrderBy = null;
-        
-        int total = charactersInsertion.size();
+
+        int total = charactersInsertionForOrderBy.size();
         while (0 < total) {
             if (this.isSuspended()) {
                 throw new StoppedByUserSlidingException();
@@ -68,14 +68,14 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 CallablePageSource currentCallable = taskCompletionService.take().get();
                 total--;
                 String pageSource = currentCallable.getContent();
-                
+
                 List<Engine> enginesOrderByMatches = this.getEnginesOrderByMatch(mediatorEngine, pageSource);
                 if (!enginesOrderByMatches.isEmpty()) {
                     if (this.injectionModel.getMediatorEngine().getEngineByUser() == this.injectionModel.getMediatorEngine().getAuto()) {
                         this.setEngine(mediatorEngine, enginesOrderByMatches);
                         this.injectionModel.sendToViews(new Seal.ActivateEngine(mediatorEngine.getEngine()));
                     }
-                    
+
                     charFromOrderBy = currentCallable.getCharacterInsertion();
                     String finalCharFromOrderBy = charFromOrderBy;
                     LOGGER.log(
@@ -147,45 +147,39 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             .toList();
     }
 
-    private List<String> initCallables(CompletionService<CallablePageSource> taskCompletionService, String[] characterInsertionFoundOrByUser) throws JSqlException {
-        List<String> prefixValues = Arrays.asList(
+    private List<String> initCallables(CompletionService<CallablePageSource> completionService, String[] characterInsertionFoundOrByUser) throws JSqlException {
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "[Step 2] Fingerprinting prefix using boolean match...");
+
+        List<String> prefixValues = List.of(
             RandomStringUtils.secure().next(10, "012"),  // trigger probable failure
             StringUtils.EMPTY,  // trigger matching, compatible with backtick
             "1"  // trigger eventual success
         );
-        List<String> prefixQuotes = Arrays.asList(
+        List<String> prefixQuotes = List.of(
             "'",
             StringUtils.EMPTY,
             "`",
             "\"",
             "%bf'"  // GBK slash encoding use case
         );
-        List<String> prefixParentheses = Arrays.asList(
+        List<String> prefixParentheses = List.of(
             StringUtils.EMPTY,
             ")",
             "))"
         );
-        List<String> charactersInsertion = new ArrayList<>();
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "[Step 2] Fingerprinting prefix using boolean match...");
-        boolean isFound = false;
-        for (String prefixValue: prefixValues) {
-            for (String prefixQuote: prefixQuotes) {
-                for (String prefixParenthesis: prefixParentheses) {
-                    if (!isFound) {  // stop checking when found
-                        var prefixValueAndQuote = prefixValue + prefixQuote;
-                        var isRequiringSpace = prefixValueAndQuote.matches(".*\\w$") && prefixParenthesis.isEmpty();
-                        isFound = this.checkInsertionChar(
-                            characterInsertionFoundOrByUser,
-                            charactersInsertion,
-                            prefixValueAndQuote + prefixParenthesis
-                            + (isRequiringSpace ? "%20" : StringUtils.EMPTY)  // %20 required, + or space not working in path
-                        );
-                    }
-                }
-            }
-        }
-        for (String characterInsertion: charactersInsertion) {
-            taskCompletionService.submit(
+        List<String> charactersInsertionForOrderBy = this.findWorkingPrefix(
+            prefixValues,
+            prefixQuotes,
+            prefixParentheses,
+            characterInsertionFoundOrByUser
+        );
+        this.submitCallables(completionService, charactersInsertionForOrderBy);
+        return charactersInsertionForOrderBy;
+    }
+
+    private void submitCallables(CompletionService<CallablePageSource> completionService, List<String> charactersInsertionForOrderBy) {
+        for (String characterInsertion: charactersInsertionForOrderBy) {
+            completionService.submit(
                 new CallablePageSource(
                     characterInsertion.replace(
                         InjectionModel.STAR,
@@ -198,12 +192,41 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 )
             );
         }
-        return charactersInsertion;
+    }
+
+    private List<String> findWorkingPrefix(
+        List<String> prefixValues,
+        List<String> prefixQuotes,
+        List<String> prefixParentheses,
+        String[] characterInsertionFoundOrByUser
+    ) throws JSqlException {
+        List<String> charactersInsertionForOrderBy = new ArrayList<>();
+        for (String value: prefixValues) {
+            for (String quote: prefixQuotes) {
+                for (String parenthesis: prefixParentheses) {
+                    String prefix = this.buildPrefix(value, quote, parenthesis);
+                    if (this.checkInsertionChar(
+                        characterInsertionFoundOrByUser,
+                        charactersInsertionForOrderBy,
+                        prefix
+                    )) {
+                        return charactersInsertionForOrderBy;
+                    }
+                }
+            }
+        }
+        return charactersInsertionForOrderBy;
+    }
+
+    private String buildPrefix(String value, String quote, String parenthesis) {
+        var prefixValueAndQuote = value + quote;
+        var requiresSpace = prefixValueAndQuote.matches(".*\\w$") && parenthesis.isEmpty();
+        return prefixValueAndQuote + parenthesis + (requiresSpace ? "%20" : StringUtils.EMPTY);
     }
 
     private boolean checkInsertionChar(
         String[] characterInsertionFoundOrByUser,
-        List<String> charactersInsertion,
+        List<String> charactersInsertionForOrderBy,
         String prefixParenthesis
     ) throws StoppedByUserSlidingException {  // requires prefix by user for cookie, else empty and failing
         var isCookie = this.injectionModel.getMediatorMethod().getHeader() == this.injectionModel.getMediatorUtils().connectionUtil().getMethodInjection()
@@ -223,14 +246,14 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         var isRawParamRequired = isJson || isCookie;
 
         if (isRawParamRequired) {
-            charactersInsertion.add(characterInsertionFoundOrByUser[0].replace(
+            charactersInsertionForOrderBy.add(characterInsertionFoundOrByUser[0].replace(
                 InjectionModel.STAR,
                 prefixParenthesis
                 + InjectionModel.STAR
                 + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment()
             ));
         } else {
-            charactersInsertion.add(
+            charactersInsertionForOrderBy.add(
                 prefixParenthesis
                 + InjectionModel.STAR
                 + this.injectionModel.getMediatorEngine().getEngine().instance().endingComment()
@@ -278,7 +301,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         }
         return false;
     }
-    
+
     private String getCharacterInsertion(String characterInsertionByUser, String characterInsertionDetected) {
         String characterInsertionDetectedFixed = characterInsertionDetected;
         if (characterInsertionDetectedFixed == null) {
