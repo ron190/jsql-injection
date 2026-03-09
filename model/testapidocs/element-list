@@ -19,6 +19,7 @@ com.test.engine.neo4j
 com.test.engine.oracle
 com.test.engine.postgres
 com.test.engine.presto
+com.test.engine.spanner
 com.test.engine.sqlite
 com.test.engine.sqlserver
 com.test.engine.sybase

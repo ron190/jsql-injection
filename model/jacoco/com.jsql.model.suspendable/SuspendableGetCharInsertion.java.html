@@ -101,13 +101,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 
     private void setEngine(MediatorEngine mediatorEngine, List&lt;Engine&gt; enginesOrderByMatches) {
 <span class="fc" id="L103">        if (</span>
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">            enginesOrderByMatches.size() == 1</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">            enginesOrderByMatches.size() == 1</span>
 <span class="pc bpc" id="L105" title="1 of 2 branches missed.">            &amp;&amp; enginesOrderByMatches.getFirst() != mediatorEngine.getEngine()</span>
         ) {
 <span class="nc" id="L107">            mediatorEngine.setEngine(enginesOrderByMatches.getFirst());</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        } else if (enginesOrderByMatches.size() &gt; 1) {</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">            if (enginesOrderByMatches.contains(mediatorEngine.getPostgres())) {</span>
-<span class="nc" id="L110">                mediatorEngine.setEngine(mediatorEngine.getPostgres());</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        } else if (enginesOrderByMatches.size() &gt; 1) {</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">            if (enginesOrderByMatches.contains(mediatorEngine.getPostgres())) {</span>
+<span class="fc" id="L110">                mediatorEngine.setEngine(mediatorEngine.getPostgres());</span>
 <span class="nc bnc" id="L111" title="All 2 branches missed.">            } else if (enginesOrderByMatches.contains(mediatorEngine.getMysql())) {</span>
 <span class="nc" id="L112">                mediatorEngine.setEngine(mediatorEngine.getMysql());</span>
             } else {

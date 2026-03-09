@@ -59,6 +59,7 @@ public class MediatorEngine {
     private final Engine oracle;
     private final Engine postgres;
     private final Engine presto;
+    private final Engine spanner;
     private final Engine sqlite;
     private final Engine sqlserver;
     private final Engine sybase;
@@ -70,288 +71,294 @@ public class MediatorEngine {
 
     private final InjectionModel injectionModel;
 
-<span class="fc" id="L73">    public MediatorEngine(InjectionModel injectionModel) {</span>
-<span class="fc" id="L74">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L74">    public MediatorEngine(InjectionModel injectionModel) {</span>
+<span class="fc" id="L75">        this.injectionModel = injectionModel;</span>
         
-<span class="fc" id="L76">        Engine ctreeace = new Engine(new EngineYaml(&quot;ctreeace.yml&quot;, injectionModel));</span>
-<span class="fc" id="L77">        Engine frontbase = new Engine(new EngineYaml(&quot;frontbase.yml&quot;, injectionModel));</span>
-<span class="fc" id="L78">        Engine ingres = new Engine(new EngineYaml(&quot;ingres.yml&quot;, injectionModel));</span>
-<span class="fc" id="L79">        Engine iris = new Engine(new EngineYaml(&quot;iris.yml&quot;, injectionModel));</span>
-<span class="fc" id="L80">        Engine maxdb = new Engine(new EngineYaml(&quot;maxdb.yml&quot;, injectionModel));</span>
-<span class="fc" id="L81">        Engine netezza = new Engine(new EngineYaml(&quot;netezza.yml&quot;, injectionModel));</span>
-<span class="fc" id="L82">        Engine nuodb = new Engine(new EngineYaml(&quot;nuodb.yml&quot;, injectionModel));</span>
-<span class="fc" id="L83">        Engine teradata = new Engine(new EngineYaml(&quot;teradata.yml&quot;, injectionModel));</span>
+<span class="fc" id="L77">        Engine ctreeace = new Engine(new EngineYaml(&quot;ctreeace.yml&quot;, injectionModel));</span>
+<span class="fc" id="L78">        Engine frontbase = new Engine(new EngineYaml(&quot;frontbase.yml&quot;, injectionModel));</span>
+<span class="fc" id="L79">        Engine ingres = new Engine(new EngineYaml(&quot;ingres.yml&quot;, injectionModel));</span>
+<span class="fc" id="L80">        Engine iris = new Engine(new EngineYaml(&quot;iris.yml&quot;, injectionModel));</span>
+<span class="fc" id="L81">        Engine maxdb = new Engine(new EngineYaml(&quot;maxdb.yml&quot;, injectionModel));</span>
+<span class="fc" id="L82">        Engine netezza = new Engine(new EngineYaml(&quot;netezza.yml&quot;, injectionModel));</span>
+<span class="fc" id="L83">        Engine nuodb = new Engine(new EngineYaml(&quot;nuodb.yml&quot;, injectionModel));</span>
+<span class="fc" id="L84">        Engine teradata = new Engine(new EngineYaml(&quot;teradata.yml&quot;, injectionModel));</span>
 
-<span class="fc" id="L85">        this.auto = new Engine();</span>
-<span class="fc" id="L86">        this.access = new Engine(new EngineYaml(&quot;access.yml&quot;, injectionModel));</span>
-<span class="fc" id="L87">        this.altibase = new Engine(new EngineYaml(&quot;altibase.yml&quot;, injectionModel));</span>
-<span class="fc" id="L88">        this.cubrid = new Engine(new EngineYaml(&quot;cubrid.yml&quot;, injectionModel));</span>
-<span class="fc" id="L89">        this.clickhouse = new Engine(new EngineYaml(&quot;clickhouse.yml&quot;, injectionModel));</span>
-<span class="fc" id="L90">        this.db2 = new Engine(new EngineYaml(&quot;db2.yml&quot;, injectionModel));</span>
-<span class="fc" id="L91">        this.derby = new Engine(new EngineYaml(&quot;derby.yml&quot;, injectionModel));</span>
-<span class="fc" id="L92">        this.exasol = new Engine(new EngineYaml(&quot;exasol.yml&quot;, injectionModel));</span>
-<span class="fc" id="L93">        this.firebird = new Engine(new EngineYaml(&quot;firebird.yml&quot;, injectionModel));</span>
-<span class="fc" id="L94">        this.h2 = new Engine(new EngineYaml(&quot;h2.yml&quot;, injectionModel));</span>
-<span class="fc" id="L95">        this.hana = new Engine(new EngineYaml(&quot;hana.yml&quot;, injectionModel));</span>
-<span class="fc" id="L96">        this.hsqldb = new Engine(new EngineYaml(&quot;hsqldb.yml&quot;, injectionModel));</span>
-<span class="fc" id="L97">        this.informix = new Engine(new EngineYaml(&quot;informix.yml&quot;, injectionModel));</span>
-<span class="fc" id="L98">        this.mckoi = new Engine(new EngineYaml(&quot;mckoi.yml&quot;, injectionModel));</span>
-<span class="fc" id="L99">        this.mimer = new Engine(new EngineYaml(&quot;mimersql.yml&quot;, injectionModel));</span>
-<span class="fc" id="L100">        this.monetdb = new Engine(new EngineYaml(&quot;monetdb.yml&quot;, injectionModel));</span>
-<span class="fc" id="L101">        this.mysql = new Engine(new EngineYaml(&quot;mysql.yml&quot;, injectionModel));</span>
-<span class="fc" id="L102">        this.neo4j = new Engine(new EngineYaml(&quot;neo4j.yml&quot;, injectionModel));</span>
-<span class="fc" id="L103">        this.oracle = new Engine(new EngineYaml(&quot;oracle.yml&quot;, injectionModel));</span>
-<span class="fc" id="L104">        this.postgres = new Engine(new EngineYaml(&quot;postgres.yml&quot;, injectionModel));</span>
-<span class="fc" id="L105">        this.presto = new Engine(new EngineYaml(&quot;presto.yml&quot;, injectionModel));</span>
-<span class="fc" id="L106">        this.sqlite = new Engine(new EngineYaml(&quot;sqlite.yml&quot;, injectionModel)) {</span>
+<span class="fc" id="L86">        this.auto = new Engine();</span>
+<span class="fc" id="L87">        this.access = new Engine(new EngineYaml(&quot;access.yml&quot;, injectionModel));</span>
+<span class="fc" id="L88">        this.altibase = new Engine(new EngineYaml(&quot;altibase.yml&quot;, injectionModel));</span>
+<span class="fc" id="L89">        this.cubrid = new Engine(new EngineYaml(&quot;cubrid.yml&quot;, injectionModel));</span>
+<span class="fc" id="L90">        this.clickhouse = new Engine(new EngineYaml(&quot;clickhouse.yml&quot;, injectionModel));</span>
+<span class="fc" id="L91">        this.db2 = new Engine(new EngineYaml(&quot;db2.yml&quot;, injectionModel));</span>
+<span class="fc" id="L92">        this.derby = new Engine(new EngineYaml(&quot;derby.yml&quot;, injectionModel));</span>
+<span class="fc" id="L93">        this.exasol = new Engine(new EngineYaml(&quot;exasol.yml&quot;, injectionModel));</span>
+<span class="fc" id="L94">        this.firebird = new Engine(new EngineYaml(&quot;firebird.yml&quot;, injectionModel));</span>
+<span class="fc" id="L95">        this.h2 = new Engine(new EngineYaml(&quot;h2.yml&quot;, injectionModel));</span>
+<span class="fc" id="L96">        this.hana = new Engine(new EngineYaml(&quot;hana.yml&quot;, injectionModel));</span>
+<span class="fc" id="L97">        this.hsqldb = new Engine(new EngineYaml(&quot;hsqldb.yml&quot;, injectionModel));</span>
+<span class="fc" id="L98">        this.informix = new Engine(new EngineYaml(&quot;informix.yml&quot;, injectionModel));</span>
+<span class="fc" id="L99">        this.mckoi = new Engine(new EngineYaml(&quot;mckoi.yml&quot;, injectionModel));</span>
+<span class="fc" id="L100">        this.mimer = new Engine(new EngineYaml(&quot;mimersql.yml&quot;, injectionModel));</span>
+<span class="fc" id="L101">        this.monetdb = new Engine(new EngineYaml(&quot;monetdb.yml&quot;, injectionModel));</span>
+<span class="fc" id="L102">        this.mysql = new Engine(new EngineYaml(&quot;mysql.yml&quot;, injectionModel));</span>
+<span class="fc" id="L103">        this.neo4j = new Engine(new EngineYaml(&quot;neo4j.yml&quot;, injectionModel));</span>
+<span class="fc" id="L104">        this.oracle = new Engine(new EngineYaml(&quot;oracle.yml&quot;, injectionModel));</span>
+<span class="fc" id="L105">        this.postgres = new Engine(new EngineYaml(&quot;postgres.yml&quot;, injectionModel));</span>
+<span class="fc" id="L106">        this.presto = new Engine(new EngineYaml(&quot;presto.yml&quot;, injectionModel));</span>
+<span class="fc" id="L107">        this.spanner = new Engine(new EngineYaml(&quot;spanner.yml&quot;, injectionModel));</span>
+<span class="fc" id="L108">        this.sqlite = new Engine(new EngineYaml(&quot;sqlite.yml&quot;, injectionModel)) {</span>
             @Override
             public String transformSqlite(String resultToParse) {
-<span class="fc" id="L109">                var resultSqlite = new StringBuilder();</span>
+<span class="fc" id="L111">                var resultSqlite = new StringBuilder();</span>
 
-<span class="fc" id="L111">                String resultTmp = resultToParse</span>
-<span class="fc" id="L112">                    .replaceFirst(&quot;[^(]+\\(&quot;, StringUtils.EMPTY)</span>
-<span class="fc" id="L113">                    .trim()</span>
-<span class="fc" id="L114">                    .replaceAll(&quot;\\)$&quot;, StringUtils.EMPTY);</span>
-<span class="fc" id="L115">                resultTmp = resultTmp.replaceAll(&quot;\\([^)]+\\)&quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L113">                String resultTmp = resultToParse</span>
+<span class="fc" id="L114">                    .replaceFirst(&quot;[^(]+\\(&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L115">                    .trim()</span>
+<span class="fc" id="L116">                    .replaceAll(&quot;\\)$&quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L117">                resultTmp = resultTmp.replaceAll(&quot;\\([^)]+\\)&quot;, StringUtils.EMPTY);</span>
 
-<span class="fc bfc" id="L117" title="All 2 branches covered.">                for (String columnNameAndType: resultTmp.split(&quot;,&quot;)) {</span>
-<span class="fc bfc" id="L118" title="All 2 branches covered.">                    if (columnNameAndType.trim().startsWith(&quot;primary key&quot;)) {</span>
-<span class="fc" id="L119">                        continue;</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">                for (String columnNameAndType: resultTmp.split(&quot;,&quot;)) {</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">                    if (columnNameAndType.trim().startsWith(&quot;primary key&quot;)) {</span>
+<span class="fc" id="L121">                        continue;</span>
                     }
                     // Some recent SQLite use tabulation character as a separator =&gt; split() by any white space \s
-<span class="fc" id="L122">                    String columnName = columnNameAndType.trim().split(&quot;\\s&quot;)[0];</span>
+<span class="fc" id="L124">                    String columnName = columnNameAndType.trim().split(&quot;\\s&quot;)[0];</span>
                     // Some recent SQLite enclose names with ` =&gt; strip those `
-<span class="fc" id="L124">                    columnName = StringUtils.strip(columnName, &quot;`&quot;);</span>
-<span class="fc" id="L125">                    if (</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">                        !&quot;CONSTRAINT&quot;.equals(columnName)</span>
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">                        &amp;&amp; !&quot;UNIQUE&quot;.equals(columnName)</span>
+<span class="fc" id="L126">                    columnName = StringUtils.strip(columnName, &quot;`&quot;);</span>
+<span class="fc" id="L127">                    if (</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">                        !&quot;CONSTRAINT&quot;.equals(columnName)</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">                        &amp;&amp; !&quot;UNIQUE&quot;.equals(columnName)</span>
                     ) {
                         // Generate pattern \4\5\4\6 for injection parsing
-<span class="fc" id="L130">                        resultSqlite.append((char) 4).append(columnName).append((char) 5).append(&quot;0&quot;).append((char) 4).append((char) 6);</span>
+<span class="fc" id="L132">                        resultSqlite.append((char) 4).append(columnName).append((char) 5).append(&quot;0&quot;).append((char) 4).append((char) 6);</span>
                     }
                 }
-<span class="fc" id="L133">                return resultSqlite.toString();</span>
+<span class="fc" id="L135">                return resultSqlite.toString();</span>
             }
         };
-<span class="fc" id="L136">        this.sqlserver = new Engine(new EngineYaml(&quot;sqlserver.yml&quot;, injectionModel));</span>
-<span class="fc" id="L137">        this.sybase = new Engine(new EngineYaml(&quot;sybase.yml&quot;, injectionModel));</span>
-<span class="fc" id="L138">        this.vertica = new Engine(new EngineYaml(&quot;vertica.yml&quot;, injectionModel));</span>
-<span class="fc" id="L139">        this.virtuoso = new Engine(new EngineYaml(&quot;virtuoso.yml&quot;, injectionModel));</span>
+<span class="fc" id="L138">        this.sqlserver = new Engine(new EngineYaml(&quot;sqlserver.yml&quot;, injectionModel));</span>
+<span class="fc" id="L139">        this.sybase = new Engine(new EngineYaml(&quot;sybase.yml&quot;, injectionModel));</span>
+<span class="fc" id="L140">        this.vertica = new Engine(new EngineYaml(&quot;vertica.yml&quot;, injectionModel));</span>
+<span class="fc" id="L141">        this.virtuoso = new Engine(new EngineYaml(&quot;virtuoso.yml&quot;, injectionModel));</span>
 
-<span class="fc" id="L141">        this.engines = Arrays.asList(</span>
+<span class="fc" id="L143">        this.engines = Arrays.asList(</span>
             this.auto, access, this.altibase, this.clickhouse, ctreeace, this.cubrid, this.db2, this.derby, this.exasol, this.firebird,
             frontbase, this.h2, this.hana, this.hsqldb, this.informix, ingres, iris, maxdb, this.mckoi, this.mimer, this.monetdb,
-            this.mysql, this.neo4j, netezza, nuodb, this.oracle, this.postgres, this.presto, this.sqlite, this.sqlserver, this.sybase,
-            teradata, this.vertica, this.virtuoso
+            this.mysql, this.neo4j, netezza, nuodb, this.oracle, this.postgres, this.presto, this.spanner, this.sqlite, this.sqlserver,
+            this.sybase, teradata, this.vertica, this.virtuoso
         );
-<span class="fc" id="L147">        this.enginesForFingerprint = Arrays.asList(  // Add sortIndex</span>
-            this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, access, this.altibase, ctreeace,
-            this.cubrid, this.db2, this.derby, this.exasol, this.firebird, frontbase, this.hana, this.informix, ingres, iris, maxdb, this.mckoi,
-            this.mimer, this.monetdb, this.neo4j, netezza, nuodb, this.presto, this.sybase, teradata, this.vertica, this.virtuoso, this.clickhouse
+<span class="fc" id="L149">        this.enginesForFingerprint = Arrays.asList(  // Add sortIndex</span>
+            this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, this.spanner, this.access, this.altibase,
+            ctreeace, this.cubrid, this.db2, this.derby, this.exasol, this.firebird, frontbase, this.hana, this.informix, ingres, iris, maxdb,
+            this.mckoi, this.mimer, this.monetdb, this.neo4j, netezza, nuodb, this.presto, this.sybase, teradata, this.vertica, this.virtuoso,
+            this.clickhouse
         );
 
-<span class="fc" id="L153">        this.engine = this.mysql;</span>
-<span class="fc" id="L154">        this.engineByUser = this.auto;</span>
-<span class="fc" id="L155">    }</span>
+<span class="fc" id="L156">        this.engine = this.mysql;</span>
+<span class="fc" id="L157">        this.engineByUser = this.auto;</span>
+<span class="fc" id="L158">    }</span>
     
     public boolean isSqlite() {
-<span class="fc bfc" id="L158" title="All 2 branches covered.">        return this.getEngine() == this.getSqlite();</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        return this.getEngine() == this.getSqlite();</span>
     }
     
     public Engine fingerprintEngine() {
-<span class="fc" id="L162">        Engine engineFound = null;</span>
-<span class="fc bfc" id="L163" title="All 2 branches covered.">        if (this.injectionModel.getMediatorEngine().getEngineByUser() != this.injectionModel.getMediatorEngine().getAuto()) {</span>
-<span class="fc" id="L164">            engineFound = this.injectionModel.getMediatorEngine().getEngineByUser();</span>
-<span class="fc" id="L165">            LOGGER.log(</span>
+<span class="fc" id="L165">        Engine engineFound = null;</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (this.injectionModel.getMediatorEngine().getEngineByUser() != this.injectionModel.getMediatorEngine().getAuto()) {</span>
+<span class="fc" id="L167">            engineFound = this.injectionModel.getMediatorEngine().getEngineByUser();</span>
+<span class="fc" id="L168">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 MediatorEngine.LOG_ENGINE,
-<span class="fc" id="L168">                () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_FORCED_BY_USER&quot;),</span>
-<span class="fc" id="L169">                () -&gt; this.injectionModel.getMediatorEngine().getEngineByUser()</span>
+<span class="fc" id="L171">                () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_FORCED_BY_USER&quot;),</span>
+<span class="fc" id="L172">                () -&gt; this.injectionModel.getMediatorEngine().getEngineByUser()</span>
             );
         } else {
-<span class="fc" id="L172">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;[Step 1] Fingerprinting database...&quot;);</span>
-<span class="fc" id="L173">            var insertionCharacter = URLEncoder.encode(&quot;'\&quot;#-)'\&quot;*&quot;, StandardCharsets.UTF_8);</span>
-<span class="fc" id="L174">            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, &quot;test#engine&quot;);</span>
+<span class="fc" id="L175">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;[Step 1] Fingerprinting database...&quot;);</span>
+<span class="fc" id="L176">            var insertionCharacter = URLEncoder.encode(&quot;'\&quot;#-)'\&quot;*&quot;, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L177">            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, &quot;test#engine&quot;);</span>
                 
-<span class="fc" id="L176">            var mediatorEngine = this.injectionModel.getMediatorEngine();</span>
-<span class="fc" id="L177">            Engine[] enginesWithoutAuto = mediatorEngine.getEngines()</span>
-<span class="fc" id="L178">                .stream()</span>
-<span class="fc bfc" id="L179" title="All 2 branches covered.">                .filter(v -&gt; v != mediatorEngine.getAuto())</span>
-<span class="fc" id="L180">                .toArray(Engine[]::new);</span>
+<span class="fc" id="L179">            var mediatorEngine = this.injectionModel.getMediatorEngine();</span>
+<span class="fc" id="L180">            Engine[] enginesWithoutAuto = mediatorEngine.getEngines()</span>
+<span class="fc" id="L181">                .stream()</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">                .filter(v -&gt; v != mediatorEngine.getAuto())</span>
+<span class="fc" id="L183">                .toArray(Engine[]::new);</span>
             
             // Test each engine
-<span class="fc bfc" id="L183" title="All 2 branches covered.">            for (Engine engineTest : enginesWithoutAuto) {</span>
-<span class="fc bfc" id="L184" title="All 2 branches covered.">                if (pageSource.matches(engineTest.instance().fingerprintErrorsAsRegex())) {</span>
-<span class="fc" id="L185">                    engineFound = engineTest;</span>
-<span class="fc" id="L186">                    LOGGER.log(</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">            for (Engine engineTest : enginesWithoutAuto) {</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">                if (pageSource.matches(engineTest.instance().fingerprintErrorsAsRegex())) {</span>
+<span class="fc" id="L188">                    engineFound = engineTest;</span>
+<span class="fc" id="L189">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_SUCCESS,
                         &quot;Found [{}] using raw fingerprinting&quot;,
-<span class="fc" id="L189">                        () -&gt; engineTest</span>
+<span class="fc" id="L192">                        () -&gt; engineTest</span>
                     );
-<span class="fc" id="L191">                    break;</span>
+<span class="fc" id="L194">                    break;</span>
                 }
             }
-<span class="fc bfc" id="L194" title="All 2 branches covered.">            if (engineFound == null) {</span>
-<span class="fc" id="L195">                engineFound = this.injectionModel.getMediatorEngine().getMysql();</span>
-<span class="fc" id="L196">                LOGGER.log(</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">            if (engineFound == null) {</span>
+<span class="fc" id="L198">                engineFound = this.injectionModel.getMediatorEngine().getMysql();</span>
+<span class="fc" id="L199">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_INFORM,
                     MediatorEngine.LOG_ENGINE,
-<span class="fc" id="L199">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_NOT_FOUND&quot;),</span>
-<span class="fc" id="L200">                    () -&gt; this.injectionModel.getMediatorEngine().getMysql()</span>
+<span class="fc" id="L202">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_NOT_FOUND&quot;),</span>
+<span class="fc" id="L203">                    () -&gt; this.injectionModel.getMediatorEngine().getMysql()</span>
                 );
             }
         }
 
-<span class="fc" id="L205">        var urlGitHub = this.injectionModel.getMediatorUtils().propertiesUtil().getProperty(&quot;github.url&quot;);</span>
-<span class="fc" id="L206">        this.injectionModel.appendAnalysisReport(</span>
-<span class="fc" id="L207">            String.join(</span>
+<span class="fc" id="L208">        var urlGitHub = this.injectionModel.getMediatorUtils().propertiesUtil().getProperty(&quot;github.url&quot;);</span>
+<span class="fc" id="L209">        this.injectionModel.appendAnalysisReport(</span>
+<span class="fc" id="L210">            String.join(</span>
                 StringUtils.EMPTY,
-<span class="fc" id="L209">                &quot;# Date: &quot;, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),</span>
+<span class="fc" id="L212">                &quot;# Date: &quot;, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),</span>
                 &quot;&lt;br&gt;&amp;#10;# Tested on: &quot;, SystemUtils.OS_NAME, &quot; (&quot;, SystemUtils.OS_VERSION, &quot;)&quot;,
-<span class="fc" id="L211">                &quot;&lt;br&gt;&amp;#10;# Tool: &quot;, StringUtil.APP_NAME, &quot; v&quot;, this.injectionModel.getPropertiesUtil().getVersionJsql(),</span>
+<span class="fc" id="L214">                &quot;&lt;br&gt;&amp;#10;# Tool: &quot;, StringUtil.APP_NAME, &quot; v&quot;, this.injectionModel.getPropertiesUtil().getVersionJsql(),</span>
                 &quot; (&lt;a href=&quot;, urlGitHub, &quot;&gt;&quot;, urlGitHub, &quot;&lt;/a&gt;)&quot;,
-<span class="fc" id="L213">                &quot;&lt;br&gt;&amp;#10;# Database: &quot;, engineFound.toString(),</span>
+<span class="fc" id="L216">                &quot;&lt;br&gt;&amp;#10;# Database: &quot;, engineFound.toString(),</span>
                 &quot;&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;## Vulnerability summary&lt;/span&gt;&quot;
             ),
             true
         );
 
-<span class="fc" id="L219">        this.injectionModel.sendToViews(new Seal.ActivateEngine(engineFound));</span>
-<span class="fc" id="L220">        return engineFound;</span>
+<span class="fc" id="L222">        this.injectionModel.sendToViews(new Seal.ActivateEngine(engineFound));</span>
+<span class="fc" id="L223">        return engineFound;</span>
     }
     
     
     // Getter and setter
 
     public Engine getEngine() {
-<span class="fc" id="L227">        return this.engine;</span>
+<span class="fc" id="L230">        return this.engine;</span>
     }
 
     public void setEngine(Engine engine) {
-<span class="fc" id="L231">        this.engine = engine;</span>
-<span class="fc" id="L232">    }</span>
+<span class="fc" id="L234">        this.engine = engine;</span>
+<span class="fc" id="L235">    }</span>
 
     public Engine getEngineByUser() {
-<span class="fc" id="L235">        return this.engineByUser;</span>
+<span class="fc" id="L238">        return this.engineByUser;</span>
     }
 
     public void setEngineByUser(Engine engineByUser) {
-<span class="fc" id="L239">        this.engineByUser = engineByUser;</span>
-<span class="fc" id="L240">    }</span>
+<span class="fc" id="L242">        this.engineByUser = engineByUser;</span>
+<span class="fc" id="L243">    }</span>
 
     public List&lt;Engine&gt; getEngines() {
-<span class="fc" id="L243">        return this.engines;</span>
+<span class="fc" id="L246">        return this.engines;</span>
     }
 
     public List&lt;Engine&gt; getEnginesForFingerprint() {
-<span class="fc" id="L247">        return this.enginesForFingerprint;</span>
+<span class="fc" id="L250">        return this.enginesForFingerprint;</span>
     }
 
 
     // engines
 
     public Engine getAuto() {
-<span class="fc" id="L254">        return this.auto;</span>
+<span class="fc" id="L257">        return this.auto;</span>
     }
 
     public Engine getAccess() {
-<span class="fc" id="L258">        return this.access;</span>
+<span class="fc" id="L261">        return this.access;</span>
     }
 
     public Engine getAltibase() {
-<span class="nc" id="L262">        return this.altibase;</span>
+<span class="nc" id="L265">        return this.altibase;</span>
     }
 
     public Engine getClickhouse() {
-<span class="nc" id="L266">        return this.clickhouse;</span>
+<span class="nc" id="L269">        return this.clickhouse;</span>
     }
 
     public Engine getCubrid() {
-<span class="fc" id="L270">        return this.cubrid;</span>
+<span class="fc" id="L273">        return this.cubrid;</span>
     }
 
     public Engine getDb2() {
-<span class="nc" id="L274">        return this.db2;</span>
+<span class="nc" id="L277">        return this.db2;</span>
     }
 
     public Engine getDerby() {
-<span class="fc" id="L278">        return this.derby;</span>
+<span class="fc" id="L281">        return this.derby;</span>
     }
 
     public Engine getExasol() {
-<span class="nc" id="L282">        return this.exasol;</span>
+<span class="nc" id="L285">        return this.exasol;</span>
     }
 
     public Engine getFirebird() {
-<span class="fc" id="L286">        return this.firebird;</span>
+<span class="fc" id="L289">        return this.firebird;</span>
     }
 
     public Engine getH2() {
-<span class="fc" id="L290">        return this.h2;</span>
+<span class="fc" id="L293">        return this.h2;</span>
     }
 
     public Engine getHana() {
-<span class="nc" id="L294">        return this.hana;</span>
+<span class="nc" id="L297">        return this.hana;</span>
     }
 
     public Engine getHsqldb() {
-<span class="fc" id="L298">        return this.hsqldb;</span>
+<span class="fc" id="L301">        return this.hsqldb;</span>
     }
 
     public Engine getInformix() {
-<span class="fc" id="L302">        return this.informix;</span>
+<span class="fc" id="L305">        return this.informix;</span>
     }
 
     public Engine getMckoi() {
-<span class="fc" id="L306">        return this.mckoi;</span>
+<span class="fc" id="L309">        return this.mckoi;</span>
     }
 
     public Engine getMimer() {
-<span class="nc" id="L310">        return this.mimer;</span>
+<span class="nc" id="L313">        return this.mimer;</span>
     }
 
     public Engine getMonetdb() {
-<span class="nc" id="L314">        return this.monetdb;</span>
+<span class="nc" id="L317">        return this.monetdb;</span>
     }
 
     public Engine getMysql() {
-<span class="fc" id="L318">        return this.mysql;</span>
+<span class="fc" id="L321">        return this.mysql;</span>
     }
 
     public Engine getNeo4j() {
-<span class="fc" id="L322">        return this.neo4j;</span>
+<span class="fc" id="L325">        return this.neo4j;</span>
     }
 
     public Engine getOracle() {
-<span class="fc" id="L326">        return this.oracle;</span>
+<span class="fc" id="L329">        return this.oracle;</span>
     }
 
     public Engine getPostgres() {
-<span class="fc" id="L330">        return this.postgres;</span>
+<span class="fc" id="L333">        return this.postgres;</span>
     }
 
     public Engine getPresto() {
-<span class="nc" id="L334">        return this.presto;</span>
+<span class="nc" id="L337">        return this.presto;</span>
+    }
+
+    public Engine getSpanner() {
+<span class="nc" id="L341">        return this.spanner;</span>
     }
 
     public Engine getSqlite() {
-<span class="fc" id="L338">        return this.sqlite;</span>
+<span class="fc" id="L345">        return this.sqlite;</span>
     }
 
     public Engine getSqlserver() {
-<span class="nc" id="L342">        return this.sqlserver;</span>
+<span class="nc" id="L349">        return this.sqlserver;</span>
     }
 
     public Engine getSybase() {
-<span class="nc" id="L346">        return this.sybase;</span>
+<span class="nc" id="L353">        return this.sybase;</span>
     }
 
     public Engine getVertica() {
-<span class="nc" id="L350">        return this.vertica;</span>
+<span class="nc" id="L357">        return this.vertica;</span>
     }
 
     public Engine getVirtuoso() {
-<span class="nc" id="L354">        return this.virtuoso;</span>
+<span class="nc" id="L361">        return this.virtuoso;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
