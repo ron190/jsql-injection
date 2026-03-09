@@ -101,6 +101,7 @@
                     **/*Monetdb*SuiteIT.java,
                     **/*Oracle*SuiteIT.java,
                     **/*Presto*SuiteIT.java,
+                    **/*Spanner*SuiteIT.java,
                     **/*Sqlserver*SuiteIT.java,
                     **/*Sybase*SuiteIT.java,
                     **/*Vertica*SuiteIT.java,

@@ -195,6 +195,10 @@ function Presto {  # shellcheck disable=SC2317
   docker exec -i jsql-presto presto-cli --server 127.0.0.1:8084 --execute "select 'jsqlValue' as jsqlColumn"
 }  # correct status 1 on error
 
+function Spanner {  # prebuild image, no tools available
+  sleep 5
+}
+
 function Sqlserver {  # shellcheck disable=SC2317
   docker exec -i jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:jsql-sqlserver,1433" -U SA -P 'yourStrong(!)Password' -Q "select 'jsqlValue' as jsqlColumn"
 }  # no status 1 on error
