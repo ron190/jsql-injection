@@ -115,11 +115,6 @@ resource:
     concat: "|| '%7f' ||"
 
  exploit: |
-  # [contribute] share following exploit methodologies on GitHub to improve the app :
-  # - read and write files
-  # - UDF creation
-  # - RCE
-  
   # readfile  = fileio_read
   # writefile = fileio_write
   # mkdir     = fileio_mkdir

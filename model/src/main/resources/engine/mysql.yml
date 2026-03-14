@@ -198,11 +198,6 @@ resource:
     concat: ",0x7f,"
 
  exploit: |
-  # [contribute] share following exploit methodologies on GitHub to improve the app :
-  # - read and write files
-  # - UDF creation
-  # - RCE
-  
   file:
     privilege: |
       (

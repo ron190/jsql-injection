@@ -22,9 +22,10 @@ import java.util.concurrent.Callable;
  * User can interrupt the process and get a partial result of the file content.
  */
 public class CallableFile implements Callable<CallableFile> {
-    
+
     private static final Logger LOGGER = LogManager.getRootLogger();
     public static final String REQUIRE_STACK = "Read file requirement: stack query";
+    public static final String READ_FILE_NOT_IMPLEMENTED = "Read file not implemented for [{}], share a working example on GitHub to speed up release";
 
     /**
      * Path to the file to read.
@@ -70,6 +71,7 @@ public class CallableFile implements Callable<CallableFile> {
         mapEngineReadable.put(this.injectionModel.getMediatorEngine().getDerby(), () -> this.injectionModel.getResourceAccess().getExploitDerby().getRead(this.pathFile));
         mapEngineReadable.put(this.injectionModel.getMediatorEngine().getHsqldb(), () -> this.injectionModel.getResourceAccess().getExploitHsqldb().getRead(this.pathFile));
         mapEngineReadable.put(this.injectionModel.getMediatorEngine().getPostgres(), () -> this.injectionModel.getResourceAccess().getExploitPostgres().getRead(this.pathFile));
+        mapEngineReadable.put(this.injectionModel.getMediatorEngine().getSqlserver(), () -> this.injectionModel.getResourceAccess().getExploitSqlserver().getRead(this.pathFile));
 
         Readable readable = mapEngineReadable.entrySet().stream()
             .filter(entry -> this.injectionModel.getMediatorEngine().getEngine() == entry.getKey())
@@ -77,7 +79,7 @@ public class CallableFile implements Callable<CallableFile> {
             .orElse(new AbstractMap.SimpleEntry<>(null, () -> {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_DEFAULT,
-                    "Read file not implemented for [{}], share a working example on GitHub to speed up release",
+                    CallableFile.READ_FILE_NOT_IMPLEMENTED,
                     this.injectionModel.getMediatorEngine().getEngine()
                 );
                 return StringUtils.EMPTY;

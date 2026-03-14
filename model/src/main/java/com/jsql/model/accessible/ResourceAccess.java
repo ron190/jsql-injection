@@ -81,6 +81,7 @@ public class ResourceAccess {
     private final ExploitHsqldb exploitHsqldb;
     private final ExploitH2 exploitH2;
     private final ExploitDerby exploitDerby;
+    private final ExploitSqlserver exploitSqlserver;
 
     // compatible cross-platform win+linux (spaces around plus sign required)
     public static final String WEB_CONFIRM_CMD = URLEncoder.encode("expr 133707330 + 10001", StandardCharsets.ISO_8859_1);
@@ -125,6 +126,7 @@ public class ResourceAccess {
         this.exploitHsqldb = new ExploitHsqldb(injectionModel);
         this.exploitH2 = new ExploitH2(injectionModel);
         this.exploitDerby = new ExploitDerby(injectionModel);
+        this.exploitSqlserver = new ExploitSqlserver(injectionModel);
     }
 
     /**
@@ -689,5 +691,9 @@ public class ResourceAccess {
 
     public ExploitDerby getExploitDerby() {
         return this.exploitDerby;
+    }
+
+    public ExploitSqlserver getExploitSqlserver() {
+        return this.exploitSqlserver;
     }
 }

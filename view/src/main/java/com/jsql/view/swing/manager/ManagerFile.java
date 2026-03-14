@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.manager;
 
+import com.jsql.model.accessible.CallableFile;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.StateButton;
@@ -57,11 +58,12 @@ public class ManagerFile extends AbstractManagerList {
                 MediatorHelper.model().getMediatorEngine().getH2(),
                 MediatorHelper.model().getMediatorEngine().getHsqldb(),
                 MediatorHelper.model().getMediatorEngine().getMysql(),
-                MediatorHelper.model().getMediatorEngine().getPostgres()
+                MediatorHelper.model().getMediatorEngine().getPostgres(),
+                MediatorHelper.model().getMediatorEngine().getSqlserver()
             ).contains(MediatorHelper.model().getMediatorEngine().getEngine())) {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
-                    "Read file not implemented for [{}], share a working example on GitHub to speed up release",
+                    CallableFile.READ_FILE_NOT_IMPLEMENTED,
                     MediatorHelper.model().getMediatorEngine().getEngine()
                 );
                 return;

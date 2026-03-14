@@ -54,6 +54,7 @@
         <altibase.version>8.1.0.0.1</altibase.version>
         <clickhouse.version>0.9.7</clickhouse.version>
         <cubrid.version>11.3.2.0053</cubrid.version>
+        <db2.version>12.1.4.0</db2.version>
         <derby.version>10.17.1.0</derby.version>
         <exasol.version>26.2.7</exasol.version>
         <firebird.version>6.0.4</firebird.version>
@@ -64,7 +65,7 @@
         <mckoi.version>1.0.5</mckoi.version>
         <mimer.version>3.42.3</mimer.version>
         <monetdb.version>12.2</monetdb.version>
-        <mssql.version>13.2.1.jre11</mssql.version>
+        <mssql.version>13.4.0.jre11</mssql.version>
         <mysql.version>9.6.0</mysql.version>
         <!-- failure with 5.28.2 -->
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
@@ -435,6 +436,7 @@
         <dependency>
             <groupId>com.ibm.db2</groupId>
             <artifactId>jcc</artifactId>
+            <version>${db2.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

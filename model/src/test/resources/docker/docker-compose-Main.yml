@@ -30,6 +30,7 @@ services:
 
   informix:
     container_name: jsql-informix
+    # error with latest 15.0.0.0: /opt/ibm/informix/bin/dbaccess: No such file or directory
     image: icr.io/informix/informix-developer-database:14.10.FC9W1DE
     ports:
       - "9088:9088"
