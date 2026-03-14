@@ -30,7 +30,7 @@ services:
 
   informix:
     container_name: jsql-informix
-    image: icr.io/informix/informix-developer-database:14.10.FC9W1
+    image: icr.io/informix/informix-developer-database:14.10.FC9W1DE
     ports:
       - "9088:9088"
     environment:
