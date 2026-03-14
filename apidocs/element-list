@@ -9,6 +9,7 @@ com.jsql.model.accessible.engine.mysql
 com.jsql.model.accessible.engine.oracle
 com.jsql.model.accessible.engine.postgres
 com.jsql.model.accessible.engine.sqlite
+com.jsql.model.accessible.engine.sqlserver
 com.jsql.model.bean.database
 com.jsql.model.exception
 com.jsql.model.injection.engine

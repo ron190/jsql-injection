@@ -1,10 +1,10 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,1,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Diff,51,62,11,7,10,19,10,8,3,6
-model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,665,2116,134,288,149,462,87,147,1,20
+model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,683,2098,137,285,153,458,88,146,1,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
 model,com.jsql.model.injection.engine,MediatorEngine.new Engine() {...},0,82,2,6,0,17,2,4,0,2
-model,com.jsql.model.injection.engine,MediatorEngine,39,1018,0,12,13,99,13,37,13,31
+model,com.jsql.model.injection.engine,MediatorEngine,36,1021,0,12,12,100,12,38,12,32
 model,com.jsql.model.injection.strategy.blind.callable,BinRanges,0,12,0,0,0,1,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.callable,AbstractCallableBit,3,37,0,0,1,13,1,8,1,8
 model,com.jsql.model.injection.strategy.blind.callable,CallableCharInsertion,3,77,0,4,2,20,0,7,0,5
@@ -13,13 +13,14 @@ model,com.jsql.model.injection.strategy.blind.callable,CallableTime,0,106,0,2,0,
 model,com.jsql.model.injection.strategy.blind.callable,CallableBlindBit,8,137,1,7,5,30,1,9,0,6
 model,com.jsql.model.injection.strategy.blind.callable,CallableBlindBin,0,140,0,8,0,30,0,11,0,7
 model,com.jsql.model.injection.strategy.blind.callable,CallableMultibit,2,105,0,4,1,22,1,7,1,5
-model,com.jsql.model.accessible.engine,ExploitSqlite,202,203,5,1,36,35,7,7,4,7
-model,com.jsql.model.accessible.engine,ExploitDerby,132,194,3,1,26,31,4,6,2,6
-model,com.jsql.model.accessible.engine,ExploitOracle,203,26,4,0,28,7,5,2,3,2
-model,com.jsql.model.accessible.engine,ExploitPostgres,547,1291,39,43,94,212,36,32,6,21
-model,com.jsql.model.accessible.engine,ExploitH2,168,261,4,2,31,45,6,8,3,8
-model,com.jsql.model.accessible.engine,ExploitHsqldb,132,200,3,1,26,31,4,6,2,6
-model,com.jsql.model.accessible.engine,ExploitMysql,418,883,48,50,81,159,45,32,6,22
+model,com.jsql.model.accessible.engine,ExploitSqlserver,31,23,0,0,3,6,1,1,1,1
+model,com.jsql.model.accessible.engine,ExploitSqlite,193,197,5,1,35,34,6,6,3,6
+model,com.jsql.model.accessible.engine,ExploitDerby,132,185,3,1,26,30,4,5,2,5
+model,com.jsql.model.accessible.engine,ExploitOracle,195,26,4,0,27,7,4,2,2,2
+model,com.jsql.model.accessible.engine,ExploitPostgres,478,1300,38,44,86,215,31,32,2,20
+model,com.jsql.model.accessible.engine,ExploitH2,159,255,4,2,30,44,5,7,2,7
+model,com.jsql.model.accessible.engine,ExploitHsqldb,132,191,3,1,26,30,4,5,2,5
+model,com.jsql.model.accessible.engine,ExploitMysql,409,880,48,50,80,159,44,32,5,22
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
 model,com.jsql.model,InjectionModel,174,1101,23,59,43,241,18,56,3,30
 model,com.jsql.model,MediatorUtils,0,63,0,0,0,1,0,1,0,1
@@ -92,11 +93,11 @@ model,com.jsql.model.accessible.engine.postgres,Read,3,32,0,0,1,12,1,6,1,6
 model,com.jsql.model.accessible.engine.postgres,Program,0,23,0,0,0,9,0,5,0,5
 model,com.jsql.model.accessible.engine.postgres,Archive,0,73,0,0,0,29,0,15,0,15
 model,com.jsql.util.reverse,ModelReverse,14,9,0,0,6,4,4,1,4,1
-model,com.jsql.model.accessible,ResourceAccess,306,1098,31,61,72,230,34,47,7,28
+model,com.jsql.model.accessible,ResourceAccess,306,1107,31,61,71,233,35,47,8,28
 model,com.jsql.model.accessible,CallableHttpHead,62,112,2,2,12,32,3,6,1,6
 model,com.jsql.model.accessible,ExploitMode,18,46,0,0,5,9,4,2,4,2
 model,com.jsql.model.accessible,DataAccess,254,467,10,18,59,98,13,16,6,9
-model,com.jsql.model.accessible,CallableFile,37,176,4,2,11,27,3,14,1,13
+model,com.jsql.model.accessible,CallableFile,45,185,4,2,11,28,4,14,2,13
 model,com.jsql.model.injection.strategy,StrategyBlindBin,0,265,0,14,0,54,0,23,0,16
 model,com.jsql.model.injection.strategy,StrategyStack,22,269,1,13,4,61,3,20,2,14
 model,com.jsql.model.injection.strategy,StrategyBlindBit,0,265,0,14,0,54,0,23,0,16
@@ -114,6 +115,8 @@ model,com.jsql.model.exception,LoopDetectedSlidingException,6,0,0,0,2,0,1,0,1,0
 model,com.jsql.model.exception,InjectionFailureException,4,9,0,0,2,4,1,2,1,2
 model,com.jsql.model.exception,StoppedByUserSlidingException,15,0,0,0,6,0,3,0,3,0
 model,com.jsql.model.exception,JSqlException,5,9,0,0,2,4,1,2,1,2
+model,com.jsql.model.accessible.engine.sqlserver,File,3,10,0,0,1,4,1,2,1,2
+model,com.jsql.model.accessible.engine.sqlserver,ModelYamlSqlserver,3,12,0,0,1,4,1,2,1,2
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},3,8,0,0,1,1,1,1,1,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,10,0,0,0,2,0,2,0,2
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},0,12,0,0,0,2,0,2,0,2
