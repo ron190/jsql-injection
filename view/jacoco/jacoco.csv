@@ -10,9 +10,9 @@ view,com.jsql.view.swing.util,RadioItemNonClosing,0,45,1,5,0,16,1,8,0,6
 view,com.jsql.view.swing.util,JSplitPaneWithZeroSizeDivider,0,57,0,2,0,18,0,4,0,3
 view,com.jsql.view.swing.util,I18nViewUtil,14,192,6,18,2,30,6,19,0,9
 view,com.jsql.view.swing.util,UiUtil,40,820,1,11,14,138,1,15,0,10
-view,com.jsql.view.swing.dialog.translate,Language,3,282,0,2,1,40,1,10,1,9
+view,com.jsql.view.swing.dialog.translate,Language,3,302,0,4,1,43,1,11,1,9
 view,com.jsql.view.swing.dialog.translate,SortedProperties,28,32,2,2,7,7,3,3,2,2
-view,com.jsql.view.swing.dialog.translate,WorkerTranslateInto,126,290,9,7,28,57,9,11,2,10
+view,com.jsql.view.swing.dialog.translate,WorkerTranslateInto,132,305,10,8,29,58,10,12,2,11
 view,com.jsql.view.swing.table,ButtonClose,0,11,0,0,0,4,0,1,0,1
 view,com.jsql.view.swing.table,ActionShowSearch,9,9,0,0,3,4,1,1,1,1
 view,com.jsql.view.swing.table,FixedColumnTable,52,219,4,6,8,41,5,6,2,4
@@ -41,7 +41,7 @@ view,com.jsql.view.swing.menubar,MenuWindows.new AbstractAction() {...},6,9,0,0,
 view,com.jsql.view.swing.menubar,MenuWindows.new JCheckBoxMenuItem() {...},8,9,2,0,3,1,2,1,1,1
 view,com.jsql.view.swing.menubar,ActionTranslate,0,15,0,0,0,6,0,2,0,2
 view,com.jsql.view.swing.menubar,AppMenubar.new MouseAdapter() {...},8,6,0,0,3,1,1,1,1,1
-view,com.jsql.view.swing.menubar,AppMenubar,86,1138,14,22,15,203,14,33,4,25
+view,com.jsql.view.swing.menubar,AppMenubar,86,1152,14,22,15,204,14,34,4,26
 view,com.jsql.view.swing.menubar,ModelItemTranslate,0,16,0,0,0,7,0,4,0,4
 view,com.jsql.view.swing.menubar,AppMenubar.new Record() {...},0,15,0,0,0,1,0,1,0,1
 view,com.jsql.view.swing.menubar,ActionCheckUpdate,13,3,0,0,4,1,2,1,2,1
@@ -49,10 +49,10 @@ view,com.jsql.view.swing.menubar,ModelCheckboxMenu,0,34,0,0,0,10,0,2,0,2
 view,com.jsql.view.swing.menubar,MenuWindows,78,719,11,15,22,153,16,24,8,19
 view,com.jsql.view.swing.tree.custom,CheckBoxMenuItemIconCustom,194,0,16,0,44,0,13,0,5,0
 view,com.jsql.view.swing.tree.custom,JPopupMenuCustomExtract,42,3,0,0,18,1,12,1,12,1
-view,com.jsql.view.swing.manager,ManagerBruteForce.new JButtonStateful() {...},0,15,0,0,0,2,0,2,0,2
+view,com.jsql.view.swing.manager,ManagerBruteForce.new JButtonStateful() {...},5,10,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JTextFieldPlaceholder() {...},5,10,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JSpinner() {...},5,9,0,0,1,1,1,1,1,1
-view,com.jsql.view.swing.manager,ManagerBruteForce.new JTextFieldPlaceholder() {...},0,15,0,0,0,2,0,2,0,2
+view,com.jsql.view.swing.manager,ManagerBruteForce.new JTextFieldPlaceholder() {...},5,10,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerBruteForce.new JCheckBox() {...},5,11,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerExploit.ActionExploit,186,9,28,0,51,3,18,1,4,1
 view,com.jsql.view.swing.manager,ManagerDatabase.new KeyAdapter() {...},28,6,10,0,7,1,6,1,1,1

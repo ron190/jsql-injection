@@ -65,12 +65,12 @@ public class AppMenubar extends JMenuBar {
 
 <span class="fc" id="L66">    protected static final List&lt;ModelItemTranslate&gt; ITEMS_TRANSLATE = Stream.of(</span>
         Language.EN, Language.FR, Language.ES, Language.IT, Language.AR, Language.ZH, Language.RU, Language.TR, Language.KO,
-        Language.SE, Language.FI, Language.CS, Language.PT, Language.PL, Language.ID, Language.NL, Language.RO, Language.DE
+        Language.SE, Language.FI, Language.CS, Language.PT, Language.PL, Language.ID, Language.NL, Language.RO, Language.AN, Language.DE
 <span class="fc" id="L69">    ).map(ModelItemTranslate::new).toList();</span>
 
 <span class="fc" id="L71">    private static final List&lt;ModelItemTranslate&gt; ITEMS_TRANSLATE_INTO = Stream.of(</span>
         Language.FR, Language.ES, Language.SE, Language.FI, Language.TR, Language.CS, Language.RO, Language.IT, Language.PT, Language.AR,
-        Language.PL, Language.RU, Language.ZH, Language.DE, Language.ID, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA
+        Language.PL, Language.RU, Language.ZH, Language.ID, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA, Language.AN, Language.DE
 <span class="fc" id="L74">    ).map(ModelItemTranslate::new).toList();</span>
 
     /**
@@ -383,50 +383,52 @@ public class AppMenubar extends JMenuBar {
 <span class="fc" id="L383">            var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
 <span class="fc" id="L384">            MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
 
-<span class="fc" id="L386">            List.of(splitReverseEW, splitReverseNetwork, splitReverseNS).forEach(splitReverse -&gt; {</span>
-<span class="fc" id="L387">                splitReverse.split.setLeftComponent(splitReverse.right);</span>
-<span class="fc" id="L388">                splitReverse.split.setRightComponent(splitReverse.left);</span>
-<span class="fc" id="L389">                splitReverse.split.setDividerLocation(splitReverse.location);</span>
-<span class="fc" id="L390">            });</span>
-<span class="fc" id="L391">        } else {</span>
-<span class="fc" id="L392">            var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
-<span class="fc" id="L393">            MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
+<span class="fc" id="L386">            SwingUtilities.invokeLater(() -&gt;  // invokeLater required to prevent wrong NS divider location when switching asiatic to arabic</span>
+<span class="fc" id="L387">                List.of(splitReverseEW, splitReverseNetwork, splitReverseNS).forEach(splitReverse -&gt; {</span>
+<span class="fc" id="L388">                    splitReverse.split.setLeftComponent(splitReverse.right);</span>
+<span class="fc" id="L389">                    splitReverse.split.setRightComponent(splitReverse.left);</span>
+<span class="fc" id="L390">                    splitReverse.split.setDividerLocation(splitReverse.location);</span>
+<span class="fc" id="L391">                })</span>
+            );
+<span class="fc" id="L393">        } else {</span>
+<span class="fc" id="L394">            var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());</span>
+<span class="fc" id="L395">            MediatorHelper.frame().applyComponentOrientation(componentOrientation);</span>
         }
 
         // required by linux: applyComponentOrientation also on sub components
-<span class="fc" id="L397">        MediatorHelper.tabResults().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
-<span class="fc" id="L398">        MediatorHelper.panelConsoles().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
-<span class="fc" id="L399">        MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
-<span class="fc" id="L400">    }</span>
+<span class="fc" id="L399">        MediatorHelper.tabResults().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
+<span class="fc" id="L400">        MediatorHelper.panelConsoles().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
+<span class="fc" id="L401">        MediatorHelper.panelConsoles().getTabbedPaneNetworkTab().applyComponentOrientation(ComponentOrientation.getOrientation(newLocale));</span>
+<span class="fc" id="L402">    }</span>
 
     private void switchMenuItems() {
-<span class="fc" id="L403">        Stream.concat(AppMenubar.ITEMS_TRANSLATE.stream(), AppMenubar.ITEMS_TRANSLATE_INTO.stream())</span>
-<span class="fc" id="L404">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
-<span class="fc bfc" id="L405" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
-<span class="fc" id="L406">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
-<span class="fc" id="L407">            : ComponentOrientation.LEFT_TO_RIGHT</span>
+<span class="fc" id="L405">        Stream.concat(AppMenubar.ITEMS_TRANSLATE.stream(), AppMenubar.ITEMS_TRANSLATE_INTO.stream())</span>
+<span class="fc" id="L406">        .forEach(model -&gt; model.getMenuItem().setComponentOrientation(</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">            model.getLanguage().isRightToLeft()</span>
+<span class="fc" id="L408">            ? ComponentOrientation.RIGHT_TO_LEFT</span>
+<span class="fc" id="L409">            : ComponentOrientation.LEFT_TO_RIGHT</span>
         ));
-<span class="fc" id="L409">    }</span>
+<span class="fc" id="L411">    }</span>
 
     private void switchNetworkTable() {
-<span class="fc" id="L412">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
-<span class="fc" id="L413">        TableColumnModel columnModel = header.getColumnModel();</span>
-<span class="fc" id="L414">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
-<span class="fc" id="L415">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
-<span class="fc" id="L416">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
-<span class="fc" id="L417">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
-<span class="fc" id="L418">        header.repaint();</span>
-<span class="fc" id="L419">    }</span>
+<span class="fc" id="L414">        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();</span>
+<span class="fc" id="L415">        TableColumnModel columnModel = header.getColumnModel();</span>
+<span class="fc" id="L416">        columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;));</span>
+<span class="fc" id="L417">        columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;) +&quot; (KB)&quot;);</span>
+<span class="fc" id="L418">        columnModel.getColumn(2).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_STRATEGY&quot;));</span>
+<span class="fc" id="L419">        columnModel.getColumn(3).setHeaderValue(I18nUtil.valueByKey(&quot;SQLENGINE_METADATA&quot;));</span>
+<span class="fc" id="L420">        header.repaint();</span>
+<span class="fc" id="L421">    }</span>
     
     
     // Getter and setter
 
     public JMenu getMenuView() {
-<span class="nc" id="L425">        return this.menuWindows.getMenuView();</span>
+<span class="nc" id="L427">        return this.menuWindows.getMenuView();</span>
     }
 
     public MenuWindows getMenuWindows() {
-<span class="fc" id="L429">        return this.menuWindows;</span>
+<span class="fc" id="L431">        return this.menuWindows;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

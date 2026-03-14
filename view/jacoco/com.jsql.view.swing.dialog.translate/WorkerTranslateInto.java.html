@@ -6,8 +6,10 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.util.PropertiesUtil;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Strings;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -26,137 +28,141 @@ import java.util.regex.Pattern;
 
 public class WorkerTranslateInto extends SwingWorker&lt;Object, Object&gt; {
     
-<span class="fc" id="L29">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L31">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
-<span class="fc" id="L31">    private final Properties propertiesLanguageToTranslate = new Properties();</span>
-<span class="fc" id="L32">    private final SortedProperties propertiesRoot = new SortedProperties();</span>
-<span class="fc" id="L33">    private final StringBuilder propertiesToTranslate = new StringBuilder();</span>
+<span class="fc" id="L33">    private final Properties propertiesLanguageToTranslate = new Properties();</span>
+<span class="fc" id="L34">    private final SortedProperties propertiesRoot = new SortedProperties();</span>
+<span class="fc" id="L35">    private final StringBuilder propertiesToTranslate = new StringBuilder();</span>
     private final DialogTranslate dialogTranslate;
     
-<span class="fc" id="L36">    private final ConnectionUtil connectionUtil = MediatorHelper.model().getMediatorUtils().connectionUtil();</span>
-<span class="fc" id="L37">    private final PropertiesUtil propertiesUtil = MediatorHelper.model().getMediatorUtils().propertiesUtil();</span>
+<span class="fc" id="L38">    private final ConnectionUtil connectionUtil = MediatorHelper.model().getMediatorUtils().connectionUtil();</span>
+<span class="fc" id="L39">    private final PropertiesUtil propertiesUtil = MediatorHelper.model().getMediatorUtils().propertiesUtil();</span>
     
     private static final String LINE_FEED_ESCAPE = &quot;{@|@}&quot;;
     private static final String LINE_FEED = &quot;\\\\[\n\r]+&quot;;
     
-<span class="fc" id="L42">    public WorkerTranslateInto(DialogTranslate dialogTranslate) {</span>
-<span class="fc" id="L43">        this.dialogTranslate = dialogTranslate;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L44">    public WorkerTranslateInto(DialogTranslate dialogTranslate) {</span>
+<span class="fc" id="L45">        this.dialogTranslate = dialogTranslate;</span>
+<span class="fc" id="L46">    }</span>
 
     @Override
     protected Object doInBackground() throws Exception {
-<span class="fc" id="L48">        Thread.currentThread().setName(&quot;SwingWorkerDialogTranslate&quot;);</span>
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        this.dialogTranslate.getProgressBarTranslation().setVisible(this.dialogTranslate.getLanguageInto() != Language.OT);</span>
+<span class="fc" id="L50">        Thread.currentThread().setName(&quot;SwingWorkerDialogTranslate&quot;);</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        this.dialogTranslate.getProgressBarTranslation().setVisible(this.dialogTranslate.getLanguageInto() != Language.OT);</span>
         try {
-<span class="fc" id="L51">            this.loadFromGithub();</span>
-<span class="nc" id="L52">        } catch (IOException eGithub) {</span>
-<span class="nc" id="L53">            this.logFileNotFound(eGithub);</span>
+<span class="fc" id="L53">            this.loadFromGithub();</span>
+<span class="nc" id="L54">        } catch (IOException eGithub) {</span>
+<span class="nc" id="L55">            this.logFileNotFound(eGithub);</span>
         } finally {
-<span class="fc" id="L55">            this.displayDiff();</span>
+<span class="fc" id="L57">            this.displayDiff();</span>
         }
-<span class="fc" id="L57">        var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());</span>
-<span class="fc" id="L58">        LOGGER.log(</span>
+<span class="fc" id="L59">        var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());</span>
+<span class="fc" id="L60">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_SUCCESS,
-            &quot;Remaining text to translate into {} loaded, send any part translated to contribute&quot;,
-<span class="fc" id="L61">            () -&gt; localeInto.getDisplayLanguage(localeInto)</span>
+            &quot;Remaining text to translate into {}{} loaded, send any part translated to contribute&quot;,
+<span class="fc" id="L63">            () -&gt; localeInto.getDisplayLanguage(localeInto),</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            () -&gt; Strings.isBlank(localeInto.getCountry()) ? StringUtils.EMPTY : &quot; (&quot;+ localeInto.getCountry() +&quot;)&quot;</span>
         );
-<span class="fc" id="L63">        return null;</span>
+<span class="fc" id="L66">        return null;</span>
     }
 
     private void displayDiff() {
-<span class="fc" id="L67">        this.propertiesRoot.entrySet().stream()</span>
-<span class="fc" id="L68">            .filter(key -&gt;</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">                this.dialogTranslate.getLanguageInto() == Language.OT</span>
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">                || this.propertiesLanguageToTranslate.isEmpty()</span>
-<span class="fc bfc" id="L71" title="All 2 branches covered.">                || !this.propertiesLanguageToTranslate.containsKey(key.getKey())</span>
+<span class="fc" id="L70">        this.propertiesRoot.entrySet().stream()</span>
+<span class="fc" id="L71">            .filter(key -&gt;</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">                this.dialogTranslate.getLanguageInto() == Language.OT</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">                || this.propertiesLanguageToTranslate.isEmpty()</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">                || !this.propertiesLanguageToTranslate.containsKey(key.getKey())</span>
             )
-<span class="fc" id="L73">            .forEach(key -&gt; this.propertiesToTranslate.append(</span>
-<span class="fc" id="L74">                String.format(&quot;%n%n%s=%s&quot;, key.getKey(), key.getValue().toString().replace(WorkerTranslateInto.LINE_FEED_ESCAPE,&quot;\\\n&quot;))</span>
+<span class="fc" id="L76">            .forEach(key -&gt; this.propertiesToTranslate.append(</span>
+<span class="fc" id="L77">                String.format(&quot;%n%n%s=%s&quot;, key.getKey(), key.getValue().toString().replace(WorkerTranslateInto.LINE_FEED_ESCAPE,&quot;\\\n&quot;))</span>
             ));
         
-<span class="fc" id="L77">        this.dialogTranslate.setTextBeforeChange(this.propertiesToTranslate.toString().trim());</span>
-<span class="fc" id="L78">        this.dialogTranslate.getButtonSend().setEnabled(true);</span>
-<span class="fc" id="L79">        this.dialogTranslate.getTextToTranslate().setText(this.dialogTranslate.getTextBeforeChange());</span>
-<span class="fc" id="L80">        this.dialogTranslate.getTextToTranslate().setCaretPosition(0);</span>
-<span class="fc" id="L81">        this.dialogTranslate.getTextToTranslate().setEditable(true);</span>
-<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (this.dialogTranslate.getLanguageInto() != Language.OT) {</span>
-<span class="fc" id="L83">            double percentTranslated = 100.0 * this.propertiesLanguageToTranslate.size() / this.propertiesRoot.size();</span>
-<span class="fc" id="L84">            this.dialogTranslate.getProgressBarTranslation().setValue((int) percentTranslated);</span>
+<span class="fc" id="L80">        this.dialogTranslate.setTextBeforeChange(this.propertiesToTranslate.toString().trim());</span>
+<span class="fc" id="L81">        this.dialogTranslate.getButtonSend().setEnabled(true);</span>
+<span class="fc" id="L82">        this.dialogTranslate.getTextToTranslate().setText(this.dialogTranslate.getTextBeforeChange());</span>
+<span class="fc" id="L83">        this.dialogTranslate.getTextToTranslate().setCaretPosition(0);</span>
+<span class="fc" id="L84">        this.dialogTranslate.getTextToTranslate().setEditable(true);</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (this.dialogTranslate.getLanguageInto() != Language.OT) {</span>
+<span class="fc" id="L86">            double percentTranslated = 100.0 * this.propertiesLanguageToTranslate.size() / this.propertiesRoot.size();</span>
+<span class="fc" id="L87">            this.dialogTranslate.getProgressBarTranslation().setValue((int) percentTranslated);</span>
 
-<span class="fc" id="L86">            var bundleInto = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag()));</span>
-<span class="fc" id="L87">            var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());</span>
-<span class="fc" id="L88">            this.dialogTranslate.getProgressBarTranslation().setString(</span>
-<span class="fc" id="L89">                String.format(</span>
+<span class="fc" id="L89">            var bundleInto = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag()));</span>
+<span class="fc" id="L90">            var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());</span>
+<span class="fc" id="L91">            this.dialogTranslate.getProgressBarTranslation().setString(</span>
+<span class="fc" id="L92">                String.format(</span>
                     &quot;%s%% %s %s&quot;,
-<span class="fc" id="L91">                    BigDecimal.valueOf(percentTranslated).setScale(1, RoundingMode.HALF_UP).doubleValue(),</span>
-<span class="fc" id="L92">                    bundleInto.getString(&quot;TRANSLATION_PROGRESS&quot;),</span>
-<span class="fc" id="L93">                    localeInto.getDisplayLanguage(localeInto)</span>
+<span class="fc" id="L94">                    BigDecimal.valueOf(percentTranslated).setScale(1, RoundingMode.HALF_UP).doubleValue(),</span>
+<span class="fc" id="L95">                    bundleInto.getString(&quot;TRANSLATION_PROGRESS&quot;),</span>
+<span class="fc" id="L96">                    localeInto.getDisplayLanguage(localeInto)</span>
                 )
             );
         }
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L100">    }</span>
 
     private void loadFromGithub() throws IOException, URISyntaxException {
-<span class="fc" id="L100">        this.loadRootFromGithub();</span>
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (this.dialogTranslate.getLanguageInto() != Language.OT) {</span>
-<span class="fc" id="L102">            this.loadLanguageFromGithub();</span>
+<span class="fc" id="L103">        this.loadRootFromGithub();</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (this.dialogTranslate.getLanguageInto() != Language.OT) {</span>
+<span class="fc" id="L105">            this.loadLanguageFromGithub();</span>
         }
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L107">    }</span>
 
     private void logFileNotFound(IOException e) throws IOException {
-<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (this.propertiesLanguageToTranslate.isEmpty()) {</span>
-<span class="nc" id="L108">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_I18N_TEXT_NOT_FOUND&quot;), e);</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">        } else if (this.propertiesRoot.isEmpty()) {</span>
-<span class="nc" id="L110">            throw new IOException(&quot;Reference language not found&quot;);</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (this.propertiesLanguageToTranslate.isEmpty()) {</span>
+<span class="nc" id="L111">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;LOG_I18N_TEXT_NOT_FOUND&quot;), e);</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        } else if (this.propertiesRoot.isEmpty()) {</span>
+<span class="nc" id="L113">            throw new IOException(&quot;Reference language not found&quot;);</span>
         }
-<span class="nc" id="L112">    }</span>
+<span class="nc" id="L115">    }</span>
     
     private void loadRootFromGithub() throws IOException, URISyntaxException {
         try {
-<span class="fc" id="L116">            String pageSourceRoot = this.connectionUtil.getSourceLineFeed(</span>
-<span class="fc" id="L117">                this.propertiesUtil.getProperty(&quot;github.webservice.i18n.root&quot;)</span>
+<span class="fc" id="L119">            String pageSourceRoot = this.connectionUtil.getSourceLineFeed(</span>
+<span class="fc" id="L120">                this.propertiesUtil.getProperty(&quot;github.webservice.i18n.root&quot;)</span>
             );
-<span class="fc" id="L119">            String pageSourceRootFixed = Pattern.compile(WorkerTranslateInto.LINE_FEED).matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll(WorkerTranslateInto.LINE_FEED_ESCAPE);</span>
-<span class="fc" id="L120">            this.propertiesRoot.load(new StringReader(pageSourceRootFixed));</span>
-<span class="nc" id="L121">        } catch (IOException e) {</span>
-<span class="nc" id="L122">            var uri = ClassLoader.getSystemResource(&quot;i18n/jsql.properties&quot;).toURI();</span>
-<span class="nc" id="L123">            var path = Paths.get(uri);</span>
-<span class="nc" id="L124">            byte[] root = Files.readAllBytes(path);</span>
-<span class="nc" id="L125">            var rootI18n = new String(root, StandardCharsets.UTF_8);</span>
-<span class="nc" id="L126">            String rootI18nFixed = Pattern.compile(WorkerTranslateInto.LINE_FEED).matcher(Matcher.quoteReplacement(rootI18n)).replaceAll(WorkerTranslateInto.LINE_FEED_ESCAPE);</span>
-<span class="nc" id="L127">            this.propertiesRoot.load(new StringReader(rootI18nFixed));</span>
-<span class="nc" id="L128">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Reference language loaded from local&quot;);</span>
-<span class="nc" id="L129">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="fc" id="L130">        }</span>
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L122">            String pageSourceRootFixed = Pattern.compile(WorkerTranslateInto.LINE_FEED).matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll(WorkerTranslateInto.LINE_FEED_ESCAPE);</span>
+<span class="fc" id="L123">            this.propertiesRoot.load(new StringReader(pageSourceRootFixed));</span>
+<span class="nc" id="L124">        } catch (IOException e) {</span>
+<span class="nc" id="L125">            var uri = ClassLoader.getSystemResource(&quot;i18n/jsql.properties&quot;).toURI();</span>
+<span class="nc" id="L126">            var path = Paths.get(uri);</span>
+<span class="nc" id="L127">            byte[] root = Files.readAllBytes(path);</span>
+<span class="nc" id="L128">            var rootI18n = new String(root, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L129">            String rootI18nFixed = Pattern.compile(WorkerTranslateInto.LINE_FEED).matcher(Matcher.quoteReplacement(rootI18n)).replaceAll(WorkerTranslateInto.LINE_FEED_ESCAPE);</span>
+<span class="nc" id="L130">            this.propertiesRoot.load(new StringReader(rootI18nFixed));</span>
+<span class="nc" id="L131">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Reference language loaded from local&quot;);</span>
+<span class="nc" id="L132">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="fc" id="L133">        }</span>
+<span class="fc" id="L134">    }</span>
     
     private void loadLanguageFromGithub() throws IOException, URISyntaxException {
         try {
-<span class="fc" id="L135">            String pageSourceLanguage = this.connectionUtil.getSourceLineFeed(</span>
-<span class="fc" id="L136">                String.format(</span>
+<span class="fc" id="L138">            String pageSourceLanguage = this.connectionUtil.getSourceLineFeed(</span>
+<span class="fc" id="L139">                String.format(</span>
                     &quot;%sjsql_%s.properties&quot;,
-<span class="fc" id="L138">                    this.propertiesUtil.getProperty(&quot;github.webservice.i18n.locale&quot;),</span>
-<span class="fc" id="L139">                    this.dialogTranslate.getLanguageInto().getLanguageTag()</span>
+<span class="fc" id="L141">                    this.propertiesUtil.getProperty(&quot;github.webservice.i18n.locale&quot;),</span>
+<span class="fc" id="L142">                    this.dialogTranslate.getLanguageInto().getLanguageTag().replace(&quot;-&quot;, &quot;_&quot;)  // for regional languages</span>
                 )
             );
-<span class="fc" id="L142">            this.propertiesLanguageToTranslate.load(new StringReader(pageSourceLanguage));</span>
-<span class="nc" id="L143">        } catch (IOException e) {</span>
-<span class="nc" id="L144">            var uri = ClassLoader.getSystemResource(</span>
-<span class="nc" id="L145">                String.format(&quot;i18n/jsql_%s.properties&quot;, this.dialogTranslate.getLanguageInto().getLanguageTag())</span>
-<span class="nc" id="L146">            ).toURI();</span>
+<span class="fc" id="L145">            this.propertiesLanguageToTranslate.load(new StringReader(pageSourceLanguage));</span>
+<span class="nc" id="L146">        } catch (IOException e) {</span>
+<span class="nc" id="L147">            var uri = ClassLoader.getSystemResource(</span>
+<span class="nc" id="L148">                String.format(</span>
+                    &quot;i18n/jsql_%s.properties&quot;,
+<span class="nc" id="L150">                    this.dialogTranslate.getLanguageInto().getLanguageTag().replace(&quot;-&quot;, &quot;_&quot;)  // for regional languages</span>
+                )
+<span class="nc" id="L152">            ).toURI();</span>
             
-<span class="nc" id="L148">            var path = Paths.get(uri);</span>
-<span class="nc" id="L149">            byte[] root = Files.readAllBytes(path);</span>
-<span class="nc" id="L150">            var localeI18n = new String(root, StandardCharsets.UTF_8);</span>
-<span class="nc" id="L151">            String localeI18nFixed = Pattern.compile(WorkerTranslateInto.LINE_FEED).matcher(localeI18n).replaceAll(WorkerTranslateInto.LINE_FEED_ESCAPE);</span>
+<span class="nc" id="L154">            var path = Paths.get(uri);</span>
+<span class="nc" id="L155">            byte[] root = Files.readAllBytes(path);</span>
+<span class="nc" id="L156">            var localeI18n = new String(root, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L157">            String localeI18nFixed = Pattern.compile(WorkerTranslateInto.LINE_FEED).matcher(localeI18n).replaceAll(WorkerTranslateInto.LINE_FEED_ESCAPE);</span>
             
-<span class="nc" id="L153">            this.propertiesLanguageToTranslate.load(new StringReader(localeI18nFixed));</span>
-<span class="nc" id="L154">            LOGGER.log(</span>
+<span class="nc" id="L159">            this.propertiesLanguageToTranslate.load(new StringReader(localeI18nFixed));</span>
+<span class="nc" id="L160">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
-<span class="nc" id="L156">                String.format(&quot;GitHub failure, %s translation loaded from local&quot;, this.dialogTranslate.getLanguageInto())</span>
+<span class="nc" id="L162">                String.format(&quot;GitHub failure, %s translation loaded from local&quot;, this.dialogTranslate.getLanguageInto())</span>
             );
-<span class="nc" id="L158">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="fc" id="L159">        }</span>
-<span class="fc" id="L160">    }</span>
+<span class="nc" id="L164">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="fc" id="L165">        }</span>
+<span class="fc" id="L166">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

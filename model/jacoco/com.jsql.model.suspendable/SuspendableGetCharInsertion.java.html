@@ -177,46 +177,46 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 <span class="fc" id="L177">        return charactersInsertionForOrderBy;</span>
     }
 
-    private void submitCallables(CompletionService&lt;CallablePageSource&gt; completionService, List&lt;String&gt; charactersInsertionForOrderBy) {
-<span class="fc bfc" id="L181" title="All 2 branches covered.">        for (String characterInsertion: charactersInsertionForOrderBy) {</span>
-<span class="fc" id="L182">            completionService.submit(</span>
-                new CallablePageSource(
-<span class="fc" id="L184">                    characterInsertion.replace(</span>
-                        InjectionModel.STAR,
-                        StringUtils.SPACE  // covered by cleaning
-<span class="fc" id="L187">                        + this.injectionModel.getMediatorEngine().getEngine().instance().sqlOrderBy()</span>
-                    ),
-                    characterInsertion,
-                    this.injectionModel,
-                    &quot;prefix#orderby&quot;
-                )
-            );
-<span class="fc" id="L194">        }</span>
-<span class="fc" id="L195">    }</span>
-
     private List&lt;String&gt; findWorkingPrefix(
         List&lt;String&gt; prefixValues,
         List&lt;String&gt; prefixQuotes,
         List&lt;String&gt; prefixParentheses,
         String[] characterInsertionFoundOrByUser
     ) throws JSqlException {
-<span class="fc" id="L203">        List&lt;String&gt; charactersInsertionForOrderBy = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L204" title="All 2 branches covered.">        for (String value: prefixValues) {</span>
-<span class="fc bfc" id="L205" title="All 2 branches covered.">            for (String quote: prefixQuotes) {</span>
-<span class="fc bfc" id="L206" title="All 2 branches covered.">                for (String parenthesis: prefixParentheses) {</span>
-<span class="fc" id="L207">                    String prefix = this.buildPrefix(value, quote, parenthesis);</span>
-<span class="fc bfc" id="L208" title="All 2 branches covered.">                    if (this.checkInsertionChar(</span>
+<span class="fc" id="L186">        List&lt;String&gt; charactersInsertionForOrderBy = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">        for (String value: prefixValues) {</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">            for (String quote: prefixQuotes) {</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">                for (String parenthesis: prefixParentheses) {</span>
+<span class="fc" id="L190">                    String prefix = this.buildPrefix(value, quote, parenthesis);</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">                    if (this.checkInsertionChar(</span>
                         characterInsertionFoundOrByUser,
                         charactersInsertionForOrderBy,
                         prefix
                     )) {
-<span class="fc" id="L213">                        return charactersInsertionForOrderBy;</span>
+<span class="fc" id="L196">                        return charactersInsertionForOrderBy;</span>
                     }
-<span class="fc" id="L215">                }</span>
-<span class="fc" id="L216">            }</span>
-<span class="fc" id="L217">        }</span>
-<span class="fc" id="L218">        return charactersInsertionForOrderBy;</span>
+<span class="fc" id="L198">                }</span>
+<span class="fc" id="L199">            }</span>
+<span class="fc" id="L200">        }</span>
+<span class="fc" id="L201">        return charactersInsertionForOrderBy;</span>
     }
+
+    private void submitCallables(CompletionService&lt;CallablePageSource&gt; completionService, List&lt;String&gt; charactersInsertionForOrderBy) {
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        for (String characterInsertion: charactersInsertionForOrderBy) {</span>
+<span class="fc" id="L206">            completionService.submit(</span>
+                new CallablePageSource(
+<span class="fc" id="L208">                    characterInsertion.replace(</span>
+                        InjectionModel.STAR,
+                        StringUtils.SPACE  // covered by cleaning
+<span class="fc" id="L211">                        + this.injectionModel.getMediatorEngine().getEngine().instance().sqlOrderBy()</span>
+                    ),
+                    characterInsertion,
+                    this.injectionModel,
+                    &quot;prefix#orderby&quot;
+                )
+            );
+<span class="fc" id="L218">        }</span>
+<span class="fc" id="L219">    }</span>
 
     private String buildPrefix(String value, String quote, String parenthesis) {
 <span class="fc" id="L222">        var prefixValueAndQuote = value + quote;</span>

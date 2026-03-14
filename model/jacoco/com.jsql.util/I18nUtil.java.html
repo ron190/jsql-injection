@@ -48,30 +48,28 @@ public class I18nUtil {
      * If not then it invites the user to use the translation process.
      */
     public static void checkCurrentLanguage() {
-<span class="nc" id="L51">        URL path = I18nUtil.class.getClassLoader().getResource(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
-<span class="nc bnc" id="L52" title="All 4 branches missed.">        if (!&quot;en&quot;.equals(Locale.getDefault().getLanguage()) &amp;&amp; path == null) {</span>
-<span class="nc" id="L53">            String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);</span>
-<span class="nc" id="L54">            LOGGER.log(</span>
+        // fall working as uppercase regional matches lowercase bundle (eg. es_AN)
+<span class="nc" id="L52">        URL path = I18nUtil.class.getClassLoader().getResource(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
+<span class="nc bnc" id="L53" title="All 4 branches missed.">        if (!&quot;en&quot;.equals(Locale.getDefault().getLanguage()) &amp;&amp; path == null) {</span>
+<span class="nc" id="L54">            String languageHost = Locale.getDefault().getDisplayLanguage();</span>
+<span class="nc" id="L55">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
-<span class="nc" id="L56">                () -&gt; String.join(</span>
-                    StringUtils.EMPTY,
-                    &quot;Contribute and translate parts of &quot;, StringUtil.APP_NAME, &quot; into &quot;, languageHost, &quot;: &quot;,
-                    &quot;click on the top right button and open menu [Community], choose [I help translate jSQL into &gt; another language...] and &quot;,
-                    &quot;translate some text into &quot;, languageHost, &quot; then click on [Send]. Your translation will be integrated to the next release by the developer.&quot;
-                )
+<span class="nc" id="L57">                () -&gt; &quot;Contribute and translate parts of &quot;+ StringUtil.APP_NAME +&quot; into &quot;+ languageHost +&quot;: &quot;</span>
+                + &quot;click on the top right button and open menu [Community], choose [I help translate jSQL into &gt; another language...] and &quot;
+                + &quot;translate some text into &quot;+ languageHost +&quot; then click on [Send]. Your translation will be integrated to the next release&quot;
             );
         }
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L62">    }</span>
     
     
     // Getters and setters
     
     public static void setCurrentBundle(Locale newLocale) {
-<span class="nc" id="L70">        I18nUtil.currentBundle = ResourceBundle.getBundle(I18nUtil.BASE_NAME, newLocale);</span>
-<span class="nc" id="L71">    }</span>
+<span class="nc" id="L68">        I18nUtil.currentBundle = ResourceBundle.getBundle(I18nUtil.BASE_NAME, newLocale);</span>
+<span class="nc" id="L69">    }</span>
     
     public static Locale getCurrentLocale() {
-<span class="nc" id="L74">        return I18nUtil.currentBundle.getLocale();</span>
+<span class="nc" id="L72">        return I18nUtil.currentBundle.getLocale();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
