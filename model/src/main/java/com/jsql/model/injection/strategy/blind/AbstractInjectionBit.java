@@ -81,7 +81,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
 
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
-        while (countTasksSubmitted.get() > 0) {
+        while (countTasksSubmitted.get() > 0) {  // ending either when no more task or force break
             if (suspendable.isSuspended()) {
                 String result = this.stop(bytes, taskExecutor);
                 throw new StoppedByUserSlidingException(result);
@@ -100,8 +100,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
 
                 String result = AbstractInjectionBit.convert(bytes);
                 if (result.matches("(?s).*"+ DataAccess.TRAIL_RGX +".*")) {
-                    countTasksSubmitted.set(0);
-                    break;
+                    countTasksSubmitted.set(0);  // force break
                 }
             } catch (InterruptedException e) {
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -110,7 +109,7 @@ public abstract class AbstractInjectionBit<T extends AbstractCallableBit<T>> {
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             } catch (InjectionFailureException e) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
-                break;
+                countTasksSubmitted.set(0);  // force break
             }
         }
         return this.stop(bytes, taskExecutor);

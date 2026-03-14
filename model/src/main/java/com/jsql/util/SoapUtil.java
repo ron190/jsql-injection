@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -77,18 +78,7 @@ public class SoapUtil {
     }
 
     public boolean isTextNodeInjectable(Document originDocument, Node node) {
-        var nodeList = node.getChildNodes();
-        if (nodeList.getLength() == 0) {  // force node check when empty
-            try {
-                var documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                var document = documentBuilderFactory.newDocumentBuilder().newDocument();
-                Text textNode = document.createTextNode(StringUtils.EMPTY);
-                Node nodeWithText = originDocument.importNode(textNode, true);
-                node.appendChild(nodeWithText);
-            } catch (ParserConfigurationException e) {
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            }
-        }
+        var nodeList = SoapUtil.getNodeList(originDocument, node);
         for (var i = 0 ; i < nodeList.getLength() ; i++) {
             var currentNode = nodeList.item(i);
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -126,6 +116,22 @@ public class SoapUtil {
             }
         }
         return false;
+    }
+
+    private static NodeList getNodeList(Document originDocument, Node node) {
+        var nodeList = node.getChildNodes();
+        if (nodeList.getLength() == 0) {  // force node check when empty
+            try {
+                var documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                var document = documentBuilderFactory.newDocumentBuilder().newDocument();
+                Text textNode = document.createTextNode(StringUtils.EMPTY);
+                Node nodeWithText = originDocument.importNode(textNode, true);
+                node.appendChild(nodeWithText);
+            } catch (ParserConfigurationException e) {
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            }
+        }
+        return nodeList;
     }
 
     public static void removeInjectionPoint(Document doc, Node node) {
