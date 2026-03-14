@@ -4,6 +4,7 @@ import com.jsql.model.exception.JSqlRuntimeException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Strings;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +42,7 @@ public class PropertiesUtil {
         if (!Arrays.asList(StringUtils.EMPTY, "en").contains(newLocale.getLanguage())) {
             AtomicInteger countGui = new AtomicInteger();
             var bundleRoot = PropertiesUtil.getProperties("/i18n/jsql.properties");
+            // fall working as uppercase regional matches lowercase bundle (eg. es_AN)
             var bundleUser = PropertiesUtil.getProperties("/i18n/jsql_" + newLocale.getLanguage() + ".properties");
             bundleRoot.entrySet().stream().filter(
                 key -> bundleUser.isEmpty() || !bundleUser.containsKey(key.getKey())
@@ -50,8 +52,9 @@ public class PropertiesUtil {
             if (countGui.get() > 0) {
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_SUCCESS,
-                    "Switched to {} with {}% translated, contribute and translate any of remaining {} items in menu Community",
+                    "Switched to {}{} with {}% translated, contribute and translate any of remaining {} items in menu Community",
                     () -> newLocale.getDisplayLanguage(newLocale),
+                    () -> Strings.isBlank(newLocale.getCountry()) ? StringUtils.EMPTY : " ("+ newLocale.getCountry() +")",  // should be nameEnglish from Language
                     () -> BigDecimal.valueOf(
                         100.0 - countGui.get() * 100.0 / bundleRoot.size()
                     ).setScale(1, RoundingMode.HALF_UP).doubleValue(),

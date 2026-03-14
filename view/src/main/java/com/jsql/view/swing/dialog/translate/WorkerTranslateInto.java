@@ -6,8 +6,10 @@ import com.jsql.util.LogLevelUtil;
 import com.jsql.util.PropertiesUtil;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Strings;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -57,8 +59,9 @@ public class WorkerTranslateInto extends SwingWorker<Object, Object> {
         var localeInto = Locale.forLanguageTag(this.dialogTranslate.getLanguageInto().getLanguageTag());
         LOGGER.log(
             LogLevelUtil.CONSOLE_SUCCESS,
-            "Remaining text to translate into {} loaded, send any part translated to contribute",
-            () -> localeInto.getDisplayLanguage(localeInto)
+            "Remaining text to translate into {}{} loaded, send any part translated to contribute",
+            () -> localeInto.getDisplayLanguage(localeInto),
+            () -> Strings.isBlank(localeInto.getCountry()) ? StringUtils.EMPTY : " ("+ localeInto.getCountry() +")"
         );
         return null;
     }
@@ -136,13 +139,16 @@ public class WorkerTranslateInto extends SwingWorker<Object, Object> {
                 String.format(
                     "%sjsql_%s.properties",
                     this.propertiesUtil.getProperty("github.webservice.i18n.locale"),
-                    this.dialogTranslate.getLanguageInto().getLanguageTag()
+                    this.dialogTranslate.getLanguageInto().getLanguageTag().replace("-", "_")  // for regional languages
                 )
             );
             this.propertiesLanguageToTranslate.load(new StringReader(pageSourceLanguage));
         } catch (IOException e) {
             var uri = ClassLoader.getSystemResource(
-                String.format("i18n/jsql_%s.properties", this.dialogTranslate.getLanguageInto().getLanguageTag())
+                String.format(
+                    "i18n/jsql_%s.properties",
+                    this.dialogTranslate.getLanguageInto().getLanguageTag().replace("-", "_")  // for regional languages
+                )
             ).toURI();
             
             var path = Paths.get(uri);

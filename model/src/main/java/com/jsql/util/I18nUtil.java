@@ -48,17 +48,15 @@ public class I18nUtil {
      * If not then it invites the user to use the translation process.
      */
     public static void checkCurrentLanguage() {
+        // fall working as uppercase regional matches lowercase bundle (eg. es_AN)
         URL path = I18nUtil.class.getClassLoader().getResource("i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
         if (!"en".equals(Locale.getDefault().getLanguage()) && path == null) {
-            String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
+            String languageHost = Locale.getDefault().getDisplayLanguage();
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
-                () -> String.join(
-                    StringUtils.EMPTY,
-                    "Contribute and translate parts of ", StringUtil.APP_NAME, " into ", languageHost, ": ",
-                    "click on the top right button and open menu [Community], choose [I help translate jSQL into > another language...] and ",
-                    "translate some text into ", languageHost, " then click on [Send]. Your translation will be integrated to the next release by the developer."
-                )
+                () -> "Contribute and translate parts of "+ StringUtil.APP_NAME +" into "+ languageHost +": "
+                + "click on the top right button and open menu [Community], choose [I help translate jSQL into > another language...] and "
+                + "translate some text into "+ languageHost +" then click on [Send]. Your translation will be integrated to the next release"
             );
         }
     }

@@ -177,23 +177,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         return charactersInsertionForOrderBy;
     }
 
-    private void submitCallables(CompletionService<CallablePageSource> completionService, List<String> charactersInsertionForOrderBy) {
-        for (String characterInsertion: charactersInsertionForOrderBy) {
-            completionService.submit(
-                new CallablePageSource(
-                    characterInsertion.replace(
-                        InjectionModel.STAR,
-                        StringUtils.SPACE  // covered by cleaning
-                        + this.injectionModel.getMediatorEngine().getEngine().instance().sqlOrderBy()
-                    ),
-                    characterInsertion,
-                    this.injectionModel,
-                    "prefix#orderby"
-                )
-            );
-        }
-    }
-
     private List<String> findWorkingPrefix(
         List<String> prefixValues,
         List<String> prefixQuotes,
@@ -216,6 +199,23 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             }
         }
         return charactersInsertionForOrderBy;
+    }
+
+    private void submitCallables(CompletionService<CallablePageSource> completionService, List<String> charactersInsertionForOrderBy) {
+        for (String characterInsertion: charactersInsertionForOrderBy) {
+            completionService.submit(
+                new CallablePageSource(
+                    characterInsertion.replace(
+                        InjectionModel.STAR,
+                        StringUtils.SPACE  // covered by cleaning
+                        + this.injectionModel.getMediatorEngine().getEngine().instance().sqlOrderBy()
+                    ),
+                    characterInsertion,
+                    this.injectionModel,
+                    "prefix#orderby"
+                )
+            );
+        }
     }
 
     private String buildPrefix(String value, String quote, String parenthesis) {

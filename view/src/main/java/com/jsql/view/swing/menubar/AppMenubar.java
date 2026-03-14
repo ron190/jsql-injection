@@ -65,12 +65,12 @@ public class AppMenubar extends JMenuBar {
 
     protected static final List<ModelItemTranslate> ITEMS_TRANSLATE = Stream.of(
         Language.EN, Language.FR, Language.ES, Language.IT, Language.AR, Language.ZH, Language.RU, Language.TR, Language.KO,
-        Language.SE, Language.FI, Language.CS, Language.PT, Language.PL, Language.ID, Language.NL, Language.RO, Language.DE
+        Language.SE, Language.FI, Language.CS, Language.PT, Language.PL, Language.ID, Language.NL, Language.RO, Language.AN, Language.DE
     ).map(ModelItemTranslate::new).toList();
 
     private static final List<ModelItemTranslate> ITEMS_TRANSLATE_INTO = Stream.of(
         Language.FR, Language.ES, Language.SE, Language.FI, Language.TR, Language.CS, Language.RO, Language.IT, Language.PT, Language.AR,
-        Language.PL, Language.RU, Language.ZH, Language.DE, Language.ID, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA
+        Language.PL, Language.RU, Language.ZH, Language.ID, Language.JA, Language.KO, Language.HI, Language.NL, Language.TA, Language.AN, Language.DE
     ).map(ModelItemTranslate::new).toList();
 
     /**
@@ -383,11 +383,13 @@ public class AppMenubar extends JMenuBar {
             var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
             MediatorHelper.frame().applyComponentOrientation(componentOrientation);
 
-            List.of(splitReverseEW, splitReverseNetwork, splitReverseNS).forEach(splitReverse -> {
-                splitReverse.split.setLeftComponent(splitReverse.right);
-                splitReverse.split.setRightComponent(splitReverse.left);
-                splitReverse.split.setDividerLocation(splitReverse.location);
-            });
+            SwingUtilities.invokeLater(() ->  // invokeLater required to prevent wrong NS divider location when switching asiatic to arabic
+                List.of(splitReverseEW, splitReverseNetwork, splitReverseNS).forEach(splitReverse -> {
+                    splitReverse.split.setLeftComponent(splitReverse.right);
+                    splitReverse.split.setRightComponent(splitReverse.left);
+                    splitReverse.split.setDividerLocation(splitReverse.location);
+                })
+            );
         } else {
             var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getCurrentLocale());
             MediatorHelper.frame().applyComponentOrientation(componentOrientation);

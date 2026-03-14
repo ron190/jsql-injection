@@ -2,6 +2,7 @@ package com.jsql.view.swing.dialog.translate;
 
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.logging.log4j.util.Strings;
 
 import javax.swing.*;
 import java.util.Locale;
@@ -21,6 +22,7 @@ public enum Language {
     ID("Indonesian", "id", UiUtil.ICON_FLAG_ID),
     IT("Italian", "it", UiUtil.ICON_FLAG_IT),
     ES("Spanish", "es", UiUtil.ICON_FLAG_ES),
+    AN("Andalusian", "es-an", UiUtil.ICON_FLAG_ES),
     PT("Portuguese", "pt", UiUtil.ICON_FLAG_PT),
     PL("Polish", "pl", UiUtil.ICON_FLAG_PL),
     KO("Korean", "ko", UiUtil.ICON_FLAG_KO, true),
@@ -55,6 +57,9 @@ public enum Language {
 
     public String getMenuItemLabel() {
         var label = Locale.forLanguageTag(this.languageTag).getDisplayLanguage(Locale.forLanguageTag(this.languageTag));
+        if (Strings.isNotBlank(Locale.forLanguageTag(this.languageTag).getCountry())) {
+            label += " ("+ this.nameEnglish +")";
+        }
         return this.isNonLatin ? I18nViewUtil.formatNonLatin(label) : label;
     }
 

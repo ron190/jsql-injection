@@ -1,17 +1,20 @@
 {
     "version": "0.114",
     "news": [
-        "[Community] First coding contribution in dozen years, thanks @juliusMansus. Project is now officially a multi members corporation",
-        "[Contribute?] Open your PR : many mysql and postgres clones to cover, or testing on docker using python and .NET endpoints, or any other topic",
-        "[DNS strategy] You're a security expert ? GUI, not CLI, then no. Though give a try to the new DNS strategy, you can test it locally without any domain",
-        "[RCE shell] How to trigger RCE or reverse shell with only one click ? For details go to https://github.com/ron190/jsql-injection/wiki/Exploit",
+        "[Iceberg levels] You are at level 0. At best. Can you progress to deeper levels ?",
+        "[Level 0] SQL injection strategies: Time, Blind bin, Blind bit, Multibit, Error, Union (https://github.com/ron190/jsql-injection/wiki/Strategy)",
+        "[Level 1] Remote Code Execution via User Defined Function or Web shell (https://github.com/ron190/jsql-injection/wiki/Exploit)",
+        "[Level 2] Strategy: Dns (https://github.com/ron190/jsql-injection/wiki/Strategy#7-dns--and-callselectbobcom)",
+        "[Level 3] Reverse shell (https://github.com/ron190/jsql-injection/wiki/Reverse-shell)",
+        "[Level ?] Deep... lost... Buffer overflow ? alone... so cold...",
+        "[Contribute?] Create your pull request : many mysql and postgres clones to cover, testing on docker using python and .NET endpoints, or any other topic",
         "[Pinned] Report any bugs and thoughts, add your star at https://github.com/ron190/jsql-injection",
         "",
-        "░   ░░░  ░░        ░░░      ░░░       ░░░░      ░░░       ░░░  ░░░░  ░░░      ░░░░      ░░░        ░░░      ░░░        ░",
-        "▒    ▒▒  ▒▒  ▒▒▒▒▒▒▒▒  ▒▒▒▒  ▒▒  ▒▒▒▒  ▒▒  ▒▒▒▒  ▒▒  ▒▒▒▒  ▒▒  ▒▒▒▒  ▒▒  ▒▒▒▒  ▒▒  ▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒",
-        "▓  ▓  ▓  ▓▓      ▓▓▓▓  ▓▓▓▓▓▓▓▓       ▓▓▓  ▓▓▓▓  ▓▓       ▓▓▓        ▓▓  ▓▓▓▓  ▓▓  ▓▓▓   ▓▓▓▓▓  ▓▓▓▓▓▓      ▓▓▓▓▓▓  ▓▓▓▓",
-        "█  ██    ██  ████████  ████  ██  ███  ███  ████  ██  ████████  ████  ██        ██  ████  █████  ███████████  █████  ████",
-        "█  ███   ██        ███      ███  ████  ███      ███  ████████  ████  ██  ████  ███      ███        ███      ██████  ████",
-        "[Subtle music starts flowing to your ears, light and soft arrangements from classical composers rolling. Calm, at peace. Also free ad. No, you can't put car ads here]"
+        "░   ░░░  ░        ░░      ░░       ░░░      ░░       ░░  ░░░░  ░░      ░░░      ░░        ░░      ░░        ░",
+        "▒    ▒▒  ▒  ▒▒▒▒▒▒▒  ▒▒▒▒  ▒  ▒▒▒▒  ▒  ▒▒▒▒  ▒  ▒▒▒▒  ▒  ▒▒▒▒  ▒  ▒▒▒▒  ▒  ▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒",
+        "▓  ▓  ▓  ▓      ▓▓▓  ▓▓▓▓▓▓▓       ▓▓  ▓▓▓▓  ▓       ▓▓        ▓  ▓▓▓▓  ▓  ▓▓▓   ▓▓▓▓  ▓▓▓▓▓      ▓▓▓▓▓  ▓▓▓▓",
+        "█  ██    █  ███████  ████  █  ███  ██  ████  █  ███████  ████  █        █  ████  ████  ██████████  ████  ████",
+        "█  ███   █        ██      ██  ████  ██      ██  ███████  ████  █  ████  ██      ██        ██      █████  ████",
+        "[Subtle music starts flowing and rolling to your ears, light and soft classical arrangements. Also free ad. No, you can't put car ads here]"
     ]
 }
