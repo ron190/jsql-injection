@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,1,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Diff,51,62,11,7,10,19,10,8,3,6
-model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,683,2098,137,285,153,458,88,146,1,20
+model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,665,2116,134,288,149,462,87,147,1,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
 model,com.jsql.model.injection.engine,MediatorEngine.new Engine() {...},0,82,2,6,0,17,2,4,0,2
 model,com.jsql.model.injection.engine,MediatorEngine,36,1021,0,12,12,100,12,38,12,32
@@ -17,7 +17,7 @@ model,com.jsql.model.accessible.engine,ExploitSqlserver,31,23,0,0,3,6,1,1,1,1
 model,com.jsql.model.accessible.engine,ExploitSqlite,193,197,5,1,35,34,6,6,3,6
 model,com.jsql.model.accessible.engine,ExploitDerby,132,185,3,1,26,30,4,5,2,5
 model,com.jsql.model.accessible.engine,ExploitOracle,195,26,4,0,27,7,4,2,2,2
-model,com.jsql.model.accessible.engine,ExploitPostgres,478,1300,38,44,86,215,31,32,2,20
+model,com.jsql.model.accessible.engine,ExploitPostgres,499,1279,39,43,90,211,32,31,2,20
 model,com.jsql.model.accessible.engine,ExploitH2,159,255,4,2,30,44,5,7,2,7
 model,com.jsql.model.accessible.engine,ExploitHsqldb,132,191,3,1,26,30,4,5,2,5
 model,com.jsql.model.accessible.engine,ExploitMysql,409,880,48,50,80,159,44,32,5,22
@@ -93,7 +93,7 @@ model,com.jsql.model.accessible.engine.postgres,Read,3,32,0,0,1,12,1,6,1,6
 model,com.jsql.model.accessible.engine.postgres,Program,0,23,0,0,0,9,0,5,0,5
 model,com.jsql.model.accessible.engine.postgres,Archive,0,73,0,0,0,29,0,15,0,15
 model,com.jsql.util.reverse,ModelReverse,14,9,0,0,6,4,4,1,4,1
-model,com.jsql.model.accessible,ResourceAccess,306,1107,31,61,71,233,35,47,8,28
+model,com.jsql.model.accessible,ResourceAccess,309,1104,31,61,73,231,35,47,8,28
 model,com.jsql.model.accessible,CallableHttpHead,62,112,2,2,12,32,3,6,1,6
 model,com.jsql.model.accessible,ExploitMode,18,46,0,0,5,9,4,2,4,2
 model,com.jsql.model.accessible,DataAccess,254,467,10,18,59,98,13,16,6,9
