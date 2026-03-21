@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>I18nUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util</a> &gt; <span class="el_source">I18nUtil.java</span></div><h1>I18nUtil.java</h1><pre class="source lang-java linenums">package com.jsql.util;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,18 +16,18 @@ import java.util.ResourceBundle;
  */
 public class I18nUtil {
     
-<span class="fc" id="L20">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L19">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     public static final String BASE_NAME = &quot;i18n.jsql&quot;;
 
     /**
      * Bundle of standard i18n keys and translated text for root language English
      */
-<span class="fc" id="L26">    public static final ResourceBundle BUNDLE_ROOT = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.ROOT);</span>
+<span class="fc" id="L25">    public static final ResourceBundle BUNDLE_ROOT = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.ROOT);</span>
     
     /**
      * Bundle of i18n keys and translated text for the current system language
      */
-<span class="fc" id="L31">    private static ResourceBundle currentBundle = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.getDefault());</span>
+<span class="fc" id="L30">    private static ResourceBundle currentBundle = ResourceBundle.getBundle(I18nUtil.BASE_NAME, Locale.getDefault());</span>
 
     private I18nUtil() {
         // Utility class
@@ -40,7 +39,7 @@ public class I18nUtil {
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-<span class="fc" id="L43">        return I18nUtil.currentBundle.getString(key.replace(&quot; &quot;, &quot;_&quot;));  // e.g BLIND BINARY</span>
+<span class="fc" id="L42">        return I18nUtil.currentBundle.getString(key.replace(&quot; &quot;, &quot;_&quot;));  // e.g BLIND BINARY</span>
     }
     
     /**
@@ -49,27 +48,27 @@ public class I18nUtil {
      */
     public static void checkCurrentLanguage() {
         // fall working as uppercase regional matches lowercase bundle (eg. es_AN)
-<span class="nc" id="L52">        URL path = I18nUtil.class.getClassLoader().getResource(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
-<span class="nc bnc" id="L53" title="All 4 branches missed.">        if (!&quot;en&quot;.equals(Locale.getDefault().getLanguage()) &amp;&amp; path == null) {</span>
-<span class="nc" id="L54">            String languageHost = Locale.getDefault().getDisplayLanguage();</span>
-<span class="nc" id="L55">            LOGGER.log(</span>
+<span class="nc" id="L51">        URL path = I18nUtil.class.getClassLoader().getResource(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
+<span class="nc bnc" id="L52" title="All 4 branches missed.">        if (!&quot;en&quot;.equals(Locale.getDefault().getLanguage()) &amp;&amp; path == null) {</span>
+<span class="nc" id="L53">            String languageHost = Locale.getDefault().getDisplayLanguage();</span>
+<span class="nc" id="L54">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
-<span class="nc" id="L57">                () -&gt; &quot;Contribute and translate parts of &quot;+ StringUtil.APP_NAME +&quot; into &quot;+ languageHost +&quot;: &quot;</span>
+<span class="nc" id="L56">                () -&gt; &quot;Contribute and translate parts of &quot;+ StringUtil.APP_NAME +&quot; into &quot;+ languageHost +&quot;: &quot;</span>
                 + &quot;click on the top right button and open menu [Community], choose [I help translate jSQL into &gt; another language...] and &quot;
                 + &quot;translate some text into &quot;+ languageHost +&quot; then click on [Send]. Your translation will be integrated to the next release&quot;
             );
         }
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L61">    }</span>
     
     
     // Getters and setters
     
     public static void setCurrentBundle(Locale newLocale) {
-<span class="nc" id="L68">        I18nUtil.currentBundle = ResourceBundle.getBundle(I18nUtil.BASE_NAME, newLocale);</span>
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L67">        I18nUtil.currentBundle = ResourceBundle.getBundle(I18nUtil.BASE_NAME, newLocale);</span>
+<span class="nc" id="L68">    }</span>
     
     public static Locale getCurrentLocale() {
-<span class="nc" id="L72">        return I18nUtil.currentBundle.getLocale();</span>
+<span class="nc" id="L71">        return I18nUtil.currentBundle.getLocale();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -9,7 +9,7 @@ view,com.jsql.view.swing.util,UiStringUtil,10,17,4,2,2,6,3,3,0,3
 view,com.jsql.view.swing.util,RadioItemNonClosing,0,45,1,5,0,16,1,8,0,6
 view,com.jsql.view.swing.util,JSplitPaneWithZeroSizeDivider,0,57,0,2,0,18,0,4,0,3
 view,com.jsql.view.swing.util,I18nViewUtil,14,192,6,18,2,30,6,19,0,9
-view,com.jsql.view.swing.util,UiUtil,40,820,1,11,14,138,1,15,0,10
+view,com.jsql.view.swing.util,UiUtil,40,814,1,11,14,137,1,15,0,10
 view,com.jsql.view.swing.dialog.translate,Language,3,302,0,4,1,43,1,11,1,9
 view,com.jsql.view.swing.dialog.translate,SortedProperties,28,32,2,2,7,7,3,3,2,2
 view,com.jsql.view.swing.dialog.translate,WorkerTranslateInto,132,305,10,8,29,58,10,12,2,11
@@ -41,7 +41,7 @@ view,com.jsql.view.swing.menubar,MenuWindows.new AbstractAction() {...},6,9,0,0,
 view,com.jsql.view.swing.menubar,MenuWindows.new JCheckBoxMenuItem() {...},8,9,2,0,3,1,2,1,1,1
 view,com.jsql.view.swing.menubar,ActionTranslate,0,15,0,0,0,6,0,2,0,2
 view,com.jsql.view.swing.menubar,AppMenubar.new MouseAdapter() {...},8,6,0,0,3,1,1,1,1,1
-view,com.jsql.view.swing.menubar,AppMenubar,86,1152,14,22,15,204,14,34,4,26
+view,com.jsql.view.swing.menubar,AppMenubar,86,1148,14,22,15,204,14,34,4,26
 view,com.jsql.view.swing.menubar,ModelItemTranslate,0,16,0,0,0,7,0,4,0,4
 view,com.jsql.view.swing.menubar,AppMenubar.new Record() {...},0,15,0,0,0,1,0,1,0,1
 view,com.jsql.view.swing.menubar,ActionCheckUpdate,13,3,0,0,4,1,2,1,2,1

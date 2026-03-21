@@ -5,6 +5,7 @@ com.test.engine.clickhouse
 com.test.engine.cubrid
 com.test.engine.db2
 com.test.engine.derby
+com.test.engine.duckdb
 com.test.engine.exasol
 com.test.engine.firebird
 com.test.engine.h2
