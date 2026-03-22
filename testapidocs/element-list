@@ -13,6 +13,7 @@ com.test.engine.h2
 com.test.engine.hana
 com.test.engine.hsqldb
 com.test.engine.informix
+com.test.engine.mariadb
 com.test.engine.mckoi
 com.test.engine.mimer
 com.test.engine.monetdb

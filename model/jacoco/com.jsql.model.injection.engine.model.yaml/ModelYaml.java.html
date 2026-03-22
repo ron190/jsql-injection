@@ -8,31 +8,40 @@ import java.io.Serializable;
 <span class="fc" id="L8">public class ModelYaml implements Serializable {</span>
 
 <span class="fc" id="L10">    private String engine = StringUtils.EMPTY;</span>
-<span class="fc" id="L11">    private Resource resource = new Resource();</span>
-<span class="fc" id="L12">    private Strategy strategy = new Strategy();</span>
+<span class="fc" id="L11">    private String clone = StringUtils.EMPTY;</span>
+<span class="fc" id="L12">    private Resource resource = new Resource();</span>
+<span class="fc" id="L13">    private Strategy strategy = new Strategy();</span>
 
     public String getEngine() {
-<span class="fc" id="L15">        return this.engine;</span>
+<span class="fc" id="L16">        return this.engine;</span>
     }
 
     public void setEngine(String engine) {
-<span class="fc" id="L19">        this.engine = engine;</span>
-<span class="fc" id="L20">    }</span>
+<span class="fc" id="L20">        this.engine = engine;</span>
+<span class="fc" id="L21">    }</span>
+
+    public String getClone() {
+<span class="fc" id="L24">        return this.clone;</span>
+    }
+
+    public void setClone(String clone) {
+<span class="fc" id="L28">        this.clone = clone;</span>
+<span class="fc" id="L29">    }</span>
 
     public Resource getResource() {
-<span class="fc" id="L23">        return this.resource;</span>
+<span class="fc" id="L32">        return this.resource;</span>
     }
 
     public void setResource(Resource resource) {
-<span class="fc" id="L27">        this.resource = resource;</span>
-<span class="fc" id="L28">    }</span>
+<span class="fc" id="L36">        this.resource = resource;</span>
+<span class="fc" id="L37">    }</span>
 
     public Strategy getStrategy() {
-<span class="fc" id="L31">        return this.strategy;</span>
+<span class="fc" id="L40">        return this.strategy;</span>
     }
 
     public void setStrategy(Strategy strategy) {
-<span class="fc" id="L35">        this.strategy = strategy;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L44">        this.strategy = strategy;</span>
+<span class="fc" id="L45">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

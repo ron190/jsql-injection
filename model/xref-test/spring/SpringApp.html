@@ -138,115 +138,116 @@
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>     }
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> 
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initDuckdb() <strong class="jxr_keyword">throws</strong> SQLException {
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>         Connection conn = DriverManager.getConnection(<span class="jxr_string">"jdbc:duckdb:jsql-duckdb-its.db"</span>);
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>         Statement stmt = conn.createStatement();
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         stmt.execute(<span class="jxr_string">"drop table if exists main.items"</span>);
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>         stmt.execute(<span class="jxr_string">"CREATE TABLE items (item VARCHAR, value DECIMAL(10, 2), count INTEGER)"</span>);
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>         stmt.execute(<span class="jxr_string">"INSERT INTO items VALUES ('jeans', 20.0, 1)"</span>);
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>         stmt.close();
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         conn.close();
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>     }
-<a class="jxr_linenumber" name="L141" href="#L141">141</a> 
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initDerby() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>         LOGGER.info(<span class="jxr_string">"Starting Derby..."</span>);
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         SpringApp.serverDerby = <strong class="jxr_keyword">new</strong> NetworkServerControl();
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>         SpringApp.serverDerby.start(<strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>     }
-<a class="jxr_linenumber" name="L147" href="#L147">147</a> 
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initHsqldb() {
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>         LOGGER.info(<span class="jxr_string">"Starting Hsqldb..."</span>);
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>         SpringApp.serverHsqldb = <strong class="jxr_keyword">new</strong> org.hsqldb.server.Server();
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>         SpringApp.serverHsqldb.setSilent(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>         SpringApp.serverHsqldb.setDatabaseName(0, <span class="jxr_string">"mainDb"</span>);
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         SpringApp.serverHsqldb.setDatabasePath(0, <span class="jxr_string">"mem:mainDb"</span>);
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>         SpringApp.serverHsqldb.setPort(9002);
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>         SpringApp.serverHsqldb.start();
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>     }
-<a class="jxr_linenumber" name="L157" href="#L157">157</a> 
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initMckoi() <strong class="jxr_keyword">throws</strong> SQLException, IOException {
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         LOGGER.info(<span class="jxr_string">"Starting Mckoi..."</span>);
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>         DefaultDBConfig config = <strong class="jxr_keyword">new</strong> DefaultDBConfig(File.createTempFile(<span class="jxr_string">"mckoi.config"</span>, <strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>         config.setMinimumDebugLevel(Lvl.ERROR);
-<a class="jxr_linenumber" name="L162" href="#L162">162</a> 
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         DBSystem database;
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>         DBController controller = DBController.getDefault();
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>         <strong class="jxr_keyword">boolean</strong> isDatabaseExists = controller.databaseExists(config);
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>         <strong class="jxr_keyword">if</strong> (!isDatabaseExists) {
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>             database = controller.createDatabase(config, <span class="jxr_string">"user"</span>, <span class="jxr_string">"password"</span>);
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>             database = controller.startDatabase(config);
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>         }
-<a class="jxr_linenumber" name="L171" href="#L171">171</a> 
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>         SpringApp.serverMckoi = <strong class="jxr_keyword">new</strong> TCPJDBCServer(database);
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>         SpringApp.serverMckoi.start();
-<a class="jxr_linenumber" name="L174" href="#L174">174</a> 
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>         <strong class="jxr_keyword">if</strong> (!isDatabaseExists) {
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>             <strong class="jxr_keyword">try</strong> (
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>                 Connection connection = DriverManager.getConnection(<span class="jxr_string">"jdbc:mckoi://127.0.0.1/APP"</span>, <span class="jxr_string">"user"</span>, <span class="jxr_string">"password"</span>);
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>                 PreparedStatement preparedStatement = connection.prepareStatement(<span class="jxr_string">"CREATE TABLE APP.pwn (dataz text)"</span>);
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>                 PreparedStatement prepareStatementInsert = connection.prepareStatement(<span class="jxr_string">"INSERT INTO APP.pwn (dataz) VALUES ('jsql data')"</span>)
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>             ) {
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>                 preparedStatement.execute();
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>                 prepareStatementInsert.executeUpdate();
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>             }
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>         }
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>     }
-<a class="jxr_linenumber" name="L186" href="#L186">186</a> 
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initH2() <strong class="jxr_keyword">throws</strong> SQLException {
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>         LOGGER.info(<span class="jxr_string">"Starting H2..."</span>);
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         SpringApp.serverH2 = Server.createTcpServer();
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         SpringApp.serverH2.start();
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>     }
-<a class="jxr_linenumber" name="L192" href="#L192">192</a> 
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initNeo4j() <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         LOGGER.info(<span class="jxr_string">"Starting Neo4j..."</span>);
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         String graphMovie;
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>         <strong class="jxr_keyword">try</strong> (InputStream stream = <strong class="jxr_keyword">new</strong> ClassPathResource(<span class="jxr_string">"neo4j/movie-graph.txt"</span>).getInputStream()) {
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>             graphMovie = <strong class="jxr_keyword">new</strong> String(stream.readAllBytes(), StandardCharsets.UTF_8);
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         }
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>         
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         Driver driver = GraphDatabase.driver(<span class="jxr_string">"bolt://jsql-neo4j:7687"</span>, AuthTokens.basic(<span class="jxr_string">"neo4j"</span>, <span class="jxr_string">"test"</span>));
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">try</strong> (org.neo4j.driver.Session session = driver.session()) {
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>             session.run(<span class="jxr_string">"MATCH (n) DETACH DELETE n"</span>);
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>             
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>             Result result = session.run(graphMovie);
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>             result.forEachRemaining(LOGGER::info);
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>         }
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>         driver.close();
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>     }
-<a class="jxr_linenumber" name="L211" href="#L211">211</a> 
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> Stream&lt;Properties&gt; getPropertiesFilterByProfile() {
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>         <strong class="jxr_keyword">return</strong> SpringApp.propertiesByEngine.parallelStream().filter(propertyByEngine -&gt;
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>             System.getProperty(SpringApp.TEST_PROFILE).equals(propertyByEngine.getProperty(SpringApp.TEST_PROFILE))
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>             || SpringApp.TENANT_H2.equals(propertyByEngine.getProperty(SpringApp.TENANT))
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>         );
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>     }
-<a class="jxr_linenumber" name="L218" href="#L218">218</a> 
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>         SpringApp.initDatabases();
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>         SpringApplication.run(SpringApp.<strong class="jxr_keyword">class</strong>, args);
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>     }
-<a class="jxr_linenumber" name="L223" href="#L223">223</a> 
-<a class="jxr_linenumber" name="L224" href="#L224">224</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> Properties get(String tenant) {
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>         <strong class="jxr_keyword">return</strong> SpringApp.propertiesByEngine.stream()
-<a class="jxr_linenumber" name="L226" href="#L226">226</a>             .filter(p -&gt; p.get(SpringApp.TENANT).equals(tenant))
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>             .findFirst()
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>             .get();
-<a class="jxr_linenumber" name="L229" href="#L229">229</a>     }
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>     
-<a class="jxr_linenumber" name="L231" href="#L231">231</a>     @PreDestroy
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onDestroy() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>         <strong class="jxr_keyword">if</strong> (System.getProperty(SpringApp.TEST_PROFILE) == <strong class="jxr_keyword">null</strong> || SpringApp.TEST_PROFILE_MAIN.equals(System.getProperty(SpringApp.TEST_PROFILE))) {
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>             LOGGER.info(<span class="jxr_string">"Ending in-memory databases..."</span>);
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>             SpringApp.serverDerby.shutdown();
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>             SpringApp.serverH2.stop();
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>             SpringApp.serverHsqldb.stop();
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>             SpringApp.serverMckoi.stop();
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>         }
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>     }
-<a class="jxr_linenumber" name="L241" href="#L241">241</a> }
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>         LOGGER.info(<span class="jxr_string">"Starting Duckdb..."</span>);
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>         Connection conn = DriverManager.getConnection(<span class="jxr_string">"jdbc:duckdb:jsql-duckdb-its.db"</span>);
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>         Statement stmt = conn.createStatement();
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         stmt.execute(<span class="jxr_string">"drop table if exists main.items"</span>);
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         stmt.execute(<span class="jxr_string">"CREATE TABLE items (item VARCHAR, value DECIMAL(10, 2), count INTEGER)"</span>);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         stmt.execute(<span class="jxr_string">"INSERT INTO items VALUES ('jeans', 20.0, 1)"</span>);
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>         stmt.close();
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>         conn.close();
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>     }
+<a class="jxr_linenumber" name="L142" href="#L142">142</a> 
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initDerby() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         LOGGER.info(<span class="jxr_string">"Starting Derby..."</span>);
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>         SpringApp.serverDerby = <strong class="jxr_keyword">new</strong> NetworkServerControl();
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         SpringApp.serverDerby.start(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>     }
+<a class="jxr_linenumber" name="L148" href="#L148">148</a> 
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initHsqldb() {
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>         LOGGER.info(<span class="jxr_string">"Starting Hsqldb..."</span>);
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>         SpringApp.serverHsqldb = <strong class="jxr_keyword">new</strong> org.hsqldb.server.Server();
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>         SpringApp.serverHsqldb.setSilent(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         SpringApp.serverHsqldb.setDatabaseName(0, <span class="jxr_string">"mainDb"</span>);
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>         SpringApp.serverHsqldb.setDatabasePath(0, <span class="jxr_string">"mem:mainDb"</span>);
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>         SpringApp.serverHsqldb.setPort(9002);
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         SpringApp.serverHsqldb.start();
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>     }
+<a class="jxr_linenumber" name="L158" href="#L158">158</a> 
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initMckoi() <strong class="jxr_keyword">throws</strong> SQLException, IOException {
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>         LOGGER.info(<span class="jxr_string">"Starting Mckoi..."</span>);
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>         DefaultDBConfig config = <strong class="jxr_keyword">new</strong> DefaultDBConfig(File.createTempFile(<span class="jxr_string">"mckoi.config"</span>, <strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         config.setMinimumDebugLevel(Lvl.ERROR);
+<a class="jxr_linenumber" name="L163" href="#L163">163</a> 
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>         DBSystem database;
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>         DBController controller = DBController.getDefault();
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>         <strong class="jxr_keyword">boolean</strong> isDatabaseExists = controller.databaseExists(config);
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">if</strong> (!isDatabaseExists) {
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>             database = controller.createDatabase(config, <span class="jxr_string">"user"</span>, <span class="jxr_string">"password"</span>);
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>             database = controller.startDatabase(config);
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>         }
+<a class="jxr_linenumber" name="L172" href="#L172">172</a> 
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>         SpringApp.serverMckoi = <strong class="jxr_keyword">new</strong> TCPJDBCServer(database);
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>         SpringApp.serverMckoi.start();
+<a class="jxr_linenumber" name="L175" href="#L175">175</a> 
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>         <strong class="jxr_keyword">if</strong> (!isDatabaseExists) {
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>             <strong class="jxr_keyword">try</strong> (
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>                 Connection connection = DriverManager.getConnection(<span class="jxr_string">"jdbc:mckoi://127.0.0.1/APP"</span>, <span class="jxr_string">"user"</span>, <span class="jxr_string">"password"</span>);
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>                 PreparedStatement preparedStatement = connection.prepareStatement(<span class="jxr_string">"CREATE TABLE APP.pwn (dataz text)"</span>);
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>                 PreparedStatement prepareStatementInsert = connection.prepareStatement(<span class="jxr_string">"INSERT INTO APP.pwn (dataz) VALUES ('jsql data')"</span>)
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>             ) {
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>                 preparedStatement.execute();
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>                 prepareStatementInsert.executeUpdate();
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>             }
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>         }
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>     }
+<a class="jxr_linenumber" name="L187" href="#L187">187</a> 
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initH2() <strong class="jxr_keyword">throws</strong> SQLException {
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         LOGGER.info(<span class="jxr_string">"Starting H2..."</span>);
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         SpringApp.serverH2 = Server.createTcpServer();
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         SpringApp.serverH2.start();
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>     }
+<a class="jxr_linenumber" name="L193" href="#L193">193</a> 
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> initNeo4j() <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>         LOGGER.info(<span class="jxr_string">"Starting Neo4j..."</span>);
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>         String graphMovie;
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         <strong class="jxr_keyword">try</strong> (InputStream stream = <strong class="jxr_keyword">new</strong> ClassPathResource(<span class="jxr_string">"neo4j/movie-graph.txt"</span>).getInputStream()) {
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>             graphMovie = <strong class="jxr_keyword">new</strong> String(stream.readAllBytes(), StandardCharsets.UTF_8);
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>         }
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>         
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         Driver driver = GraphDatabase.driver(<span class="jxr_string">"bolt://jsql-neo4j:7687"</span>, AuthTokens.basic(<span class="jxr_string">"neo4j"</span>, <span class="jxr_string">"test"</span>));
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         <strong class="jxr_keyword">try</strong> (org.neo4j.driver.Session session = driver.session()) {
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>             session.run(<span class="jxr_string">"MATCH (n) DETACH DELETE n"</span>);
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>             
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>             Result result = session.run(graphMovie);
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>             result.forEachRemaining(LOGGER::info);
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>         }
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>         driver.close();
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>     }
+<a class="jxr_linenumber" name="L212" href="#L212">212</a> 
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> Stream&lt;Properties&gt; getPropertiesFilterByProfile() {
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>         <strong class="jxr_keyword">return</strong> SpringApp.propertiesByEngine.parallelStream().filter(propertyByEngine -&gt;
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>             System.getProperty(SpringApp.TEST_PROFILE).equals(propertyByEngine.getProperty(SpringApp.TEST_PROFILE))
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>             || SpringApp.TENANT_H2.equals(propertyByEngine.getProperty(SpringApp.TENANT))
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>         );
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>     }
+<a class="jxr_linenumber" name="L219" href="#L219">219</a> 
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>         SpringApp.initDatabases();
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>         SpringApplication.run(SpringApp.<strong class="jxr_keyword">class</strong>, args);
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>     }
+<a class="jxr_linenumber" name="L224" href="#L224">224</a> 
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> Properties get(String tenant) {
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>         <strong class="jxr_keyword">return</strong> SpringApp.propertiesByEngine.stream()
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>             .filter(p -&gt; p.get(SpringApp.TENANT).equals(tenant))
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>             .findFirst()
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>             .get();
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>     }
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>     
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>     @PreDestroy
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onDestroy() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>         <strong class="jxr_keyword">if</strong> (System.getProperty(SpringApp.TEST_PROFILE) == <strong class="jxr_keyword">null</strong> || SpringApp.TEST_PROFILE_MAIN.equals(System.getProperty(SpringApp.TEST_PROFILE))) {
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>             LOGGER.info(<span class="jxr_string">"Ending in-memory databases..."</span>);
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>             SpringApp.serverDerby.shutdown();
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>             SpringApp.serverH2.stop();
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>             SpringApp.serverHsqldb.stop();
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>             SpringApp.serverMckoi.stop();
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>         }
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>     }
+<a class="jxr_linenumber" name="L242" href="#L242">242</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

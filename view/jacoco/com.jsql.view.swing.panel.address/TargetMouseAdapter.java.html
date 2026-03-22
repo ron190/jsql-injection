@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TargetMouseAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.address</a> &gt; <span class="el_source">TargetMouseAdapter.java</span></div><h1>TargetMouseAdapter.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.panel.address;
+
+import com.jsql.util.CookiesUtil;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.util.ParameterUtil;
+import com.jsql.view.swing.panel.PanelAddressBar;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
+
+class TargetMouseAdapter extends MouseAdapter {
+
+<span class="fc" id="L24">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+    private final PanelTrailingAddress panelTrailingAddress;
+    private final PanelAddressBar panelAddressBar;
+<span class="fc" id="L28">    private final JPopupMenu popupMenuTargets = new JPopupMenu();</span>
+
+<span class="fc" id="L30">    public TargetMouseAdapter(PanelTrailingAddress panelTrailingAddress, PanelAddressBar panelAddressBar) {</span>
+<span class="fc" id="L31">        this.panelTrailingAddress = panelTrailingAddress;</span>
+<span class="fc" id="L32">        this.panelAddressBar = panelAddressBar;</span>
+<span class="fc" id="L33">    }</span>
+
+    @Override
+    public void mousePressed(MouseEvent event) {
+<span class="nc" id="L37">        this.popupMenuTargets.removeAll();</span>
+<span class="nc" id="L38">        JRadioButtonMenuItem menuParamAuto = new JRadioButtonMenuItem(PanelTrailingAddress.PARAM_AUTO);</span>
+<span class="nc" id="L39">        menuParamAuto.setActionCommand(PanelTrailingAddress.PARAM_AUTO);  // mock required when adding star: @ParameterUtil.controlInput</span>
+<span class="nc" id="L40">        menuParamAuto.addActionListener(actionEvent -&gt;</span>
+<span class="nc" id="L41">            this.panelTrailingAddress.getLabelTarget().setText(menuParamAuto.getText())</span>
+        );
+<span class="nc" id="L43">        this.popupMenuTargets.add(menuParamAuto);</span>
+
+<span class="nc" id="L45">        var rawQuery = this.panelAddressBar.getTextFieldAddress().getText().trim();</span>
+<span class="nc" id="L46">        var rawRequest = this.panelAddressBar.getTextFieldRequest().getText().trim();</span>
+<span class="nc" id="L47">        var rawHeader = this.panelAddressBar.getTextFieldHeader().getText().trim();</span>
+
+<span class="nc" id="L49">        var selection = this.panelTrailingAddress.getGroupRadio().getSelection();</span>
+        String selectionCommand;  // effectively final
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (selection != null) {</span>
+<span class="nc" id="L52">            selectionCommand = selection.getActionCommand();</span>
+        } else {
+<span class="nc" id="L54">            selectionCommand = StringUtils.EMPTY;</span>
+        }
+<span class="nc" id="L56">        this.panelTrailingAddress.setGroupRadio(new ButtonGroup());</span>
+<span class="nc" id="L57">        this.panelTrailingAddress.getGroupRadio().add(menuParamAuto);</span>
+<span class="nc" id="L58">        JMenu menuQuery = new JMenu(&quot;Query&quot;);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (!rawQuery.isEmpty()) {</span>
+            try {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">                rawQuery = !rawQuery.matches(&quot;(?i)^\\w+://.*&quot;) ? &quot;http://&quot; + rawQuery : rawQuery;</span>
+<span class="nc" id="L62">                var url = new URI(rawQuery).toURL();</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                if (url.getQuery() != null) {</span>
+<span class="nc" id="L64">                    this.buildMenu(url.getQuery(), ParameterUtil.PREFIX_COMMAND_QUERY, selectionCommand, menuQuery);</span>
+                }
+<span class="nc" id="L66">            } catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L67">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect URL: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L68">                return;</span>
+<span class="nc" id="L69">            }</span>
+        }
+
+<span class="nc" id="L72">        JMenu menuRequest = new JMenu(&quot;Request&quot;);</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (!rawRequest.isEmpty()) {</span>
+<span class="nc" id="L74">            this.buildMenu(rawRequest, ParameterUtil.PREFIX_COMMAND_REQUEST, selectionCommand, menuRequest);</span>
+        }
+
+<span class="nc" id="L77">        JMenu menuHeader = new JMenu(&quot;Header&quot;);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (!rawHeader.isEmpty()) {</span>
+<span class="nc" id="L79">            this.buildMenuHeader(rawHeader, selectionCommand, menuHeader);</span>
+        }
+
+<span class="nc" id="L82">        Arrays.stream(this.popupMenuTargets.getComponents())</span>
+<span class="nc" id="L83">            .map(JComponent.class::cast)</span>
+<span class="nc" id="L84">            .forEach(c -&gt; c.setEnabled(false));</span>
+<span class="nc" id="L85">        menuParamAuto.setEnabled(true);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (this.panelTrailingAddress.getGroupRadio().getSelection() == null) {</span>
+<span class="nc" id="L87">            menuParamAuto.setSelected(true);</span>
+<span class="nc" id="L88">            this.panelTrailingAddress.getLabelTarget().setText(menuParamAuto.getText());</span>
+        }
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        menuQuery.setEnabled(menuQuery.getMenuComponentCount() &gt; 0);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        menuRequest.setEnabled(menuRequest.getMenuComponentCount() &gt; 0);</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        menuHeader.setEnabled(menuHeader.getMenuComponentCount() &gt; 0);</span>
+
+<span class="nc" id="L94">        if (</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">            menuQuery.getMenuComponentCount() &gt; 0</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            || menuRequest.getMenuComponentCount() &gt; 0</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            || menuHeader.getMenuComponentCount() &gt; 0</span>
+        ) {
+<span class="nc" id="L99">            Arrays.stream(this.popupMenuTargets.getComponents())</span>
+<span class="nc" id="L100">                .map(JComponent.class::cast)</span>
+<span class="nc" id="L101">                .forEach(JComponent::updateUI);  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L102">            this.popupMenuTargets.updateUI();  // required: incorrect when dark/light mode switch</span>
+<span class="nc" id="L103">            SwingUtilities.invokeLater(() -&gt; {  // reduce flickering on linux</span>
+<span class="nc" id="L104">                this.popupMenuTargets.show(event.getComponent(), event.getComponent().getX(), 5 + event.getComponent().getY() + event.getComponent().getHeight());</span>
+<span class="nc" id="L105">                this.popupMenuTargets.setLocation(event.getComponent().getLocationOnScreen().x, 5 + event.getComponent().getLocationOnScreen().y + event.getComponent().getHeight());</span>
+<span class="nc" id="L106">            });</span>
+        } else {
+<span class="nc" id="L108">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Missing parameter to inject&quot;);</span>
+        }
+<span class="nc" id="L110">    }</span>
+
+    private void buildMenuHeader(String rawHeader, String selectionCommand, JMenu menuHeader) {
+<span class="nc" id="L113">        var listHeaders = Pattern.compile(&quot;\\\\r\\\\n&quot;)</span>
+<span class="nc" id="L114">            .splitAsStream(rawHeader)</span>
+<span class="nc" id="L115">            .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;:&quot;), 2))</span>
+<span class="nc" id="L116">            .map(keyValue -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
+                keyValue[0],
+<span class="nc bnc" id="L118" title="All 2 branches missed.">                keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
+            ))
+<span class="nc" id="L120">            .toList();</span>
+<span class="nc" id="L121">        listHeaders.forEach(entry -&gt; {</span>
+<span class="nc" id="L122">            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());</span>
+<span class="nc" id="L123">            menuItem.setSelected((ParameterUtil.PREFIX_COMMAND_HEADER + entry.getKey()).equals(selectionCommand));</span>
+<span class="nc" id="L124">            menuItem.setActionCommand(ParameterUtil.PREFIX_COMMAND_HEADER + entry.getKey());</span>
+<span class="nc" id="L125">            menuItem.addActionListener(actionEvent -&gt;</span>
+<span class="nc" id="L126">                this.panelTrailingAddress.getLabelTarget().setText(entry.getKey())</span>
+            );
+<span class="nc" id="L128">            this.panelTrailingAddress.getGroupRadio().add(menuItem);</span>
+<span class="nc" id="L129">            menuHeader.add(menuItem);</span>
+<span class="nc" id="L130">        });</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (listHeaders.stream().anyMatch(s -&gt; CookiesUtil.COOKIE.equalsIgnoreCase(s.getKey()))) {</span>
+<span class="nc" id="L132">            var cookies = listHeaders.stream()</span>
+<span class="nc" id="L133">                .filter(s -&gt; CookiesUtil.COOKIE.equalsIgnoreCase(s.getKey()))</span>
+<span class="nc" id="L134">                .findFirst()</span>
+<span class="nc" id="L135">                .orElse(new AbstractMap.SimpleEntry&lt;&gt;(CookiesUtil.COOKIE, &quot;&quot;));</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            if (!cookies.getValue().trim().isEmpty()) {</span>
+<span class="nc" id="L137">                JMenu menuCookie = new JMenu(CookiesUtil.COOKIE);</span>
+<span class="nc" id="L138">                String[] cookieValues = StringUtils.split(cookies.getValue(), &quot;;&quot;);</span>
+<span class="nc" id="L139">                Stream.of(cookieValues).forEach(cookie -&gt; {</span>
+<span class="nc" id="L140">                    String[] cookieEntry = StringUtils.split(cookie, &quot;=&quot;);</span>
+<span class="nc" id="L141">                    JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(cookieEntry[0].trim());</span>
+<span class="nc" id="L142">                    menuItem.setSelected((ParameterUtil.PREFIX_COMMAND_COOKIE + cookieEntry[0].trim()).equals(selectionCommand));</span>
+<span class="nc" id="L143">                    menuItem.setActionCommand(ParameterUtil.PREFIX_COMMAND_COOKIE + cookieEntry[0].trim());</span>
+<span class="nc" id="L144">                    menuItem.addActionListener(actionEvent -&gt;</span>
+<span class="nc" id="L145">                            this.panelTrailingAddress.getLabelTarget().setText(cookieEntry[0].trim())</span>
+                    );
+<span class="nc" id="L147">                    this.panelTrailingAddress.getGroupRadio().add(menuItem);</span>
+<span class="nc" id="L148">                    menuCookie.add(menuItem);</span>
+<span class="nc" id="L149">                });</span>
+<span class="nc" id="L150">                menuHeader.addSeparator();</span>
+<span class="nc" id="L151">                menuHeader.add(menuCookie);</span>
+            }
+        }
+<span class="nc" id="L154">        this.popupMenuTargets.add(menuHeader);</span>
+<span class="nc" id="L155">    }</span>
+
+    private void buildMenu(String rawParams, String prefixCommand, String selectionCommand, JMenu menu) {
+<span class="nc" id="L158">        Pattern.compile(&quot;&amp;&quot;).splitAsStream(rawParams)</span>
+<span class="nc" id="L159">            .map(keyValue -&gt; Arrays.copyOf(keyValue.split(&quot;=&quot;), 2))</span>
+<span class="nc" id="L160">            .map(keyValue -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
+                keyValue[0],
+<span class="nc bnc" id="L162" title="All 2 branches missed.">                keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]</span>
+            ))
+<span class="nc" id="L164">            .forEach(entry -&gt; {</span>
+<span class="nc" id="L165">                JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(entry.getKey());</span>
+<span class="nc" id="L166">                menuItem.setSelected((prefixCommand + entry.getKey()).equals(selectionCommand));</span>
+<span class="nc" id="L167">                menuItem.setActionCommand(prefixCommand + entry.getKey());</span>
+<span class="nc" id="L168">                menuItem.addActionListener(actionEvent -&gt;</span>
+<span class="nc" id="L169">                    this.panelTrailingAddress.getLabelTarget().setText(entry.getKey())</span>
+                );
+<span class="nc" id="L171">                this.panelTrailingAddress.getGroupRadio().add(menuItem);</span>
+<span class="nc" id="L172">                menu.add(menuItem);</span>
+<span class="nc" id="L173">            });</span>
+<span class="nc" id="L174">        this.popupMenuTargets.add(menu);</span>
+<span class="nc" id="L175">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
