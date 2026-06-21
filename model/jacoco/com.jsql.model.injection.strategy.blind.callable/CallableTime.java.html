@@ -4,24 +4,14 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.strategy.blind.InjectionTime;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * Define a call HTTP to the server, require the associated url, character position and bit.
  * diffSeconds represents the response time of the current page
  */
 public class CallableTime extends AbstractCallableBit&lt;CallableTime&gt; {
-    
-    /**
-     * Time before the url call.
-     */
-<span class="fc" id="L19">    private final Calendar calendarOnStart = Calendar.getInstance();</span>
-    
-    /**
-     * Time at the end of the url call.
-     */
-<span class="fc" id="L24">    private final Calendar calendarOnEnd = Calendar.getInstance();</span>
     
     /**
      * Current page loading time.
@@ -42,12 +32,12 @@ public class CallableTime extends AbstractCallableBit&lt;CallableTime&gt; {
         InjectionTime injectionTime,
         BlindOperator blindOperator,
         String metadataInjectionProcess
-<span class="fc" id="L45">    ) {</span>
-<span class="fc" id="L46">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L47">        this.injectionTime = injectionTime;</span>
-<span class="fc" id="L48">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
-<span class="fc" id="L49">        this.booleanUrl = this.injectionModel.getMediatorEngine().getEngine().instance().sqlTestTimeWithOperator(sqlQuery, blindOperator);</span>
-<span class="fc" id="L50">    }</span>
+<span class="fc" id="L35">    ) {</span>
+<span class="fc" id="L36">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L37">        this.injectionTime = injectionTime;</span>
+<span class="fc" id="L38">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L39">        this.booleanUrl = this.injectionModel.getMediatorEngine().getEngine().instance().sqlTestTimeWithOperator(sqlQuery, blindOperator);</span>
+<span class="fc" id="L40">    }</span>
     
     /**
      * Constructor for bit test.
@@ -61,15 +51,15 @@ public class CallableTime extends AbstractCallableBit&lt;CallableTime&gt; {
         BlindOperator blindOperator,
         String metadataInjectionProcess
     ) {
-<span class="fc" id="L64">        this(sqlQuery, injectionModel, injectionTime, blindOperator, metadataInjectionProcess);</span>
-<span class="fc" id="L65">        this.booleanUrl = this.injectionModel.getMediatorEngine().getEngine().instance().sqlTimeBit(sqlQuery, indexChar, bit, blindOperator);</span>
-<span class="fc" id="L66">        this.currentIndex = indexChar;</span>
-<span class="fc" id="L67">        this.currentBit = bit;</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L54">        this(sqlQuery, injectionModel, injectionTime, blindOperator, metadataInjectionProcess);</span>
+<span class="fc" id="L55">        this.booleanUrl = this.injectionModel.getMediatorEngine().getEngine().instance().sqlTimeBit(sqlQuery, indexChar, bit, blindOperator);</span>
+<span class="fc" id="L56">        this.currentIndex = indexChar;</span>
+<span class="fc" id="L57">        this.currentBit = bit;</span>
+<span class="fc" id="L58">    }</span>
     
     @Override
     public boolean isTrue() {
-<span class="fc bfc" id="L72" title="All 2 branches covered.">        return this.diffSeconds &lt; this.injectionTime.getSleepTime();</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        return this.diffSeconds &lt; this.injectionTime.getSleepTime();</span>
     }
 
     /**
@@ -79,16 +69,11 @@ public class CallableTime extends AbstractCallableBit&lt;CallableTime&gt; {
      */
     @Override
     public CallableTime call() {
-<span class="fc" id="L82">        this.calendarOnStart.setTime(new Date());</span>
-<span class="fc" id="L83">        this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
-<span class="fc" id="L84">        this.calendarOnEnd.setTime(new Date());</span>
-        
-<span class="fc" id="L86">        long timeInMillisOnStart = this.calendarOnStart.getTimeInMillis();</span>
-<span class="fc" id="L87">        long timeInMillisOnEnd = this.calendarOnEnd.getTimeInMillis();</span>
-<span class="fc" id="L88">        long diff = timeInMillisOnEnd - timeInMillisOnStart;</span>
-        
-<span class="fc" id="L90">        this.diffSeconds = diff / 1000;</span>
-<span class="fc" id="L91">        return this;</span>
+<span class="fc" id="L72">        var timeInMillisOnStart = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);</span>
+<span class="fc" id="L73">        this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
+<span class="fc" id="L74">        var timeInMillisOnEnd = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);</span>
+<span class="fc" id="L75">        this.diffSeconds = timeInMillisOnEnd - timeInMillisOnStart;</span>
+<span class="fc" id="L76">        return this;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
