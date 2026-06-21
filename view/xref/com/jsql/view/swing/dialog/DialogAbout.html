@@ -92,7 +92,7 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>              <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>                  Desktop.getDesktop().browse(<strong class="jxr_keyword">new</strong> URI(MediatorHelper.model().getMediatorUtils().propertiesUtil().getProperty(<span class="jxr_string">"github.url"</span>)));
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>              } <strong class="jxr_keyword">catch</strong> (IOException | URISyntaxException | UnsupportedOperationException e) {
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>                  LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Browsing to Url failed"</span>, e);
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>                  LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Browsing to URL failed"</span>, e);
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>              }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          });
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  
@@ -157,7 +157,7 @@
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>                 <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>                     Desktop.getDesktop().browse(linkEvent.getURL().toURI());
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>                 } <strong class="jxr_keyword">catch</strong> (IOException | URISyntaxException | UnsupportedOperationException e) {
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Browsing to Url failed"</span>, e);
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, <span class="jxr_string">"Browsing to URL failed"</span>, e);
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>                 }
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>             }
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         });

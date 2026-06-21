@@ -73,9 +73,9 @@ view,com.jsql.view.swing.manager,AbstractManagerList.new JLabel() {...},5,12,0,0
 view,com.jsql.view.swing.manager,AbstractManagerList.new JButtonStateful() {...},5,10,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerDatabase,0,97,0,0,0,20,0,4,0,4
 view,com.jsql.view.swing.manager,ManagerCoder.ChangeMenuListener,0,31,2,4,0,6,2,3,0,2
-view,com.jsql.view.swing.manager,ManagerScan,160,204,12,10,48,45,10,8,2,5
-view,com.jsql.view.swing.manager,ManagerScan.ActionScan,91,6,6,0,20,1,5,1,2,1
-view,com.jsql.view.swing.manager,ManagerBruteForce,0,657,0,2,0,118,0,23,0,22
+view,com.jsql.view.swing.manager,ManagerScan,153,204,16,10,43,45,12,8,2,5
+view,com.jsql.view.swing.manager,ManagerScan.ActionScan,99,6,8,0,23,1,6,1,2,1
+view,com.jsql.view.swing.manager,ManagerBruteForce,7,661,0,2,3,120,0,24,0,23
 view,com.jsql.view.swing.manager,ManagerCoder,0,420,0,2,0,82,0,9,0,8
 view,com.jsql.view.swing.manager,ManagerDatabase.TreeModelProgressListener,9,32,2,2,4,10,3,4,1,4
 view,com.jsql.view.swing.manager,ManagerAdminPage,137,47,14,0,29,11,14,2,7,2
@@ -103,7 +103,7 @@ view,com.jsql.view.swing.panel.split,SplitNS.new MouseAdapter() {...},8,3,2,0,3,
 view,com.jsql.view.swing.panel.split,ActionHideShowConsole,0,70,2,8,0,20,2,5,0,2
 view,com.jsql.view.swing.panel.split,ActionHideShowResult,24,31,6,2,5,8,4,2,0,2
 view,com.jsql.view.swing.panel.address,TargetMouseAdapter,555,17,34,0,107,6,35,2,18,2
-view,com.jsql.view.swing.panel.address,ActionStart,43,85,6,4,14,24,6,4,1,4
+view,com.jsql.view.swing.panel.address,ActionStart,48,88,7,5,16,25,7,4,1,4
 view,com.jsql.view.swing.panel.address,ModelAddressLine,0,21,0,0,0,1,0,1,0,1
 view,com.jsql.view.swing.panel.address,ActionEnterAddressBar,10,4,2,0,3,2,2,1,1,1
 view,com.jsql.view.swing.panel.address,PanelTrailingAddress.new JRadioButtonMenuItem() {...},21,13,0,0,4,1,1,1,1,1
@@ -137,7 +137,7 @@ view,com.jsql.view.swing.tab,TabbedPaneMouseWheelListener,6,52,3,9,2,13,3,6,0,3
 view,com.jsql.view.swing.tab,TabHeader,15,35,2,0,9,9,6,2,5,2
 view,com.jsql.view.swing.tab,TabManagers,0,157,0,0,0,27,0,5,0,5
 view,com.jsql.view.swing.tab,TabManagers.new JLabel() {...},14,15,0,0,2,1,1,1,1,1
-view,com.jsql.view.swing.tab,TabResults,263,993,4,2,71,230,13,18,10,18
+view,com.jsql.view.swing.tab,TabResults,254,993,4,2,67,230,13,18,10,18
 view,com.jsql.view.swing.tab,TabManagers.new MouseAdapter() {...},0,28,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.tab,TabManagersCards,45,132,0,0,10,27,7,4,7,4
 view,com.jsql.view.swing.tab,TabResults.new FocusAdapter() {...},11,6,0,0,3,1,1,1,1,1
@@ -175,8 +175,8 @@ view,com.jsql.view.swing.panel.preferences,PanelAuthentication,0,393,0,0,0,83,0,
 view,com.jsql.view.swing.panel.preferences,PanelExploit,0,96,0,0,0,31,0,3,0,3
 view,com.jsql.view.swing.panel.preferences,PanelProxy,0,411,0,0,0,88,0,9,0,9
 view,com.jsql.view.swing.panel.preferences,PanelProxy.new DocumentListenerEditing() {...},6,6,0,0,2,1,1,1,1,1
-view,com.jsql.view.swing.panel.preferences,PanelConnection,63,782,14,6,6,170,13,17,3,17
 view,com.jsql.view.swing.panel.preferences,PanelInjection.new DocumentListenerEditing() {...},6,6,0,0,2,1,1,1,1,1
+view,com.jsql.view.swing.panel.preferences,PanelConnection,63,784,14,6,6,170,13,17,3,17
 view,com.jsql.view.swing.panel.preferences,PanelTampering,0,546,0,0,0,132,0,18,0,18
 view,com.jsql.view.swing.panel.preferences,PanelExploit.new DocumentListenerEditing() {...},0,46,0,0,0,8,0,2,0,2
 view,com.jsql.view.swing.panel.preferences,PanelUserAgent.new DocumentListenerEditing() {...},8,6,0,0,3,1,1,1,1,1
@@ -233,8 +233,8 @@ view,com.jsql.view.swing.panel,PanelAddressBar.AdvancedButtonAdapter,0,76,0,4,0,
 view,com.jsql.view.swing.tab.dnd,TabTransferHandler,78,256,24,18,13,58,22,8,1,8
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,13,167,9,15,4,38,9,9,0,6
 view,com.jsql.view.swing.tab.dnd,DnDTabData,0,6,0,0,0,3,0,1,0,1
-view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.DnDDropLocation,0,20,0,0,0,8,0,4,0,4
 view,com.jsql.view.swing.tab.dnd,GhostGlassPane,0,45,0,0,0,15,0,4,0,4
+view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.DnDDropLocation,0,20,0,0,0,8,0,4,0,4
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane,210,296,30,18,39,68,23,13,2,10
 view,com.jsql.view.swing.tab.dnd,TabTransferHandler.new Transferable() {...},5,32,1,1,1,5,1,4,0,4
 view,com.jsql.view.swing.tree.action,ActionCheckSingle,69,0,6,0,19,0,5,0,2,0
@@ -271,7 +271,7 @@ view,com.jsql.view.swing.text.action,DeletePrevCharAction,43,4,12,0,10,2,7,1,1,1
 view,com.jsql.view.swing.text.action,DeleteNextCharAction,44,4,12,0,10,2,7,1,1,1
 view,com.jsql.view.swing.text.action,SilentDeleteTextAction,46,7,14,0,13,3,8,1,1,1
 view,com.jsql.view.swing.text.action,AbstractCharAction,47,7,6,0,14,3,4,2,1,2
-view,com.jsql.view.swing.manager.util,ActionBruteForce,189,393,24,22,31,86,27,12,5,11
+view,com.jsql.view.swing.manager.util,ActionBruteForce,181,392,24,22,28,85,27,12,5,11
 view,com.jsql.view.swing.manager.util,ModelBrute,0,12,0,0,0,1,0,1,0,1
 view,com.jsql.view.swing.manager.util,JButtonStateful,0,15,0,0,0,6,0,3,0,3
 view,com.jsql.view.swing.manager.util,ModelSpinner,0,15,0,0,0,1,0,1,0,1

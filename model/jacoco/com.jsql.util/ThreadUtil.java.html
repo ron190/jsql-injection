@@ -112,5 +112,14 @@ public final class ThreadUtil {
 <span class="nc" id="L112">            Thread.currentThread().interrupt();</span>
 <span class="fc" id="L113">        }</span>
 <span class="fc" id="L114">    }</span>
+
+    public static void sleep(long from) {
+        try {
+<span class="fc" id="L118">            Thread.sleep(from);</span>
+<span class="nc" id="L119">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L120">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L121">            Thread.currentThread().interrupt();</span>
+<span class="fc" id="L122">        }</span>
+<span class="fc" id="L123">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

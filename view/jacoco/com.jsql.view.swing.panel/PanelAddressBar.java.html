@@ -539,10 +539,11 @@ public class PanelAddressBar extends JPanel {
                 );
 
 <span class="nc" id="L541">                PanelAddressBar.this.advancedButtonAdapter.mouseClicked(true);</span>
-<span class="nc" id="L542">            } catch (IOException | UnsupportedFlavorException e) {</span>
-<span class="nc" id="L543">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L544">            }</span>
-<span class="nc" id="L545">        }</span>
+<span class="nc" id="L542">            } catch (IOException | UnsupportedFlavorException | IllegalStateException e) {</span>
+                // Fix #96410: IllegalStateException on getData()
+<span class="nc" id="L544">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L545">            }</span>
+<span class="nc" id="L546">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

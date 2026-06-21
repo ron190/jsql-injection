@@ -547,12 +547,13 @@
 <a class="jxr_linenumber" name="L539" href="#L539">539</a>                 );
 <a class="jxr_linenumber" name="L540" href="#L540">540</a> 
 <a class="jxr_linenumber" name="L541" href="#L541">541</a>                 PanelAddressBar.<strong class="jxr_keyword">this</strong>.advancedButtonAdapter.mouseClicked(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L542" href="#L542">542</a>             } <strong class="jxr_keyword">catch</strong> (IOException | UnsupportedFlavorException e) {
-<a class="jxr_linenumber" name="L543" href="#L543">543</a>                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-<a class="jxr_linenumber" name="L544" href="#L544">544</a>             }
-<a class="jxr_linenumber" name="L545" href="#L545">545</a>         }
-<a class="jxr_linenumber" name="L546" href="#L546">546</a>     }
-<a class="jxr_linenumber" name="L547" href="#L547">547</a> }
+<a class="jxr_linenumber" name="L542" href="#L542">542</a>             } <strong class="jxr_keyword">catch</strong> (IOException | UnsupportedFlavorException | IllegalStateException e) {
+<a class="jxr_linenumber" name="L543" href="#L543">543</a>                 <em class="jxr_comment">// Fix #96410: IllegalStateException on getData()</em>
+<a class="jxr_linenumber" name="L544" href="#L544">544</a>                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+<a class="jxr_linenumber" name="L545" href="#L545">545</a>             }
+<a class="jxr_linenumber" name="L546" href="#L546">546</a>         }
+<a class="jxr_linenumber" name="L547" href="#L547">547</a>     }
+<a class="jxr_linenumber" name="L548" href="#L548">548</a> }
 </pre>
 <hr/>
 <div id="footer">© 2026</div>

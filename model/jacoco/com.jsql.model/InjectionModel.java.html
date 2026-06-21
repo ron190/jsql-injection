@@ -79,11 +79,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * without asking the user 'Start a new injection?'.
      */
 <span class="fc" id="L81">    private boolean shouldErasePreviousInjection = false;</span>
-<span class="fc" id="L82">    private boolean isScanning = false;</span>
+<span class="fc" id="L82">    private boolean isScanning = false;  // prevent injecting when already scanning</span>
+<span class="fc" id="L83">    private boolean isInjectingWithoutScan = false;  // prevent scanning when already injecting</span>
 
-<span class="fc" id="L84">    public InjectionModel() {</span>
-<span class="fc" id="L85">        this.mediatorStrategy = new MediatorStrategy(this);</span>
-<span class="fc" id="L86">        this.mediatorUtils = new MediatorUtils(</span>
+<span class="fc" id="L85">    public InjectionModel() {</span>
+<span class="fc" id="L86">        this.mediatorStrategy = new MediatorStrategy(this);</span>
+<span class="fc" id="L87">        this.mediatorUtils = new MediatorUtils(</span>
             this.propertiesUtil,
             new ConnectionUtil(this),
             new AuthenticationUtil(),
@@ -105,33 +106,33 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             new FormUtil(this),
             new CertificateUtil()
         );
-<span class="fc" id="L108">    }</span>
+<span class="fc" id="L109">    }</span>
 
     /**
      * Reset each injection attributes: Database metadata, General Thread status, Strategy.
      */
     public void resetModel() {
-<span class="fc" id="L114">        this.mediatorStrategy.getTime().setApplicable(false);</span>
-<span class="fc" id="L115">        this.mediatorStrategy.getBlindBin().setApplicable(false);</span>
-<span class="fc" id="L116">        this.mediatorStrategy.getBlindBit().setApplicable(false);</span>
-<span class="fc" id="L117">        this.mediatorStrategy.getMultibit().setApplicable(false);</span>
-<span class="fc" id="L118">        this.mediatorStrategy.getDns().setApplicable(false);</span>
-<span class="fc" id="L119">        this.mediatorStrategy.getError().setApplicable(false);</span>
-<span class="fc" id="L120">        this.mediatorStrategy.getStack().setApplicable(false);</span>
-<span class="fc" id="L121">        this.mediatorStrategy.getUnion().setApplicable(false);</span>
-<span class="fc" id="L122">        this.mediatorStrategy.setStrategy(null);</span>
+<span class="fc" id="L115">        this.mediatorStrategy.getTime().setApplicable(false);</span>
+<span class="fc" id="L116">        this.mediatorStrategy.getBlindBin().setApplicable(false);</span>
+<span class="fc" id="L117">        this.mediatorStrategy.getBlindBit().setApplicable(false);</span>
+<span class="fc" id="L118">        this.mediatorStrategy.getMultibit().setApplicable(false);</span>
+<span class="fc" id="L119">        this.mediatorStrategy.getDns().setApplicable(false);</span>
+<span class="fc" id="L120">        this.mediatorStrategy.getError().setApplicable(false);</span>
+<span class="fc" id="L121">        this.mediatorStrategy.getStack().setApplicable(false);</span>
+<span class="fc" id="L122">        this.mediatorStrategy.getUnion().setApplicable(false);</span>
+<span class="fc" id="L123">        this.mediatorStrategy.setStrategy(null);</span>
 
-<span class="fc" id="L124">        this.mediatorStrategy.getSpecificUnion().setVisibleIndex(null);</span>
-<span class="fc" id="L125">        this.mediatorStrategy.getSpecificUnion().setIndexesInUrl(StringUtils.EMPTY);</span>
+<span class="fc" id="L125">        this.mediatorStrategy.getSpecificUnion().setVisibleIndex(null);</span>
+<span class="fc" id="L126">        this.mediatorStrategy.getSpecificUnion().setIndexesInUrl(StringUtils.EMPTY);</span>
 
-<span class="fc" id="L127">        this.analysisReport = StringUtils.EMPTY;</span>
-<span class="fc" id="L128">        this.isStoppedByUser = false;</span>
-<span class="fc" id="L129">        this.shouldErasePreviousInjection = false;</span>
+<span class="fc" id="L128">        this.analysisReport = StringUtils.EMPTY;</span>
+<span class="fc" id="L129">        this.isStoppedByUser = false;</span>
+<span class="fc" id="L130">        this.shouldErasePreviousInjection = false;</span>
 
-<span class="fc" id="L131">        this.mediatorUtils.csrfUtil().setTokenCsrf(null);</span>
-<span class="fc" id="L132">        this.mediatorUtils.digestUtil().setTokenDigest(null);</span>
-<span class="fc" id="L133">        this.mediatorUtils.threadUtil().reset();</span>
-<span class="fc" id="L134">    }</span>
+<span class="fc" id="L132">        this.mediatorUtils.csrfUtil().setTokenCsrf(null);</span>
+<span class="fc" id="L133">        this.mediatorUtils.digestUtil().setTokenDigest(null);</span>
+<span class="fc" id="L134">        this.mediatorUtils.threadUtil().reset();</span>
+<span class="fc" id="L135">    }</span>
 
     /**
      * Prepare the injection process, can be interrupted by the user (via shouldStopAll).
@@ -139,70 +140,71 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * Run by Scan, Standard and TU.
      */
     public void beginInjection() {
-<span class="fc" id="L142">        this.resetModel();</span>
+<span class="fc" id="L143">        this.resetModel();</span>
         try {
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">            if (this.mediatorUtils.proxyUtil().isNotLive(ShowOnConsole.YES)) {</span>
-<span class="nc" id="L145">                return;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">            if (this.mediatorUtils.proxyUtil().isNotLive(ShowOnConsole.YES)) {</span>
+<span class="nc" id="L146">                return;</span>
             }
-<span class="fc" id="L147">            LOGGER.log(</span>
+<span class="fc" id="L148">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;{}: {}&quot;,
-<span class="fc" id="L150">                () -&gt; I18nUtil.valueByKey(&quot;LOG_START_INJECTION&quot;),</span>
-<span class="fc" id="L151">                () -&gt; this.mediatorUtils.connectionUtil().getUrlByUser()</span>
+<span class="fc" id="L151">                () -&gt; I18nUtil.valueByKey(&quot;LOG_START_INJECTION&quot;),</span>
+<span class="fc" id="L152">                () -&gt; this.mediatorUtils.connectionUtil().getUrlByUser()</span>
             );
             
             // Check general integrity if user's parameters
-<span class="fc" id="L155">            this.mediatorUtils.parameterUtil().checkParametersFormat();</span>
-<span class="fc" id="L156">            this.mediatorUtils.connectionUtil().testConnection();</span>
+<span class="fc" id="L156">            this.mediatorUtils.parameterUtil().checkParametersFormat();</span>
+<span class="fc" id="L157">            this.mediatorUtils.connectionUtil().testConnection();</span>
 
             // TODO Check all path params URL segments
-<span class="fc" id="L159">            boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters(false);</span>
-<span class="fc" id="L160">            hasFoundInjection = this.mediatorUtils.multipartUtil().testParameters(hasFoundInjection);</span>
-<span class="fc" id="L161">            hasFoundInjection = this.mediatorUtils.soapUtil().testParameters(hasFoundInjection);</span>
-<span class="fc" id="L162">            hasFoundInjection = this.mediatorMethod.getRequest().testParameters(hasFoundInjection);</span>
-<span class="fc" id="L163">            hasFoundInjection = this.mediatorMethod.getHeader().testParameters(hasFoundInjection);</span>
-<span class="fc" id="L164">            hasFoundInjection = this.mediatorUtils.cookiesUtil().testParameters(hasFoundInjection);</span>
+<span class="fc" id="L160">            boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters(false);</span>
+<span class="fc" id="L161">            hasFoundInjection = this.mediatorUtils.multipartUtil().testParameters(hasFoundInjection);</span>
+<span class="fc" id="L162">            hasFoundInjection = this.mediatorUtils.soapUtil().testParameters(hasFoundInjection);</span>
+<span class="fc" id="L163">            hasFoundInjection = this.mediatorMethod.getRequest().testParameters(hasFoundInjection);</span>
+<span class="fc" id="L164">            hasFoundInjection = this.mediatorMethod.getHeader().testParameters(hasFoundInjection);</span>
+<span class="fc" id="L165">            hasFoundInjection = this.mediatorUtils.cookiesUtil().testParameters(hasFoundInjection);</span>
 
-<span class="pc bpc" id="L166" title="2 of 4 branches missed.">            if (hasFoundInjection &amp;&amp; !this.isScanning) {</span>
-<span class="nc bnc" id="L167" title="All 2 branches missed.">                if (!this.getMediatorUtils().preferencesUtil().isNotShowingVulnReport()) {</span>
-<span class="nc" id="L168">                    this.sendToViews(new Seal.CreateAnalysisReport(this.analysisReport));</span>
+<span class="pc bpc" id="L167" title="2 of 4 branches missed.">            if (hasFoundInjection &amp;&amp; !this.isScanning) {</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">                if (!this.getMediatorUtils().preferencesUtil().isNotShowingVulnReport()) {</span>
+<span class="nc" id="L169">                    this.sendToViews(new Seal.CreateAnalysisReport(this.analysisReport));</span>
                 }
-<span class="nc bnc" id="L170" title="All 2 branches missed.">                if (this.getMediatorUtils().preferencesUtil().isZipStrategy()) {</span>
-<span class="nc" id="L171">                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Using Zip mode for reduced query size&quot;);</span>
-<span class="nc bnc" id="L172" title="All 2 branches missed.">                } else if (this.getMediatorUtils().preferencesUtil().isDiosStrategy()) {</span>
-<span class="nc" id="L173">                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Using Dump In One Shot strategy for single query dump&quot;);</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">                if (this.getMediatorUtils().preferencesUtil().isZipStrategy()) {</span>
+<span class="nc" id="L172">                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Using Zip mode for reduced query size&quot;);</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">                } else if (this.getMediatorUtils().preferencesUtil().isDiosStrategy()) {</span>
+<span class="nc" id="L174">                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Using Dump In One Shot strategy for single query dump&quot;);</span>
                 }
-<span class="nc bnc" id="L175" title="All 2 branches missed.">                if (!this.mediatorUtils.preferencesUtil().isNotInjectingMetadata()) {</span>
-<span class="nc" id="L176">                    this.dataAccess.getDatabaseInfos();</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">                if (!this.mediatorUtils.preferencesUtil().isNotInjectingMetadata()) {</span>
+<span class="nc" id="L177">                    this.dataAccess.getDatabaseInfos();</span>
                 }
-<span class="nc" id="L178">                this.dataAccess.listDatabases();</span>
+<span class="nc" id="L179">                this.dataAccess.listDatabases();</span>
             }
             
-<span class="fc" id="L181">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_DONE&quot;));</span>
-<span class="fc" id="L182">            this.shouldErasePreviousInjection = hasFoundInjection;</span>
-<span class="nc" id="L183">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L184">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L185">            Thread.currentThread().interrupt();</span>
-<span class="nc" id="L186">        } catch (JSqlRuntimeException | JSqlException | IOException e) {  // Catch expected exceptions only</span>
-<span class="nc" id="L187">            LOGGER.log(</span>
+<span class="fc" id="L182">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_DONE&quot;));</span>
+<span class="fc" id="L183">            this.shouldErasePreviousInjection = hasFoundInjection;</span>
+<span class="nc" id="L184">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L185">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L186">            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L187">        } catch (JSqlRuntimeException | JSqlException | IOException e) {  // Catch expected exceptions only</span>
+<span class="nc" id="L188">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
                 &quot;Interruption: {}&quot;,
-<span class="nc bnc" id="L190" title="All 2 branches missed.">                e.getMessage() == null ? InjectionModel.getImplicitReason(e) : e.getMessage()</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">                e.getMessage() == null ? InjectionModel.getImplicitReason(e) : e.getMessage()</span>
             );
         } finally {
-<span class="fc" id="L193">            this.sendToViews(new Seal.EndPreparation());</span>
+<span class="fc" id="L194">            this.sendToViews(new Seal.EndPreparation());</span>
+<span class="fc" id="L195">            this.isInjectingWithoutScan = false;</span>
         }
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L197">    }</span>
     
     public static String getImplicitReason(Throwable e) {
-<span class="nc" id="L198">        String message = e.getClass().getSimpleName();</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (e.getMessage() != null) {</span>
-<span class="nc" id="L200">            message += &quot;: &quot;+ e.getMessage();</span>
+<span class="nc" id="L200">        String message = e.getClass().getSimpleName();</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (e.getMessage() != null) {</span>
+<span class="nc" id="L202">            message += &quot;: &quot;+ e.getMessage();</span>
         }
-<span class="nc bnc" id="L202" title="All 4 branches missed.">        if (e.getCause() != null &amp;&amp; !e.equals(e.getCause())) {</span>
-<span class="nc" id="L203">            message += &quot; &gt; &quot;+ InjectionModel.getImplicitReason(e.getCause());</span>
+<span class="nc bnc" id="L204" title="All 4 branches missed.">        if (e.getCause() != null &amp;&amp; !e.equals(e.getCause())) {</span>
+<span class="nc" id="L205">            message += &quot; &gt; &quot;+ InjectionModel.getImplicitReason(e.getCause());</span>
         }
-<span class="nc" id="L205">        return message;</span>
+<span class="nc" id="L207">        return message;</span>
     }
     
     /**
@@ -219,208 +221,208 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         boolean isReport
     ) {
         // Temporary url, we go from &quot;select 1,2,3,4...&quot; to &quot;select 1,([complex query]),2...&quot;, but keep initial url
-<span class="fc" id="L222">        String urlInjection = this.mediatorUtils.connectionUtil().getUrlBase();</span>
-<span class="fc" id="L223">        urlInjection = this.mediatorStrategy.buildPath(urlInjection, isUsingIndex, dataInjection);</span>
-<span class="fc" id="L224">        urlInjection = StringUtil.cleanSql(urlInjection.trim());</span>
+<span class="fc" id="L224">        String urlInjection = this.mediatorUtils.connectionUtil().getUrlBase();</span>
+<span class="fc" id="L225">        urlInjection = this.mediatorStrategy.buildPath(urlInjection, isUsingIndex, dataInjection);</span>
+<span class="fc" id="L226">        urlInjection = StringUtil.cleanSql(urlInjection.trim());</span>
 
         URL urlObject;
         String urlInjectionFixed;
         try {
-<span class="fc" id="L229">            urlInjectionFixed = this.initQueryString(</span>
+<span class="fc" id="L231">            urlInjectionFixed = this.initQueryString(</span>
                 isUsingIndex,
                 urlInjection,
                 dataInjection
             );
-<span class="fc" id="L234">            urlObject = new URI(urlInjectionFixed).toURL();</span>
-<span class="nc" id="L235">        } catch (MalformedURLException | URISyntaxException e) {</span>
-<span class="nc" id="L236">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect Query Url: {}&quot;, e.getMessage());</span>
-<span class="nc" id="L237">            return StringUtils.EMPTY;</span>
-<span class="fc" id="L238">        }</span>
+<span class="fc" id="L236">            urlObject = new URI(urlInjectionFixed).toURL();</span>
+<span class="nc" id="L237">        } catch (MalformedURLException | URISyntaxException e) {</span>
+<span class="nc" id="L238">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect Query URL: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L239">            return StringUtils.EMPTY;</span>
+<span class="fc" id="L240">        }</span>
 
-<span class="fc" id="L240">        String pageSource = StringUtils.EMPTY;</span>
+<span class="fc" id="L242">        String pageSource = StringUtils.EMPTY;</span>
         
         // Define the connection
         try {
-<span class="fc" id="L244">            var httpRequestBuilder = HttpRequest.newBuilder()</span>
-<span class="fc" id="L245">                .uri(URI.create(urlObject.toString()))</span>
-<span class="fc" id="L246">                .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, &quot;text/plain&quot;)</span>
-<span class="fc" id="L247">                .timeout(Duration.ofSeconds(15));</span>
+<span class="fc" id="L246">            var httpRequestBuilder = HttpRequest.newBuilder()</span>
+<span class="fc" id="L247">                .uri(URI.create(urlObject.toString()))</span>
+<span class="fc" id="L248">                .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, &quot;text/plain&quot;)</span>
+<span class="fc" id="L249">                .timeout(Duration.ofSeconds(15));</span>
             
-<span class="fc" id="L249">            this.mediatorUtils.csrfUtil().addHeaderToken(httpRequestBuilder);</span>
-<span class="fc" id="L250">            this.mediatorUtils.digestUtil().addHeaderToken(httpRequestBuilder);</span>
-<span class="fc" id="L251">            this.mediatorUtils.connectionUtil().setCustomUserAgent(httpRequestBuilder);</span>
+<span class="fc" id="L251">            this.mediatorUtils.csrfUtil().addHeaderToken(httpRequestBuilder);</span>
+<span class="fc" id="L252">            this.mediatorUtils.digestUtil().addHeaderToken(httpRequestBuilder);</span>
+<span class="fc" id="L253">            this.mediatorUtils.connectionUtil().setCustomUserAgent(httpRequestBuilder);</span>
 
-<span class="fc" id="L253">            String body = this.initRequest(isUsingIndex, dataInjection, httpRequestBuilder);</span>
-<span class="fc" id="L254">            this.initHeader(isUsingIndex, dataInjection, httpRequestBuilder);</span>
+<span class="fc" id="L255">            String body = this.initRequest(isUsingIndex, dataInjection, httpRequestBuilder);</span>
+<span class="fc" id="L256">            this.initHeader(isUsingIndex, dataInjection, httpRequestBuilder);</span>
             
-<span class="fc" id="L256">            var httpRequest = httpRequestBuilder.build();</span>
-<span class="fc bfc" id="L257" title="All 2 branches covered.">            if (isReport) {</span>
-<span class="fc" id="L258">                Color colorReport = UIManager.getColor(&quot;TextArea.inactiveForeground&quot;);</span>
-<span class="fc" id="L259">                String report = InjectionModel.BR + StringUtil.formatReport(colorReport, &quot;Method: &quot;) + httpRequest.method();</span>
-<span class="fc" id="L260">                report += InjectionModel.BR + StringUtil.formatReport(colorReport, &quot;Path: &quot;) + httpRequest.uri().getPath();</span>
-<span class="fc bfc" id="L261" title="All 2 branches covered.">                if (httpRequest.uri().getQuery() != null) {</span>
-<span class="fc" id="L262">                    report += InjectionModel.BR + StringUtil.formatReport(colorReport, &quot;Query: &quot;) + httpRequest.uri().getQuery();</span>
+<span class="fc" id="L258">            var httpRequest = httpRequestBuilder.build();</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">            if (isReport) {</span>
+<span class="fc" id="L260">                Color colorReport = UIManager.getColor(&quot;TextArea.inactiveForeground&quot;);</span>
+<span class="fc" id="L261">                String report = InjectionModel.BR + StringUtil.formatReport(colorReport, &quot;Method: &quot;) + httpRequest.method();</span>
+<span class="fc" id="L262">                report += InjectionModel.BR + StringUtil.formatReport(colorReport, &quot;Path: &quot;) + httpRequest.uri().getPath();</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">                if (httpRequest.uri().getQuery() != null) {</span>
+<span class="fc" id="L264">                    report += InjectionModel.BR + StringUtil.formatReport(colorReport, &quot;Query: &quot;) + httpRequest.uri().getQuery();</span>
                 }
-<span class="fc" id="L264">                if (</span>
-<span class="fc bfc" id="L265" title="All 2 branches covered.">                    !(this.mediatorUtils.parameterUtil().getListRequest().isEmpty()</span>
-<span class="fc bfc" id="L266" title="All 2 branches covered.">                    &amp;&amp; this.mediatorUtils.csrfUtil().getTokenCsrf() == null)</span>
+<span class="fc" id="L266">                if (</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">                    !(this.mediatorUtils.parameterUtil().getListRequest().isEmpty()</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">                    &amp;&amp; this.mediatorUtils.csrfUtil().getTokenCsrf() == null)</span>
                 ) {
-<span class="fc" id="L268">                    report += InjectionModel.BR + StringUtil.formatReport(colorReport, &quot;Body: &quot;) + body;</span>
+<span class="fc" id="L270">                    report += InjectionModel.BR + StringUtil.formatReport(colorReport, &quot;Body: &quot;) + body;</span>
                 }
-<span class="fc" id="L270">                report += InjectionModel.BR </span>
-<span class="fc" id="L271">                    + StringUtil.formatReport(colorReport, &quot;Header: &quot;)</span>
-<span class="fc" id="L272">                    + httpRequest.headers().map().entrySet().stream()</span>
-<span class="fc" id="L273">                    .map(entry -&gt; </span>
-<span class="fc" id="L274">                        String.format(&quot;%s: %s&quot;, entry.getKey(), </span>
-<span class="fc" id="L275">                        String.join(StringUtils.EMPTY, entry.getValue()))</span>
+<span class="fc" id="L272">                report += InjectionModel.BR </span>
+<span class="fc" id="L273">                    + StringUtil.formatReport(colorReport, &quot;Header: &quot;)</span>
+<span class="fc" id="L274">                    + httpRequest.headers().map().entrySet().stream()</span>
+<span class="fc" id="L275">                    .map(entry -&gt; </span>
+<span class="fc" id="L276">                        String.format(&quot;%s: %s&quot;, entry.getKey(), </span>
+<span class="fc" id="L277">                        String.join(StringUtils.EMPTY, entry.getValue()))</span>
                     )
-<span class="fc" id="L277">                    .collect(Collectors.joining(InjectionModel.BR));</span>
-<span class="fc" id="L278">                return report;</span>
+<span class="fc" id="L279">                    .collect(Collectors.joining(InjectionModel.BR));</span>
+<span class="fc" id="L280">                return report;</span>
             }
             
-<span class="fc" id="L281">            HttpResponse&lt;String&gt; response = this.getMediatorUtils().connectionUtil().getHttpClient().build().send(</span>
-<span class="fc" id="L282">                httpRequestBuilder.build(),</span>
-<span class="fc" id="L283">                BodyHandlers.ofString()</span>
+<span class="fc" id="L283">            HttpResponse&lt;String&gt; response = this.getMediatorUtils().connectionUtil().getHttpClient().build().send(</span>
+<span class="fc" id="L284">                httpRequestBuilder.build(),</span>
+<span class="fc" id="L285">                BodyHandlers.ofString()</span>
             );
-<span class="fc bfc" id="L285" title="All 2 branches covered.">            if (this.mediatorUtils.parameterUtil().isRequestSoap()) {</span>
+<span class="fc bfc" id="L287" title="All 2 branches covered.">            if (this.mediatorUtils.parameterUtil().isRequestSoap()) {</span>
                 // Invalid XML control chars like \x04 requires urlencoding from server
-<span class="fc" id="L287">                pageSource = URLDecoder.decode(response.body(), StandardCharsets.UTF_8);</span>
-<span class="fc" id="L288">                pageSource = StringUtil.fromHtml(pageSource);</span>
+<span class="fc" id="L289">                pageSource = URLDecoder.decode(response.body(), StandardCharsets.UTF_8);</span>
+<span class="fc" id="L290">                pageSource = StringUtil.fromHtml(pageSource);</span>
             } else {
-<span class="fc" id="L290">                pageSource = response.body();</span>
+<span class="fc" id="L292">                pageSource = response.body();</span>
             }
 
-<span class="fc" id="L293">            Map&lt;String, String&gt; headersResponse = ConnectionUtil.getHeadersMap(response);</span>
-<span class="fc" id="L294">            int sizeHeaders = headersResponse.keySet()</span>
-<span class="fc" id="L295">                .stream()</span>
-<span class="fc" id="L296">                .map(key -&gt; headersResponse.get(key).length() + key.length())</span>
-<span class="fc" id="L297">                .mapToInt(Integer::intValue)</span>
-<span class="fc" id="L298">                .sum();</span>
-<span class="fc" id="L299">            float size = (float) (pageSource.length() + sizeHeaders) / 1024;</span>
-<span class="fc" id="L300">            var decimalFormat = new DecimalFormat(&quot;0.000&quot;);</span>
+<span class="fc" id="L295">            Map&lt;String, String&gt; headersResponse = ConnectionUtil.getHeadersMap(response);</span>
+<span class="fc" id="L296">            int sizeHeaders = headersResponse.keySet()</span>
+<span class="fc" id="L297">                .stream()</span>
+<span class="fc" id="L298">                .map(key -&gt; headersResponse.get(key).length() + key.length())</span>
+<span class="fc" id="L299">                .mapToInt(Integer::intValue)</span>
+<span class="fc" id="L300">                .sum();</span>
+<span class="fc" id="L301">            float size = (float) (pageSource.length() + sizeHeaders) / 1024;</span>
+<span class="fc" id="L302">            var decimalFormat = new DecimalFormat(&quot;0.000&quot;);</span>
 
-<span class="fc" id="L302">            String pageSourceFixed = pageSource</span>
-<span class="fc" id="L303">                .replaceAll(&quot;(&quot;+ EngineYaml.CALIBRATOR_SQL +&quot;){60,}&quot;, &quot;$1...&quot;)  // Remove ranges of # created by calibration</span>
-<span class="fc" id="L304">                .replaceAll(&quot;(jIyM){60,}&quot;, &quot;$1...&quot;);  // Remove batch of chars created by Dios</span>
+<span class="fc" id="L304">            String pageSourceFixed = pageSource</span>
+<span class="fc" id="L305">                .replaceAll(&quot;(&quot;+ EngineYaml.CALIBRATOR_SQL +&quot;){60,}&quot;, &quot;$1...&quot;)  // Remove ranges of # created by calibration</span>
+<span class="fc" id="L306">                .replaceAll(&quot;(jIyM){60,}&quot;, &quot;$1...&quot;);  // Remove batch of chars created by Dios</span>
 
             // Send data to Views
-<span class="fc" id="L307">            this.sendToViews(new Seal.MessageHeader(</span>
+<span class="fc" id="L309">            this.sendToViews(new Seal.MessageHeader(</span>
                 urlInjectionFixed,
                 body,
-<span class="fc" id="L310">                ConnectionUtil.getHeadersMap(httpRequest.headers()),</span>
+<span class="fc" id="L312">                ConnectionUtil.getHeadersMap(httpRequest.headers()),</span>
                 headersResponse,
                 pageSourceFixed,
-<span class="fc" id="L313">                decimalFormat.format(size),</span>
-<span class="fc" id="L314">                this.mediatorStrategy.getMeta(),</span>
+<span class="fc" id="L315">                decimalFormat.format(size),</span>
+<span class="fc" id="L316">                this.mediatorStrategy.getMeta(),</span>
                 metadataInjectionProcess,
                 callableBoolean
             ));
-<span class="nc" id="L318">        } catch (IOException e) {</span>
-<span class="nc" id="L319">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Error during connection: {}&quot;, e.getMessage());</span>
-<span class="nc" id="L320">        } catch (InterruptedException e) {</span>
-<span class="nc" id="L321">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L322">            Thread.currentThread().interrupt();</span>
-<span class="pc" id="L323">        }</span>
+<span class="nc" id="L320">        } catch (IOException e) {</span>
+<span class="nc" id="L321">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Error during connection: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L322">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L323">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L324">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L325">        }</span>
 
-<span class="fc" id="L325">        return pageSource;</span>
+<span class="fc" id="L327">        return pageSource;</span>
     }
 
     private String initQueryString(boolean isUsingIndex, String urlInjection, String dataInjection) {
-<span class="fc" id="L329">        String urlInjectionFixed = urlInjection;</span>
-<span class="fc" id="L330">        if (</span>
-<span class="fc bfc" id="L331" title="All 2 branches covered.">            this.mediatorUtils.parameterUtil().getListQueryString().isEmpty()</span>
-<span class="pc bpc" id="L332" title="1 of 2 branches missed.">            &amp;&amp; !this.mediatorUtils.preferencesUtil().isProcessingCsrf()</span>
+<span class="fc" id="L331">        String urlInjectionFixed = urlInjection;</span>
+<span class="fc" id="L332">        if (</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">            this.mediatorUtils.parameterUtil().getListQueryString().isEmpty()</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">            &amp;&amp; !this.mediatorUtils.preferencesUtil().isProcessingCsrf()</span>
         ) {
-<span class="fc" id="L334">            return urlInjectionFixed;</span>
+<span class="fc" id="L336">            return urlInjectionFixed;</span>
         }
             
         // URL without query string like Request and Header can receive
         // new params from &lt;form&gt; parsing, in that case add the '?' to URL
-<span class="pc bpc" id="L339" title="1 of 2 branches missed.">        if (!urlInjectionFixed.contains(&quot;?&quot;)) {</span>
-<span class="nc" id="L340">            urlInjectionFixed += &quot;?&quot;;</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">        if (!urlInjectionFixed.contains(&quot;?&quot;)) {</span>
+<span class="nc" id="L342">            urlInjectionFixed += &quot;?&quot;;</span>
         }
-<span class="fc" id="L342">        urlInjectionFixed += this.buildQuery(</span>
-<span class="fc" id="L343">            this.mediatorMethod.getQuery(),</span>
-<span class="fc" id="L344">            this.mediatorUtils.parameterUtil().getQueryStringFromEntries(),</span>
+<span class="fc" id="L344">        urlInjectionFixed += this.buildQuery(</span>
+<span class="fc" id="L345">            this.mediatorMethod.getQuery(),</span>
+<span class="fc" id="L346">            this.mediatorUtils.parameterUtil().getQueryStringFromEntries(),</span>
             isUsingIndex,
             dataInjection
         );
-<span class="fc" id="L348">        return this.mediatorUtils.csrfUtil().addQueryStringToken(urlInjectionFixed);</span>
+<span class="fc" id="L350">        return this.mediatorUtils.csrfUtil().addQueryStringToken(urlInjectionFixed);</span>
     }
 
     private void initHeader(boolean isUsingIndex, String dataInjection, Builder httpRequest) {
-<span class="fc bfc" id="L352" title="All 2 branches covered.">        if (!this.mediatorUtils.parameterUtil().getListHeader().isEmpty()) {</span>
-<span class="fc" id="L353">            Stream.of(</span>
-<span class="fc" id="L354">                this.buildQuery(</span>
-<span class="fc" id="L355">                    this.mediatorMethod.getHeader(),</span>
-<span class="fc" id="L356">                    this.mediatorUtils.parameterUtil().getHeaderFromEntries(),</span>
+<span class="fc bfc" id="L354" title="All 2 branches covered.">        if (!this.mediatorUtils.parameterUtil().getListHeader().isEmpty()) {</span>
+<span class="fc" id="L355">            Stream.of(</span>
+<span class="fc" id="L356">                this.buildQuery(</span>
+<span class="fc" id="L357">                    this.mediatorMethod.getHeader(),</span>
+<span class="fc" id="L358">                    this.mediatorUtils.parameterUtil().getHeaderFromEntries(),</span>
                     isUsingIndex,
                     dataInjection
                 )
-<span class="fc" id="L360">                .split(&quot;\\\\r\\\\n&quot;)</span>
+<span class="fc" id="L362">                .split(&quot;\\\\r\\\\n&quot;)</span>
             )
-<span class="fc" id="L362">            .forEach(header -&gt; {</span>
-<span class="fc bfc" id="L363" title="All 2 branches covered.">                if (header.split(&quot;:&quot;).length == 2) {</span>
+<span class="fc" id="L364">            .forEach(header -&gt; {</span>
+<span class="fc bfc" id="L365" title="All 2 branches covered.">                if (header.split(&quot;:&quot;).length == 2) {</span>
                     try {  // TODO Should not catch, rethrow or use runtime exception
-<span class="fc" id="L365">                        HeaderUtil.sanitizeHeaders(</span>
+<span class="fc" id="L367">                        HeaderUtil.sanitizeHeaders(</span>
                             httpRequest,
                             new SimpleEntry&lt;&gt;(
-<span class="fc" id="L368">                                header.split(&quot;:&quot;)[0],</span>
-<span class="fc" id="L369">                                header.split(&quot;:&quot;)[1]</span>
+<span class="fc" id="L370">                                header.split(&quot;:&quot;)[0],</span>
+<span class="fc" id="L371">                                header.split(&quot;:&quot;)[1]</span>
                             )
                         );
-<span class="nc" id="L372">                    } catch (JSqlException e) {</span>
-<span class="nc" id="L373">                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Headers sanitizing issue caught already during connection, ignoring&quot;, e);</span>
-<span class="fc" id="L374">                    }</span>
+<span class="nc" id="L374">                    } catch (JSqlException e) {</span>
+<span class="nc" id="L375">                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Headers sanitizing issue caught already during connection, ignoring&quot;, e);</span>
+<span class="fc" id="L376">                    }</span>
                 }
-<span class="fc" id="L376">            });</span>
+<span class="fc" id="L378">            });</span>
         }
-<span class="fc" id="L378">    }</span>
+<span class="fc" id="L380">    }</span>
 
     private String initRequest(boolean isUsingIndex, String dataInjection, Builder httpRequest) {
-<span class="fc" id="L381">        if (</span>
-<span class="fc bfc" id="L382" title="All 2 branches covered.">            this.mediatorUtils.parameterUtil().getListRequest().isEmpty()</span>
-<span class="fc bfc" id="L383" title="All 2 branches covered.">            &amp;&amp; this.mediatorUtils.csrfUtil().getTokenCsrf() == null</span>
+<span class="fc" id="L383">        if (</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">            this.mediatorUtils.parameterUtil().getListRequest().isEmpty()</span>
+<span class="fc bfc" id="L385" title="All 2 branches covered.">            &amp;&amp; this.mediatorUtils.csrfUtil().getTokenCsrf() == null</span>
         ) {
-<span class="fc" id="L385">            return StringUtils.EMPTY;</span>
+<span class="fc" id="L387">            return StringUtils.EMPTY;</span>
         }
             
         // Set connection method
         // Active for query string injection too, in that case inject query string still with altered method
         
-<span class="fc bfc" id="L391" title="All 2 branches covered.">        if (this.mediatorUtils.parameterUtil().isRequestSoap()) {</span>
-<span class="fc" id="L392">            httpRequest.setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, &quot;text/xml&quot;);</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">        if (this.mediatorUtils.parameterUtil().isRequestSoap()) {</span>
+<span class="fc" id="L394">            httpRequest.setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, &quot;text/xml&quot;);</span>
         } else {
-<span class="fc" id="L394">            httpRequest.setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, &quot;application/x-www-form-urlencoded&quot;);</span>
+<span class="fc" id="L396">            httpRequest.setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, &quot;application/x-www-form-urlencoded&quot;);</span>
         }
 
-<span class="fc" id="L397">        var body = new StringBuilder();</span>
-<span class="fc" id="L398">        this.mediatorUtils.csrfUtil().addRequestToken(body);</span>
+<span class="fc" id="L399">        var body = new StringBuilder();</span>
+<span class="fc" id="L400">        this.mediatorUtils.csrfUtil().addRequestToken(body);</span>
             
-<span class="fc bfc" id="L400" title="All 2 branches covered.">        if (this.mediatorUtils.connectionUtil().getTypeRequest().matches(&quot;PUT|POST&quot;)) {</span>
-<span class="fc bfc" id="L401" title="All 2 branches covered.">            if (this.mediatorUtils.parameterUtil().isRequestSoap()) {</span>
-<span class="fc" id="L402">                body.append(</span>
-<span class="fc" id="L403">                    this.buildQuery(</span>
-<span class="fc" id="L404">                        this.mediatorMethod.getRequest(),</span>
-<span class="fc" id="L405">                        this.mediatorUtils.parameterUtil().getRawRequest(),</span>
+<span class="fc bfc" id="L402" title="All 2 branches covered.">        if (this.mediatorUtils.connectionUtil().getTypeRequest().matches(&quot;PUT|POST&quot;)) {</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">            if (this.mediatorUtils.parameterUtil().isRequestSoap()) {</span>
+<span class="fc" id="L404">                body.append(</span>
+<span class="fc" id="L405">                    this.buildQuery(</span>
+<span class="fc" id="L406">                        this.mediatorMethod.getRequest(),</span>
+<span class="fc" id="L407">                        this.mediatorUtils.parameterUtil().getRawRequest(),</span>
                         isUsingIndex,
                         dataInjection
                     )
                     // Invalid XML characters in recent Spring version
                     // Server needs to urldecode, or stop using out of range chars
-<span class="fc" id="L411">                    .replace(&quot;\u0001&quot;, &quot;&amp;#01;&quot;)</span>
-<span class="fc" id="L412">                    .replace(&quot;\u0003&quot;, &quot;&amp;#03;&quot;)</span>
-<span class="fc" id="L413">                    .replace(&quot;\u0004&quot;, &quot;&amp;#04;&quot;)</span>
-<span class="fc" id="L414">                    .replace(&quot;\u0005&quot;, &quot;&amp;#05;&quot;)</span>
-<span class="fc" id="L415">                    .replace(&quot;\u0006&quot;, &quot;&amp;#06;&quot;)</span>
-<span class="fc" id="L416">                    .replace(&quot;\u0007&quot;, &quot;&amp;#07;&quot;)</span>
-<span class="fc" id="L417">                    .replace(&quot;+&quot;, &quot;%2B&quot;)  // Prevent replace '+' into 'space' on server side urldecode</span>
+<span class="fc" id="L413">                    .replace(&quot;\u0001&quot;, &quot;&amp;#01;&quot;)</span>
+<span class="fc" id="L414">                    .replace(&quot;\u0003&quot;, &quot;&amp;#03;&quot;)</span>
+<span class="fc" id="L415">                    .replace(&quot;\u0004&quot;, &quot;&amp;#04;&quot;)</span>
+<span class="fc" id="L416">                    .replace(&quot;\u0005&quot;, &quot;&amp;#05;&quot;)</span>
+<span class="fc" id="L417">                    .replace(&quot;\u0006&quot;, &quot;&amp;#06;&quot;)</span>
+<span class="fc" id="L418">                    .replace(&quot;\u0007&quot;, &quot;&amp;#07;&quot;)</span>
+<span class="fc" id="L419">                    .replace(&quot;+&quot;, &quot;%2B&quot;)  // Prevent replace '+' into 'space' on server side urldecode</span>
                 );
             } else {
-<span class="fc" id="L420">                body.append(</span>
-<span class="fc" id="L421">                    this.buildQuery(</span>
-<span class="fc" id="L422">                        this.mediatorMethod.getRequest(),</span>
-<span class="fc" id="L423">                        this.mediatorUtils.parameterUtil().getRequestFromEntries(),</span>
+<span class="fc" id="L422">                body.append(</span>
+<span class="fc" id="L423">                    this.buildQuery(</span>
+<span class="fc" id="L424">                        this.mediatorMethod.getRequest(),</span>
+<span class="fc" id="L425">                        this.mediatorUtils.parameterUtil().getRequestFromEntries(),</span>
                         isUsingIndex,
                         dataInjection
                     )
@@ -428,68 +430,68 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
         }
         
-<span class="fc" id="L431">        var bodyPublisher = BodyPublishers.ofString(body.toString());</span>
-<span class="fc" id="L432">        httpRequest.method(</span>
-<span class="fc" id="L433">            this.mediatorUtils.connectionUtil().getTypeRequest(),</span>
+<span class="fc" id="L433">        var bodyPublisher = BodyPublishers.ofString(body.toString());</span>
+<span class="fc" id="L434">        httpRequest.method(</span>
+<span class="fc" id="L435">            this.mediatorUtils.connectionUtil().getTypeRequest(),</span>
             bodyPublisher
         );
-<span class="fc" id="L436">        return body.toString();</span>
+<span class="fc" id="L438">        return body.toString();</span>
     }
     
     private String buildQuery(AbstractMethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
         String query;
-<span class="fc" id="L441">        String paramLeadFixed = paramLead.replace(</span>
+<span class="fc" id="L443">        String paramLeadFixed = paramLead.replace(</span>
             InjectionModel.STAR,
             TamperingUtil.TAG_OPENED + InjectionModel.STAR + TamperingUtil.TAG_CLOSED
         );
-<span class="fc" id="L445">        if (</span>
+<span class="fc" id="L447">        if (</span>
             // No parameter transformation if method is not selected by user
-<span class="fc bfc" id="L447" title="All 2 branches covered.">            this.mediatorUtils.connectionUtil().getMethodInjection() != methodInjection</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">            this.mediatorUtils.connectionUtil().getMethodInjection() != methodInjection</span>
             // No parameter transformation if injection point in URL
-<span class="fc bfc" id="L449" title="All 2 branches covered.">            || this.mediatorUtils.connectionUtil().getUrlBase().contains(InjectionModel.STAR)</span>
+<span class="fc bfc" id="L451" title="All 2 branches covered.">            || this.mediatorUtils.connectionUtil().getUrlBase().contains(InjectionModel.STAR)</span>
         ) {
-<span class="fc" id="L451">            query = paramLeadFixed;  // Just pass parameters without any transformation</span>
-<span class="fc" id="L452">        } else if (</span>
+<span class="fc" id="L453">            query = paramLeadFixed;  // Just pass parameters without any transformation</span>
+<span class="fc" id="L454">        } else if (</span>
             // If method is selected by user and URL does not contain injection point
             // but parameters contain an injection point
             // then replace injection point by SQL expression in this parameter
-<span class="fc bfc" id="L456" title="All 2 branches covered.">            paramLeadFixed.contains(InjectionModel.STAR)</span>
+<span class="fc bfc" id="L458" title="All 2 branches covered.">            paramLeadFixed.contains(InjectionModel.STAR)</span>
         ) {
-<span class="fc" id="L458">            query = this.initStarInjection(paramLeadFixed, isUsingIndex, sqlTrail);</span>
+<span class="fc" id="L460">            query = this.initStarInjection(paramLeadFixed, isUsingIndex, sqlTrail);</span>
         } else {
-<span class="fc" id="L460">            query = this.initRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);</span>
+<span class="fc" id="L462">            query = this.initRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);</span>
         }
-<span class="fc" id="L462">        query = this.cleanQuery(methodInjection, query);  // Remove comments except empty /**/</span>
+<span class="fc" id="L464">        query = this.cleanQuery(methodInjection, query);  // Remove comments except empty /**/</span>
         // Add empty comments with space=&gt;/**/
-<span class="fc bfc" id="L464" title="All 2 branches covered.">        if (this.mediatorUtils.connectionUtil().getMethodInjection() == methodInjection) {</span>
-<span class="fc" id="L465">            query = this.mediatorUtils.tamperingUtil().tamper(query);</span>
+<span class="fc bfc" id="L466" title="All 2 branches covered.">        if (this.mediatorUtils.connectionUtil().getMethodInjection() == methodInjection) {</span>
+<span class="fc" id="L467">            query = this.mediatorUtils.tamperingUtil().tamper(query);</span>
         } else {  // remove tags added on non injection point like headers 'Accept: */*'
-<span class="fc" id="L467">            String regexToRemoveTamperTags = String.format(&quot;(?i)%s|%s&quot;, TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);</span>
-<span class="fc" id="L468">            query = query.replaceAll(regexToRemoveTamperTags, StringUtils.EMPTY);</span>
+<span class="fc" id="L469">            String regexToRemoveTamperTags = String.format(&quot;(?i)%s|%s&quot;, TamperingUtil.TAG_OPENED, TamperingUtil.TAG_CLOSED);</span>
+<span class="fc" id="L470">            query = query.replaceAll(regexToRemoveTamperTags, StringUtils.EMPTY);</span>
         }
-<span class="fc" id="L470">        return this.applyEncoding(methodInjection, query);</span>
+<span class="fc" id="L472">        return this.applyEncoding(methodInjection, query);</span>
     }
 
     private String initRawInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
         String query;
         // Method is selected by user and there's no injection point
-<span class="pc bpc" id="L476" title="1 of 2 branches missed.">        if (!isUsingIndex) {</span>
+<span class="pc bpc" id="L478" title="1 of 2 branches missed.">        if (!isUsingIndex) {</span>
             // Several SQL expressions does not use indexes in SELECT,
             // like Boolean, Error, Shell and search for character insertion,
             // in that case concat SQL expression to the end of param.
-<span class="fc" id="L480">            query = paramLead + sqlTrail;</span>
+<span class="fc" id="L482">            query = paramLead + sqlTrail;</span>
         } else {
             // Concat indexes found for Union strategy to params
             // and use visible Index for injection
-<span class="nc" id="L484">            query = paramLead + this.getMediatorStrategy().getSpecificUnion().getIndexesInUrl().replaceAll(</span>
-<span class="nc" id="L485">                String.format(EngineYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),</span>
+<span class="nc" id="L486">            query = paramLead + this.getMediatorStrategy().getSpecificUnion().getIndexesInUrl().replaceAll(</span>
+<span class="nc" id="L487">                String.format(EngineYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),</span>
                 // Oracle column often contains $, which is reserved for regex.
                 // =&gt; need to be escape with quoteReplacement()
-<span class="nc" id="L488">                Matcher.quoteReplacement(sqlTrail)</span>
+<span class="nc" id="L490">                Matcher.quoteReplacement(sqlTrail)</span>
             );
         }
         // Add ending line comment by engine
-<span class="fc" id="L492">        return query + this.mediatorEngine.getEngine().instance().endingComment();</span>
+<span class="fc" id="L494">        return query + this.mediatorEngine.getEngine().instance().endingComment();</span>
     }
 
     private String initStarInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
@@ -498,23 +500,23 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // like Boolean, Error, Shell and search for character insertion,
         // in that case replace injection point by SQL expression.
         // Injection point is always at the end?
-<span class="fc bfc" id="L501" title="All 2 branches covered.">        if (!isUsingIndex) {</span>
-<span class="fc" id="L502">            query = paramLead.replace(</span>
+<span class="fc bfc" id="L503" title="All 2 branches covered.">        if (!isUsingIndex) {</span>
+<span class="fc" id="L504">            query = paramLead.replace(</span>
                 InjectionModel.STAR,
                 sqlTrail
             );
         } else {
             // Replace injection point by indexes found for Union strategy
             // and use visible Index for injection
-<span class="fc" id="L509">            query = paramLead.replace(</span>
+<span class="fc" id="L511">            query = paramLead.replace(</span>
                 InjectionModel.STAR,
-<span class="fc" id="L511">                this.mediatorStrategy.getSpecificUnion().getIndexesInUrl().replace(</span>
-<span class="fc" id="L512">                    String.format(EngineYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),</span>
+<span class="fc" id="L513">                this.mediatorStrategy.getSpecificUnion().getIndexesInUrl().replace(</span>
+<span class="fc" id="L514">                    String.format(EngineYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificUnion().getVisibleIndex()),</span>
                     sqlTrail
                 )
             );
         }
-<span class="fc" id="L517">        return query;</span>
+<span class="fc" id="L519">        return query;</span>
     }
 
     /**
@@ -522,66 +524,66 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * - Tamper space=&gt;comment
      */
     private String cleanQuery(AbstractMethodInjection methodInjection, String query) {
-<span class="fc" id="L525">        String queryFixed = query;</span>
-<span class="fc" id="L526">        if (</span>
-<span class="fc bfc" id="L527" title="All 2 branches covered.">            methodInjection == this.mediatorMethod.getRequest()</span>
+<span class="fc" id="L527">        String queryFixed = query;</span>
+<span class="fc" id="L528">        if (</span>
+<span class="fc bfc" id="L529" title="All 2 branches covered.">            methodInjection == this.mediatorMethod.getRequest()</span>
             &amp;&amp; (
-<span class="fc bfc" id="L529" title="All 2 branches covered.">                this.mediatorUtils.parameterUtil().isRequestSoap()</span>
-<span class="fc bfc" id="L530" title="All 2 branches covered.">                || this.mediatorUtils.parameterUtil().isMultipartRequest()</span>
+<span class="fc bfc" id="L531" title="All 2 branches covered.">                this.mediatorUtils.parameterUtil().isRequestSoap()</span>
+<span class="fc bfc" id="L532" title="All 2 branches covered.">                || this.mediatorUtils.parameterUtil().isMultipartRequest()</span>
             )
         ) {
-<span class="fc" id="L533">            queryFixed = StringUtil.removeSqlComment(queryFixed)</span>
-<span class="fc" id="L534">                .replace(&quot;+&quot;, &quot; &quot;)</span>
-<span class="fc" id="L535">                .replace(&quot;%2b&quot;, &quot;+&quot;)  // Failsafe</span>
-<span class="fc" id="L536">                .replace(&quot;%23&quot;, &quot;#&quot;);  // End comment</span>
-<span class="fc bfc" id="L537" title="All 2 branches covered.">            if (this.mediatorUtils.parameterUtil().isMultipartRequest()) {</span>
+<span class="fc" id="L535">            queryFixed = StringUtil.removeSqlComment(queryFixed)</span>
+<span class="fc" id="L536">                .replace(&quot;+&quot;, &quot; &quot;)</span>
+<span class="fc" id="L537">                .replace(&quot;%2b&quot;, &quot;+&quot;)  // Failsafe</span>
+<span class="fc" id="L538">                .replace(&quot;%23&quot;, &quot;#&quot;);  // End comment</span>
+<span class="fc bfc" id="L539" title="All 2 branches covered.">            if (this.mediatorUtils.parameterUtil().isMultipartRequest()) {</span>
                 // restore linefeed from textfield
-<span class="fc" id="L539">                queryFixed = queryFixed.replaceAll(&quot;(?s)\\\\n&quot;, &quot;\r\n&quot;);</span>
+<span class="fc" id="L541">                queryFixed = queryFixed.replaceAll(&quot;(?s)\\\\n&quot;, &quot;\r\n&quot;);</span>
             }
         } else {
-<span class="fc" id="L542">            queryFixed = StringUtil.cleanSql(queryFixed);</span>
+<span class="fc" id="L544">            queryFixed = StringUtil.cleanSql(queryFixed);</span>
         }
-<span class="fc" id="L544">        return queryFixed;</span>
+<span class="fc" id="L546">        return queryFixed;</span>
     }
 
     private String applyEncoding(AbstractMethodInjection methodInjection, String query) {
-<span class="fc" id="L548">        String queryFixed = query;</span>
-<span class="fc bfc" id="L549" title="All 2 branches covered.">        if (!this.mediatorUtils.parameterUtil().isRequestSoap()) {</span>
-<span class="fc bfc" id="L550" title="All 2 branches covered.">            if (methodInjection == this.mediatorMethod.getQuery()) {</span>
+<span class="fc" id="L550">        String queryFixed = query;</span>
+<span class="fc bfc" id="L551" title="All 2 branches covered.">        if (!this.mediatorUtils.parameterUtil().isRequestSoap()) {</span>
+<span class="fc bfc" id="L552" title="All 2 branches covered.">            if (methodInjection == this.mediatorMethod.getQuery()) {</span>
                 // URL encode each character because no query parameter context
-<span class="pc bpc" id="L552" title="1 of 2 branches missed.">                if (!this.mediatorUtils.preferencesUtil().isUrlEncodingDisabled()) {</span>
-<span class="fc" id="L553">                    queryFixed = queryFixed.replace(&quot;'&quot;, &quot;%27&quot;);</span>
-<span class="fc" id="L554">                    queryFixed = queryFixed.replace(&quot;(&quot;, &quot;%28&quot;);</span>
-<span class="fc" id="L555">                    queryFixed = queryFixed.replace(&quot;)&quot;, &quot;%29&quot;);</span>
-<span class="fc" id="L556">                    queryFixed = queryFixed.replace(&quot;{&quot;, &quot;%7b&quot;);</span>
-<span class="fc" id="L557">                    queryFixed = queryFixed.replace(&quot;[&quot;, &quot;%5b&quot;);</span>
-<span class="fc" id="L558">                    queryFixed = queryFixed.replace(&quot;]&quot;, &quot;%5d&quot;);</span>
-<span class="fc" id="L559">                    queryFixed = queryFixed.replace(&quot;}&quot;, &quot;%7d&quot;);</span>
-<span class="fc" id="L560">                    queryFixed = queryFixed.replace(&quot;&gt;&quot;, &quot;%3e&quot;);</span>
-<span class="fc" id="L561">                    queryFixed = queryFixed.replace(&quot;&lt;&quot;, &quot;%3c&quot;);</span>
-<span class="fc" id="L562">                    queryFixed = queryFixed.replace(&quot;?&quot;, &quot;%3f&quot;);</span>
-<span class="fc" id="L563">                    queryFixed = queryFixed.replace(&quot;_&quot;, &quot;%5f&quot;);</span>
-<span class="fc" id="L564">                    queryFixed = queryFixed.replace(&quot;,&quot;, &quot;%2c&quot;);</span>
+<span class="pc bpc" id="L554" title="1 of 2 branches missed.">                if (!this.mediatorUtils.preferencesUtil().isUrlEncodingDisabled()) {</span>
+<span class="fc" id="L555">                    queryFixed = queryFixed.replace(&quot;'&quot;, &quot;%27&quot;);</span>
+<span class="fc" id="L556">                    queryFixed = queryFixed.replace(&quot;(&quot;, &quot;%28&quot;);</span>
+<span class="fc" id="L557">                    queryFixed = queryFixed.replace(&quot;)&quot;, &quot;%29&quot;);</span>
+<span class="fc" id="L558">                    queryFixed = queryFixed.replace(&quot;{&quot;, &quot;%7b&quot;);</span>
+<span class="fc" id="L559">                    queryFixed = queryFixed.replace(&quot;[&quot;, &quot;%5b&quot;);</span>
+<span class="fc" id="L560">                    queryFixed = queryFixed.replace(&quot;]&quot;, &quot;%5d&quot;);</span>
+<span class="fc" id="L561">                    queryFixed = queryFixed.replace(&quot;}&quot;, &quot;%7d&quot;);</span>
+<span class="fc" id="L562">                    queryFixed = queryFixed.replace(&quot;&gt;&quot;, &quot;%3e&quot;);</span>
+<span class="fc" id="L563">                    queryFixed = queryFixed.replace(&quot;&lt;&quot;, &quot;%3c&quot;);</span>
+<span class="fc" id="L564">                    queryFixed = queryFixed.replace(&quot;?&quot;, &quot;%3f&quot;);</span>
+<span class="fc" id="L565">                    queryFixed = queryFixed.replace(&quot;_&quot;, &quot;%5f&quot;);</span>
+<span class="fc" id="L566">                    queryFixed = queryFixed.replace(&quot;,&quot;, &quot;%2c&quot;);</span>
                 }
                 // HTTP forbidden characters
-<span class="fc" id="L567">                queryFixed = queryFixed.replace(StringUtils.SPACE, &quot;+&quot;);</span>
-<span class="fc" id="L568">                queryFixed = queryFixed.replace(&quot;`&quot;, &quot;%60&quot;);  // from `${database}`.`${table}`</span>
-<span class="fc" id="L569">                queryFixed = queryFixed.replace(&quot;\&quot;&quot;, &quot;%22&quot;);</span>
-<span class="fc" id="L570">                queryFixed = queryFixed.replace(&quot;|&quot;, &quot;%7c&quot;);</span>
-<span class="fc" id="L571">                queryFixed = queryFixed.replace(&quot;\\&quot;, &quot;%5c&quot;);</span>
-<span class="fc bfc" id="L572" title="All 2 branches covered.">            } else if (methodInjection != this.mediatorMethod.getRequest()) {</span>
+<span class="fc" id="L569">                queryFixed = queryFixed.replace(StringUtils.SPACE, &quot;+&quot;);</span>
+<span class="fc" id="L570">                queryFixed = queryFixed.replace(&quot;`&quot;, &quot;%60&quot;);  // from `${database}`.`${table}`</span>
+<span class="fc" id="L571">                queryFixed = queryFixed.replace(&quot;\&quot;&quot;, &quot;%22&quot;);</span>
+<span class="fc" id="L572">                queryFixed = queryFixed.replace(&quot;|&quot;, &quot;%7c&quot;);</span>
+<span class="fc" id="L573">                queryFixed = queryFixed.replace(&quot;\\&quot;, &quot;%5c&quot;);</span>
+<span class="fc bfc" id="L574" title="All 2 branches covered.">            } else if (methodInjection != this.mediatorMethod.getRequest()) {</span>
                 // For cookies in Spring (confirmed, covered by integration tests)
-<span class="fc" id="L574">                queryFixed = queryFixed.replace(&quot;+&quot;, &quot;%20&quot;);</span>
-<span class="fc" id="L575">                queryFixed = queryFixed.replace(&quot;,&quot;, &quot;%2c&quot;);</span>
+<span class="fc" id="L576">                queryFixed = queryFixed.replace(&quot;+&quot;, &quot;%20&quot;);</span>
+<span class="fc" id="L577">                queryFixed = queryFixed.replace(&quot;,&quot;, &quot;%2c&quot;);</span>
                 try {  // fix #95709: IllegalArgumentException on decode()
-<span class="fc" id="L577">                    queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);</span>
-<span class="nc" id="L578">                } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L579">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect values in [{}], please check the parameters&quot;, methodInjection.name());</span>
-<span class="nc" id="L580">                    throw new JSqlRuntimeException(e);</span>
-<span class="fc" id="L581">                }</span>
+<span class="fc" id="L579">                    queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L580">                } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L581">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect values in [{}], please check the parameters&quot;, methodInjection.name());</span>
+<span class="nc" id="L582">                    throw new JSqlRuntimeException(e);</span>
+<span class="fc" id="L583">                }</span>
             }
         }
-<span class="fc" id="L584">        return queryFixed;</span>
+<span class="fc" id="L586">        return queryFixed;</span>
     }
     
     /**
@@ -590,59 +592,71 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * @param source Text to display in console
      */
     public void sendResponseFromSite(String message, String source) {
-<span class="nc" id="L593">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{}, response from site:&quot;, message);</span>
-<span class="nc" id="L594">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;&gt;&gt;&gt;{}&quot;, source);</span>
-<span class="nc" id="L595">    }</span>
+<span class="nc" id="L595">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{}, response from site:&quot;, message);</span>
+<span class="nc" id="L596">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;&gt;&gt;&gt;{}&quot;, source);</span>
+<span class="nc" id="L597">    }</span>
     
     
     // Getters and setters
 
     public boolean shouldErasePreviousInjection() {
-<span class="nc" id="L601">        return this.shouldErasePreviousInjection;</span>
+<span class="nc" id="L603">        return this.shouldErasePreviousInjection;</span>
+    }
+
+    public boolean isScanning() {
+<span class="nc" id="L607">        return this.isScanning;</span>
     }
 
     public void setIsScanning(boolean isScanning) {
-<span class="fc" id="L605">        this.isScanning = isScanning;</span>
-<span class="fc" id="L606">    }</span>
+<span class="fc" id="L611">        this.isScanning = isScanning;</span>
+<span class="fc" id="L612">    }</span>
+
+    public boolean isInjectingWithoutScan() {
+<span class="nc" id="L615">        return this.isInjectingWithoutScan;</span>
+    }
+
+    public void setIsInjectingWithoutScan(boolean isInjectingWithoutScan) {
+<span class="nc" id="L619">        this.isInjectingWithoutScan = isInjectingWithoutScan;</span>
+<span class="nc" id="L620">    }</span>
 
     public PropertiesUtil getPropertiesUtil() {
-<span class="fc" id="L609">        return this.propertiesUtil;</span>
+<span class="fc" id="L623">        return this.propertiesUtil;</span>
     }
 
     public MediatorUtils getMediatorUtils() {
-<span class="fc" id="L613">        return this.mediatorUtils;</span>
+<span class="fc" id="L627">        return this.mediatorUtils;</span>
     }
 
     public MediatorEngine getMediatorEngine() {
-<span class="fc" id="L617">        return this.mediatorEngine;</span>
+<span class="fc" id="L631">        return this.mediatorEngine;</span>
     }
 
     public MediatorMethod getMediatorMethod() {
-<span class="fc" id="L621">        return this.mediatorMethod;</span>
+<span class="fc" id="L635">        return this.mediatorMethod;</span>
     }
 
     public DataAccess getDataAccess() {
-<span class="fc" id="L625">        return this.dataAccess;</span>
+<span class="fc" id="L639">        return this.dataAccess;</span>
     }
 
     public ResourceAccess getResourceAccess() {
-<span class="fc" id="L629">        return this.resourceAccess;</span>
+<span class="fc" id="L643">        return this.resourceAccess;</span>
     }
 
     public MediatorStrategy getMediatorStrategy() {
-<span class="fc" id="L633">        return this.mediatorStrategy;</span>
+<span class="fc" id="L647">        return this.mediatorStrategy;</span>
     }
 
     public void appendAnalysisReport(String analysisReport) {
-<span class="fc" id="L637">        this.appendAnalysisReport(analysisReport, false);</span>
-<span class="fc" id="L638">    }</span>
+<span class="fc" id="L651">        this.appendAnalysisReport(analysisReport, false);</span>
+<span class="fc" id="L652">    }</span>
 
     public void appendAnalysisReport(String analysisReport, boolean isInit) {
-<span class="fc bfc" id="L641" title="All 2 branches covered.">        this.analysisReport += (isInit ? StringUtils.EMPTY : &quot;&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;&quot;) + analysisReport;</span>
-<span class="fc" id="L642">    }</span>
+<span class="fc bfc" id="L655" title="All 2 branches covered.">        this.analysisReport += (isInit ? StringUtils.EMPTY : &quot;&lt;br&gt;&amp;#10;&lt;br&gt;&amp;#10;&quot;) + analysisReport;</span>
+<span class="fc" id="L656">    }</span>
 
     public void setAnalysisReport(String analysisReport) {
-<span class="fc" id="L645">        this.analysisReport = analysisReport;</span>
-<span class="fc" id="L646">    }</span>
+<span class="fc" id="L659">        this.analysisReport = analysisReport;</span>
+<span class="fc" id="L660">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

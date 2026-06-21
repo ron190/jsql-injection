@@ -111,14 +111,14 @@ public class MediatorEngine {
 <span class="fc" id="L111">        this.spanner = new Engine(new EngineYaml(&quot;spanner.yml&quot;, injectionModel));</span>
 <span class="fc" id="L112">        this.sqlite = new Engine(new EngineYaml(&quot;sqlite.yml&quot;, injectionModel)) {</span>
             @Override
-            public String transformSqlite(String resultToParse) {
+            public String transform(String resultToParse) {
 <span class="fc" id="L115">                var resultSqlite = new StringBuilder();</span>
 
 <span class="fc" id="L117">                String resultTmp = resultToParse</span>
 <span class="fc" id="L118">                    .replaceFirst(&quot;[^(]+\\(&quot;, StringUtils.EMPTY)</span>
 <span class="fc" id="L119">                    .trim()</span>
-<span class="fc" id="L120">                    .replaceAll(&quot;\\)$&quot;, StringUtils.EMPTY);</span>
-<span class="fc" id="L121">                resultTmp = resultTmp.replaceAll(&quot;\\([^)]+\\)&quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L120">                    .replaceAll(&quot;\\)$&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L121">                    .replaceAll(&quot;\\([^)]+\\)&quot;, StringUtils.EMPTY);</span>
 
 <span class="fc bfc" id="L123" title="All 2 branches covered.">                for (String columnNameAndType: resultTmp.split(&quot;,&quot;)) {</span>
 <span class="fc bfc" id="L124" title="All 2 branches covered.">                    if (columnNameAndType.trim().startsWith(&quot;primary key&quot;)) {</span>
@@ -151,10 +151,10 @@ public class MediatorEngine {
             this.sybase, teradata, this.vertica, this.virtuoso
         );
 <span class="fc" id="L153">        this.enginesForFingerprint = Arrays.asList(  // Add sortIndex</span>
-            this.mariadb, this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, this.spanner, this.duckdb,
+            this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, this.spanner, this.duckdb,
             this.altibase, ctreeace, this.cubrid, this.db2, this.derby, this.exasol, this.firebird, frontbase, this.hana, this.informix, ingres,
             iris, maxdb, this.mckoi, this.mimer, this.monetdb, this.neo4j, netezza, nuodb, this.presto, this.sybase, teradata, this.vertica,
-            this.virtuoso, this.clickhouse, this.access
+            this.virtuoso, this.clickhouse, this.access, this.mariadb
         );
 
 <span class="fc" id="L160">        this.engine = this.mysql;</span>
@@ -162,7 +162,7 @@ public class MediatorEngine {
 <span class="fc" id="L162">    }</span>
     
     public boolean isSqlite() {
-<span class="fc bfc" id="L165" title="All 2 branches covered.">        return this.getEngine() == this.getSqlite();</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        return this.getEngine() == this.getSqlite();</span>
     }
     
     public Engine fingerprintEngine() {
