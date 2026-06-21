@@ -183,12 +183,8 @@ public class ManagerScan extends AbstractManagerList {
         // wait for ending of ongoing interaction between two injections
         ThreadUtil.sleep(500);
 
-        // Display result only in console — guard against null subscription
-        var subView = MediatorHelper.frame().getSubscriberView();
-        var sub = subView != null ? subView.getSubscription() : null;
-        if (sub != null) {
-            sub.cancel();
-        }
+        // Display result only in console
+        MediatorHelper.frame().getSubscriberView().getSubscription().cancel();
         var subscriberScan = new SubscriberScan();
         MediatorHelper.model().subscribe(subscriberScan);
         while (subscriberScan.getSubscription() == null) {  // defensive concurrency check
