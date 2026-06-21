@@ -5,6 +5,7 @@ import com.jsql.view.swing.panel.preferences.listener.SpinnerMouseWheelListener;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,14 +25,14 @@ public class PanelConnection extends JPanel {
     private final JCheckBox checkboxIsLimitingThreads = new JCheckBox("Limit processing threads:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isLimitingThreads());
     private final JCheckBox checkboxIsConnectionTimeout = new JCheckBox("Set timeout:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isConnectionTimeout());
     private final JCheckBox checkboxIsUnicodeDecodeDisabled = new JCheckBox("Disable Unicode decoding in response", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUnicodeDecodeDisabled());
-    private final JCheckBox checkboxIsUrlDecodeDisabled = new JCheckBox("Disable Url decoding in response", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlDecodeDisabled());
+    private final JCheckBox checkboxIsUrlDecodeDisabled = new JCheckBox("Disable URL decoding in response", MediatorHelper.model().getMediatorUtils().preferencesUtil().isUrlDecodeDisabled());
     
     private final JSpinner spinnerLimitingThreads = new JSpinner();
     private final JSpinner spinnerConnectionTimeout = new JSpinner();
     
-    private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox("Custom CSRF:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCsrfUserTag());
-    private final JTextField textfieldCustomCsrfInputToken = new JPopupTextField(MediatorHelper.model().getMediatorUtils().preferencesUtil().csrfUserTag()).getProxy();
-    private final JTextField textfieldCustomCsrfOutputToken = new JPopupTextField(MediatorHelper.model().getMediatorUtils().preferencesUtil().csrfUserTagOutput()).getProxy();
+    private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox("Additional custom CSRF token to check:", MediatorHelper.model().getMediatorUtils().preferencesUtil().isCsrfUserTag());
+    private final JTextField textfieldCustomCsrfInputToken = new JPopupTextField(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().preferencesUtil().csrfUserTag()).getProxy();
+    private final JTextField textfieldCustomCsrfOutputToken = new JPopupTextField(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().preferencesUtil().csrfUserTagOutput()).getProxy();
     
     public PanelConnection(PanelPreferences panelPreferences) {
         this.checkboxIsFollowingRedirection.setToolTipText(
@@ -44,7 +45,7 @@ public class PanelConnection extends JPanel {
             "Check to disable this behavior.</html>"
         );
         this.checkboxIsUrlDecodeDisabled.setToolTipText(
-            "<html>Url entities %XX are decoded to raw characters by default.<br>" +
+            "<html>URL entities %XX are decoded to raw characters by default.<br>" +
             "Check to disable this behavior.</html>"
         );
         this.checkboxIsNotTestingConnection.setToolTipText(
@@ -107,13 +108,13 @@ public class PanelConnection extends JPanel {
 
         var panelCsrfUserTagInput = new JPanel();
         panelCsrfUserTagInput.setLayout(new BoxLayout(panelCsrfUserTagInput, BoxLayout.LINE_AXIS));
-        panelCsrfUserTagInput.add(new JLabel("Input token to find "));
+        panelCsrfUserTagInput.add(new JLabel("Input token name to search "));
         panelCsrfUserTagInput.add(this.textfieldCustomCsrfInputToken);
         panelCsrfUserTagInput.setMaximumSize(new Dimension(450, this.textfieldCustomCsrfInputToken.getPreferredSize().height));
 
         var panelCsrfUserTagOutput = new JPanel();
         panelCsrfUserTagOutput.setLayout(new BoxLayout(panelCsrfUserTagOutput, BoxLayout.LINE_AXIS));
-        panelCsrfUserTagOutput.add(new JLabel("Output token to write "));
+        panelCsrfUserTagOutput.add(new JLabel("Output token name to set "));
         panelCsrfUserTagOutput.add(this.textfieldCustomCsrfOutputToken);
         panelCsrfUserTagOutput.setMaximumSize(new Dimension(450, this.textfieldCustomCsrfInputToken.getPreferredSize().height));
 

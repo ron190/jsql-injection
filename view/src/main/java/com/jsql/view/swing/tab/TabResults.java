@@ -220,7 +220,7 @@ public class TabResults extends DnDTabbedPane {
                     try {
                         Desktop.getDesktop().browse(linkEvent.getURL().toURI());
                     } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
-                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failing to browse Url", e);
+                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Browsing to URL failed", e);
                     }
                 }
             });

@@ -235,7 +235,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             );
             urlObject = new URI(urlInjectionFixed).toURL();
         } catch (MalformedURLException | URISyntaxException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Query Url: {}", e.getMessage());
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Query URL: {}", e.getMessage());
             return StringUtils.EMPTY;
         }
 

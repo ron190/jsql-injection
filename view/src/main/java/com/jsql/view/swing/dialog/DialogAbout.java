@@ -84,7 +84,7 @@ public class DialogAbout extends JDialog {
             try {
                 Desktop.getDesktop().browse(new URI(MediatorHelper.model().getMediatorUtils().propertiesUtil().getProperty("github.url")));
             } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Browsing to Url failed", e);
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Browsing to URL failed", e);
             }
         });
 
@@ -149,7 +149,7 @@ public class DialogAbout extends JDialog {
                 try {
                     Desktop.getDesktop().browse(linkEvent.getURL().toURI());
                 } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
-                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Browsing to Url failed", e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Browsing to URL failed", e);
                 }
             }
         });

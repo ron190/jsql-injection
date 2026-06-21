@@ -3,6 +3,9 @@ package com.jsql.model.injection.strategy.blind.callable;
 import com.jsql.model.injection.strategy.blind.InjectionCharInsertion;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +17,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * the reference page, and the resulting page.
  */
 public class CallableCharInsertion extends AbstractCallableBit<CallableCharInsertion> {
+
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private LinkedList<Diff> opcodes = new LinkedList<>();  // List of differences found between the reference page, and the present page
 
@@ -48,6 +53,7 @@ public class CallableCharInsertion extends AbstractCallableBit<CallableCharInser
                     return false;
                 }
             } catch (NullPointerException e) {
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Unexpected opcodes failure during char insertion", e);
                 return false;
             }
         }

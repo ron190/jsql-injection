@@ -539,7 +539,8 @@ public class PanelAddressBar extends JPanel {
                 );
 
                 PanelAddressBar.this.advancedButtonAdapter.mouseClicked(true);
-            } catch (IOException | UnsupportedFlavorException e) {
+            } catch (IOException | UnsupportedFlavorException | IllegalStateException e) {
+                // Fix #96410: IllegalStateException on getData()
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
