@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -213,7 +214,7 @@ public class MediatorEngine {
         this.injectionModel.appendAnalysisReport(
             String.join(
                 StringUtils.EMPTY,
-                "# Date: ", LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
+                "# Date: ", LocalDate.now(Clock.systemUTC()).format(DateTimeFormatter.ISO_LOCAL_DATE),
                 "<br>&#10;# Tested on: ", SystemUtils.OS_NAME, " (", SystemUtils.OS_VERSION, ")",
                 "<br>&#10;# Tool: ", StringUtil.APP_NAME, " v", this.injectionModel.getPropertiesUtil().getVersionJsql(),
                 " (<a href=", urlGitHub, ">", urlGitHub, "</a>)",

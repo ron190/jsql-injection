@@ -1,14 +1,15 @@
 {
     "version": "0.114",
     "news": [
+        "[Bugfix] Thanks @dajiaohuang for your contribution on optimizing the scan and injection concurrency",
+        "[Contribute?] Create your pull request : many mysql and postgres clones to cover, testing on docker using python and .NET endpoints, or any other topic",
         "[Iceberg levels] You are at level 0. At best. Can you progress to deeper levels ?",
         "[Level 0] SQL injection strategies: Time, Blind bin, Error, Union (wiki: https://github.com/ron190/jsql-injection/wiki/Strategy)",
-        "[Level -1] Strategies: Blind bit, Multibit (wiki: https://github.com/ron190/jsql-injection/wiki/Strategy#4a-blind-bit--in-parallel)",
+        "[Level -1] Strategies : Blind bit, Multibit (wiki: https://github.com/ron190/jsql-injection/wiki/Strategy#4a-blind-bit--in-parallel)",
         "[Level -2] Injection into Remote Code Execution via User Defined Function and Web shell (wiki: https://github.com/ron190/jsql-injection/wiki/Exploit)",
-        "[Level -3] Strategy: Dns (wiki: https://github.com/ron190/jsql-injection/wiki/Strategy#7-dns--and-callselectbobcom)",
+        "[Level -3] Strategy : Dns (wiki: https://github.com/ron190/jsql-injection/wiki/Strategy#7-dns--and-callselectbobcom)",
         "[Level -4] Injection into RCE into Reverse shell (wiki: https://github.com/ron190/jsql-injection/wiki/Reverse-shell)",
-        "[Level -?] Deep... lost... Buffer overflow ? so cold...",
-        "[Contribute?] Create your pull request : many mysql and postgres clones to cover, testing on docker using python and .NET endpoints, any other topic",
+        "[Level -?] Deeper... lost... Buffer overflow ?",
         "[Pinned] Report any bugs and thoughts, add your star at https://github.com/ron190/jsql-injection"
     ]
 }

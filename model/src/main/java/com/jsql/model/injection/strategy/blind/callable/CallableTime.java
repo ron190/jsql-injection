@@ -4,24 +4,14 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.strategy.blind.InjectionTime;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * Define a call HTTP to the server, require the associated url, character position and bit.
  * diffSeconds represents the response time of the current page
  */
 public class CallableTime extends AbstractCallableBit<CallableTime> {
-    
-    /**
-     * Time before the url call.
-     */
-    private final Calendar calendarOnStart = Calendar.getInstance();
-    
-    /**
-     * Time at the end of the url call.
-     */
-    private final Calendar calendarOnEnd = Calendar.getInstance();
     
     /**
      * Current page loading time.
@@ -79,15 +69,10 @@ public class CallableTime extends AbstractCallableBit<CallableTime> {
      */
     @Override
     public CallableTime call() {
-        this.calendarOnStart.setTime(new Date());
+        var timeInMillisOnStart = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
         this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        this.calendarOnEnd.setTime(new Date());
-        
-        long timeInMillisOnStart = this.calendarOnStart.getTimeInMillis();
-        long timeInMillisOnEnd = this.calendarOnEnd.getTimeInMillis();
-        long diff = timeInMillisOnEnd - timeInMillisOnStart;
-        
-        this.diffSeconds = diff / 1000;
+        var timeInMillisOnEnd = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
+        this.diffSeconds = timeInMillisOnEnd - timeInMillisOnStart;
         return this;
     }
 }
