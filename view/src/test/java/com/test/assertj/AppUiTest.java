@@ -54,7 +54,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -359,15 +358,25 @@ public class AppUiTest {
 
         AppUiTest.logMethod();
         AppUiTest.window.label("labelNETWORK_TAB_URL_LABEL").click();
+
         AppUiTest.window.textBox("textNETWORK_TAB_URL_LABEL").requireText("url");
         AppUiTest.window.label("labelNETWORK_TAB_RESPONSE_LABEL").click();
-        AppUiTest.window.textBox("textNETWORK_TAB_RESPONSE_LABEL").requireText(Pattern.compile(".*key1: value1.*key2: value2.*", Pattern.DOTALL));
+
+        String textNETWORKTabResponseLabel = AppUiTest.window.textBox("textNETWORK_TAB_RESPONSE_LABEL").text();
+        Assertions.assertTrue(textNETWORKTabResponseLabel.contains("key1: value1"));
+        Assertions.assertTrue(textNETWORKTabResponseLabel.contains("key2: value2"));
         AppUiTest.window.label("labelNETWORK_TAB_SOURCE_LABEL").click();
+
         AppUiTest.window.textBox("textNETWORK_TAB_SOURCE_LABEL").requireText("source");
         AppUiTest.window.label("labelNETWORK_TAB_PREVIEW_LABEL").click();
-        AppUiTest.window.textBox("textNETWORK_TAB_PREVIEW_LABEL").requireText(Pattern.compile(".*<html>.*cleaned.*</html>.*", Pattern.DOTALL));
+
+        AppUiTest.window.textBox("textNETWORK_TAB_PREVIEW_LABEL").requireText("cleaned");
         AppUiTest.window.label("labelNETWORK_TAB_HEADERS_LABEL").click();
-        AppUiTest.window.textBox("textNETWORK_TAB_HEADERS_LABEL").requireText(Pattern.compile(".*key1: value1.*key2: value2.*", Pattern.DOTALL));
+
+        String textNETWORKTabHeadersLabel = AppUiTest.window.textBox("textNETWORK_TAB_HEADERS_LABEL").text();
+        Assertions.assertTrue(textNETWORKTabHeadersLabel.contains("key1: value1"));
+        Assertions.assertTrue(textNETWORKTabHeadersLabel.contains("key2: value2"));
+
         AppUiTest.window.label("labelNETWORK_TAB_PARAMS_LABEL").click();
         AppUiTest.window.textBox("textNETWORK_TAB_PARAMS_LABEL").requireText("post");
         AppUiTest.logMethod();

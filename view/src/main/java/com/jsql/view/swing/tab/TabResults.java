@@ -110,8 +110,8 @@ public class TabResults extends DnDTabbedPane {
                         .get()
                         .html()
                         .replaceAll("<img[^>]*>", StringUtils.EMPTY)
-                        .replaceAll("<input[^>]*type=\"?hidden\"?[^>]*>", StringUtils.EMPTY)
-                        .replaceAll("<input[^>]*type=\"?(submit|button)\"?[^>]*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
+                        .replaceAll("<input[^>]+type=\"?hidden[^>]+>", StringUtils.EMPTY)
+                        .replaceAll("<input[^>]+type=\"?(submit|button)[^>]+>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
                         .replaceAll("<input[^>]*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
                     Safelist.relaxed()
                         .addTags("center", "div", "span")
@@ -178,7 +178,7 @@ public class TabResults extends DnDTabbedPane {
             browser.addMouseListener(new BrowserMouseAdapter(browser, menu));
 
             final var scroller = new JScrollPane(browser);
-            MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(".*/", StringUtils.EMPTY) + StringUtils.SPACE, scroller);
+            MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(".+/", StringUtils.EMPTY) + StringUtils.SPACE, scroller);
             // Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()
             // Fix #96398: IllegalArgumentException on setSelectedComponent()
             try {
@@ -193,7 +193,7 @@ public class TabResults extends DnDTabbedPane {
 
             // Create a custom tab header
             var header = new TabHeader(
-                urlSuccess.replaceAll(".*/", StringUtils.EMPTY),
+                urlSuccess.replaceAll(".+/", StringUtils.EMPTY),
                 UiUtil.ADMIN.getIcon()
             );
             MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  // Apply the custom header to the tab

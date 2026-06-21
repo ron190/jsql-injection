@@ -31,53 +31,53 @@
         <!-- required as commons-text:1.11.0 not working -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <!-- must align slf4j-nop when bumped -->
-        <dnsjava.version>3.6.4</dnsjava.version>
+        <dnsjava.version>3.6.5</dnsjava.version>
         <gmavenplus-plugin.version>4.3.1</gmavenplus-plugin.version>
-        <groovy.version>5.0.4</groovy.version>
+        <groovy.version>5.0.6</groovy.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <jcabi-log.version>0.24.3</jcabi-log.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20251224</json.version>
-        <jsoup.version>1.22.1</jsoup.version>
+        <jsoup.version>1.22.2</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
-        <junit-platform-runner.version>1.14.3</junit-platform-runner.version>
+        <junit-platform-runner.version>1.14.4</junit-platform-runner.version>
         <nashorn-core.version>15.7</nashorn-core.version>
         <!-- aligned with dnsjava -->
         <slf4j-nop.version>1.7.36</slf4j-nop.version>
         <snakeyaml.version>2.6</snakeyaml.version>
         <spock-core.version>2.4-groovy-5.0</spock-core.version>
-        <spring-boot-dependencies.version>4.1.0-M4</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>4.1.0</spring-boot-dependencies.version>
         <springloaded.version>1.2.8.RELEASE</springloaded.version>
 
         <!-- databases -->
         <access.version>5.1.5</access.version>
-        <altibase.version>8.1.0.0.1</altibase.version>
+        <altibase.version>8.1.0.0.3</altibase.version>
         <clickhouse.version>0.9.8</clickhouse.version>
         <cubrid.version>11.3.2.0053</cubrid.version>
         <db2.version>12.1.4.0</db2.version>
         <derby.version>10.17.1.0</derby.version>
-        <duckdb.version>1.5.1.0</duckdb.version>
+        <duckdb.version>1.5.4.0</duckdb.version>
         <exasol.version>26.2.7</exasol.version>
-        <firebird.version>6.0.4</firebird.version>
+        <firebird.version>6.0.5</firebird.version>
         <h2.version>2.4.240</h2.version>
-        <hana.version>2.28.4</hana.version>
+        <hana.version>2.29.7</hana.version>
         <hsqldb.version>2.7.4</hsqldb.version>
-        <informix.version>15.0.1.0</informix.version>
-        <mariadb.version>3.5.7</mariadb.version>
+        <informix.version>15.0.1.2</informix.version>
+        <mariadb.version>3.5.9</mariadb.version>
         <mckoi.version>1.0.5</mckoi.version>
-        <mimer.version>3.42.3</mimer.version>
+        <mimer.version>11.0.4</mimer.version>
         <monetdb.version>12.2</monetdb.version>
         <mssql.version>13.4.0.jre11</mssql.version>
-        <mysql.version>9.6.0</mysql.version>
+        <mysql.version>9.7.0</mysql.version>
         <!-- failure with 5.28.2 -->
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>
         <!-- both java-driver and jdbc-driver required, should use neo4j-jdbc instead -->
         <neo4j-jdbc-driver.version>4.0.10</neo4j-jdbc-driver.version>
-        <oracle.version>23.26.1.0.0</oracle.version>
+        <oracle.version>23.26.2.0.0</oracle.version>
         <postgres.version>42.7.11</postgres.version>
-        <presto.version>0.296</presto.version>
-        <sqlite.version>3.51.3.0</sqlite.version>
-        <spanner.version>2.35.5</spanner.version>
+        <presto.version>0.298.1</presto.version>
+        <sqlite.version>3.53.2.0</sqlite.version>
+        <spanner.version>2.40.0</spanner.version>
         <sybase.version>16.0</sybase.version>
         <vertica.version>25.3.0-0</vertica.version>
         <virtuoso.version>6.0.0-tp1</virtuoso.version>

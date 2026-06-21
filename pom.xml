@@ -31,15 +31,15 @@
         <awaitility.version>4.3.0</awaitility.version>
         <commons-text.version>1.15.0</commons-text.version>
         <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-        <junit-bom.version>6.1.0-M1</junit-bom.version>
-        <log4j-bom.version>2.25.3</log4j-bom.version>
+        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
+        <junit-bom.version>6.1.0</junit-bom.version>
+        <log4j-bom.version>2.26.0</log4j-bom.version>
         <maven-antrun-plugin.version>3.2.0</maven-antrun-plugin.version>
         <maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>3.10.0</maven-dependency-plugin.version>
+        <maven-dependency-plugin.version>3.11.0</maven-dependency-plugin.version>
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
         <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
         <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
@@ -51,11 +51,11 @@
         <maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
         <maven-scm-publish-plugin.version>3.3.0</maven-scm-publish-plugin.version>
         <maven-site-plugin.version>4.0.0-M16</maven-site-plugin.version>
-        <maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.6.0-M1</maven-surefire-plugin.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
         <!-- enabled on modules builds only, as parent build not reporting -->
-        <pitest-maven.version>1.23.0</pitest-maven.version>
-        <spotbugs-maven-plugin.version>4.9.8.2</spotbugs-maven-plugin.version>
+        <pitest-maven.version>1.25.5</pitest-maven.version>
+        <spotbugs-maven-plugin.version>4.10.2.0</spotbugs-maven-plugin.version>
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
 
         <!-- Tests are disabled for scans by default, profile restores the tests only when required -->

@@ -144,9 +144,9 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
                         StringUtil.detectUtf8(networkData.source())
                     )
                     .replaceAll("<img[^>]*>",StringUtils.EMPTY)  // avoid loading external resources
-                    .replaceAll("<input[^>]*type=\"?hidden\"?.*>", StringUtils.EMPTY)
+                    .replaceAll("<input[^>]+type=\"?hidden[^>]*>", StringUtils.EMPTY)
                     .replaceAll(
-                        "<input[^>]*type=\"?(submit|button)\"?.*>",
+                        "<input[^>]+type=\"?(submit|button)[^>]*>",
                         "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>"
                     )
                     .replaceAll(
