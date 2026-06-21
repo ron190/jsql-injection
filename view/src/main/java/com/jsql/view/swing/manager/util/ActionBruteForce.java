@@ -12,6 +12,7 @@ package com.jsql.view.swing.manager.util;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.ThreadUtil;
 import com.jsql.util.bruter.Bruter;
 import com.jsql.util.bruter.HashBruter;
 import com.jsql.view.swing.manager.ManagerBruteForce;
@@ -89,13 +90,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         while (!hashBruter.isDone() && !hashBruter.isFound() && !this.isStopped) {
             
             hashBruter.setEndtime(System.nanoTime());
-
-            try {
-                Thread.sleep(1000);  // delay to update result panel
-            } catch (InterruptedException e) {
-                LOGGER.log(LogLevelUtil.IGNORE, e, e);
-                Thread.currentThread().interrupt();
-            }
+            ThreadUtil.sleep(1000);  // delay to update result panel
             
             int selectionStart = this.bruteForceManager.getResult().getSelectionStart();
             int selectionEnd = this.bruteForceManager.getResult().getSelectionEnd();

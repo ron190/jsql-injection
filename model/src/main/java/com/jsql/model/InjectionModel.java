@@ -79,7 +79,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * without asking the user 'Start a new injection?'.
      */
     private boolean shouldErasePreviousInjection = false;
-    private boolean isScanning = false;
+    private boolean isScanning = false;  // prevent injecting when already scanning
+    private boolean isInjectingWithoutScan = false;  // prevent scanning when already injecting
 
     public InjectionModel() {
         this.mediatorStrategy = new MediatorStrategy(this);
@@ -191,6 +192,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             );
         } finally {
             this.sendToViews(new Seal.EndPreparation());
+            this.isInjectingWithoutScan = false;
         }
     }
     
@@ -601,8 +603,20 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return this.shouldErasePreviousInjection;
     }
 
+    public boolean isScanning() {
+        return this.isScanning;
+    }
+
     public void setIsScanning(boolean isScanning) {
         this.isScanning = isScanning;
+    }
+
+    public boolean isInjectingWithoutScan() {
+        return this.isInjectingWithoutScan;
+    }
+
+    public void setIsInjectingWithoutScan(boolean isInjectingWithoutScan) {
+        this.isInjectingWithoutScan = isInjectingWithoutScan;
     }
 
     public PropertiesUtil getPropertiesUtil() {

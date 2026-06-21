@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 import static com.jsql.model.accessible.DataAccess.*;
 
 public class EngineYaml implements AbstractEngine {
-    
+
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
@@ -101,26 +101,33 @@ public class EngineYaml implements AbstractEngine {
     private static final String DNS_DOMAIN = "${dns.domain}";
     private static final String DNS_RANDOM = "${dns.random}";
 
+    public static final String PATH_ENGINE = "engine/";
+
     private final ModelYaml modelYaml;
     private final InjectionModel injectionModel;
     
     public EngineYaml(String fileYaml, InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         var yaml = new Yaml();
-        var modelYaml = yaml.loadAs(
-            EngineYaml.class.getClassLoader().getResourceAsStream("engine/" + fileYaml),
+        var modelYamlAsClone = yaml.loadAs(
+            EngineYaml.class.getClassLoader().getResourceAsStream(EngineYaml.PATH_ENGINE + fileYaml),
             ModelYaml.class
         );
-        if (!modelYaml.getClone().isBlank()) {
-            Map<String, Object> originFile = yaml.load(EngineYaml.class.getClassLoader().getResourceAsStream("engine/" + modelYaml.getClone()));
-            Map<String, Object> cloneFile = yaml.load(EngineYaml.class.getClassLoader().getResourceAsStream("engine/" + fileYaml));
+        if (!modelYamlAsClone.getClone().isBlank()) {
+            Map<String, Object> originFile = yaml.load(EngineYaml.class.getClassLoader().getResourceAsStream(
+                EngineYaml.PATH_ENGINE + modelYamlAsClone.getClone()
+            ));
+            Map<String, Object> cloneFile = yaml.load(EngineYaml.class.getClassLoader().getResourceAsStream(
+                EngineYaml.PATH_ENGINE + fileYaml
+            ));
             EngineYaml.mergeMaps(originFile, cloneFile);
             String yamlString = yaml.dump(originFile);
-            modelYaml = yaml.loadAs(yamlString, ModelYaml.class);
+            modelYamlAsClone = yaml.loadAs(yamlString, ModelYaml.class);
         }
-        this.modelYaml = modelYaml;
+        this.modelYaml = modelYamlAsClone;
     }
 
+    @SuppressWarnings("unchecked")
     private static void mergeMaps(Map<String, Object> mapOrigin, Map<String, Object> mapClone) {
         for (Map.Entry<String, Object> entryClone: mapClone.entrySet()) {
             if (

@@ -111,14 +111,14 @@ public class MediatorEngine {
         this.spanner = new Engine(new EngineYaml("spanner.yml", injectionModel));
         this.sqlite = new Engine(new EngineYaml("sqlite.yml", injectionModel)) {
             @Override
-            public String transformSqlite(String resultToParse) {
+            public String transform(String resultToParse) {
                 var resultSqlite = new StringBuilder();
 
                 String resultTmp = resultToParse
                     .replaceFirst("[^(]+\\(", StringUtils.EMPTY)
                     .trim()
-                    .replaceAll("\\)$", StringUtils.EMPTY);
-                resultTmp = resultTmp.replaceAll("\\([^)]+\\)", StringUtils.EMPTY);
+                    .replaceAll("\\)$", StringUtils.EMPTY)
+                    .replaceAll("\\([^)]+\\)", StringUtils.EMPTY);
 
                 for (String columnNameAndType: resultTmp.split(",")) {
                     if (columnNameAndType.trim().startsWith("primary key")) {
@@ -151,10 +151,10 @@ public class MediatorEngine {
             this.sybase, teradata, this.vertica, this.virtuoso
         );
         this.enginesForFingerprint = Arrays.asList(  // Add sortIndex
-            this.mariadb, this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, this.spanner, this.duckdb,
+            this.mysql, this.postgres, this.sqlite, this.h2, this.hsqldb, this.oracle, this.sqlserver, this.spanner, this.duckdb,
             this.altibase, ctreeace, this.cubrid, this.db2, this.derby, this.exasol, this.firebird, frontbase, this.hana, this.informix, ingres,
             iris, maxdb, this.mckoi, this.mimer, this.monetdb, this.neo4j, netezza, nuodb, this.presto, this.sybase, teradata, this.vertica,
-            this.virtuoso, this.clickhouse, this.access
+            this.virtuoso, this.clickhouse, this.access, this.mariadb
         );
 
         this.engine = this.mysql;

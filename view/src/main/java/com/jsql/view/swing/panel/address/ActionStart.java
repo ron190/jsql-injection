@@ -34,6 +34,10 @@ public class ActionStart implements ActionListener {
     }
     
     protected void startInjection() {
+        if (MediatorHelper.model().isScanning()) {
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Scan already ongoing, either wait or cancel the scan manually");
+            return;
+        }
         int option = JOptionPane.OK_OPTION;
         if (MediatorHelper.model().shouldErasePreviousInjection()) {  // Ask the user confirmation if injection already built
             // Fix #93469: IllegalArgumentException on showConfirmDialog()

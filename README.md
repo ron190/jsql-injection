@@ -6,7 +6,7 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 jSQL Injection is also part of the official penetration testing distribution [Kali Linux](https://www.kali.org) and is included in various other distributions like [Pentest Box](https://pentestbox.com), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org) and [BlackArch Linux](http://www.blackarch.org).
 
 [![Java](https://img.shields.io/badge/java-21%20to%2025-orange?logo=java "Version range compatibility")](http://www.oracle.com/technetwork/java/javase/downloads/)
-[![JUnit](https://img.shields.io/badge/junit-5-50940f "Tests")](http://junit.org)
+[![JUnit](https://img.shields.io/badge/junit-6-50940f "Tests")](http://junit.org)
 [![Maven](https://img.shields.io/badge/maven-3.6-a2265a "Build")](https://maven.apache.org/)
 [![Spring](https://img.shields.io/badge/spring-4-6cb52d "Spring")](https://spring.io/)
 [![License](https://img.shields.io/github/license/ron190/jsql-injection "License")](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>

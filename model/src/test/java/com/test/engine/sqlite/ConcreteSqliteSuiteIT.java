@@ -37,9 +37,8 @@ public abstract class ConcreteSqliteSuiteIT extends AbstractTestSuite {
     
     @Override
     protected Collection<String> parse(List<String> rawColumns) {
-        
         String modelColumns = rawColumns.stream().findFirst().orElseThrow();
-        String columnsToParse = this.injectionModel.getMediatorEngine().getSqlite().transformSqlite(modelColumns);
+        String columnsToParse = this.injectionModel.getMediatorEngine().getSqlite().transform(modelColumns);
         
         Matcher regexSearch = Pattern.compile(
                 DataAccess.MODE
@@ -50,7 +49,6 @@ public abstract class ConcreteSqliteSuiteIT extends AbstractTestSuite {
             .matcher(columnsToParse);
 
         List<String> columns = new ArrayList<>();
-        
         while (regexSearch.find()) {
             columns.add(regexSearch.group(1));
         }

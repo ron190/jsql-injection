@@ -92,7 +92,7 @@ public class JdbcRestController {
     }
 
     @RequestMapping("/mariadb")
-    public Greeting greetingMariadb(@RequestParam(value="name") String name) throws ClassNotFoundException {
+    public Greeting greetingMariadb(@RequestParam(value="name") String name) {
         String inject = name.replace(":", "\\:");
         return this.getGreeting(
             SpringApp.get("mariadb").getProperty(JdbcSettings.JAKARTA_JDBC_URL),

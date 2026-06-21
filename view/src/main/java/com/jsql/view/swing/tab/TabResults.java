@@ -15,6 +15,7 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
+import com.jsql.util.ThreadUtil;
 import com.jsql.util.reverse.ModelReverse;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.HotkeyUtil;
@@ -178,9 +179,11 @@ public class TabResults extends DnDTabbedPane {
 
             final var scroller = new JScrollPane(browser);
             MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(".*/", StringUtils.EMPTY) + StringUtils.SPACE, scroller);
-            try {  // Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()
+            // Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()
+            // Fix #96398: IllegalArgumentException on setSelectedComponent()
+            try {
                 MediatorHelper.tabResults().setSelectedComponent(scroller);  // Focus on the new tab
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
             MediatorHelper.tabResults().setToolTipTextAt(
@@ -437,21 +440,16 @@ public class TabResults extends DnDTabbedPane {
         });
 
         Runnable runnableReverse = () -> {
-            try {
-                Thread.sleep(2500);
-                MediatorHelper.model().getMediatorUtils().preferencesUtil().getCommandsReverse().stream()
-                .filter(modelReverse -> modelReverse.getName().equals(buttonGroup.getSelection().getActionCommand()))
-                .findFirst()
-                .ifPresent(modelReverse -> MediatorHelper.model().getResourceAccess().runWebShell(
-                    String.format(modelReverse.getCommand(), address.getText(), port.getText()),
-                    null,  // ignore connection response
-                    terminal.getUrlShell(),
-                    true
-                ));
-            } catch (InterruptedException e) {
-                LOGGER.log(LogLevelUtil.IGNORE, e, e);
-                Thread.currentThread().interrupt();
-            }
+            ThreadUtil.sleep(2500);
+            MediatorHelper.model().getMediatorUtils().preferencesUtil().getCommandsReverse().stream()
+            .filter(modelReverse -> modelReverse.getName().equals(buttonGroup.getSelection().getActionCommand()))
+            .findFirst()
+            .ifPresent(modelReverse -> MediatorHelper.model().getResourceAccess().runWebShell(
+                String.format(modelReverse.getCommand(), address.getText(), port.getText()),
+                null,  // ignore connection response
+                terminal.getUrlShell(),
+                true
+            ));
         };
 
         var panelOpenIn = new JPanel(new BorderLayout());

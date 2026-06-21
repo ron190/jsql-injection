@@ -15,7 +15,7 @@ public class Engine {
         this.labelEngine = "Engine auto";
     }
 
-    public String transformSqlite(String resultToParse) {
+    public String transform(String resultToParse) {
         return resultToParse;
     }
 

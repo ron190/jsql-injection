@@ -298,11 +298,8 @@ public class DataAccess {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
-        // Build SQLite columns
-        if (this.injectionModel.getMediatorEngine().isSqlite()) {
-            resultToParse = this.injectionModel.getMediatorEngine().getSqlite().transformSqlite(resultToParse);
-        }
-        
+        resultToParse = this.injectionModel.getMediatorEngine().getEngine().transform(resultToParse);  // build columns (e.g sqlite)
+
         // Parse all the data we have retrieved
         var regexSearch = Pattern.compile(
                 DataAccess.MODE

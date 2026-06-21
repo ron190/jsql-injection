@@ -14,6 +14,7 @@ import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.engine.model.Engine;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
+import com.jsql.util.ThreadUtil;
 import com.jsql.view.subscriber.SubscriberScan;
 import com.jsql.view.swing.list.*;
 import com.jsql.view.swing.manager.util.StateButton;
@@ -143,6 +144,10 @@ public class ManagerScan extends AbstractManagerList {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select URL(s) to scan");
                 return;
             }
+            if (MediatorHelper.model().isInjectingWithoutScan()) {
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Injection already ongoing, either wait or cancel the injection manually");
+                return;
+            }
             new Thread(() -> {
                 if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
                     ManagerScan.this.run.setText(I18nViewUtil.valueByKey("SCAN_RUN_BUTTON_STOP"));
@@ -176,17 +181,15 @@ public class ManagerScan extends AbstractManagerList {
         MediatorHelper.frame().resetInterface();  // Erase everything in the view from a previous injection
         
         // wait for ending of ongoing interaction between two injections
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            LOGGER.log(LogLevelUtil.IGNORE, e, e);
-            Thread.currentThread().interrupt();
-        }
+        ThreadUtil.sleep(500);
 
         // Display result only in console
         MediatorHelper.frame().getSubscriberView().getSubscription().cancel();
         var subscriberScan = new SubscriberScan();
         MediatorHelper.model().subscribe(subscriberScan);
+        while (subscriberScan.getSubscription() == null) {  // defensive concurrency check
+            ThreadUtil.sleep(500);
+        }
 
         MediatorHelper.model().setIsScanning(true);
         MediatorHelper.model().getResourceAccess().setScanStopped(false);
@@ -219,20 +222,19 @@ public class ManagerScan extends AbstractManagerList {
                 urlItemListScan.getBeanInjection().getRequestType(),
                 true
             );
-            
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                LOGGER.log(LogLevelUtil.IGNORE, e, e);
-                Thread.currentThread().interrupt();
-            }
+
+            ThreadUtil.sleep(500);
         }
         
         // Get back the default view
-        if (subscriberScan.getSubscription() != null) {  // Fix #96366: NullPointerException on cancel()
+        // Fix #96366: NullPointerException on cancel()
+        if (subscriberScan.getSubscription() != null) {  // defensive concurrency check
             subscriberScan.getSubscription().cancel();
         }
-        MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriberView());
+        // Defensive concurrency check: 'IllegalStateException: Duplicate subscribe' when quickly start/stop scanning
+        if (!MediatorHelper.model().isSubscribed(MediatorHelper.frame().getSubscriberView())) {
+            MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriberView());
+        }
 
         MediatorHelper.model().setIsScanning(false);
         MediatorHelper.model().setIsStoppedByUser(false);

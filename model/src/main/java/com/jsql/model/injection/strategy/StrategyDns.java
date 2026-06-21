@@ -12,6 +12,7 @@ package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.ResourceAccess;
+import com.jsql.util.ThreadUtil;
 import com.jsql.view.subscriber.Seal;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBit.BlindOperator;
 import com.jsql.model.injection.engine.model.EngineYaml;
@@ -172,14 +173,9 @@ public class StrategyDns extends AbstractStrategy {
     private void waitDnsResponse(int maxTime) {
         int currentTime = 0;
         while (this.dnsServer.getResults().isEmpty() && currentTime <= maxTime) {
-            try {
-                int waitTime = 250;
-                Thread.sleep(waitTime);
-                currentTime += waitTime;
-            } catch (InterruptedException e) {
-                LOGGER.log(LogLevelUtil.IGNORE, e, e);
-                Thread.currentThread().interrupt();
-            }
+            int waitTime = 250;
+            ThreadUtil.sleep(waitTime);
+            currentTime += waitTime;
         }
         if (currentTime > maxTime) {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing DNS response after {} ms", maxTime);

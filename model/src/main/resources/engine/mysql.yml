@@ -274,7 +274,7 @@ strategy:
     - Unknown column '1337' in 'order clause'
    # binary() disambiguation: if() introduced to sqlite in v3.48.0.0
    # any_value() disambiguation from mariadb but not available on mysql 5
-   engineSpecific: if(${test}, binary('a'), 'b')=binary('a')
+   engineSpecific: if(${test} and instr(version(), 'maria') = 0, binary('a'), 'b')=binary('a')
 
  union:
   indices: union select ${indices}

@@ -112,4 +112,13 @@ public final class ThreadUtil {
             Thread.currentThread().interrupt();
         }
     }
+
+    public static void sleep(long from) {
+        try {
+            Thread.sleep(from);
+        } catch (InterruptedException e) {
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
+            Thread.currentThread().interrupt();
+        }
+    }
 }

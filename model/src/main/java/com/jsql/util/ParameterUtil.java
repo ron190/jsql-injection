@@ -83,7 +83,7 @@ public class ParameterUtil {
         String rawHeader,
         AbstractMethodInjection methodInjection,
         String typeRequest,
-        boolean isScanning
+        boolean isScanning  // todo should be managed at parent level
     ) {
         try {
             String urlQueryFixed = urlQuery;
@@ -119,8 +119,9 @@ public class ParameterUtil {
 
             this.injectionModel.getMediatorUtils().connectionUtil().withMethodInjection(methodInjection);
             this.injectionModel.getMediatorUtils().connectionUtil().withTypeRequest(typeRequest);
-            
-            if (isScanning) {
+
+            this.injectionModel.setIsInjectingWithoutScan(!isScanning);
+            if (isScanning) {  // TODO should manage thread at same level for scan and non-scan
                 this.injectionModel.beginInjection();
             } else {
                 new Thread(this.injectionModel::beginInjection, "ThreadBeginInjection").start();  // in thread
