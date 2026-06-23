@@ -144,9 +144,9 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
 <span class="fc" id="L144">                        StringUtil.detectUtf8(networkData.source())</span>
                     )
 <span class="fc" id="L146">                    .replaceAll(&quot;&lt;img[^&gt;]*&gt;&quot;,StringUtils.EMPTY)  // avoid loading external resources</span>
-<span class="fc" id="L147">                    .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?.*&gt;&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L147">                    .replaceAll(&quot;&lt;input[^&gt;]+type=\&quot;?hidden[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
 <span class="fc" id="L148">                    .replaceAll(</span>
-                        &quot;&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?.*&gt;&quot;,
+                        &quot;&lt;input[^&gt;]+type=\&quot;?(submit|button)[^&gt;]*&gt;&quot;,
                         &quot;&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;&quot;
                     )
 <span class="fc" id="L152">                    .replaceAll(</span>
@@ -212,4 +212,4 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
 <span class="fc" id="L212">        return this.checkBoxDecode;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

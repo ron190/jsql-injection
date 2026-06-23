@@ -110,8 +110,8 @@ public class TabResults extends DnDTabbedPane {
 <span class="fc" id="L110">                        .get()</span>
 <span class="fc" id="L111">                        .html()</span>
 <span class="fc" id="L112">                        .replaceAll(&quot;&lt;img[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
-<span class="fc" id="L113">                        .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
-<span class="fc" id="L114">                        .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?[^&gt;]*&gt;&quot;, &quot;&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;&quot;)</span>
+<span class="fc" id="L113">                        .replaceAll(&quot;&lt;input[^&gt;]+type=\&quot;?hidden[^&gt;]+&gt;&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L114">                        .replaceAll(&quot;&lt;input[^&gt;]+type=\&quot;?(submit|button)[^&gt;]+&gt;&quot;, &quot;&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;&quot;)</span>
 <span class="fc" id="L115">                        .replaceAll(&quot;&lt;input[^&gt;]*&gt;&quot;, &quot;&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;&quot;),</span>
 <span class="fc" id="L116">                    Safelist.relaxed()</span>
 <span class="fc" id="L117">                        .addTags(&quot;center&quot;, &quot;div&quot;, &quot;span&quot;)</span>
@@ -178,7 +178,7 @@ public class TabResults extends DnDTabbedPane {
 <span class="fc" id="L178">            browser.addMouseListener(new BrowserMouseAdapter(browser, menu));</span>
 
 <span class="fc" id="L180">            final var scroller = new JScrollPane(browser);</span>
-<span class="fc" id="L181">            MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY) + StringUtils.SPACE, scroller);</span>
+<span class="fc" id="L181">            MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(&quot;.+/&quot;, StringUtils.EMPTY) + StringUtils.SPACE, scroller);</span>
             // Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()
             // Fix #96398: IllegalArgumentException on setSelectedComponent()
             try {
@@ -193,7 +193,7 @@ public class TabResults extends DnDTabbedPane {
 
             // Create a custom tab header
 <span class="fc" id="L195">            var header = new TabHeader(</span>
-<span class="fc" id="L196">                urlSuccess.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY),</span>
+<span class="fc" id="L196">                urlSuccess.replaceAll(&quot;.+/&quot;, StringUtils.EMPTY),</span>
 <span class="fc" id="L197">                UiUtil.ADMIN.getIcon()</span>
             );
 <span class="fc" id="L199">            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  // Apply the custom header to the tab</span>
@@ -558,4 +558,4 @@ public class TabResults extends DnDTabbedPane {
 <span class="nc" id="L558">        }</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

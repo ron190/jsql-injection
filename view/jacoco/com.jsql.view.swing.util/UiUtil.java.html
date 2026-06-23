@@ -258,38 +258,39 @@ public class UiUtil {
 
     public static void applySyntaxTheme(RSyntaxTextArea textArea) {
         try {
-<span class="fc" id="L261">            boolean isDark = UIManager.getLookAndFeel().getName().matches(&quot;.*(Dark|High Contrast).*&quot;);</span>
-<span class="fc bfc" id="L262" title="All 2 branches covered.">            var xmlTheme = String.format(&quot;/org/fife/ui/rsyntaxtextarea/themes/%s.xml&quot;, isDark ? &quot;dark&quot; : &quot;default&quot;);</span>
-<span class="fc" id="L263">            Theme theme = Theme.load(SqlEngine.class.getResourceAsStream(xmlTheme));</span>
-<span class="fc" id="L264">            theme.apply(textArea);</span>
-<span class="nc" id="L265">        } catch (IOException e) {</span>
-<span class="nc" id="L266">            throw new IllegalArgumentException(e);</span>
-<span class="fc" id="L267">        }</span>
-<span class="fc" id="L268">    }</span>
+<span class="fc" id="L261">            String name = UIManager.getLookAndFeel().getName();</span>
+<span class="pc bpc" id="L262" title="1 of 4 branches missed.">            boolean isDark = name.contains(&quot;Dark&quot;) || name.contains(&quot;High Contrast&quot;);</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">            var xmlTheme = String.format(&quot;/org/fife/ui/rsyntaxtextarea/themes/%s.xml&quot;, isDark ? &quot;dark&quot; : &quot;default&quot;);</span>
+<span class="fc" id="L264">            Theme theme = Theme.load(SqlEngine.class.getResourceAsStream(xmlTheme));</span>
+<span class="fc" id="L265">            theme.apply(textArea);</span>
+<span class="nc" id="L266">        } catch (IOException e) {</span>
+<span class="nc" id="L267">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L268">        }</span>
+<span class="fc" id="L269">    }</span>
 
     public static void applyTheme(String nameTheme) {
         try {
-<span class="fc bfc" id="L272" title="All 2 branches covered.">            UIManager.setLookAndFeel(StringUtils.isBlank(nameTheme) ? FlatLightFlatIJTheme.class.getName() : nameTheme);</span>
-<span class="nc" id="L273">        } catch (ClassNotFoundException e) {  // when preference is set with a theme name deleted</span>
-<span class="nc" id="L274">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Theme not found, falling back to default theme&quot;);</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">            UIManager.setLookAndFeel(StringUtils.isBlank(nameTheme) ? FlatLightFlatIJTheme.class.getName() : nameTheme);</span>
+<span class="nc" id="L274">        } catch (ClassNotFoundException e) {  // when preference is set with a theme name deleted</span>
+<span class="nc" id="L275">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, &quot;Theme not found, falling back to default theme&quot;);</span>
             try {
-<span class="nc" id="L276">                UIManager.setLookAndFeel(FlatLightFlatIJTheme.class.getName());</span>
-<span class="nc" id="L277">            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e2) {</span>
-<span class="nc" id="L278">                throw new IllegalArgumentException(e);</span>
-<span class="nc" id="L279">            }</span>
-<span class="nc" id="L280">        } catch (InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {</span>
-<span class="nc" id="L281">            throw new IllegalArgumentException(e);</span>
-<span class="pc" id="L282">        }</span>
-<span class="fc" id="L283">        FlatLaf.updateUI();  // required</span>
+<span class="nc" id="L277">                UIManager.setLookAndFeel(FlatLightFlatIJTheme.class.getName());</span>
+<span class="nc" id="L278">            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e2) {</span>
+<span class="nc" id="L279">                throw new IllegalArgumentException(e);</span>
+<span class="nc" id="L280">            }</span>
+<span class="nc" id="L281">        } catch (InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {</span>
+<span class="nc" id="L282">            throw new IllegalArgumentException(e);</span>
+<span class="pc" id="L283">        }</span>
+<span class="fc" id="L284">        FlatLaf.updateUI();  // required</span>
 
         // required ATTRIBUTE_ALL without color for compatibility with dark/light mode as text is white/black
-<span class="fc" id="L286">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_WARN, LogLevelUtil.COLOR_RED);</span>
-<span class="fc" id="L287">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_INFORM, LogLevelUtil.COLOR_BLU);</span>
-<span class="fc" id="L288">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_SUCCESS, LogLevelUtil.COLOR_GREEN);</span>
-<span class="fc" id="L289">    }</span>
+<span class="fc" id="L287">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_WARN, LogLevelUtil.COLOR_RED);</span>
+<span class="fc" id="L288">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_INFORM, LogLevelUtil.COLOR_BLU);</span>
+<span class="fc" id="L289">        StyleConstants.setForeground(JTextPaneAppender.ATTRIBUTE_SUCCESS, LogLevelUtil.COLOR_GREEN);</span>
+<span class="fc" id="L290">    }</span>
 
     public static GridLayout getColumnLayout(int size) {
-<span class="fc" id="L292">        return new GridLayout((size + 1) / 2, 2);</span>
+<span class="fc" id="L293">        return new GridLayout((size + 1) / 2, 2);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

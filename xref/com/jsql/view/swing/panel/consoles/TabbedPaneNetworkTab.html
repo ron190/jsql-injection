@@ -152,9 +152,9 @@
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>                         StringUtil.detectUtf8(networkData.source())
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>                     )
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>                     .replaceAll(<span class="jxr_string">"&lt;img[^&gt;]*&gt;"</span>,StringUtils.EMPTY)  <em class="jxr_comment">// avoid loading external resources</em>
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>                     .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?.*&gt;"</span>, StringUtils.EMPTY)
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>                     .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]+type=\&quot;?hidden[^&gt;]*&gt;"</span>, StringUtils.EMPTY)
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>                     .replaceAll(
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>                         <span class="jxr_string">"&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?.*&gt;"</span>,
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>                         <span class="jxr_string">"&lt;input[^&gt;]+type=\&quot;?(submit|button)[^&gt;]*&gt;"</span>,
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>                         <span class="jxr_string">"&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;"</span>
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>                     )
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>                     .replaceAll(

@@ -118,8 +118,8 @@
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>                         .get()
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>                         .html()
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>                         .replaceAll(<span class="jxr_string">"&lt;img[^&gt;]*&gt;"</span>, StringUtils.EMPTY)
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>                         .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?[^&gt;]*&gt;"</span>, StringUtils.EMPTY)
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>                         .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?[^&gt;]*&gt;"</span>, <span class="jxr_string">"&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;"</span>)
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>                         .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]+type=\&quot;?hidden[^&gt;]+&gt;"</span>, StringUtils.EMPTY)
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>                         .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]+type=\&quot;?(submit|button)[^&gt;]+&gt;"</span>, <span class="jxr_string">"&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;"</span>)
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>                         .replaceAll(<span class="jxr_string">"&lt;input[^&gt;]*&gt;"</span>, <span class="jxr_string">"&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;"</span>),
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>                     Safelist.relaxed()
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>                         .addTags(<span class="jxr_string">"center"</span>, <span class="jxr_string">"div"</span>, <span class="jxr_string">"span"</span>)
@@ -186,7 +186,7 @@
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>             browser.addMouseListener(<strong class="jxr_keyword">new</strong> BrowserMouseAdapter(browser, menu));
 <a class="jxr_linenumber" name="L179" href="#L179">179</a> 
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">var</strong> scroller = <strong class="jxr_keyword">new</strong> JScrollPane(browser);
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>             MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(<span class="jxr_string">".*/"</span>, StringUtils.EMPTY) + StringUtils.SPACE, scroller);
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>             MediatorHelper.tabResults().addTab(urlSuccess.replaceAll(<span class="jxr_string">".+/"</span>, StringUtils.EMPTY) + StringUtils.SPACE, scroller);
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>             <em class="jxr_comment">// Fix #96175: ArrayIndexOutOfBoundsException on setSelectedComponent()</em>
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>             <em class="jxr_comment">// Fix #96398: IllegalArgumentException on setSelectedComponent()</em>
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>             <strong class="jxr_keyword">try</strong> {
@@ -201,7 +201,7 @@
 <a class="jxr_linenumber" name="L193" href="#L193">193</a> 
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>             <em class="jxr_comment">// Create a custom tab header</em>
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>             <strong class="jxr_keyword">var</strong> header = <strong class="jxr_keyword">new</strong> <a name="TabHeader" href="../../../../../com/jsql/view/swing/tab/TabHeader.html#TabHeader">TabHeader</a>(
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>                 urlSuccess.replaceAll(<span class="jxr_string">".*/"</span>, StringUtils.EMPTY),
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>                 urlSuccess.replaceAll(<span class="jxr_string">".+/"</span>, StringUtils.EMPTY),
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>                 UiUtil.ADMIN.getIcon()
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>             );
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>             MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);  <em class="jxr_comment">// Apply the custom header to the tab</em>
