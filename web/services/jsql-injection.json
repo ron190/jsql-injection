@@ -1,5 +1,5 @@
 {
-    "version": "0.114",
+    "version": "0.115",
     "news": [
         "[Bugfix] Thanks @dajiaohuang for your contribution on optimizing the scan and injection concurrency",
         "[Contribute?] Create your pull request : many mysql and postgres clones to cover, testing on docker using python and .NET endpoints, or any other topic",
