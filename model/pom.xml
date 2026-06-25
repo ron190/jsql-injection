@@ -58,7 +58,7 @@
         <derby.version>10.17.1.0</derby.version>
         <!-- 'libduckdb_java.so: The specified procedure could not be found' on local 1.5.4.0 -->
         <!-- 'Could not initialize class DuckDNative' -->
-        <duckdb.version>1.5.3.0</duckdb.version>
+        <duckdb.version>1.5.4.0</duckdb.version>
         <exasol.version>26.2.7</exasol.version>
         <firebird.version>6.0.5</firebird.version>
         <h2.version>2.4.240</h2.version>
