@@ -3,7 +3,8 @@ services:
 
   clickhouse:
     container_name: jsql-clickhouse
-    image: clickhouse/clickhouse-server
+    # local issue with 26.6: Illegal instruction
+    image: clickhouse/clickhouse-server:26.5
     privileged: true
     ports:
       - "8123:8123"

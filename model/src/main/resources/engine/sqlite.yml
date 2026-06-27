@@ -177,6 +177,7 @@ strategy:
     - SQLite
    orderByErrorMessage:
     - ORDER BY term out of range - should be between
+   # possible clickhouse 26.6 collision, replace 'case when' with 'multiIf' at runtime
    engineSpecific: printf('a') = case when ${test} then printf('a') else quote('b') end
 
  union:

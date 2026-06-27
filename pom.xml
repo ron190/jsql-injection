@@ -99,6 +99,7 @@
                 <maven-failsafe-plugin.exclude>
                     **/*Altibase*SuiteIT.java,
                     **/*Clickhouse*SuiteIT.java,
+                    **/*Dameng*SuiteIT.java,
                     **/*Db2*SuiteIT.java,
                     **/*Duckdb*SuiteIT.java,
                     **/*Exasol*SuiteIT.java,
