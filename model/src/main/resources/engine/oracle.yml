@@ -177,10 +177,10 @@ strategy:
     - "Warning: oci_parse()"
     - "Warning: oci_execute()"
     - "Warning: oci_fetch_array()"
-   orderByErrorMessage:
-    - ORDER BY item must be the number of a SELECT-list expression
+   orderByErrorMessage:  # todo should be a java list instead of string
+    - "ORDER BY item must be the number of a SELECT-list expression.*|.*l'\u00e9l\u00e9ment ORDER BY doit \u00eatre le num\u00e9ro d'une expression de la liste SELECT"
    # listagg to prevent collision with hsqldb
-   engineSpecific: 0 != bitand(case when ${test} then (select listagg(1) from dual) else (select listagg(2) from dual) end, 1)
+   engineSpecific: 0 != bitand(case when ${test} then (select listagg(1) from dual) else '2' end, 1) and sys_context('userenv','db_name') != 'DAMENG'
 
  union:
   indices: union select ${indices} from dual

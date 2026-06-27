@@ -69,6 +69,17 @@ public class JdbcRestController {
         );
     }
 
+    @RequestMapping("/dameng")
+    public Greeting greetingDameng(@RequestParam(value="name") String name) {
+        String inject = name.replace(":", "\\:");
+        return this.getGreeting(
+            SpringApp.get("dameng").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("dameng").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("dameng").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
+            "select owner from all_tables where '1' = '" + inject + "'"
+        );
+    }
+
     @RequestMapping("/exasol")
     public Greeting greetingExasol(@RequestParam(value="name") String name) {
         String inject = name.replace(":", "\\:");

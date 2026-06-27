@@ -1,11 +1,12 @@
 {
     "version": "0.115",
     "news": [
-        "[Bugfix] Thanks @dajiaohuang for your contribution on optimizing the scan and injection concurrency",
+        "[GenAI] Previous user-only people are now producing cutting edge vibe coded tools with far greater standards than the now deprecated old tools, it's now verifiable",
+        "[Switch] Do not be left behind, replace also your tools by this massive and growing available AI-made toolset. I did already and I'm not regretting it",
+        "[Pivoting] Aligning with AI standard and methodology is ongoing, I'm now migrating the entire code base to Python using advanced prompt engineering. Stay tuned for the next release !",
+        "[Contribution] Thanks @dajiaohuang for suggesting scan and injection concurrency optimization and fix",
         "[Contribute?] Create your pull request : many mysql and postgres clones to cover, testing on docker using python and .NET endpoints, or any other topic",
         "[Iceberg levels] You are at level 0. At best. Can you progress to deeper levels ?",
-        "[Level 0] SQL injection strategies: Time, Blind bin, Error, Union (wiki: https://github.com/ron190/jsql-injection/wiki/Strategy)",
-        "[Level -1] Strategies : Blind bit, Multibit (wiki: https://github.com/ron190/jsql-injection/wiki/Strategy#4a-blind-bit--in-parallel)",
         "[Level -2] Injection into Remote Code Execution via User Defined Function and Web shell (wiki: https://github.com/ron190/jsql-injection/wiki/Exploit)",
         "[Level -3] Strategy : Dns (wiki: https://github.com/ron190/jsql-injection/wiki/Strategy#7-dns--and-callselectbobcom)",
         "[Level -4] Injection into RCE into Reverse shell (wiki: https://github.com/ron190/jsql-injection/wiki/Reverse-shell)",

@@ -89,6 +89,15 @@ function Clickhouse {  # shellcheck disable=SC2317
   docker exec -i jsql-clickhouse clickhouse-client -u dba --password dba -q "select 'jsqlValue' as jsqlColumn"
 }  # correct status 1 on error
 
+function Dameng {  # shellcheck disable=SC2317
+  cat <<EOF | docker exec -i jsql-dameng /bin/bash
+    cd /opt/dmdbms/bin/
+    ./disql SYSDBA/SYSDBA001 <<EOF2
+      select 'jsqlValue' as jsqlColumn;
+EOF2
+EOF
+}  # no status 1 on error
+
 function Cubrid {  # shellcheck disable=SC2317
   docker exec -i jsql-cubrid csql demodb -c "select 'jsqlValue' as jsqlColumn"
 }  # correct status 1 on error

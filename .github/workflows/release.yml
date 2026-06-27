@@ -6,7 +6,7 @@ jobs:
   draft-release:
     name: Publish draft release
     runs-on: ubuntu-latest
-    environment: Production
+    environment: jsql-release
     outputs:
       release-id: ${{ steps.step-create-draft.outputs.release-id }}
     steps:
@@ -36,7 +36,7 @@ jobs:
   publish-release:
     name: Publish release
     runs-on: ubuntu-latest
-    environment: Production
+    environment: jsql-release
     needs: [draft-release]
     steps:
 
