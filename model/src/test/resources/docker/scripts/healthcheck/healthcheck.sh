@@ -89,6 +89,16 @@ function Clickhouse {  # shellcheck disable=SC2317
   docker exec -i jsql-clickhouse clickhouse-client -u dba --password dba -q "select 'jsqlValue' as jsqlColumn"
 }  # correct status 1 on error
 
+function Cockroachdb {  # shellcheck disable=SC2317
+  cat <<EOF | docker exec -i jsql-cockroachdb cockroach sql --url="postgresql://root@127.0.0.1:26257/defaultdb" --insecure
+    select 'jsqlValue' as jsqlColumn;
+EOF
+}  # correct status 1 on error
+
+function Cubrid {  # shellcheck disable=SC2317
+  docker exec -i jsql-cubrid csql demodb -c "select 'jsqlValue' as jsqlColumn"
+}  # correct status 1 on error
+
 function Dameng {  # shellcheck disable=SC2317
   cat <<EOF | docker exec -i jsql-dameng /bin/bash
     cd /opt/dmdbms/bin/
@@ -97,10 +107,6 @@ function Dameng {  # shellcheck disable=SC2317
 EOF2
 EOF
 }  # no status 1 on error
-
-function Cubrid {  # shellcheck disable=SC2317
-  docker exec -i jsql-cubrid csql demodb -c "select 'jsqlValue' as jsqlColumn"
-}  # correct status 1 on error
 
 function Db2 {  # shellcheck disable=SC2317
   cat <<EOF | docker exec -i --workdir /database/config/db2inst1/sqllib/bin --user db2inst1 jsql-db2 /bin/bash

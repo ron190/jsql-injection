@@ -58,6 +58,17 @@ public class JdbcRestController {
         );
     }
 
+    @RequestMapping("/cockroachdb")
+    public Greeting greetingCockroachdb(@RequestParam(value="name") String name) {
+        String inject = name.replace(":", "\\:");
+        return this.getGreeting(
+            SpringApp.get("cockroachdb").getProperty(JdbcSettings.JAKARTA_JDBC_URL),
+            SpringApp.get("cockroachdb").getProperty(JdbcSettings.JAKARTA_JDBC_USER),
+            SpringApp.get("cockroachdb").getProperty(JdbcSettings.JAKARTA_JDBC_PASSWORD),
+            "select schema_name from information_schema.schemata where '1' = '" + inject + "'"
+        );
+    }
+
     @RequestMapping("/duckdb")
     public Greeting greetingDuckdb(@RequestParam(value="name") String name) {
         String inject = name.replace(":", "\\:");

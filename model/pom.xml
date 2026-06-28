@@ -55,7 +55,7 @@
         <clickhouse.version>0.9.8</clickhouse.version>
         <cubrid.version>11.3.2.0053</cubrid.version>
         <dameng.version>8.1.3.140</dameng.version>
-        <db2.version>12.1.4.0</db2.version>
+        <db2.version>12.1.5.0</db2.version>
         <derby.version>10.17.1.0</derby.version>
         <!-- 'libduckdb_java.so: The specified procedure could not be found' on local 1.5.4.0 -->
         <!-- 'Could not initialize class DuckDNative' -->
@@ -71,7 +71,7 @@
         <!-- Connection AssertionError on 11.0.4 -->
         <mimer.version>3.42.3</mimer.version>
         <monetdb.version>12.2</monetdb.version>
-        <mssql.version>13.4.0.jre11</mssql.version>
+        <mssql.version>13.5.0.jre11-preview</mssql.version>
         <mysql.version>9.7.0</mysql.version>
         <!-- failure with 5.28.2 -->
         <neo4j-java-driver.version>5.27.0</neo4j-java-driver.version>

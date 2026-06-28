@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+
+  cockroachdb:
+    container_name: jsql-cockroachdb
+    image: cockroachdb/cockroach:latest-v24.3
+    privileged: true
+    ports:
+      - "26257:26257"
+    networks:
+      - jsql-network
+    command: start-single-node --insecure
+
+networks:
+  jsql-network:

