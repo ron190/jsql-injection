@@ -2,6 +2,7 @@ com.test
 com.test.engine.access
 com.test.engine.altibase
 com.test.engine.clickhouse
+com.test.engine.cockroachdb
 com.test.engine.cubrid
 com.test.engine.dameng
 com.test.engine.db2
