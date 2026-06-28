@@ -302,13 +302,12 @@ strategy:
   modeAnd: and
   modeOr: or
   blind: ${binary.mode} ${test}
-  # need bool instead of '' in case/when for cockroachdb
   time: |
    ${binary.mode} ''=''
    || (
        select
            case when ${test}
-           then true
+           then ''
            else pg_sleep(${sleep_time})
        end
    )

@@ -6,7 +6,18 @@ strategy:
     fingerprint:
       errorMessage:
         - "(?<!postgres.*)ERROR: unterminated quoted identifier at or near"
-      engineSpecific: case when ${test} then split_part('a','',1)else ''||crdb_internal.node_id() end='a'
+      # node_id in 1st position to failfast and prevent collision with virtuoso during Error
+      engineSpecific: case when ''||crdb_internal.node_id()!='' and ${test} then 'a' else ''||crdb_internal.node_id() end='a'
+  binary:
+    time: |
+      ${binary.mode} ''=''
+      || (
+          select
+              case when ${test}
+              then true
+              else pg_sleep(${sleep_time})
+          end
+      )
   error:
     method:
     # need cast(as date) with substr instead of int for correct result
