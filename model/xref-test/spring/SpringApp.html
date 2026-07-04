@@ -220,7 +220,7 @@
 <a class="jxr_linenumber" name="L212" href="#L212">212</a> 
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> Stream&lt;Properties&gt; getPropertiesFilterByProfile() {
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>         <strong class="jxr_keyword">return</strong> SpringApp.propertiesByEngine.parallelStream().filter(propertyByEngine -&gt;
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>             System.getProperty(SpringApp.TEST_PROFILE).equals(propertyByEngine.getProperty(SpringApp.TEST_PROFILE))
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>             System.getProperty(SpringApp.TEST_PROFILE, <span class="jxr_string">"UNDEFINED_PROFILE"</span>).equals(propertyByEngine.getProperty(SpringApp.TEST_PROFILE))
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>             || SpringApp.TENANT_H2.equals(propertyByEngine.getProperty(SpringApp.TENANT))
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>         );
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>     }

@@ -11,6 +11,7 @@ com.test.engine.derby
 com.test.engine.duckdb
 com.test.engine.exasol
 com.test.engine.firebird
+com.test.engine.greenplum
 com.test.engine.h2
 com.test.engine.hana
 com.test.engine.hsqldb
