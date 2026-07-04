@@ -187,7 +187,7 @@
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>                 () -&gt; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorEngine().getEngineByUser()
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>             );
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, <span class="jxr_string">"[Step 1] Fingerprinting database..."</span>);
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, <span class="jxr_string">"[Step 1] Fingerprinting database using raw fingerprinting..."</span>);
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>             <strong class="jxr_keyword">var</strong> insertionCharacter = URLEncoder.encode(<span class="jxr_string">"'\&quot;#-)'\&quot;*"</span>, StandardCharsets.UTF_8);
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>             String pageSource = <strong class="jxr_keyword">this</strong>.injectionModel.injectWithoutIndex(insertionCharacter, <span class="jxr_string">"test#engine"</span>);
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>                 
@@ -203,7 +203,7 @@
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>                     engineFound = engineTest;
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>                     LOGGER.log(
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>                         LogLevelUtil.CONSOLE_SUCCESS,
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>                         <span class="jxr_string">"Found [{}] using raw fingerprinting"</span>,
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>                         <span class="jxr_string">"Found database [{}] using raw fingerprinting"</span>,
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>                         () -&gt; engineTest
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>                     );
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>                     <strong class="jxr_keyword">break</strong>;

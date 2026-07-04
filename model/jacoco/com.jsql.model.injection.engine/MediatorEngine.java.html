@@ -179,7 +179,7 @@ public class MediatorEngine {
 <span class="fc" id="L179">                () -&gt; this.injectionModel.getMediatorEngine().getEngineByUser()</span>
             );
         } else {
-<span class="fc" id="L182">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;[Step 1] Fingerprinting database...&quot;);</span>
+<span class="fc" id="L182">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;[Step 1] Fingerprinting database using raw fingerprinting...&quot;);</span>
 <span class="fc" id="L183">            var insertionCharacter = URLEncoder.encode(&quot;'\&quot;#-)'\&quot;*&quot;, StandardCharsets.UTF_8);</span>
 <span class="fc" id="L184">            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, &quot;test#engine&quot;);</span>
                 
@@ -195,7 +195,7 @@ public class MediatorEngine {
 <span class="fc" id="L195">                    engineFound = engineTest;</span>
 <span class="fc" id="L196">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_SUCCESS,
-                        &quot;Found [{}] using raw fingerprinting&quot;,
+                        &quot;Found database [{}] using raw fingerprinting&quot;,
 <span class="fc" id="L199">                        () -&gt; engineTest</span>
                     );
 <span class="fc" id="L201">                    break;</span>
