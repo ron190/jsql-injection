@@ -106,10 +106,10 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         ) {
 <span class="nc" id="L107">            mediatorEngine.setEngine(enginesOrderByMatches.getFirst());</span>
 <span class="fc bfc" id="L108" title="All 2 branches covered.">        } else if (enginesOrderByMatches.size() &gt; 1) {</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">            if (enginesOrderByMatches.contains(mediatorEngine.getPostgres())) {</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">            if (enginesOrderByMatches.contains(mediatorEngine.getPostgres())) {</span>
 <span class="fc" id="L110">                mediatorEngine.setEngine(mediatorEngine.getPostgres());</span>
-<span class="nc bnc" id="L111" title="All 2 branches missed.">            } else if (enginesOrderByMatches.contains(mediatorEngine.getMysql())) {</span>
-<span class="nc" id="L112">                mediatorEngine.setEngine(mediatorEngine.getMysql());</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">            } else if (enginesOrderByMatches.contains(mediatorEngine.getMysql())) {</span>
+<span class="fc" id="L112">                mediatorEngine.setEngine(mediatorEngine.getMysql());</span>
             } else {
 <span class="nc" id="L114">                mediatorEngine.setEngine(enginesOrderByMatches.getFirst());</span>
             }
