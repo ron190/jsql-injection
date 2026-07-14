@@ -69,7 +69,7 @@
         <mariadb.version>3.5.9</mariadb.version>
         <mckoi.version>1.0.5</mckoi.version>
         <!-- Connection AssertionError on 11.0.4 -->
-        <mimer.version>3.42.3</mimer.version>
+        <mimer.version>11.0.4</mimer.version>
         <monetdb.version>12.2</monetdb.version>
         <mssql.version>13.5.0.jre11-preview</mssql.version>
         <mysql.version>9.7.0</mysql.version>
