@@ -38,7 +38,7 @@
         <jcabi-log.version>0.24.3</jcabi-log.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20260522</json.version>
-        <jsoup.version>1.22.2</jsoup.version>
+        <jsoup.version>1.23.1</jsoup.version>
         <junit-pioneer.version>2.3.0</junit-pioneer.version>
         <junit-platform-runner.version>1.14.4</junit-platform-runner.version>
         <nashorn-core.version>15.7</nashorn-core.version>
